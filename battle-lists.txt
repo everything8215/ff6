@@ -61,7 +61,7 @@ Commands
 1C: Possess
 1D: MagiTek
 1E: AI
-1F: Random Attack
+1F: Random Attack (or maybe AI counterattack ???)
 20: Battle Change (AI Command $F2)
 21: Display Short Battle Dialog (top of screen) (AI Command $F3)
 22: Enemy Roulette / Characters Run Away / DoT Damage (poison/regen/phantasm) ???

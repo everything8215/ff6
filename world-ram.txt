@@ -128,9 +128,10 @@ $58-$64 scratchpad
     $E9 ????????
   ++$EA event script pointer
    +$ED event script offset (high bit does something)
-    $EF movement distance/pause duration
+    $EF movement distance/pause counter
     $F0 current event command
-   +$F1 
+    $F1 frame counter for pause event command
+    $F2 
     $F3 character movement speed
    +$F4 destination map index ???
     $F6 facing direction (0 = up, 1 = right, 2 = down, 3 = left)

@@ -888,7 +888,7 @@ $1600-$1FFF Save RAM
           $3A9B Which tools are owned, used for picking randomly if berserk, colosseum etc.
     $3A9C-$3A9F -
    +----------------------------------+
-   |$3AA0-$3F1F Character/Monster Data|
+   |$3AA0-$3EB0 Character/Monster Data|
    +----------------------------------+
           $3AA0 76543210
                 7: allow battle menu to open (cleared when character/monster is seized)
