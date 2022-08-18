@@ -29,7 +29,7 @@ a Windows machine: https://github.com/SlithyMatt/x16-hello-cc65
 ### Clone the Repo
 
 If you have git installed, run `git clone
-https://github.com/everything8215/ff4.git`. Otherwise, click on "Code" in
+https://github.com/everything8215/ff6.git`. Otherwise, click on "Code" in
 GitHub and select "Download ZIP" to copy the repo to your computer.
 
 ### Install Node.js Modules

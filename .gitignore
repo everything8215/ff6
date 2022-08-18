@@ -3,5 +3,7 @@
 *.o
 *.lst
 *.map
+*.sh
+pretty/*
 node_modules/*
 ff6-*-data.json
