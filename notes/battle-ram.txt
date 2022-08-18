@@ -1,0 +1,2188 @@
+$0000-$00FF Direct Page
+-----------
+   +$00 Always #$0000
+   +$02 Always #$FFFF
+   +$04 Buttons in Repeat Mode
+   +$06 Buttons Pressed this Frame Modified Based on Button Config
+   +$08 Buttons Pressed this Frame but not Last Frame
+   +$0A Unmodified Buttons Pressed this Frame
+   +$0C Buttons Pressed Last Frame
+        axlr----
+        a: A button down
+        x: X button down
+        l: L button down
+        r: R button down
+        bystudlr
+        b: B button down
+        y: Y button down
+        s: Select button down
+        t: Start button down
+        u: Up direction down
+        d: Down direction down
+        l: Left direction down
+        r: Right direction down
+    $0E Frame counter
+    $0F -
+-----------
+$0010-$009F Variables Used by Battle Graphics Module Only
+-----------
+$10-$45 Scratchpad RAM
+    $46 NMI in progress
+    $47 Waiting for VBlank
+  ++$48 Pointer to Current Position in Battle Message
+    $4B 
+
+	$4E vhopppmm Current Menu Text Tile Data
+    
+    $55 
+    
+    $57 
+    
+    $59 
+
+  ++$5B Animation Script Pointer
+
+   +$61 pointer to monster graphics buffer
+    $63 
+  ++$64 pointer to monster graphics in ROM
+    $67 
+	$68 Constant to add to each hex->dec conversion digit
+$69-$70 Hex->Dec conversion result (most significant digits first)
+    $71 Next available sprite index
+    $72 Random Number counter for graphics module
+	$73 
+	$74 
+    $75 
+ (+$76) Pointer to battle script commands, Starts at $2D6E (4 bytes each)
+        $00 Command index
+        $01 parameter 1
+        $02 parameter 2
+        $03 parameter 3
+ (+$78) Pointer to battle script data, Starts at $2C6E (16 bytes each, see $A0-$AF)
+	$7A aaaaabbb
+	    a: 
+		b: 
+    $7B ?-----cc
+	    ?: 
+		c: character number
+	$7C constant to add to window graphics data
+
+$7D-$8D Vector math variables (* = input)
+-----------------------------
+	$7D *x0
+	$7E *y0
+	$7F *x1
+	$80 *y1
+   +$81 dx (signed)
+   +$83 dy (signed)
+    $85 theta = arctan(dy/dx) (angle of the line between start and end)
+   +$86 sqrt(dx^2 + dy^2)
+   +$88 dx (unsigned)
+   +$8A dy (unsigned)
+   +$8C (delta_x / 8) + (delta_y * 4) (for intermediate calculation)
+    $8E -
+-----------
+  ++$8F battle event pointer
+    $92 
+    $93 play character active sound effect
+    $94 play cursor sound effect (move/cancel)
+    $95 play error sound effect
+    $96 play cursor sound effect (select)
+    $97 go to next part of song (SPC command $89)
+    $98 frame counter (inc each frame)
+    $99 Pause Sprite Animation Threads
+    $9A enable final KEFKA death animation
+	$9B 
+$9C-$9F -
+-----------
+$00A0-$00FF Variables Used by Battle Module Only
+-----------
+$00A0-$00AF Battle Script Data (gets copied to $2C6E)
+	$A0 mcfs--dt (-> $2C6E)
+		m: attacker is a monster (excludes AI characters)
+		c: no character targets
+		f: flash screen (critical)
+		s: disable pre-magic swirly animation
+		d: dragon horn effect (attacker bounces back up when jumping)
+		t: poison/regen/seizure damage (no critical and ignore true knight ???)
+	$A1 Attacker Index (-> +$2C6F)
+   +$A2 Targets (-> +$2C70) (excludes targets blocked)
+   +$A4 Targets Hit (-> +$2C72)
+   +$A6 Targets Reflected Off Of (-> +$2C74)
+   +$A8 (-> +$2C76)
+    $AA Character 1 Block Type (-> $2C78) (0 = none, 1 = knife, 2 = sword, 3 = shield, 4 = zephyr cape, 5 = hand up, 6 = golem, 7 = dog)
+    $AB Character 2 Block Type (-> $2C79)
+    $AC Character 3 Block Type (-> $2C7A)
+    $AD Character 4 Block Type (-> $2C7B)
+   +$AE (-> +$2C7C)
+-----------
+    $B0 ?p?s??c?
+        p: Preemptive Attack
+        s: disable pre-magic swirly animation
+		c: no critical and ignore true knight ???
+    $B1 d?b??r?c
+		d: disable battle menus opening
+		b: back attack
+        r: can't run away
+		c: counter attack flag (disables further counter attacks)
+    $B2 dr?s??cn
+		d: cap drain damage when attacker's hp if full (normally set, cleared by seize)
+		r: runic sword animation
+		s: follow-up spell hits same target (random weapon spellcast)
+		c: no critical
+        n: show attack name ??
+    $B3 vgrm?ucb
+		v: ignore vanish
+		g: gauntlet is equipped ??? (Bat.Pwr *= 7/4)
+		r: ignore attacker row
+		m: ignore damage multiplier
+		u: don't retarget, undead attack ???
+        c: automatic critical hit ??
+        b: blitz input failed
+    $B4 Battle Script Command
+    $B5 Command Index
+    $B6 Spell/Attack Index
+    $B7 Secondary Data Index (Item Index, Battle BG index, Atma Weapon Length, dice rolls, etc.)
+   +$B8 Targets
+    $BA crxfdioa
+		c: can't target characters
+		r: random target
+		x: can hit dead targets (Quadra Slam, Dragon Horn, etc. ???)
+		f: reflected
+		d: target only dead allies
+		i: no retarget if target becomes invalid
+		o: attacking opposite side only (no friendly targets)
+		a: can't target attacker
+	$BB ???????? Targetting Flags
+    $BC damage multiplier
+    $BD other damage multiplier
+    $BE random number for bank $C2
+	$BF -
+$C0-$DF -
+   +$F0 Maps to $3254 Pointer to AI Script
+   +$F2 Maps to $3D0C AI Script Loop Address
+    $F4 Maps to $3240 Number of times to loop
+    $F5 Maps to $3241 Loop Counter
+    $F6 Pointer to Character/Monster Data in RAM
+    $F7 
+    $F8 Final Attack has been done ??
+    
+   +$FC Targets
+
+  ++$F3 Decompression Source
+  ++$F6 Decompression Destination
+
+$0300-$051F Sprite Data
+-----------
+      $0300 X position
+      $0301 Y position
+      $0302 vhoopppm mmmmmmmm
+            v: Vertical Flip
+            h: Horizontal Flip
+			o: sprite priority
+            p: Palette Index
+            m: Graphic Index
+            
+            Notable Sprites
+            ---------------
+      $0300 char/monster 1 cursor (cursors can't be on monsters and characters at the same time, they flash from one to the other)
+      $0304 char/monster 2 cursor
+      $0308 char/monster 3 cursor
+      $030C char/monster 4 cursor
+      $0310 monster 5 cursor
+      $0314 monster 6 cursor
+      $0318 selected character triangle cursor
+      $031C 
+      $0320 first available sprite (107 sprites available)
+      
+$04CC-$04EF ??? sprites
+      $04F0 main battle menu cursor
+      $04F4 secondary battle menu cursor (moving items, etc.)
+      $04F8 ??? cursor
+      $04FC up/down arrows for scrolling menus
+-----------
+$0520-$119F Used by Bank $C0
++-------------------------------------+
+|$11A0-$11EF Data Shared with Bank $C0|
++-------------------------------------+
+            Spell Mode (14 bytes from from $C46AC0)
+            ----------
+      $11A0 Targetting
+      $11A1 Element
+      $11A2 76543210
+            7: can't target characters (esper attacks, tools, desperation attacks)
+            6: no damage split
+            5: ignore target's defense
+            4: random target
+            3: invert damage to undead
+            2: resurrection targetting
+            1: instant death spell
+            0: physical damage
+      $11A3 76543210 Attack flags 1
+            7: affect mp
+            6: attacker dies after attack (air anchor effect)
+            5: re-target if target becomes invalid
+            4: quick/warp flag ???
+            3: enable runic
+            2: can learn as lore
+            1: ignore reflect
+            0: useable on field
+      $11A4 76543210 Attack flags 2
+            7: damage is fraction of hp
+            6: level divisible spell (evasion gives the factor)
+            5: can't dodge
+            4: use stamina for defense ???
+            3: toggle status
+            2: remove status
+            1: drain effect
+            0: restore hp/mp
+      $11A5 MP Cost
+      $11A6 Power
+      $11A7 ------10
+            1: display battle message based on attack index (if attack hits)
+            0: automatically miss if target is immune to status
+      $11A8 Hit Rate
+      $11A9 Special Effect (0 = no effect)
+      $11AA Status 1
+      $11AB Status 2
+      $11AC Status 3
+      $11AD Status 4
+      $11AE Hit Rate
+      $11AF Level
+
+            Item Mode
+            ---------
+      $11A0 
+      $11A1 Element
+      $11A2 
+      $11A3 
+      $11A4 
+      $11A5 
+      $11A6 Battle/Defense Power
+
+      $11A9 Special Effect (0 = no effect)
+      $11AA Status 1
+      $11AB Status 2
+      $11AC Status 3
+      $11AD Status 4
+      
+     +$11B0 Damage
+            
+            Stats Mode
+            ----------
+     +$11A0 Mag.Pwr
+	 +$11A2 Stamina
+	 +$11A4 Speed
+	 +$11A6 Vigor
+     +$11A8 Evade
+	 +$11AA MBlock
+      $11AC Battle Power (main hand)
+	  $11AD Battle Power (off-hand)
+	  $11AE Weapon Hit Rate (main hand)
+	  $11AF Weapon Hit Rate (off-hand)
+	  $11B0 Weapon Element (main hand)
+	  $11B1 Weapon Element (off-hand)
+	 +$11B2 bbhhhhhh hhhhhhhh
+	        b: hp boost (0 = none, 1 = 25% boost, 2 = 50% boost, 3 = 12.5% boost)
+			h: max hp
+	  $11B4 Weapon Spell Cast
+	  $11B5 -
+	  $11B6 Absorbed Elements
+	  $11B7 Nullified Elements
+	  $11B8 Weak Elements
+	  $11B9 Halved Elements
+	  $11BA Defense
+	  $11BB Magic Defense
+	  $11BC Status 2 Effects
+	  $11BD -
+	  $11BE ----mpbb Main Hand
+	  $11BF ----mpbb Off Hand
+	        m: can block magic attacks
+			p: can block physical attacks
+			b: block graphic (0 = Dagger, 1 = Sword, 2 = Shield, 3 = Zephyr Cape)
+$11C0-$11C5 -
+	  $11C6 Weapon
+	  $11C7 Shield
+	  $11C8 Helmet
+	  $11C9 Armor
+	  $11CA Relic 1
+	  $11CB Relic 2
+	  $11CC -
+	  $11CD -
+	 +$11CE -------- ---4321-
+	        1: weapon in off-hand
+	        2: weapon in main hand
+			3: unarmed in off-hand
+			4: unarmed in main hand
+	  $11D0 ----zhsd Physical Block Graphic
+	  $11D1 ----zhsd Magical Block Graphic
+	        z: Zephyr Cape
+			h: Shield
+			s: Sword
+			d: dagger
+	  $11D2 Status 1 Immunity
+	  $11D3 Status 2 Immunity
+	  $11D4 Status 3 Effects
+	  $11D5 76543210 relic effects 1
+	        7: MP +12.5% (bard's hat)
+			6: MP +50% (crystal orb)
+			5: MP +25% (minerva)
+			4: HP +12.5% (green beret)
+			3: HP +50% (muscle belt)
+			2: HP +25% (red cap)
+			1: raise magic damage (double earrings or hero ring)
+			0: raise fight damage (atlas armlet, hero ring)
+	  $11D6 76543210 relic effects 2
+	        7: jump continuously (dragon horn)
+			6: steal -> capture (thief glove)
+			5: slot -> gp rain (coin toss)
+			4: sketch -> control (fakemustache)
+			3: magic -> x-magic (gem box)
+			2: fight -> jump (dragoonboots)
+			1: prevent back/pincer attacks (back guard)
+			0: increase pre-emptive attack rate (gale hairpin)
+	  $11D7 76543210 relic effects 3
+	        7: raise vigor +50% (hyper wrist)
+			6: MP cost = 1 (economizer)
+			5: MP cost = 50% (gold hairpin)
+			4: 100% Hit Rate, ignore target's MBlock (sniper sight)
+			3: Increase Control Rate (coronet)
+			2: Increase Sketch Rate (beret)
+			1: raise magic damage (single earring or hero ring)
+			0: Increase Steal Rate (sneak ring)
+      $11D8 -thgaebo relic effects 4
+	        t: protects weak allies (true knight)
+	        h: can equip heavy items (merit award)
+			g: can equip 2 weapons (genji glove)
+			a: uses weapon 2-handed (gauntlet)
+			e: randomly evade (beads)
+			b: randomly counter (black belt)
+			o: fight -> x-fight (offering)
+	  $11D9 7--43210 relic effects 5
+	        7: make character undead (relic ring)
+			4: double GP (cat hood)
+			3: double experience (exp. egg)
+			2: casts wall when HP is low
+			1: casts safe when HP is low (mithril glove, czarina ring)
+			0: casts shell when HP is low (barrier ring, czarina ring)
+	  $11DA 765---1- Weapon Effects (main hand)
+	  $11DB 765---1- Weapon Effects (off-hand)
+	        7: enable runic
+			6: 2-hand
+			5: no back row penalty
+			1: swdtech
+	  $11DC Run Factor
+	  $11DD -
+	  $11DE -
+      $11DF t-s---mc Field Equipment Effects
+            t: tintina bar effect (doesn't work)
+            s: sprint shoes effect (1.5x walk speed)
+            m: moogle charm effect (no random battles)
+            c: charm bangle effect (50% less random battles)
+    + $11E0 r-----bb bbbbbbbb
+            r: randomly pick this battle or one of the next 3 (see C2/30E8)
+            b: battle index
+    + $11E2 ???????? ??bbbbbb
+            b: battle background index
+      $11E4 ----3210
+            3: continue current music (no battle music)
+            2: on the veldt (enable leap in status menu)
+	        1: on the veldt (enable leap in battle)
+	        0: gau can appear after battle
+$11E5-$11EF -
+-----------
+$11F0-$11FF Used by Bank $C0 and $EE
+-----------
+$1200-$12FF Copy of Direct Page
+-----------
+$1300-$13FF Music and Sound Direct Page (used by bank $C5)
+-----------
+$1500-$15FF Interrupt Jump Codes and CPU Stack
+-----------
+$1500-$1503 NMI Jump Code
+$1504-$1507 IRQ Jump Code
+$1508-$15FF CPU Stack
+-----------
+$1600-$1FFF Save RAM
+-----------
+
++-------------------------------------------------------+
+| $2000-$3000 RAM Shared by Battle and Graphics Modules |
++-------------------------------------------------------+
+          $2000 monster VRAM map index
+         +$2001 monster 1 index
+         +$2003 monster 2 index
+         +$2005 monster 3 index
+         +$2007 monster 4 index
+         +$2009 monster 5 index
+         +$200B monster 6 index
+    $200D-$2014 monster names (4 items, 2 bytes each)
+    $2015-$201C number of monsters alive for each name (4 items, 2 bytes each)
+          $201D ----4321 characters shown
+          $201E --654321 monsters shown
+          $201F Type of battle (0 = normal, 1 = back, 2 = pincer, 3 = side)
+          $2020 Number of SwdTechs known - 1
+          $2021 ATB Gauge Setting (0 = off, 1 = on)
+          $2022 Character ATB Gauge % ($00 = empty, $FF = full, display only)
+          $2026 Character Morph Gauge % ($00 = not shown, $01 = empty, $FF = full, display only)
+          $202A Character Condemned Numbers ($00 = not shown, $01 = 00 ... $64 = 99, display only)
+    $202E-$205D Character Battle Commands (4 items, 4x3 bytes each)
+    -----------
+		  $202E command number
+		  $202F d???????
+		        d: command is disabled (gray)
+		  $2030 remcobsu Battle Command Targetting
+		        r: randomize target
+		        e: cursor defaults to enemy
+		        m: manual party select
+		        c: auto confirm
+		        o: auto select one party
+		        b: auto select both parties
+		        s: 0 = can target both sides, 1 = can target one side only
+		        u: 0 = cursor can't be moved, 1 = cursor moveable
+	$205E-$208D Controlled Monster Battle Commands (4 items, 4x3 bytes each)
+    $208E-$21C9 Character Spell Lists (4 * 79 items [1 esper + 54 spells + 24 lores], 4 bytes each)
+    -----------
+          $0000 spell index
+          $0001 msb set if spell is disabled (due to low mp)
+          $0002 targetting data
+          $0003 mp cost
+          $208E esper
+          $2092 spell
+          $216A lore
+    $257E-$267D Rages known
+    $267E-$2685 Dances known
+   +-----------------------------------------------------------+
+   |$2686-$2B85 Battle Inventory (256 + 8 items, 5 bytes each) |
+   +-----------------------------------------------------------+
+          $2686 Item Index
+          $2687 u?tjws??
+		        u: not usable in battle
+				t: can be thrown
+				j: can be used with jump
+				w: is a weapon
+				s: is a shield
+          $2688 abcdefgh Item Targetting Flags
+		        a: random target
+				b: enemy target by default
+				c: multi-target possible
+				d: auto-accept default target
+				e: target all enemies or all allies
+				f: target all enemies and all allies
+				g: target can't switch between enemies and allies
+				h: target single ally or enemy
+          $2689 Item Quantity
+          $268A ----4321 Item Equippability (set if character can't equip the item)
+		  -----
+          $2B86 Character equipped right-hand data (4 items, 5 bytes each)
+          $2B9A Character equipped left-hand data (4 items, 5 bytes each)
+   +-----------------------------------------------------------+
+	$2BAE-$2BCD Pending User Actions from Battle Menu (4 items, 8 bytes each)
+          $2BAE character slot ($FF means no action)
+          $2BAF command
+          $2BB0 attack
+         +$2BB1 targets
+          $2BB3 secondary attack (for x-magic)
+         +$2BB4 targets with cursors shown
+
+	$2BCE-$2C6D Damage variables for each target, from $33D0 & $33E4 (8 items, 20 bytes each)
+    $2C6E-$2D6D Battle script data (see $A0-$AF, 16 bytes each)
+    $2D6E-$2E6D Battle script command queue (4 bytes each)
+    $2E6E-$2E71 Characters with Genji Glove
+          $2E72 Item Index
+		  $2E73 Item Use Flags (see $2687)
+          $2E74 Item Targetting Flags (see $2688)
+          $2E75 Item Quantity
+		  $2E76 Item Equippability
+          $2E77 
+         +$2E78 char 1 current HP (buffer, for graphics)
+         +$2E7A char 2 current HP (buffer, for graphics)
+         +$2E7C char 3 current HP (buffer, for graphics)
+         +$2E7E char 4 current HP (buffer, for graphics)
+         +$2E80 char 1 max HP (buffer, for graphics)
+         +$2E82 char 2 max HP (buffer, for graphics)
+         +$2E84 char 3 max HP (buffer, for graphics)
+         +$2E86 char 4 max HP (buffer, for graphics)
+         +$2E88 char 1 current MP (buffer, for graphics)
+         +$2E8A char 2 current MP (buffer, for graphics)
+         +$2E8C char 3 current MP (buffer, for graphics)
+         +$2E8E char 4 current MP (buffer, for graphics)
+         +$2E90 char 1 max MP (buffer, for graphics)
+         +$2E92 char 2 max MP (buffer, for graphics)
+         +$2E94 char 3 max MP (buffer, for graphics)
+         +$2E96 char 4 max MP (buffer, for graphics)
+         +$2E98 char 1 current status 1 & 2 (buffer, for graphics)
+         +$2E9A char 2 current status 1 & 2 (buffer, for graphics)
+         +$2E9C char 3 current status 1 & 2 (buffer, for graphics)
+         +$2E9E char 4 current status 1 & 2 (buffer, for graphics)
+         +$2EA0 char 1 current status 3 & 4 (buffer, for graphics)
+         +$2EA2 char 2 current status 3 & 4 (buffer, for graphics)
+         +$2EA4 char 3 current status 3 & 4 (buffer, for graphics)
+         +$2EA6 char 4 current status 3 & 4 (buffer, for graphics)
+		  $2EA8 
+
+    $2EAE-$2F2D character graphics data (4 items, 32 bytes each)
+	-----------
+	      $2EAE character graphics index
+    $2EAF-$2EB4 character name
+         +$2EB5 current HP (for graphics)
+         +$2EB7 max HP (for graphics)
+         +$2EB9 current MP (for graphics)
+         +$2EBB max MP (for graphics)
+         +$2EBD current status 1 & 2 (second buffer, for graphics)
+         +$2EBF current status 3 & 4 (second buffer, for graphics)
+         +$2EC1 current status 1 & 2 (for graphics)
+         +$2EC3 current status 3 & 4 (for graphics)
+          $2EC5 row (for graphics, 0 = front, 1 = back)
+          $2EC6 actor index
+          $2EC7 character ai enabled
+
+          $2F2E Command Setting (0 = window, 1 = short)
+          $2F2F --654321 Monsters that are present (graphics buffer)
+          $2F30 character slot 1 equipment change flag
+          $2F31 character slot 2 equipment change flag
+          $2F32 character slot 3 equipment change flag
+          $2F33 character slot 4 equipment change flag
+          $2F34 menu window graphics index (wallpaper)
+        ++$2F35 variable 0 for battle message display
+        ++$2F38 variable 1 for battle message display
+        ++$2F3B variable 2 for battle message display
+        ++$2F3E variable 3 for battle message display
+          $2F41 stop battle time (doesn't override "Wait" setting)
+		 +$2F42 Characters/Monsters that is about to get doom cast on them (enemy roulette ???)
+          $2F44 Monster targets with clear status (for graphics)
+          $2F45 Enable Characters Running Animation (L+R pressed)
+          $2F46 Characters that are targettable
+          $2F47 Characters acting as enemies (KEFKA, etc.)
+          
+    $2F48-$2F4B Auxiliary Battle Data
+    -----------
+          $2F48 spbnaaaa
+                s: enable side attacks
+                p: enable pincer attacks
+                b: enable back attacks
+                n: enable normal attacks (if none are disabled, normal is used)
+                a: appearance effects
+                   0 = pre-drawn
+                   1 = *poof of smoke (Laser Gun, Missile Bay, FlameEater)
+                   2 = fall from ceiling
+                   3 = *come from sides, individually (most battles)
+                   4 = *jump out of water (Piranha, Ultros)
+                   5 = *float from ceiling
+                   6 = *jump out of sand (Ultros on land)
+                   7 = come from sides, at the same time
+                   8 = fade in 1 (top to bottom)
+                   9 = fade in 2 (bottom to top)
+                   A = fade in 3 (materialize)
+                   B = fade in 4 (bottom left to top right, diagonally)
+                   C = pre-drawn (boss death)
+                   D = flash in
+                   E = Chadarnook (fade from one painting to the other)
+                   F = slow drop from above (final Kefka)
+				   * = characters enter before monsters (see C1/1420)
+          $2F49 e---ljf-
+                e: enable character AI
+                l: disable Leap
+                j: disable Joker Doom
+                f: disable fanfare
+          $2F4A Character AI Index (data at $D0FD00)
+                00 = no character AI
+                01 = shadow at colosseum
+                02 = kefka and terra flashback
+                03 = vargas vs sabin at mt kolts
+                04 = kefka vs sabin at imperial base
+                05 = cyan vs. soldiers at imperial base
+                06 = cyan vs. soldiers at imperial base (w/ big soldier)
+                07 = piranha battle
+                08 = kefka vs sabin
+                09 = kefka vs terra
+                0A = gau returning from veldt
+                0B = unused
+                0C = esper gate 1
+                0D = esper gate 2
+                0E = esper gate 3
+                0F = ultros
+                10 = esper gate 4
+                11 = espers and airship
+                12 = kefka vs esper
+                13 = esper gate 6
+                14 = kefka vs leo
+          $2F4B c-mmmtvr
+                c: continue playing current music
+                m: music index
+                   0 = normal (battle theme)
+                   1 = boss (the decisive battle)
+                   2 = atma weapon (the fierce battle)
+                   3 = returners
+                   4 = factory train (save them!)
+                   5 = final battle (Dancing Mad #1)
+                   6 = none, continue playing current music
+                   7 = none, continue playing current music
+                t: disable attack type message (back, pincer, side) & disable preemptive attacks
+                v: formation won't appear on the veldt
+				r: trying to run with L+R has no effect (for event battles)
+         +$2F4C Characters/Monsters that can't be targetted (used by Battle Event Command $13, Zinger, running away)
+         +$2F4E Characters/Monsters that can be targetted (used by Battle Event Command $13)
+         +$2F50 Character/Monster facing directions (1 = right, 0 = left)
+		  $2F52 
+          $2F53 horizontal flip for characters that are muddled
+          $2F54 horizontal flip for targets being controlled (by Relm)
++--------------------------------------------+
+| $3000-$4000 RAM Used by Battle Module Only |
++--------------------------------------------+
+          $3000 TERRA character slot (#$FF if TERRA is not in the party)
+          $3001 LOCKE character slot
+          $3002 CYAN character slot
+          $3003 SHADOW character slot
+          $3004 EDGAR character slot
+          $3005 SABIN character slot
+          $3006 CELES character slot
+          $3007 STRAGO character slot
+          $3008 RELM character slot
+          $3009 SETZER character slot
+          $300A MOG character slot
+          $300B GAU character slot
+          $300C GOGO character slot
+          $300D UMARO character slot
+		  $300E -
+		  $300F -
+         +$3010 pointer to character slot 1 data (+$1600)
+         +$3012 pointer to character slot 2 data (+$1600)
+         +$3014 pointer to character slot 3 data (+$1600)
+         +$3016 pointer to character slot 4 data (+$1600)
+         +$3018 #$0001 character 1 mask
+         +$301A #$0002 character 2 mask
+         +$301C #$0004 character 3 mask
+         +$301E #$0008 character 4 mask
+         +$3020 #$0100 monster 1 mask
+         +$3022 #$0200 monster 2 mask
+         +$3024 #$0400 monster 3 mask
+         +$3026 #$0800 monster 4 mask
+         +$3028 #$1000 monster 5 mask
+         +$302A #$2000 monster 6 mask
+         +$302C pointer to character 1 spell list ($208E)
+         +$302E pointer to character 2 spell list ($21CA)
+         +$3030 pointer to character 3 spell list ($2306)
+         +$3032 pointer to character 4 spell list ($2442)
+    $3034-$3069 Master Spell List (1 byte per spell)
+	$306A-$3083	Master Lore List (1 byte per lore)
+    $3084-$3183 Pointer to each spell in master spell list (1 byte per attack, used to get modified mp cost for character spells)
+    $3184-$3203 Command List (pointers to command/attack queue at $3420)
+                NOTE: a command list slot equals itself if it is the last pending action for a character/monster
+                      otherwise, it equals the next pending action to be executed after this one
+---------------------------------------------------------------------------------
+          $3204 prsxcamj Character Update Flags
+				p: update enabled spells/espers
+				r: remove all advance wait actions
+				s: condemned counter needs to be started
+				x: condemned counter needs to be stopped
+				c: update enabled commands
+				a: ATB gauge constant needs to be updated (haste/slow)
+				m: character just morphed or reverted - update menu, etc.
+				j: character just jumped - remove all actions from action queue
+          $3205 j????al? (init $FF, flags are active when clear)
+                j: target is executing an action and can't jump
+                a: air anchor effect
+                l: near-fatal spell has been cast this battle
+         +$3218 ATB Gauge % ($0001 = empty, $0000 = full)
+          $322C Advance Wait Duration ($FF = disabled)
+          $322D dnssssss Special Attack Data
+                d: can't miss
+                n: no damage
+                s: special attack index ($00-$1F: status, $20-$2F: damage increment, $30: drain HP, $31: drain MP, $32+: remove rflect status)
+          $3240 AI No. of Times to Loop ???
+          $3241 AI Loop Counter ???
+         +$3254 Pointer to Start of AI Script
+         +$3268 Pointer to Start of Counterattack AI Script
+          $327C Character/Monster that just attacked you
+		  $327D -
+          $3290 Last Target to Attack you
+		  $3291 Last Target to Cast a Spell on you
+          $32A4 Last Target to Use an Item on you
+		  $32A5 Last Target to use an element on you ???
+          $32B8 Target you Control (invalid if msb set)
+		  $32B9 Target Controlling you (invalid if msb set)
+          $32CC Pointer to Next Pending Action in Command List, $FF if no actions pending (+$3184)
+          $32CD " " for Counterattacks
+          $32E0 Last Target that Targetted you
+          $32E1 Battle Background Index for Dance
+          $32F4 Obtained Item index (steal/metemorph, $FF is no item)
+          $32F5 "Targetting" target
+          $3308 Steal Item 1 (12.5%)
+          $3309 Steal Item 2 (87.5)
+          $331C Blocked Status 1
+          $331D Blocked Status 2
+          $3330 Blocked Status 3
+          $3331 Blocked Status 4
+          $3344 Esper Index
+          $3345 Esper Targetting Data (from spell data byte 0)
+          $3358 Seize target (invalid if msb set)
+          $3359 Seize attacker (invalid if msb set)
+          $336C Love Token target (invalid if msb set)
+          $336D Love Token attacker (invalid if msb set)
+         +$3380 Monster Index for Name Display
+          $3394 Charm target (invalid if msb set)
+          $3395 Charm attacker (invalid if msb set)
+         +$33A8 Monster Index (set for Gau when using rage)
+          $33BC 
+          $33BD 
+         +$33D0 nmdddddd dddddddd Damage Taken
+                n: negative
+                m: miss
+                d: damage taken
+         +$33E4 nmdddddd dddddddd Damage Healed
+                n: negative
+                m: miss
+                d: damage healed
+---------------------------------------------------------------------------------
+          $33F8 Zinger attacker
+          $33F9 Zinger target
+         +$33FA Target that is Doom Gaze
+         +$33FC Target that ???
+         +$33FE Target that ???
+          $3400 Secondary Spell index ($FF = no spell)
+          $3401 Battle message index
+          $3402 Quick Counter
+          $3403 Target that is Seized
+          $3404 Target that is Quick
+          $3405 Additional Attacks from Launcher and Super Ball ??
+          $3406 Currently acting character/monster (used for multiple actions by one attacker)
+          $3407 Currently counterattacking character/monster (used for multiple actions by one attacker)
+         +$3408 Characters/Monsters that were revived/summoned (AI command $F5)
+		  $340A Immediate Action (pointer to command list, +$3184)
+	$340B-$340F -
+          $3410 Last Spell Cast
+          $3411 Last Item Used
+          $3412 Attack Name Type (disabled if msb set)
+                0: normal
+                1: item
+                2: esper
+                3: ???
+                4: swdtech
+                5: command (GP rain)
+                6: monster special attack
+                7: joker doom [slot]
+                8: blitz
+          $3413 Primary Command Index (holds fight command if a spell gets cast as a secondary attack from a weapon)
+          $3414 Enable Damage Modification (randomness, defense stat, shell/safe, defending, row, morph, friendly fire)
+          $3415 Randomize Targets ??
+         +$3416 Interceptor Character/Monster
+         +$3417 Character using Sketch
+          $3419 Black Belt Targets ??
+          $341A Enable Counterattacks
+          $341B -
+          $341C Enable Weapon's Spell Animation
+          $341D Enable Weapon Animation
+          $341E -
+          $341F -
+---------------------------------------------------------------------------------
+    $3420-$351F Command/Attack Queue (pointer from $3184)
+    $3520-$361F Targets Queue (pointer from $3184)
+    $3620-$371F MP Cost Queue (pointer from $3184)
+    $3720-$381F Advance Wait Queue (ready stance, jump pre-animation, pointer at $3A64)
+    $3820-$391F Action Queue (pointer at $3A66)
+    $3920-$3A1F Counterattack Queue (executed before advance wait and actions, pointer at $3A68)
+---------------------------------------------------------------------------------
+         +$3A20 Character 1 Actor mask (used for item equipability, 0 for actor >= 0x0E)
+         +$3A22 Character 2 Actor mask
+         +$3A24 Character 3 Actor mask
+         +$3A26 Character 4 Actor mask
+          $3A28 Battle Script Command Byte 1
+          $3A29 Battle Script Command Byte 2
+          $3A2A Battle Script Command Byte 3
+          $3A2B Battle Script Command Byte 4
+---------------------------------------------------------------------------------
+          $3A2C Current AI Command
+		  $3A2D AI Command Data Byte 1
+		  $3A2E AI Command Data Byte 2
+		  $3A2F AI Command Data Byte 3
+         +$3A30 Current Targets ???
+         +$3A32 Pointer to Current Battle Script Data (+$2C6E)
+          $3A34 Counter for Damage Variables (when $33D0 & $33E4 copied to battle gfx buffer at $2BCE)
+		  $3A35 -
+         +$3A36 Golem HP (starts at caster's HP, $0000 means no golem)
+          $3A38 Characters that *just* escaped (gets cleared after they run)
+          $3A39 Characters that have lef the battle (sneezed away, ran away, etc.)
+          $3A3A Monsters that have died/escaped
+          $3A3B Run Difficulty
+         +$3A3C Targets that are invincible
+         +$3A3E Battle Turn Counter (used for desperation attacks, see C2/1136, C2/15C8)
+         +$3A40 Enemy Characters (Gau Veldt/Shadow Colosseum)
+         +$3A42 ??? Enemy Characters (bitmask)
+         +$3A44 Battle Counter (increments once every 16 frames)
+         +$3A46 FEDCBA98 76543210
+		        F: monsters go back to full HP/MP
+		        4: ignore pending actions (set for sonic dive)
+		        2: clear all pending actions when GAU appears on the veldt
+		        1: ??? (set for joker doom and seize hp drain)
+         +$3A48 Targets missed due to no statuses changing or checks in special effect
+         +$3A4A Targets with changed status
+         +$3A4C Max MP cost (based on character's current mp remaining)
+         +$3A4E Backup Targets (in case all targets die and there are still attacks being made)
+         +$3A50 -
+         +$3A52 -
+         +$3A54 Characters/Monsters getting hit in the back
+         +$3A56 Characters/Monsters that have died
+         +$3A58 Characters with Menus that need to be updated ???
+         +$3A5A Missed Targets
+         +$3A5C Targets affected by "Mind Blast" (characters only)
+         +$3A5E -
+         +$3A60 -
+         +$3A62 -
+          $3A64 Advance Wait Queue Start (+$3720)
+          $3A65 Advance Wait Queue End
+          $3A66 Action Queue Start (+$3820)
+          $3A67 Action Queue End
+		  $3A68 Counterattack Queue Start (+$3920)
+		  $3A69 Counterattack Queue End
+		 +$3A6A pointer to current pending user action queue (+$2BAE)
+		  $3A6C Previous Frame Counter Value
+		  $3A6D 76543210 Relic Effects 2 (party)
+                7: jump continuously (dragon horn)
+                6: steal -> capture (thief glove)
+                5: slot -> gp rain (coin toss)
+                4: sketch -> control (fakemustache)
+                3: magic -> x-magic (gem box)
+                2: fight -> jump (dragoonboots)
+                1: prevent back/pincer attacks (back guard)
+                0: increase pre-emptive attack rate (gale hairpin)
+          $3A6E End of Battle Special Event Index (pre-multiplied by 2, see C2/48F5)
+          $3A6F Default Battle Background for Dance (see C2/178E, C2/4DE4)
+          $3A70 Number of attacks
+		  $3A71 ??? Battle Script Command Queue Pointer
+          $3A72 Battle Script Command Queue Pointer
+          $3A73 Number of Monsters at Start of Battle
+         +$3A74 Characters/Monsters that are alive (bitmask)
+          $3A76 Number of characters that are alive
+          $3A77 Number of enemies that are alive
+         +$3A78 
+          $3A7A Command index
+          $3A7B Attack index
+          $3A7C Command index
+		  $3A7D Target index ??? used item index ??? blitz index ???
+		  $3A7E -
+		  $3A7F -
+          $3A80 Number of known blitzes
+          $3A81 - (used when $3A82 is loaded in 16-bit mode)
+          $3A82 Golem block targets (disabled if negative)
+          $3A83 Interceptor block targets (disabled if negative)
+        ++$3A84 Lores learned this battle
+          $3A87 Number of Lores Known
+          $3A88 Characters that got Bababreath'd or Possessed ???
+          $3A89 Enable Random Weapon Spellcast
+         +$3A8A Engulfed Targets
+          $3A8C Characters that Obtained an Item (steal/metamorph, see C2/62C7)
+          $3A8D Characters present at start of battle (used to check if everyone got engulfed)
+          $3A8E Jump continuously (dragon horn)
+          $3A8F Enable "Wait" Battle Mode
+          $3A90 Battle Speed Constant = 255 - (battle_speed * 24) [231, 207, 183, 159, 135, 111] fast to slow (used to set advance wait constant $3AC8 for monsters)
+          $3A91 Counter for checking status counters (low 4 bits are current character/monster, has different effects for values 10-15, see C2/5A83)
+		  $3A92 -
+		  $3A93 Character That used Rage
+          $3A94 -
+          $3A95 Doesn't allows the battle to end (used by AI script command $F5 to hide the last monster) action in progress/pending
+		  $3A96 Flag for killing all monsters immediately (unused, debug mode ???)
+          $3A97 colosseum mode ($00 = not colosseum, $FF = colosseum)
+         +$3A98 AI is doing a counterattack (only execute until the first "wait until next turn", "end if", or "end of script")
+          $3A9A Number of Rages Known
+          $3A9B Which tools are owned, used for picking randomly if berserk, colosseum etc.
+    $3A9C-$3A9F -
+   +----------------------------------+
+   |$3AA0-$3EB0 Character/Monster Data|
+   +----------------------------------+
+          $3AA0 76543210
+                7: allow battle menu to open (cleared when character/monster is seized)
+                6: psyche was just cleared
+                5: advance wait counter just triggered (never used ???)
+                4: something with condemned
+                3: action counter just triggered (ATB gauge is stopped)
+                2: ogre nix can't break
+                1: skip advance wait
+                0: target is present
+          $3AA1 76543210
+                7: something with regen/poison/seizure (DoT)
+                6: pending action from run/control/psyche/seize (triggers subroutine at C2/0977)
+                5: row (0 = front, 1 = back)
+                4: target has a pending DoT action
+                3: 
+                2: protection from instant death
+                1: defense mode (used def. command)
+                0: pending action goes directly to action queue
+         +$3AB4 Advance Wait Counter
+         +$3AC8 ATB Gauge Constant (see C2/09D2)
+          $3ADC Slow/Normal/Haste Counter (decrement status counters on overflow)
+          $3ADD Slow/Normal/Haste Constant (32/64/84)
+          $3AF0 Counter for damage over time (poison, regen, seize, phantasm)
+          $3AF1 Stop Counter
+          $3B04 Morph Gauge ($00 = not shown, $01 = empty, $FF = full)
+          $3B05 Condemned Number ($00 = not shown, $01 = 00 ... $64 = 99)
+          $3B18 Level
+          $3B19 Speed
+          $3B2C Vigor * 2
+          $3B2D Speed (dummy)
+          $3B40 Stamina
+          $3B41 Mag.Pwr * 1.5
+          $3B54 255 - (Evade * 2) + 1
+          $3B55 255 - (MBlock * 2) + 1
+          $3B68 Bat.Pwr (main hand)
+          $3B69 Bat.Pwr (off hand)
+         +$3B7C Hit Rate
+          $3B90 Attack Elemental
+          $3B91 Attack Properties
+          $3BA4 Main Hand Weapon Properties (Defense for Monsters)
+          $3BA5 Off Hand Weapon Properties (Magic Defense for Monsters)
+          $3BCC Absorbed Elements
+          $3BCD Immune Elements
+          $3BE0 Weak Elements
+          $3BE1 Halved Elements
+         +$3BF4 Current HP
+         +$3C08 Current MP
+         +$3C1C Max HP
+         +$3C30 Max MP
+          $3C44 Relic Effects 1
+          $3C45 Relic Effects 2
+          $3C58 Relic Effects 3
+          $3C59 Relic Effects 4
+          $3C6C Equipment Status 2
+          $3C6D Equipment Status 3
+          $3C80 c?ksruph Special Status 2
+                c: can't control
+				?: special event ???
+                k: can't sketch
+                s: can't scan
+                r: can't run
+                u: can't suplex
+                p: first strike (has an action at the very beginning of battle)
+                h: harder to run
+          $3C81 Special Attack Animation Index
+          $3C94 pppiiiii Metamorph Info
+                p: metamorph probability (0 = 255/256, 1 = 3/4, 2 = 1/2, 3 = 1/4, 4 = 1/8, 5 = 1/16, 6 = 1/32, 7 = 0)
+                i: metamorph item set
+          $3C95 ui-h-n-m
+                u: undead
+                i: imp critical ??
+                h: human
+                n: don't display name
+                m: dies at 0 MP
+          $3CA8 Main Hand Item Index
+          $3CA9 Off Hand Item Index
+          $3CBC ssssmpbb Main Hand
+          $3CBD ssssmpbb Main Hand
+                s: off hand special effect
+	            m: can block magic attacks
+			    p: can block physical attacks
+			    b: block graphic (0 = Dagger, 1 = Sword, 2 = Shield, 3 = Zephyr Cape)
+          $3CD0 Relic 1
+          $3CD1 Relic 2
+          $3CE4 ----zhsd Physical Block Graphics
+          $3CE5 ----zhsd Magical Block Graphics
+                z: Zephyr Cape
+                h: Shield
+                s: Sword
+                d: Dagger
+          $3CF8 Number of Available Magic Spells (including lores?)
+          $3CF9 Psyche Counter
+         +$3D0C AI Script Loop Address
+         +$3D20 AI Script Loop Address (counterattack)
+          $3D34 Main Hand Weapon Spell Index
+          $3D35 Off Hand Weapon Spell Index
+          $3D48 Command you were attacked with
+          $3D49 Spell you were attacked with
+          $3D5C Item you were attacked with
+          $3D5D Element you were attacked with
+          $3D70 Run Counter
+          $3D71 Run Factor
+         +$3D84 XP
+          $3D98 Gold
+         +$3DAC Character/Monster Variable (bit 7 set after using seize)
+         +$3DC0 Character/Monster Timer (how many frames the monster/character has been alive)
+          $3DD4 Status to Set 1
+          $3DD5 Status to Set 2
+          $3DE8 Status to Set 3
+          $3DE9 Status to Set 4
+          $3DFC Status to Clear 1
+          $3DFD Status to Clear 2
+          $3E10 Status to Clear 3
+          $3E11 Status to Clear 4
+          $3E24 DoT Damage Multiplier (double damage every turn, max x7)
+          $3E25 -
+          $3E38 -
+          $3E39 -
+          $3E4C p--odcer Special Status 1
+                p: piranha status (thing where enemies come in and out of battle after you kill them)
+                o: poison counter just triggered
+                d: regen/seize/phantasm counter just triggered
+                c: character runic
+                e: enemy runic (Speck)
+                r: retort
+          $3E4D -p----oc
+                p: phantasm status (DoT similar to seize, goes away when you die or get petrified)
+                o: overcast status (turns you into a zombie when you die)
+                c: use control battle menu (currently controlling something)
+          $3E60 Preliminary Current Status 1
+          $3E61 Preliminary Current Status 2
+          $3E74 Preliminary Current Status 3
+          $3E75 Preliminary Current Status 4
+          $3E88 -
+          $3E89 -
+          $3E9C -
+          $3E9D -
+---------------------------------------
+    $3EB0-$3ED3 Global Battle Variables
+---------------------------------------
+          $3EB0 Local Battle Variable 1
+          $3EB1 Local Battle Variable 2
+          $3EB2 Local Battle Variable 3
+          $3EB3 Local Battle Variable 4
+          $3EB4 - (same as $1DC9)
+          $3EB5 - (same as $1DCA)
+          $3EB6 - (same as $1DCB)
+          $3EB7 - (same as $1DCC)
+          $3EB8 - (same as $1DCD)
+         +$3EB9 abcdefgh Conditional Battle Flags (same as +$1DCE)
+                a: if set, program compares current battle index with
+                   battle index at CF3780,X. if equal, battle index
+                   is changed to battle index at CF3782,X. (used with GtBehemoth/SrBehemoth, M-TekArmor)
+                b-h: same as a
+          $3EBB -----mtf (same as $1DD0)
+                m: permanent morph (for Phunbaba battle)
+                t: morph lasts twice as long (set after Phunbaba battle)
+                f: magic only (fanatic's tower)
+          $3EBC ztrbemsg (same as $1DD1)
+                z: zone eater just ate you
+                t: timers are shown in menu and battle
+                r: end battle if timer expires (used before emperor's banquet)
+                b: ran away from battle (used before emperor's banquet)
+                e: espers have been acquired
+                m: morph is available
+                s: enables scene with LOCKE and EDGAR if TERRA uses magic (battle event 6)
+                g: game over after battle ends
+          $3EBD --ums-gd (same as $1DD2)
+                u: LOCKE is wearing soldier uniform
+                m: LOCKE is wearing merchant clothes
+                s: SHADOW won't leave after battle
+                g: GAU has been obtained
+                d: Doom Gaze has been defeated
+         +$3EBE Doom Gaze's HP (same as +$1DD3)
+          $3EC0 Battles fought with the Cursed Shield (same as $1DD5)
+          $3EC1 - (same as $1DD6)
+          $3EC2 - (same as $1DD7)
+          $3EC3 - (same as $1DD8)
+          $3EC4 - (same as $1DD9)
+          $3EC5 - (same as $1DDA)
+          $3EC6 - (same as $1DDB)
+          $3EC7 - (same as $1DDC)
+          $3EC8 Elements Nullified by Forcefield
+          $3EC9 number of targets
+          $3ECA Number of different types of monsters in combat (alive)
+    $3ECB-$3ED3 unused local battle variables
+---------------------------------
+         +$3ED4 Battle index
+
+          $3ED8 slot 1 actor index (character properties, can go up to 63)
+          $3ED9 slot 1 character index (character graphics, can only go up to 23)
+          $3EDA slot 2 actor index
+          $3EDB slot 2 character index
+          $3EDC slot 3 actor index
+          $3EDD slot 3 character index
+          $3EDE slot 4 actor index
+          $3EDF slot 4 character index
+          $3EE0 Enable End of Battle Special Event (see C2/47ED)
+          $3EE1 Data Byte for Final Battle Scrolling (battle script command $12, see C2/4AB3 & C2/2520)
+          $3EE2 Morphed Character ($FF if no one is morphed)
+          $3EE3 -
+          $3EE4 Current Status 1
+          $3EE5 Current Status 2
+          $3EF8 Current Status 3
+          $3EF9 Current Status 4
+          $3F0C Reflect Counter
+          $3F0D Freeze Counter
+         +$3F20 Last Command/Attack
+         +$3F22 Last Targets
+         +$3F24 Last Command/Attack (second attack w/ Gem Box), init #$12 (mimic)
+         +$3F26 Last Targets (second attack w/ Gem Box), init #$12 (mimic)
+          $3F28 init #$12 (mimic)
+          
+         +$3F2C Characters/Monsters that are temporarily out of combat (jump, seize) ???
+          $3F2E ----1234 Characters that have an esper equipped
+          $3F2F ----1234 Characters that have used a desperation attack this battle
+         +$3F30 Morph Counter (high byte goes to $3B04)
+         +$3F32 Morph Counter Speed
+
++-----------------------------+
+| $7E3F44-$7E3F53 Battle Data |
++-----------------------------+
+         +$3F44 mmmmbbbb bbpppppp
+                m: graphic mold index
+                b: bg1 monsters
+                p: monsters present
+          $3F46 Monster 1 ID
+          $3F47 Monster 2 ID
+          $3F48 Monster 3 ID
+          $3F49 Monster 4 ID
+          $3F4A Monster 5 ID
+          $3F4B Monster 6 ID
+          $3F4C xxxxyyyy
+                x: Monster 1 X Position
+                y: Monster 1 Y Position
+          $3F4D xxxxyyyy
+                x: Monster 2 X Position
+                y: Monster 2 Y Position
+          $3F4E xxxxyyyy
+                x: Monster 3 X Position
+                y: Monster 3 Y Position
+          $3F4F xxxxyyyy
+                x: Monster 4 X Position
+                y: Monster 4 Y Position
+          $3F50 xxxxyyyy
+                x: Monster 5 X Position
+                y: Monster 5 Y Position
+          $3F51 xxxxyyyy
+                x: Monster 6 X Position
+                y: Monster 6 Y Position
+          $3F52 --abcdef
+                a: MSB of Monster 1 Index
+                b: MSB of Monster 2 Index
+                c: MSB of Monster 3 Index
+                d: MSB of Monster 4 Index
+                e: MSB of Monster 5 Index
+                f: MSB of Monster 6 Index
+          $3F53 -
++----------------------------------------------+
+| $4000-$FFFF RAM Used by Graphics Module Only |
++----------------------------------------------+
+          $4000 Current Character (for battle menu order)
+		  $4001 Character 1 Battle Menu Order (0 = player is selecting a command for this character, 1 = character is next in line, $FF = character not active)
+		  $4002 Character 2 Battle Menu Order
+		  $4003 Character 3 Battle Menu Order
+		  $4004 Character 4 Battle Menu Order
+		  $4005 Item Index ???
+		  $4006 Item Quantity ???
+		  $4007 
+		  $4008 
+		  $4009 
+		  $400A 
+
+		  HDMA #0 Data
+		  ------------
+    $43F5-$4650 BG1 Scroll HDMA Data (battlefield region) -> +$210D
+    $4651-$4774 BG1 Scroll HDMA Data (menu region) -> +$210D
+
+		  HDMA #1 Data
+		  ------------
+    $4775-$49D0 BG2 Scroll HDMA Data (battlefield region) -> +$210F
+    $49D1-$4AF4 BG2 Scroll HDMA Data (menu region) -> +$210F
+
+		  HDMA #2 Data
+		  ------------
+    $4AF5-$4D50 Current BG3 Scroll HDMA Data (battlefield region) -> +$2111
+    $4D51-$4E74 Current BG3 Scroll HDMA Data (menu region) -> +$2111
+    $4E75-$4F74 BG3 Scroll HDMA Data (default)
+    $4F75-$5094 BG3 Scroll HDMA Data
+    $5095-$51D4 BG3 Scroll HDMA Data (item/magic character select)
+    $51D5-$53D4 BG3 Scroll HDMA Data (list)
+    $53D5-$5474 BG3 Scroll HDMA Data (esper)
+    $5475-$5534 BG3 Scroll HDMA Data (weapon change)
+
+	$55D5-
+	$56D5-      BG3 Tile Data Buffer ???
+
+	      $5755 
+	      $575A 
+
+		  $5760 
+
+    $57D5-      Attack name
+
+	$5859-
+	$5871-
+
+	$5AD5-
+    
+    $5DDA       swdtech menu bg tile data ???
+
+	$5E4D-$5ECC graphics ???
+
+    $5F6D-$5FAC tornado data
+    -----------
+	      $5F6D 
+		  $5F7D 
+	      $5F8D 
+	     +$5F8E tornado y position
+		  $5F9D 
+		 +$5F9E tornado x position
+		  
+	$602D-$607C items received in battle (16 items, 5 bytes each, see $2686)
+    
+	      $607E possible character targets
+		  $607F possible monster targets
+		  $6080 character targets hit
+          $6081 monster targets hit
+	      $6082 
+		  $6083 
+          $6084 Number of active threads (for animation command $9F)
+    $6085-$6094 palette shift counters
+          $6095 BG1 scroll horizontal amplitude
+          $6096 BG1 scroll vertical amplitude
+          $6097 
+          $6098 
+          $6099 BG1 scroll horizontal frequency
+          $609A BG1 scroll vertical frequency
+          $609B BG2 scroll horizontal amplitude
+          $609C BG2 scroll vertical amplitude
+          $609D 
+          $609E 
+          $609F BG2 scroll horizontal frequency
+          $60A0 BG2 scroll vertical frequency
+          $60A1 BG3 scroll horizontal amplitude
+          $60A2 BG3 scroll vertical amplitude
+          $60A3 
+          $60A4 
+          $60A5 BG3 scroll horizontal frequency
+          $60A6 BG3 scroll vertical frequency
+          $60A7 Hide BG1 animation graphics
+          $60A8 Hide BG3 animation graphics
+		  $60A9 Multi-target delay for animation threads
+          $60AA Shared Sprite and Extra Threads
+          $60AB Monsters shown ???
+          $60AC Pause BG1 Animation Threads
+		  $60AD Pause BG3 Animation Threads
+          $60AE SwdTech Hit Index (0..3)
+          $60AF 
+          $60B0 
+          
+    $60B3-$6132 graphics to display
+          
+          $613D attack from battle script command 6 param 2 [Character Targets]
+          $613E ?e?????? [Monster Targets]
+                e: attack is hitting monster if set, characters if cleared
+          $613F character/monster (for bg1/bg3 thread starting position)
+		  $6140 current character/monster (for thread init)
+		  $6141 current character/monster (for damage numerals)
+		  $6142 (1 byte per character/monster)
+         +$614C XY position ??
+         +$614E XY position ??
+         +$6150 Difference Vector Signs (+/-,+/-)
+         +$6152 Difference Vector Absolute Value (|dx|,|dy|)
+         +$6154 Triangle XY Position (absolute screen position)
+          $6156 Triangle Size (bounding circle diameter, in pixels)
+          $6157 Triangle Rotation Angle ($00 = down, $80 = up)
+          
+         +$615B Triangle Vertex 1 XY Position [relative, ($80,$80) is center of triangle]
+         +$615D Triangle Vertex 2 XY Position
+         +$615F Triangle Vertex 3 XY Position
+         +$6161 Triangle Top Vertex XY Position (lowest Y coordinate)
+         +$6163 Triangle Left Vertex XY Position
+         +$6165 Triangle Right Vertex XY Position
+		  -----
+          $6167 Animation BG1 Palette/Esper Palette Index ???
+          $6168 
+         +$6169 Pointer to Esper Palette (+$D27820), also used for sketched monster palette
+		  $616B Esper Graphics Width
+		  $616C Esper Graphics Height
+		  -----
+		  $616D Counter for word lengths (used when writing words in long & short battle messages)
+          $616E Character 1 palette index (saved)
+          $616F Character 2 palette index (saved)
+          $6170 Character 3 palette index (saved)
+          $6171 Character 4 palette index (saved)
+          $6172 Monster 1 palette index (saved)
+          $6173 Monster 2 palette index (saved)
+          $6174 Monster 3 palette index (saved)
+          $6175 Monster 4 palette index (saved)
+          $6176 Monster 5 palette index (saved)
+          $6177 Monster 6 palette index (saved)
+
+          $617E ??????vh Monster 1
+                v: flip vertical (unused)
+                h: flip horizontal (if controlled)
+ 
+          $6180 ??????vh Monster 1
+                v: flip vertical
+                h: flip horizontal
+
+          $618A Monster Weapon Attack
+          
+		  $6191 --123456 monsters ???
+          $6192 ----1234 characters that are visible (AI characters ???)
+          $6193 Characters not acting as enemies ???
+          
+          $6195 
+          $6196 Flash Screen (critical)
+          $6197 
+          $6198 Player 2 controls character 1
+          $6199 Player 2 controls character 2
+          $619A Player 2 controls character 3
+          $619B Player 2 controls character 4
+		  $619C ----4321 Characters with Vertical Mirror Image
+		  $619D --123456 monsters with vertical mirror image
+		  $619E ATB gauge value ($00 = empty, $FF = full)
+		  $61A2 morph gauge value ($00 = empty, $FF = full)
+		  $61A6 condemned number value
+          $61AA --123456 monsters present (from battle data)
+          $61AB --123456 monsters shown
+          $61AC ----1234 characters shown
+          $61AD ----1234 characters without hide status (for graphics/menu)
+          $61AE Disable Character Stepping Forward to Attack (1 byte per character) (or enable stepping back ???)
+          $61B2 ??? Facing Direction
+
+    $61B6-$6235 Character Graphics Data (4 items, 32 bytes each)
+    -----------
+		  $61B6 
+         +$61B7 Character X Position (left)
+         +$61B9 Character Y Position (top)
+          $61BB Character Graphical Action
+          $61BC ----ppp-
+                p: Palette Index
+          $61BD --oo---m
+		        o: sprite priority
+                m: MSB of graphic index (unused ???)
+          $61BE vh------
+                v: vertical flip
+                h: horizontal flip
+          $61BF Character Tertiary Graphic Action (use if $61C0 = 0)
+          $61C0 Character Secondary Graphic Action (use if $61C1 = 0)
+                00: unused
+                01: dead, horizontal
+                02: walking down
+                03: walking back
+                04: walking forward
+                05: walking up
+                06: facing forward
+                07: attacking with back hand
+                08: attacking with front hand
+                09: casting
+                0A: critical
+                0B: ready
+                0C: hit
+                0D: dead, vertical
+                0E: blinking, facing down
+                0F: blinking, facing back
+                10: blinking, facing forward
+                11: winking (mirrored), facing down
+                12: winking, facing down
+                13: raising arms, facing down
+                14: raising arms, facing back
+                15: raising arms and jumping, facing forward
+                16: raising arms, facing up
+                17: glitchy
+                18: arms up, facing down
+                19: arms up, facing back
+                1A: arms up, facing forward
+                1B: arms up, facing up
+                1C-1F: dead, horizontal
+                20: wagging finger
+                21: wagging finger, mirrored
+                22: shaking head
+                23: laughing
+                24: dead, horizontal
+                25: spinning, confused
+                26-3F: glitchy
+          $61C1 Character Primary Graphic Position (not animated)
+		        00: Facing Forward
+				01-03: Walking Down
+				04-06: Walking Forward (map-style)
+				07: Jumping, Hands Up
+				08-09: Casting
+				0A: Dead, vertical
+				0B: Eyes Closed, Facing Down
+				0C: Winking, Facing Down
+				0D: Eyes Closed, Facing Forward
+				0E-10: Walking Up
+				11-12: Walking Forward (battle-style)
+				13: Walking Forward, Hands Up
+				14: Kneeling
+				15: Ready to Attack
+				16: Got Hit
+				17: Facing Down, Hands Up
+				18: Facing Up, Hands Up
+				19: Glitchy
+				1A-1B: Laughing, Facing Down
+				1C: Surprised
+				1D: Facing Down, Looking Forward
+				1E-1F: Wagging Finger
+				20-2F: Glitchy
+				30-4F: Same as 00-1F, mirrored horizontally
+          $61C2 Character Graphic Action Counter (increments every frame)
+          $61C3 Character Current Graphic Action
+          $61C4 Previous Graphic Action ???
+         +$61C5 Character X Offset (signed)
+         +$61C7 Character Y Offset (for animation threads, signed)
+         +$61C9 Target value - Character X/Y Angle from battle type + back row ($0100 = vertical, $0180 = 45 degrees to the right)
+         +$61CB Current value (same as +$61C9, update x position if different)
+          $61CD Counter for vanish status palette
+          $61CE 
+          $61CF Character Status Sprite
+		        00: none
+				01: poison bubbles
+				02: muddle swirl
+				03: dark eyes
+				04: berserk/rage bubbles
+				05: mute bubble
+				06: psyche (sleep) Z's
+          $61D0 Double speed graphic actions
+          $61D1 
+         +$61D2 Character Y Offset (for jumping, signed)
+         +$61D4 Character X Offset (for animation threads, signed)
+
+	$6236-$6245 Saved Character Positions (4 items, 4 bytes each)
+	-----------
+         +$6236 X coordinate
+         +$6238 Y coordinate
+
+	$6246-$6255 AI Character Positions ??? (4 items, 4 bytes each)
+	-----------
+		 +$6246 AI character X position
+		 +$6248 AI character Y position
+        
+         +$6266 Buttons being pressed (for blitz input)
+         +$6268 Buttons being pressed (that weren't pressed last frame, for blitz input)
+          $626A Animation Index (spell index, item index + 1, or $5B/$5C for atma weapon 2/3)
+
+	$626B-$6272 Weapon Animation Data (8 bytes from $ECE400 for characters or $ECE6E8 for monsters)
+	---------------------------------
+          $626B Weapon Animation Script (right hand)
+          $626C Weapon Animation Script (left hand)
+          $626D Weapon Palette
+          $626E Hit Animation Script
+          $626F Hit Palette
+          $6270 tsssssss
+                t: star/boomerang/gambler weapons (thrown)
+                s: weapon animation init
+                   0 = normal
+                   1 = star-type & gambler-type (shadow sprites)
+                   2 = boomerang-type
+                   3 = atma weapon 3 (shadow sprites)
+                   4 = atma weapon 1 & 2
+          $6271 Sound Effect
+          $6272 -
+
+	$6273-$6280 Animation Data (14 bytes, copied from $D07FB2)
+    ----------------------------------------------------------
+         +$6273 sggggggg gggggggg
+		        s: Sprite script disabled (load graphics only)
+                g: Animation Sprite Script Number ($FFFF if unused)
+         +$6275 sggggggg gggggggg
+		        s: BG1 script disabled (load graphics only)
+                g: Animation BG1 Script Number ($FFFF if unused)
+         +$6277 sggggggg gggggggg
+		        s: BG3 script disabled (load graphics only)
+                g: Animation BG3 Script Number ($FFFF if unused)
+          $6279 Animation Sprite Palette ($00 if unused)
+          $627A Animation BG1 Palette
+          $627B Animation BG3 Palette
+          $627C Animation Sound Effect Index
+          $627D tsssssss
+		        t: bg1 target (instead of bg1 graphics)
+		        s: Animation Init Function (Points to Function at C2/E8D8)
+         +$627E sggggggg gggggggg
+		        s: 0 = extra attacker sprite thread, 1 = esper
+                g: Esper Animation Graphics (used by esper animations, et al.)
+          $6280 Multi-Target Delay (adjusted for animation speed)
+    ----------------------------------------------------------
+          $6281 Play ching sound effect (SPC command $2C)
+          $6282 
+          $6283 Enable Wavy Battle BG (desert)
+          $6284 
+          $6285 h------s
+		        h: horizontal shaking only
+				s: enable screen shaking (battle bg)
+		  $6286 Character 1 can't change equipment during battle
+		  $6287 Character 2 can't change equipment during battle
+		  $6288 Character 3 can't change equipment during battle
+		  $6289 Character 4 can't change equipment during battle
+          $628A Enable Flashback Mode
+		  $628B disable battle menu
+          $628C Enable seamless scripts (i.e. don't wait 4 frames after animation is done, see C1/9558)
+          $628D Victory fanfare is happening
+
+		  $628F Timer Frame Counter (counts 60 frames)
+         +$6290 Timer Tile Data (minute 10s place)
+         +$6292 Timer Tile Data (minute 1s place)
+         +$6294 Timer Tile Data (colon)
+         +$6296 Timer Tile Data (second 10s place)
+         +$6298 Timer Tile Data (second 1s place)
+          $629A disable pause (victory animation or background scrolling ???)
+          $629B char 1
+		  $629C char 2
+		  $629D char 3 (song index ???)
+          $629E char 4
+      
+          $62A4 
+         +$62A5 
+         +$62A7 
+          $62A9 
+		  $62AA Battle Menu Strip Counter (see C1/04CA)
+          $62AB Pause Battle
+          $62AC 
+		  $62AD bgriiiii
+          $62AE bgriiiii Fixed Color for Backdrop Gradients
+		  $62AF Monsters that are currently shown as BG1 ???
+          $62B0 Esper thread 1 sprites are shown below characters/monsters
+          
+          $62B5 Enable roulette cursor (used by enemy enemy)
+		  $62B6 
+		  $62B7 ??? Counter
+		  $62B8 
+		  $62B9 
+		  $62BA ??? Counter
+         +$62BB 
+          $62BD Hide Characters (during esper attack)
+          $62BE Hide Cursor Sprites (during esper attack)
+          $62BF Character color palettes are up to date
+          $62C0 Ignore Block Animations
+          $62C1 
+          $62C2 Enable Monster 1 Imp Graphics
+          $62C3 Enable Monster 2 Imp Graphics
+          $62C4 Enable Monster 3 Imp Graphics
+          $62C5 Enable Monster 4 Imp Graphics
+          $62C6 Enable Monster 5 Imp Graphics
+          $62C7 Enable Monster 6 Imp Graphics
+		  $62C8 BG1 Tile Data Quadrant (0 = top-left 16x16)
+		  $62C9 BG3 Tile Data Quadrant (0 = top-left 16x16)
+         +$62CA Active Character (menu command select, used for arrow indicator)
+          $62CC Char 1 is controlling a monster
+          $62CD char 2 is controlling a monster
+          $62CE char 3 is controlling a monster
+          $62CF char 4 is controlling a monster
+          $62D0 
+          $62D1 
+          $62D2 Sprite priority data is up to date
+          $62D3 Sprite index with echo effect
+          $62D4 Enable echo effect
+          $62D5 
+
+    $62D6-$6315 Echo Sprite Data (8 items, 8 bytes each)
+	-----------
+		 +$62D6 XY position for top echo sprite
+		 +$62D8 vhoopppm mmmmmmmm for top echo sprite
+		 +$62D6 XY position for bottom echo sprite
+		 +$62D8 vhoopppm mmmmmmmm for bottom echo sprite
+
+	      $6316 Enable damage numeral graphics update in VRAM
+	     +$6317 Pointer to damage numeral graphics in VRAM
+          $6319 
+    $631A-$631D h------e (4 items, 1 byte each)
+                h: Green Numerals (heal damage)
+                e: Enable Damage Numeral Thread
+    $631E-$6321 Damage Numeral Thread Target (4 items, 1 byte each)
+    $6322-$6325 Damage Numeral Frame Counter (4 items, 1 byte each)
+    $6326-$6329 numeral graphics x offset (width / 2) (4 items, 1 byte each)
+    $632A-$632D (4 items, 1 byte each)
+          $632E Damage Numeral Counter (0..3)
+          
+    $6330-$63AF BG2 Scroll HDMA Table Buffer (+X,+Y)
+    $63B0-$64AF BG1 Scroll HDMA Table Buffer (+X,+Y)
+         +$64B0 Battle BG Horizontal Scroll Position
+         +$64B2 Battle BG Vertical Scroll Position
+         +$64B4 BG1 Horizontal Scroll Position
+         +$64B6 BG1 Vertical Scroll Position
+        
+          $64B8 command select window type (0 = ???, 1 = short, 2 = command, 3 = RELM's "Command)
+          $64B9 
+          $64BA magitek mode enabled
+          $64BB 
+          
+          $64CC magitek armor action for each character (0 = standing still, 1 = walking, 2 = cockpit open, 3 = jap text)
+          $64D0 
+		  $64D4 magitek color palette index (stored in an empty character slot palette)
+
+    $64D6-$64D9 character slots in battle menu order (1 byte per character, $FF means no character)
+	      $64DA number of items obtained in battle (steal/metamorph, pointer to data at $602D)
+		  $64DB number of obtained items that have been added to the inventory
+		 +$64DC Offset to select Attacker or Target Position (+$6F7E)
+
+    $64DE-$7A1D Animation Thread Data (16 x 4 bytes each, 8 sprite threads per character/monster x 10 + bg1 thread + bg3 thread + 3 esper threads)
+	---------------------------------
+          $64DE Sprite is active
+		 +$64DF Sprite X offset
+		 +$64E1 Sprite Y offset
+          $64E3 Animation frame number
+		 +$64E4 vhftpppm mmmmmmmm (final buffer before copying to sprite buffer)
+		  $64E6 --ooppp-
+          $64E7 -------t
+                t: sprite layer priority (0 = show in front of monsters/characters, 1 = show behind monsters/characters)
+         +$64E8 ??? X Position
+		 +$64EA ??? Y Position
+         +$64EC Animation script subroutine return address
+		  -----
+          $6A2E Thread is active (3 = extra/esper thread)
+          $6A2F Frame Width
+          $6A30 Frame Height
+        ++$6A31 Animation Script Pointer
+          $6A34 Animation Speed (frames per update)
+          $6A35 Animation Frame Counter
+          $6A36 Thread index
+          $6A37 Sprite Graphic index (tile number)
+          $6A38 Attacker index ($00 to $09, MSB set if monster)
+          $6A39 Target Index ($00 to $09, MSB set if monster)
+         +$6A3A Thread X Position
+         +$6A3C Thread Y Position
+		  -----
+         +$6F7E Attacker X Position
+         +$6F80 Attacker Y Position
+         +$6F82 Target X Position
+         +$6F84 Target Y Position
+          $6F86 --oo--ll
+		        o: sprite tile priority
+				l: thread layer (0 = sprite, 1 = bg1, 2 = bg3)
+          $6F87 -h------
+                h: animation being performed facing to the right (h flip)
+          $6F88 m------l
+		        m: attack missed
+				l: Animation is left-handed
+         +$6F89 Animation Script Loop Start Address
+          $6F8B Animation Script Loop Count
+          $6F8C Frame Offset (for animated loops)
+          $6F8D Frame Offset Counter (init 1, increment $6F8C when it hits zero)
+		  -----
+         +$74CE Thread X Offset
+         +$74D0 Thread Y Offset (for jumping, shadow doesn't move)
+		  $74D2 Target's width (in 8x8 tiles, 2 for characters)
+		  $74D3 Target's height (in 8x8 tiles, 3 for characters)
+		  $74D4 
+		  $74D5 ----ppp-
+		        p: Thread Palette index
+		  $74D6 
+          $74D7 Calculated Vector X Component
+          $74D8 Calculated Polar Angle/Vector Movement Speed
+         +$74D9 Current Polar Radius
+          $74DB Current Vector Angle
+         +$74DC Calculated Vector Magnitude
+    ---------------
+		  $7A1E 
+
+    $7A1F-$7A6E Character/Monster Order Priority Data
+    -----------
+         +$7A1F Character/Monster Bottom Y Position (buffer)
+         +$7A21 Character/Monster Index (buffer)
+         +$7A47 Character/Monster Bottom Y Position
+         +$7A49 Character/Monster Index
+
+    $7A6F-$7A72 Cursor Sprite Tile Numbers (4 cursors, usually all $E0)
+    $7A73-$7A82 SwdTech bar graphics data (2 bytes each)
+          $7A83 
+		  $7A84 
+		  $7A85 Item being used ???
+    $7A86-$7A9D 
+          
+          $7ACE 
+          
+          $7AE8 Enable X-Magic for Battle Menu
+          $7AE9 
+
+    $7AEA-$7AEF Animation graphics data (6 bytes from $D4D000)
+	-----------
+		  $7AEA 2hnnnnnn
+		        2: 2bpp graphics
+		        h: high bit of tile formation index
+				n: number of frames
+          $7AEB Tile formation index (at $D20000 for 3bpp graphics, $D2C000 for 2bpp)
+         +$7AEC Frame data index (pointer at $D4DF3C, data at $D10141)
+          $7AEE Frame width (in 16x16 tiles)
+          $7AEF Frame height
+
+		  $7AF0 
+		  $7AF1 
+    
+          $7AF4 attacking with left-hand weapon
+          $7AF5 weapon animation number (character or monster)
+         +$7AF6 Pointer to animation thread data (+$6A2E)
+         +$7AF8 Pointer to attacker animation thread data (+$6A2E)
+		 +$7AFA Pointer to ??? animation thread data (+$6A2E)
+		  $7AFC Animation sprite counter
+          
+          $7B0C Character/Monster Order Priority is invalid (buffer needs to be copied to main data)
+          $7B0D Number of animation threads to update
+          $7B0E Number of animation threads to update (monster)
+          $7B0F Number of animation threads to update (character)
+          $7B10 Character 1 is facing right (swap hands)
+          $7B11 Character 2 is facing right (swap hands)
+          $7B12 Character 3 is facing right (swap hands)
+          $7B13 Character 4 is facing right (swap hands)
+		  $7B14 Number of active threads (sprite)
+		  $7B15 BG1 Animation Tile Data needs to be updated
+         +$7B16 BG1 Animation X Offset
+         +$7B18 BG1 Animation Y Offset
+        ++$7B1A Pointer to BG1 Animation Tile Data Buffer
+         +$7B1D BG1 Animation X position
+         +$7B1F BG1 Animation Y position
+		  $7B21 BG3 Animation Tile Data needs to be updated
+         +$7B22 BG3 Animation X Offset
+         +$7B24 BG3 Animation Y Offset
+		++$7B26 Pointer to BG3 Animation Tile Data Buffer
+         +$7B29 BG3 Animation X position
+         +$7B2B BG3 Animation Y position
+         +$7B2D Weapon Graphics Frame Width/Height
+		 +$7B2F Hit Graphics Frame Width/Height
+		 +$7B31 BG1 Animation Frame Width/Height
+		 +$7B33 BG3 Animation Frame Width/Height
+		 +$7B35 Animation Frame height/width
+		 +$7B37 Esper Animation Frame height/width
+          
+          $7B3D 
+          $7B3E Enable Mass Damage Numerals
+		  $7B3F h------e Mass Damage Numerals (10 items, 1 byte each)
+                h: Green Numerals (heal damage)
+                e: Enable Damage Numeral Thread
+		  $7B49 Damage Numeral Frame Counter (10 items, 1 byte each)
+		  $7B53 numeral graphics x offset (width / 2) (10 items, 1 byte each)
+		  $7B5D 
+          $7B67 hide bg1 monster sprites
+		  $7B68 
+
+		  $7B6A Vanish Animation is Happening
+
+		  $7B6C Character Graphics Index (morphed TERRA???)
+          
+          $7B78 character slot for status change animations
+          $7B79 
+
+		  $7B7D Characters with Cursors Shown
+		  $7B7E Monsters with Cursors Shown
+		  $7B7F Cursors on characters and monsters (there's only 6 sprites, so they flash between characters and monsters every frame)
+          $7B80 Current Character Slot (battle menu)
+          $7B81 Enable SwdTech Counter Graphics Update
+          $7B82 SwdTech Bar Counter
+          $7B83 
+          
+          $7B85 battle menu windows open and close instantly
+          $7B86 
+          
+          $7B92 first slot is spinning
+          $7B93 second slot is spinning
+          $7B94 third slot is spinning
+          $7B95 Need to Update HDMA #3 (+++$2105, $01: slot mode, $02: normal mode)
+          $7B96 Need to Update HDMA #5 (window positions)
+          $7B97 Need to Update HDMA #6 ($01: slot mode, $02: normal mode)
+          $7B98 
+          $7B99 
+          $7B9A Counter for gauge/condemned updates (character number
+          $7B9B Character to update for gauge/condemned
+          $7B9C 
+          $7B9D 
+          $7B9E 
+          
+          $7BA5 
+
+		  $7BA9 Enable ???
+		 +$7BAA VRAM destination address for ???
+          
+          $7BAD character needing graphical update in VRAM ($FF = none)
+		  $7BAE vhopppmm (for menu window graphics)
+		  $7BAF 
+		  $7BB0 
+		 +$7BB1 
+		 +$7BB3 
+          $7BB5 
+          $7BB6 
+          $7BB7 
+
+          $7BBB Battle Menu Update Pending (bg2 tile data)
+         +$7BBC Battle Menu Tile Data Size ??? (unused, i think...)
+		 +$7BBE Pointer to Menu Tile Data in VRAM (BG2)
+         +$7BC0 Pointer to Menu Tile Data buffer in RAM
+          $7BC2 Current Menu Cursor State
+    $7BC3-$7BC9 Menu Cursor State Queue
+          $7BCA Menu Open or Opening
+          $7BCB Close Menu
+          $7BCC Next/Previous Character Enable, w/ X or Y Button ($01 = next/X, $02 = prev/Y)
+          
+          $7BD1 Menu Window Needs to Change Size
+         +$7BD2 Menu Window Horizontal Scroll Position (in pixels)
+         +$7BD4 Menu Window Vertical Scroll Position (in pixels)
+          $7BD6 Menu Window Height (in tiles)
+         +$7BD7 Menu Window Bottom (in pixels)
+         +$7BD9 Menu Window Top (in pixels)
+         +$7BDB Menu Window Update for BG1 instead of BG2
+          $7BDD 
+		 +$7BDE 
+		 +$7BE0 
+		 +$7BE2 
+		 +$7BE4 
+          $7BE6 
+		 +$7BE7 
+		 +$7BE9 
+		  $7BEB 
+		 +$7BEC 
+		  $7BEE 
+          $7BEF HDMA enable ($210C)
+          $7BF0 Current Menu State
+    $7BF1-$7BFF Menu State Queue
+          
+    Unaltered color palettes
+    ------------------------
+    
+    Current color palettes
+    ----------------------
+    $7E00-$7E1F Various Text Color Palettes (4 colors each)
+    $7E20-$7E3F BG3 Animation Palette
+    $7E40-$7E5F Menu Window Color Palette
+    $7E60-$7E7F BG1 Animation Palette (gets sepia if in flashback mode, used for some esper/monster palettes)
+    $7E80-$7E9F BG1 Animation Palette
+    $7EA0-$7EFF Battle BG Color Palettes (buffer, real palettes are at $7EEC11)
+    $7F00-$7F1F Monster Palette 1 (max 3 different monsters per formation)
+    $7F20-$7F3F Monster Palette 2
+    $7F40-$7F5F Monster Palette 3
+    $7F60-$7F7F Sprite Animation Palette (gets sepia if in flashback mode, used for some esper palettes)
+    $7F80-$7F9F Character Palette 1
+    $7FA0-$7FBF Character Palette 2
+    $7FC0-$7FDF Character Palette 3
+    $7FE0-$7FFF Character Palette 4
+	-----------
+          $8000 enable large data VRAM DMA
+        ++$8001 Large data VRAM DMA source address
+         +$8004 Large data VRAM DMA destination address
+         +$8006 Large data VRAM DMA Chunk size (amount transferred this frame, max $0400)
+         +$8008 Large data VRAM DMA Total size
+          $800A Large data VRAM DMA Last chunk
+          $800B 
+          $800C BG1 Scroll HDMA type (disable update if MSB set)
+          $800D BG2 Scroll HDMA type (disable update if MSB set)
+          $800E BG3 Scroll HDMA type (disable update if MSB set)
+         +$800F Monster Center X Coordinate (in pixels)
+         +$801B Monster Center Y Coordinate (in pixels)
+         +$8027 Monster Bottom Y Coordinate (in pixels)
+         +$8033 Character Center X Coordinate (in pixels)
+         +$803B Character Center Y Coordinate (in pixels)
+         +$8043 Character Bottom Y Coordinate (in pixels, for sprite order priority)
+         +$804B Monster Corrected Bottom Y Coordinate (in pixels, for sprite order priority)
+         +$8057 Monster Y-Shift for Sprite Priority (in pixels, makes some monsters appear above others even though the others may be higher on the screen)
+         +$8063 Monster Right X Coordinate (in pixels) for Cursor ???
+         +$806F Monster Additional Center Y Coordinate (in pixels) for Cursor ???
+         +$807B Monster Front X Offset (in pixels) for Cursor ???
+         +$8087 Character Right X Coordinate for Cursor (in pixels)
+         +$8093 Character Additional Center Y Coordinate for Cursor (in pixels)
+         +$809F Character Front X Offset for Cursor (in pixels, 0 if facing left, 32 if facing right)
+		 +$80AB Monster ???
+		 +$80B7 Monster ???
+         +$80C3 Monster Left X Position (screen location, in pixels)
+         +$80CF Monster Top Y Position (screen location, in pixels)
+         +$80DB vhoopppm mmmmmmmm - Monster Sprite Data
+                v: vertical flip
+                h: horizontal flip
+				o: sprite priority
+                p: Monster 1 Palette Index
+                m: sprite graphics index
+          $80E7 
+          $80E8 
+          $80F3 ??????vh Monster 1
+                v: flipped vertically (currently)
+                h: flipped horizontally (currently)
+          $80F4 bg1 monster
+          $80FF Monster palette copied to spell animation palette ($7E60)
+          $8100 ??? something to do with $80FF
+         +$810B Saved Monster Sprite Data from $80DB (6 monsters, 2 bytes per monster)
+         +$8117 Monster Palette Index
+         +$8123 Current Monster Palette Index
+          $812F Monster Height/Width (in 8x8 tiles)
+         +$813B Character XY Positions (saved)
+         +$814B Monster XY Positions (saved)
+    $816B-$81A6 Saved Center/Bottom Positions (from $800F-$804A)
+          $81A7 Current Monster Slot (for graphics loader)
+         +$81A8 Monster Graphics Index (for graphics loader)
+          $81AA Monster Graphics Map Index (for graphics loader)
+          $81AB Large Monster Graphics Map Flag (for graphics loader)
+          $81AC 3bpp Monster Graphics ($80) and Large Map ($40) Flag (for graphics loader)
+    $81AD-$81CC Character 1 Palette (unaltered)
+    $81CD-$81EC Character 2 Palette (unaltered)
+    $81ED-$820C Character 3 Palette (unaltered)
+    $820D-$822C Character 4 Palette (unaltered)
+    $822D-$824C Monster Graphics Map
+          $824D Counter for Graphics Map Pointer
+          $824E Pointer to Graphics Map
+
+          $8251 Monster Graphics Width (calculated using graphics map)
+          $8252 Monster Graphics Width (used as a counter to load graphics to RAM buffer)
+          $8253 Monster Graphics Height (uses mold box height, used as a counter to load graphics to RAM buffer)
+		  $8254 
+
+          $8256 Monster Graphics Mold Box Width
+		  $8257 Monster Graphics Mold Box Height
+          $8258 Current Monster Slot (for graphics loader)
+    $8259-$88B8 Monster Sprite Data (4 copies per monster, 6 monsters, 17 sprites per monster, 4 bytes per sprite)
+	-----------
+	      $8259 X position ($FF marks end of data)
+          $825A Y position
+         +$825B vhoopppm mmmmmmmm
+                v: Vertical Flip
+                h: Horizontal Flip
+                o: sprite priority
+                p: Palette Index
+                m: Graphic Index
+		  $83F1 horizontally mirrored sprite data
+		  $8589 vertically mirrored sprite data
+		  $8721 horizontally & vertically mirrored sprite data
+
+	$88B9-$88BE Number of sprites used by each monster (1 byte per monster)
+        ++$88BF Sprite Palette 3 Addition/Subtraction quantities (R,G,B)
+        ++$88C2 Background Palette Addition/Subtraction quantities
+        ++$88C5 Sprite Palette 2 Addition/Subtraction quantities
+        ++$88C8 Sprite Palette 1 Addition/Subtraction quantities
+        ++$88CB Monster Palette Addition/Subtraction quantities
+        ++$88CE Character Palette Addition/Subtraction quantities
+          $88D1 Monsters with visible sprites
+          $88D2 Monster Index (current sprite update)
+          $88D3 Window width
+          $88D4 Window height
+         +$88D5 Destination address for window graphics data in RAM
+        ++$88D7 Pointer to long/short battle dialog text
+		  $88DA 
+		  $88DB
+		  $88DC vhoppp-- Menu text tile data
+         +$88DD 
+         +$88DF 
+          $88E1 
+          $88E2 
+
+    $88E3-$890A Cursor Sprite Data (10 cursors, 4 bytes each)
+	-----------
+		  $88E3 Main Cursor is Active
+	      $88E4 Main Cursor X Position
+	      $88E5 Main Cursor Y Position
+		  $88E6 vhoopppm Main Cursor
+	$88E7-$88EA Same as above for Aux Menu Cursor
+	$88EB-$88EE Same as above for ??? cursor
+	$88EF-$88F2 Same as above for up/down arrows for scrolling menus
+          $88F2 up/down arrows (0 = both, 1 = down, 2 = up)
+    $88F3-$890A Same as above for character/monster cursors (6 items, 4 bytes each)
+
+	      $890B character/monster counter for sprite thread init
+    
+          $890F Character 1 Cursor Position
+          $8910 Character 2 Cursor Position
+          $8911 Character 3 Cursor Position
+          $8912 Character 4 Cursor Position
+          $8913 Character 1 Cursor Vertical Scroll Position
+          $8914 Character 2 Cursor Vertical Scroll Position
+          $8915 Character 3 Cursor Vertical Scroll Position
+          $8916 Character 4 Cursor Vertical Scroll Position
+          $8917 Character 1 Cursor X Position
+          $8918 Character 2 Cursor X Position
+          $8919 Character 3 Cursor X Position
+          $891A Character 4 Cursor X Position
+          $891B Character 1 Cursor Y Position
+          $891C Character 2 Cursor Y Position
+          $891D Character 3 Cursor Y Position
+          $891E Character 4 Cursor Y Position
+
+		  HDMA #3 Data (+++$2105)
+		  -----------------------
+          $896F Screen Mode -> $2105 (Battlefield Region)
+          $8970 Screen Mosaic -> $2106 (Battlefield Region)
+          $8971 BG1 VRAM Location -> $2107 (Battlefield Region)
+          $8972 BG2 VRAM Location -> $2108 (Battlefield Region)
+          $8973 Screen Mode -> $2105 (Menu Region)
+          $8974 Screen Pixelation -> $2106 (Menu Region)
+          $8975 BG1 VRAM Location -> $2107 (Menu Region)
+          $8976 BG2 VRAM Location -> $2108 (Menu Region)
+          $8977 Screen Mode -> $2105 (Slot Region)
+          $8978 Screen Pixelation -> $2106 (Slot Region)
+          $8979 BG1 VRAM Location -> $2107 (Slot Region)
+          $897A BG2 VRAM Location -> $2108 (Slot Region)
+
+		  HDMA #6 Data (+++$2109)
+		  -----------------------
+          $897B BG3 VRAM Location -> $2109 (Battlefield Region)
+          $897C BG4 VRAM Location -> $210A (Battlefield Region)
+          $897D BG1/BG2 VRAM Location High Byte -> $210B (Battlefield Region)
+          $897E BG3/BG4 VRAM Location High Byte -> $210C (Battlefield Region)
+          $897F BG3 VRAM Location -> $2109 (Menu Region)
+          $8980 BG4 VRAM Location -> $210A (Menu Region)
+          $8981 BG1/BG2 VRAM Location High Byte -> $210B (Menu Region)
+          $8982 BG3/BG4 VRAM Location High Byte -> $210C (Menu Region)
+          $8983 BG3 VRAM Location -> $2109 (Slot Region)
+          $8984 BG4 VRAM Location -> $210A (Slot Region)
+          $8985 BG1/BG2 VRAM Location High Byte -> $210B (Slot Region)
+          $8986 BG3/BG4 VRAM Location High Byte -> $210C (Slot Region)
+
+		  HDMA #7 Data (+++$212A)
+		  -----------------------
+         +$8987 Mask Logic Settings -> +$212A (Top and Bottom Region)
+          $8989 Main Screen Designation -> $212C (Top and Bottom Region) all layers are disabled
+          $898A Sub Screen Designation -> $212D (Top and Bottom Region)
+         +$898B Mask Logic Settings -> +$212A (Battlefield Region)
+          $898D Main Screen Designation -> $212C (Battlefield Region)
+          $898E Sub Screen Designation -> $212D (Battlefield Region)
+         +$898F Mask Logic Settings -> +$212A (menu region)
+          $8991 Main Screen Designation -> $212C (menu region)
+          $8992 Sub Screen Designation -> $212D (menu region)
+
+    $8993-$8D12 Subscreen Window Mask, Fixed Color +/-, +/- Enable, Fixed Color HDMA data -> +++$212F, 4 bytes per HBlank
+	$8D13-$9012 Menu Window tile data (buffer)
+    $9013-$9212 Menu Window tile data (short mode)
+	$9213-$9412 Menu Window tile data (window mode)
+	$9413-$9612 Menu Window tile data for Relm's "Command" window
+          $9613 current circle size
+          $9614 current circle X position
+          $9615 current circle Y position
+          $9616 final circle size
+          $9617 final circle X position (min X position is #$21 ??)
+          $9618 final circle Y position
+          $9619 circle speed
+          $961A vh flip for circle ???
+		  $961B circle shape (0 = circle, 1 = bio blast, 2 = big blob, 3 = beam from top, 4 = vertical oval, 5 = small blob, 6 = horizontal oval, 7 = ultima, 8 = slimer blob)
+          $961C 
+          $961D 
+          $961E 
+    $961F-$981E 
+    
+    $9821-$9A20 
+    $9A21-$9C7C Window Position HDMA data Buffer (Battlefield Region)
+
+		  HDMA #5 Data (+++$2126)
+		  -----------------------
+    $9C7F-$9D9E Window Position HDMA data -> +++$2126 (Menu Region)
+    $9D9F-$9F1E -
+    $9F1F-$A17E Window Position HDMA data -> +++$2126 (Battlefield Region)
+
+	$A17F-$A37E Pointers to high byte of sprite data (4 bytes per sprite, +$0500)
+	$A37F-$A57E 32x32 sprite, x coordinate MSB = 0
+	$A57F-$A77E 32x32 sprite, x coordinate MSB = 1
+	$A77F-$A97E 16x16 sprite, x coordinate MSB = 1
+	$A97F-$AE3E BG Tile Data buffer (2 bytes per tile)
+    $AE3F-$BE3E Monster Graphics Buffer (also used as a buffer for other VRAM DMA)
+    $BE3F-$CE3E Saved Monster Graphics Buffer
+    $CE3F-$D8BE Sprite Animation Frame Data (32 frames, 21 tiles each, 4 bytes per tile)
+    $D8BF-$E33E Sprite Animation Frame Data (horizontally flipped)
+    $E33F-$E73E VRAM DMA Buffer ($400 bytes)
+	$E73F-$E7BE another VRAM DMA Buffer ($80 bytes)
+    $E7BF-$E7FE sine wave table (A=0)
+    $E7FF-$E83E sine wave table (A=2)
+    $E83F-$E87E sine wave table (A=4)
+    $E87F-$E8BE sine wave table (A=6)
+    $E8BF-$E8FE sine wave table (A=8)
+    $E8FF-$E93E sine wave table (A=10)
+    $E93F-$E97E sine wave table (A=12)
+    $E97F-$E9BE sine wave table (A=14)
+         +$E9BF VRAM destination address
+          $E9C1 
+
+          $E9C3 
+         +$E9C4 X Zoom Size (higher number = smaller)
+         +$E9C6 
+         +$E9C8 
+         +$E9CA Y Zoom Size
+         +$E9CC X Position
+         +$E9CE Y Position
+         
+    $E9D2-$E9D9 Pointers to Condemned Numeral Graphics for each Character (2 bytes each, $7F0000)
+          $E9DA 
+          $E9DB Counter for Condemned Numeral Graphics
+		  $E9DC 
+		  $E9DD 
+		  $E9DE 
+		  $E9DF 
+          
+          $E9E1 blitz button input pointer (+$E9FE)
+         +$E9E2 buttons pressed last frame (for blitz code)
+          $E9E4 blitz code counter (64 frames)
+          $E9E5 
+          $E9E6 Monsters that are visible (no clear status)
+          $E9E7 Default Animation Sound Effect
+          $E9E8 Sound Command (-> $2140)
+          $E9E9 Sound Effect Index (-> $2141)
+          $E9EA Animation Sound Effect Pan Value (-> $2142)
+          $E9EB -
+		  $E9EC Enable Animation Sound Effect
+          $E9ED Disable Sound Effects
+          $E9EE 
+          $E9EF Stop Battle Time
+		  $E9F0 
+		  $E9F1 
+          
+          $E9F5 
+		  $E9F6 Screen is fading in
+		  $E9F7 Position of top fade bar (starts at scanline 152 and moves up)
+		  $E9F8 Position of bottom fade bar (starts at scanline 0 and moves down)
+          $E9F9 Screen Brightness (0-F)
+          $E9FB monster entry/exit animation type
+		  $E9FC misc. monster animation target
+          
+    $E9FE-$EA1D blitz button inputs (16 items, 2 bytes each)
+    $EA1E-$EA31 correct button combo for current blitz (10 items, 2 bytes per button)
+    $EA32-$EBF1 +/- Enable, Fixed Color HDMA data ->+$2131, 2 bytes per scanline
+
+	      $EBFA 
+		  $EBFB Number on Dice 1
+		  $EBFC Number on Dice 2
+		  $EBFD Number on Dice 3
+		  $EBFE 
+    $EBFF-$EC06 monster names (4 items, 2 bytes each)
+    $EC07-$EC0E number of monsters alive for each name (4 items, 2 bytes each)
+		  $EC0F 
+		  $EC10 Dragon Horn Effect
+    $EC11-$EC70 Battle BG palettes (3 palettes)
+    $EC71-$ECB0 Buffer for battle BG palette processing
+	      $ECB1 
+		  $ECB2 
+
+		 +$ECB4 ??? Monster y position (top)
+		 +$ECB6 Pointer to ??? monster graphics data
+         +$ECB8 Battle BG Index
+          $ECBA Curative Menu Type (0 = item, 1 = magic)
+          $ECBB Enable Animation Sound Effect Panned based on Sprite Y Position (Animation Script Command $87)
+    
+          $ECEF ztrbemsg Battle End Event Flags
+                z: zone eater just ate you
+                t: timer is shown (beneath enemy name)
+                r: ran out of time (before emperor's banquet)
+                b: ran away from battle (before emperor's banquet)
+                e: espers have been acquired
+                m: morph is available
+                s: enables scene with LOCKE and EDGAR if TERRA uses magic
+                g: game over after battle ends
+          $ECF0 
+
+    $F800-$FFFF Decompression Buffer
+
+$7F0000-$7F1FFF Character 1 Graphics
+$7F2000-$7F3FFF Character 2 Graphics
+$7F4000-$7F5FFF Character 3 Graphics
+$7F6000-$7F7FFF Character 4 Graphics
+$7F8000-
+
+$7FA000-$7FA3FF Current Character Graphics
+$7FA400-$7FB3FF Animated Status Graphics, etc. (8 tiles, 4 frames each)
+$7FB400-$7FB5FF Various blocking graphics
+$7FB800-$7FBBFF Cursor, Scroll indicators, reflect, and shield graphics
+        $7FBC00 "Miss" graphics
+		$7FBC40 Numeral Graphics
+		$7FBE00 Numeral Graphics
+		$7FC000 Backwards Numeral Graphics
+$7FC200-$7FC2FF Condemned Numeral Graphics
+$7FC300-$7FC3FF Backwards Condemned Numeral Graphics
+$7FC400-$7FE3FF BG1 Animation Tile Data Buffer (16 frames, 16x16 tiles each, 2 bytes per tile)
+$7FE400-$7FF800 BG3 Animation Tile Data Buffer (8 frames, 16x16 tiles each, 2 bytes per tile)
+
+VRAM
+----
+$0000 Battle Animation BG1 Graphics
+$0A00 Menu Window Graphics
+$0C00 Battlefield BG1 Tile Data
+$1000 Battle BG Graphics (BG2)
+$2000 Character Sprite Graphics
+$2200 Status Effect Graphics
+$22C0 Character Shadow Graphics
+$22E0 Active Character Pointer Graphics
+$2400 Battle Animation Sprite Graphics
+$2C00 Damage Numeral Graphics
+$2CC0 "Miss" Graphics
+$2E00 Hand Pointer Graphics
+$2E20 Up/Down Page Indicator Graphics
+$2E60 Reflect Graphics
+$2EA0 Shield Graphics
+$3000 Monster Graphics
+$4000 
+$4080 Menu Number Graphics
+$4200 Menu Window Graphics
+$4400 Slot Graphics
+$4800 Add'l Battle BG Graphics (BG2)
+$5000 BG3 Graphics (2bpp)
+$5400 Battlefield BG3 Tile Data
+$5800 Fixed Width Font Graphics (2bpp)
+$5C00 BG3 Font Graphics (2bpp)
+$6000 Battle BG Tile Formation (BG2)
+$6800 Menu BG1 Tile Data
+$7000 Menu BG2 Tile Data
+$7800 Menu BG3 Tile Data

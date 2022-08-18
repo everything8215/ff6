@@ -1,0 +1,7 @@
+.DS_Store
+*.sfc
+*.o
+*.lst
+*.map
+node_modules/*
+ff6-*-data.json

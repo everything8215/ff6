@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "crc-32": "^1.2.2",
+    "is-number": "^7.0.0",
+    "is-string": "^1.0.7",
+    "isarray": "^2.0.5"
+  }
+}

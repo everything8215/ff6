@@ -1,0 +1,73 @@
+memory {
+    ram: start = $000000, size = $2000, type = rw;
+    wram: start = $7e2000, size = $01e000, type = rw;
+    sram: start = $306000, size = $2000, type = rw;
+    bank_c0: start = $c00000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_c1: start = $c10000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_c2: start = $c20000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_c3: start = $c30000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_c4: start = $c40000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_c5: start = $c50000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_c6: start = $c60000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_c7: start = $c70000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_c8: start = $c80000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_c9: start = $c90000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_ca: start = $ca0000, size = $2e600, type = ro, fill = yes, fillval = $ff;
+    bank_cc: start = $cce600, size = $1a00, type = ro, fill = yes, fillval = $ff;
+    bank_cd: start = $cd0000, size = $20000, type = ro, fill = yes, fillval = $ff;
+    bank_cf: start = $cf0000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_d0: start = $d00000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_d1: start = $d10000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_d2: start = $d20000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_d3: start = $d30000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_d4: start = $d40000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_d5: start = $d50000, size = $40000, type = ro, fill = yes, fillval = $ff;
+    bank_d9: start = $d90000, size = $50000, type = ro, fill = yes, fillval = $ff;
+    bank_de: start = $de0000, size = $7fa00, type = ro, fill = yes, fillval = $ff;
+    bank_e5: start = $e5f400, size = $0600, type = ro, fill = yes, fillval = $ff;
+    bank_e6: start = $e60000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_e7: start = $e70000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_e8: start = $e80000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_e9: start = $e90000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_ea: start = $ea0000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_eb: start = $eb0000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_ec: start = $ec0000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_ed: start = $ed0000, size = $10000, type = ro, fill = yes, fillval = $ff;
+    bank_ee: start = $ee0000, size = $20000, type = ro, fill = yes, fillval = $ff;
+}
+
+segments {
+#    wram: load = wram, type = bss;
+#    sram: load = sram, type = bss;
+
+    field_code: load = bank_c0, type = ro;
+    field_data: load = bank_c0, type = ro, start = $c0dfa0;
+    interrupt: load = bank_c0, type = ro, start = $c0ff00;
+    snes_header_ext: load = bank_c0, type = ro, start = $c0ffb0;
+    snes_header: load = bank_c0, type = ro, start = $c0ffc0;
+    vectors: load = bank_c0, type = ro, start = $c0ffe0;
+    btlgfx_code: load = bank_c1, type = ro;
+    battle_code: load = bank_c2, type = ro;
+    cutscene_code: load = bank_c2, type = ro, start = $c26800;
+    menu_code: load = bank_c3, type = ro;
+    event_triggers: load = bank_c4, type = ro;
+    font_gfx: load = bank_c4, type = ro, start = $c487c0;
+    sound_code: load = bank_c5, type = ro;
+    dialogue_ptrs: load = bank_cc, type = ro, start = $cce600;
+    dialogue: load = bank_cd, type = ro;
+    event_script: load = bank_ca, type = ro;
+    battle_data: load = bank_cf, type = ro;
+    map_init_event: load = bank_d1, type = ro, start = $d1fa00;
+    world_pal: load = bank_d2, type = ro, start = $d2ec00;
+    map_sprite_gfx: load = bank_d5, type = ro;
+    mode7_cutscene_data: load = bank_d5, type = ro, start = $d8dd00;
+    map_tile_data: load = bank_d9, type = ro, start = $d9a800;
+    map_tile_data2: load = bank_de, type = ro, start = $de0000;
+    map_gfx: load = bank_de, type = ro, start = $dfda00;
+    map_gfx2: load = bank_e6, type = ro;
+    window_gfx: load = bank_ed, type = ro;
+    map_data: load = bank_ed, type = ro, start = $ed8f00;
+    world_code: load = bank_ee, type = ro;
+    world_data: load = bank_ee, type = ro, start = $eeb200;
+    world_sine: load = bank_ee, type = ro, start = $effef0;
+}
