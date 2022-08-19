@@ -2988,24 +2988,24 @@ InitTreasures:
         lda     $82
         asl
         tax
-        lda     $ed82f6,x
+        lda     f:TreasurePropPtrs+2,x
         sta     $1e
-        lda     $ed82f4,x
+        lda     f:TreasurePropPtrs,x
         tax
         shorta0
         cpx     $1e
         beq     @1637
 @15ef:  longa
-        lda     $ed8634,x
+        lda     f:TreasureProp,x
         sta     $2a
-        lda     $ed8635,x
+        lda     f:TreasureProp+1,x
         sta     $2b
         phx
-        lda     $ed8636,x
+        lda     f:TreasureProp+2,x
         and     #$01ff
         lsr3
         tay
-        lda     $ed8636,x
+        lda     f:TreasureProp+2,x
         and     #$0007
         tax
         shorta0
@@ -8509,17 +8509,17 @@ CheckTreasure:
         lda     $82
         asl
         tax
-        lda     $ed82f6,x   ; pointer to treasure data
+        lda     f:TreasurePropPtrs+2,x   ; pointer to treasure data
         sta     $1e
-        lda     $ed82f4,x
+        lda     f:TreasurePropPtrs,x
         tax
         shorta0
         cpx     $1e
         beq     @4bd3
-@4bec:  lda     $ed8634,x   ; x position
+@4bec:  lda     f:TreasureProp,x   ; x position
         cmp     $2a
         bne     @4bfc
-        lda     $ed8635,x   ; y position
+        lda     f:TreasureProp+1,x   ; y position
         cmp     $2b
         beq     @4c06
 @4bfc:  inx5
@@ -8527,9 +8527,9 @@ CheckTreasure:
         bne     @4bec
         rts
 @4c06:  longa
-        lda     $ed8638,x   ; treasure contents
+        lda     f:TreasureProp+4,x   ; treasure contents
         sta     $1a
-        lda     $ed8636,x   ; treasure event bit and type
+        lda     f:TreasureProp+2,x   ; treasure event bit and type
         sta     $1e
         and     #$0007
         tax
@@ -14880,15 +14880,15 @@ CalcTextWidth:
         bra     @80d2
 @8118:  lda     $0583       ; item index
         sta     hWRMPYA
-        lda     #$0d        ; get pointer to item name
+        lda     #13         ; get pointer to item name
         sta     hWRMPYB
         lda     $cf         ; return if text buffer is not empty
         bpl     @80d2
-        lda     #$0c        ; 12 letters
+        lda     #12         ; 12 letters
         sta     $1a
         ldx     hRDMPYL
 @812e:  txy
-        lda     $d2b301,x   ; item name
+        lda     f:ItemName+1,x   ; item name
         cmp     #$ff        ; return if no letter
         beq     @80d2
         sec
@@ -15231,7 +15231,7 @@ UpdateDlgTextOneLine:
         lda     #$7e
         pha
         plb
-@83ee:  lda     $d2b301,x   ; load item name (ignore symbol)
+@83ee:  lda     f:ItemName+1,x   ; load item name (ignore symbol)
         sec
         sbc     #$60
         sta     $9183,y
@@ -15239,7 +15239,7 @@ UpdateDlgTextOneLine:
         beq     @8403
         inx
         iny
-        cpy     #$000c
+        cpy     #12
         bne     @83ee
 @8403:  tdc
         sta     $9183,y

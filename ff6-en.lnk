@@ -58,6 +58,7 @@ segments {
     event_script: load = bank_ca, type = ro;
     battle_data: load = bank_cf, type = ro;
     map_init_event: load = bank_d1, type = ro, start = $d1fa00;
+    item_name: load = bank_d2, type = ro, start = $d2b300;
     world_pal: load = bank_d2, type = ro, start = $d2ec00;
     map_sprite_gfx: load = bank_d5, type = ro;
     mode7_cutscene_data: load = bank_d5, type = ro, start = $d8dd00;
@@ -66,6 +67,7 @@ segments {
     map_gfx: load = bank_de, type = ro, start = $dfda00;
     map_gfx2: load = bank_e6, type = ro;
     window_gfx: load = bank_ed, type = ro;
+    treasure_prop: load = bank_ed, type = ro, start = $ed82f4;
     map_data: load = bank_ed, type = ro, start = $ed8f00;
     world_code: load = bank_ee, type = ro;
     world_data: load = bank_ee, type = ro, start = $eeb200;

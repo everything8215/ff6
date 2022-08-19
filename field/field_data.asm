@@ -137,6 +137,13 @@ DlgPtrs:
 
 ; ------------------------------------------------------------------------------
 
+.segment "item_name"
+
+; d2/b300
+        .include "text/item_name_en.asm"
+
+; ------------------------------------------------------------------------------
+
 .segment "map_sprite_gfx"
 
 ; d5/0000
@@ -241,6 +248,19 @@ MapAnimGfxBG3Ptrs:
 
 ; e6/cdc0
         .include "gfx/map_anim_gfx_bg3.asm"
+
+; ------------------------------------------------------------------------------
+
+.segment "treasure_prop"
+
+; ed/82f4
+TreasurePropPtrs:
+        make_ptr_tbl_rel TreasureProp, 415
+        .addr TreasurePropEnd - TreasurePropPtrs
+
+; ed/8634
+        .include "data/treasure_prop.asm"
+TreasurePropEnd:
 
 ; ------------------------------------------------------------------------------
 
