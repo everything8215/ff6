@@ -20,6 +20,7 @@
 ; [ clr_a/x/y ]
 
 ; clear accumulator, x, y registers
+; note: don't use if dp register is nonzero
 
 .macro clr_a
         tdc

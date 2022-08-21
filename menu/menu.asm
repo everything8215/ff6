@@ -399,8 +399,7 @@ LoadWindowPal:
 @6bcc:  lda     f:WindowPal+2,x         ; load wallpaper palettes
         sta     $1d57,y
         inx2
-        iny
-        iny
+        iny2
         dec     $e9
         bne     @6bcc
         txa

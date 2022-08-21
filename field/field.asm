@@ -878,7 +878,7 @@ InitPPU:
         sta     hWRIO
         stz     hHTIMEL
         stz     hHTIMEH
-        ldx     #$00d7                  ; vertical timer set to scanline 215
+        ldx     #215                    ; vertical timer set to scanline 215
         stx     hVTIMEL
         rts
 
@@ -1840,10 +1840,12 @@ _c00d8d:
 
 ; [ unused ??? ]
 
+; this seems to be an unused fixed color effect for the spotlights
+
 EffectColor:
-@0d95:  lda     #$20
+@0d95:  lda     #$20                    ; set bit for red
         sta     $0752
-        lda     #$40
+        lda     #$40                    ; set bit for green
         sta     $0753
         lda     #$80
         sta     hWRMPYA                 ; multiplicand
@@ -1862,7 +1864,7 @@ EffectColor:
         stx     $20
         ldy     #$0020
 @0dc3:  ldx     $1e
-        lda     f:EffectColorTbl,x
+        lda     f:EffectColorRedTbl,x
         sta     hWRMPYB                 ; multiplier
         txa
         inc
@@ -1872,7 +1874,7 @@ EffectColor:
         ora     $0752
         sta     hWMDATA
         ldx     $20
-        lda     f:$c00e17,x
+        lda     f:EffectColorGreenTbl,x
         sta     hWRMPYB                 ; multiplier
         txa
         inc
@@ -1887,10 +1889,12 @@ EffectColor:
 
 ; ------------------------------------------------------------------------------
 
-EffectColorTbl:
+EffectColorRedTbl:
 @0df7:  .byte   $10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1a,$1b,$1c,$1d,$1e,$1f
         .byte   $1f,$1e,$1d,$1c,$1b,$1a,$19,$18,$17,$16,$15,$14,$13,$12,$11,$10
-        .byte   $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$0f
+
+EffectColorGreenTbl:
+@0e17:  .byte   $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$0f
         .byte   $0f,$0e,$0d,$0c,$0b,$0a,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00
 
 ; ------------------------------------------------------------------------------
@@ -6305,13 +6309,13 @@ UpdateDlgWindow:
         jmp     @3139
 
 ; open dialog window
-@30ac:  lda     #$c0
+@30ac:  lda     #^*
         pha
         plb
         longa
-        lda     #$0009
+        lda     #9
         sta     $1e
-@30b7:  lda     $327a,y
+@30b7:  lda     DlgOpenMaskTbl,y
         beq     @30f4
         lda     $7e7bf7,x
         sta     $7e7ece,x
@@ -6327,20 +6331,20 @@ UpdateDlgWindow:
         sta     $7e7fdc,x
         lda     $7e7dbe,x
         sta     $7e8090,x
-@30f4:  lda     $32d4,y
+@30f4:  lda     DlgOpenBG1ScrollTbl,y
         beq     @3127
         sta     $7e7bf7,x
-        lda     $332e,y
+        lda     DlgOpenBG3ScrollTbl,y
         sta     $7e7cad,x
-        lda     $3388,y
+        lda     DlgOpenWindowPosTbl,y
         sta     $7e7d63,x
-        lda     $33e2,y
+        lda     DlgOpenColorMathTbl,y
         sta     $7e7e19,x
-        lda     $343c,y
+        lda     DlgOpenBGLocTbl,y
         sta     $7e7b9c,x
-        lda     $34f0,y
+        lda     DlgOpenFixedColorTbl,y
         sta     $7e7d08,x
-        lda     $354a,y
+        lda     DlgOpenMainSubTbl,y
         sta     $7e7dbe,x
 @3127:  iny2
         inx3
@@ -6354,13 +6358,13 @@ UpdateDlgWindow:
         rts
 
 ; open dialog window (text only)
-@3139:  lda     #$c0
+@3139:  lda     #^*
         pha
         plb
         longa
-        lda     #$0009
+        lda     #9
         sta     $1e
-@3144:  lda     $327a,y
+@3144:  lda     DlgOpenMaskTbl,y
         beq     @3171
         lda     $7e7cad,x
         sta     $7e7f82,x
@@ -6372,19 +6376,19 @@ UpdateDlgWindow:
         sta     $7e80ea,x
         lda     $7e7dbe,x
         sta     $7e8090,x
-@3171:  lda     $332e,y
+@3171:  lda     DlgOpenBG3ScrollTbl,y
         beq     @31a8
         sta     $7e7cad,x
-        lda     $3388,y
+        lda     DlgOpenWindowPosTbl,y
         sta     $7e7d63,x
-        lda     $3496,y
+        lda     DlgTextOpenBGLocTbl,y
         sta     $7e7b9c,x
         lda     f:$001ed8
         and     #$0001
         bne     @31a1
         lda     #$8c73
         sta     $7e7e19,x
-        lda     $35a4,y
+        lda     DlgTextOpenMainSubTbl,y
         sta     $7e7dbe,x
         bra     @31a8
 @31a1:  lda     #$81a3
@@ -6415,13 +6419,13 @@ UpdateDlgWindow:
         lda     $0564
         beq     @31d7
         jmp     @322f
-@31d7:  lda     #$c0
+@31d7:  lda     #^*
         pha
         plb
         longa
-        lda     #$0009
+        lda     #9
         sta     $1e
-@31e2:  lda     $327a,y
+@31e2:  lda     DlgOpenMaskTbl,y
         beq     @321f
         lda     $7e7ece,x
         sta     $7e7bf7,x
@@ -6448,13 +6452,13 @@ UpdateDlgWindow:
         rts
 
 ; close dialog window (text only)
-@322f:  lda     #$c0
+@322f:  lda     #^*
         pha
         plb
         longa
-        lda     #$0009
+        lda     #9
         sta     $1e
-@323a:  lda     $327a,y
+@323a:  lda     DlgOpenMaskTbl,y
         beq     @3267
         lda     $7e7f82,x
         sta     $7e7cad,x
@@ -6481,6 +6485,7 @@ UpdateDlgWindow:
 ; ------------------------------------------------------------------------------
 
 ; dialog window strips added/removed each frame
+DlgOpenMaskTbl:
 @327a:  .word   0,0,0,0,1,0,0,0,0
         .word   0,0,0,1,0,1,0,0,0
         .word   0,0,1,0,0,0,1,0,0
@@ -6488,6 +6493,7 @@ UpdateDlgWindow:
         .word   1,0,0,0,0,0,0,0,1
 
 ; hdma pointers for bg1 scroll (hdma #4)
+DlgOpenBG1ScrollTbl:
 @32d4:  .word   $0000,$0000,$0000,$0000,$8513,$0000,$0000,$0000,$0000
         .word   $0000,$0000,$0000,$84b3,$84d3,$84f3,$0000,$0000,$0000
         .word   $0000,$0000,$8413,$8433,$8453,$8473,$8493,$0000,$0000
@@ -6495,6 +6501,7 @@ UpdateDlgWindow:
         .word   $8313,$8313,$8313,$8313,$8313,$8313,$8313,$8313,$8313
 
 ; hdma pointers for bg3 scroll (hdma #3)
+DlgOpenBG3ScrollTbl:
 @332e:  .word   $0000,$0000,$0000,$0000,$85f3,$0000,$0000,$0000,$0000
         .word   $0000,$0000,$0000,$85f3,$85f3,$85f3,$0000,$0000,$0000
         .word   $0000,$0000,$85f3,$85f3,$85f3,$85f3,$85f3,$0000,$0000
@@ -6502,6 +6509,7 @@ UpdateDlgWindow:
         .word   $85f3,$8613,$8633,$8653,$8673,$8693,$86b3,$86d3,$86f3
 
 ; hdma pointers for window 2 position (hdma #5)
+DlgOpenWindowPosTbl:
 @3388:  .word   $0000,$0000,$0000,$0000,$8ca3,$0000,$0000,$0000,$0000
         .word   $0000,$0000,$0000,$8ca3,$8ca3,$8ca3,$0000,$0000,$0000
         .word   $0000,$0000,$8ca3,$8ca3,$8ca3,$8ca3,$8ca3,$0000,$0000
@@ -6509,6 +6517,7 @@ UpdateDlgWindow:
         .word   $8ca3,$8ca3,$8ca3,$8ca3,$8ca3,$8ca3,$8ca3,$8ca3,$8ca3
 
 ; hdma pointers for color add/sub settings (hdma #1)
+DlgOpenColorMathTbl:
 @33e2:  .word   $0000,$0000,$0000,$0000,$8c53,$0000,$0000,$0000,$0000
         .word   $0000,$0000,$0000,$8c23,$8c33,$8c43,$0000,$0000,$0000
         .word   $0000,$0000,$8bd3,$8be3,$8bf3,$8c03,$8c13,$0000,$0000
@@ -6516,6 +6525,7 @@ UpdateDlgWindow:
         .word   $8ad3,$8ae3,$8af3,$8b03,$8b13,$8b23,$8b33,$8b43,$8b53
 
 ; hdma pointers for mosaic/bg location (hdma #7)
+DlgOpenBGLocTbl:
 @343c:  .word   $0000,$0000,$0000,$0000,$81b3,$0000,$0000,$0000,$0000
         .word   $0000,$0000,$0000,$81b3,$81b3,$81b3,$0000,$0000,$0000
         .word   $0000,$0000,$81b3,$81b3,$81b3,$81b3,$81b3,$0000,$0000
@@ -6523,6 +6533,7 @@ UpdateDlgWindow:
         .word   $81b3,$81b3,$81b3,$81b3,$81b3,$81b3,$81b3,$81b3,$81b3
 
 ; hdma pointers for mosaic/bg location (hdma #7) text only
+DlgTextOpenBGLocTbl:
 @3496:  .word   $0000,$0000,$0000,$0000,$81d3,$0000,$0000,$0000,$0000
         .word   $0000,$0000,$0000,$81d3,$81d3,$81d3,$0000,$0000,$0000
         .word   $0000,$0000,$81d3,$81d3,$81d3,$81d3,$81d3,$0000,$0000
@@ -6530,6 +6541,7 @@ UpdateDlgWindow:
         .word   $81d3,$81d3,$81d3,$81d3,$81d3,$81d3,$81d3,$81d3,$81d3
 
 ; hdma pointers for fixed color add/sub (hdma #2)
+DlgOpenFixedColorTbl:
 @34f0:  .word   $0000,$0000,$0000,$0000,$8ac3,$0000,$0000,$0000,$0000
         .word   $0000,$0000,$0000,$8a93,$8aa3,$8ab3,$0000,$0000,$0000
         .word   $0000,$0000,$8a43,$8a53,$8a63,$8a73,$8a83,$0000,$0000
@@ -6537,6 +6549,7 @@ UpdateDlgWindow:
         .word   $8943,$8953,$8963,$8973,$8983,$8993,$89a3,$89b3,$89c3
 
 ; hdma pointers for main/sub screen designation (hdma #6)
+DlgOpenMainSubTbl:
 @354a:  .word   $0000,$0000,$0000,$0000,$8183,$0000,$0000,$0000,$0000
         .word   $0000,$0000,$0000,$8183,$8183,$8183,$0000,$0000,$0000
         .word   $0000,$0000,$8183,$8183,$8183,$8183,$8183,$0000,$0000
@@ -6544,6 +6557,7 @@ UpdateDlgWindow:
         .word   $8183,$8183,$8183,$8183,$8183,$8183,$8183,$8183,$8183
 
 ; hdma pointers for main/sub screen designation (hdma #6) text only
+DlgTextOpenMainSubTbl:
 @35a4:  .word   $0000,$0000,$0000,$0000,$8193,$0000,$0000,$0000,$0000
         .word   $0000,$0000,$0000,$8193,$8193,$8193,$0000,$0000,$0000
         .word   $0000,$0000,$8193,$8193,$8193,$8193,$8193,$0000,$0000
@@ -7135,35 +7149,35 @@ FadeBarsFixedColorTbl:
 
 ; fixed color data for dialog window gradient
 DlgWindowFixedColorTbl:
-@3cd7:  .byte   $e7, $e7, $e7, $e6, $e6, $e6, $e6, $e6
-        .byte   $e5, $e5, $e5, $e5, $e5, $e4, $e4, $e4
-        .byte   $e4, $e4, $e3, $e3, $e3, $e3, $e3, $e2
-        .byte   $e2, $e2, $e2, $e2, $e1, $e1, $e1, $e1
-        .byte   $e1, $e0, $e0, $e0, $e0, $e0, $e1, $e1
-        .byte   $e1, $e1, $e1, $e2, $e2, $e2, $e2, $e2
-        .byte   $e3, $e3, $e3, $e3, $e3, $e4, $e4, $e4
-        .byte   $e4, $e4, $e5, $e5, $e5, $e5, $e5, $e6
-        .byte   $e6, $e6, $e6, $e6, $e7, $e7, $e7, $e7
+@3cd7:  .byte   $e7,$e7,$e7,$e6,$e6,$e6,$e6,$e6
+        .byte   $e5,$e5,$e5,$e5,$e5,$e4,$e4,$e4
+        .byte   $e4,$e4,$e3,$e3,$e3,$e3,$e3,$e2
+        .byte   $e2,$e2,$e2,$e2,$e1,$e1,$e1,$e1
+        .byte   $e1,$e0,$e0,$e0,$e0,$e0,$e1,$e1
+        .byte   $e1,$e1,$e1,$e2,$e2,$e2,$e2,$e2
+        .byte   $e3,$e3,$e3,$e3,$e3,$e4,$e4,$e4
+        .byte   $e4,$e4,$e5,$e5,$e5,$e5,$e5,$e6
+        .byte   $e6,$e6,$e6,$e6,$e7,$e7,$e7,$e7
 
-@3d1f:  .byte   $e7, $e7, $e6, $e6, $e6, $e6, $e5, $e5
-        .byte   $e5, $e5, $e4, $e4, $e4, $e4, $e3, $e3
-        .byte   $e3, $e3, $e2, $e2, $e2, $e2, $e1, $e1
-        .byte   $e1, $e1, $e0, $e0, $e0, $e0, $e1, $e1
-        .byte   $e1, $e1, $e2, $e2, $e2, $e2, $e3, $e3
-        .byte   $e3, $e3, $e4, $e4, $e4, $e4, $e5, $e5
-        .byte   $e5, $e5, $e6, $e6, $e6, $e6, $e7, $e7
+@3d1f:  .byte   $e7,$e7,$e6,$e6,$e6,$e6,$e5,$e5
+        .byte   $e5,$e5,$e4,$e4,$e4,$e4,$e3,$e3
+        .byte   $e3,$e3,$e2,$e2,$e2,$e2,$e1,$e1
+        .byte   $e1,$e1,$e0,$e0,$e0,$e0,$e1,$e1
+        .byte   $e1,$e1,$e2,$e2,$e2,$e2,$e3,$e3
+        .byte   $e3,$e3,$e4,$e4,$e4,$e4,$e5,$e5
+        .byte   $e5,$e5,$e6,$e6,$e6,$e6,$e7,$e7
 
-@3d57:  .byte   $e7, $e6, $e6, $e6, $e5, $e5, $e5, $e4
-        .byte   $e4, $e4, $e3, $e3, $e3, $e2, $e2, $e2
-        .byte   $e1, $e1, $e1, $e0, $e0, $e0, $e1, $e1
-        .byte   $e1, $e2, $e2, $e2, $e3, $e3, $e3, $e4
-        .byte   $e4, $e4, $e5, $e5, $e5, $e6, $e6, $e6
+@3d57:  .byte   $e7,$e6,$e6,$e6,$e5,$e5,$e5,$e4
+        .byte   $e4,$e4,$e3,$e3,$e3,$e2,$e2,$e2
+        .byte   $e1,$e1,$e1,$e0,$e0,$e0,$e1,$e1
+        .byte   $e1,$e2,$e2,$e2,$e3,$e3,$e3,$e4
+        .byte   $e4,$e4,$e5,$e5,$e5,$e6,$e6,$e6
 
-@3d7f:  .byte   $e6, $e5, $e5, $e4, $e4, $e3, $e3, $e2
-        .byte   $e2, $e1, $e1, $e0, $e0, $e1, $e1, $e2
-        .byte   $e2, $e3, $e3, $e4, $e4, $e5, $e5, $e6
+@3d7f:  .byte   $e6,$e5,$e5,$e4,$e4,$e3,$e3,$e2
+        .byte   $e2,$e1,$e1,$e0,$e0,$e1,$e1,$e2
+        .byte   $e2,$e3,$e3,$e4,$e4,$e5,$e5,$e6
 
-@3d97:  .byte   $e4, $e3, $e2, $e1, $e0, $e1, $e2, $e3
+@3d97:  .byte   $e4,$e3,$e2,$e1,$e0,$e1,$e2,$e3
 
 ; ------------------------------------------------------------------------------
 
@@ -8545,12 +8559,12 @@ CheckTreasure:
         ora     f:BitOrTbl,x
         sta     $1e40,y     ; set treasure event bit
         lda     $1f
-        bpl     @4c80       ; branch if not gp
+        bpl     @4c80       ; branch if not gil
 
-; gp
+; gil
         lda     $1a
         sta     hWRMPYA
-        lda     #$64        ; multiply by 100
+        lda     #100        ; multiply by 100
         sta     hWRMPYB
         nop3
         ldy     hRDMPYL
@@ -8558,22 +8572,22 @@ CheckTreasure:
         stz     $24
         longac
         tya
-        adc     $1860       ; add to gp
+        adc     $1860       ; add to gil
         sta     $1860
         shorta0
         adc     $1862
         sta     $1862
-        cmp     #$98
+        cmp     #^9999999
         bcc     @4c78
         ldx     $1860
-        cpx     #$967f
+        cpx     #.loword(9999999)
         bcc     @4c78
-        ldx     #$967f      ; max 9,999,999 gp
+        ldx     #.loword(9999999)      ; max 9,999,999 gil
         stx     $1860
-        lda     #$98
+        lda     #^9999999
         sta     $1862
 @4c78:  jsr     HexToDec
-        ldx     #$0010      ; $ca0010 (chest with gp)
+        ldx     #$0010      ; $ca0010 (chest with gil)
         bra     @4cac
 
 ; item
@@ -8644,14 +8658,14 @@ CheckTreasure:
 
 ; treasure chest map data (1x1)
 TreasureTiles:
-@4d0c:  .byte   $01, $01
+@4d0c:  .byte   $01,$01
         .byte   $12
 
 TreasureOffsetX:
-@4d0f:  .byte   $00, $01, $00, $ff
+@4d0f:  .byte   $00,$01,$00,$ff
 
 TreasureOffsetY:
-@4d13:  .byte   $ff, $00, $01, $00
+@4d13:  .byte   $ff,$00,$01,$00
 
 ; ------------------------------------------------------------------------------
 
@@ -8807,7 +8821,7 @@ OpenDoorTiles3:
 CheckPlayerMove:
 @4e16:  sta     $b3         ; set movement direction
         tax
-        lda     $c04f8d,x   ; get pointer to tile number
+        lda     f:_c04f8d,x   ; get pointer to tile number
         tax
         lda     $a3,x       ; bg1 tile
         tax
@@ -9075,7 +9089,7 @@ UpdatePlayerLayerPriorityBefore:
         jmp     _c07c69
 @4ff3:  lda     $b3
         tax
-        lda     $c04f8d,x
+        lda     f:_c04f8d,x
         tax
         lda     $a3,x
         tax
@@ -9351,7 +9365,7 @@ InitCharSpritePriority:
 
 InitNPCSwitches:
 @5228:  ldx     $00
-@522a:  lda     $c0e0a0,x
+@522a:  lda     f:InitNPCSwitch,x
         sta     $1ee0,x
         inx
         cpx     #$0080
@@ -10307,10 +10321,10 @@ DrawObjSprites:
 
 @hDP := hWMDATA & $ff00
 
-@5a2d:  ldx     #@hDP
+@5a2d:  ldx     #@hDP                   ; nonzero dp, don't use clr_a
         phx
         pld
-        ldx     #$0300      ; clear $0300-$0520
+        ldx     #$0300                  ; clear $0300-$0520
         stx     <hWMADDL
         stz     <hWMADDH
         ldy     #$0020
@@ -10333,56 +10347,56 @@ DrawObjSprites:
         lda     #$7e
         pha
         plb
-        lda     #6          ; update graphics for 6 sprites per frame
+        lda     #6                      ; update graphics for 6 sprites per frame
         sta     $de
-        lda     $47         ; get first sprite to update this frame
+        lda     $47                     ; get first sprite to update this frame
         and     #$03
         tax
         lda     f:FirstObjTbl1,x
         sta     $dc
 @5ac0:  lda     $dc
         tax
-        ldy     $10f7,x     ; pointer to object data
+        ldy     $10f7,x                 ; pointer to object data
         cpy     #$07b0
-        beq     @5ad1       ; branch if empty
+        beq     @5ad1                   ; branch if empty
         lda     $0877,y
-        sta     $0876,y     ; set current graphic position
-@5ad1:  inc     $dc         ; next object
+        sta     $0876,y                 ; set current graphic position
+@5ad1:  inc     $dc                     ; next object
         inc     $dc
         dec     $de
         bne     @5ac0
-        ldy     #$00a0      ; normal priority sprite data pointer
+        ldy     #$00a0                  ; normal priority sprite data pointer
         sty     $d4
-        ldy     #$0020      ; low and high priority sprite data pointer
+        ldy     #$0020                  ; low and high priority sprite data pointer
         sty     $d6
         sty     $d8
-        lda     #$18        ; update all 24 objects every frame
+        lda     #$18                    ; update all 24 objects every frame
         sta     $de
-        stz     $dc         ; current object
+        stz     $dc                     ; current object
 
 ; start of object loop
 _5aeb:  lda     $dc
-        cmp     $dd         ; branch if less than total number of active objects
+        cmp     $dd                     ; branch if less than total number of active objects
         bcc     @5af4
         jmp     DrawNextObj
 @5af4:  tax
-        lda     $0803,x     ; pointer to object data
+        lda     $0803,x                 ; pointer to object data
         sta     $da
         lda     $0804,x
         sta     $db
         ldy     $da
-        lda     $0867,y     ; skip if object is not visible
+        lda     $0867,y                 ; skip if object is not visible
         bmi     @5b09
         jmp     DrawNextObj
-@5b09:  lda     $0868,y     ; vehicle
+@5b09:  lda     $0868,y                 ; vehicle
         and     #$e0
         cmp     #$80
-        bne     @5b15       ; branch if not special graphics
+        bne     @5b15                   ; branch if not special graphics
         jmp     DrawObjSpecial
-@5b15:  lda     $088c,y     ; branch if object animation is enabled
+@5b15:  lda     $088c,y                 ; branch if object animation is enabled
         and     #$20
         bne     DrawObjNoVehicle
-        lda     $0868,y     ; branch if not in a vehicle
+        lda     $0868,y                 ; branch if not in a vehicle
         and     #$60
         beq     DrawObjNoVehicle
         cmp     #$20
@@ -10399,7 +10413,7 @@ DrawNextObj:
         inc     $dc
         inc     $dc
         dec     $de
-        beq     @5b42       ; branch if last object
+        beq     @5b42                   ; branch if last object
         jmp     _5aeb
 @5b42:  jsr     FixPlayerSpritePriority
         tdc
@@ -10660,14 +10674,14 @@ DrawMagitek:
         sec
         sbc     $7f         ; vertical offset for shake screen
         sec
-        sbc     #$0008
+        sbc     #8
         sta     $26
-        sbc     #$0010
+        sbc     #16
         sta     $24
-        sbc     #$0006
+        sbc     #6
         sta     $22
         clc
-        adc     #$001e
+        adc     #30
         shorta
         xba
         beq     @5d96       ; branch if sprite is on screen
@@ -10682,14 +10696,14 @@ DrawMagitek:
 @5da6:  longa
         lda     $d4         ; pointer to normal priority sprite
         sec
-        sbc     #$000c      ; use 3 sprites (3 top and 3 bottom)
+        sbc     #12      ; use 3 sprites (3 top and 3 bottom)
         sta     $d4
         shorta0
         ldy     $d4
         longa
         lda     $1e         ; left half + 8 to get rider x-position
         clc
-        adc     #$0008
+        adc     #8
         sta     $2a
         shorta0
         lda     $2a
@@ -10772,13 +10786,13 @@ DrawMagitek:
         adc     $22
         sta     $0341,y
         longa
-        lda     $c05eb6,x
+        lda     f:MagitekTopLeftTiles,x
         sta     $0346,y
-        lda     $c05ed6,x
+        lda     f:MagitekTopRightTiles,x
         sta     $034a,y
-        lda     $c05ef6,x
+        lda     f:MagitekBtmLeftTiles,x
         sta     $0402,y
-        lda     $c05f16,x
+        lda     f:MagitekBtmRightTiles,x
         sta     $0406,y
         shorta0
         lda     #$ef
@@ -10795,31 +10809,31 @@ DrawMagitek:
 
 ; magitek tile formation (top left)
 MagitekTopLeftTiles:
-@5eb6:  .word   $2fac, $2fc0, $2fac, $2fc4
-        .word   $6fca, $6fe2, $6fca, $6fea
-        .word   $2fa0, $2fa4, $2fa0, $2fa8
-        .word   $2fc8, $2fe0, $2fc8, $2fe8
+@5eb6:  .word   $2fac,$2fc0,$2fac,$2fc4
+        .word   $6fca,$6fe2,$6fca,$6fea
+        .word   $2fa0,$2fa4,$2fa0,$2fa8
+        .word   $2fc8,$2fe0,$2fc8,$2fe8
 
 ; magitek tile formation (top right)
 MagitekTopRightTiles:
-@5ed6:  .word   $6fac, $6fc4, $6fac, $6fc0
-        .word   $6fc8, $6fe0, $6fc8, $6fe8
-        .word   $6fa0, $6fa8, $6fa0, $6fa4
-        .word   $2fca, $2fe2, $2fca, $2fea
+@5ed6:  .word   $6fac,$6fc4,$6fac,$6fc0
+        .word   $6fc8,$6fe0,$6fc8,$6fe8
+        .word   $6fa0,$6fa8,$6fa0,$6fa4
+        .word   $2fca,$2fe2,$2fca,$2fea
 
 ; magitek tile formation (bottom left)
 MagitekBtmLeftTiles:
-@5ef6:  .word   $2fae, $2fc2, $2fae, $2fc6
-        .word   $6fce, $6fe6, $6fce, $6fee
-        .word   $2fa2, $2fa6, $2fa2, $2faa
-        .word   $2fcc, $2fe4, $2fcc, $2fec
+@5ef6:  .word   $2fae,$2fc2,$2fae,$2fc6
+        .word   $6fce,$6fe6,$6fce,$6fee
+        .word   $2fa2,$2fa6,$2fa2,$2faa
+        .word   $2fcc,$2fe4,$2fcc,$2fec
 
 ; magitek tile formation (bottom right)
 MagitekBtmRightTiles:
-@5f16:  .word   $6fae, $6fc6, $6fae, $6fc2
-        .word   $6fcc, $6fe4, $6fcc, $6fec
-        .word   $6fa2, $6faa, $6fa2, $6fa6
-        .word   $2fce, $2fe6, $2fce, $2fee
+@5f16:  .word   $6fae,$6fc6,$6fae,$6fc2
+        .word   $6fcc,$6fe4,$6fcc,$6fec
+        .word   $6fa2,$6faa,$6fa2,$6fa6
+        .word   $2fce,$2fe6,$2fce,$2fee
 
 ; ------------------------------------------------------------------------------
 
@@ -10838,7 +10852,7 @@ DrawRaft:
         sbc     $5c
         sta     $1e
         clc
-        adc     #$0010
+        adc     #16
         sta     $20
         lda     $086d,y
         clc
@@ -10846,14 +10860,14 @@ DrawRaft:
         sec
         sbc     $7f
         sec
-        sbc     #$0008
+        sbc     #8
         sta     $26
-        sbc     #$0010
+        sbc     #16
         sta     $24
-        sbc     #$0008
+        sbc     #8
         sta     $22
         clc
-        adc     #$001e
+        adc     #30
         shorta
         xba
         beq     @5f75
@@ -10868,14 +10882,14 @@ DrawRaft:
 @5f85:  longa
         lda     $d4
         sec
-        sbc     #$000c
+        sbc     #12
         sta     $d4
         shorta0
         ldy     $d4
         longa
         lda     $1e
         clc
-        adc     #$0008
+        adc     #8
         sta     $2a
         shorta0
         lda     $2a
@@ -10885,7 +10899,7 @@ DrawRaft:
         longa
         lda     $1e
         clc
-        adc     #$0008
+        adc     #8
         sta     $2a
         shorta0
         lda     $2a
@@ -10959,13 +10973,13 @@ DrawRaft:
         adc     #$10
         sta     $0345,y
         longa
-        lda     $c0609a,x
+        lda     f:RaftTiles,x
         sta     $034a,y
-        lda     $c060a2,x
+        lda     f:RaftTiles+8,x
         sta     $0402,y
-        lda     $c060aa,x
+        lda     f:RaftTiles+16,x
         sta     $0406,y
-        lda     $c060b2,x
+        lda     f:RaftTiles+24,x
         sta     $040a,y
         shorta0
         ldy     $da
@@ -10980,10 +10994,10 @@ DrawRaft:
 ; ------------------------------------------------------------------------------
 
 RaftTiles:
-@609a:  .word   $2f20, $2f28, $2f20, $2f28
-        .word   $2f24, $2f2c, $2f24, $2f2c
-        .word   $2f22, $2f2a, $2f22, $2f2a
-        .word   $2f26, $2f2e, $2f26, $2f2e
+@609a:  .word   $2f20,$2f28,$2f20,$2f28
+        .word   $2f24,$2f2c,$2f24,$2f2c
+        .word   $2f22,$2f2a,$2f22,$2f2a
+        .word   $2f26,$2f2e,$2f26,$2f2e
 
 ; ------------------------------------------------------------------------------
 
@@ -11012,7 +11026,7 @@ DrawChoco:
         sbc     $5c
         sta     $20
         clc
-        adc     #$0008
+        adc     #8
         sta     $1e
         lda     $086d,y
         clc
@@ -11020,14 +11034,14 @@ DrawChoco:
         sec
         sbc     $7f
         sec
-        sbc     #$0008
+        sbc     #8
         sta     $26
-        sbc     #$0010
+        sbc     #16
         sta     $24
-        sbc     #$0004
+        sbc     #4
         sta     $22
         clc
-        adc     #$001c
+        adc     #28
         shorta
         xba
         beq     @610f
@@ -11042,7 +11056,7 @@ DrawChoco:
 @611f:  longa
         lda     $d4
         sec
-        sbc     #$000c
+        sbc     #12
         sta     $d4
         shorta0
         ldy     $da
@@ -11091,7 +11105,7 @@ DrawChocoUp:
         ldy     $da
         lda     $0881,y
         and     #$0e
-        ora     $c06201,x
+        ora     f:ChocoUpTileFlags+1,x
         ldy     $d4
         sta     $0347,y
         lda     $1a
@@ -11122,25 +11136,25 @@ DrawChocoUp:
 ; ------------------------------------------------------------------------------
 
 ChocoUpTailX:
-@61e0:  .word   $0000, $0001, $0000, $ffff ; tail x-offset
+@61e0:  .word   $0000,$0001,$0000,$ffff ; tail x-offset
 
 ChocoUpTailY:
-@61e8:  .word   $0009, $000a, $0009, $000a ; tail y-offset
+@61e8:  .word   $0009,$000a,$0009,$000a ; tail y-offset
 
 ChocoUpBodyX:
-@61f0:  .word   $0000, $0001, $0000, $0001 ; body y-offset
+@61f0:  .word   $0000,$0001,$0000,$0001 ; body y-offset
 
 ChocoUpTailTile:
-@61f8:  .word   $2f4a, $6f4a, $2f4a, $6f4a ; tail tile
+@61f8:  .word   $2f4a,$6f4a,$2f4a,$6f4a ; tail tile
 
 ChocoUpTileFlags:
-@6200:  .word   $2000, $2000, $2000, $2000 ; unused
+@6200:  .word   $2000,$2000,$2000,$2000 ; unused
 
 ChocoUpBodyTile1:
-@6208:  .word   $2f4c, $2f60, $2f4c, $6f60 ; body tile (top)
+@6208:  .word   $2f4c,$2f60,$2f4c,$6f60 ; body tile (top)
 
 ChocoUpBodyTile2:
-@6210:  .word   $2f4e, $2f62, $2f4e, $6f62 ; body tile (bottom)
+@6210:  .word   $2f4e,$2f62,$2f4e,$6f62 ; body tile (bottom)
 
 ; ------------------------------------------------------------------------------
 
@@ -11159,7 +11173,7 @@ DrawChocoDown:
         longa
         lda     $1e
         clc
-        adc     $c062b9,x
+        adc     f:ChocoDownHeadX,x
         sta     $2a
         shorta
         sta     $0340,y
@@ -11167,20 +11181,20 @@ DrawChocoDown:
         jsr     SetTopSpriteMSB
         lda     $24
         clc
-        adc     $c062c1,x
+        adc     f:ChocoDownHeadY,x
         sta     $0341,y
         longa
-        lda     $c062d1,x
+        lda     f:ChocoDownHeadTile,x
         sta     $0342,y
-        lda     $c062e1,x
+        lda     f:ChocoDownBodyTopTile,x
         sta     $034a,y
-        lda     $c062e9,x
+        lda     f:ChocoDownBodyBtmTile,x
         sta     $0402,y
         shorta0
         ldy     $da
         lda     $0881,y
         and     #$0e
-        ora     $c062da,x
+        ora     f:ChocoDownTileFlags+1,x
         ldy     $d4
         sta     $0347,y
         lda     $1a
@@ -11191,7 +11205,7 @@ DrawChocoDown:
         sta     $0400,y
         lda     $22
         clc
-        adc     $c062c9,x
+        adc     f:ChocoBodyHeadX,x
         sta     $0345,y
         lda     $24
         sta     $0349,y
@@ -11210,13 +11224,26 @@ DrawChocoDown:
 
 ; ------------------------------------------------------------------------------
 
-@62b9:  .word   $0000, $0001, $0000, $ffff ; head x-offset
-        .word   $0007, $0008, $0007, $0008 ; head y-offset
-        .word   $ffff, $0001, $ffff, $0001 ; body y-offset
-        .word   $2f40, $2f40, $2f40, $2f40 ; head tile
-        .word   $2000, $2000, $2000, $2000 ; unused
-        .word   $2f42, $2f46, $2f42, $6f46 ; body tile (top)
-        .word   $2f44, $2f48, $2f44, $6f48 ; body tile (bottom)
+ChocoDownHeadX:
+@62b9:  .word   $0000,$0001,$0000,$ffff ; head x-offset
+
+ChocoDownHeadY:
+@62c1:  .word   $0007,$0008,$0007,$0008 ; head y-offset
+
+ChocoBodyHeadX:
+@62c9:  .word   $ffff,$0001,$ffff,$0001 ; body y-offset
+
+ChocoDownHeadTile:
+@62d1:  .word   $2f40,$2f40,$2f40,$2f40 ; head tile
+
+ChocoDownTileFlags:
+@62d9:  .word   $2000,$2000,$2000,$2000 ; tile flags
+
+ChocoDownBodyTopTile:
+@62e1:  .word   $2f42,$2f46,$2f42,$6f46 ; body tile (top)
+
+ChocoDownBodyBtmTile:
+@62e9:  .word   $2f44,$2f48,$2f44,$6f48 ; body tile (bottom)
 
 ; ------------------------------------------------------------------------------
 
@@ -11226,7 +11253,7 @@ DrawChocoRight:
         longa
         lda     $1e
         sec
-        sbc     #$0003
+        sbc     #3
         sta     $2a
         shorta0
         lda     $2a
@@ -11239,7 +11266,7 @@ DrawChocoRight:
         longa
         lda     $20
         clc
-        adc     #$0010
+        adc     #16
         sta     $2a
         shorta0
         lda     $2a
@@ -11262,7 +11289,7 @@ DrawChocoRight:
         ldy     $d4
         lda     $22
         clc
-        adc     $c063c5,x
+        adc     f:ChocoSideYTbl,x
         sta     $0341,y
         clc
         adc     #$10
@@ -11286,13 +11313,13 @@ DrawChocoRight:
         sta     $0401,y
         sta     $0405,y
         longa
-        lda     $c063cd,x
+        lda     f:ChocoRightTopLeftTiles,x
         sta     $034a,y
-        lda     $c063d5,x
+        lda     f:ChocoRightTopRightTiles,x
         sta     $040a,y
-        lda     $c063dd,x
+        lda     f:ChocoRightBtmLeftTiles,x
         sta     $0402,y
-        lda     $c063e5,x
+        lda     f:ChocoRightBtmRightTiles,x
         sta     $0406,y
         shorta0
         ldy     $da
@@ -11306,11 +11333,20 @@ DrawChocoRight:
 
 ; ------------------------------------------------------------------------------
 
-@63c5:  .word   $0000, $ffff, $0000, $ffff ; y-offset
-        .word   $6f64, $6f6c, $6f64, $6f84
-        .word   $6f68, $6f80, $6f68, $6f88
-        .word   $6f66, $6f6e, $6f66, $6f86
-        .word   $6f6a, $6f82, $6f6a, $6f8a
+ChocoSideYTbl:
+@63c5:  .word   $0000,$ffff,$0000,$ffff ; y-offset
+
+ChocoRightTopLeftTiles:
+@63cd:  .word   $6f64,$6f6c,$6f64,$6f84
+
+ChocoRightTopRightTiles:
+@63d5:  .word   $6f68,$6f80,$6f68,$6f88
+
+ChocoRightBtmLeftTiles:
+@63dd:  .word   $6f66,$6f6e,$6f66,$6f86
+
+ChocoRightBtmRightTiles:
+@63e5:  .word   $6f6a,$6f82,$6f6a,$6f8a
 
 ; ------------------------------------------------------------------------------
 
@@ -11320,10 +11356,10 @@ DrawChocoLeft:
         longa
         lda     $1e
         clc
-        adc     #$0003
+        adc     #3
         sta     $2a
         clc
-        adc     #$0008
+        adc     #8
         shorta0
         lda     $2a
         sta     $0340,y
@@ -11335,10 +11371,10 @@ DrawChocoLeft:
         longa
         lda     $20
         clc
-        adc     #$0010
+        adc     #16
         sta     $2a
         clc
-        adc     #$0008
+        adc     #8
         shorta0
         lda     $2a
         sta     $0340,y
@@ -11351,7 +11387,7 @@ DrawChocoLeft:
         lda     $20
         sta     $2a
         clc
-        adc     #$0008
+        adc     #8
         shorta0
         lda     $2a
         sta     $0400,y
@@ -11362,7 +11398,7 @@ DrawChocoLeft:
         ldy     $d4
         lda     $22
         clc
-        adc     $c063c5,x
+        adc     f:ChocoSideYTbl,x
         sta     $0341,y
         clc
         adc     #$10
@@ -11386,13 +11422,13 @@ DrawChocoLeft:
         sta     $0401,y
         sta     $0405,y
         longa
-        lda     $c064d5,x
+        lda     f:ChocoLeftTopRightTiles,x
         sta     $034a,y
-        lda     $c064cd,x
+        lda     f:ChocoLeftTopLeftTiles,x
         sta     $040a,y
-        lda     $c064e5,x
+        lda     f:ChocoLeftBtmRightTiles,x
         sta     $0402,y
-        lda     $c064dd,x
+        lda     f:ChocoLeftBtmLeftTiles,x
         sta     $0406,y
         shorta0
         ldy     $da
@@ -11406,15 +11442,20 @@ _64ca:  jmp     DrawNextObj
 
 ; ------------------------------------------------------------------------------
 
-@64cd:  .word   $2f64, $2f6c, $2f64, $2f84
-        .word   $2f68, $2f80, $2f68, $2f88
-        .word   $2f66, $2f6e, $2f66, $2f86
-        .word   $2f6a, $2f82, $2f6a, $2f8a
+ChocoLeftTopLeftTiles:
+@64cd:  .word   $2f64,$2f6c,$2f64,$2f84
 
-; ------------------------------------------------------------------------------
+ChocoLeftTopRightTiles:
+@64d5:  .word   $2f68,$2f80,$2f68,$2f88
+
+ChocoLeftBtmLeftTiles:
+@64dd:  .word   $2f66,$2f6e,$2f66,$2f86
+
+ChocoLeftBtmRightTiles:
+@64e5:  .word   $2f6a,$2f82,$2f6a,$2f8a
 
 ; unused ???
-@64ed:  .word   $0000, $0010, $0020, $0030
+@64ed:  .word   $0000,$0010,$0020,$0030
 
 ; ------------------------------------------------------------------------------
 
@@ -11790,7 +11831,7 @@ TfrObjGfxSub:
         asl
         tax
         longa
-        lda     $c0693c,x
+        lda     f:_c0693c,x
         sta     $14
         lda     #$0006
         sta     $18
@@ -11809,7 +11850,7 @@ TfrObjGfxSub:
         lda     f:MapSpriteGfxPtrsHi,x
         sta     $10
         ldx     $14
-        lda     $c06944,x
+        lda     f:_c06944,x
         sta     hVMADDL
         clc
         adc     #$0100
@@ -11970,13 +12011,17 @@ TfrObjGfxWorld:
 
 ; ------------------------------------------------------------------------------
 
-@6934:  .word   $0000, $00f6, $01ec, $02e2
-        .word   $0000, $000c, $0018, $0024
+_c06934:
+@6934:  .word   $0000,$00f6,$01ec,$02e2
 
-@6944:  .word   $6000, $6040, $6080, $60c0, $6200, $6240
-        .word   $6280, $62c0, $6400, $6440, $6480, $64c0
-        .word   $6600, $6640, $6680, $66c0, $6800, $6840
-        .word   $6880, $68c0, $6a00, $6a40, $6a80, $6ac0
+_c0693c:
+@693c:  .word   $0000,$000c,$0018,$0024
+
+_c06944:
+@6944:  .word   $6000,$6040,$6080,$60c0,$6200,$6240
+        .word   $6280,$62c0,$6400,$6440,$6480,$64c0
+        .word   $6600,$6640,$6680,$66c0,$6800,$6840
+        .word   $6880,$68c0,$6a00,$6a40,$6a80,$6ac0
 
 ; ------------------------------------------------------------------------------
 
@@ -12006,7 +12051,7 @@ InitTerraOutline:
         sta     $30
         inc
         sta     $33
-        lda     $c0d0f3,x
+        lda     f:MapSpriteGfxPtrsLo+1,x
         sta     $2b
         sta     $2e
         sta     $31
@@ -12020,7 +12065,7 @@ InitTerraOutline:
         stx     $20
 @69bf:  longa
         ldx     $20
-        lda     $c0ce46,x
+        lda     f:MapSpriteTileOffsets+12,x
         sta     $24
         shorta0
         lda     #$08
@@ -13639,7 +13684,7 @@ _c076e9:
         asl
         tax
         longa
-        lda     $c07807,x
+        lda     f:ObjCmdTbl,x
         sta     $2d
         shorta0
         jmp     ($002d)
@@ -13655,6 +13700,7 @@ _c07801:
 ; ------------------------------------------------------------------------------
 
 ; object command jump table
+ObjCmdTbl:
 @7807:  .addr   ObjCmd_c6
         .addr   ObjCmd_c7
         .addr   ObjCmd_c8
@@ -14815,7 +14861,7 @@ CalcTextWidth:
         adc     $c0
         sta     $c0
         plx
-@809c:  lda     $c0dfa1,x   ; second dte letter
+@809c:  lda     f:DTETbl+1,x   ; second dte letter
         cmp     #$7f
         beq     @80d2
         tax
@@ -15485,7 +15531,7 @@ ClearDlgTextRegion:
         asl
         tax
         longa
-        lda     $c085f3,x   ; set vram address
+        lda     f:_c085f3,x   ; set vram address
         sta     hVMADDL
         shorta0
         stz     hMDMAEN     ; disable dma
@@ -15509,7 +15555,8 @@ ClearDlgTextRegion:
 ; ------------------------------------------------------------------------------
 
 ; pointers to dialog text regions in vram
-@85f3:  .word   $3ee0, $3e00, $3ce0, $3c00, $3ae0, $3a00, $38e0, $3800
+_c085f3:
+@85f3:  .word   $3ee0,$3e00,$3ce0,$3c00,$3ae0,$3a00,$38e0,$3800
 
 ; ------------------------------------------------------------------------------
 
@@ -16165,29 +16212,29 @@ LoadLetterGfx:
 
 ; dialog strings carried over from ff6j (unused)
 @8cab:  .byte   $c7,$c7,$00
-        .byte   $1f,$f9,$1f,$f8,$00
-        .byte   $bd,$85,$00
-        .byte   $bd,$7f,$00
-        .byte   $1e,$9f,$1e,$af,$00
-        .byte   $93,$8d,$00
-        .byte   $77,$85,$00
-        .byte   $1c,$00,$1d,$ed,$00
-        .byte   $85,$8d,$00
-        .byte   $1f,$2a,$1f,$78,$1f,$86,$1f,$a6,$d0,$00
-        .byte   $1f,$70,$1f,$64,$1f,$6a,$d0,$00
-        .byte   $6b,$a7,$00
-        .byte   $73,$9b,$00
-        .byte   $1e,$da,$1c,$03,$00
-        .byte   $1f,$20,$1f,$92,$1f,$b8,$d0,$00
-        .byte   $b9,$3f,$00
-        .byte   $1c,$04,$1e,$0d,$00
-        .byte   $45,$33,$35,$ab,$00
-        .byte   $1f,$76,$1f,$46,$d0,$00
-        .byte   $9b,$1d,$e6,$00
-        .byte   $37,$bf,$00
-        .byte   $85,$6f,$ad,$00
-        .byte   $3f,$d2,$00
-        .byte   $1e,$23,$1e,$01,$00
+@8cae:  .byte   $1f,$f9,$1f,$f8,$00
+@8cb3:  .byte   $bd,$85,$00
+@8cb6:  .byte   $bd,$7f,$00
+@8cb9:  .byte   $1e,$9f,$1e,$af,$00
+@8cbe:  .byte   $93,$8d,$00
+@8cc1:  .byte   $77,$85,$00
+@8cc4:  .byte   $1c,$00,$1d,$ed,$00
+@8cc9:  .byte   $85,$8d,$00
+@8ccc:  .byte   $1f,$2a,$1f,$78,$1f,$86,$1f,$a6,$d0,$00
+@8cd6:  .byte   $1f,$70,$1f,$64,$1f,$6a,$d0,$00
+@8cde:  .byte   $6b,$a7,$00
+@8ce1:  .byte   $73,$9b,$00
+@8ce4:  .byte   $1e,$da,$1c,$03,$00
+@8ce9:  .byte   $1f,$20,$1f,$92,$1f,$b8,$d0,$00
+@8cf1:  .byte   $b9,$3f,$00
+@8cf4:  .byte   $1c,$04,$1e,$0d,$00
+@8cf9:  .byte   $45,$33,$35,$ab,$00
+@8cfe:  .byte   $1f,$76,$1f,$46,$d0,$00
+@8d04:  .byte   $9b,$1d,$e6,$00
+@8d08:  .byte   $37,$bf,$00
+@8d0b:  .byte   $85,$6f,$ad,$00
+@8d0f:  .byte   $3f,$d2,$00
+@8d12:  .byte   $1e,$23,$1e,$01,$00
 
 ; ------------------------------------------------------------------------------
 
@@ -16199,36 +16246,36 @@ InitPalAnim:
         rts
 @8d1d:  dec
         sta     hWRMPYA
-        lda     #$0c
+        lda     #12
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
         ldy     $00
-@8d2e:  lda     $c09825,x   ; palette animation data
+@8d2e:  lda     f:MapPalAnimProp,x
         sta     $10ea,y
-        lda     $c09826,x
+        lda     f:MapPalAnimProp+1,x
         sta     $10e8,y
-        lda     $c09827,x
+        lda     f:MapPalAnimProp+2,x
         sta     $10eb,y
-        lda     $c09828,x
+        lda     f:MapPalAnimProp+3,x
         sta     $10ec,y
-        lda     $c09829,x
+        lda     f:MapPalAnimProp+4,x
         sta     $10ed,y
-        lda     $c0982a,x
+        lda     f:MapPalAnimProp+5,x
         sta     $10ee,y
         lda     #$00
         sta     $10e7,y
         sta     $10e9,y
         longac
         txa
-        adc     #$0006
+        adc     #6
         tax
         shorta0
         tya
         clc
-        adc     #$08
+        adc     #8
         tay
-        cmp     #$10
+        cmp     #16
         bne     @8d2e
         rts
 
@@ -16237,10 +16284,10 @@ InitPalAnim:
 ; [ update palette animation ]
 
 UpdatePalAnim:
-@8d74:  lda     $053a       ; palette animation index
+@8d74:  lda     $053a                   ; palette animation index
         beq     @8dc7
         ldy     $00
-@8d7b:  lda     $10ea,y     ; palette animation type
+@8d7b:  lda     $10ea,y                 ; palette animation type
         bmi     @8dbb
         and     #$f0
         lsr4
@@ -16249,8 +16296,8 @@ UpdatePalAnim:
 ; 0 (counter only)
         jsr     IncPalAnimCounter
         cmp     #0
-        bne     @8dbb       ; branch if no reset
-        jmp     @8dbb       ; branch anyway
+        bne     @8dbb                   ; branch if no reset
+        jmp     @8dbb                   ; branch anyway
 @8d92:  dec
         bne     @8da2
 
@@ -16279,9 +16326,9 @@ UpdatePalAnim:
         ply
 @8dbb:  tya
         clc
-        adc     #$08
+        adc     #8
         tay
-        cmp     #$10
+        cmp     #16
         beq     @8dc7
         jmp     @8d7b
 @8dc7:  rts
@@ -16291,24 +16338,24 @@ UpdatePalAnim:
 ; [ update palette animation counters ]
 
 IncPalAnimCounter:
-@8dc8:  lda     $10e7,y     ; increment frame counter
+@8dc8:  lda     $10e7,y                 ; increment frame counter
         inc
         sta     $10e7,y
         cmp     $10e8,y
         bne     @8def
         lda     #$00
         sta     $10e7,y
-        lda     $10e9,y     ; increment color counter
+        lda     $10e9,y                 ; increment color counter
         inc
         sta     $10e9,y
         lda     $10ea,y
         and     #$0f
         cmp     $10e9,y
         bne     @8def
-        tdc                 ; return 0 for reset
+        tdc                             ; return 0 for reset
         sta     $10e9,y
         rts
-@8def:  lda     #$01        ; return 1 for no reset
+@8def:  lda     #1                      ; return 1 for no reset
         rts
 
 ; ------------------------------------------------------------------------------
@@ -16381,14 +16428,14 @@ LoadPalAnimColors:
         longa
         asl5
         clc
-        adc     $10ed,y     ; rom color offset
+        adc     $10ed,y                 ; rom color offset
         tax
         shorta0
         lda     $10ec,y
         tay
         iny2
         longa
-@8e95:  lda     $e6f200,x   ; palette animation color palette
+@8e95:  lda     f:MapPalAnimColors,x    ; palette animation color palette
         sta     [$2a]
         inc     $2a
         inc     $2a
@@ -16450,24 +16497,24 @@ InitBG12Anim:
         longac
         tdc
         sta     $1069,y                 ; clear animation counter
-        lda     f:MapBGAnimProp,x         ; animation speed
+        lda     f:MapBGAnimProp,x       ; animation speed
         sta     $106b,y
-        lda     f:MapBGAnimProp+2,x       ; frame 1 pointer
+        lda     f:MapBGAnimProp+2,x     ; frame 1 pointer
         sta     $106e,y
-        lda     f:MapBGAnimProp+4,x       ; frame 2 pointer
+        lda     f:MapBGAnimProp+4,x     ; frame 2 pointer
         sta     $1070,y
-        lda     f:MapBGAnimProp+6,x       ; frame 3 pointer
+        lda     f:MapBGAnimProp+6,x     ; frame 3 pointer
         sta     $1072,y
-        lda     f:MapBGAnimProp+8,x       ; frame 4 pointer
+        lda     f:MapBGAnimProp+8,x     ; frame 4 pointer
         sta     $1074,y
         txa
         adc     #10                     ; next tile (8 tiles total)
         tax
         tya
-        adc     #$000d
+        adc     #13
         tay
         shorta0
-        cpy     #$0068
+        cpy     #13*5
         bne     @8eef
         lda     #$10                    ; $1a = tile counter (16 tiles, last 8 don't get animated)
         sta     $1a
@@ -16498,7 +16545,7 @@ InitBG12Anim:
         longa
         tya
         clc
-        adc     #$000a
+        adc     #10
         tay
         shorta0
         dec     $1a
@@ -16544,25 +16591,25 @@ InitBG3Anim:
         tax
         tdc
         sta     $10d1                   ; clear animation counter
-        lda     f:MapBG3AnimProp,x        ; animation speed
+        lda     f:MapBG3AnimProp,x      ; animation speed
         sta     $10d3
-        lda     f:MapBG3AnimProp+2,x      ; size
+        lda     f:MapBG3AnimProp+2,x    ; size
         sta     $10d5
-        lda     f:MapBG3AnimProp+4,x      ; frame 1 pointer
+        lda     f:MapBG3AnimProp+4,x    ; frame 1 pointer
         sta     $10d7
-        lda     f:MapBG3AnimProp+6,x      ; frame 2 pointer
+        lda     f:MapBG3AnimProp+6,x    ; frame 2 pointer
         sta     $10d9
-        lda     f:MapBG3AnimProp+8,x      ; frame 3 pointer
+        lda     f:MapBG3AnimProp+8,x    ; frame 3 pointer
         sta     $10db
-        lda     f:MapBG3AnimProp+10,x     ; frame 4 pointer
+        lda     f:MapBG3AnimProp+10,x   ; frame 4 pointer
         sta     $10dd
-        lda     f:MapBG3AnimProp+12,x     ; frame 5 pointer
+        lda     f:MapBG3AnimProp+12,x   ; frame 5 pointer
         sta     $10df
-        lda     f:MapBG3AnimProp+14,x     ; frame 6 pointer
+        lda     f:MapBG3AnimProp+14,x   ; frame 6 pointer
         sta     $10e1
-        lda     f:MapBG3AnimProp+16,x     ; frame 7 pointer
+        lda     f:MapBG3AnimProp+16,x   ; frame 7 pointer
         sta     $10e3
-        lda     f:MapBG3AnimProp+18,x     ; frame 8 pointer
+        lda     f:MapBG3AnimProp+18,x   ; frame 8 pointer
         sta     $10e5
         shorta0
         tya
@@ -16572,7 +16619,7 @@ InitBG3Anim:
         adc     $1a
         tax
         longac
-        lda     f:MapAnimGfxBG3Ptrs,x   ; pointer to bg3 animation graphics (+$e6cdc0)
+        lda     f:MapAnimGfxBG3Ptrs,x
         clc
         adc     #.loword(MapAnimGfxBG3)
         sta     $f3
@@ -16595,7 +16642,7 @@ InitBG3Anim:
 TfrBGAnimGfx:
 @903f:  lda     $053b
         bne     @9050
-        ldx     #$0008
+        ldx     #8
 @9047:  dex
         bne     @9047
         lda     #$80
@@ -16610,7 +16657,7 @@ TfrBGAnimGfx:
         sta     $4300
         lda     #$18
         sta     $4301
-        ldx     #$1000
+        ldx     #$1000                  ; nonzero dp, don't use clr_a
         phx
         pld
         shorti
@@ -16626,9 +16673,9 @@ TfrBGAnimGfx:
         and     #$0600
         xba
         tax
-        lda     $6e,x       ; graphics pointer
+        lda     $6e,x                   ; graphics pointer
         sta     $4302
-        ldx     $6d         ; graphics bank
+        ldx     $6d                     ; graphics bank
         stx     $4304
         ldx     #$80
         stx     $4305
@@ -16746,55 +16793,61 @@ TfrBGAnimGfx:
 ; called every other frame during irq (30hz)
 
 TfrBG3AnimGfx:
-@9178:  stz     hMDMAEN     ; disable dma
+@9178:  stz     hMDMAEN                 ; disable dma
         lda     #$80
-        sta     hVMAINC     ; vram settings
+        sta     hVMAINC                 ; vram settings
         ldx     #$3000
-        stx     hVMADDL     ; destination = $3000 (vram)
+        stx     hVMADDL                 ; destination = $3000 (vram)
         lda     #$41
-        sta     $4300       ; dma settings
+        sta     $4300                   ; dma settings
         lda     #$18
-        sta     $4301       ; dma to $2118 (vram)
+        sta     $4301                   ; dma to $2118 (vram)
         ldx     #$0005
 @9193:  dex
-        bne     @9193       ; wait
+        bne     @9193                   ; wait
         lda     #$80
-        sta     hINIDISP    ; screen off
-        lda     $053b       ; bg3 animation index
+        sta     hINIDISP                ; screen off
+        lda     $053b                   ; bg3 animation index
         and     #$e0
-        beq     @91d4       ; return if bg3 animation is disabled
+        beq     @91d4                   ; return if bg3 animation is disabled
         longac
-        lda     $10d5       ; size
+        lda     $10d5                   ; size
         sta     $4305
-        lda     $10d1       ; add animation speed to animation counter
+        lda     $10d1                   ; add animation speed to animation counter
         adc     $10d3
         sta     $10d1
         shorta0
-        lda     $10d2       ; frame index
+        lda     $10d2                   ; frame index
         and     #$0e
         tax
         longac
-        lda     $10d7,x     ; frame pointer
+        lda     $10d7,x                 ; frame pointer
         adc     #$bf00
         sta     $4302
         shorta0
         lda     #$7e
         sta     $4304
-        lda     #$01        ; enable dma
+        lda     #$01                    ; enable dma
         sta     hMDMAEN
 @91d4:  rts
 
 ; ------------------------------------------------------------------------------
 
 MapBGAnimPropPtrs:
-@91d5:  make_ptr_tbl_rel MapBGAnimProp, 21
+@91d5:  make_ptr_tbl_rel MapBGAnimProp, 20
+        .addr   MapBGAnimPropEnd - MapBGAnimProp
 
 @91ff:  .include "data/map_bg_anim_prop.asm"
+MapBGAnimPropEnd:
 
 MapBG3AnimPropPtrs:
-@979f:  make_ptr_tbl_rel MapBG3AnimProp, 7
+@979f:  make_ptr_tbl_rel MapBG3AnimProp, 6
+.addr   MapBG3AnimPropEnd - MapBG3AnimProp
 
 @97ad:  .include "data/map_bg3_anim_prop.asm"
+MapBG3AnimPropEnd:
+
+@9825:  .include "data/map_pal_anim_prop.asm"
 
 ; ------------------------------------------------------------------------------
 
@@ -16822,6 +16875,7 @@ InitEvent:
 ; ------------------------------------------------------------------------------
 
 ; event command jump table (starts at $35)
+EventCmdTbl:
 @98c4:  .addr   EventCmd_35
         .addr   EventCmd_36
         .addr   EventCmd_37
@@ -17152,7 +17206,7 @@ _c09a6d:
         longa
         asl
         tax
-        lda     $c098c4,x   ; event command table
+        lda     f:EventCmdTbl,x   ; event command table
         sta     $2a
         shorta0
         jmp     ($002a)     ; jump to event command code
@@ -19943,42 +19997,42 @@ EventCmd_81:
 
 ; ------------------------------------------------------------------------------
 
-; [ event command $84: give gp ]
+; [ event command $84: give gil ]
 
-; +$eb = gp amount
+; +$eb = gil amount
 
 EventCmd_84:
 @ad50:  longac
-        lda     $1860       ; add gp
+        lda     $1860       ; add gil
         adc     $eb
         sta     $1860
         shorta0
         adc     $1862
         sta     $1862
-        cmp     #$98        ; max gp 9999999
+        cmp     #^9999999
         bcc     @ad7a
         ldx     $1860
-        cpx     #$967f
+        cpx     #.loword(9999999)
         bcc     @ad7a
-        ldx     #$967f
+        ldx     #.loword(9999999)
         stx     $1860
-        lda     #$98
+        lda     #^9999999
         sta     $1862
 @ad7a:  lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
 
-; [ event command $85: take gp ]
+; [ event command $85: take gil ]
 
-; +$eb = gp amount
+; +$eb = gil amount
 
 EventCmd_85:
-@ad7f:  lda     $1eb7       ; clear "not enough gp" flag
+@ad7f:  lda     $1eb7       ; clear "not enough gil" flag
         and     #$bf
         sta     $1eb7
         longa
-        lda     $1860       ; subtract gp amount
+        lda     $1860       ; subtract gil amount
         sec
         sbc     $eb
         sta     $2a
@@ -19988,11 +20042,11 @@ EventCmd_85:
         sta     $2c
         cmp     #$a0        ; branch if total is still positive
         bcc     @ada9
-        lda     $1eb7       ; set "not enough gp" flag
+        lda     $1eb7       ; set "not enough gil" flag
         ora     #$40
         sta     $1eb7
         bra     @adb3
-@ada9:  ldx     $2a         ; set new gp amount
+@ada9:  ldx     $2a         ; set new gil amount
         stx     $1860
         lda     $2c
         sta     $1862
@@ -21185,16 +21239,17 @@ EventCmd_e2:
         lda     $1e
         asl
         tax
-        lda     $c0b4f3,x
+        lda     f:CharMaskTbl,x
         sta     $1eb4
         shorta0
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
 
-@b4f3:  .word   $0001, $0002, $0004, $0008, $0010, $0020, $0040, $0080
-        .word   $0100, $0200, $0400, $0800, $1000, $2000, $4000, $8000
+CharMaskTbl:
+@b4f3:  .word   $0001,$0002,$0004,$0008,$0010,$0020,$0040,$0080
+        .word   $0100,$0200,$0400,$0800,$1000,$2000,$4000,$8000
 
 ; ------------------------------------------------------------------------------
 
@@ -22741,13 +22796,70 @@ InitNewGame:
         lda     #$c1
         sta     $1850
         sta     $0867
-        lda     $1eb9
+        lda     $1eb9                   ; enable player control
         and     #$80
         sta     $1eb9
         lda     #80
         sta     $1f60
         lda     #80
         sta     $1f61
+
+; set map and position
+        ldx     #75
+        stx     $1f64
+        lda     #2
+        sta     $1fc0
+        lda     #28
+        sta     $1fc1
+
+; set parent map
+        ldx     #0
+        stx     $1f69
+        lda     #86
+        sta     $1f6b
+        lda     #111
+        sta     $1f6c
+
+; set airship position
+        lda     #86
+        sta     $1f62
+        lda     #110
+        sta     $1f63
+        lda     $1eb7                   ; show airship
+        ora     #$02
+        sta     $1eb7
+
+        ldy     #$7fff                  ; set default font color
+        sty     $1d55
+        lda     #$12                    ; set default button mappings
+        sta     $1d50
+        lda     #$34
+        sta     $1d51
+        lda     #$56
+        sta     $1d52
+        lda     #$06
+        sta     $1d53
+        lda     #$2a                    ;
+        sta     $1d4d
+        tdc
+        tay
+        sty     $1dc7                   ;
+        stz     $1d54
+        stz     $1d4e
+        stz     $1d4f
+        sty     $1863                   ; clear game time
+        stz     $1865
+        sty     $1866                   ; clear steps
+        stz     $1868
+        sty     $021b                   ; clear menu game time
+        sty     $021d
+
+; give max gp
+        ldy     #.loword(9999999)
+        sty     $1860
+        lda     #^9999999
+        sta     $1862
+
 .endif
         rts
 

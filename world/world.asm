@@ -15189,7 +15189,7 @@ decsp:
         phb
         phd
         longai
-        lda     #@hDP
+        lda     #@hDP                   ; nonzero dp, don't use clr_a
         tcd
         shorta
         ldx     #$2000      ; $7e2000
@@ -15405,7 +15405,7 @@ _ee9f14:
         sta     f:$000024     ;
         sta     f:$0000fa     ; clear 4 frame counter
         longai
-        lda     #@hDP
+        lda     #@hDP                   ; nonzero dp, don't use clr_a
         tcd
         ldx     #0
 @9f36:  stz     $9618,x     ; clear magitek train ride graphics buffer

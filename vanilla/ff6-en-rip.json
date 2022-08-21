@@ -535,7 +535,7 @@
       "type": "array",
       "name": "Map Animation Properties",
       "range": "0xC091FF-0xC0979E",
-      "arrayLength": 21,
+      "arrayLength": 20,
       "asmSymbol": "MapBGAnimProp",
       "file": "field/data/map_bg_anim_prop.asm",
       "assembly": {
@@ -583,15 +583,15 @@
         "offset": "0xC091FF"
       },
       "stringTable": {
-        "length": 21,
+        "length": 20,
         "default": "Map Animation %i"
       }
     },
     "mapAnimationPropertiesLayer3": {
       "type": "array",
       "name": "Map Animation Properties (Layer 3)",
-      "range": "0xC097AD-0xC0989C",
-      "arrayLength": 12,
+      "range": "0xC097AD-0xC09824",
+      "arrayLength": 6,
       "itemLength": 20,
       "asmSymbol": "MapBG3AnimProp",
       "file": "field/data/map_bg3_anim_prop.asm",
@@ -661,7 +661,7 @@
         }
       },
       "stringTable": {
-        "length": 12,
+        "length": 6,
         "default": "Map Animation %i (Layer 3)"
       }
     },
@@ -1291,6 +1291,98 @@
           "33": "Mountains Exterior 2",
           "34": "Snowfields"
         }
+      }
+    },
+    "mapPaletteAnimation": {
+      "type": "array",
+      "name": "Map Palette Animation",
+      "range": "0xC09825-0xC0989C",
+      "asmSymbol": "MapPalAnimProp",
+      "file": "field/data/map_pal_anim_prop.asm",
+      "arrayLength": 10,
+      "itemLength": 12,
+      "assembly": {
+        "type": "array",
+        "arrayLength": 2,
+        "itemLength": 6,
+        "assembly": {
+          "type": "assembly",
+          "assembly": {
+            "animationType": {
+              "type": "property",
+              "name": "Type",
+              "begin": 0,
+              "mask": "0xF0",
+              "stringTable": {
+                "string": {
+                  "0": "None",
+                  "1": "Cycle",
+                  "2": "ROM",
+                  "3": "Pulse",
+                  "8": "Disabled"
+                }
+              }
+            },
+            "frameCounter": {
+              "type": "property",
+              "name": "Frame Counter",
+              "begin": 1,
+              "mask": "0xFF"
+            },
+            "colorCounter": {
+              "type": "property",
+              "name": "Color Counter",
+              "begin": 0,
+              "mask": "0x0F"
+            },
+            "firstColor": {
+              "type": "property",
+              "name": "First Color",
+              "begin": 2,
+              "mask": "0xFF"
+            },
+            "numColors": {
+              "type": "property",
+              "name": "Number of Colors",
+              "begin": 3,
+              "mask": "0xFF"
+            },
+            "romOffset": {
+              "type": "property",
+              "name": "ROM Color Offset",
+              "begin": 4,
+              "mask": "0xFFFF"
+            }
+          }
+        }
+      },
+      "stringTable": {
+        "length": 10,
+        "default": "Map Palette Animation %i",
+        "string": {
+          "0": "River",
+          "1": "Lava/Cyan's Dream",
+          "2": "Imperial Camp",
+          "3": "Beach",
+          "5": "Doma Castle",
+          "6": "Waterfall",
+          "7": "Narshe",
+          "8": "Kefka's Tower",
+          "9": "Darill's Tomb"
+        }
+      }
+    },
+    "mapPaletteAnimationColors": {
+      "type": "array",
+      "name": "Map Palettes",
+      "range": "0xE6F200-0xE6F43F",
+      "arrayLength": 18,
+      "itemLength": 32,
+      "asmSymbol": "MapPalAnimColors",
+      "file": "field/gfx/map_pal_anim_colors.asm",
+      "assembly": {
+        "type": "data",
+        "format": "bgr555"
       }
     },
     "mapPalettes": {

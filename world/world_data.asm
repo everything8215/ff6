@@ -42,7 +42,6 @@
 
 .segment "world_data"
 
-
 ; unused
 @b200:  .faraddr WorldBackdropGfx
 @b203:  .faraddr WorldBackdropGfx
@@ -123,7 +122,6 @@ MinimapGfx2Ptr:
 AirshipGfx2Ptr:
 @b251:  .faraddr AirshipGfx2
 
-; ending airship palette
 EndingAirshipScenePalPtr:
 @b254:  .faraddr EndingAirshipScenePal
 

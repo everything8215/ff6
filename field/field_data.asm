@@ -248,6 +248,10 @@ MapAnimGfxBG3Ptrs:
 
 ; e6/cdc0
         .include "gfx/map_anim_gfx_bg3.asm"
+        .res $2440+MapAnimGfxBG3Ptrs-*
+
+; e6/f200
+        .include "gfx/map_pal_anim_colors.asm"
 
 ; ------------------------------------------------------------------------------
 
