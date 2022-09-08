@@ -38,7 +38,7 @@ C1FFE5-C1FFFF   Unused Space (27 bytes)
 C20000-C26468   Battle Program
 C26469-C267FF   Unused Space (919 bytes)
 C26800-C2686B   Cinematic Loader
-C2686C-C28A6F   Title, Intro, Floating Island, & World Cinematic Program (compressed)
+C2686C-C28A6F   Title, Intro, Floating Island, & WoR Cinematic Program (compressed)
 C28A70-C2953B   Ending Cinematic Data
 C2953C-C29853   Ending Cinematic Color Palettes
 C29854-C2A659   Ending Cinematic Sprite Data
@@ -60,8 +60,8 @@ C47A40-C47A9F   Blitz Codes (8 items, 11+1 bytes each)
 C47AA0-C47ABF   Initial Rages (1 bit per rage)
 C47AC0-C47F3F   Shop Specifications (128 items, 9 bytes each)
 C47F40-C47FA7   Metamorphosis Data (26 items, 4 bytes each)
-C47FA8-C487BF   Unused Space (2072 bytes)
-C487C0-C48FBF   Fixed-Width Font Graphics
+C47FA8-C47FBF   Unused Space (24 bytes)
+C47FC0-C48FBF   Fixed-Width Font Graphics
 C48FC0-C490BF   Variable-Width Font Character Widths
 C490C0-C4A4BF   Variable-Width Font Graphics (16x11 tiles, max width is 12)
 C4A4C0-C4B9FF   Unused Space (5440 bytes)
@@ -265,7 +265,7 @@ ED1C00-ED1CFF   Menu Window Palettes (8 items, 32 bytes each)
 ED1D00-ED585F   Character Portrait Graphics (18 items, 25 tiles each)
 ED5860-ED5ABF   Character Portrait Color Palettes (18 items, 32 bytes each)
 ED5AC0-ED62BF   Standard Menu Cursor/Icon Graphics
-ED62C0-ED62FF   Save Menu Palettes (8 items, 4 colors each)
+ED62C0-ED62FF   Battle Font Palettes ??? (8 items, 4 colors each)
 ED6300-ED63FF   Character Palettes for Battle/Menu (8 items, 16 colors each)
 ED6400-ED779F   Item Descriptions (256 items, variable length)
 ED77A0-ED7A6F   Lore Descriptions (24 items, variable length)

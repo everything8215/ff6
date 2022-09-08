@@ -22,14 +22,14 @@
 .import Battle_ext, UpdateEquip_ext
 .import OpenMenu_ext, InitCtrl_ext, UpdateCtrlField_ext
 .import IncGameTime_ext, LoadSavedGame_ext, EndingCutscene_ext
-.import OptimizeEquip_ext
+.import OptimizeCharEquip_ext
 .import InitSound_ext, ExecSound_ext
 .import LoadWorld_ext, MagitekTrain_ext, EndingAirshipScene2_ext
 .import OpeningCredits_ext, TitleScreen_ext
 .import FloatingIslandScene_ext, WorldOfRuinScene_ext
 
 .import WorldBattleRate, SubBattleRate
-.import WindowGfx, WindowPal
+.import WindowGfx, WindowPal, PortraitGfx, PortraitPal
 
 .export LoadMapCharGfx_ext, CheckBattleWorld_ext, DoPoisonDmg_ext
 .export DecTimersMenuBattle_ext
@@ -3817,7 +3817,7 @@ LoadTileProp:
 
 ; [ copy bg1 map to vram (top half) ]
 
-TfrBG1TilesTop:
+TfrBG1TopTiles:
 @1cf3:  stz     hMDMAEN
         lda     #$80
         sta     hVMAINC
@@ -3842,7 +3842,7 @@ TfrBG1TilesTop:
 
 ; [ copy bg1 map to vram (bottom half) ]
 
-TfrBG1TilesBtm:
+TfrBG1BtmTiles:
 @1d24:  stz     hMDMAEN
         lda     #$80
         sta     hVMAINC
@@ -3871,7 +3871,7 @@ TfrBG1TilesBtm:
 
 ; [ copy bg2 map to vram (top half) ]
 
-TfrBG2TilesTop:
+TfrBG2TopTiles:
 @1d5f:  stz     hMDMAEN
         lda     #$80
         sta     hVMAINC
@@ -3896,7 +3896,7 @@ TfrBG2TilesTop:
 
 ; [ copy bg2 map to vram (bottom half) ]
 
-TfrBG2TilesBtm:
+TfrBG2BtmTiles:
 @1d90:  stz     hMDMAEN
         lda     #$80
         sta     hVMAINC
@@ -3925,7 +3925,7 @@ TfrBG2TilesBtm:
 
 ; [ copy bg3 map to vram (top half) ]
 
-TfrBG3TilesTop:
+TfrBG3TopTiles:
 @1dcb:  stz     hMDMAEN
         lda     #$80
         sta     hVMAINC
@@ -3950,7 +3950,7 @@ TfrBG3TilesTop:
 
 ; [ copy bg3 map to vram (bottom half) ]
 
-TfrBG3TilesBtm:
+TfrBG3BtmTiles:
 @1dfc:  stz     hMDMAEN
         lda     #$80
         sta     hVMAINC
@@ -3986,13 +3986,13 @@ TfrMapTiles:
         bcs     @1e59
         dec
         bne     @1e51       ; branch if 2
-        jsr     TfrBG1TilesBtm
+        jsr     TfrBG1BtmTiles
         lda     $5a
         ora     #$01        ; enable bg1 map flip
         sta     $5a
         stz     $055a
         bra     @1e9b
-@1e51:  jsr     TfrBG1TilesTop
+@1e51:  jsr     TfrBG1TopTiles
         dec     $055a
         bra     @1e9b
 @1e59:  lda     $055b
@@ -4001,13 +4001,13 @@ TfrMapTiles:
         bcs     @1e7b
         dec
         bne     @1e73
-        jsr     TfrBG2TilesBtm
+        jsr     TfrBG2BtmTiles
         lda     $5a
         ora     #$02
         sta     $5a
         stz     $055b
         bra     @1e9b
-@1e73:  jsr     TfrBG2TilesTop
+@1e73:  jsr     TfrBG2TopTiles
         dec     $055b
         bra     @1e9b
 @1e7b:  lda     $055c
@@ -4016,13 +4016,13 @@ TfrMapTiles:
         bcs     @1e9b
         dec
         bne     @1e95
-        jsr     TfrBG3TilesBtm
+        jsr     TfrBG3BtmTiles
         lda     $5a
         ora     #$04
         sta     $5a
         stz     $055c
         bra     @1e9b
-@1e95:  jsr     TfrBG3TilesTop
+@1e95:  jsr     TfrBG3TopTiles
         dec     $055c
 @1e9b:  lda     $055a       ; return if no maps need to be flipped
         ora     $055b
@@ -9253,7 +9253,7 @@ InitPortrait:
         pha
         plb
         ldy     $00
-@5120:  lda     $ed5860,x               ; character portrait color palette
+@5120:  lda     f:PortraitPal,x         ; character portrait color palette
         sta     $75e0,y
         inx
         iny
@@ -9321,8 +9321,10 @@ InitPortrait:
 
 ; pointers to character portrait graphics (+$ed0000, first 16 only)
 PortraitGfxPtrs:
-@51ba:  .word   $1d00,$2020,$2340,$2660,$2980,$2ca0,$2fc0,$32e0
-        .word   $3600,$3920,$3c40,$3f60,$4280,$45a0,$48c0,$4be0
+@51ba:
+.repeat 16, i
+        .addr   PortraitGfx+$0320*i
+.endrep
 
 ; character portrait tile formation
 PortraitTiles:
@@ -16514,7 +16516,7 @@ InitBG12Anim:
         adc     #13
         tay
         shorta0
-        cpy     #13*5
+        cpy     #13*8
         bne     @8eef
         lda     #$10                    ; $1a = tile counter (16 tiles, last 8 don't get animated)
         sta     $1a
@@ -17993,39 +17995,39 @@ EventCmd_40:
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
-        lda     $ed7ca2,x   ; battle commands
+        lda     f:CharProp+2,x   ; battle commands
         sta     $1616,y
-        lda     $ed7ca3,x
+        lda     f:CharProp+3,x
         sta     $1617,y
-        lda     $ed7ca4,x
+        lda     f:CharProp+4,x
         sta     $1618,y
-        lda     $ed7ca5,x
+        lda     f:CharProp+5,x
         sta     $1619,y
-        lda     $ed7ca6,x   ; vigor
+        lda     f:CharProp+6,x   ; vigor
         sta     $161a,y
-        lda     $ed7ca7,x   ; speed
+        lda     f:CharProp+7,x   ; speed
         sta     $161b,y
-        lda     $ed7ca8,x   ; stamina
+        lda     f:CharProp+8,x   ; stamina
         sta     $161c,y
-        lda     $ed7ca9,x   ; mag. power
+        lda     f:CharProp+9,x   ; mag. power
         sta     $161d,y
         lda     #$ff        ; clear esper
         sta     $161e,y
-        lda     $ed7caf,x   ; weapon
+        lda     f:CharProp+15,x   ; weapon
         sta     $161f,y
-        lda     $ed7cb0,x   ; shield
+        lda     f:CharProp+16,x   ; shield
         sta     $1620,y
-        lda     $ed7cb1,x   ; helmet
+        lda     f:CharProp+17,x   ; helmet
         sta     $1621,y
-        lda     $ed7cb2,x   ; armor
+        lda     f:CharProp+18,x   ; armor
         sta     $1622,y
-        lda     $ed7cb3,x   ; relics
+        lda     f:CharProp+19,x   ; relics
         sta     $1623,y
-        lda     $ed7cb4,x
+        lda     f:CharProp+20,x
         sta     $1624,y
-        lda     $ed7ca0,x   ; max hp
+        lda     f:CharProp,x   ; max hp
         sta     $160b,y
-        lda     $ed7ca1,x   ; max mp
+        lda     f:CharProp+1,x   ; max mp
         sta     $160f,y
         tdc
         sta     $160c,y
@@ -18038,7 +18040,7 @@ EventCmd_40:
         ply
         plx
         sta     $1608,y     ; set level
-        lda     $ed7cb5,x   ; level modifier
+        lda     f:CharProp+21,x   ; level modifier
         and     #$0c
         lsr2
         tax
@@ -18135,7 +18137,7 @@ UpdateAbilities:
 ; update cyan's swdtech
 @a1da:  stz     $1b
         ldx     $00
-@a1de:  lda     $e6f490,x
+@a1de:  lda     f:BushidoLevelTbl,x
         cmp     $1608,y
         beq     @a1e9
         bcs     @a1f3
@@ -18154,7 +18156,7 @@ UpdateAbilities:
 ; update sabin's blitz
 @a201:  stz     $1b
         ldx     $00
-@a205:  lda     $e6f498,x
+@a205:  lda     f:BlitzLevelTbl,x
         cmp     $1608,y
         beq     @a210
         bcs     @a21a
@@ -18195,7 +18197,7 @@ UpdateExp:
 @a240:  dec     $1b
         beq     @a25c       ; branch at current level
         longa
-        lda     $ed8220,x   ; add experience progression value
+        lda     f:LevelUpExp,x   ; add experience progression value
         clc
         adc     $2a
         sta     $2a
@@ -18237,12 +18239,12 @@ InitMaxHP:
         sta     $1b
         stz     $1f
         ldx     hRDMPYL
-        lda     $ed7ca0,x               ; starting hp
+        lda     f:CharProp,x               ; starting hp
         sta     $1e
         ldx     $00
 @a29b:  dec     $1b
         beq     @a2b1
-        lda     $e6f4a0,x
+        lda     f:LevelUpHP,x
         clc
         adc     $1e
         sta     $1e
@@ -18272,12 +18274,12 @@ InitMaxMP:
         sta     $1b
         stz     $1f
         ldx     hRDMPYL
-        lda     $ed7ca1,x   ; starting mp
+        lda     f:CharProp+1,x   ; starting mp
         sta     $1e
         ldx     $00
 @a2d9:  dec     $1b
         beq     @a2ef
-        lda     $e6f502,x
+        lda     f:LevelUpMP,x
         clc
         adc     $1e
         sta     $1e
@@ -20497,7 +20499,7 @@ EventCmd_9b:
 EventCmd_9c:
 @b08c:  lda     $eb
         sta     $0201       ; $0201 = character number
-        jsr     OptimizeEquip
+        jsr     OptimizeCharEquip
         jsr     UpdateEquip
         lda     #2
         jmp     IncEventPtrContinue
@@ -22782,83 +22784,74 @@ InitNewGame:
         sta     $087d
         stz     $47                     ; clear event counter
 .if DEBUG
-        ldx     #$5eb3
+
+; set event pc
+        ldx     #.loword(DebugEvent)
         stx     $e5
-        stx     $05f4
-        lda     #$ca
+        lda     #^DebugEvent
         sta     $e7
-        sta     $05f6
-        lda     #0
-        sta     $1600
-        sta     $1601
-        lda     #1
-        sta     $1a6d
-        lda     #$c1
-        sta     $1850
-        sta     $0867
-        lda     $1eb9                   ; enable player control
-        and     #$80
-        sta     $1eb9
-        lda     #80
-        sta     $1f60
-        lda     #80
-        sta     $1f61
-
-; set map and position
-        ldx     #75
-        stx     $1f64
-        lda     #2
-        sta     $1fc0
-        lda     #28
-        sta     $1fc1
-
-; set parent map
-        ldx     #0
-        stx     $1f69
-        lda     #86
-        sta     $1f6b
-        lda     #111
-        sta     $1f6c
 
 ; set airship position
-        lda     #86
+        lda     #85
         sta     $1f62
-        lda     #110
+        lda     #111
         sta     $1f63
-        lda     $1eb7                   ; show airship
+        lda     $1eb7
         ora     #$02
         sta     $1eb7
 
-        ldy     #$7fff                  ; set default font color
-        sty     $1d55
-        lda     #$12                    ; set default button mappings
-        sta     $1d50
-        lda     #$34
-        sta     $1d51
-        lda     #$56
-        sta     $1d52
-        lda     #$06
-        sta     $1d53
-        lda     #$2a                    ;
-        sta     $1d4d
+; init game vars
         tdc
         tay
-        sty     $1dc7                   ;
-        stz     $1d54
-        stz     $1d4e
+        sty     $1dc7                   ; clear save count
+        stz     $1d54                   ; reset controller to default
+        stz     $1d4e                   ; clear config settings
         stz     $1d4f
+        sty     $1860                   ; clear gil
+        stz     $1862
         sty     $1863                   ; clear game time
         stz     $1865
         sty     $1866                   ; clear steps
         stz     $1868
         sty     $021b                   ; clear menu game time
         sty     $021d
+        jsl     InitCtrl_ext
+        rts
 
-; give max gp
-        ldy     #.loword(9999999)
-        sty     $1860
-        lda     #^9999999
-        sta     $1862
+DebugEvent:
+        .byte   $a9                     ; show title screen (init controller)
+
+        .byte   $7f,$00,$00             ; change character $00's name
+        .byte   $40,$00,$00             ; set character $00 properties
+        .byte   $3d,$00                 ; create object $00
+        .byte   $37,$00,$00             ; set character $00 graphics
+        .byte   $43,$00,$02             ; set character $00 palette
+
+        .byte   $7f,$01,$01             ; change character $01's name
+        .byte   $40,$01,$01             ; set character $01 properties
+        .byte   $3d,$01                 ; create object $01
+        .byte   $37,$01,$01             ; set character $01 graphics
+        .byte   $43,$01,$01             ; set character $01 palette
+
+        .byte   $3f,$00,$01             ; add character $00 to party 1
+        .byte   $3f,$01,$01             ; add character $01 to party 1
+        .byte   $46,$01                 ; make party 1 the current party
+        .byte   $d4,$e0                 ; set $1ea1.3
+        .byte   $d4,$f0                 ; set $1ebc.3
+        .byte   $d3,$cc
+        .byte   $d2,$c1
+        .byte   $d2,$0b
+        .byte   $d2,$e3
+        .byte   $d2,$6f
+        .byte   $d2,$70
+        .byte   $6c,$00,$00,$55,$6e,$00 ; set parent map
+        .byte   $6b,$4b,$00,$02,$1c,$40 ; load map
+        .byte   $41,$00                 ; show character $00
+        .byte   $45                     ; refresh objects
+        .byte   $84,$20,$4e             ; give 50,000 gil
+        .byte   $39                     ; unlock the screen
+        .byte   $59,$08                 ; unfade the screen
+        .byte   $fe                     ; return
 
 .endif
         rts
@@ -23627,7 +23620,7 @@ UpdateMaxHP:
         ldx     $20
 @c571:  cpx     $22         ; branch if not at target level
         beq     @c587
-        lda     $e6f4a0,x   ; hp progression value
+        lda     f:LevelUpHP,x
         clc
         adc     $1e         ; add to max hp
         sta     $1e
@@ -23662,7 +23655,7 @@ UpdateMaxMP:
         ldx     $20
 @c5aa:  cpx     $22         ; branch if not at target level
         beq     @c5c0
-        lda     $e6f502,x   ; mp progression value
+        lda     f:LevelUpMP,x   ; mp progression value
         clc
         adc     $1e         ; add to max mp
         sta     $1e
@@ -23791,13 +23784,13 @@ OpenMainMenu:
 
 ; [ optimize character's equipment ]
 
-OptimizeEquip:
+OptimizeCharEquip:
 @c6b3:  jsr     PushCharFlags
         jsr     PushDP
         php
         phb
         phd
-        jsl     OptimizeEquip_ext
+        jsl     OptimizeCharEquip_ext
         pld
         plb
         plp

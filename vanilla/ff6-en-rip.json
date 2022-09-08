@@ -49,6 +49,46 @@
         "ff6-lzss"
       ]
     },
+    "battleCharacterPalette": {
+      "type": "array",
+      "name": "Battle/Menu Character Palette",
+      "range": "0xED6300-0xED63FF",
+      "asmSymbol": "BattleCharPal",
+      "file": "menu/gfx/battle_char_pal.asm",
+      "arrayLength": 8,
+      "itemLength": 32,
+      "assembly": {
+        "type": "data",
+        "format": "bgr555"
+      },
+      "stringTable": {
+        "name": "Battle/Menu Character Palette",
+        "default": "Battle/Menu Character Palette %i",
+        "length": 8,
+        "string": {
+          "0": "Edgar, Sabin, Celes (Battle/Menu)",
+          "1": "Locke (Battle/Menu)",
+          "2": "Terra (Battle/Menu)",
+          "3": "Strago, Relm, Gau, Gogo (Battle/Menu)",
+          "4": "Cyan, Shadow, Setzer (Battle/Menu)",
+          "5": "Mog, Umaro (Battle/Menu)",
+          "6": "Esper Terra (Battle/Menu)"
+        }
+      }
+    },
+    "battleFontPal": {
+      "type": "array",
+      "name": "Battle Font Palettes",
+      "range": "0xED62C0-0xED62FF",
+      "asmSymbol": "BattleFontPal",
+      "file": "menu/gfx/battle_font_pal.asm",
+      "arrayLength": 4,
+      "itemLength": 16,
+      "assembly": {
+        "type": "data",
+        "format": "bgr555"
+      }
+    },
     "characterNames": {
       "type": "array",
       "name": "Character Name",
@@ -65,6 +105,238 @@
       "stringTable": {
         "length": 64,
         "default": "<characterNames[%i]>"
+      }
+    },
+    "characterProperties": {
+      "type": "array",
+      "name": "Character Properties",
+      "range": "0xED7CA0-0xED821F",
+      "asmSymbol": "CharProp",
+      "file": "field/data/char_prop.asm",
+      "arrayLength": 64,
+      "itemLength": 22,
+      "stringTable": "characterNames",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "characterName": {
+            "type": "assembly",
+            "name": "Name",
+            "external": "characterNames[%i]"
+          },
+          "hp": {
+            "type": "property",
+            "name": "Base HP",
+            "begin": 0
+          },
+          "mp": {
+            "type": "property",
+            "name": "Base MP",
+            "begin": 1
+          },
+          "command1": {
+            "type": "property",
+            "name": "Command 1",
+            "begin": 2,
+            "stringTable": "battleCommandName"
+          },
+          "command2": {
+            "type": "property",
+            "name": "Command 2",
+            "begin": 3,
+            "stringTable": "battleCommandName"
+          },
+          "command3": {
+            "type": "property",
+            "name": "Command 3",
+            "begin": 4,
+            "stringTable": "battleCommandName"
+          },
+          "command4": {
+            "type": "property",
+            "name": "Command 4",
+            "begin": 5,
+            "stringTable": "battleCommandName"
+          },
+          "vigor": {
+            "type": "property",
+            "name": "Vigor",
+            "begin": 6
+          },
+          "speed": {
+            "type": "property",
+            "name": "Speed",
+            "begin": 7
+          },
+          "stamina": {
+            "type": "property",
+            "name": "Stamina",
+            "begin": 8
+          },
+          "magicPower": {
+            "type": "property",
+            "name": "Magic Power",
+            "begin": 9
+          },
+          "battlePower": {
+            "type": "property",
+            "name": "Battle Power",
+            "begin": 10
+          },
+          "defense": {
+            "type": "property",
+            "name": "Defense",
+            "begin": 11
+          },
+          "magicDefense": {
+            "type": "property",
+            "name": "Magic Defense",
+            "begin": 12
+          },
+          "evade": {
+            "type": "property",
+            "name": "Evade",
+            "begin": 13
+          },
+          "magicBlock": {
+            "type": "property",
+            "name": "Magic Block",
+            "begin": 14
+          },
+          "weapon": {
+            "type": "property",
+            "name": "Weapon",
+            "begin": 15,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "shield": {
+            "type": "property",
+            "name": "Shield",
+            "begin": 16,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "helmet": {
+            "type": "property",
+            "name": "Helmet",
+            "begin": 17,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "armor": {
+            "type": "property",
+            "name": "Armor",
+            "begin": 18,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "relic1": {
+            "type": "property",
+            "name": "Relic 1",
+            "begin": 19,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "relic2": {
+            "type": "property",
+            "name": "Relic 2",
+            "begin": 20,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "runFactor": {
+            "type": "property",
+            "name": "Run Factor",
+            "begin": 21,
+            "mask": "0x03",
+            "stringTable": {
+              "hideIndex": true,
+              "string": {
+                "0": "High",
+                "1": "Normal",
+                "2": "Low",
+                "3": "Very Low"
+              }
+            }
+          },
+          "levelModifier": {
+            "type": "property",
+            "name": "Level Modifier",
+            "begin": 21,
+            "mask": "0x0C",
+            "stringTable": {
+              "hideIndex": true,
+              "string": {
+                "0": "None",
+                "1": "+2",
+                "2": "+5",
+                "3": "-3"
+              }
+            }
+          },
+          "fixedEquipment": {
+            "type": "property",
+            "name": "Fixed Equipment",
+            "begin": 21,
+            "mask": "0x10",
+            "bool": true
+          }
+        }
+      }
+    },
+    "characterExpProgression": {
+      "type": "array",
+      "name": "Character Experience Progression",
+      "range": "0xED8220-0xED82E3",
+      "asmSymbol": "LevelUpExp",
+      "file": "field/data/level_up_exp.asm",
+      "arrayLength": 98,
+      "itemLength": 2,
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "exp": {
+            "type": "property",
+            "name": "Experience",
+            "mask": "0xFFFF",
+            "multiplier": 8
+          },
+          "hp": {
+            "type": "assembly",
+            "external": "characterHPProgression[%i].hp"
+          },
+          "mp": {
+            "type": "assembly",
+            "external": "characterMPProgression[%i].mp"
+          }
+        }
+      }
+    },
+    "characterHPProgression": {
+      "type": "array",
+      "name": "Character HP Progression",
+      "range": "0xE6F4A0-0xE6F501",
+      "asmSymbol": "LevelUpHP",
+      "file": "field/data/level_up_hp.asm",
+      "arrayLength": 98,
+      "itemLength": 1,
+      "assembly": {
+        "type": "property",
+        "name": "HP"
+      }
+    },
+    "characterMPProgression": {
+      "type": "array",
+      "name": "Character MP Progression",
+      "range": "0xE6F502-0xE6F563",
+      "asmSymbol": "LevelUpMP",
+      "file": "field/data/level_up_mp.asm",
+      "arrayLength": 98,
+      "itemLength": 1,
+      "assembly": {
+        "type": "property",
+        "name": "MP"
       }
     },
     "dialog": {
@@ -305,6 +577,109 @@
         "offset": "0xDFBB00"
       }
     },
+    "esperProperties": {
+      "type": "array",
+      "name": "Esper Properties",
+      "range": "0xD86E00-0xD86FFF",
+      "asmSymbol": "GenjuProp",
+      "file": "menu/data/genju_prop.asm",
+      "arrayLength": 27,
+      "itemLength": 11,
+      "stringTable": "esperNames",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "esperName": {
+            "type": "assembly",
+            "external": "esperNames[%i]"
+          },
+          "attackName": {
+            "type": "assembly",
+            "external": "esperAttackName[%i]"
+          },
+          "attackDescription": {
+            "type": "assembly",
+            "external": "esperAttackDescriptions[%i]"
+          },
+          "menuOrder": {
+            "type": "assembly",
+            "external": "esperMenuOrder[%i]"
+          },
+          "spell1": {
+            "type": "property",
+            "name": "Spell 1",
+            "begin": 1,
+            "stringTable": "spellNames",
+            "link": "attackProperties[%i]"
+          },
+          "rate1": {
+            "type": "property",
+            "name": "Rate 1",
+            "begin": 0,
+            "max": 100
+          },
+          "spell2": {
+            "type": "property",
+            "name": "Spell 2",
+            "begin": 3,
+            "stringTable": "spellNames",
+            "link": "attackProperties[%i]"
+          },
+          "rate2": {
+            "type": "property",
+            "name": "Rate 2",
+            "begin": 2,
+            "max": 100
+          },
+          "spell3": {
+            "type": "property",
+            "name": "Spell 3",
+            "begin": 5,
+            "stringTable": "spellNames",
+            "link": "attackProperties[%i]"
+          },
+          "rate3": {
+            "type": "property",
+            "name": "Rate 3",
+            "begin": 4,
+            "max": 100
+          },
+          "spell4": {
+            "type": "property",
+            "name": "Spell 4",
+            "begin": 7,
+            "stringTable": "spellNames",
+            "link": "attackProperties[%i]"
+          },
+          "rate4": {
+            "type": "property",
+            "name": "Rate 4",
+            "begin": 6,
+            "max": 100
+          },
+          "spell5": {
+            "type": "property",
+            "name": "Spell 5",
+            "begin": 9,
+            "stringTable": "spellNames",
+            "link": "attackProperties[%i]"
+          },
+          "rate5": {
+            "type": "property",
+            "name": "Rate 5",
+            "begin": 8,
+            "max": 100
+          },
+          "bonus": {
+            "type": "property",
+            "name": "Bonus",
+            "begin": 10,
+            "stringTable": "esperBonusNames",
+            "link": "esperBonusNames[%i]"
+          }
+        }
+      }
+    },
     "eventScript": {
       "type": "script",
       "name": "Event Script",
@@ -407,17 +782,10 @@
         "tileWidth": 16,
         "tileHeight": 11
     },
-    "fontWidth": {
-      "type": "data",
-      "name": "Font Width",
-      "range": "0xC48FC0-0xC490BF",
-      "asmSymbol": "FontWidth",
-      "file": "field/data/font_width.asm"
-    },
     "fontGraphicsSmall": {
         "type": "graphics",
         "name": "Small Font Graphics",
-        "range": "0xC487C0-0xC48FBF",
+        "range": "0xC47FC0-0xC48FBF",
         "asmSymbol": "FontGfxSmall",
         "file": "field/gfx/font_gfx_small.asm",
         "format": "snes2bpp",
@@ -436,12 +804,36 @@
             "format": "bgr555"
         }
     },
+    "fontWidth": {
+      "type": "data",
+      "name": "Font Width",
+      "range": "0xC48FC0-0xC490BF",
+      "asmSymbol": "FontWidth",
+      "file": "field/data/font_width.asm"
+    },
     "initNPCSwitches": {
       "type": "data",
       "name": "Initial NPC Switches",
       "range": "0xC0E0A0-0xC0E11F",
       "asmSymbol": "InitNPCSwitch",
       "file": "field/data/init_npc_switch.asm"
+    },
+    "itemDescriptions": {
+      "type": "array",
+      "name": "Item Descriptions",
+      "range": "0xED6400-0xED7786",
+      "arrayLength": 256,
+      "asmSymbol": "ItemDesc",
+      "file": "menu/text/item_desc.asm",
+      "assembly": {
+        "type": "text",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xED7AA0-0xED7C9F",
+        "offset": "0xED6400"
+      }
     },
     "itemNames": {
       "type": "array",
@@ -498,6 +890,510 @@
         "string": {
           "0xFF": "Empty"
         }
+      }
+    },
+    "itemProperties": {
+      "type": "array",
+      "name": "Item Properties",
+      "range": "0xD85000-0xD86DFF",
+      "arrayLength": 256,
+      "itemLength": 30,
+      "asmSymbol": "ItemProp",
+      "file": "menu/data/item_prop.asm",
+      "stringTable": "itemNames",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "itemName": {
+            "type": "assembly",
+            "name": "Name",
+            "external": "itemNames[%i]"
+          },
+          "itemDescription": {
+            "type": "assembly",
+            "name": "Description",
+            "external": "itemDescriptions[%i]"
+          },
+          "itemType": {
+            "type": "property",
+            "name": "Type",
+            "begin": 0,
+            "mask": "0x0F",
+            "stringTable": {
+              "string": {
+                "0": "Tool",
+                "1": "Weapon",
+                "2": "Armor",
+                "3": "Shield",
+                "4": "Helmet",
+                "5": "Relic",
+                "6": "Item"
+              }
+            }
+          },
+          "cost": {
+            "type": "property",
+            "name": "Cost",
+            "begin": 28,
+            "mask": "0xFFFF"
+          },
+          "usage": {
+            "type": "property",
+            "name": "Usage",
+            "begin": 0,
+            "mask": "0x70",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "Throw",
+                "1": "Battle",
+                "2": "Menu"
+              }
+            }
+          },
+          "targeting": {
+            "type": "property",
+            "name": "Targeting",
+            "begin": 14,
+            "flag": true,
+            "stringTable": "targetingFlags"
+          },
+          "spellCast": {
+            "type": "property",
+            "name": "Spell Cast",
+            "begin": 18,
+            "mask": "0x3F",
+            "stringTable": "spellNames",
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value > 5)"
+          },
+          "randomSpellCast": {
+            "type": "property",
+            "name": "Random Spell Cast",
+            "begin": 18,
+            "mask": "0x40",
+            "bool": true,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value > 5)"
+          },
+          "breakWhenUsed": {
+            "type": "property",
+            "name": "Break After Use",
+            "begin": 18,
+            "mask": "0x80",
+            "bool": true,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value > 5)"
+          },
+          "spellLearned": {
+            "type": "property",
+            "name": "Spell Learned",
+            "begin": 4,
+            "stringTable": "spellNames",
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+          },
+          "spellRate": {
+            "type": "property",
+            "name": "Learn Rate",
+            "begin": 3,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+          },
+          "canEquip": {
+            "type": "property",
+            "name": "Can Equip",
+            "begin": 1,
+            "mask": "0xFFFF",
+            "flag": true,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "length": 16,
+              "default": "<characterNames[%i]>",
+              "string": {
+                "14": "Imp Item",
+                "15": "Heavy Item"
+              }
+            }
+          },
+          "attackPower": {
+            "type": "property",
+            "name": "Attack Power",
+            "begin": 20,
+            "invalid": "this.parent.itemType.value >= 2"
+          },
+          "hitRate": {
+            "type": "property",
+            "name": "Hit Rate",
+            "begin": 21,
+            "invalid": "this.parent.itemType.value >= 2"
+          },
+          "defense": {
+            "type": "property",
+            "name": "Defense",
+            "begin": 20,
+            "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+          },
+          "magicDefense": {
+            "type": "property",
+            "name": "Magic Defense",
+            "begin": 21,
+            "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+          },
+          "itemPower": {
+            "type": "property",
+            "name": "Item Power",
+            "begin": 20,
+            "invalid": "this.parent.itemType.value !== 6"
+          },
+          "vigor": {
+            "type": "property",
+            "name": "Vigor",
+            "begin": 16,
+            "mask": "0x0F",
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "hideIndex": true,
+              "string": {
+                "0": "+0",
+                "1": "+1",
+                "2": "+2",
+                "3": "+3",
+                "4": "+4",
+                "5": "+5",
+                "6": "+6",
+                "7": "+7",
+                "9": "-1",
+                "10": "-2",
+                "11": "-3",
+                "12": "-4",
+                "13": "-5",
+                "14": "-6",
+                "15": "-7"
+              }
+            }
+          },
+          "speed": {
+            "type": "property",
+            "name": "Speed",
+            "begin": 16,
+            "mask": "0xF0",
+            "stringTable": "itemProperties.vigor",
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+          },
+          "stamina": {
+            "type": "property",
+            "name": "Stamina",
+            "begin": 17,
+            "mask": "0x0F",
+            "stringTable": "itemProperties.vigor",
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+          },
+          "magicPower": {
+            "type": "property",
+            "name": "Magic Power",
+            "begin": 17,
+            "mask": "0xF0",
+            "stringTable": "itemProperties.vigor",
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+          },
+          "evade": {
+            "type": "property",
+            "name": "Evade",
+            "begin": 26,
+            "mask": "0x0F",
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "hideIndex": true,
+              "string": {
+                "0": "+0",
+                "1": "+10%",
+                "2": "+20%",
+                "3": "+30%",
+                "4": "+40%",
+                "5": "+50%",
+                "6": "-10%",
+                "7": "-20%",
+                "8": "-30%",
+                "9": "-40%",
+                "10": "-50%"
+              }
+            }
+          },
+          "magicBlock": {
+            "type": "property",
+            "name": "Magic Block",
+            "begin": 26,
+            "mask": "0xF0",
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": "itemProperties.evade"
+          },
+          "weaponFlags": {
+            "type": "property",
+            "name": "Weapon Flags",
+            "begin": 19,
+            "flag": true,
+            "invalid": "this.parent.itemType.value !== 1",
+            "stringTable": {
+              "string": {
+                "1": "SwdTech",
+                "5": "No Back Row Penalty",
+                "6": "Two-Handed",
+                "7": "Enable Runic"
+              }
+            }
+          },
+          "weaponSpecialEffect": {
+            "type": "property",
+            "name": "Special Effect",
+            "begin": 27,
+            "mask": "0xF0",
+            "invalid": "this.parent.itemType.value !== 1",
+            "stringTable": "weaponSpecialEffect"
+          },
+          "itemFlags": {
+            "type": "property",
+            "name": "Item Flags",
+            "begin": 19,
+            "flag": true,
+            "invalid": "this.parent.itemType.value !== 6",
+            "stringTable": {
+              "string": {
+                "1": "Damage Undead",
+                "3": "Restore HP",
+                "4": "Restore MP",
+                "5": "Remove Status",
+                "6": "Cause Damage",
+                "7": "Fractional Power (1/16s)"
+              }
+            }
+          },
+          "itemSpecialEffect": {
+            "type": "property",
+            "name": "Special Effect",
+            "begin": 27,
+            "invalid": "this.parent.itemType.value !== 6",
+            "stringTable": "itemSpecialEffect"
+          },
+          "blockGraphics": {
+            "type": "property",
+            "name": "Block Graphics",
+            "begin": 27,
+            "mask": "0x03",
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "string": {
+                "0": "Dagger Parry",
+                "1": "Sword Parry",
+                "2": "Shield Block",
+                "3": "Cape Dodge"
+              }
+            }
+          },
+          "blockType": {
+            "type": "property",
+            "name": "Block Type",
+            "begin": 27,
+            "mask": "0x0C",
+            "flag": true,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "string": {
+                "0": "Physical Attacks",
+                "1": "Magic Attacks"
+              }
+            }
+          },
+          "elementWeapon": {
+            "type": "property",
+            "name": "Element",
+            "begin": 15,
+            "flag": true,
+            "stringTable": "element",
+            "invalid": "this.parent.itemType.value !== 1"
+          },
+          "elementHalf": {
+            "type": "property",
+            "name": "50% Element",
+            "begin": 15,
+            "flag": true,
+            "stringTable": "element",
+            "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+          },
+          "elementAbsorb": {
+            "type": "property",
+            "name": "Absorb Element",
+            "begin": 22,
+            "flag": true,
+            "stringTable": "element",
+            "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+          },
+          "elementNull": {
+            "type": "property",
+            "name": "Null Element",
+            "begin": 23,
+            "flag": true,
+            "stringTable": "element",
+            "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+          },
+          "elementWeak": {
+            "type": "property",
+            "name": "Weak Element",
+            "begin": 24,
+            "flag": true,
+            "stringTable": "element",
+            "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+          },
+          "statusImmunity": {
+            "type": "property",
+            "name": "Immune",
+            "begin": 6,
+            "mask": "0xFFFF",
+            "flag": true,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "length": 16,
+              "default": "<stringTable.statusNamesReversed[%i]>"
+            }
+          },
+          "statusHelpful": {
+            "type": "property",
+            "name": "Helpful Status",
+            "begin": 8,
+            "flag": true,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "length": 8,
+              "default": "<stringTable.statusNamesReversed[%i+16]>",
+              "string": {
+                "0": "Float"
+              }
+            }
+          },
+          "statusHarmful": {
+            "type": "property",
+            "name": "Harmful Status",
+            "begin": 25,
+            "flag": true,
+            "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "length": 8,
+              "default": "<stringTable.statusNamesReversed[%i+8]>"
+            }
+          },
+          "statusItem1": {
+            "type": "property",
+            "name": "Status Effect",
+            "begin": 21,
+            "mask": "0xFFFF",
+            "flag": true,
+            "invalid": "this.parent.itemType.value !== 6",
+            "stringTable": {
+              "length": 16,
+              "default": "<stringTable.statusNamesReversed[%i]>"
+            }
+          },
+          "statusItem2": {
+            "type": "property",
+            "begin": 23,
+            "mask": "0xFFFF",
+            "flag": true,
+            "invalid": "this.parent.itemType.value !== 6",
+            "stringTable": {
+              "length": 16,
+              "default": "<stringTable.statusNamesReversed[%i+16]>"
+            }
+          },
+          "fieldEffects": {
+            "type": "property",
+            "name": "Field Effects",
+            "begin": 5,
+            "mask": "0xFF",
+            "flag": true,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "string": {
+                "0": "Charm Bangle",
+                "1": "Moogle Charm",
+                "5": "Sprint Shoes",
+                "7": "Tintinabar (no effect)"
+              }
+            }
+          },
+          "relicEffects1": {
+            "type": "property",
+            "name": "Relic Effects",
+            "begin": 9,
+            "mask": "0xFFFFFF",
+            "flag": true,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "string": {
+                "0": "Raise Fight Damage",
+                "1": "Raise Magic Damage",
+                "2": "HP +25%",
+                "3": "HP +50%",
+                "4": "HP +12.5%",
+                "5": "MP +25%",
+                "6": "MP +50%",
+                "7": "MP +12.5%",
+                "8": "Gale Hairpin",
+                "9": "Back Guard",
+                "10": "Fight → Jump",
+                "11": "Magic → X-Magic",
+                "12": "Sketch → Control",
+                "13": "Slot → GP Rain",
+                "14": "Steal → Capture",
+                "15": "Jump Continuously",
+                "16": "Increase Steal Rate",
+                "17": "Raise Magic Damage",
+                "18": "Increase Sketch Rate",
+                "19": "Increase Control Rate",
+                "20": "100% Hit Rate",
+                "21": "Spells Cost 50% Less",
+                "22": "Spells Cost 1 MP",
+                "23": "Vigor +50%"
+              }
+            }
+          },
+          "relicEffects2": {
+            "type": "property",
+            "begin": 12,
+            "mask": "0xFFFF",
+            "flag": true,
+            "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+            "stringTable": {
+              "string": {
+                "0": "Fight → X-Fight",
+                "1": "Randomly Counterattack",
+                "2": "Randomly Evade",
+                "3": "Gauntlet",
+                "4": "Genji Glove",
+                "5": "Can Equip Heavy Items",
+                "6": "Protect Weak Allies",
+                "8": "Shell When HP is Low",
+                "9": "Safe When HP is Low",
+                "10": "Reflect When HP is Low",
+                "11": "Double Experience",
+                "12": "Double GP",
+                "15": "Make Character Undead"
+              }
+            }
+          }
+        }
+      }
+    },
+    "loreDescription": {
+      "type": "array",
+      "name": "Lore Description",
+      "range": "0xED77A0-0xED7A60",
+      "arrayLength": 24,
+      "asmSymbol": "LoreDesc",
+      "file": "menu/text/lore_desc.asm",
+      "assembly": {
+        "type": "text",
+        "name": "Description",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xED7A70-0xED7A9F",
+        "offset": "0xED77A0"
       }
     },
     "mapAnimationGraphics": {
@@ -677,7 +1573,6 @@
       "assembly": {
         "type": "property",
         "name": "Probability",
-        "length": 1,
         "mask": "0x03",
         "stringTable": {
           "string": {
@@ -2896,6 +3791,27 @@
         }
       }
     },
+    "menuFontPal": {
+      "type": "array",
+      "name": "Menu Palettes",
+      "range": "0xD8E800-0xD8E8C7",
+      "asmSymbol": "MenuPal",
+      "file": "menu/gfx/menu_pal.asm",
+      "arrayLength": 25,
+      "itemLength": 8,
+      "assembly": {
+        "type": "data",
+        "format": "bgr555"
+      }
+    },
+    "menuSpriteGraphics": {
+      "type": "graphics",
+      "name": "Menu Sprite Graphics",
+      "range": "0xED5AC0-0xED62BF",
+      "asmSymbol": "MenuSpriteGfx",
+      "file": "menu/gfx/menu_sprite_gfx.asm",
+      "format": "snes4bpp"
+    },
     "minimapGraphics1": {
       "type": "graphics",
       "name": "World of Balance Minimap Graphics",
@@ -3223,12 +4139,321 @@
         "offset": "0xC41A10"
       }
     },
+    "portraitGraphics": {
+      "type": "array",
+      "name": "Character Portrait Graphics",
+      "range": "0xED1D00-0xED585F",
+      "asmSymbol": "PortraitGfx",
+      "file": "menu/gfx/portrait_gfx.asm",
+      "arrayLength": 19,
+      "itemLength": "0x0320",
+      "assembly": {
+        "type": "graphics",
+        "format": "snes4bpp",
+        "palette": "portraitPalette[%i]",
+        "width": 5,
+        "height": 5,
+        "spriteSheet": {
+          "width": 5,
+          "height": 5,
+          "tilemap": [
+            0, 1, 2, 3, 8,
+            16,17,18,19, 9,
+            4, 5, 6, 7,10,
+            20,21,22,23,11,
+            13,14,15,24,12
+          ]
+        }
+      },
+      "stringTable": {
+        "string": {
+          "0": "Terra",
+          "1": "Locke",
+          "2": "Cyan",
+          "3": "Shadow",
+          "4": "Edgar",
+          "5": "Sabin",
+          "6": "Celes",
+          "7": "Strago",
+          "8": "Relm",
+          "9": "Setzer",
+          "10": "Mog",
+          "11": "Gau",
+          "12": "Gogo",
+          "13": "Umaro",
+          "14": "Soldier",
+          "15": "Imp",
+          "16": "Leo",
+          "17": "Banon",
+          "18": "Ghost"
+        }
+      }
+    },
+    "portraitPalette": {
+      "type": "array",
+      "name": "Character Portrait Palette",
+      "range": "0xED5860-0xED5ABF",
+      "asmSymbol": "PortraitPal",
+      "file": "menu/gfx/portrait_pal.asm",
+      "arrayLength": 19,
+      "itemLength": 32,
+      "assembly": {
+        "type": "data",
+        "format": "bgr555"
+      },
+      "stringTable": "portraitGraphics"
+    },
+    "rareItemDescription": {
+      "type": "array",
+      "name": "Rare Item Description",
+      "range": "0xCEFCB0-0xCEFEDE",
+      "arrayLength": 20,
+      "asmSymbol": "RareItemDesc",
+      "file": "menu/text/rare_item_desc.asm",
+      "assembly": {
+        "type": "text",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xCEFB60-0xCEFB9F",
+        "offset": "0xCEFCB0"
+      }
+    },
+    "rareItemName": {
+      "type": "array",
+      "name": "Rare Item Name",
+      "range": "0xCEFBA0-0xCEFCA3",
+      "arrayLength": 20,
+      "itemLength": 13,
+      "asmSymbol": "RareItemName",
+      "file": "menu/text/rare_item_name.asm",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "itemName": {
+            "type": "text",
+            "name": "Name",
+            "length": 13,
+            "encoding": "smallText"
+          },
+          "description": {
+            "type": "assembly",
+            "name": "Description",
+            "external": "rareItemDescription[%i]"
+          }
+        }
+      },
+      "stringTable": {
+        "length": 20,
+        "default": "<rareItemName[%i].itemName>",
+        "string": {
+          "2-6": "<rareItemDescription[%i]>"
+        }
+      }
+    },
     "rngTable": {
       "type": "data",
       "name": "RNG Table",
       "range": "0xC0FD00-0xC0FDFF",
       "asmSymbol": "RNGTbl",
       "file": "field/data/rng_tbl.asm"
+    },
+    "shopProperties": {
+      "type": "array",
+      "name": "Shop Properties",
+      "range": "0xC47AC0-0xC47F3F",
+      "asmSymbol": "ShopProp",
+      "file": "menu/data/shop_prop.asm",
+      "arrayLength": 128,
+      "itemLength": 9,
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "shopType": {
+            "type": "property",
+            "name": "Type",
+            "begin": 0,
+            "mask": "0x07",
+            "stringTable": {
+              "string": {
+                "0": "None",
+                "1": "Weapon",
+                "2": "Armor",
+                "3": "Item",
+                "4": "Relics",
+                "5": "Vendor"
+              }
+            }
+          },
+          "priceAdjust": {
+            "type": "property",
+            "name": "Price Modifier",
+            "begin": 0,
+            "mask": "0x38",
+            "stringTable": {
+              "string": {
+                "0": "Normal",
+                "1": "+50%",
+                "2": "+100%",
+                "3": "-50%",
+                "4": "-50% female / +50% male",
+                "5": "-50% male / +50% female",
+                "6": "-50% for Edgar"
+              }
+            }
+          },
+          "item1": {
+            "type": "property",
+            "name": "Item 1",
+            "begin": 1,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "item2": {
+            "type": "property",
+            "name": "Item 2",
+            "begin": 2,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "item3": {
+            "type": "property",
+            "name": "Item 3",
+            "begin": 3,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "item4": {
+            "type": "property",
+            "name": "Item 4",
+            "begin": 4,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "item5": {
+            "type": "property",
+            "name": "Item 5",
+            "begin": 5,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "item6": {
+            "type": "property",
+            "name": "Item 6",
+            "begin": 6,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "item7": {
+            "type": "property",
+            "name": "Item 7",
+            "begin": 7,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "item8": {
+            "type": "property",
+            "name": "Item 8",
+            "begin": 8,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          }
+        }
+      },
+      "stringTable": {
+        "length": 128,
+        "default": "Shop %i",
+        "string": {
+          "0": "Narshe: Weapons (Before Vector)",
+          "1": "Narshe: Armor (Before Vector)",
+          "2": "Narshe: Relics (Before Vector)",
+          "3": "Narshe: Items (Before Vector)",
+          "4": "Figaro Castle: Items (1st Time)",
+          "5": "South Figaro: Weapons (WoB)",
+          "6": "South Figaro: Armor (WoB)",
+          "7": "South Figaro: Relics (WoB)",
+          "8": "South Figaro: Items (WoB)",
+          "9": "Mobliz: Weapons",
+          "10": "Mobliz: Armor",
+          "11": "Mobliz: Relics",
+          "12": "Mobliz: Items",
+          "13": "Nikeah: Weapons (WoB)",
+          "14": "Nikeah: Armor (WoB)",
+          "15": "Nikeah: Items (WoB)",
+          "16": "Nikeah: Relics (WoB)",
+          "17": "Kohlingen: Weapons (WoB)",
+          "18": "Kohlingen: Armor (WoB)",
+          "19": "Kohlingen: Items (WoB)",
+          "20": "Jidoor: Weapons (WoB)",
+          "21": "Jidoor: Armor (WoB)",
+          "22": "Jidoor: Items (WoB)",
+          "23": "Jidoor: Relics (WoB)",
+          "24": "Albrook: Items (WoB)",
+          "25": "Albrook: Weapons (WoB)",
+          "26": "Albrook: Armor (WoB)",
+          "27": "Vector: Weapons",
+          "28": "Vector: Armor",
+          "29": "Tzen: Weapons (WoB)",
+          "30": "Tzen: Armor (WoB)",
+          "31": "Tzen: Items (WoB)",
+          "32": "Tzen: Relics (WoB)",
+          "33": "Thamasa: Weapons (WoB)",
+          "34": "Thamasa: Armor (WoB)",
+          "35": "Thamasa: Items (WoB)",
+          "36": "Returner's Hideout: Items",
+          "37": "Maranda: Weapons (WoB)",
+          "38": "Maranda: Armor (WoB)",
+          "39": "Crazy Old Man's House: Vendor",
+          "40": "Albrook: Relics (WoB)",
+          "41": "Narshe: Weapons (After Vector)",
+          "42": "Narshe: Armor (After Vector)",
+          "43": "Narshe: Relics (After Vector)",
+          "44": "Narshe: Items (After Vector)",
+          "45": "Thamasa: Relics (WoB)",
+          "46": "Blackjack: Items",
+          "47": "Figaro Castle: Items (2nd Time)",
+          "48": "Albrook: Items (WoR)",
+          "49": "Albrook: Weapons (WoR)",
+          "50": "Albrook: Armor (WoR)",
+          "51": "Albrook: Relics (WoR)",
+          "52": "Tzen: Weapons (WoR)",
+          "53": "Tzen: Armor (WoR)",
+          "54": "Tzen: Items (WoR)",
+          "55": "Tzen: Relic (WoR)",
+          "56": "Nikeah: Weapons (WoR)",
+          "57": "Nikeah: Armor (WoR)",
+          "58": "Nikeah: Items (WoR)",
+          "59": "Nikeah: Relics (WoR)",
+          "60": "South Figaro: Weapons (WoR)",
+          "61": "South Figaro: Armor (WoR)",
+          "62": "South Figaro: Relics (WoR)",
+          "63": "South Figaro: Items (WoR)",
+          "64": "Figaro Castle: Items (WoR)",
+          "65": "Kohlingen: Weapons (WoR)",
+          "66": "Kohlingen: Armor (WoR)",
+          "67": "Kohlingen: Items (WoR)",
+          "68": "Narshe: Weapons (WoR)",
+          "69": "Narshe: Armor (WoR)",
+          "70": "Narshe: Relics (WoR)",
+          "71": "Narshe: Items (WoR)",
+          "72": "Thamasa: Weapons (WoR)",
+          "73": "Thamasa: Armor (WoR)",
+          "74": "Thamasa: Items (WoR)",
+          "75": "Thamasa: Relics (WoR)",
+          "76": "Jidoor: Weapons (WoR)",
+          "77": "Jidoor: Armor (WoR)",
+          "78": "Jidoor: Items (WoR)",
+          "79": "Jidoor: Relics (WoR)",
+          "80": "Maranda: Weapons (WoR)",
+          "81": "Maranda: Armor (WoR)",
+          "82": "Figaro Castle: Tools (1st Time)",
+          "83": "Figaro Castle: Tools (2nd Time)",
+          "84": "Figaro Castle: Tools (WoR)",
+          "85": "Phantom Train: Items",
+          "86": "Unused: Items"
+        }
+      }
     },
     "trainGraphics": {
         "type": "data",
@@ -3254,9 +4479,9 @@
       "arrayLength": 415,
       "assembly": {
         "type": "array",
+        "itemLength": 5,
         "assembly": {
           "type": "data",
-          "length": 5,
           "assembly": {
             "x": {
               "type": "property",
@@ -3324,7 +4549,7 @@
       }
     },
     "vectorApproachPalette": {
-      "type": "assembly",
+      "type": "data",
       "name": "Vector Approach Palette",
       "range": "0xEFCE77-0xEFCE96",
       "asmSymbol": "VectorApproachPal",

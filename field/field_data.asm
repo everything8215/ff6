@@ -12,7 +12,9 @@
 ; +----------------------------------------------------------------------------+
 
 .export RNGTbl
+.export ItemName, FontGfxSmall
 .export ShortEntrancePtrs, EventTriggerPtrs
+.export CharProp, LevelUpExp, BushidoLevelTbl, BlitzLevelTbl
 
 ; ------------------------------------------------------------------------------
 
@@ -64,7 +66,7 @@ EventTriggerPtrs:
 
 ; c4/0342
         .include "data/event_trigger.asm"
-EventTriggerEnd:
+        EventTriggerEnd := *
         .res $1a10+EventTriggerPtrs-*
 
 ; c4/1a10
@@ -74,7 +76,7 @@ NPCPropPtrs:
 
 ; c4/1d52
         .include "data/npc_prop.asm"
-NPCPropEnd:
+        NPCPropEnd := *
         .res $50b0+NPCPropPtrs-*
 
 ; c4/6ac0
@@ -87,7 +89,7 @@ NPCPropEnd:
 
 .segment "font_gfx"
 
-; c4/87c0
+; c4/7fc0
         .include "gfx/font_gfx_small.asm"
 
 ; c4/8fc0
@@ -158,7 +160,7 @@ DlgPtrs:
 
 ; d9/a800
         .include "data/map_tile_prop.asm"
-MapTilePropEnd:
+        MapTilePropEnd := *
         .res $2510+MapTileProp-*
 
 ; d9/cd10
@@ -175,7 +177,7 @@ SubTilemapPtrs:
 
 ; d9/d1b0
         .include "data/sub_tilemap.asm"
-SubTilemapEnd:
+        SubTilemapEnd := *
 
 ; ------------------------------------------------------------------------------
 
@@ -203,7 +205,7 @@ ShortEntrancePtrs:
 
 ; df/bf02
         .include "data/short_entrance.asm"
-ShortEntranceEnd:
+        ShortEntranceEnd := *
 
 ; ------------------------------------------------------------------------------
 
@@ -234,24 +236,53 @@ MapTitlePtrs:
 
 ; e6/8780
         .include "gfx/map_gfx_bg3.asm"
+        MapGfxBG3End := *
         .res $45E0+MapGfxBG3-*
 
 ; e6/cd60
 MapGfxBG3Ptrs:
         make_ptr_tbl_far MapGfxBG3, 18
+        .faraddr MapGfxBG3End-MapGfxBG3
         .res $40+MapGfxBG3Ptrs-*
 
 ; e6/cda0
 MapAnimGfxBG3Ptrs:
         make_ptr_tbl_far MapAnimGfxBG3, 6
+        .faraddr MapAnimGfxBG3End-MapAnimGfxBG3
         .res $20+MapAnimGfxBG3Ptrs-*
 
 ; e6/cdc0
         .include "gfx/map_anim_gfx_bg3.asm"
-        .res $2440+MapAnimGfxBG3Ptrs-*
+        MapAnimGfxBG3End := *
+        .res $2440+MapAnimGfxBG3-*
 
 ; e6/f200
         .include "gfx/map_pal_anim_colors.asm"
+        .res $0290+MapPalAnimColors-*
+
+; e6/f490
+BushidoLevelTbl:
+        .byte   1,6,12,15,24,34,44,70
+
+; e6/f498
+BlitzLevelTbl:
+        .byte   1,6,10,15,23,30,42,70
+
+; e6/f4a0
+        .include "data/level_up_hp.asm"
+
+; e6/f502
+        .include "data/level_up_mp.asm"
+
+; ------------------------------------------------------------------------------
+
+.segment "char_prop"
+
+; ed/7ca0
+        .include "data/char_prop.asm"
+
+; ed/8220
+        .include "data/level_up_exp.asm"
 
 ; ------------------------------------------------------------------------------
 
@@ -264,7 +295,7 @@ TreasurePropPtrs:
 
 ; ed/8634
         .include "data/treasure_prop.asm"
-TreasurePropEnd:
+        TreasurePropEnd := *
 
 ; ------------------------------------------------------------------------------
 
@@ -284,6 +315,6 @@ LongEntrancePtrs:
 
 ; ed/f882
         .include "data/long_entrance.asm"
-LongEntranceEnd:
+        LongEntranceEnd := *
 
 ; ------------------------------------------------------------------------------
