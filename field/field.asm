@@ -26,7 +26,7 @@
 .import InitSound_ext, ExecSound_ext
 .import LoadWorld_ext, MagitekTrain_ext, EndingAirshipScene2_ext
 .import OpeningCredits_ext, TitleScreen_ext
-.import FloatingIslandScene_ext, WorldOfRuinScene_ext
+.import FloatingContScene_ext, WorldOfRuinScene_ext
 
 .import WorldBattleRate, SubBattleRate
 .import WindowGfx, WindowPal, PortraitGfx, PortraitPal
@@ -205,7 +205,7 @@ FieldLoop:
 ; no battle
 @0119:  jsr     UpdateDlgText
         jsr     UpdateDlgWindow
-        jsr     ExecObjScript
+        jsr     UpdateObjActions
         jsr     CalcScrollPos
         jsr     MoveObjs
         jsr     UpdateBG1
@@ -701,7 +701,7 @@ Decompress:
         ora     #$f8
         xba
         tay
-@04d3:  lda     a:$0000,y
+@04d3:  lda     $0000,y
         sta     f:hWMDATA
         sta     a:$0000,x
         inx
@@ -1293,9 +1293,8 @@ UpdatePyramid:
         sty     $075e
 @0964:  lda     $075f
         cmp     $0761
-        bne     @096f
-        jmp     @0a78
-@096f:  lda     $075d
+        jeq     @0a78
+        lda     $075d
         sta     $2c
         lda     $075f
         sec
@@ -3366,9 +3365,8 @@ CheckLongEntrance:
         lda     f:LongEntrancePtrs,x
         tax
         cmp     $1e
-        bne     @18fc
-        jmp     @1a26
-@18fc:  shorta0
+        jeq     @1a26
+        shorta0
 @18ff:  stz     $26
         stz     $28
         lda     f:LongEntrancePtrs+2,x
@@ -3553,8 +3551,7 @@ CheckShortEntrance:
         lda     f:ShortEntrancePtrs,x
         tax
         cmp     $1e
-        bne     @1a8f
-        jmp     @1b77
+        jeq     @1b77
 @1a8f:  lda     f:ShortEntrancePtrs,x   ; check xy position
         cmp     $af
         beq     @1aa4
@@ -4955,9 +4952,8 @@ _c0249a:
         and     $8a
         sta     $2a
         dec     $1b
-        beq     @2554
-        jmp     @24b1
-@2554:  lda     #$00
+        jne     @24b1
+        lda     #$00
         pha
         plb
         rts
@@ -5079,9 +5075,8 @@ UpdateBG3HScroll:
         and     #$3f
         tay
         dec     $1b
-        beq     @2646
-        jmp     @25a4
-@2646:  lda     #$00
+        jne     @25a4
+        lda     #$00
         pha
         plb
         lda     $2d
@@ -5487,20 +5482,17 @@ LoadMapTiles:
 
 ; [ copy bg map data to buffer ]
 
-; a = horizontal clip
+; A: horizontal clip
 
 CopyMapTiles:
 @2980:  cmp     #$0f
-        bne     @2987
-        jmp     @29f5
-@2987:  cmp     #$1f
-        bne     @298e
-        jmp     @29cc
-@298e:  cmp     #$3f
-        bne     @2995
-        jmp     @29a3
-@2995:  jmp     @2a1e
-        ldy     #$d040
+        jeq     @29f5
+        cmp     #$1f
+        jeq     @29cc
+        cmp     #$3f
+        jeq     @29a3
+        jmp     @2a1e
+@2998:  ldy     #$d040
         sty     hWMADDL
         lda     #$7f
         sta     hWMADDH
@@ -6069,9 +6061,8 @@ TfrWindowGfx:
         adc     #$0020                  ; next tile
         tax
         dey
-        beq     @2e94
-        jmp     @2e00
-@2e94:  shorta0
+        jne     @2e00
+        shorta0
         rts
 
 ; ------------------------------------------------------------------------------
@@ -6293,9 +6284,8 @@ UpdateDlgWindow:
         adc     $bc
         tax
         lda     $ba
-        bpl     @3094
-        jmp     @31ba
-@3094:  lda     $bb
+        jmi     @31ba
+        lda     $bb
         cmp     #$05
         beq     @3085
         asl
@@ -6305,11 +6295,10 @@ UpdateDlgWindow:
         adc     $1a
         tay
         lda     $0564
-        beq     @30ac
-        jmp     @3139
+        jne     @3139
 
 ; open dialog window
-@30ac:  lda     #^*
+        lda     #^*
         pha
         plb
         longa
@@ -6406,9 +6395,8 @@ UpdateDlgWindow:
 
 ; close dialog window
 @31ba:  lda     $bb
-        bne     @31c1
-        jmp     @3277
-@31c1:  dec     $bb
+        jeq     @3277
+        dec     $bb
         lda     $bb
         asl
         sta     $1a
@@ -6417,9 +6405,8 @@ UpdateDlgWindow:
         adc     $1a
         tay
         lda     $0564
-        beq     @31d7
-        jmp     @322f
-@31d7:  lda     #^*
+        jne     @322f
+        lda     #^*
         pha
         plb
         longa
@@ -7307,10 +7294,9 @@ InitColorMathHDMAData:
         sta     $8c94,x
         sta     $8c9c,x
         inx2
-        cpx     #$0008
-        beq     @3ee3
-        jmp     @3e2f
-@3ee3:  tdc
+        cpx     #8
+        jne     @3e2f
+        tdc
         pha
         plb
         rts
@@ -7682,11 +7668,10 @@ UpdateScrollHDMA:
         shorta0
         lda     $0521
         and     #$10
-        bne     @43ac
-        jmp     @444a
+        jeq     @444a
 
 ; wavy bg1
-@43ac:  lda     $46
+        lda     $46
         lsr
         clc
         adc     $60                     ; bg1 vertical scroll position
@@ -7706,11 +7691,10 @@ UpdateScrollHDMA:
 @444a:  shorta0
         lda     $0521
         and     #$08
-        bne     @4457
-        jmp     @44f8
+        jeq     @44f8
 
 ; wavy bg2
-@4457:  lda     $46
+        lda     $46
         lsr
         clc
         adc     $68
@@ -8383,9 +8367,8 @@ DoPoisonDmg:
         shorta0
         inx
         cpx     #$0010
-        beq     @4ade
-        jmp     @4a54
-@4ade:  plx
+        jne     @4a54
+        plx
         stx     $24
         plx
         stx     $22
@@ -9044,9 +9027,8 @@ UpdatePlayerLayerPriorityAfter:
 @4f9f:  ldy     $0803
         lda     $0868,y     ; party layer priority
         and     #$06
-        beq     @4fac       ; branch if default priority (based on tile properties)
-        jmp     _c07c69
-@4fac:  lda     $b8
+        jne     _c07c69
+        lda     $b8
         and     #$04
         beq     @4fc2       ; branch if not on a bridge tile
 
@@ -9085,9 +9067,8 @@ UpdatePlayerLayerPriorityBefore:
 @4fe6:  ldy     $0803
         lda     $0868,y     ; sprite layer priority
         and     #$06
-        beq     @4ff3
-        jmp     _c07c69
-@4ff3:  lda     $b3
+        jne     _c07c69
+        lda     $b3
         tax
         lda     f:_c04f8d,x
         tax
@@ -9449,8 +9430,7 @@ InitNPCs:
         shorta0
         ldy     #$0290                  ; start at object $10
         cpx     $1e
-        bne     @52d4                   ; end loop after last npc
-        jmp     @5434
+        jeq     @5434                   ; end loop after last npc
 @52d4:  lda     f:NPCPropPtrs,x           ; copy pointer to event script
         sta     $0889,y
         lda     f:NPCPropPtrs+1,x
@@ -9579,8 +9559,7 @@ InitNPCs:
         tax
         shorta0
         cpx     $1e
-        beq     @5434
-        jmp     @52d4
+        jne     @52d4
 @5434:  cpy     #$07b0                  ; disable and hide any remaining npcs
         beq     @5450
 @5439:  lda     $0867,y
@@ -10011,9 +9990,8 @@ MoveObjs:
         sta     $de
 @5742:  lda     $dc         ; return if past the last active object
         cmp     $dd
-        bcc     @574b
-        jmp     @5801
-@574b:  tax
+        jcs     @5801
+        tax
         longa
         lda     $0803,x     ; get pointer to object data
         sta     $da
@@ -10094,9 +10072,8 @@ MoveObjs:
 @5801:  inc     $dc         ; next object
         inc     $dc
         dec     $de
-        beq     @580c
-        jmp     @5742
-@580c:  rts
+        jne     @5742
+        rts
 
 ; ------------------------------------------------------------------------------
 
@@ -10123,9 +10100,8 @@ ObjSpecialTileTbl:
 UpdateObjFrame:
 @5839:  lda     $088c,y     ; check for special object animation
         and     #$20
-        beq     @5843
-        jmp     @58e4
-@5843:  cpy     $0803       ; no special animation, check if this is the party object
+        jne     @58e4
+        cpy     $0803       ; no special animation, check if this is the party object
         bne     @5855
         lda     $b9         ; tile properties
         cmp     #$ff
@@ -10139,11 +10115,10 @@ UpdateObjFrame:
         sta     $1a
         lda     $0868,y     ; vehicle
         and     #$60
-        beq     @5866
-        jmp     @58ad
+        jne     @58ad
 
 ; no vehicle
-@5866:  lda     $0868,y
+        lda     $0868,y
         and     #$01        ; return if walking animation is disabled
         beq     @58aa
         lda     $b8         ; tile properties, diagonal movement
@@ -10379,35 +10354,30 @@ DrawObjSprites:
 ; start of object loop
 _5aeb:  lda     $dc
         cmp     $dd                     ; branch if less than total number of active objects
-        bcc     @5af4
-        jmp     DrawNextObj
-@5af4:  tax
+        jcs     DrawNextObj
+        tax
         lda     $0803,x                 ; pointer to object data
         sta     $da
         lda     $0804,x
         sta     $db
         ldy     $da
         lda     $0867,y                 ; skip if object is not visible
-        bmi     @5b09
-        jmp     DrawNextObj
-@5b09:  lda     $0868,y                 ; vehicle
+        jpl     DrawNextObj
+        lda     $0868,y                 ; vehicle
         and     #$e0
         cmp     #$80
-        bne     @5b15                   ; branch if not special graphics
-        jmp     DrawObjSpecial
-@5b15:  lda     $088c,y                 ; branch if object animation is enabled
+        jeq     DrawObjSpecial          ; branch if special graphics
+        lda     $088c,y                 ; branch if object animation is enabled
         and     #$20
         bne     DrawObjNoVehicle
         lda     $0868,y                 ; branch if not in a vehicle
         and     #$60
         beq     DrawObjNoVehicle
         cmp     #$20
-        bne     @5b2a
-        jmp     DrawChoco
-@5b2a:  cmp     #$40
-        bne     @5b31
-        jmp     DrawMagitek
-@5b31:  jmp     DrawRaft
+        jeq     DrawChoco
+        cmp     #$40
+        jeq     DrawMagitek
+        jmp     DrawRaft
 
 ; next object
 DrawNextObj:
@@ -10415,8 +10385,7 @@ DrawNextObj:
         inc     $dc
         inc     $dc
         dec     $de
-        beq     @5b42                   ; branch if last object
-        jmp     _5aeb
+        jne     _5aeb
 @5b42:  jsr     FixPlayerSpritePriority
         tdc
         pha
@@ -10500,12 +10469,10 @@ DrawObjNoVehicle:
         adc     #$0008
         shorta
 @5bee:  xba                 ; return if sprite is off-screen to the right
-        beq     @5bf4
-        jmp     DrawNextObj
-@5bf4:  lda     $27
-        beq     @5bfb       ; return if sprite is off-screen to the bottom
-        jmp     DrawNextObj
-@5bfb:  tdc
+        jne     DrawNextObj
+        lda     $27
+        jne     DrawNextObj   ; return if sprite is off-screen to the bottom
+        tdc
         lda     $0876,y     ; graphics position
         tax
         lda     f:TopSpriteHFlip,x   ; horizontal flip flag (upper sprite)
@@ -10524,9 +10491,8 @@ DrawObjNoVehicle:
         and     #$c0
         beq     @5c31       ; branch if normal priority
         cmp     #$40
-        bne     @5c2e
-        jmp     @5c93       ; jump if high priority
-@5c2e:  jmp     @5cf5       ; jump if low priority
+        jeq     @5c93       ; jump if high priority
+        jmp     @5cf5       ; jump if low priority
 
 ; normal priority
 @5c31:  longa
@@ -10686,15 +10652,13 @@ DrawMagitek:
         adc     #30
         shorta
         xba
-        beq     @5d96       ; branch if sprite is on screen
-        jmp     DrawNextObj
-@5d96:  tdc
+        jne     DrawNextObj ; branch if sprite is on screen
+        tdc
         ldy     $1e
         cpy     #$0120
         bcc     @5da6
         cpy     #$ffe0
-        bcs     @5da6
-        jmp     DrawNextObj
+        jcc     DrawNextObj
 @5da6:  longa
         lda     $d4         ; pointer to normal priority sprite
         sec
@@ -10872,15 +10836,13 @@ DrawRaft:
         adc     #30
         shorta
         xba
-        beq     @5f75
-        jmp     DrawNextObj
-@5f75:  tdc
+        jne     DrawNextObj
+        tdc
         ldy     $1e
         cpy     #$0120
         bcc     @5f85
         cpy     #$ffe0
-        bcs     @5f85
-        jmp     DrawNextObj
+        jcc     DrawNextObj
 @5f85:  longa
         lda     $d4
         sec
@@ -11046,15 +11008,13 @@ DrawChoco:
         adc     #28
         shorta
         xba
-        beq     @610f
-        jmp     DrawNextObj
-@610f:  tdc
+        jne     DrawNextObj
+        tdc
         ldy     $1e
         cpy     #$0120
         bcc     @611f
         cpy     #$ffe0
-        bcs     @611f
-        jmp     DrawNextObj
+        jcc     DrawNextObj
 @611f:  longa
         lda     $d4
         sec
@@ -11062,15 +11022,13 @@ DrawChoco:
         sta     $d4
         shorta0
         ldy     $da
-        lda     $087f,y     ; facing direction
+        lda     $087f,y                 ; facing direction
         beq     DrawChocoUp
         dec
-        bne     @6139
-        jmp     DrawChocoRight
-@6139:  dec
-        bne     @613f
-        jmp     DrawChocoDown
-@613f:  jmp     DrawChocoLeft
+        jeq     DrawChocoRight
+        dec
+        jeq     DrawChocoDown
+        jmp     DrawChocoLeft
 
 ; chocobo facing up
 DrawChocoUp:
@@ -11573,12 +11531,10 @@ DrawObjSpecial:
         cpx     #$ffe0      ; return if sprite is off-screen
         bcs     @65c3
         cpx     #$0100
-        bcc     @65c3
-        jmp     DrawNextObj
+        jcs     DrawNextObj
 @65c3:  lda     $27
-        beq     @65ca
-        jmp     DrawNextObj
-@65ca:  tdc
+        jne     DrawNextObj
+        tdc
         lda     $0868,y     ; continuous animation flag -> horizontal flip ???
         and     #$01
         lsr
@@ -11620,15 +11576,14 @@ DrawObjSpecial:
         and     #$c0
         beq     @662a       ; branch if normal
         cmp     #$40
-        bne     @6627
-        jmp     @667b       ; jump if high
-@6627:  jmp     @66cc       ; jump if low
+        jeq     @667b       ; jump if high
+        jmp     @66cc       ; jump if low
 
 ; normal sprite priority
 @662a:  longa
         lda     $d4         ; use one sprite
         sec
-        sbc     #$0004
+        sbc     #4
         sta     $d4
         tay
         lda     $1a
@@ -11665,7 +11620,7 @@ DrawObjSpecial:
 @667b:  longa
         lda     $d6         ; use one sprite
         sec
-        sbc     #$0004
+        sbc     #4
         sta     $d6
         tay
         lda     $1a
@@ -11702,7 +11657,7 @@ DrawObjSpecial:
 @66cc:  longa
         lda     $d8         ; use one sprite
         sec
-        sbc     #$0004
+        sbc     #4
         sta     $d8
         tay
         lda     $1a
@@ -11841,9 +11796,8 @@ TfrObjGfxSub:
         ldx     $48
         ldy     $10f7,x
         cpy     #$07b0
-        bne     @67ba
-        jmp     @6866
-@67ba:  lda     $0879,y
+        jeq     @6866
+        lda     $0879,y
         and     #$00ff
         asl
         tax
@@ -11921,9 +11875,8 @@ TfrObjGfxSub:
         inc     $48
         inc     $48
         dec     $18
-        beq     @6875
-        jmp     @67aa
-@6875:  shorta0
+        jne     @67aa
+        shorta0
         rts
 
 ; ------------------------------------------------------------------------------
@@ -12103,45 +12056,45 @@ InitTerraOutline:
 ; [ update timer sprite data ]
 
 DrawTimer:
-@6a04:  lda     $1188       ; return if timer is disabled
+@6a04:  lda     $1188                   ; return if timer is disabled
         and     #$40
         bne     @6a0c
         rts
-@6a0c:  ldx     $1189       ; timer value
+@6a0c:  ldx     $1189                   ; timer value
         stx     hWRDIVL
-        lda     #60         ; divide by 60 to get seconds
+        lda     #60                     ; divide by 60 to get seconds
         sta     hWRDIVB
         nop7
         ldx     hRDDIVL
         stx     hWRDIVL
-        lda     #10         ; divide by 10 to get 10 seconds
+        lda     #10                     ; divide by 10 to get 10 seconds
         sta     hWRDIVB
         nop7
         lda     hRDMPYL
-        sta     $1d         ; remainder is one's digit of seconds
+        sta     $1d                     ; remainder is one's digit of seconds
         ldx     hRDDIVL
         stx     hWRDIVL
-        lda     #6          ; divide by 6 to get minutes
+        lda     #6                      ; divide by 6 to get minutes
         sta     hWRDIVB
         nop7
         lda     hRDMPYL
-        sta     $1c         ; remainder is ten's digit of seconds
+        sta     $1c                     ; remainder is ten's digit of seconds
         ldx     hRDDIVL
         stx     hWRDIVL
-        lda     #10         ; divide by 10 to get 10 minutes
+        lda     #10                     ; divide by 10 to get 10 minutes
         sta     hWRDIVB
         nop7
         lda     hRDMPYL
-        sta     $1b         ; remainder is one's digit of minutes
+        sta     $1b                     ; remainder is one's digit of minutes
         lda     hRDDIVL
-        sta     $1a         ; result is ten's digit of minutes
-        lda     #$cc        ; set sprite y coordinates
+        sta     $1a                     ; result is ten's digit of minutes
+        lda     #$cc                    ; set sprite y coordinates
         sta     $030d
         sta     $0311
         sta     $0315
         sta     $0319
         sta     $031d
-        lda     #$c8        ; set sprite x coordinates
+        lda     #$c8                    ; set sprite x coordinates
         sta     $030c
         lda     #$d0
         sta     $0310
@@ -12151,15 +12104,15 @@ DrawTimer:
         sta     $0314
         lda     #$e8
         sta     $0318
-        lda     #$31        ; set priority = 3, palette = 0, msb of graphics = 1
+        lda     #$31                    ; set priority = 3, palette = 0, msb of graphics = 1
         sta     $030f
         sta     $0313
         sta     $0317
         sta     $031b
         sta     $031f
-        lda     #$84        ; colon graphics
+        lda     #$84                    ; colon graphics
         sta     $031e
-        lda     $1a         ; digit graphics
+        lda     $1a                     ; digit graphics
         tax
         lda     f:TimerTiles,x
         sta     $030e
@@ -12188,6 +12141,10 @@ TimerTiles:
 ; [ load timer graphics ]
 
 LoadTimerGfx:
+
+@DigitGfx := FontGfxSmall+$0b40
+@ColonGfx := FontGfxSmall+$0c10
+
 @6adb:  lda     $0521
         bmi     @6ae1
         rts
@@ -12196,46 +12153,14 @@ LoadTimerGfx:
         ldx     #$7600
         stx     hVMADDL
         ldx     $00
-@6aee:  lda     $c48b00,x
-        eor     $c48b01,x
+@6aee:
+.repeat 8, i
+        lda     f:@DigitGfx+i*2,x
+        eor     f:@DigitGfx+i*2+1,x
         sta     hVMDATAL
-        lda     $c48b01,x
+        lda     f:@DigitGfx+i*2+1,x
         sta     hVMDATAH
-        lda     $c48b02,x
-        eor     $c48b03,x
-        sta     hVMDATAL
-        lda     $c48b03,x
-        sta     hVMDATAH
-        lda     $c48b04,x
-        eor     $c48b05,x
-        sta     hVMDATAL
-        lda     $c48b05,x
-        sta     hVMDATAH
-        lda     $c48b06,x
-        eor     $c48b07,x
-        sta     hVMDATAL
-        lda     $c48b07,x
-        sta     hVMDATAH
-        lda     $c48b08,x
-        eor     $c48b09,x
-        sta     hVMDATAL
-        lda     $c48b09,x
-        sta     hVMDATAH
-        lda     $c48b0a,x
-        eor     $c48b0b,x
-        sta     hVMDATAL
-        lda     $c48b0b,x
-        sta     hVMDATAH
-        lda     $c48b0c,x
-        eor     $c48b0d,x
-        sta     hVMDATAL
-        lda     $c48b0d,x
-        sta     hVMDATAH
-        lda     $c48b0e,x
-        eor     $c48b0f,x
-        sta     hVMDATAL
-        lda     $c48b0f,x
-        sta     hVMDATAH
+.endrep
         ldy     #$0018
 @6b81:  stz     hVMDATAL
         stz     hVMDATAH
@@ -12247,53 +12172,20 @@ LoadTimerGfx:
         tax
         shorta0
         cpx     #$0080
-        beq     @6b9c
-        jmp     @6aee
-@6b9c:  ldy     #$0100
+        jne     @6aee
+        ldy     #$0100
 @6b9f:  stz     hVMDATAL
         stz     hVMDATAH
         dey
         bne     @6b9f
-@6ba8:  lda     $c48b00,x
-        eor     $c48b01,x
+@6ba8:
+.repeat 8, i
+        lda     f:@DigitGfx+i*2,x
+        eor     f:@DigitGfx+i*2+1,x
         sta     hVMDATAL
-        lda     $c48b01,x
+        lda     f:@DigitGfx+i*2+1,x
         sta     hVMDATAH
-        lda     $c48b02,x
-        eor     $c48b03,x
-        sta     hVMDATAL
-        lda     $c48b03,x
-        sta     hVMDATAH
-        lda     $c48b04,x
-        eor     $c48b05,x
-        sta     hVMDATAL
-        lda     $c48b05,x
-        sta     hVMDATAH
-        lda     $c48b06,x
-        eor     $c48b07,x
-        sta     hVMDATAL
-        lda     $c48b07,x
-        sta     hVMDATAH
-        lda     $c48b08,x
-        eor     $c48b09,x
-        sta     hVMDATAL
-        lda     $c48b09,x
-        sta     hVMDATAH
-        lda     $c48b0a,x
-        eor     $c48b0b,x
-        sta     hVMDATAL
-        lda     $c48b0b,x
-        sta     hVMDATAH
-        lda     $c48b0c,x
-        eor     $c48b0d,x
-        sta     hVMDATAL
-        lda     $c48b0d,x
-        sta     hVMDATAH
-        lda     $c48b0e,x
-        eor     $c48b0f,x
-        sta     hVMDATAL
-        lda     $c48b0f,x
-        sta     hVMDATAH
+.endrep
         ldy     #$0018
 @6c3b:  stz     hVMDATAL
         stz     hVMDATAH
@@ -12305,48 +12197,14 @@ LoadTimerGfx:
         tax
         shorta0
         cpx     #$00a0
-        beq     @6c56
-        jmp     @6ba8
-@6c56:  lda     $c48bd0
-        eor     $c48bd1
+        jne     @6ba8
+.repeat 8, i
+        lda     f:@ColonGfx+i*2
+        eor     f:@ColonGfx+i*2+1
         sta     hVMDATAL
-        lda     $c48bd1
+        lda     f:@ColonGfx+i*2+1
         sta     hVMDATAH
-        lda     $c48bd2
-        eor     $c48bd3
-        sta     hVMDATAL
-        lda     $c48bd3
-        sta     hVMDATAH
-        lda     $c48bd4
-        eor     $c48bd5
-        sta     hVMDATAL
-        lda     $c48bd5
-        sta     hVMDATAH
-        lda     $c48bd6
-        eor     $c48bd7
-        sta     hVMDATAL
-        lda     $c48bd7
-        sta     hVMDATAH
-        lda     $c48bd8
-        eor     $c48bd9
-        sta     hVMDATAL
-        lda     $c48bd9
-        sta     hVMDATAH
-        lda     $c48bda
-        eor     $c48bdb
-        sta     hVMDATAL
-        lda     $c48bdb
-        sta     hVMDATAH
-        lda     $c48bdc
-        eor     $c48bdd
-        sta     hVMDATAL
-        lda     $c48bdd
-        sta     hVMDATAH
-        lda     $c48bde
-        eor     $c48bdf
-        sta     hVMDATAL
-        lda     $c48bdf
-        sta     hVMDATAH
+.endrep
         ldy     #$01a0
 @6ce9:  stz     hVMDATAL
         stz     hVMDATAH
@@ -12359,13 +12217,13 @@ LoadTimerGfx:
 ; [ update party equipment effects ]
 
 UpdateEquip:
-@6cf3:  stz     $11df       ; clear equipment effects
+@6cf3:  stz     $11df                   ; clear equipment effects
         ldy     $00
         stz     $1b
-@6cfa:  lda     $0867,y     ; check if character is enabled
+@6cfa:  lda     $0867,y                 ; check if character is enabled
         and     #$40
         beq     @6d14
-        lda     $0867,y     ; check if character is in the current party
+        lda     $0867,y                 ; check if character is in current party
         and     #$07
         cmp     $1a6d
         bne     @6d14
@@ -12389,21 +12247,21 @@ UpdateEquip:
 ; [ update party switching ]
 
 CheckChangeParty:
-@6d26:  lda     $1eb9       ; return if party switching is disabled
+@6d26:  lda     $1eb9                   ; return if party switching is disabled
         and     #$40
         beq     @6d76
-        lda     a:$0084       ; return if map is loading
+        lda     a:$0084                 ; return if map is loading
         bne     @6d76
-        lda     $055e       ; return if there was a party collision
+        lda     $055e                   ; return if there was a party collision
         bne     @6d76
-        ldx     $e5         ; return if running an event
+        ldx     $e5                     ; return if running an event
         cpx     #$0000
         bne     @6d76
         lda     $e7
         cmp     #$ca
         bne     @6d76
-        ldy     $0803       ; party object
-        lda     $0869,y     ; return if between tiles
+        ldy     $0803                   ; party object
+        lda     $0869,y                 ; return if between tiles
         bne     @6d76
         lda     $086a,y
         and     #$0f
@@ -12413,15 +12271,15 @@ CheckChangeParty:
         lda     $086d,y
         and     #$0f
         bne     @6d76
-        lda     $07         ; branch if y button is down
+        lda     $07                     ; branch if y button is down
         and     #$40
         bne     @6d6c
-        lda     #$01        ; enable party switching and return
+        lda     #$01                    ; enable party switching and return
         sta     $0762
         bra     @6d76
-@6d6c:  lda     $0762       ; y button down, check if party switching was enabled last frame
+@6d6c:  lda     $0762                   ; y button, check party switching
         beq     @6d76
-        stz     $0762       ; if so, disable party switching and do the switch
+        stz     $0762                   ; if so, switch party
         bra     ChangeParty
 @6d76:  rts
 
@@ -12430,17 +12288,17 @@ CheckChangeParty:
 ; [ switch parties ]
 
 ChangeParty:
-@6d77:  lda     $1a6d       ; party number
+@6d77:  lda     $1a6d                   ; party number
         tay
-        lda     $b2         ; save party z-level
+        lda     $b2                     ; save party z-level
         sta     $1ff3,y
-        lda     $1a6d       ; increment party number
+        lda     $1a6d                   ; increment party number
         inc
         cmp     #$04
         bne     @6d8a
         lda     #$01
 @6d8a:  sta     $1a6d
-        lda     #$20        ; look for character in the new party with the highest battle order
+        lda     #$20                    ; look for top character in new party
         sta     $1a
         ldy     #$07d9
         sty     $07fb
@@ -12458,7 +12316,7 @@ ChangeParty:
         cmp     $1a
         bcs     @6dba
         sta     $1a
-        sty     $07fb       ; make that character the showing character
+        sty     $07fb                   ; set the showing character
 @6dba:  longac
         tya
         adc     #$0029
@@ -12466,38 +12324,44 @@ ChangeParty:
         shorta0
         cpy     #$0290
         bne     @6d99
-        ldy     $07fb       ; if no characters were found, increment the party and try again
+
+; if no characters were found, increment the party and try again
+        ldy     $07fb
         cpy     #$07d9
         beq     @6d77
-        ldy     $07fb       ; if the new showing character was already the party object, return
+        ldy     $07fb
+
+; return if the new showing character was already the party object
         cpy     $0803
         beq     @6e43
-        ldx     #$07d9      ; clear party slot 1 through 3
+        ldx     #$07d9                  ; clear party slots 2 through 4
         stx     $07fd
         stx     $07ff
         stx     $0801
-        ldx     $0803       ; copy movement type from the old party object to the new one
+        ldx     $0803                   ; copy movement type
         lda     $087c,x
         sta     $087c,y
         sta     $087d,y
-        lda     #$00        ; clear the old party object movement type
+        lda     #$00                    ; clear old party object movement type
         sta     $087c,x
         sta     $087d,x
-        lda     $087f,x     ; old party object facing direction
+        lda     $087f,x                 ; old party object facing direction
         asl3
         sta     $1a
-        lda     $0868,x     ; set saved facing direction
+        lda     $0868,x                 ; set saved facing direction
         and     #$e7
         ora     $1a
         sta     $0868,x
-        ldx     $088d,y     ; branch if the new party is on a different map
+        ldx     $088d,y
         cpx     $82
         bne     @6e44
-        lda     #$01        ; reload same map
+
+; new party is on the same map
+        lda     #$01                    ; reload same map
         sta     $58
-        lda     #$80        ; enable map startup event
+        lda     #$80                    ; enable map startup event
         sta     $11fa
-        lda     $087a,y     ; set party position
+        lda     $087a,y                 ; set party position
         sta     $1fc0
         sta     $1f66
         lda     $087b,y
@@ -12507,18 +12371,20 @@ ChangeParty:
         lda     #$01
         sta     $84
         jsr     PushPartyMap
-        lda     $1a6d       ; restore new party's z-level
+        lda     $1a6d                   ; restore new party's z-level
         tay
         lda     $1ff3,y
         and     #$03
         sta     $0744
 @6e43:  rts
-@6e44:  lda     #$80        ; enable map startup event
+
+; new party is on a different map
+@6e44:  lda     #$80                    ; enable map startup event
         sta     $11fa
         longa
-        lda     $088d,y     ; set new map
+        lda     $088d,y                 ; set new map
         sta     $1f64
-        lda     $086a,y     ; set party position
+        lda     $086a,y                 ; set party position
         lsr4
         shorta
         sta     $1fc0
@@ -12529,12 +12395,12 @@ ChangeParty:
         sta     $1fc1
         tdc
         jsr     FadeOut
-        lda     #$80        ; don't update party facing direction
+        lda     #$80                    ; don't update party facing direction
         sta     $0743
-        lda     #$01        ; enable map load
+        lda     #$01                    ; enable map load
         sta     $84
         jsr     PushPartyMap
-        lda     $1a6d       ; restore new party's z-level
+        lda     $1a6d                   ; restore new party's z-level
         tay
         lda     $1ff3,y
         and     #$03
@@ -12578,13 +12444,13 @@ PopPartyMap:
 @6ebf:  ldx     $00
         txy
 @6ec2:  longac
-        lda     $1f81,y     ; object map index
+        lda     $1f81,y                 ; object map index
         sta     $088d,x
         txa
         adc     #$0029
         tax
         shorta0
-        iny2                ; loop through 16 characters
+        iny2                            ; loop through 16 characters
         cpy     #$0020
         bne     @6ec2
         rts
@@ -12619,7 +12485,7 @@ PopPartyPos:
         adc     #$0029
         tax
         shorta0
-        iny2                ; loop through 16 characters
+        iny2                            ; loop through 16 characters
         cpy     #$0020
         bne     @6edd
         rts
@@ -12651,7 +12517,7 @@ PushPartyPal:
 PopPartyPal:
 @6f3d:  ldx     $00
         txy
-@6f40:  lda     $0880,x     ; restore character palettes
+@6f40:  lda     $0880,x                 ; restore character palettes
         and     #$f1
         ora     $1f70,y
         sta     $0880,x
@@ -12722,9 +12588,8 @@ GetTopChar:
         ora     #$80
         sta     $0867,x
         cpx     $1e
-        bne     @6fdb
-        jmp     @7065
-@6fdb:  ldy     $1e
+        jeq     @7065
+        ldy     $1e
         longa
         lda     $087a,y
         sta     $087a,x
@@ -12790,7 +12655,7 @@ GetTopChar:
 PopCharFlags:
 @7077:  ldx     $00
         txy
-@707a:  lda     $1850,y     ; visible, enabled, row, battle order, party
+@707a:  lda     $1850,y
         sta     $0867,x
         longac
         txa
@@ -12798,7 +12663,7 @@ PopCharFlags:
         tax
         shorta0
         iny
-        cpy     #$0010      ; loop through 16 characters
+        cpy     #$0010                  ; loop through 16 characters
         bne     @707a
         rts
 
@@ -12809,10 +12674,10 @@ PopCharFlags:
 PushCharFlags:
 @7091:  ldx     $00
         txy
-@7094:  lda     $0867,x     ; visible, enabled, row, party
+@7094:  lda     $0867,x
         and     #$e7
         sta     $1a
-        lda     $1850,y     ; battle order
+        lda     $1850,y                 ; battle order
         and     #$18
         ora     $1a
         sta     $1850,y
@@ -12822,7 +12687,7 @@ PushCharFlags:
         tax
         shorta0
         iny
-        cpy     #$0010      ; loop through 16 characters
+        cpy     #$0010                  ; loop through 16 characters
         bne     @7094
         rts
 
@@ -12831,7 +12696,7 @@ PushCharFlags:
 ; [ calculate object data pointers ]
 
 CalcObjPtrs:
-@70b6:  lda     #$29        ; object data is 41 bytes each
+@70b6:  lda     #$29                    ; object data is 41 bytes each
         sta     hWRMPYA
         ldx     $00
 @70bd:  txa
@@ -12840,10 +12705,10 @@ CalcObjPtrs:
         nop3
         longa
         lda     hRDMPYL
-        sta     $0799,x     ; store pointer
+        sta     $0799,x                 ; store pointer
         shorta0
         inx2
-        cpx     #$0062      ; $31 objects total
+        cpx     #$0062                  ; $31 objects total
         bne     @70bd
         rts
 
@@ -12855,30 +12720,30 @@ CalcObjPtrs:
 
 GetTopCharPtr:
 @70d8:  cpy     $07fb
-        bne     @70ee       ; branch if not party character 0
+        bne     @70ee                   ; branch if not party character 0
         ldy     #$07d9
-        sty     $07fb       ; clear all party character slots
+        sty     $07fb                   ; clear all party character slots
         sty     $07fd
         sty     $07ff
         sty     $0801
         bra     @711c
-@70ee:  cpy     $07fd       ; branch if not party character 1
+@70ee:  cpy     $07fd                   ; branch if not party character 1
         bne     @7101
         ldy     #$07d9
-        sty     $07fd       ; clear party character slots 1-3
+        sty     $07fd                   ; clear party character slots 1-3
         sty     $07ff
         sty     $0801
         bra     @711c
-@7101:  cpy     $07ff       ; branch if not party character 2
+@7101:  cpy     $07ff                   ; branch if not party character 2
         bne     @7111
         ldy     #$07d9
-        sty     $07ff       ; clear party character slots 2-3
+        sty     $07ff                   ; clear party character slots 2-3
         sty     $0801
         bra     @711c
-@7111:  cpy     $0801       ; branch if not party character 3
+@7111:  cpy     $0801                   ; branch if not party character 3
         bne     @711c
         ldy     #$07d9
-        sty     $0801       ; clear party character slots 3
+        sty     $0801                   ; clear party character slots 3
 @711c:  rts
 
 ; ------------------------------------------------------------------------------
@@ -13103,34 +12968,34 @@ FirstObjTbl2:
 ; y = pointer to object data
 
 CheckCollosions:
-@730e:  lda     $59         ; return if menu opening
+@730e:  lda     $59                     ; return if menu opening
         bne     @7334
-        lda     $087c,y     ; return if object does not activate on collision
+        lda     $087c,y                 ; return if not a collision object
         and     #$40
         beq     @7334
-        ldx     $e5         ; return if an event is running
+        ldx     $e5                     ; return if an event is running
         cpx     #$0000
         bne     @7334
         lda     $e7
         cmp     #$ca
         bne     @7334
-        lda     $84         ; return if a map is loading
+        lda     $84                     ; return if a map is loading
         bne     @7334
-        lda     $055e       ;
+        lda     $055e                   ;
         bne     @7334
-        cpy     #$0290      ; return if the object is a character
+        cpy     #$0290                  ; return if the object is a character
         bcs     @7335
 @7334:  rts
-@7335:  lda     $087a,y     ; pointer to object map data
-        sta     $1e         ; +$1e = tile above
-        sta     $22         ; +$22 = tile below
+@7335:  lda     $087a,y                 ; pointer to object map data
+        sta     $1e                     ; +$1e = tile above
+        sta     $22                     ; +$22 = tile below
         inc
         and     $86
-        sta     $20         ; +$20 = tile to the right
+        sta     $20                     ; +$20 = tile to the right
         lda     $1e
         dec
         and     $86
-        sta     $24         ; +$24 = tile to the left
+        sta     $24                     ; +$24 = tile to the left
         lda     $087b,y
         clc
         adc     #$20
@@ -13151,8 +13016,10 @@ CheckCollosions:
         lda     #$7e
         pha
         plb
-        stz     $1b         ; $1b = facing direction
-        lda     ($1e)       ; check if the object came in contact with a character
+        stz     $1b                     ; $1b = facing direction
+
+; check if the object came in contact with a character
+        lda     ($1e)
         cmp     #$20
         bcc     @7390
         inc     $1b
@@ -13171,6 +13038,8 @@ CheckCollosions:
         pha
         plb
         rts
+
+; do collision event
 @7390:  sta     $1a
         tdc
         pha
@@ -13182,7 +13051,7 @@ CheckCollosions:
         sty     $0560
         lda     $1b
         sta     $055f
-        lda     #$01
+        lda     #1
         sta     $055e
         rts
 
@@ -13191,10 +13060,10 @@ CheckCollosions:
 ; [ update party collisions ]
 
 UpdateCollisionScroll:
-@73ac:  lda     $055e       ; return if no collisions occurred
-        cmp     #$01
+@73ac:  lda     $055e                   ; return if no collisions occurred
+        cmp     #1
         bne     @73ce
-        ldy     $0803       ; return if party is between tiles
+        ldy     $0803                   ; return if party is between tiles
         lda     $0869,y
         bne     @73ce
         lda     $086a,y
@@ -13206,46 +13075,49 @@ UpdateCollisionScroll:
         and     #$0f
         beq     @73cf
 @73ce:  rts
-@73cf:  lda     #$02        ; increment collision status
+@73cf:  lda     #$02                    ; increment collision status
         sta     $055e
-        ldy     $0560       ; collided object data pointer
+        ldy     $0560                   ; collided object data pointer
         longa
         lda     $086a,y
         lsr4
-        sta     $26         ; +$26 = x position (in tiles)
+        sta     $26                     ; +$26 = x position (in tiles)
         lda     $086d,y
         lsr4
-        sta     $28         ; +$28 = y position (in tiles)
+        sta     $28                     ; +$28 = y position (in tiles)
         shorta0
         stz     $27
         stz     $29
-        lda     $26         ; set destination horizontal scroll position
+        lda     $26                     ; set destination h-scroll position
         sta     $0557
         sec
-        sbc     $0541       ; subtract current scroll position
+        sbc     $0541                   ; subtract current scroll position
         bpl     @7402
-        inc     $27         ; $27: 0 = scrolling right, 1 = scrolling left
+        inc     $27                     ; $27: 0 = scroll right, 1 = scroll left
         eor     $02
         inc
-@7402:  sta     $26         ; $26 = horizontal scroll distance
-        lda     $28         ; set vertical horizontal scroll position
+@7402:  sta     $26                     ; $26 = h-scroll distance
+        lda     $28                     ; set horizontal scroll position
         sta     $0558
         sec
-        sbc     $0542       ; subtract current scroll position
+        sbc     $0542                   ; subtract current scroll position
         bpl     @7414
-        inc     $29         ; $29: 0 = scrolling down, 1 = scrolling up
+        inc     $29                     ; $29: 0 = scroll down, 1 = scroll up
         eor     $02
         inc
-@7414:  sta     $28         ; $28 = vertical scroll distance
-        cmp     #$02
-        bcs     @7423       ; branch if scrolling more that 2 tiles
+@7414:  sta     $28                     ; $28 = vertical scroll distance
+        cmp     #2
+        bcs     @7423                   ; branch if scrolling more than 2 tiles
         lda     $26
-        cmp     #$02
-        bcs     @7423
-        jmp     @74bb
+        cmp     #2
+        jcc     @74bb
+
+; scrolling more than 2 tiles
 @7423:  lda     $28
         cmp     $26
-        bcs     @744d       ; branch if vertical scroll distance is greater than horizontal scroll distance
+        bcs     @744d
+
+; h-scroll distance greater than v-scroll distance
         longa
         xba
         asl
@@ -13256,9 +13128,11 @@ UpdateCollisionScroll:
         nop7
         ldx     hRDDIVL
         stx     $0549
-        ldx     #$0200      ; 4 pixels/frame in the horizontal direction
+        ldx     #$0200                  ; 4 pixels/frame horizontally
         stx     $0547
         bra     @7471
+
+; v-scroll distance greater than h-scroll distance
 @744d:  lda     $26
         longa
         xba
@@ -13270,80 +13144,80 @@ UpdateCollisionScroll:
         nop7
         ldx     hRDDIVL
         stx     $0547
-        ldx     #$0200      ; 4 pixels/frame in the vertical direction
+        ldx     #$0200                  ; 4 pixels/frame vertically
         stx     $0549
-@7471:  lda     $27         ; branch if scrolling right
+@7471:  lda     $27                     ; branch if scrolling right
         beq     @7483
         longa
-        lda     $0547       ; negate horizontal scroll speed
+        lda     $0547                   ; negate horizontal scroll speed
         eor     $02
         inc
         sta     $0547
         shorta0
-@7483:  lda     $29         ; branch if scrolling up
+@7483:  lda     $29                     ; branch if scrolling up
         beq     @7495
         longa
-        lda     $0549       ; negate vertical scroll speed
+        lda     $0549                   ; negate vertical scroll speed
         eor     $02
         inc
         sta     $0549
         shorta0
-@7495:  ldx     $0547       ; copy bg1 scroll speed to bg2 and bg3
+@7495:  ldx     $0547                   ; copy bg1 scroll speed to bg2 and bg3
         stx     $054b
         stx     $054f
         ldx     $0549
         stx     $054d
         stx     $0551
-        ldx     $00         ; clear scroll due to movement
+        ldx     $00                     ; clear scroll due to movement
         stx     a:$0073
         stx     a:$0075
         stx     a:$0077
         stx     a:$0079
         stx     a:$007b
         stx     a:$007d
-@74bb:  lda     $087f,y     ; update facing direction
+@74bb:  lda     $087f,y                 ; update facing direction
         asl3
         sta     $1a
         lda     $0868,y
         and     #$e7
         ora     $1a
         sta     $0868,y
-        lda     $055f       ; get collision direction
+        lda     $055f                   ; get collision direction
         clc
-        adc     #$02        ; change left to right, up to down so character will face attacker
+        adc     #$02                    ; make character face attacker
         and     #$03
         sta     $087f,y
         tax
-        lda     f:ObjStopTileTbl,x   ; set graphic position based on facing direction
+        lda     f:ObjStopTileTbl,x      ; set sprite based on facing direction
         sta     $0877,y
-        lda     $1a6d       ; save default party
+        lda     $1a6d                   ; save default party
         sta     $055d
-        lda     $0867,y     ; set new party
+        lda     $0867,y                 ; set new party
         and     #$07
         sta     $1a6d
-        lda     $087c,y     ; set movement type to activated
+        lda     $087c,y                 ; set movement type to activated
         and     #$f0
         ora     #$04
         sta     $087c,y
         sta     $087d,y
-        ldy     #$07d9      ; clear character slot 1 through 3 object pointers
+        ldy     #$07d9                  ; clear character slot 1 through 4
         sty     $07fd
         sty     $07ff
         sty     $0801
-        ldy     $0562       ; colliding npc data pointer
+        ldy     $0562                   ; colliding npc data pointer
         tdc
-        sta     $0882,y     ; clear queue counter
-        lda     $055f       ; set facing direction
+        sta     $0882,y                 ; clear queue counter
+        lda     $055f                   ; set facing direction
         sta     $087f,y
         tax
-        lda     f:ObjStopTileTbl,x   ; set graphic position based on facing direction
+        lda     f:ObjStopTileTbl,x      ; set sprite based on facing direction
         sta     $0877,y
-        lda     $087c,y     ; save movement type
+        lda     $087c,y                 ; save movement type
         sta     $087d,y
-        and     #$f0        ; set movement type to activated
+        and     #$f0                    ; set movement type to activated
         ora     #$04
         sta     $087c,y
-        lda     $0889,y     ; set event pc
+        lda     $0889,y                 ; set event pc
         sta     $e5
         sta     $05f4
         lda     $088a,y
@@ -13354,24 +13228,24 @@ UpdateCollisionScroll:
         adc     #$ca
         sta     $e7
         sta     $05f6
-        ldx     #$0000      ; set return address
+        ldx     #$0000                  ; set return address
         stx     $0594
         lda     #$ca
-        sta     $0596       ; set loop count
+        sta     $0596                   ; set loop count
         lda     #$01
-        sta     $05c7       ; set stack pointer
+        sta     $05c7                   ; set stack pointer
         ldx     #$0003
         stx     $e8
-        ldy     $0803       ; party object data pointer
-        lda     $087c,y     ; save movement type
+        ldy     $0803                   ; party object data pointer
+        lda     $087c,y                 ; save movement type
         sta     $087d,y
-        and     #$f0        ; set movement type to activated
+        and     #$f0                    ; set movement type to activated
         ora     #$04
         sta     $087c,y
-        lda     $e1         ; wait for scroll to finish before executing events
+        lda     $e1                     ; wait for scroll before executing event
         ora     #$20
         sta     $e1
-        lda     #$01        ; wait for character objects to get updated
+        lda     #1                      ; wait for character objects update
         sta     $0798
         jsr     CloseMapTitleWindow
         rts
@@ -13382,26 +13256,26 @@ UpdateCollisionScroll:
 
 ; called once per frame and once by map loader
 
-ExecObjScript:
-@7578:  lda     $47         ; only update 6 objects per frame
+UpdateObjActions:
+@7578:  lda     $47                     ; only update 6 objects per frame
         and     #$03
         tax
-        lda     f:FirstObjTbl2,x   ; get first object (x2)
+        lda     f:FirstObjTbl2,x        ; get first object (x2)
         sta     $dc
         lda     #$06
         sta     $de
 
-_c07587:
-@7587:  tdc                 ; start of loop
+ObjActionLoop:
+@7587:  tdc                             ; start of loop
         shorta
         lda     $dc
         tax
-        ldy     $0803,x     ; get pointer to object data
+        ldy     $0803,x                 ; get pointer to object data
         sty     $da
-        cmp     $dd         ; skip if greater than the current total number of objects
+        cmp     $dd                     ; skip if past last object
         bcc     @7599
-@7596:  jmp     _c07656
-@7599:  lda     $0869,y     ; skip if this object is between tiles
+@7596:  jmp     UpdateNextObjAction
+@7599:  lda     $0869,y                 ; skip if this object is between tiles
         bne     @7596
         lda     $086a,y
         and     #$0f
@@ -13411,18 +13285,18 @@ _c07587:
         lda     $086d,y
         and     #$0f
         bne     @7596
-        lda     $087c,y     ; branch if object scrolls with bg2
+        lda     $087c,y                 ; branch if object scrolls with bg2
         bmi     @7634
-        lda     $0868,y     ; branch if object has special graphics
+        lda     $0868,y                 ; branch if object has special graphics
         and     #$e0
         cmp     #$80
         beq     @7634
-        lda     $088c,y     ; branch if not normal sprite priority
+        lda     $088c,y                 ; branch if not normal sprite priority
         and     #$c0
         bne     @7634
-        cpy     #$07b0      ; branch if this is the camera
+        cpy     #$07b0                  ; branch if this is the camera
         beq     @763a
-        ldx     $087a,y     ; pointer to map data (old)
+        ldx     $087a,y                 ; pointer to map data (old)
         sty     hWRDIVL
         lda     #$29
         sta     hWRDIVB
@@ -13430,79 +13304,78 @@ _c07587:
         pla
         pha
         pla
-        lda     hRDDIVL       ; get object number
+        lda     hRDDIVL                 ; get object number
         asl
-        cmp     $7e2000,x   ; if this object is shown in map data, clear it for now
+        cmp     $7e2000,x               ; clear in object map data for now
         bne     @75ea
         lda     #$ff
         sta     $7e2000,x
-@75ea:  lda     $0867,y     ; branch if object is visible
+@75ea:  lda     $0867,y                 ; branch if object is visible
         bpl     @763a
         jsr     GetObjMapPtr
         ldx     $087a,y
-        lda     $7f0000,x   ; tile number
+        lda     $7f0000,x               ; tile number
         tax
-        lda     $7e7600,x   ; tile properties
+        lda     $7e7600,x               ; tile properties
         and     #$03
-        sta     $0888,y     ; set z-level
-        lda     $dc         ; current object
-        bne     @7629       ; branch if not object 0 (party)
-        lda     $087c,y     ; branch if movement is not user-controlled
+        sta     $0888,y                 ; set z-level
+        lda     $dc                     ; current object
+        bne     @7629                   ; branch if not object 0 (party)
+        lda     $087c,y                 ; branch if not user-controlled
         and     #$0f
         cmp     #$02
         bne     @7629
-        lda     $b8         ; branch if not on a bridge tile
+        lda     $b8                     ; branch if not on a bridge tile
         and     #$04
         beq     @761c
-        lda     $b2         ; branch if object is not on lower z-level
+        lda     $b2                     ; branch if not on lower z-level
         cmp     #$02
         beq     @7627
-@761c:  ldx     $087a,y     ; pointer to map data
-        lda     hRDDIVL       ; get object number
+@761c:  ldx     $087a,y                 ; pointer to map data
+        lda     hRDDIVL                 ; get object number
         asl
-        sta     $7e2000,x   ; set object map data
+        sta     $7e2000,x               ; set object map data
 @7627:  bra     @763a
-@7629:  ldx     $087a,y     ; pointer to map data
-        lda     hRDDIVL       ; get object number
+@7629:  ldx     $087a,y                 ; pointer to map data
+        lda     hRDDIVL                 ; get object number
         asl
-        sta     $7e2000,x   ; set object map data
+        sta     $7e2000,x               ; set object map data
 @7634:  jsr     UpdateObjLayerPriorityAfter
         jsr     CheckCollosions
-@763a:  lda     $087c,y     ; movement type
+@763a:  lda     $087c,y                 ; movement type
         and     #$0f
         dec
-        bne     @7645
-        jmp     _c076e9       ; jump if script-controlled
-@7645:  dec
-        bne     @764b
-        jmp     _c076de
-@764b:  dec
-        beq     _7662       ; branch if random
+        jeq     ExecObjScript
         dec
-        beq     _7667       ; branch if activated
-        cpy     $0803       ; branch if current object is the party object
-        beq     _7667
+        jeq     UpdatePlayerAction
+        dec
+        beq     UpdateRandomObjAction
+        dec
+        beq     UpdateActiveObjAction
+        cpy     $0803                   ; branch if this is the party object
+        beq     UpdateActiveObjAction
 
-; next object
-_c07656:
-@7656:  inc     $dc         ; next object
+; go to next object
+UpdateNextObjAction:
+@7656:  inc     $dc                     ; next object
         inc     $dc
         dec     $de
-        beq     @7661
-        jmp     _c07587
-@7661:  rts
+        jne     ObjActionLoop
+        rts
 
 ; random movement
-_7662:  jsr     NPCMoveRand
-        bra     _c07656
+UpdateRandomObjAction:
+@7662:  jsr     NPCMoveRand
+        bra     UpdateNextObjAction
 
 ; activated (movement)
-_7667:  longa
+UpdateActiveObjAction:
+@7667:  longa
         tdc
-        sta     $0871,y     ; clear movement speed
+        sta     $0871,y                 ; clear movement speed
         sta     $0873,y
         shorta
-        lda     $e5         ; return if an event is running
+        lda     $e5                     ; return if an event is running
         cmp     #$00
         bne     @76db
         lda     $e6
@@ -13513,60 +13386,60 @@ _7667:  longa
         bne     @76db
         lda     $087d,y
         cpy     $0803
-        bne     @769a       ; branch if not the party object
+        bne     @769a                   ; branch if not the party object
         lda     $0867,y
         and     #$07
         cmp     $1a6d
-        bne     @769a       ; branch if not the current party
-        lda     #$02        ; set movement type to user-controlled (return control to user after event is complete)
+        bne     @769a                   ; branch if not the current party
+        lda     #$02                    ; set movement type to user-controlled
         bra     @76cf
-@769a:  lda     $087d,y     ; previous movement type
+@769a:  lda     $087d,y                 ; previous movement type
         and     #$0f
         cmp     #$02
-        bne     @76a7       ; branch if not user-controlled
-        lda     #$00        ; set movement type to none
+        bne     @76a7                   ; branch if not user-controlled
+        lda     #$00                    ; set movement type to none
         bra     @76cf
-@76a7:  sta     $1a         ; restore previous movement type
+@76a7:  sta     $1a                     ; restore previous movement type
         lda     $087c,y
         and     #$f0
         ora     $1a
         sta     $087c,y
-        lda     $087c,y     ; return if object activates on collision
+        lda     $087c,y                 ; return if object collision-activated
         and     #$20
         bne     @76cd
-        lda     $0868,y     ; restore facing direction
+        lda     $0868,y                 ; restore facing direction
         and     #$18
         lsr3
         sta     $087f,y
         tax
-        lda     f:ObjStopTileTbl,x   ; set graphics position
+        lda     f:ObjStopTileTbl,x      ; set graphics position
         sta     $0877,y
-@76cd:  bra     _c07656
-@76cf:  sta     $1a         ; set new movement type
+@76cd:  bra     UpdateNextObjAction
+@76cf:  sta     $1a                     ; set new movement type
         lda     $087c,y
         and     #$f0
         ora     $1a
         sta     $087c,y
-@76db:  jmp     _c07656
+@76db:  jmp     UpdateNextObjAction
 
 ; user-controlled movement
-_c076de:
-@76de:  lda     $1eb9       ; return if user-control event bit is set
+UpdatePlayerAction:
+@76de:  lda     $1eb9                   ; return if user-control is disabled
         bmi     @76e6
         jsr     UpdatePlayerMovement
-@76e6:  jmp     _c07656
+@76e6:  jmp     UpdateNextObjAction
 
 ; script-controlled movement
-_c076e9:
-@76e9:  lda     $0882,y     ; decrement script wait counter
+ExecObjScript:
+@76e9:  lda     $0882,y                 ; decrement script wait counter
         beq     @76f8
         dec
         sta     $0882,y
-        jmp     _c07656
+        jmp     UpdateNextObjAction
 @76f5:  jmp     @7783
-@76f8:  lda     $0886,y     ; number of steps to take
+@76f8:  lda     $0886,y                 ; number of steps to take
         beq     @76f5
-        lda     $087e,y     ; movement direction
+        lda     $087e,y                 ; movement direction
         beq     @76f5
 
 ; do script-controlled movement
@@ -13593,7 +13466,7 @@ _c076e9:
         cpy     $0803
         bne     @7739
 @7736:  jsr     UpdateScrollRate
-@7739:  jmp     _c07656
+@7739:  jmp     UpdateNextObjAction
 @773c:  sty     hWRDIVL
         lda     #$29
         sta     hWRDIVB
@@ -13621,39 +13494,38 @@ _c076e9:
 @7779:  lda     $0886,y
         dec
         sta     $0886,y
-        jmp     _c07656
+        jmp     UpdateNextObjAction
 
 ; do next command from object script
 @7783:  longa
-        lda     $0883,y     ; script pointer
+        lda     $0883,y                 ; script pointer
         sta     $2a
         shorta0
         lda     $0885,y
         sta     $2c
-        lda     [$2a]       ; script command
+        lda     [$2a]                   ; script command
         bmi     @779c
 
 ; object command $00-$7f: set graphical position
         sta     $0877,y
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; object command $80-$9f: horizontal/vertical movement
 @779c:  cmp     #$a0
-        bcc     @77a3
-        jmp     @77bf
-@77a3:  sec
+        jcs     @77bf
+        sec
         sbc     #$80
         sta     $1a
         and     #$03
-        sta     $087f,y     ; set facing direction
+        sta     $087f,y                 ; set facing direction
         inc
-        sta     $087e,y     ; set movement direction
+        sta     $087e,y                 ; set movement direction
         lda     $1a
         lsr2
         inc
-        sta     $0886,y     ; set number of steps to take
+        sta     $0886,y                 ; set number of steps to take
         jsr     IncObjScriptPtr
-        jmp     _c076e9       ; do script-controlled movement
+        jmp     ExecObjScript
 
 ; object command $a0-$bf: diagonal movement
 @77bf:  cmp     #$b0
@@ -13662,23 +13534,23 @@ _c076e9:
         sbc     #$9c
         sta     $1a
         inc
-        sta     $087e,y     ; set movement direction
+        sta     $087e,y                 ; set movement direction
         lda     $1a
         tax
-        lda     f:ObjMoveDirTbl,x   ; set facing direction
+        lda     f:ObjMoveDirTbl,x       ; set facing direction
         sta     $087f,y
-        lda     #$01
-        sta     $0886,y     ; take one step
+        lda     #1
+        sta     $0886,y                 ; take one step
         jsr     IncObjScriptPtr
-        jmp     _c076e9       ; do script-controlled movement
+        jmp     ExecObjScript
 
 ; object command $c0-$c5: set object speed
 @77e1:  cmp     #$c6
         bcs     @77ee
         sec
         sbc     #$c0
-        sta     $0875,y     ; set object speed
-        jmp     _c07801
+        sta     $0875,y                 ; set object speed
+        jmp     IncObjScriptPtrContinue
 
 ; object command $c6-$ff
 @77ee:  sec
@@ -13693,11 +13565,11 @@ _c076e9:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ increment object script pointer and continue ]
 
-_c07801:
+IncObjScriptPtrContinue:
 @7801:  jsr     IncObjScriptPtr
-        jmp     _c076e9
+        jmp     ExecObjScript
 
 ; ------------------------------------------------------------------------------
 
@@ -13770,7 +13642,7 @@ ObjCmd_c6:
 @787b:  lda     $0868,y
         ora     #$01
         sta     $0868,y
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13780,7 +13652,7 @@ ObjCmd_c7:
 @7886:  lda     $0868,y
         and     #$fe
         sta     $0868,y
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13789,7 +13661,7 @@ ObjCmd_c7:
 ; $eb = priority (0..3)
 
 ObjCmd_c8:
-@7891:  ldy     #$0001
+@7891:  ldy     #1
         lda     [$2a],y
         asl
         sta     $1a
@@ -13799,7 +13671,7 @@ ObjCmd_c8:
         ora     $1a
         sta     $0868,y
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13810,7 +13682,7 @@ ObjCmd_cc:
         sta     $087f,y
         lda     #$04
         sta     $0877,y
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13821,7 +13693,7 @@ ObjCmd_cd:
         sta     $087f,y
         lda     #$47
         sta     $0877,y
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13832,7 +13704,7 @@ ObjCmd_ce:
         sta     $087f,y
         lda     #$01
         sta     $0877,y
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13843,21 +13715,21 @@ ObjCmd_cf:
         sta     $087f,y
         lda     #$07
         sta     $0877,y
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
 ; [ object command $d0: show object ]
 
 ObjCmd_d0:
-@78de:  lda     $0867,y     ; return if object already visible
+@78de:  lda     $0867,y                 ; return if object already visible
         bmi     @7924
         ora     #$80
-        sta     $0867,y     ; make object visible
-        lda     $0868,y     ; set sprite layer priority to default
+        sta     $0867,y                 ; make object visible
+        lda     $0868,y                 ; set sprite layer priority to default
         and     #$f9
         sta     $0868,y
-        lda     $0880,y     ; both sprites shown below priority 1 bg
+        lda     $0880,y                 ; both sprites shown below priority 1 bg
         and     #$cf
         ora     #$20
         sta     $0880,y
@@ -13866,18 +13738,18 @@ ObjCmd_d0:
         ora     #$20
         sta     $0881,y
         phy
-        sty     hWRDIVL     ; get object number
+        sty     hWRDIVL                 ; get object number
         lda     #$29
         sta     hWRDIVB
         nop7
         ldy     hRDDIVL
         cpy     #$0010
-        bcs     @7924       ; branch if not a character
-        lda     $1850,y     ; set character visible flag
+        bcs     @7924                   ; branch if not a character
+        lda     $1850,y                 ; set character visible flag
         ora     #$80
         sta     $1850,y
 @7924:  ply
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13907,7 +13779,7 @@ ObjCmd_d1:
         and     #$7f
         sta     $1850,y
 @7965:  ply
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13915,7 +13787,7 @@ ObjCmd_d1:
 
 ObjCmd_e1:
 @7969:  phy
-        ldy     #$0001
+        ldy     #1
         lda     [$2a],y
         jsr     GetSwitchOffset
         lda     $1e80,y
@@ -13923,7 +13795,7 @@ ObjCmd_e1:
         sta     $1e80,y
         ply
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13931,7 +13803,7 @@ ObjCmd_e1:
 
 ObjCmd_e2:
 @7983:  phy
-        ldy     #$0001
+        ldy     #1
         lda     [$2a],y
         jsr     GetSwitchOffset
         lda     $1ea0,y
@@ -13939,7 +13811,7 @@ ObjCmd_e2:
         sta     $1ea0,y
         ply
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13947,7 +13819,7 @@ ObjCmd_e2:
 
 ObjCmd_e3:
 @799d:  phy
-        ldy     #$0001
+        ldy     #1
         lda     [$2a],y
         jsr     GetSwitchOffset
         lda     $1ec0,y
@@ -13955,7 +13827,7 @@ ObjCmd_e3:
         sta     $1ec0,y
         ply
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13963,7 +13835,7 @@ ObjCmd_e3:
 
 ObjCmd_e4:
 @79b7:  phy
-        ldy     #$0001
+        ldy     #1
         lda     [$2a],y
         jsr     GetSwitchOffset
         lda     $1e80,y
@@ -13971,7 +13843,7 @@ ObjCmd_e4:
         sta     $1e80,y
         ply
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13979,7 +13851,7 @@ ObjCmd_e4:
 
 ObjCmd_e5:
 @79d1:  phy
-        ldy     #$0001
+        ldy     #1
         lda     [$2a],y
         jsr     GetSwitchOffset
         lda     $1ea0,y
@@ -13987,7 +13859,7 @@ ObjCmd_e5:
         sta     $1ea0,y
         ply
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -13995,7 +13867,7 @@ ObjCmd_e5:
 
 ObjCmd_e6:
 @79eb:  phy
-        ldy     #$0001
+        ldy     #1
         lda     [$2a],y
         jsr     GetSwitchOffset
         lda     $1ec0,y
@@ -14003,7 +13875,7 @@ ObjCmd_e6:
         sta     $1ec0,y
         ply
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -14013,7 +13885,7 @@ ObjCmd_e6:
 ;       v = vehicle (0..7)
 
 ObjCmd_c9:
-@7a05:  ldy     #$0001
+@7a05:  ldy     #1
         lda     [$2a],y
         and     #$e0
         sta     $1a
@@ -14022,7 +13894,7 @@ ObjCmd_c9:
         ora     $1a
         sta     $0868,y
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -14032,7 +13904,7 @@ ObjCmd_d5:
 @7a1e:  ldx     $087a,y
         lda     #$ff
         sta     $7e2000,x
-        ldy     #$0001
+        ldy     #1
         lda     [$2a],y
         longa
         asl4
@@ -14055,7 +13927,7 @@ ObjCmd_d5:
         jsr     IncObjScriptPtr
         jsr     IncObjScriptPtr
         jsr     IncObjScriptPtr
-        jmp     _c07656
+        jmp     UpdateNextObjAction
 
 ; ------------------------------------------------------------------------------
 
@@ -14064,20 +13936,20 @@ ObjCmd_d5:
 ObjCmd_d7:
 @7a65:  ldx     $087a,y
         lda     #$ff
-        sta     $7e2000,x   ; clear object in map data
+        sta     $7e2000,x               ; clear object in map data
         longa
         ldx     $0803
-        lda     $086a,x     ; set party position
+        lda     $086a,x                 ; set party position
         sta     $086a,y
         lda     $086d,x
         sta     $086d,y
         shorta0
-        sta     $086c,y     ; clear low byte of object position
+        sta     $086c,y                 ; clear low byte of object position
         sta     $0869,y
         jsr     GetObjMapPtr
         jsr     UpdateSpritePriority
         jsr     IncObjScriptPtr
-        jmp     _c07656
+        jmp     UpdateNextObjAction
 
 ; ------------------------------------------------------------------------------
 
@@ -14086,7 +13958,7 @@ ObjCmd_d7:
 ObjCmd_dc:
 @7a94:  lda     #$0f
         sta     $0887,y
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -14095,7 +13967,7 @@ ObjCmd_dc:
 ObjCmd_dd:
 @7a9c:  lda     #$5f
         sta     $0887,y
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -14107,22 +13979,22 @@ ObjCmd_dd:
 ObjCmd_e0:
 @7aa4:  longa
         tdc
-        sta     $0871,y     ; clear movement speed
+        sta     $0871,y                 ; clear movement speed
         sta     $0873,y
         shorta
         cpy     #$07b0
-        beq     @7ab9       ; branch if camera
+        beq     @7ab9                   ; branch if camera
         cpy     $0803
-        bne     @7abc       ; branch if not showing character
+        bne     @7abc                   ; branch if not showing character
 @7ab9:  jsr     UpdateScrollRate
 @7abc:  phy
-        ldy     #$0001
-        lda     [$2a],y     ; set pause duration
+        ldy     #1
+        lda     [$2a],y                 ; set pause duration
         ply
         sta     $0882,y
         jsr     IncObjScriptPtr
         jsr     IncObjScriptPtr
-        jmp     _c07656
+        jmp     UpdateNextObjAction
 
 ; ------------------------------------------------------------------------------
 
@@ -14130,15 +14002,15 @@ ObjCmd_e0:
 
 ObjCmd_f9:
 @7acf:  lda     $055e
-        bne     @7b09       ; branch if a collision is already in progress
+        bne     @7b09                   ; branch if a collision is already in progress
         ldx     $e5
         cpx     #$0000
-        bne     @7b09       ; branch if an event is running
+        bne     @7b09                   ; branch if an event is running
         lda     $e7
         cmp     #$ca
         bne     @7b09
         phy
-        ldy     #$0001      ; copy event address
+        ldy     #1                      ; copy event address
         lda     [$2a],y
         sta     $e5
         iny
@@ -14150,13 +14022,13 @@ ObjCmd_f9:
         adc     #$ca
         sta     $e7
         ldy     #$0003
-        sty     a:$00e8       ; set event stack pointer
+        sty     a:$00e8                   ; set event stack pointer
         ply
         jsr     IncObjScriptPtr
         jsr     IncObjScriptPtr
         jsr     IncObjScriptPtr
         jsr     IncObjScriptPtr
-@7b09:  jmp     _c07656
+@7b09:  jmp     UpdateNextObjAction
 
 ; ------------------------------------------------------------------------------
 
@@ -14165,9 +14037,9 @@ ObjCmd_f9:
 ObjCmd_fa:
 @7b0c:  jsr     Rand
         cmp     #$80
-        bcs     _c07b26       ; 1/2 chance to branch
+        bcs     ObjCmd_fc               ; 1/2 chance to branch
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
@@ -14176,17 +14048,16 @@ ObjCmd_fa:
 ObjCmd_fb:
 @7b19:  jsr     Rand
         cmp     #$80
-        bcs     _c07b4b       ; 1/2 chance to branch
+        bcs     ObjCmd_fd               ; 1/2 chance to branch
         jsr     IncObjScriptPtr
-        jmp     _c07801
+        jmp     IncObjScriptPtrContinue
 
 ; ------------------------------------------------------------------------------
 
 ; [ object command $fc: branch backward ]
 
 ObjCmd_fc:
-_c07b26:
-@7b26:  ldy     #$0001
+@7b26:  ldy     #1
         lda     [$2a],y
         sta     $1a
         ldy     $da
@@ -14200,15 +14071,14 @@ _c07b26:
         lda     $0885,y
         sbc     #$00
         sta     $0885,y
-        jmp     _c076e9
+        jmp     ExecObjScript
 
 ; ------------------------------------------------------------------------------
 
 ; [ object command $fd: branch forward ]
 
 ObjCmd_fd:
-_c07b4b:
-@7b4b:  ldy     #$0001
+@7b4b:  ldy     #1
         lda     [$2a],y
         sta     $1a
         ldy     $da
@@ -14222,7 +14092,7 @@ _c07b4b:
         lda     $0885,y
         adc     #$00
         sta     $0885,y
-        jmp     _c076e9
+        jmp     ExecObjScript
 
 ; ------------------------------------------------------------------------------
 
@@ -14230,22 +14100,22 @@ _c07b4b:
 
 ObjCmd_ff:
 @7b70:  tdc
-        sta     $0885,y     ; clear script pointer (bank byte)
+        sta     $0885,y                 ; clear script pointer (bank byte)
         lda     $087c,y
         and     #$f0
-        sta     $087c,y     ; clear movement type
+        sta     $087c,y                 ; clear movement type
         longa
         tdc
-        sta     $0871,y     ; clear movement speed
+        sta     $0871,y                 ; clear movement speed
         sta     $0873,y
-        sta     $0883,y     ; clear script pointer
+        sta     $0883,y                 ; clear script pointer
         shorta
         cpy     #$07b0
-        beq     @7b94       ; branch if camera
+        beq     @7b94                   ; branch if camera
         cpy     $0803
-        bne     @7b97       ; branch if not showing character
+        bne     @7b97                   ; branch if not showing character
 @7b94:  jsr     UpdateScrollRate
-@7b97:  jmp     _c07656
+@7b97:  jmp     UpdateNextObjAction
 
 ; ------------------------------------------------------------------------------
 
@@ -14268,50 +14138,50 @@ IncObjScriptPtr:
 
 NPCMoveRand:
 @7bb1:  jsr     Rand
-        and     #$03        ; movement direction = (1..4)
+        and     #$03                    ; movement direction = (1..4)
         inc
         sta     $b3
         jsr     GetObjMapAdjacent
         ldx     $1e
-        lda     $7e2000,x   ; return if there's an object there
+        lda     $7e2000,x               ; return if there's an object there
         bpl     @7c1f
-        lda     $7f0000,x   ; bg1 tile
+        lda     $7f0000,x               ; bg1 tile
         tax
-        lda     $7e7700,x   ; branch if npc can't randomly move here
+        lda     $7e7700,x               ; branch if npc can't randomly move here
         bpl     @7c1f
-        lda     $0888,y     ; object z-level
+        lda     $0888,y                 ; object z-level
         dec
-        bne     @7beb       ; branch if not upper z-level
+        bne     @7beb                   ; branch if not upper z-level
 
 ; object is upper z-level
-        lda     $7e7600,x   ; tile z-level
+        lda     $7e7600,x               ; tile z-level
         and     #$07
         cmp     #$01
-        beq     @7bf5       ; branch if tile is upper z-level
+        beq     @7bf5                   ; branch if tile is upper z-level
         lda     $7e7600,x
         and     #$07
         cmp     #$04
         beq     @7bf5
-        bra     @7c1f       ; return if a bridge tile
+        bra     @7c1f                   ; return if a bridge tile
 
 ; object is lower z-level
-@7beb:  lda     $7e7600,x   ; tile z-level
+@7beb:  lda     $7e7600,x               ; tile z-level
         and     #$07
         cmp     #$02
-        bne     @7c1f       ; return if tile is not lower z-level
+        bne     @7c1f                   ; return if tile is not lower z-level
 @7bf5:  jsr     UpdateObjLayerPriorityBefore
         sty     hWRDIVL
         lda     #$29
         sta     hWRDIVB
         nop8
-        lda     hRDDIVL       ; object number
+        lda     hRDDIVL                 ; object number
         asl
         ldx     $1e
-        sta     $7e2000,x   ; put object at new location in map data
+        sta     $7e2000,x               ; put object at new location in map data
         lda     $b3
-        sta     $087e,y     ; set movement direction
+        sta     $087e,y                 ; set movement direction
         dec
-        sta     $087f,y     ; set facing direction
+        sta     $087f,y                 ; set facing direction
         jsr     CalcObjMoveDir
         rts
 
@@ -14328,24 +14198,24 @@ NPCMoveRand:
 ; [ update object layer priority (based on current tile) ]
 
 UpdateObjLayerPriorityAfter:
-@7c2d:  lda     $0868,y     ; sprite layer priority
+@7c2d:  lda     $0868,y                 ; sprite layer priority
         and     #$06
         bne     _c07c69
-        ldx     $087a,y     ; pointer to map data
-        lda     $7f0000,x   ; bg1 tile
+        ldx     $087a,y                 ; pointer to map data
+        lda     $7f0000,x               ; bg1 tile
         tax
-        lda     $7e7600,x   ; tile properties
+        lda     $7e7600,x               ; tile properties
         cmp     #$f7
-        beq     _7c94       ; branch if tile is impassable
+        beq     _7c94                   ; branch if tile is impassable
         and     #$04
-        bne     _7c94       ; branch if tile is a bridge tile
+        bne     _7c94                   ; branch if tile is a bridge tile
         lda     $7e7600,x
         and     #$08
-        beq     @7c58       ; branch if top sprite isn't shown above priority 1 bg
-        lda     $0880,y     ; top sprite shown above priority 1 bg
+        beq     @7c58                   ; branch if top sprite isn't shown above priority 1 bg
+        lda     $0880,y                 ; top sprite shown above priority 1 bg
         ora     #$30
         sta     $0880,y
-@7c58:  lda     $7e7600,x   ;
+@7c58:  lda     $7e7600,x               ;
         and     #$10
         beq     @7c68
         lda     $0881,y
@@ -14358,10 +14228,10 @@ UpdateObjLayerPriorityAfter:
 ; [  ]
 
 _c07c69:
-set_fixed_prio:       ; i think...
+set_fixed_prio:                         ; i think...
 @7c69:  lsr
         dec
-        bne     _7c80       ; branch if not priority 1
+        bne     _7c80                   ; branch if not priority 1
         lda     $0880,y
         ora     #$30
         sta     $0880,y
@@ -14372,7 +14242,7 @@ set_fixed_prio:       ; i think...
         rts
 
 _7c80:  dec
-        bne     _7c94       ; branch if not priority 2
+        bne     _7c94                   ; branch if not priority 2
         lda     $0880,y
         ora     #$30
         sta     $0880,y
@@ -14398,7 +14268,7 @@ _7c94:  lda     $0880,y
 ; x = bg1 tile index
 
 UpdateObjLayerPriorityBefore:
-@7ca9:  lda     $0868,y     ; object sprite layer priority
+@7ca9:  lda     $0868,y                 ; object sprite layer priority
         and     #$06
         bne     _c07c69
         lda     $7e7600,x
@@ -14428,17 +14298,17 @@ UpdateObjLayerPriorityBefore:
 
 GetObjMapPtr:
 @7ce1:  longa
-        lda     $086a,y     ; x position
+        lda     $086a,y                 ; x position
         lsr4
         shorta
-        and     $86         ; bg1 x clip
-        sta     $087a,y     ; low byte of object map data pointer
+        and     $86                     ; bg1 x clip
+        sta     $087a,y                 ; low byte of object map data pointer
         longa
-        lda     $086d,y     ; y position
+        lda     $086d,y                 ; y position
         lsr4
         shorta
-        and     $87         ; bg1 y clip
-        sta     $087b,y     ; high byte of object map data pointer
+        and     $87                     ; bg1 y clip
+        sta     $087b,y                 ; high byte of object map data pointer
         tdc
         rts
 
@@ -14477,26 +14347,26 @@ AdjacentYTbl:
 ; [ update bg2/bg3 movement scroll speed ]
 
 CalcParallaxRate:
-@7d2a:  ldx     $73         ; bg1 h-scroll speed
-        bmi     @7d60       ; branch if negative
+@7d2a:  ldx     $73                     ; bg1 h-scroll speed
+        bmi     @7d60                   ; branch if negative
         longa
         txa
         lsr4
         shorta
         sta     hWRMPYA
-        lda     $0553       ; bg2 h-scroll multiplier
+        lda     $0553                   ; bg2 h-scroll multiplier
         sta     hWRMPYB
         nop2
         longa
         lda     hRDMPYL
-        sta     $77         ; set bg2 h-scroll speed
+        sta     $77                     ; set bg2 h-scroll speed
         shorta0
-        lda     $0555       ; bg3 h-scroll multiplier
+        lda     $0555                   ; bg3 h-scroll multiplier
         sta     hWRMPYB
         nop2
         longa
         lda     hRDMPYL
-        sta     $7b         ; set bg3 h-scroll speed
+        sta     $7b                     ; set bg3 h-scroll speed
         shorta0
         bra     @7d99
 @7d60:  longa
@@ -14524,8 +14394,8 @@ CalcParallaxRate:
         inc
         sta     $7b
         shorta0
-@7d99:  ldx     $75         ; bg1 v-scroll speed
-        bmi     @7dce       ; branch if negative
+@7d99:  ldx     $75                     ; bg1 v-scroll speed
+        bmi     @7dce                   ; branch if negative
         longa
         txa
         lsr4
@@ -14578,38 +14448,38 @@ CalcParallaxRate:
 ; [ update movement scroll speed ]
 
 UpdateScrollRate:
-@7e08:  lda     $0559       ; branch if screen is not locked
+@7e08:  lda     $0559                   ; branch if screen is not locked
         beq     @7e20
-        cpy     #$07b0      ; return if not the camera
+        cpy     #$07b0                  ; return if not the camera
         bne     @7e1f
-        ldx     $1021       ; ($0871 + $07b0)
-        stx     $73         ; set horizontal scroll speed
-        ldx     $1023       ; ($0873 + $07b0)
-        stx     $75         ; set vertical scroll speed
+        ldx     $1021                   ; ($0871 + $07b0)
+        stx     $73                     ; set horizontal scroll speed
+        ldx     $1023                   ; ($0873 + $07b0)
+        stx     $75                     ; set vertical scroll speed
         jsr     CalcParallaxRate
 @7e1f:  rts
 @7e20:  ldy     $0803
-        lda     $062d       ; max horizontal scroll position
+        lda     $062d                   ; max horizontal scroll position
         cmp     #$ff
-        beq     @7e3c       ; branch if no max
+        beq     @7e3c                   ; branch if no max
         lda     $af
-        ldx     $0871,y     ; party horizontal scroll speed
+        ldx     $0871,y                 ; party horizontal scroll speed
         bpl     @7e32
         dec
-@7e32:  cmp     $062c       ; branch if less than the minimum
+@7e32:  cmp     $062c                   ; branch if less than the minimum
         bcc     @7e43
-        cmp     $062d       ; branch if greater than the maximum
+        cmp     $062d                   ; branch if greater than the maximum
         bcs     @7e43
-@7e3c:  ldx     $0871,y     ; party horizontal movement speed
-        stx     $73         ; set horizontal scroll speed
+@7e3c:  ldx     $0871,y                 ; party horizontal movement speed
+        stx     $73                     ; set horizontal scroll speed
         bra     @7e4b
 @7e43:  ldx     $00
         stx     $73
         stx     $77
         stx     $7b
-@7e4b:  lda     $062f       ; max vertical scroll position
+@7e4b:  lda     $062f                   ; max vertical scroll position
         cmp     #$ff
-        beq     @7e64       ; branch if no max
+        beq     @7e64                   ; branch if no max
         lda     $b0
         ldx     $0873,y
         bpl     @7e5a
@@ -14633,11 +14503,11 @@ UpdateScrollRate:
 ; [ calculate object movement direction and speed ]
 
 CalcObjMoveDir:
-@7e77:  lda     $0875,y     ; object speed
+@7e77:  lda     $0875,y                 ; object speed
         tax
-        lda     f:ObjMoveMult,x   ; speed multiplier
+        lda     f:ObjMoveMult,x         ; speed multiplier
         sta     $1b
-        lda     $087e,y     ; movement direction
+        lda     $087e,y                 ; movement direction
         dec
         asl
         tax
@@ -14702,35 +14572,35 @@ ObjMoveDirTbl:
 ; [ init dialog text ]
 
 InitDlgText:
-@7f64:  stz     $0568       ; dialog flags
-        stz     $c5         ; line number
-        stz     $cc         ; dialog window region
-        stz     $d3         ; keypress state
-        stz     $c9         ; dialog pointer
+@7f64:  stz     $0568                   ; dialog flags
+        stz     $c5                     ; line number
+        stz     $cc                     ; dialog window region
+        stz     $d3                     ; keypress state
+        stz     $c9                     ; dialog pointer
         stz     $ca
         lda     #$cd
         sta     $cb
-        stz     $056d       ; multiple choice selection is not changing
-        stz     $056e       ; clear current multiple choice selection
-        stz     $056f       ; clear maximum multiple choice selection
-        stz     $0582       ; disable multiple choice cursor update
-        stz     $d0         ; dialog index
+        stz     $056d                   ; multiple choice selection is not changing
+        stz     $056e                   ; clear current multiple choice selection
+        stz     $056f                   ; clear maximum multiple choice selection
+        stz     $0582                   ; disable multiple choice cursor update
+        stz     $d0                     ; dialog index
         stz     $d1
-        lda     #$80        ; text buffer is empty
+        lda     #$80                    ; text buffer is empty
         sta     $cf
-        ldx     $00         ; set vram pointers to beginning of line 1
+        ldx     $00                     ; set vram pointers to beginning of line 1
         stx     $c1
         stx     $c3
-        stx     $0569       ; pause counter
-        stx     $056b       ; keypress counter
-        ldx     #$0700      ; unused
+        stx     $0569                   ; pause counter
+        stx     $056b                   ; keypress counter
+        ldx     #$0700                  ; unused
         stx     $c6
-        lda     #$04        ; current x position on dialog window
+        lda     #$04                    ; current x position on dialog window
         sta     $bf
-        stz     $c0         ; width of current word
-        lda     #$e0        ; max x position on dialog window
+        stz     $c0                     ; width of current word
+        lda     #$e0                    ; max x position on dialog window
         sta     $c8
-        ldx     #$9003      ; clear current character graphics buffer
+        ldx     #$9003                  ; clear current character graphics buffer
         stx     hWMADDL
         lda     #$7e
         sta     hWMADDH
@@ -14807,7 +14677,7 @@ ShowMapTitle:
         lsr
         sta     $bf
         tay                             ; $c1 = ($bf / 16) * 32
-        sty     hWRDIVL                   ; pointer to vram, rounded down to nearest tile
+        sty     hWRDIVL                 ; pointer to vram, rounded down to nearest tile
         lda     #$10
         sta     hWRDIVB
         nop7
@@ -14958,29 +14828,29 @@ CalcTextWidth:
 
 UpdateDlgText:
 @814c:  longa
-        lda     $00         ; set font shadow color to black
+        lda     $00                     ; set font shadow color to black
         sta     $7e7204
         sta     $7e7404
-        lda     $1d55       ; set font color
+        lda     $1d55                   ; set font color
         sta     $7e7202
         sta     $7e7402
         sta     $7e7206
         sta     $7e7406
         shorta0
-        lda     $0567       ; decrement counter for map name dialog window
+        lda     $0567                   ; decrement counter for map name dialog window
         beq     @817b
         dec     $0567
         bne     @817b
         jsr     CloseMapTitleWindow
-@817b:  lda     $0568       ; dialog flags
-        bne     @8181       ; return if there's no dialog text
+@817b:  lda     $0568                   ; dialog flags
+        bne     @8181                   ; return if there's no dialog text
         rts
-@8181:  ldx     $0569       ; decrement counter for dialog pause
+@8181:  ldx     $0569                   ; decrement counter for dialog pause
         beq     @818b
         dex
         stx     $0569
         rts
-@818b:  ldx     $056b       ; keypress counter
+@818b:  ldx     $056b                   ; keypress counter
         beq     @81af
         longa
         txa
@@ -14990,79 +14860,78 @@ UpdateDlgText:
         cpx     $00
         bne     @81a8
         stz     $056c
-        stz     $d3         ; keypress state
+        stz     $d3                     ; keypress state
         stz     $056f
         bra     @81af
 @81a8:  ldx     $056b
         dex
         stx     $056b
-@81af:  lda     $d3         ; branch if waiting for keypress
-        bne     @81b6
-        jmp     @823b
-@81b6:  lda     $056f       ; max multiple choice selection
+@81af:  lda     $d3                     ; branch if waiting for keypress
+        jeq     @823b
+        lda     $056f                   ; max multiple choice selection
         cmp     #$02
-        bcc     @821f       ; branch if 1 or 0
+        bcc     @821f                   ; branch if 1 or 0
         lda     $056e
         asl
         tax
         longa
-        lda     $0570,x     ; set current cursor position (for erasing the indicator)
+        lda     $0570,x                 ; set current cursor position (for erasing the indicator)
         sta     $c3
         shorta0
         lda     $07
-        and     #$0f        ; branch if direction button is down
+        and     #$0f                    ; branch if direction button is down
         bne     @81d7
-        stz     $056d       ; multiple choice selection is not changing
+        stz     $056d                   ; multiple choice selection is not changing
         bra     @8209
-@81d7:  lda     $056d       ; branch if multiple choice selection is already changing
+@81d7:  lda     $056d                   ; branch if multiple choice selection is already changing
         bne     @821f
         lda     $07
-        and     #$0a        ; branch if up and left are not pressed
+        and     #$0a                    ; branch if up and left are not pressed
         beq     @81f2
-        lda     $056e       ; decrement multiple choice selection
+        lda     $056e                   ; decrement multiple choice selection
         dec
-        bmi     @8209       ; branch if less than zero (no change)
+        bmi     @8209                   ; branch if less than zero (no change)
         sta     $056e
-        lda     #$01        ; multiple choice selection is changing
+        lda     #1                      ; multiple choice selection is changing
         sta     $056d
         bra     @8209
 @81f2:  lda     $07
-        and     #$05        ; branch if up and left are not pressed
+        and     #$05                    ; branch if up and left are not pressed
         beq     @8209
-        lda     $056e       ; increment multiple choice selection
+        lda     $056e                   ; increment multiple choice selection
         inc
-        cmp     $056f       ; branch if equal to max selection (no change)
+        cmp     $056f                   ; branch if equal to max selection (no change)
         beq     @8209
         sta     $056e
-        lda     #$01        ; multiple choice selection is changing
+        lda     #1                      ; multiple choice selection is changing
         sta     $056d
 @8209:  jsr     DrawDlgCursor
-        lda     $056e       ; current selection
+        lda     $056e                   ; current selection
         asl
         tax
         longa
-        lda     $0570,x     ; position of multiple choice indicator
-        sta     $0580       ; set current
+        lda     $0570,x                 ; position of multiple choice indicator
+        sta     $0580                   ; set current
         shorta0
-        inc     $0582       ; enable update
-@821f:  lda     $d3         ; keypress state
+        inc     $0582                   ; enable update
+@821f:  lda     $d3                     ; keypress state
         cmp     #$01
-        beq     @822d       ; branch if waiting for keypress
-        lda     $06         ; a button
-        bmi     @8241       ; decrement keypress and branch if not pressed
+        beq     @822d                   ; branch if waiting for keypress
+        lda     $06                     ; a button
+        bmi     @8241                   ; decrement keypress and branch if not pressed
         dec     $d3
         bra     @8241
-@822d:  lda     $06         ; return if a button not pressed
+@822d:  lda     $06                     ; return if a button not pressed
         bpl     @8241
-        dec     $d3         ; decrement keypress state
-        stz     $056f       ; disable multiple choice
-        stz     $056c       ; disable keypress timer
-        bra     @8241       ; return
-@823b:  lda     $cc         ; decrement region to clear (getting ready for next page)
+        dec     $d3                     ; decrement keypress state
+        stz     $056f                   ; disable multiple choice
+        stz     $056c                   ; disable keypress timer
+        bra     @8241                   ; return
+@823b:  lda     $cc                     ; decrement region to clear (getting ready for next page)
         beq     @8242
         dec     $cc
 @8241:  rts
-@8242:  lda     $0568       ; dialog flags
+@8242:  lda     $0568                   ; dialog flags
         bpl     UpdateDlgTextOneLine
         sta     $ba
         stz     $0568
@@ -15070,47 +14939,47 @@ UpdateDlgText:
 
 UpdateDlgTextOneLine:
 @824d:  jsr     CalcTextWidth
-        lda     $bf         ; add width to current x position
+        lda     $bf                     ; add width to current x position
         clc
         adc     $c0
-        bcs     @825b       ; branch if it overflowed
+        bcs     @825b                   ; branch if it overflowed
         cmp     $c8
-        bcc     @825f       ; branch if less than max width
+        bcc     @825f                   ; branch if less than max width
 @825b:  jsr     NewLine
         rts
-@825f:  lda     $cf         ; branch if text buffer is empty
+@825f:  lda     $cf                     ; branch if text buffer is empty
         bmi     @8284
 @8263:  lda     $cf
         tax
-        lda     $7e9183,x   ; text buffer
-        sta     $cd         ; set next letter to display
+        lda     $7e9183,x               ; text buffer
+        sta     $cd                     ; set next letter to display
         stz     $ce
-        lda     $7e9184,x   ; branch if next letter is the end of the string
-        beq     @827a
+        lda     $7e9184,x
+        beq     @827a                   ; branch if next letter is terminator
         jsr     DrawDlgText
-        inc     $cf         ; increment text buffer position and return
+        inc     $cf                     ; increment buffer position and return
         rts
-@827a:  lda     #$80        ; empty dialog text buffer
+@827a:  lda     #$80                    ; empty dialog text buffer
         sta     $cf
         jsr     DrawDlgText
-        jmp     @829d       ; increment dialog pointer by 1
+        jmp     @829d                   ; increment dialog pointer by 1
 @8284:  ldy     $00
-        lda     [$c9],y     ; load current dialog letter
+        lda     [$c9],y                 ; load current dialog letter
         sta     $bd
         iny
-        lda     [$c9],y     ; load next dialog letter
+        lda     [$c9],y                 ; load next dialog letter
         sta     $be
-        lda     $bd         ; branch if current letter is dte
+        lda     $bd                     ; branch if current letter is dte
         bmi     @829a
-        cmp     #$20        ; branch if special letter
+        cmp     #$20                    ; branch if special letter
         bcc     @82b5
         jmp     @845a
 @829a:  jmp     @8466
 
 ; increment dialog pointer
-@829d:  lda     #$01        ; increment by 1
+@829d:  lda     #1                      ; increment by 1
         bra     @82a3
-@82a1:  lda     #$02        ; increment by 2
+@82a1:  lda     #2                      ; increment by 2
 @82a3:  clc
         adc     $c9
         sta     $c9
@@ -15134,7 +15003,7 @@ UpdateDlgTextOneLine:
 @82c2:  cmp     #$01
         bne     @82cc
         jsr     NewLine
-        jmp     @829d       ; increment dialog pointer by 1
+        jmp     @829d                   ; increment dialog pointer by 1
 
 ; special letter $02-$0f: character name
 @82cc:  cmp     #$10
@@ -15164,66 +15033,66 @@ UpdateDlgTextOneLine:
 ; special letter $10: pause for 1 second
 @8302:  cmp     #$10
         bne     @830f
-        ldx     #$003c      ; 60 frames
+        ldx     #$003c                  ; 60 frames
         stx     $0569
-        jmp     @829d       ; increment dialog pointer by 1
+        jmp     @829d                   ; increment dialog pointer by 1
 
 ; special letter $11: pause for x/4 seconds
 @830f:  cmp     #$11
         bne     @832a
         lda     $be
         sta     hWRMPYA
-        lda     #$0f        ; divide by 15
+        lda     #$0f                    ; divide by 15
         sta     hWRMPYB
         nop4
         ldx     hRDMPYL
         stx     $0569
-        jmp     @82a1       ; increment dialog pointer by 2
+        jmp     @82a1                   ; increment dialog pointer by 2
 
 ; special letter $12: wait for keypress
 @832a:  cmp     #$12
         bne     @8337
-        ldx     #$8001      ; waiting for keypress, timer is 1 frame only
+        ldx     #$8001                  ; waiting for keypress, timer is 1 frame only
         stx     $056b
-        jmp     @829d       ; increment dialog pointer by 1
+        jmp     @829d                   ; increment dialog pointer by 1
 
 ; special letter $13: new page
 @8337:  cmp     #$13
         bne     @8341
         jsr     NewPage
-        jmp     @829d       ; increment dialog pointer by 1
+        jmp     @829d                   ; increment dialog pointer by 1
 
 ; special letter $14: tab (x spaces)
 @8341:  cmp     #$14
         bne     @8362
-        lda     $be         ; number of spaces
+        lda     $be                     ; number of spaces
         sta     $1e
         stz     $1f
         ldx     $00
-        lda     #$7f        ; space
+        lda     #$7f                    ; space
 @834f:  sta     $7e9183,x
         inx
         cpx     $1e
         bne     @834f
-        tdc                 ; end of string
+        tdc                             ; end of string
         sta     $7e9183,x
         stz     $cf
-        jmp     @829d       ; increment dialog pointer by 1
+        jmp     @829d                   ; increment dialog pointer by 1
 
 ; special letter $15: multiple choice indicator
 @8362:  cmp     #$15
         bne     @837f
-        lda     $056f       ; maximum multiple choice position found so far
+        lda     $056f                   ; max choice found so far
         asl
         tay
         longa
-        lda     $c1         ; set current position as a new multiple choice position
+        lda     $c1                     ; add a multiple choice position
         sta     $0570,y
         shorta0
-        lda     #$ff        ; wide space
+        lda     #$ff                    ; wide space
         sta     $bd
-        inc     $056f       ; increment number of multiple choice positions
-        jmp     @845a       ; process like a normal letter
+        inc     $056f                   ; increment number of choices
+        jmp     @845a                   ; process like a normal letter
 
 ; special letter $16: pause for x/4 seconds, then wait for keypress
 @837f:  cmp     #$16
@@ -15238,7 +15107,7 @@ UpdateDlgTextOneLine:
         ora     #$8000
         sta     $056b
         shorta0
-        lda     #$01        ; waiting for keypress
+        lda     #$01                    ; waiting for keypress
         sta     $d3
         jmp     @82a1
 
@@ -15279,7 +15148,7 @@ UpdateDlgTextOneLine:
         lda     #$7e
         pha
         plb
-@83ee:  lda     f:ItemName+1,x   ; load item name (ignore symbol)
+@83ee:  lda     f:ItemName+1,x          ; ignore symbol
         sec
         sbc     #$60
         sta     $9183,y
@@ -15302,7 +15171,7 @@ UpdateDlgTextOneLine:
         bne     @844b
         lda     $0584
         sta     hWRMPYA
-        lda     #$04        ; multiply by 4 (this is carried over from ff6j, it should be 7 for ff3us)
+        lda     #$04                    ; carried over from ff6j, should be 7
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
@@ -15310,18 +15179,18 @@ UpdateDlgTextOneLine:
         lda     #$7e
         pha
         plb
-@842a:  lda     $e6f568,x   ; load spell name (ignore symbol)
-        sec                 ; subtract $60 to convert battle text to dialog text
+@842a:  lda     f:MagicName+1,x
+        sec                             ; subtract $60 to convert to big font
         sbc     #$60
-        sta     $9183,y     ; store in buffer
-        cmp     #$9f        ; break if $ff was reached
+        sta     $9183,y                 ; store in buffer
+        cmp     #$9f                    ; break if $ff was reached
         beq     @843f
         inx
         iny
-        cpy     #$0004      ; copy up to 4 bytes (should be 7)
+        cpy     #$0004                  ; copy up to 4 bytes (should be 7)
         bne     @842a
 @843f:  tdc
-        sta     $9183,y     ; store $00 in the last byte
+        sta     $9183,y                 ; store $00 in the last byte
         tdc
         pha
         plb
@@ -15335,49 +15204,49 @@ UpdateDlgTextOneLine:
         lda     $be
         sta     $cd
         jsr     DrawDlgText
-        jmp     @82a1       ; increment dialog pointer by 2
+        jmp     @82a1                   ; increment dialog pointer by 2
 
 ; $20-$7f: normal letter
 @845a:  lda     $bd
         sta     $cd
         stz     $ce
         jsr     DrawDlgText
-        jmp     @829d       ; increment dialog pointer by 1
+        jmp     @829d                   ; increment dialog pointer by 1
 
 ; $80-$ff: dte
 @8466:  and     #$7f
         asl
         tay
-        ldx     #.loword(DTETbl)      ; pointer to dte table
+        ldx     #.loword(DTETbl)        ; pointer to dte table
         stx     $2a
         lda     #^DTETbl
         sta     $2c
         lda     [$2a],y
-        sta     $7e9183     ; store first byte in text buffer
+        sta     $7e9183                 ; store first byte in text buffer
         iny
         lda     [$2a],y
-        sta     $7e9184     ; store second byte in text buffer
+        sta     $7e9184                 ; store second byte in text buffer
         tdc
-        sta     $7e9185     ; end of string
-        stz     $cf         ; set text position to 0
-        jmp     @8263       ; write both letters
+        sta     $7e9185                 ; end of string
+        stz     $cf                     ; set text position to 0
+        jmp     @8263                   ; write both letters
 
 ; ------------------------------------------------------------------------------
 
 ; [ load dialog font widths ]
 
 InitDlgVWF:
-@848a:  lda     #$7e        ; set wram address
+@848a:  lda     #$7e                    ; set wram address
         sta     hWMADDH
         ldx     #$9e00
         stx     hWMADDL
         ldx     $00
-@8497:  lda     f:FontWidth,x   ; copy widths for letters $00-$7f
+@8497:  lda     f:FontWidth,x           ; copy widths for letters $00-$7f
         sta     hWMDATA
         inx
         cpx     #$0080
         bne     @8497
-        ldx     #.loword(DTETbl)      ; set a pointer to the dte table
+        ldx     #.loword(DTETbl)        ; set a pointer to the dte table
         stx     $2a
         lda     #^DTETbl
         sta     $2c
@@ -15386,15 +15255,15 @@ InitDlgVWF:
 @84b0:  stz     $1a
         lda     [$2a],y
         tax
-        lda     f:FontWidth,x   ; get the width of the first letter
+        lda     f:FontWidth,x           ; get the width of the first letter
         sta     $1a
         iny
         lda     [$2a],y
         tax
-        lda     f:FontWidth,x   ; add the width of the second letter
+        lda     f:FontWidth,x           ; add the width of the second letter
         clc
         adc     $1a
-        sta     hWMDATA       ; store in wram
+        sta     hWMDATA                 ; store in wram
         iny
         cpy     #$0100
         bne     @84b0
@@ -15405,38 +15274,38 @@ InitDlgVWF:
 ; [ update dialog text graphics ]
 
 DrawDlgText:
-@84d0:  ldx     $cd         ; letter number
-        lda     f:FontWidth,x   ; letter width
+@84d0:  ldx     $cd                     ; letter number
+        lda     f:FontWidth,x           ; letter width
         clc
-        adc     $bf         ; add to current x position
+        adc     $bf                     ; add to current x position
         cmp     $c8
-        bcc     @84e1       ; branch if less than max position
+        bcc     @84e1                   ; branch if less than max position
         jsr     NewLine
         rts
 @84e1:  jsr     LoadLetterGfx
         jsr     DrawLetter
         jsr     CopyDlgTextToBuf
-        ldx     $c1         ; set vram tile address
+        ldx     $c1                     ; set vram tile address
         stx     $c3
-        inc     $c5         ; text graphics needs to get copied
-        ldx     $cd         ; letter index
-        lda     $bf         ; x position
+        inc     $c5                     ; text graphics needs to get copied
+        ldx     $cd                     ; letter index
+        lda     $bf                     ; x position
         and     #$0f
         clc
-        adc     f:FontWidth,x   ; add letter width
+        adc     f:FontWidth,x           ; add letter width
         and     #$f0
-        beq     @850e       ; branch if it hasn't reached the next tile
+        beq     @850e                   ; branch if it hasn't reached the next tile
         jsr     ShiftPrevLetter
         longac
-        lda     $c1         ; increment tile vram pointer
+        lda     $c1                     ; increment tile vram pointer
         adc     #$0020
         sta     $c1
         shorta0
-@850e:  ldx     $cd         ; letter index
-        lda     $bf         ; x position
+@850e:  ldx     $cd                     ; letter index
+        lda     $bf                     ; x position
         clc
-        adc     f:FontWidth,x   ; add letter width
-        sta     $bf         ; set new x position
+        adc     f:FontWidth,x           ; add letter width
+        sta     $bf                     ; set new x position
         rts
 
 ; ------------------------------------------------------------------------------
@@ -15444,29 +15313,29 @@ DrawDlgText:
 ; [ new line ]
 
 NewLine:
-@851a:  lda     #$ff        ; new line ($00ff)
+@851a:  lda     #$ff                    ; new line ($00ff)
         sta     $cd
         stz     $ce
         jsr     LoadLetterGfx
         jsr     DrawLetter
         jsr     CopyDlgTextToBuf
-        lda     #$04        ; set x position back to the left (carriage return)
+        lda     #$04                    ; set x position back to the left
         sta     a:$00bf
         longac
-        lda     $c1         ; set tile vram address
+        lda     $c1                     ; set tile vram address
         sta     $c3
-        and     #$0600      ; set current vram position to the beginning of the next line
+        and     #$0600                  ; move vram pointer to next line
         adc     #$0200
         and     #$07ff
         sta     $c1
         shorta0
-        inc     $c5         ; text graphics needs to get copied
+        inc     $c5                     ; text graphics needs to get copied
         jsr     ClearTextGfxBuf
-        ldx     $c1         ; return unless end of page was reached (end of line 4)
+        ldx     $c1                     ; return unless end of page was reached
         bne     @8553
-        lda     #$09        ; text fully displayed
+        lda     #$09                    ; text fully displayed
         sta     $cc
-        lda     #$02        ; waiting for key release
+        lda     #$02                    ; waiting for key release
         sta     $d3
 @8553:  rts
 
@@ -15475,23 +15344,23 @@ NewLine:
 ; [ new page ]
 
 NewPage:
-@8554:  lda     #$ff        ; new line ($00ff)
+@8554:  lda     #$ff                    ; new line ($00ff)
         sta     $cd
         stz     $ce
         jsr     LoadLetterGfx
         jsr     DrawLetter
         jsr     CopyDlgTextToBuf
-        lda     #$04        ; set x position back to the left (carriage return)
+        lda     #$04                    ; set x position back to the left
         sta     a:$00bf
-        ldx     $c1         ; set tile vram address
+        ldx     $c1                     ; set tile vram address
         stx     $c3
-        inc     $c5         ; text graphics needs to get copied
+        inc     $c5                     ; text graphics needs to get copied
         ldx     $00
-        stx     $c1         ; set current vram position to the top of the page
+        stx     $c1                     ; move vram pointer to top of page
         jsr     ClearTextGfxBuf
-        lda     #$09        ; text fully displayed
+        lda     #$09                    ; text fully displayed
         sta     $cc
-        lda     #$02        ; waiting for key release
+        lda     #$02                    ; waiting for key release
         sta     $d3
         rts
 
@@ -15514,7 +15383,7 @@ ClearDlgTextVRAM:
         lda     #$00
         sta     $4304
         sta     $4307
-        ldx     #$1000      ; clear $3800-$3fff in vram
+        ldx     #$1000                  ; clear $3800-$3fff in vram
         stx     $4305
         lda     #$01
         sta     hMDMAEN
@@ -15525,22 +15394,22 @@ ClearDlgTextVRAM:
 ; [ clear dialog text graphics region in vram ]
 
 ClearDlgTextRegion:
-@85b0:  lda     $cc         ; current dialog text region to clear
+@85b0:  lda     $cc                     ; current dialog text region to clear
         beq     @85f2
-        cmp     #$09        ; return if none
+        cmp     #$09                    ; return if none
         beq     @85f2
         dec
         asl
         tax
         longa
-        lda     f:_c085f3,x   ; set vram address
+        lda     f:_c085f3,x             ; set vram address
         sta     hVMADDL
         shorta0
-        stz     hMDMAEN     ; disable dma
+        stz     hMDMAEN                 ; disable dma
         lda     #$80
-        sta     hVMAINC     ; clear $01c0 bytes (copy from $00)
+        sta     hVMAINC                 ; clear $01c0 bytes (copy from $00)
         lda     #$09
-        sta     $4300       ; fixed address dma to $2118
+        sta     $4300                   ; fixed address dma to $2118
         lda     #$18
         sta     $4301
         ldx     #$0000
@@ -15548,7 +15417,7 @@ ClearDlgTextRegion:
         lda     #$00
         sta     $4304
         sta     $4307
-        ldx     #$01c0      ; 7 tiles (32x32, 2bpp)
+        ldx     #$01c0                  ; 7 tiles (32x32, 2bpp)
         stx     $4305
         lda     #$01
         sta     hMDMAEN
@@ -15565,29 +15434,29 @@ _c085f3:
 ; [ copy dialog text graphics to vram ]
 
 TfrDlgTextGfx:
-@8603:  lda     $c5         ; return if there is no tile to be copied
+@8603:  lda     $c5                     ; return if there's no tile to be copied
         beq     _8641
         stz     $c5
 
 TfrMapTitleGfx:
 @8609:  stz     hMDMAEN
-        lda     #$80        ; vram control register
+        lda     #$80                    ; vram control register
         sta     hVMAINC
         longac
-        lda     $c3         ; vram destination
+        lda     $c3                     ; vram destination
         adc     #$3800
         sta     hVMADDL
         shorta0
-        lda     #$41        ; dma control register
+        lda     #$41                    ; dma control register
         sta     $4300
-        lda     #$18        ; dma destination register
+        lda     #$18                    ; dma destination register
         sta     $4301
-        ldx     #$9083      ; dma source address
+        ldx     #$9083                  ; dma source address
         stx     $4302
         lda     #$7e
         sta     $4304
         sta     $4307
-        ldx     #$0040      ; dma size (four 2bpp tiles)
+        ldx     #$0040                  ; dma size (four 2bpp tiles)
         stx     $4305
         lda     #$01
         sta     hMDMAEN
@@ -15603,118 +15472,28 @@ CopyDlgTextToBuf:
 @8642:  lda     #$7e
         pha
         plb
-        stz     $9083       ; left two 8x8 tiles, top 4 rows of pixels are always blank
-        stz     $9084
-        stz     $9085
-        stz     $9086
-        stz     $9087
-        stz     $9088
-        stz     $9089
-        stz     $908a
-        lda     $9104       ; copy left half of tiles
-        sta     $908b       ; bp 1-2
-        lda     $9144
-        sta     $908c       ; bp 3-4
-        lda     $9106
-        sta     $908d
-        lda     $9146
-        sta     $908e
-        lda     $9108
-        sta     $908f
-        lda     $9148
-        sta     $9090
-        lda     $910a
-        sta     $9091
-        lda     $914a
-        sta     $9092
-        lda     $910c
-        sta     $9093
-        lda     $914c
-        sta     $9094
-        lda     $910e
-        sta     $9095
-        lda     $914e
-        sta     $9096
-        lda     $9110
-        sta     $9097
-        lda     $9150
-        sta     $9098
-        lda     $9112
-        sta     $9099
-        lda     $9152
-        sta     $909a
-        lda     $9114
-        sta     $909b
-        lda     $9154
-        sta     $909c
-        lda     $9116
-        sta     $909d
-        lda     $9156
-        sta     $909e
-        lda     $9118
-        sta     $909f
-        lda     $9158
-        sta     $90a0
-        lda     $911a
-        sta     $90a1
-        lda     $915a
-        sta     $90a2
-        stz     $90a3       ; right two 8x8 tiles, top 4 rows of pixels are always blank
-        stz     $90a4
-        stz     $90a5
-        stz     $90a6
-        stz     $90a7
-        stz     $90a8
-        stz     $90a9
-        stz     $90aa
-        lda     $9103       ; copy right half of tiles
-        sta     $90ab
-        lda     $9143
-        sta     $90ac
-        lda     $9105
-        sta     $90ad
-        lda     $9145
-        sta     $90ae
-        lda     $9107
-        sta     $90af
-        lda     $9147
-        sta     $90b0
-        lda     $9109
-        sta     $90b1
-        lda     $9149
-        sta     $90b2
-        lda     $910b
-        sta     $90b3
-        lda     $914b
-        sta     $90b4
-        lda     $910d
-        sta     $90b5
-        lda     $914d
-        sta     $90b6
-        lda     $910f
-        sta     $90b7
-        lda     $914f
-        sta     $90b8
-        lda     $9111
-        sta     $90b9
-        lda     $9151
-        sta     $90ba
-        lda     $9113
-        sta     $90bb
-        lda     $9153
-        sta     $90bc
-        lda     $9115
-        sta     $90bd
-        lda     $9155
-        sta     $90be
-        lda     $9117
-        sta     $90bf
-        lda     $9157
-        sta     $90c0
-        lda     $9119
-        sta     $90c1
-        lda     $9159
-        sta     $90c2
+
+; left two 8x8 tiles
+.repeat 8, i
+        stz     $9083+i                 ; top 4 rows of pixels are always blank
+.endrep
+.repeat 12, i
+        lda     $9104+i*2               ; copy left half of tiles
+        sta     $908b+i*2               ; bp 1-2
+        lda     $9144+i*2
+        sta     $908c+i*2               ; bp 3-4
+.endrep
+
+; right two 8x8 tiles
+.repeat 8, i
+        stz     $90a3+i                 ; top 4 rows of pixels are always blank
+.endrep
+.repeat 12, i
+        lda     $9103+i*2               ; copy right half of tiles
+        sta     $90ab+i*2
+        lda     $9143+i*2
+        sta     $90ac+i*2
+.endrep
         tdc
         pha
         plb
@@ -15824,29 +15603,24 @@ DrawLetter:
 @88d3:  lda     #$7e
         pha
         plb
-        lda     a:$00bf       ; branch if on an even tile
+        lda     a:$00bf                 ; branch if on an even tile
         and     #$08
-        beq     @88e1
-        jmp     @8924
-@88e1:  ldx     $00
-@88e3:  lda     $9104,x     ; copy left part of letter buffer to left part of tile
-        ora     $9004,x
-        sta     $9104,x
-        lda     $9103,x     ; copy middle part of letter buffer to middle part of tile
-        ora     $9003,x
-        sta     $9103,x
-        lda     $9124,x     ; copy right part of letter buffer to right part of tile
-        ora     $9024,x
-        sta     $9124,x
-        lda     $9144,x     ; repeat for bpp 3-4
-        ora     $9044,x
-        sta     $9144,x
-        lda     $9143,x
-        ora     $9043,x
-        sta     $9143,x
-        lda     $9164,x
-        ora     $9064,x
-        sta     $9164,x
+        jne     @8924
+
+; odd tile
+        ldx     $00
+@88e3:
+.repeat 2, i
+        lda     $9104+i*$40,x           ; left part
+        ora     $9004+i*$40,x
+        sta     $9104+i*$40,x
+        lda     $9103+i*$40,x           ; middle part
+        ora     $9003+i*$40,x
+        sta     $9103+i*$40,x
+        lda     $9124+i*$40,x           ; right part
+        ora     $9024+i*$40,x
+        sta     $9124+i*$40,x
+.endrep
         inx2
         cpx     #$0020
         bne     @88e3
@@ -15854,25 +15628,21 @@ DrawLetter:
         pha
         plb
         rts
+
+; even tile
 @8924:  ldx     $00
-@8926:  lda     $9103,x     ; copy left part of letter to middle part of tile
-        ora     $9004,x
-        sta     $9103,x
-        lda     $9124,x     ; copy middle part of letter to right part of tile
-        ora     $9003,x
-        sta     $9124,x
-        lda     $9123,x     ; copy right part of letter to far right part of tile
-        ora     $9024,x
-        sta     $9123,x
-        lda     $9143,x     ; repeat for bpp 3-4
-        ora     $9044,x
-        sta     $9143,x
-        lda     $9164,x
-        ora     $9043,x
-        sta     $9164,x
-        lda     $9163,x
-        ora     $9064,x
-        sta     $9163,x
+@8926:
+.repeat 2, i
+        lda     $9103+i*$40,x           ; left part
+        ora     $9004+i*$40,x
+        sta     $9103+i*$40,x
+        lda     $9124+i*$40,x           ; right part
+        ora     $9003+i*$40,x
+        sta     $9124+i*$40,x
+        lda     $9123+i*$40,x           ; middle part
+        ora     $9024+i*$40,x
+        sta     $9123+i*$40,x
+.endrep
         inx2
         cpx     #$0020
         bne     @8926
@@ -15944,110 +15714,34 @@ LoadLetterGfx:
         lda     a:$00bf                 ; current x position of text
         and     #$07                    ; get position within 8x8 tile
         cmp     #$04
-        bne     @8a51                   ; branch if not 4 (halfway through tile)
-        jmp     @8b23
-@8a51:  bcc     @8a56                   ; branch if less than 4
-        jmp     @8b42
-@8a56:  eor     $02                     ; letter needs to shift left
+        jeq     @8b23                   ; branch if 4 (halfway through tile)
+        jcs     @8b42                   ; branch if more than 4
+
+; letter needs to shift left
+        eor     $02
         clc
         adc     #$05
         sta     $1e                     ; +$1e = 4 - x
         stz     $1f
         longa
+.repeat 11, i
         ldy     $1e
-        lda     f:@FontGfx,x            ; letter graphics (first row of pixels)
-@8a67:  asl                             ; shift left
+        lda     f:@FontGfx+i*2,x        ; letter graphics (first row of pixels)
+:       asl                             ; shift left
         dey
-        bne     @8a67
-        sta     $9003                   ; move to buffer
+        bne     :-
+        sta     $9003+i*2               ; move to buffer
         lsr
-        sta     $9045                   ; shadow
-        ldy     $1e
-        lda     f:@FontGfx+2,x          ; next line
-@8a78:  asl
-        dey
-        bne     @8a78
-        sta     $9005
-        lsr
-        sta     $9047
-        ldy     $1e
-        lda     f:@FontGfx+4,x
-@8a89:  asl
-        dey
-        bne     @8a89
-        sta     $9007
-        lsr
-        sta     $9049
-        ldy     $1e
-        lda     f:@FontGfx+6,x
-@8a9a:  asl
-        dey
-        bne     @8a9a
-        sta     $9009
-        lsr
-        sta     $904b
-        ldy     $1e
-        lda     f:@FontGfx+8,x
-@8aab:  asl
-        dey
-        bne     @8aab
-        sta     $900b
-        lsr
-        sta     $904d
-        ldy     $1e
-        lda     f:@FontGfx+10,x
-@8abc:  asl
-        dey
-        bne     @8abc
-        sta     $900d
-        lsr
-        sta     $904f
-        ldy     $1e
-        lda     f:@FontGfx+12,x
-@8acd:  asl
-        dey
-        bne     @8acd
-        sta     $900f
-        lsr
-        sta     $9051
-        ldy     $1e
-        lda     f:@FontGfx+14,x
-@8ade:  asl
-        dey
-        bne     @8ade
-        sta     $9011
-        lsr
-        sta     $9053
-        ldy     $1e
-        lda     f:@FontGfx+16,x
-@8aef:  asl
-        dey
-        bne     @8aef
-        sta     $9013
-        lsr
-        sta     $9055
-        ldy     $1e
-        lda     f:@FontGfx+18,x
-@8b00:  asl
-        dey
-        bne     @8b00
-        sta     $9015
-        lsr
-        sta     $9057
-        ldy     $1e
-        lda     f:@FontGfx+20,x
-@8b11:  asl
-        dey
-        bne     @8b11
-        sta     $9017
-        lsr
-        sta     $9059
+        sta     $9045+i*2               ; shadow
+.endrep
         shorta0
         tdc
         pha
         plb
         rts
-@8b23:  longa                           ; letter doesn't need to shift
+
+; letter doesn't need to shift
+@8b23:  longa
         ldy     $00
 @8b27:  lda     f:@FontGfx,x            ; letter graphics
         sta     $9003,y
@@ -16062,143 +15756,27 @@ LoadLetterGfx:
         pha
         plb
         rts
-@8b42:  sec                             ; letter needs to shift right
+
+; letter needs to shift right
+@8b42:  sec
         sbc     #$04
         sta     $1e                     ; +$1e = x - 4
         stz     $1f
         longa
+.repeat 11, i
         ldy     $1e
-        lda     f:@FontGfx,x            ; letter graphics
-@8b51:  lsr
-        ror     $9023
+        lda     f:@FontGfx+i*2,x        ; letter graphics
+:       lsr
+        ror     $9023+i*2
         dey
-        bne     @8b51
-        sta     $9003
+        bne     :-
+        sta     $9003+i*2
         lsr
-        sta     $9045
-        lda     $9023
+        sta     $9045+i*2
+        lda     $9023+i*2
         ror
-        sta     $9065
-        ldy     $1e
-        lda     f:@FontGfx+2,x
-@8b6c:  lsr
-        ror     $9025
-        dey
-        bne     @8b6c
-        sta     $9005
-        lsr
-        sta     $9047
-        lda     $9025
-        ror
-        sta     $9067
-        ldy     $1e
-        lda     f:@FontGfx+4,x
-@8b87:  lsr
-        ror     $9027
-        dey
-        bne     @8b87
-        sta     $9007
-        lsr
-        sta     $9049
-        lda     $9027
-        ror
-        sta     $9069
-        ldy     $1e
-        lda     f:@FontGfx+6,x
-@8ba2:  lsr
-        ror     $9029
-        dey
-        bne     @8ba2
-        sta     $9009
-        lsr
-        sta     $904b
-        lda     $9029
-        ror
-        sta     $906b
-        ldy     $1e
-        lda     f:@FontGfx+8,x
-@8bbd:  lsr
-        ror     $902b
-        dey
-        bne     @8bbd
-        sta     $900b
-        lsr
-        sta     $904d
-        lda     $902b
-        ror
-        sta     $906d
-        ldy     $1e
-        lda     f:@FontGfx+10,x
-@8bd8:  lsr
-        ror     $902d
-        dey
-        bne     @8bd8
-        sta     $900d
-        lsr
-        sta     $904f
-        lda     $902d
-        ror
-        sta     $906f
-        ldy     $1e
-        lda     f:@FontGfx+12,x
-@8bf3:  lsr
-        ror     $902f
-        dey
-        bne     @8bf3
-        sta     $900f
-        lsr
-        sta     $9051
-        lda     $902f
-        ror
-        sta     $9071
-        ldy     $1e
-        lda     f:@FontGfx+14,x
-@8c0e:  lsr
-        ror     $9031
-        dey
-        bne     @8c0e
-        sta     $9011
-        lsr
-        sta     $9053
-        lda     $9031
-        ror
-        sta     $9073
-        ldy     $1e
-        lda     f:@FontGfx+16,x
-@8c29:  lsr
-        ror     $9033
-        dey
-        bne     @8c29
-        sta     $9013
-        lsr
-        sta     $9055
-        lda     $9033
-        ror
-        sta     $9075
-        ldy     $1e
-        lda     f:@FontGfx+18,x
-@8c44:  lsr
-        ror     $9035
-        dey
-        bne     @8c44
-        sta     $9015
-        lsr
-        sta     $9057
-        lda     $9035
-        ror
-        sta     $9077
-        ldy     $1e
-        lda     f:@FontGfx+20,x
-@8c5f:  lsr
-        ror     $9037
-        dey
-        bne     @8c5f
-        sta     $9017
-        lsr
-        sta     $9059
-        lda     $9037
-        ror
-        sta     $9079
+        sta     $9065+i*2
+.endrep
         shorta0
         tdc
         pha
@@ -16331,8 +15909,7 @@ UpdatePalAnim:
         adc     #8
         tay
         cmp     #16
-        beq     @8dc7
-        jmp     @8d7b
+        jne     @8d7b
 @8dc7:  rts
 
 ; ------------------------------------------------------------------------------
@@ -17196,14 +16773,12 @@ _c09a6d:
         lda     [$e5],y
         sta     $ea
         cmp     #$31
-        bcs     @9b42
-        jmp     InitObjScript
-@9b42:  cmp     #$35
-        bcs     @9b49
-        jmp     ExecPartyObjScript
+        jcc     InitObjScript
+        cmp     #$35
+        jcc     ExecPartyObjScript
 
 ; execute event command
-@9b49:  sec
+        sec
         sbc     #$35
         longa
         asl
@@ -17373,7 +16948,7 @@ EventCmd_35:
 @9c64:  sta     $e2         ; object to wait for
         lda     #$80
         sta     $e1         ; waiting for object
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17387,7 +16962,7 @@ EventCmd_36:
         lda     $087c,y
         and     #$ef
         sta     $087c,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17401,7 +16976,7 @@ EventCmd_78:
         lda     $087c,y
         ora     #$10
         sta     $087c,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17420,7 +16995,7 @@ EventCmd_37:
         bcs     @9ca4       ; branch if not a character
         lda     $ec
         sta     $1601,y     ; set character graphics index
-@9ca4:  lda     #$03
+@9ca4:  lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17443,7 +17018,7 @@ EventCmd_43:
         and     #$f1
         ora     $1a
         sta     $0881,y
-        lda     #$03
+        lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17464,7 +17039,7 @@ EventCmd_44:
         and     #$1f
         ora     $1a
         sta     $0868,y
-        lda     #$03
+        lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17472,7 +17047,7 @@ EventCmd_44:
 ; [ event command $45: wait for character objects to update ]
 
 EventCmd_45:
-@9ce2:  lda     #$01
+@9ce2:  lda     #1
         sta     $0798
         jmp     IncEventPtrContinue
 
@@ -17518,7 +17093,7 @@ EventCmd_38:
 
 EventCmd_39:
 @9d16:  stz     $0559
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17530,7 +17105,7 @@ EventCmd_3a:
         lda     #$02
         sta     $087c,y
         sta     $087d,y
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17607,7 +17182,7 @@ EventCmd_3c:
         sty     $0801
 @9da3:  lda     #$01
         sta     $0798
-        lda     #$05
+        lda     #5
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17708,7 +17283,7 @@ EventCmd_3d:
         lda     $1850,y     ; enable object in character data
         ora     #$40
         sta     $1850,y
-@9e62:  lda     #$02
+@9e62:  lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17741,7 +17316,7 @@ EventCmd_3e:
         lda     $1850,y     ; disable object in character data
         and     #$3f
         sta     $1850,y
-@9e9d:  lda     #$02
+@9e9d:  lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -17854,7 +17429,7 @@ EventCmd_77:
         sta     $160e,y
         jsr     UpdateAbilities
 @9f70:  jsr     UpdateExp
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -18078,7 +17653,7 @@ EventCmd_40:
         sta     $0867,y
         txy
         jsr     UpdateAbilities
-        lda     #$03
+        lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -18088,48 +17663,47 @@ EventCmd_40:
 ; y = pointer to character data
 
 UpdateAbilities:
-@a17f:  lda     $1600,y     ; actor index
+@a17f:  lda     $1600,y                 ; actor index
         cmp     #$00
-        beq     @a196       ; branch if terra
+        beq     @a196                   ; branch if terra
         cmp     #$06
-        beq     @a1b8       ; branch if celes
+        beq     @a1b8                   ; branch if celes
         cmp     #$02
-        beq     @a1da       ; branch if cyan
+        beq     @a1da                   ; branch if cyan
         cmp     #$05
-        bne     @a195       ; return if not sabin
-        jmp     @a201
+        jeq     @a201                   ; branch if sabin
 @a195:  rts
 
 ; update terra's natural magic
 @a196:  ldx     $00
-@a198:  lda     $ece3c1,x   ; level that the spell is learned
-        cmp     $1608,y     ; current level
+@a198:  lda     f:NaturalMagic_0000+1,x ; level that the spell is learned
+        cmp     $1608,y                 ; current level
         beq     @a1a3
-        bcs     @a195       ; return if greater than current level
+        bcs     @a195                   ; return if greater than current level
 @a1a3:  phy
-        lda     $ece3c0,x   ; spell number
+        lda     f:NaturalMagic_0000,x   ; spell number
         tay
         lda     #$ff
-        sta     $1a6e,y     ; learn spell
+        sta     $1a6e,y                 ; learn spell
         ply
-        inx2                ; next natural spell (16 total)
+        inx2                            ; next natural spell (16 total)
         cpx     #$0020
         beq     @a195
         bra     @a198
 
 ; update celes' natural magic
 @a1b8:  ldx     $00
-@a1ba:  lda     $ece3e1,x   ; level that the spell is learned
-        cmp     $1608,y     ; current level
+@a1ba:  lda     f:NaturalMagic_0001,x   ; level that the spell is learned
+        cmp     $1608,y                 ; current level
         beq     @a1c5
-        bcs     @a195       ; return if greater than current level
+        bcs     @a195                   ; return if greater than current level
 @a1c5:  phy
-        lda     $ece3e0,x   ; spell number
+        lda     f:NaturalMagic_0001+1,x ; spell number
         tay
         lda     #$ff
-        sta     $1bb2,y     ; learn spell
+        sta     $1bb2,y                 ; learn spell
         ply
-        inx2                ; next natural spell (16 total)
+        inx2                            ; next natural spell (16 total)
         cpx     #$0020
         beq     @a195
         bra     @a1ba
@@ -18324,7 +17898,7 @@ EventCmd_41:
         lda     $1850,y     ; set character object settings
         ora     #$80
         sta     $1850,y
-@a331:  lda     #$02
+@a331:  lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -18353,7 +17927,7 @@ EventCmd_42:
         lda     $1850,y
         and     #$7f
         sta     $1850,y
-@a365:  lda     #$02
+@a365:  lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -18383,7 +17957,7 @@ EventCmd_79:
         shorta0
         cpy     #$0290
         bne     @a36c
-        lda     #$04
+        lda     #4
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -18450,7 +18024,7 @@ EventCmd_7e:
         sta     $1f67
         lda     #$01        ; enable map load
         sta     $84
-        lda     #$03
+        lda     #3
         jmp     IncEventPtrReturn
 
 ; ------------------------------------------------------------------------------
@@ -18468,7 +18042,7 @@ EventCmd_7a:
         sta     $088a,y
         lda     $ee
         sta     $088b,y
-        lda     #$05
+        lda     #5
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -18482,7 +18056,7 @@ EventCmd_7b:
         dec
         sta     $1a6d       ; set current party
         jsr     ChangeParty
-@a450:  lda     #$01
+@a450:  lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -18496,7 +18070,7 @@ EventCmd_7c:
         lda     $087c,y
         ora     #$40
         sta     $087c,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -18510,7 +18084,7 @@ EventCmd_7d:
         lda     $087c,y
         and     #$bf
         sta     $087c,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -18611,7 +18185,7 @@ EventCmd_4b:
 EventCmd_4e:
 @a4f9:  inc     $56         ; enable battle
         stz     $078a       ; enable blur and sound
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrReturn
 
 ; ------------------------------------------------------------------------------
@@ -19305,7 +18879,7 @@ EventCmd_70:
         inc
         sta     $0549
         shorta0
-@a8c9:  lda     #$03
+@a8c9:  lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -19342,7 +18916,7 @@ EventCmd_5e:
         eor     $02
         sta     $054d
         shorta0
-@a912:  lda     #$03
+@a912:  lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -19383,7 +18957,7 @@ EventCmd_71:
         inc
         sta     $054d
         shorta0
-@a95f:  lda     #$03
+@a95f:  lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -19420,7 +18994,7 @@ EventCmd_5f:
         eor     $02
         sta     $0551
         shorta0
-@a9a8:  lda     #$03
+@a9a8:  lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -19586,7 +19160,7 @@ EventCmd_62:
         sta     $11f0       ; mosaic speed
         ldx     #$1e00
         stx     $0796       ; mosaic counter
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -20197,9 +19771,8 @@ EventCmd_8a:
 EventCmd_8b:
 @ae7b:  jsr     CalcCharPtr
         cpy     #$0250
-        bcc     @ae86       ; return if not a character
-        jmp     @aed3
-@ae86:  jsr     CalcMaxHP
+        jcs     @aed3
+        jsr     CalcMaxHP
         lda     $ec
         and     #$7f
         cmp     #$7f
@@ -20303,9 +19876,8 @@ CalcMaxHP:
 EventCmd_8c:
 @af3e:  jsr     CalcCharPtr
         cpy     #$0250
-        bcc     @af49
-        jmp     @af90
-@af49:  jsr     CalcMaxMP
+        jcs     @af90
+        jsr     CalcMaxMP
         lda     $ec
         and     #$7f
         cmp     #$7f
@@ -20602,7 +20174,7 @@ EventCmd_a1:
         sta     $118b,y
         sta     $118c,y
         sta     $118d,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -20611,7 +20183,7 @@ EventCmd_a1:
 
 EventCmd_a2:
 @b130:  jsr     ClearOverlayTiles
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -20647,7 +20219,7 @@ EventCmd_b1:
 @b162:  ldx     $e8         ; decrement stack pointer
         dex3
         stx     $e8
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -20682,7 +20254,7 @@ EventCmd_bc:
 @b194:  ldx     $e8         ; decrement stack pointer
         dex3
         stx     $e8
-        lda     #$03
+        lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21061,7 +20633,7 @@ EventCmd_cf:
 EventCmd_e7:
 @b394:  lda     $eb
         sta     $0795
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21080,7 +20652,7 @@ EventCmd_e4:
         asl
         bra     @b3a9
 @b3af:  sta     $1eb4
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21121,9 +20693,9 @@ EventCmd_e3:
         tay
         shorta0
         inx
-        cpx     #$0008
+        cpx     #8
         bne     @b3e5
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21166,9 +20738,9 @@ EventCmd_de:
         tay
         shorta0
         inx
-        cpx     #$0008
+        cpx     #8
         bne     @b43c
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21209,9 +20781,9 @@ EventCmd_df:
         tay
         shorta0
         inx
-        cpx     #$0008
+        cpx     #8
         bne     @b493
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21260,7 +20832,7 @@ CharMaskTbl:
 EventCmd_e0:
 @b513:  ldx     $1edc
         stx     $1eb4
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21270,7 +20842,7 @@ EventCmd_e0:
 EventCmd_e1:
 @b51e:  ldx     $1ede
         stx     $1eb4
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21288,7 +20860,7 @@ EventCmd_e8:
         lda     $ec
         sta     $1fc2,y
         shorta0
-        lda     #$04
+        lda     #4
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21309,7 +20881,7 @@ EventCmd_e9:
         lda     $02
 @b54b:  sta     $1fc2,y
         shorta0
-        lda     #$04
+        lda     #4
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21331,7 +20903,7 @@ EventCmd_ea:
         lda     $00
 @b566:  sta     $1fc2,y
         shorta0
-        lda     #$04
+        lda     #4
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21356,7 +20928,7 @@ EventCmd_eb:
 @b586:  lda     #$01        ; if variable is equal to value, $1eb4 = $0001
 @b588:  sta     $1eb4
         stz     $1eb5
-        lda     #$04
+        lda     #4
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21371,7 +20943,7 @@ EventCmd_d0:
         lda     $1e80,y
         ora     f:BitOrTbl,x
         sta     $1e80,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21386,7 +20958,7 @@ EventCmd_d2:
         lda     $1ea0,y
         ora     f:BitOrTbl,x
         sta     $1ea0,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21401,7 +20973,7 @@ EventCmd_d4:
         lda     $1ec0,y
         ora     f:BitOrTbl,x
         sta     $1ec0,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21416,7 +20988,7 @@ EventCmd_d1:
         lda     $1e80,y
         and     f:BitAndTbl,x
         sta     $1e80,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21431,7 +21003,7 @@ EventCmd_d3:
         lda     $1ea0,y
         and     f:BitAndTbl,x
         sta     $1ea0,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21446,7 +21018,7 @@ EventCmd_d5:
         lda     $1ec0,y
         and     f:BitAndTbl,x
         sta     $1ec0,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21461,7 +21033,7 @@ EventCmd_d6:
         lda     $1ee0,y
         ora     f:BitOrTbl,x
         sta     $1ee0,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21476,7 +21048,7 @@ EventCmd_d8:
         lda     $1f00,y
         ora     f:BitOrTbl,x
         sta     $1f00,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21491,7 +21063,7 @@ EventCmd_da:
         lda     $1f20,y
         ora     f:BitOrTbl,x
         sta     $1f20,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21506,7 +21078,7 @@ EventCmd_dc:
         lda     $1f40,y
         ora     f:BitOrTbl,x
         sta     $1f40,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21521,7 +21093,7 @@ EventCmd_d7:
         lda     $1ee0,y
         and     f:BitAndTbl,x
         sta     $1ee0,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21536,7 +21108,7 @@ EventCmd_d9:
         lda     $1f00,y
         and     f:BitAndTbl,x
         sta     $1f00,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21551,7 +21123,7 @@ EventCmd_db:
         lda     $1f20,y
         and     f:BitAndTbl,x
         sta     $1f20,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21566,7 +21138,7 @@ EventCmd_dd:
         lda     $1f40,y
         and     f:BitAndTbl,x
         sta     $1f40,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21581,7 +21153,7 @@ EventCmd_b8:
         lda     $1dc9,y
         ora     f:BitOrTbl,x
         sta     $1dc9,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21596,7 +21168,7 @@ EventCmd_b9:
         lda     $1dc9,y
         and     f:BitAndTbl,x
         sta     $1dc9,y
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21728,7 +21300,7 @@ EventCmd_f0:
         jsl     ExecSound_ext
 @b7a0:  lda     hRDNMI
         bpl     @b7a0
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21756,7 +21328,7 @@ EventCmd_ef:
         jsl     ExecSound_ext
 @b7ca:  lda     hRDNMI
         bpl     @b7ca
-        lda     #$03
+        lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21791,7 +21363,7 @@ EventCmd_f1:
         jsl     ExecSound_ext
 @b807:  lda     hRDNMI
         bpl     @b807
-        lda     #$03
+        lda     #3
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21807,7 +21379,7 @@ EventCmd_f2:
         sta     $1301
         stz     $1302
         jsl     ExecSound_ext
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21831,7 +21403,7 @@ EventCmd_f3:
         lda     #$ff
         sta     $1302
         jsl     ExecSound_ext
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21843,7 +21415,7 @@ EventCmd_f3:
 EventCmd_f4:
 @b854:  lda     $eb
         jsr     PlaySfx
-        lda     #$02
+        lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21869,7 +21441,7 @@ EventCmd_f5:
         lda     $ed
         sta     $1302
         jsl     ExecSound_ext
-        lda     #$04
+        lda     #4
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21888,7 +21460,7 @@ EventCmd_f6:
         lda     $ed
         sta     $1302
         jsl     ExecSound_ext
-        lda     #$04
+        lda     #4
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21902,7 +21474,7 @@ EventCmd_f7:
 @b8a1:  lda     #$89        ; spc command $89 (continue to next part of song)
         sta     $1300
         jsl     ExecSound_ext
-        lda     #$01
+        lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21913,7 +21485,7 @@ EventCmd_f8:
 @b8af:  lda     hAPUIO2
         beq     @b8b5
         rts
-@b8b5:  lda     #$01
+@b8b5:  lda     #1
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -21928,7 +21500,7 @@ EventCmd_f9:
         cmp     hAPUIO1
         beq     @b8c2
         rts
-@b8c2:  lda     #$02
+@b8c2:  lda     #2
         jmp     IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
@@ -22022,26 +21594,26 @@ EventCmd_ff:
 
 EventCmd_ab:
 @b91b:  lda     #$02
-        sta     $0200       ; $0200 = #$02 (load game)
+        sta     $0200                   ; $0200 = #$02 (load game)
         jsr     OpenMenu
-        lda     $307ff1     ; add 13 to random number seed
+        lda     $307ff1                 ; add 13 to random number seed
         clc
         adc     #$0d
         sta     $307ff1
-        sta     $1f6d       ; init random numbers
+        sta     $1f6d                   ; init random numbers
         sta     $1fa1
         sta     $1fa2
         sta     $1fa4
         sta     $1fa3
         sta     $1fa5
-        lda     $0205       ; set/clear event bit if there is at least one saved game
+        lda     $0205                   ; set/clear event bit if there is at least one saved game
         and     #$80
         sta     $1a
         lda     $1edf
         and     #$7f
         ora     $1a
         sta     $1edf
-        stz     $58         ; don't reload the same map
+        stz     $58                     ; don't reload the same map
         jsr     UpdateEquip
         jsr     EnableInterrupts
         lda     #1
@@ -22070,7 +21642,7 @@ EventCmd_a9:
         lda     $0200
         and     #$80
         sta     $1a
-        lda     $1edf       ; set/clear event bit if there is at least one saved game
+        lda     $1edf                   ; set/clear event bit if there is at least one saved game
         and     #$7f
         ora     $1a
         sta     $1edf
@@ -22092,7 +21664,7 @@ EventCmd_aa:
         lda     $0200
         and     #$80
         sta     $1a
-        lda     $1edf       ; set/clear event bit if there is at least one saved game
+        lda     $1edf                   ; set/clear event bit if there is at least one saved game
         and     #$7f
         ora     $1a
         sta     $1edf
@@ -22102,11 +21674,11 @@ EventCmd_aa:
 
 ; ------------------------------------------------------------------------------
 
-; [ event command $bb: the end cinematic ]
+; [ event command $bb: "the end" cinematic ]
 
 EventCmd_bb:
 @b9be:  jsr     DisableInterrupts
-        jml     $e5f400     ; the end cinematic
+        jml     $e5f400                 ; "the end" cinematic
 
 ; ------------------------------------------------------------------------------
 
@@ -22157,7 +21729,7 @@ EventCmd_bf:
 ; [ event command $a6: disable pyramid ]
 
 EventCmd_a6:
-@ba09:  stz     $0781       ; disable pyramid
+@ba09:  stz     $0781                   ; disable pyramid
         jsr     ClearWindowPos
         lda     #1
         jmp     IncEventPtrContinue
@@ -22169,15 +21741,15 @@ EventCmd_a6:
 ; $eb = pyramid object
 
 EventCmd_a7:
-@ba14:  lda     #$01
-        sta     $0781       ; enable pyramid
+@ba14:  lda     #1
+        sta     $0781                   ; enable pyramid
         lda     $eb
         sta     hWRMPYA
         lda     #$29
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
-        stx     $077f       ; set pointer to pyramid object
+        stx     $077f                   ; set pointer to pyramid object
         lda     #2
         jmp     IncEventPtrContinue
 
@@ -22186,7 +21758,7 @@ EventCmd_a7:
 ; [ event command $ba: ending cinematic ]
 
 EventCmd_ba:
-@ba31:  lda     $eb         ; $0201 = ending cinematic number
+@ba31:  lda     $eb                     ; $0201: ending cinematic number
         sta     $0201
         jsr     PushDP
         jsr     DisableInterrupts
@@ -22205,7 +21777,7 @@ EventCmd_ba:
 EventCmd_a8:
 @ba51:  jsr     PushDP
         jsr     DisableInterrupts
-        jsl     FloatingIslandScene_ext
+        jsl     FloatingContScene_ext
         jsr     PopDP
         jsr     DisableInterrupts
         jsr     InitInterrupts
@@ -22232,13 +21804,13 @@ EventCmd_ad:
 
 UpdateCtrlFlags:
 @ba81:  ldy     $0803
-        lda     $087f,y     ; party facing direction
+        lda     $087f,y                 ; party facing direction
         tax
         lda     $1eb6
         and     #$f0
         ora     f:BitOrTbl,x
         sta     $1eb6
-        lda     $06         ; branch if a button is not down
+        lda     $06                     ; branch if A button is not down
         bpl     @baa2
         lda     $1eb6
         ora     #$10
@@ -22319,11 +21891,11 @@ GetSwitchOffset:
 @baed:  longa
         tax
         lsr3
-        tay                 ; y = byte pointer
+        tay                             ; y = byte pointer
         shorta0
         txa
         and     #$07
-        tax                 ; x = bit mask pointer
+        tax                             ; x = bit mask pointer
         rts
 
 ; ------------------------------------------------------------------------------
@@ -22394,7 +21966,7 @@ DecTimersMenuBattle:
         dex
         stx     $1189
         bra     @bb68
-@bb59:  lda     $1188       ; used during emperor's banquet
+@bb59:  lda     $1188                   ; used during emperor's banquet
         and     #$20
         beq     @bb68
         lda     $1dd1
@@ -22649,7 +22221,7 @@ InitSavedGame:
         sta     $0743
         jsr     PopPartyPal
         ldy     #$07d9
-        sty     $07fd                   ; clear character object slot 1 through 3
+        sty     $07fd                   ; clear character object slots 1-4
         sty     $07ff
         sty     $0801
         jsr     _c0714a
@@ -22681,7 +22253,7 @@ InitNewGame:
         shorta0
         cpx     #$0250
         bne     @bd9a
-        ldx     $00                     ; clear characters visible/enabled, battle order, party
+        ldx     $00                     ; clear character flags
 @bdb3:  stz     $1850,x
         inx
         cpx     #$0010
@@ -22719,16 +22291,16 @@ InitNewGame:
         cpx     #$0054
         bne     @bdff
         ldx     $00                     ; load starting rages
-@be0a:  lda     $c47aa0,x
+@be0a:  lda     f:InitRiot,x
         sta     $1d2c,x
         inx
         cpx     #$0020
         bne     @be0a
-        lda     $e6f564                 ; load starting lores
+        lda     f:InitLore
         sta     $1d29
-        lda     $e6f565
+        lda     f:InitLore+1
         sta     $1d2a
-        lda     $e6f566
+        lda     f:InitLore+2
         sta     $1d2b
         stz     $0565                   ; set wallpaper index to 0
         ldx     #$7fff                  ; set font color to white
@@ -22874,15 +22446,15 @@ LoadMap:
         jsr     LoadMapProp
         stz     $47                     ; clear event counter
         stz     $077b                   ; disable flashlight
-        lda     #$01                    ; enable entrance triggers
+        lda     #1                      ; enable entrance triggers
         sta     $85
         ldx     $00                     ; clear open doors
         stx     $1127
         jsr     CalcObjPtrs
         jsr     CalcScrollRange
         ldx     $00
-        stx     $078c                   ; clear number of steps for random battles
-        stz     $078b                   ; clear number of random battles this map
+        stx     $078c                   ; clear step counter for random battles
+        stz     $078b                   ; clear number of battles this map
         jsr     PopPartyPos
 @bef8:  jsr     _c0714a
         jsr     InitPlayerPos
@@ -22919,7 +22491,7 @@ LoadMap:
         stz     $055c
         stz     $bb                     ; dialog window closed
         stz     $ba
-        lda     #$01                    ; wait for character objects to get updated
+        lda     #1                      ; wait for character objects to update
         sta     $0798
         jsr     InitColorMath
         jsr     InitPPU
@@ -22964,9 +22536,8 @@ LoadMap:
         jsr     InitPortrait
         jsr     InitNPCMap
         lda     $11fa                   ; branch if map startup event is enabled
-        bmi     @bfda
-        jmp     @c0a4
-@bfda:  longa
+        jpl     @c0a4
+        longa
         lda     $1f64                   ; map index * 3
         and     #$01ff
         sta     $1e
@@ -22975,9 +22546,13 @@ LoadMap:
         adc     $1e
         tax
         shorta0
-        lda     #$b2                    ; set map startup event code
-        sta     $0624                   ; $0624 b2 xxxxxx jump to xxxxxx
-        lda     f:MapInitEvent,x               ; pointer to map startup event
+
+; set map startup event code
+
+; $0624 b2 xxxxxx jump to xxxxxx
+        lda     #$b2
+        sta     $0624
+        lda     f:MapInitEvent,x        ; pointer to map startup event
         sta     $0625
         sta     $2a
         lda     f:MapInitEvent+1,x
@@ -22990,15 +22565,20 @@ LoadMap:
         sta     $2c
         lda     [$2a]
         cmp     #$fe
-        bne     @c018
-        jmp     @c0a4
-@c018:  lda     #$d3                    ; $0628 d3 cf     clear event bit $1eb9.7 (enable user control of character)
+        jeq     @c0a4                   ; branch if event simply returns
+
+; $0628 d3 cf     clear event bit $1eb9.7 (enable user control of character)
+        lda     #$d3
         sta     $0628
         lda     #$cf
         sta     $0629
-        lda     #$fd                    ; $062a fd        add 1 to event pc (does nothing)
+
+; $062a fd        add 1 to event pc (does nothing)
+        lda     #$fd
         sta     $062a
-        lda     #$fe                    ; $062b fe        return
+
+; $062b fe        return
+        lda     #$fe
         sta     $062b
         lda     $1eb9                   ; disable user control of character
         ora     #$80
@@ -23029,7 +22609,7 @@ LoadMap:
 @c06e:  jsr     ExecEvent
         lda     $1eb9
         bpl     @c08a                   ; branch if user has control of character
-        jsr     ExecObjScript
+        jsr     UpdateObjActions
         jsr     MoveObjs
         jsr     UpdateBG1
         jsr     UpdateBG2
@@ -23084,24 +22664,24 @@ LoadMap:
 ; [ battle blur/sound ]
 
 BattleMosaic:
-@c0ef:  lda     $078a       ; branch if battle sound effect is disabled
+@c0ef:  lda     $078a                   ; branch if battle sound effect is disabled
         and     #$40
         bne     @c0fb
-        lda     #$c1        ; play battle sound effect
+        lda     #$c1                    ; play battle sound effect
         jsr     PlaySfx
-@c0fb:  lda     $078a       ; return if battle blur is disabled
+@c0fb:  lda     $078a                   ; return if battle blur is disabled
         bmi     @c13d
-        stz     $46         ; clear frame counter
+        stz     $46                     ; clear frame counter
 @c102:  jsr     WaitVblank
         lda     $46
         cmp     #$10
         bcs     @c10f
-        and     #$07        ; increase mosaic size from 0 to 7 twice
+        and     #$07                    ; increase mosaic size from 0 to 7 twice
         bra     @c111
-@c10f:  and     #$0f        ; then increase from 0 to 15 once
+@c10f:  and     #$0f                    ; then increase from 0 to 15 once
 @c111:  asl4
-        ora     #$0f        ; enable mosaic on all bg layers
-        sta     $7e8233     ; store in screen mosaic hdma table ($2106)
+        ora     #$0f                    ; enable mosaic on all bg layers
+        sta     $7e8233                 ; store in screen mosaic hdma table ($2106)
         sta     $7e8237
         sta     $7e823b
         sta     $7e823f
@@ -23109,7 +22689,7 @@ BattleMosaic:
         sta     $7e8247
         sta     $7e824b
         sta     $7e824f
-        lda     $46         ; loop for $20 frames
+        lda     $46                     ; loop for $20 frames
         cmp     #$20
         bne     @c102
 @c13d:  rts
@@ -23123,11 +22703,11 @@ ExecBattle:
         jsr     DisableInterrupts
         jsr     PushDP
         jsr     PushCharFlags
-        ldx     $0803       ; save pointer to party object data
+        ldx     $0803                   ; save pointer to party object data
         stx     $1fa6
-        lda     $087f,x     ; save facing direction
+        lda     $087f,x                 ; save facing direction
         sta     $1f68
-        lda     $b2         ; save z-level
+        lda     $b2                     ; save z-level
         sta     $0744
         php
         phb
@@ -23139,7 +22719,7 @@ ExecBattle:
         jsr     DisableInterrupts
         jsr     PopDP
         jsr     PopCharFlags
-        lda     #1        ; re-load the same map
+        lda     #1                    ; re-load the same map
         sta     $58
         jsr     InitInterrupts
         rts
@@ -23151,10 +22731,10 @@ ExecBattle:
 CheckBattleWorld:
 @c176:  tdc
         jsr     PopDP
-        lda     $1f64       ; map index
+        lda     $1f64                   ; map index
         asl3
         sta     $1a
-        lda     $11f9       ; battle bg index
+        lda     $11f9                   ; battle bg index
         and     #$07
         ora     $1a
         tax
@@ -23232,9 +22812,8 @@ CheckBattleWorld:
         stz     $1f6f
         lda     $24
         cmp     #$ff
-        bne     @c23f       ; branch if not a veldt sector
-        jmp     GetVeldtBattle
-@c23f:  longa
+        jeq     GetVeldtBattle          ; jump if a veldt sector
+        longa
         asl3
         tax
         shorta0
@@ -23372,13 +22951,13 @@ CheckBattleSub:
         and     #$0f
         bne     @c36b
         lda     $57
-        bne     @c36c       ; branch if random battle is enabled
+        bne     @c36c                   ; branch if random battle is enabled
 @c36b:  rts
-@c36c:  stz     $57         ; disable random battle
-        ldx     $078c       ; increment number of steps on map
+@c36c:  stz     $57                     ; disable random battle
+        ldx     $078c                   ; increment number of steps on map
         inx
         stx     $078c
-        lda     a:$0082       ; map index
+        lda     a:$0082                 ; map index
         and     #$03
         tay
         longa
@@ -23394,7 +22973,7 @@ CheckBattleSub:
         bne     @c38e
 @c393:  and     #$03
         sta     $1a
-        lda     $11df       ; moogle charm and charm bangle effect
+        lda     $11df                   ; moogle charm and charm bangle effect
         and     #$03
         asl2
         ora     $1a
@@ -23402,22 +22981,21 @@ CheckBattleSub:
         tax
         lda     f:SubBattleRateTbl,x
         ora     f:SubBattleRateTbl+1,x
-        bne     @c3af
-        jmp     @c478       ; return if battle probability is zero (moogle charm)
-@c3af:  longac
-        lda     $1f6e       ; random battle counter
-        adc     f:SubBattleRateTbl,x   ; add random battle rate (max #$ff00)
+        jeq     @c478                   ; return if battle probability is zero
+        longac
+        lda     $1f6e                   ; random battle counter
+        adc     f:SubBattleRateTbl,x    ; add random battle rate (max #$ff00)
         bcc     @c3bd
         lda     #$ff00
 @c3bd:  sta     $1f6e
         shorta0
         jsr     UpdateBattleRng
         cmp     $1f6f
-        bcs     @c36b       ; return if greater than counter (no battle yet)
-        stz     $1f6e       ; clear random battle counter
+        bcs     @c36b                   ; return if counter didn't overflow
+        stz     $1f6e                   ; clear random battle counter
         stz     $1f6f
         ldx     a:$0082
-        lda     $cf5600,x   ; get the map's battle group
+        lda     $cf5600,x               ; get the map's battle group
         longa
         asl3
         tax
@@ -23433,35 +23011,35 @@ CheckBattleSub:
         bcc     @c3f6
         inx2
 @c3f6:  longa
-        lda     $cf4800,x   ; random battle groups (8 bytes each)
+        lda     $cf4800,x               ; random battle groups (8 bytes each)
         sta     f:$0011e0
         shorta0
-        lda     $0522       ; battle bg
+        lda     $0522                   ; battle bg
         and     #$7f
         sta     f:$0011e2
         tdc
         sta     f:$0011e3
-        ldx     $0541       ; save bg1 scroll position
+        ldx     $0541                   ; save bg1 scroll position
         stx     $1f66
-        ldx     a:$00af       ; save party position
+        ldx     a:$00af                 ; save party position
         stx     $1fc0
-        lda     $1ed7       ;
+        lda     $1ed7                   ;
         and     #$10
         lsr
         sta     f:$0011e4
-        inc     $078b       ; increment number of random battles on this map
+        inc     $078b                   ; increment battle count on this map
         longa
         tdc
-        sta     $0871,y     ; clear object 0 movement speed
+        sta     $0871,y                 ; clear object 0 movement speed
         sta     $0873,y
-        sta     $73         ; clear bg scroll from movement
+        sta     $73                     ; clear bg scroll from movement
         sta     $75
         sta     $77
         sta     $79
         sta     $7b
         sta     $7d
         shorta
-        ldx     #$0018      ; $ca0018 (random battle)
+        ldx     #$0018                  ; $ca0018 (random battle)
         stx     $e5
         stx     $05f4
         lda     #$ca
@@ -23476,12 +23054,12 @@ CheckBattleSub:
         ldx     #$0003
         stx     $e8
         ldy     $0803
-        lda     $087c,y     ; save party movement type
+        lda     $087c,y                 ; save party movement type
         sta     $087d,y
-        lda     #$04        ; movement type 4 (activated)
+        lda     #$04                    ; movement type 4 (activated)
         sta     $087c,y
         lda     #$80
-        sta     $11fa       ; enable map startup event
+        sta     $11fa                   ; enable map startup event
 @c478:  rts
 
 ; ------------------------------------------------------------------------------
@@ -23490,15 +23068,15 @@ CheckBattleSub:
 
 UpdateBattleRng:
 @c479:  phx
-        inc     $1fa1       ; increment random number pointer
+        inc     $1fa1                   ; increment random number pointer
         bne     @c488
         lda     $1fa4
         clc
-        adc     #$11        ; add 17 to random number counter
+        adc     #17                     ; add 17 to random number counter
         sta     $1fa4
 @c488:  lda     $1fa1
         tax
-        lda     f:RNGTbl,x   ; add random number to counter
+        lda     f:RNGTbl,x              ; add random number to counter
         clc
         adc     $1fa4
         plx
@@ -23562,15 +23140,13 @@ RestartGame:
         jsr     PopPartyMap
         tdc
         lda     $0205
-        beq     @c506
-        jmp     JmpReset
-@c506:  ldx     $00
+        jne     JmpReset
+        ldx     $00
         txy
 @c509:  lda     $1600,y
         cmp     $7ff1c0,x
-        beq     @c515
-        jmp     @c54b
-@c515:  phx
+        jne     @c54b
+        phx
         lda     $1608,y
         dec
         sta     $20
@@ -23599,9 +23175,8 @@ RestartGame:
         shorta0
         inx
         cpx     #$0010
-        beq     @c55e
-        jmp     @c509
-@c55e:  jsr     UpdateEquip
+        jne     @c509
+        jsr     UpdateEquip
         rts
 
 ; ------------------------------------------------------------------------------
@@ -23615,27 +23190,27 @@ UpdateMaxHP:
 @c562:  longa
         lda     $160b,y
         and     #$3fff
-        sta     $1e         ; +$1e = max hp
+        sta     $1e                     ; +$1e = max hp
         shorta0
         ldx     $20
-@c571:  cpx     $22         ; branch if not at target level
+@c571:  cpx     $22                     ; branch if not at target level
         beq     @c587
         lda     f:LevelUpHP,x
         clc
-        adc     $1e         ; add to max hp
+        adc     $1e                     ; add to max hp
         sta     $1e
         lda     $1f
         adc     #$00
         sta     $1f
         inx
         bra     @c571
-@c587:  ldx     #$270f      ; 9999 maximum
+@c587:  ldx     #$270f                  ; 9999 maximum
         cpx     $1e
         bcs     @c590
         stx     $1e
 @c590:  longa
         lda     $1e
-        sta     $160b,y     ; set new max hp
+        sta     $160b,y                 ; set new max hp
         shorta0
         rts
 
@@ -23650,27 +23225,27 @@ UpdateMaxMP:
 @c59b:  longa
         lda     $160f,y
         and     #$3fff
-        sta     $1e         ; +$1e = max mp
+        sta     $1e                     ; +$1e = max mp
         shorta0
         ldx     $20
-@c5aa:  cpx     $22         ; branch if not at target level
+@c5aa:  cpx     $22                     ; branch if not at target level
         beq     @c5c0
-        lda     f:LevelUpMP,x   ; mp progression value
+        lda     f:LevelUpMP,x           ; mp progression value
         clc
-        adc     $1e         ; add to max mp
+        adc     $1e                     ; add to max mp
         sta     $1e
         lda     $1f
         adc     #$00
         sta     $1f
         inx
         bra     @c5aa
-@c5c0:  ldx     #$03e7      ; 999 maximum
+@c5c0:  ldx     #$03e7                  ; 999 maximum
         cpx     $1e
         bcs     @c5c9
         stx     $1e
 @c5c9:  longa
         lda     $1e
-        sta     $160f,y     ; set new max mp
+        sta     $160f,y                 ; set new max mp
         shorta0
         rts
 
@@ -23679,29 +23254,29 @@ UpdateMaxMP:
 ; [ check main menu ]
 
 CheckMenu:
-@c5d4:  lda     $59         ; return if menu is already opening
+@c5d4:  lda     $59                     ; return if menu is already opening
         bne     @c62a
-        lda     $06         ; return if x button not down
+        lda     $06                     ; return if x button not down
         and     #$40
         beq     @c62a
-        lda     $56         ; return if battle enabled
+        lda     $56                     ; return if battle enabled
         bne     @c62a
-        lda     $84         ; return map load enabled
+        lda     $84                     ; return map load enabled
         bne     @c62a
-        lda     $4a         ; return if fading in/out
+        lda     $4a                     ; return if fading in/out
         bne     @c62a
-        lda     $055e       ; return if parties switching ???
+        lda     $055e                   ; return if parties switching ???
         bne     @c62a
-        ldx     $e5         ; return if an event is running
+        ldx     $e5                     ; return if an event is running
         cpx     #$0000
         bne     @c62a
         lda     $e7
         cmp     #$ca
         bne     @c62a
-        ldy     $0803       ; party object
-        lda     $087e,y     ; return if moving
+        ldy     $0803                   ; party object
+        lda     $087e,y                 ; return if moving
         bne     @c62a
-        lda     $0869,y     ; return if between tiles
+        lda     $0869,y                 ; return if between tiles
         bne     @c62a
         lda     $086a,y
         and     #$0f
@@ -23711,10 +23286,10 @@ CheckMenu:
         lda     $086d,y
         and     #$0f
         bne     @c62a
-        lda     $1eb8       ; return if main menu is disabled
+        lda     $1eb8                   ; return if main menu is disabled
         and     #$04
         bne     @c62a
-        lda     #$01        ; open menu
+        lda     #1                      ; open menu
         sta     $59
         jsr     FadeOut
 @c62a:  rts
@@ -23808,15 +23383,15 @@ OpenMenu:
         jsr     PushPartyPal
         jsr     PushPartyMap
         jsr     PushDP
-        ldx     $0541       ; save scroll position
+        ldx     $0541                   ; save scroll position
         stx     $1f66
-        ldx     a:$00af       ; save party position
+        ldx     a:$00af                   ; save party position
         stx     $1fc0
-        ldx     $0803       ; save pointer to party object data
+        ldx     $0803                   ; save pointer to party object data
         stx     $1fa6
-        lda     $087f,x     ; save facing direction
+        lda     $087f,x                 ; save facing direction
         sta     $1f68
-        lda     $b2         ; save z-level
+        lda     $b2                     ; save z-level
         sta     $0744
         php
         phb
@@ -23829,15 +23404,15 @@ OpenMenu:
         jsr     PopDP
         jsr     PopCharFlags
         jsr     PopPartyMap
-        lda     $1d4e       ; update wallpaper index
+        lda     $1d4e                   ; update wallpaper index
         and     #$07
         sta     $0565
-        lda     #$01        ; reload the same map
+        lda     #$01                    ; reload the same map
         sta     $58
-        lda     #$80        ; enable map startup event
+        lda     #$80                    ; enable map startup event
         sta     $11fa
         jsr     InitInterrupts
-        stz     $4c         ; clear screen brightness
+        stz     $4c                     ; clear screen brightness
         rts
 
 ; ------------------------------------------------------------------------------
@@ -23854,7 +23429,7 @@ InitOverlay:
 ; [ load sprite overlay graphics ]
 
 LoadOverlayGfx:
-@c72a:  lda     #$80        ; vram settings
+@c72a:  lda     #$80                    ; vram settings
         sta     hVMAINC
         ldx     #.loword(OverlayVRAMTbl)
         stx     $2d
@@ -23862,46 +23437,44 @@ LoadOverlayGfx:
         sta     $2f
         ldy     $00
 @c73a:  phy
-        lda     $0633,y     ; overlay tile number (tiles are 8 bytes each)
+        lda     $0633,y                 ; overlay tile number (8 bytes per tile)
         longa
         asl3
         clc
         adc     #.loword(OverlayTilemap)
-        sta     $2a         ; ++$2a = source address
+        sta     $2a                     ; ++$2a = source address
         shorta0
         lda     #^OverlayTilemap
         sta     $2c
         ldy     $00
 @c752:  longac
-        lda     [$2d]       ; set vram destination
+        lda     [$2d]                   ; set vram destination
         sta     hVMADDL
-        lda     [$2a],y     ; pointer to graphics
+        lda     [$2a],y                 ; pointer to graphics
         tax
         shorta0
 .repeat 8, i
-        lda     f:OverlayGfx+i,x   ; set low 8 bits only (convert 1bpp to 4bpp)
+        lda     f:OverlayGfx+i,x        ; set low 8 bits only (1bpp -> 4bpp)
         sta     hVMDATAL
         stz     hVMDATAH
 .endrep
 .repeat 8
-        stz     hVMDATAL       ; clear high 16 bits
+        stz     hVMDATAL                ; clear high 16 bits
         stz     hVMDATAH
 .endrep
         longac
-        lda     $2d         ; next 8x8 tile
+        lda     $2d                     ; next 8x8 tile
         adc     #2
         sta     $2d
         shorta0
         iny2
         cpy     #8
-        beq     @c7f5
-        jmp     @c752
-@c7f5:  ply                 ; next 16x16 tile
+        jne     @c752
+        ply                             ; next 16x16 tile
         iny
         cpy     #$0010
-        beq     @c7ff
-        jmp     @c73a
-@c7ff:  rts
+        jne     @c73a
+        rts
 
 ; ------------------------------------------------------------------------------
 
@@ -23929,7 +23502,7 @@ OverlayVRAMTbl:
 ; [ load sprite overlay data ]
 
 LoadOverlayData:
-@c880:  lda     $0531       ; overlay index
+@c880:  lda     $0531                   ; overlay index
         asl
         tax
         longac
@@ -23939,7 +23512,7 @@ LoadOverlayData:
         shorta0
         lda     #^OverlayProp
         sta     $f5
-        ldx     #$0633      ; destination address = $000633
+        ldx     #$0633                  ; destination address = $000633
         stx     $f6
         lda     #$00
         sta     $f8
@@ -23952,13 +23525,13 @@ LoadOverlayData:
 
 UpdateOverlay:
 @c8a5:  ldy     $0803
-        lda     $087c,y     ; return if user doesn't have control of party
+        lda     $087c,y                 ; return if player doesn't have control
         and     #$0f
         cmp     #$02
         beq     @c8b2
         rts
 @c8b2:  longa
-        lda     $086d,y     ; get party xy position on screen
+        lda     $086d,y                 ; get party xy position on screen
         clc
         sbc     $60
         sta     $28
@@ -23971,11 +23544,11 @@ UpdateOverlay:
         shorta0
         lda     $27
         lda     $29
-        lda     #$7e        ; set wram address to overlay data ($7e0763)
+        lda     #$7e                    ; set wram address to overlay data ($7e0763)
         sta     hWMADDH
         ldx     #$0763
         stx     hWMADDL
-        lda     $b8         ; branch if not on a stairs tile
+        lda     $b8                     ; branch if not on a stairs tile
         and     #$c0
         beq     @c8ec
         lda     $b8
@@ -23983,14 +23556,13 @@ UpdateOverlay:
         beq     @c8ef
         lda     $b2
         cmp     #$01
-        beq     @c8ec
+        beq     @c8ec                   ; this branch does nothing
 @c8ec:  jmp     _ca1a
 @c8ef:  lda     $087e,y
         beq     @c8fe
         cmp     #$05
-        bcs     @c8fb
-        jmp     _ca1a
-@c8fb:  sec
+        jcc     _ca1a
+        sec
         sbc     #$04
 @c8fe:  sta     $1a
         asl3
@@ -24117,72 +23689,72 @@ _c0c9ed:
 ; ------------------------------------------------------------------------------
 
 ; not on a stairs tile
-_ca1a:  lda     $b8         ; tile properties
+_ca1a:  lda     $b8                     ; tile properties
         and     #$04
-        beq     @ca27       ; branch if not a bridge tile
+        beq     @ca27                   ; branch if not a bridge tile
         lda     $b2
         dec
-        beq     @ca5e       ; branch if party is on upper z-level
+        beq     @ca5e                   ; branch if party is on upper z-level
         bra     @ca42
 
 ; party is not on a bridge tile
-@ca27:  lda     $aa         ; tile number
+@ca27:  lda     $aa                     ; tile number
         tay
-        lda     $0643,y     ; overlay tile formation
+        lda     $0643,y                 ; overlay tile formation
         cmp     #$ff
-        beq     @ca5e       ; branch if no overlay tile
+        beq     @ca5e                   ; branch if no overlay tile
         sta     $1a
-        and     #$3f        ; tile index bits
+        and     #$3f                    ; tile index bits
         clc
         adc     #$c0
         sta     $1b
         lda     $1a
-        and     #$c0        ; vh flip bits (lower z-level)
+        and     #$c0                    ; vh flip bits (lower z-level)
         sta     $1a
         bra     @ca64
 
 ; party is not on upper z-level
-@ca42:  lda     $aa         ; tile number
+@ca42:  lda     $aa                     ; tile number
         tay
-        lda     $0643,y     ; overlay tile formation
+        lda     $0643,y                 ; overlay tile formation
         cmp     #$ff
-        beq     @ca5e       ; branch if no overlay tile
+        beq     @ca5e                   ; branch if no overlay tile
         sta     $1a
-        and     #$3f        ; tile index bits
+        and     #$3f                    ; tile index bits
         clc
         adc     #$c0
         sta     $1b
         lda     $1a
-        and     #$c0        ; vh flip bits
-        inc                 ; upper z-level
+        and     #$c0                    ; vh flip bits
+        inc                             ; upper z-level
         sta     $1a
         bra     @ca64
 
 ; party is on upper z-level
-@ca5e:  lda     #$01        ; +$1a = #$0001 (no overlay tile)
+@ca5e:  lda     #$01                    ; +$1a = #$0001 (no overlay tile)
         sta     $1a
         stz     $1b
-@ca64:  lda     a:$0074       ; horizontal scroll speed
+@ca64:  lda     a:$0074                 ; horizontal scroll speed
         bpl     @ca70
-        lda     $26         ; tile x position
+        lda     $26                     ; tile x position
         clc
         adc     #$10
         sta     $26
 @ca70:  lda     $26
         sta     hWMDATA
-        lda     a:$0076       ; vertical scroll speed
+        lda     a:$0076                 ; vertical scroll speed
         bpl     @ca81
-        lda     $28         ; tile y position
+        lda     $28                     ; tile y position
         clc
         adc     #$10
         sta     $28
 @ca81:  lda     $28
         sta     hWMDATA
-        lda     $1b         ; tile index
+        lda     $1b                     ; tile index
         sta     hWMDATA
-        lda     $1a         ; vh flip and priority
+        lda     $1a                     ; vh flip and priority
         sta     hWMDATA
-        lda     $b8         ;
+        lda     $b8                     ;
         and     #$04
         beq     @ca9d
         lda     $b2
@@ -24191,12 +23763,12 @@ _ca1a:  lda     $b8         ; tile properties
         bra     @cae7
 
 ;
-@ca9d:  lda     $b8         ; tile z-level
+@ca9d:  lda     $b8                     ; tile z-level
         and     #$03
         cmp     #$02
-        beq     @cab6       ; branch if lower
+        beq     @cab6                   ; branch if lower
         cmp     #$03
-        beq     @cac0       ; branch if transition
+        beq     @cac0                   ; branch if transition
         lda     $b6
         cmp     #$f7
         beq     @cacc
@@ -24206,10 +23778,10 @@ _ca1a:  lda     $b8         ; tile properties
         bra     @cb03
 
 ;
-@cab6:  lda     $b6         ; top tile z-layer
+@cab6:  lda     $b6                     ; top tile z-layer
         and     #$07
         cmp     #$01
-        beq     @cb03       ; branch if upper z-level
+        beq     @cb03                   ; branch if upper z-level
         bra     @cacc
 
 ;
@@ -24352,11 +23924,8 @@ _ca1a:  lda     $b8         ; tile properties
         sta     hWMDATA
         ldy     $0803
         lda     $087e,y
-        bne     @cbc5
-        jmp     @cc4c
-
-;
-@cbc5:  lda     f:_c0cc7d+5,x
+        jeq     @cc4c
+        lda     f:_c0cc7d+5,x
         tax
         lda     $a3,x
         tax
@@ -24471,10 +24040,10 @@ _c0cc7d:
 DrawOverlaySprites:
 @cc95:  ldx     $00
         txy
-@cc98:  lda     $74         ; horizontal scroll speed
+@cc98:  lda     $74                     ; horizontal scroll speed
         beq     @cca8
-        bmi     @cca8       ; branch if not positive
-        lda     $5c         ; horizontal scroll position
+        bmi     @cca8                   ; branch if not positive
+        lda     $5c                     ; horizontal scroll position
         dec
         and     #$0f
         inc
@@ -24484,12 +24053,12 @@ DrawOverlaySprites:
         and     #$0f
         eor     #$ff
 @ccae:  sec
-        adc     $0763,x     ; add overlay tile x position
+        adc     $0763,x                 ; add overlay tile x position
         sta     $1a
-        lda     $76         ; vertical scroll speed
+        lda     $76                     ; vertical scroll speed
         beq     @ccc4
-        bmi     @ccc4       ; branch if not positive
-        lda     $60         ; vertical scroll position
+        bmi     @ccc4                   ; branch if not positive
+        lda     $60                     ; vertical scroll position
         dec
         and     #$0f
         inc
@@ -24499,16 +24068,16 @@ DrawOverlaySprites:
         and     #$0f
         eor     #$ff
 @ccca:  sec
-        adc     $0764,x     ; add overlay tile y position
+        adc     $0764,x                 ; add overlay tile y position
         sec
-        sbc     $7f         ; subtract shake screen offset
+        sbc     $7f                     ; subtract shake screen offset
         sta     $1b
-        lda     $0765,x     ; overlay tile number
-        beq     @cd1b       ; 0 = no tile
+        lda     $0765,x                 ; overlay tile number
+        beq     @cd1b                   ; 0 = no tile
         lda     $0766,x
         and     #$01
-        bne     @ccfe       ; branch if lower z-level
-        lda     $1a         ; set sprite data for upper z-level overlay sprite
+        bne     @ccfe                   ; branch if lower z-level
+        lda     $1a                     ; draw upper z-level overlay sprite
         sta     $03e0,y
         lda     $1b
         sta     $03e1,y
@@ -24517,10 +24086,10 @@ DrawOverlaySprites:
         lda     $0766,x
         and     #$ce
         sta     $03e3,y
-        lda     #$ef        ; hide lower z-level overlay sprite
+        lda     #$ef                    ; hide lower z-level overlay sprite
         sta     $04a1,y
         bra     @cd1b
-@ccfe:  lda     $1a         ; set sprite data for lower z-level overlay sprite
+@ccfe:  lda     $1a                     ; draw lower z-level overlay sprite
         sta     $04a0,y
         lda     $1b
         sta     $04a1,y
@@ -24529,14 +24098,13 @@ DrawOverlaySprites:
         lda     $0766,x
         and     #$ce
         sta     $04a3,y
-        lda     #$ef        ; hide upper z-level overlay sprite
+        lda     #$ef                    ; hide upper z-level overlay sprite
         sta     $03e1,y
-@cd1b:  iny4                ; next tile
+@cd1b:  iny4                            ; next tile
         inx4
         cpx     #$0010
-        beq     @cd2b
-        jmp     @cc98
-@cd2b:  rts
+        jne     @cc98
+        rts
 
 ; ------------------------------------------------------------------------------
 
@@ -24661,34 +24229,36 @@ DebugHexDigitTbl:
 
 ; [  ]
 
+; unused
+
 _c0d397:
 @d397:  ldx     $e5
         cpx     #$0000
         bne     @d3dd
         lda     $e7
         cmp     #$ca
-        bne     @d3dd       ; return if an event is running
+        bne     @d3dd                   ; return if an event is running
         lda     $1868
         cmp     #$10
-        bcc     @d3dd       ; return if less than 16 steps
-        ldx     #$004a      ; $ca004a (invalid event address)
+        bcc     @d3dd                   ; return if less than 16 steps
+        ldx     #$004a                  ; $ca004a (invalid event address)
         stx     $e5
         stx     $05f4
         lda     #$ca
         sta     $e7
         sta     $05f6
         ldx     #$0000
-        stx     $0594       ; event stack = $ca0000
+        stx     $0594                   ; event stack = $ca0000
         lda     #$ca
         sta     $0596
         lda     #$01
-        sta     $05c7       ; event loop count = 1
+        sta     $05c7                   ; event loop count = 1
         ldx     #$0003
-        stx     $e8         ; stack event pointer
-        ldy     $0803       ; party object
-        lda     $087c,y     ; save movement type
+        stx     $e8                     ; stack event pointer
+        ldy     $0803                   ; party object
+        lda     $087c,y                 ; save movement type
         sta     $087d,y
-        lda     #$04        ; movement type 4 (activated)
+        lda     #$04                    ; movement type 4 (activated)
         sta     $087c,y
 @d3dd:  rts
 
@@ -24697,46 +24267,46 @@ _c0d397:
 ; [ load text graphics for debug mode ]
 
 DebugLoadGfx:
-@d3de:  stz     hMDMAEN     ; disable dma
+@d3de:  stz     hMDMAEN                 ; disable dma
         lda     #$80
         sta     hVMAINC
         lda     #$18
         sta     $4301
         lda     #$41
         sta     $4300
-        ldx     #$39c0      ; destination = $39c0 (vram, bg3 dialog text graphics)
+        ldx     #$39c0                  ; destination = $39c0 (vram, bg3 dialog text graphics)
         stx     hVMADDL
-        ldx     #$e120      ; source = $c0e120 (fixed width font graphics)
+        ldx     #$e120                  ; source = $c0e120 (fixed width font graphics)
         stx     $4302
         lda     #$c0
         sta     $4304
         sta     $4307
-        ldx     #$0080      ; size = $0080
+        ldx     #$0080                  ; size = $0080
         stx     $4305
-        lda     #$01        ; enable dma
+        lda     #$01                    ; enable dma
         sta     hMDMAEN
-        ldx     #$3bc0      ; destination = $3bc0 (vram, bg3 dialog text graphics)
+        ldx     #$3bc0                  ; destination = $3bc0 (vram, bg3 dialog text graphics)
         stx     hVMADDL
-        ldx     #$e1a0      ; source = $c0e1a0 (fixed width font graphics)
+        ldx     #$e1a0                  ; source = $c0e1a0 (fixed width font graphics)
         stx     $4302
         lda     #$c0
         sta     $4304
         sta     $4307
-        ldx     #$0080      ; size = $0080
+        ldx     #$0080                  ; size = $0080
         stx     $4305
-        lda     #$01        ; enable dma
+        lda     #$01                    ; enable dma
         sta     hMDMAEN
-        ldx     #$3dc0      ; destination = $3dc0 (vram, bg3 dialog text graphics)
+        ldx     #$3dc0                  ; destination = $3dc0 (vram, bg3 dialog text graphics)
         stx     hVMADDL
-        ldx     #$e220      ; source = $c0e220 (fixed width font graphics)
+        ldx     #$e220                  ; source = $c0e220 (fixed width font graphics)
         stx     $4302
         lda     #$c0
         sta     $4304
         sta     $4307
-        ldx     #$0080      ; size = $0080
+        ldx     #$0080                  ; size = $0080
         stx     $4305
         lda     #$01
-        sta     hMDMAEN     ; enable dma
+        sta     hMDMAEN                 ; enable dma
         rts
         rts
 
@@ -24746,39 +24316,39 @@ DebugLoadGfx:
 
 _c0d44f:
 @d44f:  lda     $0568
-        bne     @d49e       ; return if dialog is being displayed
+        bne     @d49e                   ; return if dialog is being displayed
         lda     $46
         and     #$07
-        bne     @d49e       ; return 7/8 frames
+        bne     @d49e                   ; return 7/8 frames
         lda     $05
         and     #$10
-        beq     @d469       ; branch if start button is not pressed
-        ldx     a:$00d0       ; increment dialog index
+        beq     @d469                   ; branch if start button is not pressed
+        ldx     a:$00d0                 ; increment dialog index
         inx
         stx     a:$00d0
         bra     @d476
 @d469:  lda     $05
         and     #$20
-        beq     @d49e       ; branch if select button is not pressed
-        ldx     a:$00d0       ; decrement dialog index
+        beq     @d49e                   ; branch if select button is not pressed
+        ldx     a:$00d0                 ; decrement dialog index
         dex
         stx     a:$00d0
 @d476:  ldx     a:$00d0
         stx     $1e
         jsr     DebugDrawWord
-        ldx     $0569       ; counter for dialog pause
+        ldx     $0569                   ; counter for dialog pause
         stx     $1e
         jsr     DebugDrawWord
-        ldx     $056b       ; counter for keypress
+        ldx     $056b                   ; counter for keypress
         stx     $1e
         jsr     DebugDrawWord
         lda     #49
         jsr     DebugDrawBlank
         jsr     GetDlgPtr
         lda     #$01
-        sta     $bc         ; dialog window at top of screen
+        sta     $bc                     ; dialog window at top of screen
         lda     #$01
-        sta     $ba         ; enable dialog window
+        sta     $ba                     ; enable dialog window
 @d49e:  rts
 
 ; ------------------------------------------------------------------------------
@@ -24789,7 +24359,7 @@ _c0d44f:
 
 DebugDrawBlank:
 @d49f:  tay
-@d4a0:  lda     #$ff        ; tile $01ff, palette 0, high priority
+@d4a0:  lda     #$ff                    ; tile $01ff, palette 0, high priority
         sta     hWMDATA
         lda     #$21
         sta     hWMDATA
@@ -24802,7 +24372,7 @@ DebugDrawBlank:
 ; [ display 8-bit binary value (normal order, msb first) ]
 
 DebugDrawBinary:
-@d4ae:  lda     #$ff        ; tile $01ff, palette 0, high priority
+@d4ae:  lda     #$ff                    ; tile $01ff, palette 0, high priority
         sta     hWMDATA
         lda     #$21
         sta     hWMDATA
@@ -24829,7 +24399,7 @@ DebugDrawBinaryRev:
         ldy     #$0008
 @d4d9:  tdc
         lsr     $1e
-        adc     #$38        ; 0 or 1
+        adc     #$38                    ; 0 or 1
         sta     hWMDATA
         lda     #$21
         sta     hWMDATA
@@ -24925,12 +24495,12 @@ DebugDrawWord:
 DebugDrawEventSwitch:
 @d57c:  lda     $46
         and     #$03
-        bne     @d5ae       ; branch 3/4 frames
+        bne     @d5ae                   ; branch 3/4 frames
         lda     $05
         and     #$10
-        beq     @d599       ; branch if start button is not pressed
+        beq     @d599                   ; branch if start button is not pressed
         longa
-        lda     $115b       ; display next 2 event bytes
+        lda     $115b                   ; display next 2 event bytes
         clc
         adc     #$0010
         sta     $115b
@@ -24938,9 +24508,9 @@ DebugDrawEventSwitch:
         bra     @d5ae
 @d599:  lda     $05
         and     #$20
-        beq     @d5ae       ; branch if select button is not pressed
+        beq     @d5ae                   ; branch if select button is not pressed
         longa
-        lda     $115b       ; display previous 2 event bytes
+        lda     $115b                   ; display previous 2 event bytes
         sec
         sbc     #$0010
         sta     $115b
@@ -24948,14 +24518,14 @@ DebugDrawEventSwitch:
 @d5ae:  lda     #7
         jsr     DebugDrawBlank
         ldx     $115b
-        stx     $1e         ; event bit address
+        stx     $1e                     ; event bit address
         jsr     DebugDrawWord
         longa
         lda     $115b
         lsr3
         tax
         shorta0
-        lda     $1e80,x     ; event bit
+        lda     $1e80,x                 ; event bit
         sta     $1e
         jsr     DebugDrawBinaryRev
         lda     $1e81,x

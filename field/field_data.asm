@@ -12,9 +12,11 @@
 ; +----------------------------------------------------------------------------+
 
 .export RNGTbl
+.export MapGfxPtrs, MapGfx
 .export ItemName, FontGfxSmall
 .export ShortEntrancePtrs, EventTriggerPtrs
 .export CharProp, LevelUpExp, BushidoLevelTbl, BlitzLevelTbl
+.export BlitzCode, MagicName
 
 ; ------------------------------------------------------------------------------
 
@@ -84,6 +86,12 @@ NPCPropPtrs:
 
 ; c4/78c0
         .include "text/char_name_en.asm"
+
+; c4/7a40
+        .include "data/blitz_code.asm"
+
+; c4/7aa0
+        .include "data/init_riot.asm"
 
 ; ------------------------------------------------------------------------------
 
@@ -273,6 +281,19 @@ BlitzLevelTbl:
 
 ; e6/f502
         .include "data/level_up_mp.asm"
+
+; e6/f564
+        .include "data/init_lore.asm"
+
+; e6/f567
+        .include "text/magic_name.asm"
+
+; ------------------------------------------------------------------------------
+
+.segment "natural_magic"
+
+; ec/e3c0
+        .include "data/natural_magic.asm"
 
 ; ------------------------------------------------------------------------------
 

@@ -68,18 +68,28 @@ OBJ_FILES_EN = $(foreach M, $(MODULES), $(M)/obj/$(M)_en.o)
 OBJ_FILES_EN1 = $(foreach M, $(MODULES), $(M)/obj/$(M)_en1.o)
 
 # rules for making ROM files
+# run linker twice: 1st for the cutscene program, 2nd for the ROM itself
 $(FF6_JP_PATH): ff6-jp.lnk encode-jp $(OBJ_FILES_JP)
 	@mkdir -p rom
+	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_JP)
+	node tools/encode-cutscene.js $(VERSION_EXT)
+	$(MAKE) -C cutscene
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_JP)
 	node tools/calc-checksum.js $@
 
 $(FF6_EN_PATH): ff6-en.lnk encode-en $(OBJ_FILES_EN)
 	@mkdir -p rom
+	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
+	node tools/encode-cutscene.js $(VERSION_EXT)
+	$(MAKE) -C cutscene
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN)
 	node tools/calc-checksum.js $@
 
 $(FF6_EN1_PATH): ff6-en.lnk encode-en $(OBJ_FILES_EN1)
 	@mkdir -p rom
+	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
+	node tools/encode-cutscene.js $(VERSION_EXT)
+	$(MAKE) -C cutscene
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN1)
 	node tools/calc-checksum.js $@
 

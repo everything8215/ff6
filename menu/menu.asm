@@ -21,10 +21,11 @@
 .include "ending_anim.asm"
 
 .import DecTimersMenuBattle_ext
+.import Decompress_ext
 .import UpdateEquip_ext, CalcMagicEffect_ext
 .import ExecSound_ext
 
-.import ItemName, FontGfxSmall, CharProp, LevelUpExp
+.import ItemName, FontGfxSmall, CharProp, LevelUpExp, BlitzCode, MagicName
 
 .export OpenMenu_ext, UpdateCtrlBattle_ext, InitCtrl_ext, UpdateCtrlField_ext
 .export IncGameTime_ext, LoadSavedGame_ext, EndingCutscene_ext
@@ -196,7 +197,7 @@ InitMenu:
         jsr     InitWindow1PosHDMA
         jsr     ResetTasks
         jsr     InitMenuGfx
-        jmp     _c33a87
+        jmp     LoadWindowGfx
 
 ; ------------------------------------------------------------------------------
 
@@ -542,13 +543,15 @@ DrawPosTextFar:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init buffer for window tiles ]
 
-_c30326:
+; Y: flags applied to each tile
+
+SetWindowTileFlags:
 @0326:  sty     $e7
         ldx     $00
         longa
-@032c:  lda     f:_c3044e,x
+@032c:  lda     f:WindowTileTbl,x
         clc
         adc     $e7
         sta     $7e9f19,x
@@ -757,7 +760,7 @@ DrawWindowRow:
 
 ; ------------------------------------------------------------------------------
 
-_c3044e:
+WindowTileTbl:
 @044e:  .word   $0180,$0181,$0182,$0183  ; window mid 1
         .word   $0184,$0185,$0186,$0187  ; window mid 2
         .word   $0188,$0189,$018a,$018b  ; window mid 3
@@ -2456,7 +2459,7 @@ _0e1e:  sta     $4a
 
 ; ------------------------------------------------------------------------------
 
-; [ copy bg1 data to vram (top screens) ]
+; [ copy bg1 data to vram (screens A & B) ]
 
 TfrBG1ScreenAB:
 @0e28:  ldy     #$0000
@@ -2467,7 +2470,7 @@ TfrBG1ScreenAB:
 
 ; ------------------------------------------------------------------------------
 
-; [ copy bg1 data to vram (top right/bottom left) ]
+; [ copy bg1 data to vram (screens B & C) ]
 
 TfrBG1ScreenBC:
 @0e36:  ldy     #$0400
@@ -2478,7 +2481,7 @@ TfrBG1ScreenBC:
 
 ; ------------------------------------------------------------------------------
 
-; [ copy bg1 data to vram (bottom screens) ]
+; [ copy bg1 data to vram (screens C & D) ]
 
 TfrBG1ScreenCD:
 @0e44:  ldy     #$0800
@@ -2489,7 +2492,7 @@ TfrBG1ScreenCD:
 
 ; ------------------------------------------------------------------------------
 
-; [ copy bg2 data to vram (top screens) ]
+; [ copy bg2 data to vram (screens A & B) ]
 
 TfrBG2ScreenAB:
 @0e52:  ldy     #$1000
@@ -2500,7 +2503,7 @@ TfrBG2ScreenAB:
 
 ; ------------------------------------------------------------------------------
 
-; [ copy bg2 data to vram (bottom screens) ]
+; [ copy bg2 data to vram (screens C & D) ]
 
 TfrBG2ScreenCD:
 @0e60:  ldy     #$1800
@@ -2511,7 +2514,7 @@ TfrBG2ScreenCD:
 
 ; ------------------------------------------------------------------------------
 
-; [ copy bg3 data to vram (top screens) ]
+; [ copy bg3 data to vram (screens A & B) ]
 
 TfrBG3ScreenAB:
 @0e6e:  ldy     #$4000
@@ -2522,7 +2525,7 @@ TfrBG3ScreenAB:
 
 ; ------------------------------------------------------------------------------
 
-; [ copy bg3 data to vram (bottom screens) ]
+; [ copy bg3 data to vram (screens C & D) ]
 
 TfrBG3ScreenCD:
 @0e7c:  ldy     #$4800
@@ -2625,9 +2628,9 @@ PlayCureSfx:
 
 ; ------------------------------------------------------------------------------
 
-; [ init dma 1 (bg1 data, left & right screens) ]
+; [ init dma 1 (bg1 data, screens A & B) ]
 
-InitBG1TilesDMA1:
+InitDMA1BG1ScreenAB:
 @0ee9:  ldy     #$0000
         sty     $14
         ldy     #$3849
@@ -2640,9 +2643,9 @@ InitBG1TilesDMA1:
 
 ; ------------------------------------------------------------------------------
 
-; [ init dma 1 (bg1 data, left screen) ]
+; [ init dma 1 (bg1 data, screen A) ]
 
-InitBG1TilesLeftDMA1:
+InitDMA1BG1ScreenA:
 @0efd:  ldy     #$0000
         sty     $14
         ldy     #$3849
@@ -2655,9 +2658,9 @@ InitBG1TilesLeftDMA1:
 
 ; ------------------------------------------------------------------------------
 
-; [ init dma 1 (bg1 data, right screen) ]
+; [ init dma 1 (bg1 data, screen B) ]
 
-InitBG1TilesRightDMA1:
+InitDMA1BG1ScreenB:
 @0f11:  ldy     #$0400
         sty     $14
         ldy     #$4049
@@ -2670,9 +2673,9 @@ InitBG1TilesRightDMA1:
 
 ; ------------------------------------------------------------------------------
 
-; [ init dma 1 (bg3 data, left & right screens) ]
+; [ init dma 1 (bg3 data, screens A & B) ]
 
-InitBG3TilesDMA1:
+InitDMA1BG3ScreenAB:
 @0f25:  ldy     #$4000
         sty     $14
         ldy     #$7849
@@ -2685,9 +2688,9 @@ InitBG3TilesDMA1:
 
 ; ------------------------------------------------------------------------------
 
-; [ init dma 1 (bg3 data, left screen) ]
+; [ init dma 1 (bg3 data, screen A) ]
 
-InitBG3TilesLeftDMA1:
+InitDMA1BG3ScreenA:
 @0f39:  ldy     #$4000
         sty     $14
         ldy     #$7849
@@ -2700,9 +2703,9 @@ InitBG3TilesLeftDMA1:
 
 ; ------------------------------------------------------------------------------
 
-; [ init dma 1 (bg3 data, right screen) ]
+; [ init dma 1 (bg3 data, screen B) ]
 
-InitBG3TilesRightDMA1:
+InitDMA1BG3ScreenB:
 @0f4d:  ldy     #$4400
         sty     $14
         ldy     #$8049
@@ -2715,9 +2718,9 @@ InitBG3TilesRightDMA1:
 
 ; ------------------------------------------------------------------------------
 
-; [ init dma 2 (bg3 data, left screen) ]
+; [ init dma 2 (bg3 data, screen A) ]
 
-InitBG3TilesLeftDMA2:
+InitDMA2BG3ScreenA:
 @0f61:  ldy     #$4000
         sty     $1b
         ldy     #$7849
@@ -2730,9 +2733,9 @@ InitBG3TilesLeftDMA2:
 
 ; ------------------------------------------------------------------------------
 
-; [ init dma 2 (bg3 data, right screen) ]
+; [ init dma 2 (bg3 data, screen B) ]
 
-InitBG3TilesRightDMA2:
+InitDMA2BG3ScreenB:
 @0f75:  ldy     #$4400
         sty     $1b
         ldy     #$8049
@@ -2780,10 +2783,10 @@ LoadPal:
 
 ; [ create fade in/out palette task ]
 
-;   a = speed (frames per update)
-;  +x = source address
-;  +y = destination address (+$7e0000)
-; $ed = source bank
+;   A: speed (frames per update)
+;  +X: source address
+;  +Y: destination address (+$7e0000)
+; $ed: source bank
 
 CreateFadePalTask:
 @0faa:  pha
@@ -2863,7 +2866,7 @@ FadePalTask_01:
         sta     $f1
         jsr     UpdateFadePal
         shorta
-        ldx     a:$002d                   ; task data pointer
+        ldx     a:$002d                 ; task data pointer
         lda     $3349,x                 ; decrement color counter
         beq     @1030
         dec     $3349,x
@@ -2986,7 +2989,7 @@ BlackPal:
 
 ResetTasks:
 @1114:  ldx     $00
-        stx     $2d         ; clear task pointer and number of active tasks
+        stx     $2d                     ; clear task pointer and number of active tasks
         stx     $2f
         longa
         jsr     ResetSprites
@@ -2995,7 +2998,7 @@ ResetTasks:
         phx
         plb
         ldx     #0
-@1127:  stz     $3249,x     ; clear task data
+@1127:  stz     $3249,x                 ; clear task data
         stz     $3649,x
         stz     $35c9,x
         stz     $3749,x
@@ -3022,14 +3025,14 @@ ResetTasks:
 ResetSprites:
 @114e:  ldx     $00
 @1150:  lda     #$e001
-        sta     $0300,x     ; move all sprites offscreen
+        sta     $0300,x                 ; move all sprites offscreen
         inx2
         lda     #$0001
         sta     $0300,x
         inx2
         cpx     #$0200
         bne     @1150
-        ldy     $00         ; clear high sprite data
+        ldy     $00                     ; clear high sprite data
         tya
 @1168:  sta     $0500,y
         iny2
@@ -3058,15 +3061,15 @@ CreateTask:
         pha
         plb
         lda     $2d
-        sta     $7e374a,x   ; set task data pointer
-        inc     $2f         ; increment the number of active tasks
+        sta     $7e374a,x               ; set task data pointer
+        inc     $2f                     ; increment the number of active tasks
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ init task code pointer ]
 
-; a = priority
+; A: priority
 
 InitTask:
 @118b:  xba
@@ -3075,18 +3078,18 @@ InitTask:
         asl4
         longa
         tax
-@1196:  lda     $3249,x     ; find the first available task in this priority level
+@1196:  lda     $3249,x                 ; find the first available task in this priority level
         bne     @11a0
         tya
-        sta     $3249,x     ; set task code pointer
+        sta     $3249,x                 ; set task code pointer
         rts
 @11a0:  inx2
         cpx     #$0080
         bne     @1196
-        dex2                ; no empty task found, use the second to last one
+        dex2                            ; no empty task found, use the second to last one
         tya
-        sta     $3249,x     ; set task data pointer
-@11ad:  bra     @11ad       ; infinite loop
+        sta     $3249,x                 ; set task data pointer
+@11ad:  bra     @11ad                   ; infinite loop
         rts
 
 .a8
@@ -3100,36 +3103,36 @@ ExecTasks:
         lda     #$7e
         pha
         plb
-        ldx     #$0300      ; set starting pointers to sprite data
+        ldx     #$0300                  ; set starting pointers to sprite data
         stx     $0e
         ldx     #$0500
         stx     $10
-        lda     #$03        ;
+        lda     #$03                    ;
         sta     $33
         stz     $34
-        ldx     #$0080      ; start with $80 unused sprites
+        ldx     #$0080                  ; start with $80 unused sprites
         stx     $31
         ldx     $00
         longa
-@11ce:  lda     $3249,x     ; task code pointer
-        beq     @11f5       ; branch if task is not active
-        stx     $2d         ; +$2d = task data pointer
+@11ce:  lda     $3249,x                 ; task code pointer
+        beq     @11f5                   ; branch if task is not active
+        stx     $2d                     ; +$2d = task data pointer
         phx
-        sta     $2b         ; +$2b = task code pointer
+        sta     $2b                     ; +$2b = task code pointer
         shorta
         clr_a
-        lda     $3649,x     ; task state
+        lda     $3649,x                 ; task state
         asl
-        jsr     @1203       ; execute task (carry clear = terminate, carry set = don't terminate)
+        jsr     @1203                   ; execute task
         longa
         plx
-        bcs     @11f5       ; branch if task didn't terminate
-        stz     $3249,x     ; clear task data
+        bcs     @11f5                   ; branch if task didn't terminate
+        stz     $3249,x                 ; clear task data
         stz     $3649,x
         stz     $35c9,x
         stz     $3749,x
-        dec     $2f         ; decrement number of active tasks
-@11f5:  inx2                ; next task
+        dec     $2f                     ; decrement number of active tasks
+@11f5:  inx2                            ; next task
         cpx     #$0080
         bne     @11ce
         jsr     HideUnusedSprites
@@ -3137,7 +3140,7 @@ ExecTasks:
         plb
         rts
 
-; execute task
+; execute task (carry clear: terminate, carry set: don't terminate)
 @1203:  jmp     ($002b)
 
 ; ------------------------------------------------------------------------------
@@ -3171,31 +3174,31 @@ UpdateAnimTask:
 ; [ update animation data ]
 
 UpdateAnimData:
-@1227:  ldx     $2d         ; task data pointer
+@1227:  ldx     $2d                     ; task data pointer
         ldy     $00
         longa
-        lda     $32c9,x     ; ++$eb = animation data pointer
+        lda     $32c9,x                 ; ++$eb = animation data pointer
         sta     $eb
         shorta
         lda     $35ca,x
         sta     $ed
-@1239:  lda     $36ca,x     ; next animation data byte
+@1239:  lda     $36ca,x                 ; next animation data byte
         cmp     #$fe
-        beq     @1262       ; return if $fe (stop animation)
+        beq     @1262                   ; return if $fe (stop animation)
         cmp     #$ff
-        bne     @124c       ; branch if not $ff (repeat)
-        stz     $36c9,x     ; reset animation data offset
+        bne     @124c                   ; branch if not $ff (repeat)
+        stz     $36c9,x                 ; reset animation data offset
         jsr     SetAnimDur
         bra     @1239
-@124c:  lda     $36ca,x     ; frame counter
-        bne     @125f       ; decrement and return if not zero
-        lda     $36c9,x     ; increment animation data offset
+@124c:  lda     $36ca,x                 ; frame counter
+        bne     @125f                   ; decrement and return if not zero
+        lda     $36c9,x                 ; increment animation data offset
         clc
         adc     #3
         sta     $36c9,x
         jsr     SetAnimDur
         bra     @1239
-@125f:  dec     $36ca,x     ; decrement frame counter
+@125f:  dec     $36ca,x                 ; decrement frame counter
 @1262:  rts
 
 ; ------------------------------------------------------------------------------
@@ -3204,11 +3207,11 @@ UpdateAnimData:
 
 SetAnimDur:
 @1263:  shorti
-        lda     $36c9,x     ; animation data offset + 2
+        lda     $36c9,x                 ; animation data offset + 2
         tay
         iny2
         lda     [$eb],y
-        sta     $36ca,x     ; set frame counter
+        sta     $36ca,x                 ; set frame counter
         longi
         rts
 
@@ -3218,10 +3221,10 @@ SetAnimDur:
 
 UpdateAnimSprites:
 @1273:  shorti
-        lda     $36c9,x     ; animation data offset
+        lda     $36c9,x                 ; animation data offset
         tay
         longa
-        lda     [$eb],y     ; ++$e7 = pointer to sprite data
+        lda     [$eb],y                 ; ++$e7 = pointer to sprite data
         sta     $e7
         iny2
         shorta
@@ -3229,27 +3232,27 @@ UpdateAnimSprites:
         sta     $e9
         longi
         ldy     $00
-        lda     $31         ; return if there are no unused sprites remaining
+        lda     $31                     ; return if there are no unused sprites remaining
         beq     @12fb
         lda     [$e7],y
-        sta     $e6         ; $e6 = number of sprites
-        beq     @12fb       ; return if there are no sprites
+        sta     $e6                     ; $e6 = number of sprites
+        beq     @12fb                   ; return if there are no sprites
         iny
-@1297:  lda     [$e7],y     ; $e0 = x position
+@1297:  lda     [$e7],y                 ; $e0 = x position
         sta     $e0
-        bpl     @12b0       ; branch if not a 32x32 sprite
+        bpl     @12b0                   ; branch if not a 32x32 sprite
         clr_a
         lda     $33
         tax
-        lda     f:LargeSpriteTbl,x   ; high sprite mask
+        lda     f:LargeSpriteTbl,x      ; high sprite mask
         clc
         adc     $34
         sta     $34
-        sta     ($10)       ; set sprite high data
+        sta     ($10)                   ; set sprite high data
         ldx     $2d
         bra     @12b4
 @12b0:  lda     $34
-        sta     ($10)       ; set sprite high data
+        sta     ($10)                   ; set sprite high data
 @12b4:  lda     $e0
         and     #$7f
         sta     $e0
@@ -3260,30 +3263,30 @@ UpdateAnimSprites:
         longa
         lda     $e0
         sec
-        sbc     $35         ; subtract bg1 horizontal scroll
+        sbc     $35                     ; subtract bg1 horizontal scroll
         sta     $e0
         shorta
 @12ce:  jsr     DrawAnimSprite
-        dec     $33         ; decrement pointer to high sprite data masks
-        bpl     @12df       ; branch if positive
-        lda     #$03        ; reset to 3
+        dec     $33                     ; decrement pointer to high sprite data masks
+        bpl     @12df                   ; branch if positive
+        lda     #$03                    ; reset to 3
         sta     $33
-        stz     $34         ; clear current high sprite data byte
+        stz     $34                     ; clear current high sprite data byte
         longa
-        inc     $10         ; increment pointer to high sprite data
+        inc     $10                     ; increment pointer to high sprite data
 @12df:  longa
         lda     $e0
-        sta     ($0e)       ; set sprite data (position)
+        sta     ($0e)                   ; set sprite data (position)
         inc     $0e
         inc     $0e
         lda     $e2
-        sta     ($0e)       ; set sprite data (other bytes)
+        sta     ($0e)                   ; set sprite data (other bytes)
         inc     $0e
         inc     $0e
         shorta
-        dec     $31         ; decrement number of unused sprites
+        dec     $31                     ; decrement number of unused sprites
         beq     @12fb
-        dec     $e6         ; next sprite
+        dec     $e6                     ; next sprite
         bne     @1297
 @12fb:  rts
 
@@ -3292,28 +3295,28 @@ UpdateAnimSprites:
 ; [ update animation sprite data ]
 
 DrawAnimSprite:
-@12fc:  lda     $e0         ; $e0 = x position
+@12fc:  lda     $e0                     ; $e0 = x position
         clc
-        adc     $33ca,x     ; add horizontal offset
+        adc     $33ca,x                 ; add horizontal offset
         sta     $e0
         iny
-        lda     [$e7],y     ; $e1 = y position
+        lda     [$e7],y                 ; $e1 = y position
         clc
-        adc     $344a,x     ; add vertical offset
+        adc     $344a,x                 ; add vertical offset
         sta     $e1
         iny
-        lda     [$e7],y     ; $e2 = graphics offset
+        lda     [$e7],y                 ; $e2 = graphics offset
         sta     $e2
         iny
-        lda     $364a,x     ; branch if not flipped horizontal
+        lda     $364a,x                 ; branch if not flipped horizontal
         bit     #$02
         beq     @1320
         lda     [$e7],y
         ora     #$40
         bra     @1322
 @1320:  lda     [$e7],y
-@1322:  sta     $e3         ; $e3 = vhoopppm
-        lda     $3749,x     ; special palette
+@1322:  sta     $e3                     ; $e3 = vhoopppm
+        lda     $3749,x                 ; special palette
         beq     @1332
         lda     $e3
         and     #$f1
@@ -3353,15 +3356,15 @@ HideUnusedSprites:
 
 WaitFrame:
 @134d:  jsr     WaitVblank
-        lda     $46         ; branch if not scrolling text
+        lda     $46                     ; branch if not scrolling text
         bit     #$20
         beq     @1359
         jsr     UpdateTextScroll
 @1359:  jsl     UpdateCtrlMenu
         lda     $20
-        beq     @1367       ; return if not waiting for menu state counter
+        beq     @1367                   ; return if not waiting for menu state counter
         clr_ay
-        sty     $08         ; clear controller buttons
+        sty     $08                     ; clear controller buttons
         sty     $0a
 @1367:  rts
 
@@ -3370,20 +3373,20 @@ WaitFrame:
 ; [ wait for vblank ]
 
 WaitVblank:
-@1368:  lda     #$81        ; enable interrupts
+@1368:  lda     #$81                    ; enable interrupts
         sta     hNMITIMEN
         sta     $24
         cli
-@1370:  lda     $24         ; wait for nmi
+@1370:  lda     $24                     ; wait for nmi
         bne     @1370
-        sei                 ; disable interrupts
-        lda     $44         ; set screen display register
+        sei                             ; disable interrupts
+        lda     $44                     ; set screen display register
         sta     hINIDISP
-        lda     $43         ; enable hdma
+        lda     $43                     ; enable hdma
         sta     hHDMAEN
-        lda     $b5         ; set mosaic register
+        lda     $b5                     ; set mosaic register
         sta     hMOSAIC
-        stz     $ae         ; clear current sound effect
+        stz     $ae                     ; clear current sound effect
         rts
 
 ; ------------------------------------------------------------------------------
@@ -3797,7 +3800,7 @@ SaveConfirmCursorPos:
 DrawGameSaveMenu:
 @15ec:  jsr     ClearBG2ScreenA
         jsr     DrawSaveSlotWindows
-        jsr     _c33a87
+        jsr     LoadWindowGfx
         ldy     #.loword(SaveTitleWindow)
         jsr     DrawWindow
         lda     #$20                    ; white text
@@ -3814,7 +3817,7 @@ DrawGameLoadMenu:
 @1608:  jsr     ClearBG2ScreenA
         stz     $1d4e
         jsr     InitWindowPal
-        jsr     _c33a87
+        jsr     LoadWindowGfx
         ldy     #.loword(SaveTitleWindow)
         jsr     DrawWindow
         lda     $1d4e
@@ -3924,7 +3927,7 @@ DrawSaveSlotWindows:
         ldy     #.loword(SaveSlot3Window)
         jsr     DrawWindow
         ldy     #$1c00
-        jmp     _c30326
+        jmp     SetWindowTileFlags
 
 ; ------------------------------------------------------------------------------
 
@@ -4684,7 +4687,7 @@ _c31bd7:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $7e:  ]
+; [ menu state $7e: switch character (equip) ]
 
 MenuState_7e:
 @1be5:  jsr     _c31c01
@@ -4695,7 +4698,7 @@ MenuState_7e:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $7f:  ]
+; [ menu state $7f: switch character (equip remove) ]
 
 MenuState_7f:
 @1bf3:  jsr     _c31c01
@@ -4995,11 +4998,10 @@ MenuState_05:
 ; A button
         lda     $08
         bit     #$80
-        beq     @1db0       ; branch if a button is not pressed
-        jmp     SelectMainMenuOption
+        jne     SelectMainMenuOption
 
 ; left button
-@1db0:  lda     $09
+        lda     $09
         bit     #$02
         beq     @1dbc       ; branch if left button is not pressed
         jsr     PlayMoveSfx
@@ -5195,6 +5197,8 @@ MenuState_37:
         lda     $09
         bit     #$01
         beq     @1ee5       ; branch if right button is not down
+
+; B button or right button
 @1ec4:  jsr     PlayCancelSfx
         jsr     InitCharSelectCursor
         jsr     CreateCursorTask
@@ -5209,6 +5213,8 @@ MenuState_37:
         lda     #$08        ; disable multi-cursor
         trb     $46
         rts
+
+; A button
 @1ee5:  lda     $08         ; return if a button is not down
         bit     #$80
         beq     @1ef5
@@ -5223,18 +5229,22 @@ MenuState_37:
 
 ; [ menu state $08: item (select) ]
 
+.proc MenuState_08_proc
+
 _1ef6:  rts
 
-MenuState_08:
-@1ef7:  lda     #$10
+start:
+_1ef7:  lda     #$10
         trb     $45
         clr_a
         sta     $2a
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     ScrollListPage
         bcs     _1ef6
         jsr     UpdateItemListCursor
         jsr     InitItemDesc
+
+; B button
         lda     $09
         bit     #$80
         beq     _1f3b
@@ -5246,28 +5256,40 @@ MenuState_08:
         jsr     LoadItemOptionCursor
         lda     $1d4e
         and     #$40
-        beq     _c31f2e
+        beq     _1f2c
         ldy     $0234
         sty     $4d
 
-_c31f2e:
-@1f2e:  jsr     InitItemOptionCursor
+goto_item_option:
+_1f2c:  jsr     InitItemOptionCursor
         lda     #$17
         sta     $26
         jsr     ClearItemCount
-        jmp     InitBG3TilesLeftDMA1
+        jmp     InitDMA1BG3ScreenA
+
+; A button
 _1f3b:  lda     $08
         bit     #$80
-        beq     @1f4f
+        beq     _1f4f
         jsr     PlaySelectSfx
         lda     $4b
         sta     $28
         lda     #$19
         sta     $26
         jmp     _c32f21
-@1f4f:  rts
+
+_1f4f:  rts
+
+.endproc
+
+        MenuState_08 := MenuState_08_proc::start
+        GotoItemOption := MenuState_08_proc::goto_item_option
 
 ; ------------------------------------------------------------------------------
+
+; [ scroll list text up/down one page ]
+
+.proc ScrollListPage_proc
 
 ; (branch from c3/1f9b)
 _1f50:  stz     $50
@@ -5289,16 +5311,14 @@ _1f56:  lda     $54
 _1f62:  clc
         rts
 
-; [ scroll list text up/down one page ]
-
-ScrollListPage:
-@1f64:  lda     $20
-        bne     _1f62       ; branch if wait frame counter not zero
+start:
+_1f64:  lda     $20
+        bne     _1f62                   ; branch if wait frame counter not zero
 
 ; R button
         lda     $0a
         bit     #$10
-        beq     @1f93       ; branch if R button is not pressed
+        beq     _1f93                   ; branch if R button is not pressed
         lda     $4a
         cmp     $5c
         beq     _1f56
@@ -5306,10 +5326,10 @@ ScrollListPage:
         sec
         sbc     $4a
         cmp     $5a
-        bcs     @1f7f
-        bra     @1f81
-@1f7f:  lda     $5a
-@1f81:  sta     $e0
+        bcs     _1f7f
+        bra     _1f81
+_1f7f:  lda     $5a
+_1f81:  sta     $e0
         lda     $4a
         clc
         adc     $e0
@@ -5318,20 +5338,20 @@ ScrollListPage:
         clc
         adc     $e0
         sta     $50
-        bra     @1fb7
+        bra     _1fb7
 
 ; L button
-@1f93:  lda     $0a
+_1f93:  lda     $0a
         bit     #$20
-        beq     _1f62       ; branch if L button is not pressed
+        beq     _1f62                   ; branch if L button is not pressed
         lda     $4a
-        beq     _1f50       ; branch if at the top of the list
+        beq     _1f50                   ; branch if at the top of the list
         cmp     $5a
-        bcs     @1fa5
+        bcs     _1fa5
         lda     $4a
-        bra     @1fa7
-@1fa5:  lda     $5a
-@1fa7:  sta     $e0
+        bra     _1fa7
+_1fa5:  lda     $5a
+_1fa7:  sta     $e0
         lda     $4a
         sec
         sbc     $e0
@@ -5340,67 +5360,71 @@ ScrollListPage:
         sec
         sbc     $e0
         sta     $50
-@1fb7:  jsr     PlayMoveSfx
+_1fb7:  jsr     PlayMoveSfx
         clr_a
-        lda     $2a         ; list type
+        lda     $2a                     ; list type
         asl
         tax
-        jsr     (.loword(ScrollListPageTbl),x)
+        jsr     (jmp_tbl,x)
         sec
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; jump table for list type
-ScrollListPageTbl:
-@1fc4:  .addr   ScrollListPage_00
-        .addr   ScrollListPage_01
-        .addr   ScrollListPage_02
-        .addr   ScrollListPage_03
-        .addr   ScrollListPage_04
-        .addr   ScrollListPage_05
+jmp_tbl := .loword(*)
+@1fc4:  .addr   jmp_00
+        .addr   jmp_01
+        .addr   jmp_02
+        .addr   jmp_03
+        .addr   jmp_04
+        .addr   jmp_05
 
 ; ------------------------------------------------------------------------------
 
 ; 0: item list
-ScrollListPage_00:
+jmp_00:
 @1fd0:  jsr     LoadItemBG1VScrollHDMATbl
         jmp     DrawItemList
 
 ; ------------------------------------------------------------------------------
 
 ; 1: magic
-ScrollListPage_01:
+jmp_01:
 @1fd6:  jsr     LoadSkillsBG1VScrollHDMATbl
         jmp     DrawMagicList
 
 ; ------------------------------------------------------------------------------
 
 ; 2: lore
-ScrollListPage_02:
+jmp_02:
 @1fdc:  jsr     LoadSkillsBG1VScrollHDMATbl
         jmp     DrawLoreList
 
 ; ------------------------------------------------------------------------------
 
 ; 3: rage
-ScrollListPage_03:
+jmp_03:
 @1fe2:  jsr     LoadSkillsBG1VScrollHDMATbl
         jmp     DrawRiotList
 
 ; ------------------------------------------------------------------------------
 
 ; 4: esper
-ScrollListPage_04:
+jmp_04:
 @1fe8:  jsr     LoadSkillsBG1VScrollHDMATbl
         jmp     DrawGenjuList
 
 ; ------------------------------------------------------------------------------
 
 ; 5: equip/relic item list
-ScrollListPage_05:
+jmp_05:
 @1fee:  jsr     LoadEquipBG1VScrollHDMATbl
         jmp     DrawEquipItemList
+
+.endproc
+
+        ScrollListPage := ScrollListPage_proc::start
 
 ; ------------------------------------------------------------------------------
 
@@ -5606,7 +5630,7 @@ SkillsOption_01:
         jsr     _c32148
         jsr     _c32158
         jsr     _c351c6
-        jsr     InitBG3TilesRightDMA1
+        jsr     InitDMA1BG3ScreenB
         lda     #$1a
         sta     $26
         rts
@@ -5733,7 +5757,7 @@ SkillsOption_06:
 ; [ menu state $0c: status ]
 
 MenuState_0c:
-@21f5:  jsr     InitBG3TilesLeftDMA1
+@21f5:  jsr     InitDMA1BG3ScreenA
 
 ; shoulder R button
         lda     $08
@@ -5857,7 +5881,7 @@ MenuState_6b:
 ; [ menu state $0e: config ]
 
 MenuState_0e:
-@22c5:  jsr     InitBG1TilesDMA1
+@22c5:  jsr     InitDMA1BG1ScreenAB
         lda     $0b
         bit     #$04
         beq     @22e0
@@ -5911,9 +5935,8 @@ MenuState_0e:
 ; A button
 @2325:  lda     $08
         bit     #$80
-        beq     @232e
-        jmp     SelectConfigOption
-@232e:  jmp     ScrollConfigPage
+        jne     SelectConfigOption
+        jmp     ScrollConfigPage
 
 ; ------------------------------------------------------------------------------
 
@@ -6011,14 +6034,14 @@ SelectConfigOption_0e:
 
 ; window color
         jsr     _c323a7
-        jsr     _c33a87
-        jmp     _c341c3
+        jsr     LoadWindowGfx
+        jmp     UpdateConfigColorBars
 
 ; font color
 @239b:  ldy     #$7fff                  ; revert font color to default
         sty     $1d55
         jsr     InitFontColor
-        jmp     _c341c3
+        jmp     UpdateConfigColorBars
 
 ; ------------------------------------------------------------------------------
 
@@ -6194,7 +6217,7 @@ MenuState_11:
         jsr     DrawCharBlock3
         jsr     DrawCharBlock4
         jsr     SwapSavedCharCursorPos
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     InitCharSelectCursor
         jsr     ExecTasks
         jsr     WaitVblank
@@ -6391,7 +6414,7 @@ MenuState_17:
         trb     $46
         lda     #$10
         tsb     $45
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     UpdateItemOptionCursor
 
 ; B button
@@ -6451,7 +6474,7 @@ SelectItemOption_00:
 @264b:  jsr     InitItemListCursor
         jsr     InitItemListText
         jsr     InitItemDesc
-        jsr     InitBG3TilesLeftDMA1
+        jsr     InitDMA1BG3ScreenA
         jsr     WaitVblank
         jsr     CreateScrollArrowTask1
         longa
@@ -6477,7 +6500,7 @@ SelectItemOption_01:
         jsr     SortItemsByIcon
         jsr     DrawItemList
         jsr     LoadItemOptionCursor
-        jmp     _c31f2e
+        jmp     GotoItemOption
 
 ; ------------------------------------------------------------------------------
 
@@ -6494,7 +6517,7 @@ SelectItemOption_02:
         jsr     InitRareItemList
         jsr     InitBigText
         jsr     InitRareItemDesc
-        jsr     InitBG3TilesLeftDMA1
+        jsr     InitDMA1BG3ScreenA
         jsr     WaitVblank
         lda     #$c0
         trb     $46
@@ -6586,7 +6609,7 @@ FindItemsWithIcon:
 MenuState_18:
 @2741:  lda     #$10
         trb     $45
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     UpdateRareItemCursor
         jsr     InitRareItemDesc
         lda     $09
@@ -6605,7 +6628,7 @@ MenuState_18:
         sty     $4d
 @276f:  jsr     InitItemOptionCursor
         jsr     ClearItemCount
-        jmp     InitBG3TilesLeftDMA1
+        jmp     InitDMA1BG3ScreenA
 @2778:  rts
 
 ; ------------------------------------------------------------------------------
@@ -6613,7 +6636,7 @@ MenuState_18:
 ; [ menu state $19: item (move) ]
 
 MenuState_19:
-@2779:  jsr     InitBG1TilesLeftDMA1
+@2779:  jsr     InitDMA1BG1ScreenA
         jsr     UpdateItemListCursor
         jsr     InitItemDesc
         lda     $09
@@ -6671,11 +6694,11 @@ MenuState_1a:
         trb     $45
         lda     #$01
         sta     $2a
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         lda     $021e
         ror
         bcc     @27f8
-        jsr     InitBG3TilesRightDMA2
+        jsr     InitDMA2BG3ScreenB
         bra     @27fb
 @27f8:  jsr     TfrBigTextGfx
 @27fb:  jsr     ScrollListPage
@@ -6722,7 +6745,7 @@ MenuState_1a:
 @2855:  lda     $09
         bit     #$80
         beq     @2861
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     ReloadSkillsMenu
 @2861:  rts
 @2862:  jsr     PlayInvalidSfx
@@ -6757,7 +6780,7 @@ MenuState_1b:
         trb     $45
         lda     #$02
         sta     $2a
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     ScrollListPage
         bcs     @28a9
         jsr     UpdateLoreCursor
@@ -6773,7 +6796,7 @@ MenuState_1b:
 ; [ menu state $1c: dance (select) ]
 
 MenuState_1c:
-@28aa:  jsr     InitBG1TilesLeftDMA1
+@28aa:  jsr     InitDMA1BG1ScreenA
         jsr     UpdateAbilityCursor
         lda     $09
         bit     #$80
@@ -6788,7 +6811,7 @@ MenuState_1c:
 MenuState_1d:
 @28ba:  lda     #$03
         sta     $2a
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     ScrollListPage
         bcs     @28d2
         jsr     UpdateRiotCursor
@@ -6807,7 +6830,7 @@ MenuState_1e:
         trb     $45
         lda     #$04
         sta     $2a
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     ScrollListPage
         bcs     @2928
         jsr     UpdateGenjuCursor
@@ -6837,9 +6860,9 @@ MenuState_1e:
         sta     $e0
         jsr     _c32929
         jsr     DrawGenjuList
-        jsr     InitBG1TilesRightDMA1
+        jsr     InitDMA1BG1ScreenB
         jsr     WaitVblank
-        jmp     InitBG1TilesLeftDMA1
+        jmp     InitDMA1BG1ScreenA
 
 ; B button
 @291b:  lda     $09
@@ -6906,7 +6929,7 @@ MenuState_39:
 MenuState_33:
 @2977:  lda     #$10
         trb     $45
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     UpdateAbilityCursor
         jsr     LoadBlitzDesc
         lda     $09
@@ -6922,7 +6945,7 @@ MenuState_33:
 MenuState_3e:
 @298e:  lda     #$10
         trb     $45
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     UpdateAbilityCursor
         jsr     LoadBushidoDesc
         lda     $09
@@ -6951,7 +6974,7 @@ ReloadSkillsMenu:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $21: restore game ]
+; [ menu state $21: restore saved game (init) ]
 
 MenuState_21:
 @29c2:  lda     $4b
@@ -7010,7 +7033,7 @@ ResetGameTime:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $23:  ]
+; [ menu state $23: restore saved game ]
 
 MenuState_23:
 @2a2a:  jsr     UpdateSaveConfirmCursor
@@ -7042,7 +7065,7 @@ MenuState_23:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $3a:  ]
+; [ menu state $3a: magic target (init) ]
 
 MenuState_3a:
 @2a65:  lda     #$40
@@ -7083,7 +7106,7 @@ _c32aa5:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $3b:  ]
+; [ menu state $3b: magic target (single target) ]
 
 MenuState_3b:
 @2aae:  lda     $08
@@ -7120,9 +7143,8 @@ MenuState_3b:
         rts
 @2af3:  lda     $08
         bit     #$80
-        beq     @2afc
-        jmp     @2b0c
-@2afc:  lda     $09
+        jne     @2b0c
+        lda     $09
         bit     #$80
         beq     @2b0b
         jsr     PlayCancelSfx
@@ -7488,7 +7510,7 @@ MenuState_3c:
         jsr     InitBigText
         lda     #$10
         tsb     $45
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         lda     #$1a
         sta     $27
         lda     #$01
@@ -7497,7 +7519,7 @@ MenuState_3c:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $3d:  ]
+; [ menu state $3d: magic target (multi-target) ]
 
 MenuState_3d:
 @2d78:  lda     $08
@@ -7519,9 +7541,8 @@ MenuState_3d:
         rts
 @2d9b:  lda     $08
         bit     #$80
-        beq     @2da4
-        jmp     _c32c86
-@2da4:  lda     $09
+        jne     _c32c86
+        lda     $09
         bit     #$80
         beq     @2db6
         jsr     PlayCancelSfx
@@ -8821,7 +8842,7 @@ EnableInterrupts:
 ; [ draw time text ]
 
 UpdateTimeText:
-@3548:  jsr     InitBG3TilesLeftDMA1
+@3548:  jsr     InitDMA1BG3ScreenA
         jmp     DrawTime
 
 ; ------------------------------------------------------------------------------
@@ -9159,6 +9180,7 @@ LoadGogoStatusCursor:
 
 UpdateGogoStatusCursor:
 @3705:  jsr     MoveCursor
+
 InitGogoStatusCursor:
 @3708:  ldy     #.loword(GogoStatusCursorPos)
         jmp     UpdateCursorPos
@@ -9230,19 +9252,19 @@ CharBlock4LabelTextList:
         .addr   CharBlock4HPText
         .addr   CharBlock4MPText
 
-; "equip", "config"
+; "Equip", "Config"
 MainMenuOptionsTextList2:
 @3759:  .addr   MainMenuEquipText
         .addr   MainMenuConfigText
 
-; "yes", "no", "this", "data?"
+; "Yes", "No", "This", "data?"
 GameLoadChoiceTextList:
 @375d:  .addr   GameLoadYesText
         .addr   GameLoadNoText
         .addr   GameLoadMsgText1
         .addr   GameLoadMsgText2
 
-; "yes", "no", "erasing", "data.", "okay?"
+; "Yes", "No", "Erasing", "data.", "Okay?"
 GameSaveChoiceTextList:
 @3765:  .addr   GameLoadYesText
         .addr   GameLoadNoText
@@ -9532,10 +9554,10 @@ DrawConfigMenu:
         ldx     #.loword(ConfigLabelTextList4)
         ldy     #$000c
         jsr     DrawPosList
-        jsr     _c33ffd
-        jsr     _c340ea
+        jsr     DrawConfigMagicOrder
+        jsr     DrawConfigWindowNumList
         jsr     DrawConfigColors
-        jsr     _c341c3
+        jsr     UpdateConfigColorBars
         jsr     ShowConfigPage1
         jsr     TfrBG1ScreenAB
         jsr     TfrBG3ScreenAB
@@ -9618,7 +9640,7 @@ ConfigScrollArrowTask_01:
         beq     @39b5
         lda     #2                      ; page 2
         bra     @39b6
-@39b5:  clr_a                             ; page 1
+@39b5:  clr_a                           ; page 1
 @39b6:  tax
         longa
         lda     f:ConfigScrollArrowAnimTbl,x
@@ -9778,18 +9800,18 @@ Window2PosHDMATbl:
 
 ; ------------------------------------------------------------------------------
 
-; [ init custom menu window ]
+; [ load window graphics ]
 
-_c33a87:
+LoadWindowGfx:
 @3a87:  ldy     #$7800                  ; vram $7800 (menu window graphics)
         sty     $14
         lda     $1d4e                   ; window index
-        jsr     GetWindowGfxPtr
+        jsr     InitTfrWindowGfx
         lda     $1d4e
         ldx     #$0060
         jsr     LoadWindowPal
         ldy     #$1c00
-        jmp     _c30326
+        jmp     SetWindowTileFlags
 
 ; ------------------------------------------------------------------------------
 
@@ -9803,10 +9825,10 @@ LoadSaveSlot1WindowGfx:
         lda     $30674e
         bra     @3ab1
 @3ab0:  clr_a
-@3ab1:  jsr     GetWindowGfxPtr
+@3ab1:  jsr     InitTfrWindowGfx
         jsr     TfrVRAM1
         ldy     #$1820
-        jmp     _c30326
+        jmp     SetWindowTileFlags
 
 ; ------------------------------------------------------------------------------
 
@@ -9820,10 +9842,10 @@ LoadSaveSlot2WindowGfx:
         lda     $30714e
         bra     @3acd
 @3acc:  clr_a
-@3acd:  jsr     GetWindowGfxPtr
+@3acd:  jsr     InitTfrWindowGfx
         jsr     TfrVRAM1
         ldy     #$1440
-        jmp     _c30326
+        jmp     SetWindowTileFlags
 
 ; ------------------------------------------------------------------------------
 
@@ -9837,10 +9859,10 @@ LoadSaveSlot3WindowGfx:
         lda     $307b4e
         bra     @3ae9
 @3ae8:  clr_a
-@3ae9:  jsr     GetWindowGfxPtr
+@3ae9:  jsr     InitTfrWindowGfx
         jsr     TfrVRAM1
         ldy     #$1060
-        jmp     _c30326
+        jmp     SetWindowTileFlags
 
 ; ------------------------------------------------------------------------------
 
@@ -9886,11 +9908,9 @@ LoadSaveSlot3WindowPal:
 
 ; ------------------------------------------------------------------------------
 
-; [ get pointer to menu window graphics ]
+; [ init menu window graphics transfer to VRAM in DMA 1 ]
 
-; ++$16: pointer (out)
-
-GetWindowGfxPtr:
+InitTfrWindowGfx:
 @3b30:  and     #$0f
         sta     $e0
         stz     $e1
@@ -9926,7 +9946,7 @@ LoadWindowPal:
         sta     $e9
         stz     $e1
         longa
-        lda     #$1d57      ; window palette
+        lda     #$1d57                  ; window palette
 @3b6b:  ldy     $e0
         beq     @3b77
         clc
@@ -9950,9 +9970,9 @@ LoadWindowPal:
 ; [ draw active/wait config text ]
 
 DrawActiveWaitText:
-@3b8c:  lda     $1d4d       ; active/wait
+@3b8c:  lda     $1d4d                   ; active/wait
         and     #$08
-        beq     @3b9c       ; branch if active
+        beq     @3b9c                   ; branch if active
         lda     #$28
         jsr     @3ba5
         lda     #$20
@@ -9972,7 +9992,7 @@ DrawActiveWaitText:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw battle speed numerals ]
 
 DrawBattleSpeedText:
 @3bb7:  lda     #$28
@@ -9996,7 +10016,7 @@ DrawBattleSpeedText:
         adc     #$b5
         sta     $f9
         stz     $fa
-        jmp     _c34116
+        jmp     DrawConfigNum
 
 ; ------------------------------------------------------------------------------
 
@@ -10005,7 +10025,7 @@ BattleSpeedTextPos:
 
 ; ------------------------------------------------------------------------------
 
-; [ draw message speed text ]
+; [ draw message speed numerals ]
 
 DrawMsgSpeedText:
 @3bf2:  lda     #$28
@@ -10030,7 +10050,7 @@ DrawMsgSpeedText:
         adc     #$b5
         sta     $f9
         stz     $fa
-        jmp     _c34116
+        jmp     DrawConfigNum
 
 ; ------------------------------------------------------------------------------
 
@@ -10063,7 +10083,7 @@ DrawCmdConfigText:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw gauge on/off text ]
 
 DrawGaugeConfigText:
 @3c5c:  lda     $1d4e
@@ -10137,7 +10157,7 @@ DrawCursorConfigText:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw optimum/remove text ]
 
 DrawReequipConfigText:
 @3cdb:  lda     $1d4e
@@ -10162,7 +10182,7 @@ DrawReequipConfigText:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw single/multiple controller text ]
 
 DrawCtrlConfigText:
 @3d06:  lda     $1d54
@@ -10441,7 +10461,7 @@ ChangeConfigOption_09:
         and     #$f8
         ora     $e0
         sta     $1d54
-        jmp     _c33ffd
+        jmp     DrawConfigMagicOrder
 
 ; ------------------------------------------------------------------------------
 
@@ -10469,9 +10489,9 @@ ChangeConfigOption_0a:
         and     #$f0
         ora     $e0
         sta     $1d4e
-        jsr     _c340ea
-        jsr     _c33a87
-        jmp     _c341c3
+        jsr     DrawConfigWindowNumList
+        jsr     LoadWindowGfx
+        jmp     UpdateConfigColorBars
 
 ; ------------------------------------------------------------------------------
 
@@ -10504,14 +10524,14 @@ ChangeConfigOption_0b:
         ora     $e0
         sta     $1d54
         jsr     DrawConfigColors
-        jmp     _c341c3
+        jmp     UpdateConfigColorBars
 
 ; ------------------------------------------------------------------------------
 
 ; [ change red component ]
 
 ChangeConfigOption_0c:
-@3f3c:  jsr     _c341fe
+@3f3c:  jsr     GetColorComponents
         lda     $0b
         bit     #$01
         beq     @3f4f
@@ -10523,15 +10543,15 @@ ChangeConfigOption_0c:
 @3f4f:  lda     $e2
         beq     @3f55
         dec     $e2
-@3f55:  jsr     _c34221
-        jmp     _c33fc4
+@3f55:  jsr     CombineColorComponents
+        jmp     SetModifiedColor
 
 ; ------------------------------------------------------------------------------
 
 ; [ change green component ]
 
 ChangeConfigOption_0d:
-@3f5b:  jsr     _c341fe
+@3f5b:  jsr     GetColorComponents
         lda     $0b
         bit     #$01
         beq     @3f6e
@@ -10543,15 +10563,15 @@ ChangeConfigOption_0d:
 @3f6e:  lda     $e1
         beq     @3f74
         dec     $e1
-@3f74:  jsr     _c34221
-        jmp     _c33fc4
+@3f74:  jsr     CombineColorComponents
+        jmp     SetModifiedColor
 
 ; ------------------------------------------------------------------------------
 
 ; [ change blue component ]
 
 ChangeConfigOption_0e:
-@3f7a:  jsr     _c341fe
+@3f7a:  jsr     GetColorComponents
         lda     $0b
         bit     #$01
         beq     @3f8d
@@ -10563,8 +10583,8 @@ ChangeConfigOption_0e:
 @3f8d:  lda     $e0
         beq     @3f93
         dec     $e0
-@3f93:  jsr     _c34221
-        jmp     _c33fc4
+@3f93:  jsr     CombineColorComponents
+        jmp     SetModifiedColor
 
 ; ------------------------------------------------------------------------------
 
@@ -10572,7 +10592,7 @@ ChangeConfigOption_0e:
 
 InitFontColor:
 @3f99:  longa
-        lda     $1d55
+        lda     $1d55                   ; copy font color to all text palettes
         sta     $7e304f
         sta     $7e3073
         sta     $7e3077
@@ -10581,9 +10601,9 @@ InitFontColor:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ update window palette in CGRAM buffer ]
 
-_c33fad:
+UpdateWindowPal:
 @3fad:  ldx     $00
         longa
 @3fb1:  lda     $1d57,y
@@ -10597,11 +10617,11 @@ _c33fad:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ set a modified color value ]
 
-_c33fc4:
+SetModifiedColor:
 @3fc4:  clr_a
-        lda     $1d4e
+        lda     $1d4e                   ; get a pointer to the color in RAM
         and     #$0f
         sta     hWRMPYA
         lda     #14
@@ -10609,27 +10629,31 @@ _c33fc4:
         lda     $1d54
         and     #$38
         beq     @3ff2
+
+; window color
         lsr2
         clc
         adc     hRDMPYL
         tax
         lda     $9a
-        sta     $1d55,x
+        sta     $1d55,x                 ; set the new color value in SRAM
         lda     $9b
         sta     $1d56,x
         ldy     hRDMPYL
-        jsr     _c33fad
+        jsr     UpdateWindowPal
         bra     @3ffa
+
+; font color
 @3ff2:  ldy     $9a
-        sty     $1d55
+        sty     $1d55                   ; set the new color value in SRAM
         jsr     InitFontColor
-@3ffa:  jmp     _c341c3
+@3ffa:  jmp     UpdateConfigColorBars
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw magic order numerals and text ]
 
-_c33ffd:
+DrawConfigMagicOrder:
 @3ffd:  lda     #$28
         sta     $29
         ldy     #.loword(ConfigMagicOrderNumText)
@@ -10642,7 +10666,7 @@ _c33ffd:
         asl
         tax
         longa
-        lda     f:_c3402f,x
+        lda     f:ConfigMagicOrderNumPos,x
         sta     $f7
         shorta
         lda     $1d54
@@ -10651,12 +10675,13 @@ _c33ffd:
         adc     #$b5
         sta     $f9
         stz     $fa
-        jsr     _c34116
+        jsr     DrawConfigNum
         jmp     DrawConfigMagicTypeList
 
 ; ------------------------------------------------------------------------------
 
-_c3402f:
+; positions for highlighted numeral for magic order
+ConfigMagicOrderNumPos:
 @402f:  .word   $41a5,$41a9,$41ad,$41b1,$41b5,$41b9
 
 ; ------------------------------------------------------------------------------
@@ -10725,12 +10750,12 @@ ConfigMagicTypeTextPtrs:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw window pattern numerals ]
 
-_c340ea:
+DrawConfigWindowNumList:
 @40ea:  lda     #$28
         sta     $29
-        ldy     #.loword(ConfigColorNumText)
+        ldy     #.loword(ConfigWindowNumText)
         jsr     DrawPosText
         lda     #$20
         sta     $29
@@ -10740,7 +10765,7 @@ _c340ea:
         asl
         tax
         longa
-        lda     f:_c34123,x
+        lda     f:ConfigWindowNumPos,x
         sta     $f7
         shorta
         lda     $1d4e
@@ -10753,9 +10778,11 @@ _c340ea:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw selected numeral for config list ]
 
-_c34116:
+; battle speed, battle message speed, magic order, and window pattern
+
+DrawConfigNum:
 @4116:  ldy     #$00f7
         sty     $e7
         lda     #$00
@@ -10765,7 +10792,8 @@ _c34116:
 
 ; ------------------------------------------------------------------------------
 
-_c34123:
+; positions for highlighted numeral for window graphics indes
+ConfigWindowNumPos:
 @4123:  .word   $43a5,$43a9,$43ad,$43b1,$43b5,$43b9,$43bd,$43c1
 
 ; ------------------------------------------------------------------------------
@@ -10860,39 +10888,43 @@ ConfigColorArrowText7:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw config color bars and values ]
 
-_c341c3:
+UpdateConfigColorBars:
 @41c3:  jsr     _c33950
         clr_a
-        lda     $1d4e
+        lda     $1d4e                   ; window pattern
         and     #$0f
         sta     hWRMPYA
         lda     #14
         sta     hWRMPYB
-        lda     $1d54
+        lda     $1d54                   ; selected color
         and     #$38
         beq     @41e7
+
+; window color
         lsr2
         clc
         adc     hRDMPYL
         tax
         ldy     $1d55,x
         bra     @41ea
+
+; font color
 @41e7:  ldy     $1d55
 @41ea:  sty     $9a
-        jsr     _c341fe
-        jsr     _c34263
-        jsr     _c341fe
-        jsr     _c34250
-        jsr     _c341fe
-        jmp     _c3423d
+        jsr     GetColorComponents
+        jsr     DrawBlueColorBar
+        jsr     GetColorComponents
+        jsr     DrawGreenColorBar
+        jsr     GetColorComponents
+        jmp     DrawRedColorBar
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ separate color components for color bars ]
 
-_c341fe:
+GetColorComponents:
 @41fe:  ldy     $9a
         sty     $e7
         lda     $e7
@@ -10912,9 +10944,9 @@ _c341fe:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ combine RGB color components ]
 
-_c34221:
+CombineColorComponents:
 @4221:  lda     $e0
         asl2
         sta     $e8
@@ -10931,48 +10963,48 @@ _c34221:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw red color bar ]
 
-_c3423d:
+DrawRedColorBar:
 @423d:  longa
         lda     #$452f
         sta     $7e9e89
         shorta
         lda     $e2
         ldx     #$4529
-        jmp     _c34276
+        jmp     DrawConfigColorBar
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw green color bar ]
 
-_c34250:
+DrawGreenColorBar:
 @4250:  longa
         lda     #$45af
         sta     $7e9e89
         shorta
         lda     $e1
         ldx     #$45a9
-        jmp     _c34276
+        jmp     DrawConfigColorBar
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw blue color ]
 
-_c34263:
+DrawBlueColorBar:
 @4263:  longa
         lda     #$462f
         sta     $7e9e89
         shorta
         lda     $e0
         ldx     #$4629
-        jmp     _c34276
+        jmp     DrawConfigColorBar
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw one color bar and numerals ]
 
-_c34276:
+DrawConfigColorBar:
 @4276:  pha
         pha
         phx
@@ -10997,12 +11029,12 @@ _c34276:
 @429c:  pla
         and     #$03
         tax
-        lda     f:_c342be,x
+        lda     f:ColorBarTiles,x
         sta     hWMDATA
         stz     hWMDATA
         lda     #$30
         sta     $29
-        jmp     @42b1
+        jmp     @42b1                   ; this does nothing
 @42b1:  ldy     #$9e89
         sty     $e7
         lda     #$7e
@@ -11012,16 +11044,16 @@ _c34276:
 
 ; ------------------------------------------------------------------------------
 
-_c342be:
+ColorBarTiles:
 @42be:  .byte   $f0,$f2,$f4,$f6
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $47:  ]
+; [ menu state $47: battle command arrange (init) ]
 
 MenuState_47:
 @42c2:  jsr     DisableInterrupts
-        jsr     _c3442c
+        jsr     DrawCtrlConfigMenu
         jsr     InitCmdArrangeScrollHDMA
         jsr     LoadCmdArrangeCharCursor
         jsr     InitCmdArrangeCharCursor
@@ -11034,7 +11066,7 @@ MenuState_47:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $48:  ]
+; [ menu state $48: battle command arrange ]
 
 MenuState_48:
 @42df:  jsr     UpdateCmdArrangeCharCursor
@@ -11072,7 +11104,7 @@ MenuState_48:
         stz     $26
 @4325:  rts
 @4326:  jsr     PlaySelectSfx
-        jsr     InitBG3TilesLeftDMA1
+        jsr     InitDMA1BG3ScreenA
         jsr     _c343d0
         jsr     _c343d8
         jsr     _c343e1
@@ -11080,7 +11112,7 @@ MenuState_48:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $62:  ]
+; [ menu state $62: command arrange (init) ]
 
 MenuState_62:
 @4338:  jsr     UpdateCmdArrangeCursor
@@ -11117,7 +11149,7 @@ MenuState_62:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $63:  ]
+; [ menu state $63: command arrange ]
 
 MenuState_63:
 @4376:  jsr     UpdateCmdArrangeCursor
@@ -11149,11 +11181,11 @@ MenuState_63:
         ply
         lda     $e1
         sta     $0016,y
-        jsr     _c344b4
-        jsr     _c344ed
-        jsr     _c34526
-        jsr     _c3455f
-        jsr     InitBG3TilesLeftDMA1
+        jsr     DrawCmdArrangeChar1
+        jsr     DrawCmdArrangeChar2
+        jsr     DrawCmdArrangeChar3
+        jsr     DrawCmdArrangeChar4
+        jsr     InitDMA1BG3ScreenA
         bra     @43c6
 
 ; B button
@@ -11175,7 +11207,7 @@ MenuState_63:
 _c343d0:
 @43d0:  ldx     $00
         jsr     _c343f3
-        jmp     _c344b4
+        jmp     DrawCmdArrangeChar1
 
 ; ------------------------------------------------------------------------------
 
@@ -11184,7 +11216,7 @@ _c343d0:
 _c343d8:
 @43d8:  ldx     #$0002
         jsr     _c343f3
-        jmp     _c344ed
+        jmp     DrawCmdArrangeChar2
 
 ; ------------------------------------------------------------------------------
 
@@ -11193,7 +11225,7 @@ _c343d8:
 _c343e1:
 @43e1:  ldx     #$0004
         jsr     _c343f3
-        jmp     _c34526
+        jmp     DrawCmdArrangeChar3
 
 ; ------------------------------------------------------------------------------
 
@@ -11202,7 +11234,7 @@ _c343e1:
 _c343ea:
 @43ea:  ldx     #$0006
         jsr     _c343f3
-        jmp     _c3455f
+        jmp     DrawCmdArrangeChar4
 
 ; ------------------------------------------------------------------------------
 
@@ -11233,9 +11265,9 @@ _c343f3:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw controller config menu ]
 
-_c3442c:
+DrawCtrlConfigMenu:
 @442c:  jsr     ClearBG2ScreenA
         ldy     #.loword(_c34490)
         jsr     DrawWindow
@@ -11262,16 +11294,18 @@ _c3442c:
         jsr     ClearBG3ScreenB
         lda     #$30
         sta     $29
-        ldy     #$4af1
+        ldy     #.loword(CmdArrangeTitleText)
         jsr     DrawPosText
-        jsr     _c344b4
-        jsr     _c344ed
-        jsr     _c34526
-        jsr     _c3455f
+        jsr     DrawCmdArrangeChar1
+        jsr     DrawCmdArrangeChar2
+        jsr     DrawCmdArrangeChar3
+        jsr     DrawCmdArrangeChar4
         jsr     TfrBG1ScreenAB
         jmp     TfrBG3ScreenAB
 
 ; ------------------------------------------------------------------------------
+
+; controller config menu windows
 
 _c34490:
 @4490:  .byte   $1f,$59,$12,$04
@@ -11302,9 +11336,9 @@ _c344b0:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw controller config text for character slot 1 ]
 
-_c344b4:
+DrawCmdArrangeChar1:
 @44b4:  lda     $69
         bmi     @44ec
         jsl     UpdateEquip_ext
@@ -11319,20 +11353,20 @@ _c344b4:
         ldy     #$7a0f
         jsr     DrawCharTitle
         ldy     #$79ad
-        jsr     _c34598
+        jsr     DrawCmdArrangeTop
         ldy     #$7a23
-        jsr     _c3459e
+        jsr     DrawCmdArrangeLeft
         ldy     #$7a37
-        jsr     _c345a5
+        jsr     DrawCmdArrangeRight
         ldy     #$7aad
-        jsr     _c345ad
+        jsr     DrawCmdArrangeBtm
 @44ec:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw controller config text for character slot 2 ]
 
-_c344ed:
+DrawCmdArrangeChar2:
 @44ed:  lda     $6a
         bmi     @4525
         jsl     UpdateEquip_ext
@@ -11347,20 +11381,20 @@ _c344ed:
         ldy     #$7bcf
         jsr     DrawCharTitle
         ldy     #$7b6d
-        jsr     _c34598
+        jsr     DrawCmdArrangeTop
         ldy     #$7be3
-        jsr     _c3459e
+        jsr     DrawCmdArrangeLeft
         ldy     #$7bf7
-        jsr     _c345a5
+        jsr     DrawCmdArrangeRight
         ldy     #$7c6d
-        jsr     _c345ad
+        jsr     DrawCmdArrangeBtm
 @4525:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw controller config text for character slot 3 ]
 
-_c34526:
+DrawCmdArrangeChar3:
 @4526:  lda     $6b
         bmi     @455e
         jsl     UpdateEquip_ext
@@ -11375,20 +11409,20 @@ _c34526:
         ldy     #$7d8f
         jsr     DrawCharTitle
         ldy     #$7d2d
-        jsr     _c34598
+        jsr     DrawCmdArrangeTop
         ldy     #$7da3
-        jsr     _c3459e
+        jsr     DrawCmdArrangeLeft
         ldy     #$7db7
-        jsr     _c345a5
+        jsr     DrawCmdArrangeRight
         ldy     #$7e2d
-        jsr     _c345ad
+        jsr     DrawCmdArrangeBtm
 @455e:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw controller config text for character slot 4 ]
 
-_c3455f:
+DrawCmdArrangeChar4:
 @455f:  lda     $6c
         bmi     @4597
         jsl     UpdateEquip_ext
@@ -11403,49 +11437,49 @@ _c3455f:
         ldy     #$7f4f
         jsr     DrawCharTitle
         ldy     #$7eed
-        jsr     _c34598
+        jsr     DrawCmdArrangeTop
         ldy     #$7f63
-        jsr     _c3459e
+        jsr     DrawCmdArrangeLeft
         ldy     #$7f77
-        jsr     _c345a5
+        jsr     DrawCmdArrangeRight
         ldy     #$7fed
-        jsr     _c345ad
+        jsr     DrawCmdArrangeBtm
 @4597:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw top command ]
 
-_c34598:
+DrawCmdArrangeTop:
 @4598:  jsr     InitTextBuf
-        jmp     _c35ee1
+        jmp     DrawCmdName
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw left command ]
 
-_c3459e:
+DrawCmdArrangeLeft:
 @459e:  jsr     InitTextBuf
         iny
-        jmp     _c35ee1
+        jmp     DrawCmdName
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw right command ]
 
-_c345a5:
+DrawCmdArrangeRight:
 @45a5:  jsr     InitTextBuf
         iny2
-        jmp     _c35ee1
+        jmp     DrawCmdName
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw bottom command ]
 
-_c345ad:
+DrawCmdArrangeBtm:
 @45ad:  jsr     InitTextBuf
         iny3
-        jmp     _c35ee1
+        jmp     DrawCmdName
 
 ; ------------------------------------------------------------------------------
 
@@ -11703,7 +11737,7 @@ MenuState_4b:
 ; [ menu state $4c: update character controller select ]
 
 MenuState_4c:
-@46ca:  jsr     InitBG3TilesLeftDMA1
+@46ca:  jsr     InitDMA1BG3ScreenA
         jsr     UpdateCharCtrlCursor
         lda     $09
         bit     #$10
@@ -11735,7 +11769,7 @@ DrawCharCtrlMenu:
         jsr     TfrBG2ScreenAB
         lda     #$30
         sta     $29
-        ldy     #$4afb
+        ldy     #.loword(CharCtrlTitleText)
         jsr     DrawPosText
         jsr     DrawChar1CtrlText
         jsr     DrawChar2CtrlText
@@ -12218,8 +12252,9 @@ ConfigColorGText:
 ConfigColorBText:
 @4a8f:  .byte   $25,$46,$81,$00
 
-ConfigColorNumText:
-@4a93:  .byte   $a5,$43,$b5,$ff,$b6,$ff,$b7,$ff,$b8,$ff,$b9,$ff,$ba,$ff,$bb,$ff,$bc,$00
+ConfigWindowNumText:
+@4a93:  .byte   $a5,$43,$b5,$ff,$b6,$ff,$b7,$ff,$b8,$ff,$b9,$ff,$ba,$ff,$bb,$ff
+        .byte   $bc,$00
 
 ConfigMagicOrderNumText:
 @4aa5:  .byte   $a5,$41,$b5,$ff,$b6,$ff,$b7,$ff,$b8,$ff,$b9,$ff,$ba,$00
@@ -12243,15 +12278,36 @@ ConfigMagicTypeText:
 
 ; ------------------------------------------------------------------------------
 
+; "Arrange"
+CmdArrangeTitleText:
 @4af1:  .byte   $cf,$78,$80,$ab,$ab,$9a,$a7,$a0,$9e,$00
+
+; "Controller"
+CharCtrlTitleText:
 @4afb:  .byte   $4d,$7b,$82,$a8,$a7,$ad,$ab,$a8,$a5,$a5,$9e,$ab,$00
+
+; "Cntlr1" (char 1)
 @4b08:  .byte   $21,$7c,$82,$a7,$ad,$a5,$ab,$b5,$00
+
+; "Cntlr2" (char 1)
 @4b11:  .byte   $33,$7c,$82,$a7,$ad,$a5,$ab,$b6,$00
+
+; "Cntlr1" (char 2)
 @4b1a:  .byte   $a1,$7c,$82,$a7,$ad,$a5,$ab,$b5,$00
+
+; "Cntlr2" (char 2)
 @4b23:  .byte   $b3,$7c,$82,$a7,$ad,$a5,$ab,$b6,$00
+
+; "Cntlr1" (char 3)
 @4b2c:  .byte   $21,$7d,$82,$a7,$ad,$a5,$ab,$b5,$00
+
+; "Cntlr2" (char 3)
 @4b35:  .byte   $33,$7d,$82,$a7,$ad,$a5,$ab,$b6,$00
+
+; "Cntlr1" (char 4)
 @4b3e:  .byte   $a1,$7d,$82,$a7,$ad,$a5,$ab,$b5,$00
+
+; "Cntlr2" (char 4)
 @4b47:  .byte   $b3,$7d,$82,$a7,$ad,$a5,$ab,$b6,$00
 
 ; ------------------------------------------------------------------------------
@@ -12624,7 +12680,7 @@ _c34d7f:
         ldy     #.loword(SkillsMPCostText)
         jsr     DrawPosText
         jsr     CreateSubPortraitTask
-        jmp     InitBG3TilesRightDMA1
+        jmp     InitDMA1BG3ScreenB
 
 ; ------------------------------------------------------------------------------
 
@@ -12985,11 +13041,11 @@ DrawMagicList:
 ; [ draw one row of magic list ]
 
 DrawMagicListRow:
-@4f9e:  jsr     _c34fb5
+@4f9e:  jsr     GetMagicNamePtr
         ldx     #$0003
         jsr     _c34fc4
         inc     $e5
-        jsr     _c34fb5
+        jsr     GetMagicNamePtr
         ldx     #$0010
         jsr     _c34fc4
         inc     $e5
@@ -12997,14 +13053,14 @@ DrawMagicListRow:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ get pointer to magic spell name ]
 
-_c34fb5:
-@4fb5:  ldy     #$0007
+GetMagicNamePtr:
+@4fb5:  ldy     #7
         sty     $eb
-        ldy     #$f567      ; $e6f567 (spell names)
+        ldy     #.loword(MagicName)
         sty     $ef
-        lda     #$e6
+        lda     #^MagicName
         sta     $f1
         rts
 
@@ -13321,7 +13377,7 @@ _c351f9:
         ldy     #.loword(SkillsLoreTitleText)
         jsr     DrawPosText
         jsr     CreateSubPortraitTask
-        jmp     InitBG3TilesRightDMA1
+        jmp     InitDMA1BG3ScreenB
 
 ; ------------------------------------------------------------------------------
 
@@ -13458,7 +13514,7 @@ _c352d7:
         ldy     #.loword(SkillsBushidoTitleText)
         jsr     DrawPosText
         jsr     CreateSubPortraitTask
-        jmp     InitBG3TilesRightDMA1
+        jmp     InitDMA1BG3ScreenB
 
 ; ------------------------------------------------------------------------------
 
@@ -13573,7 +13629,7 @@ _c35391:
         ldy     #.loword(SkillsRiotTitleText)
         jsr     DrawPosText
         jsr     CreateSubPortraitTask
-        jmp     InitBG3TilesRightDMA1
+        jmp     InitDMA1BG3ScreenB
 
 ; ------------------------------------------------------------------------------
 
@@ -13697,7 +13753,7 @@ DrawGenjuMenu:
         ldy     #.loword(SkillsGenjuTitleText)
         jsr     DrawPosText
         jsr     CreateSubPortraitTask
-        jmp     InitBG3TilesRightDMA1
+        jmp     InitDMA1BG3ScreenB
 
 ; ------------------------------------------------------------------------------
 
@@ -13916,7 +13972,7 @@ DrawBlitzMenu:
         ldy     #.loword(SkillsBlitzTitleText)
         jsr     DrawPosText
         jsr     CreateSubPortraitTask
-        jmp     InitBG3TilesRightDMA1
+        jmp     InitDMA1BG3ScreenB
 
 ; ------------------------------------------------------------------------------
 
@@ -14028,9 +14084,9 @@ GetBlitzInputTiles:
         tax
         ldy     #$9e8b
         sty     hWMADDL
-        ldy     #$000a
+        ldy     #10
 @5699:  phx
-        lda     $c47a40,x   ; blitz codes
+        lda     f:BlitzCode,x
         asl
         tax
         lda     f:BlitzInputTileTbl,x
@@ -14190,7 +14246,7 @@ DrawDanceMenu:
         ldy     #.loword(SkillsDanceTitleText)
         jsr     DrawPosText
         jsr     CreateSubPortraitTask
-        jmp     InitBG3TilesRightDMA1
+        jmp     InitDMA1BG3ScreenB
 
 ; ------------------------------------------------------------------------------
 
@@ -14329,7 +14385,7 @@ _c3584b:
         clr_a
         lda     $4b
         sta     $e5
-        jsr     _c34fb5
+        jsr     GetMagicNamePtr
         longa
         lda     #$790d
         sta     $7e9e89
@@ -14363,9 +14419,9 @@ InitEsperDetailMenu:
         sta     $90
         jsr     LoadGenjuProp
         jsr     DrawEsperDetailMenu
-        jsr     InitBG1TilesRightDMA1
+        jsr     InitDMA1BG1ScreenB
         jsr     WaitVblank
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         longa
         lda     #$0100
         sta     $7e9a10
@@ -14409,7 +14465,7 @@ MenuState_4d:
         sty     $20
         lda     #$34
         sta     $26
-        jmp     InitBG1TilesRightDMA1
+        jmp     InitDMA1BG1ScreenB
 
 ; equip esper
 @5902:  jsr     PlaySelectSfx
@@ -14455,7 +14511,7 @@ _c35913:
         sta     $5a
         lda     #$02
         sta     $5b
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     WaitVblank
         longa
         clr_a
@@ -14465,7 +14521,7 @@ _c35913:
         sty     $39
         sty     $3d
         jsr     LoadSkillsBG1VScrollHDMATbl
-        jsr     InitBG1TilesRightDMA1
+        jsr     InitDMA1BG1ScreenB
         lda     #$1e
         sta     $26
 _597c:  rts
@@ -14661,7 +14717,7 @@ DrawGenjuMagicName:
         shorta
 
 DrawItemMagicName:
-@5aed:  jsr     _c34fb5
+@5aed:  jsr     GetMagicNamePtr
         lda     $e1
         cmp     #$ff
         beq     @5b26
@@ -14983,11 +15039,11 @@ DrawStatusMainWindow:
         jsr     ClearBG3ScreenB
         jsr     ClearBG3ScreenC
         jsr     ClearBG3ScreenD
-        ldy     #.loword(_c35f81)
+        ldy     #.loword(StatusMainWindow)
         jsr     DrawWindow
-        ldy     #.loword(_c35f79)
+        ldy     #.loword(StatusTitleWindow)
         jsr     DrawWindow
-        ldy     #.loword(_c35f7d)
+        ldy     #.loword(StatusCmdWindow)
         jsr     DrawWindow
         rts
 
@@ -15152,7 +15208,7 @@ DrawStatusGogoWindow:
         ldx     #$aa8d
         stx     hWMADDL
         clr_ax
-@5e75:  lda     f:_c35f85,x
+@5e75:  lda     f:StatusGogoWindow,x
         sta     hWMDATA
         inx
         cpx     #$0008
@@ -15184,7 +15240,7 @@ DrawStatusGogoWindow:
 @5eba:  phx
         phy
         lda     $7e9d8a,x
-        jsr     _c35ed7
+        jsr     DrawCmdNameGogo
         ply
         longa
         tya
@@ -15196,13 +15252,13 @@ DrawStatusGogoWindow:
         inx
         cpx     $e5
         bne     @5eba
-        jmp     _5f50
+        jmp     _c35f50
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw battle command name (Gogo's status menu) ]
 
-_c35ed7:
+DrawCmdNameGogo:
 @5ed7:  pha
         jsr     InitTextBuf
         pla
@@ -15211,14 +15267,12 @@ _c35ed7:
 
 ; ------------------------------------------------------------------------------
 
-; [ draw battle command names ]
+; [ draw battle command name (status menu and command arrange) ]
 
-_c35ee1:
-@5ee1:  jsr     _c3612c
+DrawCmdName:
+@5ee1:  jsr     CheckRelicCmd
         bmi     _5f0c
-
-_5ee6:
-@5ee6:  jsr     _c35f25
+_5ee6:  jsr     CheckCmdEnabled
         sta     $e2
         pha
         asl2
@@ -15229,7 +15283,7 @@ _5ee6:
         adc     $e0
         adc     $e2
         tax
-        ldy     #$0007
+        ldy     #7
 @5efb:  lda     $d8cea0,x   ; battle command names
         sta     hWMDATA
         inx
@@ -15238,6 +15292,7 @@ _5ee6:
 _5f06:  stz     hWMDATA
         jmp     DrawPosTextBuf
 
+; clear command name
 _5f0c:  lda     #$ff
         sta     hWMDATA
         sta     hWMDATA
@@ -15250,32 +15305,46 @@ _5f0c:  lda     #$ff
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ check if a battle command is enabled (for font color) ]
 
-_c35f25:
+CheckCmdEnabled:
 @5f25:  pha
         cmp     #$0b
         beq     @5f3a
         cmp     #$07
         beq     @5f44
+
+; use white text
 @5f2e:  lda     #$20
         sta     $29
         pla
         rts
+
+; use gray text
 @5f34:  lda     #$24
         sta     $29
         pla
         rts
+
+; runic
 @5f3a:  lda     $11da
         ora     $11db
         bpl     @5f34
         bra     @5f2e
+
+; swdtech
 @5f44:  lda     $11da
         ora     $11db
         bit     #$02
         beq     @5f34
         bra     @5f2e
-_5f50:  ldx     #$61ca
+
+; ------------------------------------------------------------------------------
+
+; [  ]
+
+_c35f50:
+@5f50:  ldx     #$61ca
         stx     $e7
         lda     #$7e
         sta     $e9
@@ -15299,20 +15368,19 @@ _5f50:  ldx     #$61ca
 ; ------------------------------------------------------------------------------
 
 ; status menu windows
-_c35f79:
+StatusTitleWindow:
 @5f79:  .byte   $8b,$58,$06,$01
 
-_c35f7d:
+StatusCmdWindow:
 @5f7d:  .byte   $eb,$5a,$09,$06
 
-_c35f81:
+StatusMainWindow:
 @5f81:  .byte   $8b,$58,$1c,$18
 
-_c35f85:
+; gogo window is in 2 parts
+StatusGogoWindow:
 @5f85:  .byte   $c7,$58,$00,$12
-
-_c35f89:
-@5f89:  .byte   $87,$60,$07,$12
+        .byte   $87,$60,$07,$12
 
 ; ------------------------------------------------------------------------------
 
@@ -15528,25 +15596,25 @@ _c360ca:
 _c36102:
 @6102:  ldy     #$7bf1
         jsr     InitTextBuf
-        jsr     _c35ee1
+        jsr     DrawCmdName
         ldy     #$7c71
         jsr     InitTextBuf
         iny
-        jsr     _c35ee1
+        jsr     DrawCmdName
         ldy     #$7cf1
         jsr     InitTextBuf
         iny2
-        jsr     _c35ee1
+        jsr     DrawCmdName
         ldy     #$7d71
         jsr     InitTextBuf
         iny3
-        jmp     _c35ee1
+        jmp     DrawCmdName
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ check relic-upgraded battle commands ]
 
-_c3612c:
+CheckRelicCmd:
 @612c:  lda     $0016,y     ; battle command
         cmp     #$02        ; command $02 (magic)
         bne     @613e
@@ -15840,7 +15908,7 @@ _c36306:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $42:  ]
+; [ menu state $42: party select status menu (init) ]
 
 MenuState_42:
 @631d:  jsr     DisableInterrupts
@@ -15860,7 +15928,7 @@ MenuState_42:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $43:  ]
+; [ menu state $43: party select status menu ]
 
 MenuState_43:
 @633f:  lda     $09
@@ -15935,7 +16003,7 @@ _c3638e:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $6a:  ]
+; [ menu state $6a: gogo command list ]
 
 MenuState_6a:
 @63a7:  jsr     UpdateGogoCmdListCursor
@@ -16183,16 +16251,15 @@ MenuState_5d:
 ; [ menu state $5f: name change menu ]
 
 MenuState_5f:
-@656c:  jsr     InitBG1TilesDMA1
+@656c:  jsr     InitDMA1BG1ScreenAB
         jsr     UpdateNameChangeCursor
         jsr     DrawNameChangeName
         lda     $09
         bit     #$10
-        beq     @657e
-        jmp     @65c2                   ; jump if start button is pressed
+        jne     @65c2                   ; jump if start button is pressed
 
 ; A button
-@657e:  lda     $08
+        lda     $08
         bit     #$80
         beq     @6595                   ; branch if A button is not pressed
         jsr     PlaySelectSfx
@@ -17872,7 +17939,7 @@ _c37114:
         jsr     DrawPartyMenu
         jsr     _c3793f
         jsr     _c37953
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         lda     #$2d
         sta     $27
         lda     #$66
@@ -17881,7 +17948,7 @@ _c37114:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $7d:  ]
+; [ menu state $7d: return to party select (from status) ]
 
 MenuState_7d:
 @7131:  jsr     _c370fc
@@ -17911,7 +17978,7 @@ MenuState_7d:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $2d:  ]
+; [ menu state $2d: party select (select 1st slot) ]
 
 MenuState_2d:
 @7168:  jsr     _c371b9
@@ -18001,7 +18068,7 @@ _c371b9:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $2e: party select (move) ]
+; [ menu state $2e: party select (select 2nd slot) ]
 
 _720b:  rts
 
@@ -18278,9 +18345,8 @@ UpdatePartyCursor:
         cmp     #$01
         beq     @742c       ; branch if one
         cmp     #$02
-        beq     @7429       ; branch if two
-        jmp     UpdateThreePartyCursor
-@7429:  jmp     UpdateTwoPartyCursor
+        jne     UpdateThreePartyCursor
+        jmp     UpdateTwoPartyCursor
 @742c:  jmp     UpdateOnePartyCursor
 @742f:  jmp     UpdatePartyCharCursor
 
@@ -19138,7 +19204,7 @@ _c379e6:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $67:  ]
+; [ menu state $67: fade out (party select) ]
 
 MenuState_67:
 @79f0:  jsr     CreateFadeOutTask
@@ -19150,7 +19216,7 @@ MenuState_67:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $66:  ]
+; [ menu state $66: fade in (party select) ]
 
 MenuState_66:
 @79ff:  jsr     CreateFadeInTask
@@ -19162,7 +19228,7 @@ MenuState_66:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $68:  ]
+; [ menu state $68: wait for fade in/out (party select) ]
 
 MenuState_68:
 @7a0e:  ldy     $20
@@ -19263,7 +19329,7 @@ _c37a78:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $69:  ]
+; [ menu state $69: clear party select message ]
 
 MenuState_69:
 @7a87:  lda     $20
@@ -19375,7 +19441,7 @@ _c37b25:
 
 ; ------------------------------------------------------------------------------
 
-; [ character icon thread ]
+; [ character icon task ]
 
 CharIconTask:
 @7b42:  tax
@@ -21017,7 +21083,7 @@ UseItem:
         sta     $29
         jsr     _c385d5
         jsr     DrawItemDetails
-        jsr     InitBG3TilesDMA1
+        jsr     InitDMA1BG3ScreenAB
         jsr     DisableDMA2
         lda     #$64                    ; menu state $64 (item details)
         sta     $26
@@ -21588,7 +21654,7 @@ MenuState_64:
         lda     #$04
         tsb     $45
         jsr     _c389de
-        jsr     InitBG3TilesLeftDMA1
+        jsr     InitDMA1BG3ScreenA
         jsr     WaitVblank
         clr_a
         sta     $7e9a10
@@ -21722,8 +21788,8 @@ MenuState_6f:
 ; [ menu state $70: use item (character select) ]
 
 MenuState_70:
-@8a96:  jsr     InitBG1TilesLeftDMA1
-        jsr     InitBG3TilesLeftDMA2
+@8a96:  jsr     InitDMA1BG1ScreenA
+        jsr     InitDMA2BG3ScreenA
 
 ; A button
         lda     $08
@@ -24178,14 +24244,12 @@ CheckCanEquipItem:
 _c39ad3:
 @9ad3:  lda     $7e9d89
         cmp     #$0a
-        bcs     @9ade
-        jmp     UpdateEquipShortListCursor
-@9ade:  lda     #$05
+        jcc     UpdateEquipShortListCursor
+        lda     #$05
         sta     $2a
         jsr     ScrollListPage
-        bcs     @9aea
-        jmp     UpdateEquipLongListCursor
-@9aea:  rts
+        jcc     UpdateEquipLongListCursor
+        rts
 
 ; ------------------------------------------------------------------------------
 
@@ -24709,7 +24773,7 @@ _c39e37:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $58:  ]
+; [ menu state $58: relic (init) ]
 
 MenuState_58:
 @9e4b:  jsr     _c39e50
@@ -24747,7 +24811,7 @@ _c39e6f:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $79:  ]
+; [ menu state $79: switch character (relic equip) ]
 
 MenuState_79:
 @9e7d:  jsr     _c39e99
@@ -24758,7 +24822,7 @@ MenuState_79:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $7a:  ]
+; [ menu state $7a: switch character (relic remove) ]
 
 MenuState_7a:
 @9e8b:  jsr     _c39e99
@@ -24832,7 +24896,7 @@ _c39ee6:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ check reequip ]
 
 _c39eeb:
 @9eeb:  jsr     UpdateEquipStats
@@ -25081,7 +25145,7 @@ _c3a051:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $5b:  ]
+; [ menu state $5b: relic item select ]
 
 MenuState_5b:
 @a097:  lda     #$10
@@ -25137,7 +25201,7 @@ MenuState_5b:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $5c:  ]
+; [ menu state $5c: remove relic ]
 
 MenuState_5c:
 @a10a:  jsr     _c39e23
@@ -26408,7 +26472,7 @@ MenuState_73:
         sta     $27
         lda     #$01
         sta     $26
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jmp     EnableInterrupts
 
 ; ------------------------------------------------------------------------------
@@ -26419,7 +26483,7 @@ MenuState_74:
 @aa25:  jsr     DrawFinalOrderListLeft
         jsr     DrawFinalOrderListRight
         jsr     UpdateFinalOrderCursor
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
 
 ; B button
         lda     $09
@@ -26868,7 +26932,7 @@ MenuState_72:
 @acdc:  lda     #$10
         trb     $45
         stz     $2a
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     ScrollListPage
         bcs     @ad26
         jsr     UpdateItemListCursor
@@ -26989,7 +27053,7 @@ ColosseumItemMsgText:
 MenuState_75:
 @adb7:  jsr     DisableInterrupts
         stz     $43
-        jsr     _c33a87
+        jsr     LoadWindowGfx
         jsr     InitCharProp
         lda     #$02
         jsl     InitGradientHDMA
@@ -27014,9 +27078,9 @@ MenuState_75:
         lda     #$01
         sta     $26
         jsr     ClearBGScroll
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     EnableInterrupts
-        jmp     InitBG3TilesLeftDMA1
+        jmp     InitDMA1BG3ScreenA
 
 ; ------------------------------------------------------------------------------
 
@@ -27032,7 +27096,7 @@ CreateColosseumVSTask:
 ; [ menu state $76: colosseum character select ]
 
 MenuState_76:
-@ae0f:  jsr     InitBG3TilesLeftDMA1
+@ae0f:  jsr     InitDMA1BG3ScreenA
         jsr     UpdateColosseumCharCursor
         lda     $08
         bit     #$80
@@ -27684,9 +27748,8 @@ DrawWagerName:
 
 DrawPrizeName:
 @b255:  lda     $0209                   ; prize item
-        beq     _b25d                   ; branch if colosseum item name is shown
-        jmp     _b286
-_b25d:  lda     $0207
+        jne     _b286                   ; branch if prize name is not shown
+        lda     $0207
         ldx     #$790d
 _b263:  pha
         ldy     #$9e8b
@@ -27961,7 +28024,7 @@ _c3b3f2:
         lda     #$7e
         pha
         plb
-        jsl     $c2ff6d     ; decompress
+        jsl     Decompress_ext
         plb
         rts
 
@@ -28094,7 +28157,7 @@ _b4bc:  rts
 MenuState_26:
 @b4bd:  lda     #$10
         tsb     $45
-        jsr     InitBG3TilesLeftDMA1
+        jsr     InitDMA1BG3ScreenA
         jsr     UpdateShopBuyMenuCursor
         jsr     _c3bc84
         jsr     _c3bca8
@@ -28291,7 +28354,7 @@ MenuState_29:
         tsb     $45
         clr_a
         sta     $2a
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     ScrollListPage
         bcs     @b675
         jsr     UpdateItemListCursor
@@ -28310,7 +28373,7 @@ MenuState_29:
         lda     #$c0
         trb     $46
         jsr     ClearBG1ScreenA
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     WaitVblank
         lda     #$2a
         sta     $26
@@ -28462,10 +28525,10 @@ _c3b760:
         stz     $47
         jsr     LoadShopOptionCursor
         jsr     InitShopOptionCursor
-        jsr     InitBG1TilesLeftDMA1
+        jsr     InitDMA1BG1ScreenA
         jsr     _c3b94e
         jsr     WaitVblank
-        jsr     InitBG3TilesLeftDMA1
+        jsr     InitDMA1BG3ScreenA
         jsr     _c3b95a
         ldy     #.loword(ShopOptionsText)
         jsr     DrawPosText
@@ -28530,7 +28593,7 @@ _c3b7b3:
 ; [ 1: sell ]
 
 SelectShopOption_01:
-@b7c7:  jsr     InitBG3TilesLeftDMA1
+@b7c7:  jsr     InitDMA1BG3ScreenA
         jsr     _c3bbe0
         bra     _b7d2
 
@@ -28993,7 +29056,7 @@ AdjustShopPrice_06:
 ; [  ]
 
 _c3baa5:
-@baa5:  jsr     InitBG3TilesLeftDMA1
+@baa5:  jsr     InitDMA1BG3ScreenA
         jsr     _c3b95a
         jsr     _c3c2e1
         longa
@@ -29424,11 +29487,11 @@ _c3bcfd:
         cmp     #$04
         beq     @bd42
         cmp     #$05
-        beq     @bd3c
-        jmp     @bf0a
-@bd3c:  jmp     @bf18
+        jne     @bf0a
+        jmp     @bf18
 @bd3f:  jmp     @be35
 @bd42:  jmp     @bebd
+
 @bd45:  clr_ax
 @bd47:  phx
         longa
@@ -29473,6 +29536,7 @@ _c3bcfd:
         bne     @bda2
         rts
 @bda2:  jmp     @bd07
+
 @bda5:  clr_ax
 @bda7:  phx
         longa
@@ -29532,9 +29596,9 @@ _c3bcfd:
 @be27:  plx
         inx2
         cpx     #$0020
-        bne     @be32
-        jmp     @bd8f
-@be32:  jmp     @bda7
+        jeq     @bd8f
+        jmp     @bda7
+
 @be35:  clr_ax
 @be37:  phx
         longa
@@ -29590,9 +29654,9 @@ _c3bcfd:
 @beaf:  plx
         inx2
         cpx     #$0020
-        bne     @beba
-        jmp     @bd8f
-@beba:  jmp     @be37
+        jeq     @bd8f
+        jmp     @be37
+
 @bebd:  clr_ax
 @bebf:  phx
         longa
@@ -29627,12 +29691,14 @@ _c3bcfd:
         cpx     #$0020
         bne     @bebf
         jmp     @bd8f
+
 @bf0a:  clr_ax
 @bf0c:  sta     hWMDATA
         inx
         cpx     #$0010
         bne     @bf0c
         jmp     @bd8f
+
 @bf18:  clr_ax
 @bf1a:  phx
         longa

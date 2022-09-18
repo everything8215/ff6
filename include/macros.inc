@@ -303,6 +303,50 @@ PSW_C := %00000001
 
 ; ------------------------------------------------------------------------------
 
+; [ long branch instructions ]
+
+.macro  jeq     addr
+        bne     *+5
+        jmp     addr
+.endmacro
+
+.macro  jne     addr
+        beq     *+5
+        jmp     addr
+.endmacro
+
+.macro  jmi     addr
+        bpl     *+5
+        jmp     addr
+.endmacro
+
+.macro  jpl     addr
+        bmi     *+5
+        jmp     addr
+.endmacro
+
+.macro  jcs     addr
+        bcc     *+5
+        jmp     addr
+.endmacro
+
+.macro  jcc     addr
+        bcs     *+5
+        jmp     addr
+.endmacro
+
+.macro  jvs     addr
+        bvc     *+5
+        jmp     addr
+.endmacro
+
+.macro  jvc     addr
+        bvs     *+5
+        jmp     addr
+.endmacro
+
+; ------------------------------------------------------------------------------
+
 ; [ make pointer table (absolute) ]
 
 .macro make_ptr_tbl_abs label, length

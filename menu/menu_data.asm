@@ -49,6 +49,21 @@ RareItemDescPtrs:
 
 ; ------------------------------------------------------------------------------
 
+.segment "magic_desc"
+
+; d8/c9a0
+        .include "text/magic_desc.asm"
+        .res $0500+MagicDesc-*
+
+; d8/cea0
+        .include "text/battle_cmd_name.asm"
+
+; d8/cf80
+MagicDescPtrs:
+        make_ptr_tbl_rel MagicDesc, 54
+
+; ------------------------------------------------------------------------------
+
 .segment "menu_data"
 
 ; d8/e800

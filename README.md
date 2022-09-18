@@ -155,7 +155,9 @@ As a naming convention for symbols, I've chosen to follow the example of the
 Pokémon reverse engineering team (https://github.com/pret). Subroutine names
 and labels for data in the ROM use PascalCase. Acronyms like RAM appear in all
 capitals (i.e. InitRAM). This differs from conventional camel-case
-capitalization rules.
+capitalization rules. The Apple II DeskTop project has some nice ca65
+coding style conventions here (https://github.com/a2stuff/a2d/blob/main/docs/Coding_Style.md)
+although I'm not sure how strictly I would want to follow them.
 
 External subroutines (which can be called by other modules) get the special
 suffix '_ext'. Also, dummy subroutines called by another bank (typically a
