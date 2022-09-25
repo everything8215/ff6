@@ -502,6 +502,12 @@
         "name": "MP"
       }
     },
+    "cutsceneProgram": {
+      "type": "data",
+      "name": "Cutscene Program",
+      "range": "0xC2686C-0xC28A60",
+      "format": "ff6-lzss"
+    },
     "dialog": {
       "type": "array",
       "name": "Dialogue",
@@ -934,6 +940,36 @@
         "range": "0xC40000-0xC40341",
         "offset": "0xC40000"
       }
+    },
+    "floatingIslandCutscene": {
+        "type": "assembly",
+        "name": "Floating Island Cutscene Graphics Data",
+        "range": "0xD94E96-0xD9568E",
+        "asmSymbol": "FloatingContGfx",
+        "file": "cutscene/gfx/floating_cont_gfx.asm",
+        "format": "ff6-lzss",
+        "isSequential": true,
+        "assembly": {
+            "graphics": {
+                "type": "graphics",
+                "name": "Floating Island Cutscene Graphics",
+                "range": "0x0000-0x07C0",
+                "format": "snes4bpp",
+                "palette": "cutsceneProgram.floatingIslandPalette",
+                "backColor": true
+            },
+            "layout": {
+                "type": "tilemap",
+                "name": "Floating Island Cutscene Layout",
+                "range": "0x07C0-0x0900",
+                "format": "generic4bppTile",
+                "graphics": "floatingIslandCutscene.graphics",
+                "palette": "cutsceneProgram.floatingIslandPalette",
+                "width": 32,
+                "height": 10,
+                "backColor": true
+            }
+        }
     },
     "fontGraphicsLarge": {
         "type": "graphics",
@@ -5502,6 +5538,51 @@
       "asmSymbol": "WorldTilemap3",
       "file": "world/data/world_tilemap3.asm",
       "format": "ff6-lzss"
+    },
+    "worldOfRuinCutscene": {
+        "type": "assembly",
+        "name": "World of Ruin Cutscene Data",
+        "range": "0xECE900-0xECFFFE",
+        "asmSymbol": "RuinCutsceneGfx",
+        "file": "cutscene/gfx/ruin_cutscene_gfx.asm",
+        "format": "ff6-lzss",
+        "isSequential": true,
+        "assembly": {
+            "bgGraphics": {
+                "type": "graphics",
+                "name": "World of Ruin Cutscene Background Graphics",
+                "range": "0x0000-0x0FE0",
+                "format": "snes4bpp",
+                "palette": {
+                    "path": "cutsceneProgram.worldOfRuinPalette",
+                    "range": "0-16"
+                }
+            },
+            "layout": {
+                "type": "tilemap",
+                "name": "World of Ruin Cutscene Layout",
+                "range": "0x0FE0-0x16E0",
+                "format": "snes4bppTile",
+                "graphics": "worldOfRuinCutscene.bgGraphics",
+                "palette": {
+                    "path": "cutsceneProgram.worldOfRuinPalette",
+                    "range": "0-16"
+                },
+                "width": 32,
+                "height": 28,
+                "backColor": true
+            },
+            "spriteGraphics": {
+                "type": "graphics",
+                "name": "World of Ruin Cutscene Sprite Graphics",
+                "range": "0x16E0-0x24C0",
+                "format": "snes4bpp",
+                "palette": {
+                    "path": "cutsceneProgram.worldOfRuinPalette",
+                    "range": "16-64"
+                }
+            }
+        }
     },
     "worldPalette1": {
       "type": "data",

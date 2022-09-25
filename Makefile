@@ -8,6 +8,9 @@ export VERSION_EXT
 LINK = ld65
 LINKFLAGS =
 
+# lzss encoder
+LZSS = node tools/encode-lzss.js
+
 # list of ROM versions
 VERSIONS = ff6-jp ff6-en ff6-en1
 ROM_DIR = rom
@@ -69,27 +72,33 @@ OBJ_FILES_EN1 = $(foreach M, $(MODULES), $(M)/obj/$(M)_en1.o)
 
 # rules for making ROM files
 # run linker twice: 1st for the cutscene program, 2nd for the ROM itself
+cutscene/data/cutscene_jp.lz: ff6-en.lnk $(OBJ_FILES_JP)
+	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_JP)
+	${LZSS} $(@:lz=bin) $@
+	$(MAKE) -C cutscene
+
+cutscene/data/cutscene_en.lz: ff6-en.lnk $(OBJ_FILES_EN)
+	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
+	${LZSS} $(@:lz=bin) $@
+	$(MAKE) -C cutscene
+
+cutscene/data/cutscene_en1.lz: ff6-en.lnk $(OBJ_FILES_EN1)
+	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
+	${LZSS} $(@:lz=bin) $@
+	$(MAKE) -C cutscene
+
 $(FF6_JP_PATH): ff6-jp.lnk encode-jp $(OBJ_FILES_JP)
 	@mkdir -p rom
-	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_JP)
-	node tools/encode-cutscene.js $(VERSION_EXT)
-	$(MAKE) -C cutscene
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_JP)
 	node tools/calc-checksum.js $@
 
-$(FF6_EN_PATH): ff6-en.lnk encode-en $(OBJ_FILES_EN)
+$(FF6_EN_PATH): ff6-en.lnk encode-en cutscene/data/cutscene_en.lz $(OBJ_FILES_EN)
 	@mkdir -p rom
-	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
-	node tools/encode-cutscene.js $(VERSION_EXT)
-	$(MAKE) -C cutscene
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN)
 	node tools/calc-checksum.js $@
 
 $(FF6_EN1_PATH): ff6-en.lnk encode-en $(OBJ_FILES_EN1)
 	@mkdir -p rom
-	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
-	node tools/encode-cutscene.js $(VERSION_EXT)
-	$(MAKE) -C cutscene
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN1)
 	node tools/calc-checksum.js $@
 

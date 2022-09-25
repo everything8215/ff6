@@ -53,8 +53,9 @@ segments {
     btlgfx_code: load = bank_c1, type = ro;
     battle_code: load = bank_c2, type = ro;
     cutscene_code: load = bank_c2, type = ro, start = $c26800;
-    ending_anim1: load = bank_c2, type = ro start = $c28a70;
-    decompress_code: load = bank_c2, type = ro start = $c2fc6d;
+    ending_anim1: load = bank_c2, type = ro, start = $c28a70;
+    btlgfx_code2: load = bank_c2, type = ro, start = $c2a800;
+    decompress_code: load = bank_c2, type = ro, start = $c2fc6d;
     menu_code: load = bank_c3, type = ro;
     event_triggers: load = bank_c4, type = ro;
     shop_prop: load = bank_c4, type = ro, start = $c47ac0;
@@ -81,6 +82,7 @@ segments {
     map_gfx: load = bank_de, type = ro, start = $dfda00;
     map_gfx2: load = bank_e6, type = ro;
     natural_magic: load = bank_ec, type = ro, start = $ece3c0;
+    ruin_cutscene_gfx: load = bank_ec, type = ro, start = $ece900;
     menu_gfx: load = bank_ed, type = ro;
     char_prop: load = bank_ed, type = ro, start = $ed7ca0;
     treasure_prop: load = bank_ed, type = ro, start = $ed82f4;

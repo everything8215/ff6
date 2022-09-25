@@ -1,5 +1,6 @@
 .DS_Store
 *.sfc
+*.bin
 *.o
 *.lst
 *.map

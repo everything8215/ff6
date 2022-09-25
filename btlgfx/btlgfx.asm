@@ -99,14 +99,14 @@ Decompress_ext:
         lda     [$f3]
         sta     $fc
         lda     $f6
-        sta     f:$002181
+        sta     f:hWMADDL
         shorta
         lda     $f8
         and     #$01
-        sta     f:$002183
-        lda     #$01
+        sta     f:hWMADDH
+        lda     #1
         sta     $fe
-        ldy     #$0002
+        ldy     #2
         lda     #$7f
         pha
         plb
@@ -118,7 +118,7 @@ Decompress_ext:
         ldx     #$ffde
 @ffa2:  dec     $fe
         bne     @ffaf
-        lda     #$08
+        lda     #8
         sta     $fe
         lda     [$f3],y
         sta     $ff
@@ -126,7 +126,7 @@ Decompress_ext:
 @ffaf:  lsr     $ff
         bcc     @ffc4
         lda     [$f3],y
-        sta     f:$002180
+        sta     f:hWMDATA
         sta     a:$0000,x
         inx
         bne     @fff6
@@ -139,14 +139,14 @@ Decompress_ext:
         lda     [$f3],y
         lsr3
         clc
-        adc     #$03
+        adc     #3
         sta     $fb
         lda     [$f3],y
         ora     #$f8
         xba
         tay
 @ffda:  lda     $0000,y
-        sta     f:$002180
+        sta     f:hWMDATA
         sta     a:$0000,x
         inx
         bne     @ffea
@@ -165,5 +165,9 @@ Decompress_ext:
         pld
         plb
         rtl
+
+; ------------------------------------------------------------------------------
+
+.segment "btlgfx_code2"
 
 ; ------------------------------------------------------------------------------
