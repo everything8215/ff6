@@ -891,7 +891,7 @@ _c3b28d:
         lda     #$7c4f
         sta     $7e9e89
         shorta
-        jsr     _c35409
+        jsr     GetMonsterNamePtr
         clr_a
         lda     $0206
         jsr     LoadArrayItem

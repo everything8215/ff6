@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import FontWidth, FontGfxLarge
+
 ; ------------------------------------------------------------------------------
 
 ; [  ]
@@ -457,7 +459,7 @@ CopyLetterGfx:
 @a8d9:  phx
         longa
         tyx
-        lda     $c490c0,x   ; variable width font graphics
+        lda     f:FontGfxLarge,x   ; variable width font graphics
         stz     $e7
         stz     $e9
         sta     $e8
@@ -502,7 +504,7 @@ CopyLetterGfx:
         tax
         lda     $8d
         clc
-        adc     $c48fc0,x
+        adc     f:FontWidth,x
         sta     $8d
         rts
 

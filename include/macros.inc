@@ -103,6 +103,28 @@ PSW_C := %00000001
         sep #PSW_A|PSW_C
 .endmacro
 
+.macro longic
+        .i16
+        rep #PSW_I|PSW_C
+.endmacro
+
+.macro shortic
+        .i8
+        sep #PSW_I|PSW_C
+.endmacro
+
+.macro longaic
+        .a16
+        .i16
+        rep #PSW_A|PSW_I|PSW_C
+.endmacro
+
+.macro shortaic
+        .a8
+        .i8
+        sep #PSW_A|PSW_I|PSW_C
+.endmacro
+
 ; ------------------------------------------------------------------------------
 
 ; [ repeated no operation ]

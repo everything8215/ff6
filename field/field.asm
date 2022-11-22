@@ -30,6 +30,7 @@
 
 .import WorldBattleRate, SubBattleRate
 .import WindowGfx, WindowPal, PortraitGfx, PortraitPal
+.import SineTbl8
 
 .export LoadMapCharGfx_ext, CheckBattleWorld_ext, DoPoisonDmg_ext
 .export DecTimersMenuBattle_ext
@@ -60,9 +61,7 @@ StartingMapY:
 ; ------------------------------------------------------------------------------
 
 CheckBattleWorld_ext:
-@0008:  rtl
-        nop2
-        ; jmp     CheckBattleWorld
+@0008:  jmp     CheckBattleWorld
 
 ; ------------------------------------------------------------------------------
 
@@ -1117,7 +1116,7 @@ CalcSine:
         sta     $1a
         lda     $1b
         tax
-        lda     f:$c2fe6d,x             ; sin/cos table
+        lda     f:SineTbl8,x             ; sin/cos table
         clc
         adc     #$80
         sta     hWRMPYB
@@ -1142,7 +1141,7 @@ CalcCosine:
         clc
         adc     #$40
         tax
-        lda     $c2fe6d,x               ; sin/cos table
+        lda     f:SineTbl8,x               ; sin/cos table
         clc
         adc     #$80
         sta     hWRMPYB
@@ -1623,7 +1622,7 @@ UpdateSpotlights:
         shorta0
         lda     $0784
         tax
-        lda     $c2fe6d,x               ; sin/cos table
+        lda     f:SineTbl8,x               ; sin/cos table
         clc
         adc     #$80
         lsr
@@ -1645,7 +1644,7 @@ UpdateSpotlights:
         clc
         adc     #$40
         tax
-        lda     $c2fe6d,x               ; sin/cos table
+        lda     f:SineTbl8,x               ; sin/cos table
         clc
         adc     #$80
         lsr
@@ -1661,7 +1660,7 @@ UpdateSpotlights:
         and     #$00ff
         shorta
 @0c4b:  tax
-        lda     $c2fe6d,x               ; sin/cos table
+        lda     f:SineTbl8,x               ; sin/cos table
         bmi     @0c66
         longa
         asl

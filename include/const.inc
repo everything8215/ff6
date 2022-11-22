@@ -24,6 +24,7 @@
 
 def_config DEBUG,0
 def_config LANG_EN,0
+def_config LANG_EN_REV1,0
 
 .if LANG_EN
 .define LANG_SUFFIX "en"

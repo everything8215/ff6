@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import BattleCmdProp
+
 ; ------------------------------------------------------------------------------
 
 ; [ draw status menu ]
@@ -187,7 +189,7 @@ DrawStatusGogoWindow:
         sta     $e0
         asl
         tax
-        lda     $cffe00,x   ; battle command data
+        lda     f:BattleCmdProp,x   ; battle command data
         and     #$01
         beq     @5e60       ; branch if command can't be used by gogo
         lda     $e0
@@ -279,7 +281,7 @@ _5ee6:  jsr     CheckCmdEnabled
         adc     $e2
         tax
         ldy     #7
-@5efb:  lda     $d8cea0,x   ; battle command names
+@5efb:  lda     f:BattleCmdName,x   ; battle command names
         sta     hWMDATA
         inx
         dey

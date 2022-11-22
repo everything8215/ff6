@@ -666,22 +666,22 @@ $1600-$1FFF Save RAM
          +$3030 pointer to character 3 spell list ($2306)
          +$3032 pointer to character 4 spell list ($2442)
     $3034-$3069 Master Spell List (1 byte per spell)
-	$306A-$3083	Master Lore List (1 byte per lore)
+    $306A-$3083 Master Lore List (1 byte per lore)
     $3084-$3183 Pointer to each spell in master spell list (1 byte per attack, used to get modified mp cost for character spells)
     $3184-$3203 Command List (pointers to command/attack queue at $3420)
                 NOTE: a command list slot equals itself if it is the last pending action for a character/monster
                       otherwise, it equals the next pending action to be executed after this one
 ---------------------------------------------------------------------------------
-          $3204 prsxcamj Character Update Flags
-				p: update enabled spells/espers
-				r: remove all advance wait actions
-				s: condemned counter needs to be started
-				x: condemned counter needs to be stopped
-				c: update enabled commands
-				a: ATB gauge constant needs to be updated (haste/slow)
-				m: character just morphed or reverted - update menu, etc.
-				j: character just jumped - remove all actions from action queue
-          $3205 j????al? (init $FF, flags are active when clear)
+          $3204 prsxcamj Character Flags 1
+                p: update enabled spells/espers
+                r: remove all advance wait actions
+                s: condemned counter needs to be started
+                x: condemned counter needs to be stopped
+                c: update enabled commands
+                a: ATB gauge constant needs to be updated (haste/slow)
+                m: character just morphed or reverted - update menu, etc.
+                j: character just jumped - remove all actions from action queue
+          $3205 j????al? Character Flags 2 (init $FF, flags are active when clear)
                 j: target is executing an action and can't jump
                 a: air anchor effect
                 l: near-fatal spell has been cast this battle
@@ -2150,8 +2150,8 @@ $7FB800-$7FBBFF Cursor, Scroll indicators, reflect, and shield graphics
 		$7FBC40 Numeral Graphics
 		$7FBE00 Numeral Graphics
 		$7FC000 Backwards Numeral Graphics
-$7FC200-$7FC2FF Condemned Numeral Graphics
-$7FC300-$7FC3FF Backwards Condemned Numeral Graphics
+$7FC200-$7FC2FF Condemned Numeral Graphics (4 * 32 bytes)
+$7FC300-$7FC3FF Backwards Condemned Numeral Graphics (4 * 32 bytes)
 $7FC400-$7FE3FF BG1 Animation Tile Data Buffer (16 frames, 16x16 tiles each, 2 bytes per tile)
 $7FE400-$7FF800 BG3 Animation Tile Data Buffer (8 frames, 16x16 tiles each, 2 bytes per tile)
 

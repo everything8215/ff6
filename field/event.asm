@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import EventBattleGroup
+
 ; ------------------------------------------------------------------------------
 
 ; [ init event script ]
@@ -1896,7 +1898,7 @@ EventBattle:
         bcc     @a5ba       ; 3/4 chance to choose the first battle
         inx2                ; 1/4 chance to choose the second battle
 @a5ba:  longa
-        lda     $cf5000,x   ; battle index
+        lda     f:EventBattleGroup,x   ; battle index
         sta     f:$0011e0
         shorta0
         lda     $ec         ; battle blur/sound flags

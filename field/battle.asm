@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import RandBattleGroup, WorldBattleGroup, SubBattleGroup
+
 ; ------------------------------------------------------------------------------
 
 ; [ battle blur/sound ]
@@ -119,7 +121,7 @@ CheckBattleWorld:
         ora     $20
         tax
         shorta0
-        lda     $cf5400,x               ; world battle groups
+        lda     f:WorldBattleGroup,x               ; world battle groups
         sta     $24
         cmp     #$ff
         bne     @c1df                   ; branch if not a veldt sector
@@ -180,7 +182,7 @@ CheckBattleWorld:
         bcc     @c25d
         inx2
 @c25d:  longa
-        lda     $cf4800,x
+        lda     f:RandBattleGroup,x
         sta     f:$0011e0
         tdc
 @c268:  shorta
@@ -347,7 +349,7 @@ CheckBattleSub:
         stz     $1f6e                   ; clear random battle counter
         stz     $1f6f
         ldx     a:$0082
-        lda     $cf5600,x               ; get the map's battle group
+        lda     f:SubBattleGroup,x               ; get the map's battle group
         longa
         asl3
         tax
@@ -363,7 +365,7 @@ CheckBattleSub:
         bcc     @c3f6
         inx2
 @c3f6:  longa
-        lda     $cf4800,x               ; random battle groups (8 bytes each)
+        lda     f:RandBattleGroup,x               ; random battle groups (8 bytes each)
         sta     f:$0011e0
         shorta0
         lda     $0522                   ; battle bg

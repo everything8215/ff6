@@ -13,7 +13,7 @@
 
 .export RNGTbl
 .export MapGfxPtrs, MapGfx
-.export ItemName, FontGfxSmall
+.export MagicProp, ItemName, FontGfxSmall, FontWidth, FontGfxLarge
 .export ShortEntrancePtrs, EventTriggerPtrs
 .export CharProp, LevelUpExp, BushidoLevelTbl, BlitzLevelTbl
 .export BlitzCode, MagicName
@@ -82,7 +82,7 @@ NPCPropPtrs:
         .res $50b0+NPCPropPtrs-*
 
 ; c4/6ac0
-        .res $0e00
+        .include "data/magic_prop.asm"
 
 ; c4/78c0
         .include "text/char_name_en.asm"

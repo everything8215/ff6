@@ -49,6 +49,270 @@
         "ff6-lzss"
       ]
     },
+    "attackProperties": {
+      "type": "array",
+      "name": "Attack Properties",
+      "range": "0xC46AC0-0xC478BF",
+      "arrayLength": 256,
+      "itemLength": 14,
+      "asmSymbol": "MagicProp",
+      "file": "field/data/magic_prop.asm",
+      "stringTable": "attackName",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "spellName": {
+            "type": "assembly",
+            "name": "Name",
+            "external": "spellNames[%i]",
+            "invalid": "this.parent.i >= 0x36"
+          },
+          "spellDescription": {
+            "type": "assembly",
+            "name": "Description",
+            "external": "spellDescriptions[%i]",
+            "invalid": "this.parent.i >= 0x36"
+          },
+          "esperAttackName": {
+            "type": "assembly",
+            "name": "Name",
+            "external": "esperAttackName[%i-0x36]",
+            "invalid": "this.parent.i < 0x36 || this.parent.i >= 0x51"
+          },
+          "esperAttackDescription": {
+            "type": "assembly",
+            "name": "Description",
+            "external": "esperAttackDescriptions[%i-0x36]",
+            "invalid": "this.parent.i < 0x36 || this.parent.i >= 0x51"
+          },
+          "miscName": {
+            "type": "assembly",
+            "name": "Name",
+            "external": "attackName[%i-0x51]",
+            "invalid": "this.parent.i < 0x51 || this.parent.i >= 0x55"
+          },
+          "swdTechName": {
+            "type": "assembly",
+            "name": "Name",
+            "external": "swdTechNames[%i-0x55]",
+            "invalid": "this.parent.i < 0x55 || this.parent.i >= 0x5D"
+          },
+          "swdTechDescription": {
+            "type": "assembly",
+            "name": "Description",
+            "external": "swdTechDescription[%i-0x55]",
+            "invalid": "this.parent.i < 0x55 || this.parent.i >= 0x5D"
+          },
+          "swdTechLevel": {
+            "type": "assembly",
+            "external": "swdTechLevel[%i-0x55]",
+            "invalid": "this.parent.i < 0x55 || this.parent.i >= 0x5D"
+          },
+          "attackName": {
+            "type": "assembly",
+            "name": "Name",
+            "external": "attackName[%i-0x51]",
+            "invalid": "this.parent.i < 0x5D"
+          },
+          "blitzDescription": {
+            "type": "assembly",
+            "name": "Description",
+            "external": "blitzDescription[%i-0x5D]",
+            "invalid": "this.parent.i < 0x5D || this.parent.i >= 0x65"
+          },
+          "blitzCode": {
+            "type": "assembly",
+            "external": "blitzCode[%i-0x5D]",
+            "invalid": "this.parent.i < 0x5D || this.parent.i >= 0x65"
+          },
+          "loreDescription": {
+            "type": "assembly",
+            "name": "Description",
+            "external": "loreDescription[%i-0x8B]",
+            "invalid": "this.parent.i < 0x8B || this.parent.i >= 0xA3"
+          },
+          "initialLore": {
+            "type": "assembly",
+            "external": "initialLore[%i-0x8B]",
+            "invalid": "this.parent.i < 0x8B || this.parent.i >= 0xA3"
+          },
+          "mpCost": {
+            "type": "property",
+            "name": "MP Cost",
+            "begin": 5
+          },
+          "spellPower": {
+            "type": "property",
+            "name": "Spell Power",
+            "begin": 6
+          },
+          "hitRate": {
+            "type": "property",
+            "name": "Hit Rate",
+            "begin": 8
+          },
+          "specialEffect": {
+            "type": "property",
+            "name": "Special Effect",
+            "begin": 9,
+            "mask": "0xFF",
+            "stringTable": {
+              "length": "88",
+              "default": "Attack Special Effect %i",
+              "hideIndex": true,
+              "string": {
+                "0-16": "<stringTable.weaponSpecialEffect[%i]>",
+                "16": "<stringTable.attackName[24]>",
+                "17": "<stringTable.attackName[76]>",
+                "18": "<stringTable.attackName[70]>",
+                "19": "<stringTable.attackName[63]>",
+                "21": "<stringTable.attackName[97]>",
+                "22": "<stringTable.attackName[99]>",
+                "23": "<stringTable.attackName[120]>",
+                "24": "<stringTable.attackName[42]>",
+                "25": "<stringTable.attackName[162]>",
+                "26": "<stringTable.attackName[144]>",
+                "27": "<stringTable.attackName[147]>",
+                "28": "<stringTable.attackName[151]>",
+                "29": "<stringTable.attackName[152]>",
+                "30": "<stringTable.attackName[153]>",
+                "31": "<stringTable.attackName[155]>",
+                "32": "<stringTable.attackName[157]>",
+                "33": "<stringTable.attackName[158]>",
+                "34": "<stringTable.attackName[159]>",
+                "35": "Disable Counterattack",
+                "36": "<stringTable.attackName[69]>",
+                "37": "Miss Flying Targets",
+                "38": "<stringTable.attackName[193]>",
+                "39": "<stringTable.attackName[194]>",
+                "40": "<stringTable.attackName[196]>",
+                "41": "<stringTable.attackName[197]>",
+                "42": "<stringTable.attackName[198]>",
+                "43": "<stringTable.attackName[201]>",
+                "44": "<stringTable.attackName[205]>",
+                "45": "<stringTable.attackName[199]>",
+                "46": "<stringTable.attackName[200]>",
+                "47": "<stringTable.attackName[202]>",
+                "48": "<stringTable.attackName[95]>",
+                "49": "<stringTable.attackName[154]>",
+                "50": "<stringTable.attackName[88]>, <stringTable.attackName[91]>",
+                "51": "<stringTable.attackName[234]>",
+                "52": "<stringTable.attackName[206]>",
+                "53": "<stringTable.attackName[13]>",
+                "54": "<stringTable.attackName[89]>",
+                "55": "<stringTable.attackName[220]>",
+                "56": "<stringTable.attackName[203]>",
+                "57": "<stringTable.attackName[213]>",
+                "58": "<stringTable.attackName[218]>",
+                "59": "<stringTable.attackName[211]>",
+                "60": "<stringTable.attackName[86]>",
+                "61": "<stringTable.attackName[146]>",
+                "62": "<stringTable.attackName[225]>",
+                "63": "<stringTable.attackName[90]>",
+                "64": "<stringTable.attackName[192]>",
+                "65": "1/2 Damage",
+                "66": "1/4 Damage",
+                "67": "<stringTable.attackName[43]>",
+                "68": "<stringTable.attackName[219]>",
+                "69": "<stringTable.attackName[164]>",
+                "72-88": "<stringTable.itemSpecialEffect[%i-72]>",
+                "255": "None"
+              }
+            }
+          },
+          "statusBlock": {
+            "type": "property",
+            "name": "Miss if Immune to Status",
+            "begin": 7,
+            "mask": "0x01",
+            "bool": true
+          },
+          "showMessage": {
+            "type": "property",
+            "name": "Show Message",
+            "begin": 7,
+            "mask": "0x02",
+            "bool": true
+          },
+          "attackMessage": {
+            "type": "assembly",
+            "name": "Message",
+            "external": "attackMessage[%i]",
+            "invalid": "!this.parent.showMessage.value"
+          },
+          "targeting": {
+            "type": "property",
+            "name": "Targeting",
+            "begin": 0,
+            "flag": true,
+            "stringTable": "targetingFlags"
+          },
+          "flags": {
+            "type": "property",
+            "name": "Flags",
+            "begin": 2,
+            "mask": "0xFFFFFF",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "Physical Damage",
+                "1": "Instant Death",
+                "2": "Resurrection",
+                "3": "Invert Undead Damage",
+                "4": "Random Target",
+                "5": "Ignore Defense",
+                "6": "No Damage Split",
+                "7": "Target Monsters Only",
+                "8": "Available in Menu",
+                "9": "Ignore Reflect",
+                "10": "Lore",
+                "11": "Enable Runic",
+                "12": "Quick/Warp",
+                "13": "Auto-Retarget",
+                "14": "Air Anchor",
+                "15": "Affect MP",
+                "16": "Restore HP/MP",
+                "17": "Drain",
+                "18": "Remove Status",
+                "19": "Toggle Status",
+                "20": "Use Stamina for Defense",
+                "21": "Can't Dodge",
+                "22": "Level Divisible",
+                "23": "HP Fraction"
+              }
+            }
+          },
+          "element": {
+            "type": "property",
+            "name": "Element",
+            "begin": 1,
+            "flag": true,
+            "stringTable": "element"
+          },
+          "status12": {
+            "type": "property",
+            "name": "Status",
+            "begin": 10,
+            "mask": "0xFFFF",
+            "flag": true,
+            "stringTable": {
+              "length": 16,
+              "default": "<stringTable.statusNamesReversed[%i]>"
+            }
+          },
+          "status34": {
+            "type": "property",
+            "begin": 12,
+            "mask": "0xFFFF",
+            "flag": true,
+            "stringTable": {
+              "length": 16,
+              "default": "<stringTable.statusNamesReversed[%i+16]>"
+            }
+          }
+        }
+      }
+    },
     "battleCharacterPalette": {
       "type": "array",
       "name": "Battle/Menu Character Palette",
@@ -114,6 +378,48 @@
         }
       }
     },
+    "battleCommandProperties": {
+      "type": "array",
+      "name": "Battle Command Properties",
+      "range": "0xCFFE00-0xCFFE3F",
+      "asmSymbol": "BattleCmdProp",
+      "file": "battle/data/battle_cmd_prop.asm",
+      "arrayLength": 32,
+      "itemLength": 2,
+      "stringTable": "battleCommandName",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "commandName": {
+            "type": "assembly",
+            "name": "Name",
+            "external": "battleCommandName[%i]"
+          },
+          "targeting": {
+            "type": "property",
+            "name": "Targeting",
+            "begin": 1,
+            "flag": true,
+            "stringTable": "targetingFlags"
+          },
+          "flags": {
+            "type": "property",
+            "name": "Flags",
+            "begin": 0,
+            "mask": "0x0F",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "Gogo Can Use",
+                "1": "Can Mimic",
+                "2": "Imp Can Use",
+                "3": "Unknown 0.3"
+              }
+            }
+          }
+        }
+      }
+    },
     "battleFontPal": {
       "type": "array",
       "name": "Battle Font Palettes",
@@ -125,6 +431,860 @@
       "assembly": {
         "type": "data",
         "format": "bgr555"
+      }
+    },
+    "battleGroupsEvent": {
+      "type": "array",
+      "name": "Event Battle Group",
+      "range": "0xCF5000-0xCF53FF",
+      "asmSymbol": "EventBattleGroup",
+      "file": "battle/data/event_battle_group.asm",
+      "arrayLength": 256,
+      "itemLength": 4,
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "battle1": {
+            "type": "property",
+            "name": "Battle 1",
+            "begin": 0,
+            "mask": "0x03FF",
+            "link": "battleProperties[%i]",
+            "stringTable": "battleProperties"
+          },
+          "random1": {
+            "type": "property",
+            "name": "Choose From Next Four",
+            "begin": 1,
+            "mask": "0x80",
+            "bool": true
+          },
+          "battle2": {
+            "type": "property",
+            "name": "Battle 2",
+            "begin": 2,
+            "mask": "0x03FF",
+            "link": "battleProperties[%i]",
+            "stringTable": "battleProperties"
+          },
+          "random2": {
+            "type": "property",
+            "name": "Choose From Next Four",
+            "begin": 3,
+            "mask": "0x80",
+            "bool": true
+          }
+        }
+      },
+      "stringTable": {
+        "default": "Event Battle Group %i",
+        "length": 256,
+        "string": {
+          "0": "<stringTable.battleProperties[0]>",
+          "1": "<stringTable.battleProperties[2]>",
+          "2": "<stringTable.battleProperties[1]>",
+          "3": "<stringTable.battleProperties[41]>",
+          "4": "<stringTable.battleProperties[84]>",
+          "5": "<stringTable.battleProperties[17]>",
+          "6": "<stringTable.battleProperties[4]>",
+          "7": "Lete River A",
+          "8": "Lete River B",
+          "9": "<stringTable.battleProperties[40]>",
+          "10": "<stringTable.battleProperties[43]>",
+          "11": "<stringTable.battleProperties[64]>",
+          "12": "Imperial Camp (???)",
+          "13": "Imperial Camp (Cyan A.I.)",
+          "14": "<stringTable.battleProperties[59]>",
+          "15": "<stringTable.battleProperties[27]>",
+          "16": "<stringTable.battleProperties[25]>",
+          "17": "<stringTable.battleProperties[34]>",
+          "18": "<stringTable.battleProperties[79]>",
+          "19": "Serpent Trench A",
+          "20": "Serpent Trench B",
+          "21": "Serpent Trench C",
+          "22": "Hills Maze Battle A",
+          "23": "Hills Maze Battle B",
+          "24": "<stringTable.battleProperties[87]>",
+          "25": "Opera House Rafters",
+          "26": "<stringTable.battleProperties[408]>",
+          "27": "<stringTable.battleProperties[418]>",
+          "28": "Vector Guard (Magitek Armor)",
+          "29": "Vector Guard (Soldier)",
+          "30": "<stringTable.battleProperties[157]>",
+          "31": "<stringTable.battleProperties[158]>",
+          "32": "<stringTable.battleProperties[61]>",
+          "34": "<stringTable.battleProperties[476]>",
+          "35": "<stringTable.battleProperties[270]>",
+          "37": "<stringTable.battleProperties[170]>",
+          "38": "Narshe Security Checkpoint",
+          "39": "<stringTable.battleProperties[416]>",
+          "40": "<stringTable.battleProperties[417]>",
+          "41": "Magitek Train Ride A",
+          "42": "Imperial Camp (Chest Trap)",
+          "43": "<stringTable.battleProperties[412]>",
+          "44": "<stringTable.battleProperties[410]>",
+          "45": "<stringTable.battleProperties[411]>",
+          "46": "<stringTable.battleProperties[409]>",
+          "47": "Phantom Train Ghost",
+          "48": "<stringTable.battleProperties[496]>",
+          "49": "<stringTable.battleProperties[497]>",
+          "50": "<stringTable.battleProperties[498]>",
+          "51": "<stringTable.battleProperties[499]>",
+          "52": "<stringTable.battleProperties[500]>",
+          "53": "<stringTable.battleProperties[501]>",
+          "54": "<stringTable.battleProperties[502]>",
+          "55": "<stringTable.battleProperties[503]>",
+          "56": "<stringTable.battleProperties[504]>",
+          "57": "<stringTable.battleProperties[505]>",
+          "58": "<stringTable.battleProperties[506]>",
+          "59": "<stringTable.battleProperties[507]>",
+          "60": "<stringTable.battleProperties[508]>",
+          "61": "<stringTable.battleProperties[509]>",
+          "62": "<stringTable.battleProperties[510]>",
+          "63": "<stringTable.battleProperties[511]>",
+          "64": "<stringTable.battleProperties[432]>",
+          "65": "<stringTable.battleProperties[434]>",
+          "66": "<stringTable.battleProperties[435]>",
+          "67": "<stringTable.battleProperties[436]>",
+          "68": "<stringTable.battleProperties[437]>",
+          "69": "<stringTable.battleProperties[438]>",
+          "70": "<stringTable.battleProperties[439]>",
+          "71": "<stringTable.battleProperties[440]>",
+          "72": "<stringTable.battleProperties[441]>",
+          "73": "<stringTable.battleProperties[442]>",
+          "74": "<stringTable.battleProperties[443]>",
+          "75": "<stringTable.battleProperties[445]>",
+          "76": "<stringTable.battleProperties[446]>",
+          "77": "<stringTable.battleProperties[447]>",
+          "78": "<stringTable.battleProperties[448]>",
+          "79": "<stringTable.battleProperties[449]>",
+          "80": "<stringTable.battleProperties[450]>",
+          "81": "<stringTable.battleProperties[451]>",
+          "82": "<stringTable.battleProperties[452]>",
+          "83": "<stringTable.battleProperties[453]>",
+          "84": "<stringTable.battleProperties[454]>",
+          "85": "<stringTable.battleProperties[455]>",
+          "86": "<stringTable.battleProperties[456]>",
+          "87": "<stringTable.battleProperties[457]>",
+          "88": "<stringTable.battleProperties[458]>",
+          "89": "<stringTable.battleProperties[459]>",
+          "90": "<stringTable.battleProperties[460]>",
+          "91": "<stringTable.battleProperties[461]>",
+          "92": "<stringTable.battleProperties[462]>",
+          "93": "<stringTable.battleProperties[463]>",
+          "94": "<stringTable.battleProperties[464]>",
+          "95": "<stringTable.battleProperties[465]>",
+          "96": "<stringTable.battleProperties[466]>",
+          "97": "<stringTable.battleProperties[392]>",
+          "98": "<stringTable.battleProperties[468]>",
+          "99": "<stringTable.battleProperties[469]>",
+          "100": "<stringTable.battleProperties[470]>",
+          "101": "<stringTable.battleProperties[471]>",
+          "102": "<stringTable.battleProperties[472]>",
+          "103": "<stringTable.battleProperties[473]>",
+          "104": "<stringTable.battleProperties[474]>",
+          "105": "<stringTable.battleProperties[389]>",
+          "106": "<stringTable.battleProperties[390]>",
+          "107": "<stringTable.battleProperties[477]>",
+          "108": "<stringTable.battleProperties[478]>",
+          "109": "<stringTable.battleProperties[479]>",
+          "110": "<stringTable.battleProperties[480]>",
+          "111": "<stringTable.battleProperties[481]>",
+          "112": "<stringTable.battleProperties[482]>",
+          "113": "<stringTable.battleProperties[483]>",
+          "114": "<stringTable.battleProperties[484]>",
+          "115": "<stringTable.battleProperties[485]>",
+          "116": "<stringTable.battleProperties[433]>",
+          "117": "<stringTable.battleProperties[444]>",
+          "118": "<stringTable.battleProperties[391]>",
+          "119": "<stringTable.battleProperties[487]>",
+          "120": "<stringTable.battleProperties[488]>",
+          "121": "<stringTable.battleProperties[384]>",
+          "122": "<stringTable.battleProperties[385]>",
+          "123": "<stringTable.battleProperties[386]>",
+          "124": "<stringTable.battleProperties[388]>",
+          "125": "<stringTable.battleProperties[387]>",
+          "126": "Floating Island Approach",
+          "127": "<stringTable.battleProperties[393]>",
+          "128": "<stringTable.battleProperties[420]>",
+          "129": "<stringTable.battleProperties[421]>",
+          "130": "<stringTable.battleProperties[422]>",
+          "131": "<stringTable.battleProperties[423]>",
+          "132": "<stringTable.battleProperties[366]>",
+          "133": "<stringTable.battleProperties[367]>",
+          "134": "<stringTable.battleProperties[368]>",
+          "135": "<stringTable.battleProperties[369]>",
+          "136": "<stringTable.battleProperties[370]>",
+          "137": "<stringTable.battleProperties[371]>",
+          "138": "<stringTable.battleProperties[372]>",
+          "139": "<stringTable.battleProperties[481]>",
+          "140": "<stringTable.battleProperties[446]>",
+          "141": "<stringTable.battleProperties[419]>",
+          "142": "<stringTable.battleProperties[419]>",
+          "143": "<stringTable.battleProperties[419]>",
+          "144": "Magitek Train Ride B",
+          "145": "<stringTable.battleProperties[354]>",
+          "146": "<stringTable.battleProperties[288]>",
+          "147": "<stringTable.battleProperties[289]>",
+          "148": "<stringTable.battleProperties[290]>",
+          "149": "<stringTable.battleProperties[524]>",
+          "150": "<stringTable.battleProperties[211]>",
+          "151": "<stringTable.battleProperties[287]>",
+          "152": "<stringTable.battleProperties[235]>",
+          "153": "<stringTable.battleProperties[515]>"
+        }
+      }
+    },
+    "battleGroupsRandom": {
+      "type": "array",
+      "name": "Random Battle Group",
+      "range": "0xCF4800-0xCF4FFF",
+      "asmSymbol": "RandBattleGroup",
+      "file": "battle/data/rand_battle_group.asm",
+      "arrayLength": 256,
+      "itemLength": 8,
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "battle1": {
+            "type": "property",
+            "name": "Battle 1",
+            "begin": 0,
+            "mask": "0x03FF",
+            "link": "battleProperties[%i]",
+            "stringTable": "battleProperties"
+          },
+          "random1": {
+            "type": "property",
+            "name": "Choose From Next Four",
+            "begin": 1,
+            "mask": "0x80",
+            "bool": true
+          },
+          "battle2": {
+            "type": "property",
+            "name": "Battle 2",
+            "begin": 2,
+            "mask": "0x03FF",
+            "link": "battleProperties[%i]",
+            "stringTable": "battleProperties"
+          },
+          "random2": {
+            "type": "property",
+            "name": "Choose From Next Four",
+            "begin": 3,
+            "mask": "0x80",
+            "bool": true
+          },
+          "battle3": {
+            "type": "property",
+            "name": "Battle 3",
+            "begin": 4,
+            "mask": "0x03FF",
+            "link": "battleProperties[%i]",
+            "stringTable": "battleProperties"
+          },
+          "random3": {
+            "type": "property",
+            "name": "Choose From Next Four",
+            "begin": 5,
+            "mask": "0x80",
+            "bool": true
+          },
+          "battle4": {
+            "type": "property",
+            "name": "Battle 4",
+            "begin": 6,
+            "mask": "0x03FF",
+            "link": "battleProperties[%i]",
+            "stringTable": "battleProperties"
+          },
+          "random4": {
+            "type": "property",
+            "name": "Choose From Next Four",
+            "begin": 7,
+            "mask": "0x80",
+            "bool": true
+          }
+        }
+      },
+      "stringTable": {
+        "default": "Random Battle Group %i",
+        "length": 256,
+        "string": {
+          "0": "WoB Narshe/Figaro Area (Field)",
+          "1": "WoB Narshe/Figaro Area (Desert)",
+          "2": "WoB Narshe/Figaro Area (Forest)",
+          "3": "WoB South Figaro Area (Field)",
+          "4": "WoB South Figaro Area (Forest)",
+          "5": "WoB Returner's Hideout Area",
+          "6": "WoB Crazy Old Man Area (Field)",
+          "7": "WoB Crazy Old Man Area (Forest)",
+          "8": "WoB Doma Area (Field)",
+          "9": "WoB Kohlingen Area (Grass)",
+          "10": "WoB Zozo/Jidoor Area (Grass)",
+          "11": "WoB Kohlingen/Jidoor Area (Forest)",
+          "12": "WoB Kohlingen Area (Desert)",
+          "13": "WoB Kohlingen Area (Dirt)",
+          "14": "WoB Vector/Tzen Area (Grass)",
+          "15": "WoB Albrook/Maranda Area (Grass)",
+          "17": "WoB Vector/Tzen Area (Forest)",
+          "18": "WoB Albrook/Maranda Area (Forest)",
+          "20": "WoB Southern Continent (Desert)",
+          "21": "WoB Southern Continent (Dirt)",
+          "22": "WoB North Area (Grass)",
+          "23": "WoB North Area (Forest)",
+          "24": "WoB Thamasa Area (Field)",
+          "25": "WoB Thamasa Area (Desert)",
+          "26": "WoB Thamasa Area (Forest)",
+          "27": "WoB Bomb Forest (Forest)",
+          "28": "WoB Triangle Island (Forest)",
+          "29": "WoR Solitary Island (Field)",
+          "30": "WoR Solitary Island (Desert)",
+          "31": "WoR Albrook Area (Grass)",
+          "32": "WoR Triangle Island",
+          "33": "WoR Tzen Area (Dirt)",
+          "34": "WoR Albrook Area (Dirt)",
+          "35": "WoR Albrook Area (Forest)",
+          "36": "WoR Albrook Area (Desert)",
+          "37": "WoR Nikeah/Mobliz Area (Grass)",
+          "38": "WoR Mobliz Area (Dirt)",
+          "39": "WoR Nikeah Area (Dirt)",
+          "40": "WoR Nikeah/Mobliz Area (Desert)",
+          "41": "WoR Figaro Area (Grass)",
+          "42": "WoR Figaro Area (Forest)",
+          "43": "WoR Figaro Area (Dirt)",
+          "44": "WoR Figaro Area (Desert)",
+          "44": "WoR Kohlingen Area (Desert)",
+          "45": "WoR Kohlingen Area (Grass)",
+          "46": "WoR Kohlingen Area (Forest)",
+          "47": "WoR Kohlingen Area (Dirt)",
+          "48": "WoR Maranda/Jidoor Area (Grass)",
+          "49": "WoR Maranda/Jidoor Area (Dirt)",
+          "50": "WoR Maranda/Jidoor Area (Forest)",
+          "51": "WoR Narshe Area (Grass)",
+          "52": "WoR Doma Area (Grass)",
+          "53": "WoR Narshe/Doma Area (Dirt)",
+          "54": "WoR Narshe/Doma Area (Forest)",
+          "55": "WoR Thamasa Area (Grass)",
+          "56": "WoR Thamasa Area (Dirt)",
+          "57": "Narshe: Whelk Cave (Intro)",
+          "58": "Narshe: Tritoch's Cave (Intro)",
+          "59": "Cave to South Figaro A (Terra/Locke/Edgar)",
+          "60": "Cave to South Figaro B (Terra/Locke/Edgar)",
+          "61": "Mt. Kolts Exterior A",
+          "62": "Mt. Kolts Exterior B",
+          "63": "Mt. Kolts Interor A",
+          "64": "Mt. Kolts Interor B",
+          "65": "South Figaro (Escape Tunnel)",
+          "67": "Phantom Forest A (Unused)",
+          "68": "Phantom Forest B",
+          "69": "Phantom Forest C",
+          "70": "Phantom Train (Seating Cars)",
+          "71": "Phantom Train (Seating Car with Switch)",
+          "72": "Phantom Train (Hallway)",
+          "73": "Phantom Train (Dining Car)",
+          "74": "Phantom Train (Caboose Room and Engine)",
+          "75": "Phantom Train (Small Rooms)",
+          "76": "Phantom Train (Exterior)",
+          "77": "Zozo (Interior)",
+          "78": "Zozo (Exterior)",
+          "80": "Magitek Factory (Upper Room)",
+          "81": "Magitek Factory (Lower Room)",
+          "89": "Esper Mountain (Exterior)",
+          "90": "Esper Mountain (Caves)",
+          "92": "Cave to the Sealed Gate A",
+          "93": "Cave to the Sealed Gate B",
+          "94": "Cave to the Sealed Gate C",
+          "95": "Cave to the Sealed Gate D",
+          "104": "Magitek Factory (Garbage Room)",
+          "105": "Magitek Research Facility A",
+          "106": "Magitek Research Facility B",
+          "108": "Vector: Exterior (After Train Ride)",
+          "111": "WoR Maranda Area (Desert)",
+          "112": "Floating Island",
+          "121": "Narshe Caves (WoB)",
+          "122": "Cave to South Figaro (Locke/Celes)",
+          "123": "Floating Island (Collapsing)",
+          "124": "WoB Triangle Island (Grass)",
+          "128": "Tzen (Collapsing House)",
+          "132": "Cave in the Veldt",
+          "137": "Figaro Castle A",
+          "138": "Figaro Castle B",
+          "139": "Figaro Castle C",
+          "140": "Figaro Castle D",
+          "143": "Ancient Castle (Caves)",
+          "144": "Ancient Castle (Interior)",
+          "145": "Ancient Castle (Exterior)",
+          "149": "Darill's Tomb A",
+          "150": "Darill's Tomb B",
+          "151": "Darill's Tomb C",
+          "152": "Fanatics' Tower (1st Level)",
+          "153": "Fanatics' Tower (2nd Level)",
+          "154": "Fanatics' Tower (3rd Level)",
+          "155": "Fanatics' Tower (4th Level)",
+          "156": "Fanatics' Tower (Interior)",
+          "157": "Jidoor (Owzer's Basement)",
+          "159": "Fanatics' Tower (Secret Treasure Room)",
+          "160": "Mt. Zozo (Caves)",
+          "161": "Mt. Zozo (Bridge)",
+          "162": "Mt. Zozo (Cliffs)",
+          "166": "Umaro's Cave A",
+          "167": "Umaro's Cave B",
+          "168": "Umaro's Cave C",
+          "170": "Gogo's Cave A",
+          "171": "Gogo's Cave B",
+          "174": "Phoenix Cave A",
+          "175": "Phoenix Cave B",
+          "181": "Cyan's Dream (Doma/Phantom Train)",
+          "182": "Cyan's Dream (Caves)",
+          "183": "Cyan's Dream (3 Stooges)",
+          "189": "Narshe Town (WoR)",
+          "190": "Narshe Caves A (WoR)",
+          "191": "Narshe Caves B (WoR)",
+          "193": "Ebot's Rock A",
+          "194": "Ebot's Rock B",
+          "208": "Kefka's Tower",
+          "209": "Kefka's Tower",
+          "210": "Kefka's Tower",
+          "211": "Kefka's Tower",
+          "212": "Kefka's Tower",
+          "213": "Kefka's Tower",
+          "214": "Kefka's Tower",
+          "215": "Kefka's Tower",
+          "216": "Kefka's Tower",
+          "217": "Kefka's Tower",
+          "218": "Kefka's Tower",
+          "219": "Kefka's Tower",
+          "220": "Kefka's Tower",
+          "221": "Kefka's Tower",
+          "222": "Kefka's Tower",
+          "223": "Kefka's Tower",
+          "224": "Kefka's Tower",
+          "225": "Kefka's Tower",
+          "226": "Kefka's Tower",
+          "227": "Kefka's Tower"
+        }
+      }
+    },
+    "battleMagicPoints": {
+      "type": "array",
+      "name": "Battle Magic Points",
+      "range": "0xDFB400-0xDFB5FF",
+      "asmSymbol": "battleMagicPoints",
+      "file": "battle/data/battle_magic_points.asm",
+      "arrayLength": 512,
+      "itemLength": 1,
+      "assembly": {
+        "type": "property",
+        "name": "Magic Points"
+      }
+    },
+    "battleProperties": {
+      "type": "array",
+      "name": "Battle Properties",
+      "range": "0xCF6200-0xCF83FF",
+      "asmSymbol": "BattleMonsters",
+      "file": "battle/data/battle_monsters.asm",
+      "arrayLength": 576,
+      "itemLength": 15,
+      "assembly": {
+        "type": "assembly",
+        "editor": "FF6Battle",
+        "assembly": {
+          "monster1": {
+            "type": "property",
+            "name": "Monster 1",
+            "begin": 2,
+            "max": "0x01FF",
+            "msb": "this.parent.monster1MSB",
+            "stringTable": "monsterName",
+            "link": "monsterProperties[%i]",
+            "special": {
+              "0x01FF": "Empty"
+            }
+          },
+          "monster1MSB": {
+            "type": "property",
+            "name": "Monster 1 MSB",
+            "begin": 14,
+            "mask": "0x01",
+            "bool": true,
+            "hidden": true
+          },
+          "monster1Present": {
+            "type": "property",
+            "name": "Present",
+            "begin": 1,
+            "mask": "0x01",
+            "bool": true
+          },
+          "monster2": {
+            "type": "property",
+            "name": "Monster 2",
+            "begin": 3,
+            "max": "0x01FF",
+            "msb": "this.parent.monster2MSB",
+            "stringTable": "monsterName",
+            "link": "monsterProperties[%i]",
+            "special": {
+              "0x01FF": "Empty"
+            }
+          },
+          "monster2MSB": {
+            "type": "property",
+            "name": "Monster 2 MSB",
+            "begin": 14,
+            "mask": "0x02",
+            "bool": true,
+            "hidden": true
+          },
+          "monster2Present": {
+            "type": "property",
+            "name": "Present",
+            "begin": 1,
+            "mask": "0x02",
+            "bool": true
+          },
+          "monster3": {
+            "type": "property",
+            "name": "Monster 3",
+            "begin": 4,
+            "max": "0x01FF",
+            "msb": "this.parent.monster3MSB",
+            "stringTable": "monsterName",
+            "link": "monsterProperties[%i]",
+            "special": {
+              "0x01FF": "Empty"
+            }
+          },
+          "monster3MSB": {
+            "type": "property",
+            "name": "Monster 3 MSB",
+            "begin": 14,
+            "mask": "0x04",
+            "bool": true,
+            "hidden": true
+          },
+          "monster3Present": {
+            "type": "property",
+            "name": "Present",
+            "begin": 1,
+            "mask": "0x04",
+            "bool": true
+          },
+          "monster4": {
+            "type": "property",
+            "name": "Monster 4",
+            "begin": 5,
+            "max": "0x01FF",
+            "msb": "this.parent.monster4MSB",
+            "stringTable": "monsterName",
+            "link": "monsterProperties[%i]",
+            "special": {
+              "0x01FF": "Empty"
+            }
+          },
+          "monster4MSB": {
+            "type": "property",
+            "name": "Monster 4 MSB",
+            "begin": 14,
+            "mask": "0x08",
+            "bool": true,
+            "hidden": true
+          },
+          "monster4Present": {
+            "type": "property",
+            "name": "Present",
+            "begin": 1,
+            "mask": "0x08",
+            "bool": true
+          },
+          "monster5": {
+            "type": "property",
+            "name": "Monster 5",
+            "begin": 6,
+            "max": "0x01FF",
+            "msb": "this.parent.monster5MSB",
+            "stringTable": "monsterName",
+            "link": "monsterProperties[%i]",
+            "special": {
+              "0x01FF": "Empty"
+            }
+          },
+          "monster5MSB": {
+            "type": "property",
+            "name": "Monster 5 MSB",
+            "begin": 14,
+            "mask": "0x10",
+            "bool": true,
+            "hidden": true
+          },
+          "monster5Present": {
+            "type": "property",
+            "name": "Present",
+            "begin": 1,
+            "mask": "0x10",
+            "bool": true
+          },
+          "monster6": {
+            "type": "property",
+            "name": "Monster 6",
+            "begin": 7,
+            "max": "0x01FF",
+            "msb": "this.parent.monster6MSB",
+            "stringTable": "monsterName",
+            "link": "monsterProperties[%i]",
+            "special": {
+              "0x01FF": "Empty"
+            }
+          },
+          "monster6MSB": {
+            "type": "property",
+            "name": "Monster 6 MSB",
+            "begin": 14,
+            "mask": "0x20",
+            "bool": true,
+            "hidden": true
+          },
+          "monster6Present": {
+            "type": "property",
+            "name": "Present",
+            "begin": 1,
+            "mask": "0x20",
+            "bool": true
+          },
+          "monster1X": {
+            "type": "property",
+            "name": "Monster 1 X",
+            "begin": 8,
+            "mask": "0xF0",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster1Y": {
+            "type": "property",
+            "name": "Monster 1 Y",
+            "begin": 8,
+            "mask": "0x0F",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster2X": {
+            "type": "property",
+            "name": "Monster 2 X",
+            "begin": 9,
+            "mask": "0xF0",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster2Y": {
+            "type": "property",
+            "name": "Monster 2 Y",
+            "begin": 9,
+            "mask": "0x0F",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster3X": {
+            "type": "property",
+            "name": "Monster 3 X",
+            "begin": 10,
+            "mask": "0xF0",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster3Y": {
+            "type": "property",
+            "name": "Monster 3 Y",
+            "begin": 10,
+            "mask": "0x0F",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster4X": {
+            "type": "property",
+            "name": "Monster 4 X",
+            "begin": 11,
+            "mask": "0xF0",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster4Y": {
+            "type": "property",
+            "name": "Monster 4 Y",
+            "begin": 11,
+            "mask": "0x0F",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster5X": {
+            "type": "property",
+            "name": "Monster 5 X",
+            "begin": 12,
+            "mask": "0xF0",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster5Y": {
+            "type": "property",
+            "name": "Monster 5 Y",
+            "begin": 12,
+            "mask": "0x0F",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster6X": {
+            "type": "property",
+            "name": "Monster 6 X",
+            "begin": 13,
+            "mask": "0xF0",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "monster6Y": {
+            "type": "property",
+            "name": "Monster 6 Y",
+            "begin": 13,
+            "mask": "0x0F",
+            "multiplier": 8,
+            "hidden": true
+          },
+          "vramMap": {
+            "type": "property",
+            "name": "VRAM Map",
+            "begin": 0,
+            "mask": "0xF0",
+            "stringTable": "battleVRAMMap"
+          },
+          "monsterEntry": {
+            "type": "assembly",
+            "external": "battlePropertiesAux[%i].monsterEntry"
+          },
+          "magicPoints": {
+            "type": "assembly",
+            "external": "battleMagicPoints[%i]",
+            "invalid": "this.parent.i >= 512"
+          },
+          "song": {
+            "type": "assembly",
+            "external": "battlePropertiesAux[%i].song"
+          },
+          "continueSong": {
+            "type": "assembly",
+            "external": "battlePropertiesAux[%i].continueSong"
+          },
+          "characterAI": {
+            "type": "assembly",
+            "external": "battlePropertiesAux[%i].characterAI"
+          },
+          "enableCharacterAI": {
+            "type": "assembly",
+            "external": "battlePropertiesAux[%i].enableCharacterAI"
+          },
+          "flags": {
+            "type": "assembly",
+            "external": "battlePropertiesAux[%i].flags"
+          },
+          "flags2": {
+            "type": "assembly",
+            "external": "battlePropertiesAux[%i].flags2"
+          }
+        }
+      },
+      "stringTable": {
+        "length": 576,
+        "default": "Battle %i"
+      }
+    },
+    "battlePropertiesAux": {
+      "type": "array",
+      "name": "Auxiliary Battle Properties",
+      "range": "0xCF5900-0xCF61FF",
+      "asmSymbol": "BattleProp",
+      "file": "battle/data/battle_prop.asm",
+      "arrayLength": 576,
+      "itemLength": 4,
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "monsterEntry": {
+            "type": "property",
+            "name": "Monster Entry",
+            "begin": 0,
+            "mask": "0x0F"
+          },
+          "flags": {
+            "type": "property",
+            "name": "Flags",
+            "begin": 0,
+            "mask": "0x0EF0",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "Disable Normal Attack",
+                "1": "Disable Back Attack",
+                "2": "Disable Pincer Attack",
+                "3": "Disable Side Attack",
+                "5": "Disable Fanfare",
+                "6": "Disable Joker Doom",
+                "7": "Disable Leap"
+              }
+            }
+          },
+          "song": {
+            "type": "property",
+            "name": "Song",
+            "begin": 3,
+            "mask": "0x38",
+            "stringTable": {
+              "string": {
+                "0": "Battle Theme",
+                "1": "The Decisive Battle",
+                "2": "The Fierce Battle",
+                "3": "Returners",
+                "4": "Save Them!",
+                "5": "Dancing Mad",
+                "6": "None",
+                "7": "None"
+              }
+            }
+          },
+          "continueSong": {
+            "type": "property",
+            "name": "Continue Previous Song",
+            "begin": 3,
+            "mask": "0x80",
+            "bool": true
+          },
+          "characterAI": {
+            "type": "property",
+            "name": "Character A.I.",
+            "begin": 2,
+            "stringTable": "characterAI",
+            "link": "characterAI[%i]"
+          },
+          "enableCharacterAI": {
+            "type": "property",
+            "name": "Enable Character A.I.",
+            "begin": 1,
+            "mask": "0x80",
+            "bool": true
+          },
+          "flags2": {
+            "type": "property",
+            "begin": 3,
+            "mask": "0x07",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "Disable L+R",
+                "1": "Disable on the Veldt",
+                "2": "Disable Preemptive Attack"
+              }
+            }
+          }
+        }
       }
     },
     "blitzCode": {
@@ -250,6 +1410,24 @@
           },
           "cat-end": ""
         }
+      }
+    },
+    "blitzDescription": {
+      "type": "array",
+      "name": "Blitz Description",
+      "range": "0xCFFC00-0xCFFCDF",
+      "asmSymbol": "BlitzDesc",
+      "file": "battle/text/blitz_desc.asm",
+      "arrayLength": 8,
+      "assembly": {
+        "type": "text",
+        "name": "Description",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xCFFF9E-0xCFFFAD",
+        "offset": "0xCFFC00"
       }
     },
     "characterNames": {
@@ -502,11 +1680,88 @@
         "name": "MP"
       }
     },
+    "conditionalBattle": {
+      "type": "array",
+      "name": "Conditional Battle",
+      "range": "0xCF3780-0xCF37AF",
+      "arrayLength": 12,
+      "itemLength": 4,
+      "asmSymbol": "CondBattle",
+      "file": "battle/data/cond_battle.asm",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "battle1": {
+            "type": "property",
+            "name": "Battle 1",
+            "begin": 0,
+            "mask": "0xFFFF"
+          },
+          "battle2": {
+            "type": "property",
+            "name": "Battle 2",
+            "begin": 0,
+            "mask": "0xFFFF"
+          }
+        }
+      }
+    },
     "cutsceneProgram": {
       "type": "data",
       "name": "Cutscene Program",
       "range": "0xC2686C-0xC28A60",
       "format": "ff6-lzss"
+    },
+    "danceAttacks": {
+      "type": "array",
+      "name": "Dance Attacks",
+      "range": "0xCFFE80-0xCFFE9F",
+      "asmSymbol": "DanceProp",
+      "file": "battle/data/dance_prop.asm",
+      "arrayLength": 8,
+      "itemLength": 4,
+      "stringTable": "danceName",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "danceName": {
+            "type": "assembly",
+            "external": "danceName[%i]"
+          },
+          "background": {
+            "type": "assembly",
+            "external": "danceBackground[%i]"
+          },
+          "attack1": {
+            "type": "property",
+            "name": "Attack 1",
+            "begin": 0,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          },
+          "attack2": {
+            "type": "property",
+            "name": "Attack 2",
+            "begin": 1,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          },
+          "attack3": {
+            "type": "property",
+            "name": "Attack 3",
+            "begin": 2,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          },
+          "attack4": {
+            "type": "property",
+            "name": "Attack 4",
+            "begin": 3,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          }
+        }
+      }
     },
     "dialog": {
       "type": "array",
@@ -746,6 +2001,55 @@
         "offset": "0xDFBB00"
       }
     },
+    "esperAttackDescriptions": {
+      "type": "array",
+      "name": "Esper Attack Descriptions",
+      "range": "0xCF3940-0xCF3BAC",
+      "arrayLength": 27,
+      "asmSymbol": "GenjuAttackDesc",
+      "file": "battle/text/genju_attack_desc.asm",
+      "assembly": {
+        "type": "text",
+        "name": "Attack Desc.",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xCFFE40-0xCFFE7F",
+        "offset": "0xCF3940"
+      }
+    },
+    "esperBonusNames": {
+      "type": "array",
+      "name": "Esper Bonus Names",
+      "range": "0xCFFEAE-0xCFFF9D",
+      "asmSymbol": "GenjuBonusName",
+      "file": "battle/text/genju_bonus_name.asm",
+      "arrayLength": 17,
+      "itemLength": 9,
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "bonusName": {
+            "type": "text",
+            "name": "Name",
+            "encoding": "smallText",
+            "length": 9
+          },
+          "description": {
+            "type": "assembly",
+            "external": "esperBonusDescriptions[%i]"
+          }
+        }
+      },
+      "stringTable": {
+        "length": 17,
+        "default": "<esperBonusNames[%i].bonusName>",
+        "string": {
+          "255": "None"
+        }
+      }
+    },
     "esperProperties": {
       "type": "array",
       "name": "Esper Properties",
@@ -942,66 +2246,66 @@
       }
     },
     "floatingIslandCutscene": {
-        "type": "assembly",
-        "name": "Floating Island Cutscene Graphics Data",
-        "range": "0xD94E96-0xD9568E",
-        "asmSymbol": "FloatingContGfx",
-        "file": "cutscene/gfx/floating_cont_gfx.asm",
-        "format": "ff6-lzss",
-        "isSequential": true,
-        "assembly": {
-            "graphics": {
-                "type": "graphics",
-                "name": "Floating Island Cutscene Graphics",
-                "range": "0x0000-0x07C0",
-                "format": "snes4bpp",
-                "palette": "cutsceneProgram.floatingIslandPalette",
-                "backColor": true
-            },
-            "layout": {
-                "type": "tilemap",
-                "name": "Floating Island Cutscene Layout",
-                "range": "0x07C0-0x0900",
-                "format": "generic4bppTile",
-                "graphics": "floatingIslandCutscene.graphics",
-                "palette": "cutsceneProgram.floatingIslandPalette",
-                "width": 32,
-                "height": 10,
-                "backColor": true
-            }
+      "type": "assembly",
+      "name": "Floating Island Cutscene Graphics Data",
+      "range": "0xD94E96-0xD9568E",
+      "asmSymbol": "FloatingContGfx",
+      "file": "cutscene/gfx/floating_cont_gfx.asm",
+      "format": "ff6-lzss",
+      "isSequential": true,
+      "assembly": {
+        "graphics": {
+          "type": "graphics",
+          "name": "Floating Island Cutscene Graphics",
+          "range": "0x0000-0x07C0",
+          "format": "snes4bpp",
+          "palette": "cutsceneProgram.floatingIslandPalette",
+          "backColor": true
+        },
+        "layout": {
+          "type": "tilemap",
+          "name": "Floating Island Cutscene Layout",
+          "range": "0x07C0-0x0900",
+          "format": "generic4bppTile",
+          "graphics": "floatingIslandCutscene.graphics",
+          "palette": "cutsceneProgram.floatingIslandPalette",
+          "width": 32,
+          "height": 10,
+          "backColor": true
         }
+      }
     },
     "fontGraphicsLarge": {
-        "type": "graphics",
-        "name": "Large Font Graphics",
-        "range": "0xC490C0-0xC4A4BF",
-        "asmSymbol": "FontGfxLarge",
-        "file": "field/gfx/font_gfx_large.asm",
-        "format": ["linear1bpp(1)", "byteSwapped(2)"],
-        "tileWidth": 16,
-        "tileHeight": 11
+      "type": "graphics",
+      "name": "Large Font Graphics",
+      "range": "0xC490C0-0xC4A4BF",
+      "asmSymbol": "FontGfxLarge",
+      "file": "field/gfx/font_gfx_large.asm",
+      "format": ["linear1bpp(1)", "byteSwapped(2)"],
+      "tileWidth": 16,
+      "tileHeight": 11
     },
     "fontGraphicsSmall": {
-        "type": "graphics",
-        "name": "Small Font Graphics",
-        "range": "0xC47FC0-0xC48FBF",
-        "asmSymbol": "FontGfxSmall",
-        "file": "field/gfx/font_gfx_small.asm",
-        "format": "snes2bpp",
-        "palette": "fontPalette"
+      "type": "graphics",
+      "name": "Small Font Graphics",
+      "range": "0xC47FC0-0xC48FBF",
+      "asmSymbol": "FontGfxSmall",
+      "file": "field/gfx/font_gfx_small.asm",
+      "format": "snes2bpp",
+      "palette": "fontPalette"
     },
     "fontPalette": {
-        "type": "array",
-        "name": "Font Palette",
-        "range": "0xD8E800-0xD8E89F",
-        "arrayLength": 40,
-        "itemLength": 8,
-        "asmSymbol": "FontPal",
-        "file": "field/gfx/font_pal.asm",
-        "assembly": {
-            "type": "data",
-            "format": "bgr555"
-        }
+      "type": "array",
+      "name": "Font Palette",
+      "range": "0xD8E800-0xD8E89F",
+      "arrayLength": 40,
+      "itemLength": 8,
+      "asmSymbol": "FontPal",
+      "file": "field/gfx/font_pal.asm",
+      "assembly": {
+        "type": "data",
+        "format": "bgr555"
+      }
     },
     "fontWidth": {
       "type": "data",
@@ -1872,13 +3176,13 @@
       }
     },
     "mapAnimationGraphics": {
-        "type": "graphics",
-        "name": "Map Animation Graphics",
-        "range": "0xE60000-0xE67FFF",
-        "asmSymbol": "MapAnimGfx",
-        "file": "field/gfx/map_anim_gfx.asm",
-        "format": "snes4bpp",
-        "palette": "mapPalettes"
+      "type": "graphics",
+      "name": "Map Animation Graphics",
+      "range": "0xE60000-0xE67FFF",
+      "asmSymbol": "MapAnimGfx",
+      "file": "field/gfx/map_anim_gfx.asm",
+      "format": "snes4bpp",
+      "palette": "mapPalettes"
     },
     "mapAnimationGraphicsLayer3": {
       "type": "array",
@@ -2034,6 +3338,22 @@
       "stringTable": {
         "length": 6,
         "default": "Map Animation %i (Layer 3)"
+      }
+    },
+    "mapBattleGroups": {
+      "type": "array",
+      "name": "Map Battle Groups",
+      "range": "0xCF5600-0xCF57FF",
+      "asmSymbol": "SubBattleGroup",
+      "file": "battle/data/sub_battle_group.asm",
+      "arrayLength": 512,
+      "itemLength": 1,
+      "assembly": {
+        "type": "property",
+        "name": "Battle Group",
+        "mask": "0xFF",
+        "link": "battleGroupsRandom[%i]",
+        "stringTable": "battleGroupsRandom"
       }
     },
     "mapBattleProbability": {
@@ -2210,20 +3530,20 @@
       }
     },
     "mapInitEvent": {
-        "type": "array",
-        "name": "Map Init Event",
-        "range": "0xD1FA00-0xD1FFFF",
-        "arrayLength": 512,
-        "itemLength": 3,
-        "asmSymbol": "MapInitEvent",
-        "file": "field/data/map_init_event.asm",
-        "assembly": {
-            "type": "property",
-            "name": "Start-Up Event",
-            "length": 3,
-            "mask": "0xFFFFFF",
-            "script": "eventScript"
-        }
+      "type": "array",
+      "name": "Map Init Event",
+      "range": "0xD1FA00-0xD1FFFF",
+      "arrayLength": 512,
+      "itemLength": 3,
+      "asmSymbol": "MapInitEvent",
+      "file": "field/data/map_init_event.asm",
+      "assembly": {
+        "type": "property",
+        "name": "Start-Up Event",
+        "length": 3,
+        "mask": "0xFFFFFF",
+        "script": "eventScript"
+      }
     },
     "mapLayouts": {
       "type": "array",
@@ -4153,13 +5473,13 @@
       }
     },
     "mapVehicleGraphics": {
-        "type": "graphics",
-        "name": "Map Vehicle Graphics",
-        "range": "0xD83000-0xD84FFF",
-        "format": "snes4bpp",
-        "asmSymbol": "MapVehicleGfx",
-        "file": "field/gfx/map_vehicle_gfx.asm",
-        "palette": ["mapSpritePalettes[7]", "mapSpritePalettes[11]"]
+      "type": "graphics",
+      "name": "Map Vehicle Graphics",
+      "range": "0xD83000-0xD84FFF",
+      "format": "snes4bpp",
+      "asmSymbol": "MapVehicleGfx",
+      "file": "field/gfx/map_vehicle_gfx.asm",
+      "palette": ["mapSpritePalettes[7]", "mapSpritePalettes[11]"]
     },
     "mapTilesets": {
       "type": "array",
@@ -4308,6 +5628,1510 @@
         "snes4bpp",
         "ff6-lzss"
       ]
+    },
+    "monsterAttack": {
+      "type": "array",
+      "name": "Monster Attack",
+      "range": "0xCF37C0-0xCF393F",
+      "arrayLength": 384,
+      "itemLength": 1,
+      "asmSymbol": "MonsterSpecialAnim",
+      "file": "battle/data/monster_special_anim.asm",
+      "assembly": {
+        "type": "property",
+        "name": "Animation",
+        "length": 1
+      }
+    },
+    "monsterAttackName": {
+      "type": "array",
+      "name": "Monster Attack Name",
+      "range": "0xCFD0D0-0xCFDFCF",
+      "asmSymbol": "MonsterSpecialName",
+      "file": "battle/text/monster_special_name.asm",
+      "arrayLength": 384,
+      "itemLength": 10,
+      "assembly": {
+        "type": "text",
+        "name": "Name",
+        "encoding": "bigText"
+      },
+      "stringTable": {
+        "length": 384,
+        "default": "<monsterAttackName[%i]>"
+      }
+    },
+    "monsterAttackControl": {
+      "type": "array",
+      "name": "Monster Control Attack",
+      "range": "0xCF3D00-0xCF42FF",
+      "arrayLength": 384,
+      "itemLength": 4,
+      "asmSymbol": "MonsterControl",
+      "file": "battle/data/monster_control.asm",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "attack1": {
+            "type": "property",
+            "name": "Control Attack 1",
+            "begin": 0,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          },
+          "attack2": {
+            "type": "property",
+            "name": "Control Attack 2",
+            "begin": 1,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          },
+          "attack3": {
+            "type": "property",
+            "name": "Control Attack 3",
+            "begin": 2,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          },
+          "attack4": {
+            "type": "property",
+            "name": "Control Attack 4",
+            "begin": 3,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          }
+        }
+      }
+    },
+    "monsterAttackRage": {
+      "type": "array",
+      "name": "Monster Rage Attack",
+      "range": "0xCF4600-0xCF47FF",
+      "arrayLength": 256,
+      "itemLength": 2,
+      "asmSymbol": "MonsterRiot",
+      "file": "battle/data/monster_riot.asm",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "attack1": {
+            "type": "property",
+            "name": "Rage Attack 1",
+            "begin": 0,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          },
+          "attack2": {
+            "type": "property",
+            "name": "Rage Attack 2",
+            "begin": 1,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          }
+        }
+      }
+    },
+    "monsterAttackSketch": {
+      "type": "array",
+      "name": "Monster Sketch Attack",
+      "range": "0xCF4300-0xCF45FF",
+      "arrayLength": 384,
+      "itemLength": 2,
+      "asmSymbol": "MonsterSketch",
+      "file": "battle/data/monster_sketch.asm",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "attack1": {
+            "type": "property",
+            "name": "Sketch Attack 1",
+            "begin": 0,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          },
+          "attack2": {
+            "type": "property",
+            "name": "Sketch Attack 2",
+            "begin": 1,
+            "stringTable": "attackName",
+            "link": "attackProperties[%i]"
+          }
+        }
+      }
+    },
+    "monsterColosseumType": {
+      "type": "array",
+      "name": "Monster Colosseum Type",
+      "range": "0xECE800-0xECE900",
+      "array": {
+        "length": 256
+      },
+      "assembly": {
+        "type": "property",
+        "name": "Colosseum Type",
+        "length": 1,
+        "stringTable": {
+          "string": {
+            "0": "Ceiling (top)",
+            "1": "Ground (+0)",
+            "2": "Floating (+8)",
+            "3": "Buried (-8)",
+            "4": "Flying (+40)"
+          }
+        }
+      }
+    },
+    "monsterDialog": {
+      "type": "array",
+      "name": "Monster Dialogue",
+      "range": "0xCFE1E0-0xCFF441",
+      "arrayLength": 142,
+      "asmSymbol": "MonsterDlg",
+      "file": "battle/text/monster_dlg.asm",
+      "assembly": {
+        "type": "text",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xCFDFE0-0xCFE1DF",
+        "offset": "0xCF0000"
+      },
+      "stringTable": {
+        "length": 256,
+        "default": "<monsterDialog[%i]>"
+      }
+    },
+    "monsterGraphics": {
+      "type": "array",
+      "name": "Monster Graphics",
+      "range": "0xE97000-0xECE200",
+      "array": {
+        "length": 176
+      },
+      "assembly": {
+        "type": "graphics",
+        "palette": "monsterPalette"
+      },
+      "pointerObject": {
+        "arrayPath": "monsterGraphicsProperties",
+        "pointerPath": "graphicsPointer"
+      },
+      "stringTable": {
+        "length": 176,
+        "default": "Monster Graphics %i",
+        "string": {
+          "0": "Guard, Marshal, StillGoing",
+          "1": "Soldier, Commander, Trooper, Commando, Grunt, Officer",
+          "2": "Templar, General, Sp Forces, Leader, Cadet",
+          "3": "Ninja, Covert, Outsider",
+          "4": "Samurai, Retainer, KatanaSoul",
+          "5": "Orog, Ogor, Hemophyte",
+          "6": "Mag Roader",
+          "7": "Hazer, Warlock, Wizard, L.20 Magic",
+          "8": "Dahling, Madam, Barb-e, L.80 Magic",
+          "9": "Rain Man, Joker, Parasoul, L.40 Magic",
+          "10": "Brawler, Iron Fist, Scrapper",
+          "11": "Apokryphos, Goblin",
+          "12": "Dark Force, Wrexsoul, L.70 Magic",
+          "13": "Whisper, Dark Side, Apparite, Pm Stalker, Specter",
+          "14": "Over-Mind, PowerDemon, L.50 Magic",
+          "15": "Osteosaur, Displayer, Allo Ver",
+          "16": "Rhodox, Peepers, Poppers",
+          "17": "Were-Rat, Sewer Rat, Vermin, Wild Rat",
+          "18": "Ursus, Slatter, Prussian, Gold Bear, Ipooh",
+          "19": "Rhinotaur, Rhinox, Ceritops",
+          "20": "Steroidite, Phunbaba",
+          "21": "Leafer, Rhobite, Nohrabbit",
+          "22": "Stray Cat, Wild Cat, Spek Tor",
+          "23": "Lobo, Red Fang, Lunaris, Red Wolf",
+          "24": "Doberman, Vector Pup, Bounty Man, Garm",
+          "25": "Vomammoth, Tusker, Nastidon",
+          "26": "Fidor, Ralph, Bogy",
+          "27": "Baskervor, Chitonid, Adamanchyt",
+          "28": "Suriander, Wart Puck",
+          "29": "Chimera, Rhyos, Vectagoyle",
+          "30": "Behemoth, SrBehemoth, Intangir, GtBehemoth, SrBehemoth",
+          "31": "Mesosaur, Vectaur, Ice Dragon",
+          "32": "Pterodon, Wyvern, Wirey Drgn, Storm Drgn",
+          "33": "FossilFang, Zombone, Black Drgn, Skull Drgn",
+          "34": "White Drgn, Dragon, Red Dragon",
+          "35": "Doom Drgn, CzarDragon, Blue Drgn",
+          "36": "Brachosaur, Brontaur, Gold Drgn",
+          "37": "Tyranosaur, Allosaurus, Chaos Drgn, Dirt Drgn",
+          "38": "Dark Wind, Cirpius, Vindr",
+          "39": "Beakor, Sprinter, Kiwok, Abolisher",
+          "40": "Vulture, Gobbler, Osprey",
+          "41": "Harpy, Harpiai, Aquila",
+          "42": "HermitCrab, GloomShell",
+          "43": "Trapper, Drop, Junk",
+          "44": "Hornet, Mind Candy, Bug",
+          "45": "CrassHoppr, WeedFeeder, Insecare",
+          "46": "Delta Bug, Luridan",
+          "47": "Gilomantis, Toe Cutter, Mantodea",
+          "48": "Trilium, Over Grunk, Mandrake",
+          "49": "Nightshade, Exoray",
+          "50": "TumbleWeed, Crusher",
+          "51": "Bloompire, Uroburos",
+          "52": "Trilobiter, Sand Ray, EarthGuard",
+          "53": "Siegfried",
+          "54": "Nautiloid, Cephaler",
+          "55": "Exocite, Primordite, Maliga",
+          "56": "Anguiform, Latimeria",
+          "57": "Reach Frog, Gigan Toad",
+          "58": "Lizard, Geckorex",
+          "59": "ChickenLip, Cluck",
+          "60": "Hoover, Land Worm, Zone Eater",
+          "61": "Rider, Test Rider, Dante",
+          "62": "Chupon",
+          "63": "Pipsqueak, Tomb Thumb, IronHitman",
+          "64": "M-TekArmor, PlutoArmor, HeavyArmor, Dueller, Mega Armor",
+          "65": "Sky Armor, Sky Cap, Spit Fire, Sky Base",
+          "66": "Telstar, Chaser, Innoc",
+          "67": "Lethal Wpn, Scullion, Io",
+          "68": "Vaporite, Poplium, Rinn, Psychot",
+          "69": "Flan, Muus",
+          "70": "Ing, Misfit, Karkass",
+          "71": "Humpty, Eland",
+          "72": "Brainpan, Phase",
+          "73": "Cruller, Enuo",
+          "74": "Cactrot",
+          "75": "Repo Man, GreaseMonk, Gabbldegak, 1st Class",
+          "76": "Harvester, NeckHunter, Punisher",
+          "77": "Bomb, Grenade, Balloon",
+          "78": "Still Life",
+          "79": "Boxed Set, Pan Dora",
+          "80": "SlamDancer, SoulDancer, Tap Dancer, L.30 Magic",
+          "81": "HadesGigas, Gigantos, Borras, Colossus",
+          "82": "Pug, Pugs, Master Pug",
+          "83": "Magic Urn",
+          "84": "Mover",
+          "85": "Figaliz, Crawler",
+          "86": "Buffalax, Opinicus",
+          "87": "Aspik, Parasite",
+          "88": "Ghost, Spectre, Lich, Necromancr, L.10 Magic",
+          "89": "Areneid, Coelecite, Scorpion",
+          "90": "Actaneon, Anemone, Sea Flower",
+          "91": "Sand Horse, Hipocampus",
+          "92": "Mad Oscar, Evil Oscar",
+          "93": "Crawly, Slurm",
+          "94": "Bleary, Deep Eye",
+          "95": "Critic",
+          "96": "Mag Roader",
+          "97": "Fortis, ProtoArmor",
+          "98": "Trixter, L.90 Magic, Naughty",
+          "99": "Didalos, Dullahan",
+          "100": "Woolly, Nerapa, L.60 Magic",
+          "101": "Veteran",
+          "102": "Whelk, Presenter",
+          "103": "Vargas",
+          "104": "TunnelArmr, Prometheus",
+          "105": "GhostTrain",
+          "106": "Dadaluma",
+          "107": "Shiva",
+          "108": "Ifrit, Esper",
+          "109": "Number 024, MagiMaster",
+          "110": "Number 128, Inferno",
+          "111": "Crane",
+          "112": "Umaro",
+          "113": "Guardian",
+          "114": "Air Force",
+          "115": "Tritoch",
+          "116": "FlameEater",
+          "117": "AtmaWeapon, Atma",
+          "118": "Tentacle, Tentacle",
+          "119": "Doom Gaze",
+          "120": "Chadarnook",
+          "121": "Curley",
+          "122": "Larry",
+          "123": "Moe",
+          "124": "Hidon",
+          "125": "Hidonite",
+          "126": "Doom",
+          "127": "Goddess",
+          "128": "Poltrgeist",
+          "129": "Kefka",
+          "130": "Ultros (Lete River)",
+          "131": "Ultros",
+          "132": "Head",
+          "133": "Whelk Head",
+          "134": "Merchant",
+          "135": "B.Day Suit",
+          "136": "Tentacle",
+          "137": "RightBlade",
+          "138": "Left Blade",
+          "139": "Rough",
+          "140": "Striker",
+          "141": "Laser Gun",
+          "142": "Speck",
+          "143": "MissileBay",
+          "144": "Chadarnook",
+          "145": "Kefka",
+          "146": "Piranha, Rizopas",
+          "147": "SoulSaver",
+          "148": "Ramuh",
+          "149": "Ifrit (Summon)",
+          "150": "Siren",
+          "151": "Terrato",
+          "152": "Shoat",
+          "153": "Maduin",
+          "154": "Bismark",
+          "155": "Stray",
+          "156": "Palidor",
+          "157": "Tritoch",
+          "158": "Odin",
+          "159": "Raiden",
+          "160": "Bahamut",
+          "161": "Alexandr",
+          "162": "Crusader 1",
+          "163": "Kirin",
+          "164": "ZoneSeek",
+          "165": "Carbunkl",
+          "166": "Phantom",
+          "167": "Sraphim",
+          "168": "Golem",
+          "169": "Unicorn",
+          "170": "Fenrir",
+          "171": "Starlet",
+          "172": "Phoenix",
+          "173": "TigerBreak",
+          "174": "Crusader 2",
+          "175": "Imp"
+        }
+      }
+    },
+    "monsterGraphicsMap": {
+      "type": "data",
+      "name": "Monster Graphics Map",
+      "range": "0xD2A820-0xD2B224",
+      "isSequential": true,
+      "assembly": {
+        "smallPointer": {
+          "type": "property",
+          "begin": 0,
+          "mask": "0xFFFF"
+        },
+        "largePointer": {
+          "type": "property",
+          "begin": 2,
+          "mask": "0xFFFF"
+        },
+        "small": {
+          "type": "array",
+          "range": "0x0004-0x0404",
+          "array": {
+            "length": 128
+          },
+          "assembly": {
+            "type": "assembly",
+            "length": 8
+          },
+          "stringTable": {
+            "length": 128,
+            "default": "Small Monster Graphics Map %i",
+            "string": {
+              "0": "Guard, Marshal, StillGoing",
+              "1": "Soldier, Commander, Trooper, Commando, Grunt, Officer",
+              "2": "Templar, General, Sp Forces, Leader, Cadet",
+              "3": "Ninja, Covert, Outsider",
+              "4": "Samurai, Retainer, KatanaSoul",
+              "5": "Orog, Ogor, Hemophyte",
+              "6": "Mag Roader, Mag Roader",
+              "7": "Hazer, Warlock, Wizard, L.20 Magic",
+              "8": "Dahling, Madam, Barb-e, L.80 Magic",
+              "9": "Rain Man, Joker, Parasoul, L.40 Magic",
+              "10": "Brawler, Iron Fist, Scrapper",
+              "11": "Apokryphos, Goblin",
+              "12": "Dark Force, Wrexsoul, L.70 Magic",
+              "13": "Whisper, Dark Side, Apparite, Pm Stalker, Specter",
+              "14": "Over-Mind, PowerDemon, L.50 Magic",
+              "15": "Rhodox, Peepers, Poppers",
+              "16": "Were-Rat, Sewer Rat, Vermin, Wild Rat",
+              "17": "Ursus, Slatter, Prussian, Gold Bear, Ipooh",
+              "18": "Rhinotaur, Rhinox, Ceritops",
+              "19": "Leafer, Rhobite, Nohrabbit",
+              "20": "Stray Cat, Wild Cat, Spek Tor",
+              "21": "Lobo, Red Fang, Lunaris, Red Wolf",
+              "22": "Doberman, Vector Pup, Bounty Man, Garm",
+              "23": "Vomammoth, Tusker, Nastidon",
+              "24": "Fidor, Ralph, Bogy",
+              "25": "Baskervor, Chitonid, Adamanchyt",
+              "26": "Suriander, Wart Puck",
+              "27": "Mesosaur, Vectaur, Ice Dragon",
+              "28": "Pterodon, Wyvern, Wirey Drgn, Storm Drgn",
+              "29": "FossilFang, Zombone, Black Drgn, Skull Drgn",
+              "30": "Tyranosaur, Allosaurus, Chaos Drgn, Dirt Drgn",
+              "31": "Dark Wind, Cirpius, Vindr",
+              "32": "Beakor, Sprinter, Kiwok, Abolisher",
+              "33": "Vulture, Gobbler, Osprey",
+              "34": "HermitCrab, GloomShell",
+              "35": "Trapper, Drop, Junk",
+              "36": "Hornet, Mind Candy, Bug",
+              "37": "CrassHoppr, WeedFeeder, Insecare",
+              "38": "Delta Bug, Luridan",
+              "39": "Gilomantis, Toe Cutter, Mantodea",
+              "40": "Trilium, Over Grunk, Mandrake",
+              "41": "Nightshade, Exoray",
+              "42": "TumbleWeed, Crusher",
+              "43": "Bloompire, Uroburos",
+              "44": "Trilobiter, Sand Ray, EarthGuard",
+              "45": "Siegfried",
+              "46": "Nautiloid, Cephaler",
+              "47": "Exocite, Primordite, Maliga",
+              "48": "Anguiform, Latimeria",
+              "49": "Reach Frog, Gigan Toad",
+              "50": "Lizard, Geckorex",
+              "51": "ChickenLip, Cluck",
+              "52": "Pipsqueak, Tomb Thumb, IronHitman",
+              "53": "M-TekArmor, PlutoArmor, HeavyArmor, Dueller, Mega Armor",
+              "54": "Sky Armor, Sky Cap, Spit Fire, Sky Base",
+              "55": "Telstar, Chaser, Innoc",
+              "56": "Vaporite, Poplium, Rinn, Psychot",
+              "57": "Flan, Muus",
+              "58": "Ing, Misfit, Karkass",
+              "59": "Humpty, Eland",
+              "60": "Brainpan, Phase",
+              "61": "Cruller, Enuo",
+              "62": "Cactrot",
+              "63": "Repo Man, GreaseMonk, Gabbldegak, 1st Class",
+              "64": "Harvester, NeckHunter, Punisher",
+              "65": "Bomb, Grenade, Balloon",
+              "66": "Still Life",
+              "67": "Boxed Set, Pan Dora",
+              "68": "SlamDancer, SoulDancer, Tap Dancer, L.30 Magic",
+              "69": "Pug, Pugs, Master Pug",
+              "70": "Magic Urn",
+              "71": "Mover",
+              "72": "Figaliz, Crawler",
+              "73": "Aspik, Parasite",
+              "74": "Ghost, Spectre, Lich, Necromancr, L.10 Magic",
+              "75": "Areneid, Coelecite, Scorpion",
+              "76": "Actaneon, Anemone, Sea Flower",
+              "77": "Sand Horse, Hipocampus",
+              "78": "Mad Oscar, Evil Oscar",
+              "79": "Crawly, Slurm",
+              "80": "Bleary, Deep Eye",
+              "81": "Mag Roader",
+              "82": "Fortis, ProtoArmor",
+              "83": "Trixter, L.90 Magic, Naughty",
+              "84": "Woolly, Nerapa, L.60 Magic",
+              "85": "Veteran",
+              "86": "Whelk, Presenter",
+              "87": "GhostTrain",
+              "88": "Shiva",
+              "89": "Ifrit, Kefka vs. Esper",
+              "90": "Umaro, Umaro",
+              "91": "FlameEater",
+              "92": "Tentacle",
+              "93": "Curley",
+              "94": "Larry",
+              "95": "Moe",
+              "96": "Hidonite",
+              "97": "Ultros (Lete River)",
+              "98": "Ultros",
+              "99": "Head",
+              "100": "Whelk Head",
+              "101": "Merchant",
+              "102": "B.Day Suit",
+              "103": "Tentacle",
+              "104": "RightBlade",
+              "105": "Left Blade",
+              "106": "Rough",
+              "107": "Striker",
+              "108": "Laser Gun",
+              "109": "Speck",
+              "110": "MissileBay",
+              "111": "Kefka (Hills Maze), Kefka vs. Leo",
+              "112": "Piranha, Rizopas",
+              "113": "SoulSaver",
+              "114": "Ramuh",
+              "115": "Siren",
+              "116": "Shoat",
+              "117": "Maduin",
+              "118": "Stray",
+              "119": "Kirin",
+              "120": "ZoneSeek",
+              "121": "Carbunkl",
+              "122": "Phantom",
+              "123": "Sraphim",
+              "124": "Golem",
+              "125": "Unicorn",
+              "126": "TigerBreak",
+              "127": "Imp"
+            }
+          }
+        },
+        "large": {
+          "type": "array",
+          "range": "0x0404-0x0A04",
+          "array": {
+            "length": 48
+          },
+          "assembly": {
+            "type": "assembly",
+            "length": 32,
+            "format": "byteSwapped(2)"
+          },
+          "stringTable": {
+            "length": 48,
+            "default": "Large Monster Graphics Map %i",
+            "string": {
+              "0": "Osteosaur, Displayer, Allo Ver",
+              "1": "Steroidite, Phunbaba",
+              "2": "Chimera, Rhyos, Vectagoyle",
+              "3": "Behemoth, SrBehemoth, Intangir, GtBehemoth, SrBehemoth",
+              "4": "White Drgn, Dragon, Red Dragon",
+              "5": "Doom Drgn, CzarDragon, Blue Drgn",
+              "6": "Brachosaur, Brontaur, Gold Drgn",
+              "7": "Harpy, Harpiai, Aquila",
+              "8": "Hoover, Land Worm, Zone Eater",
+              "9": "Rider, Test Rider, Dante",
+              "10": "Chupon",
+              "11": "Lethal Wpn, Scullion, Io",
+              "12": "HadesGigas, Gigantos, Borras, Colossus",
+              "13": "Buffalax, Opinicus",
+              "14": "Critic",
+              "15": "Didalos, Dullahan",
+              "16": "Vargas",
+              "17": "TunnelArmr, Prometheus",
+              "18": "Dadaluma",
+              "19": "Number 024, MagiMaster",
+              "20": "Number 128, Inferno",
+              "21": "Crane",
+              "22": "Guardian",
+              "23": "Air Force",
+              "24": "Tritoch",
+              "25": "AtmaWeapon, Atma",
+              "26": "Doom Gaze",
+              "27": "Chadarnook",
+              "28": "Hidon",
+              "29": "Doom",
+              "30": "Goddess",
+              "31": "Poltrgeist",
+              "32": "Kefka",
+              "33": "Chadarnook",
+              "34": "Ifrit (Summon)",
+              "35": "Terrato",
+              "36": "Bismark",
+              "37": "Palidor",
+              "38": "Tritoch",
+              "39": "Odin",
+              "40": "Raiden",
+              "41": "Bahamut",
+              "42": "Alexandr",
+              "43": "Crusader 1",
+              "44": "Fenrir",
+              "45": "Starlet",
+              "46": "Phoenix",
+              "47": "Crusader 2"
+            }
+          }
+        }
+      }
+    },
+    "monsterGraphicsProperties": {
+      "type": "array",
+      "name": "Monster Graphics Properties",
+      "range": "0xD27000-0xD27820",
+      "array": {
+        "length": 416
+      },
+      "assembly": {
+        "type": "data",
+        "length": 5,
+        "assembly": {
+          "graphicsPointer": {
+            "type": "property",
+            "name": "Graphics Pointer",
+            "mask": "0x7FFF",
+            "multiplier": 8,
+            "offset": "0xE97000",
+            "pointerTo": "monsterGraphics"
+          },
+          "is3bpp": {
+            "type": "property",
+            "name": "3bpp Graphics",
+            "mask": "0x80",
+            "begin": 1,
+            "bool": true
+          },
+          "palette": {
+            "type": "property",
+            "name": "Palette",
+            "mask": "0x03FF",
+            "begin": 2,
+            "multiplier": 16,
+            "offset": "0xD27820",
+            "format": "byteSwapped",
+            "pointerTo": "monsterPalette"
+          },
+          "smallMap": {
+            "type": "property",
+            "name": "Graphics Map",
+            "begin": 4,
+            "stringTable": "monsterGraphicsMap.small",
+            "invalid": "this.parent.useLargeMap.value"
+          },
+          "largeMap": {
+            "type": "property",
+            "name": "Graphics Map",
+            "begin": 4,
+            "stringTable": "monsterGraphicsMap.large",
+            "invalid": "!this.parent.useLargeMap.value"
+          },
+          "useLargeMap": {
+            "type": "property",
+            "name": "Use Large Map",
+            "mask": "0x80",
+            "begin": 2,
+            "bool": true
+          }
+        }
+      }
+    },
+    "monsterItems": {
+      "type": "array",
+      "name": "Monster Items",
+      "range": "0xCF3000-0xCF35FF",
+      "arrayLength": 384,
+      "itemLength": 4,
+      "asmSymbol": "MonsterItems",
+      "file": "battle/data/monster_items.asm",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "rareSteal": {
+            "type": "property",
+            "name": "Rare Steal",
+            "begin": 0,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "commonSteal": {
+            "type": "property",
+            "name": "Common Steal",
+            "begin": 1,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "rareDrop": {
+            "type": "property",
+            "name": "Rare Drop",
+            "begin": 2,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          },
+          "commonDrop": {
+            "type": "property",
+            "name": "Common Drop",
+            "begin": 3,
+            "stringTable": "itemNames",
+            "link": "itemProperties[%i]"
+          }
+        }
+      }
+    },
+    "monsterName": {
+      "type": "array",
+      "name": "Monster Name",
+      "range": "0xCFC050-0xCFCF4F",
+      "arrayLength": 384,
+      "itemLength": 10,
+      "asmSymbol": "MonsterName",
+      "file": "battle/text/monster_name.asm",
+      "assembly": {
+        "type": "text",
+        "name": "Name",
+        "encoding": "smallText"
+      },
+      "stringTable": {
+        "length": 384,
+        "default": "<monsterName[%i]>",
+        "string": {
+          "273": "<monsterName[%i]> (Vector)",
+          "274": "<monsterName[%i]> (Kefka's Tower)",
+          "276": "<monsterName[%i]> (Intro)",
+          "277": "<monsterName[%i]> (Terra Transforms)",
+          "282": "Final Battle Script (Unused)",
+          "300": "<monsterName[%i]> (Lete River)",
+          "301": "<monsterName[%i]> (Opera House)",
+          "302": "<monsterName[%i]> (Esper Mountain)",
+          "324": "<monsterName[%i]> (WoR)",
+          "330": "<monsterName[%i]> (Hills Maze)",
+          "360": "<monsterName[%i]> (Airship)",
+          "366": "Terra's Flashback",
+          "367": "Kefka (Imperial Camp)",
+          "368": "Cyan (Imperial Camp)",
+          "370": "Gau (Veldt)",
+          "371": "Kefka vs. Leo",
+          "372": "Kefka (Esper Gate)",
+          "378": "Kefka vs. Esper",
+          "379": "Battle Event",
+          "382": "Shadow (Colosseum)",
+          "383": "Colosseum"
+        }
+      }
+    },
+    "monsterPalette": {
+      "type": "array",
+      "name": "Monster Palette",
+      "range": "0xD27820-0xD2A130",
+      "array": {
+        "length": 348
+      },
+      "assembly": {
+        "format": "bgr555"
+      },
+      "pointerObject": {
+        "arrayPath": "monsterGraphicsProperties",
+        "pointerPath": "palette"
+      },
+      "stringTable": {
+        "default": "Monster Palette %i",
+        "string": {
+          "0": "Guard",
+          "1": "Soldier",
+          "2": "Templar",
+          "3": "Ninja",
+          "4": "Samurai",
+          "5": "Orog",
+          "6": "Mag Roader",
+          "7": "Hazer",
+          "8": "Dahling",
+          "9": "Rain Man",
+          "10": "Brawler",
+          "11": "Apokryphos",
+          "12": "Dark Force",
+          "13": "Whisper",
+          "14": "Over-Mind",
+          "15": "Osteosaur",
+          "16": "Rhodox",
+          "17": "Were-Rat",
+          "18": "Ursus",
+          "19": "Rhinotaur",
+          "20": "Steroidite",
+          "21": "Leafer",
+          "22": "Stray Cat",
+          "23": "Lobo",
+          "24": "Doberman",
+          "25": "Vomammoth",
+          "26": "Fidor",
+          "27": "Baskervor",
+          "28": "Suriander",
+          "29": "Chimera",
+          "30": "Behemoth",
+          "31": "Mesosaur",
+          "32": "Pterodon",
+          "33": "FossilFang",
+          "34": "White Drgn",
+          "35": "Doom Drgn",
+          "36": "Brachosaur",
+          "37": "Tyranosaur",
+          "38": "Dark Wind",
+          "39": "Beakor",
+          "40": "Vulture",
+          "41": "Harpy",
+          "42": "HermitCrab",
+          "43": "Trapper",
+          "44": "Hornet",
+          "45": "CrassHoppr",
+          "46": "Delta Bug",
+          "47": "Gilomantis",
+          "48": "Trilium",
+          "49": "Nightshade",
+          "50": "TumbleWeed",
+          "51": "Bloompire",
+          "52": "Trilobiter",
+          "53": "Siegfried",
+          "54": "Nautiloid",
+          "55": "Exocite",
+          "56": "Anguiform",
+          "57": "Reach Frog",
+          "58": "Lizard",
+          "59": "ChickenLip",
+          "60": "Hoover",
+          "61": "Rider",
+          "62": "Chupon",
+          "63": "Pipsqueak",
+          "64": "M-TekArmor",
+          "65": "Sky Armor",
+          "66": "Telstar",
+          "67": "Lethal Wpn",
+          "68": "Vaporite",
+          "69": "Flan",
+          "70": "Ing",
+          "71": "Humpty",
+          "72": "Brainpan",
+          "73": "Cruller",
+          "74": "Cactrot",
+          "75": "Repo Man",
+          "76": "Harvester",
+          "77": "Bomb",
+          "78": "Still Life",
+          "79": "Boxed Set",
+          "80": "SlamDancer",
+          "81": "HadesGigas",
+          "82": "Pug",
+          "83": "Magic Urn",
+          "84": "Mover",
+          "85": "Figaliz",
+          "86": "Buffalax",
+          "87": "Aspik",
+          "88": "Ghost",
+          "89": "Sand Ray",
+          "90": "Areneid",
+          "91": "Actaneon",
+          "92": "Sand Horse",
+          "93": "Mad Oscar",
+          "94": "Crawly",
+          "95": "Bleary",
+          "96": "Marshal",
+          "97": "Trooper",
+          "98": "General",
+          "99": "Covert",
+          "100": "Ogor",
+          "101": "Warlock",
+          "102": "Madam",
+          "103": "Joker",
+          "104": "Iron Fist",
+          "105": "Goblin",
+          "106": "Apparite",
+          "107": "PowerDemon",
+          "108": "Displayer",
+          "109": "Peepers",
+          "110": "Sewer Rat",
+          "111": "Slatter",
+          "112": "Rhinox",
+          "113": "Rhobite",
+          "114": "Wild Cat, Spek Tor",
+          "115": "Red Fang",
+          "116": "Bounty Man",
+          "117": "Tusker",
+          "118": "Ralph",
+          "119": "Chitonid",
+          "120": "Wart Puck",
+          "121": "Rhyos",
+          "122": "SrBehemoth",
+          "123": "Vectaur",
+          "124": "Wyvern",
+          "125": "Zombone",
+          "126": "Dragon",
+          "127": "Brontaur",
+          "128": "Allosaurus",
+          "129": "Cirpius",
+          "130": "Sprinter",
+          "131": "Gobbler",
+          "132": "Harpiai",
+          "133": "GloomShell",
+          "134": "Drop",
+          "135": "Mind Candy",
+          "136": "WeedFeeder",
+          "137": "Luridan",
+          "138": "Toe Cutter",
+          "139": "Over Grunk",
+          "140": "Exoray",
+          "141": "Crusher",
+          "142": "Uroburos",
+          "143": "Primordite",
+          "144": "Cephaler",
+          "145": "Maliga",
+          "146": "Gigan Toad",
+          "147": "Geckorex",
+          "148": "Cluck",
+          "149": "Land Worm",
+          "150": "Test Rider",
+          "151": "PlutoArmor",
+          "152": "Tomb Thumb",
+          "153": "HeavyArmor",
+          "154": "Chaser",
+          "155": "Scullion",
+          "156": "Poplium",
+          "157": "Intangir",
+          "158": "Misfit",
+          "159": "Eland",
+          "160": "Enuo",
+          "161": "Deep Eye",
+          "162": "GreaseMonk",
+          "163": "NeckHunter",
+          "164": "Grenade",
+          "165": "Critic",
+          "166": "Pan Dora",
+          "167": "SoulDancer",
+          "168": "Gigantos",
+          "169": "Mag Roader",
+          "170": "Parasite",
+          "171": "EarthGuard",
+          "172": "Coelecite",
+          "173": "Anemone",
+          "174": "Hipocampus",
+          "175": "Evil Oscar",
+          "176": "Slurm",
+          "177": "Latimeria",
+          "178": "StillGoing",
+          "179": "Phase",
+          "180": "Outsider",
+          "181": "Barb-e",
+          "182": "Parasoul",
+          "183": "Pm Stalker, Specter",
+          "184": "Hemophyte",
+          "185": "Sp Forces, Leader",
+          "186": "Nohrabbit",
+          "187": "Wizard",
+          "188": "Scrapper",
+          "189": "Ceritops",
+          "190": "Commando",
+          "191": "Opinicus",
+          "192": "Poppers",
+          "193": "Lunaris",
+          "194": "Garm",
+          "195": "Vindr",
+          "196": "Kiwok",
+          "197": "Nastidon",
+          "198": "Insecare",
+          "199": "Vermin",
+          "200": "Mantodea",
+          "201": "Bogy",
+          "202": "Prussian",
+          "203": "Black Drgn",
+          "204": "Adamanchyt",
+          "205": "Dante",
+          "206": "Wirey Drgn",
+          "207": "Dueller",
+          "208": "Psychot",
+          "209": "Muus",
+          "210": "Karkass",
+          "211": "Punisher",
+          "212": "Gabbldegak",
+          "213": "GtBehemoth",
+          "214": "Scorpion",
+          "215": "Chaos Drgn",
+          "216": "Spit Fire",
+          "217": "Vectagoyle",
+          "218": "Lich",
+          "219": "Osprey",
+          "220": "Mag Roader",
+          "221": "Bug",
+          "222": "Sea Flower",
+          "223": "Fortis",
+          "224": "Abolisher",
+          "225": "Aquila",
+          "226": "Junk",
+          "227": "Mandrake",
+          "228": "1st Class",
+          "229": "Tap Dancer",
+          "230": "Necromancr",
+          "231": "Borras",
+          "232": "Mag Roader",
+          "233": "Gold Bear",
+          "234": "Innoc",
+          "235": "Trixter",
+          "236": "Red Wolf",
+          "237": "Didalos",
+          "238": "Woolly",
+          "239": "Veteran",
+          "240": "Sky Base",
+          "241": "IronHitman",
+          "242": "Io",
+          "243": "Whelk",
+          "244": "Presenter",
+          "245": "Mega Armor",
+          "246": "Vargas",
+          "247": "TunnelArmr",
+          "248": "Prometheus",
+          "249": "GhostTrain",
+          "250": "Dadaluma",
+          "251": "Shiva",
+          "252": "Ifrit",
+          "253": "Number 024",
+          "254": "Number 128",
+          "255": "Inferno",
+          "256": "Crane",
+          "257": "Umaro",
+          "258": "Guardian",
+          "259": "Air Force",
+          "260": "Tritoch",
+          "261": "FlameEater",
+          "262": "AtmaWeapon",
+          "263": "Nerapa",
+          "264": "SrBehemoth",
+          "265": "Tentacle",
+          "266": "Dullahan",
+          "267": "Doom Gaze",
+          "268": "Chadarnook",
+          "269": "Curley",
+          "270": "Larry",
+          "271": "Moe",
+          "272": "Wrexsoul",
+          "273": "Hidon",
+          "274": "KatanaSoul",
+          "275": "L.30 Magic",
+          "276": "Hidonite",
+          "277": "Doom",
+          "278": "Goddess",
+          "279": "Poltrgeist",
+          "280": "Kefka",
+          "281": "L.40 Magic",
+          "282": "Ultros (Lete River)",
+          "283": "Ultros",
+          "284": "L.20 Magic",
+          "285": "L.10 Magic",
+          "286": "L.50 Magic",
+          "287": "Head",
+          "288": "Whelk Head",
+          "289": "CzarDragon",
+          "290": "Master Pug",
+          "291": "L.60 Magic",
+          "292": "Merchant",
+          "293": "B.Day Suit",
+          "294": "RightBlade, Left Blade",
+          "295": "Rough, Striker",
+          "296": "L.70 Magic",
+          "297": "Laser Gun, MissileBay",
+          "298": "Speck",
+          "299": "Chadarnook",
+          "300": "Ice Dragon",
+          "301": "Kefka",
+          "302": "Storm Drgn",
+          "303": "Dirt Drgn",
+          "304": "Gold Drgn",
+          "305": "Skull Drgn",
+          "306": "Blue Drgn",
+          "307": "Red Dragon",
+          "308": "Piranha",
+          "309": "Rizopas",
+          "310": "L.90 Magic",
+          "311": "ProtoArmor",
+          "312": "MagiMaster",
+          "313": "SoulSaver",
+          "314": "Naughty",
+          "315": "Phunbaba",
+          "316": "Zone Eater",
+          "317": "Officer",
+          "318": "Esper",
+          "319": "Atma",
+          "320": "Ramuh",
+          "321": "Ifrit",
+          "322": "Siren",
+          "323": "Terrato",
+          "324": "Shoat",
+          "325": "Maduin",
+          "326": "Bismark",
+          "327": "Stray",
+          "328": "Palidor",
+          "329": "Tritoch",
+          "330": "Odin",
+          "331": "Raiden",
+          "332": "Bahamut",
+          "333": "Alexandr",
+          "334": "Crusader 1",
+          "335": "Kirin",
+          "336": "ZoneSeek",
+          "337": "Carbunkl",
+          "338": "Phantom",
+          "339": "Sraphim",
+          "340": "Golem",
+          "341": "Unicorn",
+          "342": "Fenrir",
+          "343": "Starlet",
+          "344": "Phoenix",
+          "345": "TigerBreak (Unused)",
+          "346": "Crusader 2",
+          "347": "Crusader 3"
+        }
+      }
+    },
+    "monsterProperties": {
+      "type": "array",
+      "name": "Monster Properties",
+      "range": "0xCF0000-0xCF2FFF",
+      "stringTable": "monsterName",
+      "arrayLength": 384,
+      "itemLength": 32,
+      "asmSymbol": "MonsterProp",
+      "file": "battle/data/monster_prop.asm",
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "monsterName": {
+            "type": "assembly",
+            "external": "monsterName[%i]"
+          },
+          "level": {
+            "type": "property",
+            "name": "Level",
+            "begin": 16
+          },
+          "speed": {
+            "type": "property",
+            "name": "Speed",
+            "begin": 0
+          },
+          "attackPower": {
+            "type": "property",
+            "name": "Attack Power",
+            "begin": 1
+          },
+          "hitRate": {
+            "type": "property",
+            "name": "Hit Rate",
+            "begin": 2
+          },
+          "evade": {
+            "type": "property",
+            "name": "Evade",
+            "begin": 3
+          },
+          "magicBlock": {
+            "type": "property",
+            "name": "Magic Block",
+            "begin": 4
+          },
+          "defense": {
+            "type": "property",
+            "name": "Defense",
+            "begin": 5
+          },
+          "magicDefense": {
+            "type": "property",
+            "name": "Magic Defense",
+            "begin": 6
+          },
+          "magicPower": {
+            "type": "property",
+            "name": "Magic Power",
+            "begin": 7
+          },
+          "hp": {
+            "type": "property",
+            "name": "HP",
+            "begin": 8,
+            "mask": "0xFFFF"
+          },
+          "mp": {
+            "type": "property",
+            "name": "MP",
+            "begin": 10,
+            "mask": "0xFFFF"
+          },
+          "experience": {
+            "type": "property",
+            "name": "Experience",
+            "begin": 12,
+            "mask": "0xFFFF"
+          },
+          "gp": {
+            "type": "property",
+            "name": "GP",
+            "begin": 14,
+            "mask": "0xFFFF"
+          },
+          "category-attacks": "Attacks",
+          "script": {
+            "type": "property",
+            "external": "monsterScriptPointers[%i]"
+          },
+          "fightAnimation": {
+            "type": "property",
+            "name": "Fight Animation",
+            "begin": 26,
+            "stringTable": "itemNames"
+          },
+          "sketch1": {
+            "type": "assembly",
+            "external": "monsterAttackSketch[%i].attack1"
+          },
+          "sketch2": {
+            "type": "assembly",
+            "external": "monsterAttackSketch[%i].attack2"
+          },
+          "control1": {
+            "type": "assembly",
+            "external": "monsterAttackControl[%i].attack1"
+          },
+          "control2": {
+            "type": "assembly",
+            "external": "monsterAttackControl[%i].attack2"
+          },
+          "control3": {
+            "type": "assembly",
+            "external": "monsterAttackControl[%i].attack3"
+          },
+          "control4": {
+            "type": "assembly",
+            "external": "monsterAttackControl[%i].attack4"
+          },
+          "rage1": {
+            "type": "assembly",
+            "external": "monsterAttackRage[%i].attack1",
+            "invalid": "this.parent.i > 0xFF"
+          },
+          "rage2": {
+            "type": "assembly",
+            "external": "monsterAttackRage[%i].attack2",
+            "invalid": "this.parent.i > 0xFF"
+          },
+          "initialRage": {
+            "type": "assembly",
+            "external": "initialRage[%i]",
+            "invalid": "this.parent.i > 0xFF"
+          },
+          "category-special": "Special Attack",
+          "attackName": {
+            "type": "assembly",
+            "external": "monsterAttackName[%i]"
+          },
+          "attackAnimation": {
+            "type": "assembly",
+            "external": "monsterAttack[%i]"
+          },
+          "attackEffect": {
+            "type": "property",
+            "name": "Effect",
+            "begin": 31,
+            "mask": "0x3F",
+            "stringTable": {
+              "length": 51,
+              "string": {
+                "0-32": "Inflict <stringTable.statusNamesReversed[%i]>",
+                "32": "1.5× Damage",
+                "33": "2.0× Damage",
+                "34": "2.5× Damage",
+                "35": "3.0× Damage",
+                "36": "3.5× Damage",
+                "37": "4.0× Damage",
+                "38": "4.5× Damage",
+                "39": "5.0× Damage",
+                "40": "5.5× Damage",
+                "41": "6.0× Damage",
+                "42": "6.5× Damage",
+                "43": "7.0× Damage",
+                "44": "7.5× Damage",
+                "45": "8.0× Damage",
+                "46": "8.5× Damage",
+                "47": "9.0× Damage",
+                "48": "Drain HP",
+                "49": "Drain MP",
+                "50": "Remove <stringTable.statusNames[16]>"
+              }
+            }
+          },
+          "attackFlags": {
+            "type": "property",
+            "name": "Flags",
+            "begin": 31,
+            "mask": "0xC0",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "No Damage",
+                "1": "Can't Miss"
+              }
+            }
+          },
+          "category-status": "Flags",
+          "statusImmunity": {
+            "type": "property",
+            "name": "Immune",
+            "begin": 20,
+            "mask": "0xFFFFFF",
+            "flag": true,
+            "stringTable": {
+              "length": 24,
+              "default": "<stringTable.statusNamesReversed[%i]>",
+              "string": {
+                "16": "Flying"
+              }
+            }
+          },
+          "statusSet": {
+            "type": "property",
+            "name": "Set",
+            "begin": 27,
+            "mask": "0xFFFFFF",
+            "flag": true,
+            "stringTable": "monsterProperties.statusImmunity"
+          },
+          "elementAbsorb": {
+            "type": "property",
+            "name": "Absorb",
+            "begin": 23,
+            "mask": "0xFF",
+            "flag": true,
+            "stringTable": "element"
+          },
+          "elementNull": {
+            "type": "property",
+            "name": "Nullify",
+            "begin": 24,
+            "mask": "0xFF",
+            "flag": true,
+            "stringTable": "element"
+          },
+          "elementWeak": {
+            "type": "property",
+            "name": "Weak",
+            "begin": 25,
+            "mask": "0xFF",
+            "flag": true,
+            "stringTable": "element"
+          },
+          "flags": {
+            "type": "property",
+            "name": "Misc.",
+            "begin": 18,
+            "mask": "0xFFFF",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "Dies at Zero MP",
+                "2": "Hide Name",
+                "4": "Human",
+                "6": "Imp Critical",
+                "7": "Undead",
+                "8": "Harder to Run",
+                "9": "First Strike",
+                "10": "Can't Suplex",
+                "11": "Can't Run",
+                "12": "Can't Scan",
+                "13": "Can't Sketch",
+                "14": "Special Event",
+                "15": "Can't Control"
+              }
+            }
+          },
+          "flags2": {
+            "type": "property",
+            "begin": 30,
+            "mask": "0x87",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "True Knight",
+                "1": "Speck",
+                "2": "Life 3",
+                "7": "Piranha"
+              }
+            }
+          },
+          "category-items": "Items",
+          "rareSteal": {
+            "type": "assembly",
+            "external": "monsterItems[%i].rareSteal"
+          },
+          "commonSteal": {
+            "type": "assembly",
+            "external": "monsterItems[%i].commonSteal"
+          },
+          "rareDrop": {
+            "type": "assembly",
+            "external": "monsterItems[%i].rareDrop"
+          },
+          "commonDrop": {
+            "type": "assembly",
+            "external": "monsterItems[%i].commonDrop"
+          },
+          "morphItems": {
+            "type": "property",
+            "name": "Metamorphosis",
+            "begin": 17,
+            "mask": "0x1F",
+            "link": "itemMetamorphosis[%i]",
+            "stringTable": "itemMetamorphosis"
+          },
+          "morphRate": {
+            "type": "property",
+            "name": "Morph Rate",
+            "begin": 17,
+            "mask": "0xE0",
+            "stringTable": {
+              "string": {
+                "0": "255/256 (99.6%)",
+                "1": "3/4 (75%)",
+                "2": "1/2 (50%)",
+                "3": "1/4 (25%)",
+                "4": "1/8 (12.5%)",
+                "5": "1/16 (6.25%)",
+                "6": "1/32 (3.125%)",
+                "7": "0 (0%)"
+              }
+            }
+          },
+          "category-graphics": "Graphics",
+          "graphics": {
+            "type": "property",
+            "name": "Graphics",
+            "external": "monsterGraphicsProperties[%i].graphicsPointer"
+          },
+          "is3bpp": {
+            "type": "property",
+            "name": "3bpp Graphics",
+            "external": "monsterGraphicsProperties[%i].is3bpp"
+          },
+          "smallMap": {
+            "type": "property",
+            "external": "monsterGraphicsProperties[%i].smallMap"
+          },
+          "largeMap": {
+            "type": "property",
+            "external": "monsterGraphicsProperties[%i].largeMap"
+          },
+          "useLargeMap": {
+            "type": "property",
+            "external": "monsterGraphicsProperties[%i].useLargeMap"
+          },
+          "palette": {
+            "type": "property",
+            "external": "monsterGraphicsProperties[%i].palette"
+          },
+          "verticalOffset": {
+            "type": "assembly",
+            "name": "Vertical Offset",
+            "external": "monsterVerticalOffset[%i]"
+          },
+          "colosseumType": {
+            "type": "assembly",
+            "name": "Colosseum Type",
+            "external": "monsterColosseumType[%i]",
+            "invalid": "this.parent.i > 0xFF"
+          }
+        }
+      }
+    },
+    "monsterScript": {
+      "type": "script",
+      "name": "Monster Script",
+      "range": "0xCF8700-0xCFC048",
+      "asmSymbol": "AIScript",
+      "file": "battle/data/ai_script.asm",
+      "encoding": "monster"
+    },
+    "monsterScriptPointers": {
+      "type": "array",
+      "name": "Script Pointer",
+      "range": "0xCF8400-0xCF86FF",
+      "arrayLength": 384,
+      "itemLength": 2,
+      "asmSymbol": "AIScriptPtr",
+      "file": "battle/data/ai_script_ptr.asm",
+      "assembly": {
+        "type": "property",
+        "name": "Script Pointer",
+        "mask": "0xFFFF",
+        "script": "monsterScript"
+      }
+    },
+    "monsterVerticalOffset": {
+      "type": "array",
+      "name": "Monster Vertical Offset",
+      "range": "0xCF3600-0xCF377F",
+      "arrayLength": 384,
+      "itemLength": 1,
+      "asmSymbol": "MonsterOverlap",
+      "file": "battle/data/monster_overlap.asm",
+      "assembly": {
+        "type": "property",
+        "name": "Vertical Offset"
+      }
     },
     "npcProperties": {
       "type": "array",
@@ -4967,6 +7791,41 @@
         }
       }
     },
+    "swdTechDescription": {
+      "type": "array",
+      "name": "SwdTech Description",
+      "range": "0xCFFD00-0xCFFDFF",
+      "asmSymbol": "BushidoDesc",
+      "file": "battle/text/bushido_desc.asm",
+      "arrayLength": 8,
+      "assembly": {
+        "type": "text",
+        "name": "Description",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xCFFFAE-0xCFFFBD",
+        "offset": "0xCFFD00"
+      }
+    },
+    "swdTechNames": {
+      "type": "array",
+      "name": "SwdTech Name",
+      "range": "0xCF3C40-0xCF3C9F",
+      "arrayLength": 8,
+      "itemLength": 12,
+      "asmSymbol": "BushidoName",
+      "file": "battle/text/bushido_name.asm",
+      "assembly": {
+        "type": "text",
+        "encoding": "smallText"
+      },
+      "stringTable": {
+        "length": 8,
+        "default": "<swdTechNames[%i]>"
+      }
+    },
     "titleIntroGraphics": {
       "type": "assembly",
       "name": "Title/Intro Cinematic Graphics Data",
@@ -5162,18 +8021,18 @@
       }
     },
     "trainGraphics": {
-        "type": "data",
-        "name": "Magitek Train Ride Graphics",
-        "range": "0xEF3250-0xEF4845",
-        "asmSymbol": "TrainGfx",
-        "file": "world/gfx/train_gfx.asm"
+      "type": "data",
+      "name": "Magitek Train Ride Graphics",
+      "range": "0xEF3250-0xEF4845",
+      "asmSymbol": "TrainGfx",
+      "file": "world/gfx/train_gfx.asm"
     },
     "trainPalette": {
-        "type": "data",
-        "name": "Magitek Train Ride Palette",
-        "range": "0xEF4846-0xEF4A45",
-        "asmSymbol": "TrainPal",
-        "file": "world/gfx/train_pal.asm"
+      "type": "data",
+      "name": "Magitek Train Ride Palette",
+      "range": "0xEF4846-0xEF4A45",
+      "asmSymbol": "TrainPal",
+      "file": "world/gfx/train_pal.asm"
     },
     "treasureProperties": {
       "type": "array",
@@ -5287,6 +8146,52 @@
       "file": "menu/gfx/window_pal.asm",
       "assembly": {
         "format": "bgr555"
+      }
+    },
+    "worldBattleGroup": {
+      "type": "array",
+      "name": "World Map Battle Group",
+      "range": "0xCF5400-0xCF55FF",
+      "asmSymbol": "WorldBattleGroup",
+      "file": "battle/data/world_battle_group.asm",
+      "arrayLength": 128,
+      "itemLength": 4,
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "grass": {
+            "type": "property",
+            "name": "Field (Grass)",
+            "begin": 0,
+            "link": "battleGroupsRandom[%i]",
+            "stringTable": "battleGroupsRandom"
+          },
+          "forest": {
+            "type": "property",
+            "name": "Forest",
+            "begin": 1,
+            "link": "battleGroupsRandom[%i]",
+            "stringTable": "battleGroupsRandom"
+          },
+          "desert": {
+            "type": "property",
+            "name": "Desert",
+            "begin": 2,
+            "link": "battleGroupsRandom[%i]",
+            "stringTable": "battleGroupsRandom"
+          },
+          "dirt": {
+            "type": "property",
+            "name": "Field (Dirt)",
+            "begin": 3,
+            "link": "battleGroupsRandom[%i]",
+            "stringTable": "battleGroupsRandom"
+          },
+          "probability": {
+            "type": "assembly",
+            "external": "worldBattleProbability[%i]"
+          }
+        }
       }
     },
     "worldBattleProbability": {
@@ -5540,49 +8445,49 @@
       "format": "ff6-lzss"
     },
     "worldOfRuinCutscene": {
-        "type": "assembly",
-        "name": "World of Ruin Cutscene Data",
-        "range": "0xECE900-0xECFFFE",
-        "asmSymbol": "RuinCutsceneGfx",
-        "file": "cutscene/gfx/ruin_cutscene_gfx.asm",
-        "format": "ff6-lzss",
-        "isSequential": true,
-        "assembly": {
-            "bgGraphics": {
-                "type": "graphics",
-                "name": "World of Ruin Cutscene Background Graphics",
-                "range": "0x0000-0x0FE0",
-                "format": "snes4bpp",
-                "palette": {
-                    "path": "cutsceneProgram.worldOfRuinPalette",
-                    "range": "0-16"
-                }
-            },
-            "layout": {
-                "type": "tilemap",
-                "name": "World of Ruin Cutscene Layout",
-                "range": "0x0FE0-0x16E0",
-                "format": "snes4bppTile",
-                "graphics": "worldOfRuinCutscene.bgGraphics",
-                "palette": {
-                    "path": "cutsceneProgram.worldOfRuinPalette",
-                    "range": "0-16"
-                },
-                "width": 32,
-                "height": 28,
-                "backColor": true
-            },
-            "spriteGraphics": {
-                "type": "graphics",
-                "name": "World of Ruin Cutscene Sprite Graphics",
-                "range": "0x16E0-0x24C0",
-                "format": "snes4bpp",
-                "palette": {
-                    "path": "cutsceneProgram.worldOfRuinPalette",
-                    "range": "16-64"
-                }
-            }
+      "type": "assembly",
+      "name": "World of Ruin Cutscene Data",
+      "range": "0xECE900-0xECFFFE",
+      "asmSymbol": "RuinCutsceneGfx",
+      "file": "cutscene/gfx/ruin_cutscene_gfx.asm",
+      "format": "ff6-lzss",
+      "isSequential": true,
+      "assembly": {
+        "bgGraphics": {
+          "type": "graphics",
+          "name": "World of Ruin Cutscene Background Graphics",
+          "range": "0x0000-0x0FE0",
+          "format": "snes4bpp",
+          "palette": {
+            "path": "cutsceneProgram.worldOfRuinPalette",
+            "range": "0-16"
+          }
+        },
+        "layout": {
+          "type": "tilemap",
+          "name": "World of Ruin Cutscene Layout",
+          "range": "0x0FE0-0x16E0",
+          "format": "snes4bppTile",
+          "graphics": "worldOfRuinCutscene.bgGraphics",
+          "palette": {
+            "path": "cutsceneProgram.worldOfRuinPalette",
+            "range": "0-16"
+          },
+          "width": 32,
+          "height": 28,
+          "backColor": true
+        },
+        "spriteGraphics": {
+          "type": "graphics",
+          "name": "World of Ruin Cutscene Sprite Graphics",
+          "range": "0x16E0-0x24C0",
+          "format": "snes4bpp",
+          "palette": {
+            "path": "cutsceneProgram.worldOfRuinPalette",
+            "range": "16-64"
+          }
         }
+      }
     },
     "worldPalette1": {
       "type": "data",

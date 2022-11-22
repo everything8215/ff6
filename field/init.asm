@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import BushidoName
+
 ; ------------------------------------------------------------------------------
 
 ; [ init character object data ]
@@ -106,7 +108,7 @@ InitNewGame:
         cpx     #$0057
         bne     @bdd9
         ldx     $00                     ; load swdtech names
-@bde4:  lda     $cf3c40,x
+@bde4:  lda     f:BushidoName,x
         sta     $1cf8,x
         inx
         cpx     #$0030

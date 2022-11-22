@@ -11,6 +11,10 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import BushidoName, MonsterName, GenjuBonusName
+.import GenjuAttackDesc, GenjuAttackDescPtrs
+.import BlitzDesc, BlitzDescPtrs, BushidoDesc, BushidoDescPtrs
+
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (skills) ]
@@ -942,7 +946,7 @@ _c3510d:
 @510d:  pha
         jsr     _c350f5
         ldx     hMPYL
-        lda     $c46ac5,x   ; spell data
+        lda     f:MagicProp+5,x   ; spell data
         sta     $e0
         pla
         cmp     #$99
@@ -984,7 +988,7 @@ _c3514d:
         beq     @516e
 @5155:  jsr     _c350f5
         ldx     hMPYL
-        lda     $c46ac3,x
+        lda     f:MagicProp+3,x
         and     #$01
         beq     @516c
         jsr     _c350ec
@@ -1257,11 +1261,11 @@ _c35311:
 ; [  ]
 
 _c35328:
-@5328:  ldy     #$000c
+@5328:  ldy     #12
         sty     $eb
-        ldy     #$3c40
+        ldy     #.loword(BushidoName)
         sty     $ef
-        lda     #$cf
+        lda     #^BushidoName
         sta     $f1
         rts
 
@@ -1386,34 +1390,34 @@ GetRiotList:
 GetRiotListRow:
 @53ee:  lda     #$20
         sta     $29
-        jsr     _c35409
+        jsr     GetMonsterNamePtr
         ldx     #$0005
-        jsr     _c35418
+        jsr     DrawRiotName
         inc     $e5
-        jsr     _c35409
+        jsr     GetMonsterNamePtr
         ldx     #$0013
-        jsr     _c35418
+        jsr     DrawRiotName
         inc     $e5
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ get pointer to monster name ]
 
-_c35409:
-@5409:  ldy     #$000a
+GetMonsterNamePtr:
+@5409:  ldy     #10
         sty     $eb
-        ldy     #$c050
+        ldy     #.loword(MonsterName)
         sty     $ef
-        lda     #$cf
+        lda     #^MonsterName
         sta     $f1
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw monster name for rage list ]
 
-_c35418:
+DrawRiotName:
 @5418:  lda     $e6
         inc
         jsr     GetBG1TilemapPtr
@@ -1430,7 +1434,7 @@ _c35418:
         lda     $e5
         jsr     LoadArrayItem
         jmp     DrawPosTextBuf
-@543b:  ldy     #$000a
+@543b:  ldy     #10
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -1864,13 +1868,13 @@ LoadLoreDesc:
 ; [ load swdtech description ]
 
 LoadBushidoDesc:
-@5700:  ldx     #$ffae      ; $cfffae (pointers to swdtech descriptions)
+@5700:  ldx     #.loword(BushidoDescPtrs)
         stx     $e7
-        ldx     #$fd00      ; $cffd00 (swdtech descriptions)
+        ldx     #.loword(BushidoDesc)
         stx     $eb
-        lda     #$cf
+        lda     #^BushidoDescPtrs
         sta     $e9
-        lda     #$cf
+        lda     #^BushidoDesc
         sta     $ed
         jmp     LoadBigText
 
@@ -1879,13 +1883,13 @@ LoadBushidoDesc:
 ; [ load blitz description ]
 
 LoadBlitzDesc:
-@5715:  ldx     #$ff9e      ; $cfff9e (pointers to blitz descriptions)
+@5715:  ldx     #.loword(BlitzDescPtrs)
         stx     $e7
-        ldx     #$fc00      ; $cffc00 (blitz descriptions)
+        ldx     #.loword(BlitzDesc)
         stx     $eb
-        lda     #$cf
+        lda     #^BlitzDescPtrs
         sta     $e9
-        lda     #$cf
+        lda     #^BlitzDesc
         sta     $ed
         jmp     LoadBigText
 
@@ -2343,7 +2347,7 @@ DrawEsperDetailMenu:
         bne     @5a43
         ldx     hRDMPYL
         ldy     #$0009
-@5a56:  lda     $cffeae,x               ; esper bonus names
+@5a56:  lda     f:GenjuBonusName,x
         sta     hWMDATA
         inx
         dey
@@ -2582,13 +2586,13 @@ GetGenjuBonusDescPtr:
         rts
 
 GetLoadGenjuAttackDescPtr:
-@5c09:  ldx     #$fe40      ; $cffe40 (pointers to esper attack descriptions)
+@5c09:  ldx     #.loword(GenjuAttackDescPtrs)
         stx     $e7
-        ldx     #$3940      ; $cf3940 (esper attack descriptions)
+        ldx     #.loword(GenjuAttackDesc)
         stx     $eb
-        lda     #$cf
+        lda     #^GenjuAttackDescPtrs
         sta     $e9
-        lda     #$cf
+        lda     #^GenjuAttackDesc
         sta     $ed
         rts
 

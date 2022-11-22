@@ -1826,7 +1826,7 @@ LoadItemName:
         sta     hM7B
         ldx     hMPYL
         ldy     #13
-@c08b:  lda     $d2b300,x
+@c08b:  lda     f:ItemName,x
         sta     hWMDATA
         inx
         dey

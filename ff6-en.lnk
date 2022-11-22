@@ -67,6 +67,7 @@ segments {
     rare_item: load = bank_ce, type = ro, start = $cefb60;
     battle_data: load = bank_cf, type = ro;
     ending_anim2: load = bank_cf, type = ro, start = $cff450;
+    battle_data2: load = bank_cf, type = ro, start = $cffc00;
     map_init_event: load = bank_d1, type = ro, start = $d1fa00;
     item_name: load = bank_d2, type = ro, start = $d2b300;
     world_pal: load = bank_d2, type = ro, start = $d2ec00;

@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import MagicProp
+
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $04: main menu (init) ]
@@ -1618,7 +1620,7 @@ _c323a7:
         shorta
         lda     #$0e
         sta     $e9
-@23db:  lda     $ed1c02,x
+@23db:  lda     f:WindowPal+2,x
         sta     $1d57,y
         sta     hWMDATA
         inx
@@ -2673,7 +2675,7 @@ MenuState_3b:
         tax
         clr_a
         shorta
-        lda     $c46ac0,x   ; spell data
+        lda     f:MagicProp,x   ; spell data
         and     #$20
         beq     @2af3
         lda     $4e
