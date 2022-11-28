@@ -12,6 +12,7 @@
 ; +----------------------------------------------------------------------------+
 
 .export ItemProp, GenjuProp
+.export BattleCmdName
 .export WindowGfx, WindowPal, PortraitGfx, PortraitPal
 
 ; ------------------------------------------------------------------------------

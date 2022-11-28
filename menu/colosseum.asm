@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import MonsterAlign
+
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $71: colosseum item select (init) ]
@@ -558,7 +560,7 @@ _c3b0b7:
 @b0b7:  clr_a
         lda     $0206       ; colosseum monster number
         tax
-        lda     $ece800,x   ; monster vertical alignment
+        lda     f:MonsterAlign,x
         longa
         asl
         tax

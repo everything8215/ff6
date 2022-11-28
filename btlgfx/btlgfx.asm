@@ -17,12 +17,18 @@
 .include "hardware.inc"
 .include "macros.inc"
 
+.include "btlgfx_data.asm"
+
 .import DecTimersMenuBattle_ext
 .import UpdateBattleTime_ext
 .import UpdateCtrlBattle_ext, IncGameTime_ext
 .import ExecSound_ext
 
-.import RNGTbl
+.import RNGTbl, ItemName, MagicName, GenjuName, AttackName, GenjuAttackName
+.import DanceName
+.import FontGfxSmall, FontGfxLarge, FontWidth
+.import MonsterName, BattleMonsters, MonsterDlgPtrs, MonsterDlg
+.import BattleCmdName
 
 .export SineTbl8, SineTbl16
 
@@ -217,7 +223,7 @@ BtlGfx_08:
 @012d:  lda     f:_c1016b,x   ; copy to battle script command queue
         sta     $2d6e,x
         inx
-        cpx     #$0005
+        cpx     #5
         bne     @012d
         jsr     WaitFrame
         jsr     WaitFrame
@@ -550,7 +556,7 @@ _c102fa:
         pha
         plb
         tay
-@0314:  lda     $c2d368,x
+@0314:  lda     f:_c2d368,x
         sta     $4330,y     ; set hdma #3 registers
         iny
         inx
@@ -563,7 +569,7 @@ _c102fa:
         beq     @0346
         stz     $7b96       ; disable hdma #5 update
         clr_ax
-@0332:  lda     $c2d39a,x
+@0332:  lda     f:_c2d368+5*10,x
         sta     f:$004350,x   ; set hdma #5 registers
         inx
         cpx     #$0005
@@ -578,12 +584,12 @@ _c102fa:
 
 _c10347:
 @0347:  longa
-        lda     $c2d395     ; set hdma #7 registers
+        lda     f:_c2d368+5*9     ; set hdma #7 registers
         sta     f:$004370
-        lda     $c2d397
+        lda     f:_c2d368+5*9+2
         sta     f:$004372
         shorta0
-        lda     $c2d399
+        lda     f:_c2d368+5*9+4
         sta     f:$004374
         lda     #$7e
         sta     f:$004377
@@ -610,7 +616,7 @@ _c10373:
         pha
         plb
         tay
-@038d:  lda     $c2d368,x
+@038d:  lda     f:_c2d368,x
         sta     $4360,y     ; set hdma #6 registers
         iny
         inx
@@ -633,7 +639,7 @@ InitHDMA:
         clr_axy
 @03aa:  lda     #$05
         sta     $10
-@03ae:  lda     $c2d368,x
+@03ae:  lda     f:_c2d368,x
         sta     $4300,y
         inx
         iny
@@ -690,9 +696,9 @@ hdma_line_data_set:
         and     #$7f
         asl
         tax
-        lda     $c2d150,x
+        lda     f:_c2d150,x
         sta     f:$004302
-        lda     $c2d151,x
+        lda     f:_c2d150+1,x
         sta     f:$004303
 @0419:  lda     $800d
         bmi     @0437
@@ -701,9 +707,9 @@ hdma_line_data_set:
         and     #$7f
         asl
         tax
-        lda     $c2d150,x
+        lda     f:_c2d150,x
         sta     f:$004312
-        lda     $c2d151,x
+        lda     f:_c2d150+1,x
         sta     f:$004313
 @0437:  lda     $800e
         bmi     @0459
@@ -714,9 +720,9 @@ hdma_line_data_set:
         and     #$7f
         asl
         tax
-        lda     $c2d150,x
+        lda     f:_c2d150,x
         sta     f:$004322
-        lda     $c2d151,x
+        lda     f:_c2d150+1,x
         sta     f:$004323
 @0459:  lda     $7bef
         sta     f:hHDMAEN
@@ -724,6 +730,7 @@ hdma_line_data_set:
 
 ; ------------------------------------------------------------------------------
 
+_c10461:
 @0461:  .word   $9213,$9013,$9213,$9413
 
 ; ------------------------------------------------------------------------------
@@ -742,17 +749,17 @@ _c10469:
         asl
         tax
         longa
-        lda     $c2d2a4,x
+        lda     f:_c2d2a4,x
         sta     f:hVMADDL
         phx
         lda     $64b8
         and     #$00ff
         asl
         tax
-        lda     $c10461,x
+        lda     f:_c10461,x
         plx
         clc
-        adc     $c2d2b4,x
+        adc     f:_c2d2b4,x
         sta     f:$004372
         lda     #$0040
         sta     f:$004375
@@ -789,11 +796,11 @@ _c104ca:
         longa
         lda     $7bbe       ; pointer to menu tile data in vram (bg2)
         clc
-        adc     $c2d294,x   ; add strip offset
+        adc     f:_c2d294,x   ; add strip offset
         tay
         lda     $7bc0       ; pointer to menu tile data buffer in ram (bg2)
         clc
-        adc     $c2d2b4,x   ; add strip offset
+        adc     f:_c2d2b4,x   ; add strip offset
         tax
         lda     #$0040      ; size = 32 tiles (8x8)
         sta     $36
@@ -819,7 +826,7 @@ nmi_player_mp_set:
         cpx     #$0004
         bne     @0511
         clr_ax
-@051e:  lda     $c2d364,x
+@051e:  lda     f:_c2d364,x
         tax
         clr_ay
 @0525:  lda     $5ca5,x
@@ -1382,17 +1389,17 @@ _c109de:
 @09de:  asl
         tax
         longa
-        lda     $c2d2c4,x
+        lda     f:_c2d2c4,x
         sta     $4372
-        lda     $c2d2d4,x
+        lda     f:_c2d2d4,x
         sta     hVMADDL
         ldy     #$0080
         sty     $4375
         lda     #$0080
         sta     hMDMAEN
-        lda     $c2d2cc,x
+        lda     f:_c2d2cc,x
         sta     $4372
-        lda     $c2d2dc,x
+        lda     f:_c2d2dc,x
         sta     hVMADDL
         sty     $4375
         lda     #$0080
@@ -1465,9 +1472,9 @@ _c10a16:
         longa
         lda     #$0080
         sta     $4375
-        lda     $c2d324,x
+        lda     f:_c2d324,x
         sta     hVMADDL
-        lda     $c2d2e4,x
+        lda     f:_c2d2e4,x
         sta     $4372
         shorta0
         lda     #$7f
@@ -1706,7 +1713,7 @@ BattleNMI:
         and     #$00ff
         ora     #$ff00
         sta     $64b0
-@0d34:  jsl     _c2b258     ; update battle bg palette and scrolling
+@0d34:  jsl     UpdateBattleBG
         shorta0
         jsr     UpdateCtrl
         inc     $98         ; increment frame counter
@@ -1934,19 +1941,19 @@ mon_data_get:
         jsr     Mult816       ; ++$26 = $22 * +$24 (pointer to battle data)
         shorta
         ldx     $26
-        lda     $cf620e,x   ; $28 = top bit of monster numbers
+        lda     f:BattleMonsters+14,x   ; $28 = top bit of monster numbers
         sta     $28
         longa
-        lda     $cf6200,x   ; $10 = bg1 monsters (not set for any monsters)
+        lda     f:BattleMonsters,x   ; $10 = bg1 monsters (not set for any monsters)
         xba
         lsr6
         and     #$003f
         sta     $10
         shorta0
-        lda     $cf6200,x   ; vram map index
+        lda     f:BattleMonsters,x   ; vram map index
         lsr4
         sta     $2000
-        lda     $cf6201,x   ; monsters present
+        lda     f:BattleMonsters+1,x   ; monsters present
         and     #$3f
         sta     $61aa
         clr_ay
@@ -1954,13 +1961,13 @@ mon_data_get:
         rol
         and     #$01
         sta     $2a
-        lda     $cf6208,x   ; x position
+        lda     f:BattleMonsters+8,x   ; x position
         and     #$f0
         lsr
         sta     $80c3,y
         clr_a
         sta     $80c4,y
-        lda     $cf6208,x   ; y position
+        lda     f:BattleMonsters+8,x   ; y position
         and     #$0f
         asl3
         sta     $80cf,y
@@ -2052,7 +2059,7 @@ set_mess_main_poi:
         sta     $24
         jsr     Mult8
         ldx     $26
-        lda     $d0fd00,x   ; character ai data
+        lda     f:CharAI,x   ; character ai data
         and     #$01
         beq     @0f8e       ; branch if character names are not hidden
         ldx     #$ffff
@@ -2239,7 +2246,7 @@ user_init:
         jsr     InitMonsterGfx
         jsr     LoadMonsterPal
         jsr     _c13e72       ; init monster sprite data
-        jsr     _c11588
+        jsr     InitMonsterPos
         jsr     TfrMonsterGfx
         jsr     LoadMenuGfx
         jsr     _c1529c       ; init menu window tile data
@@ -2254,9 +2261,9 @@ user_init:
         jsr     InitCharGfx
         jsr     LoadStatusPal
         jsr     _c1b517       ; init cursor sprites
-        ldx     #$e000
+        ldx     #.loword(StatusGfx)
         stx     $f3
-        lda     #$d2
+        lda     #^StatusGfx
         sta     $f5
         ldx     #$a400
         stx     $f6
@@ -2477,7 +2484,7 @@ user_init:
         inc     $6197
         jsl     _c19124
         longa
-        jsl     _c2b258
+        jsl     UpdateBattleBG
         shorta0
         lda     $201e
         pha
@@ -2492,7 +2499,7 @@ user_init:
         inc     $628c
         inc     $e9ef       ; stop battle time
         clr_ax
-@13b9:  lda     $c11431,x   ; battle script for monster and character entrance
+@13b9:  lda     f:EntryGfxScript,x      ; copy char/monster entry script
         sta     $2d6e,x
         inx
         cpx     #$0009
@@ -2506,7 +2513,7 @@ user_init:
         and     #$0f
         sta     $2d6f
         tax
-        lda     $c11420,x
+        lda     f:CharEntryFirstTbl,x
         beq     @13fc       ; branch if monsters enter before characters
         ldx     $2d6e       ; swap battle script commands
         phx
@@ -2538,15 +2545,21 @@ user_init:
 ; ------------------------------------------------------------------------------
 
 ; set if characters enter before monsters (1 byte per monster entrance type)
-init_mode_type:
-@1420:  .byte   $00,$01,$00,$01,$01,$01,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+CharEntryFirstTbl:
+@1420:  .byte   0,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0
 
 ; battle script commands (monster entrance and character entrance)
-start_anim_data:
-@1431:  .byte   $13,$00,$00,$00,$0f,$00,$00,$00,$ff
+EntryGfxScript:
+@1431:  .byte   $13,$00,$00,$00         ; monster entry
+        .byte   $0f,$00,$00,$00         ; battle event 0
+        .byte   $ff
 
 ; battle type jump table for monster positions
-@143a:  .addr   $1481,$149a,$14d7,$1533
+CalcMonsterPosTbl:
+@143a:  .addr   CalcMonsterPos_00
+        .addr   CalcMonsterPos_01
+        .addr   CalcMonsterPos_02
+        .addr   CalcMonsterPos_03
 
 ; ------------------------------------------------------------------------------
 
@@ -2611,6 +2624,8 @@ set_play_gr1:
 ; ------------------------------------------------------------------------------
 
 ; 0: normal
+
+CalcMonsterPos_00:
 @1481:  jsr     _c1145a
         jsr     _c11474
         clr_ax
@@ -2625,6 +2640,8 @@ set_play_gr1:
 ; ------------------------------------------------------------------------------
 
 ; 1: back
+
+CalcMonsterPos_01:
 @149a:  jsr     _c11467
         jsr     _c11474
         clr_ax
@@ -2655,6 +2672,8 @@ set_play_gr1:
 ; ------------------------------------------------------------------------------
 
 ; 2: pincer
+
+CalcMonsterPos_02:
 @14d7:  jsr     _c11474
         clr_ax
         stz     $10
@@ -2702,6 +2721,8 @@ set_play_gr1:
 ; ------------------------------------------------------------------------------
 
 ; 3: side
+
+CalcMonsterPos_03:
 @1533:  jsr     _c11467
         clr_a
         sta     $7a98
@@ -2741,20 +2762,21 @@ set_play_gr1:
 
 ; ------------------------------------------------------------------------------
 
-; unused
-@1583:  rts
+; y-offsets for monster vertical alignment
+;   0: ceiling (unused)
+;   1: ground
+;   2: buried
+;   3: floating
+;   4: flying
+
+MonsterAlignOffset:
+@1583:  .byte   $60,$00,$f8,$08,$d8
 
 ; ------------------------------------------------------------------------------
 
-; y-offsets for monster vertical alignment (ceiling, ground, buried, floating, flying)
-@1584:  .byte   $00,$f8,$08,$d8
+; [ init monster positions ]
 
-; ------------------------------------------------------------------------------
-
-; [ ??? ]
-
-_c11588:
-monster_poi_set:
+InitMonsterPos:
 @1588:  jsr     _c11442
         stz     $7b79
         stz     $7b7a
@@ -2768,7 +2790,7 @@ monster_poi_set:
         lda     $201f       ; battle type
         asl
         tax
-        jsr     _c11604
+        jsr     CalcMonsterPos
         jsr     _c11607
         lda     $7b79
         sta     $2eac
@@ -2790,7 +2812,7 @@ monster_poi_set:
         stx     $80cf       ; top y position
         lda     $2001       ; monster index
         tax
-        lda     $ece800,x   ; monster vertical alignment
+        lda     f:MonsterAlign,x   ; monster vertical alignment
         bne     @15e9
         stz     $80cf       ; align with top of screen (ceiling)
         bra     @15f6
@@ -2798,7 +2820,7 @@ monster_poi_set:
         tax
         lda     $80cf
         clc
-        adc     $c11584,x   ; add offset
+        adc     f:MonsterAlignOffset+1,x
         sta     $80cf       ; top y position
 @15f6:  lda     #$80
         sec
@@ -2812,10 +2834,10 @@ monster_poi_set:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init monster positions for each battle type ]
 
-_c11604:
-@1604:  jmp     ($143a,x)   ; jump based on battle type
+CalcMonsterPos:
+@1604:  jmp     (.loword(CalcMonsterPosTbl),x)   ; jump based on battle type
 
 ; ------------------------------------------------------------------------------
 
@@ -2926,25 +2948,25 @@ set_group_init:
 @170b:  lda     $7a86,y
         bmi     @171b
         tax
-        lda     $c17761,x
+        lda     f:MonsterMaskTbl,x
         ora     $7b79
         sta     $7b79
 @171b:  lda     $7a8c,y
         bmi     @172b
         tax
-        lda     $c17761,x
+        lda     f:MonsterMaskTbl,x
         ora     $7b7a
         sta     $7b7a
 @172b:  lda     $7a92,y
         bmi     @173b
         tax
-        lda     $c17761,x
+        lda     f:MonsterMaskTbl,x
         ora     $7b7b
         sta     $7b7b
 @173b:  lda     $7a98,y
         bmi     @174b
         tax
-        lda     $c17761,x
+        lda     f:MonsterMaskTbl,x
         ora     $7b7c
         sta     $7b7c
 @174b:  iny
@@ -3438,19 +3460,15 @@ WaitTfrVRAM:
 
 ; bit masks
 BitOrTbl:
-num_bit_chg_tbl:
-attr_info_chg:
 @1a01:  .byte   $01,$02,$04,$08,$10,$20,$40,$80
 
 ; ------------------------------------------------------------------------------
 
 ; [ get bit mask ]
 
-; A: bit number
-; A: 1 << A (out)
+; A = 1 << A (out)
 
-_c11a09:
-num_bit_chg:
+GetBitMask:
 @1a09:  tax
         lda     f:BitOrTbl,x
         rts
@@ -3813,10 +3831,10 @@ _1be2:  stz     $e9dc
         ldy     #$6400
         jsr     TfrBattleBGTiles
 @1c2c:  inx
-        lda     $e70000,x
+        lda     f:BattleBGProp,x
         and     #$80
         sta     $6283       ; wavy battle bg (desert)
-        lda     $e70000,x   ; battle bg palette index
+        lda     f:BattleBGProp,x   ; battle bg palette index
         and     #$7f
         longa
         asl5
@@ -3829,7 +3847,7 @@ _1be2:  stz     $e9dc
         tay
         lda     $e9de
         beq     @1c66
-@1c53:  lda     $e70150,x
+@1c53:  lda     f:BattleBGPal,x
         sta     $7e60,y
         sta     $7c60,y
         inx
@@ -3837,7 +3855,7 @@ _1be2:  stz     $e9dc
         cpy     #$0040
         bne     @1c53
         bra     @1c77
-@1c66:  lda     $e70150,x
+@1c66:  lda     f:BattleBGPal,x
         sta     $7ea0,y
         sta     $7ca0,y
         inx
@@ -3857,16 +3875,16 @@ _1be2:  stz     $e9dc
 TfrBattleBGTiles:
 @1c7b:  phx
         phy
-        lda     $e70000,x   ; battle bg ($ff = none)
+        lda     f:BattleBGProp,x   ; battle bg ($ff = none)
         cmp     #$ff
         beq     @1cf2
         asl
         tax
-        lda     $e71848,x   ; pointer to battle bg tile data
+        lda     f:BattleBGTilesPtrs,x   ; pointer to battle bg tile data
         sta     $f3
-        lda     $e71849,x
+        lda     f:BattleBGTilesPtrs+1,x
         sta     $f4
-        lda     #$e7
+        lda     #^BattleBGTiles
         sta     $f5
         jsr     _c11e2f
         phy
@@ -3922,7 +3940,7 @@ TfrBattleBGTiles:
 TfrBattleBGGfx:
 @1cf5:  phx
         phy
-        lda     $e70000,x   ; battle bg
+        lda     f:BattleBGProp,x   ; battle bg
         cmp     #$ff
         jeq     @1dac
         phx
@@ -3932,13 +3950,13 @@ TfrBattleBGGfx:
         clc
         adc     $f3
         tax
-        lda     $e71650,x   ; pointer to battle bg graphics
+        lda     f:BattleBGGfxPtrs,x   ; pointer to battle bg graphics
         sta     $f3
-        lda     $e71651,x
+        lda     f:BattleBGGfxPtrs+1,x
         sta     $f4
-        lda     $e71652,x
+        lda     f:BattleBGGfxPtrs+2,x
         sta     $f5
-        cmp     #$e7
+        cmp     #^BattleBGGfx
         bcc     @1d24       ; branch if using map graphics (uncompressed)
         bra     @1d4c       ; branch if using battle bg graphics (compressed)
 @1d24:  phy
@@ -3970,7 +3988,7 @@ TfrBattleBGGfx:
         jsl     Decompress_ext
         ply
 @1d60:  plx
-        lda     $e70000,x
+        lda     f:BattleBGProp,x
         bmi     @1d6c
         ldx     #$1000
         bra     @1d6f
@@ -4035,10 +4053,10 @@ LoadBattleBG:
         ldy     #$6400
         jsr     TfrBattleBGTiles
         inx
-        lda     $e70000,x   ; wavy background (desert)
+        lda     f:BattleBGProp,x   ; wavy background (desert)
         and     #$80
         sta     $6283
-        lda     $e70000,x   ; battle bg palette
+        lda     f:BattleBGProp,x   ; battle bg palette
         and     #$7f
         longa
         asl5
@@ -4049,7 +4067,7 @@ LoadBattleBG:
         tax
         shorta0
         tay
-@1e0a:  lda     $e70150,x   ; copy palette (48 colors)
+@1e0a:  lda     f:BattleBGPal,x   ; copy palette (48 colors)
         sta     $7ea0,y
         inx
         iny
@@ -4242,9 +4260,9 @@ mon_scr_set_main:
         ora     $22
         ora     #$03
         sta     $19         ; $19 = tile data
-        lda     $c2c474,x   ; +$26 = pointer to monster sprite data
+        lda     f:MonsterSpriteDataPtrs,x
         sta     $26
-        lda     $c2c475,x
+        lda     f:MonsterSpriteDataPtrs+1,x
         sta     $27
         ldy     #$0002
         lda     ($26),y     ; $18 = tile number
@@ -4449,13 +4467,13 @@ SetImpMonsterSize:
         and     #$00ff
         asl
         tax
-        lda     $c2bb70,x
+        lda     f:_c2bb70,x
         sta     $26
         lda     $23
         and     #$00ff
         asl
         tax
-        lda     $c2bb92,x
+        lda     f:_c2bb92,x
         clc
         adc     $26
         sta     $26
@@ -4480,7 +4498,7 @@ LoadMonsterGfxProp:
         clc
         adc     $2001,x     ; multiply by 5 to get pointer to monster graphics data
         tax
-        lda     $d27002,x   ; +$16 = monster palette number
+        lda     f:MonsterGfxProp+2,x   ; +$16 = monster palette number
         xba                 ; bytes are stored backwards for some reason ...
         and     #$03ff
         sta     $16
@@ -4492,21 +4510,21 @@ LoadMonsterGfxProp:
         jsr     SetImpMonsterSize
         ldx     #$0816      ; use monster $019e graphics data (imp)
 @208a:  longa
-        lda     $d27000,x   ; monster graphics index
+        lda     f:MonsterGfxProp,x   ; monster graphics index
         and     #$7fff
         sta     $81a8       ; set graphics pointer
         shorta0
-        lda     $d27001,x   ; 3bpp flag
+        lda     f:MonsterGfxProp+1,x   ; 3bpp flag
         and     #$80
         sta     $81ac
-        lda     $d27002,x   ; large map flag
+        lda     f:MonsterGfxProp+2,x   ; large map flag
         lsr
         ora     $81ac
         sta     $81ac
         lsr5
         and     #$01
         sta     $81ab
-        lda     $d27004,x   ; graphic map number
+        lda     f:MonsterGfxProp+4,x   ; graphic map number
         sta     $81aa
         lda     $81a7       ; monster slot
         asl2
@@ -4518,7 +4536,7 @@ LoadMonsterGfxProp:
         asl
         tax
         longa
-        lda     $c2d01a,x   ; pointer to vram map data
+        lda     f:MonsterVRAMMapPtrs,x
         clc
         adc     $10         ; add monster slot * 4
         sta     $12
@@ -4551,13 +4569,13 @@ LoadMonsterGfxProp:
 AddMonsterGfxOffset:
 @210b:  lda     $64
         clc
-        adc     #$00
+        adc     #<MonsterGfx
         sta     $64
         lda     $65
-        adc     #$70
+        adc     #>MonsterGfx
         sta     $65
         lda     $66
-        adc     #$e9
+        adc     #^MonsterGfx
         sta     $66
         rts
 
@@ -4600,6 +4618,9 @@ LoadMonsterStencil:
 ; [ init monster graphics map ]
 
 InitStencil:
+
+@MonsterStencilBank := (^MonsterStencil)<<16
+
 @215f:  clr_ax
 @2161:  sta     $822d,x     ; clear monster graphics map
         inx
@@ -4614,11 +4635,11 @@ InitStencil:
         lda     $81aa       ; map number
         asl3
         clc
-        adc     $d2a820     ; pointer to small maps
+        adc     f:MonsterStencil     ; pointer to small maps
         tax
         shorta0
         ldy     $00
-@2184:  lda     $d20000,x   ; load map (8 bytes)
+@2184:  lda     f:@MonsterStencilBank,x
         sta     $822d,y
         iny2
         inx
@@ -4631,11 +4652,11 @@ InitStencil:
         lda     $81aa       ; map number
         asl5
         clc
-        adc     $d2a822     ; pointer to large maps
+        adc     f:MonsterStencil+2     ; pointer to large maps
         tax
         shorta0
         ldy     $00
-@21aa:  lda     $d20000,x   ; load map (32 bytes)
+@21aa:  lda     f:@MonsterStencilBank,x
         sta     $822d,y
         iny
         inx
@@ -4846,7 +4867,7 @@ LoadMonsterPal:
         tax
         phy
         ldy     $00
-@2349:  lda     $d27820,x   ; monster palette
+@2349:  lda     f:MonsterPal,x
         sta     ($10),y
         inx2
         iny2
@@ -5216,26 +5237,26 @@ LoadEsperGfxProp:
         clc
         adc     $10
         tax
-        lda     $d27002,x   ; pointer to esper palette
+        lda     f:MonsterGfxProp+2,x   ; pointer to esper palette
         xba
         and     #$03ff
         asl4
         sta     $6169       ; pointer to esper palette
-        lda     $d27000,x
+        lda     f:MonsterGfxProp,x
         and     #$7fff
         sta     $81a8
         shorta0
-        lda     $d27001,x
+        lda     f:MonsterGfxProp+1,x
         and     #$80
         sta     $81ac
-        lda     $d27002,x
+        lda     f:MonsterGfxProp+2,x
         lsr
         ora     $81ac
         sta     $81ac
         lsr5
         and     #$01
         sta     $81ab
-        lda     $d27004,x
+        lda     f:MonsterGfxProp+4,x
         sta     $81aa
         lda     #$c2
         sta     $14
@@ -5243,7 +5264,7 @@ LoadEsperGfxProp:
         asl
         tax
         longa
-        lda     $c2d01a,x
+        lda     f:MonsterVRAMMapPtrs,x
         sta     $12
         lda     [$12]
         clc
@@ -5476,9 +5497,9 @@ DrawAnimThreadSprites:
         lda     $3a
         and     #$0040
         beq     @26d8
-        lda     $c2c424,x   ; pointer to frame data
+        lda     f:_c2c424,x   ; pointer to frame data
         bra     @26dc
-@26d8:  lda     $c2c3e4,x
+@26d8:  lda     f:_c2c3e4,x
 @26dc:  tax
         lda     $71         ; next available sprite
         and     #$00ff
@@ -5566,14 +5587,14 @@ UpdateSprites:
         sec
         sbc     #$04
         phx
-        jsr     _c11a09       ; get bit mask
+        jsr     GetBitMask
         plx
         and     $88d1
         bne     @27aa       ; branch if monster sprite is visible
         stz     $631a,x     ; disable damage numeral
         bra     @27aa
 @279a:  phx
-        jsr     _c11a09       ; get bit mask
+        jsr     GetBitMask
         plx
         and     $201d       ; branch if character is visible
         and     $61ac
@@ -5620,7 +5641,7 @@ UpdateMonsterSprites:
         lda     $71
         sta     a:$0060
         lda     $88d2
-        jsr     _c11a09
+        jsr     GetBitMask
         and     $88d1
         and     $201e
         and     $61ab
@@ -5630,7 +5651,7 @@ UpdateMonsterSprites:
         jsr     _c13935
         lda     $88d2
         and     #$07
-        jsr     _c11a09
+        jsr     GetBitMask
         and     $619d
         beq     @285e
         lda     $88d2
@@ -5838,7 +5859,7 @@ UpdateCharSprites:
         and     $2c
         bne     @2998       ; return if character is not shown
 @2995:  jmp     @2a25
-@2998:  lda     $c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
+@2998:  lda     f:_c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
         tax
         lda     $2eae,x     ; character graphics index
         cmp     #$ff
@@ -5861,13 +5882,13 @@ UpdateCharSprites:
         pha
         and     #$03
         sta     $36
-        jsr     _c11a09       ; get bit mask
+        jsr     GetBitMask
         and     $619c
         beq     @2a0e       ; branch if vertical mirror image is enabled
         lda     $36
         and     #$03
         tax
-        lda     $c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
+        lda     f:_c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
         tax
         longa
         lda     $61b9,x     ; add $18 to y position
@@ -6056,7 +6077,7 @@ DrawDmgNumSprites:
 @2b54:  jmp     @2bfa
 @2b57:  phx
         tax
-        lda     $c2cf93,x   ; $3c = y offset for bouncing damage numerals
+        lda     f:DmgNumBounceTbl,x   ; $3c = y offset for bouncing damage numerals
         sta     $3c
         plx
         inc     $7b49,x     ; increment frame counter
@@ -6123,7 +6144,7 @@ DrawDmgNumSprites:
 @2be2:  lda     $38
         sta     $0301,y
         sta     $0305,y
-        lda     $c2e398,x
+        lda     f:_c2e398,x
         sta     $0302,y
         inc2
         sta     $0306,y
@@ -6142,7 +6163,7 @@ get_damage_poi:
         bpl     @2c2a
         and     #$03
         sta     $3a
-        jsr     _c11a09
+        jsr     GetBitMask
         and     $201d
         and     $61ac
         bne     @2c11
@@ -6161,7 +6182,7 @@ get_damage_poi:
         sta     $36
         bra     @2c5c
 @2c2a:  lda     $3a
-        jsr     _c11a09
+        jsr     GetBitMask
         and     $201e
         and     $61ab
         beq     @2c5e
@@ -6258,7 +6279,7 @@ _c12cc2:
         rts
 @2cd2:  phx
         tax
-        lda     $c2cf93,x   ; $3c = y offset for bouncing damage numerals
+        lda     f:DmgNumBounceTbl,x   ; $3c = y offset for bouncing damage numerals
         sta     $3c
         plx
         inc     $6322,x     ; increment frame counter
@@ -6339,7 +6360,7 @@ _c12cc2:
         lda     #$e0
 @2d7a:  sta     $0301,y
         sta     $0305,y
-        lda     $c2e394,x   ; tile pointer for damage numeral sprite
+        lda     f:_c2e394,x   ; tile pointer for damage numeral sprite
         sta     $0302,y
         inc2
         sta     $0306,y
@@ -6365,7 +6386,7 @@ bunsin_obj_set:
         and     $61ac
         and     $2c
         beq     @2dd1
-        lda     $c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
+        lda     f:_c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
         tax
         lda     $2eae,x
         cmp     #$ff
@@ -6421,7 +6442,7 @@ UpdateCharPal:
         and     #$40
         beq     @2e2d
         clr_ax
-@2e1c:  lda     $c2cfec,x   ; copy petrify palette
+@2e1c:  lda     f:PetrifyPal,x
         sta     $7f82,y
         iny
         inx
@@ -6433,7 +6454,7 @@ UpdateCharPal:
         beq     @2e45
         clr_ax
         phy
-@2e36:  lda     $c2d004,x   ; copy frozen palette
+@2e36:  lda     f:FrozenPal,x
         sta     $7f82,y
         iny
         inx
@@ -6749,7 +6770,7 @@ tfr_chr_tmp:
         tax
         phb
         longa
-        lda     $c2e422,x
+        lda     f:_c2e422,x
         tax
         ldy     #$8000
         lda     #$1fff
@@ -6860,7 +6881,7 @@ _c13106:
         asl
         tax
         longa
-        lda     $c2e422,x
+        lda     f:_c2e422,x
         tax
         shorta0
         phb
@@ -6911,7 +6932,7 @@ one_poi_chr_set:
         asl
         tax
         longa
-        lda     $c2e422,x   ; pointer to character graphics buffer (+$7f0000)
+        lda     f:_c2e422,x   ; pointer to character graphics buffer (+$7f0000)
         tax
         shorta0
         pla
@@ -6928,7 +6949,7 @@ DrawCharShadow:
 @3175:  pha
         and     #$03
         tax
-        lda     $c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
+        lda     f:_c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
         tax
         stz     $42
         lda     $61bd,x
@@ -7012,11 +7033,11 @@ armer_pat_set:
         clc
         adc     $36
         tax
-        lda     $c2cf73,x
+        lda     f:_c2cf73,x
         asl2
         tax
         longa
-        lda     $c2cf5f,x   ; pointer to magitek armor graphics
+        lda     f:_c2cf5f,x   ; pointer to magitek armor graphics
         sta     $64bc
         clc
         adc     #$0080
@@ -7031,13 +7052,13 @@ armer_pat_set:
         and     #$0003
         asl3
         tax
-        lda     $c2cf37,x
+        lda     f:_c2cf37,x
         sta     $64c4
-        lda     $c2cf39,x
+        lda     f:_c2cf37+2,x
         sta     $64c6
-        lda     $c2cf3b,x
+        lda     f:_c2cf37+4,x
         sta     $64c8
-        lda     $c2cf3d,x
+        lda     f:_c2cf37+6,x
         sta     $64ca
         shorta0
         inc     $64bb
@@ -7070,7 +7091,7 @@ set_armer_offset:
         clc
         adc     $36
         tax
-        lda     $c2cf73,x
+        lda     f:_c2cf73,x
         beq     @329a
         lda     #$01
 @329a:  sta     $64d0,y
@@ -7089,7 +7110,7 @@ DrawBlockSprites:
         jsr     _c1326b
         lda     $64d0,x
         sta     $3c
-        lda     $c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
+        lda     f:_c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
         tax
         stz     $3a
         lda     $61c3,x     ; current graphic action
@@ -7140,7 +7161,7 @@ DrawBlockSprites:
         asl2
         tax
         clc
-        lda     $c2cf83,x
+        lda     f:_c2cf83,x
         bpl     @332c
         adc     $36
         sta     $0300,y
@@ -7210,7 +7231,7 @@ DrawStatusSprites:
         and     #$03
         tax
         stz     $42
-        lda     $c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
+        lda     f:_c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
         tax
         lda     $61cf,x
         bne     @33b5
@@ -7372,9 +7393,9 @@ DrawCharSprite:
         tax
         lda     f:BitOrTbl,x
         sta     $36
-        lda     $c2cf57,x
+        lda     f:_c2cf57,x
         sta     $40
-        lda     $c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
+        lda     f:_c2cf5b,x   ; pointer to character graphics data (+$7e2eae)
         tax
         lda     $7b69
         beq     @34f9
@@ -7439,7 +7460,7 @@ DrawCharSprite:
         adc     $36
         txy
         tax
-        lda     $c2c6a9,x   ; frames for animated graphic actions
+        lda     f:_c2c6a9,x   ; frames for animated graphic actions
         sta     $36
         and     #$1f
         cmp     #$07
@@ -7512,7 +7533,7 @@ DrawCharSprite:
         lda     #$02
         sta     $41
 @3619:  clc
-        lda     $c2cea3,x
+        lda     f:CharSpriteData,x
         bpl     @362c
         adc     $36
         sta     $0300,y
@@ -7535,7 +7556,7 @@ DrawCharSprite:
 @364a:  iny
         inx
         clc
-        lda     $c2cea3,x
+        lda     f:CharSpriteData,x
         bpl     @365e
         adc     $38
         sta     $3e
@@ -7559,13 +7580,13 @@ DrawCharSprite:
 @367b:  sta     $0300,y
         iny
         inx
-        lda     $c2cea3,x
+        lda     f:CharSpriteData,x
         clc
         adc     $40
         sta     $0300,y
         iny
         inx
-        lda     $c2cea3,x
+        lda     f:CharSpriteData,x
         ora     $42
         sta     $0300,y
         iny
@@ -7650,7 +7671,7 @@ player_pat_chr_set:
         longa
         lda     $7ee9d2,x   ; pointer to condemned numeral graphics
         tay
-        lda     $c2e41a,x   ; pointer to character graphics buffer
+        lda     f:_c2e41a,x   ; pointer to character graphics buffer
         tax
         lda     #8
         sta     $3a
@@ -7687,10 +7708,10 @@ UpdateCharGfxBuf:
         phb
         stz     $36
         longa
-        lda     $c2e41a,x   ; pointer to character graphics buffer
+        lda     f:_c2e41a,x   ; pointer to character graphics buffer
         sta     $38
         tay
-        lda     $c2e422,x   ; pointer to character sprite sheet buffer
+        lda     f:_c2e422,x   ; pointer to character sprite sheet buffer
         clc
         adc     $36
         tax
@@ -7731,12 +7752,12 @@ UpdateCharGfxBuf:
         phb
         stz     $36
         longa
-        lda     $c2e412,x
+        lda     f:_c2e412,x
         sta     $3c
-        lda     $c2e41a,x   ; pointer to character graphics buffer
+        lda     f:_c2e41a,x   ; pointer to character graphics buffer
         sta     $38
         tay
-        lda     $c2e422,x   ; pointer to character sprite sheet buffer
+        lda     f:_c2e422,x   ; pointer to character sprite sheet buffer
         clc
         adc     $36
         tax
@@ -7773,12 +7794,12 @@ UpdateCharGfxBuf:
         phb
         stz     $36
         longa
-        lda     $c2e412,x
+        lda     f:_c2e412,x
         sta     $3c
-        lda     $c2e41a,x   ; pointer to character graphics buffer
+        lda     f:_c2e41a,x   ; pointer to character graphics buffer
         sta     $38
         tay
-        lda     $c2e422,x   ; pointer to character sprite sheet buffer
+        lda     f:_c2e422,x   ; pointer to character sprite sheet buffer
         clc
         adc     $36
         tax
@@ -7815,12 +7836,12 @@ UpdateCharGfxBuf:
         phb
         stz     $36
         longa
-        lda     $c2e412,x
+        lda     f:_c2e412,x
         sta     $3c
-        lda     $c2e41a,x   ; pointer to character graphics buffer
+        lda     f:_c2e41a,x   ; pointer to character graphics buffer
         sta     $38
         tay
-        lda     $c2e422,x
+        lda     f:_c2e422,x
         clc
         adc     $36
         tax
@@ -7860,12 +7881,12 @@ UpdateCharGfxBuf:
         plb
         stz     $36
         longa
-        lda     $c2e412,x
+        lda     f:_c2e412,x
         sta     $3c
-        lda     $c2e41a,x   ; pointer to character graphics buffer
+        lda     f:_c2e41a,x   ; pointer to character graphics buffer
         sta     $38
         tay
-        lda     $c2e422,x   ; pointer to character sprite sheet buffer
+        lda     f:_c2e422,x   ; pointer to character sprite sheet buffer
         clc
         adc     $36
         tax
@@ -7973,9 +7994,9 @@ one_mon_obj_set:
         tax
         longa
         lda     $3c
-        eor     $c2c464,x
+        eor     f:_c2c464,x
         sta     $3c
-        lda     $c2c466,x
+        lda     f:_c2c464+2,x
         sta     $36
         ldy     $2e
         tyx
@@ -8155,25 +8176,25 @@ InitCharGfxMain:
 @3ac9:  lda     $201f       ; battle type
 @3acc:  asl2
         tax
-        lda     $c2cf03,x   ; character 1 y offset
+        lda     f:CharYOffsetTbl,x   ; character 1 y offset
         tay
         sty     $61b9
-        lda     $c2cf04,x   ; character 2 y offset
+        lda     f:CharYOffsetTbl+1,x   ; character 2 y offset
         tay
         sty     $61d9
-        lda     $c2cf05,x   ; character 3 y offset
+        lda     f:CharYOffsetTbl+2,x   ; character 3 y offset
         tay
         sty     $61f9
-        lda     $c2cf06,x   ; character 4 y offset
+        lda     f:CharYOffsetTbl+3,x   ; character 4 y offset
         tay
         sty     $6219
-        lda     $c2e43e,x   ; character 1 h-flip
+        lda     f:CharFlipTbl,x   ; character 1 h-flip
         sta     $61be
-        lda     $c2e43f,x   ; character 2 h-flip
+        lda     f:CharFlipTbl+1,x   ; character 2 h-flip
         sta     $61de
-        lda     $c2e440,x   ; character 3 h-flip
+        lda     f:CharFlipTbl+2,x   ; character 3 h-flip
         sta     $61fe
-        lda     $c2e441,x   ; character 4 h-flip
+        lda     f:CharFlipTbl+3,x   ; character 4 h-flip
         sta     $621e
         jsl     _c2afa3
         stz     $10
@@ -8204,19 +8225,19 @@ InitCharGfxMain:
         lda     $201f       ; battle type
         asl2
         tax
-        lda     $c2e44e,x   ; character 1 hand swap
+        lda     f:CharDirTbl,x   ; character 1 hand swap
         sta     $7b10
-        lda     $c2e44f,x
+        lda     f:CharDirTbl+1,x
         sta     $7b11
-        lda     $c2e450,x
+        lda     f:CharDirTbl+2,x
         sta     $7b12
-        lda     $c2e451,x
+        lda     f:CharDirTbl+3,x
         sta     $7b13
         lda     $201f       ; battle type
         asl3
         tax
         longa
-        lda     $c2cf17,x   ; character 1 xy angle
+        lda     f:CharXAngleTbl,x   ; character 1 xy angle
         sta     $61c9
         inc
         sta     $61cb
@@ -8229,9 +8250,9 @@ InitCharGfxMain:
         longa
         lda     $61c9
         clc
-        adc     $c2cee3,x   ; add back row xy angle
+        adc     f:CharRowOffsetTbl,x   ; add back row xy angle
         sta     $61c9
-@3ba3:  lda     $c2cf19,x   ; character 2 x-offset
+@3ba3:  lda     f:CharXAngleTbl+2,x   ; character 2 x-offset
         sta     $61e9
         inc
         sta     $61eb
@@ -8244,9 +8265,9 @@ InitCharGfxMain:
         longa
         lda     $61e9
         clc
-        adc     $c2cee5,x
+        adc     f:CharRowOffsetTbl+2,x
         sta     $61e9
-@3bca:  lda     $c2cf1b,x   ; character 3 x-offset
+@3bca:  lda     f:CharXAngleTbl+4,x   ; character 3 x-offset
         sta     $6209
         inc
         sta     $620b
@@ -8259,9 +8280,9 @@ InitCharGfxMain:
         longa
         lda     $6209
         clc
-        adc     $c2cee7,x
+        adc     f:CharRowOffsetTbl+4,x
         sta     $6209
-@3bf1:  lda     $c2cf1d,x   ; character 4 x-offset
+@3bf1:  lda     f:CharXAngleTbl+6,x   ; character 4 x-offset
         sta     $6229
         inc
         sta     $622b
@@ -8274,7 +8295,7 @@ InitCharGfxMain:
         longa
         lda     $6229
         clc
-        adc     $c2cee9,x
+        adc     f:CharRowOffsetTbl+6,x
         sta     $6229
 @3c18:  stz     $61d3       ; clear character y-offsets
         stz     $61f3
@@ -8351,7 +8372,7 @@ InitCharGfxMain:
         bne     @3cbd
         clr_ay
 @3cd1:  tyx                 ; y = first empty character slot (0 if no slots are empty)
-        lda     $c2e45e,x
+        lda     f:MagitekPalOffsetTbl,x
         sta     $64d4       ; magitek color palette
         txa
         asl5
@@ -8361,7 +8382,7 @@ InitCharGfxMain:
         lda     #$18        ; 12 colors
         sta     $10
         clr_ax
-@3ceb:  lda     $c2cfd4,x   ; load magitek color palette
+@3ceb:  lda     f:MagitekPal,x
         sta     $81ad,y
         sta     $7f80,y
         inx
@@ -8440,7 +8461,7 @@ LoadCharGfx:
         clc
         adc     $14
         tax
-        lda     #$c2
+        lda     #^_c2c745
         sta     $16
         phb
         lda     #$7f
@@ -8451,7 +8472,7 @@ LoadCharGfx:
         longa
         lda     f:CharGfxPtrs,x
         sta     $10
-        lda     #$c745      ; pointers to tile graphics in buffer (+$7f0000)
+        lda     #.loword(_c2c745)   ; pointers to tile graphics in buffer (+$7f0000)
         sta     $14
         ldx     $1a
         lda     #$0100      ; copy 256 tiles
@@ -8545,13 +8566,13 @@ LoadCharGfx:
 
 LoadStatusPal:
 @3e4d:  clr_ax
-@3e4f:  lda     $c2c689,x
+@3e4f:  lda     f:_c2c689,x
         sta     $7f98,x
-        lda     $c2c691,x
+        lda     f:_c2c689+8,x
         sta     $7fb8,x
-        lda     $c2c699,x
+        lda     f:_c2c689+16,x
         sta     $7fd8,x
-        lda     $c2c6a1,x
+        lda     f:_c2c689+24,x
         sta     $7ff8,x
         inx
         cpx     #8
@@ -8580,11 +8601,11 @@ v_mode_init:
         jsr     Mult8
         lda     $26
         tax
-        lda     $c2c4a4,x   ; ++$10 = pointer to monster vram map sprite data
+        lda     f:MonsterSpriteMapPtrs,x
         sta     $10
-        lda     $c2c4a5,x
+        lda     f:MonsterSpriteMapPtrs+1,x
         sta     $11
-        lda     #$c2
+        lda     #^MonsterSpriteMapPtrs
         sta     $12
         ldx     #$8259      ; +$14 = pointer to monster sprite data
         stx     $14
@@ -8601,20 +8622,20 @@ v_mode_init:
         bmi     @3eef       ; branch if at end of data
         asl2
         tax
-        lda     $c2b9e7,x   ; sprite's x offset
+        lda     f:_c2b9e7,x   ; sprite's x offset
         sec
         sbc     $18
         sta     ($14),y
         iny
-        lda     $c2b9e8,x   ; sprite's y offset
+        lda     f:_c2b9e7+1,x   ; sprite's y offset
         sec
         sbc     $19
         sta     ($14),y
         iny
-        lda     $c2b9e9,x   ; sprite's tile pointer
+        lda     f:_c2b9e7+2,x   ; sprite's tile pointer
         sta     ($14),y
         iny
-        lda     $c2b9ea,x
+        lda     f:_c2b9e7+3,x
         sta     ($14),y
         iny                 ; next sprite
         ldx     $10
@@ -8701,9 +8722,9 @@ v_mode_init:
 @3f94:  tya
         asl
         tax
-        lda     $c2c474,x
+        lda     f:MonsterSpriteDataPtrs,x
         sta     $10
-        lda     $c2c475,x
+        lda     f:MonsterSpriteDataPtrs+1,x
         sta     $11
         lda     #$11
         sta     $12
@@ -8727,6 +8748,7 @@ v_mode_init:
 
 ; ------------------------------------------------------------------------------
 
+_c23fcb:
 @3fcb:  .byte   $b4,$b5,$b6,$b7,$b8,$b9,$ba,$bb,$bc,$bd,$8c,$87,$8f,$c0,$8d,$9e
         .byte   $9d,$8c,$8f,$ff,$ff
 
@@ -8738,8 +8760,9 @@ WindowGfxPtrTbl:
 
 ; ------------------------------------------------------------------------------
 
-; pointers to menu window palettes
-@3ff8:  .faraddr $001d57,$001d65,$001d73,$001d81,$001d8f,$001d9d,$001dab,$001db9
+; pointers to menu window palettes (in RAM)
+WindowPalPtrs:
+@3ff8:  .faraddr $1d57,$1d65,$1d73,$1d81,$1d8f,$1d9d,$1dab,$1db9
 
 ; ------------------------------------------------------------------------------
 
@@ -8783,36 +8806,42 @@ TfrMsgWindowGfx:
 LoadMenuGfx:
 @403f:  jsr     GetWindowGfxPtr
         ldy     $10
-        sty     $36         ; size = $0380
+        sty     $36                     ; size = $0380
         lda     $12
-        ldy     #$4200      ; destination address = $4200
+        ldy     #$4200                  ; destination address = $4200
         jsr     TfrVRAM
+
+; slot graphics
         ldx     #$0800
-        stx     $36         ; size = $0800
-        ldx     #$f000      ; source address = $d2f000 (slot window graphics)
-        ldy     #$4400      ; destination address = $4400
-        lda     #$d2
+        stx     $36                     ; size = $0800
+        ldx     #.loword(SlotGfx)
+        ldy     #$4400                  ; destination address = $4400
+        lda     #^SlotGfx
         jsr     TfrVRAM
+
+; small font graphics
         ldx     #$1000
-        stx     $36         ; size = $1000
-        ldx     #$7fc0      ; source address = $c47fc0 (fixed-width font graphics)
-        ldy     #$5800      ; destination address = $5800
-        lda     #$c4
+        stx     $36                     ; size = $1000
+        ldx     #.loword(FontGfxSmall)
+        ldy     #$5800                  ; destination address = $5800
+        lda     #^FontGfxSmall
         jsr     TfrVRAM
-        lda     $2f34       ; menu window graphics index
+
+; menu window palette
+        lda     $2f34                   ; menu window graphics index
         and     #$07
         sta     $2f34
         asl
         clc
         adc     $2f34
         tax
-        lda     $c13ffa,x   ; ++$36 = pointer to menu window palette
+        lda     $c13ffa,x               ; ++$36 = pointer to menu window palette
         sta     $38
         longa
-        lda     $c13ff8,x
+        lda     f:WindowPalPtrs,x
         sta     $36
         clr_axy
-        lda     #$0008      ;
+        lda     #$0008
         sta     $2c
         jsr     _c141e4
 @4095:  lda     [$36],y
@@ -8835,17 +8864,17 @@ LoadMenuGfx:
         shorta0
         ldy     #$4080
         clr_ax
-@40cb:  lda     $c13fcb,x
+@40cb:  lda     f:_c23fcb,x
         phx
         longa
         asl4
         clc
-        adc     #$7fc0
+        adc     #.loword(FontGfxSmall)
         tax
         lda     #$0010
         sta     $36
         shorta0
-        lda     #$c4
+        lda     #^FontGfxSmall
         jsr     TfrVRAM
         plx
         longa
@@ -8881,7 +8910,7 @@ bar_color_set:
 ; unused
 
 @410e:  clr_ax
-@4110:  lda     $c1414e,x
+@4110:  lda     f:_c1414e,x
         sta     $7e50,x
         inx
         cpx     #$0010
@@ -8909,7 +8938,7 @@ gra_color_clr:
 
 @412a:  clr_ax
         longa
-@412e:  lda     $c14166,x
+@412e:  lda     f:_c14166,x
         eor     #$ffff
         sta     $7e28,x
         inx2
@@ -8933,9 +8962,11 @@ gra_color_clr:
 
 ; ------------------------------------------------------------------------------
 
+_c1414e:
 @414e:  .word   $739c,$6318,$5294,$4210,$318c,$2108,$1084,$0000
         .word   $0000,$7fe0,$7fe0,$7fe0
 
+_c14166:
 @4166:  .word   $6f18,$4a10,$2928,$037f,$0254,$018e,$001f,$0016
         .word   $7cc1,$6ce3,$7fff,$0000
 
@@ -9095,7 +9126,7 @@ _c14286:
         lda     $7b83
         sta     $2c
         jsr     _c141e4
-@4292:  lda     $c14166,x
+@4292:  lda     f:_c14166,x
         eor     #$ffff
         jsr     _c14202
         sta     $7e28,x
@@ -9106,7 +9137,7 @@ _c14286:
         lda     $7b83
         sta     $2c
         jsr     _c141e4
-@42b0:  lda     $c1414e,x
+@42b0:  lda     f:_c1414e,x
         eor     #$ffff
         jsr     _c14202
         sta     $7e50,x
@@ -9259,9 +9290,9 @@ _c143b9:
 @43b9:  jsr     _c1434b
         ldx     #$1000
         stx     $10
-        ldx     #$7fc0
+        ldx     #.loword(FontGfxSmall)
         ldy     #$5800
-        lda     #$c4
+        lda     #^FontGfxSmall
         jmp     WaitTfrVRAM
 
 ; ------------------------------------------------------------------------------
@@ -9789,7 +9820,7 @@ set_box_data:
         asl3
         tax
         ldy     $00
-@470b:  lda     $c2df9e,x
+@470b:  lda     f:_c2df9e,x
         sta     $0010,y
         inx
         iny
@@ -9855,6 +9886,7 @@ normal_window_data_set:
 
 ; ------------------------------------------------------------------------------
 
+_c1476d:
 @476d:  .byte   $00,$1c,$38,$54
 
 ; ------------------------------------------------------------------------------
@@ -9892,7 +9924,7 @@ player_name_buf_attr_set:
         txa
         and     #$03
         tax
-        lda     $c1476d,x
+        lda     f:_c1476d,x
         tax
         lda     #$0e
         sta     $12
@@ -9920,7 +9952,7 @@ command_window_data_set:
         lda     #$1f
         jsr     LoadMenuText
         ldx     $62ca
-        lda     $c14b5b,x
+        lda     f:CharCmdPtrs,x
         tax
         clr_ay
 @47c8:  lda     $202e,x
@@ -9949,7 +9981,7 @@ command_window_data_set:
         lda     #$20
         jsr     LoadMenuText
         ldx     $62ca
-        lda     $c14b5b,x
+        lda     f:CharCmdPtrs,x
         tax
         clr_ay
 @480a:  lda     $205e,x
@@ -9978,7 +10010,7 @@ command_window_data_set:
         lda     #$04
         jsr     LoadMenuText
         ldx     $62ca
-        lda     $c14b5b,x   ; pointer to battle command data
+        lda     f:CharCmdPtrs,x
         tax
         clr_ay
 @484c:  lda     $202e,x     ; command
@@ -10010,7 +10042,7 @@ ken_window_data_set:
         sbc     $2020       ; number of known swdtechs
         tax
         clr_ay
-@487e:  lda     $c2a860,x   ; palette data for swdtech menu
+@487e:  lda     f:_c2a860,x   ; palette data for swdtech menu
         sta     $5dda,y
         inx
         iny2
@@ -10100,7 +10132,7 @@ DrawSlotReel:
         asl
         phx
         tax
-        lda     $c1495b,x
+        lda     f:_c1495b,x
         sta     $16
         plx
         lda     #$0002
@@ -10133,6 +10165,7 @@ DrawSlotReel:
 
 ; ------------------------------------------------------------------------------
 
+_c1495b:
 @495b:  .word   $0640,$0644,$0648,$064c,$0660,$0664,$0668,$066c
 
 ; ------------------------------------------------------------------------------
@@ -10153,17 +10186,17 @@ bg1_window_init:
         ldy     #$00ee
         jsr     _c14692
         clr_axy
-@498f:  lda     $c14a37,x
+@498f:  lda     f:_c14a37,x
         sta     $5883,y
-        lda     $c14a4c,x
+        lda     f:_c14a37+21,x
         sta     $5884,y
-        lda     $c14a3e,x
+        lda     f:_c14a37+7,x
         sta     $5903,y
-        lda     $c14a53,x
+        lda     f:_c14a37+28,x
         sta     $5904,y
-        lda     $c14a45,x
+        lda     f:_c14a37+14,x
         sta     $5983,y
-        lda     $c14a5a,x
+        lda     f:_c14a37+35,x
         sta     $5984,y
         iny2
         inx
@@ -10214,7 +10247,7 @@ window_name_buf_init:
         sbc     $2020
         tax
         clr_ay
-@4a21:  lda     $c2a860,x   ; palette data for swdtech menu
+@4a21:  lda     f:_c2a860,x   ; palette data for swdtech menu
         sta     $56d8,y
         inx
         iny3
@@ -10225,6 +10258,7 @@ window_name_buf_init:
 
 ; ------------------------------------------------------------------------------
 
+_c14a37:
 @4a37:  .byte   $08,$08,$08,$15,$08,$08,$08
         .byte   $08,$08,$08,$ff,$19,$1a,$ff
         .byte   $ff,$16,$17,$17,$18,$17,$18
@@ -10445,14 +10479,15 @@ player_hpmax_name_buf_set:
 ; ------------------------------------------------------------------------------
 
 ; pointers to character battle commands (+$202e)
+CharCmdPtrs:
 @4b5b:  .byte   $00,$0c,$18,$24
 
 ; pointers to character spell/lore lists (+$208e)
-buf_magic_poi:
+CharSpellListPtrs:
 @4b5f:  .word   $0000,$013c,$0278,$03b4
 
 ; pointers to character equipped weapon/shield data (+$7e2b86)
-buf_hand_poi:
+CharEquipPtrs:
 @4b67:  .byte   $00,$05,$0a,$0f
 
 ; ------------------------------------------------------------------------------
@@ -10503,6 +10538,7 @@ get_attr_info2:
 
 ; ------------------------------------------------------------------------------
 
+_c14bac:
 @4bac:  .byte   $05,$02,$04,$21,$0e,$00,$ff,$ff,$04,$21,$0e,$00,$ff,$00
 
 ; ------------------------------------------------------------------------------
@@ -10511,13 +10547,13 @@ get_attr_info2:
 
 DrawEquipListText:
 @4bba:  clr_ax
-@4bbc:  lda     $c14bac,x
+@4bbc:  lda     f:_c14bac,x
         sta     $5755,x
         inx
         cpx     #$0013
         bne     @4bbc
         ldx     $62ca
-        lda     $c14b67,x
+        lda     f:CharEquipPtrs,x
         tay
         lda     f:BitOrTbl,x
         sta     $40
@@ -10530,18 +10566,16 @@ DrawEquipListText:
 
 ; ------------------------------------------------------------------------------
 
-item_win_data:
-@4be9:  .byte   $05,$02,$04,$21,$0e,$00,$ff,$ff,$04,$21,$0e,$00,$ff,$00
-
-; 05 02 draw two spaces
-; 04 21 change tile flags to $21 (white font color)
-; 0e 00 draw item name ($00 gets replaced with item id)
-; ff    space
-; ff    space
-; 04 21 change tile flags to $21 (white font color)
-; 0e 00 draw item name ($00 gets replaced with item id)
-; ff    space
-; 00    end of string
+ToolsListText:
+@4be9:  .byte   $05,$02                 ; 2 spaces
+        .byte   $04,$21                 ; white font
+        .byte   $0e,$00                 ; item name
+        .byte   $ff                     ; space
+        .byte   $ff                     ; space
+        .byte   $04,$21                 ; white font
+        .byte   $0e,$00                 ; item name
+        .byte   $ff                     ; space
+        .byte   $00                     ; terminator
 
 ; ------------------------------------------------------------------------------
 
@@ -10558,7 +10592,7 @@ DrawToolsListText:
         tay
         shorta0
         tax
-@4c06:  lda     $c14be9,x   ; copy tools line string
+@4c06:  lda     f:ToolsListText,x
         sta     $5755,x
         inx
         cpx     #$0013
@@ -10760,7 +10794,7 @@ DrawLoreListText:
         longa
         asl2
         clc
-        adc     $c14b5f,x
+        adc     f:CharSpellListPtrs,x
         tay
         shorta0
         tax
@@ -10795,7 +10829,7 @@ DrawMagicListText:
         longa
         asl2
         clc
-        adc     $c14b5f,x
+        adc     f:CharSpellListPtrs,x
         tay
         shorta0
         tax
@@ -10853,7 +10887,7 @@ magic2_line_mess_set:
         asl
         tax
         longa
-        lda     $c14b5f,x
+        lda     f:CharSpellListPtrs,x
         tax
         shorta0
         lda     $208e,x
@@ -10907,11 +10941,11 @@ LoadMenuText:
         pla
         asl2
         tax
-        lda     $c2df12,x
+        lda     f:_c2df12,x
         sta     $88d9
-        lda     $c2df13,x
+        lda     f:_c2df12+1,x
         sta     $88da
-        lda     $c2df14,x
+        lda     f:_c2df12+2,x
         sta     $88db
         lda     #$21
         sta     $88dc
@@ -11415,32 +11449,32 @@ window_open_data_set:
         lda     $10
         beq     @5133       ; branch if menu is opening
         longa
-        lda     $c2dea2,x
+        lda     f:_c2dea2,x
         sta     $7bd2       ; menu window horizontal scroll position (pixels)
-        lda     $c2dea4,x
+        lda     f:_c2dea2+2,x
         sta     $7bd4       ; menu window vertical scroll position (pixels)
         lda     $c2de34,x
         sta     $7bd6       ; menu window height (tiles)
         asl5
         clc
-        adc     $c2de32,x
+        adc     f:_c2de32,x
         sec
         sbc     #$0010
         sta     $7bd7       ; menu window bottom (pixels)
-        lda     $c2de32,x
+        lda     f:_c2de32,x
         sta     $7bd9       ; menu window top (pixels)
         bra     @515e
 @5133:  longa
-        lda     $c2dea2,x
+        lda     f:_c2dea2,x
         sta     $7bd2       ; menu window horizontal scroll position (pixels)
-        lda     $c2dea4,x
+        lda     f:_c2dea2+2,x
         sta     $7bd4       ; menu window vertical scroll position (pixels)
         lda     $c2de34,x
         sta     $7bd6       ; menu window height (tiles)
         dec
         asl4
         clc
-        adc     $c2de32,x
+        adc     f:_c2de32,x
         sta     $7bd7       ; menu window bottom (pixels)
         clc
         adc     #$0010
@@ -11475,62 +11509,62 @@ main_window_open_data_set:
         lda     $10
         beq     @51ad       ; branch if menu is opening
         longa
-        lda     $c2ddda,x
+        lda     f:_c2ddda,x
         clc
         adc     #$0010
         sta     $7be2
-        lda     $c2dddc,x
+        lda     f:_c2ddda+2,x
         clc
         adc     #$0010
         sta     $7be4
-        lda     $c2ddde,x
+        lda     f:_c2ddda+4,x
         asl5
         pha
         clc
-        adc     $c2ddda,x
+        adc     f:_c2ddda,x
         sec
         sbc     #$0020
         sta     $7bde
         pla
         clc
-        adc     $c2dddc,x
+        adc     f:_c2ddda+2,x
         sec
         sbc     #$0020
         sta     $7be0
         bra     @51d8
 @51ad:  longa
-        lda     $c2ddde,x   ; text height (tiles)
+        lda     f:_c2ddda+4,x   ; text height (tiles)
         dec                 ; convert to pixels
         asl4
         pha
         clc
-        adc     $c2ddda,x   ; add source address
+        adc     f:_c2ddda,x   ; add source address
         sta     $7bde       ;
         clc
         adc     #$0010
         sta     $7be2
         pla
         clc
-        adc     $c2dddc,x
+        adc     f:_c2ddda+2,x
         sta     $7be0
         clc
         adc     #$0010
         sta     $7be4
-@51d8:  lda     $c2ddda,x
+@51d8:  lda     f:_c2ddda,x
         clc
         adc     #$0010
         sta     $7be7
-        lda     $c2dddc,x
+        lda     f:_c2ddda+2,x
         clc
         adc     #$0010
         sta     $7be9
-        lda     $c2ddde,x
+        lda     f:_c2ddda+4,x
         dec
         asl5
         dec
         sta     $7bec
         shorta0
-        lda     $c2ddde,x
+        lda     f:_c2ddda+4,x
         dec
         sta     $7be6
         stz     $7bee
@@ -11749,7 +11783,7 @@ TfrMenuTiles:
 @5373:  asl
         tax
         longa
-        lda     $c2dd8c,x   ; menu window tile data vram pointer
+        lda     f:_c2dd8c,x   ; menu window tile data vram pointer
         tay
         shorta0
         ldx     #$0200      ; size = $0200
@@ -12436,9 +12470,9 @@ set_scr_vram_poi:
         and     #$03
         asl
         tax
-        lda     $c18291,x
+        lda     f:_c18291,x
         sta     $7baa
-        lda     $c18292,x
+        lda     f:_c18291+1,x
         sta     $7bab
         inc     $7ba9
         inc     $7ba6
@@ -12884,7 +12918,7 @@ nmi2jmp_data_set:
 @5a2c:  asl2
         tax
         ldy     $00
-@5a31:  lda     $c2e348,x   ; menu state data
+@5a31:  lda     f:_c2e348,x   ; menu state data
         sta     $7bc2,y
         inx
         iny
@@ -13483,10 +13517,38 @@ DlgTextCmd:
 
 ; dialog text special string jump table
 DlgTextCmdTbl:
-@5e54:  .addr   $6747,$608c,$5eac,$6747,$607b,$5ea7,$5e9f,$5e94
-        .addr   $6747,$6747,$6747,$6747,$5f0c,$6747,$6043,$5fb3
-        .addr   $5f75,$5f7d,$5ee6,$5f6d,$5f65,$6747,$6747,$6747
-        .addr   $6747,$6747,$6747,$6747,$6111,$6111,$6111,$6111
+@5e54:  .addr   TextCmdUnused
+        .addr   DlgTextCmd_01
+        .addr   DlgTextCmd_02
+        .addr   TextCmdUnused
+        .addr   DlgTextCmd_04
+        .addr   DlgTextCmd_05
+        .addr   DlgTextCmd_06
+        .addr   DlgTextCmd_07
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   DlgTextCmd_0c
+        .addr   TextCmdUnused
+        .addr   DlgTextCmd_0e
+        .addr   DlgTextCmd_0f
+        .addr   DlgTextCmd_10
+        .addr   DlgTextCmd_11
+        .addr   DlgTextCmd_12
+        .addr   DlgTextCmd_13
+        .addr   DlgTextCmd_14
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   DrawDlgLetter
+        .addr   DrawDlgLetter
+        .addr   DrawDlgLetter
+        .addr   DrawDlgLetter
 
 ; ------------------------------------------------------------------------------
 
@@ -13573,6 +13635,7 @@ DlgTextCmd_12:
 ; ------------------------------------------------------------------------------
 
 ; pointers to character names
+CharNamePtrs:
 @5ef8:  .word   $2eae,$2ece,$2eee,$2f0e
 
 ; ------------------------------------------------------------------------------
@@ -13614,7 +13677,7 @@ DlgTextCmd_0c:
         lda     f:hRDMPYL
         tax
         shorta0
-@5f2e:  lda     $d8cea0,x   ; battle command name
+@5f2e:  lda     f:BattleCmdName,x
         cmp     #$ff
         beq     @5f3f
         jsr     DrawDlgLetter
@@ -13631,7 +13694,7 @@ DlgTextCmd_0c:
         asl
         tax
         longa
-        lda     $c15ef8,x   ; pointer to character name
+        lda     f:CharNamePtrs,x
         tax
         shorta0
         lda     #$06
@@ -13740,7 +13803,7 @@ _c15fb8:
         lda     f:hRDMPYL
         tax
         shorta0
-@5fdd:  lda     $e6f7b9,x   ; attack names
+@5fdd:  lda     f:AttackName,x
         cmp     #$ff
         beq     @5fee
         jsr     DrawDlgLetter
@@ -13761,7 +13824,7 @@ _c15fb8:
         lda     f:hRDMPYL
         tax
         shorta0
-@6007:  lda     $e6f6e1,x   ; esper name
+@6007:  lda     f:GenjuName,x
         cmp     #$ff
         beq     @6018
         jsr     DrawDlgLetter
@@ -13781,7 +13844,7 @@ _c15fb8:
         tax
         shorta0
         dec     $616d       ; skip symbol byte
-@6031:  lda     $e6f568,x   ; spell name (skips symbol byte)
+@6031:  lda     f:MagicName+1,x   ; spell name (skips symbol byte)
         cmp     #$ff
         beq     @6042
         jsr     DrawDlgLetter
@@ -13813,7 +13876,7 @@ _c16048:
         tax
         shorta0
         dec     $616d
-@6069:  lda     $d2b301,x   ; item name
+@6069:  lda     f:ItemName+1,x   ; item name
         cmp     #$ff
         beq     @607a
         jsr     DrawDlgLetter
@@ -13821,13 +13884,20 @@ _c16048:
         dec     $616d
         bne     @6069
 @607a:  rts
-        lda     $4b
+
+; ------------------------------------------------------------------------------
+
+; [ dialog special string $04:  ]
+
+DlgTextCmd_04:
+@607b:  lda     $4b
         eor     #$01
         sta     $4b
         rts
 
 ; ------------------------------------------------------------------------------
 
+_c16082:
 @6082:  .word   $5a00,$5c00,$5e00,$5800,$5800
 
 ; ------------------------------------------------------------------------------
@@ -13848,7 +13918,7 @@ DlgTextCmd_01:
         asl
         tax
         longa
-        lda     $c16082,x
+        lda     f:_c16082,x
         sta     $e9bf
         shorta0
         inc     $e9c1
@@ -13892,6 +13962,7 @@ DlgTextCmd_01:
 
 ; ------------------------------------------------------------------------------
 
+_c16109:
 @6109:  .word   4,3,2,1
 
 ; ------------------------------------------------------------------------------
@@ -13928,9 +13999,9 @@ DrawDlgLetter:
         lda     $1a
         sta     $18
         bne     @6158
-        lda     $c490c0,x
+        lda     f:FontGfxLarge,x
         bra     @6163
-@6158:  lda     $c490c0,x
+@6158:  lda     f:FontGfxLarge,x
 @615c:  lsr
         ror     $12
         dec     $18
@@ -13979,13 +14050,13 @@ DrawDlgLetter:
         and     #$0003
         asl
         tax
-        lda     $c16109,x
+        lda     f:_c16109,x
         sta     $1a
         ldx     $26
 @61d3:  lda     $1a
         sta     $18
         stz     $12
-        lda     $c490c0,x
+        lda     f:FontGfxLarge,x
 @61dd:  asl
         dec     $18
         bne     @61dd
@@ -14027,7 +14098,7 @@ DrawDlgLetter:
         sec
         sbc     #$60
         tax
-        lda     $c48fc0,x
+        lda     f:FontWidth,x
         plx
         clc
         adc     $7a
@@ -14041,6 +14112,7 @@ DrawDlgLetter:
 
 ; ------------------------------------------------------------------------------
 
+_c1624e:
 @624e:  .byte   $00,$80,$c0,$e0,$f0,$f8,$fc,$fe
 
 ; ------------------------------------------------------------------------------
@@ -14050,7 +14122,7 @@ DrawDlgLetter:
 @6256:  lda     $7a
         and     #$07
         tax
-        lda     $c1624e,x
+        lda     f:_c1624e,x
         sta     $28
         lda     $7a
         and     #$f8
@@ -14070,9 +14142,9 @@ DrawDlgLetter:
         lda     $1a
         sta     $18
         bne     @6290
-        lda     $c490c0,x   ; variable-width font graphics
+        lda     f:FontGfxLarge,x
         bra     @629b
-@6290:  lda     $c490c0,x
+@6290:  lda     f:FontGfxLarge,x
 @6294:  lsr
         ror     $12
         dec     $18
@@ -14125,13 +14197,13 @@ DrawDlgLetter:
         and     #$0003
         asl
         tax
-        lda     $c16109,x
+        lda     f:_c16109,x
         sta     $1a
         ldx     $26
 @6316:  lda     $1a
         sta     $18
         stz     $12
-        lda     $c490c0,x   ; variable-width font graphics
+        lda     f:FontGfxLarge,x
 @6320:  asl
         dec     $18
         bne     @6320
@@ -14176,7 +14248,7 @@ DrawDlgLetter:
         sec
         sbc     #$60
         tax
-        lda     $c48fc0,x   ; variable-width font letter widths
+        lda     f:FontWidth,x
         plx
         clc
         adc     $7a
@@ -14279,10 +14351,33 @@ ListTextCmd:
 
 ; menu list text special string jump table
 ListTextCmdTbl:
-@6414:  .addr   $6747,$6748,$6494,$64c9,$64d1,$64de,$64ef,$6747
-        .addr   $6747,$6747,$6747,$6747,$6747,$6747,$6558,$6598
-        .addr   $6747,$6585,$6517,$6747,$6747,$6747,$644a,$6600
-        .addr   $6628,$6655,$667d
+@6414:  .addr   TextCmdUnused
+        .addr   ListTextCmd_01
+        .addr   ListTextCmd_02
+        .addr   ListTextCmd_03
+        .addr   ListTextCmd_04
+        .addr   ListTextCmd_05
+        .addr   ListTextCmd_06
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   ListTextCmd_0e
+        .addr   ListTextCmd_0f
+        .addr   TextCmdUnused
+        .addr   ListTextCmd_11
+        .addr   ListTextCmd_12
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   ListTextCmd_16
+        .addr   ListTextCmd_17
+        .addr   ListTextCmd_18
+        .addr   ListTextCmd_19
+        .addr   ListTextCmd_1a
 
 ; ------------------------------------------------------------------------------
 
@@ -14333,7 +14428,7 @@ ListTextCmd_16:
 
 ListTextCmd_02:
 @6494:  jsr     IncListTextPtr
-        stz     $40         ; tens digit
+        stz     $40                     ; tens digit
         lda     ($4f)
 @649b:  sec
         sbc     #$0a
@@ -14342,12 +14437,12 @@ ListTextCmd_02:
         jmp     @649b
 @64a5:  clc
         adc     #$0a
-        sta     $41         ; ones digit
+        sta     $41                     ; ones digit
         lda     $40
         bne     @64b0
-        lda     #$4b        ; $4b + $b4 = $ff " "
+        lda     #$4b                    ; $4b + $b4 = $ff " "
 @64b0:  clc
-        adc     #$b4        ; $b4 "0"
+        adc     #$b4                    ; $b4 "0"
         jsr     DrawListLetter
         lda     $41
         ora     $40
@@ -14429,7 +14524,7 @@ ListTextCmd_12:
         sta     $2e
         jsr     Mult8NoHW
         ldx     $30
-        lda     $d2b300,x   ; item name
+        lda     f:ItemName,x   ; item name
         cmp     #$ff
         beq     @6520
         sec
@@ -14442,7 +14537,7 @@ ListTextCmd_12:
         ldx     $30
         lda     $56
         xba
-@654b:  lda     $d26f00,x   ; item type (symbol) name
+@654b:  lda     f:ItemTypeName,x
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14469,7 +14564,7 @@ ListTextCmd_0e:
         xba
         lda     #$0d
         sta     $40
-@6578:  lda     $d2b300,x   ; item name
+@6578:  lda     f:ItemName,x   ; item name
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14513,7 +14608,7 @@ ListTextCmd_0f:
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@65bf:  lda     $e6f7b9,x   ; attack name
+@65bf:  lda     f:AttackName,x
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14530,7 +14625,7 @@ ListTextCmd_0f:
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@65db:  lda     $e6f6e1,x   ; esper name
+@65db:  lda     f:GenjuName,x
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14544,7 +14639,7 @@ ListTextCmd_0f:
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@65f3:  lda     $e6f567,x   ; spell name
+@65f3:  lda     f:MagicName,x   ; spell name
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14566,7 +14661,7 @@ ListTextCmd_17:
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@661b:  lda     $e6ff9d,x   ; dance name
+@661b:  lda     f:DanceName,x
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14588,7 +14683,7 @@ ListTextCmd_18:
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@6643:  lda     $cfc050,x   ; monster name
+@6643:  lda     f:MonsterName,x
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14634,7 +14729,7 @@ ListTextCmd_1a:
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@6698:  lda     $e6f6e1,x   ; esper name
+@6698:  lda     f:GenjuName,x
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14729,10 +14824,38 @@ print_code_chg:
 
 ; menu text special string jump table
 MenuTextCmdTbl:
-@6707:  .addr   $6747,$6748,$675f,$6794,$679c,$67a4,$6747,$67b5
-        .addr   $67b8,$67bc,$67c0,$6993,$69da,$69de,$6a82,$6ac2
-        .addr   $6a0b,$6aaf,$6a38,$6747,$6747,$6747,$6747,$6747
-        .addr   $6747,$6747,$6747,$6747,$6747,$6747,$6747,$6747
+@6707:  .addr   TextCmdUnused
+        .addr   MenuTextCmd_01
+        .addr   MenuTextCmd_02
+        .addr   MenuTextCmd_03
+        .addr   MenuTextCmd_04
+        .addr   MenuTextCmd_05
+        .addr   TextCmdUnused
+        .addr   MenuTextCmd_07
+        .addr   MenuTextCmd_08
+        .addr   MenuTextCmd_09
+        .addr   MenuTextCmd_0a
+        .addr   MenuTextCmd_0b
+        .addr   MenuTextCmd_0c
+        .addr   MenuTextCmd_0d
+        .addr   MenuTextCmd_0e
+        .addr   MenuTextCmd_0f
+        .addr   MenuTextCmd_10
+        .addr   MenuTextCmd_11
+        .addr   MenuTextCmd_12
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
+        .addr   TextCmdUnused
 
 ; ------------------------------------------------------------------------------
 
@@ -14872,12 +14995,13 @@ _67c2:  tax
 @67cf:  jsr     IncTextPtr
         lda     ($48)       ; info type
         tax
-        lda     $c167dc,x   ; text length
+        lda     f:_c167dc,x   ; text length
         jmp     _c16825       ; clear text
 
 ; ------------------------------------------------------------------------------
 
 ; character info text length (for clearing)
+_c167dc:
 @67dc:  .byte   $06,$04,$06,$03,$03,$06,$06
 
 ; character info text jump table (for each character)
@@ -15037,38 +15161,38 @@ DrawGaugeText:
 
 ; atb/morph/swdtech gauge text
 GaugeTextTbl:
-@68ac:                .byte $f1,$f0,$f0,$f0
-                      .byte $f2,$f0,$f0,$f0
-                      .byte $f3,$f0,$f0,$f0
-                      .byte $f4,$f0,$f0,$f0
-                      .byte $f5,$f0,$f0,$f0
-                      .byte $f6,$f0,$f0,$f0
-                      .byte $f7,$f0,$f0,$f0
-                      .byte $f8,$f0,$f0,$f0
-                      .byte $f8,$f1,$f0,$f0
-                      .byte $f8,$f2,$f0,$f0
-                      .byte $f8,$f3,$f0,$f0
-                      .byte $f8,$f4,$f0,$f0
-                      .byte $f8,$f5,$f0,$f0
-                      .byte $f8,$f6,$f0,$f0
-                      .byte $f8,$f7,$f0,$f0
-                      .byte $f8,$f8,$f0,$f0
-                      .byte $f8,$f8,$f1,$f0
-                      .byte $f8,$f8,$f2,$f0
-                      .byte $f8,$f8,$f3,$f0
-                      .byte $f8,$f8,$f4,$f0
-                      .byte $f8,$f8,$f5,$f0
-                      .byte $f8,$f8,$f6,$f0
-                      .byte $f8,$f8,$f7,$f0
-                      .byte $f8,$f8,$f8,$f0
-                      .byte $f8,$f8,$f8,$f1
-                      .byte $f8,$f8,$f8,$f2
-                      .byte $f8,$f8,$f8,$f3
-                      .byte $f8,$f8,$f8,$f4
-                      .byte $f8,$f8,$f8,$f5
-                      .byte $f8,$f8,$f8,$f6
-                      .byte $f8,$f8,$f8,$f7
-                      .byte $f8,$f8,$f8,$f8
+@68ac:  .byte   $f1,$f0,$f0,$f0
+        .byte   $f2,$f0,$f0,$f0
+        .byte   $f3,$f0,$f0,$f0
+        .byte   $f4,$f0,$f0,$f0
+        .byte   $f5,$f0,$f0,$f0
+        .byte   $f6,$f0,$f0,$f0
+        .byte   $f7,$f0,$f0,$f0
+        .byte   $f8,$f0,$f0,$f0
+        .byte   $f8,$f1,$f0,$f0
+        .byte   $f8,$f2,$f0,$f0
+        .byte   $f8,$f3,$f0,$f0
+        .byte   $f8,$f4,$f0,$f0
+        .byte   $f8,$f5,$f0,$f0
+        .byte   $f8,$f6,$f0,$f0
+        .byte   $f8,$f7,$f0,$f0
+        .byte   $f8,$f8,$f0,$f0
+        .byte   $f8,$f8,$f1,$f0
+        .byte   $f8,$f8,$f2,$f0
+        .byte   $f8,$f8,$f3,$f0
+        .byte   $f8,$f8,$f4,$f0
+        .byte   $f8,$f8,$f5,$f0
+        .byte   $f8,$f8,$f6,$f0
+        .byte   $f8,$f8,$f7,$f0
+        .byte   $f8,$f8,$f8,$f0
+        .byte   $f8,$f8,$f8,$f1
+        .byte   $f8,$f8,$f8,$f2
+        .byte   $f8,$f8,$f8,$f3
+        .byte   $f8,$f8,$f8,$f4
+        .byte   $f8,$f8,$f8,$f5
+        .byte   $f8,$f8,$f8,$f6
+        .byte   $f8,$f8,$f8,$f7
+        .byte   $f8,$f8,$f8,$f8
 
 ; ------------------------------------------------------------------------------
 
@@ -15187,7 +15311,7 @@ MenuTextCmd_0b:
         jsr     Mult816
         shorta0
         ldx     $26
-@69c9:  lda     $cfc050,x   ; monster name
+@69c9:  lda     f:MonsterName,x
         jsr     DrawMenuLetter
         inx                 ; next letter
         dec     $10
@@ -15222,7 +15346,7 @@ MenuTextCmd_0d:
         lda     f:hRDMPYL
         tax
         shorta0
-@69fe:  lda     $d8cea0,x   ; battle command name
+@69fe:  lda     f:BattleCmdName,x   ; battle command name
         jsr     DrawMenuLetter
         inx
         dec     $10
@@ -15248,7 +15372,7 @@ MenuTextCmd_10:
         lda     f:hRDMPYL
         tax
         shorta0
-@6a2b:  lda     $c2ade1,x   ; status name
+@6a2b:  lda     f:StatusName,x
         jsr     DrawMenuLetter
         inx
         dec     $10
@@ -15274,7 +15398,7 @@ MenuTextCmd_12:
         lda     f:hRDMPYL
         tax
         shorta0
-        lda     $d2b300,x   ; item name (first character)
+        lda     f:ItemName,x   ; item name (first character)
         cmp     #$ff
         beq     @6a41       ; branch if no symbol
         sec
@@ -15287,7 +15411,7 @@ MenuTextCmd_12:
         lda     f:hRDMPYL
         tax
         shorta0
-@6a75:  lda     $d26f00,x   ; item symbol name
+@6a75:  lda     f:ItemTypeName,x
         jsr     DrawMenuLetter
         inx
         dec     $10
@@ -15313,7 +15437,7 @@ MenuTextCmd_0e:
         lda     f:hRDMPYL
         tax
         shorta0
-@6aa2:  lda     $d2b300,x
+@6aa2:  lda     f:ItemName,x
         jsr     DrawMenuLetter
         inx
         dec     $10
@@ -15362,7 +15486,7 @@ MenuTextCmd_0f:
         lda     f:hRDMPYL
         tax
         shorta0
-@6aed:  lda     $e6f7b9,x   ; attack name
+@6aed:  lda     f:AttackName,x
         jsr     DrawMenuLetter
         inx
         dec     $10
@@ -15396,7 +15520,7 @@ MenuTextCmd_0f:
         lda     f:hRDMPYL
         tax
         shorta0
-@6b2e:  lda     $e6f567,x   ; spell name
+@6b2e:  lda     f:MagicName,x   ; spell name
         jsr     DrawMenuLetter
         inx
         dec     $10
@@ -15773,7 +15897,10 @@ get_buf_input_poi:
 
 ; ------------------------------------------------------------------------------
 
-@6d60:  .byte   $01, $00, $ff, $ff, $ff, $00, $01, $ff, $01, $00, $01, $ff, $ff, $00, $01, $00
+; unused ???
+
+_c16d60:
+@6d60:  .byte   $01,$00,$ff,$ff,$ff,$00,$01,$ff,$01,$00,$01,$ff,$ff,$00,$01,$00
 
 ; ------------------------------------------------------------------------------
 
@@ -16280,19 +16407,19 @@ GetTargetCursorPosition:
         pha
         tya
         clc
-        adc     $c17767,x
+        adc     f:_c17767,x
         tax
         lda     $7a86,x
         tax
         pla
         and     $92
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         beq     @71ea
         lda     $7ace
         tax
         tya
         clc
-        adc     $c17767,x
+        adc     f:_c17767,x
         tax
         lda     $7a86,x
         bpl     @71ec
@@ -16537,7 +16664,7 @@ get_no:
 @7372:  lda     $7ace
         tay
         tax
-        lda     $c17767,x
+        lda     f:_c17767,x
         clc
         adc     $7acf
         tax
@@ -16557,7 +16684,7 @@ TargetSelectUp:
         bmi     @738b
         tax
         lda     $7b79,y
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         and     $201d
         and     $61ac
         and     $61ad
@@ -16576,7 +16703,7 @@ TargetSelectUp:
         tax
         lda     $7b79,y
         and     $92
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         sta     $7b7e
         stz     $7b7d
         stz     $7b7f
@@ -16595,7 +16722,7 @@ TargetSelectDown:
         bmi     @73dd
         tax
         lda     $7b79,y
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         and     $201d
         and     $61ac
         and     $61ad
@@ -16614,7 +16741,7 @@ TargetSelectDown:
         tax
         lda     $7b79,y
         and     $92
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         sta     $7b7e
         stz     $7b7d
         stz     $7b7f
@@ -16782,19 +16909,19 @@ get_r_mon_set:
 @7554:  jsr     SelectMonsterRight
         lda     $75
         cmp     #$ff
-        beq     @7576
+        beq     @7578
         sta     $7acf
         jsr     _c17372
         tax
         lda     $7b79,y
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         and     $92
         sta     $7b7e
         stz     $7b7d
         stz     $7b7f
-@7576:  sec
+        sec
         rts
-        clc
+@7578:  clc
         rts
 
 ; ------------------------------------------------------------------------------
@@ -16811,7 +16938,7 @@ get_l_mon_set:
         jsr     _c17372
         tax
         lda     $7b79,y
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         and     $92
         sta     $7b7e
         stz     $7b7d
@@ -17061,9 +17188,11 @@ key_target_right:
 ; ------------------------------------------------------------------------------
 
 ; bit mask for each monster
+MonsterMaskTbl:
 @7761:  .byte   $01, $02, $04, $08, $10, $20
 
 ;
+_c17767:
 @7767:  .byte   $00, $06, $0c, $12
 
 ; ------------------------------------------------------------------------------
@@ -17117,7 +17246,7 @@ _7797:  pha
         cmp     #$02
         bne     @77d1
 @77c4:  ldx     $62ca
-        lda     $c17761,x
+        lda     f:MonsterMaskTbl,x
         sta     $7b7d
         jmp     @7901
 @77d1:  lda     $36
@@ -17208,7 +17337,7 @@ _7797:  pha
         cpx     #4
         bne     @78a6
         ldx     $62ca
-        lda     $c17761,x
+        lda     f:MonsterMaskTbl,x
         sta     $7b7d
         lda     #$03
         sta     $7ace
@@ -17216,7 +17345,7 @@ _7797:  pha
         sta     $7acf
         jmp     @7901
 @78c7:  ldx     $62ca
-        lda     $c17761,x
+        lda     f:MonsterMaskTbl,x
         sta     $7b7d
         lda     #$01
         sta     $7ace
@@ -17391,7 +17520,7 @@ get_gr0:
 @798d:  stx     $36
         tax
         lda     $92
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         beq     @797f
         ldx     $36
         sec
@@ -17421,7 +17550,7 @@ get_gr2:
 @79b9:  stx     $36
         tax
         lda     $92
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         beq     @79ab
         ldx     $36
         sec
@@ -17455,7 +17584,7 @@ get_gr1:
         and     $61ac
         and     $61ad
         and     $6193
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         beq     @79d7
         ldx     $36
         sec
@@ -17488,7 +17617,7 @@ get_gr3:
         and     $61ac
         and     $61ad
         and     $6193
-        and     $c17761,x
+        and     f:MonsterMaskTbl,x
         beq     @7a0f
         ldx     $36
         sec
@@ -17496,8 +17625,10 @@ get_gr3:
 
 ; ------------------------------------------------------------------------------
 
+_c17a36:
 @7a36:  .word   $a008, $ac08, $b808, $c408
 
+_c17a3e:
 @7a3e:  .word   $a010, $ac10, $b810, $c410, $a030, $ac10, $ac58, $b830
 
 ; ------------------------------------------------------------------------------
@@ -17594,7 +17725,7 @@ key_command:
         jmp     @7bce
 @7adf:  jmp     @7c3f
 @7ae2:  ldx     $62ca
-        lda     $c14b5b,x
+        lda     f:CharCmdPtrs,x
         tay
         jsr     _c17a4e
         bcc     @7af7
@@ -17694,7 +17825,7 @@ key_command:
         sta     $88e3
         rts
 @7bce:  ldx     $62ca
-        lda     $c14b5b,x
+        lda     f:CharCmdPtrs,x
         tay
         jsr     _c17a4e
         bcs     @7bf3
@@ -17733,15 +17864,15 @@ key_command:
         lda     $890f,x
         asl
         tax
-        lda     $c17a3e,x
+        lda     f:_c17a3e,x
         sta     $88e4
-        lda     $c17a3f,x
+        lda     f:_c17a3e+1,x
         sta     $88e5
         lda     #$01
         sta     $88e3
         rts
 @7c3f:  ldx     $62ca
-        lda     $c14b5b,x
+        lda     f:CharCmdPtrs,x
         tay
         jsr     _c17a70
         bcs     @7c64
@@ -17775,9 +17906,9 @@ key_command:
         lda     $890f,x
         asl
         tax
-        lda     $c17a36,x
+        lda     f:_c17a36,x
         sta     $88e4
-        lda     $c17a37,x
+        lda     f:_c17a36+1,x
         sta     $88e5
         lda     #$01
         sta     $88e3
@@ -17870,7 +18001,7 @@ key_ken:
         sbc     $2020       ; number of swdtechs known - 1
         tax
         clr_ay
-@7d6c:  lda     $c2a860,x   ; palette data for swdtech menu
+@7d6c:  lda     f:_c2a860,x   ; palette data for swdtech menu
         sta     $5dda,y
         inx
         iny2
@@ -18065,7 +18196,7 @@ key_chg:
 ; ------------------------------------------------------------------------------
 
 SlotRateTbl:
-@7ee1:  .byte   $1f, $03, $01, $01, $00, $00
+@7ee1:  .byte   $1f,$03,$01,$01,$00,$00
 
 ; ------------------------------------------------------------------------------
 
@@ -18474,11 +18605,11 @@ key_magic:
         jsr     _c1898f
         lda     $8917,y
         tax
-        lda     $c18280,x
+        lda     f:_c18280,x
         sta     $88e4
         lda     $891b,y
         tax
-        lda     $c1828d,x
+        lda     f:ListCursorYPosTbl,x
         sta     $88e5
         inc     $88e3
         rts
@@ -18535,28 +18666,46 @@ set_scr_line_tfr_poi:
 @8269:  lda     $7afd
         asl
         tax
-        lda     $c18291,x   ; vram destination
+        lda     f:_c18291,x   ; vram destination
         sta     $7baa
-        lda     $c18292,x
+        lda     f:_c18291+1,x
         sta     $7bab
         inc     $7ba9
         rts
 
 ; ------------------------------------------------------------------------------
 
-@8280:  .byte   $08, $50, $70
+_c18280:
+@8280:  .byte   $08,$50,$70
 
 ; ------------------------------------------------------------------------------
 
-; equip menu sprite x positions
+; equip window cursor x positions
+EquipCursorXPosTbl:
 @8283:  .byte   $00,$78
+
+; tools list cursor x positions
+ToolsCursorXPosTbl:
 @8285:  .byte   $00,$78
+
+; dance/throw/item list cursor x positions
+ItemCursorXPosTbl:
 @8287:  .byte   $10,$80
+
+; rage/magitek list cursor x positions
+RiotCursorXPosTbl:
 @8289:  .byte   $10,$78
+
+; lore list cursor x positions
+LoreCursorXPosTbl:
 @828b:  .byte   $08,$58
+
+; list cursor y positions
+ListCursorYPosTbl:
 @828d:  .byte   $a4,$b0,$bc,$c8
 
 scr_line_vram_poi:
+_c18291:
 @8291:  .word   $7c00, $7c40, $7c80, $7cc0, $7d00
 
 ; ------------------------------------------------------------------------------
@@ -18568,7 +18717,7 @@ CheckHasGenju:
         asl
         tax
         longa
-        lda     $c14b5f,x   ; pointer to spell/lore list
+        lda     f:CharSpellListPtrs,x
         tax
         shorta0
         lda     $208f,x     ; equipped esper
@@ -18689,11 +18838,11 @@ key_learning:
         lda     $891f,y
         jsr     _c1898f
         clr_ax
-        lda     $c1828b,x
+        lda     f:LoreCursorXPosTbl,x
         sta     $88e4
         lda     $8927,y
         tax
-        lda     $c1828d,x
+        lda     f:ListCursorYPosTbl,x
         sta     $88e5
         inc     $88e3
         rts
@@ -18758,7 +18907,7 @@ get_learning_poi:
         longa
         asl2
         clc
-        adc     $c14b5f,x
+        adc     f:CharSpellListPtrs,x
         tax
         shorta0
         ply
@@ -18785,7 +18934,7 @@ get_magic_poi:
         longa
         asl2
         clc
-        adc     $c14b5f,x
+        adc     f:CharSpellListPtrs,x
         tax
         shorta0
         ply
@@ -18903,7 +19052,7 @@ get_command_poi:
         sta     $2e
         jsr     Mult8NoHW
         ldx     $62ca
-        lda     $c14b5b,x
+        lda     f:CharCmdPtrs,x
         clc
         adc     $30
         tax
@@ -18979,11 +19128,11 @@ key_riot:
         jsr     _c1898f
         lda     $892f,y
         tax
-        lda     $c18289,x
+        lda     f:RiotCursorXPosTbl,x
         sta     $88e4
         lda     $8933,y
         tax
-        lda     $c1828d,x
+        lda     f:ListCursorYPosTbl,x
         sta     $88e5
         inc     $88e3
         rts
@@ -19072,11 +19221,11 @@ key_dance:
 @8609:  inc     $95
 @860b:  lda     $8937,y
         tax
-        lda     $c18287,x
+        lda     f:ItemCursorXPosTbl,x
         sta     $88e4
         lda     $893b,y
         tax
-        lda     $c1828d,x
+        lda     f:ListCursorYPosTbl,x
         sta     $88e5
         inc     $88e3
         rts
@@ -19137,11 +19286,11 @@ key_madou:
 @8699:  ldy     $36
         lda     $893f,y
         tax
-        lda     $c18289,x
+        lda     f:RiotCursorXPosTbl,x
         sta     $88e4
         lda     $8943,y
         tax
-        lda     $c1828d,x
+        lda     f:ListCursorYPosTbl,x
         sta     $88e5
         inc     $88e3
         rts
@@ -19214,11 +19363,11 @@ key_throw:
         lda     $8953,y
         jsr     _c1898f
         clr_ax
-        lda     $c18287,x
+        lda     f:ItemCursorXPosTbl,x
         sta     $88e4
         lda     $895b,y
         tax
-        lda     $c1828d,x
+        lda     f:ListCursorYPosTbl,x
         sta     $88e5
         inc     $88e3
         rts
@@ -19338,11 +19487,11 @@ key_machine:
         rts
 @8822:  lda     $8963,y
         tax
-        lda     $c18285,x
+        lda     f:ToolsCursorXPosTbl,x
         sta     $88e4
         lda     $8967,y
         tax
-        lda     $c1828d,x
+        lda     f:ListCursorYPosTbl,x
         sta     $88e5
         inc     $88e3
         rts
@@ -19496,11 +19645,11 @@ key_item:
         jsr     _c1898f
         lda     $894b,y
         tax
-        lda     $c18287,x
+        lda     f:ItemCursorXPosTbl,x
         sta     $88e4
         lda     $894f,y
         tax
-        lda     $c1828d,x
+        lda     f:ListCursorYPosTbl,x
         sta     $88e5
         inc     $88e3
         rts
@@ -19721,13 +19870,13 @@ set_item_one:
         inc     $7b02
         lda     $894b,y
         tax
-        lda     $c18287,x
+        lda     f:ItemCursorXPosTbl,x
         clc
         adc     #$03
         sta     $7bb0
         lda     $894f,y
         tax
-        lda     $c1828d,x
+        lda     f:ListCursorYPosTbl,x
         tax
         stx     $7bb1
         lda     #$01
@@ -19977,9 +20126,9 @@ redrow_item:
         lda     $7ba6
         asl
         tax
-        lda     $c18291,x
+        lda     f:_c18291,x
         sta     $7baa
-        lda     $c18292,x
+        lda     f:_c18291+1,x
         sta     $7bab
         inc     $7ba9
         inc     $7ba7
@@ -20092,7 +20241,7 @@ key_hand:
 @8e1d:  ldx     $62ca
         lda     $894b,x     ; cursor x position (0 or 1)
         tax
-        lda     $c18283,x
+        lda     f:EquipCursorXPosTbl,x
         sta     $88e4       ; sprite x position
         lda     #$b4
         sta     $88e5       ; sprite y position
@@ -20128,7 +20277,7 @@ set_item_mess:
 _c18e48:
 get_hand_poi:
 @8e48:  ldx     $62ca
-        lda     $c14b67,x
+        lda     f:CharEquipPtrs,x
         tax
         rts
 
@@ -20245,7 +20394,7 @@ SelectEquipItem:
         stx     $7b03
         lda     $894b,y
         tax
-        lda     $c18283,x
+        lda     f:EquipCursorXPosTbl,x
         clc
         adc     #$03
         sta     $7bb6
@@ -20512,19 +20661,19 @@ GfxCmd_0c:
         tay
         cpx     #$00ff      ; return if command = $ff
         beq     @918d
-        lda     $c2e49a,x   ; set graphical action for waiting to attack
+        lda     f:_c2e49a,x   ; set graphical action for waiting to attack
         sta     $61bb,y
 @918d:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to pre-attack animation data (black magic, white/effect magic, esper, lore, +$d07fb2)
-magic_init_no:
+PreMagicAnimPropPtrs:
 @918e:  .word   $0f88,$0f96,$0fa4,$0fb2
 
 ; ------------------------------------------------------------------------------
 
-; battle script command jump table
+; graphics script command jump table
 GfxCmdTbl:
 @9196:  .addr   GfxCmd_00
         .addr   GfxCmd_01
@@ -20560,18 +20709,17 @@ GfxCmdTbl:
 
 GfxCmd_14:
 pran2yos_long:
-@91cc:  jsl     _c2e63d     ; execute misc. monster animation
+@91cc:  jsl     DoMonsterAnim
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ final kefka death animation (far) ]
 
-_c191d1:
-last_mon_clr:
+KefkaDeathAnim_far:
 @91d1:  jsr     _c10e86
         jsr     InitMonsterGfx
-        jsl     _c2a96b
+        jsl     KefkaDeathAnim
         rtl
 
 ; ------------------------------------------------------------------------------
@@ -20775,7 +20923,7 @@ GfxCmd_12:
         pha
         clr_a
         sta     ($76),y
-        jsl     MonsterEntryExit
+        jsl     DoMonsterEntryExit
         clr_ax
 @934c:  stz     $62c2,x
         stz     $618b,x
@@ -20791,7 +20939,7 @@ GfxCmd_12:
         jsr     InitMonsterGfx
         jsr     LoadMonsterPal
         jsr     _c13e72
-        jsr     _c11588
+        jsr     InitMonsterPos
         jsr     WaitTfrMonsterGfx
         clr_a
         ldy     #$0002
@@ -20806,7 +20954,7 @@ GfxCmd_12:
         lda     $2f48
         and     #$0f
         sta     ($76),y
-        jsl     MonsterEntryExit
+        jsl     DoMonsterEntryExit
         pla
         sta     $201e
         rts
@@ -20840,14 +20988,14 @@ GfxCmd_13:
         bne     @93cb
         jsr     InitMonsterGfx
         jsr     WaitTfrMonsterGfx
-@93cb:  jsl     MonsterEntryExit
+@93cb:  jsl     DoMonsterEntryExit
         rts
 @93d0:  ldy     #$0002
         lda     $201e
         and     $61ab
         and     ($76),y     ; affected monsters
         beq     @93e1
-        jsl     MonsterEntryExit
+        jsl     DoMonsterEntryExit
 @93e1:  rts
 
 ; ------------------------------------------------------------------------------
@@ -21059,7 +21207,7 @@ BtlGfx_04:
 
 ; ------------------------------------------------------------------------------
 
-; [ execute battle script command ]
+; [ execute graphics script command ]
 
 ExecGfxCmd:
 @9569:  asl
@@ -21406,6 +21554,7 @@ GfxCmd_11:
 
 ; ------------------------------------------------------------------------------
 
+_c197a1:
 @97a1:  .byte   $0f,$0e,$80,$00,$81,$0c
 
 ; ------------------------------------------------------------------------------
@@ -21420,7 +21569,7 @@ GfxCmd_01:
 @97a7:  ldy     #$0001
         lda     ($76),y     ;
         tax
-        lda     $c197a1,x
+        lda     f:_c197a1,x
         pha
         tax
         iny
@@ -21478,14 +21627,14 @@ InitWideMsgWindow:
 ; [ get pointer to battle dialogue ]
 
 GetBattleDlgPtr:
-@981a:  lda     #$d0
+@981a:  lda     #^BattleDlg
         sta     $88d9
-        ldy     #$0001
+        ldy     #1
         lda     [$8f],y
         longa
         asl
         tax
-        lda     $d0d000,x   ; pointer to battle dialogue
+        lda     f:BattleDlgPtrs,x
         sta     $88d7
         inc     $8f
         shorta0
@@ -21497,14 +21646,14 @@ GetBattleDlgPtr:
 
 GfxCmd_10:
 @9835:  jsr     InitWideMsgWindow
-        lda     #$cf
+        lda     #^MonsterDlg
         sta     $88d9
-        ldy     #$0001
+        ldy     #1
         longa
         lda     ($76),y
         asl
         tax
-        lda     $cfdfe0,x   ; pointer to monster dialogue
+        lda     f:MonsterDlgPtrs,x
         sta     $88d7
         shorta0
         stz     $62ac
@@ -21531,6 +21680,7 @@ GfxCmd_02:
 ; ------------------------------------------------------------------------------
 
 ; wait duration for each battle message speed
+MsgSpeedTbl:
 @9872:  .byte   $20,$30,$40,$50,$60,$70,$80,$90
 
 ; ------------------------------------------------------------------------------
@@ -21587,7 +21737,7 @@ mess_wait:
         lsr4
         and     #$07
         tax
-        lda     $c19872,x
+        lda     f:MsgSpeedTbl,x
 @98bb:  pha
         jsr     WaitFrame
         pla
@@ -21627,14 +21777,14 @@ InitMsgWindow:
 ; [ get pointer to attack message ]
 
 GetAttackMsgPtr:
-@98fe:  lda     #$d1
+@98fe:  lda     #^AttackMsg
         sta     $88d9
-        ldy     #$0001
+        ldy     #1
         lda     ($76),y
         longa
         asl
         tax
-        lda     $d1f7a0,x               ; pointers to attack messages
+        lda     f:AttackMsgPtrs,x
         sta     $88d7
         shorta0
         rts
@@ -21666,6 +21816,7 @@ anim_window_rset:
         sta     $898d
 @994a:  rts
 
+; unused
 @994b:  .byte   $ff
 
 ; ------------------------------------------------------------------------------
@@ -21753,6 +21904,7 @@ w_win_color_set:
 
 ; ------------------------------------------------------------------------------
 
+_c199c1:
 wark_counter_tbl:
 @99c1:  .byte   $08,$18
 
@@ -21780,11 +21932,11 @@ magic_back:
         adc     #$20
         tay
         inx
-        cpx     #$0004
+        cpx     #4
         bne     @99cf
         lda     $64ba
         tax
-        lda     $c199c1,x
+        lda     f:_c199c1,x
         sta     $7af1
 @99fa:  jsr     WaitFrame
         clr_ay
@@ -22064,7 +22216,7 @@ LoadSpriteAnimPal:
         asl4
         tax
         clr_ay
-@9be0:  lda     $d26000,x   ; animation palette
+@9be0:  lda     f:AttackPal,x
         sta     $7f60,y
         sta     $7d60,y
         sta     $7f70,y
@@ -22093,7 +22245,7 @@ LoadBlockPal:
 @9c10:  asl4
         tax
         clr_ay
-@9c17:  lda     $c2b07d,x
+@9c17:  lda     f:BlockPal,x
         sta     $7f70,y
         iny
         inx
@@ -22110,7 +22262,7 @@ LoadBG1AnimPal:
         asl4
         tax
         clr_ay
-@9c2f:  lda     $d26000,x   ; battle animation palette (8 colors)
+@9c2f:  lda     f:AttackPal,x
         sta     $7e60,y     ; copy to ram
         sta     $7e70,y
         sta     $7e80,y
@@ -22142,7 +22294,7 @@ LoadBG3AnimPal:
         asl4
         tax
         clr_ay
-@9c74:  lda     $d26000,x   ; battle animation palette (4 colors)
+@9c74:  lda     f:AttackPal,x
         sta     $7e20,y
         sta     $7c20,y
         inx2
@@ -22201,7 +22353,7 @@ InitAnimProp:
         tax
         clr_ay
         shorta
-@9cca:  lda     $d07fb2,x   ; copy animation data
+@9cca:  lda     f:AttackAnimProp,x
         sta     $6273,y
         inx
         iny
@@ -22292,19 +22444,24 @@ InitWeaponAnim:
         shorta0
         lda     $618a       ; branch if not a monster attack
         beq     @9db8
-@9da8:  lda     $ece6e8,x   ; monster attack animation data
+
+; monster attack animation
+@9da8:  lda     f:MonsterAttackAnimProp,x   ; monster attack animation data
         sta     $626b,y
         inx
         iny
-        cpy     #$0008
+        cpy     #8
         bne     @9da8
         bra     @9dc6
-@9db8:  lda     $ece400,x   ; weapon animation data
+
+; weapon animation
+@9db8:  lda     f:WeaponAnimProp,x
         sta     $626b,y
         inx
         iny
-        cpy     #$0008
+        cpy     #8
         bne     @9db8
+
 @9dc6:  lda     $10         ; attacker
         and     #$03
         tax
@@ -22550,9 +22707,9 @@ _9f73:  stx     $14
         lda     $7aec       ; animation frame data index
         asl
         tax
-        lda     $d4df3c,x   ; pointer to animation frame data
+        lda     f:AttackAnimFramesPtrs,x
         sta     $10
-        lda     $d4df3e,x
+        lda     f:AttackAnimFramesPtrs+2,x
         sta     $1a
         shorta0
         tay
@@ -22748,9 +22905,9 @@ obj_shape_init_main:
         lda     $7aec       ; frame data index
         asl
         tax
-        lda     $d4df3c,x   ; ++$10 = pointer to animation frame data
+        lda     f:AttackAnimFramesPtrs,x
         sta     $10
-        lda     $d4df3e,x   ; +$1a = pointer to next animation frame data
+        lda     f:AttackAnimFramesPtrs+2,x
         sta     $1a
         shorta0
         tay
@@ -22849,7 +23006,7 @@ LoadAnimGfxProp:
         adc     $7aea
         tax
         clr_ay
-@a19d:  lda     $d4d000,x               ; animation graphics data
+@a19d:  lda     f:AttackGfxProp,x
         sta     $7aea,y
         inx2
         iny2
@@ -22934,10 +23091,10 @@ LoadAnimGfx3bpp:
         xba
         asl6
         clc
-        adc     #$0000
+        adc     #.loword(AttackTiles3bpp)
         sta     $10
         shorta0
-        lda     #$d2
+        lda     #^AttackTiles3bpp
         sta     $12
         lda     #$7f
         sta     $28
@@ -22959,14 +23116,14 @@ LoadAnimGfx3bpp:
         adc     $22
         sta     $22
         lda     $24
-        adc     #$0000
+        adc     #0
         sta     $24
         lda     $22
         clc
-        adc     #$0000
+        adc     #.loword(AttackGfx3bpp)
         sta     $22
         lda     $24
-        adc     #$00d3
+        adc     #^AttackGfx3bpp
         sta     $24
         lda     [$10]
         and     #$4000
@@ -23057,12 +23214,12 @@ LoadAnimGfx2bpp:
         xba
         asl6
         clc
-        adc     #$c000
+        adc     #.loword(AttackTiles2bpp)
         sta     $10
         shorta0
-        lda     #$d2
+        lda     #^AttackTiles2bpp
         sta     $12
-        lda     #$d8
+        lda     #^AttackGfx2bpp
         sta     $24
         lda     #$7f
         sta     $28
@@ -23075,7 +23232,7 @@ LoadAnimGfx2bpp:
         and     #$3fff
         asl4
         clc
-        adc     #$7000
+        adc     #.loword(AttackGfx2bpp)
         sta     $22
         lda     [$10]
         and     #$4000
@@ -23147,12 +23304,12 @@ LoadBG3AnimGfx2bpp:
         xba
         asl6
         clc
-        adc     #$c000
+        adc     #.loword(AttackTiles2bpp)
         sta     $10
         shorta0
-        lda     #$d2
+        lda     #^AttackTiles2bpp
         sta     $12
-        lda     #$d8
+        lda     #^AttackGfx2bpp
         sta     $24
         lda     #$7f
         sta     $28
@@ -23165,7 +23322,7 @@ LoadBG3AnimGfx2bpp:
         and     #$3fff
         asl4
         clc
-        adc     #$7000
+        adc     #.loword(AttackGfx2bpp)
         sta     $22
         lda     [$10]
         and     #$4000
@@ -23299,9 +23456,9 @@ GfxCmd_0b:
         lda     $632e       ; numeral counter
         asl
         tax
-        lda     $c1a5cb,x   ; pointer to damage numeral graphics in vram
+        lda     f:_c1a5cb,x   ; pointer to damage numeral graphics in vram
         sta     $6317
-        lda     $c1a5cc,x
+        lda     f:_c1a5cb+1,x
         sta     $6318
         inc     $6316       ; enable damage numeral graphics update in vram
         jsr     WaitFrame
@@ -23383,9 +23540,9 @@ GfxCmd_0b:
         lda     $632e       ; numeral counter
         asl
         tax
-        lda     $c1a5d3,x   ; pointer to damage numeral graphics in vram
+        lda     f:_c1a5d3,x   ; pointer to damage numeral graphics in vram
         sta     $6317
-        lda     $c1a5d4,x
+        lda     f:_c1a5d3+1,x
         sta     $6318
         inc     $6316       ; enable damage numeral graphics update in vram
         jsr     WaitFrame
@@ -23395,9 +23552,11 @@ GfxCmd_0b:
 ; ------------------------------------------------------------------------------
 
 ; pointers to damage numeral graphics in vram (bottom of tiles)
+_c1a5cb:
 @a5cb:  .word   $2d00,$2d40,$2d80,$2dc0
 
 ; pointers to damage numeral graphics in vram (top of tiles, where the numbers are)
+_c1a5d3:
 @a5d3:  .word   $2c00,$2c40,$2c80,$2cc0
 
 ; ------------------------------------------------------------------------------
@@ -23413,7 +23572,7 @@ one_num_set2_local:
 @a5db:  and     #$00ff
         asl
         tax
-        lda     $c1a735,x   ; pointer to numeral graphics
+        lda     f:_c1a735,x   ; pointer to numeral graphics
         tax
         lda     #$0010      ; 16 bytes per tile
         sta     $12
@@ -23575,7 +23734,7 @@ one_num_set:
         and     #$00ff
         asl
         tax
-        lda     $c1a735,x
+        lda     f:_c1a735,x
         tay
         plx
         lda     #$0010
@@ -23592,13 +23751,15 @@ one_num_set:
 
 ; pointers to numeral graphics (+$7f0000)
 num_get_poi:
+_c1a735:
 @a735:  .word   $bc40,$bc60,$bc80,$bca0,$bcc0,$bce0,$bd00,$bd20
         .word   $bd40,$bd60,$e400,$e480,$e500,$e580,$e800,$e880
         .word   $e900,$e980,$ec00,$ec80
 
 ref_target_bit:
+_c1a75d:
 @a75d:  .word   $0001,$0002,$0004,$0008
-@a765:  .word   $0100,$0200,$0400,$0800,$1000,$2000
+        .word   $0100,$0200,$0400,$0800,$1000,$2000
 
 ; ------------------------------------------------------------------------------
 
@@ -23642,10 +23803,10 @@ GfxCmd_09:
         tya
         asl
         tax
-        lda     $c1a75d,x
+        lda     f:_c1a75d,x
         ora     $613d
         sta     $613d
-        lda     $c1a75e,x
+        lda     f:_c1a75d+1,x
         ora     $613e
         sta     $613e
         lda     ($78),y
@@ -23859,10 +24020,10 @@ GfxCmd_15:
         tya
         asl
         tax
-        lda     $c1a75d,x
+        lda     f:_c1a75d,x
         ora     $613d
         sta     $613d
-        lda     $c1a75e,x
+        lda     f:_c1a75d+1,x
         ora     $613e
         sta     $613e
         lda     ($78),y
@@ -24173,7 +24334,7 @@ PreMagicAnim:
         bra     @abe7
 @abbb:  inc     $62c0       ; ignore block graphics
         longa
-        lda     $c1918e,x   ; +$1e = pointer to pre-attack animation data (+$d07fb2)
+        lda     f:PreMagicAnimPropPtrs,x
         sta     $1e
         shorta0
         jsr     InitAnimProp
@@ -25094,7 +25255,7 @@ l_01_ll283:
         sta     $1a         ; $1a = 1 (active thread flag)
 
 set_magic_buf_main:
-_b2a4:  lda     #$d0
+_b2a4:  lda     #^AttackAnimScript
         sta     $26         ; $26 = #$d0 (script pointer bank)
         ldx     $22
         phx
@@ -25108,7 +25269,7 @@ _b2a4:  lda     #$d0
         lda     $24
         asl
         tax
-        lda     $d1ead8,x   ; ++$22 = pointer to animation script
+        lda     f:AttackAnimScriptPtrs,x
         sta     $22
         inc2
         ldx     $7af6
@@ -25420,6 +25581,7 @@ cur_init:
 ; ------------------------------------------------------------------------------
 
 ; flashing scroll arrows sprite data (both, down, up, not flashing, then flashing)
+_c1b534:
 @b534:  .word   $38e2,$78e2,$38e2,$b8e4,$38e2,$38e4
 
 ; ------------------------------------------------------------------------------
@@ -25530,7 +25692,7 @@ DrawCursorSprites:
         clc
         adc     $36
         tax
-        lda     $c1b534,x   ; flashing cursor tile data
+        lda     f:_c1b534,x   ; flashing cursor tile data
         sta     $04f2,y
         lda     $c1b535,x
         sta     $04f3,y
@@ -25721,12 +25883,6 @@ CmdAnimTbl:
         .addr   CmdAnim_25
         .addr   CmdAnim_26
 
-        ; .addr   $becd,$bc41,$abeb,$bbe7,$bbdc,$bb87,$bba5,$b98d
-        ; .addr   $b9c5,$bc13,$b91a,$baaa,$b8e5,$b9e8,$bb54,$b900
-        ; .addr   $bb2b,$bb76,$bc88,$bb12,$b80a,$bc88,$b9f7,$abeb
-        ; .addr   $bbed,$abeb,$bb62,$bb49,$ba9c,$b7c3,$bc88,$bc88
-        ; .addr   $bb0a,$b7f1,$b7e9,$ba8e,$ba5f,$bab7,$b955
-
 ; ------------------------------------------------------------------------------
 
 ; [ attack command $1d: magitek ]
@@ -25805,9 +25961,9 @@ CmdAnim_14:
         and     #$01
         beq     @b834       ; branch if front
         stz     $11
-        lda     $c2a86f,x   ; horizontal movement speed (back row)
+        lda     f:_c2a86f,x   ; horizontal movement speed (back row)
         bra     @b838
-@b834:  lda     $c2a87f,x   ; horizontal movement speed (front row)
+@b834:  lda     f:_c2a87f,x   ; horizontal movement speed (front row)
 @b838:  sta     $10
         bpl     @b83e
         dec     $11         ; make $10 16-bit (+$10)
@@ -26170,7 +26326,7 @@ CmdAnim_16:
 @ba27:  ldy     #$0001
         lda     ($78),y     ; attacker
         tax
-        lda     $c14b67,x   ; pointer to character equipped weapon data
+        lda     f:CharEquipPtrs,x
         tax
         lda     $2b87,x     ; branch if right-hand item can be used with jump
         and     #$10
@@ -26336,7 +26492,7 @@ CmdAnim_13:
 @bb12:  jsr     InitCmdAnim
         lda     $ecb8       ; battle bg index
         tax
-        lda     $c2e462,x
+        lda     f:_c2e462,x
         bne     _bb2b
         ldy     #$0003
         lda     ($76),y
@@ -26976,13 +27132,13 @@ anim_command_attack:
         asl
         phx
         tax
-        lda     $d1ead8,x   ; ++$22 = pointer to animation script (weapon)
+        lda     f:AttackAnimScriptPtrs,x
         plx
         sta     $22
         inc2
         sta     $6a31,x
         shorta0
-        lda     #$d0
+        lda     #^AttackAnimScript
         sta     $24
         sta     $6a33,x
         lda     [$22]       ; animation speed
@@ -27141,13 +27297,13 @@ anim_command_attack:
         asl
         phx
         tax
-        lda     $d1ead8,x   ; pointer to animation script (hit)
+        lda     f:AttackAnimScriptPtrs,x
         plx
         sta     $22
         inc2
         sta     $6a31,x     ; ++$22 = script pointer
         shorta0
-        lda     #$d0
+        lda     #^AttackAnimScript
         sta     $24
         sta     $6a33,x
         lda     [$22]
@@ -27218,7 +27374,7 @@ anim_command_attack:
         stz     $613f       ; character/monster number
         lda     #$01
         sta     $22
-        lda     #$d0
+        lda     #^AttackAnimScript
         sta     $26
         longa
         lda     $d1ee28     ; ++$22 = pointer to animation script $01a8
@@ -28716,6 +28872,7 @@ magic_init_117:
 
 ; ------------------------------------------------------------------------------
 
+_c1cb15:
 @cb15:  .byte   $02,$03,$04,$05,$06,$07,$1f,$1f
 
 ; ------------------------------------------------------------------------------
@@ -28729,7 +28886,7 @@ magic_init_115:
         tax
         lda     $ebfb,x
         tax
-        lda     $c1cb15,x
+        lda     f:_c1cb15,x
         ldx     $7af6
         sta     $6f8c,x
         jmp     _c1cfc6
@@ -29305,9 +29462,9 @@ magic_init_83:
         eor     #$01
         and     #$01
         beq     @ce0b
-        lda     $c2a86f,x
+        lda     f:_c2a86f,x
         bra     @ce0f
-@ce0b:  lda     $c2a87f,x
+@ce0b:  lda     f:_c2a87f,x
 @ce0f:  sta     $10
         bpl     @ce15
         dec     $11
@@ -29383,13 +29540,13 @@ _c1ce83:
 one_duble_flag_set:
 @ce83:  bmi     @ce8e
         and     #$03
-        jsr     _c11a09
+        jsr     GetBitMask
         sta     $619c
         rts
 @ce8e:  and     #$7f
         sec
         sbc     #$04
-        jsr     _c11a09
+        jsr     GetBitMask
         sta     $619d
         rts
 
@@ -29532,6 +29689,7 @@ magic_init_74:
 
 ; ------------------------------------------------------------------------------
 
+_c1cf77:
 @cf77:  .byte   $39,$3b,$3c,$56,$78,$65,$39,$3b
 
 ; ------------------------------------------------------------------------------
@@ -29543,7 +29701,7 @@ magic_init_73:
 @cf7f:  jsr     Rand
         and     #$07
         tax
-        lda     $c1cf77,x
+        lda     f:_c1cf77,x
         jsr     LoadSpriteAnimPal
         rts
 
@@ -29559,7 +29717,7 @@ magic_init_72:
         and     #$7f
         sec
         sbc     #$04
-        jsr     _c11a09
+        jsr     GetBitMask
         eor     #$ff
         sta     $22
         lda     $e9e6
@@ -29961,7 +30119,7 @@ magic_init_57:
         tax
         ldy     #$0004
         phy
-@d20b:  lda     $c1d29c,x
+@d20b:  lda     f:_c1d29c,x
         sec
         sbc     $12
         bpl     @d215
@@ -30063,6 +30221,7 @@ magic_init_52:
 
 ; ------------------------------------------------------------------------------
 
+_c1d29c:
 @d29c:  .byte   $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$0f
         .byte   $0f,$0e,$0d,$0c,$0b,$0a,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00
         .byte   $80,$40,$60,$20,$a0,$c0,$80,$20,$20,$60,$20,$60,$20,$60,$20,$60
@@ -30105,7 +30264,7 @@ _d2d4:  lda     [$5b],y
         and     #$1f
         tax
         ldy     #$0004
-@d2fc:  lda     $c1d29c,x
+@d2fc:  lda     f:_c1d29c,x
         sec
         sbc     $12
         bpl     @d306
@@ -30213,7 +30372,7 @@ magic_init_48:
         asl4
         tax
         clr_ay
-@d399:  lda     $d26000,x   ; animation palette
+@d399:  lda     f:AttackPal,x
         sta     $7f80,y
         inx2
         iny2
@@ -30488,7 +30647,7 @@ magic_init_34:
         sbc     $7b1f
         sta     $10
         clr_ayx
-@d500:  lda     $c2d39f,x
+@d500:  lda     f:_c2d39f,x
         and     #$00ff
         sta     $12
         lda     $10
@@ -30506,7 +30665,7 @@ magic_init_34:
         bra     @d500
 @d524:  dec
         sta     $10
-@d527:  lda     $c2d39f,x
+@d527:  lda     f:_c2d39f,x
         and     #$00ff
         sta     $12
         lda     $10
@@ -30584,7 +30743,7 @@ magic_init_32:
         sbc     $7b2b       ; bg3 thread y position
         sta     $10
         clr_ayx
-@d5ad:  lda     $c2d39f,x   ;
+@d5ad:  lda     f:_c2d39f,x
         and     #$00ff
         sta     $12
         lda     $10
@@ -30602,7 +30761,7 @@ magic_init_32:
         bra     @d5ad
 @d5d1:  dec
         sta     $10
-@d5d4:  lda     $c2d39f,x
+@d5d4:  lda     f:_c2d39f,x
         and     #$00ff
         sta     $12
         lda     $10
@@ -30695,7 +30854,7 @@ AnimCmd_80_18:
 magic_init_24:
 @d677:  ldx     $6169       ; pointer to sketched monster palette
         clr_ay
-@d67c:  lda     $d27820,x   ; monster palettes
+@d67c:  lda     f:MonsterPal,x
         sta     $7e60,y     ; bg palette 2
         sta     $7c60,y
         inx
@@ -34470,6 +34629,7 @@ magic_code2c:
 ; ------------------------------------------------------------------------------
 
 get_laster_poi:
+_c1ef24:
 @ef24:  .word   $e7bf,$e7ff,$e83f,$e87f,$e8bf,$e8ff,$e93f,$e97f
 
 ; ------------------------------------------------------------------------------
@@ -34482,7 +34642,7 @@ bg_laster_set:
         and     #$0e
         tax
         longa
-        lda     $c1ef24,x
+        lda     f:_c1ef24,x
         sta     $22
         lda     $16
         and     #$00ff
@@ -34514,7 +34674,7 @@ bg_laster_set_bg3:
         and     #$0e
         tax
         longa
-        lda     $c1ef24,x
+        lda     f:_c1ef24,x
         sta     $22
         lda     $16
         and     #$00ff
@@ -35217,27 +35377,42 @@ magic_code03_a:
         and     #$e0
         lsr4
         tax
-        jmp     ($f3b2,x)
+        jmp     (.loword(MoveAnimTbl+16),x)
 @f396:  lda     $12
         and     #$e0
         lsr4
         tax
-        jmp     ($f3a2,x)
+        jmp     (.loword(MoveAnimTbl),x)
 
 ; ------------------------------------------------------------------------------
 
 ; move thread jump table (normal)
 vect_chg:
 MoveAnimTbl:
-@f3a2:  .addr   $f3c2,$f3dd,$f3ef,$f40a,$f41c,$f42e,$f449,$f45b
+@f3a2:  .addr   MoveAnimDownLeft
+        .addr   MoveAnimDown
+        .addr   MoveAnimDownRight
+        .addr   MoveAnimLeft
+        .addr   MoveAnimRight
+        .addr   MoveAnimUpLeft
+        .addr   MoveAnimUp
+        .addr   MoveAnimUpRight
 
-; move thread jump table (horizontally flipped)
-@f3b2:  .addr   $f3ef,$f3dd,$f3c2,$f41c,$f40a,$f45b,$f449,$f42e
+; horizontally flipped
+        .addr   MoveAnimDownRight
+        .addr   MoveAnimDown
+        .addr   MoveAnimDownLeft
+        .addr   MoveAnimRight
+        .addr   MoveAnimLeft
+        .addr   MoveAnimUpRight
+        .addr   MoveAnimUp
+        .addr   MoveAnimUpLeft
 
 ; ------------------------------------------------------------------------------
 
 ; [ move thread down/forward ]
 
+MoveAnimDownLeft:
 @f3c2:  ldx     $7af6
         longa
         lda     $6a3a,x     ; thread x position
@@ -35255,6 +35430,7 @@ MoveAnimTbl:
 
 ; [ move thread down ]
 
+MoveAnimDown:
 @f3dd:  ldx     $7af6
         longa
         lda     $6a3c,x
@@ -35268,6 +35444,7 @@ MoveAnimTbl:
 
 ; [ move thread down/back ]
 
+MoveAnimDownRight:
 @f3ef:  ldx     $7af6
         longa
         lda     $6a3a,x
@@ -35285,6 +35462,7 @@ MoveAnimTbl:
 
 ; [ move thread forward ]
 
+MoveAnimLeft:
 @f40a:  ldx     $7af6
         longa
         lda     $6a3a,x
@@ -35298,6 +35476,7 @@ MoveAnimTbl:
 
 ; [ move thread back ]
 
+MoveAnimRight:
 @f41c:  ldx     $7af6
         longa
         lda     $6a3a,x
@@ -35311,6 +35490,7 @@ MoveAnimTbl:
 
 ; [ move thread up/forward ]
 
+MoveAnimUpLeft:
 @f42e:  ldx     $7af6
         longa
         lda     $6a3a,x
@@ -35328,6 +35508,7 @@ MoveAnimTbl:
 
 ; [ move thread up ]
 
+MoveAnimUp:
 @f449:  ldx     $7af6
         longa
         lda     $6a3c,x
@@ -35341,6 +35522,7 @@ MoveAnimTbl:
 
 ; [ move thread up/back ]
 
+MoveAnimUpRight:
 @f45b:  ldx     $7af6
         longa
         lda     $6a3a,x
@@ -35467,18 +35649,51 @@ _f4a8:  bmi     @f4d5                   ; branch if a monster
 ; character movement jump table (8 movement directions, normal then horizontally flipped)
 pmvect_chg_tbl:
 MoveCharTbl:
-@f501:  .addr   $f689,$f6a0,$f6ae,$f6c5,$f6d3,$f6e1,$f6f8,$f706
-        .addr   $f6ae,$f6a0,$f689,$f6d3,$f6c5,$f706,$f6f8,$f6e1
+@f501:  .addr   MoveCharDownLeft
+        .addr   MoveCharDown
+        .addr   MoveCharDownRight
+        .addr   MoveCharLeft
+        .addr   MoveCharRight
+        .addr   MoveCharUpLeft
+        .addr   MoveCharUp
+        .addr   MoveCharUpRight
+
+; horizontally flipped
+        .addr   MoveCharDownRight
+        .addr   MoveCharDown
+        .addr   MoveCharDownLeft
+        .addr   MoveCharRight
+        .addr   MoveCharLeft
+        .addr   MoveCharUpRight
+        .addr   MoveCharUp
+        .addr   MoveCharUpLeft
 
 ; monster movement jump table (8 movement directions, normal then horizontally flipped)
 MoveMonsterTbl:
-@f521:  .addr   $f541,$f573,$f593,$f5c5,$f5e5,$f605,$f637,$f657
-        .addr   $f593,$f573,$f541,$f5e5,$f5c5,$f657,$f637,$f605
+@f521:  .addr   MoveMonsterDownLeft
+        .addr   MoveMonsterDown
+        .addr   MoveMonsterDownRight
+        .addr   MoveMonsterLeft
+        .addr   MoveMonsterRight
+        .addr   MoveMonsterUpLeft
+        .addr   MoveMonsterUp
+        .addr   MoveMonsterUpRight
+
+; horizontally flipped
+        .addr   MoveMonsterDownRight
+        .addr   MoveMonsterDown
+        .addr   MoveMonsterDownLeft
+        .addr   MoveMonsterRight
+        .addr   MoveMonsterLeft
+        .addr   MoveMonsterUpRight
+        .addr   MoveMonsterUp
+        .addr   MoveMonsterUpLeft
 
 ; ------------------------------------------------------------------------------
 
 ; [ move monster down/forward ]
 
+MoveMonsterDownLeft:
 @f541:  longa
         lda     $80c3,y     ; monster x position
         sec
@@ -35507,6 +35722,7 @@ _f555:  lda     $7af6       ; thread data pointer
 
 ; [ move monster down ]
 
+MoveMonsterDown:
 @f573:  longa
         lda     $80cf,y
         clc
@@ -35527,6 +35743,7 @@ _f57e:  lda     $7af6
 
 ; [ move monster down/back ]
 
+MoveMonsterDownRight:
 @f593:  longa
         lda     $80c3,y
         clc
@@ -35555,6 +35772,7 @@ _f5a7:  lda     $7af6
 
 ; [ move monster forward ]
 
+MoveMonsterLeft:
 @f5c5:  longa
         lda     $80c3,y
         sec
@@ -35575,6 +35793,7 @@ _f5d0:  lda     $7af6
 
 ; [ move monster back ]
 
+MoveMonsterRight:
 @f5e5:  longa
         lda     $80c3,y
         clc
@@ -35595,6 +35814,7 @@ _f5f0:  lda     $7af6
 
 ; [ move monster up/forward ]
 
+MoveMonsterUpLeft:
 @f605:  longa
         lda     $80c3,y
         sec
@@ -35623,6 +35843,7 @@ _f619:  lda     $7af6
 
 ; [ move monster up ]
 
+MoveMonsterUp:
 @f637:  longa
         lda     $80cf,y
         sec
@@ -35643,6 +35864,7 @@ _f642:  lda     $7af6
 
 ; [ move monster up/back ]
 
+MoveMonsterUpRight:
 @f657:  longa
         lda     $80c3,y
         clc
@@ -35671,6 +35893,7 @@ _f66b:  lda     $7af6
 
 ; [ move character down/forward ]
 
+MoveCharDownLeft:
 @f689:  longa
         lda     $61d4,y     ; character x offset
         sec
@@ -35686,6 +35909,7 @@ _f66b:  lda     $7af6
 
 ; [ move character down ]
 
+MoveCharDown:
 @f6a0:  longa
         lda     $61c7,y
         clc
@@ -35697,6 +35921,7 @@ _f66b:  lda     $7af6
 
 ; [ move character down/back ]
 
+MoveCharDownRight:
 @f6ae:  longa
         lda     $61d4,y
         clc
@@ -35712,6 +35937,7 @@ _f66b:  lda     $7af6
 
 ; [ move character forward ]
 
+MoveCharLeft:
 @f6c5:  longa
         lda     $61d4,y
         sec
@@ -35723,6 +35949,7 @@ _f66b:  lda     $7af6
 
 ; [ move character back ]
 
+MoveCharRight:
 @f6d3:  longa
         lda     $61d4,y
         clc
@@ -35734,6 +35961,7 @@ _f66b:  lda     $7af6
 
 ; [ move character up/forward ]
 
+MoveCharUpLeft:
 @f6e1:  longa
         lda     $61d4,y
         sec
@@ -35749,6 +35977,7 @@ _f66b:  lda     $7af6
 
 ; [ move character up ]
 
+MoveCharUp:
 @f6f8:  longa
         lda     $61c7,y
         sec
@@ -35760,6 +35989,7 @@ _f66b:  lda     $7af6
 
 ; [ move character up/back ]
 
+MoveCharUpRight:
 @f706:  longa
         lda     $61d4,y
         clc
@@ -35776,7 +36006,7 @@ _f66b:  lda     $7af6
 
 ; [ battle animation command $88: move attacker forward (fight) ]
 
-; b1 = frame index (0..7), ignored for magitek mode
+; b1: frame index (0..7), ignored for magitek mode
 
 AnimCmd_88:
 magic_code08:
@@ -35801,10 +36031,10 @@ magic_code08:
         jmp     MoveAnim
 @f749:  lda     [$5b]       ; frame number
         tax
-        lda     $c1f7a3,x
+        lda     f:_c1f7a3,x
         sta     $10         ; set movement distance
         stz     $11
-        lda     $c1f7ab,x
+        lda     f:_c1f7ab,x
         sta     $12         ; set movement direction
         jsr     MoveAnim
         ldy     #$0003      ; move 3 pixels
@@ -35822,10 +36052,10 @@ magic_code08:
         jmp     MoveAnim
 @f77d:  lda     [$5b]       ; frame number
         tax
-        lda     $c1f7a3,x
+        lda     f:_c1f7a3,x
         sta     $10         ; set movement distance
         stz     $11
-        lda     $c1f7ab,x
+        lda     f:_c1f7ab,x
         sta     $12         ; set movement direction
         jsr     MoveAttacker
         jsr     MoveAnim
@@ -35839,9 +36069,11 @@ magic_code08:
 ; ------------------------------------------------------------------------------
 
 ; vertical movement distance for jump
+_c1f7a3:
 @f7a3:  .byte   $03,$03,$02,$01,$00,$02,$03,$04
 
 ; vertical movement direction for jump
+_c1f7ab:
 @f7ab:  .byte   $c0,$c0,$c0,$c0,$c0,$20,$20,$20
 
 ; ------------------------------------------------------------------------------
@@ -36767,10 +36999,10 @@ goodanim:
         longa
         asl
         tax
-        lda     $d09800,x   ; get pointer to battle event script
+        lda     f:BattleEventScriptPtrs,x   ; get pointer to battle event script
         sta     $8f
         shorta0
-        lda     #$d0
+        lda     #^BattleEventScript
         sta     $91
 @fda8:  lda     [$8f]       ; get battle event script command
         cmp     #$ff
@@ -36856,10 +37088,11 @@ BattleEventCmd_14:
 ; 12: move monster back (ultros, unused)
 ; 13: move monster back (ultros, unused)
 
+_c1fdf9:
 event_init_data:
-@fdf9:  .addr   $0e0e,$0e1c,$0e2a,$0e38,$0e46,$0e54,$0e62,$0e70
-        .addr   $0e7e,$0e8c,$0e9a,$0ea8,$0eb6,$0ec4,$0ed2,$1014
-        .addr   $1500,$150e,$0eee,$0eee
+@fdf9:  .word   $0e0e,$0e1c,$0e2a,$0e38,$0e46,$0e54,$0e62,$0e70
+        .word   $0e7e,$0e8c,$0e9a,$0ea8,$0eb6,$0ec4,$0ed2,$1014
+        .word   $1500,$150e,$0eee,$0eee
 
 ; ------------------------------------------------------------------------------
 
@@ -36889,7 +37122,7 @@ BattleEventCmd_0d:
         longa
         asl
         tax
-        lda     $c1fdf9,x   ; pointer to animation data
+        lda     f:_c1fdf9,x   ; pointer to animation data
         sta     $1e
         shorta0
         iny
@@ -36900,7 +37133,7 @@ BattleEventCmd_0d:
         lda     [$8f],y     ; target
         bpl     @fe7a       ;
         lda     $2c6f
-        jsr     _c11a09
+        jsr     GetBitMask
         sta     $2c70
         sta     $2c72
         sta     $613d
@@ -37025,7 +37258,7 @@ good_start_init_set:
         lda     $10
         sta     $2c6f
         stz     $2c6e
-        lda     #$d0
+        lda     #^BattleEventScript
         sta     $26
         jsr     _c1b1c4
         rts
@@ -37154,7 +37387,7 @@ _ffa9:  pla
         bra     @ffd8
 @ffd7:  clr_a
 @ffd8:  sta     $2c6e
-        lda     #$d0
+        lda     #^BattleEventScript
         sta     $26
         jsr     _c1b1c4
         rts
@@ -37187,12 +37420,14 @@ SlotReelTbl:
 ; ------------------------------------------------------------------------------
 
 ; palette data for swdtech menu (grays out attacks that aren't known)
+_c2a860:
 sword_level_attr:
 @a860:  .byte   $21,$21,$21,$21,$21,$21,$21,$21,$25,$25,$25,$25,$25,$25,$25
 
 ; ------------------------------------------------------------------------------
 
 ; horizontal movement speed for back row (4 battle types, 4 characters each)
+_c2a86f:
 player_chg_x_offset2:
 @a86f:  .byte   $02,$02,$02,$02
         .byte   $fe,$fe,$fe,$fe
@@ -37202,6 +37437,7 @@ player_chg_x_offset2:
 ; ------------------------------------------------------------------------------
 
 ; horizontal movement speed for front row (4 battle types, 4 characters each)
+_c2a87f:
 player_chg_x_offset:
 @a87f:  .byte   $fe,$fe,$fe,$fe
         .byte   $02,$02,$02,$02
@@ -37219,15 +37455,15 @@ auto_last_tfr:
         lda     $0e
         and     #$07
         tax
-        lda     $c2e4e3,x
+        lda     f:_c2e4e3,x
         sta     f:$004374
         txa
         asl
         tax
         longa
-        lda     $c2e4c3,x
+        lda     f:_c2e4c3,x
         sta     f:hVMADDL
-        lda     $c2e4d3,x
+        lda     f:_c2e4d3,x
         sta     f:$004372
         lda     #$0800
         sta     f:$004375
@@ -37243,6 +37479,7 @@ auto_last_tfr:
 ; ------------------------------------------------------------------------------
 
 and_data:
+_c2a8d2:
 @a8d2:  .word   $ffff,$ffff,$ffff,$ffff,$ffff,$ffff,$ffff,$ffff
         .word   $ff7f,$fffb,$ffef,$ffdf,$fffd,$fff7,$fffe,$ffbf
         .word   $fdff,$efff,$f7ff,$bfff,$feff,$7fff,$dfff,$fbff
@@ -37273,10 +37510,9 @@ inc_scr_poi:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ wait A frames (final Kefka death animation) ]
 
-_c2a961:
-last_n_wait:
+WaitKefkaDeath:
 @a961:  pha
         jsl     WaitFrame_far
         pla
@@ -37286,10 +37522,9 @@ last_n_wait:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ final kefka death animation ]
 
-_c2a96b:
-last_mon_clr_long:
+KefkaDeathAnim:
 @a96b:  inc     $9a
         inc     $628b
         ldx     #$ffff
@@ -37377,7 +37612,7 @@ last_mon_clr_long:
         cpx     #$0010
         bne     @aa25
         lda     #$08
-        jsr     _c2a961
+        jsr     WaitKefkaDeath
         lda     #$17
         sta     $898d
 @aa3e:  jsl     WaitFrame_far
@@ -37408,7 +37643,7 @@ last_mon_clr_long:
         phx
         tax
         clr_ay
-@aa86:  lda     $c2a8d2,x
+@aa86:  lda     f:_c2a8d2,x
         sta     $ecdc,y
         inx
         iny
@@ -37448,11 +37683,11 @@ last_mon_clr_long:
 @aadb:  cpx     #$005a
         jne     @aa3e
         lda     #$80
-        jsr     _c2a961
+        jsr     WaitKefkaDeath
         lda     $e9f9
         beq     @aaf7
 @aaed:  lda     #$10
-        jsr     _c2a961
+        jsr     WaitKefkaDeath
         dec     $e9f9
         bne     @aaed
 @aaf7:  rtl
@@ -37608,12 +37843,13 @@ _c2ab8a:
         lda     #$80
         jmp     ($ac7c,x)
 
-@ac7c:  .addr   $ac84,$acbd,$acf6,$ad2f
+@ac7c:  .addr   _c2ac84,_c2acbd,_c2acf6,_c2ad2f
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
+_c2ac84:
 @ac84:  ldx     #$7839
         stx     hVMADDL
         ldx     #$5c51
@@ -37638,6 +37874,7 @@ _c2ab8a:
 
 ; [  ]
 
+_c2acbd:
 @acbd:  ldx     #$7879
         stx     hVMADDL
         ldx     #$5c69
@@ -37662,6 +37899,7 @@ _c2ab8a:
 
 ; [  ]
 
+_c2acf6:
 @acf6:  ldx     #$78b9
         stx     hVMADDL
         ldx     #$5c81
@@ -37686,6 +37924,7 @@ _c2ab8a:
 
 ; [  ]
 
+_c2ad2f:
 @ad2f:  ldx     #$78f9
         stx     hVMADDL
         ldx     #$5c99
@@ -37722,14 +37961,14 @@ _c2ad65:
         asl
         tax
         longa
-        lda     $c2add9,x
+        lda     f:_c2add9,x
         tay
         txa
         asl2
         tax
         lda     #$0003
         sta     $36
-@ad89:  lda     $c2adb9,x
+@ad89:  lda     f:_c2adb9,x
         sta     f:hVMADDL
         lda     $5c0d,y
         sta     f:hVMDATAL
@@ -37748,16 +37987,19 @@ _c2ad65:
 
 ; ------------------------------------------------------------------------------
 
+_c2adb9:
 @adb9:  .word   $7835,$7935,$7a35,$0000
         .word   $7875,$7975,$7a75,$0000
         .word   $78b5,$79b5,$7ab5,$0000
         .word   $78f5,$79f5,$7af5,$0000
 
+_c2add9:
 @add9:  .word   $0000,$0010,$0020,$0030
 
 ; ------------------------------------------------------------------------------
 
 ; status names (32 items, 10 bytes each)
+StatusName:
 @ade1:  .byte   $96,$a8,$ae,$a7,$9d,$ff,$ff,$ff,$ff,$ff
         .byte   $8f,$9e,$ad,$ab,$a2,$9f,$b2,$ff,$ff,$ff
         .byte   $88,$a6,$a9,$ff,$ff,$ff,$ff,$ff,$ff,$ff
@@ -37809,7 +38051,7 @@ magic_init_133long:
         bne     @af4a
 @af35:  longa
         clr_ax
-@af39:  lda     $c2e2e8,x
+@af39:  lda     f:_c2e2e8,x
         sta     $7ea0,x
         inx2
         cpx     #$0060
@@ -37818,7 +38060,7 @@ magic_init_133long:
 @af4a:  rtl
 @af4b:  longa
         clr_ax
-@af4f:  lda     $c2e288,x
+@af4f:  lda     f:_c2e288,x
         sta     $7ea0,x
         inx2
         cpx     #$0060
@@ -37860,9 +38102,10 @@ magic_init_131long:
 ; ------------------------------------------------------------------------------
 
 ; high sprite data
+_c2af97:
 @af97:  .byte   $02,$08,$20,$80
-@af9b:  .byte   $03,$0c,$30,$c0
-@af9f:  .byte   $01,$04,$10,$40
+        .byte   $03,$0c,$30,$c0
+        .byte   $01,$04,$10,$40
 
 ; ------------------------------------------------------------------------------
 
@@ -37881,17 +38124,17 @@ oam_hibit_init:
         lda     $10
         and     #$03
         tax
-        lda     $c2af97,x
+        lda     f:_c2af97,x
         sta     $a37f,y
         sta     $a380,y
         sta     $a381,y
         sta     $a382,y
-        lda     $c2af9b,x
+        lda     f:_c2af97+4,x
         sta     $a57f,y
         sta     $a580,y
         sta     $a581,y
         sta     $a582,y
-        lda     $c2af9f,x
+        lda     f:_c2af97+8,x
         sta     $a77f,y
         sta     $a780,y
         sta     $a781,y
@@ -37978,56 +38221,110 @@ magic_init_125long:
 
 ; monster death animation palette
 MonsterDeathPal:
-mon_clr_col:
 @b05d:  .word   $318c,$0401,$7c1f,$741d,$6419,$5c17,$5415,$4c13
-@b06d:  .word   $4411,$3c0f,$340d,$2c0b,$2409,$1c07,$1405,$0c03
+        .word   $4411,$3c0f,$340d,$2c0b,$2409,$1c07,$1405,$0c03
 
 ; ------------------------------------------------------------------------------
 
 ; block/shield palettes (8 colors each)
-sp_color:
+BlockPal:
 @b07d:  .word   $0000,$0000,$001a,$0013,$000d,$7ffe,$0380,$01c0
-@b08d:  .word   $0000,$0000,$7ffe,$373a,$2295,$1d8b,$28f2,$186e
-@b09d:  .word   $0000,$0000,$7ffe,$6737,$4a71,$2989,$2ef8,$098f
-@b0ad:  .word   $35ad,$0c63,$6fff,$2108,$31f8,$2926,$18c6,$0172
+        .word   $0000,$0000,$7ffe,$373a,$2295,$1d8b,$28f2,$186e
+        .word   $0000,$0000,$7ffe,$6737,$4a71,$2989,$2ef8,$098f
+        .word   $35ad,$0c63,$6fff,$2108,$31f8,$2926,$18c6,$0172
 
 ; ------------------------------------------------------------------------------
 
+; unused ???
 @b0bd:  .byte   $02,$04,$06,$08,$0a,$0c,$0e,$10
 
 ; ------------------------------------------------------------------------------
 
 ; vertical scroll positions for magitek train car bg
 tor_rnd_poi:
+_c2b0c5:
 @b0c5:  .word   $0000,$ffff,$fffe,$fffd
 
 ; ------------------------------------------------------------------------------
 
 ; battle bg update jump table
+UpdateBattleBGTbl:
 land_prog_jmp:
-@b0cd:  .addr   $b13d,$b13d,$b13d,$b13d,$b13d,$b13d,$b13d,$b1ad
-        .addr   $b13d,$b13d,$b13d,$b13d,$b13d,$b218,$b13d,$b1b8
-        .addr   $b13d,$b13d,$b13d,$b13d,$b13d,$b13d,$b13d,$b13d
-        .addr   $b13d,$b13d,$b13d,$b13d,$b13d,$b13d,$b13d,$b1e1
-        .addr   $b13d,$b1b8,$b13d,$b13d,$b13d,$b13d,$b13d,$b13d
-        .addr   $b13d,$b13d,$b13d,$b13d,$b1c3,$b13d,$b170,$b13d
-        .addr   $b13d,$b13d,$b13d,$b13d,$b13d,$b13d,$b14e,$b13d
+@b0cd:  .addr   UpdateBattleBGNoEffect  ; $00
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBG_07
+        .addr   UpdateBattleBGNoEffect  ; $08
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBG_0d
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBG_0f
+        .addr   UpdateBattleBGNoEffect  ; $10
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect  ; $18
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBG_1f
+        .addr   UpdateBattleBGNoEffect  ; $20
+        .addr   UpdateBattleBG_21
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect  ; $28
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBG_2c
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBG_2e
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect  ; $30
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBGNoEffect
+        .addr   UpdateBattleBG_36
+        .addr   UpdateBattleBGNoEffect
 
 ; ------------------------------------------------------------------------------
 
 ; [ no battle bg update ]
 
+UpdateBattleBGNoEffect:
 @b13d:  rtl
 
 ; ------------------------------------------------------------------------------
 
 ; final kefka death animation scroll positions ???
+_c2b13e:
 @b13e:  .word   1,2,1,0,1,2,1,2
 
 ; ------------------------------------------------------------------------------
 
 ; [ update battle bg $36: final kefka ]
 
+UpdateBattleBG_36:
         .a16
 @b14e:  lda     $9a         ; return if death animation is not enabled
         beq     @b16f
@@ -38035,7 +38332,7 @@ land_prog_jmp:
         and     #$0007
         asl
         tax
-        lda     $c2b13e,x   ;
+        lda     f:_c2b13e,x   ;
         pha
         clc
         adc     #$fff0
@@ -38051,6 +38348,7 @@ land_prog_jmp:
 
 ; [ update battle bg $2e: cyan's dream world ]
 
+UpdateBattleBG_2e:
         .a16
 @b170:  clr_ax
 @b172:  lda     $ec13,x     ; copy first 8 colors of palette 1 and 3 to buffer
@@ -38082,6 +38380,7 @@ land_prog_jmp:
 
 ; [ update battle bg $07: falling through the clouds ]
 
+UpdateBattleBG_07:
         .a16
 @b1ad:  lda     $64b2       ; add 6 to vertical scroll position
         clc
@@ -38093,6 +38392,8 @@ land_prog_jmp:
 
 ; [ update battle bg $0f/$21: top of train car/running on train tracks ]
 
+UpdateBattleBG_0f:
+UpdateBattleBG_21:
         .a16
 @b1b8:  lda     $64b0       ; subtract 4 from horizontal scroll position
         sec
@@ -38104,6 +38405,7 @@ land_prog_jmp:
 
 ; [ update battle bg $2c: magitek train car ]
 
+UpdateBattleBG_2c:
         .a16
 @b1c3:  lda     $64b0       ; add 8 to horizontal scroll position
         sec
@@ -38115,7 +38417,7 @@ land_prog_jmp:
         and     #$0003      ; (0..3)
         asl
         tax
-        lda     $c2b0c5,x   ; vertical scroll position (0, -1, -2, -3)
+        lda     f:_c2b0c5,x   ; vertical scroll position (0, -1, -2, -3)
         sta     $64b2
         rtl
 
@@ -38123,6 +38425,7 @@ land_prog_jmp:
 
 ; [ update battle bg $1f: waterfall ]
 
+UpdateBattleBG_1f:
         .a16
 @b1e1:  clr_ax
 @b1e3:  lda     $ec13,x     ; copy first 8 colors of palette 1 to buffer
@@ -38153,6 +38456,7 @@ land_prog_jmp:
 
 ; [ update battle bg $0d: raft on a river ]
 
+UpdateBattleBG_0d:
         .a16
 @b218:  clr_ax
 @b21a:  lda     $ec13,x     ; copy colors 1 through 4 of palette 1 to buffer
@@ -38185,8 +38489,7 @@ land_prog_jmp:
 
 ; [ update battle bg palette and scrolling ]
 
-_c2b258:
-color_scene_chg:
+UpdateBattleBG:
         .a16
 @b258:  shorti
         clr_ax
@@ -38204,7 +38507,7 @@ color_scene_chg:
         and     #$003f
         asl
         tax
-        jmp     ($b0cd,x)   ; update battle bg
+        jmp     (.loword(UpdateBattleBGTbl),x)
         .a8
 
 ; ------------------------------------------------------------------------------
@@ -38520,7 +38823,6 @@ chg_color:
 
 ; unused ???
 
-_c2b49d:
 @b49d:  .byte   $01,$02,$03,$04,$05,$06
 
 ; ------------------------------------------------------------------------------
@@ -38634,14 +38936,14 @@ LoadTrainGfx:
         rtl
 @b541:  ldx     #$012c
         stx     $26
-        lda     $e70003,x   ; battle bg tile formation index (in battle bg properties)
+        lda     f:BattleBGProp+3,x   ; battle bg tile formation index (in battle bg properties)
         asl
         tax
-        lda     $e71848,x   ; pointer to tile formation
+        lda     f:BattleBGTilesPtrs,x   ; pointer to tile formation
         sta     $f3
-        lda     $e71849,x
+        lda     f:BattleBGTilesPtrs+1,x
         sta     $f4
-        lda     #$e7
+        lda     #^BattleBGTiles
         sta     $f5
         lda     #$00        ; destination = $7fc400
         sta     $f6
@@ -38651,32 +38953,32 @@ LoadTrainGfx:
         sta     $f8
         jsl     Decompress_ext
         ldx     $26
-        lda     $e70000,x   ; battle bg graphics index 1 (in battle bg properties)
+        lda     f:BattleBGProp,x   ; battle bg graphics index 1 (in battle bg properties)
         and     #$7f
         sta     $22
         asl
         clc
         adc     $22
         tax
-        lda     $e71650,x   ; pointer to battle bg graphics 1
+        lda     f:BattleBGGfxPtrs,x   ; pointer to battle bg graphics 1
         sta     $f3
-        lda     $e71651,x
+        lda     f:BattleBGGfxPtrs+1,x
         sta     $f4
-        lda     $e71652,x
+        lda     f:BattleBGGfxPtrs+2,x
         sta     $f5
         ldx     $26
-        lda     $e70002,x   ; battle bg graphics index 3 (in battle bg properties)
+        lda     f:BattleBGProp+2,x   ; battle bg graphics index 3 (in battle bg properties)
         and     #$7f
         sta     $22
         asl
         clc
         adc     $22
         tax
-        lda     $e71650,x   ; pointer to battle bg graphics 3
+        lda     f:BattleBGGfxPtrs,x   ; pointer to battle bg graphics 3
         sta     $f6
-        lda     $e71651,x
+        lda     f:BattleBGGfxPtrs+1,x
         sta     $f7
-        lda     $e71652,x
+        lda     f:BattleBGGfxPtrs+2,x
         sta     $f8
         longa
         stz     $10
@@ -39245,22 +39547,23 @@ magic_init_106long:
 ; ------------------------------------------------------------------------------
 
 ; sprite data for monsters
+_c2b9e7:
 @b9e7:  .byte $00,$00,$00,$01
         .byte $20,$00,$04,$01
         .byte $40,$00,$08,$01
         .byte $60,$00,$0c,$01
 
-@b9f7:  .byte $00,$20,$40,$01
+        .byte $00,$20,$40,$01
         .byte $20,$20,$44,$01
         .byte $40,$20,$48,$01
         .byte $60,$20,$4c,$01
 
-@ba07:  .byte $00,$40,$80,$01
+        .byte $00,$40,$80,$01
         .byte $20,$40,$84,$01
         .byte $40,$40,$88,$01
         .byte $60,$40,$8c,$01
 
-@ba17:  .byte $00,$60,$c0,$01
+        .byte $00,$60,$c0,$01
         .byte $20,$60,$c4,$01
         .byte $40,$60,$c8,$01
         .byte $60,$60,$cc,$01
@@ -39443,7 +39746,7 @@ set_s_mess_poi:
         jsl     Mult8_far
         ldx     $26
         clr_ay
-@bb59:  lda     $e6fe8f,x   ; esper attack names
+@bb59:  lda     f:GenjuAttackName,x
         cmp     #$ff
         beq     @bb6b
         sta     $57d5,y
@@ -39457,11 +39760,13 @@ set_s_mess_poi:
 
 ; ------------------------------------------------------------------------------
 
+_c2bb70:
 x_image_offset:
 @bb70:  .word   $0000,$0000,$0000,$0000,$0000,$0020,$0020,$0040
         .word   $0040,$0060,$0060,$0080,$0080,$00a0,$00a0,$00c0
         .word   $00c0
 
+_c2bb92:
 y_image_offset:
 @bb92:  .word   $0000,$0000,$0000,$0000,$0000,$0200,$0200,$0400
         .word   $0400,$0600,$0600,$0800,$0800,$0a00,$0a00,$0c00
@@ -39525,7 +39830,7 @@ Rand_near:
 ; ------------------------------------------------------------------------------
 
 ; rainbow palette indexes (orange, purple, blue, green, gray, red, purple, green)
-magic_rnd_col_tbl:
+RainbowPalTbl:
 @bbf2:  .byte   $c0,$c1,$c2,$c3,$c4,$c5,$c1,$c3
 
 ; ------------------------------------------------------------------------------
@@ -39553,12 +39858,12 @@ magic_init_101long:
         jsr     Rand_near
         and     #$07
         tax
-        lda     $c2bbf2,x   ; rainbow palette index
+        lda     f:RainbowPalTbl,x
         longa
         asl4
         tax
         clr_ay
-@bc21:  lda     $d26000,x   ; battle animation palettes
+@bc21:  lda     f:AttackPal,x
         sta     $7f60,y     ; sprite animation palette
         sta     $7f70,y
         inx2
@@ -39739,14 +40044,14 @@ scene_init:
         sta     $24
         jsl     Mult8_far
         ldx     $26
-        lda     $d0fd01,x   ; special battle background
+        lda     f:CharAI+1,x   ; special battle background
         cmp     #$ff
         beq     @bd84       ; branch if no special background
         sta     $ecb8       ; set battle background
         stz     $ecb9
-@bd84:  lda     $d0fd02,x
+@bd84:  lda     f:CharAI+2,x
         sta     $2f46       ; characters that can be targetted
-        lda     $d0fd03,x
+        lda     f:CharAI+3,x
         sta     $629d       ; special song index
         jsr     _c2be6e
 @bd95:  lda     $2f4b
@@ -39849,11 +40154,11 @@ scene_init:
 _c2be6e:
 set_play_xy:
 @be6e:  phx
-        lda     $d0fd00,x   ; character ai data
+        lda     f:CharAI,x
         bmi     @bee9       ; branch if non-ai characters are not shown
         lda     #$04
         sta     $10
-@be79:  lda     $d0fd04,x
+@be79:  lda     f:CharAI+4,x
         cmp     #$ff
         beq     @bee7
         and     #$3f
@@ -39865,12 +40170,12 @@ set_play_xy:
 @be8d:  lda     $2ec6,y     ; actor index
         cmp     $12
         bne     @bed1
-        lda     $d0fd04,x
+        lda     f:CharAI+4,x
         and     #$40
         beq     @bea1
         lda     $18
         sta     $2f47       ; characters acting as enemies
-@bea1:  lda     $d0fd04,x
+@bea1:  lda     f:CharAI+4,x
         bpl     @beaf
         lda     $18
         ora     $6192       ;
@@ -39878,13 +40183,13 @@ set_play_xy:
 @beaf:  lda     $14
         asl2
         tay
-        lda     $d0fd07,x   ; x position
+        lda     f:CharAI+7,x   ; x position
         cmp     #$ff
         beq     @bede
         longa
         asl
         sta     $6246,y
-        lda     $d0fd08,x   ; y position
+        lda     f:CharAI+8,x   ; y position
         and     #$00ff
         asl
         sta     $6248,y
@@ -39908,25 +40213,25 @@ set_play_xy:
 @bee9:  clr_ay
         lda     #$01        ; character bit mask
         sta     $10
-@beef:  lda     $d0fd04,x
+@beef:  lda     f:CharAI+4,x
         cmp     #$ff
         beq     @bf0e       ; branch if ai character slot is disabled
         and     #$40
         beq     @bf00       ; branch if not acting as enemy
         lda     $10
         sta     $2f47       ; set character acting as enemy
-@bf00:  lda     $d0fd04,x
+@bf00:  lda     f:CharAI+4,x
         bpl     @bf0e       ; branch if character is not shown
         lda     $10
         ora     $6192       ; visible ai characters
         sta     $6192
-@bf0e:  lda     $d0fd07,x   ; x position
+@bf0e:  lda     f:CharAI+7,x   ; x position
         cmp     #$ff
         beq     @bf29
         longa
         asl
         sta     $6246,y
-        lda     $d0fd08,x   ; y position
+        lda     f:CharAI+8,x   ; y position
         and     #$00ff
         asl
         sta     $6248,y
@@ -40043,7 +40348,7 @@ DrawCondemnNumDigitFlip:
         and     #$00ff
         asl
         tax
-        lda     $c2c013,x   ; pointer to backwards numeral graphics
+        lda     f:_c2c013,x   ; pointer to backwards numeral graphics
         bra     DrawCondemnNumDigit
 
 ; ------------------------------------------------------------------------------
@@ -40056,7 +40361,7 @@ DrawCondemnNumDigitNoFlip:
         and     #$00ff
         asl
         tax
-        lda     $c2bfff,x   ; pointer to numeral graphics
+        lda     f:_c2bfff,x   ; pointer to numeral graphics
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -40081,10 +40386,12 @@ DrawCondemnNumDigit:
 ; ------------------------------------------------------------------------------
 
 ; pointers to numeral graphics (10 digits, +$7f0000)
+_c2bfff:
 num_get_poi2:
 @bfff:  .word   $be00,$be20,$be40,$be60,$be80,$bea0,$bec0,$bee0,$bf00,$bf20
 
 ; pointers to backwards numeral graphics (10 digits, +$7f0000)
+_c2c013:
 num_get_poi3:
 @c013:  .word   $c000,$c020,$c040,$c060,$c080,$c0a0,$c0c0,$c0e0,$c100,$c120
 
@@ -40361,6 +40668,7 @@ EventAnimCmd_0a:
 ; ------------------------------------------------------------------------------
 
 ; character actions for vector directions (arms up)
+_c2c1a3:
 @c1a3:  .byte   $19,$18,$18,$1a,$1a,$1b,$1b,$19
         .byte   $1a,$18,$18,$19,$19,$1b,$1b,$1a
 
@@ -40381,7 +40689,7 @@ EventAnimCmd_09:
         clc
         adc     $10
         tax
-        lda     $c2c1a3,x
+        lda     f:_c2c1a3,x
         sta     $61c0,y
         rts
 
@@ -40438,6 +40746,7 @@ EventAnimCmd_08:
 ; ------------------------------------------------------------------------------
 
 ; character actions for vector directions (walking)
+_c2c237:
 @c237:  .byte   $03,$02,$02,$04,$04,$05,$05,$03
         .byte   $04,$02,$02,$03,$03,$05,$05,$04
 
@@ -40458,7 +40767,7 @@ EventAnimCmd_07:
         clc
         adc     $10
         tax
-        lda     $c2c237,x
+        lda     f:_c2c237,x
         sta     $61c0,y     ; character tertiary graphic action
         rts
 
@@ -40694,6 +41003,7 @@ ToggleCharFlip_near:
 ; ------------------------------------------------------------------------------
 
 ; pointers to frame data (+$7e0000)
+_c2c3e4:
 @c3e4:  .word   $ce3f,$ce93,$cee7,$cf3b,$cf8f,$cfe3,$d037,$d08b
         .word   $d0df,$d133,$d187,$d1db,$d22f,$d283,$d2d7,$d32b
         .word   $d37f,$d3d3,$d427,$d47b,$d4cf,$d523,$d577,$d5cb
@@ -40702,6 +41012,7 @@ ToggleCharFlip_near:
 ; ------------------------------------------------------------------------------
 
 ; pointers to frame data (+$7e0000)
+_c2c424:
 @c424:  .word   $d8bf,$d913,$d967,$d9bb,$da0f,$da63,$dab7,$db0b
         .word   $db5f,$dbb3,$dc07,$dc5b,$dcaf,$dd03,$dd57,$ddab
         .word   $ddff,$de53,$dea7,$defb,$df4f,$dfa3,$dff7,$e04b
@@ -40710,11 +41021,13 @@ ToggleCharFlip_near:
 ; ------------------------------------------------------------------------------
 
 ; vh flip and pointers to monster sprite data pointers
+_c2c464:
 @c464:  .word   $0000,$c474,$4000,$c480,$8000,$c48c,$c000,$c498
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to monster sprite data (4 copies, 6 monsters per copy, +$7e0000)
+MonsterSpriteDataPtrs:
 @c474:  .word   $8259,$829d,$82e1,$8325,$8369,$83ad
         .word   $83f1,$8435,$8479,$84bd,$8501,$8545
         .word   $8589,$85cd,$8611,$8655,$8699,$86dd
@@ -40723,103 +41036,248 @@ ToggleCharFlip_near:
 ; ------------------------------------------------------------------------------
 
 ; pointers to monster vram map sprite data (+$c20000)
-@c4a4:  .word   $c543,$c54a,$c551,$c558,$c540,$c540
-        .word   $c55f,$c566,$c56d,$c571,$c575,$c579
-        .word   $c57d,$c586,$c540,$c540,$c540,$c540
-        .word   $c58f,$c59a,$c540,$c540,$c540,$c540
-        .word   $c5a5,$c5ae,$c5b5,$c540,$c540,$c540
-        .word   $c5bc,$c5c7,$c5ce,$c540,$c540,$c540
-        .word   $c5d5,$c540,$c540,$c540,$c540,$c540
-        .word   $c5e8,$c5f4,$c5fa,$c5fe,$c602,$c606
-        .word   $c60a,$c611,$c618,$c61d,$c540,$c540
-        .word   $c622,$c540,$c540,$c540,$c540,$c540
-        .word   $c631,$c63a,$c63f,$c644,$c648,$c540
-        .word   $c64c,$c651,$c656,$c65b,$c660,$c540
-        .word   $c667,$c66e,$c675,$c67a,$c67f,$c684
+MonsterSpriteMapPtrs:
+@c4a4:  .addr   MonsterSpriteMap_00_Slot1
+        .addr   MonsterSpriteMap_00_Slot2
+        .addr   MonsterSpriteMap_00_Slot3
+        .addr   MonsterSpriteMap_00_Slot4
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
 
-; ------------------------------------------------------------------------------
+        .addr   MonsterSpriteMap_01_Slot1
+        .addr   MonsterSpriteMap_01_Slot2
+        .addr   MonsterSpriteMap_01_Slot3
+        .addr   MonsterSpriteMap_01_Slot4
+        .addr   MonsterSpriteMap_01_Slot5
+        .addr   MonsterSpriteMap_01_Slot6
+
+        .addr   MonsterSpriteMap_02_Slot1
+        .addr   MonsterSpriteMap_02_Slot2
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+
+        .addr   MonsterSpriteMap_03_Slot1
+        .addr   MonsterSpriteMap_03_Slot2
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+
+        .addr   MonsterSpriteMap_04_Slot1
+        .addr   MonsterSpriteMap_04_Slot2
+        .addr   MonsterSpriteMap_04_Slot3
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+
+        .addr   MonsterSpriteMap_05_Slot1
+        .addr   MonsterSpriteMap_05_Slot2
+        .addr   MonsterSpriteMap_05_Slot3
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+
+        .addr   MonsterSpriteMap_06_Slot1
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+
+        .addr   MonsterSpriteMap_07_Slot1
+        .addr   MonsterSpriteMap_07_Slot2
+        .addr   MonsterSpriteMap_07_Slot3
+        .addr   MonsterSpriteMap_07_Slot4
+        .addr   MonsterSpriteMap_07_Slot5
+        .addr   MonsterSpriteMap_07_Slot6
+
+        .addr   MonsterSpriteMap_08_Slot1
+        .addr   MonsterSpriteMap_08_Slot2
+        .addr   MonsterSpriteMap_08_Slot3
+        .addr   MonsterSpriteMap_08_Slot4
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+
+        .addr   MonsterSpriteMap_09_Slot1
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+        .addr   MonsterSpriteMapUnused
+
+        .addr   MonsterSpriteMap_0a_Slot1
+        .addr   MonsterSpriteMap_0a_Slot2
+        .addr   MonsterSpriteMap_0a_Slot3
+        .addr   MonsterSpriteMap_0a_Slot4
+        .addr   MonsterSpriteMap_0a_Slot5
+        .addr   MonsterSpriteMapUnused
+
+        .addr   MonsterSpriteMap_0b_Slot1
+        .addr   MonsterSpriteMap_0b_Slot2
+        .addr   MonsterSpriteMap_0b_Slot3
+        .addr   MonsterSpriteMap_0b_Slot4
+        .addr   MonsterSpriteMap_0b_Slot5
+        .addr   MonsterSpriteMapUnused
+
+        .addr   MonsterSpriteMap_0c_Slot1
+        .addr   MonsterSpriteMap_0c_Slot2
+        .addr   MonsterSpriteMap_0c_Slot3
+        .addr   MonsterSpriteMap_0c_Slot4
+        .addr   MonsterSpriteMap_0c_Slot5
+        .addr   MonsterSpriteMap_0c_Slot6
+
+.macro def_monster_sprite_map x_pos, y_pos, width, height
+        ; position and size converted to 32x32 sprites
+        .local  x32, y32, height32, width32
+        x32 = x_pos / 4
+        y32 = y_pos / 4
+        width32 = width / 4
+        height32 = height / 4
+        ; loop over 32x32 sprites
+        .byte   x_pos*8, y_pos*8
+        .repeat height32, _y
+        .repeat width32, _x
+        .byte   x32+_x+(y32+_y)*4
+        .endrep
+        .endrep
+        ; terminator
+        .byte   $ff
+.endmac
+
+; sprite data for unused monster in vram map
+MonsterSpriteMapUnused:
+@c540:  def_monster_sprite_map 0,0,0,0
 
 ; sprite data for vram map $00
-@c540:  .byte   $00,$00,$ff
-@c543:  .byte   $00,$00,$00,$01,$04,$05,$ff
-@c54a:  .byte   $40,$00,$02,$03,$06,$07,$ff
-@c551:  .byte   $00,$40,$08,$09,$0c,$0d,$ff
-@c558:  .byte   $40,$40,$0a,$0b,$0e,$0f,$ff
+MonsterSpriteMap_00_Slot1:
+@c543:  def_monster_sprite_map 0,0,8,8
+MonsterSpriteMap_00_Slot2:
+@c54a:  def_monster_sprite_map 8,0,8,8
+MonsterSpriteMap_00_Slot3:
+@c551:  def_monster_sprite_map 0,8,8,8
+MonsterSpriteMap_00_Slot4:
+@c558:  def_monster_sprite_map 8,8,8,8
 
 ; sprite data for vram map $01
-@c55f:  .byte   $00,$00,$00,$01,$04,$05,$ff
-@c566:  .byte   $40,$00,$02,$03,$06,$07,$ff
-@c56d:  .byte   $00,$40,$08,$ff
-@c571:  .byte   $20,$40,$09,$ff
-@c575:  .byte   $40,$40,$0a,$ff
-@c579:  .byte   $60,$40,$0b,$ff
+MonsterSpriteMap_01_Slot1:
+@c55f:  def_monster_sprite_map 0,0,8,8
+MonsterSpriteMap_01_Slot2:
+@c566:  def_monster_sprite_map 8,0,8,8
+MonsterSpriteMap_01_Slot3:
+@c56d:  def_monster_sprite_map 0,8,4,4
+MonsterSpriteMap_01_Slot4:
+@c571:  def_monster_sprite_map 4,8,4,4
+MonsterSpriteMap_01_Slot5:
+@c575:  def_monster_sprite_map 8,8,4,4
+MonsterSpriteMap_01_Slot6:
+@c579:  def_monster_sprite_map 12,8,4,4
 
 ; sprite data for vram map $02
-@c57d:  .byte   $00,$00,$00,$01,$02,$04,$05,$06,$ff
-@c586:  .byte   $00,$40,$08,$09,$0a,$0c,$0d,$0e,$ff
+MonsterSpriteMap_02_Slot1:
+@c57d:  def_monster_sprite_map 0,0,12,8
+MonsterSpriteMap_02_Slot2:
+@c586:  def_monster_sprite_map 0,8,12,8
 
 ; sprite data for vram map $03
-@c58f:  .byte   $00,$00,$00,$01,$04,$05,$08,$09,$0c,$0d,$ff
-@c59a:  .byte   $40,$00,$02,$03,$06,$07,$0a,$0b,$0e,$0f,$ff
+MonsterSpriteMap_03_Slot1:
+@c58f:  def_monster_sprite_map 0,0,8,16
+MonsterSpriteMap_03_Slot2:
+@c59a:  def_monster_sprite_map 8,0,8,16
 
 ; sprite data for vram map $04
-@c5a5:  .byte   $00,$00,$00,$01,$02,$04,$05,$06,$ff
-@c5ae:  .byte   $00,$40,$08,$09,$0c,$0d,$ff
-@c5b5:  .byte   $40,$40,$0a,$0b,$0e,$0f,$ff
+MonsterSpriteMap_04_Slot1:
+@c5a5:  def_monster_sprite_map 0,0,12,8
+MonsterSpriteMap_04_Slot2:
+@c5ae:  def_monster_sprite_map 0,8,8,8
+MonsterSpriteMap_04_Slot3:
+@c5b5:  def_monster_sprite_map 8,8,8,8
 
 ; sprite data for vram map $05
-@c5bc:  .byte   $00,$00,$00,$01,$04,$05,$08,$09,$0c,$0d,$ff
-@c5c7:  .byte   $40,$00,$02,$03,$06,$07,$ff
-@c5ce:  .byte   $40,$40,$0a,$0b,$0e,$0f,$ff
+MonsterSpriteMap_05_Slot1:
+@c5bc:  def_monster_sprite_map 0,0,8,16
+MonsterSpriteMap_05_Slot2:
+@c5c7:  def_monster_sprite_map 8,0,8,8
+MonsterSpriteMap_05_Slot3:
+@c5ce:  def_monster_sprite_map 8,8,8,8
 
 ; sprite data for vram map $06
-@c5d5:  .byte   $00,$00,$00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d
-        .byte   $0e,$0f,$ff
+MonsterSpriteMap_06_Slot1:
+@c5d5:  def_monster_sprite_map 0,0,16,16
 
 ; sprite data for vram map $07
-@c5e8:  .byte   $00,$00,$00,$01,$02,$04,$05,$06,$08,$09,$0a,$ff
-@c5f4:  .byte   $60,$00,$03,$07,$0b,$ff
-@c5fa:  .byte   $00,$60,$0c,$ff
-@c5fe:  .byte   $20,$60,$0d,$ff
-@c602:  .byte   $40,$60,$0e,$ff
-@c606:  .byte   $60,$60,$0f,$ff
+MonsterSpriteMap_07_Slot1:
+@c5e8:  def_monster_sprite_map 0,0,12,12
+MonsterSpriteMap_07_Slot2:
+@c5f4:  def_monster_sprite_map 12,0,4,12
+MonsterSpriteMap_07_Slot3:
+@c5fa:  def_monster_sprite_map 0,12,4,4
+MonsterSpriteMap_07_Slot4:
+@c5fe:  def_monster_sprite_map 4,12,4,4
+MonsterSpriteMap_07_Slot5:
+@c602:  def_monster_sprite_map 8,12,4,4
+MonsterSpriteMap_07_Slot6:
+@c606:  def_monster_sprite_map 12,12,4,4
 
 ; sprite data for vram map $08
-@c60a:  .byte   $00,$00,$00,$01,$04,$05,$ff
-@c611:  .byte   $00,$40,$08,$09,$0c,$0d,$ff
-@c618:  .byte   $40,$00,$02,$06,$ff
-@c61d:  .byte   $40,$40,$0a,$0e,$ff
+MonsterSpriteMap_08_Slot1:
+@c60a:  def_monster_sprite_map 0,0,8,8
+MonsterSpriteMap_08_Slot2:
+@c611:  def_monster_sprite_map 0,8,8,8
+MonsterSpriteMap_08_Slot3:
+@c618:  def_monster_sprite_map 8,0,4,8
+MonsterSpriteMap_08_Slot4:
+@c61d:  def_monster_sprite_map 8,8,4,8
 
 ; sprite data for vram map $09
-@c622:  .byte   $00,$00,$00,$01,$02,$04,$05,$06,$08,$09,$0a,$0c,$0d,$0e,$ff
+MonsterSpriteMap_09_Slot1:
+@c622:  def_monster_sprite_map 0,0,12,16  ; height is 12 in vram map
 
 ; sprite data for vram map $0a
-@c631:  .byte   $00,$00,$00,$01,$04,$05,$08,$09,$ff
-@c63a:  .byte   $40,$00,$02,$06,$ff
-@c63f:  .byte   $40,$40,$0a,$0e,$ff
-@c644:  .byte   $00,$60,$0c,$ff
-@c648:  .byte   $20,$60,$0d,$ff
+MonsterSpriteMap_0a_Slot1:
+@c631:  def_monster_sprite_map 0,0,8,12
+MonsterSpriteMap_0a_Slot2:
+@c63a:  def_monster_sprite_map 8,0,4,8
+MonsterSpriteMap_0a_Slot3:
+@c63f:  def_monster_sprite_map 8,8,4,8
+MonsterSpriteMap_0a_Slot4:
+@c644:  def_monster_sprite_map 0,12,4,4
+MonsterSpriteMap_0a_Slot5:
+@c648:  def_monster_sprite_map 4,12,4,4
 
 ; sprite data for vram map $0b
-@c64c:  .byte   $00,$00,$00,$04,$ff
-@c651:  .byte   $20,$00,$01,$05,$ff
-@c656:  .byte   $40,$00,$02,$06,$ff
-@c65b:  .byte   $40,$40,$0a,$0e,$ff
-@c660:  .byte   $00,$40,$08,$09,$0c,$0d,$ff
+MonsterSpriteMap_0b_Slot1:
+@c64c:  def_monster_sprite_map 0,0,4,8
+MonsterSpriteMap_0b_Slot2:
+@c651:  def_monster_sprite_map 4,0,4,8
+MonsterSpriteMap_0b_Slot3:
+@c656:  def_monster_sprite_map 8,0,4,8
+MonsterSpriteMap_0b_Slot4:
+@c65b:  def_monster_sprite_map 8,8,4,8
+MonsterSpriteMap_0b_Slot5:
+@c660:  def_monster_sprite_map 0,8,8,8
 
 ; sprite data for vram map $0c
-@c667:  .byte   $00,$00,$00,$01,$04,$05,$ff
-@c66e:  .byte   $40,$00,$02,$03,$06,$07,$ff
-@c675:  .byte   $00,$40,$08,$0c,$ff
-@c67a:  .byte   $20,$40,$09,$0d,$ff
-@c67f:  .byte   $40,$40,$0a,$0e,$ff
-@c684:  .byte   $60,$40,$0b,$0f,$ff
+MonsterSpriteMap_0c_Slot1:
+@c667:  def_monster_sprite_map 0,0,8,8
+MonsterSpriteMap_0c_Slot2:
+@c66e:  def_monster_sprite_map 8,0,8,8
+MonsterSpriteMap_0c_Slot3:
+@c675:  def_monster_sprite_map 0,8,4,8
+MonsterSpriteMap_0c_Slot4:
+@c67a:  def_monster_sprite_map 4,8,4,8
+MonsterSpriteMap_0c_Slot5:
+@c67f:  def_monster_sprite_map 8,8,4,8
+MonsterSpriteMap_0c_Slot6:
+@c684:  def_monster_sprite_map 12,8,4,8
 
 ; ------------------------------------------------------------------------------
 
 ; battle status/cursor/text palette for sprites
 ; each of these gets copied to the last 4 colors after the 12-color character palettes
 ; this effectively creates an extra 16-color palette
+_c2c689:
 @c689:  .word   $1463,$7ffe,$6314,$4e6f
         .word   $1463,$4bf6,$2bff,$26cd
         .word   $1463,$527b,$4615,$41f0
@@ -40828,6 +41286,7 @@ ToggleCharFlip_near:
 ; ------------------------------------------------------------------------------
 
 ; graphic frames for each character graphical action (4 frames each)
+_c2c6a9:
 @c6a9:  .byte   $ff,$ff,$ff,$ff
         .byte   $00,$00,$00,$00
         .byte   $01,$02,$03,$02
@@ -40871,6 +41330,7 @@ ToggleCharFlip_near:
 ; ------------------------------------------------------------------------------
 
 ; graphic action tile offsets (32 items, 6 values per action)
+_c2c745:
 @c745:  .word   $0ae0,$0b00,$0b40,$0b60,$0b20,$ffff,$0b80,$ffff
         .word   $ffff,$ffff,$0000,$0020,$0040,$0060,$0080,$00a0
         .word   $ffff,$ffff,$0000,$0020,$00c0,$00e0,$0100,$0120
@@ -41020,6 +41480,7 @@ get_main_work_poi:
 ; ------------------------------------------------------------------------------
 
 ; character sprite data (top/bottom sprite, then left/right sprite for dead characters)
+CharSpriteData:
 @cea3:  .byte   $00,$f8,$00,$00
         .byte   $00,$08,$02,$00
         .byte   $fc,$08,$00,$00
@@ -41045,14 +41506,21 @@ get_main_work_poi:
 
 ; ------------------------------------------------------------------------------
 
+; Character x positions lie along a diagonal line from an imaginary point
+; $68 pixels above top center point of the screen. The angle convention is
+;   $0080 = 45 degrees to the left
+;   $0100 = vertical
+;   $0180 = 45 degrees to the right
+
 ; character back row xy angle offsets (normal, back, pincer, side)
-@cee3:
-        .word   $000c,$000c,$000c,$000c
+CharRowOffsetTbl:
+@cee3:  .word   $000c,$000c,$000c,$000c
         .word   $fff4,$fff4,$fff4,$fff4
         .word   $0000,$0000,$0000,$0000
         .word   $000c,$000c,$fff4,$fff4
 
 ; battle type character y-offsets (normal, back, pincer, side, magitek train bg)
+CharYOffsetTbl:
 @cf03:  .byte   $44,$56,$68,$7a
         .byte   $44,$56,$68,$7a
         .byte   $44,$56,$68,$7a
@@ -41060,6 +41528,7 @@ get_main_work_poi:
         .byte   $50,$5e,$6c,$7a
 
 ; battle type character xy angles (normal, back, pincer, side)
+CharXAngleTbl:
 @cf17:  .word   $0170,$0170,$0170,$0170
         .word   $0090,$0090,$0090,$0090
         .word   $0100,$0100,$0100,$0100
@@ -41067,26 +41536,35 @@ get_main_work_poi:
 
 ; ------------------------------------------------------------------------------
 
+_c2cf37:
 @cf37:  .word   $30c0,$31c0,$32c0,$33c0,$34c0,$35c0,$36c0,$37c0
         .word   $38c0,$39c0,$3ac0,$3bc0,$3cc0,$3dc0,$3ec0,$3fc0
 
 ; ------------------------------------------------------------------------------
 
 ; character sprite graphics offsets
+_c2cf57:
 @cf57:  .byte   $00,$04,$08,$0c
 
 ; pointers to character graphics data (+$7e2eae)
+_c2cf5b:
 @cf5b:  .byte   $00,$20,$40,$60
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to magitek armor graphics (4 frames, then unknown japanese text)
-@cf5f:  .dword  $00d84500,$00d84800,$00d84900,$00d84c00,$00d84d00
+_c2cf5f:
+@cf5f:  .dword  $d84500,$d84800,$d84900,$d84c00,$d84d00
 
 ; magitek animation data (4 items, 4 bytes each)
-@cf73:  .byte   $00,$00,$00,$00,$00,$01,$00,$02,$03,$03,$03,$03,$04,$04,$04,$04
+_c2cf73:
+@cf73:  .byte   $00,$00,$00,$00
+        .byte   $00,$01,$00,$02
+        .byte   $03,$03,$03,$03
+        .byte   $04,$04,$04,$04
 
 ; (4 items, 4 bytes each)
+_c2cf83:
 @cf83:  .byte   $f7,$fc,$0c,$01
         .byte   $f7,$fc,$4c,$01
         .byte   $f7,$fc,$8c,$01
@@ -41095,6 +41573,7 @@ get_main_work_poi:
 ; ------------------------------------------------------------------------------
 
 ; y offsets for bouncing damage numerals
+DmgNumBounceTbl:
 @cf93:  .byte   $03,$06,$08,$0a,$0b,$0d,$0e,$0f,$0f,$10,$10,$10,$10,$10,$0f,$0f
         .byte   $0e,$0d,$0b,$0a,$08,$06,$03,$00,$03,$04,$05,$06,$07,$07,$08,$08
         .byte   $07,$07,$06,$05,$04,$03,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
@@ -41104,150 +41583,122 @@ get_main_work_poi:
 ; ------------------------------------------------------------------------------
 
 ; magitek color palette (12 colors)
+MagitekPal:
 @cfd4:  .word   $00bf,$0c63,$196c,$2e10,$42f7,$110e,$2ebc,$4b9f
         .word   $41ad,$6739,$7fff,$2192
 
 ; petrify status color palette (11 colors used)
+PetrifyPal:
 @cfec:  .word   $0842,$6b5a,$18c6,$4210,$294a,$6b5a,$4e73,$6318
         .word   $3def,$4e73,$294a,$0000
 
 ; frozen status color palette (11 colors)
+FrozenPal:
 @d004:  .word   $44c6,$7fff,$3c60,$7ef7,$7dad,$7fff,$7f18,$7e52
         .word   $7d8c,$7e52,$7d29
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to monster vram maps
-@d01a:  .addr   $d034,$d044,$d05c,$d064,$d06c,$d078,$d084,$d088
-        .addr   $d0a0,$d0b0,$d0b4,$d0c8,$d0dc
+MonsterVRAMMapPtrs:
+@d01a:  make_ptr_tbl_abs MonsterVRAMMap, 13
 
-; ------------------------------------------------------------------------------
+.macro def_monster_vram_map x_pos, y_pos, width, height
+        .word   x_pos*$20+y_pos*$200
+        .byte   width, height
+.endmac
 
 ; monster vram map $00 (vram destination, width, height)
-@d034:  .word   $0000
-        .byte   $08,$08
-        .word   $0100
-        .byte   $08,$08
-        .word   $1000
-        .byte   $08,$08
-        .word   $1100
-        .byte   $08,$08
+MonsterVRAMMap_0000:
+@d034:  def_monster_vram_map 0,0,8,8
+        def_monster_vram_map 8,0,8,8
+        def_monster_vram_map 0,8,8,8
+        def_monster_vram_map 8,8,8,8
 
 ; monster vram map $01
-@d044:  .word   $0000
-        .byte   $08,$08
-        .word   $0100
-        .byte   $08,$08
-        .word   $1000
-        .byte   $04,$04
-        .word   $1080
-        .byte   $04,$04
-        .word   $1100
-        .byte   $04,$04
-        .word   $1180
-        .byte   $04,$04
+MonsterVRAMMap_0001:
+@d044:  def_monster_vram_map 0,0,8,8
+        def_monster_vram_map 8,0,8,8
+        def_monster_vram_map 0,8,4,4
+        def_monster_vram_map 4,8,4,4
+        def_monster_vram_map 8,8,4,4
+        def_monster_vram_map 12,8,4,4
 
 ; monster vram map $02
-@d05c:  .word   $0000
-        .byte   $0c,$08
-        .word   $1000
-        .byte   $0c,$08
+MonsterVRAMMap_0002:
+@d05c:  def_monster_vram_map 0,0,12,8
+        def_monster_vram_map 0,8,12,8
 
 ; monster vram map $03
-@d064:  .word   $0000
-        .byte   $08,$10
-        .word   $0100
-        .byte   $08,$10
+MonsterVRAMMap_0003:
+@d064:  def_monster_vram_map 0,0,8,16
+        def_monster_vram_map 8,0,8,16
 
 ; monster vram map $04
-@d06c:  .word   $0000
-        .byte   $0c,$08
-        .word   $1000
-        .byte   $08,$08
-        .word   $1100
-        .byte   $08,$08
+MonsterVRAMMap_0004:
+@d06c:  def_monster_vram_map 0,0,12,8
+        def_monster_vram_map 0,8,8,8
+        def_monster_vram_map 8,8,8,8
 
 ; monster vram map $05
-@d078:  .word   $0000
-        .byte   $08,$10
-        .word   $0100
-        .byte   $08,$08
-        .word   $1100
-        .byte   $08,$08
+MonsterVRAMMap_0005:
+@d078:  def_monster_vram_map 0,0,8,16
+        def_monster_vram_map 8,0,8,8
+        def_monster_vram_map 8,8,8,8
 
 ; monster vram map $06
-@d084:  .word   $0000
-        .byte   $10,$10
+MonsterVRAMMap_0006:
+@d084:  def_monster_vram_map 0,0,16,16
 
 ; monster vram map $07
-@d088:  .word   $0000
-        .byte   $0c,$0c
-        .word   $0180
-        .byte   $04,$0c
-        .word   $1800
-        .byte   $04,$04
-        .word   $1880
-        .byte   $04,$04
-        .word   $1900
-        .byte   $04,$04
-        .word   $1980
-        .byte   $04,$04
+MonsterVRAMMap_0007:
+@d088:  def_monster_vram_map 0,0,12,12
+        def_monster_vram_map 12,0,4,12
+        def_monster_vram_map 0,12,4,4
+        def_monster_vram_map 4,12,4,4
+        def_monster_vram_map 8,12,4,4
+        def_monster_vram_map 12,12,4,4
 
 ; monster vram map $08
-@d0a0:  .word   $0000
-        .byte   $08,$08
-        .word   $1000
-        .byte   $08,$08
-        .word   $0100
-        .byte   $04,$08
-        .word   $1100
-        .byte   $04,$08
+MonsterVRAMMap_0008:
+@d0a0:  def_monster_vram_map 0,0,8,8
+        def_monster_vram_map 0,8,8,8
+        def_monster_vram_map 8,0,4,8
+        def_monster_vram_map 8,8,4,8
 
 ; monster vram map $09
-@d0b0:  .word   $0000
-        .byte   $0c,$0c
+MonsterVRAMMap_0009:
+@d0b0:  def_monster_vram_map 0,0,12,12  ; height is 16 in sprite map
 
 ; monster vram map $0a
-@d0b4:  .word   $0000
-        .byte   $08,$0c
-        .word   $0100
-        .byte   $04,$08
-        .word   $1100
-        .byte   $04,$08
-        .word   $1800
-        .byte   $04,$04
-        .word   $1880
-        .byte   $04,$04
+MonsterVRAMMap_000a:
+@d0b4:  def_monster_vram_map 0,0,8,12
+        def_monster_vram_map 8,0,4,8
+        def_monster_vram_map 8,8,4,8
+        def_monster_vram_map 0,12,4,4
+        def_monster_vram_map 4,12,4,4
 
 ; monster vram map $0b
-@d0c8:  .word   $0000
-        .byte   $04,$08
-        .word   $0080
-        .byte   $04,$08
-        .word   $0100
-        .byte   $04,$08
-        .word   $1100
-        .byte   $04,$08
-        .word   $1000
-        .byte   $08,$08
+MonsterVRAMMap_000b:
+@d0c8:  def_monster_vram_map 0,0,4,8
+        def_monster_vram_map 4,0,4,8
+        def_monster_vram_map 8,0,4,8
+        def_monster_vram_map 8,8,4,8
+        def_monster_vram_map 0,8,8,8
 
 ; monster vram map $0c
-@d0dc:  .word   $0000
-        .byte   $08,$08
-        .word   $0100
-        .byte   $08,$08
-        .word   $1000
-        .byte   $04,$08
-        .word   $1080
-        .byte   $04,$08
-        .word   $1100
-        .byte   $04,$08
-        .word   $1180
-        .byte   $04,$08
+MonsterVRAMMap_000c:
+@d0dc:  def_monster_vram_map 0,0,8,8
+        def_monster_vram_map 8,0,8,8
+        def_monster_vram_map 0,8,4,8
+        def_monster_vram_map 4,8,4,8
+        def_monster_vram_map 8,8,4,8
+        def_monster_vram_map 12,8,4,8
 
 ; ------------------------------------------------------------------------------
 
 ; hdma #6 table, normal (+++$2109)
+_c2d0f4:
 @d0f4:  .byte   $64
         .word   $897b
         .byte   $33
@@ -41257,6 +41708,7 @@ get_main_work_poi:
         .byte   $00
 
 ; hdma #7 table (+++$212a)
+_c2d0fe:
 @d0fe:  .byte   $04
         .word   $8987
         .byte   $60
@@ -41270,6 +41722,7 @@ get_main_work_poi:
         .byte   $00
 
 ; hdma #6 table, slot (+++$2109)
+_c2d10e:
 @d10e:  .byte   $64
         .word   $897b
         .byte   $33
@@ -41283,6 +41736,7 @@ get_main_work_poi:
         .byte   $00
 
 ; hdma #3 table, slot (+++$2105)
+_c2d11e:
 @d11e:  .byte   $64
         .word   $896f
         .byte   $33
@@ -41296,6 +41750,7 @@ get_main_work_poi:
         .byte   $00
 
 ; hdma #3 table, normal (+++$2105)
+_c2d12e:
 @d12e:  .byte   $64
         .word   $896f
         .byte   $33
@@ -41305,6 +41760,7 @@ get_main_work_poi:
         .byte   $00
 
 ; hdma #4 table (+++$212f)
+_c2d138:
 @d138:  .byte   $f0
         .word   $8993
         .byte   $f0
@@ -41312,6 +41768,7 @@ get_main_work_poi:
         .byte   $00
 
 ; hdma #5 table (+++$2126)
+_c2d13f:
 @d13f:  .byte   $cc
         .word   $9f1f
         .byte   $cc
@@ -41321,6 +41778,7 @@ get_main_work_poi:
         .byte   $00
 
 ; hdma #5 table (+++$2126)
+_c2d149:
 @d149:  .byte   $f0
         .word   $ea32
         .byte   $f0
@@ -41330,13 +41788,15 @@ get_main_work_poi:
 ; ------------------------------------------------------------------------------
 
 ; pointers to bg scroll hdma tables (hdma #0, #1, and #2)
-@d150:  .addr   $d1bd,$d1c4,$d1cb,$d1f2,$d225,$d24b,$d1d2,$d238
-        .addr   $d1e5,$d180,$d212,$d1ff,$d1bd,$d1c4,$d258,$d1f2
-        .addr   $d225,$d281,$d1d2,$d268,$d1e5,$d180,$d212,$d1ff
+_c2d150:
+@d150:  .addr   _c2d1bd,_c2d1c4,_c2d1cb,_c2d1f2,_c2d225,_c2d24b,_c2d1d2,_c2d238
+        .addr   _c2d1e5,_c2d180,_c2d212,_c2d1ff,_c2d1bd,_c2d1c4,_c2d258,_c2d1f2
+        .addr   _c2d225,_c2d281,_c2d1d2,_c2d268,_c2d1e5,_c2d180,_c2d212,_c2d1ff
 
 ; ------------------------------------------------------------------------------
 
 ; $09/$15: hdma #0 table, 19 values, change every 8 scanlines (+$210d)
+_c2d180:
 @d180:  .byte   $08
         .word   $43f5
         .byte   $08
@@ -41380,6 +41840,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $00/$0c: hdma #0 table, 224 values (+$210d)
+_c2d1bd:
 @d1bd:  .byte   $f0
         .word   $43f5
         .byte   $f0
@@ -41387,6 +41848,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $01/$0d: hdma #1 table, 224 values (+$210f)
+_c2d1c4:
 @d1c4:  .byte   $f0
         .word   $4775
         .byte   $f0
@@ -41394,6 +41856,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $02: hdma #2 table, 224 values (+$2111)
+_c2d1cb:
 @d1cb:  .byte   $f0
         .word   $4af5
         .byte   $f0
@@ -41401,6 +41864,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $06/$12: hdma #0 table, 32 values (+$210d)
+_c2d1d2:
 @d1d2:  .byte   $a0
         .word   $43f5
         .byte   $a0
@@ -41416,6 +41880,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $08/$14: hdma #0 table, 64 values (+$210d)
+_c2d1e5:
 @d1e5:  .byte   $c0
         .word   $43f5
         .byte   $c0
@@ -41427,6 +41892,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $03/$0f: hdma #0 table, single value (+$210d)
+_c2d1f2:
 @d1f2:  .byte   $40
         .word   $43f5
         .byte   $40
@@ -41438,6 +41904,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $0b/$17: hdma #1 table (+$210f)
+_c2d1ff:
 @d1ff:  .byte   $a0
         .word   $4775
         .byte   $a0
@@ -41453,6 +41920,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $0a/$16: hdma #1 table (+$210f)
+_c2d212:
 @d212:  .byte   $a0
         .word   $4775
         .byte   $a0
@@ -41468,6 +41936,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $04/$10: hdma #1 table (+$210f)
+_c2d225:
 @d225:  .byte   $a0
         .word   $4775
         .byte   $a0
@@ -41483,6 +41952,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $07: hdma #2 table (+$2111)
+_c2d238:
 @d238:  .byte   $a0
         .word   $4af5
         .byte   $a0
@@ -41498,6 +41968,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $05: hdma #2 table (+$2111)
+_c2d24b:
 @d24b:  .byte   $40
         .word   $4af5
         .byte   $40
@@ -41509,6 +41980,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $0e: hdma #2 table (+$2111)
+_c2d258:
 @d258:  .byte   $e4
         .word   $4af5
         .byte   $b3
@@ -41522,6 +41994,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $13: hdma #2 table (+$2111)
+_c2d268:
 @d268:  .byte   $a0
         .word   $4af5
         .byte   $a0
@@ -41541,6 +42014,7 @@ get_main_work_poi:
         .byte   $00
 
 ; $11: hdma #2 table (+$2111)
+_c2d281:
 @d281:  .byte   $40
         .word   $4af5
         .byte   $40
@@ -41558,27 +42032,40 @@ get_main_work_poi:
 ; ------------------------------------------------------------------------------
 
 ;
+_c2d294:
 @d294:  .word   $0000,$0020,$0040,$0060,$0080,$00a0,$00c0,$00e0
 
 ; pointers to bg2 tile data in vram (menu region)
+_c2d2a4:
 @d2a4:  .word   $7140,$7160,$7180,$71a0,$71c0,$71e0,$7200,$7220
 
 ;
+_c2d2b4:
 @d2b4:  .word   $0000,$0040,$0080,$00c0,$0100,$0140,$0180,$01c0
 
 ; pointers to character sprite graphics in ram
-@d2c4:  .word   $a000,$a080,$a100,$a180,$a200,$a280,$a300,$a380
+_c2d2c4:
+@d2c4:  .word   $a000,$a080,$a100,$a180
+
+_c2d2cc:
+@d2cc:  .word   $a200,$a280,$a300,$a380
 
 ; pointers to character sprite graphics in vram
-@d2d4:  .word   $2000,$2040,$2080,$20c0,$2100,$2140,$2180,$21c0
+_c2d2d4:
+@d2d4:  .word   $2000,$2040,$2080,$20c0
+
+_c2d2dc:
+@d2dc:  .word   $2100,$2140,$2180,$21c0
 
 ;
+_c2d2e4:
 @d2e4:  .word   $a400,$a600,$a480,$a680,$a500,$a700,$a580,$a780
         .word   $a800,$aa00,$a880,$aa80,$a900,$ab00,$a980,$ab80
         .word   $ac00,$ae00,$ac80,$ae80,$ad00,$af00,$ad80,$af80
         .word   $b000,$b200,$b080,$b280,$b100,$b300,$b180,$a780
 
 ;
+_c2d324:
 @d324:  .word   $2200,$2300,$2240,$2340,$2280,$2380,$22c0,$23c0
         .word   $2200,$2300,$2240,$2340,$2280,$2380,$22c0,$23c0
         .word   $2200,$2300,$2240,$2340,$2280,$2380,$22c0,$23c0
@@ -41586,61 +42073,64 @@ get_main_work_poi:
 
 ; ------------------------------------------------------------------------------
 
+_c2d364:
 @d364:  .byte   $0e,$2a,$46,$62
 
 ; ------------------------------------------------------------------------------
 
-; hdma #0 ($c2d1f2 -> +$210d)
+; 0: hdma #0 ($c2d1f2 -> +$210d)
+_c2d368:
 @d368:  .byte $43,$0d
-        .faraddr $c2d1f2
+        .faraddr _c2d1f2
 
-; hdma #1 ($c2d225 -> +$210f)
+; 1: hdma #1 ($c2d225 -> +$210f)
 @d36d:  .byte $43,$0f
-        .faraddr $c2d225
+        .faraddr _c2d225
 
-; hdma #2 ($c2d24b -> +$2111)
+; 2: hdma #2 ($c2d24b -> +$2111)
 @d372:  .byte $43,$11
-        .faraddr $c2d24b
+        .faraddr _c2d24b
 
-; hdma #3, normal ($c2d12e -> +++$2105)
+; 3: hdma #3, normal ($c2d12e -> +++$2105)
 @d377:  .byte $44,$05
-        .faraddr $c2d12e
+        .faraddr _c2d12e
 
-; hdma #4 ($c2d138 -> +++$212f)
+; 4: hdma #4 ($c2d138 -> +++$212f)
 @d37c:  .byte $44,$2f
-        .faraddr $c2d138
+        .faraddr _c2d138
 
-; ($c2d149 -> +$2131)
+; 5: ($c2d149 -> +$2131)
 @d381:  .byte $41,$31
-        .faraddr $c2d149
+        .faraddr _c2d149
 
-; hdma #6, normal ($c2d0f4 -> +++$2109)
+; 6: hdma #6, normal ($c2d0f4 -> +++$2109)
 @d386:  .byte $44,$09
-        .faraddr $c2d0f4
+        .faraddr _c2d0f4
 
-; hdma #3, slot ($c2d11e -> +++$2105)
+; 7: hdma #3, slot ($c2d11e -> +++$2105)
 @d38b:  .byte $44,$05
-        .faraddr $c2d11e
+        .faraddr _c2d11e
 
-; hdma #6, slot ($c2d10e -> +++$2109)
+; 8: hdma #6, slot ($c2d10e -> +++$2109)
 @d390:  .byte $44,$09
-        .faraddr $c2d10e
+        .faraddr _c2d10e
 
-; hdma #7 ($c2d0fe -> +++$212a)
+; 9: hdma #7 ($c2d0fe -> +++$212a)
 @d395:  .byte $44,$2a
-        .faraddr $c2d0fe
+        .faraddr _c2d0fe
 
-; hdma #5 ($c2d13f -> +++$2126)
+; 10: hdma #5 ($c2d13f -> +++$2126)
 @d39a:  .byte $44,$26
-        .faraddr $c2d13f
+        .faraddr _c2d13f
 
 ; ------------------------------------------------------------------------------
 
 ; repeat count for bg3 hdma scroll data (vertical)
-@d39f:  .byte   $01,$01,$01,$01,$01,$02,$01,$02,$01,$02,$02,$03,$02,$03,$03,$03
-        .byte   $04,$03,$04,$04,$04,$05,$04,$05,$05,$05,$05,$05,$05,$05,$05,$04
-        .byte   $05,$04,$04,$04,$03,$04,$03,$03,$03,$02,$03,$02,$02,$01,$02,$01
-        .byte   $02,$01,$01,$01,$01,$01
+_c2d39f:
+@d39f:  .byte   1,1,1,1,1,2,1,2,1,2,2,3,2,3,3,3
+        .byte   4,3,4,4,4,5,4,5,5,5,5,5,5,5,5,4
+        .byte   5,4,4,4,3,4,3,3,3,2,3,2,2,1,2,1
+        .byte   2,1,1,1,1,1
 
 ; ------------------------------------------------------------------------------
 
@@ -42876,6 +43366,7 @@ magic_init_110long:
 
 ; menu window tile data vram pointers
 frame_tfr_poi:
+_c2dd8c:
 @dd8c:  .word   $7000,$7140,$7600,$7300,$7400,$7500,$7700,$6800
         .word   $6900
 
@@ -42921,6 +43412,7 @@ MenuWindowTbl:
 ;   +$02: destination address
 ;   +$04: number of rows
 ;   +$06: unused
+_c2ddda:
 @ddda:  .word   $4e75,$4d51,$0008,$0000
         .word   $4f75,$4d51,$0008,$0000
         .word   $51d5,$4d61,$0008,$0000
@@ -42936,6 +43428,7 @@ MenuWindowTbl:
 ; ------------------------------------------------------------------------------
 
 ; menu text vertical offset and height (in tiles)
+_c2de32:
 @de32:  .word   $025c,$0008
         .word   $025c,$0008
         .word   $026c,$0008
@@ -42968,6 +43461,7 @@ MenuWindowTbl:
 ; ------------------------------------------------------------------------------
 
 ; battle menu window scroll positions
+_c2dea2:
 @dea2:  .word   $0000,$0068
         .word   $0000,$00b8
         .word   $0100,$00e4
@@ -43000,6 +43494,7 @@ MenuWindowTbl:
 ; ------------------------------------------------------------------------------
 
 ; menu region text data
+_c2df12:
 @df12:  .word   $5ad5
         .byte   $0c,$00
         .word   $5b95
@@ -43074,6 +43569,7 @@ MenuWindowTbl:
 ; ------------------------------------------------------------------------------
 
 ; menu text tile display data (source, destination, length, number of lines)
+_c2df9e:
 set_box_data_tbl:
 @df9e:  .word   $5ad5,$5859,$0018,$0008  ; monster names
         .word   $5b95,$5871,$000e,$0008  ; character names
@@ -43208,12 +43704,15 @@ magic2_win_data:
 ; ------------------------------------------------------------------------------
 
 ; color palettes
+_c2e288:
 @e288:  .word   $0000,$31ad,$190a,$1d2b,$296b,$2129,$1d08,$1ce7
         .word   $18e7,$18a5,$0823,$0c64,$294a,$18c6,$0ca9,$0866
 @e2a8:  .word   $3800,$4af8,$3a96,$2a34,$1dd2,$112e,$0ca9,$0866
         .word   $0823,$25d4,$14ed,$10a8,$0865,$0443,$2946,$2107
 @e2c8:  .word   $3800,$09d3,$0cb2,$11cb,$1d70,$14ec,$10a8,$0c84
         .word   $0823,$420e,$296a,$1d70,$5273,$09d3,$0cb2,$11cb
+
+_c2e2e8:
 @e2e8:  .word   $0000,$0c84,$0c44,$0c64,$1084,$0c43,$0c62,$0c42
         .word   $0c42,$0c43,$0823,$0823,$0c63,$0c43,$0823,$0823
 @e308:  .word   $3800,$112e,$0ca9,$18a7,$1485,$1444,$1443,$1023
@@ -43224,6 +43723,7 @@ magic2_win_data:
 ; ------------------------------------------------------------------------------
 
 ; menu state data
+_c2e348:
 @e348:  .byte   $01,$05,$00,$00  ; command select
         .byte   $01,$32,$39,$08
         .byte   $01,$0a,$00,$00
@@ -43247,8 +43747,10 @@ magic2_win_data:
 ; ------------------------------------------------------------------------------
 
 ; tile pointers for damage numeral sprites
+_c2e394:
 @e394:  .byte   $c0,$c4,$c8,$cc
 
+_c2e398:
 @e398:  .byte   $60,$64,$68,$6c,$80,$84,$88,$8c,$a0,$a4
 
 ; ------------------------------------------------------------------------------
@@ -43304,23 +43806,28 @@ StatusSpriteData:
 
 ; ------------------------------------------------------------------------------
 
+_c2e412:
 super_offset:
 @e412:  .word   $8000,$6000,$4000,$2000
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to character graphics vram buffers (+$7f0000)
+_c2e41a:
 player_pat_put_poi:
 @e41a:  .word   $a000,$a080,$a100,$a180
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to character sprite sheet buffers (+$7f0000)
+_c2e422:
 player_pat_get_poi:
 @e422:  .word   $0000,$2000,$4000,$6000
 
 ; ------------------------------------------------------------------------------
 
+; unused ???
+_c2e42a:
 obj_mask_tbl:
 @e42a:  .word   $a000,$0000,$a000,$0000
         .word   $a000,$0000,$a000,$0000,$a000,$0000
@@ -43328,7 +43835,7 @@ obj_mask_tbl:
 ; ------------------------------------------------------------------------------
 
 ; character h-flip for attack types (normal, back, pincer, side)
-player_init_attr:
+CharFlipTbl:
 @e43e:  .byte   $00,$00,$00,$00
         .byte   $40,$40,$40,$40
         .byte   $40,$00,$40,$00
@@ -43337,7 +43844,7 @@ player_init_attr:
 ; ------------------------------------------------------------------------------
 
 ; character hand swap for attack types
-player_init_direction:
+CharDirTbl:
 @e44e:  .byte   $00,$00,$00,$00
         .byte   $01,$01,$01,$01
         .byte   $01,$00,$01,$00
@@ -43346,21 +43853,23 @@ player_init_direction:
 ; ------------------------------------------------------------------------------
 
 ; magitek color palette locations (fills an empty character slot color palette)
-armer_pal_tbl:
+MagitekPalOffsetTbl:
 @e45e:  .byte   $08,$0a,$0c,$0e
 
 ; ------------------------------------------------------------------------------
 
 land_not_chg_tbl:
-@e462:  .byte   $00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$01,$00,$01
-        .byte   $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01
-        .byte   $01,$01,$00,$00,$00,$01,$00,$00,$00,$01,$00,$00,$01,$00,$00,$00
-        .byte   $00,$00,$01,$01,$01,$01,$01,$01
+_c2e462:
+@e462:  .byte   0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1
+        .byte   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+        .byte   1,1,0,0,0,1,0,0,0,1,0,0,1,0,0,0
+        .byte   0,0,1,1,1,1,1,1
 
 ; ------------------------------------------------------------------------------
 
 ; graphical actions when waiting to attack (for each command)
 command_act_tbl:
+_c2e49a:
 @e49a:  .byte   $0b,$0b,$09,$0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b
         .byte   $0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b,$09,$09,$0b,$0b,$00,$0b,$0b
         .byte   $0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b,$0b
@@ -43368,87 +43877,177 @@ command_act_tbl:
 ; ------------------------------------------------------------------------------
 
 last_vram_offset:
+_c2e4c3:
 @e4c3:  .word   $3c00,$3800,$3400,$3000,$0c00,$0800,$0400,$0000
 
 last_get_offset:
+_c2e4d3:
 @e4d3:  .word   $c63f,$be3f,$b63f,$ae3f,$dc00,$d400,$cc00,$c400
 
 last_get_bank:
+_c2e4e3:
 @e4e3:  .byte   $7e,$7e,$7e,$7e,$7f,$7f,$7f,$7f
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to monster exit animation scripts
-@e4eb:  .addr   $e53f,$e546,$e552,$e55e,$e56a,$e576,$e582,$e5c7
-        .addr   $e58e,$e59a,$e5a6,$e5b2,$e5b8,$e53f,$e539,$e53f
-        .addr   $e53f,$e53f
+MonsterExitScriptPtrs:
+@e4eb:  make_ptr_tbl_abs MonsterExitScript, 18
 
 ; pointers to monster entry animation scripts
-@e50f:  .addr   $e53f,$e540,$e54c,$e558,$e564,$e570,$e57c,$e5c1
-        .addr   $e588,$e594,$e5a0,$e5ac,$e53f,$e53f,$e533,$e5cd
-        .addr   $e53f,$e53f
+MonsterEntryScriptPtrs:
+@e50f:  make_ptr_tbl_abs MonsterEntryScript, 18
 
 ; ------------------------------------------------------------------------------
 
 ; monster entry/exit animation scripts
+MonsterEntryScript_000e:
 @e533:  .byte   $00,$04,$9a,$15,$01,$ff
+
+MonsterExitScript_000e:
 @e539:  .byte   $00,$03,$8c,$15,$01,$ff
+
+MonsterExitScript_0000:
+MonsterExitScript_000d:
+MonsterExitScript_000f:
+MonsterExitScript_0010:
+MonsterExitScript_0011:
+MonsterEntryScript_0000:
+MonsterEntryScript_000c:
+MonsterEntryScript_000d:
+MonsterEntryScript_0010:
+MonsterEntryScript_0011:
 @e53f:  .byte   $ff
+
+MonsterEntryScript_0001:
 @e540:  .byte   $00,$04,$b0,$13,$01,$ff
+
+MonsterExitScript_0001:
 @e546:  .byte   $00,$03,$54,$15,$01,$ff
+
+MonsterEntryScript_0002:
 @e54c:  .byte   $00,$04,$cc,$13,$01,$ff
+
+MonsterExitScript_0002:
 @e552:  .byte   $00,$03,$be,$13,$01,$ff
+
+MonsterEntryScript_0003:
 @e558:  .byte   $00,$04,$e8,$13,$01,$ff
+
+MonsterExitScript_0003:
 @e55e:  .byte   $00,$03,$da,$13,$01,$ff
+
+MonsterEntryScript_0004:
 @e564:  .byte   $00,$04,$04,$14,$01,$ff
+
+MonsterExitScript_0004:
 @e56a:  .byte   $00,$03,$f6,$13,$01,$ff
+
+MonsterEntryScript_0005:
 @e570:  .byte   $00,$04,$20,$14,$01,$ff
+
+MonsterExitScript_0005:
 @e576:  .byte   $00,$03,$12,$14,$01,$ff
+
+MonsterEntryScript_0006:
 @e57c:  .byte   $00,$04,$3c,$14,$01,$ff
+
+MonsterExitScript_0006:
 @e582:  .byte   $00,$03,$2e,$14,$01,$ff
+
+MonsterEntryScript_0008:
 @e588:  .byte   $00,$04,$58,$14,$01,$ff
+
+MonsterExitScript_0008:
 @e58e:  .byte   $00,$03,$4a,$14,$01,$ff
+
+MonsterEntryScript_0009:
 @e594:  .byte   $00,$04,$74,$14,$01,$ff
+
+MonsterExitScript_0009:
 @e59a:  .byte   $00,$03,$66,$14,$01,$ff
+
+MonsterEntryScript_000a:
 @e5a0:  .byte   $00,$04,$90,$14,$01,$ff
+
+MonsterExitScript_000a:
 @e5a6:  .byte   $00,$03,$82,$14,$01,$ff
+
+MonsterEntryScript_000b:
 @e5ac:  .byte   $00,$04,$ac,$14,$01,$ff
+
+MonsterExitScript_000b:
 @e5b2:  .byte   $00,$03,$9e,$14,$01,$ff
+
+MonsterExitScript_000c:
 @e5b8:  .byte   $00,$03,$62,$15,$01,$ff
+
+; unused
 @e5be:  .byte   $00,$e0,$ff
+
+MonsterEntryScript_0007:
 @e5c1:  .byte   $00,$04,$b6,$15,$01,$ff
+
+MonsterExitScript_0007:
 @e5c7:  .byte   $00,$03,$a8,$15,$01,$ff
+
+MonsterEntryScript_000f:
 @e5cd:  .byte   $00,$04,$c4,$15,$01,$ff
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to misc. monster animation data
-@e5d3:  .addr   $e613,$e619,$e61f,$e625,$e62b,$e607,$e60d,$e631
-        .addr   $e637,$e613,$e601,$e5fb,$e5f5,$e5ef
+MonsterAnimScriptPtrs:
+@e5d3:  make_ptr_tbl_abs MonsterAnimScript, 14
 
 ; ------------------------------------------------------------------------------
 
 ; misc. monster animation scripts (ai command $fa, command $2b)
+MonsterAnimScript_000d:
 @e5ef:  .byte   $00,$04,$0a,$16,$01,$ff
+
+MonsterAnimScript_000c:
 @e5f5:  .byte   $00,$04,$ee,$15,$01,$ff
+
+MonsterAnimScript_000b:
 @e5fb:  .byte   $00,$04,$e0,$15,$01,$ff
+
+MonsterAnimScript_000a:
 @e601:  .byte   $00,$04,$d2,$15,$01,$ff
+
+MonsterAnimScript_0005:
 @e607:  .byte   $00,$05,$46,$15,$01,$fe
+
+MonsterAnimScript_0006:
 @e60d:  .byte   $00,$05,$38,$15,$01,$fe
+
+MonsterAnimScript_0000:
+MonsterAnimScript_0009:
 @e613:  .byte   $00,$04,$fc,$0e,$01,$ff
+
+MonsterAnimScript_0001:
 @e619:  .byte   $00,$04,$ee,$0e,$01,$ff
+
+MonsterAnimScript_0002:
 @e61f:  .byte   $00,$04,$e0,$0e,$01,$ff
+
+MonsterAnimScript_0003:
 @e625:  .byte   $00,$04,$f2,$14,$01,$ff
+
+MonsterAnimScript_0004:
 @e62b:  .byte   $00,$04,$e4,$14,$01,$ff
+
+MonsterAnimScript_0007:
 @e631:  .byte   $00,$04,$7e,$15,$01,$ff
+
+MonsterAnimScript_0008:
 @e637:  .byte   $00,$04,$70,$15,$01,$ff
 
 ; ------------------------------------------------------------------------------
 
 ; [ execute misc. monster animation (ai command $fa, command $2b) ]
 
-_c2e63d:
-pran2yos:
+DoMonsterAnim:
 @e63d:  ldy     #$0002
         lda     ($76),y
         sta     $e9fc       ; target monster
@@ -43475,7 +44074,7 @@ pran2yos:
 
 ; [ execute monster entry/exit animation ]
 
-MonsterEntryExit:
+DoMonsterEntryExit:
 @e668:  jsr     WaitLine160_near
         ldy     #$0001
         lda     ($76),y     ; entry/exit type
@@ -43485,13 +44084,17 @@ MonsterEntryExit:
         jmp     _c2e88e
 @e67a:  cmp     #$11
         bne     @e691       ; branch if not $11 (final kefka death)
+
+; final kefka death
         jsr     _c2e806
-        jsl     _c191d1
+        jsl     KefkaDeathAnim_far
         lda     #$ff
         sta     $6191
         lda     $2f2f
         sta     $201e
         rtl
+
+; all other monster entry/exit animations
 @e691:  pha
         jsr     _c2e806
         pla
@@ -43517,7 +44120,7 @@ _e6b1:  lda     #$c2        ; bank $c2
         beq     @e6d0       ;
         asl
         tax
-        jsr     ($e6d7,x)   ; monster animation script command jump table
+        jsr     (.loword(MonsterAnimCmdTbl),x)
         ldy     $8f
         iny
         sty     $8f
@@ -43532,7 +44135,13 @@ _e6b1:  lda     #$c2        ; bank $c2
 
 ; monster animation script command jump table
 mode_jmp_tbl:
-@e6d7:  .addr   $e7fc,$e801,$e7a7,$e6f4,$e733,$e772
+MonsterAnimCmdTbl:
+@e6d7:  .addr   MonsterAnimCmd_00
+        .addr   MonsterAnimCmd_01
+        .addr   MonsterAnimCmd_02
+        .addr   MonsterAnimCmd_03
+        .addr   MonsterAnimCmd_04
+        .addr   MonsterAnimCmd_05
 
 ; ------------------------------------------------------------------------------
 
@@ -43558,6 +44167,7 @@ bit_num_chg_loval:
 
 ; +b1: pointer to animation data (+$d07fb2)
 
+MonsterAnimCmd_03:
 @e6f4:  jsl     _c2fe21
         ldy     #$0001
         longa
@@ -43589,6 +44199,7 @@ bit_num_chg_loval:
 
 ; +b1: pointer to animation data (+$d07fb2)
 
+MonsterAnimCmd_04:
 @e733:  jsl     _c2fe21
         ldy     #$0001
         longa
@@ -43620,6 +44231,7 @@ bit_num_chg_loval:
 
 ; +b1: pointer to animation data (+$d07fb2)
 
+MonsterAnimCmd_05:
 @e772:  jsl     _c2fe21
         ldy     #$0001
         longa
@@ -43647,6 +44259,7 @@ bit_num_chg_loval:
 
 ; b1:
 
+MonsterAnimCmd_02:
 @e7a7:  lda     $e9fb
         sta     $2c71
         sta     $2c73
@@ -43687,6 +44300,7 @@ bit_num_chg_loval:
 
 ; [ monster animation script command $00: clear animations ]
 
+MonsterAnimCmd_00:
 @e7fc:  jsl     InitEventAnim_far
         rts
 
@@ -43694,6 +44308,7 @@ bit_num_chg_loval:
 
 ; [ monster animation script command $01: execute animations ]
 
+MonsterAnimCmd_01:
 @e801:  jsl     ExecEventAnim_far
         rts
 
@@ -43735,10 +44350,12 @@ get_mode_bit:
 ; ------------------------------------------------------------------------------
 
 ; ??? number of frames to wait
+_c2e84c:
 @e84c:  .byte   $0c,$0b,$0a,$09,$08,$07,$06,$07,$04,$03,$02,$02,$02,$02,$02,$02
         .byte   $02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02
 
 ; ??? number of frames to wait
+_c2e86c:
 @e86c:  .byte   $02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02
         .byte   $02,$02,$02,$02,$02,$02,$02,$02,$03,$04,$05,$06,$07,$08,$09,$0a
         .byte   $0b,$0c
@@ -43756,13 +44373,13 @@ mode_chg_00:
         sta     $201e
         lda     $ecb3
         tax
-        lda     $c2e84c,x
+        lda     f:_c2e84c,x
         jsl     WaitA_far
         lda     $e9fc
         sta     $201e
         lda     $ecb3
         tax
-        lda     $c2e86c,x
+        lda     f:_c2e86c,x
         jsl     WaitA_far
         inc     $ecb3
         lda     $ecb3
@@ -44049,6 +44666,7 @@ AnimType_7a:
 ; ------------------------------------------------------------------------------
 
 ; esper graphics (shiva, kirin, bismark, carbunkl, terrato)
+_c2ea9d:
 @ea9d:  .word   $0182,$0191,$0187,$0193,$0184
 
 ; ------------------------------------------------------------------------------
@@ -44063,7 +44681,7 @@ AnimType_79:
         asl
         tax
         longa
-        lda     $c2ea9d,x
+        lda     f:_c2ea9d,x
         tax
         shorta0
         jsl     LoadSummonGfxBG1_far
@@ -44351,9 +44969,9 @@ AnimType_65:
 LoadMode7AnimGfx:
 @ec61:  phx
         phy
-        lda     #$d8
+        lda     #^AttackGfxMode7
         sta     $f5
-        ldx     #$d000      ; $d8d000 (mode 7 battle animation graphics)
+        ldx     #.loword(AttackGfxMode7)
         stx     $f3
         lda     #$7e
         sta     $f8
@@ -44374,9 +44992,9 @@ LoadMode7AnimGfx:
         jsl     _c2c027
         phx
         phy
-        lda     #$d8        ; $d8daf2
+        lda     #^AttackTilesMode7
         sta     $f5
-        ldx     #$daf2
+        ldx     #.loword(AttackTilesMode7)
         stx     $f3
         lda     #$7e
         sta     $f8
@@ -45372,7 +45990,7 @@ _c2f322:
 @f322:  and     #$7f
         sec
         sbc     #$04
-        jsr     _c2fa9e
+        jsr     GetBitMask_near
         pha
         jsl     MonstersToBG1_far
         jsr     _c2f2f1
@@ -45888,12 +46506,14 @@ magic_type1c:
 ; ------------------------------------------------------------------------------
 
 ; number of duplicate threads per target (meteor, fire dance)
+_c2f64d:
 chg_type28_copy:
 @f64d:  .byte   $00,$05,$02,$01,$01,$00,$00
 
 ; ------------------------------------------------------------------------------
 
 ; total number of threads per target
+_c2f654:
 chg_type28_copy2:
 @f654:  .byte   $01,$06,$03,$02,$02,$01,$01
 
@@ -45932,12 +46552,12 @@ magic_type28_main2:
 @f68a:  shorta0
         lda     #$06
         sta     $961b       ; circle shape 6 (horizontal oval)
-        lda     $c2f64d,x   ; number of duplicate threads per target
+        lda     f:_c2f64d,x   ; number of duplicate threads per target
         beq     @f69d
         phx
         jsr     CopyThread
         plx
-@f69d:  lda     $c2f654,x   ; total number of threads per target
+@f69d:  lda     f:_c2f654,x   ; total number of threads per target
         jmp     SetNumThreads
 
 ; ------------------------------------------------------------------------------
@@ -46256,7 +46876,7 @@ magic_type27:
         and     #$7f
         sec
         sbc     #$04
-        jsr     _c2fa9e
+        jsr     GetBitMask_near
         jsl     MonstersToBG1_far
         jsl     TfrBG1Tiles_far
         jsl     WaitFrame_far
@@ -46301,7 +46921,7 @@ magic_type1d:
         and     #$7f
         sec
         sbc     #$04
-        jsr     _c2fa9e
+        jsr     GetBitMask_near
         pha
         sta     $14
         jsr     WaitLine160_near
@@ -46618,7 +47238,7 @@ InitCircle:
 LoadSummonPalBG1:
 @fa70:  ldx     $6169
         clr_ay
-@fa75:  lda     $d27820,x
+@fa75:  lda     f:MonsterPal,x
         sta     $7e60,y
         sta     $7c60,y
         inx
@@ -46634,7 +47254,7 @@ LoadSummonPalBG1:
 LoadSummonPalSprite:
 @fa87:  ldx     $6169
         clr_ay
-@fa8c:  lda     $d27820,x
+@fa8c:  lda     f:MonsterPal,x
         sta     $7f60,y
         sta     $7d60,y
         inx
@@ -46647,8 +47267,7 @@ LoadSummonPalSprite:
 
 ; [ A = 1 << A ]
 
-_c2fa9e:
-num_bit_chg_local:
+GetBitMask_near:
 @fa9e:  tax
         lda     f:BitOrTbl,x
         rts

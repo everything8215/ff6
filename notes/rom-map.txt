@@ -157,8 +157,8 @@ D1EAD8-D1EFFF   Pointers to Battle Animation Scripts (+$D00000)
 D1F000-D1F79F   Attack Messages (256 items, variable length)
 D1F7A0-D1F99F   Pointers to Attack Messages (+$D10000)
 D1F9A0-D1F9AA   Unused Space (11 bytes)
-D1F9AB-D1F9D2   Battle Background Index to change to for each Dance
-D1F9D5-D1F9CF   Esper Order for Menu
+D1F9AB-D1F9B2   Battle Background Index to change to for each Dance
+D1F9B5-D1F9CF   Esper Order for Menu
 D1F9D0-D1F9FF   Unused Space (48 bytes)
 D1FA00-D1FFFF   Map Startup Event Pointers (+$CA0000)
 D20000-D25FFF   3bpp Battle Animation Tile Formation (64 bytes each, 2 bytes per 8x8 tile, 0x8000: vflip, 0x4000: hflip, [$D30000 + 0x3FFF * $18]: address of tile graphics)

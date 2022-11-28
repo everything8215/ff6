@@ -49,6 +49,1001 @@
         "ff6-lzss"
       ]
     },
+    "attackAnimationFrames": {
+      "type": "array",
+      "name": "Attack Animation Frames",
+      "range": "0xD10141-0xD1E988",
+      "arrayLength": 2948,
+      "asmSymbol": "AttackAnimFrames",
+      "file": "btlgfx/data/attack_anim_frames.asm",
+      "assembly": {
+        "type": "data",
+        "format": "ff6-animation-frame"
+      },
+      "pointerTable": {
+        "range": "0xD4DF3C-0xD4F645",
+        "offset": "0xD10000"
+      }
+    },
+    "attackAnimationProperties": {
+      "type": "array",
+      "name": "Attack Animation Properties",
+      "range": "0xD07FB2-0xD095E5",
+      "asmSymbol": "AttackAnimProp",
+      "file": "btlgfx/data/attack_anim_prop.asm",
+      "arrayLength": 406,
+      "itemLength": 14,
+      "assembly": {
+        "type": "assembly",
+        "editor": "FF6AttackEditor",
+        "assembly": {
+          "soundEffect": {
+            "type": "property",
+            "name": "Sound Effect",
+            "begin": 9
+          },
+          "specialFunction": {
+            "type": "property",
+            "name": "Init. Function",
+            "begin": 10,
+            "mask": "0x7F"
+          },
+          "delay": {
+            "type": "property",
+            "name": "Thread Delay",
+            "begin": 13
+          },
+          "cat-sprite": "Sprite",
+          "spritePalette": {
+            "type": "property",
+            "name": "Palette",
+            "begin": 6,
+            "stringTable": "attackPalette"
+          },
+          "spriteAnimation": {
+            "type": "data",
+            "name": "Sprite Animation",
+            "begin": 0,
+            "length": 2,
+            "assembly": {
+              "spriteGraphics": {
+                "type": "property",
+                "name": "Graphics",
+                "mask": "0x7FFF",
+                "stringTable": "attackGraphicsProperties",
+                "link": "attackGraphicsProperties[%i]"
+              },
+              "spriteNoGraphics": {
+                "type": "property",
+                "name": "No Graphics",
+                "mask": "0x8000",
+                "bool": true
+              }
+            },
+            "special": {
+              "0xFFFF": "No Animation"
+            }
+          },
+          "cat-layer1": "Layer 1",
+          "layer1Palette": {
+            "type": "property",
+            "name": "Palette",
+            "begin": 7,
+            "stringTable": "attackPalette"
+          },
+          "layer1Animation": {
+            "type": "data",
+            "name": "Layer 1 Animation",
+            "begin": 2,
+            "length": 2,
+            "assembly": {
+              "layer1Graphics": {
+                "type": "property",
+                "name": "Graphics",
+                "mask": "0x7FFF",
+                "stringTable": "attackGraphicsProperties",
+                "link": "attackGraphicsProperties[%i]"
+              },
+              "layer1NoGraphics": {
+                "type": "property",
+                "name": "No Graphics",
+                "mask": "0x8000",
+                "bool": true
+              }
+            },
+            "special": {
+              "0xFFFF": "No Animation"
+            }
+          },
+          "layer1Target": {
+            "type": "property",
+            "name": "Layer 1 Target",
+            "begin": 10,
+            "mask": "0x80",
+            "bool": true
+          },
+          "cat-layer3": "Layer 3",
+          "layer3Palette": {
+            "type": "property",
+            "name": "Palette",
+            "begin": 8,
+            "stringTable": "attackPalette"
+          },
+          "layer3Animation": {
+            "type": "data",
+            "name": "Layer 3 Animation",
+            "begin": 4,
+            "length": 2,
+            "assembly": {
+              "layer3Graphics": {
+                "type": "property",
+                "name": "Graphics",
+                "mask": "0x7FFF",
+                "stringTable": "attackGraphicsProperties",
+                "link": "attackGraphicsProperties[%i]"
+              },
+              "layer3NoGraphics": {
+                "type": "property",
+                "name": "No Graphics",
+                "mask": "0x8000",
+                "bool": true
+              }
+            },
+            "special": {
+              "0xFFFF": "No Animation"
+            }
+          },
+          "cat-extra": "Extra",
+          "extraAnimation": {
+            "type": "data",
+            "name": "Extra Animation",
+            "begin": 11,
+            "length": 2,
+            "assembly": {
+              "extraGraphics": {
+                "type": "property",
+                "name": "Graphics",
+                "mask": "0x7FFF",
+                "stringTable": "attackGraphicsProperties",
+                "link": "attackGraphicsProperties[%i]"
+              },
+              "extraNoGraphics": {
+                "type": "property",
+                "name": "No Graphics",
+                "mask": "0x8000",
+                "bool": true
+              }
+            },
+            "special": {
+              "0xFFFF": "No Animation"
+            }
+          }
+        }
+      },
+      "stringTable": {
+        "length": 406,
+        "default": "Attack Animation Properties %i",
+        "string": {
+          "0x0000-0x00FF": "<stringTable.attackName[%i]>",
+          "0x00FF": "Unused",
+          "0x0100": "Walk Forward (Pre-Attack)",
+          "0x0101": "Terra/Tritoch Lightning (w/ Explosions)",
+          "0x0102": "Blizzard Fist",
+          "0x0103": "Terra/Tritoch Lightning (no Explosions)",
+          "0x0104": "Water Splash (Layer 1)",
+          "0x0105": "Water Splash (Sprite)",
+          "0x0106": "Bahamut (Esper Only)",
+          "0x0107": "Zoneseek (Esper Only)",
+          "0x0108": "Fenrir (Esper Only)",
+          "0x0109": "Terrato (Esper Only)",
+          "0x010A": "Shiva (Esper Only)",
+          "0x010B": "Kirin (Esper Only)",
+          "0x010C": "Bismark (Esper Only)",
+          "0x010D": "Carbunkl (Esper Only)",
+          "0x010E": "Phantom (Esper Only)",
+          "0x010F": "Transforming into Magicite",
+          "0x0116": "Possess",
+          "0x0117": "Jump (Unarmed)",
+          "0x011B": "Morph",
+          "0x011C": "Black Magic",
+          "0x011D": "White/Effect Magic",
+          "0x011E": "Summon",
+          "0x011F": "Rage/Lore",
+          "0x0120": "Revert",
+          "0x0121": "Steal",
+          "0x0122": "SwdTech",
+          "0x0123": "Blitz",
+          "0x0124": "Runic",
+          "0x0125": "Dance",
+          "0x0128": "GP Rain",
+          "0x012C": "Sketch",
+          "0x012D": "Leap",
+          "0x012E": "Health",
+          "0x012F": "Run",
+          "0x0130": "Jump (Thick Knife)",
+          "0x0131": "Jump (Thin Knife)",
+          "0x0132": "Jump (Sword)",
+          "0x0133": "Jump (Katana)",
+          "0x0134": "Jump (Rod)",
+          "0x0135": "Jump (Spear)",
+          "0x0136": "Jump (Hawk Eye/Sniper)",
+          "0x0137": "Shock",
+          "0x0138": "Throw (Thick Knife)",
+          "0x0139": "Throw (Thin Knife)",
+          "0x013A": "Throw (Sword)",
+          "0x013B": "Throw (Katana)",
+          "0x013C": "Throw (Rod)",
+          "0x013D": "Throw (Spear)",
+          "0x013E": "Throw (Hawk Eye/Sniper)",
+          "0x013F": "Throw (Life 2 ???)",
+          "0x0140": "Throw (Fire Skean)",
+          "0x0141": "Throw (Water Edge)",
+          "0x0142": "Throw (Bolt Edge)",
+          "0x0143": "Throw (Inviz Edge)",
+          "0x0144": "Throw (Shadow Edge)",
+          "0x0145": "Throw (Full Moon, Morning Star, Rising Sun)",
+          "0x0146": "Throw (Boomerang)",
+          "0x0147": "Throw (No Animation)",
+          "0x0148": "NoiseBlaster",
+          "0x0149": "Bio Blaster",
+          "0x014A": "Flash",
+          "0x014B": "Chain Saw (Normal)",
+          "0x014C": "Debilitator",
+          "0x014D": "Drill",
+          "0x014E": "Air Anchor",
+          "0x014F": "AutoCrossbow",
+          "0x0150": "Chainsaw (Auto-Kill)",
+          "0x0151": "Tonic",
+          "0x0152": "Potion",
+          "0x0153": "X-Potion",
+          "0x0154": "Tincture",
+          "0x0155": "Ether",
+          "0x0156": "X-Ether",
+          "0x0157": "Elixir",
+          "0x0158": "Megalixir",
+          "0x0159": "Fenix Down",
+          "0x015A": "Revivify",
+          "0x015B": "Antidote",
+          "0x015C": "Eyedrop",
+          "0x015D": "Soft",
+          "0x015E": "Remedy",
+          "0x015F": "Sleeping Bag (Unused)",
+          "0x0160": "Tent (Unused)",
+          "0x0161": "Green Cherry",
+          "0x0162": "Magicite (Unused)",
+          "0x0163": "Super Ball",
+          "0x0164": "Echo Screen",
+          "0x0165": "Smoke Bomb",
+          "0x0166": "Warp Stone",
+          "0x0167": "Dried Meat",
+          "0x017B": "Dance Trip-Up",
+          "0x017C": "3 Dice",
+          "0x017D": "2 Dice",
+          "0x0180": "Lightning Bolt (Kefka vs. Gestahl)",
+          "0x0181": "Black Magic (Kefka vs. Gestahl)",
+          "0x0182": "Capture (Part 1)",
+          "0x0183": "Capture (Part 2)",
+          "0x0187": "Boss Death",
+          "0x018F": "Kefka Head",
+          "0x0193": "Final Kefka Death"
+        }
+      }
+    },
+    "attackAnimationScript": {
+      "type": "script",
+      "name": "Attack Animation Script",
+      "range": "0xD00000-0xD07FB1",
+      "asmSymbol": "AttackAnimScript",
+      "file": "btlgfx/data/attack_anim_script.asm"
+    },
+    "attackAnimationScriptPointers": {
+      "type": "array",
+      "name": "Attack Animation Script Pointers",
+      "range": "0xD1EAD8-0xD1EFFF",
+      "asmSymbol": "AttackAnimScriptPtrs",
+      "file": "btlgfx/data/attack_anim_script_ptrs.asm",
+      "arrayLength": 660,
+      "itemLength": 2,
+      "assembly": {
+        "type": "property",
+        "name": "Pointer",
+        "mask": "0xFFFF"
+      }
+    },
+    "attackGraphics2bpp": {
+      "type": "graphics",
+      "name": "Attack Graphics (2bpp)",
+      "range": "0xD87000-0xD8C99F",
+      "asmSymbol": "AttackGfx2bpp",
+      "file": "btlgfx/gfx/attack_gfx_2bpp.asm",
+      "format": "snes2bpp",
+      "palette": "attackPalette"
+    },
+    "attackGraphics3bpp": {
+      "type": "graphics",
+      "name": "Attack Graphics (3bpp)",
+      "range": "0xD30000-0xD4C9FF",
+      "asmSymbol": "AttackGfx3bpp",
+      "file": "btlgfx/gfx/attack_gfx_3bpp.asm",
+      "format": "snes3bpp",
+      "palette": "attackPalette"
+    },
+    "attackGraphicsMode7": {
+      "type": "array",
+      "name": "Attack Graphics (Mode 7)",
+      "range": "0xD8D000-0xD8DAF1",
+      "asmSymbol": "AttackGfxMode7",
+      "file": "btlgfx/gfx/attack_gfx_mode7.asm",
+      "format": "ff6-lzss",
+      "arrayLength": 3,
+      "itemLength": "0x0800",
+      "assembly": {
+        "type": "graphics",
+        "format": "snes4bpp",
+        "palette": "attackPalette"
+      },
+      "stringTable": {
+        "string": {
+          "0": "Overcast",
+          "1": "S.Cross",
+          "2": "H-Bomb"
+        }
+      }
+    },
+    "attackGraphicsProperties": {
+      "type": "array",
+      "name": "Attack Graphics Properties",
+      "range": "0xD4D000-0xD4DF3B",
+      "asmSymbol": "AttackGfxProp",
+      "file": "btlgfx/data/attack_gfx_prop.asm",
+      "arrayLength": 650,
+      "itemLength": 6,
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "tilemapMSB": {
+            "type": "property",
+            "name": "Tilemap MSB",
+            "begin": 0,
+            "mask": "0x40",
+            "hidden": true
+          },
+          "tilemap": {
+            "type": "property",
+            "name": "Tilemap Offset",
+            "begin": 1,
+            "msb": "this.parent.tilemapMSB"
+          },
+          "is2bpp": {
+            "type": "property",
+            "name": "Use 2bpp Graphics",
+            "begin": 0,
+            "mask": "0x80",
+            "bool": true
+          },
+          "frameCount": {
+            "type": "property",
+            "name": "Frame Count",
+            "begin": 0,
+            "mask": "0x3F"
+          },
+          "frameOffset": {
+            "type": "property",
+            "name": "Frame Offset",
+            "begin": 2,
+            "mask": "0xFFFF"
+          },
+          "frameHeight": {
+            "type": "property",
+            "name": "Frame Height",
+            "begin": 5
+          },
+          "frameWidth": {
+            "type": "property",
+            "name": "Frame Width",
+            "begin": 4
+          }
+        }
+      },
+      "stringTable": {
+        "length": 650,
+        "default": "Attack Graphics Properties %i",
+        "string": {
+          "0": "Thick Diagonal Slash (Layer 1)",
+          "1": "Thin Diagonal Slash (Layer 1)",
+          "2": "Stab 1 (Layer 1)",
+          "3": "Stab 2 (Layer 1)",
+          "4": "Stab 3 (Layer 1)",
+          "5": "Thick Horizontal Slash (Layer 1)",
+          "6": "Arc Slash (Layer 1)",
+          "7": "Claw Slash (Layer 1)",
+          "8": "Unarmed Hit (Layer 1)",
+          "9": "Large Piercing Hit (Layer 1)",
+          "10": "Cards Hit (Layer 1)",
+          "11": "Darts/Dice Hit (Layer 1)",
+          "12": "Shuriken/Tack Star Hit (Layer 1)",
+          "13": "Ninja Star Hit (Layer 1)",
+          "15": "Boomerang, Wing Edge (Sprite)",
+          "16": "Cards (Sprite)",
+          "17": "Doom Darts (Sprite)",
+          "18": "Dice (Sprite)",
+          "19": "Darts (Sprite)",
+          "20": "Trump (Sprite)",
+          "21": "Full Moon, Rising Sun (Sprite)",
+          "22": "Medium Brush (Sprite)",
+          "23": "Short Brush (Sprite)",
+          "24": "Long Brush (Sprite)",
+          "25": "Flail, Morning Star (Sprite)",
+          "26": "Hawk Eye, Sniper (Sprite)",
+          "28": "Short Katana (Sprite)",
+          "29": "Long Katana (Sprite)",
+          "30": "Drainer, Excalibur, Ragnarok (Sprite)",
+          "31": "Soul Sabre, Ogre Nix (Sprite)",
+          "32": "Bone Club (Sprite)",
+          "33": "Ninja Sword (Left Hand, Sprite)",
+          "34": "Ninja Sword (Right Hand, Sprite)",
+          "35": "Guardian, Man Eater (Sprite)",
+          "36": "Unarmed (Sprite)",
+          "38": "Air Lancet (Sprite)",
+          "39": "Knife (Sprite)",
+          "40": "Rod (Sprite)",
+          "41": "Short Sword (Sprite)",
+          "42": "ThunderBlade (Sprite)",
+          "43": "Rune Edge, Enhancer (Sprite)",
+          "44": "Flame Sabre, Blizzard (Sprite)",
+          "45": "Spear (Sprite)",
+          "46": "Trident (Sprite)",
+          "47": "Shuriken, Tack Star (Sprite)",
+          "48": "Ninja Star (Sprite)",
+          "49": "Kaiser, Tiger Fangs (Sprite)",
+          "50": "Claw (Right Hand, Sprite)",
+          "51": "Claw (Left Hand, Sprite)",
+          "52": "Full Moon, Rising Sun Hit (Layer 1)",
+          "53": "Boomerang, Wing Edge Hit (Layer 1)",
+          "54": "Atma Weapon 1 (Sprite)",
+          "55": "Atma Weapon 2 (Sprite)",
+          "56": "Atma Weapon 3 (Sprite)",
+          "57": "GP Rain (Sprite)",
+          "59": "Dispatch/Slash/Bum Rush (Layer 1)",
+          "61": "Triple Horizontal Slash (Layer 1)",
+          "62": "Thin Horizontal Slash (Layer 1)",
+          "63": "Jump: Hawk Eye/Sniper (Sprite)",
+          "89": "Stunner (Layer 1)",
+          "90": "Valiant Knife (Sprite)",
+          "91": "Falchion (Sprite)",
+          "92": "Illumina (Sprite)",
+          "93": "Aura Lance (Sprite)",
+          "94": "MetalKnuckle, Poison Claw (Sprite)",
+          "95": "Punisher (Sprite)",
+          "96": "Imp Halberd (Sprite)",
+          "97": "Scimitar (Sprite)",
+          "100": "Throw: Hawk Eye/Sniper (Sprite)",
+          "101": "Pummel (Sprite)",
+          "102": "AuraBolt (Layer 1)",
+          "103": "AuraBolt (Layer 3)",
+          "104": "AuraBolt (Sprite)",
+          "105": "Suplex (Sprite)",
+          "106": "Fire Dance (Sprite)",
+          "107": "Fire Dance (Layer 1)",
+          "108": "Air Blade (Sprite)",
+          "109": "Air Blade (Layer 1)",
+          "110": "Mantra (Layer 1)",
+          "111": "Bum Rush (Sprite)",
+          "112": "Spiraler (Layer 1)",
+          "114": "Sketch (Sprite)",
+          "115": "Black Magic (Layer 1)",
+          "116": "White/Effect Magic (Layer 1)",
+          "117": "White/Effect Magic (Sprite)",
+          "118": "Summon (Sprite)",
+          "119": "Summon (Layer 1)",
+          "120": "Rage/Lore (Layer 1)",
+          "121": "Morph (Layer 1)",
+          "122": "Revert (Sprite)",
+          "123": "Steal (Sprite)",
+          "124": "SwdTech (Layer 1)",
+          "125": "Blitz (Layer 1)",
+          "126": "Runic (Sprite)",
+          "127": "Dance (Sprite)",
+          "128": "Shock (Sprite)",
+          "129": "Shock (Layer 1)",
+          "130": "Jump: Unarmed (Sprite)",
+          "135": "Jump: Thick Knife (Sprite)",
+          "136": "Jump: Thin Knife (Sprite)",
+          "137": "Jump: Sword (Sprite)",
+          "138": "Jump: Katana (Sprite)",
+          "139": "Jump: Rod (Sprite)",
+          "140": "Jump: Spear (Sprite)",
+          "141": "Throw: Thick Knife (Sprite)",
+          "142": "Throw: Thin Knife (Sprite)",
+          "143": "Throw: Sword (Sprite)",
+          "144": "Throw: Katana (Sprite)",
+          "145": "Throw: Rod (Sprite)",
+          "146": "Throw: Spear (Sprite)",
+          "153": "Flare (Layer 1)",
+          "154": "Life, Fallen One (Sprite)",
+          "155": "Life 3 (Sprite/Layer 1)",
+          "156": "Antdot (Sprite)",
+          "157": "Remedy (Sprite)",
+          "158": "Remedy (Layer 1)",
+          "159": "Regen (Sprite)",
+          "162": "Scan, Targetting (Sprite)",
+          "163": "Scan, Targetting (Layer 1)",
+          "164": "Slow, Slow 2 (Sprite)",
+          "165": "Rasp (Layer 3)",
+          "166": "Rasp (Sprite)",
+          "167": "Step Mine (Layer 1)",
+          "168": "Sleep (Sprite)",
+          "169": "Safe (Sprite)",
+          "170": "Muddle, L.3 Muddle, Confusion (Sprite)",
+          "171": "Muddle, L.3 Muddle (Layer 1)",
+          "172": "Haste, Haste2 (Sprite)",
+          "173": "Haste, Haste2 (Layer 3)",
+          "174": "Stop (Sprite)",
+          "175": "Purifier (Layer 3)",
+          "176": "Bserk (Sprite)",
+          "177": "Float (Sprite)",
+          "178": "Imp (Sprite)",
+          "179": "Imp (Layer 1)",
+          "180": "Rflect (Sprite)",
+          "181": "Shell (Layer 1)",
+          "182": "TekBarrier (Sprite)",
+          "183": "TekBarrier (Layer 1)",
+          "184": "TekBarrier (Layer 3)",
+          "185": "Vanish (Layer 1)",
+          "186": "Drain, Osmose, Raid (Sprite)",
+          "187": "Drain, Osmose, Raid (Layer 1)",
+          "188": "Warp, Warp Stone (Layer 1)",
+          "189": "Quick (Sprite)",
+          "190": "Dispel (Sprite)",
+          "191": "Dispel (Layer 1)",
+          "192": "Antdot, Regen (Layer 3)",
+          "193": "Fire, Blaze (Sprite)",
+          "194": "Fire 2 (Sprite)",
+          "195": "Fire 2 (Layer 1)",
+          "196": "Fire 3 (Sprite)",
+          "197": "Fire 3 (Layer 1)",
+          "198": "Bolt (Sprite)",
+          "199": "Bolt 2, Mega Volt (Sprite)",
+          "200": "Bolt 2, Mega Volt (Layer 1)",
+          "201": "Bio (Sprite)",
+          "202": "Bio (Layer 1)",
+          "203": "GrandTrain (Layer 1)",
+          "204": "Poison (Sprite)",
+          "205": "Doom, Roulette (Sprite)",
+          "206": "Meteor (Sprite)",
+          "207": "Meteor (Layer 1)",
+          "208": "Meteor (Layer 3)",
+          "209": "Quate (Layer 1)",
+          "210": "X-Zone (Layer 3)",
+          "211": "Demi, Quartr, Reflect??? (Sprite)",
+          "212": "GrandTrain (Layer 3)",
+          "213": "Safe (Layer 1)",
+          "214": "Slow 2 (Layer 1)",
+          "215": "Flare (Sprite)",
+          "216": "X-Zone (Sprite)",
+          "217": "Merton (Layer 3)",
+          "218": "Merton (Sprite)",
+          "219": "Sketch (Layer 1)",
+          "220": "Ice (Sprite)",
+          "221": "Ice (Layer 1)",
+          "222": "Ice 2, N. Cross (Sprite)",
+          "223": "Ice 2, N. Cross (Layer 1)",
+          "224": "Ice 3 (Sprite)",
+          "225": "Ice 3 (Layer 1)",
+          "226": "Break (Sprite)",
+          "227": "Break (Layer 1)",
+          "228": "Pearl (Sprite)",
+          "229": "Pearl (Layer 1)",
+          "230": "Pearl (Layer 3)",
+          "231": "Ultima (Layer 1)",
+          "232": "Ultima (Layer 3)",
+          "233": "W Wind (Layer 1)",
+          "234": "Bolt 3, Giga Volt (Sprite)",
+          "235": "Bolt 3, Giga Volt (Layer 1)",
+          "236": "Cure (Sprite)",
+          "237": "Sleep (Layer 1)",
+          "238": "Inferno (Sprite)",
+          "239": "Inferno (Layer 1)",
+          "240": "Inferno (Layer 3)",
+          "241": "Spin Edge (Layer 1)",
+          "242": "Battle (Sprite)",
+          "243": "Earth Aura (Layer 1)",
+          "244": "Earth Aura (Layer 3)",
+          "245": "Earth Aura (Sprite)",
+          "246": "Sea Song (Layer 1)",
+          "247": "Sea Song (Extra)",
+          "248": "Sea Song (Sprite)",
+          "249": "Wall (Sprite)",
+          "250": "Wall (Layer 1)",
+          "251": "Bolt Fist (Layer 3)",
+          "252": "Bolt Fist (Layer 1)",
+          "253": "Bolt Fist (Sprite)",
+          "254": "Gem Dust (Layer 1)",
+          "255": "Gem Dust (Layer 3)",
+          "256": "Gem Dust (Sprite)",
+          "257": "Hope Song (Sprite)",
+          "258": "Hope Song (Layer 3)",
+          "259": "Hope Song (Layer 1)",
+          "260": "Justice (Sprite)",
+          "261": "Justice (Layer 3)",
+          "262": "Justice (Layer 1)",
+          "263": "Justice (Extra)",
+          "292": "Sun Bath (Sprite)",
+          "293": "Sun Bath (Extra)",
+          "294": "Rage (Layer 1)",
+          "295": "Rage (Layer 3)",
+          "296": "Harvester (Sprite)",
+          "297": "Harvester (Layer 1)",
+          "298": "Sand Storm (Layer 1)",
+          "299": "Antlion (Layer 1)",
+          "300": "Elf Fire (Sprite)",
+          "301": "Harvester (Layer 3)",
+          "302": "Wind Slash (Sprite)",
+          "303": "Wind Slash (Layer 1)",
+          "304": "Specter (Layer 1)",
+          "305": "Specter (Sprite)",
+          "306": "Land Slide (Sprite)",
+          "308": "Sonic Boom (Sprite)",
+          "309": "El Nino (Sprite)",
+          "310": "El Nino (Layer 1)",
+          "311": "Plasma (Sprite)",
+          "312": "Cave In (Sprite)",
+          "313": "Snow Ball (Sprite)",
+          "314": "Surge, Slide (Layer 1)",
+          "315": "Surge, Slide (Layer 3)",
+          "316": "Surge, Slide (Sprite)",
+          "317": "Cokatrice (Sprite)",
+          "318": "Cokatrice (Layer 1)",
+          "319": "Wombat (Sprite)",
+          "320": "Wombat (Layer 1)",
+          "321": "Whump (Sprite)",
+          "322": "Whump (Layer 1)",
+          "323": "Leap (Sprite)",
+          "324": "Tapir (Layer 1)",
+          "325": "Tapir (Sprite)",
+          "326": "Poison Frog (Layer 1)",
+          "327": "Poison Frog (Sprite)",
+          "328": "Ice Rabbit (Layer 1)",
+          "329": "Ice Rabbit (Sprite)",
+          "331": "Fire Beam (Layer 1)",
+          "332": "Fire/Ice Beam (Layer 3)",
+          "333": "Fire/Ice Beam (Sprite)",
+          "334": "Wild Bear (Sprite)",
+          "335": "Wild Bear (Layer 1)",
+          "336": "Kitty (Sprite)",
+          "337": "Kitty (Layer 1)",
+          "338": "Snare (Layer 1)",
+          "339": "Health (Sprite)",
+          "340": "Bolt Beam (Layer 1)",
+          "341": "Bolt Beam (Layer 3)",
+          "342": "Bolt Beam (Sprite)",
+          "343": "Ice Beam (Layer 1)",
+          "344": "Bio Blast (Layer 1)",
+          "348": "Confuser (Layer 3)",
+          "349": "Confuser (Layer 1)",
+          "350": "X-fer (Sprite)",
+          "351": "X-fer (Layer 3)",
+          "396": "TekMissile (Sprite)",
+          "398": "Slow, Slow 2 (Layer 3)",
+          "463": "Dispatch (Sprite)",
+          "464": "Retort (Sprite)",
+          "465": "Slash (Sprite)",
+          "466": "Slash (Layer 3)",
+          "467": "Quadra Slash/Slice (Sprite)",
+          "470": "Stunner (Sprite)",
+          "471": "Empowerer (Layer 1)",
+          "472": "Empowerer (Sprite)",
+          "473": "Cleave (Sprite)",
+          "500": "Fire Skean (Layer 1)",
+          "501": "Water Edge (Sprite)",
+          "502": "Water Edge (Layer 1)",
+          "503": "Bolt Edge (Layer 1)",
+          "505": "Bolt Edge (Layer 3)",
+          "539": "Chocobop (Sprite)",
+          "540": "Storm (Layer 1)",
+          "541": "H-Bomb (Sprite)",
+          "542": "H-Bomb (Layer 1)",
+          "543": "7-Flush (Sprite)",
+          "544": "7-Flush (Layer 1)",
+          "545": "Storm (Sprite)",
+          "547": "Water Splash (Sprite)",
+          "549": "Possess (Layer 1)",
+          "552": "Heal Force (Sprite)",
+          "560": "Bahamut (Esper Only)",
+          "561": "Zoneseek (Esper Only)",
+          "562": "Fenrir (Esper Only)",
+          "563": "Terrato (Esper Only)",
+          "564": "Shiva (Esper Only)",
+          "565": "Kirin (Esper Only)",
+          "566": "Bismark (Esper Only)",
+          "567": "Carbunkl (Esper Only)",
+          "568": "Phantom (Esper Only)",
+          "569": "Transforming into Magicite (Sprite)",
+          "570": "Transforming into Magicite (Layer 3)",
+          "599": "Black Magic (Kefka vs. Gestahl)",
+          "609": "Confuser (Sprite)",
+          "610": "Sketch (Layer 3)",
+          "611": "Sting Hit (Layer 1)",
+          "612": "Cloud Hit (Layer 1)",
+          "613": "Hammer (Layer 1)",
+          "614": "Bone (Layer 1)",
+          "615": "Wrench (Layer 1)",
+          "616": "Lightning Bolt (Layer 1)",
+          "619": "Blob Guy (Layer 1)",
+          "620": "Single Punch (Layer 1)",
+          "621": "Vertical Slash (Layer 1)",
+          "622": "Small Piercing Hit (Layer 1)",
+          "623": "Bubble (Layer 1)",
+          "624": "Music Note (Layer 1)",
+          "625": "Heart (Layer 1)",
+          "626": "Wheel (Layer 1)",
+          "627": "Flower (Layer 1)",
+          "628": "Missile (Layer 1)",
+          "629": "Net (Layer 1)",
+          "630": "Drill (Layer 1)",
+          "631": "Black Ball (Layer 1)",
+          "634": "Diagonal Slash with Skull (Layer 1)",
+          "635": "Boss Death (Layer 1)",
+          "638": "Unused (Sprite)",
+          "641": "Kefka Head (Layer 1)",
+          "649": "Water Edge (Layer 1, Glitched)",
+          "0x7FFF": "None"
+        }
+      }
+    },
+    "attackMessage": {
+      "type": "array",
+      "name": "Attack Message",
+      "range": "0xD1F000-0xD1F750",
+      "asmSymbol": "AttackMsg",
+      "file": "btlgfx/text/attack_msg.asm",
+      "arrayLength": 256,
+      "assembly": {
+        "type": "text",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xD1F7A0-0xD1F99F",
+        "offset": "0xD10000"
+      },
+      "stringTable": {
+        "length": 256,
+        "default": "<attackMessage[%i]>"
+      }
+    },
+    "attackName": {
+      "type": "array",
+      "name": "Attack Name",
+      "range": "0xE6F7B9-0xE6FE8E",
+      "asmSymbol": "AttackName",
+      "file": "field/text/attack_name.asm",
+      "arrayLength": 175,
+      "itemLength": 10,
+      "assembly": {
+        "type": "text",
+        "encoding": "bigText"
+      },
+      "stringTable": {
+        "length": 256,
+        "default": "<attackName[%i-0x51]>",
+        "string": {
+          "0x00-0x36": "<spellNames[%i]>",
+          "0x36-0x51": "<esperName[%i-0x36]> (<esperAttackName[%i-0x36]>)",
+          "0x55-0x5D": "<swdTechNames[%i-0x55]>",
+          "0xFF": "Nothing"
+        }
+      }
+    },
+    "attackPalette": {
+      "type": "array",
+      "name": "Attack Palette",
+      "range": "0xD26000-0xD26EFF",
+      "asmSymbol": "AttackPal",
+      "file": "btlgfx/gfx/attack_pal.asm",
+      "arrayLength": 240,
+      "itemLength": 16,
+      "assembly": {
+        "type": "data",
+        "format": "bgr555"
+      },
+      "stringTable": {
+        "length": 240,
+        "default": "Attack Palette %i",
+        "string": {
+          "0": "Generic Tools",
+          "1": "Drill/Air Anchor",
+          "2": "Debilitator (Sprite)",
+          "3": "Auto Crossbow",
+          "5": "Debilitator (Layer 1)",
+          "8": "Fire Dance, Black Magic",
+          "9": "Spiraler",
+          "10": "Mantra",
+          "11": "Air Blade (Layer 1)",
+          "12": "Aura Bolt, White/Effect Magic, Runic, etc. (Sprite)",
+          "15": "Rage/Lore, SwdTech",
+          "16": "Revenge, Morph",
+          "17": "Shock (Layer 1)",
+          "20": "Shock (Sprite)",
+          "21": "Blitz",
+          "24": "Weapon (Brown/Blue)",
+          "25": "Weapon (Red/Green)",
+          "28": "Full Moon",
+          "29": "Weapon (Gray/Blue)",
+          "30": "Dice",
+          "31": "Atma Weapon",
+          "32": "Weapon (Gold)",
+          "33": "Assassin",
+          "34": "Weapon (Blue)",
+          "36": "Rising Sun",
+          "37": "Weapon (Yellow)",
+          "38": "Bone Club",
+          "40": "Weapon (Brown/Red)",
+          "41": "Weapon (Red)",
+          "42": "Weapon (Gray)",
+          "43": "Aura Lance",
+          "44": "Ice Rod, Pearl Rod",
+          "45": "Fire Rod",
+          "46": "Tack Star",
+          "48": "Diffuser, Riot Blade (Layer 1)",
+          "49": "Flash Rain (Layer 3)",
+          "50": "Blue Hit",
+          "51": "Stunner, Tek Laser",
+          "52": "Red Hit",
+          "53": "Purple Hit",
+          "54": "Black & White Hit",
+          "55": "Bolt Edge (Layer 3)",
+          "56": "Fire, Tri-Dazer, Fire Skean, etc.",
+          "57": "Fire Beam, L.4 Flare, etc. (Sprite)",
+          "58": "Scan, Mute, Rflect, Quick, etc. (Sprite)",
+          "59": "Remedy (Sprite)",
+          "60": "Hope Song, Cat Rain (Sprite)",
+          "62": "Haste, Haste 2 (Sprite)",
+          "63": "Muddle, Float, Life, Life 2, Life 3, etc.",
+          "65": "Regen (Sprite)",
+          "67": "Tri-Dazer, True Edge (Layer 3)",
+          "68": "Hope Song (Layer 3)",
+          "69": "TekBarrier (Sprite)",
+          "73": "Rasp",
+          "74": "Regen (Layer 3)",
+          "75": "Haste (Layer 3)",
+          "76": "Drain, Antdot (Sprite)",
+          "78": "Slow, ForceField (Layer 3)",
+          "80": "W Wind",
+          "81": "Fire 2, Flare, Reviver, Sun Bath",
+          "82": "Ice, Pearl, Moon Song, etc. (Sprite)",
+          "83": "Fire 3, Inferno (Layer 1)",
+          "84": "Ice 2, Dispel (Sprite)",
+          "85": "Bio, Imp (Sprite)",
+          "86": "Ice, Ice 2, Bolt 3 (Layer 1)",
+          "88": "Group Hug (Layer 1)",
+          "89": "Meteor, Grand Train (Layer 1)",
+          "90": "Drain (Layer 1)",
+          "92": "Shell (Layer 1)",
+          "93": "Scan, Remedy, Heal Horn, etc. (Layer 1)",
+          "94": "X-Zone, Meteor, Gem Dust (Layer 3)",
+          "95": "Stop",
+          "96": "TekBarrier (Layer 1)",
+          "97": "Bolt, Bolt 2, Bolt 3 (Sprite)",
+          "99": "Mind Blast",
+          "100": "Meteor, Land Slide (Sprite)",
+          "101": "Quake",
+          "102": "Flare Star (Layer 1)",
+          "103": "Chaos Wing, Engulf (Layer 1)",
+          "104": "Generic Light Green Palette",
+          "105": "Bolt 2, Elf Fire (Layer 1)",
+          "106": "Break, Earth Wall, Cave In (Layer 1)",
+          "108": "Merton",
+          "110": "Ultima, Gem Dust, Storm (Layer 1)",
+          "111": "Doom, Roulette (Sprite)",
+          "112": "L? Pearl (Layer 3)",
+          "113": "Ultima (Layer 3)",
+          "115": "Earth Aura (Layer 1)",
+          "117": "Life Guard (Layer 1)",
+          "119": "Rebirth (Layer 3)",
+          "120": "Generic Blue Palette",
+          "122": "Break (Sprite)",
+          "123": "Bolt Fist, Bolt Edge (Layer 1)",
+          "126": "Justice (Layer 1)",
+          "127": "Sun Flare, WaveCannon, etc. (Layer 3)",
+          "128": "Rebirth (Layer 1)",
+          "129": "Condemned (Layer 3)",
+          "130": "Osmose (Layer 1)",
+          "131": "Chaos Wing (Layer 3)",
+          "132": "Metamorph, Heal Horn (Layer 3)",
+          "134": "Bolt Fist, Sea Song (Layer 3)",
+          "136": "Layer 3 Mask",
+          "137": "Metamorph (Sprite)",
+          "138": "Snare (Layer 3)",
+          "139": "Snare (Layer 1)",
+          "141": "Antlion",
+          "142": "Slide",
+          "143": "Rage, Inviz Edge",
+          "144": "Whump (Sprite)",
+          "145": "Cokatrice (Sprite)",
+          "146": "Wombat (Sprite)",
+          "147": "Tapir (Layer 1)",
+          "148": "Kitty, Wild Bear (Layer 1)",
+          "149": "Lagomorph",
+          "150": "Ice Rabbit (Layer 1)",
+          "151": "Wild Frog (Layer 1)",
+          "152": "Grav Bomb (Layer 1)",
+          "153": "Bio Blast",
+          "154": "Grav Bomb (Sprite)",
+          "155": "Confuser",
+          "156": "X-fer",
+          "157": "Slimer",
+          "158": "Harvester, Sonic Boom (Sprite)",
+          "159": "Bolt Beam (Layer 1)",
+          "160": "Ice Beam (Layer 3)",
+          "161": "Fire Beam/Bolt Beam (Layer 3)",
+          "162": "Tek Missile, Launcher, etc.",
+          "164": "Quasar (Layer 1)",
+          "166": "Condemned (Layer 1)",
+          "167": "Imp Song, Lullaby (Layer 1)",
+          "168": "Acid Rain",
+          "169": "Delta Hit",
+          "170": "Rippler (Layer 1)",
+          "171": "Aero, Sneeze (Layer 1)",
+          "173": "Quasar (Layer 3)",
+          "174": "Goner (Layer 1)",
+          "175": "Cyclonic",
+          "176": "S.Cross (Layer 1)",
+          "177": "Disaster",
+          "179": "Tentacle",
+          "180": "Terra/Tritoch Lightning",
+          "181": "Blizzard Fist",
+          "182": "S.Cross (Sprite)",
+          "184": "H-Bomb",
+          "185": "Aqua Rake",
+          "186": "Chocobop",
+          "187": "Charm",
+          "188": "Moogle Rush",
+          "191": "Takedown",
+          "192": "7-Flush, X-Potion, Elixir, etc.",
+          "193": "Ether, Antidote",
+          "194": "Potion, Soft",
+          "195": "Tonic",
+          "196": "Tincture",
+          "197": "Summon, X-Ether",
+          "198": "Green Cherry",
+          "199": "Evil Toot",
+          "200": "Quasar (Sprite)",
+          "201": "Ice 3, Shock Wave",
+          "202": "Osmose, Soul Out (Sprite)",
+          "203": "Gale Cut (Layer 1)",
+          "204": "BabaBreath",
+          "205": "Lifeshaver",
+          "206": "Wind Slash (Layer 1)",
+          "207": "Sand Storm",
+          "208": "Step Mine",
+          "209": "Super Ball",
+          "210": "Fire 3, Demon Eye (Sprite)",
+          "211": "Demi, Quartr",
+          "212": "Slow, Slow 2 (Sprite)",
+          "216": "Safe (Layer 1)",
+          "218": "Big Guard (Layer 1)",
+          "219": "Wall (Sprite)",
+          "220": "Bserk",
+          "221": "Haste 2 (Layer 3)",
+          "222": "Slow 2 (Layer 3)",
+          "225": "Safe, Aero (Sprite)",
+          "226": "ChokeSmoke",
+          "227": "Vanish",
+          "228": "Mute, Megazerk (Layer 1)",
+          "229": "Hyperdrive",
+          "230": "Overcast (Sprite)",
+          "231": "L.5 Doom",
+          "232": "Purifier (Layer 3)",
+          "233": "Justice (Layer 3)",
+          "234": "Sour Mouth (Layer 3)",
+          "236": "Transforming into Magicite",
+          "237": "Lightning Bolt (Kefka vs. Gestahl)",
+          "238": "Bio Blaster",
+          "239": "Kefka Head, Antdot (Sprite)"
+        }
+      }
+    },
     "attackProperties": {
       "type": "array",
       "name": "Attack Properties",
@@ -313,6 +1308,220 @@
         }
       }
     },
+    "attackTilemap2bpp": {
+      "type": "tilemap",
+      "name": "Attack Tilemap (2bpp)",
+      "range": "0xD2C000-0xD2DFFF",
+      "asmSymbol": "AttackTiles2bpp",
+      "file": "btlgfx/gfx/attack_tiles_2bpp.asm",
+      "format": [
+        "defaultTile",
+        "ff6-animation-tilemap"
+      ],
+      "graphics": "attackGraphics2bpp",
+      "palette": "attackPalette",
+      "height": 256,
+      "width": 16,
+      "disableZLevel": true
+    },
+    "attackTilemap3bpp": {
+      "type": "tilemap",
+      "name": "Attack Tilemap (3bpp)",
+      "range": "0xD20000-0xD25FFF",
+      "asmSymbol": "AttackTiles3bpp",
+      "file": "btlgfx/gfx/attack_tiles_3bpp.asm",
+      "format": [
+        "defaultTile",
+        "ff6-animation-tilemap"
+      ],
+      "graphics": "attackGraphics3bpp",
+      "palette": "attackPalette",
+      "height": 768,
+      "width": 16,
+      "disableZLevel": true
+    },
+    "attackTilemapMode7": {
+      "type": "array",
+      "name": "Attack Tilemap (Mode 7)",
+      "range": "0xD8DAF2-0xD8DCFF",
+      "asmSymbol": "AttackTilesMode7",
+      "file": "btlgfx/gfx/attack_tiles_mode7.asm",
+      "format": "ff6-lzss",
+      "arrayLength": 3,
+      "itemLength": "0x0400",
+      "assembly": {
+        "type": "tilemap",
+        "format": "generic8bppTile",
+        "graphics": "attackGraphicsMode7",
+        "palette": "attackPalette",
+        "height": 32,
+        "width": 32
+      },
+      "stringTable": {
+        "string": {
+          "0": "S.Cross",
+          "1": "Overcast",
+          "2": "H-Bomb"
+        }
+      }
+    },
+    "battleBackgroundDance": {
+      "type": "array",
+      "name": "Battle Background Dance",
+      "range": "0xED8E5B-0xED8E9A",
+      "asmSymbol": "DanceBattleBG",
+      "file": "btlgfx/data/dance_battle_bg.asm",
+      "arrayLength": 64,
+      "itemLength": 1,
+      "assembly": {
+        "type": "property",
+        "name": "Dance",
+        "stringTable": "danceName",
+        "link": "danceAttacks[%i]"
+      }
+    },
+    "battleBackgroundGraphics": {
+      "type": "array",
+      "name": "Battle Background Graphics",
+      "range": "0xE7A9E7-0xE962FF",
+      "asmSymbol": "BattleBGGfx",
+      "file": "btlgfx/gfx/battle_bg_gfx.asm",
+      "arrayLength": 75,
+      "assembly": {
+        "type": "graphics",
+        "format": [
+          "snes4bpp",
+          "ff6-lzss"
+        ],
+        "palette": "battleBackgroundPalette"
+      },
+      "pointerTable": {
+        "range": "0xE71650-0xE71730",
+        "pointerSize": 3,
+        "isMapped": true
+      }
+    },
+    "battleBackgroundLayout": {
+      "type": "array",
+      "name": "Battle Background Layout",
+      "range": "0xE71928-0xE7A9E6",
+      "asmSymbol": "BattleBGTiles",
+      "file": "btlgfx/gfx/battle_bg_tiles.asm",
+      "arrayLength": 112,
+      "assembly": {
+        "type": "tilemap",
+        "format": [
+          "snes4bppTile",
+          "ff6-lzss"
+        ],
+        "width": 32,
+        "height": 32
+      },
+      "pointerTable": {
+        "range": "0xE71848-0xE71927",
+        "offset": "0xE70000"
+      }
+    },
+    "battleBackgroundPalette": {
+      "type": "array",
+      "name": "Battle Background Palette",
+      "range": "0xE70150-0xE7164F",
+      "asmSymbol": "BattleBGPal",
+      "file": "btlgfx/gfx/battle_bg_pal.asm",
+      "arrayLength": 56,
+      "itemLength": 96,
+      "assembly": {
+        "type": "data",
+        "format": "bgr555"
+      }
+    },
+    "battleBackgroundProperties": {
+      "type": "array",
+      "name": "Battle Background Properties",
+      "range": "0xE70000-0xE7014F",
+      "asmSymbol": "BattleBGProp",
+      "file": "btlgfx/data/battle_bg_prop.asm",
+      "stringTable": "battleBackground",
+      "arrayLength": 56,
+      "itemLength": 6,
+      "assembly": {
+        "type": "assembly",
+        "editor": "FF6BattleBackgroundEditor",
+        "assembly": {
+          "graphics1": {
+            "type": "assembly",
+            "name": "Graphics 1",
+            "begin": 0,
+            "length": 1,
+            "assembly": {
+              "g": {
+                "type": "property",
+                "name": "Graphics 1",
+                "mask": "0x7F",
+                "link": "battleBackgroundGraphics[%i]"
+              },
+              "double": {
+                "type": "property",
+                "name": "Double Size Graphics 1",
+                "mask": "0x80",
+                "bool": true
+              }
+            },
+            "special": {
+              "0xFF": "No Graphics 1"
+            }
+          },
+          "graphics2": {
+            "type": "property",
+            "name": "Graphics 2",
+            "begin": 1,
+            "link": "battleBackgroundGraphics[%i]",
+            "special": {
+              "0xFF": "No Graphics 2"
+            }
+          },
+          "graphics3": {
+            "type": "property",
+            "name": "Graphics 3",
+            "begin": 2,
+            "link": "battleBackgroundGraphics[%i]",
+            "special": {
+              "0xFF": "No Graphics 3"
+            }
+          },
+          "layout1": {
+            "type": "property",
+            "name": "Layout",
+            "begin": 3,
+            "link": "battleBackgroundLayout[%i]"
+          },
+          "layout2": {
+            "type": "property",
+            "name": "Layout 2",
+            "begin": 4,
+            "hidden": true
+          },
+          "palette": {
+            "type": "property",
+            "name": "Palette",
+            "begin": 5,
+            "mask": "0x7F"
+          },
+          "wavy": {
+            "type": "property",
+            "name": "Wavy Effect",
+            "begin": 5,
+            "mask": "0x80",
+            "bool": true
+          },
+          "dance": {
+            "type": "assembly",
+            "name": "Dance",
+            "external": "battleBackgroundDance[%i]"
+          }
+        }
+      }
+    },
     "battleCharacterPalette": {
       "type": "array",
       "name": "Battle/Menu Character Palette",
@@ -418,6 +1627,48 @@
             }
           }
         }
+      }
+    },
+    "battleDialog": {
+      "type": "array",
+      "name": "Battle Dialogue",
+      "range": "0xD0D200-0xD0FC79",
+      "asmSymbol": "BattleDlg",
+      "file": "btlgfx/text/battle_dlg.asm",
+      "arrayLength": 256,
+      "assembly": {
+        "type": "text",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xD0D000-0xD0D200",
+        "offset": "0xD00000"
+      },
+      "stringTable": {
+        "length": 256,
+        "default": "<battleDialog[%i]>"
+      }
+    },
+    "battleEventScript": {
+      "type": "script",
+      "name": "Battle Event Script",
+      "range": "0xD09842-0xD0CF49",
+      "asmSymbol": "BattleEventScript",
+      "file": "btlgfx/data/battle_event_script.asm"
+    },
+    "battleEventScriptPointers": {
+      "type": "array",
+      "name": "Battle Event Script Pointers",
+      "range": "0xD09800-0xD09841",
+      "asmSymbol": "BattleEventScriptPtrs",
+      "file": "btlgfx/data/battle_event_script_ptrs.asm",
+      "arrayLength": 33,
+      "itemLength": 2,
+      "assembly": {
+        "type": "property",
+        "name": "Pointer",
+        "mask": "0xFFFF"
       }
     },
     "battleFontPal": {
@@ -754,8 +2005,7 @@
           "41": "WoR Figaro Area (Grass)",
           "42": "WoR Figaro Area (Forest)",
           "43": "WoR Figaro Area (Dirt)",
-          "44": "WoR Figaro Area (Desert)",
-          "44": "WoR Kohlingen Area (Desert)",
+          "44": "WoR Figaro/Kohlingen Area (Desert)",
           "45": "WoR Kohlingen Area (Grass)",
           "46": "WoR Kohlingen Area (Forest)",
           "47": "WoR Kohlingen Area (Dirt)",
@@ -871,7 +2121,7 @@
       "type": "array",
       "name": "Battle Magic Points",
       "range": "0xDFB400-0xDFB5FF",
-      "asmSymbol": "battleMagicPoints",
+      "asmSymbol": "BattleMagicPoints",
       "file": "battle/data/battle_magic_points.asm",
       "arrayLength": 512,
       "itemLength": 1,
@@ -1287,6 +2537,17 @@
         }
       }
     },
+    "battleStatusGraphics": {
+      "type": "graphics",
+      "name": "Battle Status Graphics",
+      "range": "0xD2E000-0xD2EB43",
+      "asmSymbol": "StatusGfx",
+      "file": "btlgfx/gfx/status_gfx.asm",
+      "format": [
+        "snes4bpp",
+        "ff6-lzss"
+      ]
+    },
     "blitzCode": {
       "type": "array",
       "name": "Blitz Code",
@@ -1428,6 +2689,175 @@
       "pointerTable": {
         "range": "0xCFFF9E-0xCFFFAD",
         "offset": "0xCFFC00"
+      }
+    },
+    "characterAI": {
+      "type": "array",
+      "name": "Character A.I. Properties",
+      "range": "0xD0FD00-0xD0FF3F",
+      "asmSymbol": "CharAI",
+      "file": "btlgfx/data/char_ai.asm",
+      "arrayLength": 24,
+      "itemLength": 24,
+      "assembly": {
+        "type": "assembly",
+        "assembly": {
+          "background": {
+            "type": "property",
+            "name": "Background",
+            "begin": 1,
+            "stringTable": "battleBackground"
+          },
+          "song": {
+            "type": "property",
+            "name": "Song",
+            "begin": 3,
+            "stringTable": "song",
+            "special": {
+              "0xFF": "Default"
+            }
+          },
+          "flags": {
+            "type": "property",
+            "name": "Flags",
+            "begin": 0,
+            "mask": "0x81",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "Hide Names",
+                "7": "Hide Party"
+              }
+            }
+          },
+          "validTargets": {
+            "type": "property",
+            "name": "Valid Targets",
+            "begin": 2,
+            "mask": "0x3F",
+            "flag": true,
+            "stringTable": {
+              "string": {
+                "0": "Monster Slot 1",
+                "1": "Monster Slot 2",
+                "2": "Monster Slot 3",
+                "3": "Monster Slot 4",
+                "4": "Monster Slot 5",
+                "5": "Monster Slot 6"
+              }
+            }
+          },
+          "slot": {
+            "type": "array",
+            "name": "Character Slots",
+            "begin": 4,
+            "length": 20,
+            "arrayLength": 4,
+            "itemLength": 5,
+            "assembly": {
+              "type": "assembly",
+              "assembly": {
+                "graphics": {
+                  "type": "property",
+                  "name": "Graphics",
+                  "begin": 1,
+                  "mask": "0xFF",
+                  "stringTable": "battleCharacterGraphics",
+                  "disabled": "this.parent.character.getSpecialValue()",
+                  "special": {
+                    "0xFF": "Default Character Graphics"
+                  }
+                },
+                "aiScript": {
+                  "type": "property",
+                  "name": "A.I. Script",
+                  "begin": 2,
+                  "disabled": "this.parent.character.getSpecialValue()",
+                  "link": "monsterProperties[%i+256]",
+                  "stringTable": {
+                    "length": 128,
+                    "default": "<stringTable.monsterName[%i+256]>",
+                    "string": {
+                      "0xFF": "None"
+                    }
+                  }
+                },
+                "character": {
+                  "type": "data",
+                  "name": "Character",
+                  "begin": 0,
+                  "length": 1,
+                  "mask": "0xFF",
+                  "special": {
+                    "0xFF": "No Character"
+                  },
+                  "assembly": {
+                    "c": {
+                      "type": "property",
+                      "name": "Character",
+                      "mask": "0x3F",
+                      "stringTable": "characterNames",
+                      "link": "characterProperties[%i]"
+                    },
+                    "flags": {
+                      "type": "property",
+                      "name": "Flags",
+                      "mask": "0xC0",
+                      "flag": true,
+                      "stringTable": {
+                        "hideIndex": true,
+                        "string": {
+                          "0": "Enemy Character",
+                          "1": "Character Hidden"
+                        }
+                      }
+                    }
+                  }
+                },
+                "x": {
+                  "type": "property",
+                  "name": "X Position",
+                  "begin": 3,
+                  "multiplier": 2,
+                  "hidden": true
+                },
+                "y": {
+                  "type": "property",
+                  "name": "Y Position",
+                  "begin": 4,
+                  "multiplier": 2,
+                  "hidden": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "stringTable": {
+        "length": 32,
+        "default": "Character A.I. %i",
+        "string": {
+          "0": "None",
+          "1": "Shadow at Colosseum",
+          "2": "Kefka/Terra Flashback",
+          "3": "Vargas Battle",
+          "4": "Kefka vs. Sabin",
+          "5": "Cyan at Imperial Camp 1",
+          "6": "Cyan at Imperial Camp 2",
+          "7": "Piranha Battle",
+          "8": "Kefka vs. Sabin",
+          "9": "Kefka vs. Terra",
+          "10": "Gau on the Veldt",
+          "12": "Sealed Gate 1",
+          "13": "Sealed Gate 2",
+          "14": "Espers on Blackjack",
+          "15": "Ultros vs. Relm",
+          "16": "Espers go to Thamasa",
+          "17": "Blitz Instructions (Unused)",
+          "18": "Kefka vs. Esper",
+          "19": "Kefka vs. Gestahl",
+          "20": "Kefka vs. Leo"
+        }
       }
     },
     "characterNames": {
@@ -1683,8 +3113,8 @@
     "conditionalBattle": {
       "type": "array",
       "name": "Conditional Battle",
-      "range": "0xCF3780-0xCF37AF",
-      "arrayLength": 12,
+      "range": "0xCF3780-0xCF37BF",
+      "arrayLength": 16,
       "itemLength": 4,
       "asmSymbol": "CondBattle",
       "file": "battle/data/cond_battle.asm",
@@ -1761,6 +3191,23 @@
             "link": "attackProperties[%i]"
           }
         }
+      }
+    },
+    "danceName": {
+      "type": "array",
+      "name": "Dance Name",
+      "range": "0xE6FF9D-0xE6FFFC",
+      "asmSymbol": "DanceName",
+      "file": "field/text/dance_name.asm",
+      "arrayLength": 8,
+      "itemLength": 12,
+      "assembly": {
+        "type": "text",
+        "encoding": "smallText"
+      },
+      "stringTable": {
+        "length": 8,
+        "default": "<danceName[%i]>"
       }
     },
     "dialog": {
@@ -2005,7 +3452,7 @@
       "type": "array",
       "name": "Esper Attack Descriptions",
       "range": "0xCF3940-0xCF3BAC",
-      "arrayLength": 27,
+      "arrayLength": 32,
       "asmSymbol": "GenjuAttackDesc",
       "file": "battle/text/genju_attack_desc.asm",
       "assembly": {
@@ -2017,6 +3464,24 @@
       "pointerTable": {
         "range": "0xCFFE40-0xCFFE7F",
         "offset": "0xCF3940"
+      }
+    },
+    "esperAttackName": {
+      "type": "array",
+      "name": "Esper Attack Name",
+      "range": "0xE6FE8F-0xE6FF9C",
+      "asmSymbol": "GenjuAttackName",
+      "file": "field/text/genju_attack_name.asm",
+      "arrayLength": 27,
+      "itemLength": 10,
+      "assembly": {
+        "type": "text",
+        "name": "Attack Name",
+        "encoding": "bigText"
+      },
+      "stringTable": {
+        "length": 27,
+        "default": "<esperAttackName[%i]>"
       }
     },
     "esperBonusNames": {
@@ -2050,6 +3515,24 @@
         }
       }
     },
+    "esperName": {
+      "type": "array",
+      "name": "Esper Name",
+      "range": "0xE6F6E1-0xE6F7B8",
+      "asmSymbol": "GenjuName",
+      "file": "field/text/genju_name.asm",
+      "arrayLength": 27,
+      "itemLength": 8,
+      "assembly": {
+        "type": "text",
+        "name": "Name",
+        "encoding": "smallText"
+      },
+      "stringTable": {
+        "length": 27,
+        "default": "<esperName[%i]>"
+      }
+    },
     "esperProperties": {
       "type": "array",
       "name": "Esper Properties",
@@ -2058,13 +3541,13 @@
       "file": "menu/data/genju_prop.asm",
       "arrayLength": 27,
       "itemLength": 11,
-      "stringTable": "esperNames",
+      "stringTable": "esperName",
       "assembly": {
         "type": "assembly",
         "assembly": {
           "esperName": {
             "type": "assembly",
-            "external": "esperNames[%i]"
+            "external": "esperName[%i]"
           },
           "attackName": {
             "type": "assembly",
@@ -2159,7 +3642,12 @@
       "range": "0xCA0000-0xCCE5ED",
       "asmSymbol": "EventScript",
       "file": "field/data/event_script.asm",
-      "encoding": ["event", "object", "world", "vehicle"],
+      "encoding": [
+        "event",
+        "object",
+        "world",
+        "vehicle"
+      ],
       "label": {
         "No Event": "0xCA0000",
         "Wait for Dialogue Window": "0xCA0001",
@@ -2281,7 +3769,10 @@
       "range": "0xC490C0-0xC4A4BF",
       "asmSymbol": "FontGfxLarge",
       "file": "field/gfx/font_gfx_large.asm",
-      "format": ["linear1bpp(1)", "byteSwapped(2)"],
+      "format": [
+        "linear1bpp(1)",
+        "byteSwapped(2)"
+      ],
       "tileWidth": 16,
       "tileHeight": 11
     },
@@ -2425,6 +3916,24 @@
         "string": {
           "0xFF": "Empty"
         }
+      }
+    },
+    "itemTypeName": {
+      "type": "array",
+      "name": "Item Type Name",
+      "range": "0xD26F00-0xD26F6F",
+      "arrayLength": 16,
+      "itemLength": 7,
+      "asmSymbol": "ItemTypeName",
+      "file": "btlgfx/text/item_type_name_en.asm",
+      "assembly": {
+        "type": "text",
+        "name": "Item Type Name",
+        "encoding": "smallText"
+      },
+      "stringTable": {
+        "length": 16,
+        "default": "<characterNames[%i]>"
       }
     },
     "itemProperties": {
@@ -3193,7 +4702,10 @@
       "file": "field/gfx/map_anim_gfx_bg3.asm",
       "assembly": {
         "type": "graphics",
-        "format": ["snes2bpp", "ff6-lzss"],
+        "format": [
+          "snes2bpp",
+          "ff6-lzss"
+        ],
         "palette": {
           "path": "mapPalettes",
           "range": "0-16"
@@ -5021,7 +6533,10 @@
       "assembly": {
         "type": "graphics",
         "format": "snes4bpp",
-        "palette": ["mapSpritePalettes", "battleCharacterPalette"],
+        "palette": [
+          "mapSpritePalettes",
+          "battleCharacterPalette"
+        ],
         "width": 16,
         "height": 21,
         "spriteSheet": [
@@ -5030,29 +6545,294 @@
             "width": 16,
             "height": 18,
             "tilemap": [
-              0,  1,   0,  1,   0,  1,  12, 13,  12, 13,  12, 13,  24, 25,  30, 31,
-              2,  3,   6,  7,  10, 11,  14, 15,  18, 19,  22, 23,  26, 27,  32, 33,
-              4,  5,   8,  9,  "0x10000005", "0x10000004", 16,17, 20,21, "0x10000011","0x10000010", 28,29, 34,35,
-
-              24, 25,  56, 57,  62, 63,  68, 69,  30, 31,  24, 25,  24, 46,  30, 51,
-              36, 37,  58, 59,  64, 65,  70, 71,  40, 41,  44, 27,  47, 48,  52, 53,
-              38, 39,  60, 61,  66, 67,  72, 73,  42, 43,  45, 29,  49, 50,  54, 55,
-
-              74, 75,  74, 75,  81, 82,   0,  1,   0,  1, 150, 31, 106,107, 112,113,
-              76, 77,  80, 77,  83, 84,  93, 94,   6, 95, 151, 33, 108,109, 114,115,
-              78, 79,  78, 79,  85, 86,   8,  9,   8,  9,  34, 35, 110,111, 116,117,
-
-              118,119, 106,  1, 130,  1,  12,113,  12,132,  96, 97, 102,103, 124,125,
-              120,121, 108,  7, 131,  7,  18,115,  18,133,  98, 99, 104,105, 126,127,
-              122,123, 110,  9, 110,  9,  20,117,  20,117, 100,101, 100,101, 128,129,
-
-              134,135, 138,139, 142,143, 146,147, 163,164, 163,164, 157,158, 165,166,
-              136,137, 140,141, 144,145, 148,149, 152,153, 156,153, 159,160, 167,168,
-              8,  9,  20, 21,  34, 35,   8,  9, 154,155, 154,155, 161,162, 169,170,
-
-              177,178, 171,172,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-              179,180, 173,174,  87, 88, 89, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-              175,176, 175,176,  90, 91, 92, -1, -1, -1, -1, -1, -1, -1, -1, -1
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              12,
+              13,
+              12,
+              13,
+              12,
+              13,
+              24,
+              25,
+              30,
+              31,
+              2,
+              3,
+              6,
+              7,
+              10,
+              11,
+              14,
+              15,
+              18,
+              19,
+              22,
+              23,
+              26,
+              27,
+              32,
+              33,
+              4,
+              5,
+              8,
+              9,
+              "0x10000005",
+              "0x10000004",
+              16,
+              17,
+              20,
+              21,
+              "0x10000011",
+              "0x10000010",
+              28,
+              29,
+              34,
+              35,
+              24,
+              25,
+              56,
+              57,
+              62,
+              63,
+              68,
+              69,
+              30,
+              31,
+              24,
+              25,
+              24,
+              46,
+              30,
+              51,
+              36,
+              37,
+              58,
+              59,
+              64,
+              65,
+              70,
+              71,
+              40,
+              41,
+              44,
+              27,
+              47,
+              48,
+              52,
+              53,
+              38,
+              39,
+              60,
+              61,
+              66,
+              67,
+              72,
+              73,
+              42,
+              43,
+              45,
+              29,
+              49,
+              50,
+              54,
+              55,
+              74,
+              75,
+              74,
+              75,
+              81,
+              82,
+              0,
+              1,
+              0,
+              1,
+              150,
+              31,
+              106,
+              107,
+              112,
+              113,
+              76,
+              77,
+              80,
+              77,
+              83,
+              84,
+              93,
+              94,
+              6,
+              95,
+              151,
+              33,
+              108,
+              109,
+              114,
+              115,
+              78,
+              79,
+              78,
+              79,
+              85,
+              86,
+              8,
+              9,
+              8,
+              9,
+              34,
+              35,
+              110,
+              111,
+              116,
+              117,
+              118,
+              119,
+              106,
+              1,
+              130,
+              1,
+              12,
+              113,
+              12,
+              132,
+              96,
+              97,
+              102,
+              103,
+              124,
+              125,
+              120,
+              121,
+              108,
+              7,
+              131,
+              7,
+              18,
+              115,
+              18,
+              133,
+              98,
+              99,
+              104,
+              105,
+              126,
+              127,
+              122,
+              123,
+              110,
+              9,
+              110,
+              9,
+              20,
+              117,
+              20,
+              117,
+              100,
+              101,
+              100,
+              101,
+              128,
+              129,
+              134,
+              135,
+              138,
+              139,
+              142,
+              143,
+              146,
+              147,
+              163,
+              164,
+              163,
+              164,
+              157,
+              158,
+              165,
+              166,
+              136,
+              137,
+              140,
+              141,
+              144,
+              145,
+              148,
+              149,
+              152,
+              153,
+              156,
+              153,
+              159,
+              160,
+              167,
+              168,
+              8,
+              9,
+              20,
+              21,
+              34,
+              35,
+              8,
+              9,
+              154,
+              155,
+              154,
+              155,
+              161,
+              162,
+              169,
+              170,
+              177,
+              178,
+              171,
+              172,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              179,
+              180,
+              173,
+              174,
+              87,
+              88,
+              89,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              175,
+              176,
+              175,
+              176,
+              90,
+              91,
+              92,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
             ]
           },
           {
@@ -5060,13 +6840,102 @@
             "width": 16,
             "height": 6,
             "tilemap": [
-              0,  1,   0,  1,   0,  1,  12, 13,  12, 13,  12, 13,  24, 25,  30, 31,
-              2,  3,   6,  7,  10, 11,  14, 15,  18, 19,  22, 23,  26, 27,  32, 33,
-              4,  5,   8,  9,  "0x10000005", "0x10000004", 16,17, 20,21, "0x10000011","0x10000010", 28,29, 34,35,
-
-              24, 25,  49, 50,  40,  1,  43,  1,  45, 46,  40, 41,  46, 47,  52, 53,
-              36, 37,  51, 52,  41,  7,  44,  7,  47, 48,  42, 43,  48, 49,  54, 55,
-              38, 39,  53, 54,  42,  9,  42,  9,   8,  9,  44, 45,  50, 51,  50, 51
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              12,
+              13,
+              12,
+              13,
+              12,
+              13,
+              24,
+              25,
+              30,
+              31,
+              2,
+              3,
+              6,
+              7,
+              10,
+              11,
+              14,
+              15,
+              18,
+              19,
+              22,
+              23,
+              26,
+              27,
+              32,
+              33,
+              4,
+              5,
+              8,
+              9,
+              "0x10000005",
+              "0x10000004",
+              16,
+              17,
+              20,
+              21,
+              "0x10000011",
+              "0x10000010",
+              28,
+              29,
+              34,
+              35,
+              24,
+              25,
+              49,
+              50,
+              40,
+              1,
+              43,
+              1,
+              45,
+              46,
+              40,
+              41,
+              46,
+              47,
+              52,
+              53,
+              36,
+              37,
+              51,
+              52,
+              41,
+              7,
+              44,
+              7,
+              47,
+              48,
+              42,
+              43,
+              48,
+              49,
+              54,
+              55,
+              38,
+              39,
+              53,
+              54,
+              42,
+              9,
+              42,
+              9,
+              8,
+              9,
+              44,
+              45,
+              50,
+              51,
+              50,
+              51
             ]
           },
           {
@@ -5074,9 +6943,24 @@
             "width": 6,
             "height": 3,
             "tilemap": [
-              0,1, 6,1, 9,10,
-              2,3, 7,3, 2,3,
-              4,5, 8,5, 4,5
+              0,
+              1,
+              6,
+              1,
+              9,
+              10,
+              2,
+              3,
+              7,
+              3,
+              2,
+              3,
+              4,
+              5,
+              8,
+              5,
+              4,
+              5
             ]
           },
           {
@@ -5084,9 +6968,12 @@
             "width": 2,
             "height": 3,
             "tilemap": [
-              0,1,
-              2,3,
-              4,5
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
             ]
           },
           {
@@ -5094,9 +6981,30 @@
             "width": 8,
             "height": 3,
             "tilemap": [
-              0,  0,   0,  0,   0,  0,   0,  0,
-              1,  2,   5,  6,   9, 10,  13, 14,
-              3,  4,   7,  8,  11, 12,  15, 16
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              2,
+              5,
+              6,
+              9,
+              10,
+              13,
+              14,
+              3,
+              4,
+              7,
+              8,
+              11,
+              12,
+              15,
+              16
             ]
           },
           {
@@ -5104,8 +7012,14 @@
             "width": 4,
             "height": 2,
             "tilemap": [
-              0, 1,  4, 5,
-              2, 3,  6, 7
+              0,
+              1,
+              4,
+              5,
+              2,
+              3,
+              6,
+              7
             ]
           },
           {
@@ -5113,10 +7027,22 @@
             "width": 4,
             "height": 4,
             "tilemap": [
-              0, 1, 2, 3,
-              4, 5, 6, 7,
-              8, 9,10,11,
-              12,13,14,15
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15
             ]
           }
         ]
@@ -5346,7 +7272,10 @@
       "file": "field/data/map_tile_prop.asm",
       "assembly": {
         "type": "array",
-        "format": ["interlace(1,2,256)", "ff6-lzss"],
+        "format": [
+          "interlace(1,2,256)",
+          "ff6-lzss"
+        ],
         "arrayLength": 256,
         "itemLength": 2,
         "assembly": {
@@ -5479,7 +7408,10 @@
       "format": "snes4bpp",
       "asmSymbol": "MapVehicleGfx",
       "file": "field/gfx/map_vehicle_gfx.asm",
-      "palette": ["mapSpritePalettes[7]", "mapSpritePalettes[11]"]
+      "palette": [
+        "mapSpritePalettes[7]",
+        "mapSpritePalettes[11]"
+      ]
     },
     "mapTilesets": {
       "type": "array",
@@ -5643,6 +7575,18 @@
         "length": 1
       }
     },
+    "monsterAttackAnimationProperties": {
+      "type": "array",
+      "name": "Monster Attack Animation Properties",
+      "range": "0xECE6E8-0xECE7FF",
+      "asmSymbol": "MonsterAttackAnimProp",
+      "file": "btlgfx/data/monster_attack_anim_prop.asm",
+      "arrayLength": 35,
+      "itemLength": 8,
+      "assembly": {
+        "type": "assembly"
+      }
+    },
     "monsterAttackName": {
       "type": "array",
       "name": "Monster Attack Name",
@@ -5761,14 +7705,15 @@
     },
     "monsterColosseumType": {
       "type": "array",
-      "name": "Monster Colosseum Type",
-      "range": "0xECE800-0xECE900",
-      "array": {
-        "length": 256
-      },
+      "name": "Monster Vertical Alignment",
+      "range": "0xECE800-0xECE8FF",
+      "asmSymbol": "MonsterAlign",
+      "file": "btlgfx/data/monster_align.asm",
+      "arrayLength": 256,
+      "itemLength": 1,
       "assembly": {
         "type": "property",
-        "name": "Colosseum Type",
+        "name": "Vertical Alignment",
         "length": 1,
         "stringTable": {
           "string": {
@@ -5785,7 +7730,7 @@
       "type": "array",
       "name": "Monster Dialogue",
       "range": "0xCFE1E0-0xCFF441",
-      "arrayLength": 142,
+      "arrayLength": 256,
       "asmSymbol": "MonsterDlg",
       "file": "battle/text/monster_dlg.asm",
       "assembly": {
@@ -5803,19 +7748,15 @@
       }
     },
     "monsterGraphics": {
-      "type": "array",
+      "type": "data",
       "name": "Monster Graphics",
-      "range": "0xE97000-0xECE200",
-      "array": {
-        "length": 176
-      },
+      "range": "0xE97000-0xECE1FF",
+      "asmSymbol": "MonsterGfx",
+      "file": "btlgfx/gfx/monster_gfx.asm",
+      "arrayLength": 176,
       "assembly": {
         "type": "graphics",
         "palette": "monsterPalette"
-      },
-      "pointerObject": {
-        "arrayPath": "monsterGraphicsProperties",
-        "pointerPath": "graphicsPointer"
       },
       "stringTable": {
         "length": 176,
@@ -6000,245 +7941,228 @@
         }
       }
     },
-    "monsterGraphicsMap": {
-      "type": "data",
-      "name": "Monster Graphics Map",
-      "range": "0xD2A820-0xD2B224",
-      "isSequential": true,
+    "monsterGraphicsMapSmall": {
+      "type": "array",
+      "name": "Monster Small Graphics Map",
+      "range": "0xD2A824-0xD2AC23",
+      "asmSymbol": "MonsterStencilSmall",
+      "file": "btlgfx/data/monster_stencil_small.asm",
+      "arrayLength": 128,
+      "itemLength": 8,
       "assembly": {
-        "smallPointer": {
-          "type": "property",
-          "begin": 0,
-          "mask": "0xFFFF"
-        },
-        "largePointer": {
-          "type": "property",
-          "begin": 2,
-          "mask": "0xFFFF"
-        },
-        "small": {
-          "type": "array",
-          "range": "0x0004-0x0404",
-          "array": {
-            "length": 128
-          },
-          "assembly": {
-            "type": "assembly",
-            "length": 8
-          },
-          "stringTable": {
-            "length": 128,
-            "default": "Small Monster Graphics Map %i",
-            "string": {
-              "0": "Guard, Marshal, StillGoing",
-              "1": "Soldier, Commander, Trooper, Commando, Grunt, Officer",
-              "2": "Templar, General, Sp Forces, Leader, Cadet",
-              "3": "Ninja, Covert, Outsider",
-              "4": "Samurai, Retainer, KatanaSoul",
-              "5": "Orog, Ogor, Hemophyte",
-              "6": "Mag Roader, Mag Roader",
-              "7": "Hazer, Warlock, Wizard, L.20 Magic",
-              "8": "Dahling, Madam, Barb-e, L.80 Magic",
-              "9": "Rain Man, Joker, Parasoul, L.40 Magic",
-              "10": "Brawler, Iron Fist, Scrapper",
-              "11": "Apokryphos, Goblin",
-              "12": "Dark Force, Wrexsoul, L.70 Magic",
-              "13": "Whisper, Dark Side, Apparite, Pm Stalker, Specter",
-              "14": "Over-Mind, PowerDemon, L.50 Magic",
-              "15": "Rhodox, Peepers, Poppers",
-              "16": "Were-Rat, Sewer Rat, Vermin, Wild Rat",
-              "17": "Ursus, Slatter, Prussian, Gold Bear, Ipooh",
-              "18": "Rhinotaur, Rhinox, Ceritops",
-              "19": "Leafer, Rhobite, Nohrabbit",
-              "20": "Stray Cat, Wild Cat, Spek Tor",
-              "21": "Lobo, Red Fang, Lunaris, Red Wolf",
-              "22": "Doberman, Vector Pup, Bounty Man, Garm",
-              "23": "Vomammoth, Tusker, Nastidon",
-              "24": "Fidor, Ralph, Bogy",
-              "25": "Baskervor, Chitonid, Adamanchyt",
-              "26": "Suriander, Wart Puck",
-              "27": "Mesosaur, Vectaur, Ice Dragon",
-              "28": "Pterodon, Wyvern, Wirey Drgn, Storm Drgn",
-              "29": "FossilFang, Zombone, Black Drgn, Skull Drgn",
-              "30": "Tyranosaur, Allosaurus, Chaos Drgn, Dirt Drgn",
-              "31": "Dark Wind, Cirpius, Vindr",
-              "32": "Beakor, Sprinter, Kiwok, Abolisher",
-              "33": "Vulture, Gobbler, Osprey",
-              "34": "HermitCrab, GloomShell",
-              "35": "Trapper, Drop, Junk",
-              "36": "Hornet, Mind Candy, Bug",
-              "37": "CrassHoppr, WeedFeeder, Insecare",
-              "38": "Delta Bug, Luridan",
-              "39": "Gilomantis, Toe Cutter, Mantodea",
-              "40": "Trilium, Over Grunk, Mandrake",
-              "41": "Nightshade, Exoray",
-              "42": "TumbleWeed, Crusher",
-              "43": "Bloompire, Uroburos",
-              "44": "Trilobiter, Sand Ray, EarthGuard",
-              "45": "Siegfried",
-              "46": "Nautiloid, Cephaler",
-              "47": "Exocite, Primordite, Maliga",
-              "48": "Anguiform, Latimeria",
-              "49": "Reach Frog, Gigan Toad",
-              "50": "Lizard, Geckorex",
-              "51": "ChickenLip, Cluck",
-              "52": "Pipsqueak, Tomb Thumb, IronHitman",
-              "53": "M-TekArmor, PlutoArmor, HeavyArmor, Dueller, Mega Armor",
-              "54": "Sky Armor, Sky Cap, Spit Fire, Sky Base",
-              "55": "Telstar, Chaser, Innoc",
-              "56": "Vaporite, Poplium, Rinn, Psychot",
-              "57": "Flan, Muus",
-              "58": "Ing, Misfit, Karkass",
-              "59": "Humpty, Eland",
-              "60": "Brainpan, Phase",
-              "61": "Cruller, Enuo",
-              "62": "Cactrot",
-              "63": "Repo Man, GreaseMonk, Gabbldegak, 1st Class",
-              "64": "Harvester, NeckHunter, Punisher",
-              "65": "Bomb, Grenade, Balloon",
-              "66": "Still Life",
-              "67": "Boxed Set, Pan Dora",
-              "68": "SlamDancer, SoulDancer, Tap Dancer, L.30 Magic",
-              "69": "Pug, Pugs, Master Pug",
-              "70": "Magic Urn",
-              "71": "Mover",
-              "72": "Figaliz, Crawler",
-              "73": "Aspik, Parasite",
-              "74": "Ghost, Spectre, Lich, Necromancr, L.10 Magic",
-              "75": "Areneid, Coelecite, Scorpion",
-              "76": "Actaneon, Anemone, Sea Flower",
-              "77": "Sand Horse, Hipocampus",
-              "78": "Mad Oscar, Evil Oscar",
-              "79": "Crawly, Slurm",
-              "80": "Bleary, Deep Eye",
-              "81": "Mag Roader",
-              "82": "Fortis, ProtoArmor",
-              "83": "Trixter, L.90 Magic, Naughty",
-              "84": "Woolly, Nerapa, L.60 Magic",
-              "85": "Veteran",
-              "86": "Whelk, Presenter",
-              "87": "GhostTrain",
-              "88": "Shiva",
-              "89": "Ifrit, Kefka vs. Esper",
-              "90": "Umaro, Umaro",
-              "91": "FlameEater",
-              "92": "Tentacle",
-              "93": "Curley",
-              "94": "Larry",
-              "95": "Moe",
-              "96": "Hidonite",
-              "97": "Ultros (Lete River)",
-              "98": "Ultros",
-              "99": "Head",
-              "100": "Whelk Head",
-              "101": "Merchant",
-              "102": "B.Day Suit",
-              "103": "Tentacle",
-              "104": "RightBlade",
-              "105": "Left Blade",
-              "106": "Rough",
-              "107": "Striker",
-              "108": "Laser Gun",
-              "109": "Speck",
-              "110": "MissileBay",
-              "111": "Kefka (Hills Maze), Kefka vs. Leo",
-              "112": "Piranha, Rizopas",
-              "113": "SoulSaver",
-              "114": "Ramuh",
-              "115": "Siren",
-              "116": "Shoat",
-              "117": "Maduin",
-              "118": "Stray",
-              "119": "Kirin",
-              "120": "ZoneSeek",
-              "121": "Carbunkl",
-              "122": "Phantom",
-              "123": "Sraphim",
-              "124": "Golem",
-              "125": "Unicorn",
-              "126": "TigerBreak",
-              "127": "Imp"
-            }
-          }
-        },
-        "large": {
-          "type": "array",
-          "range": "0x0404-0x0A04",
-          "array": {
-            "length": 48
-          },
-          "assembly": {
-            "type": "assembly",
-            "length": 32,
-            "format": "byteSwapped(2)"
-          },
-          "stringTable": {
-            "length": 48,
-            "default": "Large Monster Graphics Map %i",
-            "string": {
-              "0": "Osteosaur, Displayer, Allo Ver",
-              "1": "Steroidite, Phunbaba",
-              "2": "Chimera, Rhyos, Vectagoyle",
-              "3": "Behemoth, SrBehemoth, Intangir, GtBehemoth, SrBehemoth",
-              "4": "White Drgn, Dragon, Red Dragon",
-              "5": "Doom Drgn, CzarDragon, Blue Drgn",
-              "6": "Brachosaur, Brontaur, Gold Drgn",
-              "7": "Harpy, Harpiai, Aquila",
-              "8": "Hoover, Land Worm, Zone Eater",
-              "9": "Rider, Test Rider, Dante",
-              "10": "Chupon",
-              "11": "Lethal Wpn, Scullion, Io",
-              "12": "HadesGigas, Gigantos, Borras, Colossus",
-              "13": "Buffalax, Opinicus",
-              "14": "Critic",
-              "15": "Didalos, Dullahan",
-              "16": "Vargas",
-              "17": "TunnelArmr, Prometheus",
-              "18": "Dadaluma",
-              "19": "Number 024, MagiMaster",
-              "20": "Number 128, Inferno",
-              "21": "Crane",
-              "22": "Guardian",
-              "23": "Air Force",
-              "24": "Tritoch",
-              "25": "AtmaWeapon, Atma",
-              "26": "Doom Gaze",
-              "27": "Chadarnook",
-              "28": "Hidon",
-              "29": "Doom",
-              "30": "Goddess",
-              "31": "Poltrgeist",
-              "32": "Kefka",
-              "33": "Chadarnook",
-              "34": "Ifrit (Summon)",
-              "35": "Terrato",
-              "36": "Bismark",
-              "37": "Palidor",
-              "38": "Tritoch",
-              "39": "Odin",
-              "40": "Raiden",
-              "41": "Bahamut",
-              "42": "Alexandr",
-              "43": "Crusader 1",
-              "44": "Fenrir",
-              "45": "Starlet",
-              "46": "Phoenix",
-              "47": "Crusader 2"
-            }
-          }
+        "type": "data"
+      },
+      "stringTable": {
+        "length": 128,
+        "default": "Small Monster Graphics Map %i",
+        "string": {
+          "0": "Guard, Marshal, StillGoing",
+          "1": "Soldier, Commander, Trooper, Commando, Grunt, Officer",
+          "2": "Templar, General, Sp Forces, Leader, Cadet",
+          "3": "Ninja, Covert, Outsider",
+          "4": "Samurai, Retainer, KatanaSoul",
+          "5": "Orog, Ogor, Hemophyte",
+          "6": "Mag Roader, Mag Roader",
+          "7": "Hazer, Warlock, Wizard, L.20 Magic",
+          "8": "Dahling, Madam, Barb-e, L.80 Magic",
+          "9": "Rain Man, Joker, Parasoul, L.40 Magic",
+          "10": "Brawler, Iron Fist, Scrapper",
+          "11": "Apokryphos, Goblin",
+          "12": "Dark Force, Wrexsoul, L.70 Magic",
+          "13": "Whisper, Dark Side, Apparite, Pm Stalker, Specter",
+          "14": "Over-Mind, PowerDemon, L.50 Magic",
+          "15": "Rhodox, Peepers, Poppers",
+          "16": "Were-Rat, Sewer Rat, Vermin, Wild Rat",
+          "17": "Ursus, Slatter, Prussian, Gold Bear, Ipooh",
+          "18": "Rhinotaur, Rhinox, Ceritops",
+          "19": "Leafer, Rhobite, Nohrabbit",
+          "20": "Stray Cat, Wild Cat, Spek Tor",
+          "21": "Lobo, Red Fang, Lunaris, Red Wolf",
+          "22": "Doberman, Vector Pup, Bounty Man, Garm",
+          "23": "Vomammoth, Tusker, Nastidon",
+          "24": "Fidor, Ralph, Bogy",
+          "25": "Baskervor, Chitonid, Adamanchyt",
+          "26": "Suriander, Wart Puck",
+          "27": "Mesosaur, Vectaur, Ice Dragon",
+          "28": "Pterodon, Wyvern, Wirey Drgn, Storm Drgn",
+          "29": "FossilFang, Zombone, Black Drgn, Skull Drgn",
+          "30": "Tyranosaur, Allosaurus, Chaos Drgn, Dirt Drgn",
+          "31": "Dark Wind, Cirpius, Vindr",
+          "32": "Beakor, Sprinter, Kiwok, Abolisher",
+          "33": "Vulture, Gobbler, Osprey",
+          "34": "HermitCrab, GloomShell",
+          "35": "Trapper, Drop, Junk",
+          "36": "Hornet, Mind Candy, Bug",
+          "37": "CrassHoppr, WeedFeeder, Insecare",
+          "38": "Delta Bug, Luridan",
+          "39": "Gilomantis, Toe Cutter, Mantodea",
+          "40": "Trilium, Over Grunk, Mandrake",
+          "41": "Nightshade, Exoray",
+          "42": "TumbleWeed, Crusher",
+          "43": "Bloompire, Uroburos",
+          "44": "Trilobiter, Sand Ray, EarthGuard",
+          "45": "Siegfried",
+          "46": "Nautiloid, Cephaler",
+          "47": "Exocite, Primordite, Maliga",
+          "48": "Anguiform, Latimeria",
+          "49": "Reach Frog, Gigan Toad",
+          "50": "Lizard, Geckorex",
+          "51": "ChickenLip, Cluck",
+          "52": "Pipsqueak, Tomb Thumb, IronHitman",
+          "53": "M-TekArmor, PlutoArmor, HeavyArmor, Dueller, Mega Armor",
+          "54": "Sky Armor, Sky Cap, Spit Fire, Sky Base",
+          "55": "Telstar, Chaser, Innoc",
+          "56": "Vaporite, Poplium, Rinn, Psychot",
+          "57": "Flan, Muus",
+          "58": "Ing, Misfit, Karkass",
+          "59": "Humpty, Eland",
+          "60": "Brainpan, Phase",
+          "61": "Cruller, Enuo",
+          "62": "Cactrot",
+          "63": "Repo Man, GreaseMonk, Gabbldegak, 1st Class",
+          "64": "Harvester, NeckHunter, Punisher",
+          "65": "Bomb, Grenade, Balloon",
+          "66": "Still Life",
+          "67": "Boxed Set, Pan Dora",
+          "68": "SlamDancer, SoulDancer, Tap Dancer, L.30 Magic",
+          "69": "Pug, Pugs, Master Pug",
+          "70": "Magic Urn",
+          "71": "Mover",
+          "72": "Figaliz, Crawler",
+          "73": "Aspik, Parasite",
+          "74": "Ghost, Spectre, Lich, Necromancr, L.10 Magic",
+          "75": "Areneid, Coelecite, Scorpion",
+          "76": "Actaneon, Anemone, Sea Flower",
+          "77": "Sand Horse, Hipocampus",
+          "78": "Mad Oscar, Evil Oscar",
+          "79": "Crawly, Slurm",
+          "80": "Bleary, Deep Eye",
+          "81": "Mag Roader",
+          "82": "Fortis, ProtoArmor",
+          "83": "Trixter, L.90 Magic, Naughty",
+          "84": "Woolly, Nerapa, L.60 Magic",
+          "85": "Veteran",
+          "86": "Whelk, Presenter",
+          "87": "GhostTrain",
+          "88": "Shiva",
+          "89": "Ifrit, Kefka vs. Esper",
+          "90": "Umaro, Umaro",
+          "91": "FlameEater",
+          "92": "Tentacle",
+          "93": "Curley",
+          "94": "Larry",
+          "95": "Moe",
+          "96": "Hidonite",
+          "97": "Ultros (Lete River)",
+          "98": "Ultros",
+          "99": "Head",
+          "100": "Whelk Head",
+          "101": "Merchant",
+          "102": "B.Day Suit",
+          "103": "Tentacle",
+          "104": "RightBlade",
+          "105": "Left Blade",
+          "106": "Rough",
+          "107": "Striker",
+          "108": "Laser Gun",
+          "109": "Speck",
+          "110": "MissileBay",
+          "111": "Kefka (Hills Maze), Kefka vs. Leo",
+          "112": "Piranha, Rizopas",
+          "113": "SoulSaver",
+          "114": "Ramuh",
+          "115": "Siren",
+          "116": "Shoat",
+          "117": "Maduin",
+          "118": "Stray",
+          "119": "Kirin",
+          "120": "ZoneSeek",
+          "121": "Carbunkl",
+          "122": "Phantom",
+          "123": "Sraphim",
+          "124": "Golem",
+          "125": "Unicorn",
+          "126": "TigerBreak",
+          "127": "Imp"
+        }
+      }
+    },
+    "monsterGraphicsMapLarge": {
+      "type": "array",
+      "range": "0xD2AC24-0xD2B223",
+      "asmSymbol": "MonsterStencilLarge",
+      "file": "btlgfx/data/monster_stencil_large.asm",
+      "arrayLength": 48,
+      "itemLength": 32,
+      "assembly": {
+        "type": "data",
+        "format": "byteSwapped(2)"
+      },
+      "stringTable": {
+        "length": 48,
+        "default": "Large Monster Graphics Map %i",
+        "string": {
+          "0": "Osteosaur, Displayer, Allo Ver",
+          "1": "Steroidite, Phunbaba",
+          "2": "Chimera, Rhyos, Vectagoyle",
+          "3": "Behemoth, SrBehemoth, Intangir, GtBehemoth, SrBehemoth",
+          "4": "White Drgn, Dragon, Red Dragon",
+          "5": "Doom Drgn, CzarDragon, Blue Drgn",
+          "6": "Brachosaur, Brontaur, Gold Drgn",
+          "7": "Harpy, Harpiai, Aquila",
+          "8": "Hoover, Land Worm, Zone Eater",
+          "9": "Rider, Test Rider, Dante",
+          "10": "Chupon",
+          "11": "Lethal Wpn, Scullion, Io",
+          "12": "HadesGigas, Gigantos, Borras, Colossus",
+          "13": "Buffalax, Opinicus",
+          "14": "Critic",
+          "15": "Didalos, Dullahan",
+          "16": "Vargas",
+          "17": "TunnelArmr, Prometheus",
+          "18": "Dadaluma",
+          "19": "Number 024, MagiMaster",
+          "20": "Number 128, Inferno",
+          "21": "Crane",
+          "22": "Guardian",
+          "23": "Air Force",
+          "24": "Tritoch",
+          "25": "AtmaWeapon, Atma",
+          "26": "Doom Gaze",
+          "27": "Chadarnook",
+          "28": "Hidon",
+          "29": "Doom",
+          "30": "Goddess",
+          "31": "Poltrgeist",
+          "32": "Kefka",
+          "33": "Chadarnook",
+          "34": "Ifrit (Summon)",
+          "35": "Terrato",
+          "36": "Bismark",
+          "37": "Palidor",
+          "38": "Tritoch",
+          "39": "Odin",
+          "40": "Raiden",
+          "41": "Bahamut",
+          "42": "Alexandr",
+          "43": "Crusader 1",
+          "44": "Fenrir",
+          "45": "Starlet",
+          "46": "Phoenix",
+          "47": "Crusader 2"
         }
       }
     },
     "monsterGraphicsProperties": {
       "type": "array",
       "name": "Monster Graphics Properties",
-      "range": "0xD27000-0xD27820",
-      "array": {
-        "length": 416
-      },
+      "range": "0xD27000-0xD2781F",
+      "asmSymbol": "MonsterGfxProp",
+      "file": "btlgfx/data/monster_gfx_prop.asm",
+      "arrayLength": 416,
+      "itemLength": 5,
       "assembly": {
-        "type": "data",
-        "length": 5,
+        "type": "assembly",
         "assembly": {
           "graphicsPointer": {
             "type": "property",
@@ -6375,10 +8299,11 @@
     "monsterPalette": {
       "type": "array",
       "name": "Monster Palette",
-      "range": "0xD27820-0xD2A130",
-      "array": {
-        "length": 348
-      },
+      "range": "0xD27820-0xD2A81F",
+      "asmSymbol": "MonsterPal",
+      "file": "btlgfx/gfx/monster_pal.asm",
+      "arrayLength": 768,
+      "itemLength": 16,
       "assembly": {
         "format": "bgr555"
       },
@@ -7456,11 +9381,31 @@
           "width": 5,
           "height": 5,
           "tilemap": [
-            0, 1, 2, 3, 8,
-            16,17,18,19, 9,
-            4, 5, 6, 7,10,
-            20,21,22,23,11,
-            13,14,15,24,12
+            0,
+            1,
+            2,
+            3,
+            8,
+            16,
+            17,
+            18,
+            19,
+            9,
+            4,
+            5,
+            6,
+            7,
+            10,
+            20,
+            21,
+            22,
+            23,
+            11,
+            13,
+            14,
+            15,
+            24,
+            12
           ]
         }
       },
@@ -7754,6 +9699,14 @@
         }
       }
     },
+    "slotGraphics": {
+      "type": "graphics",
+      "name": "Slot Window Graphics",
+      "range": "0xD2F000-0xD2FFFF",
+      "asmSymbol": "SlotGfx",
+      "file": "btlgfx/gfx/slot_gfx.asm",
+      "format": "snes4bpp"
+    },
     "spellDescriptions": {
       "type": "array",
       "name": "Spell Descriptions",
@@ -7794,7 +9747,7 @@
     "swdTechDescription": {
       "type": "array",
       "name": "SwdTech Description",
-      "range": "0xCFFD00-0xCFFDFF",
+      "range": "0xCFFD00-0xCFFDA0",
       "asmSymbol": "BushidoDesc",
       "file": "battle/text/bushido_desc.asm",
       "arrayLength": 8,
@@ -7855,7 +9808,10 @@
           "type": "tilemap",
           "name": "Magitek March Tile Layout",
           "range": "0x0BC0-0x1BC0",
-          "format": ["generic4bppTile", "interlace(32,2,32)"],
+          "format": [
+            "generic4bppTile",
+            "interlace(32,2,32)"
+          ],
           "graphics": [
             [
               {
@@ -7895,7 +9851,10 @@
           "type": "tilemap",
           "name": "Intro Tile Layout",
           "range": "0x1BC0-0x33C0",
-          "format": ["snes4bppTile", "interlace(2048,2,2)"],
+          "format": [
+            "snes4bppTile",
+            "interlace(2048,2,2)"
+          ],
           "graphics": [
             [
               {
@@ -8120,6 +10079,18 @@
       "asmSymbol": "VectorApproachPal",
       "file": "world/gfx/vector_approach_pal.asm",
       "format": "bgr555"
+    },
+    "weaponAnimationProperties": {
+      "type": "array",
+      "name": "Weapon Animation Properties",
+      "range": "0xECE400-0xECE6E7",
+      "asmSymbol": "WeaponAnimProp",
+      "file": "btlgfx/data/weapon_anim_prop.asm",
+      "arrayLength": 93,
+      "itemLength": 8,
+      "assembly": {
+        "type": "assembly"
+      }
     },
     "windowGraphics": {
       "type": "array",
@@ -8391,7 +10362,10 @@
           "type": "tilemap",
           "name": "Serpent Trench Tileset",
           "range": "0x0000-0x03FF",
-          "format": ["generic4bppTile", "interlace(2,16,2)"],
+          "format": [
+            "generic4bppTile",
+            "interlace(2,16,2)"
+          ],
           "width": 32,
           "height": 32,
           "graphics": "worldGraphics3.graphics",
@@ -8571,7 +10545,10 @@
           "name": "Event Battle",
           "category": "Battle",
           "length": 3,
-          "opcode": ["0x4D", "0x4C"],
+          "opcode": [
+            "0x4D",
+            "0x4C"
+          ],
           "assembly": {
             "type": {
               "type": "property",
@@ -8626,7 +10603,10 @@
         "characterEquip": {
           "name": "Change a Character's Equipment",
           "category": "Character",
-          "opcode": ["0x8D", "0x9C"],
+          "opcode": [
+            "0x8D",
+            "0x9C"
+          ],
           "length": 2,
           "assembly": {
             "equipment": {
@@ -8651,7 +10631,10 @@
         "characterHP": {
           "name": "Change a Character's HP/MP",
           "category": "Character",
-          "opcode": ["0x8B", "0x8C"],
+          "opcode": [
+            "0x8B",
+            "0x8C"
+          ],
           "length": 3,
           "assembly": {
             "hpmp": {
@@ -8836,7 +10819,15 @@
         "cinematic": {
           "name": "Show Cinematic",
           "category": "Cinematic",
-          "opcode": ["0xA8", "0xA9", "0xAA", "0xAD", "0xAE", "0xBB", "0xBF"],
+          "opcode": [
+            "0xA8",
+            "0xA9",
+            "0xAA",
+            "0xAD",
+            "0xAE",
+            "0xBB",
+            "0xBF"
+          ],
           "assembly": {
             "cinematic": {
               "type": "property",
@@ -8900,7 +10891,10 @@
           "name": "Display Dialogue",
           "category": "Dialogue",
           "length": 3,
-          "opcode": ["0x4B", "0x48"],
+          "opcode": [
+            "0x4B",
+            "0x48"
+          ],
           "assembly": {
             "dialog": {
               "type": "property",
@@ -8959,7 +10953,10 @@
         "inventoryEsper": {
           "name": "Give/Take Esper",
           "category": "Inventory",
-          "opcode": ["0x86", "0x87"],
+          "opcode": [
+            "0x86",
+            "0x87"
+          ],
           "length": 2,
           "assembly": {
             "giveTake": {
@@ -8978,7 +10975,7 @@
               "name": "Esper",
               "begin": 1,
               "offset": -54,
-              "stringTable": "esperNames",
+              "stringTable": "esperName",
               "link": "esperProperties[%i]"
             }
           }
@@ -8986,7 +10983,10 @@
         "inventoryGP": {
           "name": "Give/Take GP",
           "category": "Inventory",
-          "opcode": ["0x84", "0x85"],
+          "opcode": [
+            "0x84",
+            "0x85"
+          ],
           "length": 3,
           "assembly": {
             "giveTake": {
@@ -9011,7 +11011,10 @@
         "inventoryItem": {
           "name": "Give/Take Item",
           "category": "Inventory",
-          "opcode": ["0x80", "0x81"],
+          "opcode": [
+            "0x80",
+            "0x81"
+          ],
           "length": 2,
           "assembly": {
             "giveTake": {
@@ -9271,7 +11274,10 @@
           "name": "Change Map",
           "category": "Map",
           "length": 6,
-          "opcode": ["0x6A", "0x6B"],
+          "opcode": [
+            "0x6A",
+            "0x6B"
+          ],
           "assembly": {
             "map": {
               "type": "property",
@@ -9404,7 +11410,10 @@
         "mapBackground": {
           "name": "Change Map Layer",
           "category": "Map",
-          "opcode": ["0x73", "0x74"],
+          "opcode": [
+            "0x73",
+            "0x74"
+          ],
           "length": 5,
           "assembly": {
             "update": {
@@ -9602,7 +11611,10 @@
           "name": "Enable/Disable Collision Event",
           "category": "Object",
           "length": 2,
-          "opcode": ["0x7C", "0x7D"],
+          "opcode": [
+            "0x7C",
+            "0x7D"
+          ],
           "assembly": {
             "enable": {
               "type": "property",
@@ -9627,7 +11639,10 @@
           "name": "Create/Delete Object",
           "category": "Object",
           "length": 2,
-          "opcode": ["0x3D", "0x3E"],
+          "opcode": [
+            "0x3D",
+            "0x3E"
+          ],
           "assembly": {
             "create": {
               "type": "property",
@@ -9726,7 +11741,10 @@
           "name": "Enable/Disable Passability",
           "category": "Object",
           "length": 2,
-          "opcode": ["0x36", "0x78"],
+          "opcode": [
+            "0x36",
+            "0x78"
+          ],
           "assembly": {
             "passability": {
               "type": "property",
@@ -9794,7 +11812,10 @@
           "name": "Show/Hide Object",
           "category": "Object",
           "length": 2,
-          "opcode": ["0x41", "0x42"],
+          "opcode": [
+            "0x41",
+            "0x42"
+          ],
           "assembly": {
             "show": {
               "type": "property",
@@ -9919,7 +11940,10 @@
         "partyControl": {
           "name": "Enable/Disable User Control",
           "category": "Control",
-          "opcode": ["0x3A", "0x3B"],
+          "opcode": [
+            "0x3A",
+            "0x3B"
+          ],
           "length": 1,
           "assembly": {
             "control": {
@@ -10022,7 +12046,10 @@
         "screenFade": {
           "name": "Fade In/Out",
           "category": "Screen",
-          "opcode": ["0x96", "0x97"],
+          "opcode": [
+            "0x96",
+            "0x97"
+          ],
           "assembly": {
             "fade": {
               "type": "property",
@@ -10039,7 +12066,10 @@
         "screenFadeManual": {
           "name": "Fade In/Out (manual)",
           "category": "Screen",
-          "opcode": ["0x59", "0x5A"],
+          "opcode": [
+            "0x59",
+            "0x5A"
+          ],
           "length": 2,
           "assembly": {
             "fade": {
@@ -10101,7 +12131,10 @@
         "screenMath": {
           "name": "Set Fixed Color Math",
           "category": "Screen",
-          "opcode": ["0x56", "0x57"],
+          "opcode": [
+            "0x56",
+            "0x57"
+          ],
           "length": 2,
           "assembly": {
             "math": {
@@ -10160,7 +12193,10 @@
         "screenPalettes": {
           "name": "Modify Color Palettes (All)",
           "category": "Screen",
-          "opcode": ["0x50", "0x52"],
+          "opcode": [
+            "0x50",
+            "0x52"
+          ],
           "length": 2,
           "assembly": {
             "palettes": {
@@ -10211,7 +12247,10 @@
         "screenPalettesRange": {
           "name": "Modify Color Palettes (Range)",
           "category": "Screen",
-          "opcode": ["0x51", "0x53"],
+          "opcode": [
+            "0x51",
+            "0x53"
+          ],
           "length": 4,
           "assembly": {
             "palettes": {
@@ -10272,7 +12311,10 @@
         "screenScroll": {
           "name": "Scroll Background",
           "category": "Screen",
-          "opcode": ["0x5D-0x60", "0x70-0x73"],
+          "opcode": [
+            "0x5D-0x60",
+            "0x70-0x73"
+          ],
           "length": 3,
           "assembly": {
             "layer": {
@@ -10307,7 +12349,10 @@
         "screenScrollLock": {
           "name": "Lock/Unlock the Screen",
           "category": "Screen",
-          "opcode": ["0x38", "0x39"],
+          "opcode": [
+            "0x38",
+            "0x39"
+          ],
           "length": 1,
           "assembly": {
             "lock": {
@@ -10623,7 +12668,10 @@
           "name": "Wait for SPC",
           "category": "Sound",
           "length": 1,
-          "opcode": ["0xF8", "0xFA"],
+          "opcode": [
+            "0xF8",
+            "0xFA"
+          ],
           "assembly": {
             "waitType": {
               "type": "property",
@@ -10643,7 +12691,10 @@
           "name": "Change Battle Switch",
           "category": "Control",
           "length": 2,
-          "opcode": ["0xB8", "0xB9"],
+          "opcode": [
+            "0xB8",
+            "0xB9"
+          ],
           "assembly": {
             "onOff": {
               "type": "property",
@@ -10837,7 +12888,10 @@
           "name": "Wait (Manual)",
           "category": "Control",
           "length": 2,
-          "opcode": ["0xB4", "0xB5"],
+          "opcode": [
+            "0xB4",
+            "0xB5"
+          ],
           "assembly": {
             "units": {
               "type": "property",
@@ -10874,7 +12928,10 @@
       "command": {
         "animation": {
           "name": "Monster Animation",
-          "opcode": ["0xFA00-0xFA09", "0xFA0A-0xFB00"],
+          "opcode": [
+            "0xFA00-0xFA09",
+            "0xFA0A-0xFB00"
+          ],
           "length": 4,
           "assembly": {
             "animation": {
@@ -11532,7 +13589,10 @@
         },
         "animation": {
           "name": "Enable/Disable Animation",
-          "opcode": ["0xC6", "0xC7"],
+          "opcode": [
+            "0xC6",
+            "0xC7"
+          ],
           "assembly": {
             "animation": {
               "type": "property",
@@ -11591,7 +13651,10 @@
         },
         "jump": {
           "name": "Jump in the Air",
-          "opcode": ["0xDC", "0xDD"],
+          "opcode": [
+            "0xDC",
+            "0xDD"
+          ],
           "assembly": {
             "jump": {
               "type": "property",
@@ -11712,7 +13775,10 @@
         },
         "showHide": {
           "name": "Show/Hide Object",
-          "opcode": ["0xD0", "0xD1"],
+          "opcode": [
+            "0xD0",
+            "0xD1"
+          ],
           "assembly": {
             "showHide": {
               "type": "property",
@@ -11917,7 +13983,14 @@
         },
         "cinematic": {
           "name": "Show Cinematic",
-          "opcode": ["0xF2", "0xF3", "0xF5", "0xF6", "0xF8-0xFD", "0xFE"],
+          "opcode": [
+            "0xF2",
+            "0xF3",
+            "0xF5",
+            "0xF6",
+            "0xF8-0xFD",
+            "0xFE"
+          ],
           "assembly": {
             "cinematic": {
               "type": "property",
@@ -11973,7 +14046,11 @@
         },
         "graphic": {
           "name": "Change Vehicle Graphic",
-          "opcode": ["0xF4", "0xF7", "0xFD"],
+          "opcode": [
+            "0xF4",
+            "0xF7",
+            "0xFD"
+          ],
           "assembly": {
             "graphic": {
               "type": "property",
@@ -12059,7 +14136,10 @@
         "map": {
           "name": "Change Map",
           "length": 6,
-          "opcode": ["0xD2", "0xD3"],
+          "opcode": [
+            "0xD2",
+            "0xD3"
+          ],
           "assembly": {
             "map": {
               "type": "property",
@@ -12151,7 +14231,10 @@
         },
         "miniMap": {
           "name": "Show/Hide Mini-Map",
-          "opcode": ["0xDD", "0xDF"],
+          "opcode": [
+            "0xDD",
+            "0xDF"
+          ],
           "assembly": {
             "miniMap": {
               "type": "property",
@@ -12210,7 +14293,10 @@
         },
         "screenFade": {
           "name": "Fade In/Out",
-          "opcode": ["0xD8", "0xD9"],
+          "opcode": [
+            "0xD8",
+            "0xD9"
+          ],
           "assembly": {
             "fade": {
               "type": "property",
@@ -12227,7 +14313,10 @@
         },
         "showHide": {
           "name": "Show/Hide Vehicle Sprite",
-          "opcode": ["0xD0", "0xD1"],
+          "opcode": [
+            "0xD0",
+            "0xD1"
+          ],
           "assembly": {
             "showHide": {
               "type": "property",
@@ -12246,7 +14335,10 @@
         "switch": {
           "name": "Change Switch",
           "length": 3,
-          "opcode": ["0xC8", "0xC9"],
+          "opcode": [
+            "0xC8",
+            "0xC9"
+          ],
           "assembly": {
             "onOff": {
               "type": "property",
@@ -12363,7 +14455,10 @@
         },
         "figaro": {
           "name": "Figaro Castle Animation",
-          "opcode": ["0xFD", "0xFE"],
+          "opcode": [
+            "0xFD",
+            "0xFE"
+          ],
           "assembly": {
             "animation": {
               "type": "property",
@@ -12489,7 +14584,10 @@
         "map": {
           "name": "Change Map",
           "length": 6,
-          "opcode": ["0xD2", "0xD3"],
+          "opcode": [
+            "0xD2",
+            "0xD3"
+          ],
           "assembly": {
             "map": {
               "type": "property",
@@ -12581,7 +14679,10 @@
         },
         "miniMap": {
           "name": "Show/Hide Mini-Map",
-          "opcode": ["0xDD", "0xDF"],
+          "opcode": [
+            "0xDD",
+            "0xDF"
+          ],
           "assembly": {
             "miniMap": {
               "type": "property",
@@ -12646,7 +14747,10 @@
         },
         "screenFade": {
           "name": "Fade In/Out",
-          "opcode": ["0xD8", "0xD9"],
+          "opcode": [
+            "0xD8",
+            "0xD9"
+          ],
           "assembly": {
             "fade": {
               "type": "property",
@@ -12666,7 +14770,10 @@
         },
         "showHide": {
           "name": "Show/Hide Character Sprite",
-          "opcode": ["0xD0", "0xD1"],
+          "opcode": [
+            "0xD0",
+            "0xD1"
+          ],
           "assembly": {
             "showHide": {
               "type": "property",
@@ -12706,7 +14813,10 @@
         "switch": {
           "name": "Change Switch",
           "length": 3,
-          "opcode": ["0xC8", "0xC9"],
+          "opcode": [
+            "0xC8",
+            "0xC9"
+          ],
           "assembly": {
             "onOff": {
               "type": "property",

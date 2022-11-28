@@ -20,6 +20,7 @@
 .include "battle_data.asm"
 
 .import CharProp, ItemProp, MagicProp, RNGTbl
+.import CharAI
 
 .import ExecBtlGfx_ext
 
@@ -51,7 +52,7 @@ CalcMagicEffect_ext:
 ; [ battle ]
 
 BattleMain:
-@000c:  rtl ; php
+@000c:  php
         shortai
         lda     #$7e
         pha
@@ -7654,7 +7655,7 @@ _makepartytable:
         lda     #$18
         jsr     MultAB
         tax
-        lda     $d0fd00,x   ; character ai data
+        lda     f:CharAI,x
         bpl     @2ffa       ; branch if party is not hidden
         ldy     #$0006
 @2ff1:  lda     #$ff
@@ -7663,7 +7664,7 @@ _makepartytable:
         bpl     @2ff1
 @2ffa:  ldy     #$0004
 @2ffd:  phy
-        lda     $d0fd04,x   ; actor index
+        lda     f:CharAI+4,x   ; actor index
         cmp     #$ff
         beq     @3041       ; branch if no character ai
         and     #$3f
@@ -7682,12 +7683,12 @@ _makepartytable:
 @3023:  lda     $3018,y
         tsb     $b8
         longa
-        lda     $d0fd04,x   ; actor/character index (also loads $d0fd05,x)
+        lda     f:CharAI+4,x   ; actor/character index (also loads $d0fd05,x)
         sta     $3ed8,y
         shorta
         lda     #$01        ; msb of ai script index always set for character ai
         xba
-        lda     $d0fd06,x   ; character ai script index
+        lda     f:CharAI+6,x   ; character ai script index
         cmp     #$ff
         beq     @3041       ; branch if no ai script
         jsr     InitAI

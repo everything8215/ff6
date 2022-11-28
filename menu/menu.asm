@@ -5547,11 +5547,11 @@ _d4cbf5:
         sta     $4327
         lda     #$04
         sta     $4330
-        lda     #<hCOLDATA              ; channel #3 destination = $2130, $2131, $2132, $2133 (fixed color)
+        lda     #<hCGSWSEL
         sta     $4331
-        ldy     #$cc98                  ; channel #3 source = $d4cc98
+        ldy     #.loword(FixedColorHDMATbl)
         sty     $4332
-        lda     #$d4
+        lda     #^FixedColorHDMATbl
         sta     $4334
         sta     $4337
         lda     #$fe

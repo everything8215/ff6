@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import ItemTypeName
+
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (item list) ]
@@ -489,7 +491,7 @@ LoadItemTypeName:
         ldy     #$9e8b
         sty     hWMADDL
         ldy     #7                      ; 7 letters
-@801a:  lda     $d26f00,x               ; item type name
+@801a:  lda     f:ItemTypeName,x
         sta     hWMDATA
         inx
         dey

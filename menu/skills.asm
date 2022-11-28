@@ -11,7 +11,7 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.import BushidoName, MonsterName, GenjuBonusName
+.import BushidoName, MonsterName, GenjuBonusName, GenjuName, DanceName
 .import GenjuAttackDesc, GenjuAttackDescPtrs
 .import BlitzDesc, BlitzDescPtrs, BushidoDesc, BushidoDescPtrs
 
@@ -1549,11 +1549,11 @@ DrawGenjuListRow:
 ; [  ]
 
 _c354fa:
-@54fa:  ldy     #$0008
+@54fa:  ldy     #8
         sty     $eb
-        ldy     #$f6e1      ; $e6f6e1 (esper names)
+        ldy     #.loword(GenjuName)
         sty     $ef
-        lda     #$e6
+        lda     #^GenjuName
         sta     $f1
         rts
 
@@ -1996,9 +1996,9 @@ DrawDanceListRow:
 GetDanceNamePtr:
 @57c1:  ldy     #12
         sty     $eb
-        ldy     #$ff9d      ; $e6ff9d (dance names)
+        ldy     #.loword(DanceName)
         sty     $ef
-        lda     #$e6
+        lda     #^DanceName
         sta     $f1
         rts
 
@@ -2284,7 +2284,7 @@ DrawEsperDetailMenu:
         asl3
         tax
         ldy     #8
-@59c4:  lda     $e6f6e1,x   ; esper names
+@59c4:  lda     f:GenjuName,x
         sta     hWMDATA
         inx
         dey

@@ -15,8 +15,12 @@
 .export MapGfxPtrs, MapGfx
 .export MagicProp, ItemName, FontGfxSmall, FontWidth, FontGfxLarge
 .export ShortEntrancePtrs, EventTriggerPtrs
-.export CharProp, LevelUpExp, BushidoLevelTbl, BlitzLevelTbl
-.export BlitzCode, MagicName
+.export CharProp, LevelUpExp, BushidoLevelTbl, BlitzLevelTbl, BlitzCode
+.export MagicName, AttackName, GenjuName, GenjuAttackName, DanceName
+
+.repeat 82, i
+      .export .ident(.sprintf("MapGfx_%04x", i))
+.endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -287,6 +291,18 @@ BlitzLevelTbl:
 
 ; e6/f567
         .include "text/magic_name.asm"
+
+; e6/f6e1
+        .include "text/genju_name.asm"
+
+; e6/f7b9
+        .include "text/attack_name.asm"
+
+; e6/fe8f
+        .include "text/genju_attack_name.asm"
+
+; e6/ff9d
+        .include "text/dance_name.asm"
 
 ; ------------------------------------------------------------------------------
 

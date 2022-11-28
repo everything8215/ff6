@@ -11,7 +11,7 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.import MagicProp
+.import MagicProp, GenjuName
 
 ; ------------------------------------------------------------------------------
 
@@ -4326,7 +4326,7 @@ DrawEquipGenju:
         asl3
         tax
         ldy     #8
-@34f7:  lda     $e6f6e1,x               ; esper names
+@34f7:  lda     f:GenjuName,x
         sta     hWMDATA
         inx
         dey

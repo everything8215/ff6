@@ -67,7 +67,7 @@ class ROMDecoder {
       // extract the pointer table
       const ptrDefinition = definition.pointerTable;
       const isMapped = ptrDefinition.isMapped;
-      let ptrOffset = Number(ptrDefinition.offset);
+      let ptrOffset = Number(ptrDefinition.offset) || 0;
       if (!isMapped) {
         // map pointer offset first, then add pointers
         ptrOffset = this.memoryMap.mapAddress(ptrOffset);
@@ -120,7 +120,7 @@ class ROMDecoder {
     }
 
     // remove duplicates and sort pointers
-    const sortedPointers = [...new Set(pointers)].sort(function(a, b) {
+    const sortedPointers = [...new Set(pointers)].sort(function (a, b) {
       return a - b;
     });
 

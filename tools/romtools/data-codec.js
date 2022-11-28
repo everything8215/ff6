@@ -89,7 +89,7 @@ class ROMDataCodec {
 ROMDataCodec.Codec = {
   // generic formats
   "byteSwapped": {
-    encode: function(data, width) {
+    encode: function (data, width) {
       if (!width) {
         data.dest = data.src.slice().reverse();
         return;
@@ -104,7 +104,7 @@ ROMDataCodec.Codec = {
         }
       }
     },
-    decode: function(data, width) {
+    decode: function (data, width) {
       if (!width) {
         data.dest = data.src.slice().reverse();
         return;
@@ -119,7 +119,7 @@ ROMDataCodec.Codec = {
     }
   },
   "interlace": {
-    encode: function(data, word, layers, stride) {
+    encode: function (data, word, layers, stride) {
       var step = word * layers;
       var block = step * stride;
       var length = Math.ceil(data.src.length / block) * block;
@@ -143,7 +143,7 @@ ROMDataCodec.Codec = {
         s += block;
       }
     },
-    decode: function(data, word, layers, stride) {
+    decode: function (data, word, layers, stride) {
       var step = word * stride;
       var block = step * layers;
       var length = Math.ceil(data.src.length / block) * block;
@@ -169,7 +169,7 @@ ROMDataCodec.Codec = {
     }
   },
   "terminated": {
-    encode: function(data, terminator, stride) {
+    encode: function (data, terminator, stride) {
       terminator = terminator || 0;
       stride = stride || 1;
       let length = data.src.length;
@@ -183,7 +183,7 @@ ROMDataCodec.Codec = {
       data.dest.set(data.src);
       data.dest[data.src.length] = terminator;
     },
-    decode: function(data, terminator, stride) {
+    decode: function (data, terminator, stride) {
       terminator = terminator || 0;
       stride = stride || 1;
       let length = 0;
@@ -229,7 +229,7 @@ ROMDataCodec.Codec = {
 
   // game-specific formats
   "ff1-map": {
-    encode: function(data) {
+    encode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(4096);
       var d = 0;
@@ -254,7 +254,7 @@ ROMDataCodec.Codec = {
       data.dest[d++] = 0xFF;
       data.dest = data.dest.slice(0, d);
     },
-    decode: function(data) {
+    decode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(4096);
       var d = 0; // destination pointer
@@ -275,7 +275,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff1-shop": {
-    encode: function(data) {
+    encode: function (data) {
       data.dest = new Uint8Array(6);
       var d = 0;
       for (var s = 0; s < 5; s++) {
@@ -285,7 +285,7 @@ ROMDataCodec.Codec = {
       data.dest[d++] = 0;
       data.dest = data.dest.slice(0, d);
     },
-    decode: function(data) {
+    decode: function (data) {
       data.dest = new Uint8Array(5);
       var d = 0;
       for (var s = 0; s < data.src.length; s++) {
@@ -295,7 +295,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff4-battlebg": {
-    encode: function(data) {
+    encode: function (data) {
       // 16-bit source, 8-bit destination
       const src16 = new Uint16Array(data.src.buffer);
       data.dest = new Uint8Array(src16.length);
@@ -307,7 +307,7 @@ ROMDataCodec.Codec = {
       }
       return data.dest;
     },
-    decode: function(data) {
+    decode: function (data) {
       // 8-bit source, 16-bit destination
       const dest16 = new Uint16Array(data.src.length);
       for (var i = 0; i < data.src.length; i++) {
@@ -320,7 +320,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff4-monster": {
-    encode: function(data) {
+    encode: function (data) {
       data.dest = new Uint8Array(20);
       data.dest.set(data.src.subarray(0, 9));
       let flags = 0;
@@ -354,7 +354,7 @@ ROMDataCodec.Codec = {
       data.dest[9] = flags;
       data.dest = data.dest.slice(0, d);
     },
-    decode: function(data) {
+    decode: function (data) {
       data.dest = new Uint8Array(20);
       data.dest.set(data.src.subarray(0, 9));
       let flags = data.src[9];
@@ -374,7 +374,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff4-world": {
-    encode: function(data) {
+    encode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(256);
       var d = 0;
@@ -401,7 +401,7 @@ ROMDataCodec.Codec = {
       }
       data.dest = data.dest.slice(0, d);
     },
-    decode: function(data) {
+    decode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(256);
       var d = 0; // destination pointer
@@ -426,7 +426,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff4-map": {
-    encode: function(data) {
+    encode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(1024);
       var d = 0;
@@ -450,7 +450,7 @@ ROMDataCodec.Codec = {
       }
       data.dest = data.dest.slice(0, d);
     },
-    decode: function(data) {
+    decode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(1024);
       var d = 0; // destination pointer
@@ -470,7 +470,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff4a-world-tile-properties": {
-    encode: function(data) {
+    encode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(1024);
       var d = 0; // destination pointer
@@ -489,7 +489,7 @@ ROMDataCodec.Codec = {
       d += 4;
       data.dest = data.dest.slice(0, d);
     },
-    decode: function(data) {
+    decode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(256);
       var d = 0; // destination pointer
@@ -505,7 +505,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff5-battlebg": {
-    encode: function(data) {
+    encode: function (data) {
       const src16 = new Uint16Array(data.src.buffer);
       // var src = new Uint16Array(data.buffer, data.byteOffset, data.byteLength >> 1);
       data.dest = new Uint8Array(0x280);
@@ -516,11 +516,11 @@ ROMDataCodec.Codec = {
       while (s < 0x0280) {
 
         var s0 = src16[s];
-        var s1 = src16[s+1];
-        var s2 = src16[s+2];
-        var s3 = src16[s+3];
-        var s4 = src16[s+4];
-        var s5 = src16[s+5];
+        var s1 = src16[s + 1];
+        var s2 = src16[s + 2];
+        var s3 = src16[s + 3];
+        var s4 = src16[s + 4];
+        var s5 = src16[s + 5];
 
         // if (s0 === s1 && s1 === s2 && s2 === s3 && s3 === s4 && s4 !== s5) {
         //     // this is a very specific case where exactly 5 identical
@@ -536,19 +536,19 @@ ROMDataCodec.Codec = {
         if (s0 !== s1 && s0 === s2 && s0 === s4 && s1 === s3 && s1 === s5) {
           b = 3;
           s += 6;
-          while (src16[s-2] === src16[s] && src16[s-1] === src16[s+1] && b < 0x40) {
+          while (src16[s - 2] === src16[s] && src16[s - 1] === src16[s + 1] && b < 0x40) {
             b++;
             s += 2
           }
           data.dest[d++] = 0xFF;
           data.dest[d++] = b | 0x80;
           data.dest[d++] = s0 & 0x7F;
-          if (s0 & 0x0400) data.dest[d-1] |= 0x80;
+          if (s0 & 0x0400) data.dest[d - 1] |= 0x80;
           data.dest[d++] = s1 & 0x7F;
-          if (s1 & 0x0400) data.dest[d-1] |= 0x80;
+          if (s1 & 0x0400) data.dest[d - 1] |= 0x80;
         } else if ((s1 - s0) === (s2 - s1) &&
-        (s2 - s1) === (s3 - s2) &&
-        (s3 - s2) === (s4 - s3)) {
+          (s2 - s1) === (s3 - s2) &&
+          (s3 - s2) === (s4 - s3)) {
           var delta = s1 - s0;
           s += 4;
           b = 4;
@@ -559,17 +559,17 @@ ROMDataCodec.Codec = {
           data.dest[d++] = 0xFF;
           data.dest[d++] = b;
           data.dest[d++] = s0 & 0x7F;
-          if (s0 & 0x0400) data.dest[d-1] |= 0x80;
+          if (s0 & 0x0400) data.dest[d - 1] |= 0x80;
           data.dest[d++] = (delta >= 0 ? delta : -delta);
         } else {
           data.dest[d++] = s0 & 0x7F;
-          if (s0 & 0x0400) data.dest[d-1] |= 0x80;
+          if (s0 & 0x0400) data.dest[d - 1] |= 0x80;
           s++;
         }
       }
       data.dest = data.dest.slice(0, d);
     },
-    decode: function(data) {
+    decode: function (data) {
       const dest16 = new Uint16Array(0x0280);
       var s = 0;
       var d = 0;
@@ -615,7 +615,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff5-battlebgflip": {
-    encode: function(data) {
+    encode: function (data) {
       data.dest = new Uint8Array(0x50);
       var s = 0;
       var d = 0;
@@ -649,7 +649,7 @@ ROMDataCodec.Codec = {
       }
       data.dest = data.dest.slice(0, d);
     },
-    decode: function(data) {
+    decode: function (data) {
       data.dest = new Uint8Array(0x0280);
       var s = 0;
       var d = 0;
@@ -670,7 +670,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff5-world": {
-    encode: function(data) {
+    encode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(256);
       var d = 0;
@@ -698,7 +698,7 @@ ROMDataCodec.Codec = {
       data.src = data.src.slice(0, s);
       data.dest = data.dest.slice(0, s);
     },
-    decode: function(data) {
+    decode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(256);
       var d = 0; // destination pointer
@@ -721,7 +721,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff5-lzss": {
-    encode: function(data) {
+    encode: function (data) {
 
       const length = data.src.length;
 
@@ -810,7 +810,7 @@ ROMDataCodec.Codec = {
       data.dest = data.dest.slice(0, d);
       data.src = data.src.slice(0x0800, s);
     },
-    decode: function(data) {
+    decode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(0x10000);
       var d = 0; // destination pointer
@@ -869,17 +869,17 @@ ROMDataCodec.Codec = {
     }
   },
   "tose-70": {
-    encode: function(data) {
+    encode: function (data) {
       const encoder = new Tose70Encoder();
       encoder.encode(data);
     },
-    decode: function(data) {
+    decode: function (data) {
       const decoder = new Tose70Decoder();
       decoder.decode(data);
     }
   },
   "tose-graphics": {
-    encode: function(data) {
+    encode: function (data) {
       var header = new Uint32Array(2);
       header[0] = 1;
       header[1] = Math.floor(data.src.length / 32)
@@ -888,7 +888,7 @@ ROMDataCodec.Codec = {
       data.dest.set(header8, 0);
       data.dest.set(data.src, 8);
     },
-    decode: function(data) {
+    decode: function (data) {
       var header = new Uint32Array(data.src.buffer, data.src.byteOffset, 2);
       var mode = header[0]; // always 1
       if (mode !== 1) console.log(`Invalid TOSE graphics format ${mode}`);
@@ -897,7 +897,7 @@ ROMDataCodec.Codec = {
     }
   },
   "tose-layout": {
-    encode: function(data, width, height) {
+    encode: function (data, width, height) {
       var header = new Uint32Array(2);
       header[0] = 2;
       header[1] = Math.floor(data.src.length / 2)
@@ -908,7 +908,7 @@ ROMDataCodec.Codec = {
       data.src[9] = height;
       data.dest.set(data.src, 12);
     },
-    decode: function(data, width, height) {
+    decode: function (data, width, height) {
       var header = new Uint32Array(data.src.buffer, data.src.byteOffset, 2);
       var mode = header[0]; // always 2
       if (mode !== 2) console.log(`Invalid TOSE layout format ${mode}`);
@@ -919,7 +919,7 @@ ROMDataCodec.Codec = {
     }
   },
   "tose-palette": {
-    encode: function(data) {
+    encode: function (data) {
       var count = Math.ceil(data.src.length / 2); // number of colors
       var header = new Uint32Array(2);
       header[0] = 3;
@@ -929,7 +929,7 @@ ROMDataCodec.Codec = {
       data.dest.set(header8, 0);
       data.dest.set(data.src, 8);
     },
-    decode: function(data) {
+    decode: function (data) {
       var header = new Uint32Array(data.src.buffer, data.src.byteOffset, 2);
       var mode = header[0]; // always 3
       if (mode !== 3) console.log(`Invalid TOSE palette format ${mode}`);
@@ -938,7 +938,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff5a-world": {
-    encode: function(data) {
+    encode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(256);
       var d = 0;
@@ -952,7 +952,7 @@ ROMDataCodec.Codec = {
       }
       data.dest = data.dest.slice(0, d);
     },
-    decode: function(data) {
+    decode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(256);
       var d = 0; // destination pointer
@@ -966,7 +966,7 @@ ROMDataCodec.Codec = {
     }
   },
   "ff6-lzss": {
-    encode: function(data) {
+    encode: function (data) {
 
       // create a source buffer preceded by 2K of empty space (this increases compression for some data)
       const src = new Uint8Array(0x0800 + data.src.length);
@@ -996,7 +996,7 @@ ROMDataCodec.Codec = {
           len = 0;
 
           while ((len < 34) && (s + len < data.src.length) && (data.src[s + len - p] === data.src[s + len]))
-          len++;
+            len++;
 
           if (len > lenMax) {
             // this sequence is longer than any others that have been found so far
@@ -1052,7 +1052,7 @@ ROMDataCodec.Codec = {
       data.dest = data.dest.slice(0, d);
       data.src = data.src.slice(0x0800, s);
     },
-    decode: function(data) {
+    decode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(0x10000);
       var d = 0; // destination pointer
@@ -1115,33 +1115,33 @@ ROMDataCodec.Codec = {
     }
   },
   "ff6-animation-frame": {
-    encode: function(data) {
+    encode: function (data) {
       // 16-bit source, 16-bit destination
       const dest16 = new Uint16Array(data.src.length);
       var d = 0;
       for (var i = 0; i < data.src.length; i++) {
-        if (src[i] === 0xFFFF) continue;  // skip blank tiles
-        var t = src[i] & 0xFF;
+        if (data.src[i] === 0xFFFF) continue;  // skip blank tiles
+        var t = data.src[i] & 0xFF;
         var x = i & 0x0F;
         var y = i >> 4;
         dest16[d++] = (t << 8) | (x << 4) | y;
       }
       data.dest = new Uint8Array(dest16.buffer);
     },
-    decode: function(data) {
+    decode: function (data) {
       // 16-bit source, 16-bit destination
       data.dest = new Uint16Array(256);
       data.dest.fill(0xFFFF);  // blank tiles are 0xFF
       for (var i = 0; i < data.src.length; i++) {
-        var t = (src[i] & 0xFF00) >> 8;
-        var x = (src[i] & 0xF0) >> 4;
-        var y = src[i] & 0x0F;
+        var t = (data.src[i] & 0xFF00) >> 8;
+        var x = (data.src[i] & 0xF0) >> 4;
+        var y = data.src[i] & 0x0F;
         data.dest[x + y * 16] = t;
       }
     }
   },
   "ff6-animation-tilemap": {
-    encode: function(data) {
+    encode: function (data) {
       // 32-bit source, 16-bit destination
       const src32 = new Uint32Array(data.src.buffer);
       const dest16 = new Uint16Array(src32.length);
@@ -1153,7 +1153,7 @@ ROMDataCodec.Codec = {
       }
       data.dest = new Uint8Array(dest16.buffer);
     },
-    decode: function(data) {
+    decode: function (data) {
       // 16-bit source, 32-bit destination
       const src16 = new Uint16Array(data.src.buffer);
       const dest32 = new Uint32Array(src16.length);
@@ -1167,7 +1167,7 @@ ROMDataCodec.Codec = {
     }
   },
   "gba-lzss": {
-    encode: function(data) {
+    encode: function (data) {
 
       // note: gba format doesn't allow an empty preceding buffer
       var s = 0;
@@ -1200,7 +1200,7 @@ ROMDataCodec.Codec = {
 
           if (p > s) break;
           while ((len < 18) && (s + len < data.src.length) && (data.src[s + len - p] === data.src[s + len]))
-          len++;
+            len++;
 
           if (len > lenMax) {
             // this sequence is longer than any others that have been found so far
@@ -1247,7 +1247,7 @@ ROMDataCodec.Codec = {
       data.dest = data.dest.slice(0, d);
       data.src = data.src.slice(0, s);
     },
-    decode: function(data) {
+    decode: function (data) {
       var s = 0; // source pointer
       data.dest = new Uint8Array(0x10000);
       var d = 0; // destination pointer
@@ -1296,7 +1296,7 @@ ROMDataCodec.Codec = {
             data.dest.set(line.subarray(0, l), d)
             d += l;
           }
-          
+
           // reached end of compressed data
           if (d >= length) break;
         }
@@ -1308,11 +1308,11 @@ ROMDataCodec.Codec = {
     }
   },
   "apultra": {
-    encode: function(data, winSize) {
+    encode: function (data, winSize) {
       winSize = winSize || 0x10000;
       data.dest = apultra_pack(data.src);
     },
-    decode: function(data) {
+    decode: function (data) {
       data.dest = apultra_unpack(data.src);
     }
   }
