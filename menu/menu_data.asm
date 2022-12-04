@@ -14,61 +14,50 @@
 .export ItemProp, GenjuProp
 .export BattleCmdName
 .export WindowGfx, WindowPal, PortraitGfx, PortraitPal
+.export BattleFontPal, BattleCharPal
 
 ; ------------------------------------------------------------------------------
 
+.export MetamorphProp
+
 .segment "shop_prop"
 
-; c4/7ac0
-        .include "data/shop_prop.asm"
+        .include "data/shop_prop.asm"                           ; c4/7ac0
+        .include "data/metamorph_prop.asm"                      ; c4/7f40
 
 ; ------------------------------------------------------------------------------
 
 .segment "rare_item"
 
-; ce/fb60
 RareItemDescPtrs:
-        make_ptr_tbl_rel RareItemDesc, 20
+        make_ptr_tbl_rel RareItemDesc, 20                       ; ce/fb60
         .res $40+RareItemDescPtrs-*
-
-; ce/fba0
-        .include "text/rare_item_name.asm"
+        .include "text/rare_item_name.asm"                      ; ce/fba0
         .res $0110+RareItemName-*
-
-; ce/fcb0
-        .include "text/rare_item_desc.asm"
+        .include "text/rare_item_desc.asm"                      ; ce/fcb0
 
 ; ------------------------------------------------------------------------------
 
 .segment "item_genju_prop"
 
-; d8/5000
-        .include "data/item_prop.asm"
-
-; d8/6e00
-        .include "data/genju_prop.asm"
+        .include "data/item_prop.asm"                           ; d8/5000
+        .include "data/genju_prop.asm"                          ; d8/6e00
 
 ; ------------------------------------------------------------------------------
 
 .segment "magic_desc"
 
-; d8/c9a0
-        .include "text/magic_desc.asm"
+        .include "text/magic_desc.asm"                          ; d8/c9a0
         .res $0500+MagicDesc-*
-
-; d8/cea0
-        .include "text/battle_cmd_name.asm"
-
-; d8/cf80
+        .include "text/battle_cmd_name.asm"                     ; d8/cea0
 MagicDescPtrs:
-        make_ptr_tbl_rel MagicDesc, 54
+        make_ptr_tbl_rel MagicDesc, 54                          ; d8/cf80
 
 ; ------------------------------------------------------------------------------
 
 .segment "menu_data"
 
-; d8/e800
-        .include "gfx/menu_pal.asm"
+        .include "gfx/menu_pal.asm"                             ; d8/e800
 
 ; ------------------------------------------------------------------------------
 
@@ -88,50 +77,33 @@ ElementSymbols:
 
 ; ------------------------------------------------------------------------------
 
-; d8/e917
-        .include "menu_anim.asm"
+        .include "menu_anim.asm"                                ; d8/e917
 
 ; ------------------------------------------------------------------------------
+
+.repeat 8, i
+        .export .ident(.sprintf("WindowGfx_%04x", i))
+.endrep
 
 .segment "menu_gfx"
 
-; ed/0000
-        .include "gfx/window_gfx.asm"
-
-; ed/1c00
-        .include "gfx/window_pal.asm"
-
-; ed/1d00
-        .include "gfx/portrait_gfx.asm"
-
-; ed/5860
-        .include "gfx/portrait_pal.asm"
-
-; ed/5ac0
-        .include "gfx/menu_sprite_gfx.asm"
-
-; ed/62c0
-        .include "gfx/battle_font_pal.asm"
-
-; ed/6300
-        .include "gfx/battle_char_pal.asm"
+        .include "gfx/window_gfx.asm"                           ; ed/0000
+        .include "gfx/window_pal.asm"                           ; ed/1c00
+        .include "gfx/portrait_gfx.asm"                         ; ed/1d00
+        .include "gfx/portrait_pal.asm"                         ; ed/5860
+        .include "gfx/menu_sprite_gfx.asm"                      ; ed/5ac0
+        .include "gfx/battle_font_pal.asm"                      ; ed/62c0
+        .include "gfx/battle_char_pal.asm"                      ; ed/6300
 
 ; ------------------------------------------------------------------------------
 
-; ed/6400
-        .include "text/item_desc.asm"
+        .include "text/item_desc.asm"                           ; ed/6400
         .res $13a0+ItemDesc-*
-
-; ed/77a0
-        .include "text/lore_desc.asm"
+        .include "text/lore_desc.asm"                           ; ed/77a0
         .res $02d0+LoreDesc-*
-
-; ed/7a70
 LoreDescPtrs:
-        make_ptr_tbl_rel LoreDesc, 24
-
-; ed/7aa0
+        make_ptr_tbl_rel LoreDesc, 24                           ; ed/7a70
 ItemDescPtrs:
-        make_ptr_tbl_rel ItemDesc, 256
+        make_ptr_tbl_rel ItemDesc, 256                          ; ed/7aa0
 
 ; ------------------------------------------------------------------------------

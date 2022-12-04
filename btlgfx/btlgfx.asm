@@ -24,11 +24,12 @@
 .import UpdateCtrlBattle_ext, IncGameTime_ext
 .import ExecSound_ext
 
-.import RNGTbl, ItemName, MagicName, GenjuName, AttackName, GenjuAttackName
-.import DanceName
-.import FontGfxSmall, FontGfxLarge, FontWidth
+.import RNGTbl, ItemName, MagicName, GenjuName, AttackName, CharProp
+.import BushidoName, GenjuAttackName, DanceName, MonsterOverlap, BlitzCode
+.import FontGfxSmall, FontGfxLarge, FontWidth, VehicleGfx
 .import MonsterName, BattleMonsters, MonsterDlgPtrs, MonsterDlg
-.import BattleCmdName
+.import BattleFontPal, BattleCharPal
+.import BattleCmdName, MonsterSpecialName
 
 .export SineTbl8, SineTbl16
 
@@ -132,11 +133,11 @@ last_init2:
         inc     $e9ef       ; stop battle time
         jsr     _c10e67
         jsr     _c10f1f
-        jsr     _c14a01
+        jsr     InitMenuText
         jsr     InitCharGfxFinalBattle
         jsr     LoadStatusPal
         jsr     _c1468f
-        jsr     _c14a01
+        jsr     InitMenuText
         jsr     _c14759
         inc     $7bbb       ; enable battle menu update
         jsr     _c10f8f       ; check if characters can change equipment
@@ -278,7 +279,7 @@ BtlGfx_0b:
 
 _c10187:
 nor_tfr_long:
-@0187:  jsr     _c14a61
+@0187:  jsr     DrawMonsterNames
         jsr     _c14759
         inc     $7bbb       ; enable menu window update
         jsr     WaitFrame
@@ -301,7 +302,7 @@ UpdateMonsterNames:
         rtl
 @01a8:  lda     $7bca       ; branch if menu is open
         bne     @01bc
-        jsr     _c14a61
+        jsr     DrawMonsterNames
         jsr     _c14759
         inc     $7bbb       ; enable battle menu update
         jsr     WaitFrame
@@ -368,7 +369,7 @@ BtlGfx_01:
         jsr     UpdateMenuWindow
         jsr     _c12f79       ; update character status change animations
         jsr     _c102ca       ; update battle menu
-        jsr     _c144be       ; update hp/mp/gauge graphics
+        jsr     UpdateCharText
         jsl     UpdateCondemnNum
         jsr     MonsterDeathAnim
         jsl     UpdateFacingDir
@@ -399,7 +400,7 @@ WaitFrame:
         jsr     WaitVblank
         jsr     UpdateMenuWindow
         jsr     _c102ca       ; update battle menu
-        jsr     _c144be       ; update hp/gauge graphics
+        jsr     UpdateCharText
         jsl     UpdateCondemnNum
         jsl     UpdateFacingDir
         lda     $e9ef
@@ -1504,9 +1505,11 @@ _c10a16:
         sta     $4374
         lda     #$80
         sta     hMDMAEN
+
+; transfer magitek armor graphics to vram
         lda     $7e64bb
         beq     @0b72
-        lda     #$d8
+        lda     #$d8                    ; magitek armor graphics bank
         sta     $4374
         longa
         ldy     #$0080
@@ -2001,7 +2004,7 @@ bg1_line_init:
 
 ; ------------------------------------------------------------------------------
 
-; [ init ??? ]
+; [ init menu list scrolling ??? ]
 
 _c10f17:
 line_init:
@@ -2083,7 +2086,7 @@ chr_equip_init:
         sta     $24
         jsr     Mult8
         ldx     $26
-        lda     $ed7cb5,x   ; character can't change equipment during battle (from character initial properties)
+        lda     f:CharProp+21,x   ; character can't change equipment during battle
         and     #$10
         sta     $6286,y
         iny                 ; next character
@@ -2249,13 +2252,13 @@ user_init:
         jsr     InitMonsterPos
         jsr     TfrMonsterGfx
         jsr     LoadMenuGfx
-        jsr     _c1529c       ; init menu window tile data
+        jsr     InitMenuWindows
         jsr     _c10f17
         jsr     InitHDMA
         jsr     _c16b47
         jsr     _c1496b
         jsr     _c1468f
-        jsr     _c14a01
+        jsr     InitMenuText
         jsr     _c14759
         inc     $7bbb
         jsr     InitCharGfx
@@ -4606,7 +4609,7 @@ LoadMonsterStencil:
         sta     $812f,x     ; width = $10, height = $0e
         pla
 @214f:  tax
-        lda     $cf3600,x   ; y shift for sprite priority
+        lda     f:MonsterOverlap,x   ; y shift for sprite priority
         plx
         and     #$00ff
         sta     $8057,x
@@ -5168,7 +5171,7 @@ summon_obj_chr_set2:
         longa
         lda     #$0180
         sta     $10
-        lda     $c2d473,x
+        lda     f:_c2d471+2,x
         tay
         lda     f:_c2d471,x
         tax
@@ -5631,7 +5634,7 @@ UpdateMonsterSprites:
         asl
         tax
         longa
-        lda     $c2ce93,x   ; pointer to monster animation thread data (+$7e64de)
+        lda     f:_c2ce93,x   ; pointer to monster animation thread data (+$7e64de)
         tax
         shorta0
         phx
@@ -7037,7 +7040,7 @@ armer_pat_set:
         asl2
         tax
         longa
-        lda     f:_c2cf5f,x   ; pointer to magitek armor graphics
+        lda     f:MagitekGfxPtrs,x
         sta     $64bc
         clc
         adc     #$0080
@@ -7190,7 +7193,7 @@ DrawBlockSprites:
         sta     $0500,x
         ldx     $3c
 @335d:  clc
-        lda     $c2cf84,x
+        lda     f:_c2cf83+1,x
         bpl     @336e
         adc     $38
         sta     $3e
@@ -7213,7 +7216,7 @@ DrawBlockSprites:
 @3389:  lda     #$97
 @338b:  sta     $0301,y
         longa
-        lda     $c2cf85,x
+        lda     f:_c2cf83+2,x
         ora     $42
         sta     $0302,y
         shorta0
@@ -7318,7 +7321,7 @@ DrawStatusSprites:
         sta     $0500,x
         ldx     $3c
 @3462:  clc
-        lda     $c2e3db,x   ; y position for character status sprites
+        lda     f:StatusSpriteData+1,x   ; y position for character status sprites
         bpl     @3473
         adc     $38
         sta     $3e
@@ -7341,7 +7344,7 @@ DrawStatusSprites:
 @348e:  lda     #$97
 @3490:  sta     $0301,y
         longa
-        lda     $c2e3dc,x   ; sprite data for character status sprites
+        lda     f:StatusSpriteData+2,x
         ora     $42
         sta     $0302,y
         shorta0
@@ -7655,7 +7658,7 @@ player_pat_chr_set:
         and     #$03
         asl
         tax
-        jsr     ($373f,x)
+        jsr     (.loword(_c1373f),x)
 @36f8:  pla
         and     #$03
         tax
@@ -7695,7 +7698,8 @@ player_pat_chr_set:
 
 ; jump table for vanishing character ??? (one per character)
 super_jmp:
-@373f:  .addr   $379a,$37e7,$3834,$3881
+_c1373f:
+@373f:  .addr   _c1379a,_c137e7,_c13834,_c13881
 
 ; ------------------------------------------------------------------------------
 
@@ -7746,6 +7750,7 @@ UpdateCharGfxBuf:
 
 ; [  ]
 
+_c1379a:
 @379a:  lda     $3c
         asl
         tax
@@ -7788,6 +7793,7 @@ UpdateCharGfxBuf:
 
 ; [  ]
 
+_c137e7:
 @37e7:  lda     $3c
         asl
         tax
@@ -7830,6 +7836,7 @@ UpdateCharGfxBuf:
 
 ; [  ]
 
+_c13834:
 @3834:  lda     $3c
         asl
         tax
@@ -7872,6 +7879,7 @@ UpdateCharGfxBuf:
 
 ; [  ]
 
+_c13881:
 @3881:  lda     $3c
         asl
         tax
@@ -8467,7 +8475,7 @@ LoadCharGfx:
         lda     #$7f
         pha
         plb
-        lda     $c2ce45,x   ; pointer to sprite graphics
+        lda     f:CharGfxPtrs+2,x
         sta     $12
         longa
         lda     f:CharGfxPtrs,x
@@ -8550,7 +8558,7 @@ LoadCharGfx:
         phy
         lda     #$18
         sta     $10
-@3e3b:  lda     $ed6300,x   ; copy character sprite color palette
+@3e3b:  lda     f:BattleCharPal,x
         sta     $81ad,y
         inx
         iny
@@ -8754,9 +8762,13 @@ _c23fcb:
 
 ; ------------------------------------------------------------------------------
 
+.repeat 8, i
+        .import .ident(.sprintf("WindowGfx_%04x", i))
+.endrep
+
 ; pointers to menu window graphics
-WindowGfxPtrTbl:
-@3fe0:  .faraddr $ed0000,$ed0380,$ed0700,$ed0a80,$ed0e00,$ed1180,$ed1500,$ed1880
+WindowGfxPtrs:
+@3fe0:  make_ptr_tbl_far WindowGfx, 8, 0
 
 ; ------------------------------------------------------------------------------
 
@@ -8779,10 +8791,10 @@ GetWindowGfxPtr:
         clc
         adc     $2f34
         tax
-        lda     f:WindowGfxPtrTbl+2,x
+        lda     f:WindowGfxPtrs+2,x
         sta     $12
         longa
-        lda     f:WindowGfxPtrTbl,x
+        lda     f:WindowGfxPtrs,x
         tax
         shorta0
         ldy     #$0380      ; size = $0380
@@ -8835,7 +8847,7 @@ LoadMenuGfx:
         clc
         adc     $2f34
         tax
-        lda     $c13ffa,x               ; ++$36 = pointer to menu window palette
+        lda     f:WindowPalPtrs+2,x
         sta     $38
         longa
         lda     f:WindowPalPtrs,x
@@ -8852,9 +8864,9 @@ LoadMenuGfx:
         cpx     #$000e
         bne     @4095
         clr_ax
-@40a8:  lda     $ed62c0,x
+@40a8:  lda     f:BattleFontPal,x
         sta     $7e00,x
-        lda     $ed62d0,x
+        lda     f:BattleFontPal+$10,x
         sta     $7e10,x
         inx2
         cpx     #$0010
@@ -8896,7 +8908,7 @@ LoadMenuGfx:
 _c140fe:
 bar_color_set:
 @40fe:  clr_ax
-@4100:  lda     $ed62e8,x
+@4100:  lda     f:BattleFontPal+$28,x
         sta     $7e28,x
         inx
         cpx     #$0018
@@ -9435,15 +9447,14 @@ window_open:
 
 ; [ update hp/gauge graphics ]
 
-_c144be:
-auto_name_chg:
+UpdateCharText:
 @44be:  lda     $7b98       ;
         ora     $7b9c
         bne     @44d7
         lda     $7b99       ;
         asl
         tax
-        jsr     ($44ed,x)
+        jsr     (.loword(DrawCharHPMPTbl),x)
         lda     $7b99
         inc
         and     #$07
@@ -9454,25 +9465,41 @@ auto_name_chg:
         sta     $7b9a
         asl
         tax
-        jmp     ($44e5,x)
+        jmp     (.loword(DrawCharGaugeTbl),x)
 
 ; ------------------------------------------------------------------------------
 
 ; jump table for gauge updates (each character)
-@44e5:  .addr   $4abc,$4aca,$4adb,$4aec
+DrawCharGaugeTbl:
+@44e5:  .addr   DrawCharGauge_00
+        .addr   DrawCharGauge_01
+        .addr   DrawCharGauge_02
+        .addr   DrawCharGauge_03
 
 ; ------------------------------------------------------------------------------
 
-; jump table for hp updates
-auto_name_chg_jmp_tbl:
-@44ed:  .addr   $4afd,$4500,$4b04,$4500,$4b0d,$4500,$4b16,$44fd
+; jump table for hp/mp updates
+DrawCharHPMPTbl:
+@44ed:  .addr   DrawCharHP_00
+        .addr   DrawCharMP_00
+        .addr   DrawCharHP_01
+        .addr   DrawCharMP_01
+        .addr   DrawCharHP_02
+        .addr   DrawCharMP_02
+        .addr   DrawCharHP_03
+        .addr   DrawCharMP_03
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw character mp ]
 
-@44fd:  jsr     _c14b3e
-        inc     $7b9c
+DrawCharMP_03:
+@44fd:  jsr     DrawCharMP
+
+DrawCharMP_00:
+DrawCharMP_01:
+DrawCharMP_02:
+@4500:  inc     $7b9c
         rts
 
 ; ------------------------------------------------------------------------------
@@ -9552,45 +9579,44 @@ UpdateMenuWindowTbl:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu window $2c:  ]
+; [ update menu window $2c: close character status window ]
 
 UpdateMenuWindow_2c:
 @4571:  inc     $10
         lda     #$1a
         clc
-        adc     $ecba
+        adc     $ecba                   ; status window type (item or magic)
         jsr     _c150fb
         lda     #$0a
         jsr     _c15165
-        jsr     _c14f8c       ; close menu window
+        jsr     _c14f8c                 ; close menu window
         jmp     _c148f2
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ find first status ailment for status window ]
 
-_c14587:
-one_status_no_get:
+GetFirstStatus:
 @4587:  longa
-        lda     $2ebd,x
+        lda     $2ebd,x                 ; character status 1 & 2
         beq     @459f
         xba
-        ldx     #$0000
+        ldx     #0
 @4592:  asl
         bcs     @459b
         inx
-        cpx     #$0010
+        cpx     #16
         bne     @4592
 @459b:  txa
         shorta
         rts
-@459f:  lda     $2ebf,x
-        ldx     #$0010
+@459f:  lda     $2ebf,x                 ; character status 3 & 4
+        ldx     #16
         xba
 @45a6:  asl
         bcs     @45af
         inx
-        cpx     #$001f
+        cpx     #31
         bne     @45a6
 @45af:  txa
         shorta
@@ -9598,9 +9624,9 @@ one_status_no_get:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ check if character menu slot is valid ]
 
-_c145b3:
+CheckStatusMenuCharValid:
 @45b3:  tax
         lda     $64d6,x
         bmi     @45c1
@@ -9613,44 +9639,50 @@ _c145b3:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw status name for status window (character target select) ]
 
-_c145c3:
-status_buf_set:
+DrawStatusMenuText:
 @45c3:  lda     #$21
         jsr     LoadMenuText
+
+; character slot 1
         clr_a
-        jsr     _c145b3
+        jsr     CheckStatusMenuCharValid
         bcc     @45fb
-        jsr     _c14587
+        jsr     GetFirstStatus
         sta     $56d6
+
+; character slot 2
         lda     #$01
-        jsr     _c145b3
+        jsr     CheckStatusMenuCharValid
         bcc     @45fb
-        jsr     _c14587
+        jsr     GetFirstStatus
         sta     $56d9
+
+; character slot 3
         lda     #$02
-        jsr     _c145b3
+        jsr     CheckStatusMenuCharValid
         bcc     @45fb
-        jsr     _c14587
+        jsr     GetFirstStatus
         sta     $56dc
+; character slot 4
         lda     #$03
-        jsr     _c145b3
+        jsr     CheckStatusMenuCharValid
         bcc     @45fb
-        jsr     _c14587
+        jsr     GetFirstStatus
         sta     $56df
 @45fb:  jmp     DrawMenuText
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu window $2b:  ]
+; [ update menu window $2b: open character status window ]
 
 UpdateMenuWindow_2b:
 disp_window_open:
 @45fe:  lda     #$22
         jsr     LoadMenuText
         jsr     DrawMenuText
-        jsr     _c145c3
+        jsr     DrawStatusMenuText
         lda     #$11
         jsr     _c14704
         inc
@@ -9673,7 +9705,7 @@ disp_window_open:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu window $03:  ]
+; [ update menu window $03: open command window ]
 
 UpdateMenuWindow_03:
 command_window_open:
@@ -9708,7 +9740,7 @@ command_window_close:
 @466b:  inc     $10
         clr_a
         jsr     _c150fb
-        jsr     _c14b2b       ; get character's battle menu position
+        jsr     GetCharMenuOrder
         lda     #$21
         jsr     _c14780
         clr_a
@@ -9853,9 +9885,9 @@ tfr_poi_set2:
         asl2
         tax
         longa
-        lda     $c14749,x   ; size ??? (unused)
+        lda     f:_c14749,x   ; size ??? (unused)
         sta     $7bbc
-        lda     $c1474b,x   ; bg2 tile data destination (vram)
+        lda     f:_c14749+2,x   ; bg2 tile data destination (vram)
         sta     $7bbe
         ply
         sty     $7bc0       ; source address
@@ -9865,6 +9897,7 @@ tfr_poi_set2:
 ; ------------------------------------------------------------------------------
 
 tfr_poi_tbl:
+_c14749:
 @4749:  .addr   $0200,$7800,$0200,$7900,$0200,$7a00,$0280,$7c00
 
 ; ------------------------------------------------------------------------------
@@ -9958,7 +9991,7 @@ command_window_data_set:
 @47c8:  lda     $202e,x
         sta     $56da,y
         lda     $202f,x
-        jsr     _c14b6b
+        jsr     GetTextColor
         ora     $56d8,y
         sta     $56d8,y
         inx3
@@ -9973,7 +10006,7 @@ command_window_data_set:
         jmp     _c1471e       ; update battle menu tile data (-> $7900 vram)
 
 ; controlling a monster
-@47ee:  jsr     _c14b2b       ; get character's battle menu position
+@47ee:  jsr     GetCharMenuOrder
         lda     #$29
         jsr     _c14780
         lda     #$01
@@ -9987,7 +10020,7 @@ command_window_data_set:
 @480a:  lda     $205e,x
         sta     $56d9,y
         lda     $205f,x
-        jsr     _c14b6b
+        jsr     GetTextColor
         ora     $56d7,y
         sta     $56d7,y
         inx3
@@ -10002,7 +10035,7 @@ command_window_data_set:
         jmp     _c1471e       ; update battle menu tile data (-> $7900 vram)
 
 ; window mode
-@4830:  jsr     _c14b2b       ; get character's battle menu position
+@4830:  jsr     GetCharMenuOrder
         lda     #$29
         jsr     _c14780
         lda     #$01
@@ -10016,7 +10049,7 @@ command_window_data_set:
 @484c:  lda     $202e,x     ; command
         sta     $56da,y
         lda     $202f,x     ;
-        jsr     _c14b6b       ; get enabled/disabled text color
+        jsr     GetTextColor
         ora     $56d8,y
         sta     $56d8,y
         inx3
@@ -10105,7 +10138,7 @@ _c148cb:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ copy menu window tile buffer ]
 
 _c148f2:
 tmp_buffer_copy:
@@ -10230,15 +10263,14 @@ bg1_window_init:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init menu text ]
 
-_c14a01:
-window_name_buf_init:
-@4a01:  jsr     _c14a61
+InitMenuText:
+@4a01:  jsr     DrawMonsterNames
         jsr     DrawCharNames
-        jsr     _c14b23
-        jsr     _c14b4b
-        jsr     _c14a68
+        jsr     DrawCharHPInit
+        jsr     DrawCharMPInit
+        jsr     DrawRowDefText
         lda     #$1e
         jsr     LoadMenuText
         ldx     $62ca
@@ -10254,7 +10286,7 @@ window_name_buf_init:
         cpy     #$0018
         bne     @4a21
         jsr     DrawMenuText
-        jmp     _c14b53
+        jmp     DrawCharGaugeInit
 
 ; ------------------------------------------------------------------------------
 
@@ -10270,18 +10302,16 @@ _c14a37:
 
 ; [ update monster names ]
 
-_c14a61:
-monster_name_buf_set:
+DrawMonsterNames:
 @4a61:  clr_a
         jsr     LoadMenuText
         jmp     DrawMenuText
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw row/def window text ]
 
-_c14a68:
-chg_name_buf_set:
+DrawRowDefText:
 @4a68:  clr_ax
         longa
         lda     #$01ff
@@ -10300,7 +10330,7 @@ chg_name_buf_set:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw all character names ]
 
 DrawCharNames:
 @4a8f:  lda     #$01
@@ -10314,8 +10344,7 @@ DrawCharNames:
 ; A: character number
 ; A: 0 if not morphed, 4 if morphed (out)
 
-_c14a97:
-get_name_main_offset:
+UpdateCharGaugeBuf:
 @4a97:  tax
         lda     $64d6,x
         bmi     @4aba       ; return if character slot is empty
@@ -10336,90 +10365,99 @@ get_name_main_offset:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw gauge for character slot 1 ]
 
+DrawCharGauge_00:
 @4abc:  clr_a
-        jsr     _c14a97       ; update gauge/condemned buffers
+        jsr     UpdateCharGaugeBuf
         clc
-        adc     #$12
-        jsr     _c14b1d
+        adc     #$12                    ; $12 if not morphed, $16 if morphed
+        jsr     DrawCharText
         stz     $7b9b
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw gauge for character slot 2 ]
 
+DrawCharGauge_01:
 @4aca:  lda     #$01
-        jsr     _c14a97       ; update gauge/condemned buffers
+        jsr     UpdateCharGaugeBuf
         clc
         adc     #$13
-        jsr     _c14b1d
+        jsr     DrawCharText
         lda     #$01
         sta     $7b9b
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw gauge for character slot 3 ]
 
+DrawCharGauge_02:
 @4adb:  lda     #$02
-        jsr     _c14a97       ; update gauge/condemned buffers
+        jsr     UpdateCharGaugeBuf
         clc
         adc     #$14
-        jsr     _c14b1d
+        jsr     DrawCharText
         lda     #$02
         sta     $7b9b
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw gauge for character slot 4 ]
 
+DrawCharGauge_03:
 @4aec:  lda     #$03
-        jsr     _c14a97       ; update gauge/condemned buffers
+        jsr     UpdateCharGaugeBuf
         clc
         adc     #$15
-        jsr     _c14b1d
+        jsr     DrawCharText
         lda     #$03
         sta     $7b9b
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw a single character's current hp ]
 
+DrawCharHP_00:
 @4afd:  stz     $7b9d
         lda     #$0e
-        bra     _c14b1d
-        lda     #$01
+        bra     DrawCharText
+
+DrawCharHP_01:
+@4b04:  lda     #$01
         sta     $7b9d
         lda     #$0f
-        bra     _c14b1d
-        lda     #$02
+        bra     DrawCharText
+
+DrawCharHP_02:
+@4b0d:  lda     #$02
         sta     $7b9d
         lda     #$10
-        bra     _c14b1d
-        lda     #$03
+        bra     DrawCharText
+
+DrawCharHP_03:
+@4b16:  lda     #$03
         sta     $7b9d
         lda     #$11
 ; fall through
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw character text ]
 
-_c14b1d:
-player_name_main:
+DrawCharText:
 @4b1d:  jsr     LoadMenuText
         jmp     DrawMenuText
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw all characters' current hp ]
 
-_c14b23:
-player_hp_name_buf_set:
+DrawCharHPInit:
 @4b23:  lda     #$02
         jsr     LoadMenuText
         jmp     DrawMenuText
@@ -10431,12 +10469,11 @@ player_hp_name_buf_set:
 ; empty character slots are pushed to the bottom of the battle menu order
 ; for example, if slot 1 is empty, the battle menu order would be 2, 3, 4, empty
 
-_c14b2b:
-get_player_name_poi:
+GetCharMenuOrder:
 @4b2b:  clr_ax
         lda     $62ca       ; character slot
 @4b30:  cmp     $64d6,x
-        beq     @4b3d       ; branch if
+        beq     @4b3d       ; return if slot is valid
         inx
         cpx     #4
         bne     @4b30
@@ -10445,11 +10482,12 @@ get_player_name_poi:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw character mp ]
 
-_c14b3e:
-one_player_mp_name_buf_set:
-@4b3e:  jsr     _c14b2b       ; get character's battle menu position
+; A: character slot
+
+DrawCharMP:
+@4b3e:  jsr     GetCharMenuOrder
         txa
         clc
         adc     #$0a
@@ -10458,20 +10496,18 @@ one_player_mp_name_buf_set:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw all characters' min/max MP ]
 
-_c14b4b:
-player_mp_name_buf_set:
+DrawCharMPInit:
 @4b4b:  lda     #$07
         jsr     LoadMenuText
         jmp     DrawMenuText
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw all characters' ATB gauges (or max HP) ]
 
-_c14b53:
-player_hpmax_name_buf_set:
+DrawCharGaugeInit:
 @4b53:  lda     #$03
         jsr     LoadMenuText
         jmp     DrawMenuText
@@ -10496,8 +10532,7 @@ CharEquipPtrs:
 
 ; A: msb set = gray, msb clear = white
 
-_c14b6b:
-get_attr_info:
+GetTextColor:
 @4b6b:  and     #$80        ; "disabled" flag >> 5
         lsr5
         rts
@@ -10561,7 +10596,7 @@ DrawEquipListText:
         sta     $575a
         lda     $2b9a,y
         sta     $5760
-        jsr     _c14e07
+        jsr     InitListTextTfr
         jmp     DrawListText
 
 ; ------------------------------------------------------------------------------
@@ -10601,7 +10636,7 @@ DrawToolsListText:
         sta     $575a       ; set 1st item id
         lda     $4008,y
         sta     $5760       ; set 2nd item id
-        jsr     _c14e07
+        jsr     InitListTextTfr
         jsr     DrawListText
         ply
         rts
@@ -10620,7 +10655,7 @@ DrawThrowListText:
         tay
         shorta0
         tax
-@4c35:  lda     $c2e074,x   ; item in item list
+@4c35:  lda     f:ItemListText,x
         sta     $5755,x
         inx
         cpx     #$0013
@@ -10638,7 +10673,7 @@ DrawThrowListText:
 @4c5a:  lda     $4005,y
         sta     $575a
         sta     $5761
-        jsr     _c14e07
+        jsr     InitListTextTfr
         jsr     DrawListText
         ply
         rts
@@ -10657,7 +10692,7 @@ DrawItemListText:
         tay
         shorta0
         tax
-@4c7a:  lda     $c2e074,x   ; item in item list
+@4c7a:  lda     f:ItemListText,x
         sta     $5755,x
         inx
         cpx     #$0013
@@ -10690,10 +10725,10 @@ DrawItemListText:
         sta     $5758
         bra     @4cda
 @4cce:  lda     $2687,y
-        jsr     _c14b6b
+        jsr     GetTextColor
         ora     $5758
         sta     $5758
-@4cda:  jsr     _c14e07
+@4cda:  jsr     InitListTextTfr
         jsr     DrawListText
         ply
         rts
@@ -10707,7 +10742,7 @@ DrawRageListText:
         asl
         tay
         clr_ax
-@4ce7:  lda     $c2e067,x
+@4ce7:  lda     f:RageListText,x
         sta     $5755,x
         inx
         cpx     #$000d
@@ -10716,7 +10751,7 @@ DrawRageListText:
         sta     $575a
         lda     $257f,y
         sta     $5760
-        jsr     _c14e07
+        jsr     InitListTextTfr
         jsr     DrawListText
         ply
         rts
@@ -10730,7 +10765,7 @@ DrawDanceListText:
         asl
         tay
         clr_ax
-@4d0d:  lda     $c2e05a,x
+@4d0d:  lda     f:DanceListText,x
         sta     $5755,x
         inx
         cpx     #$000d
@@ -10739,7 +10774,7 @@ DrawDanceListText:
         sta     $575a
         lda     $267f,y
         sta     $5760
-        jsr     _c14e07
+        jsr     InitListTextTfr
         jsr     DrawListText
         ply
         rts
@@ -10754,7 +10789,7 @@ madou_line_mess_set:
         asl
         tay
         clr_ax
-@4d33:  lda     $c2e04d,x
+@4d33:  lda     f:MagitekListText,x
         sta     $5755,x
         inx
         cpx     #$000d
@@ -10775,7 +10810,7 @@ madou_line_mess_set:
         sta     $575a
         lda     f:DefaultMagitekAttackTbl+1,x
         sta     $5760
-@4d6e:  jsr     _c14e07
+@4d6e:  jsr     InitListTextTfr
         jsr     DrawListText
         ply
         rts
@@ -10798,7 +10833,7 @@ DrawLoreListText:
         tay
         shorta0
         tax
-@4d8e:  lda     $c2e045,x
+@4d8e:  lda     f:LoreListText,x
         sta     $5755,x
         inx
         cpx     #$000e
@@ -10806,10 +10841,10 @@ DrawLoreListText:
         lda     $216a,y
         sta     $575b
         lda     $216b,y
-        jsr     _c14b6b
+        jsr     GetTextColor
         ora     $5759
         sta     $5759
-        jsr     _c14e07
+        jsr     InitListTextTfr
         jsr     DrawListText
         ply
         rts
@@ -10833,7 +10868,7 @@ DrawMagicListText:
         tay
         shorta0
         tax
-@4dce:  lda     $c2e036,x
+@4dce:  lda     f:MagicListText,x
         sta     $5755,x
         inx
         cpx     #$0010
@@ -10843,24 +10878,23 @@ DrawMagicListText:
         lda     $2096,y
         sta     $5760
         lda     $2093,y
-        jsr     _c14b6b
+        jsr     GetTextColor
         ora     $5758
         sta     $5758
         lda     $2097,y
-        jsr     _c14b6b
+        jsr     GetTextColor
         ora     $575e
         sta     $575e
-        jsr     _c14e07
+        jsr     InitListTextTfr
         jsr     DrawListText
         ply
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [ init list text transfer to VRAM ??? ]
+; [ init list text transfer to VRAM ]
 
-_c14e07:
-set_nmi_mess_poi:
+InitListTextTfr:
 @4e07:  ldx     #$5755
         stx     $88dd
         ldx     #$5e4d
@@ -10873,12 +10907,11 @@ set_nmi_mess_poi:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw magic list when summon window is open ]
 
-_c14e1e:
-magic2_line_mess_set:
+DrawSummonMagicListText:
 @4e1e:  clr_ax
-@4e20:  lda     $c2e083,x
+@4e20:  lda     f:SummonMagicListText,x
         sta     $5755,x
         inx
         cpx     #$0017
@@ -10895,10 +10928,10 @@ magic2_line_mess_set:
         lda     $2091,x
         sta     $576a
         lda     $208f,x
-        jsr     _c14b6b
+        jsr     GetTextColor
         ora     $575f
         sta     $575f
-        jsr     _c14e07
+        jsr     InitListTextTfr
         jmp     DrawListText
 
 ; ------------------------------------------------------------------------------
@@ -10911,16 +10944,36 @@ magic2_line_mess_set:
 ;      $02: character current hp
 ;      $03: character atb gauges or max hp
 ;      $04: battle command names (window mode)
-;      $0e: character 1 morph gauge
-;      $0f: character 2 morph gauge
-;      $10: character 3 morph gauge
-;      $11: character 4 morph gauge
+;      $05:
+;      $06: equip menu text
+;      $07: current/max mp
+;      $08: def. command
+;      $09: row command
+;      $0a: character 1 mp
+;      $0b: character 2 mp
+;      $1c: character 3 mp
+;      $1d: character 4 mp
+;      $0e: character 1 hp
+;      $0f: character 2 hp
+;      $10: character 3 hp
+;      $11: character 4 hp
 ;      $12: character 1 atb gauge
 ;      $13: character 2 atb gauge
 ;      $14: character 3 atb gauge
 ;      $15: character 4 atb gauge
+;      $16: character 1 morph gauge
+;      $17: character 2 morph gauge
+;      $18: character 3 morph gauge
+;      $19: character 4 morph gauge
+;      $1a: character 1 condemned gauge
+;      $1b: character 2 condemned gauge
+;      $1c: character 3 condemned gauge
+;      $1d: character 4 condemned gauge
+;      $1e: swdtech window text
 ;      $1f: battle command names (short mode)
 ;      $20: battle command names (controlling a monster)
+;      $21: clear status names
+;      $22: character status window (item/magic target select)
 
 LoadMenuText:
 @4e5a:  pha
@@ -10929,7 +10982,7 @@ LoadMenuText:
         lda     #$c2
         sta     $12
         longa
-        lda     $c2e09a,x
+        lda     f:MenuTextPtrs,x
         sta     $10
         ldy     $00
 @4e6b:  lda     [$10],y
@@ -10941,11 +10994,11 @@ LoadMenuText:
         pla
         asl2
         tax
-        lda     f:_c2df12,x
+        lda     f:MenuTextBufData,x
         sta     $88d9
-        lda     f:_c2df12+1,x
+        lda     f:MenuTextBufData+1,x
         sta     $88da
-        lda     f:_c2df12+2,x
+        lda     f:MenuTextBufData+2,x
         sta     $88db
         lda     #$21
         sta     $88dc
@@ -11453,7 +11506,7 @@ window_open_data_set:
         sta     $7bd2       ; menu window horizontal scroll position (pixels)
         lda     f:_c2dea2+2,x
         sta     $7bd4       ; menu window vertical scroll position (pixels)
-        lda     $c2de34,x
+        lda     f:_c2de32+2,x
         sta     $7bd6       ; menu window height (tiles)
         asl5
         clc
@@ -11469,7 +11522,7 @@ window_open_data_set:
         sta     $7bd2       ; menu window horizontal scroll position (pixels)
         lda     f:_c2dea2+2,x
         sta     $7bd4       ; menu window vertical scroll position (pixels)
-        lda     $c2de34,x
+        lda     f:_c2de32+2,x
         sta     $7bd6       ; menu window height (tiles)
         dec
         asl4
@@ -11588,7 +11641,7 @@ window_tmp_buf_clr:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu window $29:  ]
+; [ update menu window $29: get command window setting ]
 
 UpdateMenuWindow_29:
 @5220:  ldx     $62ca       ; active character
@@ -11661,8 +11714,7 @@ set_short_frame:
 
 ; [ init menu window tile data ]
 
-_c1529c:
-window_frame_init:
+InitMenuWindows:
 @529c:  jsr     _c1520b       ; clear menu window tile data buffer
         clr_a
         jsr     DrawMenuWindow
@@ -11783,7 +11835,7 @@ TfrMenuTiles:
 @5373:  asl
         tax
         longa
-        lda     f:_c2dd8c,x   ; menu window tile data vram pointer
+        lda     f:MenuWindowVRAMPtrs,x
         tay
         shorta0
         ldx     #$0200      ; size = $0200
@@ -11804,7 +11856,7 @@ DrawMsgWindow:
         lda     #$80
         sta     $7c
         lda     #$28        ; tiles are priority 1, palette 2, tile index +#$0000
-        bra     DrawWindow
+        bra     DrawWindowMain
 
 ; ------------------------------------------------------------------------------
 
@@ -11818,7 +11870,7 @@ DrawMPWindow:
         asl2
         tax
         lda     #$0a        ; tiles are priority 0, palette 2, tile index +#$0200
-        bra     DrawWindow
+        bra     DrawWindowMain
 
 ; ------------------------------------------------------------------------------
 
@@ -11848,7 +11900,7 @@ DrawMenuWindow:
         lda     #$2a        ; tiles are priority 1, palette 2, tile index +#$0200
 ; fallthrough
 
-DrawWindow:
+DrawWindowMain:
 _53a7:  sta     $7bae
         ldy     $00
 @53ac:  lda     f:MenuWindowTbl,x
@@ -11864,9 +11916,9 @@ _53a7:  sta     $7bae
         dec2
         sta     $13
         longa
-        lda     $c15510                 ; top border
+        lda     f:WindowBorderTileTbl                 ; top border
         sta     $22
-        lda     $c15512
+        lda     f:WindowBorderTileTbl+2
         sta     $24
         shorta0
         lda     $88d3
@@ -11878,9 +11930,9 @@ _53a7:  sta     $7bae
         and     #$0f
         tax
         longa
-        lda     $c15500,x               ; window area
+        lda     f:WindowTileTbl,x
         sta     $22
-        lda     $c15502,x
+        lda     f:WindowTileTbl+2,x
         sta     $24
         shorta0
         lda     $88d3
@@ -11895,9 +11947,9 @@ _53a7:  sta     $7bae
         dec     $13
         bne     @53e6
         longa
-        lda     $c15514                 ; bottom border
+        lda     f:WindowBorderTileTbl+4                 ; bottom border
         sta     $22
-        lda     $c15516
+        lda     f:WindowBorderTileTbl+6
         sta     $24
         shorta0
         lda     $88d3
@@ -11907,9 +11959,9 @@ _53a7:  sta     $7bae
         stx     $10
         lda     $88d4
         sta     $12
-        lda     $c1551c                 ; left border
+        lda     f:WindowBorderTileTbl+12                 ; left border
         sta     $22
-        lda     $c1551d
+        lda     f:WindowBorderTileTbl+13
         sta     $23
         ldy     $00
         jsr     DrawWindowCol
@@ -11917,9 +11969,9 @@ _53a7:  sta     $7bae
         stx     $10
         lda     $88d4
         sta     $12
-        lda     $c15520                 ; right border
+        lda     f:WindowBorderTileTbl+16                 ; right border
         sta     $22
-        lda     $c15521
+        lda     f:WindowBorderTileTbl+17
         sta     $23
         lda     $88d3
         dec
@@ -11929,13 +11981,13 @@ _53a7:  sta     $7bae
         ldx     $88d5
         stx     $10
         ldy     $00
-        lda     $c15518                 ; top left corner
+        lda     f:WindowBorderTileTbl+8                 ; top left corner
         jsr     DrawWindowTile
         lda     $88d3
         dec
         asl
         tay
-        lda     $c15519                 ; top right corner
+        lda     f:WindowBorderTileTbl+9                 ; top right corner
         jsr     DrawWindowTile
         lda     $88d4
         dec
@@ -11946,13 +11998,13 @@ _53a7:  sta     $7bae
         sta     $10
         clr_ay
         shorta
-        lda     $c1551a                 ; bottom left corner
+        lda     f:WindowBorderTileTbl+10                 ; bottom left corner
         jsr     DrawWindowTile
         lda     $88d3
         dec
         asl
         tay
-        lda     $c1551b                 ; bottom right corner
+        lda     f:WindowBorderTileTbl+11                 ; bottom right corner
         jsr     DrawWindowTile
         rts
 
@@ -12130,10 +12182,9 @@ UpdateMenuStateTbl:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu state $3f:  ]
+; [ update menu state $3f: open character status window ]
 
 UpdateMenuState_3f:
-nmi_dispwin_open:
 @55b0:  lda     #$2b
         sta     $7bf0
         lda     #$12
@@ -12141,15 +12192,15 @@ nmi_dispwin_open:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu state $40:  ]
+; [ update menu state $40: close character status window ]
 
 UpdateMenuState_40:
 @55ba:  lda     #$2c
         sta     $7bf0
-        lda     $ecba
+        lda     $ecba                   ; status menu type (item or magic)
         asl
         clc
-        adc     #$02
+        adc     #$02                    ; show item or magic window (2 or 4)
         jmp     _c15a2c
 
 ; ------------------------------------------------------------------------------
@@ -12205,7 +12256,6 @@ UpdateMenuState_35:
 
 UpdateMenuState_36:
 CloseBushidoWindow:
-nmi_kenwin_close:
 @5628:  lda     #$26
         sta     $7bf0
         clr_a
@@ -12235,9 +12285,8 @@ UpdateMenuState_25:
 
 ; [ update menu state $0b: open equip window ]
 
-OpenEquipWindow:
 UpdateMenuState_0b:
-nmi_handwin_open:
+OpenEquipWindow:
 @5645:  jsr     DrawEquipListText
         ldx     #$7e40
         stx     $7baa
@@ -12261,11 +12310,10 @@ UpdateMenuState_10:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu state $13: close equip menu ]
+; [ update menu state $13: close equip window ]
 
 UpdateMenuState_13:
 CloseEquipWindow:
-nmi_handwin_close:
 @5669:  lda     #$0a
         sta     $7bf0
         lda     #$08
@@ -12277,7 +12325,6 @@ nmi_handwin_close:
 
 UpdateMenuState_26:
 CloseDefendWindow:
-nmi_defwin_close:
 @5673:  lda     #$1a
         sta     $7bf0
         clr_a
@@ -12289,7 +12336,6 @@ nmi_defwin_close:
 
 UpdateMenuState_23:
 CloseRowWindow:
-nmi_chgwin_close:
 @567c:  lda     #$18
         sta     $7bf0
         clr_a
@@ -12297,10 +12343,10 @@ nmi_chgwin_close:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu state $0f: close menu ??? ]
+; [ update menu state $0f: close command menu ]
 
 UpdateMenuState_0f:
-nmi_comwin_close:
+CloseCmdWindow:
 @5685:  stz     $632f
         lda     #$05
         sta     $7bf0
@@ -12315,7 +12361,6 @@ nmi_comwin_close:
 
 UpdateMenuState_2f:
 CloseToolsWindow:
-nmi_machinewin_close:
 @5697:  lda     #$21
         sta     $7bf0
         clr_a
@@ -12371,7 +12416,6 @@ UpdateMenuState_33:
 
 UpdateMenuState_2c:
 CloseThrowWindow:
-nmi_throwwin_close:
 @56e0:  lda     #$1e
         sta     $7bf0
         clr_a
@@ -12383,7 +12427,6 @@ nmi_throwwin_close:
 
 UpdateMenuState_14:
 CloseMagicWindow:
-nmi_magicwin_close:
 @56e9:  lda     #$0c
         sta     $7bf0
         clr_a
@@ -12395,7 +12438,6 @@ nmi_magicwin_close:
 
 UpdateMenuState_12:
 CloseItemWindow:
-nmi_itemwin_close:
 @56f2:  lda     #$08
         sta     $7bf0
         clr_a
@@ -12417,8 +12459,7 @@ CloseLoreWindow:
 ; [ update menu state $1d: close rage window ]
 
 UpdateMenuState_1d:
-CloseRiotWindow:
-nmi_riotwin_close:
+CloseRageWindow:
 @5704:  lda     #$14
         sta     $7bf0
         clr_a
@@ -12430,7 +12471,6 @@ nmi_riotwin_close:
 
 UpdateMenuState_20:
 CloseDanceWindow:
-nmi_dancewin_close:
 @570d:  lda     #$16
         sta     $7bf0
         clr_a
@@ -12438,11 +12478,10 @@ nmi_dancewin_close:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu state $29: close magitek window ??? ]
+; [ update menu state $29: close magitek window ]
 
 UpdateMenuState_29:
 CloseMagitekWindow:
-nmi_madouwin_close:
 @5716:  lda     #$1c
         sta     $7bf0
         clr_a
@@ -12454,7 +12493,6 @@ nmi_madouwin_close:
 
 UpdateMenuState_15:
 CloseSummonWindow:
-nmi_summonwin_close:
 @571f:  lda     #$0e
         sta     $7bf0
         lda     #$04
@@ -12511,7 +12549,7 @@ UpdateMenuState_3c:
 ; [ update menu state $09: open item window ]
 
 UpdateMenuState_09:
-nmi_itemwin_open:
+OpenItemWindow:
 @5769:  stz     $7b02
         stz     $890c
         lda     #$09
@@ -12540,7 +12578,6 @@ nmi_itemwin_open:
 
 UpdateMenuState_0d:
 OpenMagicWindow:
-nmi_magicwin_open:
 @57a0:  lda     #$0d
         sta     $7bc2
         lda     $7ba5
@@ -12566,9 +12603,19 @@ nmi_magicwin_open:
 
 ; ------------------------------------------------------------------------------
 
-_window_jmp_tbl:
-@57da:  .addr   $583a,$5850,$5856,$585c,$5882
-        .addr   $5836,$5850,$5856,$585c,$58be
+MakeThrowListTbl:
+@57da:  .addr   MakeThrowList_00
+        .addr   MakeThrowList_01
+        .addr   MakeThrowList_02
+        .addr   MakeThrowList_03
+        .addr   MakeThrowList_04
+
+MakeToolsListTbl:
+@57e4:  .addr   MakeToolsList_00
+        .addr   MakeToolsList_01
+        .addr   MakeToolsList_02
+        .addr   MakeToolsList_03
+        .addr   MakeToolsList_04
 
 ; ------------------------------------------------------------------------------
 
@@ -12606,14 +12653,16 @@ set_buf_item:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ generate item list for tools and throw ]
 
 ; check items 0-63
+MakeToolsList_00:
 @5836:  lda     #$40        ; tools flag
-        bra     @583c
+        bra     _583c
 
+MakeThrowList_00:
 @583a:  lda     #$20        ; throw flag
-@583c:  sta     $7ba4
+_583c:  sta     $7ba4
         clr_ax
         stx     $7b9f       ; reset item buffer
         stx     $7ba1
@@ -12622,14 +12671,20 @@ set_buf_item:
         jmp     _c157ee
 
 ; check items 64-127
+MakeToolsList_01:
+MakeThrowList_01:
 @5850:  ldx     #$0280
         jmp     _c157ee
 
 ; check items 128-191
+MakeToolsList_02:
+MakeThrowList_02:
 @5856:  ldx     #$03c0
         jmp     _c157ee
 
 ; check items 192-255
+MakeToolsList_03:
+MakeThrowList_03:
 @585c:  ldx     #$0500
         jsr     _c157ee
         lda     #$ff
@@ -12646,18 +12701,19 @@ set_buf_item:
 ; [ update menu state $2b: open throw window ]
 
 UpdateMenuState_2b:
-nmi_throwwin_open:
+OpenThrowWindow:
 @5875:  lda     #$2b
         sta     $7bc2
         lda     $7b9e
         asl
         tax
-        jmp     ($57da,x)
+        jmp     (.loword(MakeThrowListTbl),x)
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
+MakeThrowList_04:
 @5882:  lda     $7ba5
         bmi     @5898
         jsr     _c15a17
@@ -12682,18 +12738,19 @@ nmi_throwwin_open:
 ; [ update menu state $2e: open tools window ]
 
 UpdateMenuState_2e:
-nmi_machinewin_open:
+OpenToolsWindow:
 @58b1:  lda     #$2e
         sta     $7bc2
         lda     $7b9e
         asl
         tax
-        jmp     ($57e4,x)
+        jmp     (.loword(MakeToolsListTbl),x)
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
+MakeToolsList_04:
 @58be:  lda     $7ba5
         bmi     @58d4
         jsr     _c15a17
@@ -12718,7 +12775,7 @@ nmi_machinewin_open:
 ; [ update menu state $19: open lore window ]
 
 UpdateMenuState_19:
-nmi_learningwin_open:
+OpenLoreWindow:
 @58ed:  lda     #$19
         sta     $7bc2
         lda     $7ba5
@@ -12747,7 +12804,7 @@ nmi_learningwin_open:
 ; [ update menu state $1c: open rage window ]
 
 UpdateMenuState_1c:
-nmi_riotwin_open:
+OpenRageWindow:
 @5927:  lda     #$1c
         sta     $7bc2
         lda     $7ba5
@@ -12773,7 +12830,7 @@ nmi_riotwin_open:
 ; [ update menu state $1f: open dance window ]
 
 UpdateMenuState_1f:
-nmi_dancewin_open:
+OpenDanceWindow:
 @5958:  lda     #$1f
         sta     $7bc2
         lda     $7ba5
@@ -12794,10 +12851,10 @@ nmi_dancewin_open:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu state $28: open magitek window ??? ]
+; [ update menu state $28: open magitek window ]
 
 UpdateMenuState_28:
-nmi_madouwin_open:
+OpenMagitekWindow:
 @5983:  lda     #$28
         sta     $7bc2
         lda     $7ba5
@@ -12821,7 +12878,7 @@ nmi_madouwin_open:
 ; [ update menu state $06: open slot window ]
 
 UpdateMenuState_06:
-nmi_throtwin_open:
+OpenSlotWindow:
 @59ae:  jsr     _c1411e
         lda     #$06
         sta     $7bc2
@@ -12841,25 +12898,24 @@ nmi_throtwin_open:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu state $04:  ]
+; [ update menu state $04: open command window ]
 
 UpdateMenuState_04:
-nmi_comwin_open:
-@59d6:  lda     f:$001d4e
+@59d6:  lda     f:$001d4e               ; cursor setting
         and     #$40
         bne     @59e9
         clr_ax
-@59e0:  stz     $890f,x
+@59e0:  stz     $890f,x                 ; clear saved cursor settings
         inx
         cpx     #$005c
         bne     @59e0
 @59e9:  lda     #$01
         sta     $632f
-        lda     #$29
+        lda     #$29                    ; $29: get command window setting
         sta     $7bf0
-        lda     #$03
+        lda     #$03                    ; $03: open command window
         sta     $7bf1
-        lda     #$1f
+        lda     #$1f                    ; $1f:
         sta     $7bf2
         clr_a
         jmp     _c15a2c
@@ -12869,8 +12925,7 @@ nmi_comwin_open:
 ; [ open summon window ]
 
 OpenSummonWindow:
-nmi_summonwin_open:
-@5a01:  jsr     _c14e1e
+@5a01:  jsr     DrawSummonMagicListText
         ldx     #$7b80
         stx     $7baa
         inc     $7ba9
@@ -13625,12 +13680,13 @@ DlgTextCmd_12:
         lda     [$48]
         asl
         tax
-        jmp     ($5ef0,x)
+        jmp     (.loword(_c15ef0),x)
 
 ; ------------------------------------------------------------------------------
 
 ; jump table for string type
-@5ef0:  .addr   $5f40,$5f06,$5f00,$5f13
+_c15ef0:
+@5ef0:  .addr   _c15f40,_c15f06,_c15f00,_c15f13
 
 ; ------------------------------------------------------------------------------
 
@@ -13642,6 +13698,7 @@ CharNamePtrs:
 
 ; $02: attack name
 
+_c15f00:
 @5f00:  lda     $2f35       ; variable 0
         jmp     _c15fb8       ; write attack name
 
@@ -13649,6 +13706,7 @@ CharNamePtrs:
 
 ; $01: item name
 
+_c15f06:
 @5f06:  lda     $2f35       ; variable 0
         jmp     _c16048       ; write item name
 
@@ -13659,14 +13717,15 @@ CharNamePtrs:
 DlgTextCmd_0c:
 @5f0c:  jsr     IncTextPtr
         lda     [$48]
-        bra     @5f16
+        bra     _5f16
 
 ; ------------------------------------------------------------------------------
 
 ; $03: battle command name
 
+_c15f13:
 @5f13:  lda     $2f35       ; variable 0
-@5f16:  cmp     #$ff
+_5f16:  cmp     #$ff
         bne     @5f1b
         rts
 @5f1b:  xba
@@ -13690,6 +13749,7 @@ DlgTextCmd_0c:
 
 ; $00: character name
 
+_c15f40:
 @5f40:  lda     $2f38       ; variable 1
         asl
         tax
@@ -14501,7 +14561,7 @@ ListTextCmd_06:
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@650a:  lda     $e6f9ad,x   ; magitek attack name
+@650a:  lda     f:AttackName+500,x   ; magitek attack name
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14707,7 +14767,7 @@ ListTextCmd_19:
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@6670:  lda     $e6f9fd,x   ; lore name
+@6670:  lda     f:AttackName+580,x   ; lore name
         jsr     DrawListLetter
         inx
         dec     $40
@@ -14991,7 +15051,7 @@ _67c2:  tax
         beq     @67cf       ; branch if character slot is empty
         asl
         tax
-        jmp     ($67e3,x)
+        jmp     (.loword(DrawCharSlotInfoTbl),x)
 @67cf:  jsr     IncTextPtr
         lda     ($48)       ; info type
         tax
@@ -15005,39 +15065,49 @@ _c167dc:
 @67dc:  .byte   $06,$04,$06,$03,$03,$06,$06
 
 ; character info text jump table (for each character)
-@67e3:  .addr   $67eb,$67f2,$67f9,$6800
+DrawCharSlotInfoTbl:
+@67e3:  .addr   DrawCharSlot1Info
+        .addr   DrawCharSlot2Info
+        .addr   DrawCharSlot3Info
+        .addr   DrawCharSlot4Info
 
 ; ------------------------------------------------------------------------------
 
 ; character 1
 
+DrawCharSlot1Info:
 @67eb:  ldx     #$2eae
         lda     #$00
-        bra     @6805
+        bra     _6805
 
 ; ------------------------------------------------------------------------------
 
 ; character 2
 
+DrawCharSlot2Info:
 @67f2:  ldx     #$2ece
         lda     #$01
-        bra     @6805
+        bra     _6805
 
 ; ------------------------------------------------------------------------------
 
 ; character 3
+
+DrawCharSlot3Info:
 @67f9:  ldx     #$2eee
         lda     #$02
-        bra     @6805
+        bra     _6805
 
 ; ------------------------------------------------------------------------------
 
 ; character 4
+
+DrawCharSlot4Info:
 @6800:  ldx     #$2f0e
         lda     #$03
 ; fall through
 
-@6805:  sta     $18
+_6805:  sta     $18
         stx     $10         ; ++$10 = pointer to character graphics data
         lda     #$7e
         sta     $12
@@ -15045,12 +15115,19 @@ _c167dc:
         lda     ($48)       ; info type
         asl
         tax
-        jmp     ($6817,x)
+        jmp     (.loword(DrawCharInfoTbl),x)
 
 ; ------------------------------------------------------------------------------
 
 ; character info text jump table (for each info type)
-@6817:  .addr   $682f,$6841,$6872,$68a7,$692c,$684e,$6846
+DrawCharInfoTbl:
+@6817:  .addr   DrawCharInfo_00
+        .addr   DrawCharInfo_01
+        .addr   DrawCharInfo_02
+        .addr   DrawCharInfo_03
+        .addr   DrawCharInfo_04
+        .addr   DrawCharInfo_05
+        .addr   DrawCharInfo_06
 
 ; ------------------------------------------------------------------------------
 
@@ -15066,6 +15143,7 @@ _c16825:
 ; ------------------------------------------------------------------------------
 
 ; character info text $00: name
+DrawCharInfo_00:
 @682f:  ldx     $10
         lda     #$06        ; 6 letters
         sta     $14
@@ -15079,12 +15157,14 @@ _c16825:
 ; ------------------------------------------------------------------------------
 
 ; character info text $01: current hp
+DrawCharInfo_01:
 @6841:  lda     #$07        ; $2eb5 (current hp)
         jmp     DrawNum4
 
 ; ------------------------------------------------------------------------------
 
 ; character info text $06: condemned gauge
+DrawCharInfo_06:
 @6846:  lda     $18
         tax
         lda     $61a6,x     ; condemned number
@@ -15093,6 +15173,7 @@ _c16825:
 ; ------------------------------------------------------------------------------
 
 ; character info text $05: morph gauge
+DrawCharInfo_05:
 @684e:  lda     $18
         tax
         lda     $61a2,x     ; morph gauge value
@@ -15121,6 +15202,7 @@ DrawGaugeText:
 ; ------------------------------------------------------------------------------
 
 ; character info text $02: atb gauge or max hp
+DrawCharInfo_02:
 @6872:  lda     $2021       ; atb gauge setting
         and     #$01
         beq     @6898       ; branch if off
@@ -15133,8 +15215,12 @@ DrawGaugeText:
         lda     $619e,x     ; atb gauge
         cmp     #$ff
         bne     @688a       ; branch if not full
+
+; ATB gauge full
         lda     #$29        ; palette 2
         bra     @688c
+
+; ATB gauge filling
 @688a:  lda     #$35        ; palette 7
 @688c:  sta     $4e
         lda     $619e,x     ; atb gauge
@@ -15154,6 +15240,7 @@ DrawGaugeText:
 ; ------------------------------------------------------------------------------
 
 ; character info text $03: current mp
+DrawCharInfo_03:
 @68a7:  lda     #$0b        ; $2eb9 (current mp)
         jmp     DrawNum3
 
@@ -15197,6 +15284,8 @@ GaugeTextTbl:
 ; ------------------------------------------------------------------------------
 
 ; character info text $04: max mp
+DrawCharInfo_04:
+_c1692c:
 @692c:  lda     #$0d        ; $2ebb (max mp)
         jmp     DrawNum3
 
@@ -15336,8 +15425,8 @@ MenuTextCmd_0d:
         lda     ($48)
         cmp     #$ff
         bne     @69ec       ; branch if command slot is empty
-        lda     #$07
-        jmp     _c16b3b
+        lda     #7
+        jmp     DrawSpaces
 @69ec:  xba
         lda     #$07
         sta     $10
@@ -15362,8 +15451,8 @@ MenuTextCmd_10:
         lda     ($48)
         cmp     #$ff
         bne     @6a19
-        lda     #$0a
-        jmp     _c16b3b
+        lda     #10
+        jmp     DrawSpaces
 @6a19:  xba
         lda     #$0a
         sta     $10
@@ -15388,8 +15477,8 @@ MenuTextCmd_12:
         lda     ($48)
         cmp     #$ff
         bne     @6a46
-@6a41:  lda     #$07
-        jmp     _c16b3b
+@6a41:  lda     #7
+        jmp     DrawSpaces
 @6a46:  xba
         lda     #$0d        ; get pointer to item name
         sta     $10
@@ -15427,8 +15516,8 @@ MenuTextCmd_0e:
         lda     ($48)
         cmp     #$ff
         bne     @6a90
-        lda     #$0d
-        jmp     _c16b3b
+        lda     #13
+        jmp     DrawSpaces
 @6a90:  xba
         lda     #$0d
         sta     $10
@@ -15456,8 +15545,8 @@ MenuTextCmd_11:
         cmp     #$36
         bcc     @6abd
         rts
-@6abd:  lda     #$03
-        jmp     _c16b3b
+@6abd:  lda     #3
+        jmp     DrawSpaces
 
 ; ------------------------------------------------------------------------------
 
@@ -15468,8 +15557,8 @@ MenuTextCmd_0f:
         lda     ($48)
         cmp     #$ff
         bne     @6ad0
-        lda     #$07
-        jmp     _c16b3b
+        lda     #7
+        jmp     DrawSpaces
 @6ad0:  cmp     #$36
         bcc     @6b1c       ; branch if a spell
         cmp     #$51
@@ -15479,7 +15568,7 @@ MenuTextCmd_0f:
         sec
         sbc     #$51
         xba
-        lda     #$0a
+        lda     #10
         sta     $10
         jsr     MultAB
         longa
@@ -15497,7 +15586,7 @@ MenuTextCmd_0f:
 @6afa:  sec
         sbc     #$36
         xba
-        lda     #$08
+        lda     #8
         sta     $10
         jsr     MultAB
         longa
@@ -15513,7 +15602,7 @@ MenuTextCmd_0f:
 
 ; spell
 @6b1c:  xba
-        lda     #$07
+        lda     #7
         sta     $10
         jsr     MultAB
         longa
@@ -15529,9 +15618,11 @@ MenuTextCmd_0f:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw spaces (tab) ]
 
-_c16b3b:
+; A: number of spaces
+
+DrawSpaces:
 @6b3b:  sta     $1a
 @6b3d:  lda     #$ff
         jsr     DrawMenuLetter
@@ -15932,7 +16023,6 @@ check_group_name:
 ; [ update menu state $38: target select ]
 
 UpdateMenuState_38:
-key_target_main:
 @6d90:  lda     $7bcb
         beq     @6d98
         jmp     @6f57
@@ -16132,14 +16222,14 @@ key_target_main:
 
 ; blitz button masks
 BlitzButtonMaskTbl:
-@6f6a:  .word   $ffff, $0080, $8000, $0040, $4000, $0020, $0010, $0600
-        .word   $0400, $0500, $0100, $0900, $0800, $0a00, $0200
+@6f6a:  .word   $ffff,$0080,$8000,$0040,$4000,$0020,$0010,$0600
+        .word   $0400,$0500,$0100,$0900,$0800,$0a00,$0200
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to blitz codes
 BlitzCodePtrs:
-@6f88:  .byte   $00, $0c, $18, $24, $30, $3c, $48, $54
+@6f88:  .byte   $00,$0c,$18,$24,$30,$3c,$48,$54
 
 ; ------------------------------------------------------------------------------
 
@@ -16151,12 +16241,12 @@ CheckBlitzCode:
         tax
         lda     f:BlitzCodePtrs,x
         tax
-        lda     $c47a4b,x   ; length of code
+        lda     f:BlitzCode+11,x   ; length of code
         dec2
         longa
         sta     $38
         clr_ay
-@6fa6:  lda     $c47a40,x   ; blitz codes
+@6fa6:  lda     f:BlitzCode,x   ; blitz codes
         and     #$00ff
         asl
         phx
@@ -16201,7 +16291,6 @@ CheckBlitzCode:
 ; [ update menu state $3d: blitz ]
 
 UpdateMenuState_3d:
-key_hisatsu:
 @6ff8:  lda     $7bcb
         beq     @7000
         jmp     @7083
@@ -16750,19 +16839,23 @@ TargetSelectDown:
 ; ------------------------------------------------------------------------------
 
 ; ??? jump table (1 per battle type)
-@7428:  .addr   $74bf, $74e9, $74bf, $74ea
+_c17428:
+@7428:  .addr   _c174bf,_c174e9,_c174bf,_c174ea
 
 ; ??? jump table (1 per battle type)
-@7430:  .addr   $7438, $7439, $7439, $7463
+_c17430:
+@7430:  .addr   _c17438,_c17439,_c17439,_c17463
 
 ; ------------------------------------------------------------------------------
 
 ; 0: normal
+_c17438:
 @7438:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; 1/2: back/side
+_c17439:
 @7439:  lda     $7a84
         and     #$02
         bne     @745d
@@ -16785,6 +16878,7 @@ TargetSelectDown:
 ; ------------------------------------------------------------------------------
 
 ; 3: pincer
+_c17463:
 @7463:  lda     $7ace
         cmp     #$03
         beq     @74be
@@ -16827,6 +16921,7 @@ TargetSelectDown:
 ; ------------------------------------------------------------------------------
 
 ; 0/2: normal/side
+_c174bf:
 @74bf:  lda     $7a84
         and     #$02
         bne     @74e3
@@ -16849,11 +16944,13 @@ TargetSelectDown:
 ; ------------------------------------------------------------------------------
 
 ; 1: back
+_c174e9:
 @74e9:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; 3: pincer
+_c174ea:
 @74ea:  lda     $7ace
         cmp     #$01
         beq     @7543
@@ -16895,10 +16992,12 @@ TargetSelectDown:
 ; ------------------------------------------------------------------------------
 
 ; ??? (1 per battle type)
-@7544:  .addr   $7666, $7669, $76a7, $76fe
+_c17544:
+@7544:  .addr   _c17666,_c17669,_c176a7,_c176fe
 
 ; ??? (1 per battle type)
-@754c:  .addr  $75a3, $75a0, $75d8, $7631
+_c1754c:
+@754c:  .addr  _c175a3,_c175a0,_c175d8,_c17631
 
 ; ------------------------------------------------------------------------------
 
@@ -16952,12 +17051,14 @@ get_l_mon_set:
 
 ; [  ]
 
+_c175a0:
 @75a0:  jmp     _c17554
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
+_c175a3:
 @75a3:  jsr     _c17554
         bcs     @75d7
         lda     $7a84
@@ -16984,6 +17085,7 @@ get_l_mon_set:
 
 ; [  ]
 
+_c175d8:
 @75d8:  jsr     _c17554
         bcs     @7630
         lda     $7ace
@@ -17025,6 +17127,7 @@ get_l_mon_set:
 
 ; [  ]
 
+_c17631:
 @7631:  jsr     _c17554
         bcs     @7665
         lda     $7a84
@@ -17051,12 +17154,14 @@ get_l_mon_set:
 
 ; [  ]
 
+_c17666:
 @7666:  jmp     _c1757a
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
+_c17669:
 @7669:  jsr     _c1757a
         bcs     @76a1
         lda     $7a84
@@ -17087,6 +17192,7 @@ get_l_mon_set:
 
 ; [  ]
 
+_c176a7:
 @76a7:  jsr     _c1757a
         bcs     @76fd
         lda     $7ace
@@ -17127,6 +17233,7 @@ get_l_mon_set:
 
 ; [  ]
 
+_c176fe:
 @76fe:  jsr     _c1757a
         bcs     @7732
         lda     $7a84
@@ -17161,11 +17268,11 @@ key_target_left:
         lda     $201f       ; battle type
         asl
         tax
-        jmp     ($7428,x)
+        jmp     (.loword(_c17428),x)
 @7742:  lda     $201f
         asl
         tax
-        jmp     ($7544,x)
+        jmp     (.loword(_c17544),x)
 
 ; ------------------------------------------------------------------------------
 
@@ -17179,11 +17286,11 @@ key_target_right:
         lda     $201f       ; battle type
         asl
         tax
-        jmp     ($7430,x)
+        jmp     (.loword(_c17430),x)
 @7759:  lda     $201f
         asl
         tax
-        jmp     ($754c,x)
+        jmp     (.loword(_c1754c),x)
 
 ; ------------------------------------------------------------------------------
 
@@ -17199,6 +17306,7 @@ _c17767:
 
 ; [  ]
 
+_c1776b:
 @776b:  ldx     $0a
         stx     $e9e2
         lda     #$ff
@@ -17626,10 +17734,13 @@ get_gr3:
 ; ------------------------------------------------------------------------------
 
 _c17a36:
-@7a36:  .word   $a008, $ac08, $b808, $c408
+@7a36:  .word   $a008,$ac08,$b808,$c408
 
 _c17a3e:
-@7a3e:  .word   $a010, $ac10, $b810, $c410, $a030, $ac10, $ac58, $b830
+@7a3e:  .word   $a010,$ac10,$b810,$c410
+
+_c17a46:
+@7a46:  .word   $a030,$ac10,$ac58,$b830
 
 ; ------------------------------------------------------------------------------
 
@@ -17690,8 +17801,7 @@ check_command_mon:
 ; [ update menu state $05: command select ]
 
 UpdateMenuState_05:
-key_command:
-@7a92:  stz     $2f41       ; start battle time
+@7a92:  stz     $2f41                   ; start battle time
         stz     $88e3
         lda     $7bcb
         beq     @7aa3
@@ -17808,18 +17918,20 @@ key_command:
         inc     $94
         jsr     _c17ca9
         jmp     UpdateMenuState_25
+
+; A button
 @7ba6:  lda     $04
         bpl     @7bb2
         inc     $96
-        inc     $2f41       ; stop battle time
-        jmp     _c17cc8
+        inc     $2f41                   ; stop battle time
+        jmp     OpenCmdMenu
 @7bb2:  ldx     $62ca
         lda     $890f,x
         asl
         tax
-        lda     $c17a46,x
+        lda     f:_c17a46,x
         sta     $88e4
-        lda     $c17a47,x
+        lda     f:_c17a46+1,x
         sta     $88e5
         lda     #$01
         sta     $88e3
@@ -17843,11 +17955,13 @@ key_command:
 @7bf3:  inc     $890f,x
         jsr     _c17a4e
         bcs     @7bf3
+
+; A button
 @7bfb:  lda     $04
         bpl     @7c07
         inc     $96
-        inc     $2f41       ; stop battle time
-        jmp     _c17cc8
+        inc     $2f41                   ; stop battle time
+        jmp     OpenCmdMenu
 @7c07:  lda     $05
         and     #$0f
         cmp     #$02
@@ -17936,10 +18050,9 @@ init_buf_input:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ open menu window for selected command (or select target) ]
 
-_c17cc8:
-command_jmp_set:
+OpenCmdMenu:
 @7cc8:  jsr     _c184ab
         jsr     _c17ca9
         lda     $2030,x
@@ -17949,29 +18062,56 @@ command_jmp_set:
         and     #$7f
         asl
         tax
-        jmp     ($7ce9,x)
+        jmp     (.loword(OpenCmdMenuTbl),x)
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
+_c17ce1:
 @7ce1:  lda     #$01
         sta     $7ae8
         jmp     OpenMagicWindow
 
 ; ------------------------------------------------------------------------------
 
-@7ce9:  .addr   $7792,$5769,$57a0,$7795,$7795,$7795,$7795,$561b
-        .addr   $5875,$58b1,$776b,$7795,$58ed,$7795,$7795,$59ae
-        .addr   $5927,$7795,$7795,$5958,$5631,$563b,$7795,$7ce1
-        .addr   $7795,$7795,$7795,$7795,$7795,$5983
+OpenCmdMenuTbl:
+@7ce9:  .addr   _c17792
+        .addr   OpenItemWindow
+        .addr   OpenMagicWindow
+        .addr   _c17795
+        .addr   _c17795
+        .addr   _c17795
+        .addr   _c17795
+        .addr   UpdateMenuState_35
+        .addr   OpenThrowWindow
+        .addr   OpenToolsWindow
+        .addr   _c1776b
+        .addr   _c17795
+        .addr   OpenLoreWindow
+        .addr   _c17795
+        .addr   _c17795
+        .addr   OpenSlotWindow
+        .addr   OpenRageWindow
+        .addr   _c17795
+        .addr   _c17795
+        .addr   OpenDanceWindow
+        .addr   UpdateMenuState_22
+        .addr   UpdateMenuState_25
+        .addr   _c17795
+        .addr   _c17ce1
+        .addr   _c17795
+        .addr   _c17795
+        .addr   _c17795
+        .addr   _c17795
+        .addr   _c17795
+        .addr   OpenMagitekWindow
 
 ; ------------------------------------------------------------------------------
 
 ; [ update menu state $37: swdtech ]
 
 UpdateMenuState_37:
-key_ken:
 @7d25:  stz     $2f41       ; start battle time
         stz     $88e3
         lda     $7bcb
@@ -18090,7 +18230,6 @@ DrawBushidoGaugeRepeat:
 ; [ update menu state $27: def. ]
 
 UpdateMenuState_27:
-key_def:
 @7e05:  stz     $88e3
         lda     $7bcb
         beq     @7e13
@@ -18134,7 +18273,7 @@ key_def:
         bra     @7e6f
 @7e63:  lda     #$38
         sta     $88e4       ; main cursor x position
-        lda     $c17a3f,x
+        lda     f:_c17a3e+1,x
         sta     $88e5       ; main cursor y position
 @7e6f:  inc     $88e3       ; activate main cursor
         rts
@@ -18144,7 +18283,6 @@ key_def:
 ; [ update menu state $24: row ]
 
 UpdateMenuState_24:
-key_chg:
 @7e73:  stz     $88e3
         lda     $7bcb
         beq     @7e81
@@ -18188,7 +18326,7 @@ key_chg:
         bra     @7edd
 @7ed1:  lda     #$08
         sta     $88e4
-        lda     $c17a3f,x
+        lda     f:_c17a3e+1,x
         sta     $88e5
 @7edd:  inc     $88e3
         rts
@@ -18230,7 +18368,6 @@ GetSlotReel3:
 ; [ update menu state $08: slot ]
 
 UpdateMenuState_08:
-key_throt:
 @7f08:  stz     $88e3
         lda     $7bcb
         beq     @7f16
@@ -18513,7 +18650,6 @@ GetCursorInput:
 ; [ update menu state $0e: spell select ]
 
 UpdateMenuState_0e:
-key_magic:
 @8145:  stz     $88ef
         stz     $88e3
         lda     $7bcb
@@ -18693,7 +18829,7 @@ ItemCursorXPosTbl:
 @8287:  .byte   $10,$80
 
 ; rage/magitek list cursor x positions
-RiotCursorXPosTbl:
+RageCursorXPosTbl:
 @8289:  .byte   $10,$78
 
 ; lore list cursor x positions
@@ -18732,7 +18868,6 @@ CheckHasGenju:
 ; [ update menu state $16: esper select ]
 
 UpdateMenuState_16:
-key_summon:
 @82b3:  stz     $88e3
         lda     $7bcb
         beq     @82c1
@@ -18774,7 +18909,6 @@ key_summon:
 ; [ update menu state $1b: lore select ]
 
 UpdateMenuState_1b:
-key_learning:
 @8308:  stz     $88e3
         stz     $88ef
         lda     $7bcb
@@ -19063,7 +19197,6 @@ get_command_poi:
 ; [ update menu state $1e: rage ]
 
 UpdateMenuState_1e:
-key_riot:
 @84c6:  stz     $88e3
         stz     $88ef
         lda     $7bcb
@@ -19090,14 +19223,14 @@ key_riot:
         inc
         sta     $892b,y
         inc     $94
-        jsr     ScrollRiotListDown
+        jsr     ScrollRageListDown
         bra     @8516
 @8508:  lda     $892b,y
         beq     @8520
         dec
         sta     $892b,y
         inc     $94
-        jsr     ScrollRiotListUp
+        jsr     ScrollRageListUp
 @8516:  lda     $36
         sta     $892f,y
         lda     $37
@@ -19105,7 +19238,7 @@ key_riot:
 @8520:  lda     $09
         bpl     @852a
         inc     $96
-        jsr     CloseRiotWindow
+        jsr     CloseRageWindow
         rts
 @852a:  lda     $04
         bpl     @854a
@@ -19128,7 +19261,7 @@ key_riot:
         jsr     _c1898f
         lda     $892f,y
         tax
-        lda     f:RiotCursorXPosTbl,x
+        lda     f:RageCursorXPosTbl,x
         sta     $88e4
         lda     $8933,y
         tax
@@ -19141,7 +19274,7 @@ key_riot:
 
 ; [  ]
 
-ScrollRiotListDown:
+ScrollRageListDown:
 @8573:  clc
         adc     #$03
         jsr     DrawRageListText
@@ -19157,7 +19290,7 @@ ScrollRiotListDown:
 @858c:  sta     $7afd
         bra     _85a9
 
-ScrollRiotListUp:
+ScrollRageListUp:
 @8591:  jsr     DrawRageListText
         lda     #$18
         sta     $7bc2
@@ -19181,7 +19314,6 @@ _85a9:  lda     #$03
 ; [ update menu state $21: dance ]
 
 UpdateMenuState_21:
-key_dance:
 @85b4:  stz     $88e3
         lda     $7bcb
         beq     @85c2
@@ -19232,10 +19364,9 @@ key_dance:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu state $2a:  ]
+; [ update menu state $2a: magitek attack select ]
 
 UpdateMenuState_2a:
-key_madou:
 @8625:  stz     $88e3
         lda     $7bcb
         beq     @8633
@@ -19286,7 +19417,7 @@ key_madou:
 @8699:  ldy     $36
         lda     $893f,y
         tax
-        lda     f:RiotCursorXPosTbl,x
+        lda     f:RageCursorXPosTbl,x
         sta     $88e4
         lda     $8943,y
         tax
@@ -19300,7 +19431,6 @@ key_madou:
 ; [ update menu state $2d: throw (item select) ]
 
 UpdateMenuState_2d:
-key_throw:
 @86b5:  stz     $88e3
         stz     $88ef
         lda     $7bcb
@@ -19418,7 +19548,6 @@ _8792:  lda     #$03
 ; [ update menu state $30: tools select ]
 
 UpdateMenuState_30:
-key_machine:
 @879d:  stz     $88e3
         stz     $88ef
         lda     $7bcb
@@ -19544,7 +19673,6 @@ _8872:  lda     #$03
 ; [ update menu state $0a: item select ]
 
 UpdateMenuState_0a:
-key_item:
 @887d:  stz     $88e3
         stz     $88ef
         lda     $7bcb
@@ -20068,7 +20196,7 @@ CheckInventoryFull:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ scroll inventory list down ]
 
 ScrollItemListDown:
 @8ce9:  clc
@@ -20091,7 +20219,7 @@ ScrollItemListDown:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ scroll inventory list up ]
 
 ScrollItemListUp:
 @8d11:  jsr     DrawItemListText
@@ -20172,7 +20300,6 @@ redrow_item_set:
 ; [ update menu state $0c: weapon/shield select ]
 
 UpdateMenuState_0c:
-key_hand:
 @8d98:  lda     $7b02
         beq     @8da3
         lda     $7b00
@@ -20592,10 +20719,9 @@ DefaultMagitekAttackTbl:
 
 ; ------------------------------------------------------------------------------
 
-; [ update menu state $41:  ]
+; [ update menu state $41: status window for character target select ]
 
 UpdateMenuState_41:
-key_disp:
 @911c:  lda     #$40
         sta     $7bc2
         jmp     _c17795
@@ -20634,14 +20760,14 @@ long_magic_rset:
 GfxCmd_0c:
 @9147:  jsr     _c1ab58
         jsr     GfxCmd_0d
-        ldy     #$0001
+        ldy     #1
         lda     ($78),y     ; attacker
         pha
         lda     ($76),y     ; command
         pha
         cmp     #$16
         bne     @9174
-        ldy     #$0001
+        ldy     #1
         lda     ($78),y     ; attacker
         cmp     #$04
         bcc     @9168       ; branch if a character
@@ -20799,7 +20925,7 @@ all_obj_col_up:
 _c19256:
 wait_last:
 @9256:  pha
-        lda     #$04
+        lda     #4
         jsr     WaitA       ; wait 4 frames
         pla
         rts
@@ -20909,13 +21035,13 @@ last_scene_chg:
 ; [ battle script command $12: scroll battle bg (final battle) ]
 
 GfxCmd_12:
-@9329:  ldy     #$0001
+@9329:  ldy     #1
         lda     ($76),y
         bpl     @9337
         and     #$7f
         sta     ($76),y
         jsr     _c19275
-@9337:  ldy     #$0002
+@9337:  ldy     #2
         lda     $201e
         sta     ($76),y
         iny
@@ -20942,7 +21068,7 @@ GfxCmd_12:
         jsr     InitMonsterPos
         jsr     WaitTfrMonsterGfx
         clr_a
-        ldy     #$0002
+        ldy     #2
         sta     ($76),y
         iny
         pla
@@ -20950,7 +21076,7 @@ GfxCmd_12:
         sta     $2f2f
         sta     $61ab
         pha
-        ldy     #$0001
+        ldy     #1
         lda     $2f48
         and     #$0f
         sta     ($76),y
@@ -20968,7 +21094,7 @@ GfxCmd_12:
 ; b3:
 
 GfxCmd_13:
-@939c:  ldy     #$0003
+@939c:  ldy     #3
         lda     ($76),y
         beq     @93d0       ; branch if only current monster is affected
         sta     $10
@@ -20978,9 +21104,9 @@ GfxCmd_13:
         stz     $62c2,x     ;
         stz     $618b,x     ;
 @93b1:  inx                 ; next monster
-        cpx     #$0006
+        cpx     #6
         bne     @93a7
-        ldy     #$0001
+        ldy     #1
         lda     ($76),y
         cmp     #$0e
         beq     @93cb       ; branch if entry/exit type $0e (chadarnook)
@@ -20990,7 +21116,7 @@ GfxCmd_13:
         jsr     WaitTfrMonsterGfx
 @93cb:  jsl     DoMonsterEntryExit
         rts
-@93d0:  ldy     #$0002
+@93d0:  ldy     #2
         lda     $201e
         and     $61ab
         and     ($76),y     ; affected monsters
@@ -21010,20 +21136,23 @@ GfxCmd_08:
 
 ; [ execute monster death animations ]
 
+; called once per frame, also updates monster facing directions
+
 MonsterDeathAnim:
-@93e3:  lda     $2f44       ; invisible monsters
+@93e3:  lda     $2f44                   ; invisible monsters
         eor     #$ff
         sta     $e9e6
         lda     $6282
         beq     @93f3
         stz     $e9e6
-@93f3:  lda     $2f2f       ; monsters that are not dead (invert to get monsters that are dead)
+@93f3:  lda     $2f2f                   ; invert to get monsters that are dead
         eor     #$ff
-        and     $201e       ; monsters that are visible
-        and     $61ab       ; monsters that are shown
-        bne     @9403
-        jmp     @9492
-@9403:  pha                 ; a = monsters that are dying
+        and     $201e                   ; monsters that are visible
+        and     $61ab                   ; monsters that are shown
+        jeq     @9492                   ; jump if no monsters died
+
+; monster death animation
+        pha                             ; A = monsters that are dying
         stz     $7b67
         jsr     WaitFrame
         jsr     ClearBG1Tiles
@@ -21037,68 +21166,72 @@ MonsterDeathAnim:
         cpx     #$0020
         bne     @9418
         lda     $628a
-        beq     @9438       ; branch if not in flashback mode
+        beq     @9438                   ; branch if not in flashback mode
         ldx     #$0160
         stx     $18
         ldx     #$0180
         stx     $1a
         jsl     _c2b442
-@9438:  ldx     #$0202      ; add bg2
+@9438:  ldx     #$0202                  ; add bg2
         stx     $10
-        lda     #$10        ; affect sprites
+        lda     #$10                    ; affect sprites
         jsr     SetColorMathHDMA
         pla
-        sta     $10         ; monsters that are dying
+        sta     $10                     ; monsters that are dying
         sta     $12
         clr_ax
 @9449:  lsr     $12
-        bcc     @9461       ; branch if this monster is not dying
-        lda     $80db,x     ; set palette to 3
+        bcc     @9461                   ; branch if this monster is not dying
+        lda     $80db,x                 ; set palette to 3
         and     #$c1
         ora     #$06
         sta     $80db,x
         lda     #$01
-        sta     $80dc,x     ;
-        lda     $80c3,x     ; $14 = x position
+        sta     $80dc,x
+        lda     $80c3,x                 ; $14 = x position
         sta     $14
-@9461:  inx2                ; next monster
-        cpx     #$000c
+@9461:  inx2                            ; next monster
+        cpx     #12
         bne     @9449
         lda     $14
         sta     $10
-        lda     #$2d        ; sound effect $2d (monster death)
+        lda     #$2d                    ; sound effect $2d (monster death)
         jsr     PlayAnimSfx
-        lda     #$20
+        lda     #$20                    ; animation takes 32 frames
+
+; start of frame loop
 @9473:  pha
         jsr     WaitFrame
-        jsr     _c194c0       ; update monster death palette
+        jsr     UpdateMonsterDeathPal
         pla
-        dec                 ; next frame
+        dec                             ; next frame
         bne     @9473
-        lda     $2f2f       ; monsters that are not dead
-        sta     $201e       ; monsters shown
+        lda     $2f2f                   ; monsters that are not dead
+        sta     $201e                   ; monsters shown
         clr_ax
         stx     $10
         jsr     SetColorMathHDMA
         jsr     PopMonsterPalID
         jsl     UpdateMonsterNames
-@9492:  lda     $201e       ; monsters shown
-        cmp     $2f2f       ; monsters that are not dead
+
+; update monster facing directions
+@9492:  lda     $201e                   ; monsters shown
+        cmp     $2f2f                   ; monsters that are not dead
         beq     @94a3
         lda     $201e
-        ora     $2f2f       ; monsters that are not dead
+        ora     $2f2f                   ; monsters that are not dead
         sta     $201e
 @94a3:  clr_ax
-        lda     $2f54       ; h-flip for controlled targets
+        lda     $2f54                   ; h-flip for controlled targets
         sta     $10
 @94aa:  lda     #$21
-        sta     $80dc,x     ; tile index = $21
+        sta     $80dc,x                 ; tile index = $21
         lda     $10
         and     #$01
-        sta     $617e,x     ; monster h flip
+        sta     $617e,x                 ; monster h-flip
         lsr     $10
         inx2
-        cpx     #$000c
+        cpx     #12
         bne     @94aa
         rts
 
@@ -21106,20 +21239,19 @@ MonsterDeathAnim:
 
 ; [ update monster death palette ]
 
-_c194c0:
-color11_down:
+UpdateMonsterDeathPal:
 @94c0:  clr_ay
         longa
-        ldx     #$0010      ; 10 colors
-        lda     #$00e1      ; color value to subtract = 1 (red, green, and blue)
+        ldx     #16                     ; 16 colors
+        lda     #$00e1                  ; subtract 1 (red, green, and blue)
         sta     $14
         sta     $16
         sta     $18
-        jsr     _c1fc6e       ; init color add/sub math
+        jsr     InitColorMod
 @94d3:  lda     $7f60,y
         jsr     DecColor
         sta     $7f60,y
-        iny2                ; next color
+        iny2                            ; next color
         dex
         bne     @94d3
         shorta0
@@ -21216,14 +21348,13 @@ ExecGfxCmd:
 
 ; ------------------------------------------------------------------------------
 
-; [ increment battle script data pointer ]
+; [ increment graphics command data pointer ]
 
-_c1956e:
-anim_info_inc:
+NextGfxCmdData:
 @956e:  longa
         lda     $78
         clc
-        adc     #$0010
+        adc     #16
         sta     $78
         shorta0
         rts
@@ -21241,7 +21372,7 @@ sort_y_poi:
 @9584:  lda     #$ff
         sta     $80e8,x     ;
         inx2
-        cpx     #$000c
+        cpx     #12
         bne     @9584
         longa
         clr_axy
@@ -21303,7 +21434,7 @@ GfxCmd_03:
         clr_ax
 @9611:  ora     $7b3f,x
         inx
-        cpx     #$000a
+        cpx     #10
         bne     @9611
         ora     $631a
         ora     $631b
@@ -21380,7 +21511,7 @@ _c19673:
 ; [ battle script command $07: increment battle script data pointer ]
 
 GfxCmd_07:
-@9690:  jsr     _c1956e
+@9690:  jsr     NextGfxCmdData
         rts
 
 ; ------------------------------------------------------------------------------
@@ -21505,9 +21636,9 @@ GfxCmd_11:
         sta     $88d9
         ldx     #$57d5
         stx     $88d7
-        lda     #$cf
+        lda     #^MonsterSpecialName
         sta     $12
-        ldy     #$0001
+        ldy     #1
         longa
         lda     ($76),y
         asl
@@ -21516,7 +21647,7 @@ GfxCmd_11:
         clc
         adc     $10
         clc
-        adc     #$d0d0      ; $cfd0d0 (monster special attack names)
+        adc     #.loword(MonsterSpecialName)
         sta     $10
         shorta0
         tay
@@ -21566,7 +21697,7 @@ _c197a1:
 ; b3:
 
 GfxCmd_01:
-@97a7:  ldy     #$0001
+@97a7:  ldy     #1
         lda     ($76),y     ;
         tax
         lda     f:_c197a1,x
@@ -22133,7 +22264,7 @@ magic_front:
         bne     @9ba0
         inc     $618b,x
         jsr     _c19bc5
-        ldy     #$0001
+        ldy     #1
         lda     ($78),y
         and     #$7f
         sec
@@ -22676,7 +22807,7 @@ _9f21:  bmi     @9f37       ; branch if a monster
 LoadBG3AnimFrames:
 @9f4a:  jsr     AttackerGfxToBG1
         jsr     ClearAnimGfxBuf
-        lda     #$d1
+        lda     #^AttackAnimFrames
         sta     $12
         lda     #$7f
         sta     $16
@@ -22692,7 +22823,7 @@ LoadBG3AnimFrames:
 LoadBG1AnimFrames:
 @9f61:  pha
         jsr     ClearBGAnimFrames
-        lda     #$d1
+        lda     #^AttackAnimFrames
         sta     $12
         lda     #$7f
         sta     $16
@@ -22851,7 +22982,7 @@ magic_sp_init:
         plx
         shorta0
         jsr     LoadAnimGfxProp
-        lda     #$d1
+        lda     #^AttackAnimFrames
         sta     $12
         jsr     LoadSpriteAnimFrames
         pla
@@ -22874,7 +23005,7 @@ ref_init:
 
 InitSpriteAnimFrames:
 @a0b5:  jsr     ClearSpriteAnimFrameBuf
-        lda     #$d1
+        lda     #^AttackAnimFrames
         sta     $12
         ldx     #$ce3f
         stx     $14
@@ -23623,7 +23754,7 @@ damage_set:
         asl
         tax
         longa
-        lda     $c1a749,x
+        lda     f:_c1a749,x
         tax
         clr_ay
 @a63e:  lda     $bc00,y     ; "miss" graphics
@@ -23654,7 +23785,7 @@ damage_set:
         asl
         tax
         longa
-        lda     $c1a749,x
+        lda     f:_c1a749,x
         tax
         clr_ay
         lda     #$0010
@@ -23690,7 +23821,7 @@ damage_set:
         tax
         cpx     #$0004
         bcc     @a6d3
-        lda     $c119fd,x
+        lda     f:BitOrTbl-4,x
         and     $201e
         and     $61ab
         beq     @a6eb
@@ -23753,8 +23884,11 @@ one_num_set:
 num_get_poi:
 _c1a735:
 @a735:  .word   $bc40,$bc60,$bc80,$bca0,$bcc0,$bce0,$bd00,$bd20
-        .word   $bd40,$bd60,$e400,$e480,$e500,$e580,$e800,$e880
-        .word   $e900,$e980,$ec00,$ec80
+        .word   $bd40,$bd60
+
+_c1a749:
+@a749:  .word   $e400,$e480,$e500,$e580,$e800,$e880,$e900,$e980
+        .word   $ec00,$ec80
 
 ref_target_bit:
 _c1a75d:
@@ -23831,7 +23965,7 @@ GfxCmd_09:
         sta     $12
         lda     $613e
         sta     $13
-        ldy     #$000e
+        ldy     #14
         lda     ($78),y
         asl4
         sta     $607e
@@ -24003,7 +24137,7 @@ _a8b3:  ldy     $6275
         jsr     _c1b085
         stz     $62d1
         stz     $62d0
-        jmp     _c1956e
+        jmp     NextGfxCmdData
 
 ; ------------------------------------------------------------------------------
 
@@ -24156,7 +24290,7 @@ get_target2:
 
 _c1aaad:
 get_super_num:
-@aaad:  ldy     #$000e
+@aaad:  ldy     #14
         lda     ($78),y     ; ??? characters
         jne     _c11a0f       ; get bit number
         iny
@@ -24266,7 +24400,7 @@ init_all_anim:
 ; [ set animation targets ]
 
 SetAnimTargets:
-@ab67:  ldy     #$0002
+@ab67:  ldy     #2
         lda     ($78),y     ; animation targets
         sta     $613d
         iny
@@ -24302,7 +24436,7 @@ GfxCmd_1a:
 
 _c1ab8b:
 clr_player_pat:
-@ab8b:  ldy     #$0001
+@ab8b:  ldy     #1
         lda     ($78),y     ; character/monster number
         cmp     #$04
         bcs     @ab9e       ; branch if not a character
@@ -24376,7 +24510,7 @@ anim_magic:
         rts
 @ac06:  jsr     _c1ab58
         jsr     _c1ab8b       ; reset attacker graphical action
-        ldy     #$0001
+        ldy     #1
         lda     ($78),y     ; attacker number
         cmp     #$04
         bcs     @ac1e       ; branch if a monster
@@ -24441,7 +24575,7 @@ InitAnim_far:
 ; [ init battle animation threads ]
 
 InitAnim:
-@ac6b:  ldy     #$0002
+@ac6b:  ldy     #2
         lda     ($78),y     ; $12 = possible character targets
         asl4
         sta     $12
@@ -24618,7 +24752,7 @@ InitAnim:
         sta     $24
         shorta0
         jsr     CreateThread
-@ae03:  ldy     #$0006
+@ae03:  ldy     #6
         lda     ($78),y     ; targets reflected off of
         asl4
         sta     $6080
@@ -24651,7 +24785,7 @@ clr_success_flag:
 @ae38:  ldx     $6082
         phx
         longa
-        ldy     #$000a
+        ldy     #10
         lda     ($78),y
         sta     $62a5
         iny2
@@ -24775,7 +24909,7 @@ type_00b_anim_set:
 @af5a:  jsl     AnimType_09_far
         lda     #$06
         sta     $800c
-        ldy     #$0005
+        ldy     #5
         lda     ($78),y
         sta     $607f
         stz     $607e
@@ -24890,7 +25024,7 @@ target_mon_col_down:
         sta     $14
         sta     $16
         sta     $18
-        jsr     _c1fc6e
+        jsr     InitColorMod
 @b040:  lda     $7e60,y
         jsr     DecColor
         sta     $7e60,y
@@ -25694,7 +25828,7 @@ DrawCursorSprites:
         tax
         lda     f:_c1b534,x   ; flashing cursor tile data
         sta     $04f2,y
-        lda     $c1b535,x
+        lda     f:_c1b534+1,x
         sta     $04f3,y
 @b64e:  jsr     _c1b684       ; update character/monster cursor sprite data
         clr_ay
@@ -25830,15 +25964,15 @@ BlockSfxTbl:
 
 anim_command:
 GfxCmd_06:
-@b760:  jsr     _c19c9e       ; deactivate all animation threads
+@b760:  jsr     _c19c9e                 ; deactivate all animation threads
         stz     $ecbb
         ldy     #$0001
-        lda     ($76),y     ; attack command
+        lda     ($76),y                 ; attack command
         bmi     @b772
         asl
         tax
-        jsr     ($b775,x)
-@b772:  jmp     _c1956e
+        jsr     (.loword(CmdAnimTbl),x)
+@b772:  jmp     NextGfxCmdData
 
 ; attack command jump table
 anim_command_jmp:
@@ -25888,7 +26022,7 @@ CmdAnimTbl:
 ; [ attack command $1d: magitek ]
 
 CmdAnim_1d:
-@b7c3:  ldy     #$0002
+@b7c3:  ldy     #2
         lda     ($76),y
         cmp     #$86
         bcc     @b7d7       ; branch if fire, ice, or bolt beam
@@ -25896,7 +26030,7 @@ CmdAnim_1d:
         jsr     _c1b8a4
         jsr     MagicCmdAnim
         jmp     _c1b86b
-@b7d7:  ldy     #$0004
+@b7d7:  ldy     #4
         lda     ($78),y
         iny
         ora     ($78),y
@@ -26044,7 +26178,7 @@ set_caster_animation2:
 @b890:  asl
         tax
         longa
-        ldy     #$0004
+        ldy     #4
         lda     ($78),y
         pha
         lda     f:_c2b4be,x   ; pointer to animation data (+$d07fb2)
@@ -26064,10 +26198,10 @@ set_caster_animation:
         asl
         tax
         longa
-        ldy     #$0004
+        ldy     #4
         lda     ($78),y     ; targets hit
         pha
-        ldy     #$0002
+        ldy     #2
         lda     ($78),y     ; set targets
         iny2
         sta     ($78),y
@@ -26086,7 +26220,7 @@ _b8c2:  phx
         jsr     _c1ab8b       ; reset attacker graphical action
         longa
         pla
-        ldy     #$0004
+        ldy     #4
         sta     ($78),y     ; restore targets hit
         shorta0
         stz     $62c0       ; don't ignore block graphics
@@ -26138,7 +26272,7 @@ CmdAnim_0a:
         bcc     @b93a
         ldx     #$0516
         stx     $1e
-        ldy     #$0002
+        ldy     #2
         lda     ($76),y
         jsr     InitAnimProp
         jsr     ExecAnim
@@ -26154,7 +26288,7 @@ CmdAnim_0a:
 ; carry clear = no targets (out)
 
 CheckNullTarget:
-@b941:  ldy     #$0002
+@b941:  ldy     #2
         clr_a
 @b945:  ora     ($78),y     ; check possible targets, targets hit, targets reflected off, ...
         iny
@@ -26173,7 +26307,7 @@ CheckNullTarget:
 
 CmdAnim_26:
 @b955:  jsr     InitCmdAnim
-        ldy     #$0002
+        ldy     #2
         lda     ($76),y     ; die 1
         and     #$0f
         sta     $ebfb
@@ -26217,7 +26351,7 @@ CmdAnim_07:
 @b9ac:  jsr     _c19aa2
         ldx     #$04a6
         stx     $1e
-        ldy     #$0002
+        ldy     #2
         lda     ($76),y
         bmi     @b9c4
         jsr     InitAnimProp
@@ -26262,11 +26396,11 @@ CmdAnim_07:
 
 CmdAnim_08:
 @b9c5:  jsr     InitCmdAnim
-        ldy     #$0002
+        ldy     #2
         lda     ($76),y     ; item number
         inc
         tax
-        lda     $d10040,x   ;
+        lda     f:ItemJumpThrowAnim,x
         bpl     @b9df
         clr_a
         sta     ($76),y
@@ -26305,7 +26439,7 @@ CmdAnim_16:
         bpl     @ba18       ; branch if attacker is a character
 
 ; monster attacker
-        ldy     #$0004
+        ldy     #4
         lda     ($78),y     ; targets hit
         iny
         ora     ($78),y
@@ -26316,14 +26450,14 @@ CmdAnim_16:
 @ba15:  jmp     _c1bbe1
 
 ; character attacker
-@ba18:  ldy     #$0002
+@ba18:  ldy     #2
         lda     ($78),y     ; targets
         iny
         ora     ($78),y
         bne     @ba27       ; branch if there are targets
         lda     #$0a
         jmp     _c1bbe1
-@ba27:  ldy     #$0001
+@ba27:  ldy     #1
         lda     ($78),y     ; attacker
         tax
         lda     f:CharEquipPtrs,x
@@ -26342,7 +26476,7 @@ CmdAnim_16:
 @ba4a:  lda     $2b86,x     ; right-hand item
         inc
 @ba4e:  tax
-        lda     $d10040,x   ; item jump animation
+        lda     f:ItemJumpThrowAnim,x
         and     #$7f
         lsr4
         clc
@@ -26370,7 +26504,7 @@ CmdAnim_24:
         bne     @ba6a
         rts
 @ba7d:  tya
-        ldy     #$0001
+        ldy     #1
         sta     ($78),y
 @ba83:  jsr     NullTargetAnim
         bcc     @ba8d
@@ -26494,7 +26628,7 @@ CmdAnim_13:
         tax
         lda     f:_c2e462,x
         bne     _bb2b
-        ldy     #$0003
+        ldy     #3
         lda     ($76),y
         cmp     #$ff
         beq     _bb2b
@@ -26687,7 +26821,7 @@ CmdAnim_09:
         jsr     InitCmdAnim
         ldx     #$11f0
         stx     $1e
-        ldy     #$0002
+        ldy     #2
         lda     ($76),y
         jsr     InitAnimProp
         jsr     ExecAnim
@@ -26718,7 +26852,7 @@ CmdAnim_01:
         jsr     _c1b86b
 @bc51:  jsr     CheckNullTarget
         bcc     @bc85
-        ldy     #$0002
+        ldy     #2
         lda     ($76),y     ; item number
         cmp     #$e0
         bcc     @bc64       ; branch if not a usable item
@@ -26729,7 +26863,7 @@ CmdAnim_01:
 @bc66:  longa
         asl
         tax
-        lda     $d10000,x   ; pointer to battle animation data (+$d07fb2)
+        lda     f:ItemAnimPtrs,x
         tax
         shorta0
         cpx     #$ffff      ; branch if no animation
@@ -26876,7 +27010,7 @@ PopObjPos:
 
 _c1bd5a:
 set_defend:
-@bd5a:  ldy     #$0008
+@bd5a:  ldy     #8
         lda     ($78),y     ;
         cmp     #$04
         bcs     @bd9a       ; branch if a monster
@@ -26935,7 +27069,7 @@ set_defend:
 @bdce:  ldx     #$0000
 @bdd1:  phx
         stx     $22
-        ldy     #$0006
+        ldy     #6
         lda     ($78),y
         sta     $18
         stz     $1a
@@ -26986,7 +27120,7 @@ set_defend:
         bne     @bddd
         plx
         stx     $22
-        ldy     #$0007
+        ldy     #7
         lda     ($78),y
         sta     $18
         stz     $1a
@@ -27083,7 +27217,7 @@ anim_command_attack:
         lda     $618a       ; branch if monster attack
         bne     @beff
         jsr     _c1b86b
-@beff:  ldy     #$0002
+@beff:  ldy     #2
         lda     ($76),y     ; left-hand weapon flag
         and     #$80
         sta     $7af4
@@ -27357,7 +27491,7 @@ anim_command_attack:
         lda     ($78),y     ; block type
         sta     $629b,y     ;
         bne     @c188
-@c176:  ldy     #$0004
+@c176:  ldy     #4
         lda     ($78),y     ; targets hit
         iny
         ora     ($78),y     ; targets reflected off of
@@ -27377,7 +27511,7 @@ anim_command_attack:
         lda     #^AttackAnimScript
         sta     $26
         longa
-        lda     $d1ee28     ; ++$22 = pointer to animation script $01a8
+        lda     f:AttackAnimScriptPtrs+$01a8*2     ; ++$22 = pointer to animation script $01a8
         sta     $24
         shorta0
         lda     #$01        ; frame delay = 1
@@ -27407,7 +27541,7 @@ anim_command_attack:
         jsr     GetTargetID
         jsr     UpdateSpritePriority
         jsr     ExecAnimScript
-        ldy     #$0004
+        ldy     #4
         lda     ($78),y     ; targets hit
         bne     @c201       ; branch if targets were hit
         iny2
@@ -30224,7 +30358,9 @@ magic_init_52:
 _c1d29c:
 @d29c:  .byte   $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$0f
         .byte   $0f,$0e,$0d,$0c,$0b,$0a,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00
-        .byte   $80,$40,$60,$20,$a0,$c0,$80,$20,$20,$60,$20,$60,$20,$60,$20,$60
+
+_c1d2bc:
+@d2bc:  .byte   $80,$40,$60,$20,$a0,$c0,$80,$20,$20,$60,$20,$60,$20,$60,$20,$60
 
 ; ------------------------------------------------------------------------------
 
@@ -30258,7 +30394,7 @@ _d2d4:  lda     [$5b],y
         adc     $16
         tax
         sta     $14
-        lda     $c1d2bc,x
+        lda     f:_c1d2bc,x
         sta     $10
         lda     $62ad
         and     #$1f
@@ -30283,7 +30419,7 @@ _d2d4:  lda     [$5b],y
         clc
         adc     $16
         tax
-        lda     $c1d2bc,x
+        lda     f:_c1d2bc,x
         sta     $10
         ldx     #$0000
 @d326:  iny4
@@ -34011,7 +34147,7 @@ IncPal:
         stz     $13
         longa
         ldx     $10
-        jsr     _c1fc6e
+        jsr     InitColorMod
 @eb40:  lda     $7c00,x
         jsr     IncColor
         sta     $7e00,x
@@ -34030,7 +34166,7 @@ DecPal:
         stz     $13
         longa
         ldx     $10
-        jsr     _c1fc6e
+        jsr     InitColorMod
 @eb5e:  lda     $7c00,x
         jsr     DecColor
         sta     $7e00,x
@@ -36826,14 +36962,13 @@ magic_code1a:
 
 ; ------------------------------------------------------------------------------
 
-; [ set color math ]
+; [ init palette color modification (not hardware color math) ]
 
 ; +$14: red value
 ; +$16: green value
 ; +$18: blue value
 
-_c1fc6e:
-init_color_set:
+InitColorMod:
         .a16
 @fc6e:  stz     $22
         stz     $24
@@ -36979,7 +37114,7 @@ IncColor:
 
 GfxCmd_0f:
 goodanim:
-@fd67:  ldy     #$0001
+@fd67:  ldy     #1
         lda     ($76),y     ; battle event number
         cmp     #$1b
         beq     @fd77
@@ -36994,7 +37129,7 @@ goodanim:
         jsl     BtlGfx_01
         jsl     BtlGfx_01
 @fd8f:  inc     $e9ef       ; stop battle time
-        ldy     #$0001
+        ldy     #1
         lda     ($76),y     ; battle event number
         longa
         asl
@@ -37841,8 +37976,9 @@ _c2ab8a:
 @ac75:  asl
         tax
         lda     #$80
-        jmp     ($ac7c,x)
+        jmp     (.loword(_c2ac7c),x)
 
+_c2ac7c:
 @ac7c:  .addr   _c2ac84,_c2acbd,_c2acf6,_c2ad2f
 
 ; ------------------------------------------------------------------------------
@@ -39699,36 +39835,38 @@ good_inside_mode:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ load swdtech or esper attack name ]
 
 _c2bb11:
 set_s_mess_poi:
 @bb11:  and     #$0f
         asl
         tax
-        jmp     ($bb18,x)
+        jmp     (.loword(_c2bb18),x)
 
-@bb18:  .addr   $bb46,$bb1c
+_c2bb18:
+@bb18:  .addr   _c2bb46,_c2bb1c
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ load swdtech name ]
 
-@bb1c:  ldy     #$0002
+_c2bb1c:
+@bb1c:  ldy     #2
         lda     ($76),y
         sta     $22
-        lda     #$0c
+        lda     #12
         sta     $24
         jsl     Mult8_far
         ldx     $26
         clr_ay
-@bb2f:  lda     $cf3c40,x
+@bb2f:  lda     f:BushidoName,x
         cmp     #$ff
         beq     @bb41
         sta     $57d5,y
         inx
         iny
-        cpy     #$000c
+        cpy     #12
         bne     @bb2f
 @bb41:  clr_a
         sta     $57d5,y
@@ -39736,12 +39874,13 @@ set_s_mess_poi:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ load esper attack name ]
 
-@bb46:  ldy     #$0002
+_c2bb46:
+@bb46:  ldy     #2
         lda     ($76),y
         sta     $22
-        lda     #$0a
+        lda     #10
         sta     $24
         jsl     Mult8_far
         ldx     $26
@@ -39752,7 +39891,7 @@ set_s_mess_poi:
         sta     $57d5,y
         inx
         iny
-        cpy     #$000a
+        cpy     #10
         bne     @bb59
 @bb6b:  clr_a
         sta     $57d5,y
@@ -39803,7 +39942,7 @@ _c2bbcf:
 magic_init_103long:
 @bbcf:  ldx     $6169
         clr_ay
-@bbd4:  lda     $d27840,x   ; monster palette
+@bbd4:  lda     f:MonsterPal+$20,x
         sta     $7fe0,y
         sta     $7de0,y
         inx
@@ -41462,11 +41601,14 @@ CharPalTbl:
 
 ; ------------------------------------------------------------------------------
 
+.repeat 23, i
+        .import .ident(.sprintf("MapSpriteGfx_%04x", i))
+.endrep
+
 ; pointers to character sprite graphics
 CharGfxPtrs:
-@ce43:  .faraddr $d50000,$d516a0,$d52d40,$d543e0,$d55a80,$d57120,$d587c0,$d59e60
-        .faraddr $d5b500,$d5cba0,$d5e240,$d5f8e0,$d60f80,$d62620,$d63cc0,$d65360
-        .faraddr $d66a00,$d67f60,$d694c0,$d6aa20,$d6bf80,$d6d4e0,$d6ea40,$d63cc0
+@ce43:  make_ptr_tbl_far MapSpriteGfx, 23, 0
+        .faraddr MapSpriteGfx_000e
 
 ; ------------------------------------------------------------------------------
 
@@ -41474,7 +41616,9 @@ CharGfxPtrs:
 _c2ce8b:
 get_main_work_poi:
 @ce8b:  .word   $0000,$0080,$0100,$0180
-        .word   $0200,$0280,$0300,$0380,$0400,$0480
+
+_c2ce93:
+@ce93:  .word   $0200,$0280,$0300,$0380,$0400,$0480
         .word   $0500,$0580
 
 ; ------------------------------------------------------------------------------
@@ -41553,8 +41697,12 @@ _c2cf5b:
 ; ------------------------------------------------------------------------------
 
 ; pointers to magitek armor graphics (4 frames, then unknown japanese text)
-_c2cf5f:
-@cf5f:  .dword  $d84500,$d84800,$d84900,$d84c00,$d84d00
+MagitekGfxPtrs:
+@cf5f:  .dword  VehicleGfx+$1500
+        .dword  VehicleGfx+$1800
+        .dword  VehicleGfx+$1900
+        .dword  VehicleGfx+$1c00
+        .dword  VehicleGfx+$1d00
 
 ; magitek animation data (4 items, 4 bytes each)
 _c2cf73:
@@ -43365,45 +43513,35 @@ magic_init_110long:
 ; ------------------------------------------------------------------------------
 
 ; menu window tile data vram pointers
-frame_tfr_poi:
-_c2dd8c:
+MenuWindowVRAMPtrs:
 @dd8c:  .word   $7000,$7140,$7600,$7300,$7400,$7500,$7700,$6800
         .word   $6900
 
 ; ------------------------------------------------------------------------------
 
 ; menu window size & position data
+
+.macro def_menu_window _bufptr,_width,_height
+        .byte   _width,_height
+        .word   _bufptr
+.endmac
+
 MenuWindowTbl:
-@dd9e:  .byte   $0c,$08
-        .word   $8d15
-        .byte   $12,$08
-        .word   $8d2d
-        .byte   $0a,$08
-        .word   $8d17
-        .byte   $1e,$08
-        .word   $8d15
-        .byte   $1e,$08
-        .word   $8d15
-        .byte   $09,$08
-        .word   $8d3f
-        .byte   $1e,$05
-        .word   $8d15
-        .byte   $15,$08
-        .word   $8d15
-        .byte   $1e,$04
-        .word   $8d15
-        .byte   $07,$04
-        .word   $8d13
-        .byte   $0c,$05
-        .word   $8d13
-        .byte   $1e,$04
-        .word   $a9c1
-        .byte   $12,$04
-        .word   $a9cd
-        .byte   $13,$07
-        .word   $8d17
-        .byte   $0c,$08
-        .word   $8d17
+@dd9e:  def_menu_window $8d15,12,8
+        def_menu_window $8d2d,18,8
+        def_menu_window $8d17,10,8
+        def_menu_window $8d15,30,8
+        def_menu_window $8d15,30,8
+        def_menu_window $8d3f,9,8
+        def_menu_window $8d15,30,5
+        def_menu_window $8d15,21,8
+        def_menu_window $8d15,30,4
+        def_menu_window $8d13,7,4
+        def_menu_window $8d13,12,5
+        def_menu_window $a9c1,30,4
+        def_menu_window $a9cd,18,4
+        def_menu_window $8d17,19,7
+        def_menu_window $8d17,12,8
 
 ; ------------------------------------------------------------------------------
 
@@ -43493,213 +43631,251 @@ _c2dea2:
 
 ; ------------------------------------------------------------------------------
 
-; menu region text data
-_c2df12:
-@df12:  .word   $5ad5
-        .byte   $0c,$00
-        .word   $5b95
-        .byte   $07,$00
-        .word   $5c05
-        .byte   $04,$00
-        .word   $5c45
-        .byte   $06,$00
-        .word   $5859
-        .byte   $20,$00
-        .word   $8d61
-        .byte   $20,$00
-        .word   $5e4d
-        .byte   $20,$00
-        .word   $5ca5
-        .byte   $07,$00
-        .word   $5d3f
-        .byte   $07,$00
-        .word   $5d85
-        .byte   $07,$00
-        .word   $5ca5
-        .byte   $07,$00
-        .word   $5cc1
-        .byte   $07,$00
-        .word   $5cdd
-        .byte   $07,$00
-        .word   $5cf9
-        .byte   $07,$00
-        .word   $5c05
-        .byte   $04,$00
-        .word   $5c15
-        .byte   $04,$00
-        .word   $5c25
-        .byte   $04,$00
-        .word   $5c35
-        .byte   $04,$00
-        .word   $5c45
-        .byte   $06,$00
-        .word   $5c5d
-        .byte   $06,$00
-        .word   $5c75
-        .byte   $06,$00
-        .word   $5c8d
-        .byte   $06,$00
-        .word   $5c45
-        .byte   $06,$00
-        .word   $5c5d
-        .byte   $06,$00
-        .word   $5c75
-        .byte   $06,$00
-        .word   $5c8d
-        .byte   $06,$00
-        .word   $5c45
-        .byte   $06,$00
-        .word   $5c5d
-        .byte   $06,$00
-        .word   $5c75
-        .byte   $06,$00
-        .word   $5c8d
-        .byte   $06,$00
-        .word   $5dbd
-        .byte   $0c,$00
-        .word   $5859
-        .byte   $20,$00
-        .word   $5859
-        .byte   $20,$00
-        .word   $5ecd
-        .byte   $0a,$00
-        .word   $8d57
-        .byte   $20,$00
+; menu text buffer data
+
+.macro def_menu_text_buf _bufptr, _width
+        .word   _bufptr
+        .byte   _width,0
+.endmac
+
+MenuTextBufData:
+@df12:  def_menu_text_buf $5ad5,12
+        def_menu_text_buf $5b95,7
+        def_menu_text_buf $5c05,4
+        def_menu_text_buf $5c45,6
+        def_menu_text_buf $5859,32
+        def_menu_text_buf $8d61,32
+        def_menu_text_buf $5e4d,32
+        def_menu_text_buf $5ca5,7
+        def_menu_text_buf $5d3f,7
+        def_menu_text_buf $5d85,7
+        def_menu_text_buf $5ca5,7
+        def_menu_text_buf $5cc1,7
+        def_menu_text_buf $5cdd,7
+        def_menu_text_buf $5cf9,7
+        def_menu_text_buf $5c05,4
+        def_menu_text_buf $5c15,4
+        def_menu_text_buf $5c25,4
+        def_menu_text_buf $5c35,4
+        def_menu_text_buf $5c45,6
+        def_menu_text_buf $5c5d,6
+        def_menu_text_buf $5c75,6
+        def_menu_text_buf $5c8d,6
+        def_menu_text_buf $5c45,6
+        def_menu_text_buf $5c5d,6
+        def_menu_text_buf $5c75,6
+        def_menu_text_buf $5c8d,6
+        def_menu_text_buf $5c45,6
+        def_menu_text_buf $5c5d,6
+        def_menu_text_buf $5c75,6
+        def_menu_text_buf $5c8d,6
+        def_menu_text_buf $5dbd,12
+        def_menu_text_buf $5859,32
+        def_menu_text_buf $5859,32
+        def_menu_text_buf $5ecd,10
+        def_menu_text_buf $8d57,32
 
 ; ------------------------------------------------------------------------------
 
 ; menu text tile display data (source, destination, length, number of lines)
 _c2df9e:
 set_box_data_tbl:
-@df9e:  .word   $5ad5,$5859,$0018,$0008  ; monster names
-        .word   $5b95,$5871,$000e,$0008  ; character names
-        .word   $5c05,$587f,$0008,$0008  ; hp
-        .word   $5c45,$5887,$000c,$0008  ; gauge
-        .word   $5d31,$8d15,$000e,$0005  ; row (top)
-        .word   $5d31,$8d95,$000e,$0005  ; row
-        .word   $5d31,$8e15,$000e,$0005  ; row
-        .word   $5d31,$8e95,$000e,$0005  ; row (bottom)
-        .word   $5d77,$8d21,$000e,$0005  ; def. (top)
-        .word   $5d77,$8da1,$000e,$0005  ; def.
-        .word   $5d77,$8e21,$000e,$0005  ; def.
-        .word   $5d77,$8ea1,$000e,$0005  ; def. (bottom)
-        .word   $5c05,$8d7d,$0008,$0008  ; hp
-        .word   $5c45,$8d85,$000c,$0008  ; gauge
-        .word   $5dbd,$8d57,$0018,$0006  ;
-        .word   $5d31,$8d17,$000e,$0005  ; row (short)
-        .word   $5d77,$8d2f,$000e,$0005  ; def. (short)
-        .word   $5ecd,$8d57,$0014,$0008
-        .word   $5b95,$8d6f,$000e,$0008
+@df9e:  .word   $5ad5,$5859,$0018,$0008  ; $00: monster names
+        .word   $5b95,$5871,$000e,$0008  ; $01: character names
+        .word   $5c05,$587f,$0008,$0008  ; $02: hp
+        .word   $5c45,$5887,$000c,$0008  ; $03: gauge
+        .word   $5d31,$8d15,$000e,$0005  ; $04: row (top)
+        .word   $5d31,$8d95,$000e,$0005  ; $05: row
+        .word   $5d31,$8e15,$000e,$0005  ; $06: row
+        .word   $5d31,$8e95,$000e,$0005  ; $07: row (bottom)
+        .word   $5d77,$8d21,$000e,$0005  ; $08: def. (top)
+        .word   $5d77,$8da1,$000e,$0005  ; $09: def.
+        .word   $5d77,$8e21,$000e,$0005  ; $0a: def.
+        .word   $5d77,$8ea1,$000e,$0005  ; $0b: def. (bottom)
+        .word   $5c05,$8d7d,$0008,$0008  ; $0c: hp
+        .word   $5c45,$8d85,$000c,$0008  ; $0d: gauge
+        .word   $5dbd,$8d57,$0018,$0006  ; $0e:
+        .word   $5d31,$8d17,$000e,$0005  ; $0f: row (short)
+        .word   $5d77,$8d2f,$000e,$0005  ; $10: def. (short)
+        .word   $5ecd,$8d57,$0014,$0008  ; $11:
+        .word   $5b95,$8d6f,$000e,$0008  ; $12:
 
 ; ------------------------------------------------------------------------------
 
-magic_win_data:
+; menu list text data (draws one line of each list)
+
+MagicListText:
 @e036:  .byte   $05,$03,$04,$21,$0f,$00,$ff,$ff,$04,$21,$0f,$00,$05,$0a,$00
 
+LoreListText:
 @e045:  .byte   $ff,$ff,$ff,$04,$21,$19,$00,$00
 
+MagitekListText:
 @e04d:  .byte   $05,$04,$04,$21,$06,$00,$05,$03,$04,$21,$06,$00,$00
+
+DanceListText:
 @e05a:  .byte   $05,$04,$04,$21,$17,$00,$05,$02,$04,$21,$17,$00,$00
+
+RageListText:
 @e067:  .byte   $05,$04,$04,$21,$18,$00,$05,$02,$04,$21,$18,$00,$00
 
-; item in list
+ItemListText:
 @e074:  .byte   $05,$04,$04,$21,$0e,$00,$c1,$02,$00,$ff,$ff,$12,$00,$ff,$00
 
-magic2_win_data:
+; this draws the magic list below the summon window, and not the
+; text in the summon window itself
+SummonMagicListText:
 @e083:  .byte   $ff,$ff,$84,$ac,$a9,$9e,$ab,$ff,$ff,$04,$21,$1a,$00,$05,$04,$03
         .byte   $2c,$03,$2f,$ff,$16,$00,$00
 
-; pointers to menu region text
-@e09a:  .word   $e1c9,$e1d9,$e1e9,$e1f5,$e248,$e268,$e172,$e185
-        .word   $e165,$e16b,$e1a1,$e1a8,$e1af,$e1b6,$e125,$e128
-        .word   $e12b,$e12e,$e131,$e134,$e137,$e13a,$e13d,$e142
-        .word   $e147,$e14c,$e151,$e156,$e15b,$e160,$e0ec,$e201
-        .word   $e228,$e1bd,$e0e0
+; ------------------------------------------------------------------------------
+
+; pointers to menu text
+MenuTextPtrs:
+@e09a:  make_ptr_tbl_abs MenuText, $23
 
 ; menu text region $22:
+MenuText_0022:
 @e0e0:  .byte   $05,$12,$01,$05,$12,$01,$05,$12,$01,$05,$12,$00
 
 ; menu text region $1e: swdtech numbers and gauge
+MenuText_001e:
 @e0ec:  .byte   $ff,$ff,$04,$21,$b5,$04,$21,$b6,$04,$21,$b7,$04,$21,$b8,$04,$21
         .byte   $b9,$04,$21,$ba,$04,$21,$bb,$04,$21,$bc,$ff,$ff,$01,$04,$35,$ff
         .byte   $03,$f9,$03,$f0,$03,$f0,$03,$f0,$03,$f0,$03,$f0,$03,$f0,$03,$f0
         .byte   $03,$f0,$03,$fa,$ff,$01,$05,$0c,$00
 
 ; menu text region $0e-$11: current hp (one character)
+MenuText_000e:
 @e125:  .byte   $07,$01,$00
-        .byte   $08,$01,$00
-        .byte   $09,$01,$00
-        .byte   $0a,$01,$00
+
+MenuText_000f:
+@e128:  .byte   $08,$01,$00
+
+MenuText_0010:
+@e12b:  .byte   $09,$01,$00
+
+MenuText_0011:
+@e12e:  .byte   $0a,$01,$00
 
 ; menu text region $12-$15: atb gauge or max hp (one character)
+MenuText_0012:
 @e131:  .byte   $07,$02,$00
+
+MenuText_0013:
         .byte   $08,$02,$00
+
+MenuText_0014:
         .byte   $09,$02,$00
+
+MenuText_0015:
         .byte   $0a,$02,$00
 
 ; menu text region $16-$19: morph gauge
+MenuText_0016:
 @e13d:  .byte   $04,$39,$07,$05,$00
+
+MenuText_0017:
         .byte   $04,$39,$08,$05,$00
+
+MenuText_0018:
         .byte   $04,$39,$09,$05,$00
+
+MenuText_0019:
         .byte   $04,$39,$0a,$05,$00
 
 ; menu text region $1a-$1d: condemned gauge
+MenuText_001a:
 @e151:  .byte   $04,$3d,$07,$06,$00
-        .byte   $04,$3d,$08,$06,$00
-        .byte   $04,$3d,$09,$06,$00
-        .byte   $04,$3d,$0a,$06,$00
+
+MenuText_001b:
+@e156:  .byte   $04,$3d,$08,$06,$00
+
+MenuText_001c:
+@e15b:  .byte   $04,$3d,$09,$06,$00
+
+MenuText_001d:
+@e160:  .byte   $04,$3d,$0a,$06,$00
 
 ; menu text region $08: "row"
+MenuText_0008:
 @e165:  .byte   $ff,$ff,$91,$a8,$b0,$00
 
 ; menu text region $09: "def."
+MenuText_0009:
 @e16b:  .byte   $ff,$ff,$83,$9e,$9f,$c5,$00
 
 ; menu text region $06: "r-hand", "l-hand"
+MenuText_0006:
 @e172:  .byte   $05,$03,$91,$c4,$87,$9a,$a7,$9d,$05,$09,$8b,$c4,$87,$9a,$a7,$9d
         .byte   $05,$07,$00
 
 ; menu text region $07: current mp/max mp (for all characters)
-@e185:  .byte   $07,$03,$03,$15,$07,$04,$01,$08,$03,$03,$15,$08,$04,$01,$09,$03
-        .byte   $03,$15,$09,$04,$01,$0a,$03,$03,$15,$0a,$04,$00
+MenuText_0007:
+@e185:  .byte   $07,$03,$03,$15,$07,$04,$01
+        .byte   $08,$03,$03,$15,$08,$04,$01
+        .byte   $09,$03,$03,$15,$09,$04,$01
+        .byte   $0a,$03,$03,$15,$0a,$04,$00
 
 ; menu text region $0a-$0d: current mp/max mp (for one character)
+MenuText_000a:
 @e1a1:  .byte   $07,$03,$03,$15,$07,$04,$00
+
+MenuText_000b:
         .byte   $08,$03,$03,$15,$08,$04,$00
+
+MenuText_000c:
         .byte   $09,$03,$03,$15,$09,$04,$00
+
+MenuText_000d:
         .byte   $0a,$03,$03,$15,$0a,$04,$00
 
 ; menu text region $21: clear status names
+MenuText_0021:
 @e1bd:  .byte   $10,$1f,$01,$10,$1f,$01,$10,$1f,$01,$10,$1f,$00
 
 ; menu text region $00: monster names
+MenuText_0000:
 @e1c9:  .byte   $0b,$00,$ff,$01,$0b,$01,$ff,$01,$0b,$02,$ff,$01,$0b,$03,$ff,$00
 
 ; menu text region $01: character names
+MenuText_0001:
 @e1d9:  .byte   $07,$00,$ff,$01,$08,$00,$ff,$01,$09,$00,$ff,$01,$0a,$00,$ff,$00
 
 ; menu text region $02: current hp (all characters)
+MenuText_0002:
 @e1e9:  .byte   $07,$01,$01,$08,$01,$01,$09,$01,$01,$0a,$01,$00
 
 ; menu text region $03: atb gauge or max hp (all characters)
+MenuText_0003:
 @e1f5:  .byte   $07,$02,$01,$08,$02,$01,$09,$02,$01,$0a,$02,$00
 
 ; menu text region $1f: clear battle commands
+MenuText_001f:
 @e201:  .byte   $05,$06,$04,$21,$0d,$00,$05,$05,$01,$ff,$ff,$04,$21,$0d,$00,$16
         .byte   $16,$16,$ff,$ff,$04,$21,$0d,$00,$ff,$01,$16,$05,$06,$04,$21,$0d
         .byte   $00,$05,$05,$01,$05,$13,$00
 
 ; menu text region $20:
-@e228:  .byte   $ff,$04,$21,$11,$00,$ff,$16,$01,$ff,$04,$21,$11,$00,$ff,$16,$01
-        .byte   $ff,$04,$21,$11,$00,$ff,$16,$01,$ff,$04,$21,$11,$00,$ff,$16,$00
+MenuText_0020:
+@e228:  .byte   $ff,$04,$21,$11,$00,$ff,$16,$01
+        .byte   $ff,$04,$21,$11,$00,$ff,$16,$01
+        .byte   $ff,$04,$21,$11,$00,$ff,$16,$01
+        .byte   $ff,$04,$21,$11,$00,$ff,$16,$00
 
-; menu text region $04:
-@e248:  .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$01,$ff,$ff,$04,$21,$0d,$00,$ff,$01
-        .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$01,$ff,$ff,$04,$21,$0d,$00,$ff,$00
+; menu text region $04: battle command names
+MenuText_0004:
+@e248:  .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$01
+        .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$01
+        .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$01
+        .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$00
 
 ; menu text region $05:
-@e268:  .byte   $ff,$ff,$04,$21,$1b,$00,$ff,$01,$ff,$ff,$04,$21,$1b,$00,$ff,$01
-        .byte   $ff,$ff,$04,$21,$1b,$00,$ff,$01,$ff,$ff,$04,$21,$1b,$00,$ff,$00
+MenuText_0005:
+@e268:  .byte   $ff,$ff,$04,$21,$1b,$00,$ff,$01
+        .byte   $ff,$ff,$04,$21,$1b,$00,$ff,$01
+        .byte   $ff,$ff,$04,$21,$1b,$00,$ff,$01
+        .byte   $ff,$ff,$04,$21,$1b,$00,$ff,$00
 
 ; ------------------------------------------------------------------------------
 
@@ -43707,17 +43883,17 @@ magic2_win_data:
 _c2e288:
 @e288:  .word   $0000,$31ad,$190a,$1d2b,$296b,$2129,$1d08,$1ce7
         .word   $18e7,$18a5,$0823,$0c64,$294a,$18c6,$0ca9,$0866
-@e2a8:  .word   $3800,$4af8,$3a96,$2a34,$1dd2,$112e,$0ca9,$0866
+        .word   $3800,$4af8,$3a96,$2a34,$1dd2,$112e,$0ca9,$0866
         .word   $0823,$25d4,$14ed,$10a8,$0865,$0443,$2946,$2107
-@e2c8:  .word   $3800,$09d3,$0cb2,$11cb,$1d70,$14ec,$10a8,$0c84
+        .word   $3800,$09d3,$0cb2,$11cb,$1d70,$14ec,$10a8,$0c84
         .word   $0823,$420e,$296a,$1d70,$5273,$09d3,$0cb2,$11cb
 
 _c2e2e8:
 @e2e8:  .word   $0000,$0c84,$0c44,$0c64,$1084,$0c43,$0c62,$0c42
         .word   $0c42,$0c43,$0823,$0823,$0c63,$0c43,$0823,$0823
-@e308:  .word   $3800,$112e,$0ca9,$18a7,$1485,$1444,$1443,$1023
+        .word   $3800,$112e,$0ca9,$18a7,$1485,$1444,$1443,$1023
         .word   $0823,$0823,$1046,$0845,$0824,$0823,$7fd4,$0823
-@e328:  .word   $3800,$5230,$4914,$3deb,$0c64,$0845,$0824,$0823
+        .word   $3800,$5230,$4914,$3deb,$0c64,$0845,$0824,$0823
         .word   $0823,$0c64,$0c44,$65b0,$1065,$0863,$0844,$0c62
 
 ; ------------------------------------------------------------------------------
@@ -44048,7 +44224,7 @@ MonsterAnimScript_0008:
 ; [ execute misc. monster animation (ai command $fa, command $2b) ]
 
 DoMonsterAnim:
-@e63d:  ldy     #$0002
+@e63d:  ldy     #2
         lda     ($76),y
         sta     $e9fc       ; target monster
         dey
@@ -44065,7 +44241,7 @@ DoMonsterAnim:
 @e659:  longa
         asl
         tax
-        lda     $c2e5d3,x   ; pointer to misc. monster animation script
+        lda     f:MonsterAnimScriptPtrs,x
         sta     $8f
         shorta0
         bra     _e6b1
@@ -44076,7 +44252,7 @@ DoMonsterAnim:
 
 DoMonsterEntryExit:
 @e668:  jsr     WaitLine160_near
-        ldy     #$0001
+        ldy     #1
         lda     ($76),y     ; entry/exit type
         cmp     #$0d
         bne     @e67a       ; branch if not $0d (flash in/out)
@@ -44104,9 +44280,9 @@ DoMonsterEntryExit:
         lda     $e9fb
         and     #$00ff
         beq     @e6a8       ; branch if monsters are entering
-        lda     $c2e4eb,x   ; pointers to monster exit animation scripts
+        lda     f:MonsterExitScriptPtrs,x
         bra     @e6ac
-@e6a8:  lda     $c2e50f,x   ; pointers to monster entry animation scripts
+@e6a8:  lda     f:MonsterEntryScriptPtrs,x
 @e6ac:  sta     $8f
         shorta0
 
@@ -44320,7 +44496,7 @@ _c2e806:
 get_mode_bit:
 @e806:  lda     $201e
         sta     $e9fa
-        ldy     #$0002
+        ldy     #2
         lda     ($76),y
         sta     $e9fb
         eor     #$ff
@@ -44399,7 +44575,7 @@ ExecAnimType:
 @e8d0:  and     #$7f
         asl
         tax
-        jsr     ($e8d8,x)
+        jsr     (.loword(AnimTypeTbl),x)
         rtl
 
 ; ------------------------------------------------------------------------------
@@ -44852,7 +45028,7 @@ AnimType_6e:
 @ebc2:  ldx     #$019b      ; tigerbreak
         jsl     LoadSummonGfxSprite_far
         clr_ax
-@ebcb:  lda     $ed6300,x   ; character sprite color palette 0
+@ebcb:  lda     f:BattleCharPal,x   ; character sprite color palette 0
         sta     $7f60,x
         sta     $7d60,x
         inx
@@ -46418,7 +46594,7 @@ magic_type2f:
         lda     $898d
         and     #$fe
         sta     $898d
-        ldy     #$0003
+        ldy     #3
         lda     ($76),y
 
 .if LANG_EN_REV1

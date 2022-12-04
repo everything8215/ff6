@@ -11,7 +11,7 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.import MonsterAlign
+.import MonsterAlign, ColosseumProp
 
 ; ------------------------------------------------------------------------------
 
@@ -841,11 +841,11 @@ _c3b22c:
         asl2
         tax
         shorta
-        lda     $dfb600,x               ; colosseum monster
+        lda     f:ColosseumProp,x
         sta     $0206
-        lda     $dfb602,x               ; prize
+        lda     f:ColosseumProp+2,x               ; prize
         sta     $0207
-        lda     $dfb603,x               ; hide prize name
+        lda     f:ColosseumProp+3,x
         sta     $0209
         rts
 

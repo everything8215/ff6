@@ -714,9 +714,9 @@ TfrVehicleGfx:
         sta     $4300
         lda     #$18
         sta     $4301
-        ldx     #.loword(MapVehicleGfx) ; source address
+        ldx     #.loword(VehicleGfx) ; source address
         stx     $4302
-        lda     #^MapVehicleGfx
+        lda     #^VehicleGfx
         sta     $4304
         sta     $4307
         ldx     #$1c00                  ; size = $1c00

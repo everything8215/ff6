@@ -128,7 +128,7 @@ CutsceneProg:
 
 ; ------------------------------------------------------------------------------
 
-.segment "cutscene_code_wram"
+.segment "cutscene_wram"
 
 TitleScreen_ext2:
 @5000:  jmp     TitleMain

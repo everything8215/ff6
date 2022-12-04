@@ -120,7 +120,7 @@ OpenMenu:
         sta     $020f
         ldy     $0206
         sty     $0201
-        jsl     OpenMenu
+        jsl     OpenMenu_ext
         lda     $020f
         sta     $0201
         stz     $0200
@@ -133,7 +133,7 @@ OpenMenu:
         sta     $020f
         lda     $0206
         sta     $0201
-        jsl     OpenMenu
+        jsl     OpenMenu_ext
         lda     $020f
         sta     $0201
         stz     $0200

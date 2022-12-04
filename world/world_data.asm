@@ -11,20 +11,29 @@
 ; | created: 8/15/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.segment "world_pal"
+.segment "world_mod"
 
-; d2/ec00
-        .include "gfx/world_bg_pal1.asm"
-; d2/ed00
-        .include "gfx/world_bg_pal2.asm"
-; d2/ee00
-        .include "gfx/world_sprite_pal1.asm"
-; d2/ef00
-        .include "gfx/world_sprite_pal2.asm"
+        .include "data/world_mod_data.asm"                      ; ce/f600
+        WorldModData_end := *
+        .include "data/world_mod_tiles.asm"                     ; ce/f648
+        .res $0500+WorldModData-*
+
+; unused (30 * 3 bytes)
+        .faraddr 1,2,3,4,5,6,7,8,9,0,0,0,0,0,0                  ; ce/fb00
+        .faraddr 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 ; ------------------------------------------------------------------------------
 
-.segment "mode7_cutscene_data"
+.segment "world_pal"
+
+        .include "gfx/world_bg_pal1.asm"                        ; d2/ec00
+        .include "gfx/world_bg_pal2.asm"                        ; d2/ed00
+        .include "gfx/world_sprite_pal1.asm"                    ; d2/ee00
+        .include "gfx/world_sprite_pal2.asm"                    ; d2/ef00
+
+; ------------------------------------------------------------------------------
+
+.segment "cutscene_mode7"
 
 ; d8/dd00 Pointers to Magitek Train Ride Tile Graphics (29 items, 12x2 bytes each, +$7E0000)
         .res $02b8
@@ -35,8 +44,7 @@
 ; d8/e5bf Vector Panorama Tilemap (compressed)
         .res $00fb
 
-; d8/e6ba
-        .include "gfx/snake_road_pal.asm"
+        .include "gfx/snake_road_pal.asm"                       ; d8/e6ba
 
 ; ------------------------------------------------------------------------------
 
@@ -131,7 +139,8 @@ EndingAirshipScenePalPtr:
 
 ; ee/b260
 WorldModDataPtrs:
-        .res 3*3
+        make_ptr_tbl_far WorldModData, 2
+        .faraddr WorldModData_end
 
 ; ee/b269
 VehicleEvent_00:
@@ -159,74 +168,32 @@ VehicleEvent_06:
 
 ; ------------------------------------------------------------------------------
 
-; ee/b290   World Map Clouds Graphics (compressed)
-        .include "gfx/world_backdrop_gfx.asm"
-
-; ee/c295   World Map Clouds Tile Formation (compressed)
-        .include "gfx/world_backdrop_tiles.asm"
-
-; ee/c702   Blackjack Graphics (compressed)
-        .include "gfx/airship_gfx1.asm"
-
-; ee/d434   World of Balance Map Formation (compressed)
-        .include "data/world_tilemap1.asm"
-
-; ef/114f   World of Balance Graphics (compressed)
-        .include "gfx/world_gfx1.asm"
-
-; ef/3250   Magitek Train Ride Graphics (variable size tiles, compressed)
-        .include "gfx/train_gfx.asm"
-
-; ef/4846   Magitek Train Ride Palettes
-        .include "gfx/train_pal.asm"
-
-; ef/4a46   World of Ruin Graphics (compressed)
-        .include "gfx/world_gfx2.asm"
-
-; ef/6a56   World of Ruin Map Formation (compressed)
-        .include "data/world_tilemap2.asm"
-
-; ef/9d17   Serpent Trench Map Formation (compressed)
-        .include "data/world_tilemap3.asm"
-
-; ef/b631   Serpent Trench Graphics (compressed)
-        .include "gfx/world_gfx3.asm"
-
-; ef/c624   Some Chocobo Graphics (compressed)
-        .include "gfx/world_choco_gfx1.asm"
-
-; ef/ce77   Vector Approach Palette
-        .include "gfx/vector_approach_pal.asm"
-
-; ef/ce97   Esper Terra Palette
-        .include "gfx/world_esper_terra_pal.asm"
-
-; ef/ceb7   Airship Shadow and Perspective Graphics (compressed)
-        .include "gfx/world_sprite_gfx1.asm"
-
-; ef/cfb9   Various Sprites (ship, esper terra, figaro, etc., compressed)
-        .include "gfx/world_sprite_gfx2.asm"
-
-; ef/dc4c   More Chocobo Graphics (world map, compressed)
-        .include "gfx/world_choco_gfx2.asm"
-
-; ef/e49b   World of Balance Minimap Graphics (compressed)
-        .include "gfx/minimap_gfx1.asm"
-
-; ef/e8b3   World of Ruin Minimap Graphics (compressed)
-        .include "gfx/minimap_gfx2.asm"
-
-; ef/ed26   Falcon Graphics (compressed)
-        .include "gfx/airship_gfx2.asm"
-
-; ef/fac8   Palettes for Ending Airship Scene
-        .include "gfx/ending_airship_scene_pal.asm"
+        .include "gfx/world_backdrop_gfx.asm"                   ; ee/b290
+        .include "gfx/world_backdrop_tiles.asm"                 ; ee/c295
+        .include "gfx/airship_gfx1.asm"                         ; ee/c702
+        .include "data/world_tilemap1.asm"                      ; ee/d434
+        .include "gfx/world_gfx1.asm"                           ; ef/114f
+        .include "gfx/train_gfx.asm"                            ; ef/3250
+        .include "gfx/train_pal.asm"                            ; ef/4846
+        .include "gfx/world_gfx2.asm"                           ; ef/4a46
+        .include "data/world_tilemap2.asm"                      ; ef/6a56
+        .include "data/world_tilemap3.asm"                      ; ef/9d17
+        .include "gfx/world_gfx3.asm"                           ; ef/b631
+        .include "gfx/world_choco_gfx1.asm"                     ; ef/c624
+        .include "gfx/vector_approach_pal.asm"                  ; ef/ce77
+        .include "gfx/world_esper_terra_pal.asm"                ; ef/ce97
+        .include "gfx/world_sprite_gfx1.asm"                    ; ef/ceb7
+        .include "gfx/world_sprite_gfx2.asm"                    ; ef/cfb9
+        .include "gfx/world_choco_gfx2.asm"                     ; ef/dc4c
+        .include "gfx/minimap_gfx1.asm"                         ; ef/e49b
+        .include "gfx/minimap_gfx2.asm"                         ; ef/e8b3
+        .include "gfx/airship_gfx2.asm"                         ; ef/ed26
+        .include "gfx/ending_airship_scene_pal.asm"             ; ef/fac8
 
 ; ------------------------------------------------------------------------------
 
 .segment "world_sine"
 
-; ef/fef0
-        .include "data/world_sine.asm"
+        .include "data/world_sine.asm"                          ; ef/fef0
 
 ; ------------------------------------------------------------------------------

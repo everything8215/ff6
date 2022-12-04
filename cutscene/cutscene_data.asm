@@ -13,16 +13,14 @@
 
 .segment "title_opening_gfx"
 
-; d8/f000
-        .include "gfx/title_opening_gfx.asm"
+        .include "gfx/title_opening_gfx.asm"                    ; d8/f000
         .res $24
+        .include "gfx/floating_cont_gfx.asm"                    ; d9/4e96
 
-; d9/4e96
-        .include "gfx/floating_cont_gfx.asm"
+; ------------------------------------------------------------------------------
 
 .segment "ruin_cutscene_gfx"
 
-; ec/e900
-        .include "gfx/ruin_cutscene_gfx.asm"
+        .include "gfx/ruin_cutscene_gfx.asm"                    ; ec/e900
 
 ; ------------------------------------------------------------------------------

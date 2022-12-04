@@ -1278,12 +1278,12 @@ UpdateAbilities:
 
 ; update celes' natural magic
 @a1b8:  ldx     $00
-@a1ba:  lda     f:NaturalMagic_0001,x   ; level that the spell is learned
+@a1ba:  lda     f:NaturalMagic_0001+1,x ; level that the spell is learned
         cmp     $1608,y                 ; current level
         beq     @a1c5
         bcs     @a195                   ; return if greater than current level
 @a1c5:  phy
-        lda     f:NaturalMagic_0001+1,x ; spell number
+        lda     f:NaturalMagic_0001,x   ; spell number
         tay
         lda     #$ff
         sta     $1bb2,y                 ; learn spell

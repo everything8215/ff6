@@ -1757,7 +1757,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $7B97 Need to Update HDMA #6 ($01: slot mode, $02: normal mode)
           $7B98
           $7B99
-          $7B9A Counter for gauge/condemned updates (character number
+          $7B9A Counter for gauge/condemned updates (character number)
           $7B9B Character to update for gauge/condemned
           $7B9C
           $7B9D

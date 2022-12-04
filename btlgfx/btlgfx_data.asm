@@ -34,10 +34,40 @@ BattleDlgPtrs:
 .segment "battle_anim1"
 
 ItemAnimPtrs:
-        .res $0141
-; D10000-D1003F   Pointers to Battle Animation Data for Items $E0-$FF (+$D07FB2)
-; D10040-D10140   Item Jump and Throw Animation Data (257 items, 1 byte each, see C1/B9C5 and C1/B9F7)
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   402*14
+        .word   337*14
+        .word   338*14
+        .word   339*14
+        .word   340*14
+        .word   341*14
+        .word   342*14
+        .word   343*14
+        .word   344*14
+        .word   345*14
+        .word   346*14
+        .word   347*14
+        .word   348*14
+        .word   349*14
+        .word   350*14
+        .word   351*14
+        .word   352*14
+        .word   353*14
+        .word   354*14
+        .word   355*14
+        .word   356*14
+        .word   357*14
+        .word   358*14
+        .word   358*14
+        .word   $ffff
 
+        .include "data/item_jump_throw_anim.asm"                ; d1/0040
         .include "data/attack_anim_frames.asm"                  ; d1/0141
         AttackAnimFramesEnd := *
         .res $ead8+ItemAnimPtrs-*

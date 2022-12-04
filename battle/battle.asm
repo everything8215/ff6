@@ -19,8 +19,8 @@
 
 .include "battle_data.asm"
 
-.import CharProp, ItemProp, MagicProp, RNGTbl
-.import CharAI
+.import CharProp, ItemProp, MagicProp, BattleMagicPoints, RNGTbl
+.import CharAI, MetamorphProp
 
 .import ExecBtlGfx_ext
 
@@ -9234,7 +9234,7 @@ TargetEffect_12:
         jsr     RandCarry
         rol
         tax
-        lda     $c47f40,x
+        lda     f:MetamorphProp,x
         sta     $2f35
         lda     #$02
         sta     $3a28
@@ -15153,7 +15153,7 @@ WinBattle:
         ldx     $3ed4       ; battle index
         cpx     #$0200
         bcs     @5da0       ; branch if >= $0200 (no magic points)
-        lda     $dfb400,x   ; $fb = number of magic points gained from battle
+        lda     f:BattleMagicPoints,x   ; $fb = number of magic points gained from battle
 @5da0:  sta     $fb
         stz     $f0
         lda     $3ebc       ; $f1 set if morph is available
