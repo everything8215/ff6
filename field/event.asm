@@ -5263,7 +5263,7 @@ EventCmd_aa:
 
 EventCmd_bb:
 @b9be:  jsr     DisableInterrupts
-        jml     $e5f400                 ; "the end" cinematic
+        jml     TheEnd_ext
 
 ; ------------------------------------------------------------------------------
 

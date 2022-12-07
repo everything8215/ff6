@@ -20,7 +20,7 @@
 .include "battle_data.asm"
 
 .import CharProp, ItemProp, MagicProp, BattleMagicPoints, RNGTbl
-.import CharAI, MetamorphProp
+.import CharAI, MetamorphProp, DanceBG
 
 .import ExecBtlGfx_ext
 
@@ -3680,7 +3680,7 @@ Cmd_13:
         jsr     RandCarry
         bcc     @17af       ; 50% chance to branch
         tax
-        lda     $d1f9ab,x   ; change battle background
+        lda     f:DanceBG,x   ; change battle background
         sta     $b7
         sta     $11e2
         jmp     Cmd_02

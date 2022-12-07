@@ -3193,6 +3193,21 @@
         }
       }
     },
+    "danceBackground": {
+      "type": "array",
+      "name": "Dance Background",
+      "range": "0xD1F9AB-0xD1F9B2",
+      "asmSymbol": "DanceBG",
+      "file": "btlgfx/data/dance_bg.asm",
+      "arrayLength": 8,
+      "itemLength": 1,
+      "assembly": {
+        "type": "property",
+        "name": "Background",
+        "stringTable": "battleBackground",
+        "link": "battleBackgroundProperties[%i]"
+      }
+    },
     "danceName": {
       "type": "array",
       "name": "Dance Name",
@@ -3368,7 +3383,7 @@
       "name": "Single-Tile Entrance Triggers",
       "range": "0xDFBF02-0xDFD977",
       "isSequential": true,
-      "arrayLength": 416,
+      "arrayLength": 512,
       "asmSymbol": "ShortEntrance",
       "file": "field/data/short_entrance.asm",
       "assembly": {
@@ -3444,7 +3459,7 @@
         }
       },
       "pointerTable": {
-        "range": "0xDFBB00-0xDFBF01",
+        "range": "0xDFBB00-0xDFBEFF",
         "offset": "0xDFBB00"
       }
     },
@@ -3484,6 +3499,24 @@
         "default": "<esperAttackName[%i]>"
       }
     },
+    "esperBonusDescriptions": {
+      "type": "array",
+      "name": "Esper Bonus Descriptions",
+      "range": "0xEDFE00-0xEDFFA6",
+      "asmSymbol": "GenjuBonusDesc",
+      "file": "menu/text/genju_bonus_desc.asm",
+      "arrayLength": 17,
+      "assembly": {
+        "type": "text",
+        "name": "Description",
+        "encoding": "nullTerminated",
+        "multiLine": true
+      },
+      "pointerTable": {
+        "range": "0xEDFFD0-0xEDFFF1",
+        "offset": "0xEDFE00"
+      }
+    },
     "esperBonusNames": {
       "type": "array",
       "name": "Esper Bonus Names",
@@ -3513,6 +3546,19 @@
         "string": {
           "255": "None"
         }
+      }
+    },
+    "esperMenuOrder": {
+      "type": "array",
+      "name": "Esper Menu Order",
+      "range": "0xD1F9B5-0xD1F9CF",
+      "asmSymbol": "GenjuOrder",
+      "file": "btlgfx/data/genju_order.asm",
+      "arrayLength": 27,
+      "itemLength": 1,
+      "assembly": {
+        "type": "property",
+        "name": "Menu Order"
       }
     },
     "esperName": {
@@ -3763,6 +3809,15 @@
         }
       }
     },
+    "fontGraphicsDebug": {
+      "type": "graphics",
+      "name": "Debug Font Graphics",
+      "range": "0xC0E120-0xC0E29F",
+      "asmSymbol": "FontGfxDebug",
+      "file": "field/gfx/font_gfx_debug.asm",
+      "format": "snes4bpp",
+      "palette": "fontPalette"
+    },
     "fontGraphicsLarge": {
       "type": "graphics",
       "name": "Large Font Graphics",
@@ -3843,6 +3898,22 @@
       "range": "0xC0E0A0-0xC0E11F",
       "asmSymbol": "InitNPCSwitch",
       "file": "field/data/init_npc_switch.asm"
+    },
+    "impItem": {
+      "type": "array",
+      "name": "Imp Items",
+      "range": "0xED82E4-0xED82F3",
+      "asmSymbol": "ImpItem",
+      "file": "field/data/imp_item.asm",
+      "arrayLength": 16,
+      "itemLength": 1,
+      "assembly": {
+        "type": "property",
+        "name": "Item",
+        "begin": 0,
+        "stringTable": "itemNames",
+        "link": "itemProperties[%i]"
+      }
     },
     "itemColosseum": {
       "type": "array",
@@ -3931,10 +4002,10 @@
     "itemMetamorphosis": {
       "type": "array",
       "name": "Metamorphosis Items",
-      "range": "0xC47F40-0xC47FA7",
+      "range": "0xC47F40-0xC47FBF",
       "asmSymbol": "MetamorphProp",
       "file": "menu/data/metamorph_prop.asm",
-      "arrayLength": 26,
+      "arrayLength": 32,
       "itemLength": 4,
       "assembly": {
         "type": "assembly",
@@ -9919,6 +9990,33 @@
         "length": 8,
         "default": "<swdTechNames[%i]>"
       }
+    },
+    "theEndGraphics1": {
+      "type": "graphics",
+      "name": "\"The End\" Graphics 1",
+      "range": "0xE96300-0xE96FFF",
+      "asmSymbol": "TheEndGfx1",
+      "file": "cutscene/gfx/the_end_gfx1.asm",
+      "format": "snes4bpp",
+      "palette": "theEndPalette"
+    },
+    "theEndGraphics2": {
+      "type": "graphics",
+      "name": "\"The End\" Graphics 2",
+      "range": "0xC9FE00-0xC9FEFF",
+      "asmSymbol": "TheEndGfx2",
+      "file": "cutscene/gfx/the_end_gfx2.asm",
+      "format": "snes4bpp",
+      "palette": "theEndPalette",
+      "width": 8
+    },
+    "theEndPalette": {
+      "type": "graphics",
+      "name": "\"The End\" Palette",
+      "range": "0xC9FF00-0xC9FFFF",
+      "asmSymbol": "TheEndPal",
+      "file": "cutscene/gfx/the_end_pal.asm",
+      "format": "bgr555"
     },
     "titleIntroGraphics": {
       "type": "assembly",

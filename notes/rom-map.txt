@@ -59,8 +59,7 @@ C478C0-C47A3F   Character Names (64 items, 6 bytes each)
 C47A40-C47A9F   Blitz Codes (8 items, 11+1 bytes each)
 C47AA0-C47ABF   Initial Rages (1 bit per rage)
 C47AC0-C47F3F   Shop Specifications (128 items, 9 bytes each)
-C47F40-C47FA7   Metamorphosis Data (26 items, 4 bytes each)
-C47FA8-C47FBF   Unused Space (24 bytes)
+C47F40-C47FBF   Metamorphosis Data (32 items, 4 bytes each)
 C47FC0-C48FBF   Fixed-Width Font Graphics
 C48FC0-C490BF   Variable-Width Font Character Widths
 C490C0-C4A4BF   Variable-Width Font Graphics (16x11 tiles, max width is 12)

@@ -27,6 +27,7 @@
 
 .import RNGTbl
 .import ShortEntrancePtrs, EventTriggerPtrs
+.import EventBattleGroup
 
 .export LoadWorld_ext, UpdateMode7Vars_ext, UpdateMode7Rot_ext
 .export PushMode7Vars_ext, PopMode7Vars_ext, UpdateMode7Circle_ext
@@ -1342,7 +1343,7 @@ _ee0b30:
         lda     $7eb664
         bra     @0c11
 @0be2:  stz     $58
-        lda     $e00000,x
+        lda     f:$e00000,x
         and     #$0003
         cmp     #$0003
         bne     @0bf3
@@ -4917,9 +4918,9 @@ TrainCmd_e0:
         cmp     #$c0
         bcc     @329a       ; 75% chance to branch
         inx2                 ; 25% chance to choose next battle
-@329a:  lda     $cf5000,x   ; event battle index
+@329a:  lda     f:EventBattleGroup,x
         sta     f:$0011e0
-        lda     $cf5001,x
+        lda     f:EventBattleGroup+1,x
         sta     f:$0011e1
         lda     #$2c        ; battle bg $2c (magitek train car)
         sta     f:$0011e2
@@ -4953,9 +4954,9 @@ TrainCmd_e1:
         cmp     #$c0
         bcc     @32e8
         inx2
-@32e8:  lda     $cf5000,x
+@32e8:  lda     f:EventBattleGroup,x
         sta     f:$0011e0
-        lda     $cf5001,x
+        lda     f:EventBattleGroup+1,x
         sta     f:$0011e1
         lda     #$2c
         sta     f:$0011e2
@@ -4979,9 +4980,9 @@ TrainCmd_e2:
         asl2
         tax
         shorta
-        lda     $cf5000,x
+        lda     f:EventBattleGroup,x
         sta     f:$0011e0
-        lda     $cf5001,x
+        lda     f:EventBattleGroup+1,x
         sta     f:$0011e1
         lda     #$2c
         sta     f:$0011e2
@@ -8596,7 +8597,9 @@ _ee5196:
 @5196:  .byte   $00,$00,$00,$00,$00,$00
         .byte   $00,$56,$56,$56,$56,$56
         .byte   $00,$57,$57,$56,$56,$56
-        .byte   $00,$59,$58,$57,$56,$56
+
+_ee51a8:
+@51a8:  .byte   $00,$59,$58,$57,$56,$56
         .byte   $00,$58,$57,$57,$56,$56
         .byte   $00,$57,$57,$56,$56,$56
         .byte   $00,$57,$56,$56,$56,$56
@@ -8670,12 +8673,12 @@ _5213:  shorta
         inc2
         sta     $b654
         shorta
-        lda     $c50000,x
+        lda     f:$c50000,x
         and     #$03
         sec
         sbc     #$01
         sta     $b658
-        lda     $c50001,x
+        lda     f:$c50001,x
         and     #$03
         sec
         sbc     #$01
@@ -8930,7 +8933,7 @@ _540f:  shorta
         lda     $b660,x
 @543e:  phx
         tax
-        lda     $ee51a8,x
+        lda     f:_ee51a8,x
         plx
         sta     $b5d0,y
         lda     $e9
@@ -10024,7 +10027,7 @@ _ee6e7e:
         stz     $2d
         longi
         ldx     #$0174
-        lda     $cf5000,x
+        lda     f:EventBattleGroup,x
         sta     $11e0
         lda     #$0029      ; battle bg $29 (doom gaze)
         sta     $11e2
@@ -10587,9 +10590,9 @@ VehicleCmd_ca:
         cmp     #$2d
         bcc     @7301       ; 3/4 chance to branch
         inx2
-@7301:  lda     $cf5000,x   ; event monster battle groups
+@7301:  lda     f:EventBattleGroup,x
         sta     f:$0011e0     ; battle index
-        lda     $cf5001,x
+        lda     f:EventBattleGroup+1,x
         sta     f:$0011e1
         iny
         lda     [$ea],y
@@ -10914,7 +10917,7 @@ VehicleCmd_f4:
         lda     #$01
         sta     hMDMAEN
         ldx     #$0000
-@751b:  lda     $d2ef00,x
+@751b:  lda     f:WorldSpritePal2,x
         sta     $7ee100,x
         inx
         cpx     #$0020
@@ -12908,9 +12911,9 @@ InitAirship:
         jsr     TfrBackdropTiles
         lda     f:WorldSpriteGfx1Ptr
         sta     $d2
-        lda     $eeb243
+        lda     f:WorldSpriteGfx1Ptr+1
         sta     $d3
-        lda     $eeb244
+        lda     f:WorldSpriteGfx1Ptr+2
         sta     $d4
         ldx     #$2000
         stx     $d5
@@ -14563,8 +14566,7 @@ LandAirship:
 ; [ apply map layout modifications ]
 
 ModifyMap:
-@942f:  rts
-        ; phb
+@942f:  phb
         php
         shortai
         lda     f:$001f64               ; map index
@@ -14605,7 +14607,7 @@ ModifyMap:
         phy
         longac
         lda     [$6a],y                 ; pointer to modified tiles
-        adc     f:WorldModDataPtrs      ; +$cef600
+        adc     f:WorldModDataPtrs
         tay
         lda     a:$0000,y               ; tile offset (x then y)
         tax

@@ -29,7 +29,7 @@
 
         .include "data/dte_table.asm"                           ; c0/dfa0
         .include "data/init_npc_switch.asm"                     ; c0/e0a0
-        .res $0180
+        .include "gfx/font_gfx_debug.asm"                       ; c0/e120
         .include "gfx/overlay_gfx.asm"                          ; c0/e2a0
         .res $0c00+OverlayGfx-*
         .include "data/overlay_tilemap.asm"                     ; c0/eea0
@@ -126,35 +126,37 @@ DlgPtrs:
 .segment "map_tile_data"
 
         .include "data/map_tile_prop.asm"                       ; d9/a800
-        MapTilePropEnd := *
+        MapTileProp_end := *
         .res $2510+MapTileProp-*
 MapTilePropPtrs:
         make_ptr_tbl_rel MapTileProp, 42                        ; d9/cd10
-        .addr MapTilePropEnd - MapTileProp
+        .addr MapTileProp_end - MapTileProp
         .res $80+MapTilePropPtrs-*
 SubTilemapPtrs:
         make_ptr_tbl_far SubTilemap, 350                        ; d9/cd90
-        .faraddr SubTilemapEnd - SubTilemap
+        .faraddr SubTilemap_end - SubTilemap
         .res $420+SubTilemapPtrs-*
         .include "data/sub_tilemap.asm"                         ; d9/d1b0
-        SubTilemapEnd := *
+        SubTilemap_end := *
 
 ; ------------------------------------------------------------------------------
 
 .segment "map_tile_data2"
 
         .include "data/map_tileset.asm"                         ; de/0000
+        MapTileset_end := *
         .res $01b400+MapTileset-*
         .include "data/battle_magic_points.asm"                 ; df/b400
         .include "data/colosseum_prop.asm"                      ; df/b600
 MapTilesetPtrs:
         make_ptr_tbl_far MapTileset, 75                         ; df/ba00
+        .faraddr MapTileset_end - MapTileset
         .res $0100+MapTilesetPtrs-*
 ShortEntrancePtrs:
-        make_ptr_tbl_rel ShortEntrance, 416, ShortEntrancePtrs  ; df/bb00
-        .addr ShortEntranceEnd - ShortEntrancePtrs
+        make_ptr_tbl_rel ShortEntrance, 512, ShortEntrancePtrs  ; df/bb00
+        .addr ShortEntrance_end - ShortEntrancePtrs
         .include "data/short_entrance.asm"                      ; df/bf02
-        ShortEntranceEnd := *
+        ShortEntrance_end := *
 
 ; ------------------------------------------------------------------------------
 
@@ -218,8 +220,11 @@ BlitzLevelTbl:
 
 ; ------------------------------------------------------------------------------
 
+.export ImpItem
+
 .segment "treasure_prop"
 
+        .include "data/imp_item.asm"                           ; ed/82e4
 TreasurePropPtrs:
         make_ptr_tbl_rel TreasureProp, 415                      ; ed/82f4
         .addr TreasurePropEnd - TreasurePropPtrs

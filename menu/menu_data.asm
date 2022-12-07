@@ -107,3 +107,10 @@ ItemDescPtrs:
         make_ptr_tbl_rel ItemDesc, 256                          ; ed/7aa0
 
 ; ------------------------------------------------------------------------------
+
+.segment "genju_bonus_desc"
+
+        .include "text/genju_bonus_desc.asm"                    ; ed/fe00
+        .res $01d0+GenjuBonusDesc-*
+GenjuBonusDescPtrs:
+        make_ptr_tbl_rel GenjuBonusDesc, 17                     ; ed/ffd0

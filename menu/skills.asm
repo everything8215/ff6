@@ -12,8 +12,9 @@
 ; +----------------------------------------------------------------------------+
 
 .import BushidoName, MonsterName, GenjuBonusName, GenjuName, DanceName
-.import GenjuAttackDesc, GenjuAttackDescPtrs
+.import AttackName, GenjuAttackDesc, GenjuAttackDescPtrs
 .import BlitzDesc, BlitzDescPtrs, BushidoDesc, BushidoDescPtrs
+.import GenjuOrder
 
 ; ------------------------------------------------------------------------------
 
@@ -1149,11 +1150,14 @@ DrawLoreListRow:
 ; [  ]
 
 _c35266:
-@5266:  ldy     #$000a
+
+@LoreName := AttackName+58*10
+
+@5266:  ldy     #10
         sty     $eb
-        ldy     #$f9fd      ; $e6f9fd (lore names)
+        ldy     #.loword(@LoreName)
         sty     $ef
-        lda     #$e6
+        lda     #^@LoreName
         sta     $f1
         rts
 
@@ -1520,7 +1524,7 @@ GetGenjuList:
         bmi     @54df
         pha
         tax
-        lda     $d1f9b5,x   ; esper order for menu
+        lda     f:GenjuOrder,x   ; esper order for menu
         dec
         tax
         pla
@@ -2564,24 +2568,24 @@ GetGenjuDescPtr:
         beq     GetGenjuBonusDescPtr
 
 GetMagicDescPtr:
-@5be3:  ldx     #$cf80      ; $d8cf80 (pointers to spell descriptions)
+@5be3:  ldx     #.loword(MagicDescPtrs)
         stx     $e7
-        ldx     #$c9a0      ; $d8c9a0 (spell descriptions)
+        ldx     #.loword(MagicDesc)
         stx     $eb
-        lda     #$d8
+        lda     #^MagicDescPtrs
         sta     $e9
-        lda     #$d8
+        lda     #^MagicDesc
         sta     $ed
         rts
 
 GetGenjuBonusDescPtr:
-@5bf6:  ldx     #$ffd0      ; $edffd0 (pointers to esper bonus descriptions)
+@5bf6:  ldx     #.loword(GenjuBonusDescPtrs)
         stx     $e7
-        ldx     #$fe00      ; $edfe00 (esper bonus descriptions)
+        ldx     #.loword(GenjuBonusDesc)
         stx     $eb
-        lda     #$ed
+        lda     #^GenjuBonusDescPtrs
         sta     $e9
-        lda     #$ed
+        lda     #^GenjuBonusDesc
         sta     $ed
         rts
 

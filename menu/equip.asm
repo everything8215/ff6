@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import ImpItem
+
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (equip, optimum, rmove, empty) ]
@@ -1534,7 +1536,7 @@ GetBestEquip:
         tax
         lda     $1869,x     ; item number
         plx
-        cmp     $ed82e4,x   ; check imp items
+        cmp     f:ImpItem,x
         beq     @983c       ; branch if this is an imp item
         inx
         cpx     #$000a
@@ -1565,7 +1567,7 @@ GetBest2Hand:
         tax
         lda     $1869,x     ; item number
         plx
-        cmp     $ed82e4,x   ; check imp items
+        cmp     f:ImpItem,x
         beq     @9878       ; branch if this is an imp item
         inx
         cpx     #$000a      ; number of imp items

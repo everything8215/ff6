@@ -11,7 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.import MonsterAlign, ColosseumProp
+.import MonsterAlign, ColosseumProp, MonsterGfxProp, MonsterPal
+.import BattleBGGfxPtrs, BattleBGTilesPtrs, BattleBGTiles
 
 ; ------------------------------------------------------------------------------
 
@@ -385,15 +386,15 @@ LoadMonsterGfx:
         sty     hVMADDL
         nop2
         ldx     hRDMPYL
-        lda     $d27000,x   ; monster graphics data
+        lda     f:MonsterGfxProp,x   ; monster graphics data
         sta     $e7
-        lda     $d27001,x
+        lda     f:MonsterGfxProp+1,x
         sta     $e8
-        lda     $d27002,x
+        lda     f:MonsterGfxProp+2,x
         sta     $f2
-        lda     $d27003,x
+        lda     f:MonsterGfxProp+3,x
         sta     $f1
-        lda     $d27004,x
+        lda     f:MonsterGfxProp+4,x
         sta     $e9
         lda     $e8
         bmi     @af85
@@ -484,7 +485,7 @@ LoadMonsterGfx:
         dec     $e6
         bne     @b001
         jsr     _c3b033
-        jmp     _c3b15a
+        jmp     LoadMonsterPal
 
 ; ------------------------------------------------------------------------------
 
@@ -690,9 +691,9 @@ _c3b11e:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ load monster palette ]
 
-_c3b15a:
+LoadMonsterPal:
 @b15a:  longa
         lda     $f1
         and     #$03ff
@@ -702,7 +703,7 @@ _c3b15a:
         ldy     #$30a9
         sty     hWMADDL
         ldy     #$0020
-@b171:  lda     $d27820,x
+@b171:  lda     f:MonsterPal,x
         sta     hWMDATA
         inx
         dey
@@ -1045,10 +1046,10 @@ ColosseumCharWindow:
 
 LoadColosseumBGGfx:
 @b34b:  longa
-        lda     $e7168c
+        lda     f:BattleBGGfxPtrs+20*3
         sta     $f3
         shorta
-        lda     $e7168e
+        lda     f:BattleBGGfxPtrs+20*3+2
         sta     $f5
         jsr     _c3b3f2
         ldy     #$6800
@@ -1058,10 +1059,10 @@ LoadColosseumBGGfx:
         ldx     $00
         jsr     _c3b3c6
         longa
-        lda     $e71692
+        lda     f:BattleBGGfxPtrs+22*3
         sta     $f3
         shorta
-        lda     $e71694
+        lda     f:BattleBGGfxPtrs+22*3+2
         sta     $f5
         jsr     _c3b3f2
         ldy     #$7000
@@ -1071,10 +1072,10 @@ LoadColosseumBGGfx:
         ldx     $00
         jsr     _c3b3c6
         longa
-        lda     $e7187a
+        lda     f:BattleBGTilesPtrs+25*2
         sta     $f3
         shorta
-        lda     #$e7
+        lda     #^BattleBGTiles
         sta     $f5
         jsr     _c3b3f2
         jsr     _c3b3d8

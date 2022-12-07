@@ -139,7 +139,7 @@ EndingAirshipScenePalPtr:
 
 ; ee/b260
 WorldModDataPtrs:
-        make_ptr_tbl_far WorldModData, 2
+        make_ptr_tbl_far WorldModData, 2, 0
         .faraddr WorldModData_end
 
 ; ee/b269

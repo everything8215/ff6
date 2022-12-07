@@ -31,6 +31,8 @@ BattleDlgPtrs:
 
 ; ------------------------------------------------------------------------------
 
+.export DanceBG, GenjuOrder
+
 .segment "battle_anim1"
 
 ItemAnimPtrs:
@@ -64,7 +66,7 @@ ItemAnimPtrs:
         .word   356*14
         .word   357*14
         .word   358*14
-        .word   358*14
+        .word   359*14
         .word   $ffff
 
         .include "data/item_jump_throw_anim.asm"                ; d1/0040
@@ -80,9 +82,9 @@ ItemAnimPtrs:
 AttackMsgPtrs:
         make_ptr_tbl_rel AttackMsg, 256, .bankbyte(*)<<16       ; d1/f7a0
         .res 11
-
-; D1F9AB-D1F9B2   Battle Background Index to change to for each Dance
-; D1F9B5-D1F9CF   Esper Order for Menu
+        .include "data/dance_bg.asm"                            ; d1/f9ab
+        .byte   1,1
+        .include "data/genju_order.asm"                         ; d1/f9b5
 
 ; ------------------------------------------------------------------------------
 
@@ -93,6 +95,8 @@ AttackMsgPtrs:
         .include "text/item_type_name_en.asm"                   ; d2/6f00
 
 ; ------------------------------------------------------------------------------
+
+.export MonsterGfxProp, MonsterPal
 
 .segment "monster_gfx_prop"
 
@@ -148,6 +152,8 @@ AttackAnimFramesPtrs:
         .include "gfx/attack_tiles_mode7.asm"                   ; d8/daf2
 
 ; ------------------------------------------------------------------------------
+
+.export BattleBGGfxPtrs, BattleBGTilesPtrs, BattleBGTiles
 
 .segment "battle_bg"
 

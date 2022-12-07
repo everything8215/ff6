@@ -18,6 +18,7 @@
 .include "macros.inc"
 
 .include "cutscene_data.asm"
+.include "the_end.asm"
 
 .import Decompress_ext
 .import ExecSound_ext

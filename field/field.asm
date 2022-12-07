@@ -25,7 +25,7 @@
 .import OptimizeCharEquip_ext
 .import InitSound_ext, ExecSound_ext
 .import LoadWorld_ext, MagitekTrain_ext, EndingAirshipScene2_ext
-.import OpeningCredits_ext, TitleScreen_ext
+.import OpeningCredits_ext, TitleScreen_ext, TheEnd_ext
 .import FloatingContScene_ext, WorldOfRuinScene_ext
 
 .import WorldBattleRate, SubBattleRate
