@@ -70,39 +70,43 @@ OBJ_FILES_JP = $(foreach M, $(MODULES), $(M)/obj/$(M)_jp.o)
 OBJ_FILES_EN = $(foreach M, $(MODULES), $(M)/obj/$(M)_en.o)
 OBJ_FILES_EN1 = $(foreach M, $(MODULES), $(M)/obj/$(M)_en1.o)
 
+# compressed cutscene program
+CUTSCENE_LZ = cutscene/lz/cutscene.lz
+
 # rules for making ROM files
 # run linker twice: 1st for the cutscene program, 2nd for the ROM itself
-cutscene/data/cutscene_jp.lz: ff6-en.lnk $(OBJ_FILES_JP)
+$(FF6_JP_PATH): ff6-jp.cfg encode-jp $(OBJ_FILES_JP)
+	@mkdir -p cutscene/lz
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_JP)
-	${LZSS} $(@:lz=bin) $@
-	$(MAKE) -C cutscene
+	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
+	$(MAKE) -C cutscene lz
+	@mkdir -p rom
+	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_JP) $(CUTSCENE_LZ).o
+	@$(RM) -r cutscene/lz
+	node tools/calc-checksum.js $@
 
-cutscene/data/cutscene_en.lz: ff6-en.lnk $(OBJ_FILES_EN)
+$(FF6_EN_PATH): ff6-en.cfg encode-en $(OBJ_FILES_EN)
+	@mkdir -p cutscene/lz
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
-	${LZSS} $(@:lz=bin) $@
-	$(MAKE) -C cutscene
+	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
+	$(MAKE) -C cutscene lz
+	@mkdir -p rom
+	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN) $(CUTSCENE_LZ).o
+	@$(RM) -r cutscene/lz
+	node tools/calc-checksum.js $@
 
-cutscene/data/cutscene_en1.lz: ff6-en.lnk $(OBJ_FILES_EN1)
+$(FF6_EN1_PATH): ff6-en.cfg encode-en $(OBJ_FILES_EN1)
+	@mkdir -p cutscene/lz
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
-	${LZSS} $(@:lz=bin) $@
-	$(MAKE) -C cutscene
-
-$(FF6_JP_PATH): ff6-jp.lnk encode-jp $(OBJ_FILES_JP)
+	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
+	$(MAKE) -C cutscene lz
 	@mkdir -p rom
-	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_JP)
-	node tools/calc-checksum.js $@
-
-$(FF6_EN_PATH): ff6-en.lnk encode-en cutscene/data/cutscene_en.lz $(OBJ_FILES_EN)
-	@mkdir -p rom
-	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN)
-	node tools/calc-checksum.js $@
-
-$(FF6_EN1_PATH): ff6-en.lnk encode-en $(OBJ_FILES_EN1)
-	@mkdir -p rom
-	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN1)
+	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN1) $(CUTSCENE_LZ).o
+	@$(RM) -r cutscene/lz
 	node tools/calc-checksum.js $@
 
 # run sub-make to create object files for each module
+# $(OBJ_FILES): $(MODULES)
 $(OBJ_FILES_JP): $(MODULES)
 $(OBJ_FILES_EN): $(MODULES)
 $(OBJ_FILES_EN1): $(MODULES)

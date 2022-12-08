@@ -22,14 +22,20 @@
         .endif
 .endmacro
 
+def_config ROM_VERSION,0
 def_config DEBUG,0
 def_config LANG_EN,0
-def_config LANG_EN_REV1,0
-
-.if LANG_EN
-.define LANG_SUFFIX "en"
+.if (LANG_EN .and ROM_VERSION)
+        LANG_EN_REV1 = 1
 .else
-.define LANG_SUFFIX "jp"
+        LANG_EN_REV1 = 0
+.endif
+
+; define language suffix
+.if LANG_EN
+        .define LANG_SUFFIX "en"
+.else
+        .define LANG_SUFFIX "jp"
 .endif
 
 .list on

@@ -53,26 +53,26 @@ WorldOfRuinScene_ext:
 ; ------------------------------------------------------------------------------
 
 TitleScreen:
-@680c:  jsr   DecompCutsceneProg
-        jml   TitleScreen_ext2
+@680c:  jsr     DecompCutsceneProg
+        jml     TitleScreen_ext2
 
 ; ------------------------------------------------------------------------------
 
 OpeningCredits:
-@6813:  jsr   DecompCutsceneProg
-        jml   OpeningCredits_ext2
+@6813:  jsr     DecompCutsceneProg
+        jml     OpeningCredits_ext2
 
 ; ------------------------------------------------------------------------------
 
 FloatingContScene:
-@681a:  jsr   DecompCutsceneProg
-        jml   FloatingContScene_ext2
+@681a:  jsr     DecompCutsceneProg
+        jml     FloatingContScene_ext2
 
 ; ------------------------------------------------------------------------------
 
 WorldOfRuinScene:
-@6821:  jsr   DecompCutsceneProg
-        jml   WorldOfRuinScene_ext2
+@6821:  jsr     DecompCutsceneProg
+        jml     WorldOfRuinScene_ext2
 
 ; ------------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ DecompCutsceneProg:
         ldx     #$0000
         phx
         pld
-        ldx     #$0000
+        ldx     #0
         stx     $00
         lda     #$7e
         sta     hWMADDH
@@ -123,9 +123,10 @@ DecompCutsceneProg:
 
 ; ------------------------------------------------------------------------------
 
+.segment "cutscene_lz"
+
 ; c2/686c
 CutsceneProg:
-        .incbin "data/cutscene_en.lz"
 
 ; ------------------------------------------------------------------------------
 

@@ -14040,7 +14040,7 @@ DrawDlgLetter:
         sta     $24
         jsr     Mult8
         lda     $4b
-        jne     $6256
+        jne     _c16256
         lda     $7a
         and     #$f8
         longa
@@ -14179,6 +14179,7 @@ _c1624e:
 
 ; [  ]
 
+_c16256:
 @6256:  lda     $7a
         and     #$07
         tax
@@ -18721,7 +18722,7 @@ UpdateMenuState_0e:
         lda     $2094,x
         sta     $7a84
         and     #$40
-        jeq     $55b0
+        jeq     UpdateMenuState_3f
         jmp     _c17795
 @81eb:  inc     $95         ; play error sound effect
 
@@ -19747,7 +19748,7 @@ UpdateMenuState_0a:
         stz     $7a1e
         stz     $ecba
         and     #$40
-        jeq     $55b0
+        jeq     UpdateMenuState_3f
         jmp     _c17795
 @893b:  lda     $09
         bpl     @8963
@@ -27978,7 +27979,7 @@ CalcAttackerPos:
 
 get_pointer_main:
 _c4a0:  sta     $ecb1       ; characer/monster number
-        jmi     $c58f       ; branch if a monster
+        jmi     @c58f       ; branch if a monster
 
 ; character
         asl
@@ -35287,7 +35288,7 @@ magic_code0f:
         lda     $7b10,y     ; character facing direction
         eor     $6f88,x     ; animation direction
         and     #$01
-        jeq     $f377       ; move thread
+        jeq     AnimCmd_83       ; move thread
 @f279:  rts
 
 ; ------------------------------------------------------------------------------
@@ -35330,7 +35331,7 @@ magic_code1c:
         tay
         lda     $7b10,y
         and     #$01
-        jeq     $f377
+        jeq     AnimCmd_83
 @f2b5:  rts
 
 ; ------------------------------------------------------------------------------
