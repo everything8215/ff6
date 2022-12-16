@@ -3675,7 +3675,7 @@ Cmd_13:
         lda     $3a6f       ; default dance battle background
         sta     $32e1,y
 @1794:  ldx     $11e2       ; current battle background
-        cmp     $ed8e5b,x   ; dance for current background
+        cmp     f:BattleBGDance,x   ; dance for current background
         beq     Cmd_02      ; branch if dance matches
         jsr     RandCarry
         bcc     @17af       ; 50% chance to branch
@@ -15297,7 +15297,7 @@ WinBattle:
         lda     $300a       ; mog character slot
         bmi     @5f00       ; branch if mog not present
         ldx     $11e2
-        lda     $ed8e5b,x   ; dance index for each battle background
+        lda     f:BattleBGDance,x   ; dance index for each battle background
         bmi     @5f00
         jsr     GetBitPtr
         tsb     $1d4c       ; set in known dances

@@ -369,6 +369,16 @@ PSW_C := %00000001
 
 ; ------------------------------------------------------------------------------
 
+; [ make jump table ]
+
+.macro make_jump_tbl label, length
+.repeat length, i
+        .addr   .ident(.sprintf("%s_%02x", .string(label), i))
+.endrep
+.endmacro
+
+; ------------------------------------------------------------------------------
+
 ; [ make pointer table (absolute) ]
 
 .macro make_ptr_tbl_abs label, length

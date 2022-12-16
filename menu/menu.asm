@@ -2759,9 +2759,9 @@ DisableDMA2:
 
 ; [ load color palette ]
 
-;  a = source bank
-; +x = source address
-; +y = destination address (+$7e0000)
+;  A: source bank
+; +X: source address
+; +Y: destination address (+$7e0000)
 
 LoadPal:
 @0f8e:  sta     $ed
@@ -3046,8 +3046,8 @@ ResetSprites:
 
 ; [ create task ]
 
-; a = priority
-; y = address
+; A: priority
+; Y: address
 
 CreateTask:
 @1173:  tax
@@ -5146,47 +5146,7 @@ MenuState_46:
         .include "final_order.asm"
         .include "colosseum.asm"
         .include "shop.asm"
-
-; ------------------------------------------------------------------------------
-
-EndingCutscene:
-@c51c:  rtl
-
-; ------------------------------------------------------------------------------
-
-EndingAirshipScene:
-@c51c:  rtl
-
-; ------------------------------------------------------------------------------
-
-; [ update mode 7 registers ]
-
-UpdateMode7Regs:
-@d263:  lda     $bb
-        sta     hM7A
-        lda     $bc
-        sta     hM7A
-        lda     $bd
-        sta     hM7B
-        lda     $be
-        sta     hM7B
-        lda     $bf
-        sta     hM7C
-        lda     $c0
-        sta     hM7C
-        lda     $c1
-        sta     hM7D
-        lda     $c2
-        sta     hM7D
-        lda     $b7
-        sta     hM7X
-        lda     $b8
-        sta     hM7X
-        lda     $b9
-        sta     hM7Y
-        lda     $ba
-        sta     hM7Y
-        rts
+        .include "ending.asm"
 
 ; ------------------------------------------------------------------------------
 
@@ -5498,6 +5458,7 @@ _d4cbf5:
 
 ; [ init mode 7 hdma (credits, airship above clouds) ]
 
+_d4cbfc:
 @cbfc:  lda     #$43
         sta     $4310
         sta     $4320
@@ -5763,6 +5724,7 @@ InitMenuRAM:
 
 ; [  ]
 
+_d4ce55:
 @ce55:  lda     #$70
         sta     $7e9d89
         sta     $7e9d8b

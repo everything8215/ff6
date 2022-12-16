@@ -35,18 +35,14 @@
 
 .segment "cutscene_mode7"
 
-; d8/dd00 Pointers to Magitek Train Ride Tile Graphics (29 items, 12x2 bytes each, +$7E0000)
-        .res $02b8
-
-; d8/dfb8 Vector Panorama Graphics (compressed)
-        .res $0607
-
-; d8/e5bf Vector Panorama Tilemap (compressed)
-        .res $00fb
-
+        .include "data/magitek_train_tiles.asm"                 ; d8/dd00
+        .include "gfx/vector_approach_gfx.asm"                  ; d8/dfb8
+        .include "gfx/vector_approach_tiles.asm"                ; d8/e5bf
         .include "gfx/snake_road_pal.asm"                       ; d8/e6ba
 
 ; ------------------------------------------------------------------------------
+
+.export WorldBackdropGfxPtr, WorldBackdropTilesPtr
 
 .segment "world_data"
 
@@ -69,14 +65,14 @@ WorldTilemap1Ptr:
 WorldGfx1Ptr:
 @b212:  .faraddr WorldGfx1
 
-TrainGfxPtr:
-@b215:  .faraddr TrainGfx
+MagitekTrainGfxPtr:
+@b215:  .faraddr MagitekTrainGfx
 
 ; unused
-@b218:  .faraddr TrainPal
+@b218:  .faraddr MagitekTrainPal
 
-TrainPalPtr:
-@b21b:  .faraddr TrainPal
+MagitekTrainPalPtr:
+@b21b:  .faraddr MagitekTrainPal
 
 WorldGfx2Ptr:
 @b21e:  .faraddr WorldGfx2
@@ -173,8 +169,8 @@ VehicleEvent_06:
         .include "gfx/airship_gfx1.asm"                         ; ee/c702
         .include "data/world_tilemap1.asm"                      ; ee/d434
         .include "gfx/world_gfx1.asm"                           ; ef/114f
-        .include "gfx/train_gfx.asm"                            ; ef/3250
-        .include "gfx/train_pal.asm"                            ; ef/4846
+        .include "gfx/magitek_train_gfx.asm"                    ; ef/3250
+        .include "gfx/magitek_train_pal.asm"                    ; ef/4846
         .include "gfx/world_gfx2.asm"                           ; ef/4a46
         .include "data/world_tilemap2.asm"                      ; ef/6a56
         .include "data/world_tilemap3.asm"                      ; ef/9d17

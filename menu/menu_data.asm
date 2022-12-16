@@ -11,11 +11,6 @@
 ; | created: 8/12/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.export ItemProp, GenjuProp
-.export BattleCmdName
-.export WindowGfx, WindowPal, PortraitGfx, PortraitPal
-.export BattleFontPal, BattleCharPal
-
 ; ------------------------------------------------------------------------------
 
 .export MetamorphProp
@@ -24,6 +19,18 @@
 
         .include "data/shop_prop.asm"                           ; c4/7ac0
         .include "data/metamorph_prop.asm"                      ; c4/7f40
+
+; ------------------------------------------------------------------------------
+
+.segment "ending_gfx"
+
+        .include "gfx/ending_font_gfx.asm"                      ; c4/ba00
+        .res $0608+EndingFontGfx-*
+        .include "gfx/ending_gfx1.asm"                          ; c4/c008
+        .res $346f+EndingGfx1-*
+        .include "gfx/ending_gfx2.asm"                          ; c4/f477
+        .res $0284+EndingGfx2-*
+        .include "gfx/ending_gfx3.asm"                          ; c4/f6fb
 
 ; ------------------------------------------------------------------------------
 
@@ -38,12 +45,16 @@ RareItemDescPtrs:
 
 ; ------------------------------------------------------------------------------
 
+.export ItemProp, GenjuProp
+
 .segment "item_genju_prop"
 
         .include "data/item_prop.asm"                           ; d8/5000
         .include "data/genju_prop.asm"                          ; d8/6e00
 
 ; ------------------------------------------------------------------------------
+
+.export BattleCmdName
 
 .segment "magic_desc"
 
@@ -59,8 +70,6 @@ MagicDescPtrs:
 
         .include "gfx/menu_pal.asm"                             ; d8/e800
 
-; ------------------------------------------------------------------------------
-
 ; name change letters
 NameChangeLetters:
 @e8c8:  .byte   $80,$81,$82,$83,$84,$9a,$9b,$9c,$9d,$9e
@@ -75,11 +84,22 @@ NameChangeLetters:
 ElementSymbols:
 @e90e:  .byte   $dd,$da,$d6,$d9,$de,$d8,$db,$dc,0
 
-; ------------------------------------------------------------------------------
-
         .include "menu_anim.asm"                                ; d8/e917
 
 ; ------------------------------------------------------------------------------
+
+.segment "credits_gfx"
+
+        .include "gfx/credits_gfx1.asm"                         ; d9/568f
+        .res $46bc+CreditsGfx1-*
+        .include "gfx/ending_gfx4.asm"                          ; d9/9d4b
+        .res $079a+EndingGfx4-*
+        .include "gfx/ending_gfx5.asm"                          ; d9/a4e5
+
+; ------------------------------------------------------------------------------
+
+.export WindowGfx, WindowPal, PortraitGfx, PortraitPal
+.export BattleFontPal, BattleCharPal
 
 .repeat 8, i
         .export .ident(.sprintf("WindowGfx_%04x", i))
@@ -113,4 +133,6 @@ ItemDescPtrs:
         .include "text/genju_bonus_desc.asm"                    ; ed/fe00
         .res $01d0+GenjuBonusDesc-*
 GenjuBonusDescPtrs:
-        make_ptr_tbl_rel GenjuBonusDesc, 17                     ; ed/ffd0
+        make_ptr_tbl_rel GenjuBonusDesc, 24                     ; ed/ffd0
+
+; ------------------------------------------------------------------------------

@@ -57,6 +57,7 @@ _c3a600:
 
 ; [  ]
 
+_c3a611:
 @a611:  ldx     #$7849
         stx     $eb
         lda     #$7e
@@ -79,8 +80,7 @@ _c3a600:
 
 ; [  ]
 
-; unused
-
+_c3a63b:
 @a63b:  jsr     _c3a5de
         stz     $8d
         stz     $ed

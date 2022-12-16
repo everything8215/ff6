@@ -208,7 +208,6 @@ BattleBGTilesPtrs:
 .segment "monster_gfx"
 
         .include "gfx/monster_gfx.asm"                          ; e9/7000
-        .res 3, 0
 
 ; ------------------------------------------------------------------------------
 

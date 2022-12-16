@@ -76,3 +76,9 @@ BushidoDescPtrs:
         make_ptr_tbl_rel BushidoDesc, 8, BushidoDesc            ; cf/ffae
 
 ; ------------------------------------------------------------------------------
+
+.segment "battle_bg_dance"
+
+        .include "data/battle_bg_dance.asm"                     ; ed/8e5b
+
+; ------------------------------------------------------------------------------

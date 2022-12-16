@@ -952,9 +952,9 @@ doman:
         tdc
         pha
         plb
-        ldx     #$dfb8      ; source = $d8dfb8 (vector panorama graphics)
+        ldx     #.loword(VectorApproachGfx)
         stx     $d2
-        lda     #$d8
+        lda     #^VectorApproachGfx
         sta     $d4
         ldx     #$2000      ; destination = $7e2000
         stx     $d5
@@ -962,9 +962,9 @@ doman:
         sta     $d7
         jsr     Decompress
         jsr     TfrBackdropGfx
-        ldx     #$e5bf      ; source = $d8e5bf (vector panorama tile formation)
+        ldx     #.loword(VectorApproachTiles)
         stx     $d2
-        lda     #$d8
+        lda     #^VectorApproachTiles
         sta     $d4
         ldx     #$2000      ; destination = $7e2000
         stx     $d5
@@ -13641,11 +13641,11 @@ MagitekTrain:
         sta     $1302
         jsl     ExecSound_ext
         shorta
-        lda     f:TrainPalPtr
+        lda     f:MagitekTrainPalPtr
         sta     $6a
-        lda     f:TrainPalPtr+1
+        lda     f:MagitekTrainPalPtr+1
         sta     $6b
-        lda     f:TrainPalPtr+2
+        lda     f:MagitekTrainPalPtr+2
         sta     $6c
         jsr     TfrPal
         lda     f:AirshipGfx1Ptr
@@ -13660,11 +13660,11 @@ MagitekTrain:
         sta     $d7
         jsr     Decompress
         jsr     TfrSpriteGfx
-        lda     f:TrainGfxPtr
+        lda     f:MagitekTrainGfxPtr
         sta     $d2
-        lda     f:TrainGfxPtr+1
+        lda     f:MagitekTrainGfxPtr+1
         sta     $d3
-        lda     f:TrainGfxPtr+2
+        lda     f:MagitekTrainGfxPtr+2
         sta     $d4
         ldx     #$a000      ; destination = $7ea000
         stx     $d5
@@ -13672,9 +13672,9 @@ MagitekTrain:
         sta     $d7
         jsr     Decompress
         jsr     InitTrainGfx
-        ldx     #$dd00      ; $d8dd00 (pointers to magitek train ride tiles)
+        ldx     #.loword(MagitekTrainTiles)
         stx     $6a
-        lda     #$d8
+        lda     #^MagitekTrainTiles
         sta     $6c
         jsr     _eeae29       ; copy pointers to magitek train ride tiles to vram
         jsr     _eeadf8       ; init magitek train tile map in vram

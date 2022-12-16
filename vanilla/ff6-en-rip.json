@@ -1369,8 +1369,8 @@
       "type": "array",
       "name": "Battle Background Dance",
       "range": "0xED8E5B-0xED8E9A",
-      "asmSymbol": "DanceBattleBG",
-      "file": "btlgfx/data/dance_battle_bg.asm",
+      "asmSymbol": "BattleBGDance",
+      "file": "battle/data/battle_bg_dance.asm",
       "arrayLength": 64,
       "itemLength": 1,
       "assembly": {
@@ -2691,6 +2691,46 @@
         "offset": "0xCFFC00"
       }
     },
+    "brrSamples": {
+      "type": "array",
+      "name": "BRR Samples",
+      "range": "0xC54A35-0xC85C79",
+      "arrayLength": 63,
+      "asmSymbol": "BRRSample",
+      "file": "sound/data/brr_sample.asm",
+      "pointerTable": {
+        "range": "0xC53C5F-0xC53D1B",
+        "pointerSize": 3,
+        "isMapped": true
+      }
+    },
+    "brrSampleADSR": {
+      "type": "array",
+      "name": "BRR Sample ADSR Values",
+      "range": "0xC53E18-0xC53E95",
+      "arrayLength": 63,
+      "itemLength": 2,
+      "asmSymbol": "SampleADSR",
+      "file": "sound/data/sample_adsr.asm"
+    },
+    "brrSampleFrequencyMultiplier": {
+      "type": "array",
+      "name": "BRR Sample Frequency Multiplier",
+      "range": "0xC53D9A-0xC53E17",
+      "arrayLength": 63,
+      "itemLength": 1,
+      "asmSymbol": "SampleFreqMult",
+      "file": "sound/data/sample_freq_mult.asm"
+    },
+    "brrSampleLoopStart": {
+      "type": "array",
+      "name": "BRR Sample Loop Start",
+      "range": "0xC53D1C-0xC53D99",
+      "arrayLength": 63,
+      "itemLength": 2,
+      "asmSymbol": "SampleLoopStart",
+      "file": "sound/data/sample_loop_start.asm"
+    },
     "characterAI": {
       "type": "array",
       "name": "Character A.I. Properties",
@@ -3136,6 +3176,14 @@
         }
       }
     },
+    "creditsGraphics1": {
+      "type": "assembly",
+      "name": "Credits Graphics Data",
+      "range": "0xD9568F-0xD99A50",
+      "asmSymbol": "CreditsGfx1",
+      "file": "menu/gfx/credits_gfx1.asm",
+      "format": "ff6-lzss"
+    },
     "cutsceneProgram": {
       "type": "data",
       "name": "Cutscene Program",
@@ -3279,12 +3327,272 @@
       "file": "world/gfx/ending_airship_scene_pal.asm",
       "format": "bgr555"
     },
+    "endingFontGraphics": {
+      "type": "data",
+      "name": "Ending Font Graphics",
+      "range": "0xC4BA00-0xC4BFB8",
+      "asmSymbol": "EndingFontGfx",
+      "file": "menu/gfx/ending_font_gfx.asm",
+      "format": "ff6-lzss"
+    },
+    "endingGraphics1": {
+      "type": "assembly",
+      "name": "Ending Graphics Data 1",
+      "range": "0xC4C008-0xC4F1C1",
+      "asmSymbol": "EndingGfx1",
+      "file": "menu/gfx/ending_gfx1.asm",
+      "format": "ff6-lzss",
+      "assembly": {
+        "graphics1": {
+          "type": "graphics",
+          "name": "Ending Graphics 1",
+          "range": "0x0000-0x1F5F",
+          "format": "snes4bpp"
+        },
+        "graphics2": {
+          "type": "graphics",
+          "name": "Ending Graphics 2",
+          "range": "0x1F60-0x2A9F",
+          "format": "snes4bpp"
+        },
+        "graphics3": {
+          "type": "graphics",
+          "name": "Ending Graphics 3",
+          "range": "0x2AA0-0x389F",
+          "format": "snes4bpp"
+        },
+        "tableLayout": {
+          "type": "tilemap",
+          "name": "Ending Table Layout",
+          "range": "0x38A0-0x401F",
+          "format": "snes4bppTile",
+          "graphics": [
+            [
+              {
+                "path": "endingGraphics.graphics1",
+                "offset": "0x0000"
+              },
+              {
+                "path": "endingGraphics.graphics2",
+                "offset": "0x4000"
+              },
+              {
+                "path": "endingGraphics.graphics3",
+                "offset": "0x8000"
+              }
+            ]
+          ],
+          "palette": [
+            [
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xA0-0xB0",
+                "offset": "0x10"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xB0-0xC0",
+                "offset": "0x20"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xD0-0xE0",
+                "offset": "0x50"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xE0-0xF0",
+                "offset": "0x60"
+              }
+            ]
+          ],
+          "width": 32,
+          "height": 30
+        },
+        "miscLayout": {
+          "type": "tilemap",
+          "name": "Ending Misc. Layout",
+          "range": "0x4020-0x4447",
+          "format": "snes4bppTile",
+          "graphics": [
+            [
+              {
+                "path": "endingGraphics.graphics1",
+                "offset": "0x0000"
+              },
+              {
+                "path": "endingGraphics.graphics2",
+                "offset": "0x4000"
+              },
+              {
+                "path": "endingGraphics.graphics3",
+                "offset": "0x8000"
+              }
+            ]
+          ],
+          "palette": [
+            [
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xA0-0xB0",
+                "offset": "0x10"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xB0-0xC0",
+                "offset": "0x20"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xD0-0xE0",
+                "offset": "0x50"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xE0-0xF0",
+                "offset": "0x60"
+              }
+            ]
+          ],
+          "width": 32,
+          "height": 17
+        },
+        "barsLayout": {
+          "type": "tilemap",
+          "name": "Ending Bars Layout",
+          "range": "0x4448-0x4BC7",
+          "format": "snes4bppTile",
+          "graphics": [
+            [
+              {
+                "path": "endingGraphics.graphics1",
+                "offset": "0x0000"
+              },
+              {
+                "path": "endingGraphics.graphics2",
+                "offset": "0x4000"
+              },
+              {
+                "path": "endingGraphics.graphics3",
+                "offset": "0x8000"
+              }
+            ]
+          ],
+          "palette": [
+            [
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xA0-0xB0",
+                "offset": "0x10"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xB0-0xC0",
+                "offset": "0x20"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xD0-0xE0",
+                "offset": "0x50"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xE0-0xF0",
+                "offset": "0x60"
+              }
+            ]
+          ],
+          "width": 32,
+          "height": 30
+        },
+        "bookLayout": {
+          "type": "tilemap",
+          "name": "Ending Book Layout",
+          "range": "0x4BC8-0x503F",
+          "format": "snes4bppTile",
+          "graphics": [
+            [
+              {
+                "path": "endingGraphics.graphics1",
+                "offset": "0x0000"
+              },
+              {
+                "path": "endingGraphics.graphics2",
+                "offset": "0x4000"
+              },
+              {
+                "path": "endingGraphics.graphics3",
+                "offset": "0x8000"
+              }
+            ]
+          ],
+          "palette": [
+            [
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xA0-0xB0",
+                "offset": "0x10"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xB0-0xC0",
+                "offset": "0x20"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xD0-0xE0",
+                "offset": "0x50"
+              },
+              {
+                "path": "endingCreditsBackgroundPalette",
+                "range": "0xE0-0xF0",
+                "offset": "0x60"
+              }
+            ]
+          ],
+          "width": 32,
+          "height": 18
+        }
+      }
+    },
+    "endingGraphics2": {
+      "type": "data",
+      "name": "Ending Graphics Data 2",
+      "range": "0xC4F477-0xC4F6F7",
+      "asmSymbol": "EndingGfx2",
+      "file": "menu/gfx/ending_gfx2.asm",
+      "format": "ff6-lzss"
+    },
+    "endingGraphics3": {
+      "type": "data",
+      "name": "Ending Graphics Data 3",
+      "range": "0xC4F6FB-0xC4FF71",
+      "asmSymbol": "EndingGfx3",
+      "file": "menu/gfx/ending_gfx3.asm",
+      "format": "ff6-lzss"
+    },
+    "endingGraphics4": {
+      "type": "data",
+      "name": "Ending Graphics Data 4",
+      "range": "0xD99D4B-0xD9A4E3",
+      "asmSymbol": "EndingGfx4",
+      "file": "menu/gfx/ending_gfx4.asm",
+      "format": "ff6-lzss"
+    },
+    "endingGraphics5": {
+      "type": "data",
+      "name": "Ending Graphics Data 5",
+      "range": "0xD9A4E5-0xD9A568",
+      "asmSymbol": "EndingGfx5",
+      "file": "menu/gfx/ending_gfx5.asm",
+      "format": "ff6-lzss"
+    },
     "entranceTriggersMulti": {
       "type": "array",
       "name": "Multi-Tile Entrance Triggers",
       "range": "0xEDF882-0xEDFCA9",
       "isSequential": true,
-      "arrayLength": 416,
+      "arrayLength": 512,
       "asmSymbol": "LongEntrance",
       "file": "field/data/long_entrance.asm",
       "assembly": {
@@ -3505,7 +3813,7 @@
       "range": "0xEDFE00-0xEDFFA6",
       "asmSymbol": "GenjuBonusDesc",
       "file": "menu/text/genju_bonus_desc.asm",
-      "arrayLength": 17,
+      "arrayLength": 24,
       "assembly": {
         "type": "text",
         "name": "Description",
@@ -3513,7 +3821,7 @@
         "multiLine": true
       },
       "pointerTable": {
-        "range": "0xEDFFD0-0xEDFFF1",
+        "range": "0xEDFFD0-0xEDFFFF",
         "offset": "0xEDFE00"
       }
     },
@@ -9919,6 +10227,35 @@
       "file": "btlgfx/gfx/slot_gfx.asm",
       "format": "snes4bpp"
     },
+    "songSamples": {
+      "type": "array",
+      "name": "Song Samples",
+      "range": "0xC53F95-0xC54A34",
+      "arrayLength": 85,
+      "itemLength": 32,
+      "asmSymbol": "SongSamples",
+      "file": "sound/data/song_samples.asm"
+    },
+    "songScripts": {
+      "type": "array",
+      "name": "Song Scripts",
+      "range": "0xC85C7A-0xC9FDFF",
+      "arrayLength": 85,
+      "asmSymbol": "SongScript",
+      "file": "sound/data/song_script.asm",
+      "pointerTable": {
+        "range": "0xC53E96-0xC53F94",
+        "pointerSize": 3,
+        "isMapped": true
+      }
+    },
+    "spcData": {
+      "type": "data",
+      "name": "SPC Data",
+      "range": "0xC5070E-0xC53C5D",
+      "asmSymbol": "SPCData",
+      "file": "sound/data/spc_data.asm"
+    },
     "spellDescriptions": {
       "type": "array",
       "name": "Spell Descriptions",
@@ -10218,19 +10555,26 @@
         }
       }
     },
-    "trainGraphics": {
+    "magitekTrainGraphics": {
       "type": "data",
       "name": "Magitek Train Ride Graphics",
       "range": "0xEF3250-0xEF4845",
-      "asmSymbol": "TrainGfx",
-      "file": "world/gfx/train_gfx.asm"
+      "asmSymbol": "MagitekTrainGfx",
+      "file": "world/gfx/magitek_train_gfx.asm"
     },
-    "trainPalette": {
+    "magitekTrainTiles": {
+      "type": "data",
+      "name": "Magitek Train Ride Graphics Pointers",
+      "range": "0xD8DD00-0xD8DFB7",
+      "asmSymbol": "MagitekTrainTiles",
+      "file": "world/data/magitek_train_tiles.asm"
+    },
+    "magitekTrainPalette": {
       "type": "data",
       "name": "Magitek Train Ride Palette",
       "range": "0xEF4846-0xEF4A45",
-      "asmSymbol": "TrainPal",
-      "file": "world/gfx/train_pal.asm"
+      "asmSymbol": "MagitekTrainPal",
+      "file": "world/gfx/magitek_train_pal.asm"
     },
     "treasureProperties": {
       "type": "array",
@@ -10310,6 +10654,36 @@
         "range": "0xED82F4-0xED8633",
         "offset": "0xED8634"
       }
+    },
+    "vectorApproachGraphics": {
+      "type": "graphics",
+      "name": "Vector Approach Graphics",
+      "range": "0xD8DFB8-0xD8E5BE",
+      "asmSymbol": "VectorApproachGfx",
+      "file": "world/gfx/vector_approach_gfx.asm",
+      "format": [
+        "snes4bpp",
+        "ff6-lzss"
+      ],
+      "palette": "vectorApproachPalette"
+    },
+    "vectorApproachLayout": {
+      "type": "tilemap",
+      "name": "Vector Approach Tile Layout",
+      "range": "0xD8E5BF-0xD8E6B9",
+      "asmSymbol": "VectorApproachTiles",
+      "file": "world/gfx/vector_approach_tiles.asm",
+      "format": [
+        "snes4bppTile",
+        "ff6-lzss"
+      ],
+      "graphics": "vectorApproachGraphics",
+      "palette": {
+        "path": "vectorApproachPalette",
+        "offset": "0x70"
+      },
+      "width": 32,
+      "height": 16
     },
     "vectorApproachPalette": {
       "type": "data",

@@ -227,7 +227,7 @@ BlitzLevelTbl:
         .include "data/imp_item.asm"                           ; ed/82e4
 TreasurePropPtrs:
         make_ptr_tbl_rel TreasureProp, 415                      ; ed/82f4
-        .addr TreasurePropEnd - TreasurePropPtrs
+        .addr TreasurePropEnd - TreasureProp
         .include "data/treasure_prop.asm"                       ; ed/8634
         TreasurePropEnd := *
 
@@ -239,7 +239,7 @@ TreasurePropPtrs:
         .res 1
         .include "gfx/map_pal.asm"                              ; ed/c480
 LongEntrancePtrs:
-        make_ptr_tbl_rel LongEntrance, 416, LongEntrancePtrs    ; ed/f480
+        make_ptr_tbl_rel LongEntrance, 512, LongEntrancePtrs    ; ed/f480
         .addr LongEntranceEnd - LongEntrancePtrs
         .include "data/long_entrance.asm"                       ; ed/f882
         LongEntranceEnd := *
