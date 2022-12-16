@@ -13,18 +13,18 @@ The Japanese version is not currently supported.
 
 You will need a Unix-like shell to build the ROM. If you are on a Mac or
 Linux, simply open a terminal. If you are using Windows, you will need to
-use a Unix-like runtime environment such as Cygwin: https://www.cygwin.com.
+use a Unix-like runtime environment such as Cygwin: <https://www.cygwin.com>.
 
 ### Install Dependencies
 
 First, install the following dependencies if you don't have them already.
 
-- GNU Make: https://www.gnu.org/software/make/
-- cc65: https://cc65.github.io
-- node: https://nodejs.org
+- GNU Make: <https://www.gnu.org/software/make/>
+- cc65: <https://cc65.github.io>
+- node: <https://nodejs.org>
 
 Here is a very nice tutorial explaining how to set up Cygwin and cc65 on
-a Windows machine: https://github.com/SlithyMatt/x16-hello-cc65
+a Windows machine: <https://github.com/SlithyMatt/x16-hello-cc65>
 
 ### Clone the Repo
 
@@ -60,7 +60,7 @@ directory called either ff6-en-data.json or ff6-jp-data.json. Data in these
 files can be modified and then encoded into source files when a ROM is
 assembled. Editing the data file will eventually be done with the FFTools
 editor, which is currently in development
-(https://github.com/everything8215/fftools).
+(<https://github.com/everything8215/fftools>).
 It is also possible to change simple things like text and monster HP
 by editing the json file. A top-level object called `"obj"` contains all of
 the data objects. After editing an object, find the corresponding entry in the
@@ -77,14 +77,12 @@ Run `make <version>` to make the version of the ROM that you want, where
 - `ff6-en`: Final Fantasy III 1.0 (U)
 - `ff6-en1`: Final Fantasy III 1.1 (U)
 
-The ROM will be created in the `rom` directory. If you have ripped data from
-both the Japanese and English versions, you can also run `make all` to make
-all four ROMs.
+The ROM will be created in the `rom` directory.
 
 After building the vanilla ROMs, you are free to modify the code and data as
-you like, then run make again to rebuild the ROM. Some switchable config
-options can be found in the file `include/const.inc`. This includes several
-bugfixes and options to skip the intro and disable random battles.
+you like, then run `make` again to rebuild the ROM. Some switchable config
+options can be found in the file `include/const.inc`. This includes a "debug"
+mode that allows you to skip the intro.
 
 ## Distributing ROM Hacks
 
@@ -152,11 +150,11 @@ to link all of the object files together to create the ROM.
 ### Naming Conventions
 
 As a naming convention for symbols, I've chosen to follow the example of the
-Pokémon reverse engineering team (https://github.com/pret). Subroutine names
+Pokémon reverse engineering team (<https://github.com/pret>). Subroutine names
 and labels for data in the ROM use PascalCase. Acronyms like RAM appear in all
 capitals (i.e. InitRAM). This differs from conventional camel-case
 capitalization rules. The Apple II DeskTop project has some nice ca65
-coding style conventions here (https://github.com/a2stuff/a2d/blob/main/docs/Coding_Style.md)
+coding style conventions here (<https://github.com/a2stuff/a2d/blob/main/docs/Coding_Style.md>)
 although I'm not sure how strictly I would want to follow them.
 
 External subroutines (which can be called by other modules) get the special
