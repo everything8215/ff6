@@ -14,6 +14,8 @@
 ; +----------------------------------------------------------------------------+
 
 .list off
+.ifndef MACROS_INC
+MACROS_INC = 1
 
 ; ------------------------------------------------------------------------------
 
@@ -93,33 +95,37 @@ PSW_C := %00000001
         sep #PSW_A|PSW_I
 .endmacro
 
-.macro longac
+; ------------------------------------------------------------------------------
+
+; [ set the size of accumulator/index registers and carry ]
+
+.macro longa_clc
         .a16
         rep #PSW_A|PSW_C
 .endmacro
 
-.macro shortac
+.macro shorta_sec
         .a8
         sep #PSW_A|PSW_C
 .endmacro
 
-.macro longic
+.macro longi_clc
         .i16
         rep #PSW_I|PSW_C
 .endmacro
 
-.macro shortic
+.macro shorti_sec
         .i8
         sep #PSW_I|PSW_C
 .endmacro
 
-.macro longaic
+.macro longai_clc
         .a16
         .i16
         rep #PSW_A|PSW_I|PSW_C
 .endmacro
 
-.macro shortaic
+.macro shortai_sec
         .a8
         .i8
         sep #PSW_A|PSW_I|PSW_C
@@ -417,4 +423,11 @@ PSW_C := %00000001
 
 ; ------------------------------------------------------------------------------
 
+.define inc_lang(_path) .include .sprintf(_path, LANG_SUFFIX)
+
+; ------------------------------------------------------------------------------
+
+.endif
 .list on
+
+; ------------------------------------------------------------------------------

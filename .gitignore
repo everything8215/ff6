@@ -1,4 +1,5 @@
 .DS_Store
+.vscode
 *.sfc
 *.lz
 *.bin
@@ -7,5 +8,10 @@
 *.map
 *.sh
 pretty/*
-node_modules/*
 ff6-*-data.json
+*.log
+*.pot
+*.pyc
+*/*/*/__pycache__/
+*/*/__pycache__/
+*/__pycache__/

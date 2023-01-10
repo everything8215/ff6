@@ -14,6 +14,10 @@
 ; +----------------------------------------------------------------------------+
 
 .list off  ; disable listing
+.ifndef CONST_INC
+CONST_INC = 1
+
+; ------------------------------------------------------------------------------
 
 ; define a config constant if it's not already defined
 .macro def_config _const, _value
@@ -38,4 +42,7 @@ def_config LANG_EN,0
         .define LANG_SUFFIX "jp"
 .endif
 
+; ------------------------------------------------------------------------------
+
+.endif
 .list on

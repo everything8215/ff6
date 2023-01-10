@@ -21,7 +21,7 @@ First, install the following dependencies if you don't have them already.
 
 - GNU Make: <https://www.gnu.org/software/make/>
 - cc65: <https://cc65.github.io>
-- node: <https://nodejs.org>
+- Python 3: <https://www.python.org/>
 
 Here is a very nice tutorial explaining how to set up Cygwin and cc65 on
 a Windows machine: <https://github.com/SlithyMatt/x16-hello-cc65>
@@ -31,11 +31,6 @@ a Windows machine: <https://github.com/SlithyMatt/x16-hello-cc65>
 If you have git installed, run `git clone
 https://github.com/everything8215/ff6.git`. Otherwise, click on "Code" in
 GitHub and select "Download ZIP" to copy the repo to your computer.
-
-### Install Node.js Modules
-
-In the root directory, run `npm install` to install Node.js modules needed
-to build the ROMs.
 
 ### Rip ROM Data
 
