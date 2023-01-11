@@ -50,20 +50,6 @@ files to their original state, simply delete those files and run `make rip`
 again, as it will only create files that do not exist and will not affect
 existing files.
 
-All ROM data will also be decoded and saved to a json file in the root
-directory called either ff6-en-data.json or ff6-jp-data.json. Data in these
-files can be modified and then encoded into source files when a ROM is
-assembled. Editing the data file will eventually be done with the FFTools
-editor, which is currently in development
-(<https://github.com/everything8215/fftools>).
-It is also possible to change simple things like text and monster HP
-by editing the json file. A top-level object called `"obj"` contains all of
-the data objects. After editing an object, find the corresponding entry in the
-top-level object called `"assembly"` and add the following property:
-`"isDirty": true`. This will notify the encoding script that the assembly
-file containing this object's data needs to be updated. This procedure will
-be automated by FFTools, but for now it needs to be done manually.
-
 ### Assemble and Link ROM File
 
 Run `make <version>` to make the version of the ROM that you want, where
@@ -138,9 +124,9 @@ Each of the modules described above is in a separate directory. This mimics
 my best guess as to how the original source code was organized based on e.g.
 the Playstation releases where each module had a directory named after the
 main programmer for that module ('NARITA', 'YOSHII', etc.). Each directory
-contains all of the source code and data as well as a GNU Makefile to assemble
-everything into a single object file. The root directory contains a Makefile
-to link all of the object files together to create the ROM.
+contains all of the source code and data. The root directory contains a
+Makefile to assemble each module and link all of the object files together to
+create the ROM.
 
 ### Naming Conventions
 
