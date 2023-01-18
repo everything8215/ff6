@@ -15,3 +15,8 @@ ff6-*-data.json
 */*/*/__pycache__/
 */*/__pycache__/
 */__pycache__/
+*.smc
+*.sfc
+include/assets/
+src/assets/
+!src/assets/main.asm
