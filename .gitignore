@@ -20,3 +20,4 @@ ff6-*-data.json
 include/assets/
 src/assets/
 !src/assets/main.asm
+!src/assets/mml/
