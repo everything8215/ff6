@@ -94,7 +94,7 @@ $(FF6_JP_PATH): cfg/ff6-jp.cfg $(OBJ_FILES_JP)
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@
 
-$(FF6_EN_PATH): cfg/ff6-en.cfg $(OBJ_FILES_EN)
+$(FF6_EN_PATH): cfg/ff6-en.cfg mml $(OBJ_FILES_EN)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
 	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
@@ -105,7 +105,7 @@ $(FF6_EN_PATH): cfg/ff6-en.cfg $(OBJ_FILES_EN)
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@
 
-$(FF6_EN1_PATH): cfg/ff6-en.cfg $(OBJ_FILES_EN1)
+$(FF6_EN1_PATH): cfg/ff6-en.cfg mml $(OBJ_FILES_EN1)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
 	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
