@@ -304,7 +304,262 @@ SongScriptPtrs:                                                 ; c5/3e96
         make_ptr_tbl_far SongScript, SONG_SCRIPT_ARRAY_LENGTH, 0
         .include "song_samples.asm"                             ; c5/3f95
         .include "brr_sample.asm"                               ; c5/4a35
-        .include "song_script.asm"                              ; c8/5c7a
+
+SongScript:                                                     ; c8/5c7a
+
+SongScript_0000:
+SongScript_0051:
+        .include "song_script_0000.asm"
+
+SongScript_0001:
+        .include "song_script_0001.asm"
+
+SongScript_0005:
+        .include "song_script_0005.asm"
+
+SongScript_0006:
+        .include "song_script_0006.asm"
+
+SongScript_0007:
+        .include "song_script_0007.asm"
+
+SongScript_0008:
+        .include "song_script_0008.asm"
+
+SongScript_0009:
+        .include "song_script_0009.asm"
+
+SongScript_000a:
+        .include "song_script_000a.asm"
+
+SongScript_000b:
+        .include "song_script_000b.asm"
+
+SongScript_000c:
+        .include "song_script_000c.asm"
+
+SongScript_000d:
+        .include "song_script_000d.asm"
+
+SongScript_000e:
+        .include "song_script_000e.asm"
+
+SongScript_000f:
+        .include "song_script_000f.asm"
+
+SongScript_0010:
+        .include "song_script_0010.asm"
+
+SongScript_0011:
+        .include "song_script_0011.asm"
+
+SongScript_0012:
+        .include "song_script_0012.asm"
+
+SongScript_0013:
+        .include "song_script_0013.asm"
+        .include "song_script_0013a.asm"
+
+SongScript_0014:
+        .include "song_script_0014.asm"
+
+SongScript_0015:
+        .include "song_script_0015.asm"
+
+SongScript_0003:
+        .include "song_script_0003.asm"
+
+SongScript_0016:
+        .include "song_script_0016.asm"
+
+SongScript_0017:
+        .include "song_script_0017.asm"
+
+SongScript_0018:
+        .include "song_script_0018.asm"
+
+SongScript_0004:
+        .include "song_script_0004.asm"
+
+SongScript_0019:
+        .include "song_script_0019.asm"
+
+SongScript_001a:
+        .include "song_script_001a.asm"
+
+SongScript_001b:
+        .include "song_script_001b.asm"
+
+SongScript_001c:
+        .include "song_script_001c.asm"
+
+SongScript_001d:
+        .include "song_script_001d.asm"
+
+SongScript_001e:
+        .include "song_script_001e.asm"
+
+SongScript_001f:
+        .include "song_script_001f.asm"
+
+SongScript_0020:
+        .include "song_script_0020.asm"
+
+SongScript_0021:
+        .include "song_script_0021.asm"
+
+SongScript_0022:
+        .include "song_script_0022.asm"
+
+SongScript_0023:
+        .include "song_script_0023.asm"
+
+SongScript_0024:
+        .include "song_script_0024.asm"
+
+SongScript_0025:
+        .include "song_script_0025.asm"
+
+SongScript_0026:
+        .include "song_script_0026.asm"
+
+SongScript_0027:
+        .include "song_script_0027.asm"
+
+SongScript_002a:
+        .include "song_script_002a.asm"
+
+SongScript_002d:
+        .include "song_script_002d.asm"
+
+SongScript_002e:
+        .include "song_script_002e.asm"
+
+SongScript_002f:
+        .include "song_script_002f.asm"
+
+SongScript_0030:
+        .include "song_script_0030.asm"
+
+SongScript_0031:
+        .include "song_script_0031.asm"
+
+SongScript_0032:
+        .include "song_script_0032.asm"
+
+SongScript_0033:
+        .include "song_script_0033.asm"
+
+SongScript_0034:
+        .include "song_script_0034.asm"
+
+SongScript_0035:
+        .include "song_script_0035.asm"
+
+SongScript_0036:
+        .include "song_script_0036.asm"
+
+SongScript_0037:
+        .include "song_script_0037.asm"
+
+SongScript_0038:
+        .include "song_script_0038.asm"
+
+SongScript_0039:
+        .include "song_script_0039.asm"
+
+SongScript_003a:
+        .include "song_script_003a.asm"
+
+SongScript_003b:
+        .include "song_script_003b.asm"
+
+SongScript_003c:
+        .include "song_script_003c.asm"
+
+SongScript_003d:
+        .include "song_script_003d.asm"
+
+SongScript_003e:
+        .include "song_script_003e.asm"
+
+SongScript_003f:
+        .include "song_script_003f.asm"
+
+SongScript_0040:
+        .include "song_script_0040.asm"
+
+SongScript_0041:
+        .include "song_script_0041.asm"
+
+SongScript_0042:
+        .include "song_script_0042.asm"
+
+SongScript_0043:
+        .include "song_script_0043.asm"
+
+SongScript_0044:
+        .include "song_script_0044.asm"
+
+SongScript_0045:
+        .include "song_script_0045.asm"
+
+SongScript_0046:
+        .include "song_script_0046.asm"
+
+SongScript_0002:
+        .include "song_script_0002.asm"
+
+SongScript_0047:
+        .include "song_script_0047.asm"
+
+SongScript_0048:
+        .include "song_script_0048.asm"
+
+SongScript_0049:
+        .include "song_script_0049.asm"
+
+SongScript_004a:
+        .include "song_script_004a.asm"
+
+SongScript_002b:
+        .include "song_script_002b.asm"
+
+SongScript_0028:
+        .include "song_script_0028.asm"
+
+SongScript_0029:
+        .include "song_script_0029.asm"
+
+SongScript_002c:
+        .include "song_script_002c.asm"
+
+SongScript_004b:
+        .include "song_script_004b.asm"
+
+SongScript_004c:
+        .include "song_script_004c.asm"
+
+SongScript_004d:
+        .include "song_script_004d.asm"
+
+SongScript_004e:
+        .include "song_script_004e.asm"
+
+SongScript_004f:
+        .include "song_script_004f.asm"
+
+SongScript_0050:
+        .include "song_script_0050.asm"
+
+SongScript_0052:
+        .include "song_script_0052.asm"
+
+SongScript_0053:
+        .include "song_script_0053.asm"
+
+SongScript_0054:
+        .include "song_script_0054.asm"
 
 ; ------------------------------------------------------------------------------
 
