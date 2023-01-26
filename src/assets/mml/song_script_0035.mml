@@ -1,0 +1,113 @@
+#TITLE The Airship Blackjack
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t145%x220%b0,70%f0,0%v50v60|0p60%e1r2o5grgrgrgr  grgrgrgrgrgrgrgr  
+v100|1p60%e1m48,18,239 $1 o7d2^4e4  >g1  r4g4a4a+4  <f4d+4d4c4  
+c+2^4d4  >f+4d4a4g+4  g2e2  ^2^4r4  
+g4d+rf4gra+4  ^2^4r4  b4gra4br<d4  ^2r2  
+d4>a+r<c4drf4  ^4d4e4f4  g1  ^2r2  
+d2^4e4  >g1  r4g4a4a+4  <f4d+4d4c4  
+c+2^4d4  >f+4d4a4g+4  g2e2  ^2^4r4  
+g4d+rf4gra+4  ^2^4r4  b4gra4br<d4  ^2r2  
+d4>br<c+4drf+4  ^4e4f+4g+4  a2f+2  ^1  
+r1  r4.>b8<d8c8>b8<d8  c8>b8<c8>a2^8  ^2^4.r8  
+r1  r4.b8<d8c8>b8<d8  c8>b8<c8e2^8  ^2r2  
+r1  r1  r1  r1  
+c4d8d+2^8  ^4d+4d4c4  d4e8f2^8  ^4.r2r8  
+
+;1
+
+l16
+{2}
+l16v60|0p50%e1o5drdrdrdrdrdrdrdr  drdrdrdrdrdrdrdr  
+v60|2p50%e1m48,18,239 $2 o5d2^4e4  g2^4r4  d+rd+r8.d+rd+r8.d+rd+r  
+r8d+rd+r8.d+r8.d+r8.  c+2^4d4  f+2a4g+4  g1  
+<c4.>g4.e4  d+8.^48r24d+rd+8.^48r24d+rd+4  ^4d+4f4d+4  d8.^48r24drd8.^48r24drd4  
+^4d4f+4g4  f8.^48r24frf8.^48r24frf4  ^4f4e4d4  g2^4.^12r24  
+grgr8.grgr8.grgr  d2^4e4  g2^4r4  d+rd+r8.d+rd+r8.d+rd+r  
+r8d+rd+r8.d+r8.d+r8.  c+2^4d4  f+2a4g+4  g1  
+<c4.>g4.e4  d+8.^48r24d+rd+8.^48r24d+rd+4  ^4d+4f4d+4  d8.^48r24drd8.^48r24drd4  
+^4d4f+4g4  f+8.^48r24f+rf+8.^48r24f+rf+4  ^4e4f+4g+4  a2f+2  
+^1  r1  r4.d8f8e8d8f8  e8d8e8c2^8  
+^2^4.r8  r1  r4.d8f8e8d8f8  e8d8e8a2^8  
+^2r2  r1  r1  r1  
+r1  >g+4a+8<c2^8  ^4c4>a+4g+4  b4<c8d2^8  
+^4.r2r8  
+;2
+
+l16
+{3}
+l16v60|0p55%e1o4arararararararar  arararararararar  
+ $3 v60|2p55%e1m48,18,239o4b1  ^2^4r4  a+ra+r8.a+ra+r8.a+ra+r  r8a+ra+r8.a+r8.a+r8.  
+a1  ^2a4b4  <c1  e4.d4.c4  
+>g+8.^48r24g+rg+8.^48r24g+rg+4  ^4g+4g+4a+4  b8.^48r24brb8.^48r24brb4  
+^4b4b4<c4  d8.^48r24drd8.^48r24drd4  ^4d4c4>a+4  <c2^4.^12r24  
+>brbr8.brbr8.brbr  b1  ^2^4r4  a+ra+r8.a+ra+r8.a+ra+r  
+r8a+ra+r8.a+r8.a+r8.  a1  ^2a4b4  <c1  
+e4.d4.c4  >g+8.^48r24g+rg+8.^48r24g+rg+4  ^4g+4g+4a+4  b8.^48r24brb8.^48r24brb4  
+^4b4b4<c4  d8.^48r24drd8.^48r24drd4  ^4d4d4d4  c+2c+2  
+^1  v60|8p55%e1m48,18,239o5a2f2  ^4.r2r8  r1  
+r1  a2f2  ^4.r2r8  r1  
+r2>a4b4  <c4d8d+2^8  ^4d+4d4c4  >b4<c8d2^8  
+^1  r1  r1  r1  
+r1  
+;3
+
+l16
+{4}
+l16v60|0p80%e1r1  r2o6frfrfrfr   $4 o5g1  
+^2<c4>b4  a+2<c4d4  >a+1  a1  
+^2a4b4  <c1  >gef+g<crc>g<cderef+ge  d+1  
+^4d+4f4f+4  g1  ^4g4a4b4  a+1  
+^1  <c1  >bgabgdf+gd>b<c+d>bgab  g1  
+^2<c4>b4  a+2<c4d4  >a+1  a1  
+^2a4b4  <c1  >gef+g<crc>g<cderef+ge  d+1  
+^4d+4f4f+4  g1  ^4g4a4b4  b1  
+^1  a1  ^2>f+g+a<c+>a<c+f+g+  a2f2  
+^4.>d8f8e8d8f8  e8d8e8c2^8  ^1  <a2f2  
+^4.>d8f8e8d8f8  e8d8e8a2^8  ^2a4b4  <c4d8d+2^8  
+^4d+4d4c4  >b4<c8d2^8  ^1  c4>a+8g+2^8  
+^4g+4a+4<c4  >b4a8g2^8  <bgabgdf+gd>b<c+d>bgab  
+;4
+
+l16
+{5}
+l16v60|0p75%e1r1  
+o6crcrcrcrcrcrcrcr   $5 o5e1  ^2e4f+4  g1  
+^1  f+1  ^1  e1  
+ecdegrgef+g<crcdec  c1  ^4c4d4d+4  d1  
+^4d4f+4g4  f1  ^1  g1  
+d>b<c+d>bgabgdf+gd>b<c+d  e1  ^2e4f+4  g1  
+^1  f+1  ^1  e1  
+ecdegrgef+g<crcdec  c1  ^4c4d4d+4  d1  
+^4d4f+4g4  f+1  ^1  f+1  
+^2>>a<c+f+af+a<c+e  f2c2  ^4.>>b8<d8c8>b8<d8  c8>b8<c8>a2^8  
+^1  <<f2c2  ^4.>>b8<d8c8>b8<d8  c8>b8<c8e2^8  
+^2c4d4  d+4a+8<c2^8  ^4c4>a+4d+4  d4g8b2^8  
+^1  d+4d8c2^8  ^4c4d4d+4  d4c8>b2^8  
+<<d>b<c+d>bgabgdf+gd>b<c+d  
+;5
+
+l16
+{6}
+l16v80|3p64%e0o6[16d8] $6 o6[32c8]>[16b8][16a8][16f8][16g8][16a+8][16g8  
+]<[32c8]>[16b8][16a8][16f8][16g8][16b8][16f+8][16f8  ][16a8][16f8][16a8][16g+8][16g8][16g+8][16g8]
+;6
+
+l16
+{7}
+l16v40p70%e0o5|4a8  
+aa|5a8|4aaa|5a|4aa|5a8|4aaa8  aa|5a8|4aaa8|5a8|4aa|5a8 $7 |4a8  
+aaa8|5a8|4a8aaa8aaa8  aaa8|5a8|4a8|5a8|4a8aa
+;7
+
+l16
+{8}
+l16v100p64%e0o5|6a4  
+a4a4a4a4  a4a8|7a8a8aa $8 |6a4  |7a4|6a8a8|7a4|6a4  |7a8|6a4a8|7a8|6a8
+;8
+
+l16

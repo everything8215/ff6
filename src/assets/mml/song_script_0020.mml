@@ -1,0 +1,117 @@
+#TITLE Phantom Train
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16%v50r4.r4.r4.   $2 r4.:3 
+;2
+
+l16 $3 v60|0p64%e1mo5b4<d6c12>b4  
+a6g12e12d+12e12g6f12e2  e4e4e4g6f+12  e1  v60|1p55%e1m48,18,239o6e4g6f12e4d6c12  
+e4g6f+12e4r4  e6f+12g6a12r12a+12a+12a+12a+12a+12  a+12a+12a+12a+12a12g12e4r4  
+e4g6f12e4d6c12  e4g6f+12e4r4  e6f+12g6a12r12a+12a+12a+12a+12a+12  
+a+12a+12a+12a+12a12g12e4r4  <e6d+12d6c+12c4>g24r24a24r24a+24r24  
+b24r8>b12<g24r8f12e12r6<d6c12  e6d+12d6c+12c4>g24r24a24r24a+24r24  
+b12a+12b12f+6d+12e12r4.r24  
+;3
+
+l16
+{2}
+l16r4.r4.r4.   $5 r4.:6 
+;5
+
+l16 $6 v60|0p64%e1o5g4a4g4  
+e4>b4<d+4>b2  b4a4g4<d+4  >b1  v60|2p60%e1o4b4<d+4>b4a+4  
+b4<d+4>b4r4  b4<d+4r12e12e12d+12d+12d+12  d12d12d12c+12c+12c+12>b4r4  
+b4<d+4>b4a+4  b4<d+4>b4r4  b4<d+4r12e12e12d+12d+12d+12  d12d12d12c+12c+12c+12>b4r4  
+<<<e6d+12d6c+12c4>g24r24a24r24a+24r24  b24r8>b12<g24r8f12e12r6>a4  
+<<e6d+12d6c+12c4>g24r24a24r24a+24r24  b12a+12b12f+6d+12e12r4.r24  
+
+;6
+
+l16
+{3}
+l16r4.r4.r4.   $8 r4.:9 
+;8
+
+l16 $9 v60|0p64%e1o5e4d+4e4  
+>a+4g4a4g2  g4f+4e4a4  a4a12g+12f+12g+2  v60|2p70%e1o4g4a4g4e4  
+g4a4g4r4  g4a4r12g12g12g12g12g12  g12g12g12g12g12g12g4r4  g4a4g4e4  
+g4a4g4r4  g4a4r12g12g12g12g12g12  g12g12g12g12g12g12g4r4  <<e6d+12d6c+12c4>g24r24a24r24a+24r24  
+b24r8>b12<g24r8f12e12r6d+4  <e6d+12d6c+12c4>g24r24a24r24a+24r24  
+b12a+12b12f+6d+12e12r4.r24  
+;9
+
+l16
+{4}
+l16r4.r4.r4.   $11 r4.:12 
+;11
+
+l16 $12 v60|0p64%e1o4e4>b4<e4  
+c4e4f4e4  >b4<e4d4c4  >b4<e1  v80|3p85%e1o5e4f4e4c4  
+e4>b4<e4>b12<c+24r24d+24r24  e4>b4<e4c4  e4f4e4>b6<c+24d+24  e4f4e4c4  
+e4>b4<e4>b12<c+24r24d+24r24  e4>b4<e4c4  e4f4e4r4  e6f+12g6a12a+4a+24r24a24r24g24r24  
+f+24r8.r48d+24r8.r48e12r6b4  e6f+12g6a12a+4a+24r24a24r24g24r24  
+f+12r6b6r12e12r6>b12b12b12  
+;12
+
+l16
+{5}
+l16t20t216,55%e1%b0,20%f0,1%b216,100v60p64|8o4a32a4a32aa32a4a32aa32a4  
+a32a $14 a32a4a32a:13 
+;14
+
+l16 $13 %f216,0v216,40[3a32a4a32a]v216,20[3a32a4  
+a32a]v144,0[2a32a4a32a]r1   $15 v70|4p80%e1m48,18,239o5e4f4e4c4  
+e4>b4<e4>b12<c+24r24d+24r24  e4>b4<e4c4  e4f4e4>b6<c+24d+24  e4f4e4c4  
+e4>b4<e4>b12<c+24r24d+24r24  e4>b4<e4c4  e4f4e4r4  <e6f+12g6a12a+4a+24r24a24r24g24r24  
+f+24r8.r48d+24r8.r48e12r6b4  e6f+12g6a12a+4a+24r24a24r24g24r24  
+f+12r6b6r12e12r6>b12b12b12  r1  r1  r1  
+r1  
+;15
+
+l16
+{6}
+l16%e1v20v216,60p64|8&1r1  k2a32a4a32aa32a4a32aa32a4  
+a32a $17 a32a4a32a:16 
+;17
+
+l16 $16 v216,40[3a32a4a32a]v216,20[3a32a4  
+a32a]v144,0[2a32a4a32a]&191r1   $18 v120|5p45%e0o4e4f4e2  e4>b4<e2  
+e4>b4<e2  e4f4e2  e4f4e2  e4>b4<e2  
+e4>b4<e2  e4f4e2  r1  r2r4>b4  
+r1  r2r4b12b12b12  r1  r1  
+r1  r1  
+;18
+
+l16
+{7}
+l16%e1v20v216,60p64@4%n1%c22%s0%g1c32c4c32cc32c4c32cc32c4  
+c32c $20 c32c4c32c:19 
+;20
+
+l16 $19 v216,40[3c32c4c32c]v216,20[3c32c4  
+c32c]v144,0[2c32c4c32c]%n0v60|6p64%e1m48,18,239r1   $21 r1  r1  
+r1  r1  r1  r1  
+r1  r1  o5e24f+24e24f+24e24f+24g24a24g24a24g24a24a+24<c24>a+24<c24>a+24<c24d24e24f+24e24d24c24  
+>b24r24a+24r24b24r24<c+24r8d+12e12r4.r24  >e24f+24e24f+24e24f+24g24a24g24a24g24a24a+24<c24>a+24<c24>a+24<c24d24e24f+24e24d24c24  
+>b24r24a+24r24b24r24<c+24r8d+12e12r4.r24  r1  r1  r1  
+r1  
+;21
+
+l16
+{8}
+l16%e1v20v216,60p64%p1@4%s0%g1d32d4d32dd32d4d32dd32d4  
+d32d $23 d32d4d32d:22 
+;23
+
+l16 $22 v216,40[3d32d4d32d]v216,20[3d32d4  
+d32d]v144,0[2d32d4d32d]%p0v60|7p50%e0r1   $24 %g1o5[2v50f12f12f12f8.^32v30f64f64v50f8.^32v30f64f64v50f8.^32v30f64f64  
+v50f12f12f12f8.^32v30f64f64v50f8.^32^4v30f64f64  ][2v50f12f12f12f8.^32v30f64f64v50f8.^32v30f64f64v50f8.^32v30f64f64  
+v50f12f12f12f8.^32v30f64f64v50f2  ][2v10v96,70[32f64]v96,10[32f64]v50f8.^32v30f64f64v50f8.^32v30f64f64v50f2  
+]r1  r1  r1  r1  
+
+;24
+
+l16

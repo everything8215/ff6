@@ -1,0 +1,75 @@
+#TITLE Umaro's Theme
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t83%b0,70%f0,0%v50 $2 v60|0p50%e0r1  r1  o4[2[3d+8d+8g+4d+8d+d+g+4  
+]j2,1 r4.d+8d+8r4.  ] $1 d+8d+8d+4r2  v60|1p50%e1m48,18,239o6d8f+a<drc>a+a4.ga  
+a+rgrd+rdrc+2  d8f+a<drc>a+a4.ga  a+rgr<frerd+2  >f+32rr32f+32rr32g32rr32g32rr32g+32rr32g+32rr32a32rr32a32rr32  
+a+32rr32a+32rr32b32rr32b32rr32<c32r4.rr32  
+;2
+
+l16
+{2}
+l16 $4 v60|3p80%e1m48,18,239r1  
+r1  [2o5gr8.a+r8.<d4c+r>a+8  grdrfrg+8grdrf4  gr8.a+r8.<d4c+rj2,3 g8  
+frerd+r4rdrc+4  ] $3 grr4frerd+rdrc+4  v70|2p80%e1m48,18,239o5d8f+a<drc>a+a4.ga  
+a+rgrd+rdrc+2  d8f+a<drc>a+a4.ga  a+rgr<frerd+2  v60|3p80%e1m48,18,239o6drdrc+rc+rcrcr>brbr  
+a+ra+rararg+r4.r  
+;4
+
+l16
+{3}
+l16v50|4p75%e1 $6 r8o6gr8.f+r8.grf4  
+r8grf8d8>gr4.r  <[2r8gr8.gr8.gr8.gr  r8gr8.g+r8.grf4  r8gr8.gr8.gr8.gr  
+j2,5 frerd+r4rdrc+4  ] $5 r4frerd+rdrc+4  dd+drf+gf+raa+ar4r  d+fd+rgagra+<c>a+r4r  
+dd+drf+gf+raa+ar4r  d+fd+rgagra+<c>a+agfd+c+  r8f+r8.f+r8.f+r8.f+r  
+r8f+r8.f+rf+r4.r  
+;6
+
+l16
+{4}
+l16v50|4p70%e1 $8 o6r8dr8.c+r8.dr>a+4  
+r8<drc8>a+8dr4.r  [2r8<dr8.dr8.dr8.dr  r8dr8.dr8.drd4  r8dr8.dr8.dr8.dr  
+j2,7 >frgrg+r4rara+4  ] $7 r4>frf+rgrg+ra4  f+gf+raa+ar<cdcr4r  
+>gagra+<c>a+r<c+d+c+r4r  >f+gf+raa+ar<cdcr4r  >gagra+<c>a+r<c+d+c+c>a+agf  
+r2ererfrfr  f+rf+rgrgrg+r4.r  
+;8
+
+l16
+{5}
+l16 $10 v60|4p60%e1o4gr8.f8f+8gr8.g+4  
+gr8.f8f+8gr4.r  v60|5p60%e1m48,18,239[2o4gr8.a+r8.<d4c+r>a+8  grdrfrg+8grdrf4  
+gr8.a+r8.<d4c+rj2,9 g8  frerd+r4rdrc+4  ] $9 grr4frerd+rdrc+4  >d8arcrc+rd8arf+4  
+d+8a+rc+rdrd+8grgrgr  d8arcrc+rd8arf+4  d+8a+rc+rdrd+8grg4  r2ererd+rd+r  
+drdrc+rc+rcr4.r  
+;10
+
+l16
+{6}
+l16 $11 r1  r2r4v80|8p64%e1o3a4  
+^1  ^1  r1  r1  
+r1  r1  r1  r1  
+v60|5p55%e1m48,18,239r8o5dr4.rdr>a4  r8<d+r4.rc+rcr>a+r  r8<dr4.rdr>a4  
+r8<d+r4.rc+rc+4  r1  r1  
+;11
+
+l16
+{7}
+l16v80|6p64%e0 $13 o5gr8.f8f+8gr8.g+4  
+gr8.f8f+8gr8rr4  [2o5gr8.a+r8.<d4c+r>a+8  grdrfrg+8grdrf4  gr8.a+r8.<d4c+rj2,12 g8  
+frerd+r4rdrc+4  ] $12 grr4frerd+rdrc+4  d8r8crc+rd8r8>a4  <d+8r8c+rdrd+8r4.  
+d8r8crc+rd8r8>a4  <d+8r8c+rdrd+8r4.  r1  >f+rf+rfrfrer4.r  
+
+;13
+
+l16
+{8}
+l16|7p64%e0 $14 v120o3g4g4g2  g4g4g2  g1  g1  
+g1  g1  g1  g1  
+g1  r2<d8>g8g8g8  <d4>a4<d2  d+4>a+4<d+2  
+d4>a4<d2  d+4>a+4<d+2  r1  r2c4>v48,10[8g+32]
+;14
+
+l16

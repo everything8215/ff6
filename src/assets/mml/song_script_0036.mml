@@ -1,0 +1,85 @@
+#TITLE Catastrophe
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16%x240%b0,80%f0,0%v70v60|0p80%e1 $1 t80r2o4a+4<c4  c+2^4t60^4  
+t80r2>a+4<c4  f2^4t60^4  t80r2>a+4<c4  c+2^4t60^4  
+t80r2>a+4<c4  f2^4t60^4  t110d+2g2  f+2a+4<c4  
+d+2g2  f+2a+4<c4  t85r4>d24r24d24r24d24r24drcrdrd+r  f1  
+r4e24r24e24r24e24r24erdrerfr  g1  t90f2d+2  c+2>b4%l1b24<c+24d+24f24f+24g+24  
+a+2%l0g+2  f+2e8t85^8t80^8t75^8  
+;1
+
+l16
+{2}
+l16v60|0p75%e1 $2 r2o4f4g4  
+g+1  r2f4g4  <c+1  r2>f4g4  
+g+1  r2f4g4  <c+1  c2d2  
+d+2f2  <c2d2  d+2f2  r4>f+24r24f+24r24f+24r24f+rerf+rgr  
+a1  r4g+24r24g+24r24g+24r24g+rf+rg+rar  b1  c2>a+2  
+g+2f+2  <f+2e2  d2c2  
+;2
+
+l16
+{3}
+l16v60|0p70%e1 $3 r2o4d+4d4  
+c+1  r2d+4d4  g+1  r2d+4d4  
+c+1  r2d+4d4  g+1  g2a+2  
+a+2<c+2  g2a+2  a+2<c+2  r4>d24r24d24r24d24r24drcrdrd+r  
+f1  r4e24r24e24r24e24r24erdrerfr  g1  a2g2  
+f2d+4%l1d+24f24f+24g+24a+24b24  <c+2%l0>b2  a2g8g+8a8a+8  
+;3
+
+l16
+{4}
+l16v45|1p55%e1m12,18,239 $4 [2r2o5a+4<c4  
+c+1  r2>a+4<c4  f1  ]r1  
+r1  r1  r1  r1  
+>a2g4a4  f+4r2r4  b2a2  <f2d+2  
+c+2>b2  a+2g+2  f+2e2  
+;4
+
+l16
+{5}
+l16 $5 v80|6p50%e1o3a1  
+^2^2  v80|6p50%e1o3a1  ^2^2  v80|6p50%e1o3a1  
+^2^2  v80|6p50%e1o3a1  ^2^2  v70|2p60%e1m48,18,239o4d+2g2  
+f+2a+4<c4  d+2g2  f+2a+4<c4  r1  
+>f2d+4f4  d4r2r4  g2f2  r1  
+v100r2>b24r24<d+24r24c+24r24f+24r24>a24r24b24r24  v70<c+2>b2  a4.v100a24a24a24v70grg+rara+r  
+
+;5
+
+l16
+{6}
+l16v100|3p100%e1%r8 $6 o5c1  ^1  c1  ^1  
+c1  ^1  c1  ^1  
+<c2>a+2  f+2f2  c2d2  d+2f2  
+c1  ^1  d1  ^1  
+<d+2c+2  >b2a2  f2f+2  g+2a+2  
+
+;6
+
+l16
+{7}
+l16v90|4p35%e0%r8 $7 o4c1  ^1  c1  ^1  
+c1  ^1  c1  ^1  
+<c2>a+2  f+2f2  c2d2  d+2f2  
+c1  ^1  d1  ^1  
+<d+2c+2  >b2a2  f2f+2  g+2a+2  
+
+;7
+
+l16
+{8}
+l16v120|5p85%e0 $8 o4c1  ^1  c1  ^1  
+c1  ^1  c1  ^1  
+r1  r1  r1  r1  
+r1  c4>f12f12f12<c4>f4  ^1  <d4>g12g12g12<d2  
+d+1  r2r4v20v48,120>a32a32a32a32a32a32a32a32  f2r2  r2a+8a+8a+8a+8  
+
+;8
+
+l16

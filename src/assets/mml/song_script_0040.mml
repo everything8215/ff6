@@ -1,0 +1,28 @@
+#TITLE (Walking out of Zozo)
+#ALBUM Final Fantasy VI
+#COMPOSER unknown
+#ARRANGED M.Akao
+
+{1}
+l16t120%b100,80%f0,0%v70p64v8@7o10%a4c1   $1 ^1  
+;1
+
+l16
+{2}
+l16p64v6r64%e1@7v0,180,201o18p0,255,16%p1%a4c1  
+ $2 ^1  
+;2
+
+l16
+{3}
+l16p100%e1%p1p0,127,70@5o5%s0%r26 $3 v18[2m7,+32c3m6,+31g4v28m9,+34d+4.]m8,+30f+6  
+
+;3
+
+l16
+{4}
+l16p27v10r6%e1%p1p0,100,70@5o5%s0%r26 $4 [2m7,+32c3m6,+31g6m9,+34d+4.  
+]m8,+30f+6
+;4
+
+l16

@@ -1,0 +1,101 @@
+#TITLE Opening Theme #3
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t80%x212%b0,100%f0,0%v50r1  r1  r1  r2r4.v70|0p64%e1m48,18,227%a8%r6o5%l1ga  
+%l0[2%l1a+o6d%l0>a+2^4%l1ag  %l0a4d2^r%l1ga  %l0%l1a+<d%l0>a+2^4%l1ag  
+%l0a4<d2^r>%l1a+<c  %l0%l1df%l0d2^4%l1c>a+  %l0<c4>f2^r%l1a+a  %l0g2^4.%l1a+a  
+%l0g2^4^rj2,1 %l1ga  %l0] $1 a+<c%l1d%l0fd2^4  %l1c>a+%l0<c4>f2^r  
+%l1a+<c%l0%l1df%l0d2^4  %l1c>a+%l0<c4f2^r  >%l1ga%l0%l1a+<d%l0>a+2^4  
+%l1ag%l0a4d2^r  %l1a+a%l0g2^4.  %l1a+a%l0g1  v60|1p104%e1%a4%r6o5d1  
+^1  c+1  ^1  c1  
+^1  >a+1  ^1  ^1  
+^1  
+;
+
+l16
+{2}
+l16|1p84%e1%a4o5v20v192,30g1  v192,40^1  v192,50^1  
+v192,60%r6^1  [2o6d1  f1  d1  
+f1  d1  f4d+4d4c4  d2d+2  
+d1  ]d1  f1  d1  
+f1  d1  f4d+4d4c4  d2d+2  
+d1  >a+1  ^1  a1  
+^1  g+1  ^1  g1  
+^1  ^1  ^1  
+;
+
+l16
+{3}
+l16|1p94%e1%a4o4v20v192,30a+1  
+v192,40^1  v192,50^1  v192,60%r6^1  <[2a+4d4g4a+4  
+<c2>a+4a4  a+4d4g4a+4  <c2>a+4a4  a+4d4f4a+4  
+a1  g1  a+1  ]a+4d4f4a+4  
+<c2>a+4a4  a+4d4f4a+4  <c2>a+4a4  a+4d4g4a+4  
+a1  g1  a+1  g1  
+^1  e1  ^1  d+1  
+^1  d1  ^1  ^1  
+^1  
+;
+
+l16
+{4}
+l16|2p44%e1o5v20v192,30[2drgra+rdr]v192,40[2drgra+rdr  
+]v192,50[2drgra+rdr]v192,60[2drgra+rdr  ][2[2[2drgra+rdr][2drfrardr  
+]][2drfra+rdr][2crfrarcr  ]>a+r<d+rgr>a+r<crd+rgrcr  [2drgra+rdr]][2[2drfra+rdr  
+][2crfrarcr]][2drgra+rdr  ][2drfrardr]>a+r<d+rgr>a+r  <crd+rgrcr[2drgra+rdr  
+]>g4.^a+32<d32g8.g32a+32<d8.d32g32  a+1  >>g4.^<c+32e32a8.a32<c+32e8.c+32e32  
+a1  >>g4.^<c32d+32g+8.g+32<c32d+8.d+32g+32  <c1  >>>g4.^a+32<d32g8.g32a+32<d8.d32g32  
+a+1  r1  r1  
+;
+
+l16
+{5}
+l16|2p34%e1o4v20v192,30[2a+r<drgr>a+r]v192,40[2a+r<drgr>a+r  
+]v192,50[2a+r<drgr>a+r]v192,60[2a+r<drgr>a+r  ][2[2[2a+r<drgr>a+r][2ar<drfr>ar  
+]][2a+r<drfr>a+r][2ar<crfr>ar  ]gra+r<d+r>grgr<crd+r>gr  [2a+r<drgr>a+r]][2[2a+r<drfr>a+r  
+][2ar<crfr>ar]][2a+r<drgr>a+r  ][2ar<drfr>ar]gra+r<d+r>gr  gr<crd+r>gr[2a+r<drgr>a+r  
+]v70|3p34%e1m48,18,239o4r2r4.g24<d24g24  a+2^4^ra+32r32a+32r32  
+a4e2^4  ^2^4r8>a24<c+24e24  g+1  ^2r8g+8d+8c8  
+d1  ^2^4.r8  %r9>g1  ^1  
+
+;
+
+l16
+{6}
+l16|1p104%e1%a4v20v192,30o3g1  v192,40^1  v192,50^1  
+v192,60%r6^1  <[2r4d4g4a+4  a1  r4d4g4a+4  
+a1  r4f4a+4<d4  c1  r1  
+r1  >]r4d4f4a+4  a1  r4d4f4a+4  
+a1  r4d4g4a+4  <d1  ^2c4>a+4  
+g1  >v70|3p44%e1m48,18,215o5r2r4.d24g24a+24  <d2^4^rd+32r32d32r32  
+c+4>a2^4  ^2^4r8c+24e24a24  <c1  ^2r8c8>a+8f+8  
+g1  ^2^4.r8  %r9d1  ^1  
+
+;
+
+l16
+{7}
+l16|4p54%e0r1  r1  o5v10v192,30a8a8a8a24a24a24a8a24a24a24a8aa  
+v192,45a8a8a8a24a24a24a8a24a24a24a8aa  [30v50a8a8a8v20a24v30a24v40a24v50a8v20a24v30a24v40a24v50a8v30aa  
+]v50a8a8r8v20a24v30a24v40a24v50a8a8r4  a8a8r8v20a24v30a24v40a24v50a8a8a8aa  
+a4r2r4  r1  
+;
+
+l16
+{8}
+l16|5p74%e0r1  r1  
+o6v10v192,50grgrgrg24g24g24grg24g24g24grgg  v192,100grgrgrg24g24g24grg24g24g24grgg  
+[2[2grgrgrg24g24g24grg24g24g24grgg  drdrdrd24d24d24drd24d24d24drdd  
+]a+ra+ra+ra+24a+24a+24a+ra+24a+24a+24a+ra+a+  frfrfrf24f24f24frf24f24f24frff  
+d+rd+rd+rd+24d+24d+24crc24c24c24crcc  grgrgrg24g24g24grg24g24g24grgg  
+][2a+ra+ra+ra+24a+24a+24a+ra+24a+24a+24a+ra+a+  frfrfrf24f24f24frf24f24f24frff  
+]grgrgrg24g24g24grg24g24g24grgg  drdrdrd24d24d24drd24d24d24drdd  
+d+rd+rd+rd+24d+24d+24crc24c24c24crcc  grgrgrg24g24g24grg24g24g24grgg  
+[6grgrgrg24g24g24grg24g24g24grgg  ]grgr8.g24g24g24grgr4r  grgr8.g24g24g24grgrgrgg  
+%r9g1  ^1  
+;
+
+l16

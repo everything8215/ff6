@@ -1,0 +1,25 @@
+#TITLE (Burning House)
+#ALBUM Final Fantasy VI
+#COMPOSER unknown
+#ARRANGED M.Akao
+
+{1}
+l16t120%b0,100%f0,0%v40p64v20p0,200,100@0%n1%a8%c16c1   $1 ^1  
+p%a12c1  p0,150,50^1  
+;1
+
+l16
+{2}
+l16p64v40p0,0,36v0,255,191%p1%a6@4o0b1  
+ $2 ^1  %e1^4.%e0
+;2
+
+l16
+{3}
+l16r2k4
+{4}
+l16p64v30@7%r31%e1o38p0,0,152 $3 [3c64r3  
+cr3[2c64r4.c64r32c64r3  c64r2]c64r6c64r3  ]
+;3
+
+l16

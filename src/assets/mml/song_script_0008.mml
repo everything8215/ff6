@@ -1,0 +1,74 @@
+#TITLE Strago's Theme
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t80%b0,70%f0,0%v50v50|0p54%e1m48,18,239 $1 r1  r1  r1  r1  
+[2o4%l1ga%l0%l1a+<c%l0%l1d8fr%l1d+8dr%l1g8dr  %l1d+8.f32d+32d2^8r8  
+%l1dc%l0>%l1a+<dcr>%l1a<c%l0>a+r%l1a8g8f+8  g2^4r4  ]r1  r1  
+%l1a+<c%l0defedc+%l1de%l0dcdc+>a+a  a+2^4r4  r2g8<c8d+8g8  %l1f8^32e32d+32d32%l0c+8d+8c8f8g+8<c8  
+r1  r1  
+;1
+
+l16
+{2}
+l16|1p84%e0 $2 v30r1  r1  
+r1  r1  [2o6[9r8d32r32d32r32]r8c32r32c32r32r8>a+32r32a+32r32r8<c32r32c32r32  
+[4r8d32r32d32r32]][8r8c32r32c32r32][8r8d32r32d32r32]v20c1  c+2c2  
+>a+1  ara8.rarar4.r  
+;2
+
+l16
+{3}
+l16|1p84%e0 $3 v30r1  r1  
+r1  r1  [2o5[9r8a+32r32a+32r32]r8a32r32a32r32r8g32r32g32r32r8a32r32a32r32  
+[4r8a+32r32a+32r32]][8r8g+32r32g+32r32][8r8a+32r32a+32r32]v20g+2  
+g2f2  g+2f+1  grg8.rgrf+r4.r  
+;3
+
+l16
+{4}
+l16v40|2p74%e1m48,18,239 $4 o6dc+dr4r>a+aa+r4r  
+gf+gr2r4r  <dc+dr4r>a+aa+r4r  gf+gr2r4r  [2r1  
+r1  r1  r1  ]%l1g+a+%l0<cdd+dc>b<cdc>a+<c>bg+g  
+g+2^4r4  r1  r1  f4g+8f8<c4.r8  
+>a+4<c+8>a+8<f4.r8  %l1c8c+d+%l0frd+rc+rcr>a+r<c+r  c2r2  
+;4
+
+l16
+{5}
+l16v40|2p74%e1m48,18,239 $5 o5a+aa+r4rgf+gr4r  
+dc>a+r2r4r  <a+aa+r4rgf+gr4r  dc>a+r2r4r  [2r1  
+r1  r1  r1  ]r1  
+r1  r1  r1  r1  
+r1  r1  r1  
+;5
+
+l16
+{6}
+l16v60|3p44%e0 $6 r1  
+r1  r1  r1  [8o4ga+<dg2^4^  
+][2>fg+<cf2^4^  ][2>ga+<dg2^4^  ]>g+<cfg+8cfg+>g<cd+g8cd+g  >fa+<c+f8>a+<c+f>fg+<cf8>g+<cf  
+>d+f+a+<c+f4>d+f+a+<c+f4  >dga<dg8f+ef+8r4.  
+;6
+
+l16
+{7}
+l16v70|4p64m48,18,239 $7 [2o6gr<drc+r8.>gr<drc+r8.  
+>gr<drc+r>drgr<drc+r8.  ][2>gr<drc+r8.>gr<drc+r8.  >gr<drc+r>drgr<drc+r8.  
+>gr<dr>fr8.d+ra+rdr8.  gr<drc+r>drgr<drc+r8.  ]>fr<cr>br8.fr<cr>br8.  
+fr<cr>brcrfr<cr>br8.  gr<drc+r8.>gr<drc+r8.  >gr<drc+r>drgr<drc+r8.  
+>f4.f8d+2  >a+8<crc+rd+rf4.f8  d+1  r8<dr>argrf+r8.d4  
+
+;7
+
+l16
+{8}
+l16v60p64o5 $8 [8v120|5p64a8v40|6p34a8v80|7p94a4v120|5p64a8o4v60|8p34gg<p64dd>p94gg  
+o5v120|5p64a8v40|6p34a8v80|7p94a4v80|9p64a8a8a4  ]r1  r1  o5v80|8p34d4>p94g4<p34d4>p94g4  
+o5v120|5p64a8v40|6p34a8v80|7p94a8v40|6p34a8v120|5p64a8v80|9p64a4.  
+
+;8
+
+l16

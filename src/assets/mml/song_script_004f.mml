@@ -1,0 +1,73 @@
+#TITLE Dark World
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{3}
+l16t67%x232%b0,100%f0,0%v80v60|0p64%e1r1  r1  [2o5c+8r8c+8r8>b8r8b8r8  
+a+8r8a+8r8b8r8b8r8  ] $1 [2o5c+8r8c+8r8>b8r8b8r8  a+8r8a+8r8b8r8b8r8  
+][2b8r8b8r8a8r8a8r8  g8r8g8r8a8r8a8r8  ][2<c+8r8c+8r8>b8r8b8r8  
+a+8r8a+8r8b8r8b8r8  ]<[2d8r8d8r8c+8r8c+8r8  c8r8c8r8c+8r8c+8r8  
+][2e8r8e8r8d8r8d8r8  c+8r8c+8r8d8r8d8r8  ]
+;1
+
+l16
+{4}
+l16v60|0p64%e1r1  
+r1  o4[16f+8r8] $2 [16f+8r8][16f8r8][16f+8r8  ][16g8r8][16a8r8]
+;2
+
+l16
+{5}
+l16v60|0p64%e1r1  
+r1  o4[16d8r8] $3 [16d8r8][16c8r8][16d8r8  ][16e8r8][16f8r8]
+;3
+
+l16
+{6}
+l16r1  
+r1  r1  r1  r1  
+r1   $4 v80|1p80%e1o5f+1  r2r8d4ef+  b4.f+2^8  
+r2r8d8e8f+8  b4.<c8>a2  ^1  b4.<c8>a2  
+^2r8b8^12a12g12  f+2v120|2p40%e1o5b2  ^1  ^2b2  
+^1  ^2<e2  ^1  ^2e2  
+^1  ^2d2  ^1  ^2d2  
+^1  
+;4
+
+l16
+{7}
+l16r1  r1  r1  
+r1  r1  r1   $5 v80|4p50%e1mo6f+1  
+r2r8d4ef+  b4.f+2^8  r2r8d8e8f+8  b4.<c8>a2  
+^1  b4.<c8>a2  ^2r8b8^12a12g12  f+2r2  
+r1  r1  r1  v50|3p70%e1m48,18,239r4o5e8f+8g4.a8  
+b1  r4e8f+8g4.a8  a+2^8a+8a8g8  e1  
+r1  r1  r1  
+;5
+
+l16
+{8}
+l16v50|3p50%e1m48,18,239r1  
+r1  r1  r1  r1  
+r1   $6 r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r4o4g8b8<e4.f+8  g1  r4>g8b8<e4.f+8  
+g2^8g8e8c+8  c1  r1  r1  
+r1  
+;6
+
+l16
+{1}
+l16p64o3@4%a8p0,40,235v0,255,191m40,+2v10v192,40d8. $7 [2^1  
+m40,+5^4.m24,-5]^12m48,+21^4.m48,-21^8
+;7
+
+l16
+{2}
+l16p64%p1o6@3p0,68,56v0,160,191%a4v10v192,40a64 $8 ^2  
+[2m44,+7^8.m132,-8^1  m44,+8^8.m44,-10^8.]m24,+6
+;8
+
+l16

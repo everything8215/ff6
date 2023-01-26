@@ -1,0 +1,29 @@
+#TITLE Victory Fanfare (slow)
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16%b0,70%f0,0%v70v60|0p50%e1m48,18,239t110o6b4b24r24b24r24b24r24<t105c4t100d4  
+e2^4r4  
+;
+
+l16
+{2}
+l16v60|0p60%e1m48,18,239o6e4g+24r24f+24r24e24r24e4f+4  
+g+2^4r4  
+;
+
+l16
+{3}
+l16v60|0p70%e1m48,18,239o5g+4b24r24a24r24g+24r24g4a4  
+b2^4r4  
+;
+
+l16
+{4}
+l16v60|1p80%e1m48,18,239o5e4e24r24e24r24e24r24c4>a4  
+g+2^4r4  
+;
+
+l16

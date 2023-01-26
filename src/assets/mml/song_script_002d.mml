@@ -1,0 +1,92 @@
+#TITLE Gogo's Theme
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t160%x232%b0,70%f0,0%v50v60|0p70%e1m48,18,239r1  r1  r1  
+r2r4t50r4  t120 $1 [2o5v70g12r6%l1d8e24f24f+24g12r6a+4  a12r12a12d12e12f+12g12r4.r24  
+v40<d24r8d24r24d24r8d24r24d+24r8d+24r24d+24r8d+24r24  d+24r8.r48c+4d24r4.r12  
+r1  >f+24r24a24r24<d24r24g24r8f+24r24g24r8d24r24>a+24r8a24r24  g12r12g12f+12r12f12f+12r6f+4  
+d12r6c4>a+12r4.r24  ]v70<<gr48r12gr48gr48r12f+r48fr48r12e12^4  gr48r12gr48f+r48r12fr48e2  
+r1  r1  >g4a4a+4a4  a+r48r12a+r48ar48r12g2^12  
+g+12r4.r24<%l1c+48d%l0f12d12>a+12f12g12  g+2g+12g+12g+12g+12g12f+12  
+f2f12f12f12f12e12d+12  d1  ^1  
+;1
+
+l16
+{2}
+l16v60|1p80%e1m48,18,239r1  
+r1  r1  r1   $2 [2r1  
+r1  o4v60a+24r8a+24r24a+24r8a+24r24<c24r8c24r24c24r8c24r24  c24r8.r48>a4a24r4.r12  
+g24r24a+24r24<d24r24g24r8f+24r2r24  r2a+24r8a24r24g24r8d24r24  v80c12r12c12>b12r12a+12a12r6<d4  
+>g12r6g+4g12r4.r24  ]v60<er48r12er48er48r12d+r48dr48r12c12^4  er48r12er48d+r48r12dr48c4.^^24r48  
+v80%l1c+48d8^48%l0f12%l1c+48d8^48%l0f12>a+12g+12a12<f4  %l1c+48d8^48%l0f12d+12c+12d12a+2  
+v60>e4f4g4f4  gr48r12gr48fr48r12e2^12  f12r2r4.r24  r1  
+r1  r1  r1  
+;2
+
+l16
+{3}
+l16v70|3p60%e1m48,18,215r1  
+r1  r1  r1   $3 [2o5v70g24r8<d24r24>a+24r8<d24r24>g24r8<d24r24>a+24r8<d24r24  
+>f+24r8<d24r24>a24r8<d24r24>g24r24a+24r24<d24r24g24r8.r48  r1  r1  
+v90g12r6%l1d8e24f24f+24g12r6a+4  a12r12a12d12e12f+12g12r4.r24  r1  
+r1  ]v60|2p60%e1m48,18,215o5dr48r12dr48dr48r12c+r48cr48r12>a+12^4  
+<dr48r12dr48c+r48r12cr48>a+2  r1  r1  <d4d+4e4d+4  
+er48r12er48d+r48r12d2^12  d12r2r4.r24  r1  r1  
+v70|3p60%e1m48,18,215o5g24r8<d24r24>a+24r8<d24r24>g24r8<d24r24>a+24r8<d24r24  
+>g24r8<d24r24>a+24r8<d24r24>g24r8<d24r24>a+24r8<d24r24  
+;3
+
+l16
+{4}
+l16v60|2p50%e1m48,18,215r1  
+r1  r1  r1   $4 [2r1  
+r1  o5v90g12r12g12d12r12f12d+12r12d12c12r12>a+12  a12r6<c+4d12r4.r24  
+v60r2>g24r24a+24r24<d24r24g24r8f+24r24  r2>g24r8a24r24a+24r8<d24r24  
+d+12r12d+12d12r12c+12c12r6>a4  a+12r6f+4g12r4.r24  ]a+r48r12a+r48a+r48r12ar48g+r48r12g12^4  
+a+r48r12a+r48ar48r12g+r48g2  r1  r1  a+4<c4d4c4  
+dr48r12dr48cr48r12>a+2^12  <c12r2r4.r24  r1  r1  
+r1  r1  
+;4
+
+l16
+{5}
+l16v80|4p64%e0o5a4a8a8a4a+4  <c1  
+c4c8c8c4d4  d+1  > $5 [2g4<d4g4c+4  d4f+4g12r12d12d+12r12d12  
+g4f4d+4c4  >a4g4f+4r4  g4<d4g4c+4  d4f+4g12r12f12d+12r12d12  
+c4.^24c+12d12r6>a4  g12r6<d4>g12r4.r24  ]<[8c12r12c12]>[4f12r12f12][4a+12r12a+12]<[8c12r12c12  
+]>a+12r2r4.r24  r1  r1  r1  
+r1  
+;5
+
+l16
+{6}
+l16v120|5p55%e1o3a4a8a8a4a+4  <c1  %e0c4c8c8c4d4  
+d+1   $6 [2^1  r1  r1  
+r1  r1  r1  r1  
+r2r6g12d4  ]^1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+
+;6
+
+l16
+{7}
+l16v80|6p75%e0r1  r2o4a2  ^1  r2a2  
+o5v40 $8 [2[2r4|7a4r4a4  r4a4r4a4  r4a4r4a4  j2,7 r4a4a12a12a12|8a6|7a12  
+] $7 a4|8a4|7a4r4  ][6|7a6a12a6a12a6a12a12|8a12|7a12  ]r1  r1  
+r1  r1  r1  
+;8
+
+l16
+{8}
+l16v100p64%e0o5[2%g0|Av100a4a8a8a4a4  
+v144,10%g1[18a24]r4] $10 [2[2[3v100|9a4^6a12a4  ^6a12]j2,9 a4^6a12a2  
+] $9 a4a4a2  ][6|9a6a12|Aa6|9a12a6a12|Aa6|9a12  ]|Aa1  r1  
+r1  %g1a4.v30v24,100a32a32a32a32a4.v30v24,100a32a32a32a32  a8v30v24,100a32a32a32a32a8v30v24,100a32a32a32a32a4r4  
+
+;10
+
+l16

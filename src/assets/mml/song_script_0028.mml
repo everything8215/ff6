@@ -1,0 +1,56 @@
+#TITLE The Serpent Trench
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t130%b0,100%f0,0%v50v60|0p64%e1m48,18,239 $1 [16r1  ]r2o5e2  
+c2>g2  g+2<g2  r4f4d+4d4  c+2a+2  
+r4g+4e4>b4  <c+1  ^2^4r4  r2e2  
+c2>g2  g+2<g2  r4f4d+4d4  c+2<c+2  
+r4>b4<e4>b4  a+1  ^2^4r4  
+;1
+
+l16
+{2}
+l16v30|1p90%e1&2r1  
+ $2 [8r1  ]o6[3[8%l1efga%l0][8%l1gg+a+<c>%l0][4%l1a+b<c+d+>%l0][2%l1g+ab<c+  
+>%l0][2%l1f+gab%l0][8%l1ff+g+a+%l0]]
+;2
+
+l16
+{3}
+l16v30|1p40%e1&2r1  
+ $3 [8r1  ]o6[3[8%l1cdef%l0][8%l1d+fgg+%l0][4%l1f+g+a+b%l0][2%l1ef+g+a  
+%l0][2%l1def+g%l0][8%l1c+d+ff+%l0]]
+;3
+
+l16
+{4}
+l16v60|1p50%e1 $4 o5[4v60erv30erer][2v60er  
+v30er][4v60grv30grgr][2v60grv30gr][3v60a+rv30a+r  a+r]v60g+rv30g+rg+r[2v60f+rv30f+r][4v60frv30fr  
+fr][2v60frv30fr]
+;4
+
+l16
+{5}
+l16v60|1p60%e1 $5 o4[4v60arv30arar][2v60arv30ar  
+]<[4v60crv30crcr][2v60crv30cr][3v60d+rv30d+rd+r  ]v60c+rv30c+rc+r>[2v60brv30br][4v60a+rv30a+ra+r  
+][2v60a+rv30a+r]
+;5
+
+l16
+{6}
+l16|1p70%e1 $6 o4[4v70grv35grgr][2v70grv35gr][4v70a+r  
+v35a+ra+r][2v70a+rv35a+r]<[3v70c+rv35c+rc+r]>v70br  v35brbr[2v70arv35ar][4v70g+rv35g+rg+r][2v70g+r  
+v35g+r]
+;6
+
+l16
+{7}
+l16|2p80%e1 $7 o5[4v100frv50frfr][2v100frv50fr][4v100g+rv50g+r  
+g+r][2v100g+rv50g+r][3v100brv50brbr]v100arv50ar  ar[2v100grv50gr][4v100f+rv50f+rf+r][2v100f+rv50f+r  
+]
+;7
+
+l16

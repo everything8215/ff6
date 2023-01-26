@@ -1,0 +1,106 @@
+#TITLE Forever Rachel
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t92%b0,100%f0,0%v50v40|0p64%e0 $1 o6g8>b8<e8g8f+8e8d8f+8  
+e1  c4.c8>b8a8g8b8  a1  <f8>a8<d8f8e8d8c8e8  
+d2>a+4<c4  d1  ^2>a+4<c4  d1  
+^1  >g8a8a+8g8d8a8a+8g8  f8g8a8f8c8g8a8f8  d+8f8g8d+8>a+8<f8g8d+8  
+>a+8<d8f8d8a+8d8f8d8  c8d8d+8g8<c2  c8d8d+8g8<c2  >>>g8a+8<d8g8a+2  
+d8g8a+8<d8f2  >>a8<e8a8e8<c+8>e8a8e8  >a8<e8g8e8<c+8>e8g8e8  d8f+8a8f+8<d8>f+8a8f+8  
+<d8>d8<c8>d8a+8d8a8d8  g8a8a+8g8d8a8a+8g8  f8g8a8f8c8g8a8f8  d+8f8g8d+8>a+8<f8g8d+8  
+>a+8<d8f8d8a+8d8f8d8  >g+8<c8d+8g8a+2  >d8a8<d8e8f+8e8d8>a8  g8<d8g8<c8d8c8>g8d8  
+>g1  
+;1
+
+l16
+{2}
+l16 $2 v40|0p64%e0o5e2d2  c1  >a8<c8e8c8>g8b8<e8>b8  
+f8a8<c8e8g2  d2c2  >a+1  g8<d8a+8d8a8d8g8d8  
+>g8<d8g8d8f8d8e8c8  >d8a8<d8g8a8g8d8>a8  d1  v50|1p64%a12%r13%e1o5g2^4g4  
+f1  d+2^4d+4  a+1  <c2^4>g8m24,+5^8  
+^1  g2^4<d4  >g1  a2^4a4  
+<c+2^4c+4  d2^4>a4  <d2>f+2  g2^4g4  
+f1  d+2^4d+4  a+1  g+2^4g+4  
+<d2>a2  g1  ^1  
+;2
+
+l16
+{3}
+l16 $3 v70|2p84%e1m48,24,215o5g4.g8%l1f+8e8%l0%l1d8f+8  
+%l0e2^4.r8  v60|4p54%e1m48,18,239o5c4.c8>%l1b8a8%l0%l1g8b8  %l0a2^4.r8  
+v30|3p34%e1m48,18,215o6f4.f8%l1e8d8%l0%l1c8e8  %l0d2>%l1a+4<c4  
+%l0d1  ^4.r8>%l1a+4<c4  %l0d1  ^4.^2r8  
+v60|4p54%e1m48,18,239o5g2d4g4  a2^8r8<d4  c4>a+4a4g4  f4d4.r8d4  
+d4c4g2  ^2^4.r8  c4>a+4<g2  ^8r8g4a4a+4  
+a2e2  ^8r8e4g4f+4  a1  ^4r2r4  
+g2d4g4  a2^8r8<d4  c4>a+4a4g4  f4d2^8r8  
+d4c4g4a+4  a2f+2  g1  ^1  
+
+;3
+
+l16
+{4}
+l16v40|5p84%e1%a4%r6 $4 r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  o6g2d4g4  a2^4<d4  
+c4>a+4a4g4  f4d2^4  d4c4g4a+4  a2f+2  
+g1  ^1  
+;4
+
+l16
+{5}
+l16v45|5p74%e1%a4%r6 $5 r1  r1  
+r1  r1  r1  r1  
+o5g1  ^1  g1  f+1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+a+1  <c1  d1  ^1  
+>a+1  a1  g1  ^1  
+
+;5
+
+l16
+{6}
+l16v50|5p64%e1%a4%r6 $6 r1  r1  r1  r1  
+r1  r1  o5d1  ^1  
+d1  ^1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  g1  a1  
+g1  a+1  g1  f+1  
+d1  ^1  
+;6
+
+l16
+{7}
+l16v55|5p54%e1%a4%r6 $7 r1  r1  
+r1  r1  r1  r1  
+o4a+1  ^1  a1  ^1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+<d1  ^1  f1  ^1  
+c1  ^1  c1  >b1  
+
+;7
+
+l16
+{8}
+l16v60|5p44%e1%a4%r6 $8 r1  r1  r1  r1  
+r1  r1  o3g1  ^1  
+d1  ^1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  g1  f1  
+d+1  a+1  g+1  <d1  
+>g1  ^1  
+;8
+
+l16

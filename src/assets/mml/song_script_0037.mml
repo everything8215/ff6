@@ -1,0 +1,104 @@
+#TITLE The Magic House
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t100%b0,70%f0,0%v50v60|0p80%e1m48,18,239r1  r1  r1  r1  
+r1  r1  r1  r2r4.o5d+r  
+[2t95e8ar<cr>%l1b48<c48>b12%l0a8g+rbr<f8  e8t90d8t85c8t80>b8t70<c4.t95^8  
+r1  j2,1 r2r4.>d+r  ] $1 r1  r1  
+r2r4.>d+r   $3 [2e8ar<cr>%l1b48<c48>b12%l0a8g+rbr<f8  e8t90d8t85c8t80>b8t70<c4.t95^8  
+r1  j2,2 r2r4.>d+r  ] $2 r1  r1  
+r1  t100r1  r1  r1  
+r2r4.>a8  <er4rc8>g+r4ra8  b8<d8%l1c48d48c12>%l0b8g+8arara8  <er4rc8>g+r4rg+r  
+f8e8<%l1c48d48c48d48c48d48c8>%l0a8r4d+8  
+;3
+
+l16
+{2}
+l16v60|1p60%e1m48,18,239r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+[2o5r2r4.er  %l1f48g48f12%l0er%l1a48b48a12%l0er%l1e48f48e12%l0dr8.dr  
+%l1e48f48e12%l0dr%l1b48<c48>b12%l0dr%l1d48e48d12%l0cj2,4 r4r  r1  
+] $4 r8.v40|2p55%e1%r18o5ab<c>dbdadg+dace  cf>a<d>a<c4>b48<c48>b48<c32>b32aba2  
+ $6 v60|1p60%e1m48,18,239o5[2r1  r2r4.er  %l1f48g48f12%l0er%l1a48b48a12%l0er%l1e48f48e12%l0dr8.dr  
+%l1e48f48e12%l0dr%l1b48<c48>b12%l0dr%l1d48e48d12%l0cj2,5 r4r  ] $5 r8.v40|2p55%e1%r18o5ab<c>dbdadg+dace  
+cf>a<d>a<c4>b48<c48>b48<c32>b32aba2  r1  r1  r1  
+r1  r1  r1  r1  
+r1  
+;6
+
+l16
+{3}
+l16v80|2p75%e1%r18r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r2r4.o6ab  <c>dbdadg+dacecf>a<d>a  <c4>b48<c48>b48<c32>b32aba2  
+ $8 o6v60[2o5r1  r2r4.e8  f48g48f12era48b48a12ere48f48e12dr8.dr  
+e48f48e12drb48<c48>b12drd48e48d12cj2,7 r4r  ] $7 r8.v80o6ab<c>dbdadg+dace  
+cf>a<d>a<c4>b48<c48>b48<c32>b32aba2  v60[2r8ab<c4r8>b<cd4  r8>b<de8>b8<e8d32e32dc4  
+>r8ab<c4r8>b<cd8cd  ed+efed48e48d48c>b<ce>b<e>a4  ]
+;8
+
+l16
+{4}
+l16|3p50%e1r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1   $9 [2o5v60er4rerer4rfr  e8frf+rg+ra4.r8  ar8.<cr8.>b4r4  
+br8.<dr8.c4r4  ]>a4b4<c4>a4  ^4b4a4.r8  <v40[4r8erer4rfrfr8.  
+r8g+rg+r4rarar8.  ]
+;9
+
+l16
+{5}
+l16v60|3p55%e1r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1   $10 [2o5v60cr4rdrcr4rcr  
+d8drd+rdre4.r8  fr8.fr8.g+4r4  g+r8.br8.a4r4  ]f4e2f4  
+e2^4.r8  <v40[4r8crcr4rdrdr8.  r8erer4rerer8.  ]
+;10
+
+l16
+{6}
+l16v60|3p70%e1[2o5er4rc8>g+r4ra8  
+b8<d8%l1c48d48c12>%l0b8g+8arara8  <er4rc8>g+r4rg+r  f8e8<%l1c48d48c48d48c48d48c8>%l0a8j2,11 r4a8  
+] $11 r4.r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1   $12 [2o4v60ar4rbrar4rar  b8ararbr<c4.r8  
+cr8.dr8.d4r4  dr8.er8.e4r4  ]d2c4d4  c4d4c4.r8  
+v40[4r8brbr4r<crcr8.  r8drdr4rcrcr8.  >]
+;12
+
+l16
+{7}
+l16v60|4p64%e1[2o6er4rc8>g+r4ra8  
+b8<d8c8>b8g+8arara8  <er4rc8>g+r4rg+r  f8e8<c4>a8j2,13 r4a8  ] $13 r4.r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1   $15 r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  o5r2r4.a8  [2<er4rc8>g+r4ra8  
+b8<d8%l1c48d48c12>%l0b8g+8arara8  <er4rc8>g+r4rg+r  f8e8<%l1c48d48c48d48c48d48c8>%l0a8j2,14 r4a8  
+] $14 r4.
+;15
+
+l16
+{8}
+l16v70|5p64%e0r1  r1  r1  r1  
+r1  r1  r1  r1  
+[2o5a4r8br<c4r8dr  e8frf+rg+ra2  dr8.>ar8.<e4r4  j2,16 er8.>g+r8.a4r8<d+8  
+] $16 er8.>g+r8.a4r4  <d4e4a8>a8b8<d8  e4>g+4a2   $19 [2o5a4r8br<c4r8dr  
+e8frf+rg+ra2  dr8.>ar8.<e4r4  j2,17 er8.>g+r8.a4r8<d+8  ] $17 er8.>g+r8.a4r4  
+<d4e4a8>a8b8<d8  e4>g+4a4.a8  [2<er4rc8>g+r4ra8  b8<d8c8>b8g+8arara8  
+<er4rc8>g+r4rg+r  j2,18 f8e8<c4>a8r4a8  ] $18 f8e8<c4>a8r4.  
+;19
+
+l16

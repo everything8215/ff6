@@ -1,0 +1,88 @@
+#TITLE The Unforgiven
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t170%x228%b0,70%f0,0%v50v60|0p50%e1o6a+4g+4g4f4  g8f8d+8c+4f8c+4  
+c1  ^1   $1 v40o6[2cc+d+fgrc+d+fgg+rcc+d+f  gfd+c+cc+d+fgrc+d+fgg+r  
+cc+d+fgg+a+<c>][4ff+g+a+<cr>f+g+  a+<cc+r>ff+g+a+<c>a+g+f+]v60r2  
+>f+8fd+c+c>a+g+f+2  <d+8c+c>a+g+f+f<<[10d+r][10f+r][2d+r4  rd+r4rd+r8.er8.d+  
+r4rd+r4rc+r8.d  r8.]v40a+ag+g<d+dc+cc+c>ba+b  a+ag+ag+gf+<dc+c>b<c>ba+aa+  
+ag+gg+gf+f<c+c>ba+ba+ag+a  g+gf+gf+feff+gg+aa+b<cc+  dd+e
+;1
+
+l16
+{2}
+l16v60|0p55%e1o5a+4g+4g4f4  
+g8f8d+8c+4f8c+4  c1  ^1   $4 o5[2r8crcr8.c+rc+r8.d+r8.  
+c+rr8crcr8.c+rc+j2,2 rc8  >g8<c8c+8] $2 r8.d+r8.er[2r8  frfr8.f+rf+r8.g+r8.  
+f+rr8frfr8.f+rf+j2,3 rf8  c8f8f+8] $3 r8.g+r8.arv80|1p55%e1m48,18,239o6r2  
+f+8fd+c+c>a+g+f+2  <d+8c+c>a+g+f+fv60|0p55%e1o5[10a+r][10br][2a+r4  
+ra+r4ra+r8.br8.a+  r4ra+r4rg+r8.a  r8.]<f1  e1  
+d+1  d1  
+;4
+
+l16
+{3}
+l16v80|7p60%e1o6a+4g+4g4f4  g8f8d+8c+4f8c+4  
+[4c8>g8<c8c+8] $7 o6[2v120c8v60grgrv120c+8  v60g+rg+rv120d+8v60a+rv120c+8v60g+rv120c8v60gr  
+grv120c+8v60g+rg+rj2,5 v120c8>g8<c8c+8  ] $5 v120d+8v60a+rv120e8v60br[2v120>f8v60<<crcrv120>>f+8  
+v60<<c+rc+rv120>>g+8v60<<d+rv120>>f+8v60<<c+rv120>>f8v60<<cr  crv120>>f+8v60<<c+rc+rj2,6 v120>f8c8f8f+8  
+] $6 v120>>g+8v60<<d+rv120>>a8v60<<e8v60|2p60%e1m48,18,239o5a+8g+f+fd+c+c  
+>a+2<f+8fd+c+c>a+g+  f+2v80|7p60%e1mo6d+4.f4.  f+4g+4f+4.g+4.  a4b4[2c8r4c8  
+r4c8r8c+8r8c8r4  c8r4>a+8r8b8r8<]>v120g1  f+1  
+f1  e1  
+;7
+
+l16
+{4}
+l16v60|3p80%e1m48,18,239o5a+4g+4g4f4  g8f8d+8c+4f8c+4  
+[4cr>gr<crc+r] $8 o5c8r4c+8  r4d+8r8c+8r8c8r4  c+8r4c8>g8<c8c+8c8  
+r4c+8r4d+8r8c+8  r8c8r4c+8r4d+8  r8e8r8f8r4f+8r4  g+8r8f+8r8f8r4f+8  
+r4f8c8f8f+8f8r4  f+8r4g+8r8f+8r8f8  r4f+8r4g+8r8a8  r8r8>a+r<f+rfrd+rc+rcr  
+>a+rd+1  d+4.f4.f+4  g+4f+4.g+4.  a4b4<[2er4rer4  
+rer8.fr8.er4re  r4rdr8.d+r8.]b1  a+1  a1  
+g+1  
+;8
+
+l16
+{7}
+l16r1  r1  r1  
+r1   $9 r1  r4r1  r4r1  
+r4r1  r4r1  r4r1  r4r1  
+r4r1  r4v80|1p55%e1m48,18,239o6a+8g+f+fd+c+c>a+2  <f+8fd+c+c>a+g+f+2  
+d+4.f4.f+4  g+4f+4.g+4.  a4b4v100|3p80%e1m48,18,239o5[2d+r4rd+r4  
+rd+r8.er8.d+r4rd+  r4rc+r8.dr8.]>f1  e1  d+1  
+d1  
+;9
+
+l16
+{8}
+l16v80|4p70%e0o4a1  ^1  r1  
+r1   $10 [4a4^1  a4^2a4  a4]a1  
+^1  r1  r4r1  r4v124|3p80%e1m48,18,239o4[2a+r4ra+r4r  
+a+r8.br8.a+r4ra+r4  rg+r8.ar8.]v80|4p70%e0o4a1  a1  a1  
+a1  
+;10
+
+l16
+{5}
+l16v60|5p70%e0r1  r1  o5v10v192,30[4a8aa]v192,60a8aaa8aaa8a8  
+aaaa $11 [8[2v40v48,60aaaaar][2v60a8v30aa]][2v60%g0a8  aaaaaav96,10%g1[16a32]]%g0[3v60a8v30aav60a8]aa[2v60a8  
+v30aav60a8]v60a8v30aav60aaaa[4v60a8v30a8  a8v60a8v30a8a8v60a8v30a8v60a8v30a8  
+]r1  r1  r1  r1  
+
+;11
+
+l16
+{6}
+l16v120|6p64%e0o3a+1  r2v20v96,120[8f]<c1  r2>v20v96,120[8g] $12 <c4.c4.  
+c4>g4<c4.c4.  c8>g8<c8c+8c4.c4.  c4>g4<c4.c4.  c4c4f4.f4.  
+f4c4f4.f4.  f8c8f8f+8f4.f4.  f4c4f4.f4.  f4f4>f+1  
+d+2v20v96,120[8a+]<d+4.d+4.  d+4>a+4b4.b4.  b4b4[2[2<d+8>a+a+a+8]<d+8  
+>a+8<e8>a+8[2<d+8>a+a+a+8]<c+8>a+8  <d8>a+8][4g8<d8>][4f+8<c+8>][4f8<c8  
+>][3e8b8]v20v48,120[6e24]
+;12
+
+l16

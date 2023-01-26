@@ -1,0 +1,76 @@
+#TITLE Mt. Koltz
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t73%x248%b0,70%f0,0%v50v60|0p45%e1r1  r2o6c2   $1 [2[2c8d+8d8c8>a+ra+<c%l1c48>a+24%l0g+<%l1c48>a+24%l0g+  
+<]>[2gab<cdc+edc+rc+d%l1d48c+^24>%l0b8  ]<]>[16c24r48r]>[16a+24r48r]<<c4d4e4  
+f4g4f4e4  d4>a+2<c>a+ag8.  gaa+8a8gaa+ag2  r1  
+r1  r1  r2<c2  
+;1
+
+l16
+{2}
+l16v60|0p55%e1r1  
+o5g1   $2 [2[2d+8g8f8d+8drdd+%l1d+48d24%l0c%l1d+48d24%l0c  ][2>b<cdef+egf+eref+%l1f+48e^24%l0d8  
+]][4g+24r48rg+a+24r48g+g24r48g+24r48d+24r48][4f+24r48rf+g+24r48f+f24r48f+24r48c+24r48  
+]e4f4g4a4  b4a4g4f4  g4a8g8agfd+8.d+f  g8f8d+fgfd+2  
+r1  r1  r1  g1  
+
+;2
+
+l16
+{3}
+l16v60|0p75%e1r2o5d+2  ^1   $3 r1  r1  
+r1  r1  r1  r1  
+r1  r1  v60|1p75%e1m48,18,215o5g8c8f8d+dcrc>a+<cdd+f  g8c8f8d+dcrcdc>a+<c>g+  
+<d+8>g+a+br<f+rf8c+rd+ra+r  <c+1  v60|2p75%e1o6[2g8c8f8edcrc>b<cdef  
+]g8a+8a8a+8<c>a+aa+grga  a+r<cr>a+agag2  r1  r1  
+v60|0p64%e1r2o5d+2  ^1  
+;3
+
+l16
+{4}
+l16v60|0p85%e1o4a1  ^1  
+ $4 r1  r1  r1  r1  
+r1  r1  r1  r1  
+v60|1p85%e1m48,18,215o5d+8>g+8<d8c>a+g+rg+gg+a+<cd  d+8>g+8<d8c>a+g+rg+a+g+gg+d+  
+f+8ff+g+r<d+rc+8>a+rbr<f+r  a+1  v60|2p85%e1o6[2e8>g8<d8c>bgrgggb<cd  
+]d+8g8f8g8agfgd+rd+f  grargfd+fd+2  r1  r1  
+v60|0p64%e1o4a1  ^1  
+;4
+
+l16
+{5}
+l16v60|3p40%e1r1  r2r8o4a32<c32e32d+32g32a+32a32<c32e32d+32g32a+32  
+ $5 >>[2[3g+<d+g+8^4>]g+<d+g+8gg+d+c  >[3g<dg8^4>]g<dg8f+gd>b  ]r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r2r8a32<c32e32d+32g32a+32a32<c32e32d+32g32a+32  
+;5
+
+l16
+{6}
+l16v40|4p70%e1o5[8a8a32r32a32r32] $6 [2[8g+8g+32r32g+32r32][8g8g32r32g32r32]][8g+8g+32r32g+32r32  
+][4f+8f+32r32f+32r32]f+8f+32r32f+32r32g+8g+32r32g+32r32a+8a+32r32a+32r32  
+<c+8c+32r32c+32r32[8c8c32r32c32r32]>[8a+8a+32r32a+32r32][16a8a32r32a32r32  
+]
+;6
+
+l16
+{7}
+l16v100|5p60%e0o5[2aaararaaaraaaaar  ] $7 [2[8g+8g+32rr32][8g8g32rr32]][8g+8g+32rr32][4f+8f+32rr32  
+]f+8f+32rr32g+8g+32rr32a+8a+32rr32<c+8c+32rr32  [8c8c32rr32]>[8a+8a+32rr32][4aaararaa  
+araaaaar]
+;7
+
+l16
+{8}
+l16v60|6p50%e0o4[4v80e8v50ee]v80p80<c8p50>ee  
+p65a8p50ev30v12,80p80<%g1c48c48c48%g0ccp50>eep65a8p50ee $8 [16v80p80<c8p50>ee  
+p65a8p50ev30v12,80p80<%g1c48c48c48%g0ccp50>eep65a8p50ee]r1  p50[8v80e8v50ee]v80p80<c8p50>eep65a8p50ev30v12,80p80<%g1c48c48c48%g0ccp50>ee  
+p65a8p50ee
+;8
+
+l16

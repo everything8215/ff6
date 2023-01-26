@@ -1,0 +1,89 @@
+#TITLE Edgar & Sabin's Theme
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16%x224%b0,70%f0,0%v50 $2 [2t90v100|0p64%e1m48,18,215o6g+4b4a+4.f+8  
+g+8bra+rf+8g+8bra+8g+24a+24b24  <c+4>b8<c+8>b4f+4  g+2^4.^r  g+4b4a+4.f+8  
+g+8bra+rf+8g+8bra+8g+24a+24b24  <c+4>b8<c+8d+4>b4  j2,1 t85<c+4t80^4t75^8t70^8t65^8t60^r  
+] $1 <c+2^4.^r  v60|1p64%e1o6c+4>b8<c+8d+4>b4  g+4f+8g+8b4g+4  f+4e8f+8g+4e4  
+c+2c+8d+8e8g+8  <c+4>b8<c+8d+4>b4  g+4f+8g+8b4g+4  a2^ra32r32a32r32ag+f+g+  
+a2^ra32r32a32r32ag+f+g+  a2^4.r8  t88a4t85a4t80art75art70art65ar  
+
+;2
+
+l16
+{2}
+l16v60|1p74%e1 $3 o5[2e4g+4f+4.d+8  e8g+rf+rd+8e8g+rf+8e24f+24g+24  
+a4a8a8g+4d+4  e2f+2  e4g+4f+4.d+8  e8g+rf+rd+8e8g+rf+8e24f+24g+24  
+a4a8a8f+4f+4  f+2f2  ]e2f+2  e2c+2  
+d2c2  >b2a+2  <e2f+2  e2d+2  
+d4.ddd2  d4.ddd2  c4.ccc2  c4c4c8c8c8c8  
+
+;3
+
+l16
+{3}
+l16v60|1p84%e1 $4 [2o5c+4c+4c+4.c+8  c+8c+rc+rc+8c+8c+rc+4  
+e4e8e8d+8c+8>b8a8  g+1  <c+4c+4c+4.c+8  c+8c+rc+rc+8c+8c+rc+4  
+e4e8e8d+8c+8>b8<d+8  c+1  ]>a2b2  g+2a2  
+a2g+2  g+1  a2b2  g+2g+2  
+f+4.f+f+f+2  f+4.f+f+f+2  f+4.f+f+f+2  f+4f+4f+8f+8f+8f+8  
+
+;4
+
+l16
+{4}
+l16v70|5p94%e1 $5 [2o5c+4r2r8c+8  c+4r8c+8c+8>bra+rg+r  
+a4.a8b4b4  <e2d+2  c+4r2r8c+8  c+4r8c+8c+8>bra+rg+r  
+a4.a8b4b4  <c+1  ]a2g+2  e2f+2  
+d2g+2  c+2c+rc+rc+r>br  <a2g+2  e2d+2  
+d4r8ddd2  d4r8ddd2  d4r8ddd2  d4d4d8d8d8d8  
+
+;5
+
+l16
+{5}
+l16v60|2p54%e1m48,18,239 $6 [2o5c+4e4f+4^rf+r  c+8erf+rf+8c+8erf+4  
+r1  e4f+8e8d+8c+8d+8f+8  c+4e4f+4^rf+r  c+8erf+rf+8c+8erf+4  
+r1  r1  ]r1  r1  
+r1  v80r2c+rd+rerg+r  r1  r1  
+v60r8d32r32d32r32d>a<df+a2  r8d32r32d32r32d>a<df+a2  r8d32r32d32r32d>a<df+a2  
+a4a4arararar  
+;6
+
+l16
+{6}
+l16v60|2p44%e1m48,18,239 $7 [2o4g+4b4a+4^rf+r  
+g+8bra+rf+8g+8bra+4  r1  b4b8b8b8b8b8b8  g+4b4a+4^rf+r  
+g+8bra+rf+8g+8bra+4  r1  r1  ]r1  
+r1  r1  v80r2g+rf+r<c+r>br  r1  
+r1  v70r8f+32r32f+32r32f+f+f+a<d2  r8>f+32r32f+32r32f+f+f+a<d2  
+r8>f+32r32f+32r32f+f+f+a<c2  c4c4crcrcrcr  
+;7
+
+l16
+{7}
+l16v80|3p30%e0 $8 o4a1  
+r1  r1  r1  a1  
+r1  r1  r1  a1  
+r1  r1  r1  a1  
+r1  r1  r1  a1  
+r1  r1  r1  a1  
+r1  r2a2  ^2a2  ^2a2  
+^1  
+;8
+
+l16
+{8}
+l16v120|4p40%e0 $9 o4c+2^4.c+8  c+4.c+8c+2  r1  
+r2r4.>g+24g+24g+24  <c+2^4.c+8  c+4.c+8c+2  r1  
+c+4c+4c+8c+8c+8c+8  c+2^4.c+8  c+4.c+8c+2  r1  
+r2r4.>g+24g+24g+24  <c+2^4.c+8  c+4.c+8c+2  r1  
+r2r4v30v48,120c+32c+32c+32c+32c+32c+32c+32c+32  >a1  r1  r1  
+r2r4<v30v48,120c+32c+32c+32c+32c+32c+32c+32c+32  >a1  r1  <d4.ddd2  
+d4.ddd2  d4.ddd2  d4d4d8>a8<d8>a8  
+;9
+
+l16
