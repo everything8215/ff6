@@ -31,6 +31,9 @@ all: $(VERSIONS)
 rip:
 	python3 tools/extract_ff6.py
 
+mml:
+	python3 tools/encode_mml.py
+
 clean:
 	$(RM) -r $(ROM_DIR) assets obj include/assets
 
@@ -84,7 +87,7 @@ $(FF6_JP_PATH): cfg/ff6-jp.cfg $(OBJ_FILES_JP)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_JP)
 	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
-	@echo '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
+	printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
 	@mkdir -p rom
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_JP) $(CUTSCENE_LZ).o
@@ -95,7 +98,7 @@ $(FF6_EN_PATH): cfg/ff6-en.cfg $(OBJ_FILES_EN)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
 	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
-	@echo '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
+	printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
 	@mkdir -p rom
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN) $(CUTSCENE_LZ).o
@@ -106,7 +109,7 @@ $(FF6_EN1_PATH): cfg/ff6-en.cfg $(OBJ_FILES_EN1)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
 	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
-	@echo '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
+	printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
 	@mkdir -p rom
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN1) $(CUTSCENE_LZ).o
