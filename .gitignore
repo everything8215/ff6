@@ -18,6 +18,6 @@ ff6-*-data.json
 *.smc
 *.sfc
 include/assets/
-src/assets/
+src/assets/*
 !src/assets/main.asm
 !src/assets/mml/
