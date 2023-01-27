@@ -1,0 +1,37 @@
+#TITLE (Cranes)
+#ALBUM Final Fantasy VI
+#COMPOSER unknown
+#ARRANGED M.Akao
+
+{1}
+l16t120%b0,100%f0,0%v50v8p64%n1@0%c16 $1 c48
+;1
+
+l16
+{2}
+l16p64v15%e1@4o8p0,0,120v0,1,191%l1 $2 m192,+1c1  
+v255,40m1
+;2
+
+l16
+{3}
+l16p64o3m1,-15@4%s2 $3 v127c32v92,0^3
+;3
+
+l16
+{4}
+l16p64v50%p1%e1o7p0,255,140@7 $4 f+24m36,+6%r16c+1  
+[61c64]
+;4
+
+l16
+{5}
+l16p20k2
+;5
+
+l16
+{6}
+l16p107 $5 |0o4v70 $6 c2
+;6
+
+l16

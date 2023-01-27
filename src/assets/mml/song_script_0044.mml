@@ -1,0 +1,70 @@
+#TITLE Wedding Waltz #2
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t120%b0,100%f0,0%v50v80|0p50%e1o4ef+gr1  r4rv60t85ef+ged+<c>bagd+e  
+bf+g<e>b<gd+ebf+g<e>b<g4  g12f+12e12d+8r4.a4  a12g12f+12e8r4.ba+<c>b  
+f+fgf+>ba+<c>bf+fgf+t75grar  b8.r<g32r32g32r32a32r32a32r32b8.r>arbr  
+<c8.ra32r32a32r32b32r32b32r32<c8.rt80>>b<c>br8.  <d+ed+r8.f+gf+r>b<c>br8.  
+<d+ed+r8.f+gf+eb2  ^4r8b24b24b24b24r8.r48
+;
+
+l16
+{2}
+l16v80|0p60%e1o5ef+gr1  
+r4rr1  r2v60<c+4c+12c+12c+12  >b8r4.<d+4d+12d+12d+12  >b8r4.r1  
+ererd+8.r<e32r32e32r32e32r32e32r32d+8.r  >f+rgra8.r<f+32r32f+32r32g32r32g32r32a8.r  
+>d+ed+r8.f+gf+r8.abar  d+ed+r8.f+gf+r8.abag  <d+2^4r8d+24d+24d+24  
+d+24r8.r48
+;
+
+l16
+{3}
+l16v60|0p70%e1r1  r2r1  r2o5g4g12f+12e12  
+d+8r4.a4a12g12f+12  g8r4.r1  >brarf+8.r<b24r48b24r48a24r48a24r48f+8.r  
+cr>bra8.r<<c24r48c24r48>b24r48b24r48a8.r  >b<c>br8.<d+ed+r8.f+gf+r  
+>b<c>br8.<d+ed+r8.f+gf+e  b2^4r8b24b24b24  b24r8.r48
+;
+
+l16
+{4}
+l16v100|1p75%e1o5ef+gr1  
+r4rv80ef+ged+<c>bagd+e  bf+g<e>b<gd+ebf+g<e>b>a+4  a+12a+12a+12b8r4.<c4  
+c12c12c12>b8r4.r2  <b8a8d+8>b8<erc+r>b8.r  <<e24r48e24r48c+24r48c+24r48>b8.rd+rerf+8.r  
+<d+24r48d+24r48e24r48e24r48f+8.r>>v100[32b24r48]b2  ^4r8b24b24b24b24r8.r48
+;
+
+l16
+{5}
+l16r1  
+r2r1  r2r1  r1  
+r1  r1  r1  r1  
+r1  r1  r4
+;
+
+l16
+{6}
+l16v80|2p45%e1m48,18,239r2o4a2  ^2r1  
+r2r1  r1  r1  r1  
+r1  r4a4^8a4^8  ^4a4^8a4^8  a4^1  
+
+;
+
+l16
+{7}
+l16|3p64%e0o5aaar1  r4rr1  r2[2v50v48,10%g1[12a48]%g0v50a12a12a12a2  
+]r1  r1  r1  v10v192,50[8aa32a32]v10v192,50[7aa32a32]a32a32a32a32a2r4.  
+a24a24a24a24r8.r48
+;
+
+l16
+{8}
+l16v120|4p55%e0r2o3v192,10[24b24]r1  
+r2r1  r1  r1  r1  
+r1  v120r8.<f+32f+32>b4^<f+32f+32>b4^8  r8.<f+32f+32>b4^<f+32f+32>b8bbbb  
+b2^4r8b24b24b24  b4
+;
+
+l16

@@ -1,0 +1,84 @@
+#TITLE Wedding Waltz #1
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t160%b0,100%f0,0%v50v50|0p55%e1m48,18,239r2r4r2  r4r2r4  
+r2r4 $1 o5e2  ^4d+2^4  >b4<c+4e4d+2  ^4>b4<c+4d+4  
+e4f+4g+4a2  ^4r2r4  f+2^4f2  ^4c+4e4f+4  
+d+2^4>b4  <c+4d+4e4f+4  g4g+2^4  r2r4e2  
+^4d+2^4  >b4<c+4e4d+2  ^4>b4<c+4d+4  e4g+4b4<c+2  
+^4r2r4  >%l1a8g+8%l0a8b8a8f8g+4  f+2%l1f+8f8%l0f+8g+8  f+8c+8e4d+2  
+>b4<b4a4g+4  r8>b8<c+8d+8e2  ^4r2r4  
+;1
+
+l16
+{2}
+l16v40|1p45%e1r2r4r2  
+r4r2r4  r2r4 $2 o4b8<e8  g+8e8g+8e8>b8<d+8g+8d+8  g+8d+8>b8<c+8g+8c+8g+8c+8  
+>b8<d+8g+8d+8g+8d+8>b8<e8  g+8e8g+8e8>b8<e8g+8e8  g+8e8c+8f+8a8f+8a8f+8  
+c+8f8a8f8a8f8c+8f+8  a8f+8a8f+8c+8f8a8f8  a8f8c+8f+8a8f+8a8f+8  
+>b8<d+8f+8d+8f+8d+8>b8<d+8  f+8d+8f+8d+8>b8<d+8f+8d+8  g8d+8>b8<e8g+8e8g+8e8  
+d+8r8e8r8f+8r8>b8<e8  g+8e8g+8e8>b8<d+8g+8d+8  g+8d+8>b8<c+8g+8c+8g+8c+8  
+>b8<d+8g+8d+8g+8d+8>b8<e8  g+8e8g+8e8>b8<e8g+8e8  g+8e8c+8e8a8e8a8e8  
+c+8e8a8e8a8e8c+8f+8  a8f+8a8f+8c+8e8a8e8  a8e8c+8d+8a8d+8a8d+8  
+c+8e8a8e8a8e8>b8<d+8  a8d+8a8d+8>b4<c+4  d+4e2^4  d+8r8e8r8f+8r8
+;2
+
+l16
+{3}
+l16v60|2p80%e1r4  
+o5g+r8.g+r8.r4g+r8.  g+r8.r4g+r8.g+r8.  r4g+r8.g+r8. $3 r4  g+r8.g+r8.r4g+r8.  
+g+r8.r4g+r8.g+r8.  r4g+r8.g+r8.r4  g+r8.g+r8.r4g+r8.  g+r8.r4ar8.ar8.  
+r4ar8.ar8.r4  ar8.ar8.r4ar8.  ar8.r4ar8.ar8.  r4ar8.ar8.r4  
+ar8.ar8.r4ar8.  ar8.r4g+r8.g+r8.  b4a+4a4r4  g+r8.g+r8.r4g+r8.  
+g+r8.r4g+r8.g+r8.  r4g+r8.g+r8.r4  g+r8.g+r8.r4g+r8.  g+r8.r4ar8.ar8.  
+r4ar8.ar8.r4  f+r8.f+r8.r4er8.  er8.r4d+r8.d+r8.  r4er8.er8.r4  
+f+r8.f+r8.f+r8.g+r8.  ar8.g+2^4  b4a+4a4
+;3
+
+l16
+{4}
+l16v60|2p75%e1r4  
+o5er8.er8.r4d+r8.  d+r8.r4c+r8.c+r8.  r4d+r8.d+r8. $4 r4  er8.er8.r4d+r8.  
+d+r8.r4c+r8.c+r8.  r4d+r8.d+r8.r4  er8.er8.r4er8.  er8.r4f+r8.f+r8.  
+r4f+r8.f+r8.r4  f+r8.f+r8.r4fr8.  fr8.r4f+r8.f+r8.  r4f+r8.f+r8.r4  
+f+r8.f+r8.r4d+r8.  d+r8.r4er8.er8.  d+4e4f+4r4  er8.er8.r4d+r8.  
+d+r8.r4er8.er8.  r4d+r8.d+r8.r4  er8.er8.r4er8.  er8.r4er8.er8.  
+r4er8.er8.r4  c+r8.c+r8.r4c+r8.  c+r8.r4c+r8.c+r8.  r4c+r8.c+r8.r4  
+d+r8.d+r8.d+r8.er8.  f+r8.e2^4  d+4e4f+4
+;4
+
+l16
+{5}
+l16v60|2p70%e1o4e4  
+br8.br8.d+4br8.  br8.c+4br8.br8.  d+4br8.br8. $5 e4  br8.br8.d+4br8.  
+br8.c+4br8.br8.  d+4br8.br8.e4  br8.br8.>b4<br8.  br8.f+4<c+r8.c+r8.  
+>c+4<c+r8.c+r8.>f+4  <c+r8.c+r8.>f4<c+r8.  c+r8.>e4<c+r8.c+r8.  
+>d+4br8.br8.>b4  <br8.br8.f+4br8.  br8.e4br8.br8.  >b4<c+4d+4e4  
+br8.br8.d+4br8.  br8.c+4br8.br8.  d+4br8.br8.e4  br8.br8.>b4<br8.  
+br8.>a4<<c+r8.c+r8.  >e4<c+r8.c+r8.>f+4  ar8.ar8.e4ar8.  ar8.d+4ar8.ar8.  
+c+4ar8.ar8.>b4  <br8.br8.br8.a+r8.  ar8.g+2^4  >b4<c+4d+4
+;5
+
+l16
+{6}
+l16v80|3p64%e1o5e4  
+r2d+4r2  c+4r2d+4  r2 $6 e4r2  d+4r2c+4  
+r2d+4r2  e4r2>b4  r2<f+4r2  c+4r2f+4  
+r2f4r2  e4r2d+4  r2>b4r2  <f+4r2e4  
+r2>b4<c+4  d+4e4r2  d+4r2c+4  r2d+4r2  
+e4r2>b4  r2a4r2  <e4r2f+4  r2e4r2  
+d+4r2c+4  r2>b4r2  b8r8<c+8r8d+8r8e2  ^4>b4<c+4d+4  
+
+;6
+
+l16
+{7}
+l16v40|4p64%e0r2r4r2  r4r2r4  r2r4 $7 o5[2[3a2  a4a2a4  
+a4a4a4a4  ^2]a2  a4a2a4  a2a4a4  
+a4a4]
+;7
+
+l16

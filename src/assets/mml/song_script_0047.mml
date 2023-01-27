@@ -1,0 +1,80 @@
+#TITLE Magitek Research Facility
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t85%x232%b0,100%f0,0%v50v120|0p75%e1m48,18,239r1  r1   $1 r1  
+r1  r1  r1  o6c+32r32>g+32r32<c+32r32d+32r32g+rg8ercrc+re8  
+bra+4.grg+4.  f+32r32>b32r32<c+32r32d+32r32erd+rc+r>bra+rgr  g+1  
+<c+32r32>g+32r32<c+32r32d+32r32g+rg8ercrc+re8  bra+4.grg+4.  ererg+8.ef+8f+8e8d+8  
+c+1  e>b<ef+g+8f+ed+ec+rc+4  r1  r1  
+r1  r2r4ed+dc+  c>g+<cd+g+4.cd+g+d+g+a+  b1  
+r1  
+;1
+
+l16
+{2}
+l16v50|1p50%e1r1  r1   $2 r1  
+r1  r1  r1  o5ef+ef+er4ref+g+re8  
+r4bra+8r4grg+8  g+4b4<c+4f+4  r8ef+eref+eref+g+f+ed+  >ef+ef+er4ref+g+re8  
+r4bra+8r4grg+8  g+4b4<c+4f+4  r8ef+eref+eref+g+f+ed+  e4>b4<c+4f+4  
+c+rd+d+e8d+8f+8e8d+8e8  c+8e8d+8e8c+2  erf+f+g8f+8a8g8f+8g8  e8g8f+8g8e4ed+dc+  
+crcrc+rc+rd+rd+rc+rc+r  >b2<e2  d+2d2  
+;2
+
+l16
+{3}
+l16v50|1p40%e1r1  
+r1   $3 r1  r1  r1  
+r1  o5c+d+c+d+c+r4rc+d+erc8  r4ere8r4ere8  e4g+4a+4<c+4  
+r8c+d+c+rc+d+c+rc+d+ed+c+c  >c+d+c+d+c+r4rc+d+erc8  r4ere8r4ere8  
+e4g+4a+4<c+4  r8c+d+c+rc+d+c+rc+d+ed+c+c  >g+2f+4a+4  arbb<c+8>b8<d+8c+8>b8<c+8  
+>a8<c+8>b8<c+8>a2  <crdde8d8f+8e8d8e8  c8e8d8e8c4c>ba+a  g+rg+ra+ra+r<crcr>a+ra+r  
+g+2a2  b1  
+;3
+
+l16
+{4}
+l16v70|2p70%e0r1  r1  
+ $4 o6c+rc+re8.cc+d+ef+g+rc8  c+rc+r4cc+rc+r4r  ererg+8.ef+8f+8>a+8b<c  
+c+rc+r4cc+rc+r4r  c+rc+re8.cc+d+ef+g+rc8  c+rc+r4cc+rc+r4r  ererg+8.ef+8f+8>a+8b<c  
+c+rc+r4cc+rc+r4r  c+rc+re8.cc+d+ef+g+rc8  c+rc+r4cc+rc+r4r  ererg+8.ef+8f+8>a+8b<c  
+c+rc+r4cc+rc+r4r  e8e8g+8.ef+8c+c+f+g+8.  a8a8>a4<a8a8>a4  <a8a8>a4<a8a8>a8b8  
+<c8c8<c4>c8c8<c4  >c8c8<c4>c8c8<c>ba+a  g+8g+8r4f+8f+8r4  e8e8r4e8e8r4  
+e8e8r4.e8d+8d8  
+;4
+
+l16
+{5}
+l16v50|3p60%e0r1  r1   $5 o5c+rc+re8.cc+d+ef+g+rc8  
+c+rc+r4cc+rc+r4r  ererg+8.ef+8f+8>a+8b<c  c+rc+r4cc+rc+r4r  c+rc+re8.cc+d+ef+g+rc8  
+c+rc+r4cc+rc+r4r  ererg+8.ef+8f+8>a+8b<c  c+rc+r4cc+rc+r4r  c+rc+re8.cc+d+ef+g+rc8  
+c+rc+r4cc+rc+r4r  ererg+8.ef+8f+8>a+8b<c  c+rc+r4cc+rc+r4r  e8e8g+8.ef+8c+c+f+g+8.  
+a8a8>a4<a8a8>a4  <a8a8>a4<a8a8>a8b8  <c8c8<c4>c8c8<c4  >c8c8<c4>c8c8<c>ba+a  
+g+8g+8r4f+8f+8r4  e8e8r4e8e8r4  e8e8r4.e8d+8d8  
+;5
+
+l16
+{6}
+l16v120|0p64%e0 $6 o5|4%e0c4|5%e1g4|4%e0c8c8|5%e1g4  
+
+;6
+
+l16
+{7}
+l16v100|0p64%e0 $7 o5|6a4|7c4|6a8a8|7c4  
+;7
+
+l16
+{8}
+l16p64%e0r1  
+r1  r1  r1  r1  
+r1   $8 [8r4r8@7%e1p20p24,64v70o3c32m18,+24^32^o6rv40p100p84,20@2%e0c+>@1g@0c+>@1g+@2c+>@1g@0c  
+]r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+
+;8
+
+l16

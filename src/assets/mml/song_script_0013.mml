@@ -1,0 +1,79 @@
+#TITLE Techno de Chocobo
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t130%x208%b0,100%f0,0%v50v100p64%e1o4|8a8|9a8|Aa8^8r1  r1  
+o4v120|8a8|9a8|Aa8r8r2  r1   $1 v60@2p64%e1m48,24,239[2o6dr8.>b8g8e8<dr>brgr  
+br8.gr8.b4.a8  grgagrfrg4.f8  grgb<drerf2  ]er8.c8>a8f+8ar<crer  
+dr8.gr8.d4.>b8  <cr8.>a8f+8d8f+rar<cr  >brb<c>brarb2  <er8.c8>a8f+8ar<crer  
+dr8.gr8.d4.>b8  arabargra4.g8  arab<crdrer8.f+4  v120p64%e1v120|8o4p40a4o5v70p110a4v120|9o4p90a4o5v70p20a4  
+|Ao4v120p100p192,20a6v110g+6v100g6v90f+6v80f6v70e6  v120|8o4p40a4o5v70p110a4v120|9o4p90a4o5v70p20a4  
+v120p64|Ao4a4r4|8a8|9a8|Aa8r8  
+;1
+
+l16
+{2}
+l16r2v40@5p44 $2 %e1[4o6drgr>br<dc  
+rfrf>ar<cr][8drgr>br<dc  rfrf>ar<cr]%e1ecgec>gec  <f+daf+d>af+d<gdbgd>bgd  
+<gdbgd>bgd<ecgec>gec  <f+daf+d>af+d<gdbgd>bf+d  <gdbgd>bgd<ecgec>gec  
+<f+daf+d>af+d<gdbgd>bgd  <gdbgd>bgd<aacrarca  racrarcrar>ar<gr>a<f+  
+rf+>ar<f+r>ar
+;2
+
+l16
+{3}
+l16r2  @5p84 $3 v20%e1rr32o6drgr>br<dcrfrf>ar<c32  
+[3^32rdrgr>br<dcrfrf>ar<c32  ][8^32rdrgr>br<dcrfrf>ar<c32  ]v40%e1c>g<ec>gec>g<<d>a<f+d>af+d>a  
+<<d>b<gd>bgd>b<<d>b<gd>bgd>b  <<c>g<ec>gec>g<<d>a<f+d>af+d>a  <<d>b<gd>bf+d>b<<d>b<gd>bgd>b  
+<<c>g<ec>gec>g<<d>a<f+d>af+d>a  <<d>b<gd>bgd>b<<d>b<gd>bgd>b  <<ff>ar<fr>a<ere>ar<er>ar  
+<dr>f+r<dr>f+<crc>f+r<cr>f+r  
+;3
+
+l16
+{4}
+l16r2 $5 [3v50@3o4%e1[4p64p96,124m96,+22a2  
+p64p96,0m96,+22a2][2v50|0o5%e1p24bbrbb8v50|1o5%e0p104de  frf8e24f24e24d8v50|0o5%e1p24g4d4  
+v50|1o5%e0p104r8v50c64v20^64v50^64v20^64v50^64v20^64v50^64v20^64v50^64v20^64v50^64v20^64v50^64v20^64v50^64v20^64v50^64v20^64v50^64v20^64v50^64v20^64v50^64v20^64v50|0o5%e1p24bbbbb8v50|1o5%e0p104gr  
+f8ad4^v50|0o5%e1p24gm60,-8^4^v50|1o5%e1p104dc  >bga<c>b8a8]j3,4 r1  
+r1  r1  r1  r1  
+r1  v60@4%r25p84r8o4ggg8p64dd8d8dp44>a8a8  r1  ] $4 p0v30o6@3%e0m0,8,223r2grgrbr8.  
+gr8brgrgrbr4.  v30o5@3[4v30g8.m3,-72v15b64r64r32r8]v30o6@3%e0m0,8,223grgrbr8.gr8  
+brgrgrbr4.v40o5@3[12g48]r2  [12g48]v60@4%r25p84r8o4ggg8p64dd8d8dp44>a8a8  
+r1  
+;5
+
+l16
+{5}
+l16r2v50|2p74%e0 $6 o5g8r4de  fr8.c4>br<grdref  
+r4c4g8r4de  fr8.c4>br<grdref  r2[2g8r4de  fr8.c4>br<grdref  
+r2g8r4de  fr8.c4>br<grdref  r2]ccccrcrc+  d8r8>a4g8g8r4  
+g8g8r4<ccccrcrc+  d8r8>a4g8g8r4  g8g8r4<ccccrcrc+  d8r8>a4g8g8r4  
+g8g8r4v60@3%r8m24,-16p84r8o5m24,-16gm24,-16gm24,-16g8p64m24,-16dm24,-16d8  
+m24,-16d8m24,-16d>p44m24,-16a8m24,-16a8v50|2p74%e0o4a8<a8g>ar<f+r  
+f+rf+e4
+;6
+
+l16
+{6}
+l16r2 $7 v40o6[2p14p192,114|3e  d+dc+c>b|4a+8|3ag+|4g8|3f+f|4e8p114p192,14|3e  
+ff+gg+a|4a+8|3b<c|4c+8|3dd+|4e8]v50o5[8|3a  aaaaa|4a8[2|3aa|4a8]][3|3aa48a48a48aaa  
+a|4a8|3a8|4a8|3a4aaaa|4a8  |3aaa|4a|3aa|4a8|3aa][4|3a8|4a8|3aa  
+|4a8]
+;7
+
+l16
+{7}
+l16r2%e0o5 $8 p34v0[4|3aaaaaa  |4a8[2|3aa|4a8]]|5p94%e0o5[64v80g+8v50g+g+]
+;8
+
+l16
+{8}
+l16r2  
+v120|0p54%e0o5 $9 |7a4a4a4a4  a4a4a4a4  a4a4a4a4  a4a4a|6a8.a8aa  
+[2[3|7a4|6a4|7a8a8|6a4  ]|7a4|6a4|7a8a8|6a8aa  ][3|7aaaa|6a|7a8aa4|6a4  
+|7a8a8|6a8.|7aa8a8|6a4  ]|7a4a4a4a4  a4a4a|6a8.a8aa  
+;9
+
+l16

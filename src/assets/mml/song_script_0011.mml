@@ -1,0 +1,92 @@
+#TITLE Epitaph
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t70%b0,70%f0,3%v50v60|0p64%e1r1  r1  r1  r1  
+ $1 o5a4<e8d8c+4.>a8  b8<c+8>b4g4b4  a1  ^2^4.^8  
+a4<e8d8c+4.>a8  <g4f4e4.d8  e1  ^2^4.^8  
+e8d8c8>a8b8<c8d8e8  ^2^4^4  ^1  ^2^4>d4  
+f2^4e8f8  g2^4^8d8  f2^8a8g8f8  g2^8^8e4  
+a1  ^1  r1  r1  
+
+;1
+
+l16
+{2}
+l16v60|1p55%e0%r12r4.o5e2^8  r4.e2^8  r4.e2^8  r4.e2^8  
+ $2 r4.e2^8  r4.e2^8  r4.e2f8  r4.e2^8  
+r4.e2^8  r4.g2^8  r4.e2e8  r4.e2^8  
+r4.f8r4.f8  r4.e2^8  r4.e8r4.e8  r4.f+2^8  
+v10v192,30[24f24]v192,10[24e24]v192,30[24g24]v192,10[24g24]v60r4.e4.e4  
+r4.e4.e4  r4.g4.g4  r2f+2  
+;2
+
+l16
+{3}
+l16v60|1p50%e0%r12r4o5c+2^4  
+r4d2^4  r4c+2^4  r4d2^4   $3 r4c+2^4  
+r4d2^4  r4c+2d4  r4c+2^4  r4c+2^4  
+r4d2^4  r4c+2d4  r4c+4.c+4.  r4c4r4>b4  
+r4b4.b4.  r4<d4r4c+4  r4c+4.c+4.  r4>a+4a+4a+4  
+r4a+4a+4a+4  r4a+4a+4a+4  r4a+4a+4a+4  r4<d4d4.d8  
+r4c+4c+4.c+8  r4c4c4.c8  r4c2^4  
+;3
+
+l16
+{4}
+l16v60|1p45%e0%r12r8o4a2^4.  
+r8g2^4.  r8a2^4.  r8g2^4.   $4 r8a2^4.  
+r8g2^4.  r8a2a4.  r8a2^4.  r8a2^4.  
+r8a+2^4.  r8a2g4.  r8a2^8a4  r8a4.r8g4.  
+r8g2^8g4  r8g4.r8g4.  r8a2^8a4  r8f4f4f4f8  
+r8e4e4e4e8  r8g4g4g4g8  r8g4g4g4g8  r8a2a4.  
+r8a2a4.  r8a2a4.  r8a4a2^8  
+;4
+
+l16
+{5}
+l16v60|1p40%e0%r12o3a1  
+e1  a1  e1   $5 a1  
+e1  a2<d2  >a1  a1  
+g1  a2e2  a1  <d2>g2  
+<c1  >e2a2  <d1  >a+1  
+e1  g1  <c1  >a1  
+a1  <d1  d1  >
+;5
+
+l16
+{6}
+l16v50|2p74%e1m48,18,239r1  
+r1  r1  r1   $6 r1  
+r1  r4o4a4<f4d4  e2^4.r8  r1  
+r1  r4>a4<e4d4  c+2^4.r8  r1  
+r1  %l1g8f+8%l0%l1e8>b8%l0<%l1c+8d8%l0%l1e8f+8  ^2^8r4.  d1  
+^2^4.r8  d1  ^2^4.r8  d2^8%l1e8d8%l0>b8  
+<c+2^4.r8  c1  ^2^4r4  
+;6
+
+l16
+{7}
+l16v50|2p84%e1m48,18,239r1  
+r1  r1  r1   $7 r1  
+r1  r4o4e4<d4>a4  <c+2^4.r8  r1  
+r1  r4>e4g4b4  a2^4.r8  r1  
+r1  r1  r1  a+1  
+^2^4.r8  a+1  ^2^4.r8  a1  
+^2^4.r8  g2^8a8g8e8  f+2^4r4  
+;7
+
+l16
+{8}
+l16v50|2p94%e1m48,18,239r1  
+r1  r1  r1   $8 r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  o4f1  
+g2^4.r8  f1  e2^4.r8  e1  
+^2^4.r8  d1  ^2^4r4  
+;8
+
+l16

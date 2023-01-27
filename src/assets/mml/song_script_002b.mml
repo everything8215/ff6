@@ -1,0 +1,69 @@
+#TITLE What?
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16%x176%b0,100%f0,0%v50|0p64%e0%r21t85 $1 v60o6ffff>a+8<f8>a+8<f8>a+8<f>a+  
+[2v60a8<d+8d+8>g8<v48,10[13c+48]r8.r24>]<v60d+d+d+d+  >g+8<d+8>g+8<d+8>g+8<d+>g+[2v60g8<c+8  
+c+8>f8v48,10[13b48]r8.r24]v60r8.a+arg+r  grgg+grf+rf8e8<f8e8  >f8e8r4e8d+8<e8d+8  
+>e8d+8r4d+8d+ef+8a8  g8gab8<c+8v192,20d+8c+8d+8c+8  d+8c+8d+8c+8r1  
+
+;1
+
+l16
+{2}
+l16v60|0p64%e0%r21 $2 o6cccc>f+8<c8>f+8<c8>f+8<c>f+  
+[2v60f8b8b8d+8v48,10[13a48]r8.r24]v60a+a+a+a+  e8a+8e8a+8e8a+e[2v60d+8a8  
+a8c+8v48,10[13g48]r8.r24]v60r8gf+frer  d+rd+ed+rdrc+8c8<c+8c8  >c+8c8r4c8>b8<<c8>b8  
+c8>b8r4b8b<c+d+8f+8  e8ef+g8a8v192,20b8a8b8a8  b8a8b8a8r1  
+;2
+
+l16
+{3}
+l16v60|0p64%e0%r21 $3 r1  
+r1  r1  r1  r1  
+r1  r8o5bbbrbrbrbbbrbr  r1  r1  
+r1  r1  r1  
+;3
+
+l16
+{4}
+l16 $4 [2v60|1p30%e0r1  
+o4araaa4^2  o5v60|2p40%e0aaaaereer8v60|3p50%e0a8e4  ]r1  r1  
+v60|4p40%e0o6r2r4a4  r1  r1  v60|3p50%e0o5r2r8a8e4  
+
+;4
+
+l16
+{5}
+l16 $5 [2r1  v60|5p90%e0r2o5a8a8a4  v60|4p100%e0o6r2a8r4.  
+]r1  r1  v60|5p80%e0o5a4a4a4r4  r1  
+r1  r1  
+;5
+
+l16
+{6}
+l16 $6 v60|6p70%e0r1  r1  
+r1  r1  r1  r1  
+r8o5a8r8a8r8a8r8a8  r1  r1  r8a8r8a8r8a8r8a8  
+v100|7p90%e0o4r2r4v192,10r6e6  ^6c+6^6>a+6^6g+12
+;6
+
+l16
+{7}
+l16|7p50%e0 $7 o4v100f4  
+f4f4r4r1  r1  f4f4f4r4  r1  
+r1  r1  f4f4f4r4  r1  
+r1  f4f4f4v192,10f4  f4d4>b4r4  
+;7
+
+l16
+{8}
+l16 $9 v120r1  
+r1  r1  r1  r1  
+r1  o5[2[2|8p64%e0a4|9p64%e0a4]j2,8 r1  r1  ] $8 v100|7p20%e0o4r2r4v192,10r6r6  
+d+6^6c6^6>a6^12
+;9
+
+l16

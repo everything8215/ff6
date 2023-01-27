@@ -1,0 +1,23 @@
+#TITLE (Waves)
+#ALBUM Final Fantasy VI
+#COMPOSER unknown
+#ARRANGED M.Akao
+
+{1}
+l16t120%b0,100%f0,0%v20v15p64%e1%n1@0%a4%r16 $1 r4.[2%c26g2^1  
+%c24c1  ]r3
+;1
+
+l16
+{2}
+l16 $2 r2p64v8@4o4%a0%r13m20,+8c1  v15%a11%r15c12c2m20,+8v6%a3%r19c1  
+r3
+;2
+
+l16
+{3}
+l16 $3 r2p64v0v114,24%p1v0,208,191@7o7%a2p0,76,32d+1  
+%r12^12^2^1  ^3
+;3
+
+l16

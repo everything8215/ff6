@@ -1,0 +1,101 @@
+#TITLE Kefka
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t80%x248%b0,70%f0,0%v50 $1 v60|0p85%e0o4a+8<c8c+8d+8f8c+8f+8fd+  
+f8c+8c8d+8c+8>a+8a8a+<c  >a+8f+8f8f+8f8f+8e8f8  ^4f+8f8f+8f8e8f8  
+f+8f8a+8<c8c+8d+8f8c+8  f+8fd+f8c+8c8d+8c+8>a+8  a8a+<cv60|1p85%e1o5r8frfrfrfrfr  
+g+8f+rerfrf+rg+ra+ra+r  <crcr>f+rf+rf+rf+rf+rf+r  f+8f+rf+rf+rf+rf+rf+rf+r  
+f+rf+r<fr8cc+>a+r<c+d+rd+8  c+r>a8a+r<frfrfrfrfr  g+8f+re8frf+rg+rf+8fr  
+%l1g+32g32%l0f+32f32e8r8a+ra+ra+ra+ra+r  <c+8cr>a8a+r<crc+rc8>a+r  
+ara+8r8frfrfrfrfr  g+8f+re8frf+rg+rf+8fr  %l1g+32g32%l0f+32f32e8r8a+ra+ra+ra+ra+r  
+<c+8cr>a8a+r<crc+rc8>a+r  ara+8fr8cc+>a+r<c+d+rd+8  c+r>a8>a+r<crc+r8.%l1c>a+%l0aa+  
+<cr8.>a+r<crc+r8.%l1d+c+%l0cc+  d+r8.>a+r<crc+rd+rf8a+8  a8a+<c>a+8f8a+8<c+8f2  
+^2e2  r2
+;1
+
+l16
+{2}
+l16 $2 v60|0p75%e0r1  r1  r1  
+r4r1  o5c+8f8a+8<c8c+8>a+8<d+8c+c  c+8>a+8a8<c8>a+8f+8d+8c+f  >a+8v60|1p75%e1o5c+rc+rc+rc+rc+rc8d+r  
+c+rc+rc+rc+rc+rc+rc+rc+r  c+rc+rc+rc+rc+rc+re8d+r  c+rc+rc+rc+rc+rc+rcrcr  
+v80|2p75%e1m48,18,239o6fr8cc+>a+r<c+d+rd+8c+r>a8  a+r<frfrfrfrfrg+8f+r  
+e8frf+rg+rf+8fr%l1g+32g32%l0f+32f32e8  r8a+ra+ra+ra+ra+r<c+8cr  
+>a8a+r<crc+rc8>a+rara+8  r8frfrfrfrfrg+8f+r  e8frf+rg+rf+8fr%l1g+32g32%l0f+32f32e8  
+r8a+ra+ra+ra+ra+r<c+8cr  >a8a+r<crc+rc8>a+rara+8  fr8cc+>a+r<c+d+rd+8c+r>a8  
+r1  r1  v60|1p75%e1mr2o5c+4f8d+8  c+8d+8f8g+8a+2  
+^1  r2
+;2
+
+l16
+{3}
+l16 $3 v60|0p65%e0o3a+8<c8c+8d+8  f8c+8f+8fd+f8c+8c8d+8  
+c+8>a+8a8a+<c>a+8f+8f8f+8  f8f+8e8f8^4f+8f8  f+8f8e8f8f+8f8a+8<c8  
+c+8d+8f8c+8f+8fd+f8c+8  c8d+8c+8>a+8a8a+<cv80|Ap65%e1o5a+r8.  a+r8.a+r4.ra+r8.  
+a+r8.a+r8.f4f+r8.  f+r8.f+r4.rf+r8.  f+r8.f+r8.f+4<fr8c  c+>a+r<c+d+rd+8c+r>a8a+r8.  
+fr8.a+r4rf8a+r8.  fr8.a+r8.e4f+r8.  <c+r8.>a+r8.fr8.f+r8.  <c+r8.>a+r8.f+4a+r8.  
+fr8.a+r4rf8a+r8.  fr8.a+r8.e4f+r8.  <c+r8.>a+r8.fr8.f+r8.  <c+r8.>a+r8.f+4<fr8c  
+c+>a+r<c+d+rd+8c+r>a8r1  r1  v60|1p70%e1o4r2a+4a4  a+4<c+4f+2  
+^1  r2
+;3
+
+l16
+{4}
+l16 $4 v30|4p50%e1m48,18,239o5a+r<crc+rd+r  frc+rf+8fd+frc+rcrd+r  
+c+r>a+ra8a+<c>a+rf+rf8f+r  f8f+rerfr4rf+8fr  f+8fre8frf+rf8a+r<cr  
+c+rd+rfrc+rf+8fd+frc+r  crd+rc+r>a+ra8a+<cr1  r1  v60r8>a+ra+ra+ra+ra+r<c+8cr  
+>a8a+r<crc+rc8>a+rara+8  v60|3p45%e1m48,18,239o5fr8cc+>a+r<c+d+rd+8c+r>a8  
+r8<c+rc+rc+rc+rc+rc8d+r  c+rc+rc+rc+rc+rc+rc+rc+^24r48  c+rc+rc+rc+rc+rc+re8d+r  
+c+rc+rc+rc+rc+rc+rc+rc+8  r8c+rc+rc+rc+rc+rc8d+r  c+rc+rc+rc+rc+rc+rc+rc+^24r48  
+c+rc+rc+rc+rc+rc+re8d+r  c+rc+rc+rc+rc+rc+rc+rc+8  fr8cc+>a+r<c+d+rd+8c+r>a8  
+<frfrfr2r8.  frfrfr8.%l1d+c+%l0cc+d+r8.  frfrfrfrf4d+4  c+4c+4>a+2  
+^ra+<cc+rd+re2  r2
+;4
+
+l16
+{5}
+l16 $5 v60|5p80%e1m48,18,239r1  r1  
+r1  r4r1  r1  r1  
+r8o5frfrfrfrfrg+8f+r  e8frf+rg+rf+8fr%l1g+32g32%l0f+32f32e8  r1  
+r1  <fr8cc+>a+r<c+d+rd+8%l1c+48d+48c+48d+48c+48c48%l0>a8  v60|3p55%e1m48,18,239o4r8a+ra+ra+ra+ra+ra+8a+r  
+a+ra+ra+ra+ra+ra+ra+ra+^24r48  a+ra+ra+ra+ra+ra+ra+8a+r  a+ra+ra+ra+ra+ra+ra+ra+8  
+r8a+ra+ra+ra+ra+ra+8a+r  a+ra+ra+ra+ra+ra+ra+ra+^24r48  a+ra+ra+ra+ra+ra+ra+8a+r  
+a+ra+ra+ra+ra+ra+ra+ra+8  v60|5p80%e1m48,18,239o6fr8cc+>a+r<c+d+r%l1d+8c+48d+48c+48d+48c+48c48%l0>a8  
+v60|3p55%e1m48,18,239o4a+r<crc+r2r8.  >a+r<crc+r8.%l1c>a+%l0aa+<cr8.  
+>a+r<crc+rd+rc+4c4  >a+4g+4f+2  ^rf+g+a+r<crc+2  r2
+;5
+
+l16
+{6}
+l16 $6 v30|6p70%e0r1  
+r1  r1  r4r1  o4a+<a+c<c>c+<c+>d+<d+>f<f>c+<c+>f+<f+fd+  
+>f<f>c+<c+>c<c>d+<d+>c+<c+>>a+<a+>a<aa+<c  r1  r1  r1  
+r1  v100|7p40%e0o4f8.cc+>a+8<c+d+8d+8c+8>a8  a+4f4a+4.f8  a+4f4a+4e4  
+f+4<c+4>a+4f4  f+4<c+4>a+4f+4  a+4f4a+4.f8  a+4f4a+4e4  
+f+4<c+4>a+4f4  f+4<c+4>a+4f+4  <f8.cc+>a+8<c+d+8d+8c+8>a8  v80|Ap65%e1m48,18,239o5a+r<crc+r8.c>a+aa+<cr8.  
+>a+r<crc+r8.c>a+aa+<cr8.  >a+r<crc+rd+rc+4c4  >a+4g+4f+2  ^1  
+r2
+;6
+
+l16
+{7}
+l16 $7 v40|8p60%e0r1  r1  r4o5[2v50v24,20[6%g1a48]v50a8]a8a8r4[3v50v24,20[6%g1a48]v50a8  
+]v50a8a8r1  r1  r1  r1  
+r1  r1  r1  [2[2|6p70%e1v30o4a+32<f32a+32<c+32f32c+32>a+32f32a+32<f32a+32<c+32f8|8%g1p60%e0v50v48,10o5[12a48]v50a4][2v30|6p70%e1o4f+32<c+32f+32a+32<c+32>a+32f+32c+32  
+f+32<c+32f+32a+32<c+8|8%g1p60%e0v50v48,10o5[12a48]v50a4]]r1  r1  
+r1  r1  r1  r1  
+r2
+;7
+
+l16
+{8}
+l16 $8 v80|9p90%e0r1  r1  r1  r4r1  
+r1  r1  r1  r1  
+r1  r1  o4a1  [8%e0a%e1^8.%e0a%e1^8.%e0a%e1^8.^4  
+]a1  ^1  r1  v60|5p80%e1m48,18,239r2o5f8a+8a8a+<c  
+>a+8f8a+8<c+8f2  ^2e2  r8%l1ed+%l0c+c>a+f+
+;8
+
+l16

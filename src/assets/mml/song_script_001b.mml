@@ -1,0 +1,97 @@
+#TITLE The Gestahl Empire
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t90%x196%b0,100%f0,0%v50r1  r1  r1  r1  
+r1  r1  r1  r1  
+ $1 [2v60|1p35%e1m48,18,215o5cr8.c24r24c24r24c24r24g2  ^8r8f8g8f8d+8c+8d+8  
+c2>g2  ^8r8g8g+8a+4g+8g8  <c2>g2  ^4v80|0p35%e1m48,18,215o6c+8d+8f8d+8c+8d+8  
+c1  ^2^4r4  ]v60|1p35%e1m48,18,215o4a+12r6a+r48a+r48a+r48a+2  ^8r2r4.  
+a+12r6a+r48a+r48a+r48a+2  ^8r2r4.  b12r6br48br48br48b2  ^8r2r4.  
+b12r6br48br48br48b2  ^8r8<e8f+8g+8f+8e8d8  d+12r6>a+r48a+r48a+r48<d+2  
+^8r2r4.  d+12r6>a+r48a+r48a+r48<d+2  ^8r2r4.  
+;1
+
+l16
+{2}
+l16r1  
+r1  r1  r1  r1  
+r1  r1  r1   $2 [2v60|1p40%e1m48,18,215o4a+r8.a+24r24a+24r24a24r24g2  
+^8r8<c+8d+8c+8c8>a+8<c8  >g2d+2  ^8r8d+8f8g4f8d+8  g2d+2  
+^4v80|0p35%e1m48,18,215o5a+8<c8c+8c8>a+8<c8  >g1  ^2^4r4  ]v60|1p40%e1m48,18,215o4d+12r6d+r48d+r48d+r48d+2  
+^8r2r4.  d+12r6d+r48d+r48d+r48d+2  ^8r2r4.  e12r6er48er48er48e2  
+^8r2r4.  e12r6er48er48er48e2  ^8r8g+8a+8b8a+8g+8e8  d+12r6g+r48g+r48g+r48f+2  
+^8r2r4.  d+12r6g+r48g+r48g+r48f+2  ^8r2r4.  
+;2
+
+l16
+{3}
+l16v60|2p90%e1%a4%r6r2o6a+2  
+a2g+2  g1  ^1  r2>a+2  
+a2g+2  g1  ^1   $3 [2%a4%r6v60c2a+2  
+a2g+2  g1  ^1  c2a+2  
+a2g+2  g1  ^1  ]%a15%r0v50<a+8r8a+12a+12a12g+2  
+^4g+8a8a+8a+8a+8g+8  f+4.f8d+2  ^4>a+8<d8d+8f8f+8a8  a+8r8a+12a+12a12g+2  
+^4g+8a+8b8b8b8a+8  g+4.f+8e2  ^4e8f+8g+8f+8e8d8  d+1  
+^1  r1  r1  >
+;3
+
+l16
+{4}
+l16v60|2p95%e1%a4%r6r2o6d+2  
+d+2d2  c1  ^1  r2>d+2  
+d+2d2  c1  ^1   $4 [2%a4%a6v60r2g2  
+f2d+2  c1  ^1  r2g2  
+f2d+2  c1  ^1  ]%a15%r0v50a+8r8a+12a+12a12g+2  
+^4g+8a8a+8a+8a+8g+8  f+4.f8d+2  ^4>a+8<d8d+8f8f+8a8  a+8r8a+12a+12a12g+2  
+^4g+8a+8b8b8b8a+8  g+4.f+8e2  ^4e8f+8g+8f+8e8d8  d+1  
+^1  r1  r1  
+;4
+
+l16
+{5}
+l16v60|2p100%e1%a4%r6r2o6d2  
+c2c2  >a+1  ^1  r2d2  
+c2c2  >a+1  ^1  v40|3p70%e0o5 $5 [11r2r4.a24a24a24  
+a4r8a24a24a24a4r4  ]r2r4.a24a24a24  a4r2r4  r2r4.a24a24a24  
+a4r8a24a24a24a4r4  r2r4.a24a24a24  a4r8a24a24a24a4r4  
+;5
+
+l16
+{6}
+l16v60|4p80%e1o6c1  
+^1  c1  ^1  c1  
+^1  c1  ^1   $6 [2c1  
+^1  c1  ^1  c1  
+^1  c1  ^1  ]d+1  
+^1  d+1  ^1  e1  
+^1  e1  ^1  d+1  
+^1  d+1  ^1  
+;6
+
+l16
+{7}
+l16v90|5p50%e0%r9o4c1  
+^1  c1  ^1  c1  
+^1  c1  ^1   $7 [2c1  
+^1  c1  ^1  c1  
+^1  c1  ^1  ]d+1  
+^1  d+1  ^1  e1  
+^1  e1  ^1  d+1  
+^1  d+1  ^1  
+;7
+
+l16
+{8}
+l16v120|6p60%e1r1  
+r1  r1  r1  r1  
+r1  r1  r1   $8 [8o4c4c12c12c12c2  
+r1  ]d+4d+12d+12d+12d+2  r2d+4>a+4  <d+4d+12d+12d+12d+2  
+r2d+4>a+4  <e4e12e12e12e2  r2e4>b4  <e4e12e12e12e2  
+r1  d+4d+12d+12d+12d+2  r1  d+4d+12d+12d+12d+2  
+r1  
+;8
+
+l16

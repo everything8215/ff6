@@ -1,0 +1,83 @@
+#TITLE From that Day On...
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t115%b0,70%f0,0%v50|0p84%e1m48,18,239 $1 v60r8o6c8>b8<c8>a4e4  
+d+8f+8b2^4  r8a+8a8a+8f4d4  c+8e8a2^8r8  r8<c8>b8<c8>a4e4  
+d+8f+8b2^4  r8a+8a8a+8f4d4  c+8e8a2^8r8  r1  
+r1  r1  r1  v40[2a2^4.g8  
+a4e4.r8e8g8  a4b4a8b8a8g8  a8e2^4r8  ]<c2^4.>b8  
+<c4>g4.r8g8b8  <c4e4d8e8d8>a8  a4.bag+4r4  a2^4.g8  
+a4e4.r8e8g8  a4b4a8b8a8g8  a8e2^4r8  
+;1
+
+l16
+{2}
+l16|1p44%e1m48,18,239 $2 v50r1  
+r2r8o4d+8f+8b8  <d2f2  e1  r1  
+r2r8>d+8f+8b8  <d2f2  e2r8d8c8>b8  r1  
+r1  r1  r1  v70[2<%l1d48c2^4^^24%l0>b8  
+<%l1c48e48c8.^48%l0>a4.r8a8b8  <%l1c48d48c8.^48%l0d4c8d8c8>b8  <%l1c48d48c12>%l0a2^4r8  
+]<%l1d48e2^4^^24%l0d8  %l1e48g48e8.^48%l0c4.r8c8d8  %l1e48f48e8.^48%l0g4f+8g8f+8d8  
+%l1e48f+48e2^4r8.r48  %l1d48c2^4^^24%l0>b8  %l1<c48e48c8.^48%l0>a4.r8a8b8  
+%l1<c48d48c8.^48%l0d4c8d8c8>b8  <%l1c48d48c12%l0>a2^4r8  
+;2
+
+l16
+{3}
+l16 $3 v60|2p54%e1m48,18,239[2o4a8<e8a8<c8e8c8>a8e8  
+>a8<f+8b8<d+8f+8d+8>b8f+8  >a+8<f8a+8<d8f8d8>a+8f8  >a8<e8a8<c+8e8c+8>a8e8  
+]v80|3p54%e1[4o3a8<b4b8a8b8a8e8  ][8>a8<b4b8a8b8a8e8  ][2c8<c4c8>b8<c8>g8e8  
+]c8<c4c8>b8<c8>a8f+8  e8<d4d8>b8<d8>b8g+8  [4>a8<b4b8a8b8a8e8  ]
+;3
+
+l16
+{4}
+l16|4p74%e1 $4 o6[2v40[12c24][12e24]v192,10[24d+24]v40[12d24][12f24]v192,10[24e24]]r1  
+r1  r1  r1  [2v40[21c24]>b24b24b24<[6c24]>v96,20[12a24]v40a24a24a24b24b24b24<[6c24][6d24]c24c24c24d24d24d24c24c24c24>b24  
+b24b24<c24c24c24>v168,10[21a24]<]v40[21e24]d24d24d24[6e24]v96,20[12c24]v40c24c24c24d24d24d24[6e24][6g24]f+24f+24f+24g24  
+g24g24f+24f+24f+24d24d24d24v192,10[24e24]v40[2[21c24]>b24b24b24<[6c24]>v96,20[12a24]v40a24a24a24b24b24b24<[6c24][6d24]c24  
+c24c24d24d24d24c24c24c24>b24b24b24<c24c24c24>v168,10[21a24]
+;4
+
+l16
+{5}
+l16|4p74%e1&1r1  
+ $5 [2v40o5[12a24]<[12c24]>v192,10[24b24]v40[12a+24]<[12d24]v192,10[24c+24]]r1  
+r1  r1  r1  >[2v40[21a24]g24g24g24[6a24]v96,20[12e24]v40e24e24e24g24g24g24[6a24][6b24]a24a24a24b24b24b24a24a24a24g24  
+g24g24a24a24a24v168,10[21e24]]<v40[21c24]>b24b24b24<c24c24c24c24c24c24>v96,20[12g24]v40g24g24g24b24b24b24<[6c24  
+][6e24]d24d24d24e24e24e24d24d24d24>a24a24a24v192,10[24b24]v40[21a24]g24g24g24[6a24]v96,20[12e24]v40e24e24e24g24  
+g24g24[6a24][6b24]a24a24a24b24b24b24a24a24a24g24g24g24a24a24a24v168,10[21e24]
+;5
+
+l16
+{6}
+l16v70|5p64%e0 $6 o5[6a4  
+r2r8a8a4  r2r4][4a4  r2r8a8a4  r2r4]<c4  
+r2r8c8c4  r2r4c4  r4d4r4e1  [2a4r2r8a8  
+a4r2r4  ]
+;6
+
+l16
+{7}
+l16 $7 r1  r1  r1  
+r1  r1  r1  r1  
+r1  o5v50p50|6%e0r2f+2  r2[2f+8v10f+8v50]r2  f+2r2  
+v96,10p96,80f+8f+8f+8f+8[2v50p50r2  f+2r2  [2f+8v10f+8v50]r2f+2  
+r2v96,10p96,80f+8f+8f+8f+8  ][2v50p50r2f+2  r2[2f+8v10f+8v50]r2  
+f+2r2  v96,10p96,80f+8f+8f+8f+8]
+;7
+
+l16
+{8}
+l16v120|7p64%e0 $8 r1  
+r1  r1  r1  r1  
+r1  r1  r1  o5[2a4r2r8a8  
+a1  ][4a4r2r8a8  a1  ]a4r2r8a8  
+a1  a4r8a8a4r4  a1  [2a4r2r8a8  
+a1  ]
+;8
+
+l16

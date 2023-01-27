@@ -1,0 +1,94 @@
+#TITLE The Fierce Battle
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t82%b0,70%f0,0%v50r4 $2 v40|0p50%e1m48,18,239vo5[16%l1ed+%l0%l1fd+%l0]v60>a<cegfdd+g  
+fg+<c+c>a+g+f+fv40[2%l1ed+32d32c%l0>araga  ragaraga<%l1d+d32c+32c%l0>araga  
+ragaraga<]v30|8p50%e1m48,18,255[2o7%l1g+48a24a+b<v12,6,191c8v>a48b24a+a  
+d48e24d+av12,6,191c+48d24^vc>bgv12,6,191a8<vc>ba<dc48d48c48>b  <edcf+d+v12,6,191e8.%l0%l1vg+48a24a+b<v12,6,191c8>va48b24a+a  
+d48e24d+av12,6,191c+48d24^vc>bgj2,1 a8<d+48e24^d8>bg  v12,6,191a4m48,-6^4<] $1 a8<e8d8g8  
+v12,6,191a4m48,+6^4r1  r1  r1  r1  
+r1  r1  
+;2
+
+l16
+{2}
+l16r4 $4 v40|0p40%e1m48,18,239[16o5%l1c>b%l0%l1ab%l0]v60|2p40%e1m48,18,239o4a8<e8d8g8  
+f8a+8d+8g+8v40|0p40%e1m48,18,239[4o5%l1c>b32a+32a%l0erede  rederede]v70|8p80%e1m48,18,255%p1[2o5%l1g+48a24a+b<v12,6,191c8v>a48b24a+a  
+d48e24d+av12,6,191c+48d24^vc>bgv12,6,191a8<vc>ba<dc48d48c48>b  <edcf+d+v12,6,191e8.%l0%l1vg+48a24a+b<v12,6,191c8>va48b24a+a  
+d48e24d+av12,6,191c+48d24^vc>bgj2,3 a8<d+48e24^d8>bg  v12,6,191a4m48,-6^4<] $3 a8<e8d8g8  
+v12,6,191a4m48,+6^4%p0v100|1p40%e1m48,18,239vo6aa+b<c8>ba+a  gd<d>b8gab<c8>ab<cd+8e8  
+ecdef+8f+>aa+b<c8>ba+ag  d<d>b8gab<c8>g+a+<cdd+f8  d+g+f+fd+c+d+f1  
+^2^4r4  
+;4
+
+l16
+{5}
+l16v60|3p80%e1r4 $6 o6[4ed+fd+ed+fd+ed+fd+  
+ed+fd+]>a8<e8d8g8f8a+8  d+8g+8[4c32r8r32d32r8r32e32rr32g32r8r32f+32r8  
+r32e32rr32][2[3c32r8r32c32r8r32c32rr32c32r8r32c32r8  r32c32rr32]j2,5 >a8<c8d8f8c32r8r32c32r8  
+r32c32rr32] $5 >a8<c8d8e8d4>%l1a32a+32b32  <c32c+32d32d+32e32f4^%l0eff+g8f+8f8  
+d8c8>ab<cd+8e8ecdef+8  f+f4^eff+g8f+8f8d8  d+32r32d+32r32d+32r32d+32r32d32r32d32r32c32r32c+8c+32r32c+32r32c+32r32d+32r32d+32r32f+32r32f+32r32  
+c32r8r32c32r8r32c32rr32c32r8r32c32r8r32c32rr32  c32r8r32c32r8r32c32rr32%l1>a32b32<c32d32%l0%l1d+32d32c32>b32%l0%l1a32b32<c32d32d+32f32g32a32  
+%l0
+;6
+
+l16
+{7}
+l16v60|3p90%e1r4 $8 o5[2a2^4  ^gfed+2^4  ^efg+]e8b8a8<d8c8f8  
+>a+8<d+8[4>a32r8r32b32r8r32<c32rr32d+32r8r32d32r8  r32c32rr32]>[2[3a32r32d+32r32e32r32a32r32d+32r32e32r32a32r32e32r32a32r32d+32r32e32r32a32r32d+32r32e32  
+r32a32r32e32r32]j2,7 f8a8a+8<d8>a32r32d+32r32e32r32a32r32d+32r32e32  
+r32a32r32e32r32] $7 f8g8a8a+8a4%l1c+32d32d+32  e32f32f+32g32g+32a2%l0b2  
+a8egab8<c8c>ab<cd8d  >a2b2  <c32r32c32r32c32r32c32r32>a+32r32a+32r32g+32r32a+8a+32r32a+32r32a+32r32<c32r32c32r32c+32r32c+32r32  
+>a32r32e32r32f32r32a32r32e32r32f32r32a32r32f32r32a32r32d+32r32e32r32a32r32d+32r32e32r32a32r32e32r32  
+a32r32d32r32d+32r32a32r32d32r32d+32r32a32r32d+32r32%l1f32g32a32b32%l0%l1<c32>b32a32g32%l0%l1f32g32a32b32<c32d32d+32f32  
+%l0
+;8
+
+l16
+{3}
+l16v110|4p64%e1r4 $10 o5a2^4  ^gfed+2^4  ^efg+a2^4  
+^gfed+2^4  ^efg+a8g8f8d+8c+8f+8  f8a+8[4a<a32r32a32r32>b<b32r32b32r32c<c32r32>d+<d+32r32d+32r32>d  
+<d32r32d32r32>c<c32r32>>]<[3>a<a32r32a32r32>a<a32r32a32r32>a<a32r32>a<a32r32a32r32>a  
+<a32r32a32r32>a<a32r32]>f8a+8<c8>g8a<a32r32a32r32>b  <a32r32a32r32ca32r32[3>a<a32r32a32r32>a<a32r32a32r32>a<a32r32>a<a32r32a32r32>a  
+<a32r32a32r32>a<a32r32]>a8g8f8e8dd<d32r32>d  <a32r32d32r32>d<d32r32>[2ff<f32r32>ff<f32r32>ffgg<g32r32>g  
+g<g32r32>ggj2,9 a8g8fd+8c8.<cc+  d>d8d] $9 g+g+r8g+g+rf+8f+<c+>f+  
+f+f+<c+32r32>f+f<f32r32f32r32>f<f32r32f32r32>f<f32r32>f<f32r32f32r32>f  
+<f32r32f32r32>f<f32r32>f<f32r32f32r32>f<f32r32f32r32>f<f32r32>f8g8  
+a8b8
+;10
+
+l16
+{6}
+l16r4 $11 v30@3%e1m0,2,239%l1[2p120p192,24[2o6a32b32<c32>b32<c32d32c32d32d+32>b32<c32d32>a32b32<c32>g+32  
+a32b32<c32>b32<c32d32c32d32d+32>b32<c32d32>a32b32<c32>g+32p192,120]]|5p70%e0o5v20v192,60[8aa32a32][7a32a32a32rr32a32a32a32r8.  
+r32]a32a32a32rr32a32a32a32r32a32a32a32a32a32a32[2[6a32a32a32rr32a32a32a32r8.  
+r32]r1  ][2v60av30v24,60a32a32a32a32a8v30v36,60a32a32a32a32a32a32]v60av30a32a32v60av30a32a32av60a8v30a32a32  
+v60av30a32a32v60av30a32a32v60aaaa32a32[2v60av30v24,60a32a32a32a32a8v30v36,60a32a32a32a32a32a32  
+][4v60aa8v30v12,60a48a48a48][2a32a32a8a32a32a32r8.r32]v20v192,60[8aa32a32]
+;11
+
+l16
+{8}
+l16v80|6p70%e0r4  
+ $12 o4a1  a1  a1  a1  
+a1  a1  a1  a1  
+a1  a1  a1  a1  
+r8a4a4^4.  a1  a1  a1  
+r8a4a4^4.  r1  r4ra2a8.  ^^2r4.r  
+r8a4a4a4a8  a1  a1  
+;12
+
+l16
+{4}
+l16|7p60%e0o4v30v48,120[8d+32]> $13 v120a2^4^v50v36,120a32a32a32a32a32  
+a32<d+2d+4d+8d+8  >a2^4^v50v36,120a32a32a32a32a32a32  <d+2d+8d+8d+d+d+d+  
+^1  >[14a8.a8.e8]f8a+8<c8>g8  a8.b8.<c8>[6a8.a8.e8  ]a8g8f8e8<d8.d8.>a8  
+f8.f8.<c8>g8.g8.<d8  >a8g8fd+8<c8c>g8<d>a8a  f8.f8.<c8>g8.g8.<d8  
+>g+4d+8.f+8f+<c+>f+f+8<c+8  >f8.f8.f8f8.f8.f8  f8.f8.f8f4v50v48,120ffff  
+
+;13
+
+l16

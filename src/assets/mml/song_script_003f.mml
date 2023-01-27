@@ -1,0 +1,31 @@
+#TITLE (Chocobos Running)
+#ALBUM Final Fantasy VI
+#COMPOSER unknown
+#ARRANGED M.Akao
+
+{1}
+l16t120%b0,80%f0,0%v35p64v50%n1@0%c30%a13%r30 $1 crcr
+;1
+
+l16
+{2}
+l16p64v70%p1@2o1 $2 v0,1,191m4,+24%a14%r26crf8
+;2
+
+l16
+{3}
+l16r64p64v40@7v0,2,175o11%r28 $3 m2,+20crer
+;3
+
+l16
+{4}
+l16p64v70r12%p1@2o1 $4 v0,1,191m4,+24%a14%r26crf8  
+
+;4
+
+l16
+{5}
+l16r12p64v45@7v0,2,175o11%r28 $5 m2,+20crer
+;5
+
+l16

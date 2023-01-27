@@ -1,0 +1,67 @@
+#TITLE Troops March On
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t70%b0,70%f0,0%v50v60|0p34%e1o5crc24r48c24r48c+8cr8.c24r48c24r48c+8>br  
+<c+8crc+8cr>b8<crc+8>a+r  < $1 [2[4[3v70crv40c8]v70crv40c+8]]<a+ra+24a+24a24g+4.  
+g+aa+a+a+g+f+8.fd+4.  >a+<dd+ff+aa+ra+24a+24a24g+4.  g+a+bbba+g+8.f+e4.  
+ef+g+f+edd+r8>a+<d+4.  ef+g+f+edd+r8>a+<d+2  ^4>
+;1
+
+l16
+{2}
+l16v60|0p44%e1o4grg24r48g24r48g+8gr8.g24r48g24r48  
+g+8f+rg+8grg+8grf+8gr  g+8fr $2 [2[4[4v70grv50g8]]]<a+ra+24a+24a24g+4.  
+g+aa+a+a+g+f+8.fd+4.  >a+<dd+ff+aa+ra+24a+24a24g+4.  g+a+bbba+g+8.f+e4.  
+ef+g+f+edd+r8>a+<d+4.  ef+g+f+edd+r8>a+<d+2  ^4>
+;2
+
+l16
+{3}
+l16r1  
+r1   $3 [2v60|1p94%e1m48,18,215o7crc24c24c24g4.f32r32g32r32fd+32r32c+32r32d+32r32  
+cr8.>g4.g32r32g+32r32a+8g+32r32g32r32  <cr8.>g4.v60|2p94%e1m48,18,215o5c+32r32d+32r32fd+32r32c+32r32d+32r32  
+cr8>g<c2^4  ]o4a+ra+r<d+8c+>ba+ra+ra+ra+r  a+ra+r<d+8c+>ba+ra+ra+ra+r  
+brbr<e8d+c+>brbrbrbr  brbr<e8d+c+>brbrbrbr  a+8a24r48a24r48a+8a24r48a24r48a+8a24r48a24r48brb8  
+a+8a24r48a24r48a+8a24r48a24r48a+8a24r48a24r48a+r<d+8  
+;3
+
+l16
+{4}
+l16r1  
+r1   $4 [2v60|1p84%e1m48,18,215o6a+ra+24a+24a24g4.<c+32r32d+32r32c+c32r32>a+32r32<c32r32  
+>gr8.c4.c32r32f32r32g8f32r32c32r32  gr8.c4.v60|2p84%e1m48,18,215o5>a+32r32<c32r32c+c32r32>a+32r32<c32r32  
+>gr8fd+2^4  ]o4d+rd+rf+8ffd+rd+rd+rd+r  d+rd+rf+8ffd+rd+rd+rd+r  
+ererg+8f+f+erererer  ererg+8f+f+erererer  d+8d+24r48d+24r48d+8d+24r48d+24r48d+8d+24r48d+24r48ere8  
+d+8d+24r48d+24r48d+8d+24r48d+24r48d+8d+24r48d+24r48d+rd+8  
+;4
+
+l16
+{5}
+l16v80|3p64%e0o6[8crcc] $5 [2[4crcccrcccrcc  
+crc+8]][2d+rd+d+d+rd+d+d+rd+d+  d+rd+8][2ereeereeeree  ere8]d+rd+d+d+rd+d+d+rd+d+  
+ere8d+rd+d+d+rd+d+d+rd+d+  d+rd+8
+;5
+
+l16
+{6}
+l16|4p50%e0r1  r1  
+ $6 o5[3%g0v40a8v20%g1aa]v40%g0a8v24,10%g1a48a48a48a48a48a48
+;6
+
+l16
+{7}
+l16v120|5p74%e0o4c8ccc2  
+^4c8ccc2  ^4 $7 [2[4c8ccc2  c8c+8]]d+8d+d+d+2  d+8d+8d+8d+d+d+2  
+d+8d+8e8eee2  e8e8e8eee2  e8e8d+8d+d+d+2  e8e8d+8d+d+d+2  
+d+8d+8
+;7
+
+l16
+{8}
+l16|4p80%e0r1  &194r1   $8 o5[3%g0v40g+8v20%g1g+g+]v40%g0g+8v24,10%g1g+48g+48g+48g+48g+48g+48
+;8
+
+l16

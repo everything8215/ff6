@@ -1,0 +1,100 @@
+#TITLE Searching for Friends
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16%x192%b0,100%f0,0%v50v60|5p84%e1m48,18,239t125o5a1  b1  
+<c1  d1  v80|0p84%e1m48,18,239 $2 [2o5a2<c2  >b4a4g4c8d8  
+e4.e8d4c8d8  e2e4^8r8  a2<c2  d4c4>b4g4  
+a4<c4>b4g+4  j2,1 a2^4r4  ] $1 a1  ^2^4r4  
+v100|5p84%e1m48,18,239r4o5a4<c4>a4  b4a4g4a4  b2^4<d4  c1  
+v80|0p84%e1m48,18,239r4f4a4f4  g4f4e4f4  g1  r1  
+v100|5p84%e1m48,18,239r4>a4<c4>a4  b4a4g4a4  b2^4<d4  c+1  
+v80|0p84%e1m48,18,239e2^8e8d8c8  >a1  r4g4a4a+4  <d+4d4c4>a+4  
+a1  ^1  r1  r1  
+
+;2
+
+l16
+{2}
+l16v60|1p44%e1%a8o5a1  b1  <c1  d1  
+ $4 [2o6e1  ^2^4d4  c1  d1  
+e1  ^2d2  c2d2  j2,3 c1  
+] $3 ^1  c+1  o6e1  d1  
+^1  c1  c1  ^2>b2  
+b1  <c1  e1  d1  
+^1  c+1  c1  d1  
+d+1  d1  d1  ^1  
+^1  ^1  
+;4
+
+l16
+{3}
+l16v60|1p54%e1%a8o5e1  f+1  
+g1  a1   $6 [2o5a1  ^2g2  
+e2f2  f+2g+2  a1  g1  
+f+2e2  j2,5 e1  ] $5 e1  ^1  
+o6c1  >b1  ^1  a1  
+a1  g1  ^1  a1  
+<c1  >b1  ^1  a1  
+a1  ^1  g1  ^1  
+f+1  ^1  g+1  ^1  
+
+;6
+
+l16
+{4}
+l16v60|1p64%e1%a8o5c1  d1  e1  f+1  
+ $8 [2o5c1  >b1  a1  b1  
+<c1  >b1  a2g+2  j2,7 a1  
+] $7 a1  ^1  o5a1  g1  
+^1  e1  f1  ^1  
+e1  ^1  a1  g1  
+^1  e1  f1  ^1  
+f1  d+1  d1  ^1  
+e1  ^1  
+;8
+
+l16
+{5}
+l16v60|2p74%e0%a11%r10m120,18,239o5a2^4.%l1d+e  
+%l0a1  a2^4.%l1d+e  %l0>a2^4<em36,-6^8.   $10 [2o5a4.g8f4.%l1dd+  
+%l0e4d8m24,-2^8^2  f4.f8d8.<d8.>d+8  e2^8f+4g+8  a4.g8f4.%l1ef  
+%l0g4%l1d8d+8%l0e8.<e8.d+8  d4>%l1d8d+8%l0e8.b8.g+8  j2,9 a2^4<em36,-6^8.  
+] $9 a2^4e4  >a1  o5f8f8r8<c8r8f4c8  >f8f8r4f8f8r4  
+e8e8r8b8r8<e4>b8  a8a8r4.<e8>a8e8  d8d8r8a8r8<d4>a8  g8g8r4g8g8r4  
+<c8c8r8>g8r8<c4>g8  a8a8r4g8g8r4  f8f8r8<c8r8f4c8  >f8f8r4f8f8r4  
+e8e8r8b8r8<e4>b8  a8a8r4.<e8>a8e8  d8d8r8a8r8<d4>a8  a+8a+8r4a+8a+8r4  
+d+8d+8r8a+8r8<d+4d8  c8c8r4>g8g8r4  e8e8r8b8r8<e4>b8  e8e8r4e8e8r4  
+e8e8r8b8r8<e4>b8  dm12,+2^%l1^8<e8>f4f+8<e8>g+8  %l0
+;10
+
+l16
+{6}
+l16r1  
+r1  r1  r1   $11 [17v40m4,4,255%e1@6o6%a7m6,+1p65g+8@0o5m%a15%r28p85a@1%a15%r21p65a8@2%a15%r21p85a8@5%a15%r21m6,+1p65g+8@6%a15%r21p85a8@2%a15%r21p65a@1%a15%r21p85a8@0%a15%r21p65a8  
+]v50|5p84%e1m48,18,239r4o5f4a4f4  g4f4e4f4  g2^4b4  a1  
+<v35|0p84%e1m48,18,239r4d4f4d4  e4d4c4d4  e1  r1  
+v50|5p84%e1m48,18,239r4>f4a4f4  g4f4e4f4  g2^4b4  a1  
+<v35|0p84%e1m48,18,239c2^8c8>b8a8  f1  r4d+4f4g4  <c4>a+4a4g4  
+f+1  ^1  r1  r1  
+
+;11
+
+l16
+{7}
+l16r1  r1  r1  r1  
+v50@7%e1 $12 v192,10p110o4%r30b%r29a+%r28a%r27g+%r26g%r25f+%r24f%r23e%r23d+%r24e%r25f%r26f+%r27g%r28g+%r29a%r30a+  
+v192,50p20%r30b%r29a+%r28a%r27g+%r26g%r25f+%r24f%r23e%r23d+%r24e%r25f%r26f+%r27g%r28g+%r29a%r30a+  
+
+;12
+
+l16
+{8}
+l16v50o5p50%e0v10v192,20[4|3a8|4aa]v192,30[4|3a8|4aa]v192,40[4|3a8|4aa]v192,50[3|3a8|4aa  
+]|4a24a24a24|3a8 $13 v60|3a8v40|4aa|3a8|4aa|4v60v24,10%g1a24a24a24v40|3a|4a  
+v60|3a8v40|4aa
+;13
+
+l16

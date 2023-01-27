@@ -1,0 +1,26 @@
+#TITLE (Water Flowing)
+#ALBUM Final Fantasy VI
+#COMPOSER unknown
+#ARRANGED M.Akao
+
+{1}
+l16t120%b0,100%f0,0%v20p64v20p0,60,215%e1%n1@0%c20v0,255,255c1  
+ $1 [2^1  ^1  ^1  %c21]^1  
+%c20
+;1
+
+l16
+{2}
+l16p64v20p0,244,52v0,200,255%p1@4o2e4 $2 [3m108,+4^1  
+m76,-5^2]m48,+11^4.m192,-11^1  
+;2
+
+l16
+{3}
+l16k1
+{4}
+l16p64v25%p1@4o8v0,20,203c1  
+ $3 ^1  
+;3
+
+l16

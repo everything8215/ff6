@@ -1,0 +1,65 @@
+#TITLE Victory Fanfare
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t135%b0,70%f0,0%v50v80|0p80%e1m48,18,239r48o7d24r24d24r24d24r24d4>a+4<c4  
+d12r12c12d2^4   $1 >a4g4a4gr<c8  ^8cr>b4<cr>b4br  a4g4f+4g8e8  
+^2^4.r8  a4g4a4gr<c8  ^8cr>b4<cr>b4br  a4g4a4<c8d8  
+^2^4.r8  
+;1
+
+l16
+{2}
+l16v70|0p75%e1m48,18,239o6a24r24a24r24a24r24a4g4r48g4  
+f+12r12e12f+2^4   $2 f+4e4f+4erg8  ^8grg4grg4gr  f+4e4d4d8c8  
+^2^4.r8  f+4e4f+4era8  ^8ara4ara4ar  f+4e4f+4g8f8  
+^2^4.r8  
+;2
+
+l16
+{3}
+l16v60|0p60%e1m48,18,239r48o6g24r24g24r24g24r24f+4f4e4  
+d12r12d12d2^4   $3 d4d4d4drc8  ^8crd4erc4cr  d4d4c4>b8a8  
+^2^4.r8  <d4d4d4drc8  ^8crd4erc4cr  d4d4d4c8>a+8  
+^2^4.r8  <
+;3
+
+l16
+{4}
+l16v60|1p64%e0r48o6d24r24d24r24e24r24f+4g4g4  
+d12r12d12d2^4   $4 d8<dr>d8<dr>d8<dr>d8c8  ^8<cr>d8<dr>e8<er>c8<cr  
+>d8<dr>d8<dr>d8<dr>d8>a8  ^8<ar>b8<brc8<cr>e8<er  >d8<dr>d8<dr>d8<dr>d8c8  
+^8<cr>d8<dr>e8<er>c8<cr  >d8<dr>d8<dr>d8<dr>c8>a+8  ^8<a+rc8<cr>d8<dr>f8<fr  
+>
+;4
+
+l16
+{5}
+l16|2p45%e1r1  r1   $5 o5v50d8v30ddv50d8v30ddv50d8d4c8  
+^8v30ccv50c8v30ccv50c8c4c8  d8v30ddv50d8v30ddv50d8d4>a8  ^8a8b8a8<c8>a8<e8>a8  
+<d8v30ddv50d8v30ddv50d8d4c8  ^8v30ccv50c8v30ccv50c8c4c8  d8v30ddv50d8v30ddv50d8d8c8>a+8  
+^8a+8<c8>a+8<d8f4>a8  
+;5
+
+l16
+{6}
+l16v100|3p64%e0o5r48a12a12a12a4a4v48,30%g1a24a24a24a24a24a24  
+v100a12r12a12v96,10%g1a24a24a24a24a24a24a24a24a24a24a24a24r4  v100 $6 r4a4
+;6
+
+l16
+{7}
+l16v40p70%e0r48r1  
+r2o5|4a8|5a8|4aa|5a8   $7 |4a8|5a8|4aa|5a8|4a8|5a8|4a8|5a8  r|4a|5a|4aaa|5a8|4a8|5a8|4aa|5a|4a  
+
+;7
+
+l16
+{8}
+l16v120|6p64%e0r48r1  o5a4a4a4a4   $8 a4a4a4a8a8  ^4a4a4a4  
+
+;8
+
+l16

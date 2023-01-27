@@ -1,0 +1,75 @@
+#TITLE Cyan's Theme
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t55%b0,100%f0,0%v50v120|1p65%e1m24,18,255t75o5g4t70<c4t75 $1 >a+2  
+^8.r%l1a8f8%l0g2  ^8.r%l1g8<c8%l0d8>a+2  ^r%l1agf8%l0g2^8.  r%l1g8<c8%l0>a+2^8.  
+r%l1agfa%l0g2^r%l1c8  d8d+8%l0f2^r%l1d+8  d8>a+8%l0<c2^4  r4r1  
+%l1a+8a8f8a8%l0g2  r1  %l1a+8a8<c8>a8%l0g2  v70|0p90%e1m48,18,215o5d8d+8c4.>d+8f8d+8  
+g8a+8a+2^8^r  <d8d+8c4f4d+8d8  c4>a+2^8^r  <d8d+8c4.>d+8f8d+8  
+g8a+8a+2^8^r  a+8b8g+2f+8g+8  a+2v120|1p65%e1m48,18,239o5g4<c4  
+
+;1
+
+l16
+{2}
+l16v30@3p55%e1m48,18,239%a9%r10r2 $2 r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+o6[3dd+c>g+d+g+<cd+dd+c>g+d+g+<cd  cd>a+gd+ga+<dcd>a+gd+ga+<c  ]>a+8b8g+2f+8g+8  
+a+2r2  
+;2
+
+l16
+{3}
+l16v60|2p80%e1r2 $3 v60|2p80%e1mo4[16v80a+rv50a+rv65a+rv50a+r  
+]v60<a+4a4f4a4  g1  a+4a4<c4>a4  g2^4.%l1c48d48d+48g48a+48<c48  
+%l0v30@3p80%e1m48,18,239%a9%r10o5[3a+<c>g+d+cd+g+<c>a+<c>g+d+cd+g+a+  
+g+a+gd+>a+<d+ga+g+a+gd+>a+<d+gg+  ]f+2e2  d2r2  
+;3
+
+l16
+{4}
+l16v60|2p70%e1r2 $4 o4[12v80grv50grv65grv50gr  
+][2v80frv50frv65frv50fr][2v80grv50grv65grv50gr  ]v60<f4e4c4e4  d1  
+f4e4g4e4  d2^4.v70>%l1g48a+48<c48d+48f48g48  %l0<d8d+8c4.>d+8f8d+8  
+g8a+8a+2^4  <d8d+8c4f4d+8d8  c4>a+2^4  <d8d+8c4.>d+8f8d+8  
+g8a+8a+2^4  a+8b8g+2f+8g+8  a+1  
+;4
+
+l16
+{5}
+l16|2p60%e1r2 $5 o4[12v80d+rv50d+rv65d+rv50d+r  
+][2v80drv50drv65drv50dr][2v80d+rv50d+rv65d+rv50d+r  ]v60<d+4d4>a+4<d4  
+c1  d+4d4f4d4  c2^4.r8  >v70d+g+<c>g+gg+<d+c>d+g+<c>g+gg+<c>g+  
+d+a+<d+>a+ga+<d>a+d+a+<d+>a+ga+<d>a+  d+g+<c>g+gg+<d+c>d+g+<c>g+gg+<d+c  
+>d+a+<d+>a+ga+<d>a+d+a+<d+>a+ga+<d>a+  d+g+<c>g+gg+<d+c>d+g+<c>g+gg+<c>g+  
+d+a+<d+>a+ga+<d>a+d+a+<d+>a+ga+<d>a+  d+b<d+>bd+b<d+>beb<e>beb<e>b  
+fa+<d>a+g+a+<fd>fa+<d>a+g+a+<fd  
+;5
+
+l16
+{6}
+l16v70|6p50%e1r2 $6 o6[8c4^rcc  
+c4r4]c1  ^1  c1  ^2c4>a+4  
+[3g+4^rg+g+g+4r4  d+4^rd+d+d+4r4  ]b4^rbbe4r4  a+4^ra+a+a+4r4  
+
+;6
+
+l16
+{7}
+l16r2 $7 v80|3p100%e1%r18[8o5r2  r4g4]r1  r1  r1  
+r1  [2v80|4p40%e0mo4a2^4v80|3p100%e1%r18o5g4  r2r4g4  r2r4g4  
+r2r4g4  ]
+;7
+
+l16
+{8}
+l16v120|5p40%e0r2 $8 o4[8c4.cc  c2]c1  c4.ccc4>g4  
+<c1  c2c4>a+4  [3g+4.g+g+g+2  <d+4.d+d+d+2  
+>]b4.bb<e2  >a+4.a+a+a+2  
+;8
+
+l16

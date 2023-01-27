@@ -1,0 +1,63 @@
+#TITLE The Fanatics
+#ALBUM Final Fantasy VI
+#COMPOSER Nobuo Uematsu
+#ARRANGED M.Akao
+
+{1}
+l16t75%x204%b0,100%f0,0%v100|0p90%e1%a8 $1 o6v60[16r4]v110[2g+1  
+f+1  g+1  a1  ]
+;1
+
+l16
+{2}
+l16v80|1p35%e1%a8 $2 o5r1  
+r1  r1  r1  [2d+1  
+c+1  d+1  c+1  ]
+;2
+
+l16
+{3}
+l16v50|6p64%e1&2r1  
+ $3 o4r1  r1  v40v192,45a8a+8a8a+8a8a+8a8a+8  v192,50a8a+8a8a+8a8a+8a8a+8  
+v55[2g+1  f+1  g+1  a1  
+]
+;3
+
+l16
+{4}
+l16v50|6p64%e1&2r1   $4 o4r1  v35v192,40f+8g8f+8g8f+8g8f+8g8  
+v192,45f+8g8f+8g8f+8g8f+8g8  <v192,50c8c+8c8c+8c8c+8c8c+8  v55>[2d+1  
+c+1  d+1  c+1  ]
+;4
+
+l16
+{5}
+l16|6p64%e1&2r1  
+ $5 o3v30v192,35d+8e8d+8e8d+8e8d+8e8  v192,40d+8e8d+8e8d+8e8d+8e8  
+v192,45d+8e8d+8e8d+8e8d+8e8  v192,50d+8e8d+8e8d+8e8d+8e8  v55[2g+1  
+f+1  g+1  f+1  ]
+;5
+
+l16
+{6}
+l16v125|5%e1&2r1  
+ $6 o3^1  r1  r1  r1  
+[2^2p20f1  p110f1  p20f1  p110f2]
+;6
+
+l16
+{7}
+l16|3p50%e1 $7 [16o5v50e8v25e8][32v80ev40eee  
+]
+;7
+
+l16
+{8}
+l16
+{14}
+l16|4p64&2r1   $8 v90o3[4a+4a+4a+2  ][2[2[2v125g+8v90g+8g+8g+8][2v125f+8v90f+8f+8f+8  
+]]]
+;8
+
+l16
+{15} {16} ##EOF
