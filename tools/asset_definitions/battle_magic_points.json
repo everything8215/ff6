@@ -1,0 +1,13 @@
+{
+  "type": "array",
+  "name": "Battle Magic Points",
+  "range": "0xDFB400-0xDFB5FF",
+  "asmSymbol": "BattleMagicPoints",
+  "assetPath": "assets/battle/battle_magic_points.json",
+  "arrayLength": 512,
+  "itemSize": 1,
+  "assembly": {
+    "type": "property",
+    "name": "Magic Points"
+  }
+}

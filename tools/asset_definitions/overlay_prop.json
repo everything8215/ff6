@@ -1,0 +1,55 @@
+{
+  "type": "array",
+  "name": "Map Overlay Properties",
+  "range": "0xC0F500-0xC0FCAA",
+  "arrayLength": 45,
+  "asmSymbol": "OverlayProp",
+  "assetPath": "assets/map/overlay_prop/overlay_prop%s.dat",
+  "pointerTable": {
+    "range": "0xC0F4A0-0xC0F4F9",
+    "offset": "0xC0F500"
+  },
+  "assembly": {
+    "type": "data",
+    "format": "ff6-lzss"
+  },
+  "stringTable": {
+    "length": 45,
+    "default": "Map Overlay %i",
+    "string": {
+      "0": "None",
+      "1": "Town Exterior",
+      "2": "Caves",
+      "3": "Town Interior",
+      "4": "Narshe Exterior",
+      "5": "Caves w/ Furniture",
+      "6": "Mountains Exterior 1",
+      "7": "Train Exterior",
+      "8": "Zozo Exterior",
+      "9": "Train Interior",
+      "10": "Imperial Camp",
+      "11": "Forest",
+      "12": "Opera House",
+      "13": "Destroyed Town",
+      "14": "Magitek Factory",
+      "15": "Figaro Castle Exterior",
+      "16": "Doma Castle Exterior",
+      "17": "Village Exterior 1",
+      "18": "Castle Interior",
+      "19": "Castle Basement",
+      "20": "Village Exterior 2",
+      "21": "Floating Island",
+      "22": "Airship Exterior",
+      "23": "Airship Interior",
+      "24": "Imperial Castle Interior",
+      "25": "Vector Exterior",
+      "27": "Mountains Interior",
+      "28": "Imperial Castle Exterior",
+      "29": "Magitek Research Facility",
+      "30": "Darill's Tomb",
+      "31": "Kefka's Tower",
+      "33": "Mountains Exterior 2",
+      "34": "Snowfields"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "array",
+  "name": "Song Samples",
+  "range": "0xC53F95-0xC54A34",
+  "arrayLength": 85,
+  "itemSize": 32,
+  "asmSymbol": "SongSamples",
+  "assetPath": "assets/sound/song_samples/song%s.dat",
+  "assembly": {
+    "type": "data"
+  }
+}

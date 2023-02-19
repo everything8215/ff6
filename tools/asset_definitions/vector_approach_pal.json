@@ -1,0 +1,8 @@
+{
+  "type": "data",
+  "name": "Vector Approach Palette",
+  "range": "0xEFCE77-0xEFCE96",
+  "asmSymbol": "VectorApproachPal",
+  "assetPath": "assets/cutscene/vector_approach.pal",
+  "format": "bgr555"
+}

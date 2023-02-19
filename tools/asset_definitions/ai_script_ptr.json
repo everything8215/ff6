@@ -1,0 +1,15 @@
+{
+  "type": "array",
+  "name": "Monster A.I. Script Pointer",
+  "range": "0xCF8400-0xCF86FF",
+  "arrayLength": 384,
+  "itemSize": 2,
+  "asmSymbol": "AIScriptPtr",
+  "assetPath": "assets/monster/ai_script_ptr.json",
+  "assembly": {
+    "type": "property",
+    "name": "Script Pointer",
+    "mask": "0xFFFF",
+    "script": "monsterScript"
+  }
+}

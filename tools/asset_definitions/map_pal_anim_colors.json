@@ -1,0 +1,13 @@
+{
+  "type": "array",
+  "name": "Map Palettes",
+  "range": "0xE6F200-0xE6F43F",
+  "arrayLength": 18,
+  "itemSize": 32,
+  "asmSymbol": "MapPalAnimColors",
+  "assetPath": "assets/map/map_pal_anim/map_pal_anim%s.pal",
+  "assembly": {
+    "type": "data",
+    "format": "bgr555"
+  }
+}

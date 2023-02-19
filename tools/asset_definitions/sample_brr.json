@@ -1,0 +1,15 @@
+{
+  "type": "array",
+  "name": "BRR Samples",
+  "range": "0xC54A35-0xC85C79",
+  "asmSymbol": "SampleBRR",
+  "assetPath": "assets/sound/sample_brr/sample_brr%s.dat",
+  "assembly": {
+    "type": "data"
+  },
+  "pointerTable": {
+    "range": "0xC53C5F-0xC53D1B",
+    "pointerSize": 3,
+    "isMapped": true
+  }
+}

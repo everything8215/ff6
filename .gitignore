@@ -7,6 +7,9 @@
 *.lst
 *.map
 *.sh
+assets/*
+include/assets/*
+include/script/*
 pretty/*
 ff6-*-data.json
 *.log

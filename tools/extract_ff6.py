@@ -4,27 +4,32 @@ import os
 import binascii
 import json
 import romtools as rt
+from ff6_lzss import *
+
+rt.DataCodec.add_format('ff6-lzss', encode_lzss, decode_lzss)
 
 ff6_rom_info_list = {
     # 0x45EF5AC8: {
     #     'name': 'Final Fantasy VI 1.0 (J)',
-    #     'extractPath': 'vanilla/ff6-jp-extract.json',
-    #     'cutscenePath': 'assets/cutscene_jp.lz',
+    #     'assetList': 'tools/ff6_jp_asset_list.json',
+    #     'cutscenePath': 'assets/cutscene/cutscene_jp.lz',
     #     'cutsceneRange': '0xC2686C-0xC28A51',
     # },
     0xA27F1C7A: {
         'name': 'Final Fantasy III 1.0 (U)',
-        'extractPath': 'vanilla/ff6-en-extract.json',
-        'cutscenePath': 'assets/cutscene_en.lz',
+        'assetList': 'tools/ff6_en_asset_list.json',
+        'cutscenePath': 'assets/cutscene/cutscene_en.lz',
         'cutsceneRange': '0xC2686C-0xC28A5F',
     },
     0xC0FA0464: {
         'name': 'Final Fantasy III 1.1 (U)',
-        'extractPath': 'vanilla/ff6-en-extract.json',
-        'cutscenePath': 'assets/cutscene_en.lz',
+        'assetList': 'tools/ff6_en_asset_list.json',
+        'cutscenePath': 'assets/cutscene/cutscene_en.lz',
         'cutsceneRange': '0xC2686C-0xC28A5F',
     }
 }
+
+asset_manager = rt.AssetManager()
 
 # search the vanilla directory for valid ROM files
 dir_list = os.listdir('vanilla')
@@ -53,27 +58,22 @@ for file_name in dir_list:
     print(f'File: {file_path}')
     found_one = True
 
-    # load the definition file
-    extract_path = rom_info['extractPath']
-    with open(extract_path, 'r') as extract_file:
-        extract_definition = json.load(extract_file)
+    memory_map = rt.MemoryMap('hirom')
 
-    # create the asset extractor
-    map_mode = extract_definition['mode']
-    extractor = rt.AssetExtractor(map_mode)
+    # load the asset extraction info
+    asset_list_path = rom_info['assetList']
+    with open(asset_list_path, 'r') as asset_list_file:
+        asset_list = json.load(asset_list_file)
 
     # extract the list of assets
-    asset_list = extract_definition['assets']
-    for asset_definition in asset_list:
-        if 'key' not in asset_definition:
-            continue
-        extractor.extract_asset(file_data, asset_definition)
+    for asset_key in asset_list:
+        asset_manager.extract_asset(asset_key, file_data, memory_map)
 
     # copy the compressed cutscene program
     cutscene_range = rt.Range(rom_info['cutsceneRange'])
     cutscene_path = rom_info['cutscenePath']
     print(f'{cutscene_range} CutsceneProgram -> {cutscene_path}')
-    cutscene_range = extractor.memory_map.map_range(cutscene_range)
+    cutscene_range = memory_map.map_range(cutscene_range)
     cutscene_data = file_data[cutscene_range.begin:cutscene_range.end + 1]
 
     # write the compressed cutscene program to a file

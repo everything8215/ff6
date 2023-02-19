@@ -1,0 +1,13 @@
+{
+  "type": "array",
+  "name": "Monster Attack Animation Properties",
+  "range": "0xECE6E8-0xECE7FF",
+  "asmSymbol": "MonsterAttackAnimProp",
+  "assetPath": "assets/monster/monster_attack_anim_prop.json",
+  "arrayLength": 35,
+  "itemSize": 8,
+  "assembly": {
+    "type": "assembly",
+    "assembly": {}
+  }
+}

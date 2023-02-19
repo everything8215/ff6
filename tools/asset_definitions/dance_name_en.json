@@ -1,0 +1,17 @@
+{
+  "type": "array",
+  "name": "Dance Name",
+  "range": "0xE6FF9D-0xE6FFFC",
+  "asmSymbol": "DanceName",
+  "assetPath": "assets/character/dance_name_en.json",
+  "arrayLength": 8,
+  "itemSize": 12,
+  "assembly": {
+    "type": "text",
+    "encoding": "small_text_en"
+  },
+  "stringTable": {
+    "length": 8,
+    "default": "<danceName[%i]>"
+  }
+}

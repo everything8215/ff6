@@ -1,0 +1,168 @@
+{
+  "type": "array",
+  "name": "Character A.I. Properties",
+  "range": "0xD0FD00-0xD0FF3F",
+  "asmSymbol": "CharAI",
+  "assetPath": "assets/battle/char_ai.json",
+  "arrayLength": 24,
+  "itemSize": 24,
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "background": {
+        "type": "property",
+        "name": "Background",
+        "begin": 1,
+        "stringTable": "battleBackground"
+      },
+      "song": {
+        "type": "property",
+        "name": "Song",
+        "begin": 3,
+        "stringTable": "song",
+        "special": {
+          "0xFF": "Default"
+        }
+      },
+      "flags": {
+        "type": "property",
+        "name": "Flags",
+        "begin": 0,
+        "mask": "0x81",
+        "flag": true,
+        "stringTable": {
+          "string": {
+            "0": "Hide Names",
+            "7": "Hide Party"
+          }
+        }
+      },
+      "validTargets": {
+        "type": "property",
+        "name": "Valid Targets",
+        "begin": 2,
+        "mask": "0x3F",
+        "flag": true,
+        "stringTable": {
+          "string": {
+            "0": "Monster Slot 1",
+            "1": "Monster Slot 2",
+            "2": "Monster Slot 3",
+            "3": "Monster Slot 4",
+            "4": "Monster Slot 5",
+            "5": "Monster Slot 6"
+          }
+        }
+      },
+      "slot": {
+        "type": "array",
+        "name": "Character Slots",
+        "range": "4-23",
+        "arrayLength": 4,
+        "itemSize": 5,
+        "assembly": {
+          "type": "assembly",
+          "assembly": {
+            "graphics": {
+              "type": "property",
+              "name": "Graphics",
+              "begin": 1,
+              "mask": "0xFF",
+              "stringTable": "battleCharacterGraphics",
+              "disabled": "this.parent.character.getSpecialValue()",
+              "special": {
+                "0xFF": "Default Character Graphics"
+              }
+            },
+            "aiScript": {
+              "type": "property",
+              "name": "A.I. Script",
+              "begin": 2,
+              "disabled": "this.parent.character.getSpecialValue()",
+              "link": "monsterProperties[%i+256]",
+              "stringTable": {
+                "length": 128,
+                "default": "<stringTable.monsterName[%i+256]>",
+                "string": {
+                  "0xFF": "None"
+                }
+              }
+            },
+            "character": {
+              "type": "assembly",
+              "name": "Character",
+              "begin": 0,
+              "length": 1,
+              "mask": "0xFF",
+              "special": {
+                "0xFF": "No Character"
+              },
+              "assembly": {
+                "c": {
+                  "type": "property",
+                  "name": "Character",
+                  "mask": "0x3F",
+                  "stringTable": "characterNames",
+                  "link": "characterProperties[%i]"
+                },
+                "flags": {
+                  "type": "property",
+                  "name": "Flags",
+                  "mask": "0xC0",
+                  "flag": true,
+                  "stringTable": {
+                    "hideIndex": true,
+                    "string": {
+                      "0": "Enemy Character",
+                      "1": "Character Hidden"
+                    }
+                  }
+                }
+              }
+            },
+            "x": {
+              "type": "property",
+              "name": "X Position",
+              "begin": 3,
+              "multiplier": 2,
+              "hidden": true
+            },
+            "y": {
+              "type": "property",
+              "name": "Y Position",
+              "begin": 4,
+              "multiplier": 2,
+              "hidden": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "stringTable": {
+    "length": 32,
+    "default": "Character A.I. %i",
+    "string": {
+      "0": "None",
+      "1": "Shadow at Colosseum",
+      "2": "Kefka/Terra Flashback",
+      "3": "Vargas Battle",
+      "4": "Kefka vs. Sabin",
+      "5": "Cyan at Imperial Camp 1",
+      "6": "Cyan at Imperial Camp 2",
+      "7": "Piranha Battle",
+      "8": "Kefka vs. Sabin",
+      "9": "Kefka vs. Terra",
+      "10": "Gau on the Veldt",
+      "12": "Sealed Gate 1",
+      "13": "Sealed Gate 2",
+      "14": "Espers on Blackjack",
+      "15": "Ultros vs. Relm",
+      "16": "Espers go to Thamasa",
+      "17": "Blitz Instructions (Unused)",
+      "18": "Kefka vs. Esper",
+      "19": "Kefka vs. Gestahl",
+      "20": "Kefka vs. Leo"
+    }
+  }
+}

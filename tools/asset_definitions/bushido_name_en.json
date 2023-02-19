@@ -1,0 +1,17 @@
+{
+  "type": "array",
+  "name": "SwdTech Name",
+  "range": "0xCF3C40-0xCF3C9F",
+  "arrayLength": 8,
+  "itemSize": 12,
+  "asmSymbol": "BushidoName",
+  "assetPath": "assets/character/bushido_name.json",
+  "assembly": {
+    "type": "text",
+    "encoding": "small_text_en"
+  },
+  "stringTable": {
+    "length": 8,
+    "default": "<swdTechNames[%i]>"
+  }
+}

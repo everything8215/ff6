@@ -1,0 +1,13 @@
+{
+  "type": "graphics",
+  "name": "Large Font Graphics",
+  "range": "0xC490C0-0xC4A4BF",
+  "asmSymbol": "LargeFontGfx",
+  "assetPath": "assets/system/large_font_en.cgx",
+  "format": [
+    "linear1bpp(1)",
+    "byteSwapped(2)"
+  ],
+  "tileWidth": 16,
+  "tileHeight": 11
+}

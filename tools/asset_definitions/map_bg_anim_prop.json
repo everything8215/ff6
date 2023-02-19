@@ -1,0 +1,56 @@
+{
+  "type": "array",
+  "name": "Map Animation Properties",
+  "range": "0xC091FF-0xC0979E",
+  "arrayLength": 20,
+  "asmSymbol": "MapBGAnimProp",
+  "assetPath": "assets/map/map_bg_anim_prop.json",
+  "assembly": {
+    "type": "array",
+    "itemSize": 10,
+    "assembly": {
+      "type": "assembly",
+      "name": "Map Animation Properties %i",
+      "assembly": {
+        "speed": {
+          "type": "property",
+          "name": "Speed",
+          "begin": 0,
+          "mask": "0xFFFF"
+        },
+        "frame1": {
+          "type": "property",
+          "name": "Frame 1",
+          "begin": 2,
+          "mask": "0xFFFF"
+        },
+        "frame2": {
+          "type": "property",
+          "name": "Frame 2",
+          "begin": 4,
+          "mask": "0xFFFF"
+        },
+        "frame3": {
+          "type": "property",
+          "name": "Frame 3",
+          "begin": 6,
+          "mask": "0xFFFF"
+        },
+        "frame4": {
+          "type": "property",
+          "name": "Frame 4",
+          "begin": 8,
+          "mask": "0xFFFF"
+        }
+      }
+    }
+  },
+  "pointerTable": {
+    "range": "0xC091D5-0xC091FC",
+    "offset": "0xC091FF"
+  },
+  "stringTable": {
+    "length": 20,
+    "default": "Map Animation %i"
+  }
+}

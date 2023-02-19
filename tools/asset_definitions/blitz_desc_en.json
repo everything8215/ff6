@@ -1,0 +1,18 @@
+{
+  "type": "array",
+  "name": "Blitz Description",
+  "range": "0xCFFC00-0xCFFCDF",
+  "asmSymbol": "BlitzDesc",
+  "assetPath": "assets/character/blitz_desc_en.json",
+  "arrayLength": 8,
+  "assembly": {
+    "type": "text",
+    "name": "Description",
+    "encoding": "null_terminated_en",
+    "multiLine": true
+  },
+  "pointerTable": {
+    "range": "0xCFFF9E-0xCFFFAD",
+    "offset": "0xCFFC00"
+  }
+}

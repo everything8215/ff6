@@ -1,0 +1,114 @@
+{
+  "type": "array",
+  "name": "Map Tile Properties",
+  "range": "0xD9A800-0xD9CC4B",
+  "arrayLength": 42,
+  "asmSymbol": "MapTileProp",
+  "assetPath": "assets/map/map_tile_prop.json",
+  "assembly": {
+    "type": "array",
+    "format": [
+      "interlace(1,2,256)",
+      "ff6-lzss"
+    ],
+    "arrayLength": 256,
+    "itemSize": 2,
+    "assembly": {
+      "type": "assembly",
+      "special": {
+        "0xFFF7": "Impassable",
+        "0x0007": "Through-Tile"
+      },
+      "assembly": {
+        "zLevel": {
+          "type": "property",
+          "name": "Z-Level",
+          "mask": "0x07",
+          "stringTable": {
+            "hideIndex": true,
+            "string": {
+              "0": "None",
+              "1": "Upstairs",
+              "2": "Downstairs",
+              "3": "Upstairs & Downstairs",
+              "4": "Bridge"
+            }
+          }
+        },
+        "flags": {
+          "type": "property",
+          "name": "Flags",
+          "mask": "0xFFF8",
+          "flag": true,
+          "stringTable": {
+            "string": {
+              "0": "Top Sprite Priority",
+              "1": "Bottom Sprite Priority",
+              "2": "Door",
+              "3": "Stairs Up/Right",
+              "4": "Stairs Up/Left",
+              "5": "Passable Through Right",
+              "6": "Passable Through Left",
+              "7": "Passable Through Bottom",
+              "8": "Passable Through Top",
+              "11": "Ladder",
+              "12": "Passable by NPCs"
+            }
+          }
+        }
+      }
+    }
+  },
+  "pointerTable": {
+    "range": "0xD9CD10-0xD9CD63",
+    "offset": "0xD9A800"
+  },
+  "stringTable": {
+    "length": 42,
+    "default": "Tile Properties %i",
+    "string": {
+      "0": "None",
+      "1": "Figaro Castle",
+      "2": "Doma Castle",
+      "3": "Village Exterior 1",
+      "4": "Town Exterior",
+      "5": "Castle Interior",
+      "6": "Caves",
+      "7": "Village/Town Interior",
+      "8": "Narshe Exterior",
+      "9": "Caves w/ Furniture",
+      "10": "Castle Basement",
+      "11": "Village Exterior 2",
+      "12": "Mountains Exterior",
+      "13": "Train Exterior",
+      "14": "Zozo",
+      "15": "Floating Island",
+      "16": "Mountains Interior",
+      "17": "Docks",
+      "18": "Narshe Exterior (Intro)",
+      "19": "Train Interior",
+      "20": "Imperial Camp",
+      "21": "Imperial Castle Exterior",
+      "22": "Airship Exterior",
+      "23": "Airship Interior",
+      "24": "Imperial Castle Interior",
+      "25": "Snowfields",
+      "26": "Forest",
+      "27": "Vector",
+      "28": "River",
+      "29": "Opera House",
+      "30": "Destroyed Town",
+      "31": "Magitek Factory",
+      "32": "Darill's Tomb",
+      "33": "Castle (Opera House)",
+      "34": "Burning Building",
+      "35": "Sealed Gate",
+      "36": "Magitek Research Facility",
+      "37": "Magitek Research Facility w/ Garbage",
+      "38": "Beach",
+      "39": "Cyan's Dream",
+      "40": "Kefka's Tower 1",
+      "41": "Kefka's Tower 2"
+    }
+  }
+}

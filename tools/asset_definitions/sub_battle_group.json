@@ -1,0 +1,16 @@
+{
+  "type": "array",
+  "name": "Map Battle Groups",
+  "range": "0xCF5600-0xCF57FF",
+  "asmSymbol": "SubBattleGroup",
+  "assetPath": "assets/battle/sub_battle_group.json",
+  "arrayLength": 512,
+  "itemSize": 1,
+  "assembly": {
+    "type": "property",
+    "name": "Battle Group",
+    "mask": "0xFF",
+    "link": "battleGroupsRandom[%i]",
+    "stringTable": "battleGroupsRandom"
+  }
+}

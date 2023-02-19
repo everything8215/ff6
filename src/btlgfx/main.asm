@@ -54,8 +54,8 @@ inc_lang "assets/bushido_name_%s.inc"
 .include "assets/char_ai.inc"
 .include "assets/char_prop.inc"
 inc_lang "assets/dance_name_%s.inc"
-inc_lang "assets/font_gfx_large_%s.inc"
-inc_lang "assets/font_gfx_small_%s.inc"
+inc_lang "assets/large_font_gfx_%s.inc"
+inc_lang "assets/small_font_gfx_%s.inc"
 inc_lang "assets/font_width_%s.inc"
 inc_lang "assets/genju_attack_name_%s.inc"
 inc_lang "assets/genju_name_%s.inc"
@@ -8884,9 +8884,9 @@ LoadMenuGfx:
 ; small font graphics
         ldx     #$1000
         stx     $36                     ; size = $1000
-        ldx     #.loword(FontGfxSmall)
+        ldx     #.loword(SmallFontGfx)
         ldy     #$5800                  ; destination address = $5800
-        lda     #^FontGfxSmall
+        lda     #^SmallFontGfx
         jsr     TfrVRAM
 
 ; menu window palette
@@ -8931,12 +8931,12 @@ LoadMenuGfx:
         longa
         asl4
         clc
-        adc     #.loword(FontGfxSmall)
+        adc     #.loword(SmallFontGfx)
         tax
         lda     #$0010
         sta     $36
         shorta0
-        lda     #^FontGfxSmall
+        lda     #^SmallFontGfx
         jsr     TfrVRAM
         plx
         longa
@@ -9352,9 +9352,9 @@ _c143b9:
 @43b9:  jsr     _c1434b
         ldx     #$1000
         stx     $10
-        ldx     #.loword(FontGfxSmall)
+        ldx     #.loword(SmallFontGfx)
         ldy     #$5800
-        lda     #^FontGfxSmall
+        lda     #^SmallFontGfx
         jmp     WaitTfrVRAM
 
 ; ------------------------------------------------------------------------------
@@ -14109,9 +14109,9 @@ DrawDlgLetter:
         lda     $1a
         sta     $18
         bne     @6158
-        lda     f:FontGfxLarge,x
+        lda     f:LargeFontGfx,x
         bra     @6163
-@6158:  lda     f:FontGfxLarge,x
+@6158:  lda     f:LargeFontGfx,x
 @615c:  lsr
         ror     $12
         dec     $18
@@ -14166,7 +14166,7 @@ DrawDlgLetter:
 @61d3:  lda     $1a
         sta     $18
         stz     $12
-        lda     f:FontGfxLarge,x
+        lda     f:LargeFontGfx,x
 @61dd:  asl
         dec     $18
         bne     @61dd
@@ -14253,9 +14253,9 @@ _c16256:
         lda     $1a
         sta     $18
         bne     @6290
-        lda     f:FontGfxLarge,x
+        lda     f:LargeFontGfx,x
         bra     @629b
-@6290:  lda     f:FontGfxLarge,x
+@6290:  lda     f:LargeFontGfx,x
 @6294:  lsr
         ror     $12
         dec     $18
@@ -14314,7 +14314,7 @@ _c16256:
 @6316:  lda     $1a
         sta     $18
         stz     $12
-        lda     f:FontGfxLarge,x
+        lda     f:LargeFontGfx,x
 @6320:  asl
         dec     $18
         bne     @6320

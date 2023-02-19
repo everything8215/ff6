@@ -1,0 +1,48 @@
+{
+  "type": "array",
+  "name": "Map Sprite Palettes",
+  "range": "0xE68000-0xE683FF",
+  "arrayLength": 32,
+  "itemSize": 32,
+  "asmSymbol": "MapSpritePal",
+  "assetPath": "assets/map/map_sprite_pal/map_sprite_pal%s.pal",
+  "assembly": {
+    "type": "data",
+    "format": "bgr555"
+  },
+  "stringTable": {
+    "name": "Map Sprite Palettes",
+    "default": "Palette %i",
+    "length": 32,
+    "string": {
+      "0": "Edgar, Sabin, Celes",
+      "1": "Locke",
+      "2": "Terra",
+      "3": "Strago, Relm, Gau, Gogo",
+      "4": "Cyan, Shadow, Setzer",
+      "5": "Mog, Umaro",
+      "6": "Rainbow",
+      "7": "Chocobo/Magitek",
+      "8": "Esper Terra",
+      "9": "Edgar, Sabin, Celes (Alt.)",
+      "10": "Machinery A",
+      "11": "Raft",
+      "12": "Machinery B",
+      "13": "Guardian",
+      "14": "Sealed Gate Door",
+      "15": "Vector Crane",
+      "16": "Gray (Statue/Smoke)",
+      "17": "Treasure Chest",
+      "18": "Chadarnook",
+      "19": "Rock",
+      "20": "Falcon",
+      "21": "Odin",
+      "22": "Kefka's Tower / Orange Parallax",
+      "23": "Kefka's Tower / Blue/White Parallax",
+      "24": "Kefka's Tower / Map 356 Parallax",
+      "25": "Dadaluma",
+      "26": "Green Magicite Smoke",
+      "29": "Airship WoB Parallax"
+    }
+  }
+}

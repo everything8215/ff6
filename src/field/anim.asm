@@ -11,6 +11,10 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.include "assets/map_bg_anim_prop.inc"
+.include "assets/map_bg3_anim_prop.inc"
+.include "assets/map_pal_anim_prop.inc"
+
 ; ------------------------------------------------------------------------------
 
 ; [ init palette animation ]
@@ -608,19 +612,19 @@ TfrBG3AnimGfx:
 ; ------------------------------------------------------------------------------
 
 MapBGAnimPropPtrs:
-@91d5:  make_ptr_tbl_rel MapBGAnimProp, 20
+@91d5:  make_ptr_tbl_rel MapBGAnimProp, MapBGAnimProp_ARRAY_LENGTH
         .addr   MapBGAnimPropEnd - MapBGAnimProp
 
-@91ff:  .include "../assets/map_bg_anim_prop.asm"
+@91ff:  .include "assets/map_bg_anim_prop.asm"
         MapBGAnimPropEnd := *
 
 MapBG3AnimPropPtrs:
-@979f:  make_ptr_tbl_rel MapBG3AnimProp, 6
+@979f:  make_ptr_tbl_rel MapBG3AnimProp, MapBG3AnimProp_ARRAY_LENGTH
         .addr   MapBG3AnimPropEnd - MapBG3AnimProp
 
-@97ad:  .include "../assets/map_bg3_anim_prop.asm"
+@97ad:  .include "assets/map_bg3_anim_prop.asm"
         MapBG3AnimPropEnd := *
 
-@9825:  .include "../assets/map_pal_anim_prop.asm"
+@9825:  .include "assets/map_pal_anim_prop.asm"
 
 ; ------------------------------------------------------------------------------

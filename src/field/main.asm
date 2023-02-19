@@ -33,11 +33,11 @@ inc_lang "assets/dlg1_%s.inc"
 inc_lang "assets/dlg2_%s.inc"
 .include "assets/dte_table.inc"
 .include "assets/event_battle_group.inc"
-.include "assets/event_trigger.inc"
+inc_lang "assets/event_trigger_%s.inc"
 inc_lang "assets/event_script_%s.inc"
-.include "assets/font_gfx_debug.inc"
-inc_lang "assets/font_gfx_large_%s.inc"
-inc_lang "assets/font_gfx_small_%s.inc"
+.include "assets/debug_font_gfx.inc"
+inc_lang "assets/large_font_gfx_%s.inc"
+inc_lang "assets/small_font_gfx_%s.inc"
 inc_lang "assets/font_width_%s.inc"
 .include "assets/init_lore.inc"
 .include "assets/init_npc_switch.inc"
@@ -64,7 +64,7 @@ inc_lang "assets/map_gfx_%s.inc"
 inc_lang "assets/map_tileset_%s.inc"
 inc_lang "assets/map_title_%s.inc"
 .include "assets/natural_magic.inc"
-.include "assets/npc_prop.inc"
+inc_lang "assets/npc_prop_%s.inc"
 .include "assets/overlay_gfx.inc"
 .include "assets/overlay_prop.inc"
 .include "assets/overlay_tilemap.inc"
@@ -88,7 +88,7 @@ inc_lang "assets/map_title_%s.inc"
 .import BlitzLevelTbl, BushidoLevelTbl
 .import DlgBankInc, DlgPtrs
 .import NaturalMagic_0000, NaturalMagic_0001
-.repeat MAP_SPRITE_GFX_ARRAY_LENGTH, i
+.repeat MapSpriteGfx_ARRAY_LENGTH, i
         .import .ident(.sprintf("MapSpriteGfx_%04x", i))
 .endrep
 

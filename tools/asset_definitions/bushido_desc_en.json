@@ -1,0 +1,18 @@
+{
+  "type": "array",
+  "name": "SwdTech Description",
+  "range": "0xCFFD00-0xCFFD9F",
+  "asmSymbol": "BushidoDesc",
+  "assetPath": "assets/character/bushido_desc_en.json",
+  "arrayLength": 8,
+  "assembly": {
+    "type": "text",
+    "name": "Description",
+    "encoding": "null_terminated_en",
+    "multiLine": true
+  },
+  "pointerTable": {
+    "range": "0xCFFFAE-0xCFFFBD",
+    "offset": "0xCFFD00"
+  }
+}

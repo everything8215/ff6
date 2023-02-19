@@ -1,0 +1,17 @@
+{
+  "type": "array",
+  "name": "Dialogue Bank 1",
+  "range": "0xCD0000-0xCE000B",
+  "arrayLength": 1574,
+  "asmSymbol": "Dlg1",
+  "assetPath": "assets/event/dlg1_en.json",
+  "assembly": {
+    "type": "text",
+    "encoding": "dialog_en",
+    "multiLine": true
+  },
+  "pointerTable": {
+    "range": "0xCCE602-0xCCF24D",
+    "offset": "0xCD0000"
+  }
+}

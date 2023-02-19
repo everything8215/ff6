@@ -44,8 +44,8 @@ inc_lang "assets/dance_name_%s.inc"
 .include "assets/ending_gfx3.inc"
 .include "assets/ending_gfx4.inc"
 .include "assets/ending_gfx5.inc"
-inc_lang "assets/font_gfx_large_%s.inc"
-inc_lang "assets/font_gfx_small_%s.inc"
+inc_lang "assets/large_font_gfx_%s.inc"
+inc_lang "assets/small_font_gfx_%s.inc"
 inc_lang "assets/font_width_%s.inc"
 inc_lang "assets/genju_attack_desc_%s.inc"
 inc_lang "assets/genju_bonus_desc_%s.inc"
@@ -79,7 +79,7 @@ inc_lang "assets/rare_item_name_%s.inc"
 
 ; ------------------------------------------------------------------------------
 
-.repeat PORTRAIT_GFX_ARRAY_LENGTH, i
+.repeat PortraitGfx_ARRAY_LENGTH, i
         .import .ident(.sprintf("PortraitGfx_%04x", i))
 .endrep
 
@@ -4036,7 +4036,7 @@ LoadFontGfx2bpp:
         ldy     #$6000
         sty     hVMADDL
         ldx     $00
-@6b1d:  lda     f:FontGfxSmall,x   ; small font graphics
+@6b1d:  lda     f:SmallFontGfx,x   ; small font graphics
         sta     hVMDATAL
         inx2
         cpx     #$1000
@@ -4067,7 +4067,7 @@ LoadFontGfx4bpp:
         bne     @6b41
         ldx     $00
 @6b57:  ldy     #8
-@6b5a:  lda     f:FontGfxSmall+$80,x
+@6b5a:  lda     f:SmallFontGfx+$80,x
         sta     hVMDATAL
         inx2
         dey

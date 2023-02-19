@@ -1,0 +1,55 @@
+{
+  "type": "array",
+  "name": "Spell Name",
+  "range": "0xE6F567-0xE6F6E0",
+  "asmSymbol": "MagicName",
+  "assetPath": "assets/attack/magic_name_en.json",
+  "arrayLength": 54,
+  "itemSize": 7,
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "magicSymbol": {
+        "type": "property",
+        "name": "Symbol",
+        "stringTable": {
+          "string": {
+            "0xD8": "Dagger",
+            "0xD9": "Sword",
+            "0xDA": "Spear",
+            "0xDB": "Katana",
+            "0xDC": "Staff",
+            "0xDD": "Brush",
+            "0xDE": "Star",
+            "0xDF": "Diamond",
+            "0xE0": "Card",
+            "0xE1": "Claw",
+            "0xE2": "Shield",
+            "0xE3": "Helm",
+            "0xE4": "Armor",
+            "0xE5": "Tool",
+            "0xE6": "Scroll",
+            "0xE7": "Relic",
+            "0xE8": "White Magic",
+            "0xE9": "Black Magic",
+            "0xEA": "Effect Magic",
+            "0xFF": "None"
+          }
+        }
+      },
+      "magicName": {
+        "type": "text",
+        "name": "Name",
+        "range": "1-6",
+        "encoding": "small_text_en"
+      }
+    }
+  },
+  "stringTable": {
+    "length": 54,
+    "default": "<spellNames[%i]>",
+    "string": {
+      "255": "None"
+    }
+  }
+}

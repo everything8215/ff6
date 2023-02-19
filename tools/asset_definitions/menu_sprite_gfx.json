@@ -1,0 +1,8 @@
+{
+  "type": "graphics",
+  "name": "Menu Sprite Graphics",
+  "range": "0xED5AC0-0xED62BF",
+  "asmSymbol": "MenuSpriteGfx",
+  "assetPath": "assets/system/menu_sprite.cgx",
+  "format": "snes4bpp"
+}

@@ -1292,7 +1292,7 @@ ShiftPrevLetter:
 
 LoadLetterGfx:
 
-@FontGfx := FontGfxLarge-32*22          ; skip first 32 tiles
+@FontGfx := LargeFontGfx-32*22          ; skip first 32 tiles
 
 @898a:  lda     #$7e                    ; clear next letter graphics
         sta     hWMADDH

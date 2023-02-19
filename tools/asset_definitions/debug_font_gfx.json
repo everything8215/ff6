@@ -1,0 +1,9 @@
+{
+  "type": "graphics",
+  "name": "Debug Font Graphics",
+  "range": "0xC0E120-0xC0E29F",
+  "asmSymbol": "DebugFontGfx",
+  "assetPath": "assets/system/debug_font.cgx",
+  "format": "snes4bpp",
+  "palette": "fontPalette"
+}

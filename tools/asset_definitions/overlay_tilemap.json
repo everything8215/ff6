@@ -1,0 +1,7 @@
+{
+  "type": "data",
+  "name": "Map Overlay Layout",
+  "range": "0xC0EEA0-0xC0F49F",
+  "asmSymbol": "OverlayTilemap",
+  "assetPath": "assets/map/overlay_tilemap.dat"
+}

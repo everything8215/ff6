@@ -457,7 +457,7 @@ CopyLetterGfx:
 @a8d9:  phx
         longa
         tyx
-        lda     f:FontGfxLarge,x   ; variable width font graphics
+        lda     f:LargeFontGfx,x   ; variable width font graphics
         stz     $e7
         stz     $e9
         sta     $e8

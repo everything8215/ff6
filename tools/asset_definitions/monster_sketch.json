@@ -1,0 +1,28 @@
+{
+  "type": "array",
+  "name": "Monster Sketch Attack",
+  "range": "0xCF4300-0xCF45FF",
+  "arrayLength": 384,
+  "itemSize": 2,
+  "asmSymbol": "MonsterSketch",
+  "assetPath": "assets/monster/monster_sketch.json",
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "attack1": {
+        "type": "property",
+        "name": "Sketch Attack 1",
+        "begin": 0,
+        "stringTable": "attackName",
+        "link": "attackProperties[%i]"
+      },
+      "attack2": {
+        "type": "property",
+        "name": "Sketch Attack 2",
+        "begin": 1,
+        "stringTable": "attackName",
+        "link": "attackProperties[%i]"
+      }
+    }
+  }
+}

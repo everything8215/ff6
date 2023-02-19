@@ -1,0 +1,7 @@
+{
+  "type": "data",
+  "name": "Font Width",
+  "range": "0xC48FC0-0xC490BF",
+  "asmSymbol": "FontWidth",
+  "assetPath": "assets/system/font_width_en.dat"
+}

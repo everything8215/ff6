@@ -1,0 +1,8 @@
+{
+  "type": "data",
+  "name": "Ending Graphics Data 4",
+  "range": "0xD99D4B-0xD9A4E3",
+  "asmSymbol": "EndingGfx4",
+  "assetPath": "assets/cutscene/ending_gfx4.dat",
+  "format": "ff6-lzss"
+}

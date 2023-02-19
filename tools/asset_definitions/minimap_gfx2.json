@@ -1,0 +1,11 @@
+{
+  "type": "graphics",
+  "name": "World of Ruin Minimap Graphics",
+  "range": "0xEFE8B3-0xEFED25",
+  "asmSymbol": "MinimapGfx2",
+  "assetPath": "assets/world/wor_minimap.cgx",
+  "format": [
+    "snes4bpp",
+    "ff6-lzss"
+  ]
+}

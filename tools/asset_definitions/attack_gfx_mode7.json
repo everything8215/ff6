@@ -1,0 +1,8 @@
+{
+  "type": "data",
+  "name": "Attack Graphics (Mode 7)",
+  "range": "0xD8D000-0xD8DAF1",
+  "asmSymbol": "AttackGfxMode7",
+  "assetPath": "assets/attack/attack_gfx_mode7.cgx",
+  "format": "ff6-lzss"
+}

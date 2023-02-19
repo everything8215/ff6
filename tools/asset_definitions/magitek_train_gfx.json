@@ -1,0 +1,7 @@
+{
+  "type": "data",
+  "name": "Magitek Train Ride Graphics",
+  "range": "0xEF3250-0xEF4845",
+  "asmSymbol": "MagitekTrainGfx",
+  "assetPath": "assets/cutscene/magitek_train.cgx"
+}

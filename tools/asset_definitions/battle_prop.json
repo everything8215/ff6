@@ -1,0 +1,90 @@
+{
+  "type": "array",
+  "name": "Auxiliary Battle Properties",
+  "range": "0xCF5900-0xCF61FF",
+  "asmSymbol": "BattleProp",
+  "assetPath": "assets/battle/battle_prop.json",
+  "arrayLength": 576,
+  "itemSize": 4,
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "monsterEntry": {
+        "type": "property",
+        "name": "Monster Entry",
+        "begin": 0,
+        "mask": "0x0F"
+      },
+      "flags": {
+        "type": "property",
+        "name": "Flags",
+        "begin": 0,
+        "mask": "0x0EF0",
+        "flag": true,
+        "stringTable": {
+          "string": {
+            "0": "Disable Normal Attack",
+            "1": "Disable Back Attack",
+            "2": "Disable Pincer Attack",
+            "3": "Disable Side Attack",
+            "5": "Disable Fanfare",
+            "6": "Disable Joker Doom",
+            "7": "Disable Leap"
+          }
+        }
+      },
+      "song": {
+        "type": "property",
+        "name": "Song",
+        "begin": 3,
+        "mask": "0x38",
+        "stringTable": {
+          "string": {
+            "0": "Battle Theme",
+            "1": "The Decisive Battle",
+            "2": "The Fierce Battle",
+            "3": "Returners",
+            "4": "Save Them!",
+            "5": "Dancing Mad",
+            "6": "None",
+            "7": "None"
+          }
+        }
+      },
+      "continueSong": {
+        "type": "property",
+        "name": "Continue Previous Song",
+        "begin": 3,
+        "mask": "0x80",
+        "bool": true
+      },
+      "characterAI": {
+        "type": "property",
+        "name": "Character A.I.",
+        "begin": 2,
+        "stringTable": "characterAI",
+        "link": "characterAI[%i]"
+      },
+      "enableCharacterAI": {
+        "type": "property",
+        "name": "Enable Character A.I.",
+        "begin": 1,
+        "mask": "0x80",
+        "bool": true
+      },
+      "flags2": {
+        "type": "property",
+        "begin": 3,
+        "mask": "0x07",
+        "flag": true,
+        "stringTable": {
+          "string": {
+            "0": "Disable L+R",
+            "1": "Disable on the Veldt",
+            "2": "Disable Preemptive Attack"
+          }
+        }
+      }
+    }
+  }
+}

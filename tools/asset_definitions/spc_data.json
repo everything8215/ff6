@@ -1,0 +1,7 @@
+{
+  "type": "data",
+  "name": "SPC Data",
+  "range": "0xC5070E-0xC53C5D",
+  "asmSymbol": "SPCData",
+  "assetPath": "assets/sound/spc_data.dat"
+}

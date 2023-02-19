@@ -1,0 +1,22 @@
+{
+  "type": "array",
+  "name": "Map Graphics",
+  "range": "0xDFDB00-0xE5F35F",
+  "arrayLength": 82,
+  "asmSymbol": "MapGfx",
+  "assetPath": "assets/map/map_gfx/map_gfx%s.cgx",
+  "assembly": {
+    "type": "graphics",
+    "format": "snes4bpp",
+    "palette": "mapPalettes"
+  },
+  "pointerTable": {
+    "range": "0xDFDA00-0xDFDAF5",
+    "pointerSize": 3,
+    "offset": "0xDFDB00"
+  },
+  "stringTable": {
+    "length": 82,
+    "default": "Map Graphics %i"
+  }
+}

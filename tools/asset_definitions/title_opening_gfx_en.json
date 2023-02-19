@@ -1,0 +1,201 @@
+{
+  "type": "data",
+  "name": "Title/Intro Cinematic Graphics Data",
+  "range": "0xD8F000-0xD94E71",
+  "asmSymbol": "TitleOpeningGfx",
+  "assetPath": "assets/cutscene/title_opening_en.cgx",
+  "lang": "en",
+  "format": "ff6-lzss",
+  "assembly": {
+    "magitekSpriteGraphics": {
+      "type": "graphics",
+      "name": "Magitek March Sprite Graphics",
+      "range": "0x0000-0x0940",
+      "format": "snes4bpp",
+      "palette": {
+        "path": "cinematicProgram.magitekPalette",
+        "range": "48-64"
+      }
+    },
+    "magitekBGGraphics": {
+      "type": "graphics",
+      "name": "Magitek March Background Graphics",
+      "range": "0x0940-0x0BC0",
+      "format": "snes4bpp",
+      "palette": "cinematicProgram.magitekPalette"
+    },
+    "magitekLayout": {
+      "type": "tilemap",
+      "name": "Magitek March Tile Layout",
+      "range": "0x0BC0-0x1BC0",
+      "format": [
+        "generic4bppTile",
+        "interlace(32,2,32)"
+      ],
+      "graphics": [
+        [
+          {
+            "path": "mapGraphics[34]",
+            "offset": "0x0000",
+            "range": "0x0000-0x1000"
+          },
+          {
+            "path": "mapGraphics[31]",
+            "offset": "0x1000",
+            "range": "0x1000-0x2000"
+          },
+          {
+            "path": "mapGraphics[32]",
+            "offset": "0x2000",
+            "range": "0x0000-0x1000"
+          },
+          {
+            "path": "titleIntroGraphics.magitekBGGraphics",
+            "offset": "0x3000"
+          }
+        ]
+      ],
+      "palette": {
+        "path": "cinematicProgram.magitekPalette",
+        "offset": "0x10"
+      },
+      "colorOffset": {
+        "path": "cinematicProgram.magitekColorOffset",
+        "multiplier": 16,
+        "perTile": true
+      },
+      "width": 64,
+      "height": 64
+    },
+    "introLayout": {
+      "type": "tilemap",
+      "name": "Intro Tile Layout",
+      "range": "0x1BC0-0x33C0",
+      "format": [
+        "snes4bppTile",
+        "interlace(2048,2,2)"
+      ],
+      "graphics": [
+        [
+          {
+            "path": "mapGraphics[75]",
+            "offset": "0x0000"
+          },
+          {
+            "path": "titleIntroGraphics.introGraphics",
+            "offset": "0x4000"
+          }
+        ]
+      ],
+      "palette": [
+        [
+          {
+            "path": "cinematicProgram.introBackgroundPalette",
+            "offset": "0x20",
+            "range": "0x60-0x70"
+          },
+          {
+            "path": "cinematicProgram.introBackgroundPalette",
+            "offset": "0x30",
+            "range": "0x60-0x70"
+          },
+          {
+            "path": "cinematicProgram.introBackgroundPalette",
+            "offset": "0x50",
+            "range": "0x40-0x50"
+          },
+          {
+            "path": "cinematicProgram.introBackgroundPalette",
+            "offset": "0x60",
+            "range": "0x50-0x60"
+          },
+          {
+            "path": "cinematicProgram.introBackgroundPalette",
+            "offset": "0x70",
+            "range": "0x70-0x80"
+          }
+        ]
+      ],
+      "width": 32,
+      "height": 96
+    },
+    "introGraphics": {
+      "type": "graphics",
+      "name": "Intro Background Graphics",
+      "range": "0x33C0-0x75C0",
+      "format": "snes4bpp",
+      "palette": "cinematicProgram.introBackgroundPalette"
+    },
+    "introFontGraphics": {
+      "type": "graphics",
+      "name": "Intro Font Graphics",
+      "range": "0x75C0-0x7930",
+      "format": "snes2bpp",
+      "palette": "cinematicProgram.introFontPalette"
+    },
+    "flames2bppLayout": {
+      "type": "tilemap",
+      "name": "Intro Flame Tile Layout (2bpp)",
+      "range": "0x7930-0x7B30",
+      "format": "snes2bppTile",
+      "graphics": "titleIntroGraphics.flames2bpp",
+      "palette": {
+        "path": "cinematicProgram.introBackgroundPalette",
+        "range": "0x24-0x28"
+      },
+      "width": 32,
+      "height": 8
+    },
+    "flames2bpp": {
+      "type": "graphics",
+      "name": "Intro Flame Graphics (2bpp)",
+      "range": "0x7B30-0x81E0",
+      "format": "snes2bpp",
+      "palette": "cinematicProgram.introBackgroundPalette"
+    },
+    "flames4bppLayout": {
+      "type": "tilemap",
+      "name": "Intro Flame Tile Layout (4bpp)",
+      "range": "0x81E0-0x83E0",
+      "format": "snes4bppTile",
+      "graphics": "titleIntroGraphics.flames4bpp",
+      "palette": {
+        "path": "cinematicProgram.introBackgroundPalette",
+        "range": "0x10-0x20"
+      },
+      "width": 32,
+      "height": 8
+    },
+    "flames4bpp": {
+      "type": "graphics",
+      "name": "Intro Flame Graphics (4bpp)",
+      "range": "0x83E0-0x8BE0",
+      "format": "snes4bpp",
+      "palette": "cinematicProgram.introBackgroundPalette"
+    },
+    "splashLayout": {
+      "type": "tilemap",
+      "name": "Splash Screen Tile Layout",
+      "range": "0x8BE0-0x8DE0",
+      "format": "snes4bppTile",
+      "graphics": "titleIntroGraphics.splashBackground",
+      "palette": "cinematicProgram.splashPalette",
+      "width": 32,
+      "height": 8
+    },
+    "splashBackground": {
+      "type": "graphics",
+      "name": "Splash Screen Background Graphics",
+      "range": "0x8DE0-0x9EE0",
+      "format": "snes4bpp",
+      "palette": "cinematicProgram.splashPalette"
+    },
+    "splashSprites": {
+      "type": "graphics",
+      "name": "Intro/Splash Sprite Graphics",
+      "range": "0x9EF0-0xAEA8",
+      "format": "snes4bpp",
+      "palette": "cinematicProgram.introSpritePalette"
+    }
+  }
+}

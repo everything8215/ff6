@@ -1,0 +1,12 @@
+{
+  "type": "graphics",
+  "name": "Vector Approach Graphics",
+  "range": "0xD8DFB8-0xD8E5BE",
+  "asmSymbol": "VectorApproachGfx",
+  "assetPath": "assets/cutscene/vector_approach.cgx",
+  "format": [
+    "snes4bpp",
+    "ff6-lzss"
+  ],
+  "palette": "vectorApproachPalette"
+}

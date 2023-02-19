@@ -157,8 +157,8 @@ $A3-$B9 Tile Properties Stuff
         nu--btrl tile properties byte 2
                  n: NPC can randomly move here (ZoneDoctor: "Passable quadrants")
                  u: Always Face Up (ladder)
-				 -: (ZoneDoctor: "1.5")
-				 -: (ZoneDoctor: "1.4")
+                 -: (ZoneDoctor: "1.5")
+                 -: (ZoneDoctor: "1.4")
                  b: Passable through bottom
                  t: Passable through top
                  r: Passable through right
@@ -183,8 +183,8 @@ $BD-$D3 Dialog Text
     $C8 Max X Position on Dialog Window (always $E0?)
  ++ $C9 Pointer to Current Dialog Character
     $CC current region of dialog window that needs to be cleared in VRAM (starts at 9, decrements once per frame)
-		9 = none, waiting for keypress
-	    +-----------+-----------+
+        9 = none, waiting for keypress
+        +-----------+-----------+
         |     8     |     7     |
         +-----------+-----------+
         |     6     |     5     |
@@ -193,17 +193,17 @@ $BD-$D3 Dialog Text
         +-----------+-----------+
         |     2     |     1     |
         +-----------+-----------+
-	    0 = none, no text displayed (or map name displayed)
+        0 = none, no text displayed (or map name displayed)
   + $CD Character to Display (top byte is for extra characters from FF6j)
     $CF eppppppp
-	    e: text buffer is empty
-	    p: dialog text buffer position (+$7E9183)
+        e: text buffer is empty
+        p: dialog text buffer position (+$7E9183)
   + $D0 Dialog Index
     $D2 -
     $D3 Keypress State (decrements when button is pressed or released)
-	    0 = not waiting for keypress
-		1 = waiting for keypress
-		2 = waiting for key release
+        0 = not waiting for keypress
+        1 = waiting for keypress
+        2 = waiting for key release
 
 $D4-$DE Object Stuff
 --------------------
@@ -301,7 +301,7 @@ $0520-$0540 Location Properties
       $0525 b-------
             b: enable random battles
       $0526 ?-----mm
-	        ?: set for colosseum guy's house exterior (unused)
+            ?: set for colosseum guy's house exterior (unused)
             m: Window Mask Settings (used if flashlight, spotlight, or pyramid is enabled)
 +++++ $0527 aaaaaaab bbbbbbcc ccccdddd dddeeeee eeffffff fggggggg
             a: BG2 Tile Formation Index ($800 bytes -> $7FC800)
@@ -362,22 +362,22 @@ $0520-$0540 Location Properties
       $0558 BG1 destination Y center coordinate
       $0559 lock screen (Disable Screen Scroll With Character Movement)
       $055A BG1 Map Data Update Status (decrements every frame)
-	        05 = needs update, but waiting for event command $75
-			04 = top->RAM
-			03 = bottom->RAM
-			02 = top->VRAM
-			01 = bottom->VRAM
-			00 = no changes
+            05 = needs update, but waiting for event command $75
+            04 = top->RAM
+            03 = bottom->RAM
+            02 = top->VRAM
+            01 = bottom->VRAM
+            00 = no changes
       $055B BG2 Map Data Update Status
       $055C BG3 Map Data Update Status
       $055D Default party
       $055E Object Collision Status
-	        00 = no collisions
-			01 = collision occurred, waiting for party to stop moving
-			02 = collision being processed
+            00 = no collisions
+            01 = collision occurred, waiting for party to stop moving
+            02 = collision being processed
       $055F Object Collision Facing Direction
-	+ $0560 Pointer to Character Object Data for Collision
-	+ $0562 Pointer to NPC Object Data for Collision
+    + $0560 Pointer to Character Object Data for Collision
+    + $0562 Pointer to NPC Object Data for Collision
 
 $0564-$0584 Dialog Window Stuff
 -------------------------------
@@ -402,9 +402,9 @@ $0570-$057F Multiple Choice XY Positions (8 items, 2 bytes each)
       $0584 Spell Index for Dialog Window Display (unused, this is from FF6j)
 
       $0585 BG1 Vertical Scroll Status
-	        0 = no update
-			1 = update in RAM
-			2 = update in VRAM
+            0 = no update
+            1 = update in RAM
+            2 = update in VRAM
       $0586 BG1 Horizontal Scroll Status
       $0587 BG2 Vertical Scroll Status
       $0588 BG2 Horizontal Scroll Status
@@ -434,7 +434,7 @@ $0624-$062B Event Code for Map Startup
       $0630 Horizontal Scanline Position
       $0631 Vertical Scanline Position
       $0632 Max Vertical Scanline Position (can be used to watch CPU load)
-      
+
 $0633-$0742 Sprite Overlay Stuff
 --------------------------------
 $0633-$0642 Sprite Overlay Graphics Indexes (16 tiles)
@@ -442,10 +442,10 @@ $0643-$0742 yxo-ooo- Sprite Overlay Tile Formation (for each bg1 tile, $FF means
             y: flip overlay graphics vertical
             x: flip overlay graphics horizontal
             o: overlay tile index
-            
+
       $0743 x-----dd
             x: don't update facing direction (for party switch)
-	        d: party facing direction
+            d: party facing direction
       $0744 ------lu Saved/Destination Z Level
             l: Lower Z Level
             u: Upper Z Level
@@ -460,13 +460,13 @@ $0746-$0749 -
             a: amplitude
       $074B current shake screen amplitude
     + $074C BG1 vertical offset for shake screen
-	+ $074E BG2 vertical offset for shake screen
-	+ $0750 BG3 vertical offset for shake screen
+    + $074E BG2 vertical offset for shake screen
+    + $0750 BG3 vertical offset for shake screen
       $0752 ??? Spotlight color add/sub (unused)
-	  $0753 ??? Spotlight color add/sub (unused)
+      $0753 ??? Spotlight color add/sub (unused)
 $0754-$075B Decimal Number for Dialog Text Display
     + $075C ??? Pyramid
-	+ $075E ??? Pyramid
+    + $075E ??? Pyramid
     + $0760 ??? Pyramid
       $0762 Enable Party Change
 
@@ -488,11 +488,11 @@ $0763-$077A Active Overlay Data (6 items, 4 bytes each, last two are unused)
     + $077D Pyamid/Flashlight XY Position
     + $077F Pointer to Pyramid Object Data (+0867)
       $0781 Enable Pyramid
-	  $0782 -
-	+ $0783 ??? (spotlights)
-	+ $0785 ??? (spotlights)
-	  $0787 -
-	  $0788 -
+      $0782 -
+    + $0783 ??? (spotlights)
+    + $0785 ??? (spotlights)
+      $0787 -
+      $0788 -
       $0789 "Monster-in-a-Box" Formation Index
       $078A bs------
             b: disable battle blur
@@ -533,9 +533,9 @@ $0867-$1068 Object Data (50 items, 41 bytes each, $00-$0F are characters, $10-$2
             d: saved facing direction for movement (while object is activated)
             o: layer priority (for layering wrt bg tiles, ZoneDoctor: "Can walk under/over")
                00 = default, based on bg tile properties
-			   01 = upper sprite above bg, lower sprite below bg
-			   02 = both sprites above bg
-			   03 = both sprites below bg
+               01 = upper sprite above bg, lower sprite below bg
+               02 = both sprites above bg
+               03 = both sprites below bg
             m: Enable Walking Animation When Moving *OR* horizontal flip for special NPC graphics (copied from $0889.7)
    ++ $0869 tttttttt ttttpppp xxxxxxxx
             t: X Position (in tiles)
@@ -550,10 +550,10 @@ $0867-$1068 Object Data (50 items, 41 bytes each, $00-$0F are characters, $10-$2
     + $0873 Vertical Movement Speed
       $0875 Object Speed
       $0876 -hpppppp Current Graphic Position
-	        h: horizontal flip
+            h: horizontal flip
             p: graphics position
       $0877 -hpppppp Next Graphic Position
-	        h: horizontal flip
+            h: horizontal flip
             p: graphics position
       $0878 Actor Index
       $0879 Graphic Index
@@ -581,14 +581,14 @@ $0867-$1068 Object Data (50 items, 41 bytes each, $00-$0F are characters, $10-$2
                $06 = down/right
                $07 = down/left
                $08 = up/left
-			   $09 = right/up 1x2
-			   $0A = right/up 2x1
-			   $0B = right/down 2x1
-			   $0C = right/down 1x2
-			   $0D = left/down 1x2
-			   $0E = left/down 2x1
-			   $0F = left/up 2x1
-			   $10 = left/up 1x2
+               $09 = right/up 1x2
+               $0A = right/up 2x1
+               $0B = right/down 2x1
+               $0C = right/down 1x2
+               $0D = left/down 1x2
+               $0E = left/down 2x1
+               $0F = left/up 2x1
+               $10 = left/up 1x2
       $087F ------dd
             d: facing direction
                00 = up
@@ -608,7 +608,7 @@ $0867-$1068 Object Data (50 items, 41 bytes each, $00-$0F are characters, $10-$2
             j: Jump Type (00 = low, 01 = high)
             p: Jump Counter (pointer to $C059AD, decrements every frame)
       $0888 -----blu (copied from tile properties)
-	        b: bridge tile
+            b: bridge tile
             l: lower Z level
             u: upper Z level
    ++ $0889 Pointer to Event Script (normal objects only)
@@ -617,18 +617,18 @@ $0867-$1068 Object Data (50 items, 41 bytes each, $00-$0F are characters, $10-$2
             v: VRAM address (in tiles, +$7000)
       $088A sssmmmmm (special NPC graphics only)
             s: amount to shift (in pixels * 2 if there is no master object, in tiles if there is)
-			m: master object number (NPC number)
+            m: master object number (NPC number)
       $088B ------md (special NPC graphics only)
-	        m: enable master/slave object (this object follows another NPC whenever it moves)
-			d: direction to shift (0 = right, 1 = down)
+            m: enable master/slave object (this object follows another NPC whenever it moves)
+            d: direction to shift (0 = right, 1 = down)
       $088C ppannggg
             p: sprite priority (layering wrt other sprites, 0 = normal, 1 = high, 2,3 = low) (ZoneDoctor: "8.3", "8.4")
             a: enable special animation (set when g is not zero)
             n: special animation frame type (active when g is not zero)
-			   00 = 1 frame
-			   01 = 2 frames (one image flips horizontally)
-			   10 = 2 frames
-			   11 = 4 frames
+               00 = 1 frame
+               01 = 2 frames (one image flips horizontally)
+               10 = 2 frames
+               11 = 4 frames
             g: special animation offset (see C0/5831) (ZoneDoctor: "8.5", "8.6", "8.7")
     + $088D Object Map Index
       $088F Pointer to Animation Queue (+$10F7)
@@ -692,108 +692,108 @@ $1188-$119F Timer Data (4 items, 6 bytes each)
 $11A0-$11E0 Character Stats ($40 bytes, shared with bank $C2)
 -----------
      +$11A0 Mag. Power
-	 +$11A2 Stamina
-	 +$11A4 Speed
-	 +$11A6 Vigor
+     +$11A2 Stamina
+     +$11A4 Speed
+     +$11A6 Vigor
      +$11A8 Evade
-	 +$11AA MBlock
+     +$11AA MBlock
       $11AC Battle Power (main hand)
-	  $11AD Battle Power (off-hand)
-	  $11AE Weapon Hit Rate (main hand)
-	  $11AF Weapon Hit Rate (off-hand)
-	  $11B0 Weapon Element (main hand)
-	  $11B1 Weapon Element (off-hand)
-	 +$11B2 bbhhhhhh hhhhhhhh
-	        b: hp boost (0 = none, 1 = 25% boost, 2 = 50% boost, 3 = 12.5% boost)
-			h: max hp
-	  $11B4 Weapon Spell Cast
-	  $11B5 -
-	  $11B6 Absorbed Elements
-	  $11B7 Nullified Elements
-	  $11B8 Weak Elements
-	  $11B9 Halved Elements
-	  $11BA Defense
-	  $11BB Magic Defense
-	  $11BC Status 2 Effects
-	  $11BD -
-	  $11BE ----mpbb
-	        m: can block magic attacks
-			p: can block physical attacks
-			b: block graphic (0 = Dagger, 1 = Sword, 2 = Shield, 3 = Zephyr Cape)
+      $11AD Battle Power (off-hand)
+      $11AE Weapon Hit Rate (main hand)
+      $11AF Weapon Hit Rate (off-hand)
+      $11B0 Weapon Element (main hand)
+      $11B1 Weapon Element (off-hand)
+     +$11B2 bbhhhhhh hhhhhhhh
+            b: hp boost (0 = none, 1 = 25% boost, 2 = 50% boost, 3 = 12.5% boost)
+            h: max hp
+      $11B4 Weapon Spell Cast
+      $11B5 -
+      $11B6 Absorbed Elements
+      $11B7 Nullified Elements
+      $11B8 Weak Elements
+      $11B9 Halved Elements
+      $11BA Defense
+      $11BB Magic Defense
+      $11BC Status 2 Effects
+      $11BD -
+      $11BE ----mpbb
+            m: can block magic attacks
+            p: can block physical attacks
+            b: block graphic (0 = Dagger, 1 = Sword, 2 = Shield, 3 = Zephyr Cape)
 $11BF-$11C5 -
-	  $11C6 Weapon
-	  $11C7 Shield
-	  $11C8 Helmet
-	  $11C9 Armor
-	  $11CA Relic 1
-	  $11CB Relic 2
-	  $11CC -
-	  $11CD -
-	 +$11CE -------- ---4321-
-	        1: weapon in off-hand
-	        2: weapon in main hand
-			3: unarmed in off-hand
-			4: unarmed in main hand
-	  $11D0 ----zhsd Physical Block Graphic
-	  $11D1 ----zhsd Magical Block Graphic
-	        z: zephyr Cape
-			h: shield
-			s: sword
-			d: dagger
-	  $11D2 Status 1 Immunity
-	  $11D3 Status 2 Immunity
-	  $11D4 Status 3 Effects
-	  $11D5 76543210
-	        7: MP +12.5% (bard's hat)
-			6: MP +50% (crystal orb)
-			5: MP +25% (minerva)
-			4: HP +12.5% (green beret)
-			3: HP +50% (muscle belt)
-			2: HP +25% (red cap)
-			1: raise magic damage (double earrings or hero ring)
-			0: raise fight damage (atlas armlet, hero ring)
-	  $11D6 76543210
-	        7: jump continuously (dragon horn)
-			6: steal -> capture (thief glove)
-			5: slot -> gp rain (coin toss)
-			4: sketch -> control (fakemustache)
-			3: magic -> x-magic (gem box)
-			2: fight -> jump (dragoonboots)
-			1: prevent back/pincer attacks (back guard)
-			0: increase pre-emptive attack rate (gale hairpin)
-	  $11D7 76543210
-	        7: raise vigor +50% (hyper wrist)
-			6: MP cost = 1 (economizer)
-			5: MP cost = 50% (gold hairpin)
-			4: 100% Hit Rate, ignore target's MBlock (sniper sight)
-			3: Increase Control Rate (coronet)
-			2: Increase Sketch Rate (beret)
-			1: raise magic damage (single earring or hero ring)
-			0: Increase Steal Rate (sneak ring)
+      $11C6 Weapon
+      $11C7 Shield
+      $11C8 Helmet
+      $11C9 Armor
+      $11CA Relic 1
+      $11CB Relic 2
+      $11CC -
+      $11CD -
+     +$11CE -------- ---4321-
+            1: weapon in off-hand
+            2: weapon in main hand
+            3: unarmed in off-hand
+            4: unarmed in main hand
+      $11D0 ----zhsd Physical Block Graphic
+      $11D1 ----zhsd Magical Block Graphic
+            z: zephyr Cape
+            h: shield
+            s: sword
+            d: dagger
+      $11D2 Status 1 Immunity
+      $11D3 Status 2 Immunity
+      $11D4 Status 3 Effects
+      $11D5 76543210
+            7: MP +12.5% (bard's hat)
+            6: MP +50% (crystal orb)
+            5: MP +25% (minerva)
+            4: HP +12.5% (green beret)
+            3: HP +50% (muscle belt)
+            2: HP +25% (red cap)
+            1: raise magic damage (double earrings or hero ring)
+            0: raise fight damage (atlas armlet, hero ring)
+      $11D6 76543210
+            7: jump continuously (dragon horn)
+            6: steal -> capture (thief glove)
+            5: slot -> gp rain (coin toss)
+            4: sketch -> control (fakemustache)
+            3: magic -> x-magic (gem box)
+            2: fight -> jump (dragoonboots)
+            1: prevent back/pincer attacks (back guard)
+            0: increase pre-emptive attack rate (gale hairpin)
+      $11D7 76543210
+            7: raise vigor +50% (hyper wrist)
+            6: MP cost = 1 (economizer)
+            5: MP cost = 50% (gold hairpin)
+            4: 100% Hit Rate, ignore target's MBlock (sniper sight)
+            3: Increase Control Rate (coronet)
+            2: Increase Sketch Rate (beret)
+            1: raise magic damage (single earring or hero ring)
+            0: Increase Steal Rate (sneak ring)
       $11D8 -thgaebo
-	        t: protects weak allies (true knight)
-	        h: can equip heavy items (merit award)
-			g: can equip 2 weapons (genji glove)
-			a: uses weapon 2-handed (gauntlet)
-			e: randomly evade (beads)
-			b: randomly counter (black belt)
-			o: fight -> x-fight (offering)
-	  $11D9 7--43210
-	        7: make character undead (relic ring)
-			4: double GP (cat hood)
-			3: double experience (exp. egg)
-			2: casts wall when HP is low
-			1: casts safe when HP is low (mithril glove, czarina ring)
-			0: casts shell when HP is low (barrier ring, czarina ring)
-	  $11DA 765---1- Weapon Effects (main hand)
-	  $11DB 765---1- Weapon Effects (off-hand)
-	        7: enable runic
-			6: 2-hand
-			5: no back row penalty
-			1: swdtech
-	  $11DC Run Factor
-	  $11DD -
-	  $11DE -
+            t: protects weak allies (true knight)
+            h: can equip heavy items (merit award)
+            g: can equip 2 weapons (genji glove)
+            a: uses weapon 2-handed (gauntlet)
+            e: randomly evade (beads)
+            b: randomly counter (black belt)
+            o: fight -> x-fight (offering)
+      $11D9 7--43210
+            7: make character undead (relic ring)
+            4: double GP (cat hood)
+            3: double experience (exp. egg)
+            2: casts wall when HP is low
+            1: casts safe when HP is low (mithril glove, czarina ring)
+            0: casts shell when HP is low (barrier ring, czarina ring)
+      $11DA 765---1- Weapon Effects (main hand)
+      $11DB 765---1- Weapon Effects (off-hand)
+            7: enable runic
+            6: 2-hand
+            5: no back row penalty
+            1: swdtech
+      $11DC Run Factor
+      $11DD -
+      $11DE -
       $11DF t-s---mc Field Equipment Effects
             t: tintina bar effect (doesn't work)
             s: sprint shoes effect (1.5x walk speed)
@@ -807,8 +807,8 @@ $11BF-$11C5 -
       $11E4 ----3210
             3: continue current music (no battle music)
             2: on the veldt (enable leap in status menu)
-	        1: on the veldt (enable leap in battle)
-	        0: gau can appear after battle
+            1: on the veldt (enable leap in battle)
+            0: gau can appear after battle
 $11E5-$11EF -
       $11F0 Screen Mosaic Speed
       $11F1 Enable Restore Saved Game
@@ -831,9 +831,9 @@ $11E5-$11EF -
             f: disable map fade in when loading
             s: don't update map size when loading map
             v: world map vehicle
-			   0 = no vehicle
-			   1 = airship
-			   2 = chocobo
+               0 = no vehicle
+               1 = airship
+               2 = chocobo
       $11FB Showing Character's Graphic Index
       $11FC Showing Character's Palette Index
    ++ $11FD World Map Event Pointer
@@ -853,23 +853,23 @@ $1300-$14FF Music and Sound Direct Page
       $1309 Previous song number
       $130A Previous b2
       $130B Previous b3
-      
+
       $131E Validation byte for data transfer
-      
+
 $1320-$135F Current Instrument Numbers
-$1360-$139F Size of Current BRR Data      
+$1360-$139F Size of Current BRR Data
 $13A0-$13DF Pointers to Current BRR Data
 
-     +$13E2 
-      
+     +$13E2
+
       $13F0 Echo Delay
      +$13F1 Pointer to Start of Echo Buffer in SPC RAM
       $13F3 Song Data Overlaps Pointers to Pointers to Sound Effect Data
-     
-     +$13F8 
-      $13FA 
-      $13FB 
-      
+
+     +$13F8
+      $13FA
+      $13FB
+
 $1400-$1420 Instrument Table
 
 $1480-$14BF Pointers to Instrument Data and Loop Start (16 items, 4 bytes each)
@@ -887,12 +887,12 @@ $1602-$1607 Name
       $1608 Level
     + $1609 Current HP
     + $160B bbhhhhhh hhhhhhhh
-	        b: hp boost (0 = none, 1 = 25% boost, 2 = 50% boost, 3 = 12.5% boost)
-			h: max hp
+            b: hp boost (0 = none, 1 = 25% boost, 2 = 50% boost, 3 = 12.5% boost)
+            h: max hp
     + $160D Current MP
     + $160F bbmmmmmm mmmmmmmm
-	        b: mp boost (0 = none, 1 = 25% boost, 2 = 50% boost, 3 = 12.5% boost)
-			h: max mp
+            b: mp boost (0 = none, 1 = 25% boost, 2 = 50% boost, 3 = 12.5% boost)
+            h: max mp
    ++ $1611 Experience Points
       $1614 weicmpzd Status 1
             w: wound
@@ -962,26 +962,26 @@ $1D4D-$1DC8 Config Data
             r: reequip
             w: wallpaper (values 0-7 valid)
       $1D4F ----4321
-	        4: player 2 control character 4
-			3: player 2 control character 3
-			2: player 2 control character 2
-			1: player 2 control character 1
+            4: player 2 control character 4
+            3: player 2 control character 3
+            2: player 2 control character 2
+            1: player 2 control character 1
       $1D50 aaaabbbb
-	        a: A button mapping (0 = start, 1 = A, 2 = B, 3 = X, 4 = Y, 5 = top L, 6 = top R, 7 = select)
-			b: B button mapping
-	  $1D51 xxxxyyyy
-	        x: X button mapping
-			y: Y button mapping
-	  $1D52 llllrrrr
-	        l: top L button mapping
-			r: top R button mapping
-	  $1D53 tttteeee
-	        t: Start button mapping
-			e: Select button mapping
+            a: A button mapping (0 = start, 1 = A, 2 = B, 3 = X, 4 = Y, 5 = top L, 6 = top R, 7 = select)
+            b: B button mapping
+      $1D51 xxxxyyyy
+            x: X button mapping
+            y: Y button mapping
+      $1D52 llllrrrr
+            l: top L button mapping
+            r: top R button mapping
+      $1D53 tttteeee
+            t: Start button mapping
+            e: Select button mapping
       $1D54 mbcccsss
-	        m: controller 2 enabled
-	        b: custom button config
-			c: font/window palette color selection
+            m: controller 2 enabled
+            b: custom button config
+            c: font/window palette color selection
             s: spell order index
     + $1D55 Font Color
 $1D57-$1DC6 Window Palette (8 palettes, 7 colors each)
@@ -1021,12 +1021,12 @@ $1DC9-$1DDC Battle Variables
             d: Doom Gaze has been defeated
     + $1DD3 Doom Gaze's HP
       $1DD5 Battles Fought with Cursed Shield
-	  $1DD6 -
-	  $1DD7 -
-	  $1DD8 -
-	  $1DD9 -
-	  $1DDA -
-	  $1DDB -
+      $1DD6 -
+      $1DD7 -
+      $1DD8 -
+      $1DD9 -
+      $1DDA -
+      $1DDB -
       $1DDC -
 $1DDD-$1E1C Veldt Formations Available (64 bytes)
 $1E1D-$1E3F -
@@ -1035,84 +1035,84 @@ $1E40-$1E7F Treasure Bits (indicates if chests have been collected)
 $1E80-$1F5F Event Bits
 -----------
       $1E80 1: first dialog with Arvis
-			3: moogle battle at Narshe
-			4: met Edgar
-			5: learned about Sabin
-			6: first dialog with Kefka at Figaro castle
-			7: Sabin returned to Figaro castle
-	  $1E81 0: going to room at Figaro after first dialog with Kefka
-			3: met Shadow
-	  $1E82 0: Sabin joined
+            3: moogle battle at Narshe
+            4: met Edgar
+            5: learned about Sabin
+            6: first dialog with Kefka at Figaro castle
+            7: Sabin returned to Figaro castle
+      $1E81 0: going to room at Figaro after first dialog with Kefka
+            3: met Shadow
+      $1E82 0: Sabin joined
 
-	  $1E84 4: Shadow's 1st dream
-	        6: Shadow's 2nd dream
-	        7: Shadow's 3rd dream
-	  $1E85 0: Shadow's 4th dream
+      $1E84 4: Shadow's 1st dream
+            6: Shadow's 2nd dream
+            7: Shadow's 3rd dream
+      $1E85 0: Shadow's 4th dream
 
       $1E93 ?f??????
             f: floating island has lifted off (not shown on mini map)
-	  
-	  $1EA5 76543210
-	        0: single dog attack, opening Narshe
-	        1: two guards attack, opening Narshe
-			2: two dogs then two guards attack, opening Narshe
-			3: dialog at mine entrance, opening Narshe
-			4: gate open, opening Narshe
-	  $1EA6 76543210
-	        0: pincer attack, opening Narshe
-			1: two guards + two mammths attack, opening Narshe
-			3: save point explanation
-			4: chocobo explanation
-			5: whelk attack, opening Narshe
+
+      $1EA5 76543210
+            0: single dog attack, opening Narshe
+            1: two guards attack, opening Narshe
+            2: two dogs then two guards attack, opening Narshe
+            3: dialog at mine entrance, opening Narshe
+            4: gate open, opening Narshe
+      $1EA6 76543210
+            0: pincer attack, opening Narshe
+            1: two guards + two mammths attack, opening Narshe
+            3: save point explanation
+            4: chocobo explanation
+            5: whelk attack, opening Narshe
 
     + $1EB4 abcdefgh ijklmnop
             a: TERRA is available
       $1EB6 sotaldru
-	        s: serpent trench arrow direction (0: right, 1: left)
+            s: serpent trench arrow direction (0: right, 1: left)
             o: map's object data needs to be loaded ???
-			t: tile event bit (gets cleared when the party moves to a new tile)
+            t: tile event bit (gets cleared when the party moves to a new tile)
             a: A button is down
             l: character is facing left
             d: character is facing down
             r: character is facing right
             u: character is facing up
       $1EB7 sg??va?m
-	        s: on a save point
+            s: on a save point
             g: not enough gp (set by event command $85)
-			v: on the veldt
+            v: on the veldt
             a: airship is grounded
-			m: play alternative world map music
+            m: play alternative world map music
       $1EB8 ?p???ms?
             p: enable character portrait
-			m: disable main menu
-			s: sprint shoes effect is disabled
+            m: disable main menu
+            s: sprint shoes effect is disabled
       $1EB9 up?s????
             u: user does not have control of character
             p: enable party switching
-			s: don't change song when loading map
+            s: don't change song when loading map
    ++ $1EBA current rare items
       $1EBD sc--rrrr
-	        s: fighting SHADOW at the colosseum
-			c: a valid item was selected for the colosseum
-			r: more rare items (unused)
+            s: fighting SHADOW at the colosseum
+            c: a valid item was selected for the colosseum
+            r: more rare items (unused)
       $1EBE Local Control
       $1EBF Local Control
-   
+
       $1ED7 ???m????
             m: continue current music during battle -> $11E4.3
       $1ED8 aaaa???f
-	        a: party 1 event bits (cleared every step)
+            a: party 1 event bits (cleared every step)
             f: enable horizontal fade bars from ending
       $1ED9 ccccbbbb
-	        c: party 3 event bits (cleared every step)
-			b: party 2 event bits (cleared every step)
+            c: party 3 event bits (cleared every step)
+            b: party 2 event bits (cleared every step)
 
      +$1EDC ??cccccc cccccccc
-	        c: initialized characters
+            c: initialized characters
      +$1EDE sncccccc cccccccc
-	        s: there is at least one saved game (go to load screen after title screen instead of playing intro)
-			n: go to first Narshe scene after magitek march (instead of back to the title screen)
-	        c: available characters
+            s: there is at least one saved game (go to load screen after title screen instead of playing intro)
+            n: go to first Narshe scene after magitek march (instead of back to the title screen)
+            c: available characters
 $1EE0-$1F5F NPC Event Bits (to enable/disable NPC's, initialized for new game, all other event bits are cleared)
 
 $1F60-$1FFF
@@ -1169,7 +1169,7 @@ $7E00-$7FEF -
      +$7FFA Fixed Value #$E41B
      +$7FFC Fixed Value #$E41B
      +$7FFE Fixed Value #$E41B
-    
+
 $7E2000-$7FFFFF WRAM
 ---------------
 $7E2000-$7E5FFF Object Map Data (object number x 2, $FF means no object)
@@ -1177,10 +1177,10 @@ $7E6000-$7E6BFF Terra Outline Graphics (not implemented)
 $7E6C00-$7E71FF -
 $7E7200-$7E73FF Color Palettes (unmodified)
         $7E7200 Dialog Text Palette (uses first four colors only)
-		$7E7220 Map Palettes
-		$7E72E0 Dialog Window Palette (last 8 colors only)
-		$7E7300 Sprite Palettes
-		$7E73E0 Vehicle Palette (overwritten for character portrait)
+        $7E7220 Map Palettes
+        $7E72E0 Dialog Window Palette (last 8 colors only)
+        $7E7300 Sprite Palettes
+        $7E73E0 Vehicle Palette (overwritten for character portrait)
 $7E7400-$7E75FF Color Palettes (active)
 $7E7600-$7E76FF tile properties byte 1 ($F7 = always impassable, $07 = counter tile, can be talked over)
                 lrdbtslu
@@ -1264,7 +1264,7 @@ $9023-$9042 Next 16x16 Character Graphics, bpp 1-2 (main)
 $9043-$9062 Current 16x16 Character Graphics, bpp 3-4 (shadow)
 $9063-$9082 Next 16x16 Character Graphics, bpp 3-4 (shadow)
 $9083-$90C2 Dialog Text Graphics VRAM Buffer ($40 bytes -> VRAM $3800)
-$90C3-$9102 
+$90C3-$9102
 $9103-$9122 Current 16x16 Text Graphics, bpp 1-2 (main)
 $9123-$9142 Next 16x16 Text Graphics, bpp 1-2 (main)
 $9143-$9162 Current 16x16 Text Graphics, bpp 3-4 (shadow)
@@ -1313,12 +1313,12 @@ $4400-$47FF Dialog Text Map Data
       $4420 Window at top of screen
       $4640 Window at bottom of screen
 $4800-$4FFF BG1 Map Data
-      $4800 
-	  $4C00 
+      $4800
+      $4C00
 $5000-$57FF BG2 Map Data
 $5800-$5FFF BG3 Map Data
 $6000-$7FFF Sprite Graphics
       $6000 Object Graphics
       $6C00 Overlay Graphics
-	  $7000 Character Portrait Graphics
-	  $7200 Vehicle Graphics
+      $7000 Character Portrait Graphics
+      $7200 Vehicle Graphics

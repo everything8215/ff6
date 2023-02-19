@@ -1,0 +1,486 @@
+{
+  "type": "array",
+  "name": "Item Properties",
+  "range": "0xD85000-0xD86DFF",
+  "arrayLength": 256,
+  "itemSize": 30,
+  "asmSymbol": "ItemProp",
+  "assetPath": "assets/item/item_prop_en.json",
+  "stringTable": "itemNames",
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "itemName": {
+        "type": "assembly",
+        "name": "Name",
+        "external": "itemNames[%i]"
+      },
+      "itemDescription": {
+        "type": "assembly",
+        "name": "Description",
+        "external": "itemDescriptions[%i]"
+      },
+      "itemType": {
+        "type": "property",
+        "name": "Type",
+        "begin": 0,
+        "mask": "0x0F",
+        "stringTable": {
+          "string": {
+            "0": "Tool",
+            "1": "Weapon",
+            "2": "Armor",
+            "3": "Shield",
+            "4": "Helmet",
+            "5": "Relic",
+            "6": "Item"
+          }
+        }
+      },
+      "cost": {
+        "type": "property",
+        "name": "Cost",
+        "begin": 28,
+        "mask": "0xFFFF"
+      },
+      "usage": {
+        "type": "property",
+        "name": "Usage",
+        "begin": 0,
+        "mask": "0x70",
+        "flag": true,
+        "stringTable": {
+          "string": {
+            "0": "Throw",
+            "1": "Battle",
+            "2": "Menu"
+          }
+        }
+      },
+      "targeting": {
+        "type": "property",
+        "name": "Targeting",
+        "begin": 14,
+        "flag": true,
+        "stringTable": "targetingFlags"
+      },
+      "spellCast": {
+        "type": "property",
+        "name": "Spell Cast",
+        "begin": 18,
+        "mask": "0x3F",
+        "stringTable": "spellNames",
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value > 5)"
+      },
+      "randomSpellCast": {
+        "type": "property",
+        "name": "Random Spell Cast",
+        "begin": 18,
+        "mask": "0x40",
+        "bool": true,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value > 5)"
+      },
+      "breakWhenUsed": {
+        "type": "property",
+        "name": "Break After Use",
+        "begin": 18,
+        "mask": "0x80",
+        "bool": true,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value > 5)"
+      },
+      "spellLearned": {
+        "type": "property",
+        "name": "Spell Learned",
+        "begin": 4,
+        "stringTable": "spellNames",
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+      },
+      "spellRate": {
+        "type": "property",
+        "name": "Learn Rate",
+        "begin": 3,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+      },
+      "canEquip": {
+        "type": "property",
+        "name": "Can Equip",
+        "begin": 1,
+        "mask": "0xFFFF",
+        "flag": true,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "length": 16,
+          "default": "<characterNames[%i]>",
+          "string": {
+            "14": "Imp Item",
+            "15": "Heavy Item"
+          }
+        }
+      },
+      "attackPower": {
+        "type": "property",
+        "name": "Attack Power",
+        "begin": 20,
+        "invalid": "this.parent.itemType.value >= 2"
+      },
+      "hitRate": {
+        "type": "property",
+        "name": "Hit Rate",
+        "begin": 21,
+        "invalid": "this.parent.itemType.value >= 2"
+      },
+      "defense": {
+        "type": "property",
+        "name": "Defense",
+        "begin": 20,
+        "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+      },
+      "magicDefense": {
+        "type": "property",
+        "name": "Magic Defense",
+        "begin": 21,
+        "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+      },
+      "itemPower": {
+        "type": "property",
+        "name": "Item Power",
+        "begin": 20,
+        "invalid": "this.parent.itemType.value !== 6"
+      },
+      "vigor": {
+        "type": "property",
+        "name": "Vigor",
+        "begin": 16,
+        "mask": "0x0F",
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "hideIndex": true,
+          "string": {
+            "0": "+0",
+            "1": "+1",
+            "2": "+2",
+            "3": "+3",
+            "4": "+4",
+            "5": "+5",
+            "6": "+6",
+            "7": "+7",
+            "9": "-1",
+            "10": "-2",
+            "11": "-3",
+            "12": "-4",
+            "13": "-5",
+            "14": "-6",
+            "15": "-7"
+          }
+        }
+      },
+      "speed": {
+        "type": "property",
+        "name": "Speed",
+        "begin": 16,
+        "mask": "0xF0",
+        "stringTable": "itemProperties.vigor",
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+      },
+      "stamina": {
+        "type": "property",
+        "name": "Stamina",
+        "begin": 17,
+        "mask": "0x0F",
+        "stringTable": "itemProperties.vigor",
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+      },
+      "magicPower": {
+        "type": "property",
+        "name": "Magic Power",
+        "begin": 17,
+        "mask": "0xF0",
+        "stringTable": "itemProperties.vigor",
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)"
+      },
+      "evade": {
+        "type": "property",
+        "name": "Evade",
+        "begin": 26,
+        "mask": "0x0F",
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "hideIndex": true,
+          "string": {
+            "0": "+0",
+            "1": "+10%",
+            "2": "+20%",
+            "3": "+30%",
+            "4": "+40%",
+            "5": "+50%",
+            "6": "-10%",
+            "7": "-20%",
+            "8": "-30%",
+            "9": "-40%",
+            "10": "-50%"
+          }
+        }
+      },
+      "magicBlock": {
+        "type": "property",
+        "name": "Magic Block",
+        "begin": 26,
+        "mask": "0xF0",
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": "itemProperties.evade"
+      },
+      "weaponFlags": {
+        "type": "property",
+        "name": "Weapon Flags",
+        "begin": 19,
+        "flag": true,
+        "invalid": "this.parent.itemType.value !== 1",
+        "stringTable": {
+          "string": {
+            "1": "SwdTech",
+            "5": "No Back Row Penalty",
+            "6": "Two-Handed",
+            "7": "Enable Runic"
+          }
+        }
+      },
+      "weaponSpecialEffect": {
+        "type": "property",
+        "name": "Special Effect",
+        "begin": 27,
+        "mask": "0xF0",
+        "invalid": "this.parent.itemType.value !== 1",
+        "stringTable": "weaponSpecialEffect"
+      },
+      "itemFlags": {
+        "type": "property",
+        "name": "Item Flags",
+        "begin": 19,
+        "flag": true,
+        "invalid": "this.parent.itemType.value !== 6",
+        "stringTable": {
+          "string": {
+            "1": "Damage Undead",
+            "3": "Restore HP",
+            "4": "Restore MP",
+            "5": "Remove Status",
+            "6": "Cause Damage",
+            "7": "Fractional Power (1/16s)"
+          }
+        }
+      },
+      "itemSpecialEffect": {
+        "type": "property",
+        "name": "Special Effect",
+        "begin": 27,
+        "invalid": "this.parent.itemType.value !== 6",
+        "stringTable": "itemSpecialEffect"
+      },
+      "blockGraphics": {
+        "type": "property",
+        "name": "Block Graphics",
+        "begin": 27,
+        "mask": "0x03",
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "string": {
+            "0": "Dagger Parry",
+            "1": "Sword Parry",
+            "2": "Shield Block",
+            "3": "Cape Dodge"
+          }
+        }
+      },
+      "blockType": {
+        "type": "property",
+        "name": "Block Type",
+        "begin": 27,
+        "mask": "0x0C",
+        "flag": true,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "string": {
+            "0": "Physical Attacks",
+            "1": "Magic Attacks"
+          }
+        }
+      },
+      "elementWeapon": {
+        "type": "property",
+        "name": "Element",
+        "begin": 15,
+        "flag": true,
+        "stringTable": "element",
+        "invalid": "this.parent.itemType.value !== 1"
+      },
+      "elementHalf": {
+        "type": "property",
+        "name": "50% Element",
+        "begin": 15,
+        "flag": true,
+        "stringTable": "element",
+        "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+      },
+      "elementAbsorb": {
+        "type": "property",
+        "name": "Absorb Element",
+        "begin": 22,
+        "flag": true,
+        "stringTable": "element",
+        "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+      },
+      "elementNull": {
+        "type": "property",
+        "name": "Null Element",
+        "begin": 23,
+        "flag": true,
+        "stringTable": "element",
+        "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+      },
+      "elementWeak": {
+        "type": "property",
+        "name": "Weak Element",
+        "begin": 24,
+        "flag": true,
+        "stringTable": "element",
+        "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)"
+      },
+      "statusImmunity": {
+        "type": "property",
+        "name": "Immune",
+        "begin": 6,
+        "mask": "0xFFFF",
+        "flag": true,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "length": 16,
+          "default": "<stringTable.statusNamesReversed[%i]>"
+        }
+      },
+      "statusHelpful": {
+        "type": "property",
+        "name": "Helpful Status",
+        "begin": 8,
+        "flag": true,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "length": 8,
+          "default": "<stringTable.statusNamesReversed[%i+16]>",
+          "string": {
+            "0": "Float"
+          }
+        }
+      },
+      "statusHarmful": {
+        "type": "property",
+        "name": "Harmful Status",
+        "begin": 25,
+        "flag": true,
+        "invalid": "(this.parent.itemType.value < 2) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "length": 8,
+          "default": "<stringTable.statusNamesReversed[%i+8]>"
+        }
+      },
+      "statusItem1": {
+        "type": "property",
+        "name": "Status Effect",
+        "begin": 21,
+        "mask": "0xFFFF",
+        "flag": true,
+        "invalid": "this.parent.itemType.value !== 6",
+        "stringTable": {
+          "length": 16,
+          "default": "<stringTable.statusNamesReversed[%i]>"
+        }
+      },
+      "statusItem2": {
+        "type": "property",
+        "begin": 23,
+        "mask": "0xFFFF",
+        "flag": true,
+        "invalid": "this.parent.itemType.value !== 6",
+        "stringTable": {
+          "length": 16,
+          "default": "<stringTable.statusNamesReversed[%i+16]>"
+        }
+      },
+      "fieldEffects": {
+        "type": "property",
+        "name": "Field Effects",
+        "begin": 5,
+        "mask": "0xFF",
+        "flag": true,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "string": {
+            "0": "Charm Bangle",
+            "1": "Moogle Charm",
+            "5": "Sprint Shoes",
+            "7": "Tintinabar (no effect)"
+          }
+        }
+      },
+      "relicEffects1": {
+        "type": "property",
+        "name": "Relic Effects",
+        "begin": 9,
+        "mask": "0xFFFFFF",
+        "flag": true,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "string": {
+            "0": "Raise Fight Damage",
+            "1": "Raise Magic Damage",
+            "2": "HP +25%",
+            "3": "HP +50%",
+            "4": "HP +12.5%",
+            "5": "MP +25%",
+            "6": "MP +50%",
+            "7": "MP +12.5%",
+            "8": "Gale Hairpin",
+            "9": "Back Guard",
+            "10": "Fight → Jump",
+            "11": "Magic → X-Magic",
+            "12": "Sketch → Control",
+            "13": "Slot → GP Rain",
+            "14": "Steal → Capture",
+            "15": "Jump Continuously",
+            "16": "Increase Steal Rate",
+            "17": "Raise Magic Damage",
+            "18": "Increase Sketch Rate",
+            "19": "Increase Control Rate",
+            "20": "100% Hit Rate",
+            "21": "Spells Cost 50% Less",
+            "22": "Spells Cost 1 MP",
+            "23": "Vigor +50%"
+          }
+        }
+      },
+      "relicEffects2": {
+        "type": "property",
+        "begin": 12,
+        "mask": "0xFFFF",
+        "flag": true,
+        "invalid": "(this.parent.itemType.value === 0) || (this.parent.itemType.value === 6)",
+        "stringTable": {
+          "string": {
+            "0": "Fight → X-Fight",
+            "1": "Randomly Counterattack",
+            "2": "Randomly Evade",
+            "3": "Gauntlet",
+            "4": "Genji Glove",
+            "5": "Can Equip Heavy Items",
+            "6": "Protect Weak Allies",
+            "8": "Shell When HP is Low",
+            "9": "Safe When HP is Low",
+            "10": "Reflect When HP is Low",
+            "11": "Double Experience",
+            "12": "Double GP",
+            "15": "Make Character Undead"
+          }
+        }
+      }
+    }
+  }
+}

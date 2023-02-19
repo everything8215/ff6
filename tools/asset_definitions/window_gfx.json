@@ -1,0 +1,15 @@
+{
+  "type": "array",
+  "name": "Window Graphics",
+  "range": "0xED0000-0xED1BFF",
+  "stringTable": "battleBackgroundProperties",
+  "arrayLength": 8,
+  "itemSize": 896,
+  "asmSymbol": "WindowGfx",
+  "assetPath": "assets/system/window/window%s.cgx",
+  "assembly": {
+    "type": "graphics",
+    "format": "snes4bpp",
+    "palette": "windowPalette"
+  }
+}

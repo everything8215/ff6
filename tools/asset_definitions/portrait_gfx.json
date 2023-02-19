@@ -1,0 +1,70 @@
+{
+  "type": "array",
+  "name": "Character Portrait Graphics",
+  "range": "0xED1D00-0xED585F",
+  "asmSymbol": "PortraitGfx",
+  "assetPath": "assets/character/portrait/portrait%s.cgx",
+  "arrayLength": 19,
+  "itemSize": "0x0320",
+  "assembly": {
+    "type": "graphics",
+    "format": "snes4bpp",
+    "palette": "portraitPalette[%i]",
+    "width": 5,
+    "height": 5,
+    "spriteSheet": {
+      "width": 5,
+      "height": 5,
+      "tilemap": [
+        0,
+        1,
+        2,
+        3,
+        8,
+        16,
+        17,
+        18,
+        19,
+        9,
+        4,
+        5,
+        6,
+        7,
+        10,
+        20,
+        21,
+        22,
+        23,
+        11,
+        13,
+        14,
+        15,
+        24,
+        12
+      ]
+    }
+  },
+  "stringTable": {
+    "string": {
+      "0": "Terra",
+      "1": "Locke",
+      "2": "Cyan",
+      "3": "Shadow",
+      "4": "Edgar",
+      "5": "Sabin",
+      "6": "Celes",
+      "7": "Strago",
+      "8": "Relm",
+      "9": "Setzer",
+      "10": "Mog",
+      "11": "Gau",
+      "12": "Gogo",
+      "13": "Umaro",
+      "14": "Soldier",
+      "15": "Imp",
+      "16": "Leo",
+      "17": "Banon",
+      "18": "Ghost"
+    }
+  }
+}

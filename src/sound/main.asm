@@ -28,7 +28,7 @@
 
 ; ------------------------------------------------------------------------------
 
-.import NumSongs, BRRSamplePtrs, SongScriptPtrs
+.import NumSongs, SampleBRRPtrs, SongScriptPtrs
 
 ; ------------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ TfrSongScript_ext:
 
 ; pointers to misc spc data (+$C50000, unused)
 @0028:  .addr   SongScriptPtrs
-        .addr   BRRSamplePtrs
+        .addr   SampleBRRPtrs
         .addr   SampleLoopStart
         .addr   SampleADSR
         .addr   SampleFreqMult
@@ -336,11 +336,11 @@ PlaySong:
         adc     $e2
         tax
         shorta
-        lda     f:BRRSamplePtrs,x
+        lda     f:SampleBRRPtrs,x
         sta     $10
-        lda     f:BRRSamplePtrs+1,x
+        lda     f:SampleBRRPtrs+1,x
         sta     $11
-        lda     f:BRRSamplePtrs+2,x
+        lda     f:SampleBRRPtrs+2,x
         sta     $12
         ldy     $10
         stz     $10

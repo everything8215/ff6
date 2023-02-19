@@ -1,0 +1,16 @@
+{
+  "type": "tilemap",
+  "name": "Attack Tilemap (2bpp)",
+  "range": "0xD2C000-0xD2DFFF",
+  "asmSymbol": "AttackTiles2bpp",
+  "assetPath": "assets/attack/attack_tiles_2bpp.scr",
+  "format": [
+    "defaultTile",
+    "ff6-animation-tilemap"
+  ],
+  "graphics": "attackGraphics2bpp",
+  "palette": "attackPalette",
+  "height": 256,
+  "width": 16,
+  "disableZLevel": true
+}

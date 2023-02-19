@@ -1,0 +1,8 @@
+{
+  "type": "graphics",
+  "name": "Slot Window Graphics",
+  "range": "0xD2F000-0xD2FFFF",
+  "asmSymbol": "SlotGfx",
+  "assetPath": "assets/battle/slot.cgx",
+  "format": "snes4bpp"
+}

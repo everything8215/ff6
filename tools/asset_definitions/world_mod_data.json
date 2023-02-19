@@ -1,0 +1,16 @@
+{
+  "type": "array",
+  "name": "World Modification Data",
+  "range": "0xCEF600-0xCEF647",
+  "asmSymbol": "WorldModData",
+  "assetPath": "assets/world/mod/mod_data%s.dat",
+  "arrayLength": 2,
+  "assembly": {
+    "type": "data"
+  },
+  "pointerTable": {
+    "range": "0xEEB260-0xEEB265",
+    "pointerSize": 3,
+    "isMapped": true
+  }
+}

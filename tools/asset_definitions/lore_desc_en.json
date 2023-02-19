@@ -1,0 +1,18 @@
+{
+  "type": "array",
+  "name": "Lore Description",
+  "range": "0xED77A0-0xED7A60",
+  "arrayLength": 24,
+  "asmSymbol": "LoreDesc",
+  "assetPath": "assets/character/lore_desc_en.json",
+  "assembly": {
+    "type": "text",
+    "name": "Description",
+    "encoding": "null_terminated_en",
+    "multiLine": true
+  },
+  "pointerTable": {
+    "range": "0xED7A70-0xED7A9F",
+    "offset": "0xED77A0"
+  }
+}

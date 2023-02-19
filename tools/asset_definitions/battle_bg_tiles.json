@@ -1,0 +1,21 @@
+{
+  "type": "array",
+  "name": "Battle Background Layout",
+  "range": "0xE71928-0xE7A9E6",
+  "asmSymbol": "BattleBGTiles",
+  "assetPath": "assets/battle_bg/battle_bg_tiles/battle_bg_tiles%s.scr",
+  "arrayLength": 112,
+  "assembly": {
+    "type": "tilemap",
+    "format": [
+      "snes4bppTile",
+      "ff6-lzss"
+    ],
+    "width": 32,
+    "height": 32
+  },
+  "pointerTable": {
+    "range": "0xE71848-0xE71927",
+    "offset": "0xE70000"
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "type": "array",
+  "name": "Battle Properties",
+  "range": "0xCF6200-0xCF83BF",
+  "asmSymbol": "BattleMonsters",
+  "assetPath": "assets/battle/battle_monsters.json",
+  "arrayLength": 576,
+  "itemSize": 15,
+  "assembly": {
+    "type": "assembly",
+    "editor": "FF6Battle",
+    "assembly": {
+      "monster1": {
+        "type": "property",
+        "name": "Monster 1",
+        "begin": 2,
+        "max": "0x01FF",
+        "msb": "this.parent.monster1MSB",
+        "stringTable": "monsterName",
+        "link": "monsterProperties[%i]",
+        "special": {
+          "0x01FF": "Empty"
+        }
+      },
+      "monster1MSB": {
+        "type": "property",
+        "name": "Monster 1 MSB",
+        "begin": 14,
+        "mask": "0x01",
+        "bool": true,
+        "hidden": true
+      },
+      "monster1Present": {
+        "type": "property",
+        "name": "Present",
+        "begin": 1,
+        "mask": "0x01",
+        "bool": true
+      },
+      "monster2": {
+        "type": "property",
+        "name": "Monster 2",
+        "begin": 3,
+        "max": "0x01FF",
+        "msb": "this.parent.monster2MSB",
+        "stringTable": "monsterName",
+        "link": "monsterProperties[%i]",
+        "special": {
+          "0x01FF": "Empty"
+        }
+      },
+      "monster2MSB": {
+        "type": "property",
+        "name": "Monster 2 MSB",
+        "begin": 14,
+        "mask": "0x02",
+        "bool": true,
+        "hidden": true
+      },
+      "monster2Present": {
+        "type": "property",
+        "name": "Present",
+        "begin": 1,
+        "mask": "0x02",
+        "bool": true
+      },
+      "monster3": {
+        "type": "property",
+        "name": "Monster 3",
+        "begin": 4,
+        "max": "0x01FF",
+        "msb": "this.parent.monster3MSB",
+        "stringTable": "monsterName",
+        "link": "monsterProperties[%i]",
+        "special": {
+          "0x01FF": "Empty"
+        }
+      },
+      "monster3MSB": {
+        "type": "property",
+        "name": "Monster 3 MSB",
+        "begin": 14,
+        "mask": "0x04",
+        "bool": true,
+        "hidden": true
+      },
+      "monster3Present": {
+        "type": "property",
+        "name": "Present",
+        "begin": 1,
+        "mask": "0x04",
+        "bool": true
+      },
+      "monster4": {
+        "type": "property",
+        "name": "Monster 4",
+        "begin": 5,
+        "max": "0x01FF",
+        "msb": "this.parent.monster4MSB",
+        "stringTable": "monsterName",
+        "link": "monsterProperties[%i]",
+        "special": {
+          "0x01FF": "Empty"
+        }
+      },
+      "monster4MSB": {
+        "type": "property",
+        "name": "Monster 4 MSB",
+        "begin": 14,
+        "mask": "0x08",
+        "bool": true,
+        "hidden": true
+      },
+      "monster4Present": {
+        "type": "property",
+        "name": "Present",
+        "begin": 1,
+        "mask": "0x08",
+        "bool": true
+      },
+      "monster5": {
+        "type": "property",
+        "name": "Monster 5",
+        "begin": 6,
+        "max": "0x01FF",
+        "msb": "this.parent.monster5MSB",
+        "stringTable": "monsterName",
+        "link": "monsterProperties[%i]",
+        "special": {
+          "0x01FF": "Empty"
+        }
+      },
+      "monster5MSB": {
+        "type": "property",
+        "name": "Monster 5 MSB",
+        "begin": 14,
+        "mask": "0x10",
+        "bool": true,
+        "hidden": true
+      },
+      "monster5Present": {
+        "type": "property",
+        "name": "Present",
+        "begin": 1,
+        "mask": "0x10",
+        "bool": true
+      },
+      "monster6": {
+        "type": "property",
+        "name": "Monster 6",
+        "begin": 7,
+        "max": "0x01FF",
+        "msb": "this.parent.monster6MSB",
+        "stringTable": "monsterName",
+        "link": "monsterProperties[%i]",
+        "special": {
+          "0x01FF": "Empty"
+        }
+      },
+      "monster6MSB": {
+        "type": "property",
+        "name": "Monster 6 MSB",
+        "begin": 14,
+        "mask": "0x20",
+        "bool": true,
+        "hidden": true
+      },
+      "monster6Present": {
+        "type": "property",
+        "name": "Present",
+        "begin": 1,
+        "mask": "0x20",
+        "bool": true
+      },
+      "monster1X": {
+        "type": "property",
+        "name": "Monster 1 X",
+        "begin": 8,
+        "mask": "0xF0",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster1Y": {
+        "type": "property",
+        "name": "Monster 1 Y",
+        "begin": 8,
+        "mask": "0x0F",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster2X": {
+        "type": "property",
+        "name": "Monster 2 X",
+        "begin": 9,
+        "mask": "0xF0",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster2Y": {
+        "type": "property",
+        "name": "Monster 2 Y",
+        "begin": 9,
+        "mask": "0x0F",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster3X": {
+        "type": "property",
+        "name": "Monster 3 X",
+        "begin": 10,
+        "mask": "0xF0",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster3Y": {
+        "type": "property",
+        "name": "Monster 3 Y",
+        "begin": 10,
+        "mask": "0x0F",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster4X": {
+        "type": "property",
+        "name": "Monster 4 X",
+        "begin": 11,
+        "mask": "0xF0",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster4Y": {
+        "type": "property",
+        "name": "Monster 4 Y",
+        "begin": 11,
+        "mask": "0x0F",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster5X": {
+        "type": "property",
+        "name": "Monster 5 X",
+        "begin": 12,
+        "mask": "0xF0",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster5Y": {
+        "type": "property",
+        "name": "Monster 5 Y",
+        "begin": 12,
+        "mask": "0x0F",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster6X": {
+        "type": "property",
+        "name": "Monster 6 X",
+        "begin": 13,
+        "mask": "0xF0",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "monster6Y": {
+        "type": "property",
+        "name": "Monster 6 Y",
+        "begin": 13,
+        "mask": "0x0F",
+        "multiplier": 8,
+        "hidden": true
+      },
+      "vramMap": {
+        "type": "property",
+        "name": "VRAM Map",
+        "begin": 0,
+        "mask": "0xF0",
+        "stringTable": "battleVRAMMap"
+      },
+      "monsterEntry": {
+        "type": "assembly",
+        "external": "battlePropertiesAux[%i].monsterEntry"
+      },
+      "magicPoints": {
+        "type": "assembly",
+        "external": "battleMagicPoints[%i]",
+        "invalid": "this.parent.i >= 512"
+      },
+      "song": {
+        "type": "assembly",
+        "external": "battlePropertiesAux[%i].song"
+      },
+      "continueSong": {
+        "type": "assembly",
+        "external": "battlePropertiesAux[%i].continueSong"
+      },
+      "characterAI": {
+        "type": "assembly",
+        "external": "battlePropertiesAux[%i].characterAI"
+      },
+      "enableCharacterAI": {
+        "type": "assembly",
+        "external": "battlePropertiesAux[%i].enableCharacterAI"
+      },
+      "flags": {
+        "type": "assembly",
+        "external": "battlePropertiesAux[%i].flags"
+      },
+      "flags2": {
+        "type": "assembly",
+        "external": "battlePropertiesAux[%i].flags2"
+      }
+    }
+  },
+  "stringTable": {
+    "length": 576,
+    "default": "Battle %i"
+  }
+}

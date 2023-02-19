@@ -19,7 +19,7 @@ VERSIONS = ff6-jp ff6-en ff6-en1
 ROM_DIR = rom
 ROMS = $(foreach V, $(VERSIONS), $(ROM_DIR)/$(V).sfc)
 
-.PHONY: all rip clean $(VERSIONS) $(MODULES)
+.PHONY: all rip clean distclean $(VERSIONS) $(MODULES)
 
 # disable default suffix rules
 .SUFFIXES:
@@ -35,7 +35,10 @@ mml:
 	python3 tools/encode_mml.py
 
 clean:
-	$(RM) -r $(ROM_DIR) assets obj include/assets
+	$(RM) -r $(ROM_DIR) obj
+
+distclean: clean
+	$(RM) -r assets include/assets include/script
 
 # ROM filenames
 FF6_JP_PATH = $(ROM_DIR)/ff6-jp.sfc
@@ -83,11 +86,11 @@ CUTSCENE_LZ_ASM = $(LZ_DIR)/cutscene_lz.asm
 
 # rules for making ROM files
 # run linker twice: 1st for the cutscene program, 2nd for the ROM itself
-$(FF6_JP_PATH): cfg/ff6-jp.cfg $(OBJ_FILES_JP)
+$(FF6_JP_PATH): cfg/ff6-jp.cfg mml $(OBJ_FILES_JP)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_JP)
 	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
-	printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
+	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
 	@mkdir -p rom
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_JP) $(CUTSCENE_LZ).o
@@ -98,7 +101,7 @@ $(FF6_EN_PATH): cfg/ff6-en.cfg mml $(OBJ_FILES_EN)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
 	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
-	printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
+	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
 	@mkdir -p rom
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN) $(CUTSCENE_LZ).o
@@ -109,7 +112,7 @@ $(FF6_EN1_PATH): cfg/ff6-en.cfg mml $(OBJ_FILES_EN1)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
 	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
-	printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
+	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
 	@mkdir -p rom
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN1) $(CUTSCENE_LZ).o

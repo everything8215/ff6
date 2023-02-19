@@ -1,0 +1,14 @@
+{
+  "type": "array",
+  "name": "Battle Event Script Pointers",
+  "range": "0xD09800-0xD09841",
+  "asmSymbol": "BattleEventScriptPtrs",
+  "assetPath": "assets/battle/battle_event_script_ptrs.json",
+  "arrayLength": 33,
+  "itemSize": 2,
+  "assembly": {
+    "type": "property",
+    "name": "Pointer",
+    "mask": "0xFFFF"
+  }
+}

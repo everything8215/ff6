@@ -1,0 +1,13 @@
+{
+  "type": "array",
+  "name": "Attack Palette",
+  "range": "0xD26000-0xD26EFF",
+  "asmSymbol": "AttackPal",
+  "assetPath": "assets/attack/attack_pal/attack_pal%s.pal",
+  "arrayLength": 240,
+  "itemSize": 16,
+  "assembly": {
+    "type": "data",
+    "format": "bgr555"
+  }
+}

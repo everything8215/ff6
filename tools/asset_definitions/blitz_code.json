@@ -1,0 +1,125 @@
+{
+  "type": "array",
+  "name": "Blitz Code",
+  "range": "0xC47A40-0xC47A9F",
+  "asmSymbol": "BlitzCode",
+  "assetPath": "assets/character/blitz_code.json",
+  "arrayLength": 8,
+  "itemSize": 12,
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "level": {
+        "type": "assembly",
+        "external": "blitzLevel[%i]"
+      },
+      "cat-code": "Input Code",
+      "length": {
+        "type": "property",
+        "name": "Code Length",
+        "begin": 11,
+        "stringTable": {
+          "hideIndex": true,
+          "string": {
+            "2": "1 Button",
+            "4": "2 Buttons",
+            "6": "3 Buttons",
+            "8": "4 Buttons",
+            "10": "5 Buttons",
+            "12": "6 Buttons",
+            "14": "7 Buttons",
+            "16": "8 Buttons",
+            "18": "9 Buttons",
+            "20": "10 Buttons",
+            "22": "11 Buttons"
+          }
+        }
+      },
+      "button1": {
+        "type": "property",
+        "name": "Button 1",
+        "begin": 0,
+        "stringTable": {
+          "hideIndex": true,
+          "string": {
+            "0": "No Button",
+            "1": "A Button",
+            "3": "X Button",
+            "4": "Y Button",
+            "5": "L Button",
+            "6": "R Button",
+            "7": "Down/Left",
+            "8": "Down",
+            "9": "Down/Right",
+            "10": "Right",
+            "11": "Up/Right",
+            "12": "Up",
+            "13": "Up/Left",
+            "14": "Left"
+          }
+        }
+      },
+      "button2": {
+        "type": "property",
+        "name": "Button 2",
+        "begin": 1,
+        "stringTable": "blitzCode.button1"
+      },
+      "button3": {
+        "type": "property",
+        "name": "Button 3",
+        "begin": 2,
+        "stringTable": "blitzCode.button1"
+      },
+      "button4": {
+        "type": "property",
+        "name": "Button 4",
+        "begin": 3,
+        "stringTable": "blitzCode.button1"
+      },
+      "button5": {
+        "type": "property",
+        "name": "Button 5",
+        "begin": 4,
+        "stringTable": "blitzCode.button1"
+      },
+      "button6": {
+        "type": "property",
+        "name": "Button 6",
+        "begin": 5,
+        "stringTable": "blitzCode.button1"
+      },
+      "button7": {
+        "type": "property",
+        "name": "Button 7",
+        "begin": 6,
+        "stringTable": "blitzCode.button1"
+      },
+      "button8": {
+        "type": "property",
+        "name": "Button 8",
+        "begin": 7,
+        "stringTable": "blitzCode.button1"
+      },
+      "button9": {
+        "type": "property",
+        "name": "Button 9",
+        "begin": 8,
+        "stringTable": "blitzCode.button1"
+      },
+      "button10": {
+        "type": "property",
+        "name": "Button 10",
+        "begin": 9,
+        "stringTable": "blitzCode.button1"
+      },
+      "button11": {
+        "type": "property",
+        "name": "Button 11",
+        "begin": 10,
+        "stringTable": "blitzCode.button1"
+      },
+      "cat-end": ""
+    }
+  }
+}

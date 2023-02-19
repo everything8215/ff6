@@ -1,0 +1,24 @@
+{
+  "type": "array",
+  "name": "Map Title",
+  "range": "0xCEF100-0xCEF462",
+  "arrayLength": 73,
+  "asmSymbol": "MapTitle",
+  "assetPath": "assets/map/map_title_en.json",
+  "assembly": {
+    "type": "text",
+    "name": "Title",
+    "encoding": "dialog_en"
+  },
+  "pointerTable": {
+    "range": "0xE68400-0xE68491",
+    "offset": "0xCEF100"
+  },
+  "stringTable": {
+    "length": 73,
+    "default": "<mapTitle[%i]>",
+    "string": {
+      "0": "No Title"
+    }
+  }
+}

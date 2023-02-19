@@ -1,0 +1,26 @@
+{
+  "type": "array",
+  "name": "Item Jump/Throw Animation",
+  "range": "0xD10040-0xD10140",
+  "asmSymbol": "ItemJumpThrowAnim",
+  "assetPath": "assets/item/item_jump_throw_anim.json",
+  "arrayLength": 257,
+  "itemSize": 1,
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "jumpAnim": {
+        "type": "property",
+        "name": "Jump Animation",
+        "begin": 0,
+        "mask": "0x0F"
+      },
+      "throwAnim": {
+        "type": "property",
+        "name": "Throw Animation",
+        "begin": 0,
+        "mask": "0xF0"
+      }
+    }
+  }
+}

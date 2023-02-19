@@ -1,0 +1,84 @@
+{
+  "type": "array",
+  "name": "Map Parallax",
+  "range": "0xC0FE40-0xC0FEE7",
+  "arrayLength": 21,
+  "itemSize": 8,
+  "asmSymbol": "MapParallax",
+  "assetPath": "assets/map/map_parallax.json",
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "cat-layer2": "Layer 2",
+      "hSpeedLayer2": {
+        "type": "property",
+        "name": "Horizontal Speed",
+        "begin": 0,
+        "signed": true
+      },
+      "hMultiplierLayer2": {
+        "type": "property",
+        "name": "Horizontal Multiplier",
+        "begin": 4
+      },
+      "vSpeedLayer2": {
+        "type": "property",
+        "name": "Vertical Speed",
+        "begin": 1,
+        "signed": true
+      },
+      "vMultiplierLayer2": {
+        "type": "property",
+        "name": "Vertical Multiplier",
+        "begin": 5
+      },
+      "cat-layer3": "Layer 3",
+      "hSpeedLayer3": {
+        "type": "property",
+        "name": "Horizontal Speed",
+        "begin": 2,
+        "signed": true
+      },
+      "hMultiplierLayer3": {
+        "type": "property",
+        "name": "Horizontal Multiplier",
+        "begin": 6
+      },
+      "vSpeedLayer3": {
+        "type": "property",
+        "name": "Vertical Speed",
+        "begin": 3,
+        "signed": true
+      },
+      "vMultiplierLayer3": {
+        "type": "property",
+        "name": "Vertical Multiplier",
+        "begin": 7
+      }
+    }
+  },
+  "stringTable": {
+    "default": "Parallax %i",
+    "length": 21,
+    "string": {
+      "0": "None",
+      "1": "Phantom Forest",
+      "2": "Parallax w/ Fog",
+      "3": "Train",
+      "4": "Parallax",
+      "5": "Opera House",
+      "6": "Floating Island",
+      "8": "Airship",
+      "9": "Sealed Gate",
+      "10": "Fog",
+      "11": "Fog (Moving Down)",
+      "12": "Airship (Breaking Apart)",
+      "13": "Slow Fog",
+      "14": "Fanatics' Tower",
+      "15": "Kefka's Tower (Top)",
+      "17": "Waterfall",
+      "18": "Kefka's Tower",
+      "20": "Fog"
+    }
+  }
+}

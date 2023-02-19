@@ -1,0 +1,15 @@
+{
+  "type": "array",
+  "name": "Dance Background",
+  "range": "0xD1F9AB-0xD1F9B2",
+  "asmSymbol": "DanceBG",
+  "assetPath": "assets/character/dance_bg.json",
+  "arrayLength": 8,
+  "itemSize": 1,
+  "assembly": {
+    "type": "property",
+    "name": "Background",
+    "stringTable": "battleBackground",
+    "link": "battleBackgroundProperties[%i]"
+  }
+}

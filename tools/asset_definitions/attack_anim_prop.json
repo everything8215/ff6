@@ -1,0 +1,156 @@
+{
+  "type": "array",
+  "name": "Attack Animation Properties",
+  "range": "0xD07FB2-0xD095E5",
+  "arrayLength": 406,
+  "itemSize": 14,
+  "asmSymbol": "AttackAnimProp",
+  "assetPath": "assets/attack/attack_anim_prop.json",
+  "assembly": {
+    "type": "assembly",
+    "editor": "FF6AttackEditor",
+    "assembly": {
+      "soundEffect": {
+        "type": "property",
+        "name": "Sound Effect",
+        "begin": 9
+      },
+      "specialFunction": {
+        "type": "property",
+        "name": "Init. Function",
+        "begin": 10,
+        "mask": "0x7F"
+      },
+      "delay": {
+        "type": "property",
+        "name": "Thread Delay",
+        "begin": 13
+      },
+      "cat-sprite": "Sprite",
+      "spritePalette": {
+        "type": "property",
+        "name": "Palette",
+        "begin": 6,
+        "stringTable": "attackPalette"
+      },
+      "spriteAnimation": {
+        "type": "assembly",
+        "name": "Sprite Animation",
+        "begin": 0,
+        "length": 2,
+        "assembly": {
+          "spriteGraphics": {
+            "type": "property",
+            "name": "Graphics",
+            "mask": "0x7FFF",
+            "stringTable": "attackGraphicsProperties",
+            "link": "attackGraphicsProperties[%i]"
+          },
+          "spriteNoGraphics": {
+            "type": "property",
+            "name": "No Graphics",
+            "mask": "0x8000",
+            "bool": true
+          }
+        },
+        "special": {
+          "0xFFFF": "No Animation"
+        }
+      },
+      "cat-layer1": "Layer 1",
+      "layer1Palette": {
+        "type": "property",
+        "name": "Palette",
+        "begin": 7,
+        "stringTable": "attackPalette"
+      },
+      "layer1Animation": {
+        "type": "assembly",
+        "name": "Layer 1 Animation",
+        "begin": 2,
+        "length": 2,
+        "assembly": {
+          "layer1Graphics": {
+            "type": "property",
+            "name": "Graphics",
+            "mask": "0x7FFF",
+            "stringTable": "attackGraphicsProperties",
+            "link": "attackGraphicsProperties[%i]"
+          },
+          "layer1NoGraphics": {
+            "type": "property",
+            "name": "No Graphics",
+            "mask": "0x8000",
+            "bool": true
+          }
+        },
+        "special": {
+          "0xFFFF": "No Animation"
+        }
+      },
+      "layer1Target": {
+        "type": "property",
+        "name": "Layer 1 Target",
+        "begin": 10,
+        "mask": "0x80",
+        "bool": true
+      },
+      "cat-layer3": "Layer 3",
+      "layer3Palette": {
+        "type": "property",
+        "name": "Palette",
+        "begin": 8,
+        "stringTable": "attackPalette"
+      },
+      "layer3Animation": {
+        "type": "assembly",
+        "name": "Layer 3 Animation",
+        "begin": 4,
+        "length": 2,
+        "assembly": {
+          "layer3Graphics": {
+            "type": "property",
+            "name": "Graphics",
+            "mask": "0x7FFF",
+            "stringTable": "attackGraphicsProperties",
+            "link": "attackGraphicsProperties[%i]"
+          },
+          "layer3NoGraphics": {
+            "type": "property",
+            "name": "No Graphics",
+            "mask": "0x8000",
+            "bool": true
+          }
+        },
+        "special": {
+          "0xFFFF": "No Animation"
+        }
+      },
+      "cat-extra": "Extra",
+      "extraAnimation": {
+        "type": "assembly",
+        "name": "Extra Animation",
+        "begin": 11,
+        "length": 2,
+        "assembly": {
+          "extraGraphics": {
+            "type": "property",
+            "name": "Graphics",
+            "mask": "0x7FFF",
+            "stringTable": "attackGraphicsProperties",
+            "link": "attackGraphicsProperties[%i]"
+          },
+          "extraNoGraphics": {
+            "type": "property",
+            "name": "No Graphics",
+            "mask": "0x8000",
+            "bool": true
+          }
+        },
+        "special": {
+          "0xFFFF": "No Animation"
+        }
+      }
+    }
+  }
+}

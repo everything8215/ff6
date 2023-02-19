@@ -13,7 +13,7 @@
 
 .segment "menu_data"
 
-        .include "../assets/menu_pal.asm"                       ; d8/e800
+        .include "assets/menu_pal.asm"                          ; d8/e800
 
 ; name change letters
 NameChangeLetters:

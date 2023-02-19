@@ -1,0 +1,8 @@
+{
+  "type": "graphics",
+  "name": "\"The End\" Palette",
+  "range": "0xC9FF00-0xC9FFFF",
+  "asmSymbol": "TheEndPal",
+  "assetPath": "assets/cutscene/the_end.pal",
+  "format": "bgr555"
+}

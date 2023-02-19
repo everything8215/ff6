@@ -1,0 +1,28 @@
+{
+  "type": "array",
+  "name": "Character Experience Progression",
+  "range": "0xED8220-0xED82E3",
+  "asmSymbol": "LevelUpExp",
+  "assetPath": "assets/character/level_up_exp.json",
+  "arrayLength": 98,
+  "itemSize": 2,
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "exp": {
+        "type": "property",
+        "name": "Experience",
+        "mask": "0xFFFF",
+        "multiplier": 8
+      },
+      "hp": {
+        "type": "assembly",
+        "external": "characterHPProgression[%i].hp"
+      },
+      "mp": {
+        "type": "assembly",
+        "external": "characterMPProgression[%i].mp"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "array",
+  "name": "Font Palette",
+  "range": "0xD8E800-0xD8E89F",
+  "arrayLength": 20,
+  "itemSize": 8,
+  "asmSymbol": "FontPal",
+  "assetPath": "assets/system/font.pal",
+  "assembly": {
+    "type": "data",
+    "format": "bgr555"
+  }
+}

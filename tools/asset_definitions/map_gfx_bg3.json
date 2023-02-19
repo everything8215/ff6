@@ -1,0 +1,33 @@
+{
+  "type": "array",
+  "name": "Map Graphics (Layer 3)",
+  "range": "0xE68780-0xE6CD3C",
+  "arrayLength": 18,
+  "asmSymbol": "MapGfxBG3",
+  "assetPath": "assets/map/map_gfx_bg3/map_gfx_bg3%s.cgx",
+  "assembly": {
+    "type": "data",
+    "format": "ff6-lzss",
+    "assembly": {
+      "tileset": {
+        "type": "data",
+        "length": "0x40"
+      },
+      "graphics": {
+        "type": "data",
+        "begin": "0x40",
+        "length": "0x1000",
+        "format": "snes2bpp"
+      }
+    }
+  },
+  "pointerTable": {
+    "range": "0xE6CD60-0xE6CD95",
+    "pointerSize": 3,
+    "offset": "0xE68780"
+  },
+  "stringTable": {
+    "length": 18,
+    "default": "Map Graphics %i (Layer 3)"
+  }
+}

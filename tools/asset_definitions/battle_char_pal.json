@@ -1,0 +1,27 @@
+{
+  "type": "array",
+  "name": "Battle/Menu Character Palette",
+  "range": "0xED6300-0xED63DF",
+  "asmSymbol": "BattleCharPal",
+  "assetPath": "assets/character/battle_char_pal/battle_char_pal%s.pal",
+  "arrayLength": 7,
+  "itemSize": 32,
+  "assembly": {
+    "type": "data",
+    "format": "bgr555"
+  },
+  "stringTable": {
+    "name": "Battle/Menu Character Palette",
+    "default": "Battle/Menu Character Palette %i",
+    "length": 8,
+    "string": {
+      "0": "Edgar, Sabin, Celes (Battle/Menu)",
+      "1": "Locke (Battle/Menu)",
+      "2": "Terra (Battle/Menu)",
+      "3": "Strago, Relm, Gau, Gogo (Battle/Menu)",
+      "4": "Cyan, Shadow, Setzer (Battle/Menu)",
+      "5": "Mog, Umaro (Battle/Menu)",
+      "6": "Esper Terra (Battle/Menu)"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "array",
+  "name": "Rare Item Description",
+  "range": "0xCEFCB0-0xCEFEDE",
+  "arrayLength": 20,
+  "asmSymbol": "RareItemDesc",
+  "assetPath": "assets/item/rare_item_desc_en.json",
+  "assembly": {
+    "type": "text",
+    "encoding": "null_terminated_en",
+    "multiLine": true
+  },
+  "pointerTable": {
+    "range": "0xCEFB60-0xCEFB87",
+    "offset": "0xCEFCB0"
+  }
+}

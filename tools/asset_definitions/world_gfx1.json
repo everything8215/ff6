@@ -1,0 +1,42 @@
+{
+  "type": "data",
+  "name": "World of Balance Graphics Data",
+  "range": "0xEF114F-0xEF324F",
+  "asmSymbol": "WorldGfx1",
+  "assetPath": "assets/world/world1.cgx",
+  "format": "ff6-lzss",
+  "isSequential": true,
+  "assembly": {
+    "tileset": {
+      "type": "tilemap",
+      "name": "World of Balance Tileset",
+      "range": "0x0000-0x03FF",
+      "format": [
+        "generic4bppTile",
+        "interlace(2,16,2)"
+      ],
+      "width": 32,
+      "height": 32,
+      "graphics": "worldGraphics1.graphics",
+      "palette": "worldPalette1",
+      "colorOffset": {
+        "path": "worldGraphics1.paletteAssignment",
+        "multiplier": 16,
+        "perTile": true
+      }
+    },
+    "graphics": {
+      "type": "graphics",
+      "name": "World of Balance Graphics",
+      "range": "0x0400-0x23FF",
+      "format": "linear4bpp",
+      "palette": "worldPalette1"
+    },
+    "paletteAssignment": {
+      "type": "data",
+      "name": "World of Balance Palette Assignment",
+      "range": "0x2400-0x247F",
+      "format": "linear4bpp"
+    }
+  }
+}

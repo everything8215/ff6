@@ -1,0 +1,7 @@
+{
+  "type": "data",
+  "name": "Magitek Train Ride Palette",
+  "range": "0xEF4846-0xEF4A45",
+  "asmSymbol": "MagitekTrainPal",
+  "assetPath": "assets/cutscene/magitek_train.pal"
+}

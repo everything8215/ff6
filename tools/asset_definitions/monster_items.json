@@ -1,0 +1,42 @@
+{
+  "type": "array",
+  "name": "Monster Items",
+  "range": "0xCF3000-0xCF35FF",
+  "arrayLength": 384,
+  "itemSize": 4,
+  "asmSymbol": "MonsterItems",
+  "assetPath": "assets/monster/monster_items.json",
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "rareSteal": {
+        "type": "property",
+        "name": "Rare Steal",
+        "begin": 0,
+        "stringTable": "itemNames",
+        "link": "itemProperties[%i]"
+      },
+      "commonSteal": {
+        "type": "property",
+        "name": "Common Steal",
+        "begin": 1,
+        "stringTable": "itemNames",
+        "link": "itemProperties[%i]"
+      },
+      "rareDrop": {
+        "type": "property",
+        "name": "Rare Drop",
+        "begin": 2,
+        "stringTable": "itemNames",
+        "link": "itemProperties[%i]"
+      },
+      "commonDrop": {
+        "type": "property",
+        "name": "Common Drop",
+        "begin": 3,
+        "stringTable": "itemNames",
+        "link": "itemProperties[%i]"
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "array",
+  "name": "Attack Message",
+  "range": "0xD1F000-0xD1F750",
+  "asmSymbol": "AttackMsg",
+  "assetPath": "assets/attack/attack_msg_en.json",
+  "arrayLength": 256,
+  "assembly": {
+    "type": "text",
+    "encoding": "null_terminated_en",
+    "multiLine": true
+  },
+  "pointerTable": {
+    "range": "0xD1F7A0-0xD1F99F",
+    "offset": "0xD10000"
+  }
+}

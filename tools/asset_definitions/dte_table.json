@@ -1,0 +1,7 @@
+{
+  "type": "data",
+  "name": "DTE Table",
+  "range": "0xC0DFA0-0xC0E09F",
+  "asmSymbol": "DTETbl",
+  "assetPath": "assets/system/dte_table.dat"
+}

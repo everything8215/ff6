@@ -1,0 +1,24 @@
+{
+  "type": "data",
+  "name": "World Map Battle Probability",
+  "range": "0xCF5800-0xCF587F",
+  "format": "linear2bpp",
+  "arrayLength": 128,
+  "itemSize": 1,
+  "asmSymbol": "WorldBattleRate",
+  "assetPath": "assets/battle/world_battle_rate.dat",
+  "assembly": {
+    "type": "property",
+    "name": "Probability",
+    "length": 1,
+    "mask": "0x03",
+    "stringTable": {
+      "string": {
+        "0": "Normal",
+        "1": "Low",
+        "2": "High",
+        "3": "None"
+      }
+    }
+  }
+}

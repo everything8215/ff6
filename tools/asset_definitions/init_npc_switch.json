@@ -1,0 +1,7 @@
+{
+  "type": "data",
+  "name": "Initial NPC Switches",
+  "range": "0xC0E0A0-0xC0E11F",
+  "asmSymbol": "InitNPCSwitch",
+  "assetPath": "assets/event/init_npc_switch.dat"
+}

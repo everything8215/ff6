@@ -2957,8 +2957,8 @@ TimerTiles:
 
 LoadTimerGfx:
 
-@DigitGfx := FontGfxSmall+$0b40
-@ColonGfx := FontGfxSmall+$0c10
+@DigitGfx := SmallFontGfx+$0b40
+@ColonGfx := SmallFontGfx+$0c10
 
 @6adb:  lda     $0521
         bmi     @6ae1

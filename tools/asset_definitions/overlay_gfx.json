@@ -1,0 +1,9 @@
+{
+  "type": "graphics",
+  "name": "Map Overlay Graphics",
+  "range": "0xC0E2A0-0xC0EC1F",
+  "asmSymbol": "OverlayGfx",
+  "assetPath": "assets/map/overlay_gfx.cgx",
+  "format": "linear1bpp(1)",
+  "backColor": true
+}

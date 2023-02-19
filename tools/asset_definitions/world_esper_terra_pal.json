@@ -1,0 +1,8 @@
+{
+  "type": "data",
+  "name": "Esper Terra Palette (World Map)",
+  "range": "0xEFCE97-0xEFCEB6",
+  "asmSymbol": "WorldEsperTerraPal",
+  "assetPath": "assets/world/esper_terra.pal",
+  "format": "bgr555"
+}

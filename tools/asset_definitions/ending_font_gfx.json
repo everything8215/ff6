@@ -1,0 +1,8 @@
+{
+  "type": "data",
+  "name": "Ending Font Graphics",
+  "range": "0xC4BA00-0xC4BFB8",
+  "asmSymbol": "EndingFontGfx",
+  "assetPath": "assets/cutscene/ending_font.cgx",
+  "format": "ff6-lzss"
+}

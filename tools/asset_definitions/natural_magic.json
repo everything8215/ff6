@@ -1,0 +1,244 @@
+{
+  "type": "array",
+  "name": "Natural Magic",
+  "range": "0xECE3C0-0xECE3FF",
+  "asmSymbol": "NaturalMagic",
+  "assetPath": "assets/character/natural_magic.json",
+  "arrayLength": 2,
+  "itemSize": 32,
+  "assembly": {
+    "type": "assembly",
+    "assembly": {
+      "cat-spell1": "Spell 1",
+      "spell1": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 0,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level1": {
+        "type": "property",
+        "name": "Level",
+        "begin": 1,
+        "max": 99
+      },
+      "cat-spell2": "Spell 2",
+      "spell2": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 2,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level2": {
+        "type": "property",
+        "name": "Level",
+        "begin": 3,
+        "max": 99
+      },
+      "cat-spell3": "Spell 3",
+      "spell3": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 4,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level3": {
+        "type": "property",
+        "name": "Level",
+        "begin": 5,
+        "max": 99
+      },
+      "cat-spell4": "Spell 4",
+      "spell4": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 6,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level4": {
+        "type": "property",
+        "name": "Level",
+        "begin": 7,
+        "max": 99
+      },
+      "cat-spell5": "Spell 5",
+      "spell5": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 8,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level5": {
+        "type": "property",
+        "name": "Level",
+        "begin": 9,
+        "max": 99
+      },
+      "cat-spell6": "Spell 6",
+      "spell6": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 10,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level6": {
+        "type": "property",
+        "name": "Level",
+        "begin": 11,
+        "max": 99
+      },
+      "cat-spell7": "Spell 7",
+      "spell7": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 12,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level7": {
+        "type": "property",
+        "name": "Level",
+        "begin": 13,
+        "max": 99
+      },
+      "cat-spell8": "Spell 8",
+      "spell8": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 14,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level8": {
+        "type": "property",
+        "name": "Level",
+        "begin": 15,
+        "max": 99
+      },
+      "cat-spell9": "Spell 9",
+      "spell9": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 16,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level9": {
+        "type": "property",
+        "name": "Level",
+        "begin": 17,
+        "max": 99
+      },
+      "cat-spell10": "Spell 10",
+      "spell10": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 18,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level10": {
+        "type": "property",
+        "name": "Level",
+        "begin": 19,
+        "max": 99
+      },
+      "cat-spell11": "Spell 11",
+      "spell11": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 20,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level11": {
+        "type": "property",
+        "name": "Level",
+        "begin": 21,
+        "max": 99
+      },
+      "cat-spell12": "Spell 12",
+      "spell12": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 22,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level12": {
+        "type": "property",
+        "name": "Level",
+        "begin": 23,
+        "max": 99
+      },
+      "cat-spell13": "Spell 13",
+      "spell13": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 24,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level13": {
+        "type": "property",
+        "name": "Level",
+        "begin": 25,
+        "max": 99
+      },
+      "cat-spell14": "Spell 14",
+      "spell14": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 26,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level14": {
+        "type": "property",
+        "name": "Level",
+        "begin": 27,
+        "max": 99
+      },
+      "cat-spell15": "Spell 15",
+      "spell15": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 28,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level15": {
+        "type": "property",
+        "name": "Level",
+        "begin": 29,
+        "max": 99
+      },
+      "cat-spell16": "Spell 16",
+      "spell16": {
+        "type": "property",
+        "name": "Spell",
+        "begin": 30,
+        "stringTable": "spellNames",
+        "link": "attackProperties[%i]"
+      },
+      "level16": {
+        "type": "property",
+        "name": "Level",
+        "begin": 31,
+        "max": 99
+      }
+    }
+  },
+  "stringTable": {
+    "string": {
+      "0": "<characterNames[0]>",
+      "1": "<characterNames[6]>"
+    }
+  }
+}

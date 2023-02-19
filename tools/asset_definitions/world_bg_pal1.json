@@ -1,0 +1,8 @@
+{
+  "type": "data",
+  "name": "World of Balance BG Palette",
+  "range": "0xD2EC00-0xD2ECFF",
+  "asmSymbol": "WorldBGPal1",
+  "assetPath": "assets/world/world1_bg.pal",
+  "format": "bgr555"
+}

@@ -1,0 +1,17 @@
+{
+  "type": "graphics",
+  "name": "World Map Clouds Graphics",
+  "range": "0xEEB290-0xEEC294",
+  "asmSymbol": "WorldBackdropGfx",
+  "assetPath": "assets/world/backdrop.cgx",
+  "format": [
+    "snes4bpp",
+    "ff6-lzss"
+  ],
+  "palette": {
+    "path": [
+      "worldPalette1",
+      "worldPalette2"
+    ]
+  }
+}

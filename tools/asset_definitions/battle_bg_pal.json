@@ -1,0 +1,13 @@
+{
+  "type": "array",
+  "name": "Battle Background Palette",
+  "range": "0xE70150-0xE7164F",
+  "asmSymbol": "BattleBGPal",
+  "assetPath": "assets/battle_bg/battle_bg_pal/battle_bg_pal%s.pal",
+  "arrayLength": 56,
+  "itemSize": 96,
+  "assembly": {
+    "type": "data",
+    "format": "bgr555"
+  }
+}

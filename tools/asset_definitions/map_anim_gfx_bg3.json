@@ -1,0 +1,25 @@
+{
+  "type": "array",
+  "name": "Map Animation Graphics (Layer 3)",
+  "range": "0xE6CDC0-0xE6F197",
+  "arrayLength": 6,
+  "asmSymbol": "MapAnimGfxBG3",
+  "assetPath": "assets/map/map_anim_bg3/map_anim_bg3_%s.cgx",
+  "assembly": {
+    "type": "graphics",
+    "format": [
+      "snes2bpp",
+      "ff6-lzss"
+    ],
+    "palette": {
+      "path": "mapPalettes",
+      "range": "0-16"
+    },
+    "width": 2
+  },
+  "pointerTable": {
+    "range": "0xE6CDA0-0xE6CDB1",
+    "pointerSize": 3,
+    "offset": "0xE6CDC0"
+  }
+}
