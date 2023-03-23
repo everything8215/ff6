@@ -291,6 +291,777 @@ NPCPropPtrs:                                                    ; c4/1a10
 .export NumSongs
 
         .include "assets/spc_data.asm"                          ; c5/070e
+
+SfxPtrs:                                                        ; c5/205e
+        .addr SfxScript_0000_1 - SfxStart + $3000
+        .addr SfxScript_0000_2 - SfxStart + $3000
+        .addr SfxScript_0001_1 - SfxStart + $3000
+        .addr SfxScript_0001_2 - SfxStart + $3000
+        .addr SfxScript_0002_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_0003_1 - SfxStart + $3000
+        .addr SfxScript_0003_2 - SfxStart + $3000
+        .addr SfxScript_0004_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_0005_1 - SfxStart + $3000
+        .addr SfxScript_0005_2 - SfxStart + $3000
+        .addr SfxScript_0006_1 - SfxStart + $3000
+        .addr SfxScript_0006_2 - SfxStart + $3000
+        .addr SfxScript_0007_1 - SfxStart + $3000
+        .addr SfxScript_0007_2 - SfxStart + $3000
+        .addr SfxScript_0008_1 - SfxStart + $3000
+        .addr SfxScript_0008_2 - SfxStart + $3000
+        .addr SfxScript_0009_1 - SfxStart + $3000
+        .addr SfxScript_0009_2 - SfxStart + $3000
+        .addr SfxScript_000a_1 - SfxStart + $3000
+        .addr SfxScript_000a_2 - SfxStart + $3000
+        .addr SfxScript_000b_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_000c_1 - SfxStart + $3000
+        .addr SfxScript_000c_2 - SfxStart + $3000
+        .addr SfxScript_000d_1 - SfxStart + $3000
+        .addr SfxScript_000d_2 - SfxStart + $3000
+        .addr SfxScript_000e_1 - SfxStart + $3000
+        .addr SfxScript_000e_2 - SfxStart + $3000
+        .addr SfxScript_000f_1 - SfxStart + $3000
+        .addr SfxScript_000f_2 - SfxStart + $3000
+        .addr SfxScript_0010_1 - SfxStart + $3000
+        .addr SfxScript_0010_2 - SfxStart + $3000
+        .addr SfxScript_0011_1 - SfxStart + $3000
+        .addr SfxScript_0011_2 - SfxStart + $3000
+        .addr SfxScript_0012_1 - SfxStart + $3000
+        .addr SfxScript_0012_2 - SfxStart + $3000
+        .addr SfxScript_0013_1 - SfxStart + $3000
+        .addr SfxScript_0013_2 - SfxStart + $3000
+        .addr SfxScript_0014_1 - SfxStart + $3000
+        .addr SfxScript_0014_2 - SfxStart + $3000
+        .addr SfxScript_0015_1 - SfxStart + $3000
+        .addr SfxScript_0015_2 - SfxStart + $3000
+        .addr SfxScript_0016_1 - SfxStart + $3000
+        .addr SfxScript_0016_2 - SfxStart + $3000
+        .addr SfxScript_0017_1 - SfxStart + $3000
+        .addr SfxScript_0017_2 - SfxStart + $3000
+        .addr SfxScript_0018_1 - SfxStart + $3000
+        .addr SfxScript_0018_2 - SfxStart + $3000
+        .addr SfxScript_0019_1 - SfxStart + $3000
+        .addr SfxScript_0019_2 - SfxStart + $3000
+        .addr SfxScript_001a_1 - SfxStart + $3000
+        .addr SfxScript_001a_2 - SfxStart + $3000
+        .addr SfxScript_001b_1 - SfxStart + $3000
+        .addr SfxScript_001b_2 - SfxStart + $3000
+        .addr SfxScript_001c_1 - SfxStart + $3000
+        .addr SfxScript_001c_2 - SfxStart + $3000
+        .addr SfxScript_001d_1 - SfxStart + $3000
+        .addr SfxScript_001d_2 - SfxStart + $3000
+        .addr SfxScript_001e_1 - SfxStart + $3000
+        .addr SfxScript_001e_2 - SfxStart + $3000
+        .addr SfxScript_001f_1 - SfxStart + $3000
+        .addr SfxScript_001f_2 - SfxStart + $3000
+        .addr SfxScript_0020_1 - SfxStart + $3000
+        .addr SfxScript_0020_2 - SfxStart + $3000
+        .addr SfxScript_0021_1 - SfxStart + $3000
+        .addr SfxScript_0021_2 - SfxStart + $3000
+        .addr SfxScript_0022_1 - SfxStart + $3000
+        .addr SfxScript_0022_2 - SfxStart + $3000
+        .addr SfxScript_0023_1 - SfxStart + $3000
+        .addr SfxScript_0023_2 - SfxStart + $3000
+        .addr SfxScript_0024_1 - SfxStart + $3000
+        .addr SfxScript_0024_2 - SfxStart + $3000
+        .addr SfxScript_0025_1 - SfxStart + $3000
+        .addr SfxScript_0025_2 - SfxStart + $3000
+        .addr SfxScript_0026_1 - SfxStart + $3000
+        .addr SfxScript_0026_2 - SfxStart + $3000
+        .addr SfxScript_0027_1 - SfxStart + $3000
+        .addr SfxScript_0027_2 - SfxStart + $3000
+        .addr SfxScript_0028_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_0029_1 - SfxStart + $3000
+        .addr SfxScript_0029_2 - SfxStart + $3000
+        .addr SfxScript_002a_1 - SfxStart + $3000
+        .addr SfxScript_002a_2 - SfxStart + $3000
+        .addr SfxScript_002b_1 - SfxStart + $3000
+        .addr SfxScript_002b_2 - SfxStart + $3000
+        .addr SfxScript_002c_1 - SfxStart + $3000
+        .addr SfxScript_002c_2 - SfxStart + $3000
+        .addr SfxScript_002d_1 - SfxStart + $3000
+        .addr SfxScript_002d_2 - SfxStart + $3000
+        .addr SfxScript_002e_1 - SfxStart + $3000
+        .addr SfxScript_002e_2 - SfxStart + $3000
+        .addr SfxScript_002f_1 - SfxStart + $3000
+        .addr SfxScript_002f_2 - SfxStart + $3000
+        .addr SfxScript_0030_1 - SfxStart + $3000
+        .addr SfxScript_0030_2 - SfxStart + $3000
+        .addr SfxScript_0031_1 - SfxStart + $3000
+        .addr SfxScript_0031_2 - SfxStart + $3000
+        .addr SfxScript_0032_1 - SfxStart + $3000
+        .addr SfxScript_0032_2 - SfxStart + $3000
+        .addr SfxScript_0033_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_0034_1 - SfxStart + $3000
+        .addr SfxScript_0034_2 - SfxStart + $3000
+        .addr SfxScript_0035_1 - SfxStart + $3000
+        .addr SfxScript_0035_2 - SfxStart + $3000
+        .addr SfxScript_0036_1 - SfxStart + $3000
+        .addr SfxScript_0036_2 - SfxStart + $3000
+        .addr SfxScript_0037_1 - SfxStart + $3000
+        .addr SfxScript_0037_2 - SfxStart + $3000
+        .addr SfxScript_0038_1 - SfxStart + $3000
+        .addr SfxScript_0038_2 - SfxStart + $3000
+        .addr SfxScript_0039_1 - SfxStart + $3000
+        .addr SfxScript_0039_2 - SfxStart + $3000
+        .addr SfxScript_003a_1 - SfxStart + $3000
+        .addr SfxScript_003a_2 - SfxStart + $3000
+        .addr SfxScript_003b_1 - SfxStart + $3000
+        .addr SfxScript_003b_2 - SfxStart + $3000
+        .addr SfxScript_003c_1 - SfxStart + $3000
+        .addr SfxScript_003c_2 - SfxStart + $3000
+        .addr SfxScript_003d_1 - SfxStart + $3000
+        .addr SfxScript_003d_2 - SfxStart + $3000
+        .addr SfxScript_003e_1 - SfxStart + $3000
+        .addr SfxScript_003e_2 - SfxStart + $3000
+        .addr SfxScript_003f_1 - SfxStart + $3000
+        .addr SfxScript_003f_2 - SfxStart + $3000
+        .addr SfxScript_0040_1 - SfxStart + $3000
+        .addr SfxScript_0040_2 - SfxStart + $3000
+        .addr SfxScript_0041_1 - SfxStart + $3000
+        .addr SfxScript_0041_2 - SfxStart + $3000
+        .addr SfxScript_0042_1 - SfxStart + $3000
+        .addr SfxScript_0042_2 - SfxStart + $3000
+        .addr SfxScript_0043_1 - SfxStart + $3000
+        .addr SfxScript_0043_2 - SfxStart + $3000
+        .addr SfxScript_0044_1 - SfxStart + $3000
+        .addr SfxScript_0044_2 - SfxStart + $3000
+        .addr SfxScript_0045_1 - SfxStart + $3000
+        .addr SfxScript_0045_2 - SfxStart + $3000
+        .addr SfxScript_0046_1 - SfxStart + $3000
+        .addr SfxScript_0046_2 - SfxStart + $3000
+        .addr SfxScript_0047_1 - SfxStart + $3000
+        .addr SfxScript_0047_2 - SfxStart + $3000
+        .addr SfxScript_0048_1 - SfxStart + $3000
+        .addr SfxScript_0048_2 - SfxStart + $3000
+        .addr SfxScript_0049_1 - SfxStart + $3000
+        .addr SfxScript_0049_2 - SfxStart + $3000
+        .addr SfxScript_004a_1 - SfxStart + $3000
+        .addr SfxScript_004a_2 - SfxStart + $3000
+        .addr SfxScript_004b_1 - SfxStart + $3000
+        .addr SfxScript_004b_2 - SfxStart + $3000
+        .addr SfxScript_004c_1 - SfxStart + $3000
+        .addr SfxScript_004c_2 - SfxStart + $3000
+        .addr SfxScript_004d_1 - SfxStart + $3000
+        .addr SfxScript_004d_2 - SfxStart + $3000
+        .addr SfxScript_004e_1 - SfxStart + $3000
+        .addr SfxScript_004e_2 - SfxStart + $3000
+        .addr SfxScript_004f_1 - SfxStart + $3000
+        .addr SfxScript_004f_2 - SfxStart + $3000
+        .addr SfxScript_0050_1 - SfxStart + $3000
+        .addr SfxScript_0050_2 - SfxStart + $3000
+        .addr SfxScript_0051_1 - SfxStart + $3000
+        .addr SfxScript_0051_2 - SfxStart + $3000
+        .addr SfxScript_0052_1 - SfxStart + $3000
+        .addr SfxScript_0052_2 - SfxStart + $3000
+        .addr SfxScript_0053_1 - SfxStart + $3000
+        .addr SfxScript_0053_2 - SfxStart + $3000
+        .addr SfxScript_0054_1 - SfxStart + $3000
+        .addr SfxScript_0054_2 - SfxStart + $3000
+        .addr SfxScript_0055_1 - SfxStart + $3000
+        .addr SfxScript_0055_2 - SfxStart + $3000
+        .addr SfxScript_0056_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_0057_1 - SfxStart + $3000
+        .addr SfxScript_0057_2 - SfxStart + $3000
+        .addr SfxScript_0058_1 - SfxStart + $3000
+        .addr SfxScript_0058_2 - SfxStart + $3000
+        .addr SfxScript_0059_1 - SfxStart + $3000
+        .addr SfxScript_0059_2 - SfxStart + $3000
+        .addr SfxScript_005a_1 - SfxStart + $3000
+        .addr SfxScript_005a_2 - SfxStart + $3000
+        .addr SfxScript_005b_1 - SfxStart + $3000
+        .addr SfxScript_005b_2 - SfxStart + $3000
+        .addr SfxScript_005c_1 - SfxStart + $3000
+        .addr SfxScript_005c_2 - SfxStart + $3000
+        .addr SfxScript_005d_1 - SfxStart + $3000
+        .addr SfxScript_005d_2 - SfxStart + $3000
+        .addr SfxScript_005e_1 - SfxStart + $3000
+        .addr SfxScript_005e_2 - SfxStart + $3000
+        .addr SfxScript_005f_1 - SfxStart + $3000
+        .addr SfxScript_005f_2 - SfxStart + $3000
+        .addr SfxScript_0060_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_0061_1 - SfxStart + $3000
+        .addr SfxScript_0061_2 - SfxStart + $3000
+        .addr SfxScript_0062_1 - SfxStart + $3000
+        .addr SfxScript_0062_2 - SfxStart + $3000
+        .addr SfxScript_0063_1 - SfxStart + $3000
+        .addr SfxScript_0063_2 - SfxStart + $3000
+        .addr SfxScript_0064_1 - SfxStart + $3000
+        .addr SfxScript_0064_2 - SfxStart + $3000
+        .addr SfxScript_0065_1 - SfxStart + $3000
+        .addr SfxScript_0065_2 - SfxStart + $3000
+        .addr SfxScript_0066_1 - SfxStart + $3000
+        .addr SfxScript_0066_2 - SfxStart + $3000
+        .addr SfxScript_0067_1 - SfxStart + $3000
+        .addr SfxScript_0067_2 - SfxStart + $3000
+        .addr SfxScript_0068_1 - SfxStart + $3000
+        .addr SfxScript_0068_2 - SfxStart + $3000
+        .addr SfxScript_0069_1 - SfxStart + $3000
+        .addr SfxScript_0069_2 - SfxStart + $3000
+        .addr SfxScript_006a_1 - SfxStart + $3000
+        .addr SfxScript_006a_2 - SfxStart + $3000
+        .addr SfxScript_006b_1 - SfxStart + $3000
+        .addr SfxScript_006b_2 - SfxStart + $3000
+        .addr SfxScript_006c_1 - SfxStart + $3000
+        .addr SfxScript_006c_2 - SfxStart + $3000
+        .addr SfxScript_006d_1 - SfxStart + $3000
+        .addr SfxScript_006d_2 - SfxStart + $3000
+        .addr SfxScript_006e_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_006f_1 - SfxStart + $3000
+        .addr SfxScript_006f_2 - SfxStart + $3000
+        .addr SfxScript_0070_1 - SfxStart + $3000
+        .addr SfxScript_0070_2 - SfxStart + $3000
+        .addr SfxScript_0071_1 - SfxStart + $3000
+        .addr SfxScript_0071_2 - SfxStart + $3000
+        .addr SfxScript_0072_1 - SfxStart + $3000
+        .addr SfxScript_0072_2 - SfxStart + $3000
+        .addr SfxScript_0073_1 - SfxStart + $3000
+        .addr SfxScript_0073_2 - SfxStart + $3000
+        .addr SfxScript_0074_1 - SfxStart + $3000
+        .addr SfxScript_0074_2 - SfxStart + $3000
+        .addr SfxScript_0075_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_0076_1 - SfxStart + $3000
+        .addr SfxScript_0076_2 - SfxStart + $3000
+        .addr SfxScript_0077_1 - SfxStart + $3000
+        .addr SfxScript_0077_2 - SfxStart + $3000
+        .addr SfxScript_0078_1 - SfxStart + $3000
+        .addr SfxScript_0078_2 - SfxStart + $3000
+        .addr SfxScript_0079_1 - SfxStart + $3000
+        .addr SfxScript_0079_2 - SfxStart + $3000
+        .addr SfxScript_007a_1 - SfxStart + $3000
+        .addr SfxScript_007a_2 - SfxStart + $3000
+        .addr SfxScript_007b_1 - SfxStart + $3000
+        .addr SfxScript_007b_2 - SfxStart + $3000
+        .addr SfxScript_007c_1 - SfxStart + $3000
+        .addr SfxScript_007c_2 - SfxStart + $3000
+        .addr SfxScript_007d_1 - SfxStart + $3000
+        .addr SfxScript_007d_2 - SfxStart + $3000
+        .addr SfxScript_007e_1 - SfxStart + $3000
+        .addr SfxScript_007e_2 - SfxStart + $3000
+        .addr SfxScript_007f_1 - SfxStart + $3000
+        .addr SfxScript_007f_2 - SfxStart + $3000
+        .addr SfxScript_0080_1 - SfxStart + $3000
+        .addr SfxScript_0080_2 - SfxStart + $3000
+        .addr SfxScript_0081_1 - SfxStart + $3000
+        .addr SfxScript_0081_2 - SfxStart + $3000
+        .addr SfxScript_0082_1 - SfxStart + $3000
+        .addr SfxScript_0082_2 - SfxStart + $3000
+        .addr SfxScript_0083_1 - SfxStart + $3000
+        .addr SfxScript_0083_2 - SfxStart + $3000
+        .addr SfxScript_0084_1 - SfxStart + $3000
+        .addr SfxScript_0084_2 - SfxStart + $3000
+        .addr SfxScript_0085_1 - SfxStart + $3000
+        .addr SfxScript_0085_2 - SfxStart + $3000
+        .addr SfxScript_0086_1 - SfxStart + $3000
+        .addr SfxScript_0086_2 - SfxStart + $3000
+        .addr SfxScript_0087_1 - SfxStart + $3000
+        .addr SfxScript_0087_2 - SfxStart + $3000
+        .addr SfxScript_0088_1 - SfxStart + $3000
+        .addr SfxScript_0088_2 - SfxStart + $3000
+        .addr SfxScript_0089_1 - SfxStart + $3000
+        .addr SfxScript_0089_2 - SfxStart + $3000
+        .addr SfxScript_008a_1 - SfxStart + $3000
+        .addr SfxScript_008a_2 - SfxStart + $3000
+        .addr SfxScript_008b_1 - SfxStart + $3000
+        .addr SfxScript_008b_2 - SfxStart + $3000
+        .addr SfxScript_008c_1 - SfxStart + $3000
+        .addr SfxScript_008c_2 - SfxStart + $3000
+        .addr SfxScript_008d_1 - SfxStart + $3000
+        .addr SfxScript_008d_2 - SfxStart + $3000
+        .addr SfxScript_008e_1 - SfxStart + $3000
+        .addr SfxScript_008e_2 - SfxStart + $3000
+        .addr SfxScript_008f_1 - SfxStart + $3000
+        .addr SfxScript_008f_2 - SfxStart + $3000
+        .addr SfxScript_0090_1 - SfxStart + $3000
+        .addr SfxScript_0090_2 - SfxStart + $3000
+        .addr SfxScript_0091_1 - SfxStart + $3000
+        .addr SfxScript_0091_2 - SfxStart + $3000
+        .addr SfxScript_0092_1 - SfxStart + $3000
+        .addr SfxScript_0092_2 - SfxStart + $3000
+        .addr SfxScript_0093_1 - SfxStart + $3000
+        .addr SfxScript_0093_2 - SfxStart + $3000
+        .addr SfxScript_0094_1 - SfxStart + $3000
+        .addr SfxScript_0094_2 - SfxStart + $3000
+        .addr SfxScript_0095_1 - SfxStart + $3000
+        .addr SfxScript_0095_2 - SfxStart + $3000
+        .addr SfxScript_0096_1 - SfxStart + $3000
+        .addr SfxScript_0096_2 - SfxStart + $3000
+        .addr SfxScript_0097_1 - SfxStart + $3000
+        .addr SfxScript_0097_2 - SfxStart + $3000
+        .addr SfxScript_0098_1 - SfxStart + $3000
+        .addr SfxScript_0098_2 - SfxStart + $3000
+        .addr SfxScript_0099_1 - SfxStart + $3000
+        .addr SfxScript_0099_2 - SfxStart + $3000
+        .addr SfxScript_009a_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_009b_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_009c_1 - SfxStart + $3000
+        .addr SfxScript_009c_2 - SfxStart + $3000
+        .addr SfxScript_009d_1 - SfxStart + $3000
+        .addr SfxScript_009d_2 - SfxStart + $3000
+        .addr SfxScript_009e_1 - SfxStart + $3000
+        .addr SfxScript_009e_2 - SfxStart + $3000
+        .addr SfxScript_009f_1 - SfxStart + $3000
+        .addr SfxScript_009f_2 - SfxStart + $3000
+        .addr SfxScript_00a0_1 - SfxStart + $3000
+        .addr SfxScript_00a0_2 - SfxStart + $3000
+        .addr SfxScript_00a1_1 - SfxStart + $3000
+        .addr SfxScript_00a1_2 - SfxStart + $3000
+        .addr SfxScript_00a2_1 - SfxStart + $3000
+        .addr SfxScript_00a2_2 - SfxStart + $3000
+        .addr SfxScript_00a3_1 - SfxStart + $3000
+        .addr SfxScript_00a3_2 - SfxStart + $3000
+        .addr SfxScript_00a4_1 - SfxStart + $3000
+        .addr SfxScript_00a4_2 - SfxStart + $3000
+        .addr SfxScript_00a5_1 - SfxStart + $3000
+        .addr SfxScript_00a5_2 - SfxStart + $3000
+        .addr SfxScript_00a6_1 - SfxStart + $3000
+        .addr SfxScript_00a6_2 - SfxStart + $3000
+        .addr SfxScript_00a7_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00a8_1 - SfxStart + $3000
+        .addr SfxScript_00a8_2 - SfxStart + $3000
+        .addr SfxScript_00a9_1 - SfxStart + $3000
+        .addr SfxScript_00a9_2 - SfxStart + $3000
+        .addr SfxScript_00aa_1 - SfxStart + $3000
+        .addr SfxScript_00aa_2 - SfxStart + $3000
+        .addr SfxScript_00ab_1 - SfxStart + $3000
+        .addr SfxScript_00ab_2 - SfxStart + $3000
+        .addr SfxScript_00ac_1 - SfxStart + $3000
+        .addr SfxScript_00ac_2 - SfxStart + $3000
+        .addr SfxScript_00ad_1 - SfxStart + $3000
+        .addr SfxScript_00ad_2 - SfxStart + $3000
+        .addr SfxScript_00ae_1 - SfxStart + $3000
+        .addr SfxScript_00ae_2 - SfxStart + $3000
+        .addr SfxScript_00af_1 - SfxStart + $3000
+        .addr 0
+        .addr 0
+        .addr SfxScript_00b0_2 - SfxStart + $3000
+        .addr SfxScript_00b1_1 - SfxStart + $3000
+        .addr SfxScript_00b1_2 - SfxStart + $3000
+        .addr SfxScript_00b2_1 - SfxStart + $3000
+        .addr SfxScript_00b2_2 - SfxStart + $3000
+        .addr SfxScript_00b3_1 - SfxStart + $3000
+        .addr SfxScript_00b3_2 - SfxStart + $3000
+        .addr SfxScript_00b4_1 - SfxStart + $3000
+        .addr SfxScript_00b4_2 - SfxStart + $3000
+        .addr SfxScript_00b5_1 - SfxStart + $3000
+        .addr SfxScript_00b5_2 - SfxStart + $3000
+        .addr SfxScript_00b6_1 - SfxStart + $3000
+        .addr SfxScript_00b6_2 - SfxStart + $3000
+        .addr SfxScript_00b7_1 - SfxStart + $3000
+        .addr SfxScript_00b7_2 - SfxStart + $3000
+        .addr SfxScript_00b8_1 - SfxStart + $3000
+        .addr SfxScript_00b8_2 - SfxStart + $3000
+        .addr SfxScript_00b9_1 - SfxStart + $3000
+        .addr SfxScript_00b9_2 - SfxStart + $3000
+        .addr SfxScript_00ba_1 - SfxStart + $3000
+        .addr SfxScript_00ba_2 - SfxStart + $3000
+        .addr SfxScript_00bb_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00bc_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00bd_1 - SfxStart + $3000
+        .addr SfxScript_00bd_2 - SfxStart + $3000
+        .addr SfxScript_00be_1 - SfxStart + $3000
+        .addr SfxScript_00be_2 - SfxStart + $3000
+        .addr SfxScript_00bf_1 - SfxStart + $3000
+        .addr SfxScript_00bf_2 - SfxStart + $3000
+        .addr SfxScript_00c0_1 - SfxStart + $3000
+        .addr SfxScript_00c0_2 - SfxStart + $3000
+        .addr SfxScript_00c1_1 - SfxStart + $3000
+        .addr SfxScript_00c1_2 - SfxStart + $3000
+        .addr SfxScript_00c2_1 - SfxStart + $3000
+        .addr SfxScript_00c2_2 - SfxStart + $3000
+        .addr SfxScript_00c3_1 - SfxStart + $3000
+        .addr SfxScript_00c3_2 - SfxStart + $3000
+        .addr SfxScript_00c4_1 - SfxStart + $3000
+        .addr SfxScript_00c4_2 - SfxStart + $3000
+        .addr SfxScript_00c5_1 - SfxStart + $3000
+        .addr SfxScript_00c5_2 - SfxStart + $3000
+        .addr SfxScript_00c6_1 - SfxStart + $3000
+        .addr SfxScript_00c6_2 - SfxStart + $3000
+        .addr SfxScript_00c7_1 - SfxStart + $3000
+        .addr SfxScript_00c7_2 - SfxStart + $3000
+        .addr SfxScript_00c8_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00c9_1 - SfxStart + $3000
+        .addr SfxScript_00c9_2 - SfxStart + $3000
+        .addr SfxScript_00ca_1 - SfxStart + $3000
+        .addr SfxScript_00ca_2 - SfxStart + $3000
+        .addr SfxScript_00cb_1 - SfxStart + $3000
+        .addr SfxScript_00cb_2 - SfxStart + $3000
+        .addr SfxScript_00cc_1 - SfxStart + $3000
+        .addr SfxScript_00cc_2 - SfxStart + $3000
+        .addr SfxScript_00cd_1 - SfxStart + $3000
+        .addr SfxScript_00cd_2 - SfxStart + $3000
+        .addr SfxScript_00ce_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00cf_1 - SfxStart + $3000
+        .addr SfxScript_00cf_2 - SfxStart + $3000
+        .addr SfxScript_00d0_1 - SfxStart + $3000
+        .addr SfxScript_00d0_2 - SfxStart + $3000
+        .addr SfxScript_00d1_1 - SfxStart + $3000
+        .addr SfxScript_00d1_2 - SfxStart + $3000
+        .addr SfxScript_00d2_1 - SfxStart + $3000
+        .addr SfxScript_00d2_2 - SfxStart + $3000
+        .addr SfxScript_00d3_1 - SfxStart + $3000
+        .addr SfxScript_00d3_2 - SfxStart + $3000
+        .addr SfxScript_00d4_1 - SfxStart + $3000
+        .addr SfxScript_00d4_2 - SfxStart + $3000
+        .addr SfxScript_00d5_1 - SfxStart + $3000
+        .addr SfxScript_00d5_2 - SfxStart + $3000
+        .addr SfxScript_00d6_1 - SfxStart + $3000
+        .addr SfxScript_00d6_2 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00d7_2 - SfxStart + $3000
+        .addr SfxScript_00d8_1 - SfxStart + $3000
+        .addr SfxScript_00d8_2 - SfxStart + $3000
+        .addr SfxScript_00d9_1 - SfxStart + $3000
+        .addr SfxScript_00d9_2 - SfxStart + $3000
+        .addr SfxScript_00da_1 - SfxStart + $3000
+        .addr SfxScript_00da_2 - SfxStart + $3000
+        .addr SfxScript_00db_1 - SfxStart + $3000
+        .addr SfxScript_00db_2 - SfxStart + $3000
+        .addr SfxScript_00dc_1 - SfxStart + $3000
+        .addr SfxScript_00dc_2 - SfxStart + $3000
+        .addr SfxScript_00dd_1 - SfxStart + $3000
+        .addr SfxScript_00dd_2 - SfxStart + $3000
+        .addr SfxScript_00de_1 - SfxStart + $3000
+        .addr SfxScript_00de_2 - SfxStart + $3000
+        .addr SfxScript_00df_1 - SfxStart + $3000
+        .addr SfxScript_00df_2 - SfxStart + $3000
+        .addr SfxScript_00e0_1 - SfxStart + $3000
+        .addr SfxScript_00e0_2 - SfxStart + $3000
+        .addr SfxScript_00e1_1 - SfxStart + $3000
+        .addr SfxScript_00e1_2 - SfxStart + $3000
+        .addr SfxScript_00e2_1 - SfxStart + $3000
+        .addr SfxScript_00e2_2 - SfxStart + $3000
+        .addr SfxScript_00e3_1 - SfxStart + $3000
+        .addr SfxScript_00e3_2 - SfxStart + $3000
+        .addr SfxScript_00e4_1 - SfxStart + $3000
+        .addr SfxScript_00e4_2 - SfxStart + $3000
+        .addr SfxScript_00e5_1 - SfxStart + $3000
+        .addr SfxScript_00e5_2 - SfxStart + $3000
+        .addr SfxScript_00e6_1 - SfxStart + $3000
+        .addr SfxScript_00e6_2 - SfxStart + $3000
+        .addr SfxScript_00e7_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00e8_1 - SfxStart + $3000
+        .addr SfxScript_00e8_2 - SfxStart + $3000
+        .addr SfxScript_00e9_1 - SfxStart + $3000
+        .addr SfxScript_00e9_2 - SfxStart + $3000
+        .addr SfxScript_00ea_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00eb_1 - SfxStart + $3000
+        .addr SfxScript_00eb_2 - SfxStart + $3000
+        .addr SfxScript_00ec_1 - SfxStart + $3000
+        .addr SfxScript_00ec_2 - SfxStart + $3000
+        .addr SfxScript_00ed_1 - SfxStart + $3000
+        .addr SfxScript_00ed_2 - SfxStart + $3000
+        .addr SfxScript_00ee_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00ef_1 - SfxStart + $3000
+        .addr SfxScript_00ef_2 - SfxStart + $3000
+        .addr SfxScript_00f0_1 - SfxStart + $3000
+        .addr SfxScript_00f0_2 - SfxStart + $3000
+        .addr SfxScript_00f1_1 - SfxStart + $3000
+        .addr SfxScript_00f1_2 - SfxStart + $3000
+        .addr SfxScript_00f2_1 - SfxStart + $3000
+        .addr SfxScript_00f2_2 - SfxStart + $3000
+        .addr SfxScript_00f3_1 - SfxStart + $3000
+        .addr SfxScript_00f3_2 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00f4_2 - SfxStart + $3000
+        .addr SfxScript_00f5_1 - SfxStart + $3000
+        .addr SfxScript_00f5_2 - SfxStart + $3000
+        .addr SfxScript_00f6_1 - SfxStart + $3000
+        .addr SfxScript_00f6_2 - SfxStart + $3000
+        .addr SfxScript_00f7_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00f8_1 - SfxStart + $3000
+        .addr SfxScript_00f8_2 - SfxStart + $3000
+        .addr SfxScript_00f9_1 - SfxStart + $3000
+        .addr SfxScript_00f9_2 - SfxStart + $3000
+        .addr SfxScript_00fa_1 - SfxStart + $3000
+        .addr 0
+        .addr SfxScript_00fb_1 - SfxStart + $3000
+        .addr SfxScript_00fb_2 - SfxStart + $3000
+        .addr SfxScript_00fc_1 - SfxStart + $3000
+        .addr SfxScript_00fc_2 - SfxStart + $3000
+        .addr 0
+        .addr 0
+        .addr 0
+        .addr 0
+        .addr 0
+        .addr 0
+
+SfxStart:                                                       ; c5/245e
+        .include "script/sfx_script_0000.asm"
+        .include "script/sfx_script_0001.asm"
+        .include "script/sfx_script_0002.asm"
+        .include "script/sfx_script_0003.asm"
+        .include "script/sfx_script_0004.asm"
+        .include "script/sfx_script_0005.asm"
+        .include "script/sfx_script_0006.asm"
+        .include "script/sfx_script_0007.asm"
+        .include "script/sfx_script_0008.asm"
+        .include "script/sfx_script_0009.asm"
+        .include "script/sfx_script_000a.asm"
+        .include "script/sfx_script_000b.asm"
+        .include "script/sfx_script_000c.asm"
+        .include "script/sfx_script_000d.asm"
+        .include "script/sfx_script_000e.asm"
+        .include "script/sfx_script_000f.asm"
+        .include "script/sfx_script_0010.asm"
+        .include "script/sfx_script_0011.asm"
+        .include "script/sfx_script_0012.asm"
+        .include "script/sfx_script_0013.asm"
+        .include "script/sfx_script_0014.asm"
+        .include "script/sfx_script_0015.asm"
+        .include "script/sfx_script_0016.asm"
+        .include "script/sfx_script_0017.asm"
+        .include "script/sfx_script_0018.asm"
+        .include "script/sfx_script_0019.asm"
+        .include "script/sfx_script_001a.asm"
+        .include "script/sfx_script_001b.asm"
+        .include "script/sfx_script_001c.asm"
+        .include "script/sfx_script_001d.asm"
+        .include "script/sfx_script_001e.asm"
+        .include "script/sfx_script_001f.asm"
+        .include "script/sfx_script_0020.asm"
+        .include "script/sfx_script_0021.asm"
+        .include "script/sfx_script_0022.asm"
+        .include "script/sfx_script_0023.asm"
+        .include "script/sfx_script_0024.asm"
+        .include "script/sfx_script_0025.asm"
+        .include "script/sfx_script_0026.asm"
+        .include "script/sfx_script_0027.asm"
+        .include "script/sfx_script_0028.asm"
+        .include "script/sfx_script_0029.asm"
+        .include "script/sfx_script_002a.asm"
+        .include "script/sfx_script_002b.asm"
+        .include "script/sfx_script_002c.asm"
+        .include "script/sfx_script_002d.asm"
+        .include "script/sfx_script_002e.asm"
+        .include "script/sfx_script_002f.asm"
+        .include "script/sfx_script_0030.asm"
+        .include "script/sfx_script_0031.asm"
+        .include "script/sfx_script_0032.asm"
+        .include "script/sfx_script_0033.asm"
+        .include "script/sfx_script_0034.asm"
+        .include "script/sfx_script_0035.asm"
+        .include "script/sfx_script_0036.asm"
+        .include "script/sfx_script_0037.asm"
+        .include "script/sfx_script_0038.asm"
+        .include "script/sfx_script_0039.asm"
+        .include "script/sfx_script_003a.asm"
+        .include "script/sfx_script_003b.asm"
+        .include "script/sfx_script_003c.asm"
+        .include "script/sfx_script_003d.asm"
+        .include "script/sfx_script_003e.asm"
+        .include "script/sfx_script_003f.asm"
+        .include "script/sfx_script_0040.asm"
+        .include "script/sfx_script_0041.asm"
+        .include "script/sfx_script_0042.asm"
+        .include "script/sfx_script_0043.asm"
+        .include "script/sfx_script_0044.asm"
+        .include "script/sfx_script_0045.asm"
+        .include "script/sfx_script_0046.asm"
+        .include "script/sfx_script_0047.asm"
+        .include "script/sfx_script_0048.asm"
+        .include "script/sfx_script_0049.asm"
+        .include "script/sfx_script_004a.asm"
+        .include "script/sfx_script_004b.asm"
+        .include "script/sfx_script_004c.asm"
+        .include "script/sfx_script_004d.asm"
+        .include "script/sfx_script_004e.asm"
+        .include "script/sfx_script_004f.asm"
+        .include "script/sfx_script_0050.asm"
+        .include "script/sfx_script_0051.asm"
+        .include "script/sfx_script_0052.asm"
+        .include "script/sfx_script_0053.asm"
+        .include "script/sfx_script_0054.asm"
+        .include "script/sfx_script_0055.asm"
+        .include "script/sfx_script_0056.asm"
+        .include "script/sfx_script_0057.asm"
+        .include "script/sfx_script_0058.asm"
+        .include "script/sfx_script_0059.asm"
+        .include "script/sfx_script_005a.asm"
+        .include "script/sfx_script_005b.asm"
+        .include "script/sfx_script_005c.asm"
+        .include "script/sfx_script_005d.asm"
+        .include "script/sfx_script_005e.asm"
+        .include "script/sfx_script_005f.asm"
+        .include "script/sfx_script_0060.asm"
+        .include "script/sfx_script_0061.asm"
+        .include "script/sfx_script_0062.asm"
+        .include "script/sfx_script_0063.asm"
+        .include "script/sfx_script_0064.asm"
+        .include "script/sfx_script_0065.asm"
+        .include "script/sfx_script_0066.asm"
+        .include "script/sfx_script_0067.asm"
+        .include "script/sfx_script_0068.asm"
+        .include "script/sfx_script_0069.asm"
+        .include "script/sfx_script_006a.asm"
+        .include "script/sfx_script_006b.asm"
+        .include "script/sfx_script_006c.asm"
+        .include "script/sfx_script_006d.asm"
+        .include "script/sfx_script_006e.asm"
+        .include "script/sfx_script_006f.asm"
+        .include "script/sfx_script_0070.asm"
+        .include "script/sfx_script_0071.asm"
+        .include "script/sfx_script_0072.asm"
+        .include "script/sfx_script_0073.asm"
+        .include "script/sfx_script_0074.asm"
+        .include "script/sfx_script_0075.asm"
+        .include "script/sfx_script_0076.asm"
+        .include "script/sfx_script_0077.asm"
+        .include "script/sfx_script_0078.asm"
+        .include "script/sfx_script_0079.asm"
+        .include "script/sfx_script_007a.asm"
+        .include "script/sfx_script_007b.asm"
+        .include "script/sfx_script_007c.asm"
+        .include "script/sfx_script_007d.asm"
+        .include "script/sfx_script_007e.asm"
+        .include "script/sfx_script_007f.asm"
+        .include "script/sfx_script_0080.asm"
+        .include "script/sfx_script_0081.asm"
+        .include "script/sfx_script_0082.asm"
+        .include "script/sfx_script_0083.asm"
+        .include "script/sfx_script_0084.asm"
+        .include "script/sfx_script_0085.asm"
+        .include "script/sfx_script_0086.asm"
+        .include "script/sfx_script_0087.asm"
+        .include "script/sfx_script_0088.asm"
+        .include "script/sfx_script_0089.asm"
+        .include "script/sfx_script_008a.asm"
+        .include "script/sfx_script_008b.asm"
+        .include "script/sfx_script_008c.asm"
+        .include "script/sfx_script_008d.asm"
+        .include "script/sfx_script_008e.asm"
+        .include "script/sfx_script_008f.asm"
+        .include "script/sfx_script_0090.asm"
+        .include "script/sfx_script_0091.asm"
+        .include "script/sfx_script_0092.asm"
+        .include "script/sfx_script_0093.asm"
+        .include "script/sfx_script_0094.asm"
+        .include "script/sfx_script_0095.asm"
+        .include "script/sfx_script_0096.asm"
+        .include "script/sfx_script_0097.asm"
+        .include "script/sfx_script_0098.asm"
+        .include "script/sfx_script_0099.asm"
+        .include "script/sfx_script_009a.asm"
+        .include "script/sfx_script_009b.asm"
+        .include "script/sfx_script_009c.asm"
+        .include "script/sfx_script_009d.asm"
+        .include "script/sfx_script_009e.asm"
+        .include "script/sfx_script_009f.asm"
+        .include "script/sfx_script_00a0.asm"
+        .include "script/sfx_script_00a1.asm"
+        .include "script/sfx_script_00a2.asm"
+        .include "script/sfx_script_00a3.asm"
+        .include "script/sfx_script_00a4.asm"
+        .include "script/sfx_script_00a5.asm"
+        .include "script/sfx_script_00a6.asm"
+        .include "script/sfx_script_00a7.asm"
+        .include "script/sfx_script_00a8.asm"
+        .include "script/sfx_script_00a9.asm"
+        .include "script/sfx_script_00aa.asm"
+        .include "script/sfx_script_00ab.asm"
+        .include "script/sfx_script_00ac.asm"
+        .include "script/sfx_script_00ad.asm"
+        .include "script/sfx_script_00ae.asm"
+        .include "script/sfx_script_00af.asm"
+        .include "script/sfx_script_00b0.asm"
+        .include "script/sfx_script_00b1.asm"
+        .include "script/sfx_script_00b2.asm"
+        .include "script/sfx_script_00b3.asm"
+        .include "script/sfx_script_00b4.asm"
+        .include "script/sfx_script_00b5.asm"
+        .include "script/sfx_script_00b6.asm"
+        .include "script/sfx_script_00b7.asm"
+        .include "script/sfx_script_00b8.asm"
+        .include "script/sfx_script_00b9.asm"
+        .include "script/sfx_script_00ba.asm"
+        .include "script/sfx_script_00bb.asm"
+        .include "script/sfx_script_00bc.asm"
+        .include "script/sfx_script_00bd.asm"
+        .include "script/sfx_script_00be.asm"
+        .include "script/sfx_script_00bf.asm"
+        .include "script/sfx_script_00c0.asm"
+        .include "script/sfx_script_00c1.asm"
+        .include "script/sfx_script_00c2.asm"
+        .include "script/sfx_script_00c3.asm"
+        .include "script/sfx_script_00c4.asm"
+        .include "script/sfx_script_00c5.asm"
+        .include "script/sfx_script_00c6.asm"
+        .include "script/sfx_script_00c7.asm"
+        .include "script/sfx_script_00c8.asm"
+        .include "script/sfx_script_00c9.asm"
+        .include "script/sfx_script_00ca.asm"
+        .include "script/sfx_script_00cb.asm"
+        .include "script/sfx_script_00cc.asm"
+        .include "script/sfx_script_00cd.asm"
+        .include "script/sfx_script_00ce.asm"
+        .include "script/sfx_script_00cf.asm"
+        .include "script/sfx_script_00d0.asm"
+        .include "script/sfx_script_00d1.asm"
+        .include "script/sfx_script_00d2.asm"
+        .include "script/sfx_script_00d3.asm"
+        .include "script/sfx_script_00d4.asm"
+        .include "script/sfx_script_00d5.asm"
+        .include "script/sfx_script_00d6.asm"
+        .include "script/sfx_script_00d7.asm"
+        .include "script/sfx_script_00d8.asm"
+        .include "script/sfx_script_00d9.asm"
+        .include "script/sfx_script_00da.asm"
+        .include "script/sfx_script_00db.asm"
+        .include "script/sfx_script_00dc.asm"
+        .include "script/sfx_script_00dd.asm"
+        .include "script/sfx_script_00de.asm"
+        .include "script/sfx_script_00df.asm"
+        .include "script/sfx_script_00e0.asm"
+        .include "script/sfx_script_00e1.asm"
+        .include "script/sfx_script_00e2.asm"
+        .include "script/sfx_script_00e3.asm"
+        .include "script/sfx_script_00e4.asm"
+        .include "script/sfx_script_00e5.asm"
+        .include "script/sfx_script_00e6.asm"
+        .include "script/sfx_script_00e7.asm"
+        .include "script/sfx_script_00e8.asm"
+        .include "script/sfx_script_00e9.asm"
+        .include "script/sfx_script_00ea.asm"
+        .include "script/sfx_script_00eb.asm"
+        .include "script/sfx_script_00ec.asm"
+        .include "script/sfx_script_00ed.asm"
+        .include "script/sfx_script_00ee.asm"
+        .include "script/sfx_script_00ef.asm"
+        .include "script/sfx_script_00f0.asm"
+        .include "script/sfx_script_00f1.asm"
+        .include "script/sfx_script_00f2.asm"
+        .include "script/sfx_script_00f3.asm"
+        .include "script/sfx_script_00f4.asm"
+        .include "script/sfx_script_00f5.asm"
+        .include "script/sfx_script_00f6.asm"
+        .include "script/sfx_script_00f7.asm"
+        .include "script/sfx_script_00f8.asm"
+        .include "script/sfx_script_00f9.asm"
+        .include "script/sfx_script_00fa.asm"
+        .include "script/sfx_script_00fb.asm"
+        .include "script/sfx_script_00fc.asm"
+        .res $10                                                ; c5/3c4e
+
 NumSongs:
         .byte   SongScript_ARRAY_LENGTH                         ; c5/3c5e
 
