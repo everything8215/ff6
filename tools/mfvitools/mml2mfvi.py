@@ -688,6 +688,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             
         #populate command variables
         if command == "%": command += m.pop(0)
+        if command == "s": command += m.pop(0)
         prefix = command
         if len(m):
             while m[0] in "1234567890,.+-x":
@@ -730,7 +731,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             if (prefix + str(params[0]), len(params) - 1) in command_tbl:
                 prefix += str(params.pop(0))
         
-        #print "processing command {} -> {} {} mod {} dots {}".format(command, prefix, params, modifier, dots)
+        #print("processing command {} -> {} {} mod {} dots {}".format(command, prefix, params, modifier, dots))
         #case: notes
         if prefix in "abcdefg^r":
             pitch = note_tbl[prefix]
