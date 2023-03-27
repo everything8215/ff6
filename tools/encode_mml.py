@@ -95,8 +95,7 @@ def akao_sfx_to_asm(data, channels, filename):
     data = data[0x26:len(data)]
     ranges = []
     ranges.append(rt.Range(0, channels[2] - 0x26))
-    if channels[2] != channels[3]:
-        ranges.append(rt.Range(channels[2] - 0x26, channels[3] - 0x26))
+    ranges.append(rt.Range(channels[2] - 0x26, channels[3] - 0x26))
 
     # file header
     asm_string = '; this file is generated automatically,' \
@@ -106,14 +105,15 @@ def akao_sfx_to_asm(data, channels, filename):
     # data
     for i in range(len(ranges)):
         channel = i + 1
-        asm_string += f'\n\n{sfx_label}_{channel}:'
-        data_block = data[ranges[i].begin:ranges[i].end]
-        for j in range(len(data_block)):
-            if j % 16 == 0:
-                asm_string += '\n        .byte   '
-            else:
-                asm_string += ','
-            asm_string += rt.hex_string(data_block[j], 2, '$').lower()
+        if ranges[i].begin < ranges[i].end:
+            asm_string += f'\n\n{sfx_label}_{channel}:'
+            data_block = data[ranges[i].begin:ranges[i].end]
+            for j in range(len(data_block)):
+                if j % 16 == 0:
+                    asm_string += '\n        .byte   '
+                else:
+                    asm_string += ','
+                asm_string += rt.hex_string(data_block[j], 2, '$').lower()
     asm_string += '\n\n.list on\n'
 
     return asm_filename, asm_string
