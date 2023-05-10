@@ -97,8 +97,7 @@ class AssetManager:
             array_length = len(ptr_data) // ptr_size
 
             for i in range(array_length):
-                pointer = 0
-                pointer |= ptr_data[i * ptr_size + 0]
+                pointer = ptr_data[i * ptr_size]
                 if ptr_size > 1:
                     pointer |= ptr_data[i * ptr_size + 1] << 8
                 if ptr_size > 2:
@@ -448,50 +447,22 @@ class AssetManager:
         # file header
         asm_string = '.list off\n\n'
         asm_string += '; this file is generated automatically,' \
-            + ' do not modify manually\n\n'
+            + ' do not modify manually\n'
 
         # asset label
-        asm_string += f'{asm_symbol}:\n'
+        asset_labels = [(0, f'{asm_symbol}')]
 
-        # generate a list of labels for each points
-        label_offsets = {}
-        if asset_definition['type'] == 'array':
+        # generate a list of labels for each pointer
+        if asset_definition['type'] == 'array' and \
+                'format' not in asset_definition:
             for i, begin in enumerate(item_offsets):
                 # generate a label
-                if begin in label_offsets:
-                    label_offsets[begin].append(i)
-                else:
-                    label_offsets[begin] = [i]
+                index_string = rt.hex_string(i, 4, '').lower()
+                item_label = f'{asm_symbol}_{index_string}'
+                asset_labels.append((begin, item_label))
 
-        # remove duplicates and sort pointers
-        sorted_offsets = list(sorted(set(item_offsets)))
-
-        for offset_index, offset in enumerate(sorted_offsets):
-            # skip if pointer is out of range
-            if offset < 0 or offset > len(asset_bytes):
-                continue
-
-            # print item labels
-            if offset in label_offsets:
-                for item_index in label_offsets[offset]:
-                    index_string = rt.hex_string(item_index, 4, '').lower()
-                    asm_string += f'\n{asm_symbol}_{index_string}:'
-
-            # print the data
-            slice_begin = offset
-            if offset_index == len(sorted_offsets) - 1:
-                slice_end = len(asset_bytes) - 1
-            else:
-                slice_end = sorted_offsets[offset_index + 1] - 1
-            pointer_data = asset_bytes[slice_begin:slice_end + 1]
-            for b, value in enumerate(pointer_data):
-                if (b % 16 == 0):
-                    asm_string += '\n        .byte   '
-                else:
-                    asm_string += ','
-                asm_string += rt.hex_string(value, 2, '$').lower()
-            asm_string += '\n'
-        asm_string += '\n.list on\n'
+        asm_string += rt.bytes_to_asm(asset_bytes, labels=asset_labels)
+        asm_string += '\n\n.list on\n'
 
         # save asset assembly file
         os.makedirs(os.path.dirname(asm_path), exist_ok=True)

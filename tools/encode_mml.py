@@ -3,120 +3,71 @@ import romtools as rt
 from mfvitools.mml2mfvi import mml_to_akao
 
 
-def akao_to_asm(data, channels, labels, filename):
-    # create song label and output filename
-    filename = os.path.splitext(filename)[0].lower()
-    label_elems = filename.split("_")
-    song_label = f'SongScript_{label_elems[-1]}'
-    asm_filename = f'{filename}.asm'
+def akao_to_asm(data, channels, mfvi_labels, song_label):
 
-    # arrange and add channel pointers to the label references list
-    for i in range(1, 17):
-        labels[(i - 1) * 2 + 6] = channels[i]
+    symbol_list = []
+    label_list = []
 
-    # add song start and song end label references
-    labels[2] = 0x26
-    labels[4] = len(data)
+    # add a symbol for the size of the song data
+    symbol_list.append((0, '.word', 'SongEnd - Header'))
 
-    # sort dict by label references
-    labels = dict(sorted(labels.items()))
+    # add labels and symbols for the start and end addresses
+    label_list.append((2, 'Header'))
+    label_list.append((0x26, 'SongStart'))
+    label_list.append((len(data), 'SongEnd'))
+    symbol_list.append((2, '.addr', 'SongStart'))
+    symbol_list.append((4, '.addr', 'SongEnd'))
 
-    # create list of unique sorted label declarations
-    labels_decl = list(sorted(set(labels.values())))
+    # add symbols for channel start addresses
+    for i in range(1, 9):
+        # normal start
+        label_list.append((channels[i], f'Channel{i}'))
+        symbol_list.append((4 + i * 2, '.addr', f'Channel{i}'))
+        # alternate start
+        label_list.append((channels[i + 8], f'AltChannel{i}'))
+        symbol_list.append((20 + i * 2, '.addr', f'AltChannel{i}'))
 
-    # create label declaration ranges
-    ranges = []
-    prev_value = 0
-    for l in labels_decl:
-        ranges.append(rt.Range(prev_value, l))
-        prev_value = l
-
-    # add label declaration index to label reference
-    for k, v in labels.items():
-        labels[k] = labels_decl.index(v)
+    for ref_offset in mfvi_labels:
+        label_offset = mfvi_labels[ref_offset]
+        label_str = rt.hex_string(label_offset, 4, '_').lower()
+        label_list.append((label_offset, label_str))
+        symbol_list.append((ref_offset, '.addr', label_str))
 
     # file header with song label
-    asm_string = '; this file is generated automatically,' \
+    asm_string = '.list off\n\n'
+    asm_string += '; this file is generated automatically,' \
         + ' do not modify manually\n\n'
-    asm_string += '.list off\n'
-    asm_string += f'\n\n{song_label}:\n'
+    asm_string += f'.proc {song_label}\n'
+    asm_string += rt.bytes_to_asm(data, labels=label_list, symbols=symbol_list)
+    asm_string += '\n\n.endproc\n\n.list on\n'
 
-    # song data size
-    song_size = rt.hex_string(len(data) - 2, 4, '$').lower()
-    asm_string += f'\n        .word   {song_size}'
-    offset = 2
+    return asm_string
 
-    for i in range(len(labels_decl)):
-        # label references in the label range
-        label_refs = dict((k, v) for k, v in labels.items()
-                          if k > ranges[i].begin and k <= ranges[i].end)
-        for k, v in label_refs.items():
-            data_block_size = k - offset
-            if data_block_size > 0:
-                # bytes before the label reference
-                data_block = data[offset:k]
-                for j in range(len(data_block)):
-                    if j % 16 == 0:
-                        asm_string += '\n        .byte   '
-                    else:
-                        asm_string += ','
-                    asm_string += rt.hex_string(data_block[j], 2, '$').lower()
-                    offset += 1
-            # label reference
-            label = rt.hex_string(labels_decl[v], 4, '@').lower()
-            asm_string += f'\n        .addr   {label}'
-            offset += 2
-        data_block_size = ranges[i].end - offset
-        if data_block_size > 0:
-            # bytes after the label reference and before the next declaration
-            data_block = data[offset:ranges[i].end]
-            for j in range(len(data_block)):
-                if j % 16 == 0:
-                    asm_string += '\n        .byte   '
-                else:
-                    asm_string += ','
-                asm_string += rt.hex_string(data_block[j], 2, '$').lower()
-                offset += 1
-        # label declaration
-        decl = rt.hex_string(labels_decl[i], 4, '@').lower()
-        asm_string += f'\n\n{decl}:'
-    asm_string += '\n\n.list on\n'
 
-    return asm_filename, asm_string
-
-def akao_sfx_to_asm(data, channels, filename):
-    # create sfx label and output filename
-    filename = os.path.splitext(filename)[0].lower()
-    label_elems = filename.split("_")
-    sfx_label = f'SfxScript_{label_elems[-1]}'
-    asm_filename = f'{filename}.asm'
-
-    # arrange data and ranges
-    data = data[0x26:len(data)]
-    ranges = []
-    ranges.append(rt.Range(0, channels[2] - 0x26))
-    ranges.append(rt.Range(channels[2] - 0x26, channels[3] - 0x26))
+def akao_sfx_to_asm(data, channels, sfx_label):
 
     # file header
-    asm_string = '; this file is generated automatically,' \
-        + ' do not modify manually\n\n'
-    asm_string += '.list off\n'
+    asm_string = '.list off\n\n'
+    asm_string += '; this file is generated automatically,' \
+        + ' do not modify manually\n'
 
-    # data
-    for i in range(len(ranges)):
-        channel = i + 1
-        if ranges[i].begin < ranges[i].end:
-            asm_string += f'\n\n{sfx_label}_{channel}:'
-            data_block = data[ranges[i].begin:ranges[i].end]
-            for j in range(len(data_block)):
-                if j % 16 == 0:
-                    asm_string += '\n        .byte   '
-                else:
-                    asm_string += ','
-                asm_string += rt.hex_string(data_block[j], 2, '$').lower()
+    label_list = []
+
+    # range for sfx channel 1
+    range1 = rt.Range(0x26, channels[2] - 1)
+    if not range1.is_empty():
+        label_list.append((range1.begin - 0x26, f'{sfx_label}_1'))
+
+    # range for sfx channel 2
+    range2 = rt.Range(channels[2], channels[3] - 1)
+    if not range2.is_empty():
+        label_list.append((range2.begin - 0x26, f'{sfx_label}_2'))
+
+    # convert bytes to asm text
+    asm_string += rt.bytes_to_asm(data[0x26:], labels=label_list)
     asm_string += '\n\n.list on\n'
 
-    return asm_filename, asm_string
+    return asm_string
 
 
 if __name__ == '__main__':
@@ -125,28 +76,37 @@ if __name__ == '__main__':
     sfx_dir = os.path.join(os.getcwd(), 'script', 'sfx')
 
     for file in os.listdir(sfx_dir):
-        file_path = os.path.join(sfx_dir, file)
+        mml_path = os.path.join(sfx_dir, file)
+        mml_filename = os.path.splitext(file)[0].lower()
+        asm_filename = f'{mml_filename}.asm'
+        asm_path = os.path.join(asm_dir, asm_filename)
+
+        # skip if asm file is newer than mml
+        if os.path.isfile(asm_path) and os.path.getmtime(
+                asm_path) > os.path.getmtime(mml_path):
+            continue
+
         mml = []
         # read mml file
         try:
-            with open(file_path, 'r') as f:
+            with open(mml_path, 'r') as f:
                 mml = f.readlines()
         except IOError as e:
-            print(f'Error reading file {file_path}')
+            print(f'Error reading file {mml_path}')
             print(e)
 
         # convert mml file to binary and create asm string
         try:
+            sfx_label = f'SfxScript_{mml_filename.split("_")[-1]}'
             variants = mml_to_akao(mml)
             def_variant = variants['_default_']
-            asm_filename, asm_string = akao_sfx_to_asm(def_variant[0],
-                                                        def_variant[1], file)           
+            asm_string = akao_sfx_to_asm(def_variant[0], def_variant[1],
+                                         sfx_label)
         except Exception:
             traceback.print_exc()
 
         # write asm file
         try:
-            asm_path = os.path.join(asm_dir, asm_filename)
             os.makedirs(os.path.dirname(asm_path), exist_ok=True)
             with open(asm_path, 'w') as f:
                 f.write(asm_string)
@@ -156,23 +116,32 @@ if __name__ == '__main__':
             print(e)
 
     for file in os.listdir(mml_dir):
-        file_path = os.path.join(mml_dir, file)
+        mml_path = os.path.join(mml_dir, file)
+        mml_filename = os.path.splitext(file)[0].lower()
+        asm_filename = f'{mml_filename}.asm'
+        asm_path = os.path.join(asm_dir, asm_filename)
+
+        # skip if asm file is newer than mml
+        if os.path.isfile(asm_path) and os.path.getmtime(
+                asm_path) > os.path.getmtime(mml_path):
+            continue
+
         mml = []
         # read mml file
         try:
-            with open(file_path, 'r') as f:
+            with open(mml_path, 'r') as f:
                 mml = f.readlines()
         except IOError as e:
-            print(f'Error reading file {file_path}')
+            print(f'Error reading file {mml_path}')
             print(e)
 
         # convert mml file to binary and create asm string
         try:
+            mml_label = f'SongScript_{mml_filename.split("_")[-1]}'
             variants = mml_to_akao(mml)
             def_variant = variants['_default_']
-            asm_filename, asm_string = akao_to_asm(def_variant[0],
-                                                   def_variant[1],
-                                                   def_variant[2], file)
+            asm_string = akao_to_asm(def_variant[0], def_variant[1],
+                                     def_variant[2], mml_label)
         except Exception:
             traceback.print_exc()
 
