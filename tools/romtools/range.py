@@ -70,11 +70,8 @@ class Range:
         end = min(self.end, other_range.end)
         return Range(begin, end)
 
-    def is_empty(self):
-        if self.end < self.begin:
-            return True
-        else:
-            return False
-
     def length(self):
         return self.end - self.begin + 1
+
+    def is_empty(self):
+        return self.length() <= 0
