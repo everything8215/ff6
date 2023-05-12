@@ -203,7 +203,7 @@ inc_lang "assets/title_opening_gfx_%s.inc"
 .include "assets/world_gfx3.inc"
 .include "assets/world_mod_data.inc"
 .include "assets/world_mod_tiles.inc"
-inc_lang "assets/world_sine_%s.inc"
+.include "assets/world_sine.inc"
 .include "assets/world_sprite_gfx1.inc"
 .include "assets/world_sprite_gfx2.inc"
 .include "assets/world_sprite_pal1.inc"
@@ -294,9 +294,9 @@ NPCPropPtrs:                                                    ; c4/1a10
 
 SfxPtrs:                                                        ; c5/205e
 
-.repeat 256, _i
-        .addr .ident(.sprintf("SfxScript_%04x_1", _i)) - SfxStart + $3000
-        .addr .ident(.sprintf("SfxScript_%04x_2", _i)) - SfxStart + $3000
+.repeat 256, i
+        .addr .ident(.sprintf("SfxScript_%04x_1", i)) - SfxStart + $3000
+        .addr .ident(.sprintf("SfxScript_%04x_2", i)) - SfxStart + $3000
 .endrep
 
 SfxStart:                                                       ; c5/245e
@@ -556,12 +556,12 @@ SfxStart:                                                       ; c5/245e
         .res $10                                                ; c5/3c4e
 
 ; set undefined sfx pointers to zero
-.repeat 256, _i
-        .ifndef .ident(.sprintf("SfxScript_%04x_1", _i))
-                .ident(.sprintf("SfxScript_%04x_1", _i)) := SfxStart - $3000
+.repeat 256, i
+        .ifndef .ident(.sprintf("SfxScript_%04x_1", i))
+                .ident(.sprintf("SfxScript_%04x_1", i)) := SfxStart - $3000
         .endif
-        .ifndef .ident(.sprintf("SfxScript_%04x_2", _i))
-                .ident(.sprintf("SfxScript_%04x_2", _i)) := SfxStart - $3000
+        .ifndef .ident(.sprintf("SfxScript_%04x_2", i))
+                .ident(.sprintf("SfxScript_%04x_2", i)) := SfxStart - $3000
         .endif
 .endrep
 
@@ -1433,7 +1433,11 @@ VehicleEvent_06:
 ; ------------------------------------------------------------------------------
 
 .segment "world_sine"
+; python code to generate this table for x = [0,270]
+; def world_sine(x):
+;     x = 2.0 * math.pi * i / 360.0
+;     return math.floor(abs(math.sin(x) * 255.0))
 
-        inc_lang "assets/world_sine_%s.asm"                     ; ef/fef0
+        .include "assets/world_sine.asm"                        ; ef/fef1
 
 ; ------------------------------------------------------------------------------

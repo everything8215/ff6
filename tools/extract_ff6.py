@@ -48,7 +48,7 @@ for file_name in dir_list:
     crc32 = binascii.crc32(file_data) & 0xFFFFFFFF
 
     # skip files that are not valid vanilla ROMs
-    if not crc32 in ff6_rom_info_list:
+    if crc32 not in ff6_rom_info_list:
         continue
 
     # print ROM info

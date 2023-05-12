@@ -1,7 +1,7 @@
 {
   "type": "data",
   "name": "World Sine Table",
-  "range": "0xEFFEF0-0xEFFFFF",
+  "range": "0xEFFEF1-0xEFFFFF",
   "asmSymbol": "WorldSineTbl",
-  "assetPath": "assets/world/sine_en.dat"
+  "assetPath": "assets/world/sine.dat"
 }

@@ -47506,6 +47506,16 @@ GetBitMask_near:
 ; ------------------------------------------------------------------------------
 
 ; sin/cos table (16-bit, signed)
+
+; python code to *almost* generate the entries in this table for x = [0,255].
+; perhaps the developers used a sine function from an older floating-point
+; unit which has slightly different round-off error than a modern FPU. In any
+; case, about 1/8 of the values will be off by 1.
+
+; def sine16(x):
+;     sine_x = round(math.sin(2.0 * math.pi * i / 256.0) * 32767.0)
+;     return sine_x if sine_x >= 0 else 0x10000 + sine_x
+
 SineTbl16:
 @fc6d:  .word   $0000,$0324,$0648,$096a,$0c8c,$0fab,$12c8,$15e2
         .word   $18f9,$1c0b,$1f1a,$2223,$2528,$2826,$2b1f,$2e11
@@ -47541,6 +47551,12 @@ SineTbl16:
         .word   $e708,$ea1f,$ed39,$f055,$f375,$f696,$f9b9,$fcdc
 
 ; sin/cos table (8-bit, signed)
+
+; python code to generate the entries in this table for x = [0,255]
+; def sine8(x):
+;     sine_x = round(math.sin(2.0 * math.pi * i / 256.0) * 127.0)
+;     return sine_x if sine_x >= 0 else 0x100 + sine_x
+
 SineTbl8:
 @fe6d:  .byte   $00,$03,$06,$09,$0c,$10,$13,$16,$19,$1c,$1f,$22,$25,$28,$2b,$2e
         .byte   $31,$33,$36,$39,$3c,$3f,$41,$44,$47,$49,$4c,$4e,$51,$53,$55,$58

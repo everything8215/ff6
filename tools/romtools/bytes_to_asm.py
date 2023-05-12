@@ -91,7 +91,7 @@ def bytes_to_asm(bytes, labels=None, symbols=None):
         # print the bytes
         slice_bytes = bytes[slice_begin:next_offset]
         for b, value in enumerate(slice_bytes):
-            if (b % 16 == 0):
+            if b % 16 == 0:
                 asm_string += '\n' + '.byte'.ljust(8).rjust(16)
             else:
                 asm_string += ','

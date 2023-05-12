@@ -52,7 +52,7 @@ inc_lang "assets/event_trigger_%s.inc"
 .include "assets/world_gfx3.inc"
 .include "assets/world_mod_data.inc"
 .include "assets/world_mod_tiles.inc"
-inc_lang "assets/world_sine_%s.inc"
+.include "assets/world_sine.inc"
 .include "assets/world_sprite_gfx1.inc"
 .include "assets/world_sprite_gfx2.inc"
 .include "assets/world_sprite_pal1.inc"
@@ -746,7 +746,7 @@ sethdma0:
         sta     $4352
         lda     #$00ad
         sta     $4362
-        lda     #$00b4
+        lda     #180
         sta     $4372
         lda     #$00bb
         sta     $4312
@@ -844,7 +844,7 @@ sethdma1:
         sta     $4352
         lda     #$00ad
         sta     $4362
-        lda     #$00b4
+        lda     #180
         sta     $4372
         lda     #$6000
         sta     $4322
@@ -1079,7 +1079,7 @@ doman:
         bne     @086e
         lda     #$0092
         sta     $85
-        lda     #$00b4
+        lda     #180
         sta     $73
         lda     #$3000
         sta     $8b
@@ -1266,18 +1266,18 @@ doman:
         lda     $7eb660,x
         clc
         adc     $7eb664,x
-        cmp     #$0168
+        cmp     #360
         bcc     @0aa6
-        sbc     #$0168
+        sbc     #360
 @0aa6:  sta     $7eb660,x
-        cmp     #$00b4
+        cmp     #180
         bcc     @0ab4
-        sbc     #$00b4
+        sbc     #180
         dec     $60
 @0ab4:  phx
         tax
         shorta
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         plx
         lsr3
         sta     $5c
@@ -1412,19 +1412,19 @@ _ee0b30:
         clc
         adc     $7eb664
         bmi     @0c09
-        cmp     #$0168
+        cmp     #360
         bcc     @0c0d
         sec
-        sbc     #$0168
+        sbc     #360
         bra     @0c0d
 @0c09:  clc
-        adc     #$0168
+        adc     #360
 @0c0d:  sta     $7eb664
 @0c11:  clc
         adc     $58
-        cmp     #$0168
+        cmp     #360
         bcc     @0c1c
-        sbc     #$0168
+        sbc     #360
 @0c1c:  sta     $73
         inx
         txa
@@ -2638,13 +2638,13 @@ movth:
         lda     $75
         bra     @1766
 @1764:  lda     $73
-@1766:  cmp     #$00b4
+@1766:  cmp     #180
         bcc     @176e
-        sbc     #$00b4
+        sbc     #180
 @176e:  tax
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         sta     $9b
-        lda     f:WorldSineTbl+91,x
+        lda     f:WorldSineTbl+90,x
         sta     $9d
         lda     $1e
         bit     #$0020
@@ -2652,11 +2652,11 @@ movth:
         lda     $75
         bra     @1788
 @1786:  lda     $73
-@1788:  cmp     #$00b4
+@1788:  cmp     #180
         bcc     @17a2
         ldx     #$00
         stx     $5b
-        cmp     #$010e
+        cmp     #270
         bcc     @179c
 @1796:  ldx     #$01
         stx     $5a
@@ -2666,7 +2666,7 @@ movth:
         bra     @17ad
 @17a2:  ldx     #$01
         stx     $5b
-        cmp     #$005a
+        cmp     #90
         bcc     @1796
         bra     @179c
 @17ad:  stz     $6b
@@ -3033,12 +3033,12 @@ control:
         adc     $2a
         bpl     @1a47
         clc
-        adc     #$0168
+        adc     #360
         bra     @1a50
-@1a47:  cmp     #$0168
+@1a47:  cmp     #360
         bcc     @1a50
         sec
-        sbc     #$0168
+        sbc     #360
 @1a50:  sta     $73
 @1a52:  longa
         lda     $1e
@@ -3196,34 +3196,34 @@ _ee1b9a:
         lda     $73
         pha
         beq     @1bb1
-        cmp     #$005a
+        cmp     #90
         beq     @1bb1
-        cmp     #$00b4
+        cmp     #180
         beq     @1bb1
-        cmp     #$010e
+        cmp     #270
         bne     @1bb4
 @1bb1:  jmp     @1c4f
-@1bb4:  cmp     #$013b
+@1bb4:  cmp     #315
         bcs     @1c14
-        cmp     #$010e
+        cmp     #270
         bcs     @1bd7
-        cmp     #$00e1
+        cmp     #225
         bcs     @1c14
-        cmp     #$00b4
+        cmp     #180
         bcs     @1bd7
-        cmp     #$0087
+        cmp     #135
         bcs     @1c14
-        cmp     #$005a
+        cmp     #90
         bcs     @1bd7
-        cmp     #$002d
+        cmp     #45
         bcs     @1c14
 @1bd7:  lda     $73
         clc
-        adc     #$005a
-        cmp     #$0168
+        adc     #90
+        cmp     #360
         bcc     @1be6
         sec
-        sbc     #$0168
+        sbc     #360
 @1be6:  sta     $73
         jsr     _ee174e
         jsr     GetTileProp2
@@ -3233,10 +3233,10 @@ _ee1b9a:
         pla
         pha
         sec
-        sbc     #$005a
+        sbc     #90
         bcs     @1c02
         clc
-        adc     #$0168
+        adc     #360
 @1c02:  sta     $73
         jsr     _ee174e
         jsr     GetTileProp2
@@ -3246,10 +3246,10 @@ _ee1b9a:
         bra     @1c4f
 @1c14:  lda     $73
         sec
-        sbc     #$005a
+        sbc     #90
         bcs     @1c20
         clc
-        adc     #$0168
+        adc     #360
 @1c20:  sta     $73
         jsr     _ee174e
         jsr     GetTileProp2
@@ -3259,11 +3259,11 @@ _ee1b9a:
         pla
         pha
         clc
-        adc     #$005a
-        cmp     #$0168
+        adc     #90
+        cmp     #360
         bcc     @1c3f
         sec
-        sbc     #$0168
+        sbc     #360
 @1c3f:  sta     $73
         jsr     _ee174e
         jsr     GetTileProp2
@@ -3316,7 +3316,7 @@ _ee1c80:
         lda     $73
         cmp     #$0000
         beq     @1ca9
-        cmp     #$00b4
+        cmp     #180
         bcs     @1c98
         dec2
         and     #$0ffe
@@ -3324,7 +3324,7 @@ _ee1c80:
         bra     @1cb3
 @1c98:  inc2
         and     #$0ffe
-        cmp     #$0168
+        cmp     #360
         bne     @1ca5
         lda     #$0000
 @1ca5:  sta     $73
@@ -4416,31 +4416,31 @@ _ee235b:
         lda     $3b
         adc     $2a
         bmi     @2571       ; branch if negative
-        cmp     #$0168
+        cmp     #360
         bcc     @2575       ; branch if less than 360 degrees
         sec
-        sbc     #$0168      ; subtract 360 degrees
+        sbc     #360      ; subtract 360 degrees
         bra     @2575
 @2571:  clc
-        adc     #$0168      ; add 360 degrees
+        adc     #360      ; add 360 degrees
 @2575:  sta     $3b
 @2577:  longa
         lda     $3b         ; rotation angle
-        cmp     #$00b4
+        cmp     #180
         bcc     @2584       ; branch if less than 180 degrees
         sec
-        sbc     #$00b4      ; subtract 180 degrees
+        sbc     #180      ; subtract 180 degrees
 @2584:  tax
-        lda     f:WorldSineTbl+1,x   ; sine table
+        lda     f:WorldSineTbl,x   ; sine table
         and     #$00ff
         sta     $58
-        lda     f:WorldSineTbl+91,x   ; cosine table
+        lda     f:WorldSineTbl+90,x   ; cosine table
         and     #$00ff
         sta     $5a
         lda     $3b
-        cmp     #$00b4
+        cmp     #180
         bcs     @25af       ; branch if > 180 degrees
-        cmp     #$005a
+        cmp     #90
         bcs     @25a5       ; branch if > 90 degrees
         bra     @25ce
 @25a5:  lda     $5a
@@ -4448,7 +4448,7 @@ _ee235b:
         inc
         sta     $5a
         bra     @25ce
-@25af:  cmp     #$010e
+@25af:  cmp     #270
         bcs     @25c6       ; branch if > 270 degrees
         lda     $58
         eor     #$ffff
@@ -5979,7 +5979,7 @@ UpdateMode7Rot:
         stz     $6b
         stz     $6e
         lda     $87
-        cmp     #$00e1
+        cmp     #225
         bcc     @3a9c
         lda     #$01c0
         sec
@@ -6020,13 +6020,13 @@ UpdateMode7Rot:
         sta     hWRDIVL
         stx     hWRDIVB
         lda     a:$0073
-        cmp     #$00b4
+        cmp     #180
         bcc     @3ae8
-        sbc     #$00b4
+        sbc     #180
 @3ae8:  tax
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         sta     $9b
-        lda     f:WorldSineTbl+91,x
+        lda     f:WorldSineTbl+90,x
         sta     $9d
         plp
         lda     hRDDIVL
@@ -6050,13 +6050,13 @@ UpdateMode7Rot:
         lda     $8d
         sta     $99
         lda     a:$0073
-        cmp     #$00b4
+        cmp     #180
         bcc     @3b34
-        cmp     #$010e
+        cmp     #270
         bcc     @3b31
         jmp     @3d8f
 @3b31:  jmp     @3cc6
-@3b34:  cmp     #$005a
+@3b34:  cmp     #90
         bcc     @3b3c
         jmp     @3bfd
 @3b3c:  ldy     #$00
@@ -6429,7 +6429,7 @@ UpdateMode7Vars:
 @3e51:  longa
         longi
         lda     $87
-        cmp     #$00e1
+        cmp     #225
         bcc     @3e69
         lda     #$01c0
         sec
@@ -6472,13 +6472,13 @@ UpdateMode7Vars:
         sta     hWRDIVL
         stx     hWRDIVB
         lda     a:$0073
-        cmp     #$00b4
+        cmp     #180
         bcc     @3eba
-        sbc     #$00b4
+        sbc     #180
 @3eba:  tax
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         sta     $9b
-        lda     f:WorldSineTbl+91,x
+        lda     f:WorldSineTbl+90,x
         sta     $9d
         plp
         lda     hRDDIVL
@@ -6955,9 +6955,9 @@ DrawMinimapPos:
         and     #$0003
         sta     $5a
         lda     $73
-        cmp     #$00b4
+        cmp     #180
         bcc     @4239
-        cmp     #$010e
+        cmp     #270
         bcc     @4227
         lda     $6a
         sec
@@ -6978,7 +6978,7 @@ DrawMinimapPos:
         adc     $58
         sta     $6b35
         bra     @4263
-@4239:  cmp     #$005a
+@4239:  cmp     #90
         bcc     @4251
         lda     $6a
         sec
@@ -8579,13 +8579,13 @@ DrawPlayerSprite_14:
         longa
         tdc
         lda     $b65c
-        cmp     #$00b4
+        cmp     #180
         bcs     @50ee
         inc2
         sta     $b65c
 @50ee:  tax
         shorta
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         sta     f:hWRMPYA
         lda     #$c0
         sta     f:hWRMPYB
@@ -8601,7 +8601,7 @@ DrawPlayerSprite_14:
         adc     #$0000
         sta     $b658
         lda     $b65c
-        cmp     #$00b4
+        cmp     #180
         bne     @5156
         longa
         sec
@@ -9824,10 +9824,10 @@ keycontrol:
         bne     @6d07
         lda     a:$0073
         inc2
-        cmp     #$0168
+        cmp     #360
         bmi     @6d04
         sec
-        sbc     #$0168
+        sbc     #360
 @6d04:  sta     a:$0073
 @6d07:  lda     $04
         and     #$0110
@@ -9838,7 +9838,7 @@ keycontrol:
         cmp     #$0000
         bpl     @6d1f
         clc
-        adc     #$0168
+        adc     #360
 @6d1f:  sta     a:$0073
 @6d22:  lda     $05
         bit     #$0080
@@ -9848,13 +9848,13 @@ keycontrol:
 
 ; ------------------------------------------------------------------------------
 
+; movement angle if holding Y button (udlr bitmask)
 _ee6d2f:
-@6d2f:  .word   $0000,$010e,$005a,$0000,$00b4,$00e1,$0087,$0000
-        .word   $0000,$013b,$002d
+@6d2f:  .word   0,270,90,0,180,225,135,0,0,315,45
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ slow movement with Y button ]
 
 _ee6d45:
 @6d45:  longa
@@ -9864,29 +9864,29 @@ _ee6d45:
         jmp     @6e38
 @6d51:  asl
         tax
-        lda     f:_ee6d2f,x
+        lda     f:_ee6d2f,x             ; movement angle
         clc
         adc     $73
-        cmp     #$0168
+        cmp     #360
         bcc     @6d62
-        sbc     #$0168
+        sbc     #360
 @6d62:  sta     $58
-        cmp     #$00b4
+        cmp     #180
         bcc     @6d6c
-        sbc     #$00b4
+        sbc     #180
 @6d6c:  tax
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         sta     $5e
-        lda     f:WorldSineTbl+91,x
+        lda     f:WorldSineTbl+90,x
         sta     $60
         longa
         shorti
         lda     $58
-        cmp     #$00b4
+        cmp     #180
         bcc     @6d99
         ldx     #$00
         stx     $5b
-        cmp     #$010e
+        cmp     #270
         bcc     @6d93
 @6d8d:  ldx     #$01
         stx     $5a
@@ -9896,7 +9896,7 @@ _ee6d45:
         bra     @6da4
 @6d99:  ldx     #$01
         stx     $5b
-        cmp     #$005a
+        cmp     #90
         bcc     @6d8d
         bra     @6d93
 @6da4:  stz     $6b
@@ -10186,10 +10186,10 @@ _ee6f6d:
         bne     @702a
         lda     a:$0073
         inc2
-        cmp     #$0168
+        cmp     #360
         bmi     @7027
         sec
-        sbc     #$0168
+        sbc     #360
 @7027:  sta     a:$0073
 @702a:  lda     $04
         and     #$0110
@@ -10200,7 +10200,7 @@ _ee6f6d:
         cmp     #$0000
         bpl     @7042
         clc
-        adc     #$0168
+        adc     #360
 @7042:  sta     a:$0073
 @7045:  lda     $05
         bit     #$0080
@@ -11264,10 +11264,10 @@ autocontrol2:
         bne     @76dd
         lda     a:$0073
         inc2
-        cmp     #$0168
+        cmp     #360
         bmi     @76da
         sec
-        sbc     #$0168
+        sbc     #360
 @76da:  sta     a:$0073
 @76dd:  lda     $60
         and     #$0110
@@ -11278,7 +11278,7 @@ autocontrol2:
         cmp     #$0000
         bpl     @76f5
         clc
-        adc     #$0168
+        adc     #360
 @76f5:  sta     a:$0073
 @76f8:  shorta
         rts
@@ -12444,7 +12444,7 @@ WorldCmd_fd:
         and     #$00ff
         tax
         shorta
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         and     #$03
         cmp     #$03
         bne     @7fd0
@@ -12483,7 +12483,7 @@ WorldCmd_fd:
         sta     $b662,y
         lda     $ef
         tax
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         and     #$01
         sta     $b665,y
 @8025:  plx
@@ -12566,7 +12566,7 @@ WorldCmd_fe:
         and     #$00ff
         tax
         shorta
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         and     #$03
         cmp     #$03
         bne     @80db
@@ -12605,7 +12605,7 @@ WorldCmd_fe:
         sta     $b662,y
         lda     $ef
         tax
-        lda     f:WorldSineTbl+1,x
+        lda     f:WorldSineTbl,x
         and     #$01
         sta     $b665,y
 @8130:  plx
