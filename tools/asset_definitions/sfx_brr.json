@@ -1,0 +1,7 @@
+{
+  "type": "data",
+  "name": "Sound Effect Sample BRR Data",
+  "range": "0xC51EC9-0xC52015",
+  "asmSymbol": "SfxBRR",
+  "assetPath": "assets/sound/sfx_brr.dat"
+}

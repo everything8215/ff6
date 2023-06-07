@@ -25,10 +25,14 @@
 .include "assets/sample_adsr.inc"
 .include "assets/sample_loop_start.inc"
 .include "assets/sample_freq_mult.inc"
+.include "assets/sfx_adsr.inc"
+.include "assets/sfx_brr.inc"
+.include "assets/sfx_freq_mult.inc"
+.include "assets/sfx_loop_start.inc"
 
 ; ------------------------------------------------------------------------------
 
-.import NumSongs, SampleBRRPtrs, SongScriptPtrs
+.import SPCCode, SfxPtrs, NumSongs, SampleBRRPtrs, SongScriptPtrs
 
 ; ------------------------------------------------------------------------------
 
@@ -56,10 +60,17 @@ TfrSongScript_ext:
 
 ; ------------------------------------------------------------------------------
 
-; pointers to spc chunks (+$c50000)
-@0010:  .addr   $070e,$205c,$1ec7,$2016,$2038,$204a
+; pointers to spc blocks (+$c50000)
+InitTfrSrcTbl:
+@0010:  .addr   SPCCode-2
+        .addr   SfxPtrs-2
+        .addr   SfxBRR-2
+        .addr   SfxLoopStart-2
+        .addr   SfxADSR-2
+        .addr   SfxFreqMult-2
 
-; destination address of spc chunks
+; destination address of each spc block
+InitTfrDestTbl:
 @001c:  .word   $0200,$2c00,$4800,$1b00,$1a80,$1a00
 
 ; pointers to misc spc data (+$C50000, unused)
@@ -96,9 +107,9 @@ InitSound:
         cpx     hAPUIO0       ; wait for acknowledgement from spc
         bne     @004f
         ldx     #$0000
-        lda     $c5001c     ; destination address of first spc chunk ($0200)
+        lda     f:InitTfrDestTbl     ; destination address of first spc chunk ($0200)
         sta     hAPUIO2
-        lda     $c5001d
+        lda     f:InitTfrDestTbl+1
         sta     hAPUIO3
         lda     #$cc
         sta     hAPUIO1
@@ -107,9 +118,9 @@ InitSound:
         bne     @0070
 @0075:  lda     #$00
         xba
-        lda     $c50010,x   ; pointer to spc chunk
+        lda     f:InitTfrSrcTbl,x   ; pointer to spc chunk
         sta     $10
-        lda     $c50011,x
+        lda     f:InitTfrSrcTbl+1,x
         sta     $11
         lda     #$c5
         sta     $12
@@ -142,9 +153,9 @@ InitSound:
         cpx     #$000c
         beq     @00da
         xba
-        lda     $c5001c,x   ; destination address of next spc chunk
+        lda     f:InitTfrDestTbl,x   ; destination address of next spc chunk
         sta     hAPUIO2
-        lda     $c5001d,x
+        lda     f:InitTfrDestTbl+1,x
         sta     hAPUIO3
         xba
         sta     hAPUIO1
@@ -170,7 +181,7 @@ InitSound:
         lda     #$ff        ; clear current song index
         sta     $05
         longa
-        lda     $c51ec7     ; sound effect brr data
+        lda     f:SfxBRR-2
         clc
         adc     #$4800
         sta     $f8
@@ -485,17 +496,17 @@ TfrSong:
         adc     $e2
         tax
         shorta
-        lda     $c53c5f,x   ; pointer to instrument brr data
+        lda     f:SampleBRRPtrs,x
         sta     $10
-        lda     $c53c60,x
+        lda     f:SampleBRRPtrs+1,x
         sta     $11
-        lda     $c53c61,x
+        lda     f:SampleBRRPtrs+2,x
         sta     $12
         ldy     $10
         stz     $10
         stz     $11
         plx
-        jsr     $0374       ; transfer instrument spc data to spc
+        jsr     TfrSamples
         ply
         iny2
         inx2
@@ -900,14 +911,14 @@ TfrGameSfxPtrs:
         inc
         and     #$7f
         sta     $1e
-        lda     $c5205c     ; size of data ($1c00)
+        lda     f:SfxPtrs-2     ; size of data ($1c00)
         sta     $1c
-        lda     $c5205d
+        lda     f:SfxPtrs-1
         sta     $1d
         ldx     #$0000
-@0678:  lda     $c5205e,x   ; transfer data (pointers to sound effect data)
+@0678:  lda     f:SfxPtrs,x   ; transfer data (pointers to sound effect data)
         sta     hAPUIO2
-        lda     $c5205f,x
+        lda     f:SfxPtrs+1,x
         sta     hAPUIO3
         inx2                ; next two bytes
         lda     $1e

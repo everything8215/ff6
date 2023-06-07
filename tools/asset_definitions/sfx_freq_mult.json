@@ -1,0 +1,7 @@
+{
+  "type": "data",
+  "name": "Sound Effect Sample Frequency Multipliers",
+  "range": "0xC5204C-0xC5205B",
+  "asmSymbol": "SfxFreqMult",
+  "assetPath": "assets/sound/sfx_freq_mult.dat"
+}

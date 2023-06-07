@@ -166,13 +166,16 @@ inc_lang "assets/rare_item_name_%s.inc"
 .include "assets/sample_adsr.inc"
 .include "assets/sample_freq_mult.inc"
 .include "assets/sample_loop_start.inc"
+.include "assets/sfx_adsr.inc"
+.include "assets/sfx_brr.inc"
+.include "assets/sfx_freq_mult.inc"
+.include "assets/sfx_loop_start.inc"
 .include "assets/shop_prop.inc"
 .include "assets/short_entrance.inc"
 .include "assets/slot_gfx.inc"
 .include "assets/world_pal3.inc"
 .include "assets/song_samples.inc"
 .include "assets/song_script.inc"
-.include "assets/spc_data.inc"
 .include "assets/status_gfx.inc"
 .include "assets/sub_battle_group.inc"
 .include "assets/sub_battle_rate.inc"
@@ -288,10 +291,22 @@ NPCPropPtrs:                                                    ; c4/1a10
 
 .segment "sound_data"
 
-.export NumSongs
+.export SPCCode, SfxPtrs, NumSongs, SampleBRRPtrs
 
-        .include "assets/spc_data.asm"                          ; c5/070e
+        .word SPCCode_SIZE
+SPCCode:
+        .incbin "include/spc/ff6-spc.dat"                       ; c5/070e
+        SPCCode_SIZE = *-SPCCode
+        .word SfxBRR_SIZE
+        .include "assets/sfx_brr.asm"                           ; c5/1ec9
+        .word SfxLoopStart_SIZE
+        .include "assets/sfx_loop_start.asm"                    ; c5/2018
+        .word SfxADSR_SIZE
+        .include "assets/sfx_adsr.asm"                          ; c5/203a
+        .word SfxFreqMult_SIZE
+        .include "assets/sfx_freq_mult.asm"                     ; c5/204c
 
+        .word   Sfx_SIZE
 SfxPtrs:                                                        ; c5/205e
 
 .repeat 256, i
@@ -554,6 +569,7 @@ SfxStart:                                                       ; c5/245e
         .include "script/sfx_script_00fb.asm"
         .include "script/sfx_script_00fc.asm"
         .res $10                                                ; c5/3c4e
+        Sfx_SIZE = *-SfxPtrs
 
 ; set undefined sfx pointers to zero
 .repeat 256, i
