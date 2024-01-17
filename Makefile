@@ -44,13 +44,14 @@ rng:
 spc: src/sound/ff6-spc.dat
 
 clean:
-	$(RM) -r $(ROM_DIR) $(OBJ_DIR)
-
-distclean: clean
-	python3 tools/clean_assets.py
+	$(RM) -rf $(ROM_DIR) $(OBJ_DIR)
+	$(RM) -f src/text/*.dat
 	$(RM) src/sound/song_script/*.asm src/sound/sfx_script/*.asm
 	$(RM) src/sound/sample_brr/*.wav src/sound/sfx_brr/*.wav
 	$(RM) $(SPC_PRG)
+
+distclean: clean
+	python3 tools/clean_assets.py
 
 # ROM filenames
 FF6_JP_PATH = $(ROM_DIR)/ff6-jp.sfc
@@ -145,7 +146,7 @@ BRR_FILES = $(wildcard src/sound/sample_brr/*.brr) $(wildcard src/sound/sfx_brr/
 WAV_FILES = $(BRR_FILES:brr=wav)
 wav: $(WAV_FILES)
 
-%.wav: $(@:wav=brr)
+%.wav: %.brr
 	python3 tools/brr.py $< $@
 
 # rules for trimming monster graphics
