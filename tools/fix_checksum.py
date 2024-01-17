@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+import binascii
 import sys
+import numpy as np
 import romtools as rt
 
 
@@ -29,21 +31,24 @@ if __name__ == "__main__":
     rom_file = open(rom_path, 'r+b')
 
     checksum_offset = 0xFFDC  # 0x7FDC for LoROM
+    checksum = np.array([0xAAAA, 0x5555], dtype=np.uint16)
 
     # write a dummy checksum in the SNES header
     rom_file.seek(checksum_offset)
-    rom_file.write((0xAAAA).to_bytes(2, 'little'))
-    rom_file.write((0x5555).to_bytes(2, 'little'))
+    rom_file.write(checksum.tobytes())
 
     # read the ROM data and calculate the SNES checksum
     rom_file.seek(0)
-    rom_data = bytearray(rom_file.read())
-    checksum = mirror_sum(rom_data)
-    print('SNES Checksum: ', rt.hex_string(checksum, 4))
+    rom_bytes = bytearray(rom_file.read())
+    checksum[1] = mirror_sum(rom_bytes)
+    checksum[0] = checksum[1] ^ 0xFFFF
+    rom_bytes[checksum_offset:checksum_offset+4] = checksum.tobytes()
 
-    # write the checksum in the SNES header
+    # print the result
+    print('SNES Checksum:', rt.hex_string(checksum[1], 4))
+    print('ROM CRC32:', rt.hex_string(binascii.crc32(rom_bytes) & 0xFFFFFFFF, 8))
+
+    # write the calculated checksum in the SNES header
     rom_file.seek(checksum_offset)
-    rom_file.write((checksum ^ 0xFFFF).to_bytes(2, 'little'))
-    rom_file.write(checksum.to_bytes(2, 'little'))
-
+    rom_file.write(checksum.tobytes())
     rom_file.close()

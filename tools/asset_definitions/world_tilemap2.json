@@ -1,8 +1,0 @@
-{
-  "type": "data",
-  "name": "World of Ruin Layout",
-  "range": "0xEF6A56-0xEF9D16",
-  "asmSymbol": "WorldTilemap2",
-  "assetPath": "assets/world/world_tilemap2.dat",
-  "format": "ff6-lzss"
-}

@@ -16,23 +16,50 @@
 .include "const.inc"
 .include "hardware.inc"
 .include "macros.inc"
-.include "sound.inc"
+.include "code_ext.inc"
 
 ; ------------------------------------------------------------------------------
 
-.include "assets/song_script.inc"
-.include "assets/song_samples.inc"
-.include "assets/sample_adsr.inc"
-.include "assets/sample_loop_start.inc"
-.include "assets/sample_freq_mult.inc"
-.include "assets/sfx_adsr.inc"
-.include "assets/sfx_brr.inc"
-.include "assets/sfx_freq_mult.inc"
-.include "assets/sfx_loop_start.inc"
+; [ begin/end block of SPC data ]
+
+; each spc block is preceded by a 2-byte header containing the block size
+.macro begin_spc_block _label
+        .proc .ident(.string(_label))
+        .word .ident(.sprintf("%s_SIZE", .string(_label))) - 2
+.endmac
+
+.macro end_spc_block _label
+        .endproc
+        .ident(.sprintf("%s_SIZE", .string(_label))) = .sizeof(.ident(.string(_label)))
+.endmac
 
 ; ------------------------------------------------------------------------------
 
-.import SPCCode, SfxPtrs, NumSongs, SampleBRRPtrs, SongScriptPtrs
+; [ make adsr value ]
+
+.macro make_adsr attack, decay, sustain, release
+        .byte $80 | (attack & $0f) | ((decay & $07) << 4)
+        .byte (release & $1f) | ((sustain & $07) << 5)
+.endmac
+
+; ------------------------------------------------------------------------------
+
+; [ make song sample list ]
+
+.macro def_song_sample _sample_id
+        ; use the sample id plus 1 (zero means no sample)
+        .word _sample_id+1
+.endmac
+
+.macro begin_song_samples _song_id
+        ; save the start position for this song's samples
+        .ident(.sprintf("SongSamples_%04x", _song_id)) := *
+.endmac
+
+.macro end_song_samples _song_id
+        ; fill remaining space with zeroes (32 bytes total)
+        .res 32 + .ident(.sprintf("SongSamples_%04x", _song_id)) - *, 0
+.endmac
 
 ; ------------------------------------------------------------------------------
 
@@ -62,12 +89,12 @@ TfrSongScript_ext:
 
 ; pointers to spc blocks (+$c50000)
 InitTfrSrcTbl:
-@0010:  .addr   SPCCode-2
-        .addr   SfxPtrs-2
-        .addr   SfxBRR-2
-        .addr   SfxLoopStart-2
-        .addr   SfxADSR-2
-        .addr   SfxFreqMult-2
+@0010:  .addr   SPCCode
+        .addr   SfxPtrs
+        .addr   SfxBRR
+        .addr   SfxLoopStart
+        .addr   SfxADSR
+        .addr   SfxFreqMult
 
 ; destination address of each spc block
 InitTfrDestTbl:
@@ -181,7 +208,7 @@ InitSound:
         lda     #$ff        ; clear current song index
         sta     $05
         longa
-        lda     f:SfxBRR-2
+        lda     f:SfxBRR
         clc
         adc     #$4800
         sta     $f8
@@ -911,14 +938,14 @@ TfrGameSfxPtrs:
         inc
         and     #$7f
         sta     $1e
-        lda     f:SfxPtrs-2     ; size of data ($1c00)
+        lda     f:SfxPtrs     ; size of data ($1c00)
         sta     $1c
-        lda     f:SfxPtrs-1
+        lda     f:SfxPtrs+1
         sta     $1d
-        ldx     #$0000
-@0678:  lda     f:SfxPtrs,x   ; transfer data (pointers to sound effect data)
+        ldx     #0
+@0678:  lda     f:SfxPtrs+2,x   ; transfer data (pointers to sound effect data)
         sta     hAPUIO2
-        lda     f:SfxPtrs+1,x
+        lda     f:SfxPtrs+3,x
         sta     hAPUIO3
         inx2                ; next two bytes
         lda     $1e
@@ -987,5 +1014,21 @@ PlaySongTbl:
         .addr   PlaySong
         .addr   Exit
         .addr   Exit
+
+; ------------------------------------------------------------------------------
+
+.segment "sound_data"
+
+; ------------------------------------------------------------------------------
+
+; c5/070e
+begin_spc_block SPCCode
+        .incbin "src/sound/ff6-spc.dat"
+end_spc_block SPCCode
+
+; ------------------------------------------------------------------------------
+
+.include "sfx_data.asm"
+.include "song_data.asm"
 
 ; ------------------------------------------------------------------------------

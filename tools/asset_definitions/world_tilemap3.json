@@ -1,8 +1,0 @@
-{
-  "type": "data",
-  "name": "Serpent Trench Layout",
-  "range": "0xEF9D17-0xEFB630",
-  "asmSymbol": "WorldTilemap3",
-  "assetPath": "assets/world/world_tilemap3.dat",
-  "format": "ff6-lzss"
-}

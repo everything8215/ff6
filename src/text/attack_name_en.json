@@ -1,0 +1,11 @@
+{
+  "asset_label": "AttackName",
+  "asset_const": "ATTACK_NAME",
+  "inc_path": "include/text/attack_name_en.inc",
+  "item_size": 10,
+  "char_tables": [
+    "fixed_length_en",
+    "text_en"
+  ],
+  "text": []
+}

@@ -11,6 +11,12 @@
 ; | created: 12/8/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import CreditsGfx, EndingFontGfx
+.import EndingGfx1, EndingGfx2, EndingGfx3, EndingGfx4, EndingGfx5
+.import WorldBackdropGfxPtr, WorldBackdropTilesPtr
+
+.segment "menu_code"
+
 ; ------------------------------------------------------------------------------
 
 ; cinematic state jump table
@@ -2738,8 +2744,8 @@ _c3d6b1:
 ; [ load ending credits graphics data ]
 
 _c3d6ce:
-@d6ce:  ldy     #.loword(CreditsGfx1)
-        lda     #^CreditsGfx1
+@d6ce:  ldy     #.loword(CreditsGfx)
+        lda     #^CreditsGfx
         jmp     Decompress
 
 ; ------------------------------------------------------------------------------

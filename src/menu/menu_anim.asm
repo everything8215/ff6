@@ -13,7 +13,48 @@
 
 .segment "menu_data"
 
-        .include "assets/menu_pal.asm"                          ; d8/e800
+; ------------------------------------------------------------------------------
+
+; d8/e800
+
+; bg/font palettes
+FontPal:
+        .incbin "src/gfx/menu_pal/pal_0000.pal"
+        .incbin "src/gfx/menu_pal/pal_0001.pal"
+        .incbin "src/gfx/menu_pal/pal_0002.pal"
+        .incbin "src/gfx/menu_pal/pal_0003.pal"
+        .incbin "src/gfx/menu_pal/pal_0004.pal"
+        .incbin "src/gfx/menu_pal/pal_0005.pal"
+        .incbin "src/gfx/menu_pal/pal_0006.pal"
+        .incbin "src/gfx/menu_pal/pal_0007.pal"
+        .incbin "src/gfx/menu_pal/pal_0008.pal"
+        .incbin "src/gfx/menu_pal/pal_0009.pal"
+        .incbin "src/gfx/menu_pal/pal_000a.pal"
+        .incbin "src/gfx/menu_pal/pal_000b.pal"
+        .incbin "src/gfx/menu_pal/pal_000c.pal"
+        .incbin "src/gfx/menu_pal/pal_000d.pal"
+        .incbin "src/gfx/menu_pal/pal_000e.pal"
+        .incbin "src/gfx/menu_pal/pal_000f.pal"
+
+; config color bar palette
+ColorBarPal:
+        .incbin "src/gfx/menu_pal/pal_0010.pal"
+        .incbin "src/gfx/menu_pal/pal_0011.pal"
+        .incbin "src/gfx/menu_pal/pal_0012.pal"
+        .incbin "src/gfx/menu_pal/pal_0013.pal"
+
+; grayscale sprite palette
+GrayscalePal:
+        .incbin "src/gfx/menu_pal/pal_0014.pal"
+        .incbin "src/gfx/menu_pal/pal_0015.pal"
+        .incbin "src/gfx/menu_pal/pal_0016.pal"
+        .incbin "src/gfx/menu_pal/pal_0017.pal"  ; cursor palette
+
+; status icon palette
+StatusIconPal:
+        .incbin "src/gfx/menu_pal/pal_0018.pal"
+
+; ------------------------------------------------------------------------------
 
 ; name change letters
 NameChangeLetters:
@@ -25,9 +66,13 @@ NameChangeLetters:
         .byte   $99,$be,$bf,$c0,$c1,$b3,$c2,$c3,$c4,$c5
         .byte   $b4,$b5,$b6,$b7,$b8,$b9,$ba,$bb,$bc,$bd
 
+; ------------------------------------------------------------------------------
+
 ; element symbols
 ElementSymbols:
 @e90e:  .byte   $dd,$da,$d6,$d9,$de,$d8,$db,$dc,0
+
+; ------------------------------------------------------------------------------
 
 ; pointers to character animation data (save menu and party menu)
 PartyCharAnimTbl:

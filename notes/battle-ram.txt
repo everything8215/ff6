@@ -371,7 +371,7 @@ $11C0-$11C5 -
 			6: 2-hand
 			5: no back row penalty
 			1: swdtech
-	  $11DC Run Factor
+	  $11DC Run Factor -> $3D71
 	  $11DD -
 	  $11DE -
       $11DF t-s---mc Field Equipment Effects
@@ -520,7 +520,10 @@ $1600-$1FFF Save RAM
          +$2EA2 char 2 current status 3 & 4 (buffer, for graphics)
          +$2EA4 char 3 current status 3 & 4 (buffer, for graphics)
          +$2EA6 char 4 current status 3 & 4 (buffer, for graphics)
-		  $2EA8
+	    $2EA8
+
+          $2EAC monster targets on the right side of the screen (run left)
+          $2EAD monster targets on the left side of the screen (unused)
 
     $2EAE-$2F2D character graphics data (4 items, 32 bytes each)
 	-----------
@@ -554,7 +557,7 @@ $1600-$1FFF Save RAM
           $2F44 Monster targets with clear status (for graphics)
           $2F45 Enable Characters Running Animation (L+R pressed)
           $2F46 Characters that are targettable
-          $2F47 Characters acting as enemies (KEFKA, etc.)
+          $2F47 mask for enemy char (KEFKA, etc., can only have one)
 
     $2F48-$2F4B Auxiliary Battle Data
     -----------
@@ -1304,7 +1307,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $618A Monster Weapon Attack
 
 		  $6191 --123456 monsters ???
-          $6192 ----1234 characters that are visible (AI characters ???)
+          $6192 ----1234 characters not in the party (change with anim cmd $c7/$10)
           $6193 Characters not acting as enemies ???
 
           $6195
@@ -1519,7 +1522,10 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $62AE bgriiiii Fixed Color for Backdrop Gradients
 		  $62AF Monsters that are currently shown as BG1 ???
           $62B0 Esper thread 1 sprites are shown below characters/monsters
-
+          $62B1
+          $62B2
+          $62B3
+          $62B4
           $62B5 Enable roulette cursor (used by enemy enemy)
 		  $62B6
 		  $62B7 ??? Counter
@@ -1626,8 +1632,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $6F86 --oo--ll
 		        o: sprite tile priority
 				l: thread layer (0 = sprite, 1 = bg1, 2 = bg3)
-          $6F87 -h------
-                h: animation being performed facing to the right (h flip)
+          $6F87 animation being performed facing to the right (h flip)
           $6F88 m------l
 		        m: attack missed
 				l: Animation is left-handed
@@ -1662,11 +1667,28 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
     $7A6F-$7A72 Cursor Sprite Tile Numbers (4 cursors, usually all $E0)
     $7A73-$7A82 SwdTech bar graphics data (2 bytes each)
           $7A83
-		  $7A84
+		  $7A84 targeting flags
 		  $7A85 Item being used ???
-    $7A86-$7A9D
-
-          $7ACE
+    $7A86-$7A9D target id lists for each target group (4 * 6 items)
+                  $7A86-$7A8B monsters on the left
+                  $7A8C-$7A91 characters on the left
+                  $7A92-$7A97 monsters on the right
+                  $7A98-$7A9D characters on the right
+    $7A9E-$7ACD target cursor data for each direction (8 * 6 bytes)
+                  $7A9E-$7AA3 monsters on the left/right, left
+                  $7AA4-$7AA9 monsters on the left/right, right
+                  $7AAA-$7AAF monsters on the left/right, up
+                  $7AB0-$7AB5 monsters on the left/right, down
+                  $7AB6-$7ABB characters on the left, left
+                  $7ABC-$7AC1 characters on the left, right
+                  $7AC2-$7AC7 characters on the left, up
+                  $7AC8-$7ACD characters on the left, down
+          $7ACE selected target group
+                  0: monsters on the left
+                  1: characters on the left
+                  2: monsters on the right
+                  3: characters on the right
+          $7ACF selected target within group (+$7A86)
 
           $7AE8 Enable X-Magic for Battle Menu
           $7AE9
@@ -1736,8 +1758,10 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
 		  $7B6C Character Graphics Index (morphed TERRA???)
 
           $7B78 character slot for status change animations
-          $7B79
-
+          $7B79 monster targets on the left side of the screen
+          $7B7A character targets on the left side of the screen
+          $7B7B monster targets on the right side of the screen
+          $7B7C character targets on the right side of the screen
 		  $7B7D Characters with Cursors Shown
 		  $7B7E Monsters with Cursors Shown
 		  $7B7F Cursors on characters and monsters (there's only 6 sprites, so they flash between characters and monsters every frame)

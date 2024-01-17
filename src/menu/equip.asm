@@ -11,6 +11,10 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+inc_lang "text/item_name_%s.inc"
+
+.segment "menu_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (equip, optimum, rmove, empty) ]
@@ -351,11 +355,11 @@ _c38fe1:
         beq     @901f
 @8ffc:  sta     hM7A
         stz     hM7A
-        lda     #13
+        lda     #ITEM_NAME_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #13
+        ldy     #ITEM_NAME_SIZE
 @9010:  lda     f:ItemName,x
         sta     hWMDATA
         inx
@@ -1547,6 +1551,30 @@ GetBestEquip:
 @983c:  iny
         bra     @9821
 
+.pushseg
+.segment "imp_item"
+
+; ed/82e4
+ImpItem:
+        .byte ITEM_CURSED_SHLD
+        .byte ITEM_THORNLET
+        .byte ITEM_IMP_HALBERD
+        .byte ITEM_TORTOISESHLD
+        .byte ITEM_TITANIUM
+        .byte ITEM_IMPS_ARMOR
+        .byte ITEM_ATMA_WEAPON
+        .byte ITEM_DRAINER
+        .byte ITEM_SOUL_SABRE
+        .byte ITEM_HEAL_ROD
+        .byte ITEM_EMPTY
+        .byte ITEM_EMPTY
+        .byte ITEM_EMPTY
+        .byte ITEM_EMPTY
+        .byte ITEM_EMPTY
+        .byte ITEM_EMPTY
+
+.popseg
+
 ; ------------------------------------------------------------------------------
 
 ; [ select the best 2-handed weapon in the list ]
@@ -2263,11 +2291,11 @@ LoadEquipListItemName:
         beq     @9d4f
         sta     hM7A
         stz     hM7A
-        lda     #13
+        lda     #ITEM_NAME_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #13
+        ldy     #ITEM_NAME_SIZE
 @9d40:  lda     f:ItemName,x
         sta     hWMDATA
         inx
@@ -2275,7 +2303,7 @@ LoadEquipListItemName:
         bne     @9d40
         stz     hWMDATA
         rts
-@9d4f:  ldy     #13
+@9d4f:  ldy     #ITEM_NAME_SIZE
         lda     #$ff
 @9d54:  sta     hWMDATA
         dey

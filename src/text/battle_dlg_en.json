@@ -1,0 +1,12 @@
+{
+  "asset_label": "BattleDlg",
+  "asset_const": "BATTLE_DLG",
+  "inc_path": "include/text/battle_dlg_en.inc",
+  "char_tables": [
+    "battle_escape",
+    "big_symbols_en",
+    "null_terminated_en",
+    "text_en"
+  ],
+  "text": []
+}

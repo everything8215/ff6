@@ -1,8 +1,0 @@
-{
-  "type": "data",
-  "name": "World of Ruin Sprite Palette",
-  "range": "0xD2EF00-0xD2EFFF",
-  "asmSymbol": "WorldSpritePal2",
-  "assetPath": "assets/world/world2_sprite.pal",
-  "format": "bgr555"
-}

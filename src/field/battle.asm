@@ -11,6 +11,12 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.include "gfx/battle_bg.inc"
+
+.a8
+.i16
+.segment "field_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ battle blur/sound ]
@@ -200,16 +206,34 @@ CheckBattleWorld:
 
 ; world map battle backgrounds (8 per map)
 WorldBattleBGTbl:
-@c27f:  .byte   $00,$01,$02,$03,$04,$05,$06,$07
-        .byte   $00,$01,$2f,$03,$05,$05,$06,$07
+
+; world of balance
+@c27f:  .byte   BATTLE_BG_FIELD_WOB
+        .byte   BATTLE_BG_FOREST_WOR
+        .byte   BATTLE_BG_DESERT_WOB
+        .byte   BATTLE_BG_FOREST_WOB
+        .byte   BATTLE_BG_ZOZO_INT
+        .byte   BATTLE_BG_FIELD_WOR
+        .byte   BATTLE_BG_VELDT
+        .byte   BATTLE_BG_CLOUDS
+
+; world of ruin
+        .byte   BATTLE_BG_FIELD_WOB
+        .byte   BATTLE_BG_FOREST_WOR
+        .byte   BATTLE_BG_DESERT_WOR
+        .byte   BATTLE_BG_FOREST_WOB
+        .byte   BATTLE_BG_FIELD_WOR
+        .byte   BATTLE_BG_FIELD_WOR
+        .byte   BATTLE_BG_VELDT
+        .byte   BATTLE_BG_CLOUDS
 
 ; world map battle rate for each battle bg
 BattleBGRateTbl:
-@c28f:  .byte   $03,$02,$01,$02,$03,$00,$03,$03
+@c28f:  .byte   3,2,1,2,3,0,3,3
 
 ; world map battle groups for each battle bg
 BattleBGGroupTbl:
-@c297:  .byte   $00,$01,$02,$01,$00,$03,$00,$00
+@c297:  .byte   0,1,2,1,0,3,0,0
 
 ; world map random battle rates
 ; 8 bytes each (normal, low, high, none)
@@ -453,5 +477,35 @@ UpdateBattleGrpRng:
         adc     $1fa3
         plx
         rts
+
+; ------------------------------------------------------------------------------
+
+.export EventBattleGroup
+
+.segment "battle_groups"
+
+; cf/4800
+RandBattleGroup:
+        .incbin "rand_battle_group.dat"
+
+; cf/5000
+EventBattleGroup:
+        .incbin "event_battle_group.dat"
+
+; cf/5400
+WorldBattleGroup:
+        .incbin "world_battle_group.dat"
+
+; cf/5600
+SubBattleGroup:
+        .incbin "sub_battle_group.dat"
+
+; cf/5800
+WorldBattleRate:
+        .incbin "world_battle_rate.dat"
+
+; cf/5880
+SubBattleRate:
+        .incbin "sub_battle_rate.dat"
 
 ; ------------------------------------------------------------------------------

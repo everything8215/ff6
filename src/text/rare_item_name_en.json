@@ -1,0 +1,12 @@
+{
+  "asset_label": "RareItemName",
+  "asset_const": "RARE_ITEM_NAME",
+  "inc_path": "include/text/rare_item_name_en.inc",
+  "item_size": 13,
+  "char_tables": [
+    "text_en",
+    "fixed_length_en",
+    "small_symbols_en"
+  ],
+  "text": []
+}

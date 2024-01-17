@@ -11,6 +11,10 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import BattleCmdName, BattleCmdProp, LevelUpExp
+
+.segment "menu_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ draw status menu ]
@@ -187,9 +191,9 @@ DrawStatusGogoWindow:
         sta     $e0
         asl
         tax
-        lda     f:BattleCmdProp,x   ; battle command data
-        and     #$01
-        beq     @5e60       ; branch if command can't be used by gogo
+        lda     f:BattleCmdProp,x
+        and     #BATTLE_CMD_FLAG_GOGO
+        beq     @5e60                   ; branch can't be used by gogo
         lda     $e0
         sta     hWMDATA
         iny

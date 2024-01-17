@@ -1,0 +1,86 @@
+.list off
+.ifndef MAP_TILESET_INC
+MAP_TILESET_INC = 1
+
+.global MapTileset, MapTilesetPtrs
+
+MAP_TILESET_FIGARO_CASTLE               = $00 ; 0
+MAP_TILESET_VILLAGE_EXT_1_BG1           = $01 ; 1
+MAP_TILESET_VILLAGE_EXT_1_BG2           = $02 ; 2
+MAP_TILESET_DOMA_CASTLE_BG1             = $03 ; 3
+MAP_TILESET_DOMA_CASTLE_BG2             = $04 ; 4
+MAP_TILESET_TOWN_EXT_BG1                = $05 ; 5
+MAP_TILESET_TOWN_EXT_BG2                = $06 ; 6
+MAP_TILESET_DOCKS_BG1                   = $07 ; 7
+MAP_TILESET_DOCKS_BG2                   = $08 ; 8
+MAP_TILESET_CAVES_BG1                   = $09 ; 9
+MAP_TILESET_CASTLE_INT_BG1              = $0a ; 10
+MAP_TILESET_CASTLE_INT_BG2              = $0b ; 11
+MAP_TILESET_RIVER                       = $0c ; 12
+MAP_TILESET_IMP_CAMP_BG1                = $0d ; 13
+MAP_TILESET_IMP_CAMP_BG2                = $0e ; 14
+MAP_TILESET_MOUNTAINS_INT               = $0f ; 15
+MAP_TILESET_TOWN_INT_BG1                = $10 ; 16
+MAP_TILESET_TOWN_INT_BG2                = $11 ; 17
+MAP_TILESET_MOUNTAINS_EXT_BG1           = $12 ; 18
+MAP_TILESET_NARSHE_EXT_BG1              = $13 ; 19
+MAP_TILESET_NARSHE_EXT_BG2              = $14 ; 20
+MAP_TILESET_DESTROYED_TOWN_BG1          = $15 ; 21
+MAP_TILESET_DESTROYED_TOWN_BG2          = $16 ; 22
+MAP_TILESET_SNOWFIELDS                  = $17 ; 23
+MAP_TILESET_TRAIN_EXT_BG1               = $18 ; 24
+MAP_TILESET_TRAIN_INT_BG1               = $19 ; 25
+MAP_TILESET_TRAIN_INT_BG2               = $1a ; 26
+MAP_TILESET_ZOZO_BG1                    = $1b ; 27
+MAP_TILESET_ZOZO_BG2                    = $1c ; 28
+MAP_TILESET_VECTOR_BG1                  = $1d ; 29
+MAP_TILESET_VECTOR_BG2                  = $1e ; 30
+MAP_TILESET_CASTLE_BASEMENT_BG1         = $1f ; 31
+MAP_TILESET_CASTLE_BASEMENT_BG2         = $20 ; 32
+MAP_TILESET_CAVES_FURNITURE             = $21 ; 33
+MAP_TILESET_MAGITEK_LAB_1_BG1           = $22 ; 34
+MAP_TILESET_FLOATING_ISLAND_BG1         = $23 ; 35
+MAP_TILESET_FLOATING_ISLAND_BG2         = $24 ; 36
+MAP_TILESET_MOUNTAINS_PARALLAX          = $25 ; 37
+MAP_TILESET_NARSHE_CAVES_BG2            = $26 ; 38
+MAP_TILESET_VILLAGE_EXT_2_BG1           = $27 ; 39
+MAP_TILESET_VILLAGE_EXT_2_BG2           = $28 ; 40
+MAP_TILESET_KEFKAS_TOWER_BG2            = $29 ; 41
+MAP_TILESET_WATERFALL_SKY_PARALLAX      = $2a ; 42
+MAP_TILESET_KEFKAS_TOWER_BG1            = $2b ; 43
+MAP_TILESET_MOUNTAINS_EXT_BG2           = $2c ; 44
+MAP_TILESET_TRAIN_EXT_BG2               = $2d ; 45
+MAP_TILESET_CAVES_BG2                   = $2e ; 46
+MAP_TILESET_MAGITEK_FACTORY_BG1         = $2f ; 47
+MAP_TILESET_MAGITEK_FACTORY_BG2         = $30 ; 48
+MAP_TILESET_NARSHE_CLIFFS_PARALLAX      = $31 ; 49
+MAP_TILESET_AIRSHIP_EXT_BG1             = $32 ; 50
+MAP_TILESET_AIRSHIP_EXT_BG2             = $33 ; 51
+MAP_TILESET_AIRSHIP_INT                 = $34 ; 52
+MAP_TILESET_NARSHE_INTRO_BG1            = $35 ; 53
+MAP_TILESET_CYANS_DREAM                 = $36 ; 54
+MAP_TILESET_FOREST_BG1                  = $37 ; 55
+MAP_TILESET_FOREST_BG2                  = $38 ; 56
+MAP_TILESET_IMP_CASTLE_EXT_BG1          = $39 ; 57
+MAP_TILESET_IMP_CASTLE_EXT_1_BG2        = $3a ; 58
+MAP_TILESET_IMP_CASTLE_EXT_2_BG2        = $3b ; 59
+MAP_TILESET_BEACH                       = $3c ; 60
+MAP_TILESET_IMP_CASTLE_INT_BG1          = $3d ; 61
+MAP_TILESET_IMP_CASTLE_INT_BG2          = $3e ; 62
+MAP_TILESET_MAGITEK_LAB_2_BG1           = $3f ; 63
+MAP_TILESET_CAVES_LAVA_BG2              = $40 ; 64
+MAP_TILESET_SEALED_GATE_BG1             = $41 ; 65
+MAP_TILESET_SEALED_GATE_BG2             = $42 ; 66
+MAP_TILESET_MAGITEK_LAB_BG2             = $43 ; 67
+MAP_TILESET_KEFKAS_TOWER_PARALLAX       = $44 ; 68
+MAP_TILESET_MAP_TILESET_69              = $45 ; 69
+MAP_TILESET_BURNING_BUILDING            = $46 ; 70
+MAP_TILESET_OPERA_HOUSE_BG1             = $47 ; 71
+MAP_TILESET_OPERA_HOUSE_BG2             = $48 ; 72
+MAP_TILESET_DARILLS_TOMB_BG1            = $49 ; 73
+MAP_TILESET_DARILLS_TOMB_BG2            = $4a ; 74
+
+MAP_TILESET_ARRAY_LENGTH                = $4b ; 75
+
+.endif
+.list on

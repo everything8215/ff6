@@ -11,8 +11,12 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.import MonsterAlign, ColosseumProp, MonsterGfxProp, MonsterPal
-.import BattleBGGfxPtrs, BattleBGTilesPtrs, BattleBGTiles
+.include "gfx/battle_bg.inc"
+.include "gfx/monster_gfx.inc"
+
+.import MonsterAlign
+
+.segment "menu_code"
 
 ; ------------------------------------------------------------------------------
 
@@ -377,7 +381,7 @@ _c3af00:
 ; [ load monster graphics (colosseum) ]
 
 LoadMonsterGfx:
-@af46:  jsr     _c3b22c
+@af46:  jsr     LoadColosseumProp
         lda     $0206       ; monster index
         sta     hWRMPYA
         lda     #$05        ; calculate pointer to monster graphics data
@@ -429,16 +433,16 @@ LoadMonsterGfx:
         shorta
         lda     $f2
         bmi     @afc8
-        ldy     #$a820      ; pointer to small monster graphics maps
+        ldy     #.loword(MonsterStencil)
         sty     $e3
         lda     #$08
         bra     @afcf
-@afc8:  ldy     #$a822      ; pointer to large monster graphics maps
+@afc8:  ldy     #.loword(MonsterStencil+2)
         sty     $e3
         lda     #$20
 @afcf:  sta     $e6
         sta     $99
-        lda     #$d2
+        lda     #^MonsterStencil
         sta     $e5
         lda     $f2
         and     #$40
@@ -835,7 +839,7 @@ _c3b211:
 
 ; [ load colosseum item data ]
 
-_c3b22c:
+LoadColosseumProp:
 @b22c:  clr_a
         lda     $0205                   ; item wagered
         longa
@@ -844,7 +848,7 @@ _c3b22c:
         shorta
         lda     f:ColosseumProp,x
         sta     $0206
-        lda     f:ColosseumProp+2,x               ; prize
+        lda     f:ColosseumProp+2,x     ; prize
         sta     $0207
         lda     f:ColosseumProp+3,x
         sta     $0209
@@ -1214,5 +1218,294 @@ DownArrowSprite:
 UpArrowSprite:
 @b461:  .byte   1
         .byte   $80,$00,$03,$be
+
+; ------------------------------------------------------------------------------
+
+; [ colosseum data format ]
+
+;   0: monster opponent
+;   1: unused (always $40)
+;   2: prize item
+;   3: hide prize name if nonzero
+
+; ------------------------------------------------------------------------------
+
+.macro make_colosseum_prop _monster, _item, _hide_prize
+        .byte .ident(.sprintf("MONSTER_%s", _monster))
+        .byte $40
+        .byte .ident(.sprintf("ITEM_%s", _item))
+        .ifnblank _hide_prize
+                .byte $ff
+        .else
+                .byte 0
+        .endif
+.endmac
+
+; ------------------------------------------------------------------------------
+
+.pushseg
+.segment "colosseum_prop"
+
+; df/b600
+ColosseumProp:
+
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIRK
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRILKNIFE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GUARDIAN
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; AIR_LANCET
+make_colosseum_prop "WART_PUCK", "THIEF_GLOVE"          ; THIEFKNIFE
+make_colosseum_prop "TEST_RIDER", "SWORDBREAKER"        ; ASSASSIN
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MAN_EATER
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SWORDBREAKER
+make_colosseum_prop "KARKASS", "DIRK"                   ; GRAEDUS
+make_colosseum_prop "WOOLLY", "ASSASSIN"                ; VALIANTKNIFE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRILBLADE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; REGAL_CUTLASS
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; RUNE_EDGE
+make_colosseum_prop "EVIL_OSCAR", "OGRE_NIX"            ; FLAME_SABRE
+make_colosseum_prop "SCULLION", "OGRE_NIX"              ; BLIZZARD
+make_colosseum_prop "STEROIDITE", "OGRE_NIX"            ; THUNDERBLADE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EPEE
+make_colosseum_prop "LETHAL_WPN", "BREAK_BLADE"         ; BREAK_BLADE
+make_colosseum_prop "ENUO", "DRAINER"                   ; DRAINER
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ENHANCER
+make_colosseum_prop "BORRAS", "ENHANCER"                ; CRYSTAL
+make_colosseum_prop "OUTSIDER", "FLAME_SHLD"            ; FALCHION
+make_colosseum_prop "OPINICUS", "FALCHION"              ; SOUL_SABRE
+make_colosseum_prop "SRBEHEMOTH_UNDEAD", "SOUL_SABRE"   ; OGRE_NIX
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EXCALIBUR
+make_colosseum_prop "COVERT", "OGRE_NIX"                ; SCIMITAR
+make_colosseum_prop "SCULLION", "SCIMITAR"              ; ILLUMINA
+make_colosseum_prop "DIDALOS", "ILLUMINA", 1            ; RAGNAROK
+make_colosseum_prop "GTBEHEMOTH", "GRAEDUS"             ; ATMA_WEAPON
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_PIKE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TRIDENT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; STOUT_SPEAR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; PARTISAN
+make_colosseum_prop "SKY_BASE", "STRATO"                ; PEARL_LANCE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOLD_LANCE
+make_colosseum_prop "LAND_WORM", "SKY_RENDER"           ; AURA_LANCE
+make_colosseum_prop "ALLOSAURUS", "CAT_HOOD"            ; IMP_HALBERD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; IMPERIAL
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; KODACHI
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BLOSSOM
+make_colosseum_prop "PHASE", "MURASAME"                 ; HARDENED
+make_colosseum_prop "CHUPON_COLOSSEUM", "STRIKER", 1    ; STRIKER
+make_colosseum_prop "TEST_RIDER", "STRATO"              ; STUNNER
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ASHURA
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; KOTETSU
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FORGED
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TEMPEST
+make_colosseum_prop "BORRAS", "AURA"                    ; MURASAME
+make_colosseum_prop "RHYOS", "STRATO"                   ; AURA
+make_colosseum_prop "AQUILA", "PEARL_LANCE"             ; STRATO
+make_colosseum_prop "SCULLION", "AURA_LANCE"            ; SKY_RENDER
+make_colosseum_prop "PUG", "MAGUS_ROD"                  ; HEAL_ROD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_ROD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FIRE_ROD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ICE_ROD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; THUNDER_ROD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; POISON_ROD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; PEARL_ROD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GRAVITY_ROD
+make_colosseum_prop "OPINICUS", "GRAVITY_ROD"           ; PUNISHER
+make_colosseum_prop "ALLOSAURUS", "STRATO"              ; MAGUS_ROD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CHOCOBO_BRSH
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DAVINCI_BRSH
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MAGICAL_BRSH
+make_colosseum_prop "TEST_RIDER", "GRAVITY_ROD"         ; RAINBOW_BRSH
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SHURIKEN
+make_colosseum_prop "CHAOS_DRGN", "TACK_STAR"           ; NINJA_STAR
+make_colosseum_prop "OPINICUS", "RISING_SUN"            ; TACK_STAR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FLAIL
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FULL_MOON
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MORNING_STAR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BOOMERANG
+make_colosseum_prop "ALLOSAURUS", "BONE_CLUB"           ; RISING_SUN
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HAWK_EYE
+make_colosseum_prop "TEST_RIDER", "RED_JACKET"          ; BONE_CLUB
+make_colosseum_prop "BORRAS", "BONE_CLUB"               ; SNIPER
+make_colosseum_prop "RHYOS", "SNIPER"                   ; WING_EDGE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CARDS
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DARTS
+make_colosseum_prop "OPINICUS", "BONE_CLUB"             ; DOOM_DARTS
+make_colosseum_prop "ALLOSAURUS", "TRUMP"               ; TRUMP
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DICE
+make_colosseum_prop "TRIXTER", "FIRE_KNUCKLE"           ; FIXED_DICE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; METALKNUCKLE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_CLAW
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; KAISER
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; POISON_CLAW
+make_colosseum_prop "TUMBLEWEED", "FIRE_KNUCKLE"        ; FIRE_KNUCKLE
+make_colosseum_prop "TEST_RIDER", "SNIPER"              ; DRAGON_CLAW
+make_colosseum_prop "MANTODEA", "FIRE_KNUCKLE"          ; TIGER_FANGS
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BUCKLER
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HEAVY_SHLD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_SHLD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOLD_SHLD
+make_colosseum_prop "BORRAS", "TORTOISESHLD"            ; AEGIS_SHLD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIAMOND_SHLD
+make_colosseum_prop "IRONHITMAN", "ICE_SHLD"            ; FLAME_SHLD
+make_colosseum_prop "INNOC", "FLAME_SHLD"               ; ICE_SHLD
+make_colosseum_prop "OUTSIDER", "GENJI_SHLD"            ; THUNDER_SHLD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CRYSTAL_SHLD
+make_colosseum_prop "RETAINER", "THUNDER_SHLD"          ; GENJI_SHLD
+make_colosseum_prop "STEROIDITE", "TITANIUM"            ; TORTOISESHLD
+make_colosseum_prop "DIDALOS", "CURSED_RING"            ; CURSED_SHLD
+make_colosseum_prop "HEMOPHYTE", "FORCE_SHLD"           ; PALADIN_SHLD
+make_colosseum_prop "DARK_FORCE", "THORNLET"            ; FORCE_SHLD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; LEATHER_HAT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HAIR_BAND
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; PLUMED_HAT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BERET
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MAGUS_HAT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BANDANA
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; IRONHELMET
+make_colosseum_prop "EVIL_OSCAR", "REGAL_CROWN"         ; CORONET
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BARDS_HAT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GREEN_BERET
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HEAD_BAND
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_HELM
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TIARA
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOLD_HELMET
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TIGER_MASK
+make_colosseum_prop "RHYOS", "CORONET"                  ; RED_CAP
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MYSTERY_VEIL
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CIRCLET
+make_colosseum_prop "OPINICUS", "GENJI_HELMET"          ; REGAL_CROWN
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIAMOND_HELM
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DARK_HOOD
+make_colosseum_prop "DUELLER", "DIAMOND_HELM"           ; CRYSTAL_HELM
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; OATH_VEIL
+make_colosseum_prop "HOOVER", "MERIT_AWARD", 1          ; CAT_HOOD
+make_colosseum_prop "FORTIS", "CRYSTAL_HELM"            ; GENJI_HELMET
+make_colosseum_prop "OPINICUS", "MIRAGE_VEST"           ; THORNLET
+make_colosseum_prop "BRACHOSAUR", "CAT_HOOD"            ; TITANIUM
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; LEATHERARMOR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; COTTON_ROBE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; KUNG_FU_SUIT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; IRON_ARMOR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SILK_ROBE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_VEST
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; NINJA_GEAR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WHITE_DRESS
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_MAIL
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GAIA_GEAR
+make_colosseum_prop "VECTAGOYLE", "RED_JACKET"          ; MIRAGE_VEST
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOLD_ARMOR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; POWER_SASH
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; LIGHT_ROBE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIAMOND_VEST
+make_colosseum_prop "VECTAGOYLE", "RED_JACKET"          ; RED_JACKET
+make_colosseum_prop "SRBEHEMOTH_UNDEAD", "FORCE_ARMOR"  ; FORCE_ARMOR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIAMONDARMOR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DARK_GEAR
+make_colosseum_prop "TEST_RIDER", "TAO_ROBE"            ; TAO_ROBE
+make_colosseum_prop "COVERT", "ICE_SHLD"                ; CRYSTAL_MAIL
+make_colosseum_prop "SKY_BASE", "MINERVA"               ; CZARINA_GOWN
+make_colosseum_prop "BORRAS", "AIR_ANCHOR"              ; GENJI_ARMOR
+make_colosseum_prop "RHYOS", "TORTOISESHLD"             ; IMPS_ARMOR
+make_colosseum_prop "PUG", "CZARINA_GOWN"               ; MINERVA
+make_colosseum_prop "VECTAUR", "CHOCOBO_SUIT"           ; TABBY_SUIT
+make_colosseum_prop "VETERAN", "MOOGLE_SUIT"            ; CHOCOBO_SUIT
+make_colosseum_prop "MADAM", "NUTKIN_SUIT"              ; MOOGLE_SUIT
+make_colosseum_prop "OPINICUS", "GENJI_ARMOR"           ; NUTKIN_SUIT
+make_colosseum_prop "OUTSIDER", "SNOW_MUFFLER"          ; BEHEMOTHSUIT
+make_colosseum_prop "RETAINER", "CHARM_BANGLE"          ; SNOW_MUFFLER
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; NOISEBLASTER
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BIO_BLASTER
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FLASH
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CHAIN_SAW
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DEBILITATOR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DRILL
+make_colosseum_prop "BRONTAUR", "ZEPHYR_CAPE"           ; AIR_ANCHOR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; AUTOCROSSBOW
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FIRE_SKEAN
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WATER_EDGE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BOLT_EDGE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; INVIZ_EDGE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SHADOW_EDGE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOGGLES
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; STAR_PENDANT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; PEACE_RING
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; AMULET
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WHITE_CAPE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; JEWEL_RING
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FAIRY_RING
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BARRIER_RING
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRILGLOVE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GUARD_RING
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; RUNNINGSHOES
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WALL_RING
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CHERUB_DOWN
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CURE_RING
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TRUE_KNIGHT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DRAGOONBOOTS
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ZEPHYR_CAPE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CZARINA_RING
+make_colosseum_prop "STEROIDITE", "AIR_ANCHOR"          ; CURSED_RING
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EARRINGS
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ATLAS_ARMLET
+make_colosseum_prop "ALLOSAURUS", "RAGE_RING"           ; BLIZZARD_ORB
+make_colosseum_prop "ALLOSAURUS", "BLIZZARD_ORB"        ; RAGE_RING
+make_colosseum_prop "TAP_DANCER", "THIEF_GLOVE"         ; SNEAK_RING
+make_colosseum_prop "HEMOPHYTE", "HERO_RING"            ; POD_BRACELET
+make_colosseum_prop "RHYOS", "POD_BRACELET"             ; HERO_RING
+make_colosseum_prop "DARK_FORCE", "GOLD_HAIRPIN"        ; RIBBON
+make_colosseum_prop "ALLOSAURUS", "CRYSTAL_ORB"         ; MUSCLE_BELT
+make_colosseum_prop "BORRAS", "GOLD_HAIRPIN"            ; CRYSTAL_ORB
+make_colosseum_prop "EVIL_OSCAR", "DRAGON_HORN"         ; GOLD_HAIRPIN
+make_colosseum_prop "VECTAGOYLE", "DRAGON_HORN"         ; ECONOMIZER
+make_colosseum_prop "HARPY", "DIRK"                     ; THIEF_GLOVE
+make_colosseum_prop "VECTAGOYLE", "THUNDER_SHLD"        ; GAUNTLET
+make_colosseum_prop "HEMOPHYTE", "THUNDER_SHLD"         ; GENJI_GLOVE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HYPER_WRIST
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; OFFERING
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BEADS
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BLACK_BELT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; COIN_TOSS
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FAKEMUSTACHE
+make_colosseum_prop "SRBEHEMOTH_UNDEAD", "ECONOMIZER"   ; GEM_BOX
+make_colosseum_prop "RHYOS", "GOLD_HAIRPIN"             ; DRAGON_HORN
+make_colosseum_prop "COVERT", "RENAME_CARD", 1          ; MERIT_AWARD
+make_colosseum_prop "CHUPON_COLOSSEUM", "MEMENTO_RING"  ; MEMENTO_RING
+make_colosseum_prop "PUG", "DRAGON_HORN"                ; SAFETY_BIT
+make_colosseum_prop "SKY_BASE", "CHARM_BANGLE"          ; RELIC_RING
+make_colosseum_prop "OUTSIDER", "CHARM_BANGLE"          ; MOOGLE_CHARM
+make_colosseum_prop "RETAINER", "DRAGON_HORN"           ; CHARM_BANGLE
+make_colosseum_prop "TYRANOSAUR", "TINTINABAR"          ; MARVEL_SHOES
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BACK_GUARD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GALE_HAIRPIN
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SNIPER_SIGHT
+make_colosseum_prop "STEROIDITE", "TINTINABAR"          ; EXP_EGG
+make_colosseum_prop "DARK_FORCE", "EXP_EGG"             ; TINTINABAR
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SPRINT_SHOES
+make_colosseum_prop "DOOM_DRGN", "MARVEL_SHOES"         ; RENAME_CARD
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TONIC
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; POTION
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; X_POTION
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TINCTURE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ETHER
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; X_ETHER
+make_colosseum_prop "CACTROT", "RENAME_CARD"            ; ELIXIR
+make_colosseum_prop "SIEGFRIED_1", "TINTINABAR"         ; MEGALIXIR
+make_colosseum_prop "CACTROT", "MAGICITE"               ; FENIX_DOWN
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; REVIVIFY
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ANTIDOTE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EYEDROP
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SOFT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; REMEDY
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SLEEPING_BAG
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TENT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GREEN_CHERRY
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MAGICITE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SUPER_BALL
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ECHO_SCREEN
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SMOKE_BOMB
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WARP_STONE
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DRIED_MEAT
+make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EMPTY
+
+.popseg
 
 ; ------------------------------------------------------------------------------

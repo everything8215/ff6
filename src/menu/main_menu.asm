@@ -11,6 +11,12 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+inc_lang "text/item_name_%s.inc"
+
+.import GenjuName, MagicProp
+
+.segment "menu_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $04: main menu (init) ]
@@ -1171,7 +1177,7 @@ SkillsOption_03:
 SkillsOption_01:
 @211c:  jsr     _c32130
         jsr     _c32148
-        jsr     _c32158
+        jsr     InitMagicMenu
         jsr     _c351c6
         jsr     InitDMA1BG3ScreenB
         lda     #$1a
@@ -1207,9 +1213,9 @@ _c32148:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init magic menu ]
 
-_c32158:
+InitMagicMenu:
 @2158:  lda     #$13
         sta     $5c
         lda     #$08
@@ -1219,7 +1225,7 @@ _c32158:
         ldy     #$0100
         sty     $39
         sty     $3d
-        jmp     _c34d7f
+        jmp     DrawMagicMenu
 
 ; ------------------------------------------------------------------------------
 
@@ -2125,7 +2131,7 @@ FindItemsWithIcon:
         cmp     #$ff
         beq     @2739
         sta     hWRMPYA
-        lda     #13
+        lda     #ITEM_NAME_SIZE
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
@@ -3044,7 +3050,7 @@ MenuState_3c:
         sbc     $e0
         sta     $4e
         jsr     InitMagicCursor
-        jsr     _c32158
+        jsr     InitMagicMenu
         jsr     _c351c6
         jsr     TfrBG3ScreenAB
         jsr     WaitVblank

@@ -1,7 +1,0 @@
-{
-  "type": "script",
-  "name": "Battle Event Script",
-  "range": "0xD09842-0xD0CF49",
-  "asmSymbol": "BattleEventScript",
-  "assetPath": "assets/battle/battle_event_script.dat"
-}

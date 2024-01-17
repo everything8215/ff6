@@ -1,8 +1,0 @@
-{
-  "type": "data",
-  "name": "World of Ruin BG Palette",
-  "range": "0xD2ED00-0xD2EDFF",
-  "asmSymbol": "WorldBGPal2",
-  "assetPath": "assets/world/world2_bg.pal",
-  "format": "bgr555"
-}

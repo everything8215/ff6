@@ -1,7 +1,0 @@
-{
-  "type": "data",
-  "name": "Magitek Train Ride Graphics Pointers",
-  "range": "0xD8DD00-0xD8DFB7",
-  "asmSymbol": "MagitekTrainTiles",
-  "assetPath": "assets/cutscene/magitek_train_tiles.dat"
-}

@@ -11,6 +11,10 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import CharProp, WindowGfx
+
+.segment "menu_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (config page 1) ]
@@ -93,7 +97,7 @@ DrawConfigMenu:
         ldy     #.loword(ConfigLabelWindow)
         jsr     DrawWindow
         jsr     TfrBG2ScreenAB
-        jsr     _c3395e
+        jsr     LoadColorBarPal
         jsr     ClearBG1ScreenA
         jsr     ClearBG1ScreenB
         jsr     ClearBG3ScreenA
@@ -163,14 +167,14 @@ _c33950:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ load color bar palette ]
 
-_c3395e:
+LoadColorBarPal:
 @395e:  ldx     $00
         lda     #$40
         sta     hCGADD
 @3965:  longa
-        lda     f:MenuPal+$80,x
+        lda     f:ColorBarPal,x
         sta     $7e30c9,x
         shorta
         sta     hCGDATA
@@ -1636,7 +1640,7 @@ ColorBarTiles:
 
 MenuState_47:
 @42c2:  jsr     DisableInterrupts
-        jsr     DrawCtrlConfigMenu
+        jsr     DrawCmdArrangeMenu
         jsr     InitCmdArrangeScrollHDMA
         jsr     LoadCmdArrangeCharCursor
         jsr     InitCmdArrangeCharCursor
@@ -1848,9 +1852,9 @@ _c343f3:
 
 ; ------------------------------------------------------------------------------
 
-; [ draw controller config menu ]
+; [ draw command arrange menu ]
 
-DrawCtrlConfigMenu:
+DrawCmdArrangeMenu:
 @442c:  jsr     ClearBG2ScreenA
         ldy     #.loword(_c34490)
         jsr     DrawWindow
@@ -1919,7 +1923,7 @@ _c344b0:
 
 ; ------------------------------------------------------------------------------
 
-; [ draw controller config text for character slot 1 ]
+; [ draw command arrange text for character slot 1 ]
 
 DrawCmdArrangeChar1:
 @44b4:  lda     $69
@@ -1947,7 +1951,7 @@ DrawCmdArrangeChar1:
 
 ; ------------------------------------------------------------------------------
 
-; [ draw controller config text for character slot 2 ]
+; [ draw command arrange text for character slot 2 ]
 
 DrawCmdArrangeChar2:
 @44ed:  lda     $6a
@@ -1975,7 +1979,7 @@ DrawCmdArrangeChar2:
 
 ; ------------------------------------------------------------------------------
 
-; [ draw controller config text for character slot 3 ]
+; [ draw command arrange text for character slot 3 ]
 
 DrawCmdArrangeChar3:
 @4526:  lda     $6b
@@ -2003,7 +2007,7 @@ DrawCmdArrangeChar3:
 
 ; ------------------------------------------------------------------------------
 
-; [ draw controller config text for character slot 4 ]
+; [ draw command arrange text for character slot 4 ]
 
 DrawCmdArrangeChar4:
 @455f:  lda     $6c

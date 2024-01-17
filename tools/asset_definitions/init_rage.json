@@ -1,7 +1,0 @@
-{
-  "type": "data",
-  "name": "Initial Rage",
-  "range": "0xC47AA0-0xC47ABF",
-  "asmSymbol": "InitRage",
-  "assetPath": "assets/character/init_rage.dat"
-}

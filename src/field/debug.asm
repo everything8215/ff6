@@ -11,6 +11,12 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import DebugFontGfx
+
+.a8
+.i16
+.segment "field_code"
+
 ; ------------------------------------------------------------------------------
 
 ; tile numbers for digits 0-9 and a-f
@@ -69,9 +75,9 @@ DebugLoadGfx:
         sta     $4300
         ldx     #$39c0                  ; destination = $39c0 (vram, bg3 dialog text graphics)
         stx     hVMADDL
-        ldx     #$e120                  ; source = $c0e120 (fixed width font graphics)
+        ldx     #.loword(DebugFontGfx)
         stx     $4302
-        lda     #$c0
+        lda     #^DebugFontGfx
         sta     $4304
         sta     $4307
         ldx     #$0080                  ; size = $0080

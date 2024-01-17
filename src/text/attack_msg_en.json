@@ -1,0 +1,12 @@
+{
+  "asset_label": "AttackMsg",
+  "asset_const": "ATTACK_MSG",
+  "inc_path": "include/text/attack_msg_en.inc",
+  "char_tables": [
+    "battle_escape",
+    "big_symbols_en",
+    "null_terminated_en",
+    "text_en"
+  ],
+  "text": []
+}

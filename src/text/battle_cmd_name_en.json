@@ -1,0 +1,11 @@
+{
+  "asset_label": "BattleCmdName",
+  "asset_const": "BATTLE_CMD_NAME",
+  "inc_path": "include/text/battle_cmd_name_en.inc",
+  "item_size": 7,
+  "char_tables": [
+    "fixed_length_en",
+    "text_en"
+  ],
+  "text": []
+}

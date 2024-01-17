@@ -1,7 +1,0 @@
-{
-  "type": "data",
-  "name": "Initial Lore",
-  "range": "0xE6F564-0xE6F566",
-  "asmSymbol": "InitLore",
-  "assetPath": "assets/character/init_lore.dat"
-}

@@ -11,6 +11,14 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+inc_lang "text/item_desc_%s.inc"
+inc_lang "text/item_name_%s.inc"
+inc_lang "text/item_type_name_%s.inc"
+inc_lang "text/rare_item_desc_%s.inc"
+inc_lang "text/rare_item_name_%s.inc"
+
+.segment "menu_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (item list) ]
@@ -488,7 +496,7 @@ LoadItemTypeName:
         tax
         ldy     #$9e8b
         sty     hWMADDL
-        ldy     #7                      ; 7 letters
+        ldy     #ITEM_TYPE_NAME_SIZE
 @801a:  lda     f:ItemTypeName,x
         sta     hWMDATA
         inx
@@ -501,7 +509,7 @@ LoadItemTypeName:
 ; no type, copy 7 spaces
 @802c:  ldy     #$9e8b
         sty     hWMADDL
-        ldy     #7
+        ldy     #ITEM_TYPE_NAME_SIZE
         lda     #$ff
 @8037:  sta     hWMDATA
         inx
@@ -604,11 +612,11 @@ LoadListItemName:
 _c380ce:
 @80ce:  sta     hM7A                    ; multiply by 13 to get pointer to item name
         stz     hM7A
-        lda     #13
+        lda     #ITEM_NAME_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #13
+        ldy     #ITEM_NAME_SIZE
 @80e2:  lda     f:ItemName,x            ; item name
         sta     hWMDATA
         inx
@@ -1182,7 +1190,7 @@ DrawRareItemListRow:
 ; [ get pointer to rare item names ]
 
 GetRareItemNamePtr:
-@8436:  ldy     #13
+@8436:  ldy     #RARE_ITEM_NAME_SIZE
         sty     $eb
         ldy     #.loword(RareItemName)
         sty     $ef
@@ -1586,7 +1594,7 @@ DrawItemDetails:
         lda     #$2c                    ; teal text
         sta     $29
         ldx     #.loword(ItemElementTextList)
-        ldy     #$0008
+        ldy     #8
         jsr     DrawPosList
         jmp     DrawWeaponLearnedMagic
 
@@ -1603,21 +1611,21 @@ DrawItemDetails:
         ldx     hMPYL
         lda     f:ItemProp+19,x         ; weapon properties
         bpl     @876e
-        ldy     #$8e30                  ; "runic"
+        ldy     #.loword(ItemRunicText)
         sty     $e7
         jsr     _c38795
 @876e:  ldx     hMPYL
         lda     f:ItemProp+19,x
-        and     #$40
+        and     #WEAPON_FLAG_TWO_HAND
         beq     @8781
-        ldy     #$8e38                  ; "2-hand"
+        ldy     #.loword(Item2HandText)
         sty     $e7
         jsr     _c38795
 @8781:  ldx     hMPYL
         lda     f:ItemProp+19,x
-        and     #$02
+        and     #WEAPON_FLAG_SWDTECH
         beq     @8794
-        ldy     #$8e26                  ; "swdtech"
+        ldy     #.loword(ItemBushidoText)
         sty     $e7
         jsr     _c38795
 @8794:  rts
@@ -1639,16 +1647,16 @@ DrawWeaponPower:
 @879c:  clr_a
         lda     $4b
         tay
-        lda     $1869,y     ; current items
-        cmp     #$1c
-        beq     @87c0       ; branch if atma weapon
-        cmp     #$16
-        beq     @87c0       ; branch if soul sabre
-        cmp     #$51
-        beq     @87c0       ; branch if dice
-        cmp     #$52
-        beq     @87c0       ; branch if fixed dice
-        lda     f:ItemProp+20,x   ; battle power
+        lda     $1869,y                 ; current items
+        cmp     #ITEM_ATMA_WEAPON
+        beq     @87c0                   ; branch if atma weapon
+        cmp     #ITEM_SOUL_SABRE
+        beq     @87c0                   ; branch if soul sabre
+        cmp     #ITEM_DICE
+        beq     @87c0                   ; branch if dice
+        cmp     #ITEM_FIXED_DICE
+        beq     @87c0                   ; branch if fixed dice
+        lda     f:ItemProp+20,x         ; battle power
         jsr     HexToDec3
         ldx     #$8643
         jmp     DrawNum3
@@ -2078,7 +2086,7 @@ MenuState_70:
         bit     #$80
         beq     @8aac
         jsr     GetInventoryItemID
-        cmp     #$e7
+        cmp     #ITEM_RENAME_CARD
         beq     @8ac0                   ; branch if rename card
         jsr     @8ae7
 @8aac:  lda     $09
@@ -2174,41 +2182,41 @@ CheckCanUseItem:
 
 ; selected character does not have wound status
         jsr     GetInventoryItemID
-        cmp     #$fe        ; dried meat
+        cmp     #ITEM_DRIED_MEAT
         beq     @8bc4
-        cmp     #$e8        ; tonic
+        cmp     #ITEM_TONIC
         beq     @8bc4
-        cmp     #$e9        ; potion
+        cmp     #ITEM_POTION
         beq     @8bc4
-        cmp     #$ea        ; x-potion
+        cmp     #ITEM_X_POTION
         beq     @8bc4
-        cmp     #$eb        ; tincture
+        cmp     #ITEM_TINCTURE
         beq     @8bd5
-        cmp     #$ec        ; ether
+        cmp     #ITEM_ETHER
         beq     @8bd5
-        cmp     #$ed        ; x-ether
+        cmp     #ITEM_X_ETHER
         beq     @8bd5
-        cmp     #$f1        ; revivify
+        cmp     #ITEM_REVIVIFY
         beq     @8b8e
-        cmp     #$f2        ; antidote
+        cmp     #ITEM_ANTIDOTE
         beq     @8bbb
-        cmp     #$f3        ; eyedrop
+        cmp     #ITEM_EYEDROP
         beq     @8b97
-        cmp     #$f4        ; soft
+        cmp     #ITEM_SOFT
         beq     @8ba0
-        cmp     #$f5        ; remedy
+        cmp     #ITEM_REMEDY
         beq     @8bb2
-        cmp     #$ee        ; elixir
+        cmp     #ITEM_ELIXIR
         beq     @8be5
-        cmp     #$f8        ; green cherry
+        cmp     #ITEM_GREEN_CHERRY
         beq     @8ba9
-        cmp     #$f6        ; sleeping bag
+        cmp     #ITEM_SLEEPING_BAG
         beq     @8bd2
         bra     @8bd0       ; all other items are invalid
 
 ; selected character has wound status
 @8b85:  jsr     GetInventoryItemID
-        cmp     #$f0        ; fenix down
+        cmp     #ITEM_FENIX_DOWN
         beq     @8be3
         bra     @8bd0
 
@@ -2602,5 +2610,18 @@ ItemOwnedText:
 ; "   "
 ItemBlankQtyText:
 @8e4a:  .byte   $bf,$7a,$ff,$ff,$ff,$00
+
+; ------------------------------------------------------------------------------
+
+.export ItemProp
+
+.pushseg
+.segment "item_prop"
+
+; d8/5000
+ItemProp:
+        .incbin "item_prop.dat"
+
+.popseg
 
 ; ------------------------------------------------------------------------------

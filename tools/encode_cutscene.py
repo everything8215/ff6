@@ -7,8 +7,8 @@ import romtools as rt
 from ff6_lzss import encode_lzss
 
 cutscene_path_list = {
-    0x89AF65BC: 'assets/cutscene/cutscene_jp.lz',
-    0x8F821696: 'assets/cutscene/cutscene_en.lz',
+    0x89AF65BC: 'src/cutscene/cutscene_jp.lz',
+    0x8F821696: 'src/cutscene/cutscene_en.lz',
 }
 
 if __name__ == '__main__':
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     # calculate CRC32
     crc32 = binascii.crc32(src_data) & 0xFFFFFFFF
-    print('Cutscene CRC32: ', rt.hex_string(crc32))
+    print('Cutscene CRC32:', rt.hex_string(crc32))
 
     # check if it matches a vanilla cutscene program
     if crc32 in cutscene_path_list:

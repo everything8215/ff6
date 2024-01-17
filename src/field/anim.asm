@@ -11,9 +11,15 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "assets/map_bg_anim_prop.inc"
-.include "assets/map_bg3_anim_prop.inc"
-.include "assets/map_pal_anim_prop.inc"
+; .include "assets/map_bg_anim_prop.inc"
+; .include "assets/map_bg3_anim_prop.inc"
+.include "gfx/map_anim_gfx_bg3.inc"
+
+.import MapAnimGfx, MapPalAnimColors
+
+.a8
+.i16
+.segment "field_code"
 
 ; ------------------------------------------------------------------------------
 
@@ -138,7 +144,7 @@ IncPalAnimCounter:
 
 ; ------------------------------------------------------------------------------
 
-_c08df2:
+PalAnimPulseTbl:
 @8df2:  .byte   $70,$80,$90,$a0,$b0,$c0,$d0,$e0,$f0
         .byte   $e0,$d0,$c0,$b0,$a0,$90,$80,$70,$60
 
@@ -149,7 +155,7 @@ _c08df2:
 UpdatePalAnimPulse:
 @8e04:  lda     $10e9,y
         tax
-        lda     f:_c08df2,x
+        lda     f:PalAnimPulseTbl,x
         sta     hWRMPYA
         lda     $10eb,y
         tax
@@ -611,20 +617,25 @@ TfrBG3AnimGfx:
 
 ; ------------------------------------------------------------------------------
 
+MAP_BG_ANIM_PROP_ARRAY_LENGTH = 20
+
 MapBGAnimPropPtrs:
-@91d5:  make_ptr_tbl_rel MapBGAnimProp, MapBGAnimProp_ARRAY_LENGTH
+@91d5:  make_ptr_tbl_rel MapBGAnimProp, MAP_BG_ANIM_PROP_ARRAY_LENGTH
         .addr   MapBGAnimPropEnd - MapBGAnimProp
 
-@91ff:  .include "assets/map_bg_anim_prop.asm"
+@91ff:  .include "map_bg_anim_prop.asm"
         MapBGAnimPropEnd := *
 
+MAP_BG3_ANIM_PROP_ARRAY_LENGTH = 6
+
 MapBG3AnimPropPtrs:
-@979f:  make_ptr_tbl_rel MapBG3AnimProp, MapBG3AnimProp_ARRAY_LENGTH
+@979f:  make_ptr_tbl_rel MapBG3AnimProp, MAP_BG3_ANIM_PROP_ARRAY_LENGTH
         .addr   MapBG3AnimPropEnd - MapBG3AnimProp
 
-@97ad:  .include "assets/map_bg3_anim_prop.asm"
+@97ad:  .include "map_bg3_anim_prop.asm"
         MapBG3AnimPropEnd := *
 
-@9825:  .include "assets/map_pal_anim_prop.asm"
+MapPalAnimProp:
+@9825:  .incbin "map_pal_anim_prop.dat"
 
 ; ------------------------------------------------------------------------------

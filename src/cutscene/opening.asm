@@ -1572,11 +1572,11 @@ InitOpeningGfx:
 
 ; load map graphics 34
         longa_clc
-        lda     f:MapGfxPtrs+34*3
+        lda     f:MapGfxPtrs+MAP_GFX_NARSHE_EXT_4*3
         adc     #.loword(MapGfx)
         sta     $e7
         shorta
-        lda     f:MapGfxPtrs+34*3+2
+        lda     f:MapGfxPtrs+MAP_GFX_NARSHE_EXT_4*3+2
         adc     #^MapGfx
         sta     $e9
         ldy     #$9800
@@ -1589,11 +1589,11 @@ InitOpeningGfx:
 
 ; load map graphics 31 (skip the first $0800 bytes)
         longa_clc
-        lda     f:MapGfxPtrs+31*3
+        lda     f:MapGfxPtrs+MAP_GFX_NARSHE_EXT_2*3
         adc     #.loword(MapGfx+$0800)
         sta     $e7
         shorta
-        lda     f:MapGfxPtrs+31*3+2
+        lda     f:MapGfxPtrs+MAP_GFX_NARSHE_EXT_2*3+2
         adc     #^(MapGfx+$0800)
         sta     $e9
         ldy     #$a000
@@ -1606,11 +1606,11 @@ InitOpeningGfx:
 
 ; load map graphics 32
         longa_clc
-        lda     f:MapGfxPtrs+32*3
+        lda     f:MapGfxPtrs+MAP_GFX_NARSHE_EXT_3*3
         adc     #.loword(MapGfx)
         sta     $e7
         shorta
-        lda     f:MapGfxPtrs+32*3+2
+        lda     f:MapGfxPtrs+MAP_GFX_NARSHE_EXT_3*3+2
         adc     #^MapGfx
         sta     $e9
         ldy     #$a800

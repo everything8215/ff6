@@ -1,0 +1,11 @@
+{
+  "asset_label": "CharName",
+  "asset_const": "CHAR_NAME",
+  "inc_path": "include/text/char_name_en.inc",
+  "item_size": 6,
+  "char_tables": [
+    "text_en",
+    "fixed_length_en"
+  ],
+  "text": []
+}

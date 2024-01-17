@@ -11,6 +11,10 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+inc_lang "text/item_name_%s.inc"
+
+.segment "menu_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $24: shop (init) ]
@@ -933,11 +937,11 @@ AdjustShopPrice_05:
 @ba76:  pha
         shorta
         lda     $0202
-        cmp     #$06        ; celes
+        cmp     #CHAR_CELES
         beq     @ba8d
-        cmp     #$08        ; relm
+        cmp     #CHAR_RELM
         beq     @ba8d
-        cmp     #$00        ; terra
+        cmp     #CHAR_TERRA
         beq     @ba8d
         longa
         pla
@@ -1821,11 +1825,11 @@ LoadItemName:
         pla
         sta     hM7A
         stz     hM7A
-        lda     #13
+        lda     #ITEM_NAME_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #13
+        ldy     #ITEM_NAME_SIZE
 @c08b:  lda     f:ItemName,x
         sta     hWMDATA
         inx
@@ -2223,7 +2227,6 @@ _c3c2f7:
 
 ; ------------------------------------------------------------------------------
 
-
 ; c3/c2fc: ( 2, 3) "weapon"
 ShopTypeText_01:
 @c2fc:  .word   $790d
@@ -2333,5 +2336,16 @@ ShopTooManyMsgText:
 ShopOnlyOneMsgText:
 @c3f5:  .word   $791f
         .byte   $8e,$a7,$9e,$c3,$ac,$ff,$a9,$a5,$9e,$a7,$ad,$b2,$be,$ff,$00
+
+; ------------------------------------------------------------------------------
+
+.pushseg
+.segment "shop_prop"
+
+; c4/7ac0
+ShopProp:
+        .incbin "shop_prop.dat"
+
+.popseg
 
 ; ------------------------------------------------------------------------------

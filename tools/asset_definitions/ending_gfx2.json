@@ -1,8 +1,0 @@
-{
-  "type": "data",
-  "name": "Ending Graphics Data 2",
-  "range": "0xC4F477-0xC4F6F7",
-  "asmSymbol": "EndingGfx2",
-  "assetPath": "assets/cutscene/ending_gfx2.dat",
-  "format": "ff6-lzss"
-}

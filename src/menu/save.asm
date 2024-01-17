@@ -11,6 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.segment "menu_code"
+
 ; ------------------------------------------------------------------------------
 
 LoadSavedGame:
@@ -262,7 +264,7 @@ DrawSaveSlotWindows:
 
 ; slot 1
         jsr     PushSRAM
-        lda     #$01
+        lda     #1
         sta     $66                     ; current save slot = 1
         jsr     LoadSaveSlot
         jsr     InitCharProp
@@ -283,7 +285,7 @@ DrawSaveSlotWindows:
         jsr     LoadSaveSlot1WindowPal
 
 ; slot 2
-@1695:  lda     #$02
+@1695:  lda     #2
         sta     $66                     ; current save slot = 2
         jsr     LoadSaveSlot
         jsr     InitCharProp
@@ -304,7 +306,7 @@ DrawSaveSlotWindows:
         jsr     LoadSaveSlot2WindowPal
 
 ; slot 3
-@16c7:  lda     #$03
+@16c7:  lda     #3
         sta     $66
         jsr     LoadSaveSlot
         jsr     InitCharProp
@@ -323,6 +325,7 @@ DrawSaveSlotWindows:
         ldy     #.loword(SaveSlot3EmptyText)
         jsr     DrawPosText
         jsr     LoadSaveSlot3WindowPal
+
 @16f9:  jsr     PopSRAM
         jsr     LoadSaveSlot1WindowGfx
         ldy     #.loword(SaveSlot1Window)

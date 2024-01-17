@@ -1,8 +1,0 @@
-{
-  "type": "data",
-  "name": "Ending Airship Scene Palette",
-  "range": "0xEFFAC8-0xEFFBC7",
-  "asmSymbol": "EndingAirshipScenePal",
-  "assetPath": "assets/cutscene/ending_airship_scene.pal",
-  "format": "bgr555"
-}

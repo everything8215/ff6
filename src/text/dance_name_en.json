@@ -1,0 +1,11 @@
+{
+  "asset_label": "DanceName",
+  "asset_const": "DANCE_NAME",
+  "inc_path": "include/text/dance_name_en.inc",
+  "item_size": 12,
+  "char_tables": [
+    "text_en",
+    "fixed_length_en"
+  ],
+  "text": []
+}

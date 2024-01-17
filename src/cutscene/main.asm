@@ -16,24 +16,15 @@
 .include "const.inc"
 .include "hardware.inc"
 .include "macros.inc"
-.include "btlgfx.inc"
-.include "cutscene.inc"
-.include "sound.inc"
-.include "world.inc"
+.include "code_ext.inc"
 
 ; ------------------------------------------------------------------------------
 
-inc_lang "assets/map_gfx_%s.inc"
-.include "assets/ruin_cutscene_gfx.inc"
-.include "assets/the_end_gfx1.inc"
-.include "assets/the_end_gfx2.inc"
-.include "assets/the_end_pal.inc"
-inc_lang "assets/title_opening_gfx_%s.inc"
-.include "assets/rng_tbl.inc"
+.include "gfx/map_gfx.inc"
 
 ; ------------------------------------------------------------------------------
 
-.import MapGfxPtrs
+.import MapGfxPtrs, RuinCutsceneGfx, TitleOpeningGfx, RNGTbl
 
 ; ------------------------------------------------------------------------------
 
@@ -1301,13 +1292,13 @@ LoadTitleGfx:
         jsr     TfrVRAM
         clr_ax
         longa
-        lda     f:MapGfxPtrs+75*3,x     ; map graphics 75 (sealed gate clouds)
+        lda     f:MapGfxPtrs+MAP_GFX_SEALED_GATE_1*3,x
         clc
         adc     #.loword(MapGfx)
         sta     $e7
         inx2
         shorta
-        lda     f:MapGfxPtrs+75*3,x
+        lda     f:MapGfxPtrs+MAP_GFX_SEALED_GATE_1*3,x
         adc     #^MapGfx
         sta     $e9
         ldy     #$2000                  ; size = $2000

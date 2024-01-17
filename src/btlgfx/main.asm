@@ -16,74 +16,46 @@
 .include "const.inc"
 .include "hardware.inc"
 .include "macros.inc"
-.include "field.inc"
-.include "battle.inc"
-.include "btlgfx.inc"
-.include "menu.inc"
-.include "sound.inc"
+.include "code_ext.inc"
 
 ; ------------------------------------------------------------------------------
 
-inc_lang "assets/attack_anim_frames_%s.inc"
-.include "assets/attack_anim_prop.inc"
-.include "assets/attack_anim_script.inc"
-.include "assets/attack_anim_script_ptrs.inc"
-.include "assets/attack_gfx_2bpp.inc"
-inc_lang "assets/attack_gfx_3bpp_%s.inc"
-.include "assets/attack_gfx_mode7.inc"
-inc_lang "assets/attack_gfx_prop_%s.inc"
-inc_lang "assets/attack_msg_%s.inc"
-inc_lang "assets/attack_name_%s.inc"
-.include "assets/attack_pal.inc"
-.include "assets/attack_tiles_2bpp.inc"
-inc_lang "assets/attack_tiles_3bpp_%s.inc"
-.include "assets/attack_tiles_mode7.inc"
-inc_lang "assets/battle_bg_gfx_%s.inc"
-.include "assets/battle_bg_pal.inc"
-.include "assets/battle_bg_prop.inc"
-.include "assets/battle_bg_tiles.inc"
-.include "assets/battle_char_pal.inc"
-inc_lang "assets/battle_cmd_name_%s.inc"
-inc_lang "assets/battle_dlg_%s.inc"
-.include "assets/battle_event_script.inc"
-.include "assets/battle_event_script_ptrs.inc"
-.include "assets/battle_font_pal.inc"
-.include "assets/battle_monsters.inc"
-.include "assets/blitz_code.inc"
-inc_lang "assets/bushido_name_%s.inc"
-.include "assets/char_ai.inc"
-.include "assets/char_prop.inc"
-inc_lang "assets/dance_name_%s.inc"
-inc_lang "assets/large_font_gfx_%s.inc"
-inc_lang "assets/small_font_gfx_%s.inc"
-inc_lang "assets/font_width_%s.inc"
-inc_lang "assets/genju_attack_name_%s.inc"
-inc_lang "assets/genju_name_%s.inc"
-.include "assets/item_jump_throw_anim.inc"
-inc_lang "assets/item_name_%s.inc"
-inc_lang "assets/item_type_name_%s.inc"
-inc_lang "assets/magic_name_%s.inc"
-.include "assets/monster_align.inc"
-.include "assets/monster_attack_anim_prop.inc"
-inc_lang "assets/monster_dlg_%s.inc"
-inc_lang "assets/monster_gfx_%s.inc"
-inc_lang "assets/monster_gfx_prop_%s.inc"
-inc_lang "assets/monster_name_%s.inc"
-.include "assets/monster_overlap.inc"
-.include "assets/monster_pal.inc"
-inc_lang "assets/monster_special_name_%s.inc"
-inc_lang "assets/monster_stencil_small_%s.inc"
-inc_lang "assets/monster_stencil_large_%s.inc"
-.include "assets/rng_tbl.inc"
-.include "assets/slot_gfx.inc"
-.include "assets/status_gfx.inc"
-.include "assets/vehicle_gfx.inc"
-.include "assets/weapon_anim_prop.inc"
+.include "btlgfx/attack_anim_frames.inc"
+.include "btlgfx/attack_anim_script.inc"
+.include "btlgfx/battle_event_script.inc"
+.include "btlgfx/blitz_code.inc"
+
+.include "gfx/battle_bg.inc"
+.include "gfx/monster_gfx.inc"
+.include "gfx/map_sprite_gfx.inc"
+
+inc_lang "text/attack_msg_%s.inc"
+inc_lang "text/attack_name_%s.inc"
+inc_lang "text/battle_cmd_name_%s.inc"
+inc_lang "text/battle_dlg_%s.inc"
+inc_lang "text/bushido_name_%s.inc"
+inc_lang "text/dance_name_%s.inc"
+inc_lang "text/genju_attack_name_%s.inc"
+inc_lang "text/genju_name_%s.inc"
+inc_lang "text/item_name_%s.inc"
+inc_lang "text/item_type_name_%s.inc"
+inc_lang "text/magic_name_%s.inc"
+inc_lang "text/monster_dlg_%s.inc"
+inc_lang "text/monster_name_%s.inc"
+inc_lang "text/monster_special_name_%s.inc"
+
+.include "char_ai.asm"
+.include "monster_overlap.asm"
 
 ; ------------------------------------------------------------------------------
 
-.import ItemAnimPtrs
-.import MonsterStencil
+.import AttackGfx2bpp, AttackGfx3bpp, AttackGfxMode7
+.import AttackTiles2bpp, AttackTiles3bpp, AttackTilesMode7
+.import AttackPal, BattleCharPal, BattleFontPal
+.import BattleBGProp, CharProp, MonsterStencil
+.import SlotGfx, StatusGfx, WindowGfx
+.import FontWidth, BattleMonsters
+.import LargeFontGfx, SmallFontGfx, RNGTbl
 
 ; ------------------------------------------------------------------------------
 
@@ -182,7 +154,7 @@ last_init2:
         jsr     _c10df3
         inc     $e9ef       ; stop battle time
         jsr     _c10e67
-        jsr     _c10f1f
+        jsr     InitCharMenuOrder
         jsr     InitMenuText
         jsr     InitCharGfxFinalBattle
         jsr     LoadStatusPal
@@ -191,7 +163,7 @@ last_init2:
         jsr     _c14759
         inc     $7bbb       ; enable battle menu update
         jsr     _c10f8f       ; check if characters can change equipment
-        jsr     _c1957c       ; update character/monster order priority
+        jsr     UpdateDrawOrder
         jsl     _c2b652
         rts
 
@@ -400,9 +372,9 @@ BtlGfx_05:
 
 BtlGfx_00:
 @01ec:  jsl     _c2d3d5     ; init hardware registers
-        jsr     _c1102a       ; init battle graphics data
+        jsr     InitBattleGfx
         jsl     BtlGfx_01
-        jsr     _c1957c       ; update character/monster order priority
+        jsr     UpdateDrawOrder
         rtl
 
 ; ------------------------------------------------------------------------------
@@ -1786,7 +1758,6 @@ BattleNMI:
 
 BattleIRQ:
 @0d4a:  rti                 ; battle irq jumps here
-        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -1799,6 +1770,7 @@ ScreenShakeTbl:
 ; [ init sine wave tables ]
 
 InitSineBuf:
+        .a8
 @0d5c:  ldx     #$e7bf
         stz     $24
 @0d61:  clr_a
@@ -2064,28 +2036,32 @@ line_init:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init character menu order ]
 
-_c10f1f:
+; $10: current menu slot (empty char slots are pushed to the bottom)
+; $12: characters included in menu order (enemy characters are not included)
+;
+
+InitCharMenuOrder:
 set_mess_main_poi:
-@0f1f:  ldx     #$ffff
+@0f1f:  ldx     #$ffff                  ; start with no characters shown
         stx     $64d6
         stx     $64d8
         inx
         tay
         stz     $10
         stz     $12
-        lda     $2f47       ; characters acting as enemies
+        lda     $2f47                   ; don't include enemy characters
         eor     #$ff
         sta     $14
-        lda     $6192       ;
+        lda     $6192                   ; include characters in the party
         and     $14
         sta     $14
-@0f3c:  lda     $2eae,x     ; character graphics index
+@0f3c:  lda     $2eae,x                 ; character graphics index
         cmp     #$ff
-        beq     @0f55       ; branch if no character character
+        beq     @0f55                   ; branch if no character
         lda     $12
-        ora     #$10        ; activate character
+        ora     #$10                    ; activate character
         sta     $12
         lda     $14
         and     #$01
@@ -2093,7 +2069,7 @@ set_mess_main_poi:
         lda     $10
         sta     $64d6,y
         iny
-@0f55:  lsr     $14         ; next character
+@0f55:  lsr     $14                     ; next character
         lsr     $12
         inc     $10
         txa
@@ -2106,17 +2082,17 @@ set_mess_main_poi:
         sta     $201d
         stz     $61ac
         stz     $61ad
-        lda     $2f4a       ; character ai index
+        lda     $2f4a                   ; character ai index
         sta     $22
         lda     #$18
         sta     $24
         jsr     Mult8
         ldx     $26
-        lda     f:CharAI,x   ; character ai data
-        and     #$01
-        beq     @0f8e       ; branch if character names are not hidden
+        lda     f:CharAI,x              ; character ai data
+        and     #CHAR_AI_FLAG_HIDE_NAMES
+        beq     @0f8e                   ; branch if character names are not hidden
         ldx     #$ffff
-        stx     $64d6       ; hide character names
+        stx     $64d6                   ; hide all character names
         stx     $64d8
 @0f8e:  rts
 
@@ -2137,7 +2113,7 @@ chr_equip_init:
         jsr     Mult8
         ldx     $26
         lda     f:CharProp+21,x   ; character can't change equipment during battle
-        and     #$10
+        and     #CHAR_PROP_FIXED_EQUIP
         sta     $6286,y
         iny                 ; next character
         cpy     #$0004
@@ -2206,7 +2182,7 @@ user_init_option:
 
 ; [ init battle graphics data ]
 
-_c1102a:
+InitBattleGfx:
 user_init:
 @102a:  jsl     DecTimersMenuBattle_ext
         clr_ax
@@ -2248,7 +2224,7 @@ user_init:
         jsr     _c10fb6
         jsr     _c10df3
         jsr     _c10e67
-        jsr     _c10f1f
+        jsr     InitCharMenuOrder
         lda     #$ff
         sta     $60ab
         sta     $55
@@ -2500,7 +2476,7 @@ user_init:
         stx     $6296
         stx     $6298
         jsr     _c10f8f       ; check if characters can change equipment
-        jsr     _c1957c       ; update character/monster order priority
+        jsr     UpdateDrawOrder
         jsr     _c10659
         jsl     _c2b652
         ldx     $11e0
@@ -2624,12 +2600,12 @@ key_group_clr:
         dec
 @1445:  sta     $7a86,x     ;
         inx
-        cpx     #$0018
+        cpx     #24
         bne     @1445
         clr_ax
 @1450:  stz     $807b,x     ;
         inx
-        cpx     #$000c
+        cpx     #12
         bne     @1450
         rts
 
@@ -2643,7 +2619,7 @@ set_mon_gr0:
 @145c:  txa
         sta     $7a86,x
         inx
-        cpx     #$0006
+        cpx     #6
         bne     @145c
         rts
 
@@ -2755,7 +2731,7 @@ CalcMonsterPos_02:
         lda     $12
         tay
         lda     $16
-        sta     $7a92,y
+        sta     $7a92,y                 ; monsters on the right
         inc     $12
         bra     @1529
 @151a:  lda     $14
@@ -2763,11 +2739,11 @@ CalcMonsterPos_02:
         lda     $10
         tay
         lda     $16
-        sta     $7a86,y
+        sta     $7a86,y                 ; monsters on the left
         inc     $10
 @1529:  inc     $16
         inx2
-        cpx     #$000c
+        cpx     #12
         bne     @14e2
         rts
 
@@ -2894,7 +2870,7 @@ CalcMonsterPos:
 
 ; ------------------------------------------------------------------------------
 
-; [ ??? ]
+; [ init groups of targets on both sides of the screen ??? ]
 
 _c11607:
 set_group_init:
@@ -6739,9 +6715,9 @@ status_pat_tfr:
         and     #$08
         beq     @2fb5
         lda     $7b6c,y     ; character graphics index
-        cmp     #$12
+        cmp     #CHAR_GFX_ESPER_TERRA
         beq     @2fe6       ; branch if esper terra
-        lda     #$12
+        lda     #CHAR_GFX_ESPER_TERRA
         sta     $7b6c,y     ; change graphics to esper terra
         jsr     _c13157       ; update character graphics for status changes
         clr_a
@@ -8023,7 +7999,6 @@ super_level_tfr:
         adc     #$0040
         tax
         rts
-        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -8031,6 +8006,7 @@ super_level_tfr:
 
 _c13935:
 one_mon_obj_set:
+        .a8
 @3935:  lda     $88d2
         tay
         asl
@@ -8227,7 +8203,7 @@ CalcCharXPos:
 
 InitCharGfxMain:
 @3abe:  lda     $ecb8       ; battle bg
-        cmp     #$2c
+        cmp     #BATTLE_BG_MAGITEK_TRAIN
         bne     @3ac9       ; branch if not $2c (magitek train car)
         lda     #$04
         bra     @3acc
@@ -8585,10 +8561,10 @@ LoadCharGfx:
         phx
         tax
         lda     $2eae,x     ; character graphics
-        cmp     #$0e
+        cmp     #CHAR_GFX_SOLDIER
         bne     @3e1f       ; branch if not brown soldier
         lda     $2ec6,x     ; actor index
-        cmp     #$01
+        cmp     #CHAR_LOCKE
         bne     @3e1f       ; branch if not locke
         lda     $1ea0
         and     #$08
@@ -8812,13 +8788,16 @@ _c23fcb:
 
 ; ------------------------------------------------------------------------------
 
-.repeat 8, i
-        .import .ident(.sprintf("WindowGfx_%04x", i))
-.endrep
+; .repeat 8, i
+;         .import .ident(.sprintf("WindowGfx_%04x", i))
+; .endrep
 
 ; pointers to menu window graphics
 WindowGfxPtrs:
-@3fe0:  make_ptr_tbl_far WindowGfx, 8, 0
+@3fe0:
+.repeat 8, i
+        .faraddr WindowGfx + i * $0380
+.endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -10397,16 +10376,16 @@ DrawCharNames:
 UpdateCharGaugeBuf:
 @4a97:  tax
         lda     $64d6,x
-        bmi     @4aba       ; return if character slot is empty
+        bmi     @4aba                   ; return if character slot is empty
         and     #$03
         tax
-        lda     $2022,x     ; atb gauge
+        lda     $2022,x                 ; atb gauge
         sta     $619e,x
-        lda     $2026,x     ; morph gauge
+        lda     $2026,x                 ; morph gauge
         sta     $61a2,x
-        lda     $202a,x     ; condemned number
+        lda     $202a,x                 ; condemned number
         sta     $61a6,x
-        lda     $2026,x     ; branch if not morphed
+        lda     $2026,x                 ; branch if not morphed
         beq     @4aba
         lda     #$04
         rts
@@ -10521,9 +10500,9 @@ DrawCharHPInit:
 
 GetCharMenuOrder:
 @4b2b:  clr_ax
-        lda     $62ca       ; character slot
+        lda     $62ca                   ; character slot
 @4b30:  cmp     $64d6,x
-        beq     @4b3d       ; return if slot is valid
+        beq     @4b3d                   ; return if slot is valid
         inx
         cpx     #4
         bne     @4b30
@@ -13905,7 +13884,7 @@ _c15fb8:
         sec
         sbc     #$51
         xba
-        lda     #10        ; 10 letters
+        lda     #ATTACK_NAME_SIZE
         sta     $10
         sta     $616d
         jsr     MultAB
@@ -13926,7 +13905,7 @@ _c15fb8:
 @5fef:  sec
         sbc     #$36
         xba
-        lda     #$08
+        lda     #GENJU_NAME_SIZE
         sta     $10
         sta     $616d
         jsr     MultAB
@@ -13945,7 +13924,7 @@ _c15fb8:
 
 ; spell name
 @6019:  xba
-        lda     #$07        ; 7 letters
+        lda     #MAGIC_NAME_SIZE
         sta     $10
         sta     $616d
         jsr     MultAB
@@ -13974,10 +13953,10 @@ DlgTextCmd_0e:
 _c16048:
 @6048:  cmp     #$ff
         bne     @6051
-        lda     #$0d
+        lda     #ITEM_NAME_SIZE
         jmp     _c15fa8
 @6051:  xba
-        lda     #$0d
+        lda     #ITEM_NAME_SIZE
         sta     $10
         sta     $616d
         jsr     MultAB
@@ -13997,11 +13976,11 @@ _c16048:
 
 ; ------------------------------------------------------------------------------
 
-; [ dialog special string $04:  ]
+; [ dialog special string $04: toggle text color ]
 
 DlgTextCmd_04:
 @607b:  lda     $4b
-        eor     #$01
+        eor     #1
         sta     $4b
         rts
 
@@ -14090,7 +14069,7 @@ DrawDlgLetter:
         sta     $24
         jsr     Mult8
         lda     $4b
-        jne     _c16256
+        jne     _c16256                 ; alt. text color
         lda     $7a
         and     #$f8
         longa
@@ -14227,7 +14206,7 @@ _c1624e:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw text with alt. text color ]
 
 _c16256:
 @6256:  lda     $7a
@@ -14631,7 +14610,7 @@ ListTextCmd_12:
 @6520:  lda     #$07
         jmp     _c166a5
 @6525:  sta     $2c
-        lda     #$0d
+        lda     #ITEM_NAME_SIZE
         sta     $2e
         jsr     Mult8NoHW
         ldx     $30
@@ -14641,7 +14620,7 @@ ListTextCmd_12:
         sec
         sbc     #$d8
         sta     $2c
-        lda     #$07
+        lda     #ITEM_TYPE_NAME_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -14664,16 +14643,16 @@ ListTextCmd_0e:
         lda     ($4f)
         cmp     #$ff
         bne     @6566
-        lda     #$0d
+        lda     #ITEM_NAME_SIZE
         jmp     _c166a5
 @6566:  sta     $2c
-        lda     #$0d
+        lda     #ITEM_NAME_SIZE
         sta     $2e
         jsr     Mult8NoHW
         ldx     $30
         lda     $56
         xba
-        lda     #$0d
+        lda     #ITEM_NAME_SIZE
         sta     $40
 @6578:  lda     f:ItemName,x   ; item name
         jsr     DrawListLetter
@@ -14714,7 +14693,7 @@ ListTextCmd_0f:
         sec
         sbc     #$51
         xba
-        lda     #$0a
+        lda     #ATTACK_NAME_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -14731,7 +14710,7 @@ ListTextCmd_0f:
 @65cc:  sec
         sbc     #$36
         xba
-        lda     #$08
+        lda     #GENJU_NAME_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -14745,7 +14724,7 @@ ListTextCmd_0f:
 
 ; ------------------------------------------------------------------------------
 
-@65e8:  lda     #$07
+@65e8:  lda     #MAGIC_NAME_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -15531,7 +15510,7 @@ MenuTextCmd_12:
 @6a41:  lda     #7
         jmp     DrawSpaces
 @6a46:  xba
-        lda     #$0d        ; get pointer to item name
+        lda     #ITEM_NAME_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -15544,7 +15523,7 @@ MenuTextCmd_12:
         sec
         sbc     #$d8
         xba
-        lda     #$07
+        lda     #ITEM_TYPE_NAME_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -15567,10 +15546,10 @@ MenuTextCmd_0e:
         lda     ($48)
         cmp     #$ff
         bne     @6a90
-        lda     #13
+        lda     #ITEM_NAME_SIZE
         jmp     DrawSpaces
 @6a90:  xba
-        lda     #$0d
+        lda     #ITEM_NAME_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -15619,7 +15598,7 @@ MenuTextCmd_0f:
         sec
         sbc     #$51
         xba
-        lda     #10
+        lda     #ATTACK_NAME_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -15637,7 +15616,7 @@ MenuTextCmd_0f:
 @6afa:  sec
         sbc     #$36
         xba
-        lda     #8
+        lda     #GENJU_NAME_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -15653,7 +15632,7 @@ MenuTextCmd_0f:
 
 ; spell
 @6b1c:  xba
-        lda     #7
+        lda     #MAGIC_NAME_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -15877,13 +15856,13 @@ sin_data_get_w2:
         rol     $28
         lda     $28
         rts
-        .i16
 
 ; ------------------------------------------------------------------------------
 
 ; [ +$28 = +$24 * sin (a) ]
 
 CalcSine16:
+        .i16
 @6c67:  longa
         and     #$00ff
         asl
@@ -16046,15 +16025,16 @@ _c16d60:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ validate selected target group ]
 
-_c16d70:
-check_group_name:
+; return clear carry if no valid targets in group
+
+ValidateSelTargetGrp:
 @6d70:  and     #$03
         pha
         tax
         and     #$01
-        beq     @6d86
+        beq     @6d86                   ; branch if monster targets
         lda     $201d
         and     $61ac
         and     $61ad
@@ -16075,25 +16055,24 @@ check_group_name:
 
 UpdateMenuState_38:
 @6d90:  lda     $7bcb
-        beq     @6d98
-        jmp     @6f57
-@6d98:  lda     $7a84
-        and     #$10
-        beq     @6da2
-        jmp     @6f25
-@6da2:  lda     $201d
+        jne     @6f57                   ; branch if closing menu
+        lda     $7a84
+        and     #TARGET_AUTO_CONFIRM
+        jne     @6f25                   ; branch if auto-confirm
+        lda     $201d
         and     $61ac
         and     $61ad
         and     $6193
         and     $7b7d
-        bne     @6dbd
+        bne     @6dbd                   ; branch if any characters are valid
         lda     $92
         and     $7b7e
-        bne     @6dbd
-        jmp     @6f57
-@6dbd:  lda     $7a84
+        jeq     @6f57                   ; branch if no monsters are valid
+@6dbd:  lda     $7a84                   ; copy targeting flags
         sta     $36
-        bpl     @6dd1
+        bpl     @6dd1                   ; branch if not roulette cursor
+
+; roulette cursor
         lda     $62b4
         beq     @6dd4
         dec     $62b2
@@ -16104,7 +16083,7 @@ UpdateMenuState_38:
         beq     @6df6
         lda     $0e
         and     #$07
-        bne     @6e3d
+        bne     @6e3d                   ;  every 8 frames
         dec     $62b2
         bne     @6dfc
         lda     #$01
@@ -16143,50 +16122,62 @@ UpdateMenuState_38:
         sta     $7b7e
         stz     $7b7d
 @6e3d:  jmp     @6f05
+
+; one target group (seems to be bugged)
 @6e40:  lda     $36
-        and     #$0d
-        cmp     #$08
+        and     #TARGET_INIT_MASK|TARGET_MANUAL
+        cmp     #TARGET_INIT_GROUP
         bne     @6e82
         lda     $05
         and     #$03
-        beq     @6e82
-        inc     $94
+        beq     @6e82                   ; left or right not pressed
+        inc     $94                     ; play sound effect
         lda     $05
         and     #$02
         bne     @6e6c
+
+; right button
         lda     $7ace
         and     #$02
         bne     @6e82
         lda     $7ace
         inc2
-        jsr     _c16d70
-        bcc     @6e82
+        jsr     ValidateSelTargetGrp
+        bcc     @6e82                   ; branch if no valid targets
         sta     $7ace
         bra     @6e9a
+
+; left button
 @6e6c:  lda     $7ace
         and     #$02
         beq     @6e82
         lda     $7ace
         dec2
-        jsr     _c16d70
-        bcc     @6e82
+        jsr     ValidateSelTargetGrp
+        bcc     @6e82                   ; branch if no valid targets
         sta     $7ace
         bra     @6e9a
+
+; check if player can move target cursor manually
 @6e82:  lda     $36
-        and     #$01
+        and     #TARGET_MANUAL
         beq     @6f05
+
+; check L and R buttons
         lda     $04
         and     #$30
         beq     @6ed3
         cmp     #$30
-        beq     @6ed3
-        inc     $94
+        beq     @6ed3                   ; branch if running away
+        inc     $94                     ; play sound effect
         lda     $36
-        and     #$20
-        beq     @6ed3
+        and     #TARGET_MULTI_TARGET
+        beq     @6ed3                   ; branch if no multi-target
 @6e9a:  lda     $7ace
         and     #$01
-        beq     @6ebf
+        beq     @6ebf                   ; branch if targeting monsters
+
+; select all characters in target group
         lda     $7ace
         tax
         lda     $201d
@@ -16194,22 +16185,26 @@ UpdateMenuState_38:
         and     $61ad
         and     $6193
         and     $7b79,x
-        sta     $7b7d
+        sta     $7b7d                   ; set characters with cursors shown
         lda     #$01
         sta     $7b7f
         jmp     @6f05
+
+; select all monsters in target group
 @6ebf:  lda     $7ace
         tax
         lda     $92
         and     $7b79,x
-        sta     $7b7e
+        sta     $7b7e                   ; set monsters with cursors shown
         lda     #$01
         sta     $7b7f
         jmp     @6f05
+
+; check directions
 @6ed3:  lda     $05
         and     #$0f
         beq     @6edb
-        inc     $94
+        inc     $94                     ; play sound effect
 @6edb:  lda     $05
         cmp     #$08
         bne     @6ee7
@@ -16227,20 +16222,24 @@ UpdateMenuState_38:
         bne     @6f05
         jsr     TargetSelectRight
         jmp     @6f05
+
+; check A button
 @6f05:  lda     $04
         bpl     @6f4c
-        inc     $96
+        inc     $96                     ; play sound effect
         lda     $7a84
-        bpl     @6f25
+        bpl     @6f25                   ; branch if not roulette
         lda     $62b1
         bne     @6f4c
         inc     $62b1
-        jsr     Rand
+        jsr     Rand                    ; random [8..15]
         and     #$07
         clc
         adc     #$08
         sta     $62b2
         bra     @6f4c
+
+; confirm the selected target
 @6f25:  jsr     _c17096
         stz     $7b7d
         stz     $7b7e
@@ -16253,14 +16252,20 @@ UpdateMenuState_38:
         bne     @6f45
         inc     $7ae9
         rts
+
+;
 @6f45:  inc     $7bcb
         inc     $7b80
         rts
+
+; check if selection cancelled
 @6f4c:  lda     $09
-        bpl     @6f69
+        bpl     @6f69                   ; check B button
         lda     $62b1
         bne     @6f69
-        inc     $96
+        inc     $96                     ; play sound effect
+
+; close menu
 @6f57:  stz     $7b7d
         stz     $7b7e
         stz     $7b7f
@@ -16271,33 +16276,181 @@ UpdateMenuState_38:
 
 ; ------------------------------------------------------------------------------
 
-; blitz button masks
+; blitz code button masks
 BlitzButtonMaskTbl:
-@6f6a:  .word   $ffff,$0080,$8000,$0040,$4000,$0020,$0010,$0600
-        .word   $0400,$0500,$0100,$0900,$0800,$0a00,$0200
+@6f6a:  .word   $ffff                   ; BLITZ_CODE_NONE
+        .word   $0080                   ; BLITZ_CODE_A_BUTTON
+        .word   $8000                   ; BLITZ_CODE_B_BUTTON
+        .word   $0040                   ; BLITZ_CODE_X_BUTTON
+        .word   $4000                   ; BLITZ_CODE_Y_BUTTON
+        .word   $0020                   ; BLITZ_CODE_L_BUTTON
+        .word   $0010                   ; BLITZ_CODE_R_BUTTON
+        .word   $0600                   ; BLITZ_CODE_DOWN_LEFT
+        .word   $0400                   ; BLITZ_CODE_DOWN
+        .word   $0500                   ; BLITZ_CODE_DOWN_RIGHT
+        .word   $0100                   ; BLITZ_CODE_RIGHT
+        .word   $0900                   ; BLITZ_CODE_UP_RIGHT
+        .word   $0800                   ; BLITZ_CODE_UP
+        .word   $0a00                   ; BLITZ_CODE_UP_LEFT
+        .word   $0200                   ; BLITZ_CODE_LEFT
 
 ; ------------------------------------------------------------------------------
 
+; [ blitz code data format (12 bytes each) ]
+
+;   0-10: button inputs (including A button at the end)
+;   11: number of buttons * 2
+
+; ------------------------------------------------------------------------------
+
+.macro begin_blitz_code _id
+        ; save where the blitz starts
+        .ident(.sprintf("BlitzCode_%04x", _id)) := *
+.endmac
+
+.macro end_blitz_code _id
+        ; add padding
+        .local _blitz_length
+        _blitz_length = * - .ident(.sprintf("BlitzCode_%04x", _id))
+        .res 11 - _blitz_length, BLITZ_CODE_NONE
+        ; define the number of buttons
+        .byte _blitz_length * 2
+.endmac
+
+; ------------------------------------------------------------------------------
+
+.pushseg
+.segment "blitz_code"
+
+; c4/7a40
+BlitzCode:
+
+; ------------------------------------------------------------------------------
+
+; 0: pummel
+        begin_blitz_code 0
+        .byte   BLITZ_CODE_LEFT
+        .byte   BLITZ_CODE_RIGHT
+        .byte   BLITZ_CODE_LEFT
+        .byte   BLITZ_CODE_A_BUTTON
+        end_blitz_code 0
+
+; ------------------------------------------------------------------------------
+
+; 1: aura bolt
+        begin_blitz_code 1
+        .byte   BLITZ_CODE_DOWN
+        .byte   BLITZ_CODE_DOWN_LEFT
+        .byte   BLITZ_CODE_LEFT
+        .byte   BLITZ_CODE_A_BUTTON
+        end_blitz_code 1
+
+; ------------------------------------------------------------------------------
+
+; 2: suplex
+        begin_blitz_code 2
+        .byte   BLITZ_CODE_X_BUTTON
+        .byte   BLITZ_CODE_Y_BUTTON
+        .byte   BLITZ_CODE_DOWN
+        .byte   BLITZ_CODE_UP
+        .byte   BLITZ_CODE_A_BUTTON
+        end_blitz_code 2
+
+; ------------------------------------------------------------------------------
+
+; 3: fire dance
+        begin_blitz_code 3
+        .byte   BLITZ_CODE_LEFT
+        .byte   BLITZ_CODE_DOWN_LEFT
+        .byte   BLITZ_CODE_DOWN
+        .byte   BLITZ_CODE_DOWN_RIGHT
+        .byte   BLITZ_CODE_RIGHT
+        .byte   BLITZ_CODE_A_BUTTON
+        end_blitz_code 3
+
+; ------------------------------------------------------------------------------
+
+; 4: matra
+        begin_blitz_code 4
+        .byte   BLITZ_CODE_R_BUTTON
+        .byte   BLITZ_CODE_L_BUTTON
+        .byte   BLITZ_CODE_R_BUTTON
+        .byte   BLITZ_CODE_L_BUTTON
+        .byte   BLITZ_CODE_X_BUTTON
+        .byte   BLITZ_CODE_Y_BUTTON
+        .byte   BLITZ_CODE_A_BUTTON
+        end_blitz_code 4
+
+; ------------------------------------------------------------------------------
+
+; 5: air blade
+        begin_blitz_code 5
+        .byte   BLITZ_CODE_UP
+        .byte   BLITZ_CODE_UP_RIGHT
+        .byte   BLITZ_CODE_RIGHT
+        .byte   BLITZ_CODE_DOWN_RIGHT
+        .byte   BLITZ_CODE_DOWN
+        .byte   BLITZ_CODE_DOWN_LEFT
+        .byte   BLITZ_CODE_LEFT
+        .byte   BLITZ_CODE_A_BUTTON
+        end_blitz_code 5
+
+; ------------------------------------------------------------------------------
+
+; 6: spiraler
+        begin_blitz_code 6
+        .byte   BLITZ_CODE_R_BUTTON
+        .byte   BLITZ_CODE_L_BUTTON
+        .byte   BLITZ_CODE_X_BUTTON
+        .byte   BLITZ_CODE_Y_BUTTON
+        .byte   BLITZ_CODE_RIGHT
+        .byte   BLITZ_CODE_LEFT
+        .byte   BLITZ_CODE_A_BUTTON
+        end_blitz_code 6
+
+; ------------------------------------------------------------------------------
+
+; 7: bum rush
+        begin_blitz_code 7
+        .byte   BLITZ_CODE_LEFT
+        .byte   BLITZ_CODE_UP_LEFT
+        .byte   BLITZ_CODE_UP
+        .byte   BLITZ_CODE_UP_RIGHT
+        .byte   BLITZ_CODE_RIGHT
+        .byte   BLITZ_CODE_DOWN_RIGHT
+        .byte   BLITZ_CODE_DOWN
+        .byte   BLITZ_CODE_DOWN_LEFT
+        .byte   BLITZ_CODE_LEFT
+        .byte   BLITZ_CODE_A_BUTTON
+        end_blitz_code 7
+
+; ------------------------------------------------------------------------------
+
+.popseg
+
 ; pointers to blitz codes
 BlitzCodePtrs:
-@6f88:  .byte   $00,$0c,$18,$24,$30,$3c,$48,$54
+@6f88:
+.repeat BLITZ_CODE_ARRAY_LENGTH, i
+        .byte   i * BLITZ_CODE_SIZE
+.endrep
 
 ; ------------------------------------------------------------------------------
 
 ; [ check blitz code ]
 
 CheckBlitzCode:
-@6f90:  stz     $36         ; current blitz index being checked
+@6f90:  stz     $36                     ; current blitz index being checked
 @6f92:  lda     $36
         tax
         lda     f:BlitzCodePtrs,x
         tax
-        lda     f:BlitzCode+11,x   ; length of code
+        lda     f:BlitzCode+11,x        ; length of code
         dec2
         longa
         sta     $38
         clr_ay
-@6fa6:  lda     f:BlitzCode,x   ; blitz codes
+@6fa6:  lda     f:BlitzCode,x           ; blitz codes
         and     #$00ff
         asl
         phx
@@ -16314,27 +16467,27 @@ CheckBlitzCode:
         sta     $2c
         lda     $e9fe,y
         and     $2c
-        beq     @6fea       ; branch if button masks don't match
+        beq     @6fea                   ; branch if button masks don't match
         iny2
         cpy     $38
-        bne     @6fc2       ; branch if this was not the last button
+        bne     @6fc2                   ; branch if this was not the last button
         lda     $e9fc,y
         and     #$0080
-        bne     @6fe4       ; branch if the a button was not pressed
+        bne     @6fe4                   ; branch if the A button was not pressed
         lda     $e9fe,y
         and     #$0080
         beq     @6fea
-@6fe4:  clr_a                 ; success, use this blitz code
+@6fe4:  clr_a                           ; success, use this blitz code
         shorta
         lda     $36
         rts
-@6fea:  clr_a                 ; next blitz code
+@6fea:  clr_a                           ; next blitz code
         shorta
         inc     $36
         lda     $36
         cmp     #$08
         bne     @6f92
-        lda     #$ff        ; no codes matched
+        lda     #$ff                    ; no codes matched
         rts
 
 ; ------------------------------------------------------------------------------
@@ -16889,31 +17042,33 @@ TargetSelectDown:
 
 ; ------------------------------------------------------------------------------
 
-; ??? jump table (1 per battle type)
+; move character target left jump table (1 per battle type)
 _c17428:
 @7428:  .addr   _c174bf,_c174e9,_c174bf,_c174ea
 
-; ??? jump table (1 per battle type)
+; move character target right jump table (1 per battle type)
 _c17430:
 @7430:  .addr   _c17438,_c17439,_c17439,_c17463
 
 ; ------------------------------------------------------------------------------
 
-; 0: normal
+; [ move character target right (normal battle) ]
+
 _c17438:
 @7438:  rts
 
 ; ------------------------------------------------------------------------------
 
-; 1/2: back/side
+; [ move character target right (back/pincer attack) ]
+
 _c17439:
 @7439:  lda     $7a84
-        and     #$02
-        bne     @745d
+        and     #TARGET_ONE_SIDE
+        bne     @745d                   ; branch if can't target opposite side
         lda     $7b7b
         and     $92
         beq     @745d
-        inc     $7ace
+        inc     $7ace                   ; next target group to the right
         jsr     _c17934
         bcc     @745d
         sta     $7b7e
@@ -16922,19 +17077,20 @@ _c17439:
         txa
         sta     $7acf
         rts
-@745d:  lda     #$01
+@745d:  lda     #$01                    ; go to character target group
         sta     $7ace
         rts
 
 ; ------------------------------------------------------------------------------
 
-; 3: pincer
+; [ move character target right (side attack) ]
+
 _c17463:
 @7463:  lda     $7ace
         cmp     #$03
         beq     @74be
         lda     $7a84
-        and     #$02
+        and     #TARGET_ONE_SIDE
         bne     @7490
         lda     $7b7b
         and     $92
@@ -16971,10 +17127,11 @@ _c17463:
 
 ; ------------------------------------------------------------------------------
 
-; 0/2: normal/side
+; [ move character target left (normal/pincer attack) ]
+
 _c174bf:
 @74bf:  lda     $7a84
-        and     #$02
+        and     #TARGET_ONE_SIDE
         bne     @74e3
         lda     $7b79
         and     $92
@@ -16994,19 +17151,20 @@ _c174bf:
 
 ; ------------------------------------------------------------------------------
 
-; 1: back
+; [ move character target left (back attack) ]
 _c174e9:
 @74e9:  rts
 
 ; ------------------------------------------------------------------------------
 
-; 3: pincer
+; [ move character target left (side attack) ]
+
 _c174ea:
 @74ea:  lda     $7ace
         cmp     #$01
-        beq     @7543
+        beq     @7543                   ; return if on left side characters
         lda     $7a84
-        and     #$02
+        and     #TARGET_ONE_SIDE
         bne     @7515
         lda     $7b7b
         and     $92
@@ -17026,7 +17184,7 @@ _c174ea:
         and     $61ad
         and     $6193
         beq     @753e
-        lda     #$01
+        lda     #$01                    ; target characters on the left
         sta     $7ace
         jsr     _c17940
         bcc     @753e
@@ -17036,19 +17194,21 @@ _c174ea:
         txa
         sta     $7acf
         rts
-@753e:  lda     #$03
+@753e:  lda     #$03                    ; target characters on the right
         sta     $7ace
 @7543:  rts
 
 ; ------------------------------------------------------------------------------
 
-; ??? (1 per battle type)
+; normal, back, side, pincer
+
+; move monster target left jump table (1 per battle type)
 _c17544:
 @7544:  .addr   _c17666,_c17669,_c176a7,_c176fe
 
-; ??? (1 per battle type)
+; move monster target right jump table (1 per battle type)
 _c1754c:
-@754c:  .addr  _c175a3,_c175a0,_c175d8,_c17631
+@754c:  .addr   _c175a3,_c175a0,_c175d8,_c17631
 
 ; ------------------------------------------------------------------------------
 
@@ -17100,21 +17260,21 @@ get_l_mon_set:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ move monster target right (back attack) ]
 
 _c175a0:
 @75a0:  jmp     _c17554
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ move monster target right (normal battle) ]
 
 _c175a3:
 @75a3:  jsr     _c17554
         bcs     @75d7
         lda     $7a84
-        and     #$02
-        bne     @75d7
+        and     #TARGET_ONE_SIDE
+        bne     @75d7                   ; branch if can't change target group
         lda     $7b7a
         and     $201d
         and     $61ac
@@ -17134,7 +17294,7 @@ _c175a3:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ move monster target right (side attack) ]
 
 _c175d8:
 @75d8:  jsr     _c17554
@@ -17142,7 +17302,7 @@ _c175d8:
         lda     $7ace
         bne     @7630
         lda     $7a84
-        and     #$02
+        and     #TARGET_ONE_SIDE
         bne     @7612
         lda     $7b7a
         and     $201d
@@ -17176,13 +17336,13 @@ _c175d8:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ move monster target right (pincer attack) ]
 
 _c17631:
 @7631:  jsr     _c17554
         bcs     @7665
         lda     $7a84
-        and     #$02
+        and     #TARGET_ONE_SIDE
         bne     @7665
         lda     $7b7c
         and     $201d
@@ -17203,20 +17363,20 @@ _c17631:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ move monster target left (normal battle) ]
 
 _c17666:
 @7666:  jmp     _c1757a
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ move monster target left (back attack) ]
 
 _c17669:
 @7669:  jsr     _c1757a
         bcs     @76a1
         lda     $7a84
-        and     #$02
+        and     #TARGET_ONE_SIDE
         bne     @76a1
         lda     $7b7a
         and     $201d
@@ -17241,7 +17401,7 @@ _c17669:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ move monster target left (side attack) ]
 
 _c176a7:
 @76a7:  jsr     _c1757a
@@ -17249,7 +17409,7 @@ _c176a7:
         lda     $7ace
         beq     @76fd
         lda     $7a84
-        and     #$02
+        and     #TARGET_ONE_SIDE
         bne     @76e1
         lda     $7b7a
         and     $201d
@@ -17282,13 +17442,13 @@ _c176a7:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ move monster target left (pincer attack) ]
 
 _c176fe:
 @76fe:  jsr     _c1757a
         bcs     @7732
         lda     $7a84
-        and     #$02
+        and     #TARGET_ONE_SIDE
         bne     @7732
         lda     $7b7a
         and     $201d
@@ -17347,15 +17507,15 @@ key_target_right:
 
 ; bit mask for each monster
 MonsterMaskTbl:
-@7761:  .byte   $01, $02, $04, $08, $10, $20
+@7761:  .byte   $01,$02,$04,$08,$10,$20
 
 ;
 _c17767:
-@7767:  .byte   $00, $06, $0c, $12
+@7767:  .byte   0,6,12,18
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init blitz input ]
 
 _c1776b:
 @776b:  ldx     $0a
@@ -17364,27 +17524,27 @@ _c1776b:
         sta     $e9e4
         stz     $e9e5
         clr_ax
-@777a:  stz     $e9fe,x
+@777a:  stz     $e9fe,x                 ; clear blitz inputs
         inx
         cpx     #$0020
         bne     @777a
         stz     $e9e1
         stz     $6168
-        lda     #$02
+        lda     #TARGET_SELF
         sta     $7a84
-        lda     #$3d
+        lda     #$3d                    ; go to blitz menu state
         bra     _7797
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init target cursor select ]
 
 _c17792:
 @7792:  stz     $2f41       ; start battle time
 
 key_target:
 _c17795:
-@7795:  lda     #$38
+@7795:  lda     #$38                    ; menu cursor state to go to next
 
 key_target_2:
 _7797:  pha
@@ -17400,33 +17560,39 @@ _7797:  pha
         stz     $62b2
         stz     $62b4
         lda     $7a84
-        bmi     @77c4
+        bmi     @77c4                   ; branch if roulette cursor
         sta     $36
-        cmp     #$02
+        cmp     #TARGET_SELF
         bne     @77d1
-@77c4:  ldx     $62ca
+
+; self-target or roulette
+@77c4:  ldx     $62ca                   ; set target to active character
         lda     f:MonsterMaskTbl,x
         sta     $7b7d
         jmp     @7901
+
+; init all characters or monsters
 @77d1:  lda     $36
         and     #$0c
-        cmp     #$0c
+        cmp     #TARGET_INIT_HALF
         bne     @77ff
         lda     $36
-        and     #$40
+        and     #TARGET_ENEMY
         beq     @77ea
         lda     $92
-        sta     $7b7e
+        sta     $7b7e                   ; target all monsters
         inc     $7b7f
         jmp     @7901
 @77ea:  lda     $201d
         and     $61ac
         and     $61ad
         and     $6193
-        sta     $7b7d
+        sta     $7b7d                   ; target all characters
         inc     $7b7f
         jmp     @7901
-@77ff:  cmp     #$04
+
+; init all characters and all monsters
+@77ff:  cmp     #TARGET_INIT_ALL
         bne     @781d
         lda     $201d
         and     $61ac
@@ -17437,19 +17603,21 @@ _7797:  pha
         sta     $7b7e
         inc     $7b7f
         jmp     @7901
+
+; init single target group
 @781d:  lda     $36
         and     #$0c
-        cmp     #$08
+        cmp     #TARGET_INIT_GROUP
         bne     @789b
         lda     $36
-        and     #$40
-        bne     @7875
+        and     #TARGET_ENEMY
+        bne     @7875                   ; branch if target monsters by default
         clr_ax
         lda     $62ca
 @7830:  cmp     $7a8c,x
         beq     @7858
         inx
-        cpx     #$0004
+        cpx     #4
         bne     @7830
         lda     $201d
         and     $61ac
@@ -17485,12 +17653,14 @@ _7797:  pha
         lda     #$02
         sta     $7ace
         jmp     @7901
+
+; init single target
 @789b:  lda     $36
-        and     #$40
+        and     #TARGET_ENEMY
         bne     @78dd
         clr_ax
         lda     $62ca
-@78a6:  cmp     $7a8c,x
+@78a6:  cmp     $7a8c,x                 ; find character on the left
         beq     @78c7
         inx
         cpx     #4
@@ -17506,11 +17676,13 @@ _7797:  pha
 @78c7:  ldx     $62ca
         lda     f:MonsterMaskTbl,x
         sta     $7b7d
-        lda     #$01
+        lda     #$01                    ; target group is characters on the left
         sta     $7ace
         txa
         sta     $7acf
         jmp     @7901
+
+; single monster target
 @78dd:  jsr     _c17922
         bcs     @78f4
         jsr     _c17934
@@ -17525,8 +17697,9 @@ _7797:  pha
         txa
         sta     $7acf
         jmp     @7901
+
 @7901:  lda     $7a84
-        and     #$10
+        and     #TARGET_AUTO_CONFIRM
         beq     @790b
         stz     $7b7f
 @790b:  pla
@@ -17622,7 +17795,7 @@ get_gr1_left_bit:
 
 ; unused
 get_gr1_right_bit:
-@7952:  ldx     #$7ab6
+@7952:  ldx     #$7ab6                  ; i think this should be $7abc
         jmp     _c179c8
 
 ; ------------------------------------------------------------------------------
@@ -17652,7 +17825,7 @@ get_gr3_left_bit:
 
 ; unused
 get_gr3_right_bit:
-@796a:  ldx     #$7ab6
+@796a:  ldx     #$7ab6                  ; i think this should be $7abc
         jmp     _c17a00
 
 ; ------------------------------------------------------------------------------
@@ -18060,7 +18233,7 @@ UpdateMenuState_05:
         inc     $96
         jsr     _c184ab
         jsr     _c17ca9
-        lda     $2060,x
+        lda     $2060,x                 ; copy targeting flags
         sta     $7a84
         lda     #$0e
         sta     $2baf,y
@@ -18106,7 +18279,7 @@ init_buf_input:
 OpenCmdMenu:
 @7cc8:  jsr     _c184ab
         jsr     _c17ca9
-        lda     $2030,x
+        lda     $2030,x                 ; copy targeting flags
         sta     $7a84
         lda     $202e,x
         sta     $2baf,y
@@ -18769,9 +18942,9 @@ UpdateMenuState_0e:
         sta     $7a85
         lda     #$01        ; curative menu type 1 (spell)
         sta     $ecba
-        lda     $2094,x
+        lda     $2094,x                 ; copy targeting flags
         sta     $7a84
-        and     #$40
+        and     #TARGET_ENEMY
         jeq     UpdateMenuState_3f
         jmp     _c17795
 @81eb:  inc     $95         ; play error sound effect
@@ -18944,7 +19117,7 @@ UpdateMenuState_16:
         sta     $2baf,y
         lda     $208e,x
         sta     $7a85
-        lda     $2090,x
+        lda     $2090,x                 ; copy targeting flags
         sta     $7a84
         jmp     _c17795
 @82f8:  inc     $95         ; play cursor sound effect (select)
@@ -19004,7 +19177,7 @@ UpdateMenuState_1b:
         inc     $94
         lda     $216a,x
         sta     $7a85
-        lda     $216c,x
+        lda     $216c,x                 ; copy targeting flags
         sta     $7a84
         jmp     _c17795
 @837a:  inc     $95
@@ -19300,7 +19473,7 @@ UpdateMenuState_1e:
         inc     $96
         lda     $257e,x
         sta     $7a85
-        lda     #$02
+        lda     #$02                    ; self-target
         sta     $7a84
         jmp     _c17795
 @8548:  inc     $95
@@ -19398,7 +19571,7 @@ UpdateMenuState_21:
         bmi     @8609
         inc     $96
         sta     $7a85
-        lda     #$02
+        lda     #$02                    ; self-target
         sta     $7a84
         jmp     _c17795
 @8609:  inc     $95
@@ -19461,7 +19634,7 @@ UpdateMenuState_2a:
 @8686:  inc     $96
         sta     $7a85
         ldy     $36
-        lda     f:MagitekAttackTargetProp,x
+        lda     f:MagitekAttackTargetFlags,x
         sta     $7a84
         jmp     _c17795
 @8697:  inc     $95
@@ -19529,7 +19702,7 @@ UpdateMenuState_2d:
         inc     $95
         bra     @872b
 @871f:  sta     $7a85
-        lda     $4007,x
+        lda     $4007,x                 ; copy targeting flags
         sta     $7a84
         jmp     _c17795
 @872b:  lda     $09
@@ -19655,7 +19828,7 @@ UpdateMenuState_30:
         bra     @8818
 @8809:  lda     $4005,x
         sta     $7a85         ; set item being used
-        lda     $4007,x
+        lda     $4007,x                 ; copy targeting flags
         sta     $7a84
         jmp     _c17795
 
@@ -19793,7 +19966,7 @@ UpdateMenuState_0a:
         jsr     _c189be
         lda     $2686,x
         sta     $7a85
-        lda     $2688,x
+        lda     $2688,x                 ; copy targeting flags
         sta     $7a84
         stz     $7a1e
         stz     $ecba
@@ -20756,8 +20929,8 @@ hand_l2item:
 
 ; ------------------------------------------------------------------------------
 
-; magitek attack target properties
-MagitekAttackTargetProp:
+; magitek attack target flags
+MagitekAttackTargetFlags:
 @9104:  .byte   $43, $43, $43, $6a, $03, $6a, $43, $43
 
 ; Terra's magitek attacks
@@ -21414,7 +21587,7 @@ NextGfxCmdData:
 
 ; [ update character/monster order priority ]
 
-_c1957c:
+UpdateDrawOrder:
 sort_y_poi:
 @957c:  lda     $7b0c       ; return if character/monster order priority data is valid
         beq     @9582
@@ -21692,7 +21865,7 @@ GfxCmd_11:
         ldy     #1
         longa
         lda     ($76),y
-        asl
+        asl                             ; multiply by 10
         sta     $10
         asl2
         clc
@@ -21707,7 +21880,7 @@ GfxCmd_11:
         beq     @9767
         sta     $57d5,y
         iny
-        cpy     #$000a
+        cpy     #MONSTER_SPECIAL_NAME_SIZE
         bne     @9758
 @9767:  clr_a
         sta     $57d5,y
@@ -25993,7 +26166,6 @@ _c1b684:
         cpx     #$18
         bne     @b70c
 @b74a:  rts
-        .i16
 
 ; ------------------------------------------------------------------------------
 
@@ -26015,6 +26187,7 @@ BlockSfxTbl:
 
 anim_command:
 GfxCmd_06:
+        .i16
 @b760:  jsr     _c19c9e                 ; deactivate all animation threads
         stz     $ecbb
         ldy     #$0001
@@ -26677,7 +26850,7 @@ CmdAnim_13:
 @bb12:  jsr     InitCmdAnim
         lda     $ecb8       ; battle bg index
         tax
-        lda     f:_c2e462,x
+        lda     f:DanceNoChangeBGTbl,x
         bne     _bb2b
         ldy     #3
         lda     ($76),y
@@ -27052,7 +27225,7 @@ PopObjPos:
         cpx     #$003c
         bne     @bd46
         shorta0
-        jsr     _c1957c       ; update character/monster order priority
+        jsr     UpdateDrawOrder
         rts
 
 ; ------------------------------------------------------------------------------
@@ -27578,7 +27751,7 @@ anim_command_attack:
         sta     $6f86,x
         plx
         stx     $7af6
-@c1c6:  jsr     _c1957c       ; update character/monster order priority
+@c1c6:  jsr     UpdateDrawOrder
         stz     $7b67       ;
         jsr     WaitFrame
         lda     $6167       ; bg1 palette
@@ -27997,7 +28170,6 @@ GetMagitekOffset:
 @c48a:  tay                 ; +$18 = 0
 @c48b:  sty     $18
         rts
-        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -28008,6 +28180,7 @@ GetMagitekOffset:
 ; +$16: y position (out)
 
 CalcTargetPos:
+        .a8
 @c48e:  jsr     GetMagitekOffset
         lda     #$01
         sta     $14
@@ -28282,7 +28455,7 @@ ExecAnimScript:
         inx
         cpx     #$0012
         bne     @c655
-        jsr     _c1957c       ; update character/monster order priority
+        jsr     UpdateDrawOrder
         stz     $ebfa       ;
         stz     $60a7       ; enable bg1 animation graphics
         stz     $60a8       ; enable bg3 animation graphics
@@ -28410,7 +28583,7 @@ ExecAnimScript:
         jsr     WaitFrame
         lda     $62d2       ; branch if sprite priority data is up to date
         bne     @c77e
-        jsr     _c1957c       ; update character/monster order priority
+        jsr     UpdateDrawOrder
 @c77e:  lda     $7b14       ; continue if there are no more active threads
         jne     @c6a4
         clr_ax
@@ -28418,7 +28591,7 @@ ExecAnimScript:
         jsr     SetColorMathHDMA
         stz     $62d2       ; invalidate sprite priority data
         stz     $62af       ; clear bg1 monsters
-        jsr     _c1957c       ; update character/monster order priority
+        jsr     UpdateDrawOrder
         clr_ax
 @c798:  sta     $7b15,x     ; clear bg1/bg3 animation data
         sta     $7b21,x
@@ -36187,7 +36360,6 @@ MoveCharUpRight:
         sbc     $10
         sta     $61c7,y
         jmp     _f66b
-        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -36197,6 +36369,7 @@ MoveCharUpRight:
 
 AnimCmd_88:
 magic_code08:
+        .a8
 @f71d:  ldx     $7af6
         lda     $6a38,x     ; attacker
         bmi     @f730       ; return if monster
@@ -37155,7 +37328,6 @@ IncColor:
         ora     #$7c00
         sta     $2a
 @fd66:  rts
-        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -37165,6 +37337,7 @@ IncColor:
 
 GfxCmd_0f:
 goodanim:
+        .a8
 @fd67:  ldy     #1
         lda     ($76),y     ; battle event number
         cmp     #$1b
@@ -37378,26 +37551,26 @@ get_cas_chg_local:
 
 BattleEventCmd_12:
 @feb9:  clr_axy
-@febc:  lda     $6192       ; visible characters
+@febc:  lda     $6192                   ; characters in the party
         and     f:BitOrTbl,x
         beq     @ff02
-        lda     $2eae,y     ; character graphics index
+        lda     $2eae,y                 ; character graphics index
         cmp     #$ff
         beq     @ff02
-        lda     $628d       ; victory fanfare
+        lda     $628d                   ; victory fanfare
         bne     @feda
-        lda     $64ba       ; magitek mode
+        lda     $64ba                   ; magitek mode
         beq     @feda
         lda     #$16
         bra     @feef
-@feda:  lda     $2ec7,y     ; character ai enabled
+@feda:  lda     $2ec7,y                 ; character ai enabled
         bne     @fee6
-        lda     $2ebd,y     ; status 1 (wound/petrify)
+        lda     $2ebd,y                 ; status 1 (wound/petrify)
         and     #$c0
         beq     @feea
 @fee6:  lda     #$17
         bra     @feef
-@feea:  lda     $2eae,y     ; character graphics index
+@feea:  lda     $2eae,y                 ; character graphics index
         and     #$1f
 @feef:  asl
         inc
@@ -37592,7 +37765,7 @@ BattleEventCmd_02:
 
 ; ------------------------------------------------------------------------------
 
-.segment "btlgfx_code2"
+.segment "btlgfx_code_far"
 
 ; ------------------------------------------------------------------------------
 
@@ -38187,38 +38360,7 @@ _c2add9:
 
 ; status names (32 items, 10 bytes each)
 StatusName:
-@ade1:  .byte   $96,$a8,$ae,$a7,$9d,$ff,$ff,$ff,$ff,$ff
-        .byte   $8f,$9e,$ad,$ab,$a2,$9f,$b2,$ff,$ff,$ff
-        .byte   $88,$a6,$a9,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $82,$a5,$9e,$9a,$ab,$ff,$ff,$ff,$ff,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $8f,$a8,$a2,$ac,$a8,$a7,$ff,$ff,$ff,$ff
-        .byte   $99,$a8,$a6,$9b,$a2,$9e,$ff,$ff,$ff,$ff
-        .byte   $83,$9a,$ab,$a4,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $8f,$ac,$b2,$9c,$a1,$9e,$ff,$ff,$ff,$ff
-        .byte   $92,$9e,$a2,$b3,$ae,$ab,$9e,$ff,$ff,$ff
-        .byte   $8c,$ae,$9d,$9d,$a5,$9e,$9d,$ff,$ff,$ff
-        .byte   $81,$9e,$ab,$ac,$9e,$ab,$a4,$ff,$ff,$ff
-        .byte   $8c,$ae,$ad,$9e,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $88,$a6,$9a,$a0,$9e,$ff,$ff,$ff,$ff,$ff
-        .byte   $8d,$9e,$9a,$ab,$fe,$85,$9a,$ad,$9a,$a5
-        .byte   $82,$a8,$a7,$9d,$9e,$a6,$a7,$9e,$9d,$ff
-        .byte   $91,$9e,$9f,$a5,$9e,$9c,$ad,$ff,$ff,$ff
-        .byte   $92,$9a,$9f,$9e,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $92,$a1,$9e,$a5,$a5,$ff,$ff,$ff,$ff,$ff
-        .byte   $92,$ad,$a8,$a9,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $87,$9a,$ac,$ad,$9e,$ff,$ff,$ff,$ff,$ff
-        .byte   $92,$a5,$a8,$b0,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $91,$9e,$a0,$9e,$a7,$ff,$ff,$ff,$ff,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $85,$a5,$a8,$9a,$ad,$ff,$ff,$ff,$ff,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $8b,$a2,$9f,$9e,$fe,$b7,$ff,$ff,$ff,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
+        incbin_lang "src/text/status_name_%s.dat"
 
 ; ------------------------------------------------------------------------------
 
@@ -38695,7 +38837,6 @@ UpdateBattleBG:
         asl
         tax
         jmp     (.loword(UpdateBattleBGTbl),x)
-        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -38705,6 +38846,7 @@ UpdateBattleBG:
 
 _c2b281:
 magic_init_124long:
+        .a8
 @b281:  ldx     $7af6
         lda     $6a38,x     ; attacker
         pha
@@ -40217,7 +40359,7 @@ scene_init:
 @bd43:  lda     #$ff
         sta     $629d
         stz     $2f47
-        stz     $6192
+        stz     $6192                   ; characters not in the party (gets inverted later)
         longa
         clr_ax
         lda     #$ffff
@@ -40227,46 +40369,46 @@ scene_init:
         bne     @bd55
         shorta0
         lda     $2f49
-        bpl     @bd95       ; branch if character ai is disabled
-        lda     $2f4a       ; character ai index
+        bpl     @bd95                   ; branch if character ai is disabled
+        lda     $2f4a                   ; character ai index
         sta     $22
         lda     #$18
         sta     $24
         jsl     Mult8_far
         ldx     $26
-        lda     f:CharAI+1,x   ; special battle background
+        lda     f:CharAI+1,x            ; special battle background
         cmp     #$ff
-        beq     @bd84       ; branch if no special background
-        sta     $ecb8       ; set battle background
+        beq     @bd84                   ; branch if no special background
+        sta     $ecb8                   ; set battle background
         stz     $ecb9
 @bd84:  lda     f:CharAI+2,x
-        sta     $2f46       ; characters that can be targetted
+        sta     $2f46                   ; characters that can be targetted
         lda     f:CharAI+3,x
-        sta     $629d       ; special song index
+        sta     $629d                   ; special song index
         jsr     _c2be6e
 @bd95:  lda     $2f4b
         bmi     @bdd0
-        inc     $e9ed       ; disable sound effects
-        lda     #$10        ; spc command $10 (load song)
+        inc     $e9ed                   ; disable sound effects
+        lda     #$10                    ; spc command $10 (load song)
         sta     $1300
-        lda     #$ff        ; full volume
+        lda     #$ff                    ; full volume
         sta     $1302
         lda     $629d
         cmp     #$ff
-        bne     @bdbf       ; branch if a special song from character ai data
+        bne     @bdbf                   ; branch if a special song from character ai data
         lda     $2f4b
         and     #$38
         lsr3
         tax
         lda     f:BattleSongTbl,x
         cmp     #$ff
-        beq     @bdcd       ; branch if continuing same song
-@bdbf:  sta     $1301       ; song number
+        beq     @bdcd                   ; branch if continuing same song
+@bdbf:  sta     $1301                   ; song number
         lda     $11e4
         and     #$08
-        bne     @bdcd       ; branch if continuing current music
+        bne     @bdcd                   ; branch if continuing current music
         jsl     ExecSound_ext
-@bdcd:  stz     $e9ed       ; enable sound effects
+@bdcd:  stz     $e9ed                   ; enable sound effects
 @bdd0:  clr_axy
         longa
 @bdd5:  stz     $2ec7,x
@@ -40285,13 +40427,13 @@ scene_init:
         cpx     #$0080
         bne     @bdd5
         shorta0
-        lda     #$01
+        lda     #1
         sta     $10
         clr_ax
 @bdfd:  lda     $2ec6,x
-        cmp     #$2f
+        cmp     #CHAR_PROP_KEFKA_7
         bne     @be0c
-        lda     $6192
+        lda     $6192                   ; exclude Kefka 7 from the party
         ora     $10
         sta     $6192
 @be0c:  asl     $10
@@ -40301,10 +40443,10 @@ scene_init:
         tax
         cmp     #$80
         bne     @bdfd
-        lda     $6192
+        lda     $6192                   ; invert characters in the party
         eor     #$ff
         sta     $6192
-        inc     $e9ed       ; disable sound effects
+        inc     $e9ed                   ; disable sound effects
         lda     #$82
         sta     $1300
         clr_a
@@ -40315,7 +40457,7 @@ scene_init:
         and     #$08
         bne     @be3a
         jsl     ExecSound_ext
-@be3a:  stz     $e9ed       ; enable sound effects
+@be3a:  stz     $e9ed                   ; enable sound effects
         lda     f:$001d4f
         and     #$40
         sta     $629c
@@ -40345,8 +40487,8 @@ _c2be6e:
 set_play_xy:
 @be6e:  phx
         lda     f:CharAI,x
-        bmi     @bee9       ; branch if non-ai characters are not shown
-        lda     #$04
+        bmi     @bee9                   ; branch if non-ai characters not shown
+        lda     #4
         sta     $10
 @be79:  lda     f:CharAI+4,x
         cmp     #$ff
@@ -40355,31 +40497,31 @@ set_play_xy:
         sta     $12
         stz     $14
         clr_ay
-        lda     #$01        ; character bit mask
+        lda     #$01                    ; character bit mask
         sta     $18
-@be8d:  lda     $2ec6,y     ; actor index
+@be8d:  lda     $2ec6,y                 ; actor index
         cmp     $12
         bne     @bed1
         lda     f:CharAI+4,x
-        and     #$40
+        and     #CHAR_AI_FLAG_ENEMY_CHAR
         beq     @bea1
         lda     $18
-        sta     $2f47       ; characters acting as enemies
+        sta     $2f47                   ; characters acting as enemies
 @bea1:  lda     f:CharAI+4,x
         bpl     @beaf
         lda     $18
-        ora     $6192       ;
+        ora     $6192                   ; exclude from the party
         sta     $6192
 @beaf:  lda     $14
         asl2
         tay
-        lda     f:CharAI+7,x   ; x position
+        lda     f:CharAI+7,x            ; x position
         cmp     #$ff
         beq     @bede
         longa
         asl
         sta     $6246,y
-        lda     f:CharAI+8,x   ; y position
+        lda     f:CharAI+8,x            ; y position
         and     #$00ff
         asl
         sta     $6248,y
@@ -40399,34 +40541,34 @@ set_play_xy:
 @bee7:  plx
         rts
 
-; non-ai characters are not shown
+; non-ai characters are not shown (hide party)
 @bee9:  clr_ay
-        lda     #$01        ; character bit mask
+        lda     #$01                    ; character bit mask
         sta     $10
 @beef:  lda     f:CharAI+4,x
         cmp     #$ff
-        beq     @bf0e       ; branch if ai character slot is disabled
+        beq     @bf0e                   ; branch if ai character slot is disabled
         and     #$40
-        beq     @bf00       ; branch if not acting as enemy
+        beq     @bf00                   ; branch if not acting as enemy
         lda     $10
-        sta     $2f47       ; set character acting as enemy
+        sta     $2f47                   ; set character acting as enemy
 @bf00:  lda     f:CharAI+4,x
-        bpl     @bf0e       ; branch if character is not shown
+        bpl     @bf0e                   ; branch if character is not shown
         lda     $10
-        ora     $6192       ; visible ai characters
+        ora     $6192                   ; exclude from the party
         sta     $6192
-@bf0e:  lda     f:CharAI+7,x   ; x position
+@bf0e:  lda     f:CharAI+7,x            ; x position
         cmp     #$ff
         beq     @bf29
         longa
         asl
         sta     $6246,y
-        lda     f:CharAI+8,x   ; y position
+        lda     f:CharAI+8,x            ; y position
         and     #$00ff
         asl
         sta     $6248,y
         shorta
-@bf29:  asl     $10         ; next character
+@bf29:  asl     $10                     ; next character
         iny4
         inx5
         cpy     #$0010
@@ -40571,7 +40713,6 @@ DrawCondemnNumDigit:
         dec     $14
         bne     @bff0
         rts
-        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -40591,6 +40732,7 @@ num_get_poi3:
 
 _c2c027:
 cgx_mode7_chg:
+        .a8
 @c027:  sta     $12
         stx     $10
         phb
@@ -40695,8 +40837,8 @@ EventAnimCmd_10:
         lda     [$5b],y
         jsr     _c2c0d2
         tax
-        lda     f:BitOrTbl,x   ; bit mask
-        ora     $6192
+        lda     f:BitOrTbl,x            ; bit mask
+        ora     $6192                   ; include in the party
         sta     $6192
         ldy     $5b
         iny
@@ -41651,10 +41793,6 @@ CharPalTbl:
         .byte   $00,$03,$06,$01,$00,$03,$03,$00
 
 ; ------------------------------------------------------------------------------
-
-.repeat 23, i
-        .import .ident(.sprintf("MapSpriteGfx_%04x", i))
-.endrep
 
 ; pointers to character sprite graphics
 CharGfxPtrs:
@@ -42878,13 +43016,13 @@ circle_02_main:
         dey
         bne     @d849
         rts
-        .i16
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
 _c2d86e:
+        .i16
 @d86e:  clr_a
         sta     $9e1f,y
         dey
@@ -44085,8 +44223,8 @@ MagitekPalOffsetTbl:
 
 ; ------------------------------------------------------------------------------
 
-land_not_chg_tbl:
-_c2e462:
+; battle bgs which do not change for dance
+DanceNoChangeBGTbl:
 @e462:  .byte   0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1
         .byte   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
         .byte   1,1,0,0,0,1,0,0,0,1,0,0,1,0,0,0
@@ -45452,11 +45590,11 @@ AnimType_59:
         bne     @ee68
         lda     $201e
         and     $61ab
-        and     $2eac
+        and     $2eac                   ; monsters on right side of screen
         beq     @ee48
-        clr_a
+        clr_a                           ; face left
         bra     @ee4a
-@ee48:  lda     #$01
+@ee48:  lda     #1                      ; face right
 @ee4a:  sta     $6f87
         sta     $7007
         sta     $7087
@@ -47507,7 +47645,7 @@ GetBitMask_near:
 
 ; sin/cos table (16-bit, signed)
 
-; python code to *almost* generate the entries in this table for x = [0,255].
+; python code to *almost* generate the entries in this table for x = [0...255].
 ; perhaps the developers used a sine function from an older floating-point
 ; unit which has slightly different round-off error than a modern FPU. In any
 ; case, about 1/8 of the values will be off by 1.
@@ -47552,7 +47690,7 @@ SineTbl16:
 
 ; sin/cos table (8-bit, signed)
 
-; python code to generate the entries in this table for x = [0,255]
+; python code to generate the entries in this table for x = [0...255]
 ; def sine8(x):
 ;     sine_x = round(math.sin(2.0 * math.pi * i / 256.0) * 127.0)
 ;     return sine_x if sine_x >= 0 else 0x100 + sine_x
@@ -47655,5 +47793,137 @@ Decompress_ext:
         pld
         plb
         rtl
+
+; ------------------------------------------------------------------------------
+
+.segment "attack_gfx_prop"
+
+; d4/d000
+AttackGfxProp:
+        .incbin "attack_gfx_prop.dat"
+
+; ------------------------------------------------------------------------------
+
+.segment "weapon_anim_prop"
+
+; ec/e400
+WeaponAnimProp:
+        .incbin "weapon_anim_prop.dat"
+
+; ------------------------------------------------------------------------------
+
+.segment "monster_attack_anim_prop"
+
+; ec/e6e8
+MonsterAttackAnimProp:
+        .incbin "monster_attack_anim_prop.dat"
+
+; ------------------------------------------------------------------------------
+
+.export MonsterAlign
+
+.segment "monster_align"
+
+; ec/e800
+MonsterAlign:
+        .incbin "monster_align.dat"
+
+; ------------------------------------------------------------------------------
+
+.segment "attack_anim_script"
+
+; d0/0000
+AttackAnimScript:
+        .incbin "attack_anim_script.dat"
+
+; ------------------------------------------------------------------------------
+
+.segment "attack_anim_script_ptrs"
+
+; d1/ead8
+AttackAnimScriptPtrs:
+        make_ptr_tbl_rel AttackAnimScript, ATTACK_ANIM_SCRIPT_ARRAY_LENGTH, .bankbyte(*)<<16
+
+; ------------------------------------------------------------------------------
+
+.segment "attack_anim_prop"
+
+; d0/7fb2
+AttackAnimProp:
+        .incbin "attack_anim_prop.dat"
+
+; ------------------------------------------------------------------------------
+
+.segment "battle_event"
+
+; d0/9800
+BattleEventScriptPtrs:
+        make_ptr_tbl_rel BattleEventScript, BATTLE_EVENT_SCRIPT_ARRAY_LENGTH, .bankbyte(*)<<16
+
+; d0/9842
+BattleEventScript:
+        .incbin "battle_event_script.dat"
+
+; ------------------------------------------------------------------------------
+
+.segment "attack_anim_frames"
+
+; d1/0141
+begin_fixed_block AttackAnimFrames, $e997
+        .incbin "attack_anim_frames.dat"
+        AttackAnimFramesEnd := *
+end_fixed_block AttackAnimFrames
+
+; ------------------------------------------------------------------------------
+
+.segment "attack_anim_frames_ptrs"
+
+; d4/df3c
+AttackAnimFramesPtrs:
+        make_ptr_tbl_rel AttackAnimFrames, ATTACK_ANIM_FRAMES_ARRAY_LENGTH, .bankbyte(*)<<16
+        .addr   AttackAnimFramesEnd
+
+; ------------------------------------------------------------------------------
+
+.segment "item_anim"
+
+; d1/0000
+ItemAnimPtrs:
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   $ffff
+        .word   402*14
+        .word   337*14
+        .word   338*14
+        .word   339*14
+        .word   340*14
+        .word   341*14
+        .word   342*14
+        .word   343*14
+        .word   344*14
+        .word   345*14
+        .word   346*14
+        .word   347*14
+        .word   348*14
+        .word   349*14
+        .word   350*14
+        .word   351*14
+        .word   352*14
+        .word   353*14
+        .word   354*14
+        .word   355*14
+        .word   356*14
+        .word   357*14
+        .word   358*14
+        .word   359*14
+        .word   $ffff
+
+; d1/0040
+ItemJumpThrowAnim:
+        .incbin "item_jump_throw_anim.dat"
 
 ; ------------------------------------------------------------------------------

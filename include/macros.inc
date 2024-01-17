@@ -54,9 +54,9 @@ MACROS_INC = 1
 
 ; [ set the size of accumulator/index registers ]
 
-PSW_A := %00100000
-PSW_I := %00010000
-PSW_C := %00000001
+PSW_A = %00100000
+PSW_I = %00010000
+PSW_C = %00000001
 
 .macro longa
         .a16
@@ -389,7 +389,7 @@ PSW_C := %00000001
 
 .macro make_ptr_tbl_abs label, length
 .repeat length, i
-        .addr   .ident(.sprintf("%s_%04x", .string(label), i))
+        .addr .ident(.sprintf("%s_%04x", .string(label), i))
 .endrep
 .endmacro
 
@@ -400,9 +400,9 @@ PSW_C := %00000001
 .macro make_ptr_tbl_rel label, length, offset
 .repeat length, i
         .ifblank offset
-                .addr   .ident(.sprintf("%s_%04x", .string(label), i)) - label
+                .addr .ident(.sprintf("%s_%04x", .string(label), i)) - label
         .else
-                .addr   .ident(.sprintf("%s_%04x", .string(label), i)) - offset
+                .addr .ident(.sprintf("%s_%04x", .string(label), i)) - offset
         .endif
 .endrep
 .endmacro
@@ -423,7 +423,36 @@ PSW_C := %00000001
 
 ; ------------------------------------------------------------------------------
 
+; [ begin/end fixed length block ]
+
+.macro begin_fixed_block _label, _size
+        _label := *
+        .ident(.concat(.string(_label), "BlockSize")) = _size
+.endmac
+
+.macro end_fixed_block _label, _pad_val
+.local pad_size
+        .ifndef .ident(.concat(.string(_label), "BlockSize"))
+                .error .sprintf("Fixed block %s doesn't exist", _label)
+        .endif
+        pad_size = (_label - *) + .ident(.concat(.string(_label), "BlockSize"))
+        .if pad_size < 0
+                .error .sprintf("Fixed block %s too large by %d bytes", .string(_label), -pad_size)
+        .elseif pad_size > 0
+                .ifnblank _pad_val
+                        .res pad_size, _pad_val
+                .else
+                        .res pad_size
+                .endif
+        .endif
+.endmacro
+
+; ------------------------------------------------------------------------------
+
+; [ include with language suffix ]
+
 .define inc_lang(_path) .include .sprintf(_path, LANG_SUFFIX)
+.define incbin_lang(_path) .incbin .sprintf(_path, LANG_SUFFIX)
 
 ; ------------------------------------------------------------------------------
 

@@ -1,8 +1,8 @@
 # Final Fantasy VI Disassembly
 
 This is a disassembly of Final Fantasy VI for the Super Famicom (i.e. Final
-Fantasy III for the SNES). It is a work in progress which partially builds
-the following ROMs:
+Fantasy III for the SNES). It is a work in progress which builds the
+following ROMs:
 
 - Final Fantasy III 1.0 (U), CRC32: `0xA27F1C7A`
 - Final Fantasy III 1.1 (U), CRC32: `0xC0FA0464`
@@ -37,7 +37,7 @@ GitHub and select "Download ZIP" to copy the repo to your computer.
 Copy an unmodified FF6 ROM file into the "vanilla" directory. If you want to
 build both the Japanese version and the English version, you will need to copy
 both ROMs. If your ROMs have a 512-byte copier header, you will need to remove
-if. There are many tools available on romhacking.net that can detect and
+it first. There are many tools available on romhacking.net that can detect and
 remove a copier header from a ROM file.
 
 All of the data can be extracted from either a v1.0 ROM or a v1.1 ROM. For
@@ -79,7 +79,12 @@ resulting in patch files which contain copyrighted data when using the IPS
 patch format. To avoid this, ROM hacks made from this code should be
 distributed by creating forks of this repository or by using more sophisticated
 patch formats which are able to differentiate data that has been modified from
-data that has simply been relocated (i.e. XDelta or Delta BPS).
+data that has simply been relocated (i.e. XDelta or Delta BPS). When creating
+a fork, make sure to run `make distclean` prior to each commit to delete all
+copyrighted assets from your repo. Be aware that this will delete all text
+and files which were extracted via `make rip`, including files that you have
+modified. If in doubt, make a backup copy of the repo prior to cleaning
+the repo directory.
 
 ## Format and Organization
 
@@ -106,27 +111,59 @@ subroutines and data locations.
 
 ### File Formats, Names, and Extensions
 
-Assembly files have the extension '.asm'. This includes files which define ROM
-data, scripts, and memory labels but contain no actual code. In most cases,
-assembly files should only be assembled once. The only exception is when
-the ROM contains multiple identical copies of the same subroutine or data.
+Assembly files have the extension `.asm`. In addition to assembly code this
+includes files which contain scripts, and memory labels but contain no actual
+code. In most cases, assembly files should only be assembled once. The only
+exception is when the ROM contains multiple identical copies of the same
+subroutine or data.
 
-Include files have the extension '.inc'. These files should are meant to be
+Include files have the extension `.inc`. These files can be
 included multiple times and should not output any bytes to the assembler or
-reserve any memory addresses. Examples include macro definitions and hardware
-address definitions.
+reserve any memory addresses. Examples include macro definitions, hardware
+address definitions, and definitions of constant expressions. Include files
+should begin with an include guard to ensure that they are not included more
+than once.
 
-Assembly and include files should not have lines longer than 80 characters.
+Native graphics files should have an extension which describes the graphics
+format such as `.4bpp` for 4 bits per pixel SNES graphics. SNES Palette files
+(BGR555 format) should have the extension `.pal`. Screen tilemap files should
+have the extension `.scr`.
+
+Other binary data files can have any reasonable extension. I usually use `.dat`
+if I can't think of anything better.
+
+Compressed data files should have the same filename and extension as their
+uncompressed counterpart with an appropriate extension added at the end, e.g.
+`image.cgx.lz` is the compressed version of `image.cgx` in the same directory.
 
 ### File Organization
 
-Each of the modules described above is in a separate directory. This mimics
-my best guess as to how the original source code was organized based on e.g.
-the Playstation releases where each module had a directory named after the
-main programmer for that module ('NARITA', 'YOSHII', etc.). Each directory
-contains all of the source code and data. The root directory contains a
-Makefile to assemble each module and link all of the object files together to
-create the ROM.
+Tge `src` directory contains all of the assembly code and game data. The
+`include` directory contains all of the include files.
+
+Each of the modules described above is in a separate subdirectory within the
+`src` directory. This mimics my best guess as to how the original source code
+was organized based on e.g. the Playstation releases where each module has a
+directory named after the main programmer for that module ('NARITA', 'YOSHII',
+etc.). Each module directory contains all of the source code and data for that
+module. The root directory of the repo contains a Makefile to assemble each
+module and link all of the object files together to create the ROM.
+
+Each module also has a subdirectory in the `include` directory which can
+contain include files related to that module.
+
+The `tools` directory contains a set of python scripts which are used to
+extract and modify game data.
+
+The `notes` directory contains my notes from reverse engineering the
+assembly code.
+
+The `cfg` directory contains linker configuration files which ensure that the
+assembled game data is placed in the ROM to match the original versions. I
+don't know what assembler and linker were used to build the game by the
+original development team, but it worked somewhat differently than ca65 and
+ld65. Because of this, I have to use a lot more modules than would typically
+be used in order to build a program of this size and complexity.
 
 ### Naming Conventions
 
@@ -139,21 +176,22 @@ coding style conventions here (<https://github.com/a2stuff/a2d/blob/main/docs/Co
 although I'm not sure how strictly I would want to follow them.
 
 External subroutines (which can be called by other modules) get the special
-suffix '_ext'. Also, dummy subroutines called by another bank (typically a
-jsr followed by rtl or jsl followed by rts on the 65c816) get the special
-suffix '_far' or '_near', respectively.
+suffix `_ext`. Also, dummy subroutines called by another bank (typically a
+`jsr` followed by `rtl` or `jsl` followed by `rts` on the 65c816) get the
+special suffix `_far` or `_near`, respectively.
 
-Labels for unknown subroutines are the 6-digit ROM address of the subroutine
-(including the bank) preceded by an underscore, e.g. `_c28566`.
+I've added descriptive labels for many the subroutines in the code. Labels
+for unknown or unlabeled subroutines are the 6-digit ROM address of the
+subroutine (including the bank) preceded by an underscore, e.g. `_c28566`.
 
-Local labels inside subroutines use mixed case with a prepended '@' symbol,
+Local labels inside subroutines use mixed case with a prepended `@` symbol,
 which is ca65's default symbol to identify a local label. Most local labels
 are unnamed, and instead use the 4-digit ROM address (excluding the bank). I
 also typically include a local label at the start of each subroutine so that
 it can be compared to the original ROM file, but these are just for convenience
 and can be removed eventually.
 
-WRAM and SRAM labels begin with a lowercase 'w' or 's' followed by a
+WRAM and SRAM labels begin with a lowercase `w` or `s` followed by a
 descriptive name in PascalCase case, e.g. `wSpriteData`.
 
 Hardware registers are a slight exception to the rule. I chose to use the
@@ -161,10 +199,10 @@ official register names from the SNES development manual in all caps,
 prepended with a lowercase 'h' (i.e. `$2100` is `hINIDISP`).
 
 Instruction mnemonics and macro names are in all lowercase. Macro names can
-include underscores to improve readability. Constants are in all uppercase
-with underscores between words.
+include underscores to improve readability. Constant expressions are in all
+uppercase with underscores between words.
 
-To shorten subroutine and label names, the following shortened words may be
+To shorten subroutine and label names, the following shortened words are
 used:
 
 - anim: animation
@@ -197,8 +235,13 @@ used:
 
 ### Tabs, Spaces, and Comments
 
+Assembly and include files should not have lines longer than 80 characters.
 Never use tabs. Always use spaces. In assembly files, labels begin in column 1,
 instructions and macros begin in column 9, operands begin in column 17, and
 comments can begin in column 41. Long comments that would extend beyond the
 80-character limit should be placed on their own line before the assembly
 code that they describe.
+
+An exception to these rules is for scripts made with macros instead of
+instruction mnemonics because the macros names are often longer than 7
+characters. In this case, operands begin in column 25.

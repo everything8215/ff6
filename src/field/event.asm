@@ -11,6 +11,17 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+inc_lang "text/char_name_%s.inc"
+.include "field/event_trigger.inc"
+
+.import MapSpritePal
+
+.export BushidoLevelTbl, NaturalMagic, LevelUpExp
+
+.a8
+.i16
+.segment "field_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ init event script ]
@@ -19,13 +30,13 @@ InitEvent:
 @989d:  ldx     $00
         stx     $e3         ; clear event pause counter
         stx     $e8         ; clear event stack
-        ldx     #$0000      ; $ca0000 (no event)
+        ldx     #.loword(EventScript)
         stx     $e5
-        lda     #$ca
+        lda     #^EventScript
         sta     $e7
-        ldx     #$0000
+        ldx     #.loword(EventScript)
         stx     $0594
-        lda     #$ca
+        lda     #^EventScript
         sta     $0596
         lda     #1          ; set event loop count
         sta     f:$0005c4
@@ -407,7 +418,7 @@ IncEventPtrReturn:
 
 ; [ push event pointer ]
 
-; a = number of bytes to increment event pc by
+; a: number of bytes to increment event pc by
 
 PushEventPtr:
 @9b82:  ldx     $e8
@@ -431,7 +442,7 @@ PushEventPtr:
 
 ; [ begin object script ]
 
-; a = object index
+; a: object index
 
 InitObjScript:
 @9ba5:  sta     hWRMPYA
@@ -512,7 +523,7 @@ ExecPartyObjScript:
 
 ; [ event command $35: wait for object ]
 
-; $eb = object number
+; $eb: object number
 
 EventCmd_35:
 @9c44:  lda     $eb
@@ -538,7 +549,7 @@ EventCmd_35:
 
 ; [ event command $36: disable object passability ]
 
-; $eb = object number
+; $eb: object number
 
 EventCmd_36:
 @9c6f:  jsr     CalcObjPtr
@@ -552,7 +563,7 @@ EventCmd_36:
 
 ; [ event command $78: enable object passability ]
 
-; $eb = object number
+; $eb: object number
 
 EventCmd_78:
 @9c7f:  jsr     CalcObjPtr
@@ -566,8 +577,8 @@ EventCmd_78:
 
 ; [ event command $37: set object graphics ]
 
-; $eb = object number
-; $ec = graphics index
+; $eb: object number
+; $ec: graphics index
 
 EventCmd_37:
 @9c8f:  jsr     CalcObjPtr
@@ -585,8 +596,8 @@ EventCmd_37:
 
 ; [ event command $43: set object palette ]
 
-; $eb = object number
-; $ec = palette index
+; $eb: object number
+; $ec: palette index
 
 EventCmd_43:
 @9ca9:  jsr     CalcObjPtr
@@ -608,10 +619,10 @@ EventCmd_43:
 
 ; [ event command $44: set object vehicle ]
 
-; $eb = object number
-; $ec = svv-----
-;       s: character shown
-;       v: vehicle index (0 = no vehicle, 1 = chocobo, 2 = magitek, 3 = raft)
+; $eb: object number
+; $ec: svv-----
+;        s: character shown
+;        v: vehicle index (0 = no vehicle, 1 = chocobo, 2 = magitek, 3 = raft)
 
 EventCmd_44:
 @9cca:  jsr     CalcObjPtr
@@ -638,7 +649,7 @@ EventCmd_45:
 
 ; [ event command $46: set current party ]
 
-; $eb = party number (0..7)
+; $eb: party number (0..7)
 
 EventCmd_46:
 @9cea:  lda     $eb
@@ -706,8 +717,8 @@ EventCmd_3b:
 
 ; [ event command $3f: add character to party ]
 
-; $eb = character number
-; $eb = party number (0..7, 0 = remove from party)
+; $eb: character number
+; $eb: party number (0..7, 0 = remove from party)
 
 EventCmd_3f:
 @9d3b:  jsr     PopCharFlags
@@ -736,10 +747,10 @@ EventCmd_3f:
 
 ; [ event command $3c: set party characters ]
 
-; $eb = slot 0 character
-; $ec = slot 1 character ($ff = empty slot)
-; $ed = slot 2 character ($ff = empty slot)
-; $ee = slot 3 character ($ff = empty slot)
+; $eb: slot 0 character
+; $ec: slot 1 character ($ff = empty slot)
+; $ed: slot 2 character ($ff = empty slot)
+; $ee: slot 3 character ($ff = empty slot)
 
 EventCmd_3c:
 @9d6d:  ldy     #$07d9
@@ -772,7 +783,7 @@ EventCmd_3c:
 
 ; [ calculate pointer to character data ]
 
-; $eb = object number
+; $eb: object number
 
 CalcCharPtr:
 @9dad:  lda     $eb
@@ -807,7 +818,7 @@ CalcCharPtr:
 
 ; [ calculate pointer to object data ]
 
-; $eb = object number
+; $eb: object number
 
 CalcObjPtr:
 @9df0:  lda     $eb
@@ -847,7 +858,7 @@ CalcObjPtr:
 
 ; [ event command $3d: create object ]
 
-; $eb = object number
+; $eb: object number
 
 EventCmd_3d:
 @9e3c:  jsr     CalcObjPtr
@@ -873,7 +884,7 @@ EventCmd_3d:
 
 ; [ event command $3e: delete object ]
 
-; $eb = object number
+; $eb: object number
 
 EventCmd_3e:
 @9e67:  jsr     CalcObjPtr
@@ -904,9 +915,9 @@ EventCmd_3e:
 
 ; ------------------------------------------------------------------------------
 
-; [ get next available party slot ]
+; [ get next available character slot in party ]
 
-; a = party number number (0..2)
+; a: party number (0..2)
 
 FindEmptyCharSlot:
 @9ea2:  sta     $1a
@@ -983,7 +994,7 @@ FindEmptyCharSlot:
 
 ; [ event command $77: normalize character level ]
 
-; $eb = character number
+; $eb: character number
 
 EventCmd_77:
 @9f32:  jsr     CalcAverageLevel
@@ -1120,8 +1131,8 @@ EventCmd_8d:
 
 ; [ event command $7f: set character name ]
 
-; $eb = character number
-; $ec = name index
+; $eb: character number
+; $ec: name index
 
 EventCmd_7f:
 @a03a:  jsr     CalcCharPtr
@@ -1142,8 +1153,8 @@ EventCmd_7f:
 
 ; [ event command $40: set character properties ]
 
-; $eb = character number
-; $ec = actor number
+; $eb: character number
+; $ec: actor number
 
 EventCmd_40:
 @a07c:  jsr     CalcCharPtr
@@ -1199,10 +1210,10 @@ EventCmd_40:
         plx
         sta     $1608,y     ; set level
         lda     f:CharProp+21,x   ; level modifier
-        and     #$0c
+        and     #LEVEL_MOD_MASK
         lsr2
         tax
-        lda     f:CharAvgLevelTbl,x   ; add modifier
+        lda     f:CharLevelModTbl,x   ; add level modifier
         clc
         adc     $1608,y
         beq     @a12f
@@ -1243,28 +1254,28 @@ EventCmd_40:
 
 ; [ update character natural skills ]
 
-; y = pointer to character data
+; y: pointer to character data
 
 UpdateAbilities:
 @a17f:  lda     $1600,y                 ; actor index
-        cmp     #$00
+        cmp     #CHAR_TERRA
         beq     @a196                   ; branch if terra
-        cmp     #$06
+        cmp     #CHAR_CELES
         beq     @a1b8                   ; branch if celes
-        cmp     #$02
+        cmp     #CHAR_CYAN
         beq     @a1da                   ; branch if cyan
-        cmp     #$05
+        cmp     #CHAR_SABIN
         jeq     @a201                   ; branch if sabin
 @a195:  rts
 
 ; update terra's natural magic
 @a196:  ldx     $00
-@a198:  lda     f:NaturalMagic_0000+1,x ; level that the spell is learned
+@a198:  lda     f:NaturalMagic+1,x      ; level that the spell is learned
         cmp     $1608,y                 ; current level
         beq     @a1a3
         bcs     @a195                   ; return if greater than current level
 @a1a3:  phy
-        lda     f:NaturalMagic_0000,x   ; spell number
+        lda     f:NaturalMagic,x        ; spell number
         tay
         lda     #$ff
         sta     $1a6e,y                 ; learn spell
@@ -1276,12 +1287,12 @@ UpdateAbilities:
 
 ; update celes' natural magic
 @a1b8:  ldx     $00
-@a1ba:  lda     f:NaturalMagic_0001+1,x ; level that the spell is learned
+@a1ba:  lda     f:NaturalMagic+$21,x    ; level that the spell is learned
         cmp     $1608,y                 ; current level
         beq     @a1c5
         bcs     @a195                   ; return if greater than current level
 @a1c5:  phy
-        lda     f:NaturalMagic_0001,x   ; spell number
+        lda     f:NaturalMagic+$20,x    ; spell number
         tay
         lda     #$ff
         sta     $1bb2,y                 ; learn spell
@@ -1332,18 +1343,72 @@ UpdateAbilities:
 ; ------------------------------------------------------------------------------
 
 ; character average level modifiers
-CharAvgLevelTbl:
-@a228:  .byte   $00,$02,$05,$fd
+CharLevelModTbl:
+@a228:  .byte   0,2,5,<(-3)
 
 ; swdtech/blitz learn flags
 LearnAbilityTbl:
 @a22c:  .byte   $00,$01,$03,$07,$0f,$1f,$3f,$7f,$ff
 
+.pushseg
+.segment "bushido_blitz_level"
+
+; e6/f490
+BushidoLevelTbl:
+        .byte   1,6,12,15,24,34,44,70
+
+; e6/f498
+BlitzLevelTbl:
+        .byte   1,6,10,15,23,30,42,70
+
+.segment "natural_magic"
+
+; ec/e3c0
+NaturalMagic:
+
+; terra
+        .byte ATTACK_CURE, 1
+        .byte ATTACK_FIRE, 3
+        .byte ATTACK_ANTDOT, 6
+        .byte ATTACK_DRAIN, 12
+        .byte ATTACK_LIFE, 18
+        .byte ATTACK_FIRE_2, 22
+        .byte ATTACK_WARP, 26
+        .byte ATTACK_CURE_2, 33
+        .byte ATTACK_DISPEL, 37
+        .byte ATTACK_FIRE_3, 43
+        .byte ATTACK_LIFE_2, 49
+        .byte ATTACK_PEARL, 57
+        .byte ATTACK_BREAK, 68
+        .byte ATTACK_QUARTR, 75
+        .byte ATTACK_MERTON, 86
+        .byte ATTACK_ULTIMA, 99
+
+; celes
+        .byte ATTACK_ICE, 1
+        .byte ATTACK_CURE, 4
+        .byte ATTACK_ANTDOT, 8
+        .byte ATTACK_IMP, 13
+        .byte ATTACK_SCAN, 18
+        .byte ATTACK_SAFE, 22
+        .byte ATTACK_ICE_2, 26
+        .byte ATTACK_HASTE, 32
+        .byte ATTACK_BSERK, 40
+        .byte ATTACK_MUDDLE, 32
+        .byte ATTACK_ICE_3, 42
+        .byte ATTACK_VANISH, 48
+        .byte ATTACK_HASTE2, 52
+        .byte ATTACK_PEARL, 72
+        .byte ATTACK_FLARE, 81
+        .byte ATTACK_METEOR, 98
+
+.popseg
+
 ; ------------------------------------------------------------------------------
 
 ; [ update character experience points ]
 
-; y = pointer to character data
+; y: pointer to character data
 
 UpdateExp:
 @a235:  lda     $1608,y     ; $1b = current level
@@ -1381,6 +1446,23 @@ UpdateExp:
         sta     $1613,y
         rts
 
+.pushseg
+.segment "level_up_exp"
+
+LevelUpExp:
+        .word   4,8,14,24,34,48,62,79  ; 2-9
+        .word   99,120,143,169,195,224,257,289,323,360  ; 10-19
+        .word   402,441,484,528,575,627,674,728,785,842  ; 20-29
+        .word   899,961,1025,1088,1157,1224,1296,1370,1443,1522  ; 30-39
+        .word   1599,1680,1763,1850,1936,2024,2117,2208,2305,2401  ; 40-49
+        .word   2500,2602,2704,2808,2916,3024,3137,3248,3365,3481  ; 50-59
+        .word   3599,3722,3843,3970,4096,4224,4357,4488,4625,4762  ; 60-69
+        .word   4899,5041,5183,5330,5477,5625,5774,5929,6083,6241  ; 70-79
+        .word   6400,6562,6724,6888,7056,7225,7397,7569,7743,7921  ; 80-89
+        .word   8100,8282,8464,8648,8836,9025,9217,9409,9603,11111  ; 90-99
+
+.popseg
+
 ; ------------------------------------------------------------------------------
 
 ; [ init character max hp ]
@@ -1416,6 +1498,24 @@ InitMaxHP:
         shorta0
         rts
 
+.pushseg
+.segment "level_up_hp"
+
+; e6/f4a0
+LevelUpHP:
+        .byte   11,12,14,17,20,22,24,26  ; 2-9
+        .byte   27,28,30,35,39,44,50,54,57,61  ; 10-19
+        .byte   65,67,69,72,76,79,82,86,90,95  ; 20-29
+        .byte   99,100,101,102,102,103,104,106,107,108  ; 30-39
+        .byte   110,111,113,114,116,117,119,120,122,125  ; 40-49
+        .byte   128,130,131,133,134,136,137,139,142,144  ; 50-59
+        .byte   145,147,148,150,152,153,155,156,158,160  ; 60-69
+        .byte   162,160,155,151,145,140,136,132,126,120  ; 70-79
+        .byte   117,113,110,108,105,102,100,98,95,92  ; 80-89
+        .byte   90,88,87,85,83,82,80,83,86,88  ; 90-99
+
+.popseg
+
 ; ------------------------------------------------------------------------------
 
 ; [ init character max mp ]
@@ -1450,6 +1550,26 @@ InitMaxMP:
         sta     $160f,y
         shorta0
         rts
+
+; ------------------------------------------------------------------------------
+
+.pushseg
+.segment "level_up_mp"
+
+; e6/f502
+LevelUpMP:
+        .byte   4,4,5,5,6,6,7,8  ; 2-9
+        .byte   8,9,9,10,10,10,10,10,11,11  ; 10-19
+        .byte   11,11,11,12,12,12,12,12,13,13  ; 20-29
+        .byte   13,13,13,14,14,14,14,14,15,15  ; 30-39
+        .byte   15,15,15,16,16,16,16,16,17,17  ; 40-49
+        .byte   17,16,15,14,13,12,11,10,9,8  ; 50-59
+        .byte   7,6,5,5,6,6,7,7,7,8  ; 60-69
+        .byte   8,8,8,8,7,7,7,6,6,6  ; 70-79
+        .byte   6,5,5,5,5,5,5,5,6,6  ; 80-89
+        .byte   6,6,6,7,8,9,10,11,12,13  ; 90-99
+
+.popseg
 
 ; ------------------------------------------------------------------------------
 
@@ -5763,5 +5883,34 @@ CheckEventTriggers:
         jsr     UpdateScrollRate
         jsr     CloseMapTitleWindow
         rts
+
+; ------------------------------------------------------------------------------
+
+.export EventScript
+
+.pushseg
+.segment "event_script"
+
+; ca/0000
+begin_fixed_block EventScript, $02e600
+        .incbin "event_script.dat"
+end_fixed_block EventScript
+
+.popseg
+
+; ------------------------------------------------------------------------------
+
+.segment "event_triggers"
+
+; c4/0000
+begin_fixed_block EventTriggerPtrs, $1a10
+        make_ptr_tbl_rel EventTrigger, EVENT_TRIGGER_ARRAY_LENGTH, EventTriggerPtrs
+        .addr EventTriggerEnd - EventTriggerPtrs
+
+; c4/0342
+EventTrigger:
+        .incbin "src/field/trigger/event_trigger.dat"
+EventTriggerEnd:
+end_fixed_block EventTriggerPtrs
 
 ; ------------------------------------------------------------------------------

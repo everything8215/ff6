@@ -13,17 +13,16 @@
 
 .segment "interrupt"
 
-JmpReset:
+begin_fixed_block JmpReset, $10
 @ff00:  sei
         clc
         xce
         jml     Reset
+end_fixed_block JmpReset
 
 ; ------------------------------------------------------------------------------
 
 ; [ nmi ]
-
-.align $10
 
 JmpNMI:
 @ff10:  jml     $001500
@@ -37,15 +36,15 @@ JmpIRQ:
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-
 .segment "snes_header_ext"
 
-SnesHeaderExt:
+.if LANG_EN
+
+begin_fixed_block SnesHeaderExt, $10
 @ffb0:
         .byte   "C3"                    ; publisher: squaresoft
         .byte   "F6  "                  ; game code
-        .byte   0,0,0,0,0,0,0,0,0,0
+end_fixed_block SnesHeaderExt, 0
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -79,7 +78,6 @@ HeaderChecksum:
 
 .segment "vectors"
 
-Vectors:
 @ffe0:  .res    10
 @ffea:  .addr   JmpNMI
         .res    2

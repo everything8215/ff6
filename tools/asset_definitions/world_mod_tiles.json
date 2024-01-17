@@ -1,7 +1,0 @@
-{
-  "type": "data",
-  "name": "World Modification Tiles",
-  "range": "0xCEF648-0xCEFAE5",
-  "asmSymbol": "WorldModTiles",
-  "assetPath": "assets/world/mod/tiles.dat"
-}

@@ -11,6 +11,14 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+inc_lang "text/bushido_name_%s.inc"
+
+.import WindowPal
+
+.a8
+.i16
+.segment "field_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ init character object data ]
@@ -258,6 +266,22 @@ DebugEvent:
 .endif
         rts
 
+.pushseg
+.segment "init_rage"
+
+; c4/7aa0
+InitRage:
+        .byte   $00,$48,$28,$02,$00,$40,$40,$02,$04,$00,$00,$00,$00,$00,$00,$00
+        .byte   $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+
+.segment "init_lore"
+
+; e6/f564
+InitLore:
+        .byte   $88,$00,$10
+
+.popseg
+
 ; ------------------------------------------------------------------------------
 
 ; [ load map ]
@@ -492,5 +516,16 @@ LoadMap:
         inc     $47
         jsr     TfrObjGfxSub            ; update object 18-23 graphics in vram
         rts
+
+; ------------------------------------------------------------------------------
+
+.pushseg
+.segment "map_init_event"
+
+; d1/fa00
+MapInitEvent:
+        .incbin "map_init_event.dat"
+
+.popseg
 
 ; ------------------------------------------------------------------------------

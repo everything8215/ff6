@@ -240,6 +240,11 @@ JOY_DOWN        = %00000100
 JOY_LEFT        = %00000010
 JOY_RIGHT       = %00000001
 
+; [ fixed color components ]
+FIXED_CLR_RED   = $20
+FIXED_CLR_GREEN = $40
+FIXED_CLR_BLUE  = $80
+
 ; ------------------------------------------------------------------------------
 
 .endif

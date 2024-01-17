@@ -1,0 +1,9 @@
+{
+  "asset_label": "DTETbl",
+  "asset_const": "DTE_TBL",
+  "item_size": 2,
+  "char_tables": [
+    "dialog_en"
+  ],
+  "text": []
+}

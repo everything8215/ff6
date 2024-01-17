@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
+
 import romtools as rt
+import sys
 
 
 def encode_lzss(src):
@@ -151,3 +154,14 @@ def decode_lzss(src):
             header >>= 1
 
     return dest[:d]
+
+
+if __name__ == '__main__':
+    src_path = sys.argv[1]
+    dest_path = sys.argv[2]
+
+    with open(src_path, 'rb') as f:
+        src_bytes = bytearray(f.read())
+
+    with open(dest_path, 'wb') as f:
+        f.write(encode_lzss(src_bytes))

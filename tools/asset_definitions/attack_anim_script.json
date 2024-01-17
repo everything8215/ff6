@@ -1,7 +1,0 @@
-{
-  "type": "script",
-  "name": "Attack Animation Script",
-  "range": "0xD00000-0xD07FB1",
-  "asmSymbol": "AttackAnimScript",
-  "assetPath": "assets/attack/attack_anim_script.dat"
-}

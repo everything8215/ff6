@@ -1,9 +1,0 @@
-{
-  "type": "graphics",
-  "name": "Attack Graphics (2bpp)",
-  "range": "0xD87000-0xD8C99F",
-  "asmSymbol": "AttackGfx2bpp",
-  "assetPath": "assets/attack/attack_gfx_2bpp.cgx",
-  "format": "snes2bpp",
-  "palette": "attackPalette"
-}

@@ -16,34 +16,17 @@
 .include "const.inc"
 .include "hardware.inc"
 .include "macros.inc"
-.include "battle.inc"
-.include "btlgfx.inc"
+.include "code_ext.inc"
 
 ; ------------------------------------------------------------------------------
 
-.include "assets/ai_script.inc"
-.include "assets/ai_script_ptr.inc"
-.include "assets/battle_bg_dance.inc"
-.include "assets/battle_cmd_prop.inc"
-.include "assets/battle_magic_points.inc"
-.include "assets/battle_monsters.inc"
-.include "assets/battle_prop.inc"
-.include "assets/char_ai.inc"
-.include "assets/char_prop.inc"
-.include "assets/cond_battle.inc"
-.include "assets/dance_bg.inc"
-.include "assets/dance_prop.inc"
-inc_lang "assets/item_prop_%s.inc"
-.include "assets/magic_prop.inc"
-.include "assets/metamorph_prop.inc"
-.include "assets/monster_control.inc"
-.include "assets/monster_items.inc"
-inc_lang "assets/monster_name_%s.inc"
-.include "assets/monster_prop.inc"
-.include "assets/monster_rage.inc"
-.include "assets/monster_sketch.inc"
-.include "assets/monster_special_anim.inc"
-.include "assets/rng_tbl.inc"
+.include "battle/ai_script.inc"
+.include "gfx/battle_bg.inc"
+.include "btlgfx/char_ai.inc"
+inc_lang "text/monster_name_%s.inc"
+
+.import BushidoLevelTbl, CharProp
+.import RNGTbl, GenjuProp, ItemProp, NaturalMagic
 
 ; ------------------------------------------------------------------------------
 
@@ -359,7 +342,7 @@ _mimicinstall:
         asl
         tax
         lda     f:BattleCmdProp,x   ; return if command can't be mimicked
-        bit     #$02
+        bit     #BATTLE_CMD_FLAG_MIMIC
         beq     @0264
         lda     #$12        ; command $12 (mimic)
         sta     $3f28
@@ -435,7 +418,7 @@ InitPlayerAction:
         tax
         lda     f:BattleCmdProp,x   ; battle command data
         plx
-        bit     #$04
+        bit     #BATTLE_CMD_FLAG_IMP
         bne     @02da       ; return if command can't be used by imp
         stz     $3a4c       ; clear mp cost
         phx
@@ -962,6 +945,14 @@ RandDance:
 ; dance attack probabilities (7/16, 3/8, 1/8, 1/16)
 DanceRateTbl:
 @05ce:  .byte   $10,$30,$90
+
+.pushseg
+.segment "dance_prop"
+
+; cf/fe80
+        .include "dance_prop.asm"
+
+.popseg
 
 ; ------------------------------------------------------------------------------
 
@@ -2228,20 +2219,24 @@ _0e20:  rts
 
 ZombieEffect:
 @0e21:  jsr     Rand
+
+; 1/16 chance to cause poison status
         cmp     #$10
         bcs     @0e2c
-        lda     #$04        ; 1/16 chance to cause poison status
-        bra     SetStatus0
+        lda     #STATUS1_POISON
+        bra     SetStatus1
+
+; 1/16 chance to cause blind status
 @0e2c:  cmp     #$20
         bcs     _0e20
-        lda     #$01        ; 1/16 chance to cause dark status
+        lda     #STATUS1_BLIND
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
 
 ; [ set bit in status 0 ]
 
-SetStatus0:
+SetStatus1:
 @0e32:  ora     $3dd4,y
         sta     $3dd4,y
         rts
@@ -2331,8 +2326,8 @@ UpdateEquip:
         xba
         sta     $11aa
         lda     f:CharProp+21,x         ; run factor
-        and     #$03
-        eor     #$03
+        and     #RUN_FACTOR_MASK
+        eor     #RUN_FACTOR_MASK
         inc2
         sta     $11dc
         plx
@@ -2541,8 +2536,8 @@ CalcEquipEffect:
         asl2
         lda     $fe
         bcs     @1029                   ; branch if imp item
-        eor     #$20                    ; toggle imp status
-@1029:  bit     #$20
+        eor     #STATUS1_IMP                    ; toggle imp status
+@1029:  bit     #STATUS1_IMP
         bne     @1030                   ; branch if imp
         lda     #$01
         xba
@@ -3051,10 +3046,10 @@ _c21390:
         stx     $3a89       ; disable random weapon spellcast
         sta     $3bf4,y     ; set current hp to zero
         lda     $3ee4,y
-        bit     #$0002
+        bit     #STATUS1_ZOMBIE
         bne     _133c       ; branch if target is a zombie
-        lda     #$0080
-        jmp     SetStatus0
+        lda     #STATUS1_DEAD
+        jmp     SetStatus1
 
 ; ------------------------------------------------------------------------------
 
@@ -3145,7 +3140,7 @@ CheckDeadMonsters:
         beq     @144a       ; skip if monster is still alive
         xba
         lda     $3f01,x     ; status 4
-        bit     #$20
+        bit     #STATUS4_HIDE
         bne     @1446       ; mark monster as dead if it has hide status
         lda     $3e54,x
         bmi     @1446       ; skip if piranha status $3e4c.7
@@ -3176,7 +3171,7 @@ _timeenable2:
         lda     #$fe
         jsr     ClearFlag0       ; clear $3aa0.0 (make target not present)
         lda     $3ef9,x     ; set hide status
-        ora     #$20
+        ora     #STATUS4_HIDE
         sta     $3ef9,x
         jsr     _c207c8
         longa
@@ -3207,7 +3202,7 @@ _timeenable:
         and     #$1d        ; clear wound, petrify, imp, zombie
         sta     $3ee4,x
         lda     $3ef9,x     ; status 4
-        and     #$df        ; clear hide
+        and     #<~STATUS4_HIDE
         sta     $3ef9,x
         jsr     CheckFirstStrike
         longa
@@ -3423,14 +3418,14 @@ Cmd_00:
         lda     $3018,y
         tsb     $3f2f
         bne     _1610
-        lda     $3ed8,y
-        cmp     #$0c
+        lda     $3ed8,y                 ; calculate desperation attack id
+        cmp     #CHAR_GOGO
         beq     @1604
-        cmp     #$0b
+        cmp     #CHAR_GAU
         bcs     _1610
         inc
 @1604:  dec
-        ora     #$f0
+        ora     #$f0                    ; first desperation attack
         sta     $b6
         lda     #$10
         trb     $b0
@@ -3599,6 +3594,27 @@ DesperationAttack:
         sta     $b5
         bra     _175f
 
+.pushseg
+.segment "desperation_attack"
+
+; cf/fea0 desperation attacks for each character (unused)
+        .byte   ATTACK_RIOT_BLADE
+        .byte   ATTACK_MIRAGER
+        .byte   ATTACK_BACK_BLADE
+        .byte   ATTACK_SHADOWFANG
+        .byte   ATTACK_ROYALSHOCK
+        .byte   ATTACK_TIGERBREAK
+        .byte   ATTACK_SPIN_EDGE
+        .byte   ATTACK_SABRESOUL
+        .byte   ATTACK_STAR_PRISM
+        .byte   ATTACK_RED_CARD
+        .byte   ATTACK_MOOGLERUSH
+        .byte   ATTACK_NONE             ; gau
+        .byte   ATTACK_X_METEO
+        .byte   ATTACK_NONE             ; umaro
+
+.popseg
+
 ; ------------------------------------------------------------------------------
 
 ; [ command $1b: shock ]
@@ -3691,7 +3707,7 @@ _1765:  sta     $3412
 
 Cmd_13:
 @177d:  lda     $3ef8,y     ; set dance status
-        ora     #$01
+        ora     #STATUS3_DANCE
         sta     $3ef8,y
         lda     #$ff        ; no background change
         sta     $b7
@@ -3710,7 +3726,7 @@ Cmd_13:
         sta     $11e2
         jmp     Cmd_02
 @17af:  lda     $3ef8,y     ; clear dance status
-        and     #$fe
+        and     #<~STATUS3_DANCE
         sta     $3ef8,y
         tyx
         lda     #$06        ; battle message $06 (stumbled!!)
@@ -3719,6 +3735,93 @@ Cmd_13:
         sta     $b5
         jsr     _c2298d
         jmp     ExecSelfAttack
+
+.pushseg
+.segment "dance_bg"
+
+; d1/f9ab
+DanceBG:
+        .byte   BATTLE_BG_FIELD_WOB                     ; 0: wind song
+        .byte   BATTLE_BG_FOREST_WOB                    ; 1: forest suite
+        .byte   BATTLE_BG_DESERT_WOB                    ; 2: desert aria
+        .byte   BATTLE_BG_TOWN_INT                      ; 3: love sonata
+        .byte   BATTLE_BG_MOUNTAINS_EXT                 ; 4: earth blues
+        .byte   BATTLE_BG_UNDERWATER                    ; 5: water rondo
+        .byte   BATTLE_BG_CAVES                         ; 6: dusk requium
+        .byte   BATTLE_BG_SNOWFIELDS                    ; 7: snowman jazz
+        .byte   BATTLE_BG_FOREST_WOR                    ; unused
+        .byte   BATTLE_BG_FOREST_WOR                    ; unused
+
+.segment "battle_bg_dance"
+
+; ed/8e5b
+BattleBGDance:
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_FIELD_WOB
+        .byte   DANCE_FOREST_SUITE      ; BATTLE_BG_FOREST_WOR
+        .byte   DANCE_DESERT_ARIA       ; BATTLE_BG_DESERT_WOB
+        .byte   DANCE_FOREST_SUITE      ; BATTLE_BG_FOREST_WOB
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_ZOZO_INT
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_FIELD_WOR
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_VELDT
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_CLOUDS
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_NARSHE_EXT
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_NARSHE_CAVES_1
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_CAVES
+        .byte   DANCE_EARTH_BLUES       ; BATTLE_BG_MOUNTAINS_EXT
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_MOUNTAINS_INT
+        .byte   DANCE_WATER_RONDO       ; BATTLE_BG_RIVER
+        .byte   DANCE_DESERT_ARIA       ; BATTLE_BG_IMP_CAMP
+        .byte   DANCE_FOREST_SUITE      ; BATTLE_BG_TRAIN_EXT
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_TRAIN_INT
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_NARSHE_CAVES_2
+        .byte   DANCE_SNOWMAN_JAZZ      ; BATTLE_BG_SNOWFIELDS
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_TOWN_EXT
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_IMP_CASTLE
+        .byte   DANCE_EARTH_BLUES       ; BATTLE_BG_FLOATING_ISLAND
+        .byte   DANCE_EARTH_BLUES       ; BATTLE_BG_KEFKAS_TOWER_EXT
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_OPERA_STAGE
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_OPERA_CATWALK
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_BURNING_BUILDING
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_CASTLE_INT
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_MAGITEK_LAB
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_COLOSSEUM
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_MAGITEK_FACTORY
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_VILLAGE_EXT
+        .byte   DANCE_WATER_RONDO       ; BATTLE_BG_WATERFALL
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_OWZERS_HOUSE
+        .byte   DANCE_FOREST_SUITE      ; BATTLE_BG_TRAIN_TRACKS
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_SEALED_GATE
+        .byte   DANCE_WATER_RONDO       ; BATTLE_BG_UNDERWATER
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_ZOZO
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_AIRSHIP_CENTER
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_DARILLS_TOMB
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_CASTLE_EXT
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_KEFKAS_TOWER_INT
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_AIRSHIP_WOR
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_FIRE_CAVES
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_TOWN_INT
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_MAGITEK_TRAIN
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_FANATICS_TOWER
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_CYANS_DREAM
+        .byte   DANCE_DESERT_ARIA       ; BATTLE_BG_DESERT_WOR
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_AIRSHIP_WOB
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_31
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_GHOST_TRAIN
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_1
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_2
+        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_3
+        .byte   DANCE_WIND_SONG         ; BATTLE_BG_FINAL_BATTLE_4
+        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_TENTACLES
+        .byte   DANCE_DUSK_REQUIUM
+        .byte   DANCE_DUSK_REQUIUM
+        .byte   DANCE_DUSK_REQUIUM
+        .byte   DANCE_DUSK_REQUIUM
+        .byte   DANCE_DUSK_REQUIUM
+        .byte   DANCE_DUSK_REQUIUM
+        .byte   DANCE_DUSK_REQUIUM
+        .byte   DANCE_DUSK_REQUIUM
+
+.popseg
 
 ; ------------------------------------------------------------------------------
 
@@ -4331,8 +4434,8 @@ _1b28:  tyx
         pha
         lda     $fc
         sta     $b8
-        lda     $3ee4,x     ; current status 1
-        bit     #$2000
+        lda     $3ee4,x     ; current status 1,2
+        bit     #STATUS2_CONFUSE<<8
         beq     @1b3a       ; branch if not muddled
         stz     $b8         ; clear targets
 @1b3a:  pla
@@ -5557,10 +5660,10 @@ _escape:
         lsr
         bcc     @2144       ; skip if character is not present
         lda     $3ee4,x
-        bit     #$02
+        bit     #STATUS1_ZOMBIE
         bne     @2144       ; skip if character has zombie status
         lda     $3ef9,x
-        bit     #$20
+        bit     #STATUS4_HIDE
         bne     @2144       ; skip if character has hide status
         xba
         tsb     $b8         ; add target
@@ -5805,8 +5908,8 @@ CheckHit:
         txa
         bne     @22d1
         bra     @22e8
-@22fb:  pea     $8040
-        pea     $0210
+@22fb:  pea     STATUS1_PETRIFY|(STATUS2_SLEEP<<8)
+        pea     STATUS3_STOP|(STATUS4_FROZEN<<8)
         jsr     CheckStatus
         bcc     @22e8
         longa
@@ -5847,8 +5950,8 @@ CheckHit:
         bit     #$04
         beq     @235b
         lsr     $ee
-@235b:  pea     $2003
-        pea     $0404
+@235b:  pea     STATUS1_BLIND|STATUS1_ZOMBIE|(STATUS2_CONFUSE<<8)
+        pea     STATUS3_SLOW|(STATUS4_RERAISE<<8)
         jsr     CheckStatus
         bcs     @2372
         lda     $ee
@@ -5857,8 +5960,8 @@ CheckHit:
         bcc     @2370
         lda     #$ff
 @2370:  sta     $ee
-@2372:  pea     $4204
-        pea     $0008
+@2372:  pea     STATUS1_POISON|(STATUS2_SAP|STATUS2_NEAR_FATAL)<<8
+        pea     STATUS3_HASTE
         jsr     CheckStatus
         bcs     @2388
         lda     $ee
@@ -5983,7 +6086,7 @@ InitBattle:
         asl2
         sta     $be         ; set random number seed
         jsr     LoadBattleProp
-        jsr     _c22f2f
+        jsr     InitParty
         lda     #$80        ;
         trb     $3ebb
         lda     #$91        ; disable zone eater, time up, game over flags
@@ -6257,17 +6360,17 @@ FixImmuneStatus:
         xba
         lda     $331c,x
         bmi     @2661       ; branch if not immune to wound status
-        ora     #$80
+        ora     #STATUS1_DEAD
         xba
         ora     #$04
         xba
 @2661:  xba
         sta     $3aa1,x     ; set $3aa1.2 (instant death protection)
         lda     $3bcd,x
-        bit     #$08
+        bit     #ELEMENT_POISON
         beq     @2670       ; branch if not immune to poison element
         xba
-        and     #$fb
+        and     #<~STATUS1_POISON
         xba
 @2670:  xba
         sta     $331c,x     ; set immune to poison status
@@ -6279,22 +6382,26 @@ FixImmuneStatus:
 
 UpdateImmuneStatus:
 _initstatus2:
-@2675:  lda     $3331,x     ; blocked status 4
+@2675:  lda     $3331,x                 ; blocked status 4
         xba
-        lda     $3c6d,x     ; equipment status 3
+        lda     $3c6d,x                 ; equipment status 3
         lsr
-        bcc     @2683       ; branch if no float
+        bcc     @2683                   ; branch if no float
         xba
-        and     #$7f
+        and     #<~STATUS4_FLOAT
         xba
-@2683:  lda     $3ebb
+
+; check permanent morph
+@2683:  lda     $3ebb                   ; permanent morph
         bit     #$04
         beq     @268e
         xba
-        and     #$f7
+        and     #<~STATUS4_MORPH
         xba
 @268e:  xba
         sta     $3331,x
+
+; block both regen and sap if immune to either
         lda     $3330,x
         xba
         lda     $331d,x
@@ -6304,19 +6411,21 @@ _initstatus2:
         and     #$ee78
         eor     #$ffff
         and     $ee
-        bit     #$0200
+        bit     #STATUS3_REGEN<<8
         beq     @26b2
-        bit     #$0040
+        bit     #STATUS2_SAP
         bne     @26b5
-@26b2:  and     #$fdbf
+@26b2:  and     #.loword(~(STATUS2_SAP|STATUS3_REGEN<<8))
+
+; block both slow and haste if immune to either
 @26b5:  shorta
         sta     $331d,x
         xba
-        bit     #$04
+        bit     #STATUS3_SLOW
         beq     @26c3
-        bit     #$08
+        bit     #STATUS3_HASTE
         bne     @26c5
-@26c3:  and     #$f3
+@26c3:  and     #<~(STATUS3_SLOW|STATUS3_HASTE)
 @26c5:  sta     $3330,x
         rts
 
@@ -6763,6 +6872,17 @@ LoadMagicProp:
         plx
         rts
 
+.pushseg
+.segment "magic_prop"
+
+.export MagicProp
+
+; c4/6ac0
+MagicProp:
+        .incbin "magic_prop.dat"
+
+.popseg
+
 ; ------------------------------------------------------------------------------
 
 ; [  ]
@@ -6988,8 +7108,8 @@ ToolsEffectTbl:
 
 ; 0: noiseblaster
 ToolsEffect_00:
-@2b2a:  lda     #$20
-        sta     $11ab       ; set muddled status
+@2b2a:  lda     #STATUS2_CONFUSE
+        sta     $11ab
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -7400,7 +7520,7 @@ LoadRageProp:
         sta     $3dd4,y
         lda     f:MonsterProp+29,x   ; status 3 & 4
         pha
-        and     #$0001      ; isolate float status
+        and     #$0001                  ; flying flag
         lsr
         ror
         ora     $01,s
@@ -7591,12 +7711,9 @@ InitMonsters:
 
 ; ------------------------------------------------------------------------------
 
-; [ init character data ]
+; [ init party ]
 
-; not sure what to call this sub. InitChars and LoadCharProp are already used
-
-_c22f2f:
-_makepartytable:
+InitParty:
 @2f2f:  php
         longi
         stz     $fc
@@ -7630,12 +7747,12 @@ _makepartytable:
         bra     @2fd9
 @2f75:  ldx     $3ed4
         cpx     #$023e
-        bcc     @2f8c       ; branch if not a colosseum battle
+        bcc     @2f8c                   ; branch if not a colosseum battle
         lda     $0208
-        sta     $3ed8       ; put colosseum character in slot 1
+        sta     $3ed8                   ; put colosseum character in slot 1
         lda     #$01
-        tsb     $b8         ; make character slot 1 a valid target
-        dec     $3a97       ; enable colosseum mode
+        tsb     $b8                     ; make character slot 1 a valid target
+        dec     $3a97                   ; enable colosseum mode
         bra     @2fd9
 @2f8c:  ldy     #$000f
 @2f8f:  lda     $1850,y
@@ -7663,83 +7780,89 @@ _makepartytable:
         bne     @2fc3
         lda     $fc
         cmp     #$04
-        bcc     @2fc8       ; branch if less than 4 characters in the party
+        bcc     @2fc8                   ; branch if less than 4 characters in the party
 @2fc3:  lda     #$01
         trb     $11e4
 @2fc8:  lda     #$01
         bit     $11e4
-        beq     @2fd9       ; branch if gau can't appear after battle
-        lda     #$0a        ; character ai $0a (gau returning from the veldt)
+        beq     @2fd9                   ; branch if gau can't appear after battle
+        lda     #$0a                    ; character ai $0a (gau returning from the veldt)
         sta     $2f4a
         lda     #$80
-        tsb     $2f49       ; enable character ai
+        tsb     $2f49                   ; enable character ai
 @2fd9:  lda     $2f49
         bpl     @304a
-        lda     $2f4a       ; character ai index
+        lda     $2f4a                   ; character ai index
         xba
         lda     #$18
         jsr     MultAB
         tax
         lda     f:CharAI,x
-        bpl     @2ffa       ; branch if party is not hidden
-        ldy     #$0006
+        bpl     @2ffa                   ; branch if party is not hidden
+        ldy     #6
 @2ff1:  lda     #$ff
-        sta     $3ed8,y     ; clear all for actors
+        sta     $3ed8,y                 ; clear all for actors
         dey2
         bpl     @2ff1
-@2ffa:  ldy     #$0004
+@2ffa:  ldy     #4
 @2ffd:  phy
-        lda     f:CharAI+4,x   ; actor index
+        lda     f:CharAI+4,x            ; actor index
         cmp     #$ff
-        beq     @3041       ; branch if no character ai
+        beq     @3041                   ; branch if no character ai
         and     #$3f
         ldy     #$0006
 @300b:  cmp     $3ed8,y
-        beq     @3023
+        beq     @3023                   ; find matching party character
         dey2
         bpl     @300b
+
+; a.i. character not in party
 @3014:  iny2
-        lda     $3ed8,y
+        lda     $3ed8,y                 ; find an empty slot
         inc
         beq     @3023
         cpy     #$0006
         bcc     @3014
-        bra     @3041
+        bra     @3041                   ; use slot 4 if no slots are empty
+
+; a.i. character matches a party character
 @3023:  lda     $3018,y
         tsb     $b8
         longa
-        lda     f:CharAI+4,x   ; actor/character index (also loads $d0fd05,x)
+        lda     f:CharAI+4,x            ; character properties and graphics id
         sta     $3ed8,y
         shorta
-        lda     #$01        ; msb of ai script index always set for character ai
+        lda     #$01                    ; msb of ai script index always set for character ai
         xba
-        lda     f:CharAI+6,x   ; character ai script index
+        lda     f:CharAI+6,x            ; character ai script index
         cmp     #$ff
-        beq     @3041       ; branch if no ai script
+        beq     @3041                   ; branch if no ai script
         jsr     InitAI
 @3041:  ply
-        inx5                ; next character
+        inx5                            ; next character
         dey
         bne     @2ffd
 @304a:  ldx     #$0006
-@304d:  lda     $3ed8,x     ; loop through each character slot
+
+; start of character loop
+@304d:  lda     $3ed8,x                 ; loop through each character slot
         cmp     #$ff
-        beq     @30d3       ; skip if no actor
+        beq     @30d3                   ; skip if empty slot
         asl
-        bcs     @305a       ; skip if not an actor ???
-        inc     $3aa0,x     ; $3aa0.0 set "target present" flag
+        bcs     @305a                   ; skip if not in the party
+        inc     $3aa0,x                 ; $3aa0.0 set "target present" flag
 @305a:  asl
         bcc     @3065
         pha
         lda     $3018,x
-        tsb     $3a40       ; toggle "character acting as enemy" flag
+        tsb     $3a40                   ; toggle enemy character flag
         pla
 @3065:  lsr2
-        sta     $3ed8,x     ; set actor number
+        sta     $3ed8,x                 ; set actor number
         ldy     #$000f
 @306d:  phy
         pha
-        lda     $1850,y     ; get battle row
+        lda     $1850,y                 ; get battle row
         and     #$20
         sta     $fe
         jsr     GetCharID
@@ -7748,8 +7871,8 @@ _makepartytable:
         phx
         pha
         lda     $fe
-        sta     $3aa1,x     ; $3aa1.5 character row (other flags are cleared)
-        lda     $3ed9,x     ;
+        sta     $3aa1,x                 ; $3aa1.5 character row (other flags are cleared)
+        lda     $3ed9,x                 ;
         pha
         lda     $06,s
         sta     $3ed9,x
@@ -7760,33 +7883,33 @@ _makepartytable:
         pla
         cmp     #$ff
         bne     @309c
-        lda     $1601,y     ; set character graphic index
+        lda     $1601,y                 ; set character graphic index
 @309c:  sta     $2eae,x
         tdc
         pla
-        sta     $2ec6,x     ; set actor index
+        sta     $2ec6,x                 ; set actor index
         cmp     #$0e
         longa
         pha
-        lda     $1602,y     ; copy character name
+        lda     $1602,y                 ; copy character name
         sta     $2eaf,x
         lda     $1604,y
         sta     $2eb1,x
         lda     $1606,y
         sta     $2eb3,x
         plx
-        bcs     @30c4       ; branch if actor index >= $0e
+        bcs     @30c4                   ; branch if actor index >= $0e
         tdc
         sec
 @30c0:  rol
         dex
         bpl     @30c0
 @30c4:  plx
-        sta     $3a20,x     ; set actor mask
+        sta     $3a20,x                 ; set actor mask
         tya
-        sta     $3010,x     ; pointer to character data
+        sta     $3010,x                 ; pointer to character data
         shorta
-@30ce:  pla                 ; next character
+@30ce:  pla                             ; next character
         ply
         dey
         bpl     @306d
@@ -7799,7 +7922,7 @@ _makepartytable:
 
 ; [ get actor index ]
 
-; y = character number
+; y: character number
 
 GetCharID:
 @30dc:  tya
@@ -9005,7 +9128,7 @@ ScimitarEffect:
         lda     #$10
         tsb     $a0
         lda     #$80
-        jsr     SetStatus0
+        jsr     SetStatus1
         stz     $341d
         stz     $11a6
         lda     #$02
@@ -9282,9 +9405,18 @@ TargetEffect_12:
         sta     $32f4,x
         lda     $3018,x
         tsb     $3a8c
-        lda     #$80
-        jmp     SetStatus0
+        lda     #STATUS1_DEAD
+        jmp     SetStatus1
 _3a8a:  jmp     _c23b1b
+
+.pushseg
+.segment "metamorph_prop"
+
+; c4/7f40
+MetamorphProp:
+        .incbin "metamorph_prop.dat"
+
+.popseg
 
 ; ------------------------------------------------------------------------------
 
@@ -9507,7 +9639,7 @@ siren_atmk:
         lda     $11ac
 @3bf4:  jsr     RandBit
         plp
-        jcc     SetStatus0
+        jcc     SetStatus1
         ora     $3de8,y
         sta     $3de8,y
         rts
@@ -10975,7 +11107,7 @@ MagicStatusEffect:
         tsb     $fc
 @443d:  longa
         lda     $fc
-        jsr     SetStatus0
+        jsr     SetStatus1
         lda     $fe
         ora     $3de8,y
         sta     $3de8,y
@@ -12024,7 +12156,7 @@ UpdateSRAM:
         bne     @4a02       ; skip if monster index >= 256 (can't appear on the veldt)
         lda     $3ed5       ; high byte of battle index
         lsr
-        bne     @4a06       ; branch if battle index >= 256 (can't appear on the veldt)
+        bne     @4a06       ; branch if battle index >= 512 (can't appear on the veldt)
         lda     $3ed4       ; battle index
         jsr     GetBitPtr
         ora     $1ddd,x     ; add to available veldt battles
@@ -12072,7 +12204,7 @@ BattleEnd_06:
         bne     @4a54       ; branch if character has zombie, poison, or wound status
         lda     $3205,x
         bit     #$04
-        beq     @4a54       ; branch if character doesn't have air anchor effect ($3205.2)
+        beq     @4a54       ; branch if character has air anchor effect ($3205.2)
         longa
         lda     $3ef8,x     ; status 3 & 4
         and     #$eefe      ; remove dance, rage, and trance status
@@ -13447,7 +13579,7 @@ UpdateCmdList:
         asl
         tax
         lda     f:BattleCmdProp,x   ; battle command data
-        bit     #$04
+        bit     #BATTLE_CMD_FLAG_IMP
         bne     @52c3       ; branch if command can be used as imp
         sec
 @52c3:  pla
@@ -15243,7 +15375,7 @@ WinBattle:
         rol     $2f3f
         rol     $2f40
 @5e2f:  lda     $3ed8,y     ; actor number
-        cmp     #$00
+        cmp     #CHAR_TERRA
         bne     @5e49       ; branch if not terra
         lda     $f1
         beq     @5e49       ; branch if morph is not available
@@ -15351,7 +15483,7 @@ WinBattle:
         bit     #$c2
         beq     @5f4e       ; skip if not wound, petrify, or zombie
         jsr     Rand
-        cmp     #$20        ; 1/8 chance to get first item
+        cmp     #$20        ; 1/8 chance to get rare item
         longai
         tdc
         ror
@@ -15438,6 +15570,17 @@ MaxGil:
 
 ; ------------------------------------------------------------------------------
 
+.pushseg
+.segment "battle_magic_points"
+
+; df/b400
+BattleMagicPoints:
+        .incbin "battle_magic_points.dat"
+
+.popseg
+
+; ------------------------------------------------------------------------------
+
 ; [ display battle message and end battle ]
 
 ; A: battle message index ($ff = no message)
@@ -15520,12 +15663,12 @@ LearnGenjuMagic:
         jsr     GetGenjuPropPtr
         ldy     #$0005
 @6031:  tdc
-        lda     $d86e01,x   ; spell taught by esper
+        lda     f:GenjuProp+1,x   ; spell taught by esper
         cmp     #$ff
         beq     @6044
         phy
         tay
-        lda     $d86e00,x   ; spell learn rate
+        lda     f:GenjuProp,x   ; spell learn rate
         jsr     IncLearnMagic
         ply
 @6044:  inx2
@@ -15636,7 +15779,7 @@ DoLevelUp:
         txy
         jsr     GetGenjuPropPtr
         tdc
-        lda     $d86e0a,x   ; esper level up bonus
+        lda     f:GenjuProp+10,x   ; esper level up bonus
         bmi     @60f4       ; branch if no bonus
         asl
         tax
@@ -15815,16 +15958,16 @@ GenjuBonus_06:
 
 LearnAbilities:
 @61b6:  ldx     #$0000
-        cmp     #$00
-        beq     @61fc       ; branch if character is terra
+        cmp     #CHAR_TERRA
+        beq     @61fc                   ; branch if character is terra
         ldx     #$0020
         cmp     #$06
-        beq     @61fc       ; branch if character is celes
+        beq     @61fc                   ; branch if character is celes
 
 ; learn swdtech
         ldx     #$0000
         cmp     #$02
-        bne     @61e0       ; branch if character is not cyan
+        bne     @61e0                   ; branch if character is not cyan
         jsr     GetAbilityBit
         beq     @6221
         tsb     $1cf7
@@ -15832,13 +15975,13 @@ LearnAbilities:
         lda     #$40
         tsb     $f0
         bne     @6221
-        lda     #$42        ; battle message $42 "mastered a new technique!"
+        lda     #$42                    ; "mastered a new technique!"
         jmp     ShowMsg
 
 ; learn blitz
 @61e0:  ldx     #$0008
         cmp     #$05
-        bne     @6221       ; return if character is not sabin
+        bne     @6221                   ; return if character is not sabin
         jsr     GetAbilityBit
         beq     @6221
         tsb     $1d28
@@ -15846,28 +15989,28 @@ LearnAbilities:
         lda     #$80
         tsb     $f0
         bne     @6221
-        lda     #$33        ; battle message $33 "devised a new blitz!"
+        lda     #$33                    ; "devised a new blitz!"
         jmp     ShowMsg
 
 ; learn spell
 @61fc:  phy
-        xba                 ; a = level
-        ldy     #$0010      ; 16 spells for each character
-@6201:  cmp     $ece3c1,x   ; natural magic data (level)
+        xba                             ; A: level
+        ldy     #$0010                  ; 16 spells for each character
+@6201:  cmp     f:NaturalMagic+1,x      ; natural magic data (level)
         bne     @621b
         pha
         phy
         tdc
-        lda     $ece3c0,x   ; natural magic data (spell)
+        lda     f:NaturalMagic,x        ; natural magic data (spell)
         tay
         lda     ($f4),y
         cmp     #$ff
-        beq     @6219       ; branch if spell is already known
+        beq     @6219                   ; branch if spell is already known
         lda     #$80
-        sta     ($f4),y     ; learn spell
+        sta     ($f4),y                 ; learn spell
 @6219:  ply
         pla
-@621b:  inx2                ; next spell
+@621b:  inx2                            ; next spell
         dey
         bne     @6201
         ply
@@ -15884,7 +16027,7 @@ GetAbilityBit:
 @6222:  lda     #$01
         sta     $ee
         xba
-@6227:  cmp     $e6f490,x   ; blitz/swdtech learn data (level)
+@6227:  cmp     f:BushidoLevelTbl,x   ; blitz/swdtech learn data (level)
         beq     @6232
         inx
         asl     $ee
@@ -16285,5 +16428,76 @@ DebugWin:
         lda     #$24        ; command $24 (monster entrance/exit)
         jsr     CreateImmediateAction
 @6468:  rts
+
+; ------------------------------------------------------------------------------
+
+.segment "ai_script"
+
+; cf/8400
+AIScriptPtr:
+        make_ptr_tbl_rel AIScript, AI_SCRIPT_ARRAY_LENGTH
+
+; cf/8700
+begin_fixed_block AIScript, $3950
+        .incbin "ai_script.dat"
+end_fixed_block AIScript
+
+; ------------------------------------------------------------------------------
+
+.export BattleMonsters
+
+.segment "battle_prop"
+
+; cf/5900
+BattleProp:
+        .incbin "battle_prop.dat"
+
+; cf/6200
+begin_fixed_block BattleMonsters, $2200
+        .incbin "battle_monsters.dat"
+end_fixed_block BattleMonsters
+
+; ------------------------------------------------------------------------------
+
+.segment "cond_battle"
+
+; cf/3780
+CondBattle:
+        .incbin "cond_battle.dat"
+
+; ------------------------------------------------------------------------------
+
+.segment "monster_prop"
+
+; cf/0000
+MonsterProp:
+        .incbin "monster_prop.dat"
+
+; cf/3000
+MonsterItems:
+        .include "monster_items.asm"
+
+; ------------------------------------------------------------------------------
+
+.segment "monster_special_anim"
+
+; cf/37c0
+MonsterSpecialAnim:
+        .incbin "monster_special_anim.dat"
+
+; ------------------------------------------------------------------------------
+
+.segment "monster_attacks"
+
+        .include "monster_control.asm"
+        .include "monster_sketch.asm"
+        .include "monster_rage.asm"
+
+; ------------------------------------------------------------------------------
+
+.segment "battle_cmd_prop"
+
+; cf/fe00
+        .include "battle_cmd_prop.asm"
 
 ; ------------------------------------------------------------------------------

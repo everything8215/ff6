@@ -1,0 +1,11 @@
+{
+  "asset_label": "ItemTypeName",
+  "asset_const": "ITEM_TYPE_NAME",
+  "inc_path": "include/text/item_type_name_en.inc",
+  "item_size": 7,
+  "char_tables": [
+    "text_en",
+    "fixed_length_en"
+  ],
+  "text": []
+}

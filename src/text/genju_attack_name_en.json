@@ -1,0 +1,12 @@
+{
+  "asset_label": "GenjuAttackName",
+  "asset_const": "GENJU_ATTACK_NAME",
+  "inc_path": "include/text/genju_attack_name_en.inc",
+  "item_size": 10,
+  "char_tables": [
+    "big_symbols_en",
+    "text_en",
+    "fixed_length_en"
+  ],
+  "text": []
+}

@@ -1,7 +1,0 @@
-{
-  "type": "script",
-  "name": "Event Script",
-  "range": "0xCA0000-0xCCE5ED",
-  "asmSymbol": "EventScript",
-  "assetPath": "assets/event/event_script_en.dat"
-}

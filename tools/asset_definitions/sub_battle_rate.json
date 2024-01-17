@@ -1,7 +1,0 @@
-{
-  "type": "data",
-  "name": "Map Battle Probability",
-  "range": "0xCF5880-0xCF58FF",
-  "asmSymbol": "SubBattleRate",
-  "assetPath": "assets/battle/sub_battle_rate.dat"
-}

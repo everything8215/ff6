@@ -1,9 +1,0 @@
-{
-  "type": "graphics",
-  "name": "\"The End\" Graphics 1",
-  "range": "0xE96300-0xE96FFF",
-  "asmSymbol": "TheEndGfx1",
-  "assetPath": "assets/cutscene/the_end1.cgx",
-  "format": "snes4bpp",
-  "palette": "theEndPalette"
-}

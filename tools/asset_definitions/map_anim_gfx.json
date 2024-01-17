@@ -1,9 +1,0 @@
-{
-  "type": "graphics",
-  "name": "Map Animation Graphics",
-  "range": "0xE60000-0xE67FFF",
-  "asmSymbol": "MapAnimGfx",
-  "assetPath": "assets/map/map_anim.cgx",
-  "format": "snes4bpp",
-  "palette": "mapPalettes"
-}

@@ -11,6 +11,16 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+inc_lang "text/item_name_%s.inc"
+inc_lang "text/magic_name_%s.inc"
+inc_lang "text/map_title_%s.inc"
+
+.import Dlg1, DlgBankInc, DlgPtrs, DTETbl, LargeFontGfx, FontWidth
+
+.a8
+.i16
+.segment "field_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ init dialog text ]
@@ -264,11 +274,11 @@ CalcTextWidth:
         bra     @80d2
 @8118:  lda     $0583       ; item index
         sta     hWRMPYA
-        lda     #13         ; get pointer to item name
+        lda     #ITEM_NAME_SIZE
         sta     hWRMPYB
         lda     $cf         ; return if text buffer is not empty
         bpl     @80d2
-        lda     #12         ; 12 letters
+        lda     #ITEM_NAME_SIZE-1
         sta     $1a
         ldx     hRDMPYL
 @812e:  txy
@@ -705,7 +715,7 @@ UpdateDlgTextOneLine:
         bne     @840f
         lda     $0583
         sta     hWRMPYA
-        lda     #$0d
+        lda     #ITEM_NAME_SIZE
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
@@ -727,7 +737,7 @@ UpdateDlgTextOneLine:
         beq     @8403
         inx
         iny
-        cpy     #12
+        cpy     #ITEM_NAME_SIZE-1
         bne     @83ee
 @8403:  tdc
         sta     $9183,y
@@ -742,7 +752,7 @@ UpdateDlgTextOneLine:
         bne     @844b
         lda     $0584
         sta     hWRMPYA
-        lda     #$04                    ; carried over from ff6j, should be 7
+        lda     #4                      ; carried over from ff6j, should be 7
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL

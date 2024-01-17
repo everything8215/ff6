@@ -1,7 +1,0 @@
-{
-  "type": "data",
-  "name": "Sound Effect Sample Loop Start Data",
-  "range": "0xC52018-0xC52037",
-  "asmSymbol": "SfxLoopStart",
-  "assetPath": "assets/sound/sfx_loop_start.dat"
-}

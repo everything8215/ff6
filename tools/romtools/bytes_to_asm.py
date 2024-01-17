@@ -1,7 +1,7 @@
 import romtools as rt
 
 
-def bytes_to_asm(bytes, labels=None, symbols=None):
+def bytes_to_asm(bytes, labels=None, symbols=None, line_width=16):
     asm_string = ''
     unique_offsets = set([0])  # always include the start of the data
 
@@ -91,7 +91,7 @@ def bytes_to_asm(bytes, labels=None, symbols=None):
         # print the bytes
         slice_bytes = bytes[slice_begin:next_offset]
         for b, value in enumerate(slice_bytes):
-            if b % 16 == 0:
+            if b % line_width == 0:
                 asm_string += '\n' + '.byte'.ljust(8).rjust(16)
             else:
                 asm_string += ','

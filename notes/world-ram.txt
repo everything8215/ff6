@@ -22,33 +22,40 @@ $0000-$00FF direct page
         l: Left direction down
         r: Right direction down
 
-    $19
+    $19 exit world map
 
-   +$1E
-    $20
-
+   +$1C destination xy position
+   +$1E -------- -adhosri
+          a: disable altitude change
+          d: disable direction change
+          h: disable horizon change
+          o: disable bg2 offset-per-tile scrolling
+          s: disable bg2 h-scroll for backdrop
+          r: disable vehicle rotation
+          i: disable vehicle input
+   +$20 movement type
+          0: ???
+          1: airship
+          2: chocobo
+          3: no vehicle
+          4: serpent trench
     $22 target screen brightness
     $23 current screen brightness (0-F)
-    $24 vblank flag
-
+   +$24 vblank flag
    +$26 forward movement speed
-
+    $28 -
   ++$29 rotation speed
-
+    $2C
+   +$2D vertical movement speed
    +$2F altitude
-    $31
-
-   +$34 current X position (in pixels)
-
-   +$38 current Y position (in pixels)
-  ++$3A rotation angle (high 16-bits active)
-   +$3D m7a
-   +$3F m7b
-   +$41 m7c
-   +$43 m7d
-
-   +$44
-   +$46
+   +$31 frame counter for vector approach
+ +++$33 current X position
+ +++$37 current Y position
+    $3B -
+ +++$3C horizontal offset for scrolling
+ +++$40 vertical offset for scrolling
+   +$44 vram address for vertically scrolling tilemap dma at vblank
+   +$46 vram address for horizontally scrolling tilemap dma at vblank
 
 $58-$64 scratchpad
 
@@ -63,31 +70,35 @@ $58-$64 scratchpad
 
    +$6A scratchpad
 
-   +$73 rotation frame counter
+   +$70 bg2 h-scroll position
+
+   +$73 vehicle direction ???
    +$75 vehicle direction ???
    +$77 bg1 horizontal scroll
    +$79 bg1 vertical scroll
    +$7B map horizontal scroll position, or maybe an offset based on the map sector ???
    +$7D map vertical scroll position ???
 
-   +$83
-   +$85
-   +$87
+   +$81
+   +$83 backdrop rotation amount
+   +$85 horizon location
+   +$87 number of scanlines below backdrop area
    +$89
-    $8B
-    $8C zoom level ??
-
-    $9F HDMA #4 (M7A) line count 1 (124 lines, no repeat)
-   +$A0 HDMA #4 (M7A) data pointer 1
-    $A2 HDMA #4 (M7A) line count 2 (100 lines, no repeat)
-   +$A3 HDMA #4 (M7A) data pointer 2
-    $A5 HDMA #4 (M7A) line count 3 (terminate)
-    $A6 HDMA #5 (M7B) line count 1 (124 lines, no repeat)
-
-    $AD HDMA #6 (M7C) line count 1 (124 lines, no repeat)
-
-    $B4 HDMA #7 (M7D) line count 1 (124 lines, no repeat)
-
+   +$8B zoom level ???
+   +$8D
+   +$8F
+   +$91 zoom level (unused ???)
+   +$93
+   +$95
+   +$97
+   +$99
+   +$9B cosine of vehicle direction
+   +$9D sine of vehicle direction
+$9F-$A5 HDMA table #4 (M7A)
+$A6-$AC HDMA table #5 (M7B)
+$AD-$B3 HDMA table #6 (M7C)
+$B4-$BA HDMA table #7 (M7D)
+$BB-$C1 HDMA table #1 (bg2 h-scroll)
     $C2 ?bfpssac current tile properties, byte 1
         b: enable battles
         f: forest
@@ -103,23 +114,33 @@ $58-$64 scratchpad
    +$C4 current tile index
    +$C6 current X position (in pixels)
    +$C8 current Y position (in pixels)
-    $CA character 1 graphic
+   +$CA character 1 graphic
           00: none
-          01: falcon
-          02: chocobo ???
+          01: airship
+          02: chocobo
           03: character
-          04: ???
+          04: serpent trench ???
           05: ship
-          0C: esper terra
-          12: bird
+          06: airship lifting off (1st part)
+          07: airship lifting off (2nd part)
+          08: airship landing (1st part)
+          09: airship landing (2nd part)
+          0A: getting off chocobo (1st part)
+          0B: getting off chocobo (2nd part)
+          0C: esper terra (init)
+          0D: esper terra
+          12: bird (init)
+          13: bird
           16: smoking airship
-    $CB character 2 graphic
-    $CC character 3 graphic
-    $CD character 4 graphic
-
+   +$CC character 2 graphic
+   +$CE character 3 graphic
+   +$D0 character 4 graphic
   ++$D2 decompression source address
   ++$D5 decompression destination address
-
+   +$D8 decompression source offset
+    $DA decompression lzss run length
+   +$DB decompression source length
+   +$DD decompression buffer offset
    +$DF X position (in pixels * 256)
    +$E1 Y position (in pixels * 256)
    +$E3 X movement speed (signed)
@@ -130,11 +151,17 @@ $58-$64 scratchpad
         w: character/vehicle is moving/waiting
         v: vehicle event script is running
         c: world event script is running
-    $E8 ?t???ls?
+    $E8 atvz?lsm
+        a: disable all vblank updates
         t: airship is taking off
+        v: disable all vram/ppu transfers at vblank
+        z: eaten by zone eater
         l: arrows are not locked
         s: arrows are shown
-    $E9 ????????
+        m: open menu ???
+    $E9 ??????wf
+        w: enable window hdma (channel #3)
+        f: enable fixed color hdma (channel #2)
   ++$EA event script pointer
    +$ED event script offset (high bit does something)
     $EF movement distance/pause counter
@@ -145,20 +172,29 @@ $58-$64 scratchpad
    +$F4 destination map index ???
     $F6 facing direction (0 = up, 1 = right, 2 = down, 3 = left)
     $F7 graphical action
-
+    $F8 -
+    $F9 -
     $FA 4 frame counter (magitek train ride)
    +$FA origin X
    +$FC origin Y
-
-$0140-$09FF mode 7 HDMA data
+    $FE
+    $FF poison mosaic counter
+-----------
+$0100-$0107 interrupt jump code
+$0108-$01FF cpu stack
+$0200-$02FF menu data
+$0300-$09FF mode 7 HDMA data
 $0A00-$0AFF dp stack
-$0B00-$0B0F
+$0B00-$0B0F doom gaze positions, first two are used (4 * 4 bytes)
+              +$0B00 x position in 4 tile increments (0 to 31)
+              +$0B02 y position in 4 tile increments (0 to 31)
 
-      $11F0
+-----------
+      $11F0 mosaic speed for poison
 
       $11F2
       $11F3
-     +$11F4
+     +$11F4 airship altitude
      +$11F6 ???????? ?????gbm
             g: map graphics are already loaded
             b: enable battle
@@ -199,34 +235,70 @@ $1FD3-$1FF2 character saved XY positions (2 bytes each)
 $1FF3-$1FF6 party facing directions
 $1FF7-$1FFD -
      +$1FFE SRAM checksum
+-----------
+$2000-$3FFF 128x128 tilemap buffer
+$6000-$6006 fixed color hdma table (channel #2)
+$6007-$6206 fixed color hdma data
+$6207-$620D window position scroll hdma table (channel #3)
+$620E-      window position scroll hdma data
 
+$690E-$6B0D bg2 h-scroll hdma data (for backdrop)
+$6B0E-$6B2D (12 * 4 bytes)
+     +$6B2E animation counter for vector approach (2432 frames)
 $6B30-$6D4F sprite data
-$6D50-$6E4F
-$6E50-$6ECF
+              sprites 0-1: minimap position and direction indicator
+              sprites 2-3: airship shadow
+              sprites 4-19: 4x4 minimap
+              sprites 20-51: animation sprites (player, vehicle, etc.)
+              sprites 52-126: 15x5 gradient sprites (if in vehicle)
+$6D50-$6E4F tilemap dma buffer for horizontal scrolling
+$6E50-$6ECF tilemap dma buffer for vertical scrolling
 
-$6F50-$734F map tile formation
+$6F50-$734F map tileset
 $7350-$934F map graphics (8x8 tiles)
 $9350-$93DF map tile palette assignments
 
-$B5D0-$B64F
+$93D0-$95CF pointers to animation frame data (from EE/573E)
+$95D0-$B5CF animation frame data (from EE/5816)
+$B5D0-$B64F animation data (16 * 8 bytes)
+              +$B5D0 animation frame index
+              +$B5D2 x position
+              +$B5D4 y position
+              +$B5D6
       $B650 walking animation position (0-3)
+
+      $B652 airship animation counter
+
+      $B654 airship propeller speed
+
+$B660-$B67F (4 * 8 bytes)
 
 $B750-$B84F water tile graphics
 $B850-$B85F water tile movement counters (1 per line)
       $B860
 
+$B862-$BC61 offset-per-tile data (32 * 32 bytes)
+$BC62-
+
 $E000-$E200 color palettes
 
 $F120-$F7FF saved $0520-$0BFF
 $F800-$FFFF decompression buffer
-
-$7F0000-$7FFFFF map data
+-----------
+$7F0000-$7FFFFF world tilemap
 
 magitek train ride
 ------------------
+
+  ++$3A train rotation angle (high 16-bits active)
+   +$3D m7a
+   +$3F m7b
+   +$41 m7c
+   +$43 m7d
+
 $7E2000-$7E9C44 tile graphics (29 items, 1097 bytes each)
 
-$7F01E0-$7F02FF layer 16-21 tile data (6x12 items, 4 bytes each) last layer
+$7F01E0-$7F02FF layer 16-21 tile data (6x12 items, 4 bytes each) bottom layer
 $7F0300-$7F03BF layer 12-15 tile data (4x12 items, 4 bytes each)
 $7F03C0-$7F041F layer 10-11 tile data (2x12 items, 4 bytes each)
 $7F0420-$7F047F layer 8-9 tile data (2x12 items, 4 bytes each)
@@ -236,13 +308,14 @@ $7F0510-$7F053F layer 4 tile data (1x12 items, 4 bytes each)
 $7F0540-$7F056F layer 3 tile data (1x12 items, 4 bytes each)
 $7F0570-$7F059F layer 2 tile data (1x12 items, 4 bytes each)
 $7F05A0-$7F05CF layer 1 tile data (1x12 items, 4 bytes each)
-$7F05D0-$7F05FF layer 0 tile data (1x12 items, 4 bytes each) first layer
+$7F05D0-$7F05FF layer 0 tile data (1x12 items, 4 bytes each) top layer
 ---------------
             $00 x position
             $01 y position
            +$02 tile index (pointer to tile pointers at $0800, $0198-$0318 are $0000-$0180 flipped horizontally)
 
-$7F0800-$7F0AB7 pointers to magitek train ride tiles, copied from $D8DD00 (29 items, 24 bytes each, +$7E0000)
+$7F0800-$7F0AB7 pointers to magitek train ride tiles at $7E2000
+                copied from D8/DD00 (29 items, 24 bytes each, +$7E0000)
 $7F0AB8-
 $7F0AF8-
 $7F0B38-        pitch data 1
@@ -253,14 +326,14 @@ $7F0C18-        background data
 
        +$7F0C5C pointer to tile data
 
-$7F9618-$7FE617 magitek train ride graphics buffer (80 items, 256 bytes each)
+$7F9618-$7FE617 magitek train ride graphics buffer (80 * 256(80) bytes each)
+                only the first 80 bytes are used
 
 VRAM
 ----
-$0000-$3FFF map graphics (8 bpp)
-$4000-$43FF bg1 map formation
-$4400-$4BFF bg2 map formation
-$4C00-$4FFF bg3 map formation
-
-$5C00-$5FFF font graphics (2 bpp)
+$0000-$3FFF bg1 graphics (8 bpp)
+$4000-$43FF bg1 tilemap
+$4400-$4BFF bg2 tilemap
+$4C00-$4FFF bg3 tilemap (for offset-per-tile)
+$5000-$5FFF bg2 graphics (backdrop)
 $6000-$7FFF sprite graphics (4 bpp)

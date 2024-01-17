@@ -11,6 +11,12 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.include "field/treasure_prop.inc"
+
+.a8
+.i16
+.segment "field_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ init party position ]
@@ -564,10 +570,10 @@ DoPoisonDmg:
         and     #$c2
         bne     @4a93
         lda     $1623,y                 ; check for tintinabar
-        cmp     #$e5
+        cmp     #ITEM_TINTINABAR
         beq     @4a7a
         lda     $1624,y
-        cmp     #$e5
+        cmp     #ITEM_TINTINABAR
         bne     @4a93
 @4a7a:  jsr     CalcMaxHP
         lda     $161c,y
@@ -601,7 +607,7 @@ DoPoisonDmg:
 @4ac2:  lda     #1                      ; min 1 hp
 @4ac5:  sta     $1609,y
         shorta0
-@4acb:  longa_clc                          ; next character
+@4acb:  longa_clc                       ; next character
         tya
         adc     #$0025
         tay
@@ -890,6 +896,21 @@ TreasureOffsetX:
 
 TreasureOffsetY:
 @4d13:  .byte   $ff,$00,$01,$00
+
+.pushseg
+.segment "treasure_prop"
+
+; ed/82f4
+TreasurePropPtrs:
+        make_ptr_tbl_rel TreasureProp, TREASURE_PROP_ARRAY_LENGTH
+        .addr TreasurePropEnd - TreasureProp
+
+; ed/8634
+TreasureProp:
+        .incbin "trigger/treasure_prop.dat"
+        TreasurePropEnd := *
+
+.popseg
 
 ; ------------------------------------------------------------------------------
 

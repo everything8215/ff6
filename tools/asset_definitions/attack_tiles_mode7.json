@@ -1,8 +1,0 @@
-{
-  "type": "data",
-  "name": "Attack Tilemap (Mode 7)",
-  "range": "0xD8DAF2-0xD8DCD1",
-  "asmSymbol": "AttackTilesMode7",
-  "assetPath": "assets/attack/attack_tiles_mode7.scr",
-  "format": "ff6-lzss"
-}

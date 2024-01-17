@@ -1,7 +1,0 @@
-{
-  "type": "data",
-  "name": "RNG Table",
-  "range": "0xC0FD00-0xC0FDFF",
-  "asmSymbol": "RNGTbl",
-  "assetPath": "assets/system/rng_tbl.dat"
-}

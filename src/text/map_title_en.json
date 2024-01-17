@@ -1,0 +1,11 @@
+{
+  "asset_label": "MapTitle",
+  "asset_const": "MAP_TITLE",
+  "inc_path": "include/text/map_title_en.inc",
+  "char_tables": [
+    "dialog_en",
+    "dialog_escape",
+    "dte"
+  ],
+  "text": []
+}

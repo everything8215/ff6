@@ -1,9 +1,0 @@
-{
-  "type": "graphics",
-  "name": "Small Font Graphics",
-  "range": "0xC47FC0-0xC48FBF",
-  "asmSymbol": "SmallFontGfx",
-  "assetPath": "assets/system/small_font_en.cgx",
-  "format": "snes2bpp",
-  "palette": "fontPalette"
-}

@@ -1,8 +1,0 @@
-{
-  "type": "data",
-  "name": "Credits Graphics Data",
-  "range": "0xD9568F-0xD99A50",
-  "asmSymbol": "CreditsGfx1",
-  "assetPath": "assets/cutscene/credits_gfx1.dat",
-  "format": "ff6-lzss"
-}

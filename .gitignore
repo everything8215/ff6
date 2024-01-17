@@ -7,11 +7,7 @@
 *.lst
 *.map
 *.sh
-assets/*
-include/assets/*
-include/script/*
 pretty/*
-ff6-*-data.json
 *.log
 *.pot
 *.pyc
@@ -20,7 +16,7 @@ ff6-*-data.json
 */__pycache__/
 *.smc
 *.sfc
-include/assets/
-src/assets/*
-!src/assets/main.asm
-!src/assets/mml/
+
+rom/*
+vanilla/*
+!vanilla/README.md

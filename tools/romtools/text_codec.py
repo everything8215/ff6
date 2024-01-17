@@ -13,6 +13,8 @@ class TextCodec:
                 assert isinstance(partial_char_table, dict)
                 merged_char_table.update(partial_char_table)
             char_table = merged_char_table
+        else:
+            assert isinstance(char_table, dict)
 
         self.decoding_table = {}
         self.encoding_table = {}
@@ -42,6 +44,8 @@ class TextCodec:
             assert isinstance(primary_value, str)
 
             self.decoding_table[code] = primary_value
+
+        self.terminator_code = self.encoding_table.get(r'\0')
 
     def decode_text(self, text_bytes):
         text = ''
@@ -113,7 +117,7 @@ class TextCodec:
             if text_str[i:].startswith(r'\x'):
                 # parse raw hex value
                 raw_str = text_str[i:i + 4]
-                find_value = re.match(r'\x([0-9a-fA-F]{2})', raw_str)
+                find_value = re.match(r'\\x([0-9a-fA-F]{2})', raw_str)
                 if find_value is None:
                     raise ValueError('Invalid raw text:', raw_str)
                 value = find_value.group(1)
@@ -131,7 +135,7 @@ class TextCodec:
             key = max(match_keys, key=len)
 
             # force end of string if terminator found
-            if key == '\0':
+            if key == r'\0':
                 break
 
             code = self.encoding_table[key]
@@ -166,7 +170,7 @@ class TextCodec:
 
             elif key.endswith('['):
                 # 1-byte parameter
-                find_param = re.match(r'(.*)\]', text_str[i:])
+                find_param = re.match(r'(.*?)\]', text_str[i:])
                 if find_param is None:
                     raise ValueError('Text code missing parameter:', key)
                 param = find_param.group(1)
@@ -180,8 +184,8 @@ class TextCodec:
                 text_bytes.append(value)
                 i += len(param) + 1
 
-        if r'\0' in self.encoding_table:
-            text_bytes.append(self.encoding_table[r'\0'])
+        if self.terminator_code is not None:
+            text_bytes.append(self.terminator_code)
 
         return text_bytes
 

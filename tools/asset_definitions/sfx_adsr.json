@@ -1,7 +1,0 @@
-{
-  "type": "data",
-  "name": "Sound Effect Sample ADSR Data",
-  "range": "0xC5203A-0xC52049",
-  "asmSymbol": "SfxADSR",
-  "assetPath": "assets/sound/sfx_adsr.dat"
-}

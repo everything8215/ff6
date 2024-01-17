@@ -1,8 +1,0 @@
-{
-  "type": "script",
-  "name": "Monster A.I. Script",
-  "range": "0xCF8700-0xCFC048",
-  "asmSymbol": "AIScript",
-  "assetPath": "assets/monster/ai_script.dat",
-  "encoding": "monster"
-}

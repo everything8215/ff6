@@ -11,6 +11,26 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
+.include "btlgfx/blitz_code.inc"
+
+inc_lang "text/attack_name_%s.inc"
+inc_lang "text/blitz_desc_%s.inc"
+inc_lang "text/bushido_desc_%s.inc"
+inc_lang "text/bushido_name_%s.inc"
+inc_lang "text/dance_name_%s.inc"
+inc_lang "text/genju_attack_desc_%s.inc"
+inc_lang "text/genju_bonus_desc_%s.inc"
+inc_lang "text/genju_bonus_name_%s.inc"
+inc_lang "text/genju_name_%s.inc"
+inc_lang "text/lore_desc_%s.inc"
+inc_lang "text/magic_desc_%s.inc"
+inc_lang "text/magic_name_%s.inc"
+inc_lang "text/monster_name_%s.inc"
+
+.import MagicProp
+
+.segment "menu_code"
+
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (skills) ]
@@ -370,11 +390,11 @@ _c34d78:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw magic menu ]
 
-_c34d7f:
+DrawMagicMenu:
 @4d7f:  jsr     ClearBG1ScreenA
-        jsr     _c34f1c
+        jsr     CalcMagicOrder
         jsr     DrawMagicList
         lda     #$2c
         sta     $29
@@ -658,8 +678,9 @@ _c34f12:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ determine spell list display order ]
 
+CalcMagicOrder:
 _c34f1c:
 @4f1c:  ldx     #$9d89
         stx     hWMADDL
@@ -669,12 +690,12 @@ _c34f1c:
         dex
         bne     @4f27
         clr_ay
-        lda     $1d54
+        lda     $1d54                   ; magic order
         and     #$07
         asl2
         tax
 @4f37:  phx
-        lda     f:_c34f49,x
+        lda     f:MagicOrderTbl,x
         cmp     #$ff
         beq     @4f47
         jsr     _c34f61
@@ -686,7 +707,8 @@ _c34f1c:
 
 ; ------------------------------------------------------------------------------
 
-_c34f49:
+; magic order offsets
+MagicOrderTbl:
 @4f49:  .byte   $2d,$00,$18,$ff
         .byte   $2d,$18,$00,$ff
         .byte   $00,$18,$2d,$ff
@@ -696,18 +718,18 @@ _c34f49:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ add spell type to spell list ]
 
 _c34f61:
-@4f61:  cmp     #$00
+@4f61:  cmp     #$00                    ; first black magic spell id
         beq     @4f6e
-        cmp     #$2d
+        cmp     #$2d                    ; first white magic spell id
         beq     @4f73
-        ldx     #$0015
+        ldx     #$0015                  ; number of effect magic spells
         bra     @4f78
-@4f6e:  ldx     #$0018
+@4f6e:  ldx     #$0018                  ; number of black magic spells
         bra     @4f78
-@4f73:  ldx     #$0009
+@4f73:  ldx     #$0009                  ; number of white magic spells
         bra     @4f78
 @4f78:  stx     $e0
         tax
@@ -757,7 +779,7 @@ DrawMagicListRow:
 ; [ get pointer to magic spell name ]
 
 GetMagicNamePtr:
-@4fb5:  ldy     #7
+@4fb5:  ldy     #MAGIC_NAME_SIZE
         sty     $eb
         ldy     #.loword(MagicName)
         sty     $ef
@@ -1146,9 +1168,9 @@ DrawLoreListRow:
 
 _c35266:
 
-@LoreName := AttackName+58*10
+@LoreName := AttackName+58*ATTACK_NAME_SIZE
 
-@5266:  ldy     #10
+@5266:  ldy     #ATTACK_NAME_SIZE
         sty     $eb
         ldy     #.loword(@LoreName)
         sty     $ef
@@ -1260,7 +1282,7 @@ _c35311:
 ; [  ]
 
 _c35328:
-@5328:  ldy     #12
+@5328:  ldy     #BUSHIDO_NAME_SIZE
         sty     $eb
         ldy     #.loword(BushidoName)
         sty     $ef
@@ -1530,6 +1552,44 @@ GetGenjuList:
 
 ; ------------------------------------------------------------------------------
 
+.pushseg
+
+.segment "genju_order"
+
+; d1/f9b5
+GenjuOrder:
+        .byte   1                       ; GENJU_RAMUH
+        .byte   5                       ; GENJU_IFRIT
+        .byte   6                       ; GENJU_SHIVA
+        .byte   3                       ; GENJU_SIREN
+        .byte   19                      ; GENJU_TERRATO
+        .byte   9                       ; GENJU_SHOAT
+        .byte   8                       ; GENJU_MADUIN
+        .byte   12                      ; GENJU_BISMARK
+        .byte   4                       ; GENJU_STRAY
+        .byte   16                      ; GENJU_PALIDOR
+        .byte   18                      ; GENJU_TRITOCH
+        .byte   23                      ; GENJU_ODIN
+        .byte   27                      ; GENJU_RAIDEN
+        .byte   24                      ; GENJU_BAHAMUT
+        .byte   21                      ; GENJU_ALEXANDR
+        .byte   26                      ; GENJU_CRUSADER
+        .byte   25                      ; GENJU_RAGNAROK
+        .byte   2                       ; GENJU_KIRIN
+        .byte   14                      ; GENJU_ZONESEEL
+        .byte   11                      ; GENJU_CARBUNKL
+        .byte   10                      ; GENJU_PHANTOM
+        .byte   15                      ; GENJU_SRAPHIM
+        .byte   13                      ; GENJU_GOLEM
+        .byte   7                       ; GENJU_UNICORN
+        .byte   17                      ; GENJU_FENRIR
+        .byte   20                      ; GENJU_STARLET
+        .byte   22                      ; GENJU_PHOENIX
+
+.popseg
+
+; ------------------------------------------------------------------------------
+
 ; [ draw one row of esper list ]
 
 DrawGenjuListRow:
@@ -1548,7 +1608,7 @@ DrawGenjuListRow:
 ; [  ]
 
 _c354fa:
-@54fa:  ldy     #8
+@54fa:  ldy     #GENJU_NAME_SIZE
         sty     $eb
         ldy     #.loword(GenjuName)
         sty     $ef
@@ -2020,7 +2080,7 @@ DrawDanceName:
         beq     @57f0
         jsr     LoadArrayItem
         jmp     DrawPosTextBuf
-@57f0:  ldy     #$000c
+@57f0:  ldy     #DANCE_NAME_SIZE
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -2345,7 +2405,7 @@ DrawEsperDetailMenu:
         cpx     #$000e
         bne     @5a43
         ldx     hRDMPYL
-        ldy     #$0009
+        ldy     #GENJU_BONUS_NAME_SIZE
 @5a56:  lda     f:GenjuBonusName,x
         sta     hWMDATA
         inx
