@@ -384,7 +384,7 @@ _6e7e:  longa
         sta     $eb
         lda     f:VehicleEvent_00+2
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $ec
         lda     $e7
         ora     #$41

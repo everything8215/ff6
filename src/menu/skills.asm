@@ -1558,33 +1558,33 @@ GetGenjuList:
 
 ; d1/f9b5
 GenjuOrder:
-        .byte   1                       ; GENJU_RAMUH
-        .byte   5                       ; GENJU_IFRIT
-        .byte   6                       ; GENJU_SHIVA
-        .byte   3                       ; GENJU_SIREN
-        .byte   19                      ; GENJU_TERRATO
-        .byte   9                       ; GENJU_SHOAT
-        .byte   8                       ; GENJU_MADUIN
-        .byte   12                      ; GENJU_BISMARK
-        .byte   4                       ; GENJU_STRAY
-        .byte   16                      ; GENJU_PALIDOR
-        .byte   18                      ; GENJU_TRITOCH
-        .byte   23                      ; GENJU_ODIN
-        .byte   27                      ; GENJU_RAIDEN
-        .byte   24                      ; GENJU_BAHAMUT
-        .byte   21                      ; GENJU_ALEXANDR
-        .byte   26                      ; GENJU_CRUSADER
-        .byte   25                      ; GENJU_RAGNAROK
-        .byte   2                       ; GENJU_KIRIN
-        .byte   14                      ; GENJU_ZONESEEL
-        .byte   11                      ; GENJU_CARBUNKL
-        .byte   10                      ; GENJU_PHANTOM
-        .byte   15                      ; GENJU_SRAPHIM
-        .byte   13                      ; GENJU_GOLEM
-        .byte   7                       ; GENJU_UNICORN
-        .byte   17                      ; GENJU_FENRIR
-        .byte   20                      ; GENJU_STARLET
-        .byte   22                      ; GENJU_PHOENIX
+        .byte   1                       ; RAMUH
+        .byte   5                       ; IFRIT
+        .byte   6                       ; SHIVA
+        .byte   3                       ; SIREN
+        .byte   19                      ; TERRATO
+        .byte   9                       ; SHOAT
+        .byte   8                       ; MADUIN
+        .byte   12                      ; BISMARK
+        .byte   4                       ; STRAY
+        .byte   16                      ; PALIDOR
+        .byte   18                      ; TRITOCH
+        .byte   23                      ; ODIN
+        .byte   27                      ; RAIDEN
+        .byte   24                      ; BAHAMUT
+        .byte   21                      ; ALEXANDR
+        .byte   26                      ; CRUSADER
+        .byte   25                      ; RAGNAROK
+        .byte   2                       ; KIRIN
+        .byte   14                      ; ZONESEEL
+        .byte   11                      ; CARBUNKL
+        .byte   10                      ; PHANTOM
+        .byte   15                      ; SRAPHIM
+        .byte   13                      ; GOLEM
+        .byte   7                       ; UNICORN
+        .byte   17                      ; FENRIR
+        .byte   20                      ; STARLET
+        .byte   22                      ; PHOENIX
 
 .popseg
 

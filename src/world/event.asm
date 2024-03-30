@@ -239,7 +239,7 @@ VehicleCmd_b8:
 
 ; ------------------------------------------------------------------------------
 
-; [ vehicle event command $c0:  ]
+; [ vehicle event command $c0: modify vehicle movement flags ]
 
 VehicleCmd_c0:
 @71fb:  shorta
@@ -634,7 +634,7 @@ VehicleCmd_dd:
 
 ; ------------------------------------------------------------------------------
 
-; [ vehicle event command $de:  ]
+; [ vehicle event command $de: set rotation center ]
 
 VehicleCmd_de:
 @744e:  shorta

@@ -2561,14 +2561,14 @@ _c29854:
 @f8ae:  .byte   $18                     ; should be $0c ???
         .byte   $00,$08,$00,$31
         .byte   $00,$10,$10,$31
-        .byte   $08,$08,$0D,$31
-        .byte   $08,$10,$1D,$31
+        .byte   $08,$08,$0d,$31
+        .byte   $08,$10,$1d,$31
         .byte   $10,$08,$03,$31
         .byte   $10,$10,$13,$31
         .byte   $20,$08,$28,$31
         .byte   $20,$10,$38,$31
-        .byte   $28,$08,$0E,$31
-        .byte   $28,$10,$1E,$31
+        .byte   $28,$08,$0e,$31
+        .byte   $28,$10,$1e,$31
         .byte   $30,$08,$24,$31
         .byte   $30,$10,$34,$31
 
@@ -2576,7 +2576,7 @@ _c29854:
 
 ; character graphics pose offsets
 MenuCharPoseOffsets:
-@f8df:  .word   $03C0
+@f8df:  .word   $03c0
         .word   $0500
         .word   $0540
 
@@ -2592,48 +2592,51 @@ CharGfxVRAMAddr:
         .word   $3680
         .word   $3800
         .word   $3880
-        .word   $3A00
-        .word   $3A80
-        .word   $3C00
-        .word   $3C80
-        .word   $3E00
-        .word   $3E80
+        .word   $3a00
+        .word   $3a80
+        .word   $3c00
+        .word   $3c80
+        .word   $3e00
+        .word   $3e80
         .word   $3040
-        .word   $30C0
+        .word   $30c0
         .word   $3240
-        .word   $32C0
+        .word   $32c0
         .word   $3440
-        .word   $34C0
+        .word   $34c0
 
 ; ------------------------------------------------------------------------------
+
+.include "gfx/map_sprite_gfx.inc"
 
 ; pointers to character graphics
 MenuCharGfxPtrs:
-@f911:  .word   $00D5,$0000
-        .word   $00D5,$16A0
-        .word   $00D5,$2D40
-        .word   $00D5,$43E0
-        .word   $00D5,$5A80
-        .word   $00D5,$7120
-        .word   $00D5,$87C0
-        .word   $00D5,$9E60
-        .word   $00D5,$B500
-        .word   $00D5,$CBA0
-        .word   $00D5,$E240
-        .word   $00D5,$F8E0
-        .word   $00D6,$0F80
-        .word   $00D6,$2620
-        .word   $00D6,$3CC0
-        .word   $00D6,$5360
-        .word   $00D6,$6A00
-        .word   $00D6,$7F60
-        .word   $00D6,$94C0
-        .word   $00D6,$AA20
-        .word   $00D6,$BF80
-        .word   $00D6,$D4E0
+@f911:  .word   .hiword(MapSpriteGfx_0000),.loword(MapSpriteGfx_0000)
+        .word   .hiword(MapSpriteGfx_0001),.loword(MapSpriteGfx_0001)
+        .word   .hiword(MapSpriteGfx_0002),.loword(MapSpriteGfx_0002)
+        .word   .hiword(MapSpriteGfx_0003),.loword(MapSpriteGfx_0003)
+        .word   .hiword(MapSpriteGfx_0004),.loword(MapSpriteGfx_0004)
+        .word   .hiword(MapSpriteGfx_0005),.loword(MapSpriteGfx_0005)
+        .word   .hiword(MapSpriteGfx_0006),.loword(MapSpriteGfx_0006)
+        .word   .hiword(MapSpriteGfx_0007),.loword(MapSpriteGfx_0007)
+        .word   .hiword(MapSpriteGfx_0008),.loword(MapSpriteGfx_0008)
+        .word   .hiword(MapSpriteGfx_0009),.loword(MapSpriteGfx_0009)
+        .word   .hiword(MapSpriteGfx_000a),.loword(MapSpriteGfx_000a)
+        .word   .hiword(MapSpriteGfx_000b),.loword(MapSpriteGfx_000b)
+        .word   .hiword(MapSpriteGfx_000c),.loword(MapSpriteGfx_000c)
+        .word   .hiword(MapSpriteGfx_000d),.loword(MapSpriteGfx_000d)
+        .word   .hiword(MapSpriteGfx_000e),.loword(MapSpriteGfx_000e)
+        .word   .hiword(MapSpriteGfx_000f),.loword(MapSpriteGfx_000f)
+        .word   .hiword(MapSpriteGfx_0010),.loword(MapSpriteGfx_0010)
+        .word   .hiword(MapSpriteGfx_0011),.loword(MapSpriteGfx_0011)
+        .word   .hiword(MapSpriteGfx_0012),.loword(MapSpriteGfx_0012)
+        .word   .hiword(MapSpriteGfx_0013),.loword(MapSpriteGfx_0013)
+        .word   .hiword(MapSpriteGfx_0014),.loword(MapSpriteGfx_0014)
+        .word   .hiword(MapSpriteGfx_0015),.loword(MapSpriteGfx_0015)
 
 ; ------------------------------------------------------------------------------
 
+; airship/clouds palette assignment
 @f969:  .byte   $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$01,$01,$01,$01
         .byte   $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$01,$01,$01,$01
         .byte   $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$01,$01,$01,$01
@@ -2643,6 +2646,7 @@ MenuCharGfxPtrs:
         .byte   $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03
         .byte   $03,$03,$03,$03,$03,$03,$03,$00
 
+; land/sea palette assignment
 @f9e1:  .byte   $07,$07,$07,$07,$02,$02,$02,$02,$07,$07,$07,$07,$04,$04,$04,$04
         .byte   $07,$07,$07,$07,$02,$02,$02,$02,$07,$07,$07,$07,$04,$04,$04,$04
         .byte   $07,$07,$07,$07,$02,$02,$02,$02,$07,$07,$07,$07,$04,$04,$04,$04
@@ -2657,13 +2661,13 @@ MenuCharGfxPtrs:
         .byte   $06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$02,$02,$02,$02
         .byte   $02,$02,$02,$02,$02,$02,$02,$00
 
-@faa9:  .byte   $00,$00,$00,$00,$00,$00,$40,$00,$00,$00,$80,$00,$00,$00,$C0,$00
-        .byte   $00,$00,$00,$20,$00,$00,$40,$20,$00,$00,$80,$20,$00,$00,$C0,$20
-        .byte   $00,$00,$00,$00,$00,$00,$40,$00,$00,$00,$80,$00,$00,$00,$C0,$00
-        .byte   $00,$00,$00,$20,$00,$04,$40,$20,$00,$00,$80,$20,$00,$00,$C0,$20
-        .byte   $00,$00,$00,$00,$00,$04,$40,$00,$00,$00,$80,$00,$00,$04,$C0,$00
-        .byte   $00,$08,$00,$20,$00,$0C,$40,$20,$00,$08,$80,$20,$00,$0C,$C0,$20
-        .byte   $00,$04,$00,$00,$00,$04,$40,$00,$00,$04,$80,$00,$00,$04,$C0,$00
-        .byte   $00,$00,$00,$20,$00,$00,$40,$20,$00,$00,$80,$20,$00,$00,$C0,$20
+@faa9:  .byte   $00,$00,$00,$00,$00,$00,$40,$00,$00,$00,$80,$00,$00,$00,$c0,$00
+        .byte   $00,$00,$00,$20,$00,$00,$40,$20,$00,$00,$80,$20,$00,$00,$c0,$20
+        .byte   $00,$00,$00,$00,$00,$00,$40,$00,$00,$00,$80,$00,$00,$00,$c0,$00
+        .byte   $00,$00,$00,$20,$00,$04,$40,$20,$00,$00,$80,$20,$00,$00,$c0,$20
+        .byte   $00,$00,$00,$00,$00,$04,$40,$00,$00,$00,$80,$00,$00,$04,$c0,$00
+        .byte   $00,$08,$00,$20,$00,$0c,$40,$20,$00,$08,$80,$20,$00,$0c,$c0,$20
+        .byte   $00,$04,$00,$00,$00,$04,$40,$00,$00,$04,$80,$00,$00,$04,$c0,$00
+        .byte   $00,$00,$00,$20,$00,$00,$40,$20,$00,$00,$80,$20,$00,$00,$c0,$20
 
 ; ------------------------------------------------------------------------------

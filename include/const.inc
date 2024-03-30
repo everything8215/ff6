@@ -42,14 +42,41 @@ def_config LANG_EN,0
 
 ; ------------------------------------------------------------------------------
 
-BIT_0                                   = $01
-BIT_1                                   = $02
-BIT_2                                   = $04
-BIT_3                                   = $08
-BIT_4                                   = $10
-BIT_5                                   = $20
-BIT_6                                   = $40
-BIT_7                                   = $80
+BIT_0                                   = %00000001
+BIT_1                                   = %00000010
+BIT_2                                   = %00000100
+BIT_3                                   = %00001000
+BIT_4                                   = %00010000
+BIT_5                                   = %00100000
+BIT_6                                   = %01000000
+BIT_7                                   = %10000000
+
+; ------------------------------------------------------------------------------
+
+; movement and facing directions (field module)
+
+.enum EVENT_DIR
+        UP                              ;= 0
+        RIGHT                           ;= 1
+        DOWN                            ;= 2
+        LEFT                            ;= 3
+        UP_RIGHT                        ;= 4
+        RIGHT_UP                        = UP_RIGHT
+        DOWN_RIGHT                      ;= 5
+        RIGHT_DOWN                      = DOWN_RIGHT
+        DOWN_LEFT                       ;= 6
+        LEFT_DOWN                       = DOWN_LEFT
+        UP_LEFT                         ;= 7
+        LEFT_UP                         = UP_LEFT
+        RIGHT_UP_UP                     ;= 8
+        RIGHT_RIGHT_UP                  ;= 9
+        RIGHT_RIGHT_DOWN                ;= 10
+        RIGHT_DOWN_DOWN                 ;= 11
+        LEFT_DOWN_DOWN                  ;= 12
+        LEFT_LEFT_DOWN                  ;= 13
+        LEFT_LEFT_UP                    ;= 14
+        LEFT_UP_UP                      ;= 15
+.endenum
 
 ; ------------------------------------------------------------------------------
 
@@ -314,113 +341,207 @@ ITEM_EMPTY                              = $ff  ; 255
 ; ------------------------------------------------------------------------------
 
 ; character/actor ids
-CHAR_TERRA                              = $00
-CHAR_LOCKE                              = $01
-CHAR_CYAN                               = $02
-CHAR_SHADOW                             = $03
-CHAR_EDGAR                              = $04
-CHAR_SABIN                              = $05
-CHAR_CELES                              = $06
-CHAR_STRAGO                             = $07
-CHAR_RELM                               = $08
-CHAR_SETZER                             = $09
-CHAR_MOG                                = $0a
-CHAR_GAU                                = $0b
-CHAR_GOGO                               = $0c
-CHAR_UMARO                              = $0d
+.enum CHAR
+        TERRA                           ;= $00
+        LOCKE                           ;= $01
+        CYAN                            ;= $02
+        SHADOW                          ;= $03
+        EDGAR                           ;= $04
+        SABIN                           ;= $05
+        CELES                           ;= $06
+        STRAGO                          ;= $07
+        RELM                            ;= $08
+        SETZER                          ;= $09
+        MOG                             ;= $0a
+        GAU                             ;= $0b
+        GOGO                            ;= $0c
+        UMARO                           ;= $0d
+.endenum
+
+; ------------------------------------------------------------------------------
+
+; main characters
+.enum EVENT_OBJ
+        TERRA                           = CHAR::TERRA;0
+        LOCKE                           = CHAR::LOCKE;1
+        CYAN                            = CHAR::CYAN;2
+        SHADOW                          = CHAR::SHADOW;3
+        EDGAR                           = CHAR::EDGAR;4
+        SABIN                           = CHAR::SABIN;5
+        CELES                           = CHAR::CELES;6
+        STRAGO                          = CHAR::STRAGO;7
+        RELM                            = CHAR::RELM;8
+        SETZER                          = CHAR::SETZER;9
+        MOG                             = CHAR::MOG;10
+        GAU                             = CHAR::GAU;11
+        GOGO                            = CHAR::GOGO;12
+        UMARO                           = CHAR::UMARO;13
+
+; extra moogles
+        KUPEK                           = 2
+        KUPOP                           = 3
+        KUMAMA                          = 4
+        KUKU                            = 5
+        KUTAN                           = 6
+        KUPAN                           = 7
+        KUSHU                           = 8
+        KURIN                           = 9
+        KURU                            = 11
+        KAMOG                           = 12
+
+; phantom train ghosts
+        GHOST_1                         = 7
+        GHOST_2                         = 8
+
+; other characters
+        WEDGE                           = 14
+        BANON                           = 14
+        MADUIN                          = 14
+        VICKS                           = 15
+        LEO                             = 15
+        KEFKA                           = 15
+
+; npcs
+        NPC_1                           = $10
+        NPC_2                           = $11
+        NPC_3                           = $12
+        NPC_4                           = $13
+        NPC_5                           = $14
+        NPC_7                           = $15
+        NPC_8                           = $17
+        NPC_9                           = $18
+        NPC_10                          = $19
+        NPC_11                          = $1a
+        NPC_12                          = $1b
+        NPC_13                          = $1c
+        NPC_14                          = $1d
+        NPC_15                          = $1e
+        NPC_16                          = $1f
+        NPC_17                          = $20
+        NPC_18                          = $21
+        NPC_19                          = $22
+        NPC_20                          = $23
+        NPC_21                          = $24
+        NPC_22                          = $25
+        NPC_23                          = $26
+        NPC_24                          = $27
+        NPC_25                          = $28
+        NPC_26                          = $29
+        NPC_27                          = $2a
+        NPC_28                          = $2b
+        NPC_29                          = $2c
+        NPC_30                          = $2d
+        NPC_31                          = $2e
+        NPC_32                          = $2f
+
+; camera object
+        CAMERA                          = $30
+
+; party character slots
+        SLOT_1                          = $31
+        SLOT_2                          = $32
+        SLOT_3                          = $33
+        SLOT_4                          = $34
+.endenum
 
 ; ------------------------------------------------------------------------------
 
 ; character graphics ids (battle and menu)
-CHAR_GFX_TERRA                          = $00
-CHAR_GFX_LOCKE                          = $01
-CHAR_GFX_CYAN                           = $02
-CHAR_GFX_SHADOW                         = $03
-CHAR_GFX_EDGAR                          = $04
-CHAR_GFX_SABIN                          = $05
-CHAR_GFX_CELES                          = $06
-CHAR_GFX_STRAGO                         = $07
-CHAR_GFX_RELM                           = $08
-CHAR_GFX_SETZER                         = $09
-CHAR_GFX_MOG                            = $0a
-CHAR_GFX_GAU                            = $0b
-CHAR_GFX_GOGO                           = $0c
-CHAR_GFX_UMARO                          = $0d
-CHAR_GFX_SOLDIER                        = $0e
-CHAR_GFX_IMP                            = $0f
-CHAR_GFX_LEO                            = $10
-CHAR_GFX_BANON                          = $11
-CHAR_GFX_ESPER_TERRA                    = $12
-CHAR_GFX_MERCHANT                       = $13
-CHAR_GFX_GHOST                          = $14
-CHAR_GFX_KEFKA                          = $15
-CHAR_GFX_GESTAHL                        = $16
+.enum CHAR_GFX
+        TERRA                           ;= $00
+        LOCKE                           ;= $01
+        CYAN                            ;= $02
+        SHADOW                          ;= $03
+        EDGAR                           ;= $04
+        SABIN                           ;= $05
+        CELES                           ;= $06
+        STRAGO                          ;= $07
+        RELM                            ;= $08
+        SETZER                          ;= $09
+        MOG                             ;= $0a
+        GAU                             ;= $0b
+        GOGO                            ;= $0c
+        UMARO                           ;= $0d
+        SOLDIER                         ;= $0e
+        IMP                             ;= $0f
+        LEO                             ;= $10
+        BANON                           ;= $11
+        ESPER_TERRA                     ;= $12
+        MERCHANT                        ;= $13
+        GHOST                           ;= $14
+        KEFKA                           ;= $15
+        GESTAHL                         ;= $16
+.endenum
 
 ; ------------------------------------------------------------------------------
 
 ; battle command ids
-BATTLE_CMD_FIGHT                        = $00  ; 0
-BATTLE_CMD_ITEM                         = $01  ; 1
-BATTLE_CMD_MAGIC                        = $02  ; 2
-BATTLE_CMD_MORPH                        = $03  ; 3
-BATTLE_CMD_REVERT                       = $04  ; 4
-BATTLE_CMD_STEAL                        = $05  ; 5
-BATTLE_CMD_CAPTURE                      = $06  ; 6
-BATTLE_CMD_SWDTECH                      = $07  ; 7
-BATTLE_CMD_THROW                        = $08  ; 8
-BATTLE_CMD_TOOLS                        = $09  ; 9
-BATTLE_CMD_BLITZ                        = $0a  ; 10
-BATTLE_CMD_RUNIC                        = $0b  ; 11
-BATTLE_CMD_LORE                         = $0c  ; 12
-BATTLE_CMD_SKETCH                       = $0d  ; 13
-BATTLE_CMD_CONTROL                      = $0e  ; 14
-BATTLE_CMD_SLOT                         = $0f  ; 15
-BATTLE_CMD_RAGE                         = $10  ; 16
-BATTLE_CMD_LEAP                         = $11  ; 17
-BATTLE_CMD_MIMIC                        = $12  ; 18
-BATTLE_CMD_DANCE                        = $13  ; 19
-BATTLE_CMD_ROW                          = $14  ; 20
-BATTLE_CMD_DEF                          = $15  ; 21
-BATTLE_CMD_JUMP                         = $16  ; 22
-BATTLE_CMD_X_MAGIC                      = $17  ; 23
-BATTLE_CMD_GP_RAIN                      = $18  ; 24
-BATTLE_CMD_SUMMON                       = $19  ; 25
-BATTLE_CMD_HEALTH                       = $1a  ; 26
-BATTLE_CMD_SHOCK                        = $1b  ; 27
-BATTLE_CMD_POSSESS                      = $1c  ; 28
-BATTLE_CMD_MAGITEK                      = $1d  ; 29
-BATTLE_CMD_NONE                         = $ff  ; 255
+.enum BATTLE_CMD
+        FIGHT                           ;= $00  ; 0
+        ITEM                            ;= $01  ; 1
+        MAGIC                           ;= $02  ; 2
+        MORPH                           ;= $03  ; 3
+        REVERT                          ;= $04  ; 4
+        STEAL                           ;= $05  ; 5
+        CAPTURE                         ;= $06  ; 6
+        SWDTECH                         ;= $07  ; 7
+        THROW                           ;= $08  ; 8
+        TOOLS                           ;= $09  ; 9
+        BLITZ                           ;= $0a  ; 10
+        RUNIC                           ;= $0b  ; 11
+        LORE                            ;= $0c  ; 12
+        SKETCH                          ;= $0d  ; 13
+        CONTROL                         ;= $0e  ; 14
+        SLOT                            ;= $0f  ; 15
+        RAGE                            ;= $10  ; 16
+        LEAP                            ;= $11  ; 17
+        MIMIC                           ;= $12  ; 18
+        DANCE                           ;= $13  ; 19
+        ROW                             ;= $14  ; 20
+        DEF                             ;= $15  ; 21
+        JUMP                            ;= $16  ; 22
+        X_MAGIC                         ;= $17  ; 23
+        GP_RAIN                         ;= $18  ; 24
+        SUMMON                          ;= $19  ; 25
+        HEALTH                          ;= $1a  ; 26
+        SHOCK                           ;= $1b  ; 27
+        POSSESS                         ;= $1c  ; 28
+        MAGITEK                         ;= $1d  ; 29
+        NONE                            = $ff  ; 255
+.endenum
 
 ; ------------------------------------------------------------------------------
 
 ; genju ids
-GENJU_RAMUH                             = $00  ; 0
-GENJU_IFRIT                             = $01  ; 1
-GENJU_SHIVA                             = $02  ; 2
-GENJU_SIREN                             = $03  ; 3
-GENJU_TERRATO                           = $04  ; 4
-GENJU_SHOAT                             = $05  ; 5
-GENJU_MADUIN                            = $06  ; 6
-GENJU_BISMARK                           = $07  ; 7
-GENJU_STRAY                             = $08  ; 8
-GENJU_PALIDOR                           = $09  ; 9
-GENJU_TRITOCH                           = $0a  ; 10
-GENJU_ODIN                              = $0b  ; 11
-GENJU_RAIDEN                            = $0c  ; 12
-GENJU_BAHAMUT                           = $0d  ; 13
-GENJU_ALEXANDR                          = $0e  ; 14
-GENJU_CRUSADER                          = $0f  ; 15
-GENJU_RAGNAROK                          = $10  ; 16
-GENJU_KIRIN                             = $11  ; 17
-GENJU_ZONESEEL                          = $12  ; 18
-GENJU_CARBUNKL                          = $13  ; 19
-GENJU_PHANTOM                           = $14  ; 20
-GENJU_SRAPHIM                           = $15  ; 21
-GENJU_GOLEM                             = $16  ; 22
-GENJU_UNICORN                           = $17  ; 23
-GENJU_FENRIR                            = $18  ; 24
-GENJU_STARLET                           = $19  ; 25
-GENJU_PHOENIX                           = $1a  ; 26
+.enum GENJU
+        RAMUH                           = $36  ; 54
+        IFRIT                           ;= $37  ; 55
+        SHIVA                           ;= $38  ; 56
+        SIREN                           ;= $39  ; 57
+        TERRATO                         ;= $3a  ; 58
+        SHOAT                           ;= $3b  ; 59
+        MADUIN                          ;= $3c  ; 60
+        BISMARK                         ;= $3d  ; 61
+        STRAY                           ;= $3e  ; 62
+        PALIDOR                         ;= $3f  ; 63
+        TRITOCH                         ;= $40  ; 64
+        ODIN                            ;= $41  ; 65
+        RAIDEN                          ;= $42  ; 66
+        BAHAMUT                         ;= $43  ; 67
+        ALEXANDR                        ;= $44  ; 68
+        CRUSADER                        ;= $45  ; 69
+        RAGNAROK                        ;= $46  ; 70
+        KIRIN                           ;= $47  ; 71
+        ZONESEEL                        ;= $48  ; 72
+        CARBUNKL                        ;= $49  ; 73
+        PHANTOM                         ;= $4a  ; 74
+        SRAPHIM                         ;= $4b  ; 75
+        GOLEM                           ;= $4c  ; 76
+        UNICORN                         ;= $4d  ; 77
+        FENRIR                          ;= $4e  ; 78
+        STARLET                         ;= $4f  ; 79
+        PHOENIX                         ;= $50  ; 80
+.endenum
 
 ; ------------------------------------------------------------------------------
 
@@ -1227,116 +1348,265 @@ CHAR_PROP_FIXED_EQUIP                   = $10
 
 ; ------------------------------------------------------------------------------
 
-; main characters
-CHAR_ID_TERRA                           = 0
-CHAR_ID_LOCKE                           = 1
-CHAR_ID_CYAN                            = 2
-CHAR_ID_SHADOW                          = 3
-CHAR_ID_EDGAR                           = 4
-CHAR_ID_SABIN                           = 5
-CHAR_ID_CELES                           = 6
-CHAR_ID_STRAGO                          = 7
-CHAR_ID_RELM                            = 8
-CHAR_ID_SETZER                          = 9
-CHAR_ID_MOG                             = 10
-CHAR_ID_GAU                             = 11
-CHAR_ID_GOGO                            = 12
-CHAR_ID_UMARO                           = 13
-
-; extra moogles
-CHAR_ID_KUPEK                           = 2
-CHAR_ID_KUPOP                           = 3
-CHAR_ID_KUMAMA                          = 4
-CHAR_ID_KUKU                            = 5
-CHAR_ID_KUTAN                           = 6
-CHAR_ID_KUPAN                           = 7
-CHAR_ID_KUSHU                           = 8
-CHAR_ID_KURIN                           = 9
-CHAR_ID_KURU                            = 11
-CHAR_ID_KAMOG                           = 12
-
-; phantom train ghosts
-CHAR_ID_GHOST_1                         = 7
-CHAR_ID_GHOST_2                         = 8
-
-; other characters
-CHAR_ID_WEDGE                           = 14
-CHAR_ID_BANON                           = 14
-CHAR_ID_MADUIN                          = 14
-CHAR_ID_VICKS                           = 15
-CHAR_ID_LEO                             = 15
-CHAR_ID_KEFKA                           = 15
-
-; ------------------------------------------------------------------------------
-
-CHAR_FLAG_TERRA                         = $0001
-CHAR_FLAG_LOCKE                         = $0002
-CHAR_FLAG_CYAN                          = $0004
-CHAR_FLAG_SHADOW                        = $0008
-CHAR_FLAG_EDGAR                         = $0010
-CHAR_FLAG_SABIN                         = $0020
-CHAR_FLAG_CELES                         = $0040
-CHAR_FLAG_STRAGO                        = $0080
-CHAR_FLAG_RELM                          = $0100
-CHAR_FLAG_SETZER                        = $0200
-CHAR_FLAG_MOG                           = $0400
-CHAR_FLAG_GAU                           = $0800
-CHAR_FLAG_GOGO                          = $1000
-CHAR_FLAG_UMARO                         = $2000
+.enum CHAR_FLAG
+        TERRA                           = $0001
+        LOCKE                           = $0002
+        CYAN                            = $0004
+        SHADOW                          = $0008
+        EDGAR                           = $0010
+        SABIN                           = $0020
+        CELES                           = $0040
+        STRAGO                          = $0080
+        RELM                            = $0100
+        SETZER                          = $0200
+        MOG                             = $0400
+        GAU                             = $0800
+        GOGO                            = $1000
+        UMARO                           = $2000
+.endenum
 
 ; ------------------------------------------------------------------------------
 
 ; element bitmasks
-ELEMENT_FIRE                            = $01
-ELEMENT_ICE                             = $02
-ELEMENT_LIGHTNING                       = $04
-ELEMENT_POISON                          = $08
-ELEMENT_WIND                            = $10
-ELEMENT_HOLY                            = $20
-ELEMENT_EARTH                           = $40
-ELEMENT_WATER                           = $80
+; ELEMENT_FIRE                            = $01
+; ELEMENT_ICE                             = $02
+; ELEMENT_LIGHTNING                       = $04
+; ELEMENT_POISON                          = $08
+; ELEMENT_WIND                            = $10
+; ELEMENT_HOLY                            = $20
+; ELEMENT_EARTH                           = $40
+; ELEMENT_WATER                           = $80
+
+.enum ELEMENT
+        FIRE                            = BIT_0
+        ICE                             = BIT_1
+        LIGHTNING                       = BIT_2
+        POISON                          = BIT_3
+        WIND                            = BIT_4
+        HOLY                            = BIT_5
+        EARTH                           = BIT_6
+        WATER                           = BIT_7
+        NONE                            = 0
+.endenum
 
 ; ------------------------------------------------------------------------------
 
+.mac make_bitmask prefix, val, namespace, b1, b2, b3, b4, b5, b6, b7, b8
+        .if .paramcount = 11
+                make_bitmask prefix, val | namespace::b8, namespace, b1, b2, b3, b4, b5, b6, b7
+        .elseif .paramcount = 10
+                make_bitmask prefix, val | namespace::b7, namespace, b1, b2, b3, b4, b5, b6
+        .elseif .paramcount = 9
+                make_bitmask prefix, val | namespace::b6, namespace, b1, b2, b3, b4, b5
+        .elseif .paramcount = 8
+                make_bitmask prefix, val | namespace::b5, namespace, b1, b2, b3, b4
+        .elseif .paramcount = 7
+                make_bitmask prefix, val | namespace::b4, namespace, b1, b2, b3
+        .elseif .paramcount = 6
+                make_bitmask prefix, val | namespace::b3, namespace, b1, b2
+        .elseif .paramcount = 5
+                make_bitmask prefix, val | namespace::b2, namespace, b1
+        .elseif .paramcount = 4
+                make_bitmask prefix, val | namespace::b1, namespace
+        .elseif .paramcount = 3
+                prefix (val)
+        .endif
+.endmac
+
+.mac opflg op, namespace, flags
+        make_bitmask op, 0, namespace, flags
+.endmac
+
+.define ldaflg opflg lda #,
+.define setflg opflg ora #,
+.define andflg opflg and #,
+.define eorflg opflg eor #,
+.define bitflg opflg bit #,
+.define peaflg opflg pea 0+,
+
+.mac clrflg namespace, flags
+        .if .asize = 8
+                opflg and #$ff^, namespace, {flags}
+        .else
+                opflg and #$ffff^, namespace, {flags}
+        .endif
+.endmac
+
 ; status 1: harmful status that persist after battle
-STATUS1_BLIND                           = $01
-STATUS1_ZOMBIE                          = $02
-STATUS1_POISON                          = $04
-STATUS1_MAGITEK                         = $08
-STATUS1_INVISIBLE                       = $10
-STATUS1_IMP                             = $20
-STATUS1_PETRIFY                         = $40
-STATUS1_DEAD                            = $80
+.enum STATUS1
+        BLIND                           = BIT_0
+        ZOMBIE                          = BIT_1
+        POISON                          = BIT_2
+        MAGITEK                         = BIT_3
+        INVISIBLE                       = BIT_4
+        IMP                             = BIT_5
+        PETRIFY                         = BIT_6
+        DEAD                            = BIT_7
+        NONE                            = 0
+.endenum
 
 ; status 2: harmful status that do not persist after battle
-STATUS2_CONDEMNED                       = $01
-STATUS2_NEAR_FATAL                      = $02
-STATUS2_IMAGE                           = $04
-STATUS2_SILENCE                         = $08
-STATUS2_BERSERK                         = $10
-STATUS2_CONFUSE                         = $20
-STATUS2_SAP                             = $40
-STATUS2_SLEEP                           = $80
+.enum STATUS2
+        CONDEMNED                       = BIT_0
+        NEAR_FATAL                      = BIT_1
+        IMAGE                           = BIT_2
+        SILENCE                         = BIT_3
+        BERSERK                         = BIT_4
+        CONFUSE                         = BIT_5
+        SAP                             = BIT_6
+        SLEEP                           = BIT_7
+        NONE                            = 0
+.endenum
 
 ; status 3: helpful status that do not persist after battle
-STATUS3_DANCE                           = $01
-STATUS3_REGEN                           = $02
-STATUS3_SLOW                            = $04
-STATUS3_HASTE                           = $08
-STATUS3_STOP                            = $10
-STATUS3_SHELL                           = $20
-STATUS3_PROTECT                         = $40
-STATUS3_REFLECT                         = $80
+.enum STATUS3
+        DANCE                           = BIT_0
+        REGEN                           = BIT_1
+        SLOW                            = BIT_2
+        HASTE                           = BIT_3
+        STOP                            = BIT_4
+        SHELL                           = BIT_5
+        PROTECT                         = BIT_6
+        REFLECT                         = BIT_7
+        NONE                            = 0
+.endenum
 
 ; status 4: only float and interceptor persist after battle
-STATUS4_RAGE                            = $01
-STATUS4_FROZEN                          = $02
-STATUS4_RERAISE                         = $04
-STATUS4_MORPH                           = $08
-STATUS4_CHANT                           = $10
-STATUS4_HIDE                            = $20
-STATUS4_INTERCEPTOR                     = $40
-STATUS4_FLOAT                           = $80
+.enum STATUS4
+        RAGE                            = BIT_0
+        FROZEN                          = BIT_1
+        RERAISE                         = BIT_2
+        MORPH                           = BIT_3
+        CHANT                           = BIT_4
+        HIDE                            = BIT_5
+        INTERCEPTOR                     = BIT_6
+        FLOAT                           = BIT_7
+        NONE                            = 0
+.endenum
+
+; 16-bit combined status 1 and 2
+.enum STATUS12
+        BLIND                           = STATUS1::BLIND
+        ZOMBIE                          = STATUS1::ZOMBIE
+        POISON                          = STATUS1::POISON
+        MAGITEK                         = STATUS1::MAGITEK
+        INVISIBLE                       = STATUS1::INVISIBLE
+        IMP                             = STATUS1::IMP
+        PETRIFY                         = STATUS1::PETRIFY
+        DEAD                            = STATUS1::DEAD
+        CONDEMNED                       = STATUS2::CONDEMNED << 8
+        NEAR_FATAL                      = STATUS2::NEAR_FATAL << 8
+        IMAGE                           = STATUS2::IMAGE << 8
+        SILENCE                         = STATUS2::SILENCE << 8
+        BERSERK                         = STATUS2::BERSERK << 8
+        CONFUSE                         = STATUS2::CONFUSE << 8
+        SAP                             = STATUS2::SAP << 8
+        SLEEP                           = STATUS2::SLEEP << 8
+        NONE                            = 0
+.endenum
+
+; 16-bit combined status 2 and 3
+.enum STATUS23
+        CONDEMNED                       = STATUS2::CONDEMNED
+        NEAR_FATAL                      = STATUS2::NEAR_FATAL
+        IMAGE                           = STATUS2::IMAGE
+        SILENCE                         = STATUS2::SILENCE
+        BERSERK                         = STATUS2::BERSERK
+        CONFUSE                         = STATUS2::CONFUSE
+        SAP                             = STATUS2::SAP
+        SLEEP                           = STATUS2::SLEEP
+        DANCE                           = STATUS3::DANCE << 8
+        REGEN                           = STATUS3::REGEN << 8
+        SLOW                            = STATUS3::SLOW << 8
+        HASTE                           = STATUS3::HASTE << 8
+        STOP                            = STATUS3::STOP << 8
+        SHELL                           = STATUS3::SHELL << 8
+        PROTECT                         = STATUS3::PROTECT << 8
+        REFLECT                         = STATUS3::REFLECT << 8
+        NONE                            = 0
+.endenum
+
+; 16-bit combined status 3 and 4
+.enum STATUS34
+        DANCE                           = STATUS3::DANCE
+        REGEN                           = STATUS3::REGEN
+        SLOW                            = STATUS3::SLOW
+        HASTE                           = STATUS3::HASTE
+        STOP                            = STATUS3::STOP
+        SHELL                           = STATUS3::SHELL
+        PROTECT                         = STATUS3::PROTECT
+        REFLECT                         = STATUS3::REFLECT
+        RAGE                            = STATUS4::RAGE << 8
+        FROZEN                          = STATUS4::FROZEN << 8
+        RERAISE                         = STATUS4::RERAISE << 8
+        MORPH                           = STATUS4::MORPH << 8
+        CHANT                           = STATUS4::CHANT << 8
+        HIDE                            = STATUS4::HIDE << 8
+        INTERCEPTOR                     = STATUS4::INTERCEPTOR << 8
+        FLOAT                           = STATUS4::FLOAT << 8
+        NONE                            = 0
+.endenum
+
+; 16-bit combined status 1 and 4
+.enum STATUS14
+        BLIND                           = STATUS1::BLIND
+        ZOMBIE                          = STATUS1::ZOMBIE
+        POISON                          = STATUS1::POISON
+        MAGITEK                         = STATUS1::MAGITEK
+        INVISIBLE                       = STATUS1::INVISIBLE
+        IMP                             = STATUS1::IMP
+        PETRIFY                         = STATUS1::PETRIFY
+        DEAD                            = STATUS1::DEAD
+        RAGE                            = STATUS4::RAGE << 8
+        FROZEN                          = STATUS4::FROZEN << 8
+        RERAISE                         = STATUS4::RERAISE << 8
+        MORPH                           = STATUS4::MORPH << 8
+        CHANT                           = STATUS4::CHANT << 8
+        HIDE                            = STATUS4::HIDE << 8
+        INTERCEPTOR                     = STATUS4::INTERCEPTOR << 8
+        FLOAT                           = STATUS4::FLOAT << 8
+        NONE                            = 0
+.endenum
+
+; ; status 1: harmful status that persist after battle
+; STATUS1_BLIND                           = $01
+; STATUS1_ZOMBIE                          = $02
+; STATUS1_POISON                          = $04
+; STATUS1_MAGITEK                         = $08
+; STATUS1_INVISIBLE                       = $10
+; STATUS1_IMP                             = $20
+; STATUS1_PETRIFY                         = $40
+; STATUS1_DEAD                            = $80
+
+; ; status 2: harmful status that do not persist after battle
+; STATUS2_CONDEMNED                       = $01
+; STATUS2_NEAR_FATAL                      = $02
+; STATUS2_IMAGE                           = $04
+; STATUS2_SILENCE                         = $08
+; STATUS2_BERSERK                         = $10
+; STATUS2_CONFUSE                         = $20
+; STATUS2_SAP                             = $40
+; STATUS2_SLEEP                           = $80
+
+; ; status 3: helpful status that do not persist after battle
+; STATUS3_DANCE                           = $01
+; STATUS3_REGEN                           = $02
+; STATUS3_SLOW                            = $04
+; STATUS3_HASTE                           = $08
+; STATUS3_STOP                            = $10
+; STATUS3_SHELL                           = $20
+; STATUS3_PROTECT                         = $40
+; STATUS3_REFLECT                         = $80
+
+; ; status 4: only float and interceptor persist after battle
+; STATUS4_RAGE                            = $01
+; STATUS4_FROZEN                          = $02
+; STATUS4_RERAISE                         = $04
+; STATUS4_MORPH                           = $08
+; STATUS4_CHANT                           = $10
+; STATUS4_HIDE                            = $20
+; STATUS4_INTERCEPTOR                     = $40
+; STATUS4_FLOAT                           = $80
 
 ; ------------------------------------------------------------------------------
 

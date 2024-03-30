@@ -1,0 +1,14 @@
+python script to optimize dte table
+
+create brr files from wav files in Makefile
+
+macros for scripts (event, attack animation, battle event, monster a.i., sound?)
+figure out how to do attack animation frames
+
+create asm files for more assets
+
+organize rip list
+
+RAM symbols
+
+improve asm formatting and organization

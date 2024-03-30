@@ -56,10 +56,10 @@ CharProp:
 reset_char_prop
 CharProp_HP                             .set 40
 CharProp_MP                             .set 16
-CharProp_Cmd1                           .set BATTLE_CMD_FIGHT
-CharProp_Cmd2                           .set BATTLE_CMD_MORPH
-CharProp_Cmd3                           .set BATTLE_CMD_MAGIC
-CharProp_Cmd4                           .set BATTLE_CMD_ITEM
+CharProp_Cmd1                           .set BATTLE_CMD::FIGHT
+CharProp_Cmd2                           .set BATTLE_CMD::MORPH
+CharProp_Cmd3                           .set BATTLE_CMD::MAGIC
+CharProp_Cmd4                           .set BATTLE_CMD::ITEM
 CharProp_Strength                       .set 31
 CharProp_Agility                        .set 33
 CharProp_Stamina                        .set 28
@@ -85,10 +85,10 @@ make_char_prop
 reset_char_prop
 CharProp_HP                             .set 48
 CharProp_MP                             .set 7
-CharProp_Cmd1                           .set BATTLE_CMD_FIGHT
-CharProp_Cmd2                           .set BATTLE_CMD_STEAL
-CharProp_Cmd3                           .set BATTLE_CMD_MAGIC
-CharProp_Cmd4                           .set BATTLE_CMD_ITEM
+CharProp_Cmd1                           .set BATTLE_CMD::FIGHT
+CharProp_Cmd2                           .set BATTLE_CMD::STEAL
+CharProp_Cmd3                           .set BATTLE_CMD::MAGIC
+CharProp_Cmd4                           .set BATTLE_CMD::ITEM
 CharProp_Strength                       .set 37
 CharProp_Agility                        .set 40
 CharProp_Stamina                        .set 31
@@ -112,10 +112,10 @@ make_char_prop
 
 ; 2: cyan
         .byte 53, 5
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_SWDTECH
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::SWDTECH
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 40, 28, 33
         .byte 25, 25
         .byte 48, 20
@@ -132,10 +132,10 @@ make_char_prop
 
 ; 3: shadow
         .byte 51, 6
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_THROW
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::THROW
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 39, 38, 30
         .byte 33, 23
         .byte 47, 25
@@ -152,10 +152,10 @@ make_char_prop
 
 ; 4: edgar
         .byte 49, 6
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_TOOLS
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::TOOLS
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 39, 30, 34
         .byte 29, 20
         .byte 50, 22
@@ -172,10 +172,10 @@ make_char_prop
 
 ; 5: sabin
         .byte 58, 3
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_BLITZ
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::BLITZ
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 47, 37, 39
         .byte 28, 26
         .byte 53, 21
@@ -192,10 +192,10 @@ make_char_prop
 
 ; 6: celes
         .byte 44, 15
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_RUNIC
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::RUNIC
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 34, 34, 31
         .byte 36, 16
         .byte 44, 31
@@ -212,10 +212,10 @@ make_char_prop
 
 ; 7: strago
         .byte 35, 13
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_LORE
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::LORE
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 28, 25, 19
         .byte 34, 10
         .byte 33, 27
@@ -232,10 +232,10 @@ make_char_prop
 
 ; 8: relm
         .byte 37, 18
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_SKETCH
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::SKETCH
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 26, 34, 22
         .byte 44, 11
         .byte 35, 30
@@ -252,10 +252,10 @@ make_char_prop
 
 ; 9: setzer
         .byte 46, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_SLOT
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::SLOT
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 36, 32, 32
         .byte 29, 18
         .byte 48, 26
@@ -272,10 +272,10 @@ make_char_prop
 
 ; 10: mog
         .byte 39, 16
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_DANCE
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::DANCE
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 29, 36, 26
         .byte 35, 16
         .byte 52, 36
@@ -292,10 +292,10 @@ make_char_prop
 
 ; 11: gau
         .byte 45, 10
-        .byte BATTLE_CMD_RAGE
-        .byte BATTLE_CMD_LEAP
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::RAGE
+        .byte BATTLE_CMD::LEAP
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::ITEM
         .byte 44, 38, 36
         .byte 34, 99
         .byte 44, 34
@@ -312,10 +312,10 @@ make_char_prop
 
 ; 12: gogo
         .byte 36, 12
-        .byte BATTLE_CMD_MIMIC
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
+        .byte BATTLE_CMD::MIMIC
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
         .byte 25, 30, 20
         .byte 26, 13
         .byte 39, 25
@@ -332,10 +332,10 @@ make_char_prop
 
 ; 13: umaro
         .byte 60, 0
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
         .byte 57, 33, 46
         .byte 37, 47
         .byte 89, 68
@@ -352,10 +352,10 @@ make_char_prop
 
 ; 14: banon
         .byte 46, 16
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_HEALTH
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::HEALTH
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 10, 24, 11
         .byte 32, 6
         .byte 56, 51
@@ -372,10 +372,10 @@ make_char_prop
 
 ; 15: leo
         .byte 50, 10
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_SHOCK
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::SHOCK
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 52, 38, 41
         .byte 36, 60
         .byte 63, 41
@@ -392,10 +392,10 @@ make_char_prop
 
 ; 16: ghost 1
         .byte 26, 1
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_POSSESS
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::POSSESS
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 14, 15, 10
         .byte 30, 22
         .byte 66, 52
@@ -412,10 +412,10 @@ make_char_prop
 
 ; 17: ghost 2
         .byte 20, 1
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_POSSESS
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::POSSESS
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 4, 8, 2
         .byte 15, 10
         .byte 17, 11
@@ -432,10 +432,10 @@ make_char_prop
 
 ; 18: kupek
         .byte 50, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 18, 11, 12
         .byte 33, 35
         .byte 47, 27
@@ -452,10 +452,10 @@ make_char_prop
 
 ; 19: kupop
         .byte 54, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 18, 14, 12
         .byte 33, 1
         .byte 38, 26
@@ -472,10 +472,10 @@ make_char_prop
 
 ; 20: kumama
         .byte 48, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 18, 14, 12
         .byte 33, 1
         .byte 42, 33
@@ -492,10 +492,10 @@ make_char_prop
 
 ; 21: kuku
         .byte 64, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 17, 14, 12
         .byte 33, 11
         .byte 40, 32
@@ -512,10 +512,10 @@ make_char_prop
 
 ; 22: kutan
         .byte 55, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 16, 14, 12
         .byte 33, 11
         .byte 44, 29
@@ -532,10 +532,10 @@ make_char_prop
 
 ; 23: kupan
         .byte 51, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 20, 14, 12
         .byte 33, 21
         .byte 45, 30
@@ -552,10 +552,10 @@ make_char_prop
 
 ; 24: kushu
         .byte 52, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 24, 14, 12
         .byte 33, 27
         .byte 41, 31
@@ -572,10 +572,10 @@ make_char_prop
 
 ; 25: kurin
         .byte 53, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 19, 14, 12
         .byte 33, 20
         .byte 41, 31
@@ -592,10 +592,10 @@ make_char_prop
 
 ; 26: kuru
         .byte 50, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 17, 14, 12
         .byte 33, 44
         .byte 27, 19
@@ -612,10 +612,10 @@ make_char_prop
 
 ; 27: kamog
         .byte 53, 9
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 20, 14, 12
         .byte 33, 11
         .byte 40, 33
@@ -632,10 +632,10 @@ make_char_prop
 
 ; 28: mog
         .byte 12, 34
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
         .byte 12, 12, 12
         .byte 12, 12
         .byte 12, 12
@@ -658,10 +658,10 @@ make_char_prop
 
 ; 30: maduin
         .byte 10, 10
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
         .byte 30, 30, 30
         .byte 30, 30
         .byte 30, 30
@@ -678,10 +678,10 @@ make_char_prop
 
 ; 31:
         .byte 51, 6
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_MAGIC
-        .byte BATTLE_CMD_NONE
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::MAGIC
+        .byte BATTLE_CMD::NONE
         .byte 40, 40, 30
         .byte 35, 25
         .byte 49, 27
@@ -698,10 +698,10 @@ make_char_prop
 
 ; 32: wedge
         .byte 68, 0
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 40, 35, 46
         .byte 29, 24
         .byte 77, 50
@@ -718,10 +718,10 @@ make_char_prop
 
 ; 33: vicks
         .byte 70, 0
-        .byte BATTLE_CMD_FIGHT
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_NONE
-        .byte BATTLE_CMD_ITEM
+        .byte BATTLE_CMD::FIGHT
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::NONE
+        .byte BATTLE_CMD::ITEM
         .byte 41, 36, 45
         .byte 28, 27
         .byte 79, 50
@@ -776,10 +776,10 @@ make_char_prop
 reset_char_prop
 CharProp_HP                             .set 14
 CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD_NONE
-CharProp_Cmd2                           .set BATTLE_CMD_NONE
-CharProp_Cmd3                           .set BATTLE_CMD_NONE
-CharProp_Cmd4                           .set BATTLE_CMD_NONE
+CharProp_Cmd1                           .set BATTLE_CMD::NONE
+CharProp_Cmd2                           .set BATTLE_CMD::NONE
+CharProp_Cmd3                           .set BATTLE_CMD::NONE
+CharProp_Cmd4                           .set BATTLE_CMD::NONE
 CharProp_Strength                       .set 14
 CharProp_Agility                        .set 26
 CharProp_Stamina                        .set 18
@@ -804,10 +804,10 @@ make_char_prop
 reset_char_prop
 CharProp_HP                             .set 255
 CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD_NONE
-CharProp_Cmd2                           .set BATTLE_CMD_NONE
-CharProp_Cmd3                           .set BATTLE_CMD_NONE
-CharProp_Cmd4                           .set BATTLE_CMD_NONE
+CharProp_Cmd1                           .set BATTLE_CMD::NONE
+CharProp_Cmd2                           .set BATTLE_CMD::NONE
+CharProp_Cmd3                           .set BATTLE_CMD::NONE
+CharProp_Cmd4                           .set BATTLE_CMD::NONE
 CharProp_Strength                       .set 15
 CharProp_Agility                        .set 15
 CharProp_Stamina                        .set 15
@@ -833,10 +833,10 @@ make_char_prop
 reset_char_prop
 CharProp_HP                             .set 50
 CharProp_MP                             .set 50
-CharProp_Cmd1                           .set BATTLE_CMD_NONE
-CharProp_Cmd2                           .set BATTLE_CMD_NONE
-CharProp_Cmd3                           .set BATTLE_CMD_NONE
-CharProp_Cmd4                           .set BATTLE_CMD_NONE
+CharProp_Cmd1                           .set BATTLE_CMD::NONE
+CharProp_Cmd2                           .set BATTLE_CMD::NONE
+CharProp_Cmd3                           .set BATTLE_CMD::NONE
+CharProp_Cmd4                           .set BATTLE_CMD::NONE
 CharProp_Strength                       .set 80
 CharProp_Agility                        .set 80
 CharProp_Stamina                        .set 80
@@ -862,10 +862,10 @@ make_char_prop
 reset_char_prop
 CharProp_HP                             .set 22
 CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD_NONE
-CharProp_Cmd2                           .set BATTLE_CMD_NONE
-CharProp_Cmd3                           .set BATTLE_CMD_NONE
-CharProp_Cmd4                           .set BATTLE_CMD_NONE
+CharProp_Cmd1                           .set BATTLE_CMD::NONE
+CharProp_Cmd2                           .set BATTLE_CMD::NONE
+CharProp_Cmd3                           .set BATTLE_CMD::NONE
+CharProp_Cmd4                           .set BATTLE_CMD::NONE
 CharProp_Strength                       .set 15
 CharProp_Agility                        .set 15
 CharProp_Stamina                        .set 15
@@ -891,10 +891,10 @@ make_char_prop
 reset_char_prop
 CharProp_HP                             .set 34
 CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD_NONE
-CharProp_Cmd2                           .set BATTLE_CMD_NONE
-CharProp_Cmd3                           .set BATTLE_CMD_NONE
-CharProp_Cmd4                           .set BATTLE_CMD_NONE
+CharProp_Cmd1                           .set BATTLE_CMD::NONE
+CharProp_Cmd2                           .set BATTLE_CMD::NONE
+CharProp_Cmd3                           .set BATTLE_CMD::NONE
+CharProp_Cmd4                           .set BATTLE_CMD::NONE
 CharProp_Strength                       .set 15
 CharProp_Agility                        .set 15
 CharProp_Stamina                        .set 15
@@ -920,10 +920,10 @@ make_char_prop
 reset_char_prop
 CharProp_HP                             .set 14
 CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD_NONE
-CharProp_Cmd2                           .set BATTLE_CMD_NONE
-CharProp_Cmd3                           .set BATTLE_CMD_NONE
-CharProp_Cmd4                           .set BATTLE_CMD_NONE
+CharProp_Cmd1                           .set BATTLE_CMD::NONE
+CharProp_Cmd2                           .set BATTLE_CMD::NONE
+CharProp_Cmd3                           .set BATTLE_CMD::NONE
+CharProp_Cmd4                           .set BATTLE_CMD::NONE
 CharProp_Strength                       .set 15
 CharProp_Agility                        .set 15
 CharProp_Stamina                        .set 15
@@ -948,10 +948,10 @@ make_char_prop
 reset_char_prop
 CharProp_HP                             .set 14
 CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD_NONE
-CharProp_Cmd2                           .set BATTLE_CMD_NONE
-CharProp_Cmd3                           .set BATTLE_CMD_NONE
-CharProp_Cmd4                           .set BATTLE_CMD_NONE
+CharProp_Cmd1                           .set BATTLE_CMD::NONE
+CharProp_Cmd2                           .set BATTLE_CMD::NONE
+CharProp_Cmd3                           .set BATTLE_CMD::NONE
+CharProp_Cmd4                           .set BATTLE_CMD::NONE
 CharProp_Strength                       .set 15
 CharProp_Agility                        .set 15
 CharProp_Stamina                        .set 15

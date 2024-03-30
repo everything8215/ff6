@@ -1448,48 +1448,51 @@ sabaki1:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ extract bg palette color components ]
 
 ; vehicle event command $f6
 
-_ee15c7:
-@15c7:  php
+.proc _ee15c7
+        php
         phb
         shorta
         lda     #$7e
         pha
         plb
         longa
-        ldx     #$0000
-        ldy     #$0000
-@15d7:  shorta
-        lda     $e000,x
+        ldx     #0
+        ldy     #0
+loop:   shorta
+        lda     $e000,x                 ; red
         and     #$1f
         sta     $be62,y
         longa
-        lda     $e000,x
+        lda     $e000,x                 ; green
         lsr5
         and     #$001f
         shorta
         sta     $bee2,y
-        lda     $e001,x
+        lda     $e001,x                 ; blue
         lsr2
         and     #$1f
         sta     $bf62,y
         inx2
         iny
-        cpy     #$0080
-        bne     @15d7
+        cpy     #$0080                  ; 128 colors (all bg palettes)
+        bne     loop
         plb
         plp
         rts
+.endproc  ; _ee15c7
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ multiply bg palettes ]
 
-_ee1608:
-@1608:  php
+; $58: brightness multiplier
+
+.proc _ee1608
+        php
         phb
         shortai
         lda     #$7e
@@ -1497,7 +1500,7 @@ _ee1608:
         plb
         ldx     #$fe
         ldy     #$00
-@1614:  shorta
+loop:   shorta
         lda     $58
         sta     f:hWRMPYA
         lda     $be62,y
@@ -1523,10 +1526,11 @@ _ee1608:
         ora     $5a
         sta     $e000,x
         cpy     #$80
-        bne     @1614
+        bne     loop
         plb
         plp
         rts
+.endproc  ; _ee1608
 
 ; ------------------------------------------------------------------------------
 

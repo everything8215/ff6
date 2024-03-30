@@ -181,10 +181,10 @@ CheckMenu:
         lda     $055e                   ; return if parties switching ???
         bne     @c62a
         ldx     $e5                     ; return if an event is running
-        cpx     #$0000
+        cpx     #.loword(EventScript_NoEvent)
         bne     @c62a
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @c62a
         ldy     $0803                   ; party object
         lda     $087e,y                 ; return if moving
@@ -211,12 +211,14 @@ CheckMenu:
 
 ; [ open main menu ]
 
+.import EventScript_Tent, EventScript_Warp
+
 OpenMainMenu:
 @c62b:  lda     $4a                     ; return if still fading out
         bne     @c633
         lda     $59                     ; return if not opening menu
         bne     @c636
-@c633:  jmp     MainMenuReturn
+@c633:  jmp     MainMenuRet
 @c636:  stz     $59                     ; disable menu
         lda     #$00                    ; set menu mode to main menu
         sta     $0200
@@ -234,17 +236,17 @@ OpenMainMenu:
         cmp     #$03
         beq     @c670                   ; branch if warp/warp stone was used
         jmp     FieldMain               ; return to main code loop and fade in
-@c65f:  ldx     #$0034                  ; $ca0034 (tent)
+@c65f:  ldx     #.loword(EventScript_Tent)
         stx     $e5
         stx     $05f4
-        lda     #$ca
+        lda     #^EventScript_Tent
         sta     $e7
         sta     $05f6
         bra     @c67f
-@c670:  ldx     #$0039                  ; $ca0039 (warp/warp stone)
+@c670:  ldx     #.loword(EventScript_Warp)
         stx     $e5
         stx     $05f4
-        lda     #$ca
+        lda     #^EventScript_Warp
         sta     $e7
         sta     $05f6
 @c67f:  ldy     $0803                   ; party object
@@ -252,11 +254,11 @@ OpenMainMenu:
         and     #$f0
         ora     #$04
         sta     $087c,y
-        ldx     #$0000                  ; clear event stack
+        ldx     #.loword(EventScript_NoEvent)
         stx     $0594
-        lda     #$ca
+        lda     #^EventScript_NoEvent
         sta     $0596
-        lda     #$01
+        lda     #1
         sta     $05c7
         ldx     #$0003
         stx     $e8

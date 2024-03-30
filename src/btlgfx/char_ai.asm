@@ -82,7 +82,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_SHADOW|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX_SHADOW,<MONSTER_SHADOW_COLOSSEUM
+.byte CHAR_GFX::SHADOW,<MONSTER_SHADOW_COLOSSEUM
 .byte 40,48
 
 ; slot 1
@@ -111,7 +111,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_KEFKA_1|CHAR_AI_FLAG_NOT_IN_PARTY
-.byte CHAR_GFX_KEFKA,0
+.byte CHAR_GFX::KEFKA,0
 .byte 255,255
 
 ; slot 1
@@ -169,7 +169,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_KEFKA_1|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX_KEFKA,<MONSTER_KEFKA_IMP_CAMP
+.byte CHAR_GFX::KEFKA,<MONSTER_KEFKA_IMP_CAMP
 .byte 32,48
 
 ; slot 1
@@ -198,7 +198,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_CYAN
-.byte CHAR_GFX_CYAN,<MONSTER_CYAN_IMP_CAMP
+.byte CHAR_GFX::CYAN,<MONSTER_CYAN_IMP_CAMP
 .byte 80,48
 
 ; slot 1
@@ -227,7 +227,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_CYAN
-.byte CHAR_GFX_CYAN,<MONSTER_CYAN_IMP_CAMP
+.byte CHAR_GFX::CYAN,<MONSTER_CYAN_IMP_CAMP
 .byte 80,48
 
 ; slot 1
@@ -285,7 +285,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX_KEFKA,<MONSTER_KEFKA_IMP_CAMP
+.byte CHAR_GFX::KEFKA,<MONSTER_KEFKA_IMP_CAMP
 .byte 32,44
 
 ; slot 1
@@ -314,12 +314,12 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_KEFKA_1
-.byte CHAR_GFX_KEFKA,$ff
+.byte CHAR_GFX::KEFKA,$ff
 .byte 100,100
 
 ; slot 1
 .byte CHAR_PROP_TERRA
-.byte CHAR_GFX_TERRA,$ff
+.byte CHAR_GFX::TERRA,$ff
 .byte 32,60
 
 ; slot 2
@@ -343,7 +343,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_GAU|CHAR_AI_FLAG_NOT_IN_PARTY|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX_GAU,<MONSTER_GAU_VELDT
+.byte CHAR_GFX::GAU,<MONSTER_GAU_VELDT
 .byte 48,52
 
 ; slot 1
@@ -372,17 +372,17 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_TERRA
-.byte CHAR_GFX_TERRA,$ff
+.byte CHAR_GFX::TERRA,$ff
 .byte 60,100
 
 ; slot 1
 .byte CHAR_PROP_LOCKE
-.byte CHAR_GFX_LOCKE,$ff
+.byte CHAR_GFX::LOCKE,$ff
 .byte 60,100
 
 ; slot 2
 .byte CHAR_PROP_CELES
-.byte CHAR_GFX_CELES,$ff
+.byte CHAR_GFX::CELES,$ff
 .byte 60,100
 
 ; slot 3
@@ -401,7 +401,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX_KEFKA,<MONSTER_KEFKA_ESPER_GATE
+.byte CHAR_GFX::KEFKA,<MONSTER_KEFKA_ESPER_GATE
 .byte 100,44
 
 ; slot 1
@@ -430,7 +430,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX_KEFKA,$ff
+.byte CHAR_GFX::KEFKA,$ff
 .byte 100,48
 
 ; slot 1
@@ -459,17 +459,17 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_TERRA
-.byte CHAR_GFX_TERRA,$ff
+.byte CHAR_GFX::TERRA,$ff
 .byte 60,100
 
 ; slot 1
 .byte CHAR_PROP_LOCKE
-.byte CHAR_GFX_LOCKE,$ff
+.byte CHAR_GFX::LOCKE,$ff
 .byte 60,100
 
 ; slot 2
 .byte CHAR_PROP_SETZER
-.byte CHAR_GFX_SETZER,$ff
+.byte CHAR_GFX::SETZER,$ff
 .byte 60,100
 
 ; slot 3
@@ -488,7 +488,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_RELM|CHAR_AI_FLAG_NOT_IN_PARTY
-.byte CHAR_GFX_RELM,$ff
+.byte CHAR_GFX::RELM,$ff
 .byte 255,255
 
 ; slot 1
@@ -517,7 +517,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_TERRA
-.byte CHAR_GFX_TERRA,$ff
+.byte CHAR_GFX::TERRA,$ff
 .byte 100,100
 
 ; slot 1
@@ -546,22 +546,22 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_TERRA
-.byte CHAR_GFX_KEFKA,$ff
+.byte CHAR_GFX::KEFKA,$ff
 .byte 64,88
 
 ; slot 1
 .byte CHAR_PROP_LOCKE
-.byte CHAR_GFX_SOLDIER,$ff
+.byte CHAR_GFX::SOLDIER,$ff
 .byte 92,80
 
 ; slot 2
 .byte CHAR_PROP_CYAN
-.byte CHAR_GFX_SOLDIER,$ff
+.byte CHAR_GFX::SOLDIER,$ff
 .byte 40,84
 
 ; slot 3
 .byte CHAR_PROP_SHADOW
-.byte CHAR_GFX_SOLDIER,$ff
+.byte CHAR_GFX::SOLDIER,$ff
 .byte 100,100
 
 ; ------------------------------------------------------------------------------
@@ -575,7 +575,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_KEFKA_3
-.byte CHAR_GFX_KEFKA,$ff
+.byte CHAR_GFX::KEFKA,$ff
 .byte 92,44
 
 ; slot 1
@@ -604,12 +604,12 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_TERRA
-.byte CHAR_GFX_KEFKA,$ff
+.byte CHAR_GFX::KEFKA,$ff
 .byte 88,84
 
 ; slot 1
 .byte CHAR_PROP_LOCKE
-.byte CHAR_GFX_GESTAHL,$ff
+.byte CHAR_GFX::GESTAHL,$ff
 .byte 48,84
 
 ; slot 2
@@ -633,7 +633,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_TERRA|CHAR_AI_FLAG_NOT_IN_PARTY
-.byte CHAR_GFX_KEFKA,$ff
+.byte CHAR_GFX::KEFKA,$ff
 .byte 60,100
 
 ; slot 1
@@ -662,7 +662,7 @@ CharAI:
 
 ; slot 0
 .byte CHAR_PROP_KEFKA_1
-.byte CHAR_GFX_KEFKA,$ff
+.byte CHAR_GFX::KEFKA,$ff
 .byte 255,255
 
 ; slot 1

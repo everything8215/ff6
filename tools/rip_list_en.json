@@ -2518,8 +2518,8 @@
       "asset_range": "0xC0E0A0-0xC0E11F"
     },
     {
-      "file_path": "src/field/event_script.dat",
-      "asset_range": "0xCA0000-0xCCE5ED"
+      "file_path": "src/event/event_script.dat",
+      "asset_range": "0xCA0893-0xCCE498"
     },
     {
       "file_path": "src/field/event_battle_group.dat",

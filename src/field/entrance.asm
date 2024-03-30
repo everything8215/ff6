@@ -28,10 +28,10 @@ CheckEntrances:
         and     #$0f
         bne     @18e3
         ldx     $e5         ; return if an event is running
-        cpx     #$0000
+        cpx     #.loword(EventScript_NoEvent)
         bne     @18e3
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @18e3
         lda     $b8         ; branch if on a bridge tile
         and     #$04
@@ -177,6 +177,8 @@ CheckLongEntrance:
         rts
 @1a26:  shorta0
         rts
+
+; ------------------------------------------------------------------------------
 
 .pushseg
 .segment "long_entrance"
@@ -348,6 +350,8 @@ CheckShortEntrance:
         rts
 @1b77:  shorta0
         rts
+
+; ------------------------------------------------------------------------------
 
 .pushseg
 .segment "short_entrance"

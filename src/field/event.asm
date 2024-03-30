@@ -14,7 +14,7 @@
 inc_lang "text/char_name_%s.inc"
 .include "field/event_trigger.inc"
 
-.import MapSpritePal
+.import MapSpritePal, EventScript
 
 .export BushidoLevelTbl, NaturalMagic, LevelUpExp
 
@@ -291,7 +291,7 @@ _c09a6d:
         bne     @9a7a
 @9a96:  jsr     UpdateCtrlFlags
         lda     $e1
-        bpl     @9abe
+        bpl     @9abe                   ; branch if not waiting for object
         lda     $e2
         sta     hWRMPYA
         lda     #$29
@@ -638,7 +638,7 @@ EventCmd_44:
 
 ; ------------------------------------------------------------------------------
 
-; [ event command $45: wait for character objects to update ]
+; [ event command $45: validate and sort active objects ]
 
 EventCmd_45:
 @9ce2:  lda     #1
@@ -664,7 +664,7 @@ EventCmd_46:
 
 ; ------------------------------------------------------------------------------
 
-; [ event command $47: create party object ]
+; [ event command $47: update party objects ]
 
 EventCmd_47:
 @9d03:  jsr     GetTopChar
@@ -917,17 +917,17 @@ EventCmd_3e:
 
 ; [ get next available character slot in party ]
 
-; a: party number (0..2)
+; A: party number (0..7)
 
 FindEmptyCharSlot:
 @9ea2:  sta     $1a
         cmp     #$00
-        beq     @9ed4
+        beq     @9ed4                   ; return if no party
         ldy     $00
-@9eaa:  lda     $0867,y     ; branch if character is not enabled
+@9eaa:  lda     $0867,y                 ; branch if character is not enabled
         and     #$40
         beq     @9ec3
-        lda     $0867,y     ; branch if character is not in that party
+        lda     $0867,y                 ; branch if character is not in that party
         and     #$07
         cmp     $1a
         bne     @9ec3
@@ -943,8 +943,10 @@ FindEmptyCharSlot:
         shorta0
         cpy     #$0290
         bne     @9eaa
-        tdc                 ; slot 0
+        tdc                             ; slot 1
 @9ed4:  rts
+
+; try slot 2
 @9ed5:  ldy     $00
 @9ed7:  lda     $0867,y
         and     #$40
@@ -964,8 +966,10 @@ FindEmptyCharSlot:
         shorta0
         cpy     #$0290
         bne     @9ed7
-        lda     #$08        ; slot 1
+        lda     #$08                    ; slot 2
         rts
+
+; try slot 3
 @9f02:  ldy     $00
 @9f04:  lda     $0867,y
         and     #$40
@@ -985,9 +989,11 @@ FindEmptyCharSlot:
         shorta0
         cpy     #$0290
         bne     @9f04
-        lda     #$10        ; slot 2
+        lda     #$10                    ; slot 3
         rts
-@9f2f:  lda     #$18        ; slot 3
+
+; give up and use slot 4 (even if it's already occupied)
+@9f2f:  lda     #$18                    ; slot 4
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1258,13 +1264,13 @@ EventCmd_40:
 
 UpdateAbilities:
 @a17f:  lda     $1600,y                 ; actor index
-        cmp     #CHAR_TERRA
+        cmp     #CHAR::TERRA
         beq     @a196                   ; branch if terra
-        cmp     #CHAR_CELES
+        cmp     #CHAR::CELES
         beq     @a1b8                   ; branch if celes
-        cmp     #CHAR_CYAN
+        cmp     #CHAR::CYAN
         beq     @a1da                   ; branch if cyan
-        cmp     #CHAR_SABIN
+        cmp     #CHAR::SABIN
         jeq     @a201                   ; branch if sabin
 @a195:  rts
 
@@ -1853,7 +1859,12 @@ EventCmd_4a:
 ;        t: show text only
 ;        d: dialog message
 
+.import EventScript_WaitDlg
+
 EventCmd_4b:
+
+@WaitDlg = EventScript_WaitDlg - EventScript
+
 @a4bc:  longa
         lda     $eb
         and     #$1fff
@@ -1872,11 +1883,11 @@ EventCmd_4b:
         jsr     GetDlgPtr
         lda     #$01        ; enable dialog window
         sta     $ba
-        lda     #$01        ; $ca0001 (wait for dialog keypress)
+        lda     #<@WaitDlg
         sta     $eb
-        lda     #$00
+        lda     #>@WaitDlg
         sta     $ec
-        lda     #$00
+        lda     #^@WaitDlg
         sta     $ed
         lda     #$03        ; return address is pc+3
         jmp     _b1a3       ; jump to subroutine
@@ -3082,7 +3093,7 @@ EventCmd_6c:
 
 ; ------------------------------------------------------------------------------
 
-; [ event command $75: update map data ]
+; [ event command $75: apply map changes ]
 
 EventCmd_75:
 @ac1f:  lda     $055a
@@ -3109,7 +3120,7 @@ EventCmd_75:
 
 ; $eb = x position
 ; $ec = bbyyyyyy
-;       b: 0 = bg1, 1 = bg2, 2 = bg3
+;       b: 0 = bg1, 1 = bg2, 2 or 3 = bg3
 ;       y: y position
 ; $ed = width
 ; $ee = height
@@ -3412,7 +3423,8 @@ GiveMagic:
 
 ; [ event command $88: remove status ]
 
-; +$eb = status to clear (inverse bit mask)
+;  $eb = character number
+; +$ec = status to clear (inverse bit mask)
 
 EventCmd_88:
 @ae2d:  jsr     CalcCharPtr
@@ -3430,7 +3442,8 @@ EventCmd_88:
 
 ; [ event command $89: set status ]
 
-; +$eb = status to set
+;  $eb = character number
+; +$ec = status to set
 
 EventCmd_89:
 @ae47:  jsr     CalcCharPtr
@@ -3448,7 +3461,8 @@ EventCmd_89:
 
 ; [ event command $8a: toggle status ]
 
-; +$eb = status to toggle
+;  $eb = character number
+; +$ec = status to toggle
 
 EventCmd_8a:
 @ae61:  jsr     CalcCharPtr
@@ -3479,32 +3493,32 @@ EventCmd_8b:
         lda     $ec
         and     #$7f
         cmp     #$7f
-        beq     @aec9       ; branch if setting to maximum
+        beq     @aec9                   ; branch if setting to maximum
         asl
         tax
         lda     $ec
-        bmi     @aeae       ; branch if subtracting hp
+        bmi     @aeae                   ; branch if subtracting hp
         longa_clc
-        lda     $1609,y     ; add constant
+        lda     $1609,y                 ; add constant
         adc     f:HPTbl,x
         cmp     $1e
-        bcc     @aea6       ; can't go higher than max
+        bcc     @aea6                   ; can't go higher than max
         lda     $1e
 @aea6:  sta     $1609,y
         shorta0
         bra     @aed3
 @aeae:  longa
-        lda     $1609,y     ; subtract constant
+        lda     $1609,y                 ; subtract constant
         beq     @aec1
         sec
         sbc     f:HPTbl,x
         beq     @aebe
         bpl     @aec1
-@aebe:  lda     #$0001      ; can't go less than 1
+@aebe:  lda     #1                      ; can't go less than 1
 @aec1:  sta     $1609,y
         shorta0
         bra     @aed3
-@aec9:  longa        ; set hp to max
+@aec9:  longa                           ; set hp to max
         lda     $1e
         sta     $1609,y
         shorta0
@@ -3992,7 +4006,7 @@ _b1a3:  ldx     $e8
         sta     $05f5,x
         lda     $ed
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         sta     f:$0005f6,x
         inx3
@@ -4009,10 +4023,10 @@ _b1a3:  ldx     $e8
 ; ++$ec = event pointer
 
 EventCmd_b3:
-@b1df:  ldx     $e8         ; a = event pc + 5
+@b1df:  ldx     $e8         ; A: event pc + 5
         lda     $e5
         clc
-        adc     #$05
+        adc     #5
         sta     $0594,x     ; set return address
         lda     $e6
         adc     #$00
@@ -4028,7 +4042,7 @@ EventCmd_b3:
         sta     $05f5,x
         lda     $ee
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         sta     f:$0005f6,x
         inx3
@@ -4139,7 +4153,7 @@ EventCmd_bd:
         stx     $e5
         lda     $ed
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         jmp     _c09a6d
 
@@ -4168,7 +4182,7 @@ EventCmd_b7:
         stx     $e5
         lda     $ee
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         jmp     _c09a6d
 
@@ -4243,7 +4257,7 @@ EventCmd_c7:
         iny2
         lda     [$e5],y
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         ldy     $2a
         sty     $e5
@@ -4309,7 +4323,7 @@ EventCmd_cf:
         iny2
         lda     [$e5],y
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         ldy     $2a
         sty     $e5
@@ -4895,7 +4909,7 @@ EventCmd_b6:
         iny
         lda     [$e5],y
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         ldy     $1e
         sty     $e5
@@ -4970,12 +4984,12 @@ EventCmd_be:
         lda     $2c
         and     #$03
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         sta     f:$0005f6,x
         inx3
         stx     $e8
-        lda     #$01
+        lda     #1                      ; repeat 1 time
         sta     $05c4,x
         jmp     _c09a6d
 
@@ -5758,10 +5772,10 @@ CheckTimer:
         lda     $118d,y
         beq     @bc63
 @bc02:  ldx     $e5
-        cpx     #$0000
+        cpx     #.loword(EventScript_NoEvent)
         bne     @bc63
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @bc63
         ldx     $0803
         lda     $086a,x
@@ -5775,14 +5789,14 @@ CheckTimer:
         stx     $05f4
         lda     $118d,y
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #$0000
+        ldx     #.loword(EventScript_NoEvent)
         stx     $0594
-        lda     #$ca
+        lda     #^EventScript_NoEvent
         sta     $0596
-        lda     #$01
+        lda     #1
         sta     $05c7
         ldx     #$0003
         stx     $e8
@@ -5823,10 +5837,10 @@ CheckEventTriggers:
         lda     $086c,y
         bne     @bccf
         ldx     $e5
-        cpx     #$0000
+        cpx     #.loword(EventScript_NoEvent)
         bne     @bccf
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @bccf
         lda     $087c,y
         and     #$0f
@@ -5865,14 +5879,14 @@ CheckEventTriggers:
         sta     $078e
         lda     f:EventTriggerPtrs+4,x
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #$0000
+        ldx     #.loword(EventScript_NoEvent)
         stx     $0594
-        lda     #$ca
+        lda     #^EventScript_NoEvent
         sta     $0596
-        lda     #$01
+        lda     #1
         sta     $05c7
         ldx     #$0003
         stx     $e8
@@ -5886,20 +5900,7 @@ CheckEventTriggers:
 
 ; ------------------------------------------------------------------------------
 
-.export EventScript
-
 .pushseg
-.segment "event_script"
-
-; ca/0000
-begin_fixed_block EventScript, $02e600
-        .incbin "event_script.dat"
-end_fixed_block EventScript
-
-.popseg
-
-; ------------------------------------------------------------------------------
-
 .segment "event_triggers"
 
 ; c4/0000
@@ -5912,5 +5913,7 @@ EventTrigger:
         .incbin "src/field/trigger/event_trigger.dat"
 EventTriggerEnd:
 end_fixed_block EventTriggerPtrs
+
+.popseg
 
 ; ------------------------------------------------------------------------------

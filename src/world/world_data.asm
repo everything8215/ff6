@@ -1,5 +1,12 @@
 ; ------------------------------------------------------------------------------
 
+.import EventScript_AirshipDeck, EventScript_WorldTent
+.import EventScript_AirshipGround, EventScript_EnterPhoenixCave
+.import EventScript_EnterKefkasTower, EventScript_EnterGogosLair
+.import EventScript_DoomGazeDefeated
+
+; ------------------------------------------------------------------------------
+
 .segment "world_data"
 
 begin_fixed_block WorldDataPtrs2, $30
@@ -12,25 +19,25 @@ WorldModDataPtrs:
 
 ; ee/b269
 VehicleEvent_00:
-        .faraddr $000068
+        .faraddr EventScript_AirshipDeck - EventScript
 
 VehicleEvent_01:
-        .faraddr $00004f
+        .faraddr EventScript_WorldTent - EventScript
 
 VehicleEvent_02:
-        .faraddr $000059
+        .faraddr EventScript_AirshipGround - EventScript
 
 VehicleEvent_03:
-        .faraddr $000088
+        .faraddr EventScript_EnterPhoenixCave - EventScript
 
 VehicleEvent_04:
-        .faraddr $00007f
+        .faraddr EventScript_EnterKefkasTower - EventScript
 
 VehicleEvent_05:
-        .faraddr $00008f
+        .faraddr EventScript_EnterGogosLair - EventScript
 
 VehicleEvent_06:
-        .faraddr $000096
+        .faraddr EventScript_DoomGazeDefeated - EventScript
 
 end_fixed_block WorldDataPtrs2
 

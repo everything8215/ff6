@@ -788,7 +788,7 @@ _c3b986:
         inc
         tax
         shorta
-        lda     f:ShopProp,x
+        lda     f:ShopProp,x            ; item id
         ldx     $f1
         sta     $7e9d89,x
         cmp     #$ff
@@ -798,7 +798,7 @@ _c3b986:
         ldx     $f1
         lda     $7e9d89,x
         jsr     GetItemPropPtr
-        jsr     _c3ba0c
+        jsr     CalcShopPrice
         jsr     HexToDec5
         longa
         lda     $7e9e89
@@ -827,9 +827,9 @@ _c3b9fc:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ calculate item price in shop ]
 
-_c3ba0c:
+CalcShopPrice:
 @ba0c:  longa
         lda     hMPYL
         clc
@@ -937,11 +937,11 @@ AdjustShopPrice_05:
 @ba76:  pha
         shorta
         lda     $0202
-        cmp     #CHAR_CELES
+        cmp     #CHAR::CELES
         beq     @ba8d
-        cmp     #CHAR_RELM
+        cmp     #CHAR::RELM
         beq     @ba8d
-        cmp     #CHAR_TERRA
+        cmp     #CHAR::TERRA
         beq     @ba8d
         longa
         pla

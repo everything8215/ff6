@@ -76,8 +76,8 @@ $58-$64 scratchpad
    +$75 vehicle direction ???
    +$77 bg1 horizontal scroll
    +$79 bg1 vertical scroll
-   +$7B map horizontal scroll position, or maybe an offset based on the map sector ???
-   +$7D map vertical scroll position ???
+   +$7B horizontal offset of rotation center
+   +$7D vertical rotation offset of rotation center
 
    +$81
    +$83 backdrop rotation amount
@@ -279,6 +279,10 @@ $B850-$B85F water tile movement counters (1 per line)
 
 $B862-$BC61 offset-per-tile data (32 * 32 bytes)
 $BC62-
+
+$BE62-$BEE1 bg palette red components
+$BEF2-$BE61 bg palette green components
+$BF62-$BFE1 bg palette blue components
 
 $E000-$E200 color palettes
 

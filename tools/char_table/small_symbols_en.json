@@ -1,37 +1,37 @@
 {
   "0xD4": [
-    "\\uparrow",
+    "{uparrow}",
     "↑"
   ],
   "0xD5": [
-    "\\rightarrow",
+    "{rightarrow}",
     "→"
   ],
   "0xD6": [
-    "\\diagonalarrow",
+    "{diagonalarrow}",
     "↙"
   ],
   "0xD7": [
-    "\\times",
+    "{times}",
     "×"
   ],
-  "0xD8": "\\dagger",
-  "0xD9": "\\sword",
-  "0xDA": "\\spear",
-  "0xDB": "\\katana",
-  "0xDC": "\\staff",
-  "0xDD": "\\brush",
-  "0xDE": "\\star",
-  "0xDF": "\\special",
-  "0xE0": "\\card",
-  "0xE1": "\\claw",
-  "0xE2": "\\shield",
-  "0xE3": "\\helm",
-  "0xE4": "\\armor",
-  "0xE5": "\\tool",
-  "0xE6": "\\scroll",
-  "0xE7": "\\relic",
-  "0xE8": "\\white",
-  "0xE9": "\\black",
-  "0xEA": "\\effect"
+  "0xD8": "{dagger}",
+  "0xD9": "{sword}",
+  "0xDA": "{spear}",
+  "0xDB": "{katana}",
+  "0xDC": "{staff}",
+  "0xDD": "{brush}",
+  "0xDE": "{star}",
+  "0xDF": "{special}",
+  "0xE0": "{card}",
+  "0xE1": "{claw}",
+  "0xE2": "{shield}",
+  "0xE3": "{helm}",
+  "0xE4": "{armor}",
+  "0xE5": "{tool}",
+  "0xE6": "{scroll}",
+  "0xE7": "{relic}",
+  "0xE8": "{white}",
+  "0xE9": "{black}",
+  "0xEA": "{effect}"
 }

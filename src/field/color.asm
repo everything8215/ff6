@@ -4,12 +4,16 @@
 .i16
 .segment "field_code"
 
+zFixedColorRate := $4b
+zFixedColorCounter := $4d
+zFixedColorTarget := $54
+
 ; ------------------------------------------------------------------------------
 
 ; [ begin fixed color addition ]
 
-InitFixedColorAdd:
-@102b:  pha
+.proc InitFixedColorAdd
+        pha
         lda     $4e                     ; save color add/sub settings
         sta     $4f
         lda     $52                     ; save subscreen designation
@@ -18,14 +22,15 @@ InitFixedColorAdd:
         lda     #$07
         sta     $4e                     ; set color add/sub settings
         pla
-        bra     _104d
+        bra     :+
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ begin fixed color subtraction ]
 
-InitFixedColorSub:
-@103d:  pha
+.proc InitFixedColorSub
+        pha
         lda     $4e
         sta     $4f
         lda     $52
@@ -34,52 +39,63 @@ InitFixedColorSub:
         lda     #$87
         sta     $4e
         pla
-_104d:  jsr     CalcFixedColor
-        stz     $4d
+:       jsr     CalcFixedColor
+        stz     zFixedColorCounter
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ update fixed color add/sub hdma data ]
 
-UpdateFixedColor:
-@1053:  lda     $4b
-        bpl     @1072                   ; branch if fading out
+.proc UpdateFixedColor
+        lda     zFixedColorRate
+        bpl     dec_fixed_color
         and     #$7f
         clc
-        adc     $4d                     ; add speed to current intensity
-        sta     $4d
-        lda     $54                     ; branch if not past target intensity
+        adc     zFixedColorCounter      ; add speed to current intensity
+        sta     zFixedColorCounter
+        lda     zFixedColorTarget       ; branch if not at target intensity
         and     #$1f
         asl3
-        cmp     $4d
-        bcs     @1087
-        lda     $4d                     ; clear lower 3 bits (target intensity reached)
+        cmp     zFixedColorCounter
+        bcs     set_color
+        lda     zFixedColorCounter      ; clear lower 3 bits (target intensity reached)
         and     #$f8
-        sta     $4d
-        jmp     @1087
-@1072:  lda     $4d
-        beq     @107d
+        sta     zFixedColorCounter
+        jmp     set_color
+
+dec_fixed_color:
+        lda     zFixedColorCounter
+        beq     restore_color
         sec
-        sbc     $4b                     ; subtract speed from current intensity
-        sta     $4d
-        bra     @1087
-@107d:  lda     $4f
+        sbc     zFixedColorRate         ; subtract speed from current intensity
+        sta     zFixedColorCounter
+        bra     set_color
+
+restore_color:
+        lda     $4f
         sta     $4e
         lda     $53
         sta     $52
-        stz     $4b
-@1087:  lda     $4d                     ; color intensity
+        stz     zFixedColorRate
+
+set_color:
+        lda     zFixedColorCounter
         lsr3
         sta     $0e
-        beq     @109a                   ; branch if intensity is zero
-        lda     $54
-        and     #$e0                    ; color components
-        beq     @109a                   ; use white if there are no colors
+        beq     default_color
+        lda     zFixedColorTarget
+        and     #FIXED_CLR::MASK
+        beq     default_color
         ora     $0e
-        bra     @109c
-@109a:  lda     #$e0                    ; set to white
-@109c:  sta     $7e8753                 ; set fixed color hdma data ($2132)
+        bra     set_hdma
+
+default_color:
+        lda     #FIXED_CLR::WHITE       ; default value
+
+set_hdma:
+        sta     $7e8753                 ; set fixed color hdma data ($2132)
         sta     $7e8755
         sta     $7e8757
         sta     $7e8759
@@ -115,6 +131,7 @@ UpdateFixedColor:
         sta     $7e8170
         sta     $7e8172
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
@@ -127,31 +144,38 @@ UpdateFixedColor:
 ;     s: speed
 ;     i: intensity
 
-CalcFixedColor:
-@1123:  pha
+.proc CalcFixedColor
         pha
-        and     #$e0                    ; colors affected
+        pha
+
+; get colors affected
+        and     #FIXED_CLR::MASK
         sta     $1a
+
+; get target intensity
         pla
-        and     #$07                    ; intensity
+        and     #$07
         asl2
         clc
         adc     #$03
         ora     $1a
-        sta     $54
+        sta     zFixedColorTarget
+
+; get speed
         pla
-        and     #$18                    ; speed
+        and     #$18
         lsr3
         tax
         lda     f:FixedColorRateTbl,x
-        sta     $4b
+        sta     zFixedColorRate
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; fixed color speeds
 FixedColorRateTbl:
-@1143:  .byte   $81,$82,$84,$84
+        .byte   $81,$82,$84,$84
 
 ; ------------------------------------------------------------------------------
 
@@ -161,71 +185,71 @@ FixedColorRateTbl:
 ;  $1b = blue color target
 ; +$20 = green color target
 
-BGColorInc:
-@1147:  lda     #$7e
+.proc BGColorInc
+        lda     #$7e
         pha
         plb
         shorti
-        ldy     $df                       ; first color
-@114f:  lda     $7400,y                   ; red component (active color palette)
+        ldy     $df                     ; first color
+loop:   lda     $7400,y                 ; red component (active color palette)
         and     #$1f
-        cmp     $1a                       ; branch if greater than red constant
-        bcs     @1159
-        inc                               ; add 1
-@1159:  sta     $1e
-        lda     $7401,y                   ; blue component
+        cmp     $1a                     ; branch if greater than red constant
+        bcs     :+
+        inc                             ; add 1
+:       sta     $1e
+        lda     $7401,y                 ; blue component
         and     #$7c
-        cmp     $1b                       ; branch if greater than blue constant
-        bcs     @1166
-        adc     #$04                      ; add 1
-@1166:  sta     $1f
+        cmp     $1b                     ; branch if greater than blue constant
+        bcs     :+
+        adc     #$04                    ; add 1
+:       sta     $1f
         longa
-        lda     $7400,y                   ; green component
+        lda     $7400,y                 ; green component
         and     #$03e0
         cmp     $20
-        bcs     @1177
+        bcs     :+
         adc     #$0020
-@1177:  ora     $1e                       ; +$1e = modified color
+:       ora     $1e                     ; +$1e = modified color
         sta     $7400,y
-        tdc                               ; next color
-        shorta
+        shorta0                         ; next color
         iny2
-        cpy     $e0                       ; end of color range
-        bne     @114f
+        cpy     $e0                     ; end of color range
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ bg color math $03: decrement colors (restore to normal) ]
 
-BGColorUnInc:
-@118b:  lda     #$7e
+.proc BGColorUnInc
+        lda     #$7e
         pha
         plb
         shorti
         ldy     $df
-@1193:  lda     $7200,y                   ; unmodified red component
+loop:   lda     $7200,y                   ; unmodified red component
         and     #$1f
         sta     $1a
         lda     $7400,y                   ; active red component
         and     #$1f
         cmp     $1a
-        beq     @11a4
+        beq     :+
         dec
-@11a4:  sta     $1e
+:       sta     $1e
         lda     $7201,y                   ; unmodified blue component
         and     #$7c
         sta     $1b
         lda     $7401,y                   ; active blue component
         and     #$7c
         cmp     $1b
-        beq     @11b8
+        beq     :+
         sbc     #$04
-@11b8:  sta     $1f
+:       sta     $1f
         longa
         lda     $7200,y                   ; unmodified green component
         and     #$03e0
@@ -233,19 +257,20 @@ BGColorUnInc:
         lda     $7400,y                   ; active green component
         and     #$03e0
         cmp     $20
-        beq     @11d1
+        beq     :+
         sbc     #$0020
-@11d1:  ora     $1e
+:       ora     $1e
         sta     $7400,y
         shorta0
         iny2
         cpy     $e0
-        bne     @1193
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
@@ -255,73 +280,74 @@ BGColorUnInc:
 ;  $1b = blue color target
 ; +$20 = green color target
 
-BGColorDec:
-@11e5:  lda     #$7e
+.proc BGColorDec
+        lda     #$7e
         pha
         plb
         shorti
         ldy     $df
-@11ed:  lda     $7400,y
+loop:   lda     $7400,y
         and     #$1f
         cmp     $1a
-        beq     @11f9
-        bcc     @11f9
+        beq     :+
+        bcc     :+
         dec
-@11f9:  sta     $1e
+:       sta     $1e
         lda     $7401,y
         and     #$7c
         cmp     $1b
-        beq     @1208
-        bcc     @1208
+        beq     :+
+        bcc     :+
         sbc     #$04
-@1208:  sta     $1f
+:       sta     $1f
         longa
         lda     $7400,y
         and     #$03e0
         cmp     $20
-        beq     @121b
-        bcc     @121b
+        beq     :+
+        bcc     :+
         sbc     #$0020
-@121b:  ora     $1e
+:       ora     $1e
         sta     $7400,y
         shorta0
         iny2
         cpy     $e0
-        bne     @11ed
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ bg color math $06: increment colors (restore to normal) ]
 
-BGColorUnDec:
-@122f:  lda     #$7e
+.proc BGColorUnDec
+        lda     #$7e
         pha
         plb
         shorti
         ldy     $df
-@1237:  lda     $7200,y
+loop:   lda     $7200,y
         and     #$1f
         sta     $1a
         lda     $7400,y
         and     #$1f
         cmp     $1a
-        beq     @1248
+        beq     :+
         inc
-@1248:  sta     $1e
+:       sta     $1e
         lda     $7201,y
         and     #$7c
         sta     $1b
         lda     $7401,y
         and     #$7c
         cmp     $1b
-        beq     @125c
+        beq     :+
         adc     #$04
-@125c:  sta     $1f
+:       sta     $1f
         longa
         lda     $7200,y
         and     #$03e0
@@ -329,26 +355,27 @@ BGColorUnDec:
         lda     $7400,y
         and     #$03e0
         cmp     $20
-        beq     @1275
+        beq     :+
         adc     #$0020
-@1275:  ora     $1e
+:       ora     $1e
         sta     $7400,y
         shorta0
         iny2
         cpy     $e0
-        bne     @1237
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ bg color math $02: add color ]
 
-BGColorIncFlash:
-@1289:  lda     #$1f
+.proc BGColorIncFlash
+        lda     #$1f
         sta     $1a
         lda     #$7c
         sta     $1b
@@ -359,48 +386,49 @@ BGColorIncFlash:
         plb
         shorti
         ldy     $df
-@129e:  lda     $7400,y
+loop:   lda     $7400,y
         and     #$1f
         clc
         adc     $1a
         cmp     #$1f
-        bcc     @12ac
+        bcc     :+
         lda     #$1f
-@12ac:  sta     $1e
+:       sta     $1e
         lda     $7401,y
         and     #$7c
         clc
         adc     $1b
         cmp     #$7c
-        bcc     @12bc
+        bcc     :+
         lda     #$7c
-@12bc:  sta     $1f
+:       sta     $1f
         longa
         lda     $7400,y
         and     #$03e0
         clc
         adc     $20
         cmp     #$03e0
-        bcc     @12d1
+        bcc     :+
         lda     #$03e0
-@12d1:  ora     $1e
+:       ora     $1e
         sta     $7400,y
         shorta0
         iny2
         cpy     $e0
-        bne     @129e
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ bg color math $05: subtract color ]
 
-BGColorDecFlash:
-@12e5:  lda     $1a
+.proc BGColorDecFlash
+        lda     $1a
         clc
         adc     #$04
         sta     $1a
@@ -419,51 +447,52 @@ BGColorDecFlash:
         plb
         shorti
         ldy     $df
-@1308:  lda     $7400,y
+loop:   lda     $7400,y
         and     #$1f
         sec
         sbc     $1a
-        bpl     @1313
-        tdc
-@1313:  sta     $1e
+        bpl     :+
+        clr_a
+:       sta     $1e
         lda     $7401,y
         and     #$7c
         sec
         sbc     $1b
-        bpl     @1320
-        tdc
-@1320:  sta     $1f
+        bpl     :+
+        clr_a
+:       sta     $1f
         longa
         lda     $7400,y
         and     #$03e0
         sec
         sbc     $20
-        bpl     @1330
-        tdc
-@1330:  ora     $1e
+        bpl     :+
+        clr_a
+:       ora     $1e
         sta     $7400,y
         shorta0
         iny2
         cpy     $e0
-        bne     @1308
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ bg color math $00/$07: restore all colors to normal ]
 
-BGColorRestore:
-@1344:  lda     #$7e
+.proc BGColorRestore
+        lda     #$7e
         pha
         plb
         longa
         shorti
         ldx     $00
-@134e:  lda     $7200,x     ; copy unmodified palette to active palette
+loop:   lda     $7200,x     ; copy unmodified palette to active palette
         sta     $7400,x
         lda     $7202,x
         sta     $7402,x
@@ -483,13 +512,14 @@ BGColorRestore:
         clc
         adc     #$0010
         tax
-        bne     @134e
+        bne     loop
         shorta0
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
@@ -499,70 +529,71 @@ BGColorRestore:
 ;  $1b = -bbbbb-- blue color target
 ; +$20 = ------gg ggg----- green color target
 
-SpriteColorInc:
-@138f:  lda     #$7e
+.proc SpriteColorInc
+        lda     #$7e
         pha
         plb
         shorti
         ldy     $df
-@1397:  lda     $7500,y
+loop:   lda     $7500,y
         and     #$1f
         cmp     $1a
-        bcs     @13a1
+        bcs     :+
         inc
-@13a1:  sta     $1e
+:       sta     $1e
         lda     $7501,y
         and     #$7c
         cmp     $1b
-        bcs     @13ae
+        bcs     :+
         adc     #$04
-@13ae:  sta     $1f
+:       sta     $1f
         longa
         lda     $7500,y
         and     #$03e0
         cmp     $20
-        bcs     @13bf
+        bcs     :+
         adc     #$0020
-@13bf:  ora     $1e
+:       ora     $1e
         sta     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     @1397
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ object color math $03: decrement colors (back to normal) ]
 
-SpriteColorUnInc:
-@13d3:  lda     #$7e
+.proc SpriteColorUnInc
+        lda     #$7e
         pha
         plb
         shorti
         ldy     $df
-@13db:  lda     $7300,y
+loop:   lda     $7300,y
         and     #$1f
         sta     $1a
         lda     $7500,y
         and     #$1f
         cmp     $1a
-        beq     @13ec
+        beq     :+
         dec
-@13ec:  sta     $1e
+:       sta     $1e
         lda     $7301,y
         and     #$7c
         sta     $1b
         lda     $7501,y
         and     #$7c
         cmp     $1b
-        beq     @1400
+        beq     :+
         sbc     #$04
-@1400:  sta     $1f
+:       sta     $1f
         longa
         lda     $7300,y
         and     #$03e0
@@ -570,19 +601,20 @@ SpriteColorUnInc:
         lda     $7500,y
         and     #$03e0
         cmp     $20
-        beq     @1419
+        beq     :+
         sbc     #$0020
-@1419:  ora     $1e
+:       ora     $1e
         sta     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     @13db
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
@@ -592,73 +624,74 @@ SpriteColorUnInc:
 ;  $1b = blue color target
 ; +$20 = green color target
 
-SpriteColorDec:
-@142d:  lda     #$7e
+.proc SpriteColorDec
+        lda     #$7e
         pha
         plb
         shorti
         ldy     $df
-@1435:  lda     $7500,y
+loop:   lda     $7500,y
         and     #$1f
         cmp     $1a
-        beq     @1441
-        bcc     @1441
+        beq     :+
+        bcc     :+
         dec
-@1441:  sta     $1e
+:       sta     $1e
         lda     $7501,y
         and     #$7c
         cmp     $1b
-        beq     @1450
-        bcc     @1450
+        beq     :+
+        bcc     :+
         sbc     #$04
-@1450:  sta     $1f
+:       sta     $1f
         longa
         lda     $7500,y
         and     #$03e0
         cmp     $20
-        beq     @1463
-        bcc     @1463
+        beq     :+
+        bcc     :+
         sbc     #$0020
-@1463:  ora     $1e
+:       ora     $1e
         sta     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     @1435
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ object color math $06: increment colors (back to normal) ]
 
-SpriteColorUnDec:
-@1477:  lda     #$7e
+.proc SpriteColorUnDec
+        lda     #$7e
         pha
         plb
         shorti
         ldy     $df
-@147f:  lda     $7300,y
+loop:   lda     $7300,y
         and     #$1f
         sta     $1a
         lda     $7500,y
         and     #$1f
         cmp     $1a
-        beq     @1490
+        beq     :+
         inc
-@1490:  sta     $1e
+:       sta     $1e
         lda     $7301,y
         and     #$7c
         sta     $1b
         lda     $7501,y
         and     #$7c
         cmp     $1b
-        beq     @14a4
+        beq     :+
         adc     #$04
-@14a4:  sta     $1f
+:       sta     $1f
         longa
         lda     $7300,y
         and     #$03e0
@@ -666,26 +699,27 @@ SpriteColorUnDec:
         lda     $7500,y
         and     #$03e0
         cmp     $20
-        beq     @14bd
+        beq     :+
         adc     #$0020
-@14bd:  ora     $1e
+:       ora     $1e
         sta     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     @147f
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ object color math $02: add colors (doesn't work) ]
 
-SpriteColorIncFlash:
-@14d1:  lda     #$1f
+.proc SpriteColorIncFlash
+        lda     #$1f
         sta     $1a
         lda     #$7c
         sta     $1b
@@ -696,48 +730,49 @@ SpriteColorIncFlash:
         plb
         shorti
         ldy     $df
-@14e6:  lda     $7500,y
+loop:   lda     $7500,y
         and     #$1f
         clc
         adc     $1a
         cmp     #$1f
-        bcc     @14f4
+        bcc     :+
         lda     #$1f
-@14f4:  sta     $1e
+:       sta     $1e
         lda     $7501,y
         and     #$7c
         clc
         adc     $1b
         cmp     #$7c
-        bcc     @1504
+        bcc     :+
         lda     #$7c
-@1504:  sta     $1f
+:       sta     $1f
         longa
         lda     $7500,y
         and     #$03e0
         clc
         adc     $20
         cmp     #$03e0
-        bcc     @1519
+        bcc     :+
         lda     #$03e0
-@1519:  ora     $1e
+:       ora     $1e
         sta     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     @14e6
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ object color math $05: subtract colors ]
 
-SpriteColorDecFlash:
-@152d:  lda     $1a
+.proc SpriteColorDecFlash
+        lda     $1a
         clc
         adc     #$04
         sta     $1a
@@ -756,51 +791,52 @@ SpriteColorDecFlash:
         plb
         shorti
         ldy     $df
-@1550:  lda     $7500,y
+loop:   lda     $7500,y
         and     #$1f
         sec
         sbc     $1a
-        bpl     @155b
-        tdc
-@155b:  sta     $1e
+        bpl     :+
+        clr_a
+:       sta     $1e
         lda     $7501,y
         and     #$7c
         sec
         sbc     $1b
-        bpl     @1568
-        tdc
-@1568:  sta     $1f
+        bpl     :+
+        clr_a
+:       sta     $1f
         longa
         lda     $7500,y
         and     #$03e0
         sec
         sbc     $20
-        bpl     @1578
-        tdc
-@1578:  ora     $1e
+        bpl     :+
+        clr_a
+:       ora     $1e
         sta     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     @1550
+        bne     loop
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ object color math $00/$07: restore all colors to normal ]
 
-SpriteColorRestore:
-@158c:  lda     #$7e
+.proc SpriteColorRestore
+        lda     #$7e
         pha
         plb
         longa
         shorti
         ldx     $00
-@1596:  lda     $7300,x
+loop:   lda     $7300,x
         sta     $7500,x
         lda     $7302,x
         sta     $7502,x
@@ -820,12 +856,13 @@ SpriteColorRestore:
         clc
         adc     #$0010
         tax
-        bne     @1596
+        bne     loop
         shorta0
         longi
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------

@@ -2,6 +2,9 @@ import re
 import romtools as rt
 
 
+ESCAPE_REGEX = r'{(\w+)(?:\:(\w+))?}'
+
+
 class TextCodec:
 
     def __init__(self, char_table):
@@ -45,7 +48,8 @@ class TextCodec:
 
             self.decoding_table[code] = primary_value
 
-        self.terminator_code = self.encoding_table.get(r'\0')
+        self.encoding_keys = self.encoding_table.keys()
+        self.terminator_code = self.encoding_table.get('{0}')
 
     def decode_text(self, text_bytes):
         text = ''
@@ -66,79 +70,122 @@ class TextCodec:
 
             if char_code not in self.decoding_table:
                 # value is not in decoding table
-                text += rt.hex_string(char_code, 2, r'\x')
+                text += '{' + rt.hex_string(char_code, 2) + '}'
                 continue
 
             # get value from decoding table
             char_value = self.decoding_table[char_code]
 
-            if char_value == r'\0':
+            if char_value[0] != '{' or char_value[-1] != '}':
+                # normal text code
+                text += char_value
+                continue
+
+            if char_value == '{0}':
                 # string terminator
                 break
 
-            elif char_value.endswith('[['):
-                # 2-byte parameter
-                if i + 1 >= len(text_bytes):
-                    raise ValueError('Text code missing parameter value:',
-                                     char_value)
-                text += char_value
-                param = (text_bytes[i] << 8) | text_bytes[i + 1]
-                text += rt.hex_string(param, 4)
-                text += ']]'
-                i += 2
+            # look for a parameter in the escape code
+            escape_match = re.match(ESCAPE_REGEX, char_value)
+            if escape_match is None:
+                # probably missing the closing brace
+                raise ValueError('Invalid escape code:', char_value)
 
-            elif char_value.endswith('['):
+            elif escape_match.group(2) == 'b':
                 # 1-byte parameter
-                if i >= len(text_bytes):
-                    raise ValueError('Text code missing parameter value:',
-                                     char_value)
-                text += char_value
-                text += rt.hex_string(text_bytes[i], 2)
-                text += ']'
+                param = str(text_bytes[i])
                 i += 1
+                char_value = re.sub(ESCAPE_REGEX, r'{\1:' + param + '}', char_value)
 
-            else:
-                # normal character
-                text += char_value
+            elif escape_match.group(2) == 'w':
+                # 2-byte parameter
+                param = str(text_bytes[i] << 8 | text_bytes[i + 1])
+                i += 2
+                char_value = re.sub(ESCAPE_REGEX, r'{\1:' + param + '}', char_value)
+
+            elif escape_match.group(2) is not None:
+                print(escape_match.group(2))
+                raise ValueError('Parameter must be either byte (b) or word (w):', char_value)
+
+            text += char_value
 
         # remove padding from the end of the string
-        while text.endswith(r'\pad'):
-            text = text[:-4]
+        while text.endswith('{pad}'):
+            text = text[:-5]
 
         return text
 
     def encode_text(self, text_str):
         i = 0
         key_list = self.encoding_table.keys()
-        text_bytes = bytearray()
+        text_codes = []
 
         while i < len(text_str):
 
-            if text_str[i:].startswith(r'\x'):
-                # parse raw hex value
-                raw_str = text_str[i:i + 4]
-                find_value = re.match(r'\\x([0-9a-fA-F]{2})', raw_str)
-                if find_value is None:
-                    raise ValueError('Invalid raw text:', raw_str)
-                value = find_value.group(1)
-                text_bytes.append(int(value, 16))
-                i += 4
+            if text_str[i] != '{':
+                # find values that match the remaining string
+                match_keys = filter(lambda x: text_str[i:].startswith(x), key_list)
+                match_keys = list(match_keys)
+                if len(match_keys) == 0:
+                    raise ValueError('Unable to encode character:', text_str[i])
+
+                # find the longest match
+                key = max(match_keys, key=len)
+
+                # increment string pointer
+                i += len(key)
+
+                # append the text code
+                text_codes.append(self.encoding_table[key])
                 continue
 
-            # find values that match the remaining string
-            match_keys = filter(lambda x: text_str[i:].startswith(x), key_list)
-            match_keys = list(match_keys)
-            if len(match_keys) == 0:
-                raise ValueError('Unable to encode character:', text_str[i])
+            escape_match = re.match(ESCAPE_REGEX, text_str[i:])
+            if escape_match is None:
+                raise ValueError('Invalid escape sequence:', text_str)
 
-            # find the longest match
-            key = max(match_keys, key=len)
+            escape_str = escape_match.group(0)
 
-            # force end of string if terminator found
-            if key == r'\0':
+            if escape_match.group(1).startswith('{0x'):
+                # parse raw hex value
+                value = escape_match.group(1)
+                text_codes.append(int(value))
+                i += len(escape_match)
+                continue
+
+            elif escape_str == '{0}':
+                # force end of string if terminator found
                 break
 
-            code = self.encoding_table[key]
+            elif escape_match.group(2) is not None:
+                # escape code with a parameter
+                escape_param = int(escape_match.group(2))
+
+                b_code = re.sub(ESCAPE_REGEX, r'{\1:b}', escape_str)
+                if b_code in key_list:
+                    # escape code with no parameter
+                    i += len(escape_str)
+                    text_codes.append(self.encoding_table[b_code])
+                    text_codes.append(escape_param)
+                    continue
+
+                w_code = re.sub(ESCAPE_REGEX, r'{\1:w}', escape_str)
+                if w_code in key_list:
+                    # escape code with no parameter
+                    i += len(escape_str)
+                    text_codes.append(self.encoding_table[w_code])
+                    text_codes.append(escape_param & 0xFF)
+                    text_codes.append(escape_param >> 8)
+                    continue
+
+            elif escape_str in key_list:
+                # escape code with no parameter
+                i += len(escape_match.group(0))
+                text_codes.append(self.encoding_table[escape_str])
+                continue
+
+        text_bytes = bytearray()
+        for code in text_codes:
+
             if code > 0xFF:
                 # 2-byte code
                 text_bytes.append(code >> 8)
@@ -146,43 +193,6 @@ class TextCodec:
             else:
                 # 1-byte code
                 text_bytes.append(code)
-
-            # increment string pointer
-            i += len(key)
-
-            # encode parameter
-            if key.endswith('[['):
-                # 2-byte parameter
-                find_param = re.match(r'(.*)\]\]', text_str[i:])
-                if find_param is None:
-                    raise ValueError('Text code missing parameter:', key)
-                param = find_param.group(1)
-                try:
-                    value = int(param, 0)
-                except ValueError:
-                    raise TypeError('Invalid text code parameter:', param)
-
-                if value > 0xFFFF:
-                    raise ValueError('Invalid text code parameter:', value)
-                text_bytes.append(value >> 8)
-                text_bytes.append(value & 0xFF)
-                i += len(param) + 2
-
-            elif key.endswith('['):
-                # 1-byte parameter
-                find_param = re.match(r'(.*?)\]', text_str[i:])
-                if find_param is None:
-                    raise ValueError('Text code missing parameter:', key)
-                param = find_param.group(1)
-                try:
-                    value = int(param, 0)
-                except ValueError:
-                    raise TypeError('Invalid text code parameter:', param)
-
-                if value > 0xFF:
-                    raise ValueError('Invalid text code parameter:', value)
-                text_bytes.append(value)
-                i += len(param) + 1
 
         if self.terminator_code is not None:
             text_bytes.append(self.terminator_code)
@@ -209,16 +219,14 @@ class TextCodec:
 
             value = self.decodingTable.get(code & 0xFF, '')
 
-            if value == r'\0':
+            if value == '{0}':
                 # found string terminator
                 break
 
-            elif value.endswith('[['):
-                # command with 2-byte parameter
-                i += 2
-
-            elif value.endswith('['):
-                # command with 1-byte parameter
-                i += 1
+            elif value[0] == '{' and value[-1] == '}':
+                # check for an escape code parameter
+                escape_match = re.match(ESCAPE_REGEX, value)
+                if escape_match is not None:
+                    i += int(escape_match.group(1))
 
         return min(i, len(text_bytes))

@@ -15,6 +15,7 @@
 
 .import RNGTbl
 .import World1BGPal, World2BGPal, World1SpritePal, World2SpritePal, World3Pal
+.import EventScript_NoEvent, EventScript_GameOver
 
 ; ------------------------------------------------------------------------------
 
@@ -1649,10 +1650,10 @@ ExitVehicle:
         lda     $ec
         pha
         bra     @924d
-@9246:  lda     #$00
+@9246:  lda     #0
         pha
         pha
-        lda     #$ca
+        lda     #^EventScript_NoEvent
         pha
 @924d:  lda     $f1
         pha
@@ -1730,10 +1731,10 @@ ExitWorld:
         lda     $ec
         pha
         bra     @92dc
-@92d5:  lda     #$00
+@92d5:  lda     #0
         pha
         pha
-        lda     #$ca
+        lda     #^EventScript_NoEvent
         pha
 @92dc:  lda     $f1
         pha
@@ -1804,11 +1805,11 @@ GameOver:
         sta     f:$001f64
         tdc
         sta     f:$001f65
-        lda     #$ca        ; ca/002e (game over)
+        lda     #^EventScript_GameOver
         sta     f:$0011ff
         tdc
         sta     f:$0011fe
-        lda     #$2e
+        lda     #<EventScript_GameOver
         sta     f:$0011fd
         lda     $11f6       ; disable battle
         and     #$fd
@@ -1841,7 +1842,7 @@ LandAirship:
         sta     $eb
         lda     f:VehicleEvent_04+2
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $ec
         stz     $ed
         stz     $ee
@@ -1857,7 +1858,7 @@ LandAirship:
         sta     $eb
         lda     f:VehicleEvent_03+2
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $ec
         stz     $ed
         stz     $ee

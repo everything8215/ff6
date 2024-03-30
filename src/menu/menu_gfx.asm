@@ -250,7 +250,7 @@ LoadPortraitPal:
         bra     @6c30
 @6c25:  clr_a
         lda     $0000,y                 ; character number
-        cmp     #CHAR_LOCKE             ; if it's locke, use palette $01
+        cmp     #CHAR::LOCKE            ; if it's locke, use palette $01
         beq     @6c30
         lda     $0001,y                 ; otherwise, use the actor number
 @6c30:  tax
@@ -366,9 +366,9 @@ LoadCharGfx:
         txa
         asl
         tax
-        lda     f:MenuCharGfxPtrs+2,x
+        lda     f:MenuCharGfxPtrs+2,x   ; low word
         sta     $e7
-        lda     f:MenuCharGfxPtrs,x
+        lda     f:MenuCharGfxPtrs,x     ; high word
         sta     $e9
         ldx     $00
 @6d05:  lda     f:MenuCharPoseOffsets,x
@@ -416,12 +416,7 @@ _c36d44:
         sta     $ed
         ldy     $f3
         sty     hVMADDL
-        jmp     @6d58
-
-; ------------------------------------------------------------------------------
-
-; [  ]
-
+        jmp     @6d58                   ; this doesn't do anything
 @6d58:  ldy     $00
 @6d5a:  lda     [$eb],y
         sta     hVMDATAL
@@ -718,7 +713,7 @@ GetCharGfxID:
 ; [ fix palette id for brown or green soldier ]
 
 FixSoldierPal:
-@6fa6:  cmp     #CHAR_GFX_SOLDIER
+@6fa6:  cmp     #CHAR_GFX::SOLDIER
         bne     @6fb7
         lda     $1ea0
         bit     #$08

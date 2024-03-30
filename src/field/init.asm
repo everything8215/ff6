@@ -13,7 +13,7 @@
 
 inc_lang "text/bushido_name_%s.inc"
 
-.import WindowPal
+.import WindowPal, EventScript_GameStart
 
 .a8
 .i16
@@ -176,17 +176,17 @@ InitNewGame:
         jsr     InitEventSwitches
         jsr     InitNPCSwitches
         jsr     InitTreasureSwitches
-        ldx     #$0003                  ; $ca0003 (game start)
+        ldx     #.loword(EventScript_GameStart)
         stx     $e5
         stx     $05f4
-        lda     #$ca
+        lda     #^EventScript_GameStart
         sta     $e7
         sta     $05f6
-        ldx     #$0000                  ; set return address to $ca0000
+        ldx     #.loword(EventScript_NoEvent)
         stx     $0594
-        lda     #$ca
+        lda     #^EventScript_NoEvent
         sta     $0596
-        lda     #$01                    ; loop once
+        lda     #1                      ; loop once
         sta     $05c7
         ldx     #$0003                  ; set event stack
         stx     $e8
@@ -228,43 +228,111 @@ InitNewGame:
         jsl     InitCtrl_ext
         rts
 
+        .pushcpu
+
+        .include "event_cmd.inc"
+        .include "gfx/map_sprite_gfx.inc"
+        .include "gfx/map_sprite_pal.inc"
+
 DebugEvent:
-        .byte   $a9                     ; show title screen (init controller)
+        ; cutscene        intro
 
-        .byte   $7f,$00,$00             ; change character $00's name
-        .byte   $40,$00,$00             ; set character $00 properties
-        .byte   $3d,$00                 ; create object $00
-        .byte   $37,$00,$00             ; set character $00 graphics
-        .byte   $43,$00,$02             ; set character $00 palette
+        char_name       TERRA, CHAR_PROP_TERRA_INTRO
+        char_prop       TERRA, CHAR_PROP_TERRA
+        create_obj      OBJ_TERRA
+        obj_gfx         OBJ_TERRA, MAP_SPRITE_GFX_TERRA
+        obj_pal         OBJ_TERRA, MAP_SPRITE_PAL_TERRA
 
-        .byte   $7f,$01,$01             ; change character $01's name
-        .byte   $40,$01,$01             ; set character $01 properties
-        .byte   $3d,$01                 ; create object $01
-        .byte   $37,$01,$01             ; set character $01 graphics
-        .byte   $43,$01,$01             ; set character $01 palette
+        char_name       LOCKE, CHAR_PROP_LOCKE
+        char_prop       LOCKE, CHAR_PROP_LOCKE
+        create_obj      OBJ_LOCKE
+        obj_gfx         OBJ_LOCKE, MAP_SPRITE_GFX_LOCKE
+        obj_pal         OBJ_LOCKE, MAP_SPRITE_PAL_LOCKE
 
-        .byte   $3f,$00,$01             ; add character $00 to party 1
-        .byte   $3f,$01,$01             ; add character $01 to party 1
-        .byte   $46,$01                 ; make party 1 the current party
-        .byte   $d4,$e0                 ; set $1ea1.3
-        .byte   $d4,$f0                 ; set $1ebc.3
-        .byte   $d3,$cc
-        .byte   $d2,$c1
-        .byte   $d2,$0b
-        .byte   $d2,$e3
-        .byte   $d2,$6f
-        .byte   $d2,$70
-        .byte   $6c,$00,$00,$55,$6e,$00 ; set parent map
-        .byte   $6b,$4b,$00,$02,$1c,$40 ; load map
-        .byte   $41,$00                 ; show character $00
-        .byte   $45                     ; refresh objects
-        .byte   $84,$20,$4e             ; give 50,000 gil
-        .byte   $39                     ; unlock the screen
-        .byte   $59,$08                 ; unfade the screen
-        .byte   $fe                     ; return
+        char_name       EDGAR, CHAR_PROP_EDGAR
+        char_prop       EDGAR, CHAR_PROP_EDGAR
+        create_obj      OBJ_EDGAR
+        obj_gfx         OBJ_EDGAR, MAP_SPRITE_GFX_EDGAR
+        obj_pal         OBJ_EDGAR, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+
+        char_party      TERRA,1
+        char_party      LOCKE,1
+        char_party      EDGAR,1
+        activate_party  1
+        show_obj        OBJ_TERRA
+
+        loop_start      4
+        give_gil        50000
+        loop_end
+        give_item       ITEM_PALADIN_SHLD
+        give_item       ITEM_PALADIN_SHLD
+        give_item       ITEM_PALADIN_SHLD
+        give_item       ITEM_ILLUMINA
+        give_item       ITEM_WING_EDGE
+        give_item       ITEM_AURA_LANCE
+        char_opt_equip  TERRA
+        char_opt_equip  LOCKE
+        char_opt_equip  EDGAR
+
+        give_genju      BAHAMUT
+        give_genju      PHOENIX
+        give_genju      ALEXANDR
+        give_genju      CRUSADER
+        give_genju      RAIDEN
+        give_genju      ODIN
+        give_genju      RAGNAROK
+
+        set_switch      $02e0
+        set_switch      $02f0
+        clr_switch      $01cc
+        set_switch      $01c1
+        set_switch      $010b
+        set_switch      $01e3
+        set_switch      $016f
+        set_switch      $0170
+
+        set_parent_map 0, $55, $6e, DIR_UP, 0, 0
+        load_map $4b, 1, 28, DIR_UP, 0, $40
+        fade_in
+        unlock_screen
+
+        start_timer 0, 240, $CBCE32, 0
+
+        ; .byte   $45                     ; refresh objects
+
+        obj_script_wait OBJ_TERRA
+        obj_dir LEFT
+        obj_end
+
+        ; call_x          :+, 3
+
+;         show_dlg_wait   $01ca
+;         jmp_choice      choice1, choice2
+
+; choice1:
+;         take_gil        1
+;         return
+
+; choice2:
+;         give_gil        1
+;         return
+
+        ; .linecont +
+        ; if_switch_or    :+, $0130,1, $0132,0, $0001,1
+        ; if_switch_and   :+, \
+        ;         $0130,1, $0132,0, $0133,1, \
+        ;         $0134,0, $0135,1, $0136,0, \
+        ;         $0007,1
+        ; .linecont -
+
+        return
+
+        .popcpu
 
 .endif
         rts
+
+; ------------------------------------------------------------------------------
 
 .pushseg
 .segment "init_rage"
@@ -334,7 +402,7 @@ LoadMap:
         ldx     $e5                     ; branch if an event is running
         bne     @bf36
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @bf36
         jsr     GetTopChar
 @bf36:  stz     $84                     ; disable map load
@@ -482,7 +550,7 @@ LoadMap:
         ldy     $0594,x                 ; branch unless there's an address on the event stack
         bne     @c0a4
         lda     $0596,x
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @c0a4
         jsr     ExecEvent
 @c0a4:  lda     $11fa                   ; branch if map fade in is disabled

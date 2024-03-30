@@ -32,9 +32,9 @@ def encode_text(asset_def):
 
             # pad the text
             if len(encoded_text) != item_size:
-                assert '\\pad' in text_codec.encoding_table, \
+                assert '{pad}' in text_codec.encoding_table, \
                     f'Padding not found in char table'
-                pad_char = text_codec.encoding_table['\\pad']
+                pad_char = text_codec.encoding_table['{pad}']
                 item_size = asset_def['item_size']
                 while len(encoded_text) < item_size:
                     encoded_text.append(pad_char)

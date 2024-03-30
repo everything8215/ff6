@@ -11,8 +11,6 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-; .include "assets/map_bg_anim_prop.inc"
-; .include "assets/map_bg3_anim_prop.inc"
 .include "gfx/map_anim_gfx_bg3.inc"
 
 .import MapAnimGfx, MapPalAnimColors
@@ -25,18 +23,18 @@
 
 ; [ init palette animation ]
 
-InitPalAnim:
-@8d17:  lda     $053a
-        bne     @8d1d
+.proc InitPalAnim
+        lda     $053a
+        bne     :+
         rts
-@8d1d:  dec
+:       dec
         sta     hWRMPYA
         lda     #12
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
         ldy     $00
-@8d2e:  lda     f:MapPalAnimProp,x
+loop:   lda     f:MapPalAnimProp,x
         sta     $10ea,y
         lda     f:MapPalAnimProp+1,x
         sta     $10e8,y
@@ -61,72 +59,75 @@ InitPalAnim:
         adc     #8
         tay
         cmp     #16
-        bne     @8d2e
+        bne     loop
         rts
+.endproc  ; InitPalAnim
 
 ; ------------------------------------------------------------------------------
 
 ; [ update palette animation ]
 
-UpdatePalAnim:
-@8d74:  lda     $053a                   ; palette animation index
-        beq     @8dc7
+.proc UpdatePalAnim
+        lda     $053a                   ; palette animation index
+        beq     done
         ldy     $00
-@8d7b:  lda     $10ea,y                 ; palette animation type
-        bmi     @8dbb
+loop:   lda     $10ea,y                 ; palette animation type
+        bmi     skip
         and     #$f0
         lsr4
-        bne     @8d92
 
 ; 0 (counter only)
+        bne     :+
         jsr     IncPalAnimCounter
         cmp     #0
-        bne     @8dbb                   ; branch if no reset
-        jmp     @8dbb                   ; branch anyway
-@8d92:  dec
-        bne     @8da2
+        bne     skip                    ; branch if no reset
+        jmp     skip                    ; branch anyway
 
 ; 1 (cycle)
+:       dec
+        bne     :+
         jsr     IncPalAnimCounter
         cmp     #0
-        bne     @8dbb
+        bne     skip
         jsr     UpdatePalAnimCycle
-        jmp     @8dbb
+        jmp     skip
 
 ; 2 (rom)
-@8da2:  dec
-        bne     @8db0
+:       dec
+        bne     :+
         jsr     IncPalAnimCounter
         phy
         jsr     LoadPalAnimColors
         ply
-        jmp     @8dbb
-@8db0:  dec
-        bne     @8dbb
+        jmp     skip
 
 ; 3 (pulse)
+:       dec
+        bne     skip
         jsr     IncPalAnimCounter
         phy
         jsr     UpdatePalAnimPulse
         ply
-@8dbb:  tya
+
+skip:   tya
         clc
         adc     #8
         tay
         cmp     #16
-        jne     @8d7b
-@8dc7:  rts
+        jne     loop
+done:   rts
+.endproc  ; UpdatePalAnim
 
 ; ------------------------------------------------------------------------------
 
 ; [ update palette animation counters ]
 
-IncPalAnimCounter:
-@8dc8:  lda     $10e7,y                 ; increment frame counter
+.proc IncPalAnimCounter
+        lda     $10e7,y                 ; increment frame counter
         inc
         sta     $10e7,y
         cmp     $10e8,y
-        bne     @8def
+        bne     no_reset
         lda     #$00
         sta     $10e7,y
         lda     $10e9,y                 ; increment color counter
@@ -135,25 +136,28 @@ IncPalAnimCounter:
         lda     $10ea,y
         and     #$0f
         cmp     $10e9,y
-        bne     @8def
-        tdc                             ; return 0 for reset
+        bne     no_reset
+        clr_a                           ; return 0 for reset
         sta     $10e9,y
         rts
-@8def:  lda     #1                      ; return 1 for no reset
+
+no_reset:
+        lda     #1                      ; return 1 for no reset
         rts
+.endproc
 
 ; ------------------------------------------------------------------------------
 
 PalAnimPulseTbl:
-@8df2:  .byte   $70,$80,$90,$a0,$b0,$c0,$d0,$e0,$f0
+        .byte   $70,$80,$90,$a0,$b0,$c0,$d0,$e0,$f0
         .byte   $e0,$d0,$c0,$b0,$a0,$90,$80,$70,$60
 
 ; ------------------------------------------------------------------------------
 
 ; [ update palette animation (pulse) ]
 
-UpdatePalAnimPulse:
-@8e04:  lda     $10e9,y
+.proc UpdatePalAnimPulse
+        lda     $10e9,y
         tax
         lda     f:PalAnimPulseTbl,x
         sta     hWRMPYA
@@ -162,7 +166,7 @@ UpdatePalAnimPulse:
         lda     $10ec,y
         inc2
         tay
-@8e19:  lda     $7e7200,x
+loop:   lda     $7e7200,x
         and     #$1f
         sta     hWRMPYB
         nop3
@@ -192,15 +196,16 @@ UpdatePalAnimPulse:
         shorta0
         inx2
         dey2
-        bne     @8e19
+        bne     loop
         rts
+.endproc  ; UpdatePalAnimPulse
 
 ; ------------------------------------------------------------------------------
 
 ; [ load colors from ROM for palette animation ]
 
-LoadPalAnimColors:
-@8e6b:  lda     $10eb,y
+.proc LoadPalAnimColors
+        lda     $10eb,y
         clc
         adc     #$00
         sta     $2a
@@ -219,22 +224,23 @@ LoadPalAnimColors:
         tay
         iny2
         longa
-@8e95:  lda     f:MapPalAnimColors,x    ; palette animation color palette
+:       lda     f:MapPalAnimColors,x    ; palette animation color palette
         sta     [$2a]
         inc     $2a
         inc     $2a
         inx2
         dey2
-        bne     @8e95
+        bne     :-
         shorta0
         rts
+.endproc  ; LoadPalAnimColors
 
 ; ------------------------------------------------------------------------------
 
 ; [ update palette animation (cycle) ]
 
-UpdatePalAnimCycle:
-@8ea9:  lda     $10eb,y
+.proc UpdatePalAnimCycle
+        lda     $10eb,y
         tax
         clc
         adc     $10ec,y
@@ -243,31 +249,33 @@ UpdatePalAnimCycle:
         longa
         lda     $7e7400,x
         sta     $1e
-@8ebd:  lda     $7e7402,x
+:       lda     $7e7402,x
         sta     $7e7400,x
         inx2
         cpx     $20
-        bne     @8ebd
+        bne     :-
         lda     $1e
         sta     $7e7400,x
         shorta0
         rts
+.endproc  ; UpdatePalAnimCycle
 
 ; ------------------------------------------------------------------------------
 
 ; [ init bg animation ]
 
-InitBGAnim:
+.proc InitBGAnim
 @8ed5:  jsr     InitBG12Anim
         jsr     InitBG3Anim
         rts
+.endproc  ; InitBGAnim
 
 ; ------------------------------------------------------------------------------
 
 ; [ init bg1/bg2 animation ]
 
-InitBG12Anim:
-@8edc:  lda     $053b                   ; bg1/bg2 animation index
+.proc InitBG12Anim
+        lda     $053b                   ; bg1/bg2 animation index
         and     #$1f
         asl
         tax
@@ -276,10 +284,10 @@ InitBG12Anim:
         tax
         shorta0
         ldy     $00
-@8eef:  lda     #$e6
+loop1:  lda     #$e6
         sta     $106d,y                 ; graphics bank = $e6
         longa_clc
-        tdc
+        clr_a
         sta     $1069,y                 ; clear animation counter
         lda     f:MapBGAnimProp,x       ; animation speed
         sta     $106b,y
@@ -299,7 +307,7 @@ InitBG12Anim:
         tay
         shorta0
         cpy     #13*8
-        bne     @8eef
+        bne     loop1
         lda     #$10                    ; $1a = tile counter (16 tiles, last 8 don't get animated)
         sta     $1a
         ldy     #$9f00                  ; destination address = $7e9f00
@@ -314,18 +322,18 @@ InitBG12Anim:
         lda     f:MapBGAnimPropPtrs,x
         tay
         shorta0
-@8f4f:  tyx
+loop2:  tyx
         longa_clc
         lda     f:MapBGAnimProp+2,x     ; frame 1 pointer
         tax
         shorta0
         lda     #$80                    ; $1b = tile graphics counter (4 frames per tile, 32 bytes per frame)
         sta     $1b
-@8f5e:  lda     f:MapAnimGfx,x          ; copy tile graphics to ram
+:       lda     f:MapAnimGfx,x          ; copy tile graphics to ram
         sta     hWMDATA
         inx
         dec     $1b
-        bne     @8f5e
+        bne     :-
         longa
         tya
         clc
@@ -333,7 +341,7 @@ InitBG12Anim:
         tay
         shorta0
         dec     $1a
-        bne     @8f4f
+        bne     loop2
         stz     hHDMAEN                 ; dma graphics to vram
         stz     hMDMAEN
         lda     #$80
@@ -355,25 +363,26 @@ InitBG12Anim:
         sta     hMDMAEN
         stz     hMDMAEN
         rts
+.endproc  ; InitBG12Anim
 
 ; ------------------------------------------------------------------------------
 
 ; [ init bg3 animation ]
 
-InitBG3Anim:
-@8fb1:  lda     $053b                   ; bg3 animation index
+.proc InitBG3Anim
+        lda     $053b                   ; bg3 animation index
         and     #$e0
         lsr5
-        bne     @8fbe                   ; return if not valid
+        bne     :+                      ; return if not valid
         rts
-@8fbe:  dec
+:       dec
         tay
         asl
         tax
         longa
         lda     f:MapBG3AnimPropPtrs,x
         tax
-        tdc
+        clr_a
         sta     $10d1                   ; clear animation counter
         lda     f:MapBG3AnimProp,x      ; animation speed
         sta     $10d3
@@ -416,6 +425,7 @@ InitBG3Anim:
         sta     $f8
         jsl     Decompress
         rts
+.endproc  ; InitBG3Anim
 
 ; ------------------------------------------------------------------------------
 
@@ -423,16 +433,19 @@ InitBG3Anim:
 
 ; called every other frame during irq (30hz)
 
-TfrBGAnimGfx:
-@903f:  lda     $053b
-        bne     @9050
+.proc TfrBGAnimGfx
+        lda     $053b
+        bne     do_tfr
+
+; no animation graphics, wait a few cycles then return
         ldx     #8
-@9047:  dex
-        bne     @9047
+:       dex
+        bne     :-
         lda     #$80
         sta     hINIDISP
         rts
-@9050:  stz     hMDMAEN
+
+do_tfr: stz     hMDMAEN
         lda     #$80
         sta     hVMAINC
         ldx     #$2800
@@ -567,8 +580,9 @@ TfrBGAnimGfx:
         ldx     #$0000
         phx
         pld
-        tdc
+        clr_a
         rts
+.endproc  ; TfrBGAnimGfx
 
 ; ------------------------------------------------------------------------------
 
@@ -576,8 +590,8 @@ TfrBGAnimGfx:
 
 ; called every other frame during irq (30hz)
 
-TfrBG3AnimGfx:
-@9178:  stz     hMDMAEN                 ; disable dma
+.proc TfrBG3AnimGfx
+        stz     hMDMAEN                 ; disable dma
         lda     #$80
         sta     hVMAINC                 ; vram settings
         ldx     #$3000
@@ -587,13 +601,13 @@ TfrBG3AnimGfx:
         lda     #$18
         sta     $4301                   ; dma to $2118 (vram)
         ldx     #$0005
-@9193:  dex
-        bne     @9193                   ; wait
+:       dex
+        bne     :-                      ; wait
         lda     #$80
         sta     hINIDISP                ; screen off
         lda     $053b                   ; bg3 animation index
         and     #$e0
-        beq     @91d4                   ; return if bg3 animation is disabled
+        beq     done                    ; return if bg3 animation is disabled
         longa_clc
         lda     $10d5                   ; size
         sta     $4305
@@ -613,7 +627,8 @@ TfrBG3AnimGfx:
         sta     $4304
         lda     #$01                    ; enable dma
         sta     hMDMAEN
-@91d4:  rts
+done:   rts
+.endproc  ; TfrBG3AnimGfx
 
 ; ------------------------------------------------------------------------------
 

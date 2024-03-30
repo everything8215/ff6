@@ -191,7 +191,7 @@ GenjuProp:
 
 ; ------------------------------------------------------------------------------
 
-; 18: zoneseel
+; 18: zoneseek
         .byte 20, ATTACK_RASP
         .byte 15, ATTACK_OSMOSE
         .byte 5, ATTACK_SHELL

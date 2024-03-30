@@ -13,6 +13,11 @@
 
 .include "field/treasure_prop.inc"
 
+.import EventScript_NoEvent
+.import EventScript_TreasureItem, EventScript_TreasureMagic
+.import EventScript_TreasureGil, EventScript_TreasureEmpty
+.import EventScript_TreasureMonster
+
 .a8
 .i16
 .segment "field_code"
@@ -147,10 +152,10 @@ CheckNPCs:
         lda     #$29
         sta     hWRDIVB
         ldx     $e5                     ; return if an event is running
-        cpx     #$0000
+        cpx     #.loword(EventScript_NoEvent)
         bne     @472b
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @472b
         lda     $087c,y                 ; party object movement type
         and     #$0f
@@ -284,12 +289,12 @@ CheckNPCs:
         sta     $05f5
         lda     $088b,y
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #$0000                  ; set event return address
+        ldx     #.loword(EventScript_NoEvent)
         stx     $0594
-        lda     #$ca
+        lda     #^EventScript_NoEvent
         sta     $0596
         lda     #$01
         sta     $05c7
@@ -719,10 +724,10 @@ CheckTreasure:
         lda     $84
         bne     @4bd3
         ldy     $e5
-        cpy     #$0000
+        cpy     #.loword(EventScript_NoEvent)
         bne     @4bd3
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @4bd3
         lda     $b8
         and     #$04
@@ -817,7 +822,7 @@ CheckTreasure:
         lda     #^9999999
         sta     $1862
 @4c78:  jsr     HexToDec
-        ldx     #$0010      ; $ca0010 (chest with gil)
+        ldx     #.loword(EventScript_TreasureGil)
         bra     @4cac
 
 ; item
@@ -827,7 +832,7 @@ CheckTreasure:
         lda     $1a
         sta     $0583
         jsr     GiveItem
-        ldx     #$0008      ; $ca0008 (chest with item)
+        ldx     #.loword(EventScript_TreasureItem)
         bra     @4cac
 
 ; monster
@@ -836,22 +841,23 @@ CheckTreasure:
         beq     @4ca3       ; branch if not a monster
         lda     $1a
         sta     $0789       ; set monster-in-a-box formation
-        ldx     #$0040      ; $ca0040 (chest with monster)
+        ldx     #.loword(EventScript_TreasureMonster)
         bra     @4cac
 
 ; empty
 @4ca3:  lda     $1f
         and     #$10
         beq     @4ca9       ; <- this has no effect
-@4ca9:  ldx     #$0014      ; $ca0014 (empty chest)
+@4ca9:  ldx     #.loword(EventScript_TreasureEmpty)
+
 @4cac:  stx     $e5         ; set event pc
         stx     $05f4
-        lda     #$ca
+        lda     #^EventScript_TreasureItem
         sta     $e7
         sta     $05f6
-        ldx     #$0000      ; event return address = $ca0000
+        ldx     #.loword(EventScript_NoEvent)
         stx     $0594
-        lda     #$ca
+        lda     #^EventScript_NoEvent
         sta     $0596
         lda     #$01
         sta     $05c7

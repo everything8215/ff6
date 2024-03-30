@@ -23,7 +23,7 @@ ROMS = $(foreach V, $(VERSIONS), $(ROM_DIR)/$(V).sfc)
 # the SPC program
 SPC_PRG = src/sound/ff6-spc.dat
 
-.PHONY: all rip clean distclean mml spc wav rng monster_gfx text dte $(VERSIONS) $(MODULES)
+.PHONY: all rip clean distclean mml spc wav rng event monster_gfx text dte $(VERSIONS) $(MODULES)
 
 # disable default suffix rules
 .SUFFIXES:
@@ -41,7 +41,7 @@ rip:
 rng:
 	python3 tools/shuffle_rng.py src/field/rng_tbl.dat
 
-spc: src/sound/ff6-spc.dat
+spc: $(SPC_PRG)
 
 clean:
 	$(RM) -rf $(ROM_DIR) $(OBJ_DIR)
@@ -49,6 +49,7 @@ clean:
 	$(RM) src/sound/song_script/*.asm src/sound/sfx_script/*.asm
 	$(RM) src/sound/sample_brr/*.wav src/sound/sfx_brr/*.wav
 	$(RM) $(SPC_PRG)
+	$(RM) src/event/ff6-event.bin
 
 distclean: clean
 	python3 tools/clean_assets.py
@@ -83,14 +84,14 @@ OBJ_FILES_EN = $(foreach M,$(MODULES),$(OBJ_DIR)/$(M)_en.o)
 OBJ_FILES_EN1 = $(foreach M,$(MODULES),$(OBJ_DIR)/$(M)_en1.o)
 
 # list of modules
-MODULES = field btlgfx battle menu sound cutscene world gfx text
+MODULES = field btlgfx battle menu sound cutscene event world gfx text
 
 # generate rules for making each module
 define MAKE_MODULE
 $1_SRC := $(wildcard src/$1/*) $(wildcard src/$1/*/*)
 $$(OBJ_DIR)/$1_%.o: $$($1_SRC) $$(INC_FILES)
 	@mkdir -p $$(OBJ_DIR)
-	$$(ASM) $$(ASMFLAGS) -l $$(@:o=lst) src/$1/main.asm -o $$@
+	$$(ASM) $$(ASMFLAGS) -l $$(@:o=lst) src/$1/$1_main.asm -o $$@
 endef
 
 $(foreach M, $(MODULES), $(eval $(call MAKE_MODULE,$(M))))
@@ -124,7 +125,7 @@ src/text/%.dat: src/text/%.json
 	python3 tools/encode_text.py $<
 
 dte:
-	python3 tools/optimize_dte.py src/text/dlg1_en.json
+	python3 tools/fix_dlg.py dte en
 
 # rules for converting mml files to asm
 SONG_MML_FILES = $(wildcard src/sound/song_script/*.mml)
@@ -156,6 +157,11 @@ monster_gfx: $(MONSTER_TRIMMED_FILES)
 
 %.trm: %
 	python3 tools/monster_stencil.py $<
+
+event: src/event/ff6-event.bin
+
+src/event/ff6-event.bin: cfg/ff6-event.cfg obj/event_en.o
+	$(LINK) $(LINKFLAGS) -o $@ -C $< obj/event_en.o
 
 # rules for making ROM files
 # run linker twice: 1st for the cutscene program, 2nd for the ROM itself

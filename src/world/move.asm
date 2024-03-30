@@ -1201,7 +1201,7 @@ GetPlayerInput:
         sta     $eb
         lda     f:VehicleEvent_02+2
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $ec
         stz     $ed
         stz     $ee
@@ -1327,13 +1327,13 @@ CheckEvent:
         bne     @21cc
         lda     f:EventTriggerPtrs+2,x  ; set event pointer
         clc
-        adc     #$00
+        adc     #<EventScript
         sta     $ea
         lda     f:EventTriggerPtrs+3,x
-        adc     #$00
+        adc     #>EventScript
         sta     $eb
         lda     f:EventTriggerPtrs+4,x
-        adc     #$ca
+        adc     #^EventScript
         sta     $ec
         lda     $e7                     ; enable world event script and ???
         ora     #$41

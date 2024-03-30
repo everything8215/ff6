@@ -3089,10 +3089,10 @@ CheckChangeParty:
         lda     $055e                   ; return if there was a party collision
         bne     @6d76
         ldx     $e5                     ; return if running an event
-        cpx     #$0000
+        cpx     #.loword(EventScript_NoEvent)
         bne     @6d76
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @6d76
         ldy     $0803                   ; party object
         lda     $0869,y                 ; return if between tiles
@@ -3128,9 +3128,9 @@ ChangeParty:
         sta     $1ff3,y
         lda     $1a6d                   ; increment party number
         inc
-        cmp     #$04
+        cmp     #4                      ; only switch between first 3 parties
         bne     @6d8a
-        lda     #$01
+        lda     #1
 @6d8a:  sta     $1a6d
         lda     #$20                    ; look for top character in new party
         sta     $1a
@@ -3373,24 +3373,24 @@ PopPartyPal:
 
 ; [ get first character in party ]
 
-GetTopChar:
-@6f67:  ldy     $0803
+.proc GetTopChar
+        ldy     $0803                   ; previous top char
         sty     $1e
-        ldx     $086a,y
+        ldx     $086a,y                 ; x position
         stx     $26
-        ldx     $086d,y
+        ldx     $086d,y                 ; y position
         stx     $28
-        lda     #$20
+        lda     #$20                    ; layer priority
         sta     $1a
         ldx     $00
         txy
-@6f7d:  lda     $1850,y
+loop:   lda     $1850,y
         and     #$07
         cmp     $1a6d
-        bne     @6fb9
+        bne     skip                    ; not in active party
         longa
         lda     $26
-        sta     $086a,x
+        sta     $086a,x                 ; set position
         lda     $28
         sta     $086d,x
         lda     $087a,x
@@ -3401,28 +3401,30 @@ GetTopChar:
         phx
         ldx     $20
         lda     #$ff
-        sta     $7e2000,x
+        sta     $7e2000,x               ; remove from object map data
         plx
         lda     $1850,y
         and     #$18
         cmp     $1a
-        bcs     @6fb9
+        bcs     skip
         sta     $1a
-        stx     $07fb
-@6fb9:  longa_clc
+        stx     $07fb                   ; topmost character in active party
+skip:   longa_clc
         txa
         adc     #$0029
         tax
         shorta0
         iny
         cpy     #$0010
-        bne     @6f7d
+        bne     loop
+
+; check if top char changed
         ldx     $07fb
         lda     $0867,x
         ora     #$80
         sta     $0867,x
         cpx     $1e
-        jeq     @7065
+        jeq     done
         ldy     $1e
         longa
         lda     $087a,y
@@ -3474,13 +3476,14 @@ GetTopChar:
         nop3
         ldy     hRDDIVL
         sta     $1850,y
-@7065:  ldy     #$07d9
-        sty     $07fd
+done:   ldy     #$07d9
+        sty     $07fd                   ; hide slots 2, 3, 4
         sty     $07ff
         sty     $0801
-        lda     #$01
-        sta     $0798
+        lda     #1
+        sta     $0798                   ; validate and sort active objects
         rts
+.endproc  ; GetTopChar
 
 ; ------------------------------------------------------------------------------
 
@@ -3582,7 +3585,7 @@ GetTopCharPtr:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ unused ]
 
 @711d:  ldy     $00
 @711f:  lda     $0867,y
@@ -3607,7 +3610,7 @@ GetTopCharPtr:
 
 ; ------------------------------------------------------------------------------
 
-; [ update character objects ]
+; [ validate and sort active objects ]
 
 _c0714a:
 sort_obj_work:
@@ -3616,6 +3619,8 @@ sort_obj_work:
         lda     #$00
         sta     hWMADDH
         stz     $1b
+
+; char slot 1
         ldy     $07fb
         cpy     #$07d9
         beq     @719a
@@ -3641,6 +3646,8 @@ sort_obj_work:
         lda     $07fc
         sta     hWMDATA
         inc     $1b
+
+; char slot 2
 @719a:  ldy     $07fd
         cpy     #$07d9
         beq     @71da
@@ -3665,6 +3672,8 @@ sort_obj_work:
         lda     $07fe
         sta     hWMDATA
         inc     $1b
+
+; char slot 3
 @71da:  ldy     $07ff
         cpy     #$07d9
         beq     @7216
@@ -3688,6 +3697,8 @@ sort_obj_work:
         lda     $0800
         sta     hWMDATA
         inc     $1b
+
+; char slot 4
 @7216:  ldy     $0801
         cpy     #$07d9
         beq     @724f
@@ -3710,6 +3721,8 @@ sort_obj_work:
         lda     $0802
         sta     hWMDATA
         inc     $1b
+
+; other characters in the active party ???
 @724f:  ldx     $00
 @7251:  ldy     $0799,x
         cpy     $07fb
@@ -3741,11 +3754,15 @@ sort_obj_work:
 @7295:  inx2
         cpx     #$0020
         bne     @7251
+
+; camera object
         lda     #$b0
         sta     hWMDATA
         lda     #$07
         sta     hWMDATA
         inc     $1b
+
+; characters not in the active party
         ldx     $00
 @72aa:  ldy     $0799,x
         lda     $0867,y
@@ -3770,6 +3787,8 @@ sort_obj_work:
 @72d8:  inx2
         cpx     #$0020
         bne     @72aa
+
+; npc objects
         ldx     #$0020
 @72e2:  ldy     $0799,x
         lda     $0867,y
@@ -3808,10 +3827,10 @@ CheckCollosions:
         and     #$40
         beq     @7334
         ldx     $e5                     ; return if an event is running
-        cpx     #$0000
+        cpx     #.loword(EventScript_NoEvent)
         bne     @7334
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @7334
         lda     $84                     ; return if a map is loading
         bne     @7334
@@ -4059,14 +4078,14 @@ UpdateCollisionScroll:
         sta     $05f5
         lda     $088b,y
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #$0000                  ; set return address
+        ldx     #.loword(EventScript_NoEvent)
         stx     $0594
-        lda     #$ca
+        lda     #^EventScript_NoEvent
         sta     $0596                   ; set loop count
-        lda     #$01
+        lda     #1
         sta     $05c7                   ; set stack pointer
         ldx     #$0003
         stx     $e8
@@ -4210,13 +4229,13 @@ UpdateActiveObjAction:
         sta     $0873,y
         shorta
         lda     $e5                     ; return if an event is running
-        cmp     #$00
+        cmp     #<EventScript_NoEvent
         bne     @76db
         lda     $e6
-        cmp     #$00
+        cmp     #>EventScript_NoEvent
         bne     @76db
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @76db
         lda     $087d,y
         cpy     $0803
@@ -4838,10 +4857,10 @@ ObjCmd_f9:
 @7acf:  lda     $055e
         bne     @7b09                   ; branch if a collision is already in progress
         ldx     $e5
-        cpx     #$0000
+        cpx     #.loword(EventScript_NoEvent)
         bne     @7b09                   ; branch if an event is running
         lda     $e7
-        cmp     #$ca
+        cmp     #^EventScript_NoEvent
         bne     @7b09
         phy
         ldy     #1                      ; copy event address
@@ -4853,7 +4872,7 @@ ObjCmd_f9:
         iny
         lda     [$2a],y
         clc
-        adc     #$ca
+        adc     #^EventScript
         sta     $e7
         ldy     #$0003
         sty     a:$00e8                   ; set event stack pointer
