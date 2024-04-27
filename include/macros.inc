@@ -456,6 +456,51 @@ PSW_C = %00000001
 
 ; ------------------------------------------------------------------------------
 
+.mac make_bitmask prefix, val, namespace, b1, b2, b3, b4, b5, b6, b7, b8
+        .if .paramcount = 3
+                prefix (val)
+        .elseif .paramcount = 4
+                make_bitmask prefix, val | namespace::b1, namespace
+        .elseif .paramcount = 5
+                make_bitmask prefix, val | namespace::b2, namespace, b1
+        .elseif .paramcount = 6
+                make_bitmask prefix, val | namespace::b3, namespace, b1, b2
+        .elseif .paramcount = 7
+                make_bitmask prefix, val | namespace::b4, namespace, b1, b2, b3
+        .elseif .paramcount = 8
+                make_bitmask prefix, val | namespace::b5, namespace, b1, b2, b3, b4
+        .elseif .paramcount = 9
+                make_bitmask prefix, val | namespace::b6, namespace, b1, b2, b3, b4, b5
+        .elseif .paramcount = 10
+                make_bitmask prefix, val | namespace::b7, namespace, b1, b2, b3, b4, b5, b6
+        .elseif .paramcount = 11
+                make_bitmask prefix, val | namespace::b8, namespace, b1, b2, b3, b4, b5, b6, b7
+        .endif
+.endmac
+
+; ------------------------------------------------------------------------------
+
+.mac opflg op, namespace, flags
+        make_bitmask op, 0, namespace, flags
+.endmac
+
+.define ldaflg opflg lda #,
+.define setflg opflg ora #,
+.define andflg opflg and #,
+.define eorflg opflg eor #,
+.define bitflg opflg bit #,
+.define peaflg opflg pea 0+,
+
+.mac clrflg namespace, flags
+        .if .asize = 8
+                opflg and #$ff^, namespace, {flags}
+        .else
+                opflg and #$ffff^, namespace, {flags}
+        .endif
+.endmac
+
+; ------------------------------------------------------------------------------
+
 .endif
 .list on
 

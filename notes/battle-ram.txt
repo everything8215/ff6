@@ -2182,7 +2182,7 @@ $7FE400-$7FF800 BG3 Animation Tile Data Buffer (8 frames, 16x16 tiles each, 2 by
 VRAM
 ----
 $0000 Battle Animation BG1 Graphics
-$0A00 Menu Window Graphics
+$0A00 Menu Window Graphics (for messages at top of screen)
 $0C00 Battlefield BG1 Tile Data
 $1000 Battle BG Graphics (BG2)
 $2000 Character Sprite Graphics

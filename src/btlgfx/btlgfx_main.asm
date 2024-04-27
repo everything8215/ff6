@@ -5084,13 +5084,13 @@ LoadSummonGfxBG1:
 
 .endif
 
-        ldx     #$1800      ; size = $1800
+        ldx     #$1800      ; size = $1800 (6 rows of 16x16 tiles)
 _245c:  stx     $10
         ldx     #$ae3f      ; source = $7eae3f
 
 .if !LANG_EN_REV1
 ; *** removed in rev 1 ***
-        ldy     #$0000      ; destination = $0000 (vram)
+        ldy     #$0000      ; destination = $0000-$0BFF (vram)
 ; ************************
 .endif
 
@@ -5133,10 +5133,10 @@ LoadSummonGfxSprite_far:
 
 LoadSummonGfxSprite:
 @2484:  jsr     LoadSummonGfx
-        ldx     #$1400      ; size = $1400
+        ldx     #$1400      ; size = $1400 (5 rows of 16x16 tiles)
         stx     $10
         ldx     #$ae3f      ; source = $7eae3f
-        ldy     #$2400      ; destination = $2400 (vram)
+        ldy     #$2400      ; destination = $2400-$2DFF (vram)
         lda     #$7e
         jmp     WaitTfrVRAM
 
@@ -8833,6 +8833,8 @@ GetWindowGfxPtr:
 ; ------------------------------------------------------------------------------
 
 ; [ copy message window graphics to vram ]
+
+; for messages at the top of the screen only, not used for menu windows
 
 TfrMsgWindowGfx:
 @4034:  jsr     GetWindowGfxPtr
@@ -23376,9 +23378,9 @@ LoadAnimGfxProp:
 
 LoadSpriteAnimGfx:
 @a1b1:  stx     $10
-        ldx     #$0080
+        ldx     #$0080                  ; load 4 rows of 16x16 tiles
         stx     $16
-        ldx     #$2400
+        ldx     #$2400                  ; -> vram $2400-$2BFF
         stx     $1a
         jmp     LoadAnimGfx
 
@@ -23386,11 +23388,13 @@ LoadSpriteAnimGfx:
 
 ; [ load weapon animation graphics ]
 
+; note: block graphics are loaded to vram $2400-$25FF
+
 LoadWeaponGfx:
 @a1c0:  stx     $10
-        ldx     #$0060
+        ldx     #$0060                  ; load 3 rows of 16x16 tiles
         stx     $16
-        ldx     #$2600
+        ldx     #$2600                  ; -> vram $2600-$2BFF
         stx     $1a
         jmp     LoadAnimGfx
 
@@ -23400,9 +23404,9 @@ LoadWeaponGfx:
 
 LoadBG3AnimGfx:
 @a1cf:  stx     $10
-        ldx     #$0080
+        ldx     #$0080                  ; load 4 rows of 16x16 tiles
         stx     $16
-        ldx     #$5000
+        ldx     #$5000                  ; -> vram $5000-$53FF
         stx     $1a
         lda     $11
         jmp     LoadBG3AnimGfx2bpp
@@ -23413,15 +23417,19 @@ LoadBG3AnimGfx:
 
 LoadBG1AnimGfx:
 @a1e0:  stx     $10
-        ldx     #$00a0
+        ldx     #$00a0                  ; load 5 rows of 16x16 tiles
         stx     $16
-        ldx     #$0000
+        ldx     #$0000                  ; -> vram $0000-$09FF
         stx     $1a
         jmp     LoadAnimGfx
 
 ; ------------------------------------------------------------------------------
 
 ; [ load animation graphics ]
+
+; +$10: tilemap offset
+; +$16: tile count (8x8 tiles)
+; +$1a: destination address (vram)
 
 LoadAnimGfx:
 @a1ef:  lda     $10
@@ -23482,10 +23490,12 @@ LoadAnimGfx3bpp:
         sta     $24
         lda     [$10]
         and     #$4000
-        sta     $14
+        sta     $14                     ; h-flip
         lda     [$10]
         and     #$8000
         bne     @a2a4
+
+; no v-flip
         clr_ay
 @a26d:  lda     [$22]
         jsr     _c1a470
@@ -23511,6 +23521,8 @@ LoadAnimGfx3bpp:
         cpy     #$0020
         bne     @a28a
         jmp     @a2de
+
+; v-flip
 @a2a4:  ldy     #$000e
 @a2a7:  lda     [$22]
         jsr     _c1a470
@@ -23543,9 +23555,8 @@ LoadAnimGfx3bpp:
         inc     $10
         inc     $10
         dec     $16
-        beq     @a2f1
-        jmp     @a231
-@a2f1:  pla
+        jne     @a231
+        pla
         asl5
         sta     $10
         shorta0
@@ -23633,9 +23644,8 @@ LoadAnimGfx2bpp:
         inc     $10
         inc     $10
         dec     $16
-        beq     @a3b3
-        jmp     @a33e
-@a3b3:  pla
+        jne     @a33e
+        pla
         asl5
         sta     $10
         shorta0

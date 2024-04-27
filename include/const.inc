@@ -27,7 +27,7 @@ CONST_INC = 1
 def_config ROM_VERSION,0
 def_config DEBUG,0
 def_config LANG_EN,0
-.if (LANG_EN .and ROM_VERSION)
+.if (LANG_EN && ROM_VERSION)
         LANG_EN_REV1 = 1
 .else
         LANG_EN_REV1 = 0
@@ -342,6 +342,8 @@ ITEM_EMPTY                              = $ff  ; 255
 
 ; character/actor ids
 .enum CHAR
+
+; main characters
         TERRA                           ;= $00
         LOCKE                           ;= $01
         CYAN                            ;= $02
@@ -356,26 +358,6 @@ ITEM_EMPTY                              = $ff  ; 255
         GAU                             ;= $0b
         GOGO                            ;= $0c
         UMARO                           ;= $0d
-.endenum
-
-; ------------------------------------------------------------------------------
-
-; main characters
-.enum EVENT_OBJ
-        TERRA                           = CHAR::TERRA;0
-        LOCKE                           = CHAR::LOCKE;1
-        CYAN                            = CHAR::CYAN;2
-        SHADOW                          = CHAR::SHADOW;3
-        EDGAR                           = CHAR::EDGAR;4
-        SABIN                           = CHAR::SABIN;5
-        CELES                           = CHAR::CELES;6
-        STRAGO                          = CHAR::STRAGO;7
-        RELM                            = CHAR::RELM;8
-        SETZER                          = CHAR::SETZER;9
-        MOG                             = CHAR::MOG;10
-        GAU                             = CHAR::GAU;11
-        GOGO                            = CHAR::GOGO;12
-        UMARO                           = CHAR::UMARO;13
 
 ; extra moogles
         KUPEK                           = 2
@@ -401,13 +383,59 @@ ITEM_EMPTY                              = $ff  ; 255
         LEO                             = 15
         KEFKA                           = 15
 
+.endenum
+
+; ------------------------------------------------------------------------------
+
+; main characters
+.enum EVENT_OBJ
+        TERRA                           = CHAR::TERRA
+        LOCKE                           = CHAR::LOCKE
+        CYAN                            = CHAR::CYAN
+        SHADOW                          = CHAR::SHADOW
+        EDGAR                           = CHAR::EDGAR
+        SABIN                           = CHAR::SABIN
+        CELES                           = CHAR::CELES
+        STRAGO                          = CHAR::STRAGO
+        RELM                            = CHAR::RELM
+        SETZER                          = CHAR::SETZER
+        MOG                             = CHAR::MOG
+        GAU                             = CHAR::GAU
+        GOGO                            = CHAR::GOGO
+        UMARO                           = CHAR::UMARO
+
+; extra moogles
+        KUPEK                           = CHAR::KUPEK
+        KUPOP                           = CHAR::KUPOP
+        KUMAMA                          = CHAR::KUMAMA
+        KUKU                            = CHAR::KUKU
+        KUTAN                           = CHAR::KUTAN
+        KUPAN                           = CHAR::KUPAN
+        KUSHU                           = CHAR::KUSHU
+        KURIN                           = CHAR::KURIN
+        KURU                            = CHAR::KURU
+        KAMOG                           = CHAR::KAMOG
+
+; phantom train ghosts
+        GHOST_1                         = CHAR::GHOST_1
+        GHOST_2                         = CHAR::GHOST_2
+
+; other characters
+        WEDGE                           = CHAR::WEDGE
+        BANON                           = CHAR::BANON
+        MADUIN                          = CHAR::MADUIN
+        VICKS                           = CHAR::VICKS
+        LEO                             = CHAR::LEO
+        KEFKA                           = CHAR::KEFKA
+
 ; npcs
         NPC_1                           = $10
         NPC_2                           = $11
         NPC_3                           = $12
         NPC_4                           = $13
         NPC_5                           = $14
-        NPC_7                           = $15
+        NPC_6                           = $15
+        NPC_7                           = $16
         NPC_8                           = $17
         NPC_9                           = $18
         NPC_10                          = $19
@@ -532,7 +560,7 @@ ITEM_EMPTY                              = $ff  ; 255
         CRUSADER                        ;= $45  ; 69
         RAGNAROK                        ;= $46  ; 70
         KIRIN                           ;= $47  ; 71
-        ZONESEEL                        ;= $48  ; 72
+        ZONESEEK                        ;= $48  ; 72
         CARBUNKL                        ;= $49  ; 73
         PHANTOM                         ;= $4a  ; 74
         SRAPHIM                         ;= $4b  ; 75
@@ -1390,47 +1418,6 @@ CHAR_PROP_FIXED_EQUIP                   = $10
 .endenum
 
 ; ------------------------------------------------------------------------------
-
-.mac make_bitmask prefix, val, namespace, b1, b2, b3, b4, b5, b6, b7, b8
-        .if .paramcount = 11
-                make_bitmask prefix, val | namespace::b8, namespace, b1, b2, b3, b4, b5, b6, b7
-        .elseif .paramcount = 10
-                make_bitmask prefix, val | namespace::b7, namespace, b1, b2, b3, b4, b5, b6
-        .elseif .paramcount = 9
-                make_bitmask prefix, val | namespace::b6, namespace, b1, b2, b3, b4, b5
-        .elseif .paramcount = 8
-                make_bitmask prefix, val | namespace::b5, namespace, b1, b2, b3, b4
-        .elseif .paramcount = 7
-                make_bitmask prefix, val | namespace::b4, namespace, b1, b2, b3
-        .elseif .paramcount = 6
-                make_bitmask prefix, val | namespace::b3, namespace, b1, b2
-        .elseif .paramcount = 5
-                make_bitmask prefix, val | namespace::b2, namespace, b1
-        .elseif .paramcount = 4
-                make_bitmask prefix, val | namespace::b1, namespace
-        .elseif .paramcount = 3
-                prefix (val)
-        .endif
-.endmac
-
-.mac opflg op, namespace, flags
-        make_bitmask op, 0, namespace, flags
-.endmac
-
-.define ldaflg opflg lda #,
-.define setflg opflg ora #,
-.define andflg opflg and #,
-.define eorflg opflg eor #,
-.define bitflg opflg bit #,
-.define peaflg opflg pea 0+,
-
-.mac clrflg namespace, flags
-        .if .asize = 8
-                opflg and #$ff^, namespace, {flags}
-        .else
-                opflg and #$ffff^, namespace, {flags}
-        .endif
-.endmac
 
 ; status 1: harmful status that persist after battle
 .enum STATUS1

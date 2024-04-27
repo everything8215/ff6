@@ -647,7 +647,7 @@ EventCmd_45:
 
 ; ------------------------------------------------------------------------------
 
-; [ event command $46: set current party ]
+; [ event command $46: activate party ]
 
 ; $eb: party number (0..7)
 
@@ -2225,10 +2225,10 @@ EventCmd_52:
 ;          0 = restore all colors to normal
 ;          1 = increment color
 ;          2 = add color (doesn't work)
-;          3 = decrement colors (restore to normal)
+;          3 = un-increment colors (ignores intensity)
 ;          4 = decrement colors
 ;          5 = subtract color
-;          6 = increment colors (restore to normal)
+;          6 = un-decrement colors (ignores intensity)
 ;          7 = restore all colors to normal
 ;       r/g/b: affected colors
 ;       i: target intensity for inc/dec, add/sub value for add/sub
@@ -2302,7 +2302,7 @@ InitColorMod:
         beq     @a742
         lda     f:BlueColorTbl,x
         sta     $1b
-@a742:  lda     $eb                     ; branch if adding color
+@a742:  lda     $eb                     ; invert colors if subtracting
         bpl     @a764
         lda     $1a
         eor     $02
@@ -2520,7 +2520,7 @@ EventCmd_5c:
 
 ; [ event command $5d: scroll bg1 ]
 
-; these are the ones where $ff -> $ffff
+; these are the ones where $ff -> $ffff (basically -0)
 ; $eb = horizontal scroll speed
 ; $ec = vertical scroll speed
 
@@ -2799,7 +2799,7 @@ EventCmd_60:
 ; $ed = color range end
 
 EventCmd_61:
-@aa3d:  lda     $eb
+        lda     $eb
         asl
         tax
         longa
@@ -2816,7 +2816,7 @@ EventCmd_61:
         asl
         tax
         shorta0
-@aa5c:  lda     $7e7200,x               ; red
+loop:   lda     $7e7200,x               ; red
         and     #$1f
         sta     $1e
         lda     $7e7201,x               ; green
@@ -2853,7 +2853,7 @@ EventCmd_61:
         sta     $7e73fe,x               ; set filtered color
         shorta0
         dey
-        bne     @aa5c
+        bne     loop
         lda     #4
         jmp     IncEventPtrContinue
 
@@ -3071,12 +3071,7 @@ _ab5a:  lda     #$01        ; enable map load
 
 ; [ event command $6c: set parent map ]
 
-; +$eb = --ddnzpm mmmmmmmm
-;        d: facing direction
-;        n: show map name
-;        z: z-level
-;        p: set destination as parent map
-;        m: map number
+; +$eb = map number
 ;  $ed = x position
 ;  $ee = y position
 ;  $ef = parent map facing direction
@@ -4358,12 +4353,12 @@ EventCmd_e7:
 ; [ event command $e4: get active party number ]
 
 EventCmd_e4:
-@b39e:  tdc
+@b39e:  clr_a
         sta     $1eb5       ; +$1eb4 = 1 << party number
         lda     $1a6d
         inc
         tax
-        lda     #$01
+        lda     #1
 @b3a9:  dex
         beq     @b3af
         asl

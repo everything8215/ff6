@@ -75,7 +75,7 @@ VehicleCmd_00:
         lda     $f0
         bit     #$01
         beq     @70d1       ; branch if not double speed turns
-        lda     #$30
+        lda     #$30            ; acts like L+R buttons both down
         ora     $60
         sta     $60
 @70d1:  lda     $f0
@@ -926,14 +926,13 @@ VehicleCmd_ff:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ update automatic control of vehicle ]
 
-_ee75d3:
-autocontrol2:
+UpdateAutoCtrl:
 @75d3:  shorta
         lda     $61
         bit     #$01
-        beq     @75fa
+        beq     @75fa                   ; branch if not turning right
         longa
         lda     $29
         sec
@@ -951,7 +950,7 @@ autocontrol2:
 @75fa:  shorta
         lda     $61
         bit     #$02
-        beq     @7622
+        beq     @7622                   ; branch if not turning left
         longa
         longa_clc
         lda     $29
@@ -986,7 +985,7 @@ autocontrol2:
 @7646:  longa
         lda     $60
         bit     #$0080
-        beq     @765e
+        beq     @765e                   ; branch if not going forward
         lda     $26
         clc
         adc     #$0040
@@ -997,7 +996,7 @@ autocontrol2:
 @765e:  shorta
         lda     $61
         bit     #$80
-        beq     @7678
+        beq     @7678                   ; branch if not going backward
         longa
         lda     $26
         sec
@@ -1009,7 +1008,7 @@ autocontrol2:
 @7678:  shorta
         lda     $61
         bit     #$08
-        beq     @7691
+        beq     @7691                   ; branch if not going down
         longa
         lda     $2d
         sec
@@ -1021,7 +1020,7 @@ autocontrol2:
 @7691:  shorta
         lda     $61
         bit     #$04
-        beq     @76aa
+        beq     @76aa                   ; branch if not going up
         longa
         lda     $2d
         clc
@@ -1042,7 +1041,7 @@ autocontrol2:
         adc     #$0010
         sta     $2d
 @76c0:  longa
-        lda     $60
+        lda     $60                     ; check double speed left turn
         and     #$0220
         cmp     #$0220
         bne     @76dd
@@ -1053,7 +1052,7 @@ autocontrol2:
         sec
         sbc     #360
 @76da:  sta     a:$0073
-@76dd:  lda     $60
+@76dd:  lda     $60                     ; check double speed right turn
         and     #$0110
         cmp     #$0110
         bne     @76f8

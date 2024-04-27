@@ -59,10 +59,12 @@ $0000-$00FF direct page
 
 $58-$64 scratchpad
 
-    $60 fdd?????
+    $60 flr?????
         f: vehicle is moving forward
-        d: double speed turns ???
-    $61 ????dulr
+        l: double speed left turns (L button)
+        r: double speed right turns (R button)
+    $61 b???dulr
+        b: vehicle is moving backward
         d: vehicle is moving down
         u: vehicle is moving up
         l: vehicle is turning left

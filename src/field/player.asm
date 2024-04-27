@@ -1048,7 +1048,7 @@ CheckDoor:
 OpenDoorTiles1:
 @4e06:  .byte   $01,$02
         .byte   $04
-				.byte   $14
+        .byte   $14
 
 ; small door 2 map data (1x2)
 OpenDoorTiles2:

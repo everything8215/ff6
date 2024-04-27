@@ -108,6 +108,10 @@ set_script_mode EVENT
         .faraddr _event_addr {addr}
 .endmac
 
+.mac _2_bytes b1, b2
+        .byte b1, b2
+.endmac
+
 ; ------------------------------------------------------------------------------
 
 .enum OBJ_SCRIPT_FLAGS
@@ -115,8 +119,12 @@ set_script_mode EVENT
         AWAIT = $80                     ; default
 .endenum
 
+::_obj_script_index .set 0
+.define _ObjStart .ident(.sprintf("_ObjStart%d", ::_obj_script_index))
+.define _ObjEnd .ident(.sprintf("_ObjEnd%d", ::_obj_script_index))
+
 .mac obj_script obj, flags
-        .scope
+        ::_obj_script_index .set ::_obj_script_index + 1
         .ifblank flags
                 _e_cmd_byte EVENT_OBJ::obj, (_ObjEnd - _ObjStart) | OBJ_SCRIPT_FLAGS::AWAIT
         .else
@@ -136,19 +144,23 @@ set_script_mode EVENT
 
 .mac party_chars char1, char2, char3, char4
         _e_cmd_impl $3c
-        .byte char1
+        .ifnblank char1
+                .byte CHAR::char1
+        .else
+                .byte $ff
+        .endif
         .ifnblank char2
-                .byte char2
+                .byte CHAR::char2
         .else
                 .byte $ff
         .endif
         .ifnblank char3
-                .byte char3
+                .byte CHAR::char3
         .else
                 .byte $ff
         .endif
         .ifnblank char4
-                .byte char4
+                .byte CHAR::char4
         .else
                 .byte $ff
         .endif
@@ -156,8 +168,8 @@ set_script_mode EVENT
 
 .define create_obj(obj) _e_cmd_byte $3d, EVENT_OBJ::obj
 .define delete_obj(obj) _e_cmd_byte $3e, EVENT_OBJ::obj
-.define char_party(char, party) _e_cmd_2byte $3f, char, (party << 5)
-.define char_prop(char, prop) _e_cmd_2byte $40, char, prop
+.define char_party(char_id, party) _e_cmd_2byte $3f, CHAR::char_id, party
+.define char_prop(char_id, prop) _e_cmd_2byte $40, CHAR::char_id, prop
 .define _e_show_obj(obj) _e_cmd_byte $41, EVENT_OBJ::obj
 .define _e_hide_obj(obj) _e_cmd_byte $42, EVENT_OBJ::obj
 .define obj_pal(obj, pal) _e_cmd_2byte $43, EVENT_OBJ::obj, pal
@@ -173,11 +185,11 @@ set_script_mode EVENT
 .endenum
 
 .mac _dlg_op f1, f2, f3
-        .if .paramcount > 0 .and .xmatch(f1, ASYNC)
+        .if .paramcount > 0 && .xmatch(f1, ASYNC)
                 _e_cmd_impl $48
-        .elseif .paramcount > 1 .and .xmatch(f2, ASYNC)
+        .elseif .paramcount > 1 && .xmatch(f2, ASYNC)
                 _e_cmd_impl $48
-        .elseif .paramcount > 2 .and .xmatch(f3, ASYNC)
+        .elseif .paramcount > 2 && .xmatch(f3, ASYNC)
                 _e_cmd_impl $48
         .else
                 _e_cmd_impl $4b
@@ -207,24 +219,24 @@ set_script_mode EVENT
 
 .mac _battle_op battle_id, f1, f2, f3
         .if is_script_mode VEHICLE
-                _v_cmd_byte $ca, battle_id
-        .elseif .paramcount > 0 .and .xmatch(f1, COLLISION)
-                _e_cmd_byte $4d, battle_id
-        .elseif .paramcount > 1 .and .xmatch(f2, COLLISION)
-                _e_cmd_byte $4d, battle_id
-        .elseif .paramcount > 2 .and .xmatch(f3, COLLISION)
-                _e_cmd_byte $4d, battle_id
-        .else
+                _v_cmd_byte $cf, battle_id
+        .elseif .paramcount > 0 && .xmatch(f1, COLLISION)
                 _e_cmd_byte $4c, battle_id
+        .elseif .paramcount > 1 && .xmatch(f2, COLLISION)
+                _e_cmd_byte $4c, battle_id
+        .elseif .paramcount > 2 && .xmatch(f3, COLLISION)
+                _e_cmd_byte $4c, battle_id
+        .else
+                _e_cmd_byte $4d, battle_id
         .endif
 .endmac
 
 .mac battle battle_id, bg, flags
         _battle_op battle_id, flags
         .ifblank flags
-                .byte bg
+                .byte bg & $3f
         .else
-                make_bitmask .byte, bg, BATTLE_FLAGS, flags
+                make_bitmask .byte, bg & $3f, BATTLE_FLAGS, flags
         .endif
 .endmac
 
@@ -233,26 +245,38 @@ set_script_mode EVENT
 
 ; modify color palettes
 
-.define MOD_PAL_RESTORE $00
-.define MOD_PAL_INC $20
-.define MOD_PAL_INC_FLASH $40
-.define MOD_PAL_UNINC $60
-.define MOD_PAL_DEC $80
-.define MOD_PAL_DEC_FLASH $a0
-.define MOD_PAL_UNDEC $c0
+.enum MOD_PAL_TYPE
+        RESTORE = $00                   ; return to normal
+        INC = $20                       ; increment
+        ADD = $40                       ; add (doesn't work right)
+        UNINC = $60                     ; un-increment
+        DEC = $80                       ; decrement
+        SUB = $a0                       ; subtract
+        UNDEC = $c0                     ; un-decrement
+        RESTORE_ALT = $e0               ; return to normal
+.endenum
 
-.define MOD_PAL_WHITE $1c
-.define MOD_PAL_RED $10
-.define MOD_PAL_GREEN $08
-.define MOD_PAL_BLUE $04
-.define MOD_PAL_BLACK $00
+.enum MOD_PAL_CLR
+        ALL = $1c
+        RED = $10
+        GREEN = $08
+        BLUE = $04
+        NONE = $00
+.endenum
 
-.macro _mod_pal op, type, color, intensity, first_color, last_color
-        .if .blank(first_color) .or .blank(last_color)
-                _e_cmd_byte op, type | color | intensity
+.macro _mod_pal op, type, color, intensity, clr_range
+        .ifblank clr_range
+                _e_cmd_impl op
+                make_bitmask .byte, MOD_PAL_TYPE::type | intensity, MOD_PAL_CLR, color
         .else
-                _e_cmd_byte op + 1, type | color | intensity
-                .byte first_color, last_color
+                _e_cmd_impl op + 1
+                make_bitmask .byte, MOD_PAL_TYPE::type | intensity, MOD_PAL_CLR, color
+                .if .tcount(clr_range) <> 1
+                        _2_bytes clr_range
+                .else
+                        ; single color
+                        .byte clr_range, clr_range
+                .endif
         .endif
 .endmac
 
@@ -292,7 +316,7 @@ set_script_mode EVENT
 .endmac
 
 .mac fade_in rate
-        .if (is_script_mode WORLD) .or (is_script_mode VEHICLE)
+        .if (is_script_mode WORLD) || (is_script_mode VEHICLE)
                 _cmd_impl $d8
         .elseif .blank(rate)
                 _e_cmd_impl $96
@@ -302,7 +326,7 @@ set_script_mode EVENT
 .endmac
 
 .mac fade_out rate
-        .if (is_script_mode WORLD) .or (is_script_mode VEHICLE)
+        .if (is_script_mode WORLD) || (is_script_mode VEHICLE)
                 _cmd_impl $d9
         .elseif .blank(rate)
                 _e_cmd_impl $97
@@ -314,45 +338,182 @@ set_script_mode EVENT
 .define pause_fade _e_cmd_impl $5b
 .define wait_fade _e_cmd_impl $5c
 
-; scroll bg
+.enum SCROLL_LAYER
+        BG1 = 0
+        BG2 = 1
+        BG3 = 2
+.endenum
+
+.enum SCROLL_FLAGS
+        NORMAL = $70  ; default
+        ALT = $5d
+.endenum
+
+.mac _normal_scroll x_rate, y_rate
+        .assert (x_rate > -129) && (x_rate < 128), error, "Invalid scroll rate"
+        .assert (y_rate > -129) && (y_rate < 128), error, "Invalid scroll rate"
+        .byte <x_rate, <y_rate
+.endmac
+
+.mac scroll_bg layer, xy_rate, flags
+        .ifnblank flags
+                _e_cmd_impl SCROLL_FLAGS::flags + SCROLL_LAYER::layer
+        .else
+                _e_cmd_impl SCROLL_FLAGS::NORMAL + SCROLL_LAYER::layer
+        .endif
+        _normal_scroll xy_rate
+.endmac
+
+.mac load_pal vram_pal, rom_pal
+        _e_cmd_2byte $60, vram_pal, rom_pal
+.endmac
+
+.enum FILTER_PAL_COLOR
+        ALL = $07
+        RED = $01
+        GREEN = $02
+        BLUE = $04
+        NONE = $00
+.endenum
+
+.mac filter_pal color, clr_range
+        _e_cmd_impl $61
+        make_bitmask .byte, 0, FILTER_PAL_COLOR, color
+        .if .tcount(clr_range) <> 1
+                _2_bytes clr_range
+        .else
+                ; single color
+                .byte clr_range, clr_range
+        .endif
+.endmac
 
 .define mosaic(rate) _e_cmd_byte $62, rate
 .define flashlight(size) _e_cmd_byte $63, size
 .define bg_anim_frame(tile, frame) _e_cmd_2byte $64, tile, frame
 .define bg_anim_rate(tile, rate) _e_cmd_2byte $65, tile, rate
 
-.mac _load_map op, map, xx, yy, dd, flags1, flags2
-        .byte op
-        .word map | (flags1 << 8) | (EVENT_DIR::dd << 12)
-        .byte xx, yy, flags2
-.endmac
+.enum LOAD_MAP_FLAGS_1
+        NONE = 0
+        ASYNC = 0
+        AWAIT = 0
+        SHOW_TITLE = $0800
+        HIDE_TITLE = 0
+        Z_UPPER = $0400
+        Z_LOWER = 0
+        SET_PARENT = $0200
+        STARTUP_EVENT = 0
+        NO_FADE_IN = 0
+        SAME_SIZE = 0
+        CHOCOBO = 0
+        AIRSHIP = 0
+        NO_VEHICLE = 0
+.endenum
 
-.macro load_map map, xx, yy, dd, flags1, flags2
-        .if is_script_mode EVENT
-                _load_map $6b, map, xx, yy, dd, flags1, flags2
-        .elseif (is_script_mode WORLD) .or (is_script_mode VEHICLE)
-                _load_map $d2, map, xx, yy, dd, flags1, flags2
+.enum LOAD_MAP_FLAGS_2
+        NONE = 0
+        ASYNC = 0
+        AWAIT = 0
+        SHOW_TITLE = 0
+        HIDE_TITLE = 0
+        Z_UPPER = 0
+        Z_LOWER = 0
+        SET_PARENT = 0
+        STARTUP_EVENT = $0080
+        NO_FADE_IN = $0040
+        SAME_SIZE = $0020
+        CHOCOBO = $0002
+        AIRSHIP = $0001
+        NO_VEHICLE = 0
+.endenum
+
+.mac _e_load_map_op f1, f2, f3, f4, f5, f6, f7, f8
+        .if .paramcount > 0 && .xmatch(f1, ASYNC)
+                _e_cmd_impl $6b
+        .elseif .paramcount > 1 && .xmatch(f2, ASYNC)
+                _e_cmd_impl $6b
+        .elseif .paramcount > 2 && .xmatch(f3, ASYNC)
+                _e_cmd_impl $6b
+        .elseif .paramcount > 3 && .xmatch(f4, ASYNC)
+                _e_cmd_impl $6b
+        .elseif .paramcount > 4 && .xmatch(f5, ASYNC)
+                _e_cmd_impl $6b
+        .elseif .paramcount > 5 && .xmatch(f6, ASYNC)
+                _e_cmd_impl $6b
+        .elseif .paramcount > 6 && .xmatch(f7, ASYNC)
+                _e_cmd_impl $6b
+        .elseif .paramcount > 7 && .xmatch(f8, ASYNC)
+                _e_cmd_impl $6b
         .else
-                .error("Incorrect script mode")
+                _e_cmd_impl $6a
         .endif
 .endmac
 
-.macro load_map_vehicle map, xx, yy, dd, flags1, flags2
-        .if (is_script_mode WORLD) .or (is_script_mode VEHICLE)
-                _load_map $d3, map, xx, yy, dd, flags1, flags2
+.mac _wv_load_map_op f1, f2, f3, f4, f5, f6, f7, f8
+        .if .paramcount > 0 && .xmatch(f1, ASYNC)
+                _cmd_impl $d3
+        .elseif .paramcount > 1 && .xmatch(f1, ASYNC)
+                _cmd_impl $d3
+        .elseif .paramcount > 2 && .xmatch(f1, ASYNC)
+                _cmd_impl $d3
+        .elseif .paramcount > 3 && .xmatch(f1, ASYNC)
+                _cmd_impl $d3
+        .elseif .paramcount > 4 && .xmatch(f1, ASYNC)
+                _cmd_impl $d3
+        .elseif .paramcount > 5 && .xmatch(f1, ASYNC)
+                _cmd_impl $d3
+        .elseif .paramcount > 6 && .xmatch(f1, ASYNC)
+                _cmd_impl $d3
+        .elseif .paramcount > 7 && .xmatch(f1, ASYNC)
+                _cmd_impl $d3
         .else
-                .error("Incorrect script mode")
+                _cmd_impl $d2
         .endif
 .endmac
 
-.macro load_map_fade map, xx, yy, dd, flags1, flags2
-        _assert_script_mode EVENT
-        _load_map $6a, map, xx, yy, dd, flags1, flags2
+.mac _load_map map, xy_pos, dd, flags, op
+        .ifnblank op
+                _cmd_impl op
+        .elseif is_script_mode EVENT
+                _e_load_map_op flags
+        .elseif is_script_mode WORLD || is_script_mode VEHICLE
+                _wv_load_map_op flags
+        .else
+                .error "Invalid script mode"
+        .endif
+
+        .ifblank flags
+                .word map | (EVENT_DIR::dd << 12)
+        .else
+                make_bitmask .word, map | (EVENT_DIR::dd << 12), LOAD_MAP_FLAGS_1, flags
+        .endif
+        _2_bytes xy_pos
+        .ifblank flags
+                .byte 0
+        .else
+                make_bitmask .byte, 0, LOAD_MAP_FLAGS_2, flags
+        .endif
 .endmac
 
-.macro set_parent_map map, xx, yy, dd, flags1, flags2
-        _assert_script_mode EVENT
-        _load_map $6c, map, xx, yy, dd, flags1, flags2
+.macro load_map map, xy_pos, dd, flags
+        .ifblank flags
+                _load_map map, {xy_pos}, dd
+        .else
+                _load_map map, {xy_pos}, dd, {flags}
+        .endif
+.endmac
+
+.macro load_map_vehicle map, xy_pos, dd, flags
+        .if (is_script_mode WORLD) || (is_script_mode VEHICLE)
+                _load_map map, {xy_pos}, dd, {flags}
+        .else
+                .error("Invalid script mode")
+        .endif
+.endmac
+
+.macro set_parent_map map, xy_pos, dd
+        _cmd_word $6c, map, EVENT
+        _2_bytes xy_pos
+        .byte EVENT_DIR::dd
 .endmac
 
 .enum MOD_BG_FLAGS
@@ -366,16 +527,19 @@ set_script_mode EVENT
         BG3 = $80
 .endenum
 
-.macro mod_bg layer, xx, yy, width, height, flags
+.macro mod_bg_tiles layer, xy_pos, wh_size, flags
         .ifblank flags
                 _e_cmd_impl MOD_BG_FLAGS::AWAIT
         .else
                 _e_cmd_impl MOD_BG_FLAGS::flags
         .endif
-        .byte xx, yy | MOD_BG_LAYER::layer, width, height
+        _2_bytes xy_pos | MOD_BG_LAYER::layer
+        _2_bytes wh_size
 .endmac
 
-.define norm_lvl(char) _e_cmd_byte $77, char
+.define wait_bg _e_cmd_impl $75
+
+.define norm_lvl(char_id) _e_cmd_byte $77, CHAR::char_id
 .define pass_off(obj) _e_cmd_byte $78, EVENT_OBJ::obj
 
 .macro set_party_map party, map
@@ -388,16 +552,31 @@ set_script_mode EVENT
         .faraddr _event_addr addr
 .endmac
 
-.mac _char_status op, prefix, char, status14
-        _e_cmd_byte op, EVENT_OBJ::char
-        make_bitmask .word, 0, STATUS14, status14
+.mac _char_status op, prefix, char_id, status14
+        _e_cmd_byte op, EVENT_OBJ::char_id
+        make_bitmask prefix, 0, STATUS14, status14
 .endmac
+
+.enum EVENT_HP
+        HP_1 = 0
+        HP_2 = 1
+        HP_4 = 2
+        HP_8 = 3
+        HP_16 = 4
+        HP_32 = 5
+        HP_64 = 6
+        HP_128 = 7
+.endenum
+
+.enum EVENT_MP
+        MP_0 = 0
+.endenum
 
 .define restore_default_party _e_cmd_impl $7b
 .define collision_on(obj) _e_cmd_byte $7c, EVENT_OBJ::obj
 .define collision_off(obj) _e_cmd_byte $7d, EVENT_OBJ::obj
-.define party_pos(xx, yy) _e_cmd_2byte $7e, xx, yy
-.define char_name(char, name) _e_cmd_2byte $7f, char, name
+.define party_pos(xy_pos) _e_cmd_2byte $7e, xy_pos
+.define char_name(char_id, name) _e_cmd_2byte $7f, CHAR::char_id, name
 .define give_item(item) _e_cmd_byte $80, item
 .define take_item(item) _e_cmd_byte $81, item
 .define reset_default_party _e_cmd_impl $82
@@ -405,17 +584,17 @@ set_script_mode EVENT
 .define take_gil(gil) _cmd_word $85, gil, EVENT
 .define give_genju(genju) _e_cmd_byte $86, GENJU::genju
 .define take_genju(genju) _e_cmd_byte $87, GENJU::genju
-.define and_status _char_status $88, .byte,
-.define clr_status _char_status $88, .byte $ffff^,
-.define set_status _char_status $89, .byte,
-.define toggle_status _char_status $8a, .byte,
-.define inc_hp(char,hp) _e_cmd_2byte $8b, EVENT_OBJ::char, hp
-.define dec_hp(char,hp) _e_cmd_2byte $8b, EVENT_OBJ::char, hp | $80
-.define max_hp(char) _e_cmd_2byte $8b, EVENT_OBJ::char, $7f
-.define inc_mp(char,mp) _e_cmd_2byte $8c, EVENT_OBJ::char, mp
-.define dec_mp(char,mp) _e_cmd_2byte $8c, EVENT_OBJ::char, mp | $80
-.define max_mp(char) _e_cmd_2byte $8c, EVENT_OBJ::char, $7f
-.define remove_equip(char) _e_cmd_byte $8d, char
+.define and_status _char_status $88, .word,
+.define clr_status _char_status $88, .word $ffff^,
+.define set_status _char_status $89, .word,
+.define toggle_status _char_status $8a, .word,
+.define inc_hp(char_id, hp) _e_cmd_2byte $8b, EVENT_OBJ::char_id, EVENT_HP::hp
+.define dec_hp(char_id, hp) _e_cmd_2byte $8b, EVENT_OBJ::char_id, EVENT_HP::hp | $80
+.define max_hp(char_id) _e_cmd_2byte $8b, EVENT_OBJ::char_id, $7f
+.define inc_mp(char_id,mp) _e_cmd_2byte $8c, EVENT_OBJ::char_id, EVENT_MP::mp
+.define dec_mp(char_id,mp) _e_cmd_2byte $8c, EVENT_OBJ::char_id, EVENT_MP::mp | $80
+.define max_mp(char_id) _e_cmd_2byte $8c, EVENT_OBJ::char_id, $7f
+.define remove_equip(char_id) _e_cmd_byte $8d, EVENT_OBJ::char_id
 .define give_bushido _e_cmd_impl $8f
 .define give_blitz _e_cmd_impl $90
 
@@ -435,8 +614,27 @@ set_script_mode EVENT
 
 .define wait_1s wait_60f
 .define wait_2s wait_120f
+.define wait_3s wait_15f 12
+.define wait_4s wait_15f 16
+.define wait_5s wait_15f 20
+.define wait_6s wait_15f 24
 
-.define _e_wait(dur) _e_cmd_byte $b4, dur
+.mac _e_wait dur
+        .if dur = 30
+                wait_30f
+        .elseif dur = 45
+                wait_45f
+        .elseif dur = 60
+                wait_60f
+        .elseif dur = 90
+                wait_90f
+        .elseif dur = 120
+                wait_120f
+        .else
+                _e_cmd_byte $b4, dur
+        .endif
+.endmac
+
 .define _o_wait(dur) _o_cmd_byte $e0, dur
 .define _w_wait(dur) _w_cmd_byte $e0, dur
 .define _v_wait(dur) _v_cmd_byte $e0, dur
@@ -453,7 +651,7 @@ set_script_mode EVENT
         .endif
 .endmac
 
-.define name_menu(char) _e_cmd_byte $98, char
+.define name_menu(char_id) _e_cmd_byte $98, CHAR::char_id
 
 .enum PARTY_MENU_FLAGS
         RESET = $80  ; default
@@ -475,22 +673,22 @@ set_script_mode EVENT
 
 .define colosseum_menu _e_cmd_impl $9a
 .define shop_menu(shop_id) _e_cmd_byte $9b, shop_id
-.define opt_equip(char) _e_cmd_byte $9c, EVENT_OBJ::char
-.define final_order _e_cmd_impl $9d
+.define opt_equip(char_id) _e_cmd_byte $9c, CHAR::char_id
+.define order_menu _e_cmd_impl $9d
 
 .enum TIMER_FLAGS
-        FIELD_ONLY                      = $80
-        FIELD_VISIBLE                   = $40
-        BANQUET                         = $20
-        MENU_BATTLE_VISIBLE             = $10
+        FIELD_ONLY                      = $800000
+        FIELD_VISIBLE                   = $400000
+        BANQUET                         = $200000
+        MENU_BATTLE_VISIBLE             = $100000
 .endenum
 
 .mac start_timer timer, dur, addr, flags
         _cmd_word $a0, dur, EVENT
         .ifblank flags
-                .faraddr (_event_addr addr) | (timer << 18)
+                .faraddr (timer << 18) | (_event_addr addr)
         .else
-                make_bitmask .faraddr, (_event_addr addr) | (timer << 18), TIMER_FLAGS, flags
+                make_bitmask .faraddr, (timer << 18) | (_event_addr addr), TIMER_FLAGS, flags
         .endif
 .endmac
 
@@ -507,15 +705,25 @@ set_script_mode EVENT
         TRAIN = $ae
         THE_END = $bb
         FALCON = $bf
+.endenum
+
+.enum VEHICLE_CUTSCENE
         FALCON_ENDING = $f2
         JUDGMENT_1 = $f3
         JUDGMENT_2 = $f4
+        JUDGMENT_3 = $f5
         FALCON_EMERGE = $fa
         VECTOR_APPROACH = $fe
 .endenum
 
 .mac cutscene val
-        _e_cmd_impl EVENT_CUTSCENE::val
+        .if is_script_mode EVENT
+                _e_cmd_impl EVENT_CUTSCENE::val
+        .elseif is_script_mode VEHICLE
+                _v_cmd_impl VEHICLE_CUTSCENE::val
+        .else
+                .error "Invalid script mode"
+        .endif
 .endmac
 
 .define load_menu _e_cmd_impl $ab
@@ -574,6 +782,9 @@ set_script_mode EVENT
 .define if_rand(addr) _cmd_addr $bd, addr, EVENT
 
 _multi_case_mode .set 0
+_multi_case_index .set 0
+.define _CaseStart .ident(.sprintf("_CaseStart%d", ::_multi_case_index))
+.define _CaseEnd .ident(.sprintf("_CaseEnd%d", ::_multi_case_index))
 
 .mac case val, addr
         .faraddr (val << 20) | (_event_addr addr)
@@ -587,7 +798,7 @@ _multi_case_mode .set 0
                 case val, addr
         .else
                 ; beginning of multi-case block
-                .scope
+                ::_multi_case_index .set ::_multi_case_index + 1
                 n_cases = (_CaseEnd - _CaseStart) / 3
                 .assert n_cases <= 16, error, "Too many cases"
                 _cmd_byte $be, n_cases
@@ -600,7 +811,6 @@ _multi_case_mode .set 0
         .assert ::_multi_case_mode = 1, error, "Invalid case block"
         _CaseEnd = *
         ::_multi_case_mode .set 0
-        .endscope
 .endmac
 
 .mac _make_if_switch switch_id
@@ -614,6 +824,9 @@ _multi_case_mode .set 0
 .endmac
 
 _multi_switch_mode .set 0
+_multi_switch_index .set 0
+.define _IfStart .ident(.sprintf("_IfStart%d", ::_multi_switch_index))
+.define _IfEnd .ident(.sprintf("_IfEnd%d", ::_multi_switch_index))
 
 .mac switch val
         .if ::_multi_switch_mode = 1
@@ -628,7 +841,8 @@ _multi_switch_mode .set 0
 .endmac
 
 .mac _if_multi op
-        .scope
+        .local n_switches
+        ::_multi_switch_index .set ::_multi_switch_index + 1
         n_switches = (_IfEnd - _IfStart) / 2
         .assert n_switches <= 8, error, "Too many switches"
         _cmd_impl op + n_switches - 1
@@ -639,7 +853,7 @@ _multi_switch_mode .set 0
 .mac if_any
         .if is_script_mode EVENT
                 _if_multi $c0
-        .elseif (is_script_mode WORLD) .or (is_script_mode VEHICLE)
+        .elseif (is_script_mode WORLD) || (is_script_mode VEHICLE)
                 _if_multi $b0
         .endif
 .endmac
@@ -647,7 +861,7 @@ _multi_switch_mode .set 0
 .mac if_all
         .if is_script_mode EVENT
                 _if_multi $c8
-        .elseif (is_script_mode WORLD) .or (is_script_mode VEHICLE)
+        .elseif (is_script_mode WORLD) || (is_script_mode VEHICLE)
                 _if_multi $b8
         .endif
 .endmac
@@ -657,14 +871,13 @@ _multi_switch_mode .set 0
         _IfEnd = *
         .faraddr _event_addr addr
         ::_multi_switch_mode .set 0
-        .endscope
 .endmac
 
 ; single if switch
 .mac if_switch switch_id, addr
         .if is_script_mode EVENT
                 _cmd_impl $c0
-        .elseif (is_script_mode WORLD) .or (is_script_mode VEHICLE)
+        .elseif (is_script_mode WORLD) || (is_script_mode VEHICLE)
                 _cmd_impl $b0
         .endif
         _make_if_switch switch_id
@@ -678,7 +891,7 @@ _multi_switch_mode .set 0
         .elseif is_script_mode OBJ
                 .assert (switch_id <= $02ff), error, "Invalid switch"
                 _cmd_byte $e1 + (>switch_id), <switch_id
-        .elseif (is_script_mode WORLD) .or (is_script_mode VEHICLE)
+        .elseif (is_script_mode WORLD) || (is_script_mode VEHICLE)
                 _cmd_word $c8, switch_id
         .endif
 .endmac
@@ -690,7 +903,7 @@ _multi_switch_mode .set 0
         .elseif is_script_mode OBJ
                 .assert (switch_id <= $02ff), error, "Invalid switch"
                 _cmd_byte $e4 + (>switch_id), <switch_id
-        .elseif (is_script_mode WORLD) .or (is_script_mode VEHICLE)
+        .elseif (is_script_mode WORLD) || (is_script_mode VEHICLE)
                 _cmd_word $c9, switch_id
         .endif
 .endmac
@@ -707,30 +920,70 @@ _multi_switch_mode .set 0
 
 .define set_case(case) _e_cmd_impl EVENT_CASE::case
 
+.define portrait(portrait_id) _e_cmd_byte $e7, CHAR::portrait_id
+
 .mac _var_cmd op, var, val
         _e_cmd_byte op, var
         .word val
 .endmac
+
+.define VAR_EQUAL                       BIT_0
+.define VAR_GREATER                     BIT_1
+.define VAR_LESS                        BIT_2
 
 .define set_var _var_cmd $e8,
 .define add_var _var_cmd $e9,
 .define sub_var _var_cmd $ea,
 .define cmp_var _var_cmd $eb,
 
-.define fade_song(dur) _e_cmd_byte $f2, dur
+.enum PLAY_SONG_FLAGS
+        NONE = 0
+        PAUSE_CURRENT = $80
+.endenum
 
-.define play_song(song) _e_cmd_byte $f0, song
-.define play_song_pause(song) _e_cmd_byte $f0, song | $80
+.mac play_song song_id, flags
+        _e_cmd_impl $f0
+        .ifnblank flags
+                make_bitmask .byte, song_id, PLAY_SONG_FLAGS, flags
+        .else
+                .byte song_id
+        .endif
+.endmac
 
+.mac fade_in_song song_id, dur, flags
+        _e_cmd_impl $f1
+        .ifnblank flags
+                make_bitmask .byte, song_id, PLAY_SONG_FLAGS, flags
+        .else
+                .byte song_id
+        .endif
+        .byte dur
+.endmac
+
+.define fade_out_song(dur) _e_cmd_byte $f2, dur
 .define resume_song(dur) _e_cmd_byte $f3, dur
-.define sfx(sfx_id) _e_cmd_byte $f4, sfx_id
+
+.mac sfx sfx_id, pan, dur
+        .if .blank(pan) || .blank(dur)
+                _e_cmd_byte $f4, sfx_id
+        .else
+                _cmd_3byte $f5, sfx_id, pan, dur, EVENT
+        .endif
+.endmac
 
 .define spc_cmd(p1, p2, p3) _cmd_3byte $f6, p1, p2, p3, EVENT
 .define continue_song _e_cmd_impl $f7
 .define wait_spc _e_cmd_impl $f8
-.define wait_song_pos _e_cmd_impl $f9
-.define wait_song_end _e_cmd_impl $fa
-.define event_cmd_fb _e_cmd_impl $fb
+
+.mac wait_song song_pos
+        .ifblank song_pos
+                _e_cmd_impl $fa
+        .else
+                _e_cmd_byte $f9, song_pos
+        .endif
+.endmac
+
+.define wait_sfx _e_cmd_impl $fb
 .define event_cmd_fd _e_cmd_impl $fd
 .define return _e_cmd_impl $fe
 .define _e_end return
@@ -753,19 +1006,19 @@ _multi_switch_mode .set 0
 .define ACTION_H_FLIP $40
 
 .macro action aa
-        .assert (is_script_mode OBJ) .or (is_script_mode WORLD), error, "Invalid script mode"
+        .assert (is_script_mode OBJ) || (is_script_mode WORLD), error, "Invalid script mode"
         _cmd_impl aa
 .endmac
 
 .macro dir dd
-        .assert (is_script_mode OBJ) .or (is_script_mode WORLD), error, "Invalid script mode"
+        .assert (is_script_mode OBJ) || (is_script_mode WORLD), error, "Invalid script mode"
         _cmd_impl $cc + EVENT_DIR::dd
 .endmac
 
 .mac move dd, steps
-        .assert (is_script_mode OBJ) .or (is_script_mode WORLD), error, "Invalid script mode"
+        .assert (is_script_mode OBJ) || (is_script_mode WORLD), error, "Invalid script mode"
         .if (EVENT_DIR::dd <= 3)
-                .assert steps >= 1 .and steps <= 32, error, "Steps must be [1..32]"
+                .assert steps >= 1 && steps <= 32, error, "Steps must be [1..32]"
                 .if steps <= 8
                         _cmd_impl $80 | ((steps - 1) << 2) | EVENT_DIR::dd
                 .elseif steps <= 16
@@ -836,18 +1089,18 @@ _multi_switch_mode .set 0
 .endmac
 
 .mac hide_obj obj
-        .if is_script_mode OBJ
-                _o_hide_obj
-        .elseif is_script_mode EVENT
+        .if is_script_mode EVENT
                 _e_hide_obj obj
+        .else
+                _cmd_impl $d1
         .endif
 .endmac
 
 .mac show_obj obj
-        .if is_script_mode OBJ
-                _o_show_obj
-        .elseif is_script_mode EVENT
+        .if is_script_mode EVENT
                 _e_show_obj obj
+        .else
+                _cmd_impl $d0
         .endif
 .endmac
 
@@ -855,10 +1108,10 @@ _multi_switch_mode .set 0
 .define anim_off _o_cmd_impl $c7
 .define layer(ll) _o_cmd_byte $c8, ll
 
-.define _o_show_obj _o_cmd_impl $d0
-.define _o_hide_obj _o_cmd_impl $d1
+; .define _o_show_obj _o_cmd_impl $d0
+; .define _o_hide_obj _o_cmd_impl $d1
 
-.define pos(xx, yy) _o_cmd_2byte $d5, xx, yy
+.define pos(xy_pos) _o_cmd_2byte $d5, xy_pos
 
 .define scroll_obj _o_cmd_impl $d7
 
@@ -872,7 +1125,7 @@ _multi_switch_mode .set 0
 
 .macro _branch op, addr
         _assert_script_mode OBJ
-        .if .def(addr) .and ((addr) - (* - 1)) < 0
+        .if .def(addr) && ((addr) - (* - 1)) <= 0
                 ; branch backward
                 _cmd_byte op, (* - 1) - (addr)
         .else
@@ -884,13 +1137,21 @@ _multi_switch_mode .set 0
 .define branch _branch $fc,
 .define branch_rand _branch $fa,
 
+.mac branch_end addr
+        .ifndef _ObjStart
+                .error "Missing start of object script"
+        .endif
+        _branch $fc, addr
+        _ObjEnd := *
+        set_script_mode EVENT
+.endmac
+
 .mac _o_end
         .ifndef _ObjStart
                 .error "Missing start of object script"
         .endif
         _o_cmd_impl $ff
         _ObjEnd := *
-        .endscope
         set_script_mode EVENT
 .endmac
 
@@ -901,24 +1162,48 @@ _multi_switch_mode .set 0
 .define figaro_emerge _w_cmd_impl $fe
 .define _w_end _w_cmd_impl $ff
 
-.macro airship_pos xx, yy
-        .assert (is_script_mode WORLD) .or (is_script_mode VEHICLE), error, "Invalid script mode"
-        _cmd_2byte $c7, xx, yy
+.macro airship_pos xy_pos
+        .assert (is_script_mode WORLD) || (is_script_mode VEHICLE), error, "Invalid script mode"
+        _cmd_impl $c7
+        _2_bytes xy_pos
 .endmac
+
+.enum MOVE_VEHICLE_FLAGS
+        DOWN = BIT_6
+        UP = BIT_5
+        LEFT = BIT_4
+        RIGHT = BIT_3
+        FORWARD = BIT_2
+        BACKWARD = BIT_1
+        BACK = BIT_1
+        SHARP_TURNS = BIT_0
+        NONE = 0
+.endenum
+
+.mac move_vehicle flags, dur
+        _assert_script_mode VEHICLE
+        make_bitmask .byte, 0, MOVE_VEHICLE_FLAGS, flags
+        .byte dur
+.endmac
+
+.define camera_dir(dd) _cmd_word $c1, dd, VEHICLE
+.define move_dir(dd) _cmd_word $c2, dd, VEHICLE
+
+.define altitude(aa) _cmd_word $c5, aa, VEHICLE
 
 .define show_arrows _v_cmd_impl $da
 .define lock_arrows _v_cmd_impl $db
 .define hide_arrows _v_cmd_impl $dc
 
 .macro hide_minimap
-        .assert (is_script_mode WORLD) .or (is_script_mode VEHICLE), error, "Invalid script mode"
+        .assert (is_script_mode WORLD) || (is_script_mode VEHICLE), error, "Invalid script mode"
         _cmd_impl $dd
 .endmac
 
-.define rotation_center(xx, yy) _cmd_2byte $de, xx, yy
+.define set_origin(xy_pos) _cmd_2byte $de, xy_pos
 
 .macro show_minimap
-        .assert (is_script_mode WORLD) .or (is_script_mode VEHICLE), error, "Invalid script mode"
+        .assert (is_script_mode WORLD) || (is_script_mode VEHICLE), error, "Invalid script mode"
         _cmd_impl $df
 .endmac
 

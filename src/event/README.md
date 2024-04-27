@@ -24,7 +24,7 @@ script created by the Squaresoft developers is not publicly available,
 through reverse-engineering it's possible to create a public version of
 the event script which can be assembled into a byte-for-byte copy of
 the original. It is a very large block of data in the ROM, using almost
-200 kB of space, or about 12% of the 3 MB ROM. Currently only a small
+200 kB of space, or about 7% of the 3 MB ROM. Currently only a small
 portion of the event script has been reverse-engineered in this way, but
 hopefully the rest can be disassembled in the same format eventually.
 
@@ -38,17 +38,17 @@ understanding the event script format.
 [`char_name`](#char_name),
 [`char_party`](#char_party),
 [`char_prop`](#char_prop),
-`dec_hp`,
-`dec_mp`,
-`give_blitz`,
-`give_bushido`,
+[`dec_hp`](#dec_hp),
+[`dec_mp`](#dec_mp),
+[`give_blitz`](#give_blitz),
+[`give_bushido`](#give_bushido),
 `give_genju`,
 `give_gil`,
 `give_item`,
-`inc_hp`,
-`inc_mp`,
-`max_hp`,
-`max_mp`,
+[`inc_hp`](#inc_hp),
+[`inc_mp`](#inc_mp),
+[`max_hp`](#max_hp),
+[`max_mp`](#max_mp),
 `norm_lvl`,
 `opt_equip`,
 `remove_equip`,
@@ -122,7 +122,7 @@ understanding the event script format.
 `final_order`
 `load_menu`
 `name_menu`
-`party_menu`
+[`party_menu`](#party_menu)
 `shop_menu`
 
 ### Object Commands
@@ -154,7 +154,7 @@ understanding the event script format.
 
 ### Party Commands
 
-`activate_party`,
+[`activate_party`](#activate_party),
 `party_chars`,
 `party_pos`,
 `party_map`,
@@ -198,7 +198,8 @@ understanding the event script format.
 `hide_party`,
 `lock_arrows`,
 `minimap_on, minimap_off`,
-`rotation_center`,
+`move_vehicle`,
+`set_origin`,
 `show_arrows`,
 `show_party`,
 `vehicle_gfx`
@@ -227,12 +228,12 @@ understanding the event script format.
 |    43 | `obj_pal` |
 |    44 | [`vehicle`](#vehicle) |
 |    45 | `sort_obj` |
-|    46 | `activate_party` |
+|    46 | [`activate_party`](#activate_party) |
 |    47 | `update_party` |
-|    48 | `show_dlg` |
+|    48 | `dlg` |
 |    49 | `wait_dlg` |
 |    4A | `wait_key` |
-|    4B | `show_dlg` |
+|    4B | `dlg` |
 | 4C-4E | [`battle`](#battle) |
 |    4F | `restore_save` |
 | 50-53 | `mod_pal` |
@@ -276,12 +277,12 @@ understanding the event script format.
 |    86 | `give_genju` |
 |    87 | `take_genju` |
 | 88-8A | `char_status` |
-|    8B | `inc_hp, dec_hp, max_hp` |
-|    8C | `inc_mp, dec_mp, max_mp` |
+|    8B | [`inc_hp`](#inc_hp), [`dec_hp`](#dec_hp), [`max_hp`](#max_hp) |
+|    8C | [`inc_mp`](#inc_mp), [`dec_mp`](#dec_mp), [`max_mp`](#max_mp) |
 |    8D | `remove_equip` |
 |    8E | `battle` |
-|    8F | `give_bushido` |
-|    90 | `give_blitz` |
+|    8F | [`give_bushido`](#give_bushido) |
+|    90 | [`give_blitz`](#give_blitz) |
 |    91 | `wait_15f, wait_90f` |
 |    92 | `wait_30f` |
 |    93 | `wait_45f` |
@@ -290,7 +291,7 @@ understanding the event script format.
 |    96 | `fade_in` |
 |    97 | `fade_out` |
 |    98 | `name_menu` |
-|    99 | `party_menu` |
+|    99 | [`party_menu`](#party_menu) |
 |    9A | `colosseum_menu` |
 |    9B | `shop_menu` |
 |    9C | `opt_equip` |
@@ -394,8 +395,8 @@ understanding the event script format.
 | C8-C9 | `set_switch, clr_switch` |
 | CA-CB | (unused) |
 | CC-CF | `dir` |
-|    D0 | `show_party` |
-|    D1 | `hide_party` |
+|    D0 | `show_obj` |
+|    D1 | `hide_obj` |
 | D2-D3 | `load_map` |
 |    D4 | `if_key` |
 |    D5 | `if_dir` |
@@ -416,7 +417,7 @@ understanding the event script format.
 
 | Opcode | Command |
 |:-----:|---|
-| 00-7F | `move` |
+| 00-7F | `move_vehicle` |
 | 80-AF | (unused) |
 | B0-B7 | [`if_switch`](#if_switch), [`if_switch_any`](#if_switch_all-if_switch_any) |
 | B8-BF | [`if_switch_all`](#if_switch_all-if_switch_any) |
@@ -426,9 +427,9 @@ understanding the event script format.
 |    C6 | `move_forward` |
 |    C7 | `airship_pos` |
 | C8-C9 | `set_switch, clr_switch` |
-|    CA | `battle` |
-|    D0 | `show_vehicle` |
-|    D1 | `hide_vehicle` |
+| CA-CF | `battle` |
+|    D0 | `show_obj` |
+|    D1 | `hide_obj` |
 | D2-D3 | `load_map` |
 | D4-D7 | (unused) |
 |    D8 | `fade_in` |
@@ -437,7 +438,7 @@ understanding the event script format.
 |    DB | `lock_arrows` |
 |    DC | `hide_arrows` |
 |    DD | `minimap_off` |
-|    DE | `rotation_center` |
+|    DE | `set_origin` |
 |    DF | `minimap_on` |
 |    E0 | `cutscene` |
 | E1-F1 | (unused) |
@@ -457,6 +458,23 @@ Script modes: `E---` \
 Syntax: `add_var <var_id> <value>`
 
 Add `value` to event variable `var_id`. The result is capped at 65535.
+
+### `activate_party`
+
+Script modes: `E---` \
+Syntax: `activate_party <party_id>`
+
+Gives the user control of the specified party. Unlike when the player changes
+the active party with the Y button, this command does not fade the screen
+or center the camera on the new party.
+
+This command can be used even if the new party has no characters in it, or
+if the [`party_id`](#party_id) is the same as the current party. Note that errors may occur
+if the user is given control of an empty party.
+
+If the current party or the new party is onscreen, this command should be
+followed immediately by the `sort_obj` command to properly display
+character objects in the old and new parties.
 
 ### `battle`
 
@@ -488,7 +506,7 @@ determines how many times the subroutine gets repeated (255 max).
 Script modes: `E---` \
 Syntax: `char_name <char_id>, <name_id>`
 
-Changes the name for character `char_id`. The `name_id` parameter specifies
+Changes the name for character [`char_id`](#char_id). The `name_id` parameter specifies
 one of the 64 character names. Character names are not initialized for a new
 game, so this command must be used prior to the first time every new character
 is encountered. The player may later choose to change a character's name via
@@ -499,18 +517,19 @@ the `name_menu` command or by using a Rename Card item.
 Script modes: `E---` \
 Syntax: `char_party <char_id>, <party_id>`
 
-Move `char_id` to `party_id`. If `party_id` is zero (no party), remove that
-character from their current party. The character will be placed in the
-first empty slot in that party. If the party is full, the character will
-be placed in slot 4.
+Move [`char_id`](#char_id) to [`party_id`](#party_id). If `party_id` is zero
+(no party), remove that character from their current party. The character
+will be placed in the first empty slot in that party. If the party is full,
+the character will be placed in slot 4. This will lead to two different
+characters being in the same party slot, which may lead to errors.
 
 ### `char_prop`
 
 Script modes: `E---` \
 Syntax: `char_prop <char_id>, <char_prop_id>`
 
-Change the character properties for `char_id`. The `char_prop_id` parameter
-specifies one of the 64 character properties.
+Change the character properties for [`char_id`](#char_id). The `char_prop_id`
+parameter specifies one of the 64 character properties.
 
 ### `cmp_var`
 
@@ -552,6 +571,26 @@ is_less:
         return
 ```
 
+### `dec_hp`
+
+Script modes: `E---` \
+Syntax: `dec_hp` `<char_id>`, `HP_<val>`
+
+Decrease HP for [`char_id`](#char_id). If the character would have less than 1 HP, their
+HP is set to 1 instead. `val` must be one of the following: 1, 2, 4, 8, 16,
+32, 64, 128 (defined in HPTbl in src/field/event.asm).
+
+### `dec_mp`
+
+Script modes: `E---` \
+Syntax: `dec_mp` `<char_id>`, `MP_<val>`
+
+Decrease MP for [`char_id`](#char_id). If the character would have less than 0 MP, their
+MP is set to 0 instead. Unliked `dec_hp`, there are no nonzero MP constants
+defined in MPTbl in src/field/event.asm, so this instruction will have no
+effect unless new values are added to MPTbl. The only valid value for `val` is
+0.
+
 ### `end`
 
 Script modes: `EOWV` \
@@ -571,6 +610,23 @@ Execute the event `label` from within an object script. This command is
 typically used when a script-controlled NPC reaches its destination and
 triggers an event (i.e. multi-party battles in Narshe).
 
+### `give_blitz`
+
+Script modes: `E---` \
+Syntax: `give_blitz`
+
+Gives Sabin the Bum Rush blitz. If Sabin already has Bum Rush (either from
+this event command or from reaching level 70), this command has no effect.
+
+### `give_bushido`
+
+Script modes: `E---` \
+Syntax: `give_bushido`
+
+Gives Cyan all bushido abilities (SwdTech). If Cyan already has all bushido
+abilities (either from this event command or from reaching level 70), this
+command has no effect.
+
 ### `goto`
 
 Script modes: `E-WV` \
@@ -583,12 +639,33 @@ This instruction serves as a terminator for a conditional block of
 corresponding condition is true (all/any of the switch statements are true),
 event execution jumps to `label`.
 
+### `inc_hp`
+
+Script modes: `E---` \
+Syntax: `inc_hp` `<char_id>`, `HP_<val>`
+
+Increase HP for [`char_id`](#char_id). If the character would have more than their maximum
+HP, their HP is set to that value instead. `val` must be one of the
+following: 1, 2, 4, 8, 16, 32, 64, 128 (defined in HPTbl in
+src/field/event.asm).
+
+### `inc_mp`
+
+Script modes: `E---` \
+Syntax: `inc_mp` `<char_id>`, `MP_<val>`
+
+Increase MP for [`char_id`](#char_id). If the character would have more than their maximum
+MP, their MP is set to that value instead. Unliked `inc_hp`, there are no
+nonzero MP constants defined in MPTbl in src/field/event.asm, so this
+instruction will have no effect unless new values are added to MPTbl. The only
+valid value for `val` is 0.
+
 ### `obj_script`
 
 Script modes: `E---` \
-Syntax: `obj_script <obj> [flags]`
+Syntax: `obj_script <obj_id> [flags]`
 
-Begin a synchronous or asynchronous script for object `obj`. This command
+Begin a synchronous or asynchronous script for object [`obj_id`](#obj_id). This command
 automatically changes the script mode from event (E) to object (O). The `flags`
 parameter may be one of the following:
 
@@ -624,6 +701,49 @@ example:
 ; go here if both switch statements are true
 all_true:
         return
+```
+
+### `max_hp`
+
+Script modes: `E---` \
+Syntax: `max_hp <char_id>`
+
+Set HP to max for [`char_id`](#char_id).
+
+### `max_mp`
+
+Script modes: `E---` \
+Syntax: `max_mp <char_id>`
+
+Set MP to max for [`char_id`](#char_id).
+
+### `move_vehicle`
+
+Script modes: `---V` \
+Syntax: `move_vehicle <flags>, <duration>`
+
+Move the vehicle as though the player were controlling it for the specified
+duration in frames (60 frames per second). This allows the event script to
+control the vehicle's movement automatically as though the player were pressing
+the specified buttons on the controller. The only exception is backward
+movement, which has no equivalent button on the controller. Valid parameters
+for `flags` are `UP`, `DOWN`, `LEFT`, `RIGHT`, `FORWARD`, `BACKWARD`
+(or `BACK`), and `SHARP_TURNS` (makes both left and right turns twice as fast).
+
+### `party_menu`
+
+Script modes: `E---` \
+Syntax: `party_menu <num_parties>, [forced_chars], [flags]`
+
+Open the party menu for the player to add charactes to a given number
+of parties. `forced_chars` is a list of all characters that are required to be
+included in party 1. `flags` can be either `RESET` (default) to remove all
+characters from all parties or `NO_RESET` to start with characters in their
+current parties. For example, the following instruction will remove all characters from their parties and open the party menu with one party,
+forcing Gau and Umaro.
+
+```text
+        party_menu 1, {GAU, UMARO}
 ```
 
 ### `return`
@@ -695,7 +815,7 @@ Script modes: `EO--` \
 Syntax (event mode): `vehicle <obj_id>, <vehicle>, [flags]` \
 Syntax (object mode): `vehicle <vehicle>, [flags]`
 
-Set the vehicle shown for an object. The `vehicle` parameter can be one of the following: `NONE`, `CHOCOBO`, `MAGITEK`, or `RAFT`. The optional `flags` parameter can be either `HIDE_RIDER` (default) or `SHOW_RIDER` to hide or show the rider sprite.
+Set the vehicle shown for [`obj_id`](#obj_id). The `vehicle` parameter can be one of the following: `NONE`, `CHOCOBO`, `MAGITEK`, or `RAFT`. The optional `flags` parameter can be either `HIDE_RIDER` (default) or `SHOW_RIDER` to hide or show the rider sprite.
 
 Note that changing a character's vehicle to magitek armor has no effect in battle. To use magitek armor in battle, inflict the magitek status via the `set_status` command.
 
@@ -724,15 +844,33 @@ no effect if there is currently no script running for `obj`.
 
 ### `char_id`
 
+There are 16 slots available for characters who can be recruited and
+controlled by the player. This includes the 14 main characters as well as
+guest characters who join the party temporarily. Note that some guest
+characters (moogles and ghosts) overwrite the main characters prior to when
+they permanently join the party. For example, `GHOST_1` uses Strago's
+character slot.
+
 - Main characters:
-TERRA, LOCKE, CYAN, SHADOW, EDGAR, SABIN, CELES, STRAGO, RELM, SETZER, MOG, GAU, GOGO, UMARO
-- Extra moogles:
-KUPEK, KUPOP, KUMAMA, KUKU, KUTAN, KUPAN, KUSHU, KURIN, KURU, KAMOG
-- Phantom train ghosts: GHOST_1, GHOST_2
-- Other characters: WEDGE, BANON, MADUIN, VICKS, LEO, KEFKA
+`TERRA`, `LOCKE`, `CYAN`, `SHADOW`, `EDGAR`, `SABIN`, `CELES`, `STRAGO`,
+`RELM`, `SETZER`, `MOG`, `GAU`, `GOGO`, `UMARO`
+- Extra moogles: `KUPEK`, `KUPOP`, `KUMAMA`, `KUKU`, `KUTAN`, `KUPAN`,
+`KUSHU`, `KURIN`, `KURU`, `KAMOG`
+- Phantom train ghosts: `GHOST_1`, `GHOST_2`
+- Other characters: `WEDGE`, `BANON`, `MADUIN`, `VICKS`, `LEO`, `KEFKA`
 
-### `obj`
+### `obj_id`
 
-- NPCs: NPC_1 through NPC_32
-- Camera object: CAMERA
-- Character slots in the active party: SLOT_1, SLOT_2, SLOT_3, SLOT_4
+- Characters: same as [`char_id`](#char_id)
+- NPCs: `NPC_1` through `NPC_32`
+- Camera object: `CAMERA`
+- Characters in the active party: `SLOT_1`, `SLOT_2`, `SLOT_3`, `SLOT_4`
+
+### `party_id`
+
+There are 8 different "parties" that characters can be assigned to. Party 0
+is not a real party, but rather is for characters that are not currently
+assigned to a party. The remaining 7 parties can be separately controlled
+by the player and have up to 4 characters each. When party switching is
+enabled, the Y button only cycles through parties 1, 2, and 3. Parties 4
+through 7 can only be activated via the `activate_party` event command.

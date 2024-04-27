@@ -394,14 +394,14 @@ MoveVehicle:
         beq     @19f2
         stz     $60
         jsr     ExecVehicleCmd
-        jsr     _ee75d3
+        jsr     UpdateAutoCtrl
         bra     @1a03
 @19f2:  lda     $e7
         bit     #$0001
         bne     @1a03
         lda     $1e
         bit     #$0001
-        bne     @1a03
+        bne     @1a03                   ; branch if player input is disabled
         jsr     GetVehicleInput
 @1a03:  shorta
         lda     $e8

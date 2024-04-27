@@ -525,6 +525,8 @@ loop:   lda     $7200,x     ; copy unmodified palette to active palette
 
 ; [ object color math $01: increment colors ]
 
+; adds 1 to a range of palette colors until the color targets are reached
+
 ;  $1a = ---rrrrr red color target
 ;  $1b = -bbbbb-- blue color target
 ; +$20 = ------gg ggg----- green color target
@@ -569,6 +571,9 @@ loop:   lda     $7500,y
 ; ------------------------------------------------------------------------------
 
 ; [ object color math $03: decrement colors (back to normal) ]
+
+; subtracts 1 from a range of palette colors until the colors return
+; to their unmodified values
 
 .proc SpriteColorUnInc
         lda     #$7e
@@ -620,6 +625,8 @@ loop:   lda     $7300,y
 
 ; [ object color math $04: decrement colors ]
 
+; subtracts 1 from a range of palette colors until the color targets are reached
+
 ;  $1a = red color target
 ;  $1b = blue color target
 ; +$20 = green color target
@@ -667,6 +674,9 @@ loop:   lda     $7500,y
 ; ------------------------------------------------------------------------------
 
 ; [ object color math $06: increment colors (back to normal) ]
+
+; adds 1 to a range of palette colors until the colors return
+; to their unmodified values
 
 .proc SpriteColorUnDec
         lda     #$7e
@@ -718,8 +728,11 @@ loop:   lda     $7300,y
 
 ; [ object color math $02: add colors (doesn't work) ]
 
+; should add a fixed value to a range of palette colors, but instead sets
+; all color components to max (white)
+
 .proc SpriteColorIncFlash
-        lda     #$1f
+        lda     #$1f                    ; ignore parameters, set colors to max
         sta     $1a
         lda     #$7c
         sta     $1b
@@ -771,8 +784,10 @@ loop:   lda     $7500,y
 
 ; [ object color math $05: subtract colors ]
 
+; subtracts a fixed value from a range of palette colors
+
 .proc SpriteColorDecFlash
-        lda     $1a
+        lda     $1a                     ; add 4 to all color constants
         clc
         adc     #$04
         sta     $1a

@@ -1576,7 +1576,7 @@ GenjuOrder:
         .byte   26                      ; CRUSADER
         .byte   25                      ; RAGNAROK
         .byte   2                       ; KIRIN
-        .byte   14                      ; ZONESEEL
+        .byte   14                      ; ZONESEEK
         .byte   11                      ; CARBUNKL
         .byte   10                      ; PHANTOM
         .byte   15                      ; SRAPHIM
