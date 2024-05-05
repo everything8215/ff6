@@ -422,7 +422,7 @@ VehicleCmd_c9:
 
 VehicleCmd_ca:
 @72ea:  shorta
-        tdc
+        clr_a
         ldy     $ed
         lda     [$ea],y
         longa
@@ -442,7 +442,7 @@ VehicleCmd_ca:
         sta     f:$0011e2     ; battle background
         iny
         sty     $ed
-        tdc
+        clr_a
         sta     f:$0011e3     ;
         sta     f:$0011e4
         lda     $11f6       ; enable battle
@@ -2377,7 +2377,7 @@ WorldCmd_fe:
         cmp     #$6400
         bcs     @817a
         ldx     #$0000
-@8151:  tdc
+@8151:  clr_a
         sta     $b5d8,x
         txa
         clc

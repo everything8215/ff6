@@ -136,7 +136,7 @@ set_script_mode EVENT
 
 .define wait_obj(obj) _e_cmd_byte $35, EVENT_OBJ::obj
 .define pass_on(obj) _e_cmd_byte $36, EVENT_OBJ::obj
-.define obj_gfx(obj, gfx) _e_cmd_2byte $37, EVENT_OBJ::obj, gfx
+.define obj_gfx(obj, gfx) _e_cmd_2byte $37, EVENT_OBJ::obj, MAP_SPRITE_GFX::gfx
 .define lock_camera _e_cmd_impl $38
 .define unlock_camera _e_cmd_impl $39
 .define player_ctrl_on _e_cmd_impl $3a
@@ -172,7 +172,7 @@ set_script_mode EVENT
 .define char_prop(char_id, prop) _e_cmd_2byte $40, CHAR::char_id, prop
 .define _e_show_obj(obj) _e_cmd_byte $41, EVENT_OBJ::obj
 .define _e_hide_obj(obj) _e_cmd_byte $42, EVENT_OBJ::obj
-.define obj_pal(obj, pal) _e_cmd_2byte $43, EVENT_OBJ::obj, pal
+.define obj_pal(obj, pal) _e_cmd_2byte $43, EVENT_OBJ::obj, MAP_SPRITE_PAL::pal
 .define sort_obj _e_cmd_impl $45
 .define activate_party(party) _e_cmd_byte $46, party
 .define update_party _e_cmd_impl $47
@@ -264,7 +264,7 @@ set_script_mode EVENT
         NONE = $00
 .endenum
 
-.macro _mod_pal op, type, color, intensity, clr_range
+.mac _mod_pal op, type, color, intensity, clr_range
         .ifblank clr_range
                 _e_cmd_impl op
                 make_bitmask .byte, MOD_PAL_TYPE::type | intensity, MOD_PAL_CLR, color
@@ -365,7 +365,7 @@ set_script_mode EVENT
 .endmac
 
 .mac load_pal vram_pal, rom_pal
-        _e_cmd_2byte $60, vram_pal, rom_pal
+        _e_cmd_2byte $60, vram_pal, MAP_SPRITE_PAL::rom_pal
 .endmac
 
 .enum FILTER_PAL_COLOR
@@ -494,7 +494,7 @@ set_script_mode EVENT
         .endif
 .endmac
 
-.macro load_map map, xy_pos, dd, flags
+.mac load_map map, xy_pos, dd, flags
         .ifblank flags
                 _load_map map, {xy_pos}, dd
         .else
@@ -502,7 +502,7 @@ set_script_mode EVENT
         .endif
 .endmac
 
-.macro load_map_vehicle map, xy_pos, dd, flags
+.mac load_map_vehicle map, xy_pos, dd, flags
         .if (is_script_mode WORLD) || (is_script_mode VEHICLE)
                 _load_map map, {xy_pos}, dd, {flags}
         .else
@@ -510,7 +510,7 @@ set_script_mode EVENT
         .endif
 .endmac
 
-.macro set_parent_map map, xy_pos, dd
+.mac set_parent_map map, xy_pos, dd
         _cmd_word $6c, map, EVENT
         _2_bytes xy_pos
         .byte EVENT_DIR::dd
@@ -527,7 +527,7 @@ set_script_mode EVENT
         BG3 = $80
 .endenum
 
-.macro mod_bg_tiles layer, xy_pos, wh_size, flags
+.mac mod_bg_tiles layer, xy_pos, wh_size, flags
         .ifblank flags
                 _e_cmd_impl MOD_BG_FLAGS::AWAIT
         .else
@@ -542,12 +542,12 @@ set_script_mode EVENT
 .define norm_lvl(char_id) _e_cmd_byte $77, CHAR::char_id
 .define pass_off(obj) _e_cmd_byte $78, EVENT_OBJ::obj
 
-.macro set_party_map party, map
+.mac set_party_map party, map
         _e_cmd_byte $79, party
         .word map
 .endmac
 
-.macro obj_event obj, addr
+.mac obj_event obj, addr
         _e_cmd_byte $7a, EVENT_OBJ::obj
         .faraddr _event_addr addr
 .endmac
@@ -598,7 +598,7 @@ set_script_mode EVENT
 .define give_bushido _e_cmd_impl $8f
 .define give_blitz _e_cmd_impl $90
 
-.macro wait_15f dur
+.mac wait_15f dur
         .ifblank dur
                 _e_cmd_impl $91
         .else
@@ -1005,12 +1005,12 @@ _multi_switch_index .set 0
 
 .define ACTION_H_FLIP $40
 
-.macro action aa
+.mac action aa
         .assert (is_script_mode OBJ) || (is_script_mode WORLD), error, "Invalid script mode"
         _cmd_impl aa
 .endmac
 
-.macro dir dd
+.mac dir dd
         .assert (is_script_mode OBJ) || (is_script_mode WORLD), error, "Invalid script mode"
         _cmd_impl $cc + EVENT_DIR::dd
 .endmac
@@ -1118,12 +1118,12 @@ _multi_switch_index .set 0
 .define jump_low _o_cmd_impl $dc
 .define jump_high _o_cmd_impl $dd
 
-.macro exec addr
+.mac exec addr
         _assert_script_mode OBJ
         _cmd_addr $f9, addr
 .endmac
 
-.macro _branch op, addr
+.mac _branch op, addr
         _assert_script_mode OBJ
         .if .def(addr) && ((addr) - (* - 1)) <= 0
                 ; branch backward
@@ -1162,7 +1162,7 @@ _multi_switch_index .set 0
 .define figaro_emerge _w_cmd_impl $fe
 .define _w_end _w_cmd_impl $ff
 
-.macro airship_pos xy_pos
+.mac airship_pos xy_pos
         .assert (is_script_mode WORLD) || (is_script_mode VEHICLE), error, "Invalid script mode"
         _cmd_impl $c7
         _2_bytes xy_pos
@@ -1195,14 +1195,14 @@ _multi_switch_index .set 0
 .define lock_arrows _v_cmd_impl $db
 .define hide_arrows _v_cmd_impl $dc
 
-.macro hide_minimap
+.mac hide_minimap
         .assert (is_script_mode WORLD) || (is_script_mode VEHICLE), error, "Invalid script mode"
         _cmd_impl $dd
 .endmac
 
 .define set_origin(xy_pos) _cmd_2byte $de, xy_pos
 
-.macro show_minimap
+.mac show_minimap
         .assert (is_script_mode WORLD) || (is_script_mode VEHICLE), error, "Invalid script mode"
         _cmd_impl $df
 .endmac

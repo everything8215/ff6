@@ -524,34 +524,34 @@ DrawWorldSprites:
         bmi     @434b
         lda     $95d0,y
         bmi     @4343
-        tdc
+        clr_a
         bra     @4370
 @4343:  clc
         adc     $58
         bmi     @4370
-        tdc
+        clr_a
         bra     @4370
 @434b:  lda     $95d0,y
         bpl     @4353
-        tdc
+        clr_a
         bra     @4370
 @4353:  clc
         adc     $58
         bpl     @4370
-        tdc
+        clr_a
         bra     @4370
 @435b:  lda     $95d0,y
         bmi     @4368
         clc
         adc     $58
         bcc     @4370
-        tdc
+        clr_a
         bra     @4370
 @4368:  clc
         adc     $58
         cmp     $58
         bcc     @4370
-        tdc
+        clr_a
 @4370:  sta     $6b30,x
         lda     $95d1,y
         clc
@@ -1053,7 +1053,7 @@ UpdateSpriteAnim_03:
         sta     $7eb5d8
         bra     @47b4
 @47a9:  shorta
-        tdc
+        clr_a
         sta     $7eb5d8                 ; hide airship sprites
         sta     $7eb5db
 @47b4:  shortai
@@ -1286,7 +1286,7 @@ UpdateSpriteAnim_0d:
 @4ad4:  php
         phb
 _4ad6:  shorta
-        tdc
+        clr_a
         pha
         plb
         longa
@@ -1415,7 +1415,7 @@ UpdateSpriteAnim_06:
         bne     @4c03
         lda     $7eb666
         beq     @4beb
-        tdc
+        clr_a
         bra     @4bed
 @4beb:  lda     $5c
 @4bed:  sta     $7eb666
@@ -1469,7 +1469,7 @@ UpdateSpriteAnim_07:
         bne     @4c78
         lda     $7eb666
         beq     @4c6e
-        tdc
+        clr_a
         bra     @4c71
 @4c6e:  lda     #$0001
 @4c71:  sta     $7eb666
@@ -1514,7 +1514,7 @@ UpdateSpriteAnim_08:
         bne     @4cdf
         lda     $7eb666
         beq     @4cd5
-        tdc
+        clr_a
         bra     @4cd8
 @4cd5:  lda     #$0001
 @4cd8:  sta     $7eb666
@@ -1574,14 +1574,14 @@ UpdateSpriteAnim_09:
         bne     @4d89
         lda     $7eb666
         beq     @4d65
-        tdc
+        clr_a
         bra     @4d73
 @4d65:  lda     $7eb668
         cmp     #$000f
         bcs     @4d72
         lda     $5c
         bra     @4d73
-@4d72:  tdc
+@4d72:  clr_a
 @4d73:  sta     $7eb666
         lda     $7eb668
         cmp     #$0013
@@ -1706,7 +1706,7 @@ UpdateSpriteAnim_0a:
         sta     $7eb5da
         lda     $7eb668
         sta     $7eb5dc
-        tdc
+        clr_a
         lda     $f7
         tax
         lda     f:CharTopHFlipTbl,x
@@ -1787,7 +1787,7 @@ UpdateSpriteAnim_0e:
         ldx     #$0000
         stx     $b65c
         ldx     #$0000
-@4f56:  tdc
+@4f56:  clr_a
         sta     $b660,x
         txa
         clc
@@ -1838,7 +1838,7 @@ _4f6b:  shorta
         xba
         sbc     #$90
         bcs     @4fb8
-        tdc
+        clr_a
         bra     @4fbe
 @4fb8:  lsr3
         clc
@@ -1868,7 +1868,7 @@ _4f6b:  shorta
         ldy     #$0000
         ldx     $b65c
 @4ff5:  shorta
-        tdc
+        clr_a
         lda     $b660,x
         beq     @5019
         lda     $b662,x
@@ -1980,7 +1980,7 @@ UpdateSpriteAnim_14:
         pha
         plb
         longa
-        tdc
+        clr_a
         lda     $b65c
         cmp     #180
         bcs     @50ee
@@ -2085,12 +2085,12 @@ UpdateSpriteAnim_10:
         inx2
         cpx     #$0020
         bne     @51ce
-        tdc
+        clr_a
         sta     $b65c
         shorta
         lda     #$0a
         sta     $b652
-        tdc
+        clr_a
         sta     $b658
         sta     $b659
         sta     $b654
@@ -2099,7 +2099,7 @@ UpdateSpriteAnim_10:
         lda     #$59
         sta     $b65b
         ldx     #$0000
-@51fd:  tdc
+@51fd:  clr_a
         sta     $b660,x
         txa
         clc
@@ -2170,7 +2170,7 @@ _5213:  shorta
         adc     $b65b
         sta     $b604
         ldy     #$0000
-        tdc
+        clr_a
         lda     $b65c
         tax
 @528e:  shorta
@@ -2206,7 +2206,7 @@ _5213:  shorta
         adc     #$0008
         cmp     #$0028
         bcc     @52dd
-        tdc
+        clr_a
 @52dd:  tax
         tya
         clc
@@ -2219,7 +2219,7 @@ _5213:  shorta
         adc     #$0008
         cmp     #$0028
         bcc     @52f6
-        tdc
+        clr_a
 @52f6:  sta     $b65c
         tax
         txa
@@ -2304,7 +2304,7 @@ UpdateSpriteAnim_13:
 @5394:  phb
         php
 _5396:  shorta
-        tdc
+        clr_a
         pha
         plb
         lda     $7eb662
@@ -2316,7 +2316,7 @@ _5396:  shorta
         sta     $7eb660
         lda     #$03
 @53af:  sta     $7eb662
-        tdc
+        clr_a
         lda     $7eb660
         tax
         lda     f:_ee5350,x
@@ -2352,7 +2352,7 @@ UpdateSpriteAnim_15:
         jsr     InitWorldSpriteMSB
         ldx     #$0000
         stx     $b65c
-@53f7:  tdc
+@53f7:  clr_a
         sta     $b660,x
         sta     $b665,x
         txa
@@ -2379,7 +2379,7 @@ _540f:  shorta
         ldy     #$0000
         ldx     $b65c
 @541b:  shorta
-        tdc
+        clr_a
         lda     $b660,x
         beq     @543e
         lda     $b662,x
@@ -2389,7 +2389,7 @@ _540f:  shorta
         inc
         cmp     #$07
         bcc     @5432
-        tdc
+        clr_a
 @5432:  sta     $b660,x
         lda     $b661,x
 @5438:  sta     $b662,x
@@ -2534,7 +2534,7 @@ UpdateSpriteAnim_17:
         ldx     #$0000
         stx     $b65e
         ldx     #$0000
-@5571:  tdc
+@5571:  clr_a
         sta     $b660,x
         txa
         clc
@@ -2634,7 +2634,7 @@ _5586:  shorta
         ldy     #$0000
         ldx     $b65c
 @5647:  shorta
-        tdc
+        clr_a
         lda     $b660,x
         beq     @566b
         lda     $b662,x

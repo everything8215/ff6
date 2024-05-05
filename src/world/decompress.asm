@@ -27,7 +27,7 @@ Decompress:
         pha
         plb
         ldx     #$f800
-        tdc
+        clr_a
 @a4a2:  sta     a:0,x
         inx
         bne     @a4a2
@@ -76,7 +76,7 @@ Decompress:
 @a4ff:  iny
         cpy     $db
         bne     @a4ab
-        tdc
+        clr_a
         xba
         pld
         plb

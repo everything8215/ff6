@@ -25,7 +25,7 @@ VehicleNMI:
         phy
         phd
         shorta
-        tdc
+        clr_a
         pha
         plb
         inc     a:$0024                 ; vblank flag
@@ -226,7 +226,7 @@ AirshipIRQ:
         pha
         phb
         shorta
-        tdc
+        clr_a
         pha
         plb
         cmp     hTIMEUP                 ; reset irq flag
@@ -248,7 +248,7 @@ ChocoIRQ:
         pha
         phb
         shorta
-        tdc
+        clr_a
         pha
         plb
         cmp     hTIMEUP                 ; reset irq flag
@@ -312,7 +312,7 @@ WorldNMI:
         phy
         phd
         shorta
-        tdc
+        clr_a
         pha
         plb
         inc     a:$0024                 ; vblank flag
@@ -550,7 +550,7 @@ WorldIRQ:
         pha
         phb
         shorta
-        tdc
+        clr_a
         pha
         plb
         cmp     hTIMEUP
@@ -576,7 +576,7 @@ TrainNMI:
         lda     #$0000
         tcd
         shorta
-        tdc
+        clr_a
         pha
         plb
         cmp     hRDNMI                  ; clear nmi
@@ -822,7 +822,7 @@ EndingAirshipSceneNMI:
         phy
         phd
         shorta
-        tdc
+        clr_a
         pha
         plb
         inc     a:$0024

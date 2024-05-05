@@ -245,7 +245,7 @@ _ee235b:
         sta     $36
         lda     $73         ; rotation frame counter
         bne     @252c       ; branch if it hasn't reached zero
-        tdc
+        clr_a
         lda     a:$0074       ; random number counter for rotation
         inc     a:$0074
         tax
@@ -781,7 +781,7 @@ TrainCmd_40:
 ;     b: rotation speed (degrees per frame)
 
 TrainCmd_80:
-@3232:  tdc
+@3232:  clr_a
         shorta_sec
         lda     $f0
         and     #$03
@@ -814,7 +814,7 @@ _ee324f:
 ;     b: rotation speed (degrees per frame)
 
 TrainCmd_a0:
-@3257:  tdc
+@3257:  clr_a
         shorta_sec
         lda     $f0
         and     #$03
@@ -858,7 +858,7 @@ TrainCmd_e0:
         sta     f:$0011e1
         lda     #BATTLE_BG_MAGITEK_TRAIN
         sta     f:$0011e2
-        tdc
+        clr_a
         sta     f:$0011e3
         lda     #$08        ; continue current music
         sta     f:$0011e4
@@ -893,7 +893,7 @@ TrainCmd_e1:
         sta     f:$0011e1
         lda     #BATTLE_BG_MAGITEK_TRAIN
         sta     f:$0011e2
-        tdc
+        clr_a
         sta     f:$0011e3
         lda     #$08
         sta     f:$0011e4
@@ -918,7 +918,7 @@ TrainCmd_e2:
         sta     f:$0011e1
         lda     #$2c
         sta     f:$0011e2
-        tdc
+        clr_a
         sta     f:$0011e3
         sta     f:$0011e4
         lda     f:$0011f6     ; enable battle

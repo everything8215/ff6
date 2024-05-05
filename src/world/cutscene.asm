@@ -46,7 +46,7 @@ VectorApproach:
 
 ; load graphics and tilemap
         shorta
-        tdc
+        clr_a
         pha
         plb
         ldx     #.loword(VectorApproachGfx)
@@ -87,7 +87,7 @@ VectorApproach:
         longa
         ldx     #$0000
 @0850:  shorta
-        tdc
+        clr_a
         sta     $7e6007,x               ; clear fixed color hdma data
         sta     $7e6008,x
         longa
@@ -170,7 +170,7 @@ VectorApproach:
         lda     #$0003
         sta     $7eb67e
         shorta
-        tdc
+        clr_a
         sta     $7e6b0f
         sta     $7e6b13
         sta     $7e6b17
@@ -207,7 +207,7 @@ VectorApproach:
         lda     $e9                     ; enable window and fixed color hdma
         ora     #$03
         sta     $e9
-        tdc
+        clr_a
         pha
         plb
         stz     hW12SEL
@@ -433,7 +433,7 @@ AirshipCrash:
         sbc     #$0041
         cmp     #$0300
         bcs     @0bc0
-        tdc
+        clr_a
         sta     $7eb66c
         bra     @0bc4
 @0bc0:  sta     $7eb660
@@ -811,7 +811,7 @@ houkai2:
         sec
         sbc     #$0c80
         sta     $7eb664
-@0f79:  tdc
+@0f79:  clr_a
         sta     $60
         shorta
         lda     $7eb661
@@ -894,7 +894,7 @@ _107a:
         inx2
         cpx     #$006c
         bne     @107f
-        tdc
+        clr_a
         sta     $7eb650
         shorta
         lda     #$3f
@@ -943,7 +943,7 @@ _107a:
         inx2
         dey
         bne     @10f2
-        tdc
+        clr_a
         sta     $b652
         ldx     #$0000
 @1116:  lda     $b66a,x
@@ -1021,11 +1021,11 @@ RuinScene:
         cpx     #$0700
         bne     @11a3
         shorta
-        tdc
+        clr_a
         pha
         plb
         longai
-        tdc
+        clr_a
         sta     $7eb650
         sta     $7eb652
         sta     $7eb654
@@ -1088,7 +1088,7 @@ RuinScene:
         sta     hAPUIO1
         lda     #$18
         sta     hAPUIO0
-        tdc
+        clr_a
 @1250:  sta     $7eb65a
         jmp     @133a
 @1257:  phb
@@ -1146,7 +1146,7 @@ RuinScene:
         bne     @12ec
         lda     #$0380
         bra     @12ed
-@12ec:  tdc
+@12ec:  clr_a
 @12ed:  sta     $64
         lda     #$0030
         sta     $58
@@ -1274,7 +1274,7 @@ sabaki1:
         sta     $7eb654
         lda     #$e000
         sta     $7eb656
-@141c:  tdc
+@141c:  clr_a
         sta     $7eb658
         lda     #$0080
         sta     $7eb65a
@@ -1325,7 +1325,7 @@ sabaki1:
         beq     @1490
         stz     $24
 @1496:  shorta
-        tdc
+        clr_a
         lda     $1f6d
         tax
         lda     f:RNGTbl,x
@@ -1361,7 +1361,7 @@ sabaki1:
         sec
         sbc     #$0120
         sta     $7eb654
-@14fb:  tdc
+@14fb:  clr_a
         sta     $60
         lda     $7eb658
         inc
@@ -1373,7 +1373,7 @@ sabaki1:
         and     #$03
         cmp     #$03
         bne     @1518
-        tdc
+        clr_a
 @1518:  sta     $7eb659
         lda     $7eb651
         sec
@@ -1642,7 +1642,7 @@ UpdateSpotlightHDMA:
         bne     @1711
         lda     #$ff
         bra     @1712
-@1711:  tdc
+@1711:  clr_a
 @1712:  cpx     $62
         beq     @1720
         sta     $7e620e,x               ; window position hdma data
@@ -1665,7 +1665,7 @@ UpdateSpotlightHDMA:
         bne     @1740
         lda     #$ff
         bra     @1741
-@1740:  tdc
+@1740:  clr_a
 @1741:  sta     $7e620e,x               ; window position hdma data
         inx4
         cpx     $62

@@ -12,9 +12,8 @@
 ; +----------------------------------------------------------------------------+
 
 inc_lang "text/char_name_%s.inc"
-.include "field/event_trigger.inc"
 
-.import MapSpritePal, EventScript
+.import MapSpritePal, EventScript, EventTriggerPtrs
 
 .export BushidoLevelTbl, NaturalMagic, LevelUpExp
 
@@ -5892,23 +5891,5 @@ CheckEventTriggers:
         jsr     UpdateScrollRate
         jsr     CloseMapTitleWindow
         rts
-
-; ------------------------------------------------------------------------------
-
-.pushseg
-.segment "event_triggers"
-
-; c4/0000
-begin_fixed_block EventTriggerPtrs, $1a10
-        make_ptr_tbl_rel EventTrigger, EVENT_TRIGGER_ARRAY_LENGTH, EventTriggerPtrs
-        .addr EventTriggerEnd - EventTriggerPtrs
-
-; c4/0342
-EventTrigger:
-        .incbin "src/field/trigger/event_trigger.dat"
-EventTriggerEnd:
-end_fixed_block EventTriggerPtrs
-
-.popseg
 
 ; ------------------------------------------------------------------------------

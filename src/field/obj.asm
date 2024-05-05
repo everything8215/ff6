@@ -11,11 +11,10 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "field/npc_prop.inc"
 .include "gfx/portrait.inc"
 .include "gfx/map_sprite_gfx.inc"
 
-.import MapSpritePal, SmallFontGfx
+.import MapSpritePal, SmallFontGfx, NPCPropPtrs
 
 .a8
 .i16
@@ -5419,20 +5418,5 @@ ObjMoveMaskV:
 ; corresponding facing directions for each movement direction
 ObjMoveDirTbl:
 @7f54:  .byte   $00,$01,$02,$03,$01,$01,$03,$03,$00,$01,$01,$02,$02,$03,$03,$00
-
-; ------------------------------------------------------------------------------
-
-.segment "npc_prop"
-
-; c4/1a10
-begin_fixed_block NPCPropPtrs, $50b0
-        make_ptr_tbl_rel NPCProp, NPC_PROP_ARRAY_LENGTH, NPCPropPtrs
-        .addr NPCPropEnd - NPCPropPtrs
-
-; c4/1d52
-NPCProp:
-        .incbin "src/field/trigger/npc_prop.dat"
-NPCPropEnd:
-end_fixed_block NPCPropPtrs
 
 ; ------------------------------------------------------------------------------

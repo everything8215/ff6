@@ -389,6 +389,7 @@ reset_turtles:
 
 ; [ Tent (world map) ]
 
+; ca/015e
 .proc WorldTent
         switch $01c2=0
         play_song SONG_NIGHTY_NIGHT, PAUSE_CURRENT
@@ -780,6 +781,7 @@ _ca03e7:
 
 ; ------------------------------------------------------------------------------
 
+; ca/0405
 .proc EnterPhoenixCave
         obj_script SLOT_1
                 move DOWN, 2
@@ -1460,7 +1462,7 @@ start:
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0, {5, 7}
 
 ; load blue/white parallax
-        load_pal 5, MAP_SPRITE_PAL_KEFKAS_TOWER_PARALLAX_2
+        load_pal 5, KEFKAS_TOWER_PARALLAX_2
         wait_obj CAMERA
         call _ca37d4, 3
         switch $039a=1
@@ -1789,7 +1791,7 @@ start:
         sort_obj
         sfx 6
         call _ca3d82
-        load_pal 5, MAP_SPRITE_PAL_KEFKAS_TOWER_PARALLAX_3
+        load_pal 5, KEFKAS_TOWER_PARALLAX_3
         mod_bg_pal SUB, {GREEN, BLUE}, 0, {16, 127}
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0, {5, 15}
         shake ALL, 3, 2
@@ -1871,7 +1873,7 @@ start:
                 .byte $04
                 .byte $14
         pass_off NPC_1
-        load_pal 14, MAP_SPRITE_PAL_ESPER_TERRA
+        load_pal 14, ESPER_TERRA
         obj_script CAMERA, ASYNC
                 speed SLOW
                 move DOWN, 5
@@ -1958,8 +1960,8 @@ skip_terra_scene:
         call _ca5ea9
         delete_obj NPC_1
         play_song SONG_SILENCE
-        load_pal 14, MAP_SPRITE_PAL_ESPER_TERRA
-        load_pal 15, MAP_SPRITE_PAL_GREEN_MAGICITE_SMOKE
+        load_pal 14, ESPER_TERRA
+        load_pal 15, GREEN_MAGICITE_SMOKE
         sfx 165
         spc_cmd $82, $00, $00
         spc_cmd $82, $60, $90
@@ -2520,6 +2522,7 @@ _ca12f3:
         activate_party 1
         sort_obj
         call _cac8e1
+_ca1379:
         switch $01CC=1
         lock_camera
         call _caf61a
@@ -3295,7 +3298,7 @@ _ca1834:
         if_switch $02FA=0, _ca193d
         portrait MOG
         load_map 254, {64, 11}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
+        load_pal 14, MACHINERY_2
         filter_pal {RED, GREEN, BLUE}, {4, 255}
         create_obj MOG
         create_obj EDGAR
@@ -3727,7 +3730,7 @@ _ca1afa:
         if_switch $02FC=0, _ca1d12
         portrait GOGO
         load_map 254, {85, 14}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 14, MAP_SPRITE_PAL_GUARDIAN
+        load_pal 14, GUARDIAN
         filter_pal {RED, GREEN, BLUE}, {4, 255}
         mod_bg_tiles BG1, {82, 13}, {4, 3}
                 .byte $C4,$C5,$C4,$C5
@@ -4098,7 +4101,7 @@ _ca1d4e:
         if_switch $02FB=0, _ca1ed5
         portrait GAU
         load_map 261, {12, 29}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 14, MAP_SPRITE_PAL_ROCK
+        load_pal 14, ROCK
         filter_pal {RED, GREEN, BLUE}, {4, 255}
         create_obj GAU
         show_obj GAU
@@ -4404,7 +4407,7 @@ _ca1f0b:
         wait_song 8
         ending 100
         load_map 260, {8, 10}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 14, MAP_SPRITE_PAL_ESPER_TERRA
+        load_pal 14, ESPER_TERRA
         filter_pal {RED, GREEN, BLUE}, {4, 255}
         create_obj CELES
         show_obj CELES
@@ -4794,7 +4797,7 @@ _ca2154:
         ending 90
         portrait TERRA
         load_map 268, {28, 32}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 14, MAP_SPRITE_PAL_ESPER_TERRA
+        load_pal 14, ESPER_TERRA
         filter_pal {RED, GREEN, BLUE}, {4, 255}
         create_obj CELES
         create_obj SETZER
@@ -5570,7 +5573,7 @@ _ca25b8:
         if_switch $02F7=0, _ca267f
         portrait STRAGO
         load_map 261, {11, 19}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
+        load_pal 14, MACHINERY_2
         filter_pal {RED, GREEN, BLUE}, {4, 255}
         create_obj STRAGO
         show_obj STRAGO
@@ -5750,8 +5753,8 @@ _ca26b6:
         switch $02F3=0
         load_map 17, {11, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
         lock_camera
-        load_pal 14, MAP_SPRITE_PAL_ESPER_TERRA
-        load_pal 15, MAP_SPRITE_PAL_GREEN_MAGICITE_SMOKE
+        load_pal 14, ESPER_TERRA
+        load_pal 15, GREEN_MAGICITE_SMOKE
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0, {96, 111}
         loop 7
                 mod_bg_pal INC, {RED, GREEN, BLUE}, 3, 99
@@ -5913,7 +5916,7 @@ _ca2746:
         wait_fade
         call _cac97c
         load_map 259, {7, 7}, UP, {ASYNC, Z_UPPER}
-        load_pal 15, MAP_SPRITE_PAL_FALCON
+        load_pal 15, FALCON
         pass_off NPC_1
         pass_off NPC_2
         pass_off NPC_3
@@ -5991,8 +5994,8 @@ _ca2851:
         wait_fade
         ending 2
         load_map 17, {8, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
-        load_pal 14, MAP_SPRITE_PAL_ESPER_TERRA
+        load_pal 6, AIRSHIP_PARALLAX
+        load_pal 14, ESPER_TERRA
         create_obj NPC_1
         show_obj NPC_1
         create_obj NPC_2
@@ -6403,7 +6406,7 @@ _ca2a06:
         wait_obj CAMERA
         wait_fade
         load_map 17, {19, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
+        load_pal 6, AIRSHIP_PARALLAX
         switch $02F0=1
         mod_bg_pal ADD, {RED, GREEN, BLUE}, 3
         mod_sprite_pal ADD, {RED, GREEN, BLUE}, 3
@@ -6675,7 +6678,7 @@ _ca2b8f:
         ending 24
         ending 28
         load_map 17, {19, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
+        load_pal 6, AIRSHIP_PARALLAX
         call _ca36fe
         fade_in
         wait_30f
@@ -7044,7 +7047,7 @@ _ca2daa:
         wait_fade
         wait_obj CAMERA
         load_map 17, {15, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
+        load_pal 6, AIRSHIP_PARALLAX
         call _ca36fe
         obj_script TERRA
                 pos {15, 10}
@@ -7260,7 +7263,7 @@ _ca2f51:
         fade_out 8
         wait_fade
         load_map 17, {15, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
+        load_pal 6, AIRSHIP_PARALLAX
         call _ca36fe
         obj_script TERRA
                 pos {15, 10}
@@ -7407,7 +7410,7 @@ _ca30cc:
         wait_fade
         wait_obj CAMERA
         load_map 17, {15, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
+        load_pal 6, AIRSHIP_PARALLAX
         call _ca36fe
         if_switch $02F1=0, _ca313b
         obj_script LOCKE, ASYNC
@@ -7605,7 +7608,7 @@ _ca3196:
         wait_fade
         wait_obj CAMERA
         load_map 17, {15, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
+        load_pal 6, AIRSHIP_PARALLAX
         call _ca36fe
         if_switch $02F1=0, _ca3299
         obj_script LOCKE, ASYNC
@@ -8147,7 +8150,7 @@ _ca35a1:
         wait_15f 9
         wait_obj CAMERA
         load_map 215, {8, 7}, UP, {Z_UPPER, NO_FADE_IN}
-        load_pal 15, MAP_SPRITE_PAL_FALCON
+        load_pal 15, FALCON
         pass_off NPC_4
         pass_off NPC_5
         pass_off NPC_6
@@ -8237,7 +8240,7 @@ _ca3638:
         wait_fade
         switch $039F=1
         load_map 17, {12, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
+        load_pal 6, AIRSHIP_PARALLAX
         call _ca36fe
         create_obj NPC_5
         create_obj NPC_6
@@ -8349,6 +8352,7 @@ _ca36b1:
 .endproc  ; FinalBattle_proc
 
 FinalBattle := FinalBattle_proc::start
+_ca1379 := FinalBattle_proc::_ca1379
 
 ; ------------------------------------------------------------------------------
 
@@ -10760,7 +10764,7 @@ _ca4502:
         show_obj
         load_map 10, {8, 6}, LEFT, {Z_UPPER, NO_FADE_IN}
         set_script_mode EVENT
-        load_pal 15, MAP_SPRITE_PAL_FALCON
+        load_pal 15, FALCON
         lock_camera
         hide_obj SLOT_1
         obj_script NPC_14, ASYNC
@@ -10800,7 +10804,7 @@ _ca4576:
                 ; SETZER: There’s nothing like flying!
         wait_obj NPC_14
         load_map 11, {15, 8}, LEFT, {Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
+        load_pal 6, AIRSHIP_PARALLAX
         hide_obj SETZER
         fade_in
         wait_2s
@@ -10808,7 +10812,7 @@ _ca4576:
                 ; DARYL: Come on!
                 ; Stop lagging back there!
         load_map 10, {14, 6}, LEFT, {Z_UPPER, NO_FADE_IN}
-        load_pal 15, MAP_SPRITE_PAL_FALCON
+        load_pal 15, FALCON
         show_obj SETZER
         obj_script NPC_14, ASYNC
                 pos {7, 3}
@@ -10885,7 +10889,7 @@ _ca4576:
         wait 2
         load_map 10, {10, 6}, LEFT, {Z_UPPER, NO_FADE_IN}
         set_script_mode EVENT
-        load_pal 15, MAP_SPRITE_PAL_FALCON
+        load_pal 15, FALCON
         obj_script NPC_14, ASYNC
                 pos {2, 11}
                 end
@@ -11002,7 +11006,7 @@ _ca4685:
         wait_1s
         switch $03F3=0
         load_map 11, {23, 8}, LEFT, {ASYNC, Z_UPPER, NO_FADE_IN}
-        load_pal 6, MAP_SPRITE_PAL_AIRSHIP_PARALLAX
+        load_pal 6, AIRSHIP_PARALLAX
         scroll_bg BG2, {0, 0}, ALT
         bg_anim_rate 0, 0
         bg_anim_rate 1, 0
@@ -11366,7 +11370,7 @@ _ca48d6:
         wait_fade
         hide_obj SLOT_1
         load_map 376, {60, 6}, LEFT, {ASYNC, Z_UPPER}
-        load_pal 15, MAP_SPRITE_PAL_STATUE_SMOKE
+        load_pal 15, STATUE_SMOKE
         create_obj NPC_10
         create_obj NPC_11
         show_obj NPC_10
@@ -14127,22 +14131,22 @@ GameStart:
         char_prop TERRA, 0
         create_obj TERRA
         char_party TERRA, 1
-        obj_gfx TERRA, MAP_SPRITE_GFX_TERRA
-        obj_pal TERRA, MAP_SPRITE_PAL_TERRA
+        obj_gfx TERRA, TERRA
+        obj_pal TERRA, TERRA
         switch $02E0=1
         switch $02F0=1
         char_name WEDGE, 32
         char_prop WEDGE, 32
         create_obj WEDGE
         char_party WEDGE, 1
-        obj_gfx WEDGE, MAP_SPRITE_GFX_SOLDIER
-        obj_pal WEDGE, MAP_SPRITE_PAL_LOCKE
+        obj_gfx WEDGE, SOLDIER
+        obj_pal WEDGE, LOCKE
         char_name VICKS, 33
         char_prop VICKS, 33
         create_obj VICKS
         char_party VICKS, 1
-        obj_gfx VICKS, MAP_SPRITE_GFX_SOLDIER
-        obj_pal VICKS, MAP_SPRITE_PAL_LOCKE
+        obj_gfx VICKS, SOLDIER
+        obj_pal VICKS, LOCKE
         party_chars TERRA
         activate_party 1
         set_status TERRA, MAGITEK
@@ -15302,8 +15306,8 @@ _ca6623:
         wait_30f
         give_item ITEM_AUTOCROSSBOW
         char_name EDGAR, 4
-        obj_gfx EDGAR, MAP_SPRITE_GFX_EDGAR
-        obj_pal EDGAR, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx EDGAR, EDGAR
+        obj_pal EDGAR, EDGAR
         name_menu EDGAR
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
         fade_in
@@ -16228,8 +16232,8 @@ _ca6c85:
         switch $03FE=1
         load_map 60, {100, 20}, DOWN, {Z_UPPER, NO_FADE_IN}
         fade_in_song SONG_COIN_SONG, 255, PAUSE_CURRENT
-        obj_gfx TERRA, MAP_SPRITE_GFX_EDGAR
-        obj_pal TERRA, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx TERRA, EDGAR
+        obj_pal TERRA, EDGAR_SABIN_CELES
         hide_obj NPC_1
         hide_obj NPC_2
         obj_script SLOT_1
@@ -16319,8 +16323,8 @@ _ca6c85:
                 ; EDGAR’s twin brother, who traded the throne for his own freedom…
         wait_30f
         char_name SABIN, 5
-        obj_gfx SABIN, MAP_SPRITE_GFX_SABIN
-        obj_pal SABIN, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx SABIN, SABIN
+        obj_pal SABIN, SABIN
         name_menu SABIN
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
         fade_in
@@ -16334,8 +16338,8 @@ _ca6c85:
         obj_script SLOT_1
                 layer 0
                 end
-        obj_gfx TERRA, MAP_SPRITE_GFX_TERRA
-        obj_pal TERRA, MAP_SPRITE_PAL_TERRA
+        obj_gfx TERRA, TERRA
+        obj_pal TERRA, TERRA
         show_obj SLOT_1
         fade_in
         wait_1s
@@ -18907,8 +18911,8 @@ _ca7c3a:
         wait_30f
         char_prop SHADOW, 3
         char_name SHADOW, 3
-        obj_gfx SHADOW, MAP_SPRITE_GFX_SHADOW
-        obj_pal SHADOW, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        obj_gfx SHADOW, SHADOW
+        obj_pal SHADOW, SHADOW
         name_menu SHADOW
         switch $000B=1
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
@@ -19089,8 +19093,8 @@ _ca7db8:
         return
 _ca7dcf:
         if_b_switch $4C, _ca7dde
-        obj_gfx LOCKE, MAP_SPRITE_GFX_MERCHANT
-        obj_pal LOCKE, MAP_SPRITE_PAL_LOCKE
+        obj_gfx LOCKE, MERCHANT
+        obj_pal LOCKE, LOCKE
         switch $0103=0
         switch $0104=1
 _ca7dde:
@@ -19228,8 +19232,8 @@ _ca7eb9:
         return
 _ca7ec0:
         if_b_switch $4D, _ca7ecf
-        obj_gfx LOCKE, MAP_SPRITE_GFX_SOLDIER
-        obj_pal LOCKE, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx LOCKE, SOLDIER
+        obj_pal LOCKE, EDGAR_SABIN_CELES
         switch $0103=1
         switch $0104=0
 _ca7ecf:
@@ -20340,8 +20344,8 @@ _ca85b3:
 _ca85ba:
         clr_overlay
         load_map 75, {47, 43}, UP, {ASYNC, Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
-        obj_gfx LOCKE, MAP_SPRITE_GFX_LOCKE
-        obj_pal LOCKE, MAP_SPRITE_PAL_LOCKE
+        obj_gfx LOCKE, LOCKE
+        obj_pal LOCKE, LOCKE
         obj_script SLOT_1
                 action 40
                 end
@@ -20378,8 +20382,8 @@ _ca85fb:
         return
 _ca8608:
         if_b_switch $4C, _ca8617
-        obj_gfx LOCKE, MAP_SPRITE_GFX_MERCHANT
-        obj_pal LOCKE, MAP_SPRITE_PAL_LOCKE
+        obj_gfx LOCKE, MERCHANT
+        obj_pal LOCKE, LOCKE
         switch $0104=1
         switch $0103=0
 _ca8617:
@@ -20447,8 +20451,8 @@ _ca8661:
         choice _ca867c, EventReturn
         return
 _ca867c:
-        obj_gfx LOCKE, MAP_SPRITE_GFX_LOCKE
-        obj_pal LOCKE, MAP_SPRITE_PAL_LOCKE
+        obj_gfx LOCKE, LOCKE
+        obj_pal LOCKE, LOCKE
         switch $0104=0
         switch $0103=0
         clr_b_switch $4C
@@ -20529,8 +20533,8 @@ _ca86a4:
         char_prop CELES, 6
         and_status CELES, {MAGITEK, INTERCEPTOR}
         max_hp CELES
-        obj_gfx CELES, MAP_SPRITE_GFX_CELES
-        obj_pal CELES, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx CELES, CELES
+        obj_pal CELES, CELES
         name_menu CELES
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
         fade_in
@@ -22494,8 +22498,8 @@ _ca943d:
         play_song SONG_SETZER
         switch $01CC=1
         char_name SETZER, 9
-        obj_gfx SETZER, MAP_SPRITE_GFX_SETZER
-        obj_pal SETZER, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        obj_gfx SETZER, SETZER
+        obj_pal SETZER, SETZER
         and_status SETZER, {MAGITEK, INTERCEPTOR}
         max_hp SETZER
         load_map 10, {18, 6}, DOWN, {Z_UPPER, NO_FADE_IN}
@@ -23418,7 +23422,7 @@ _ca9749:
         wait_30f
         wait_obj CAMERA
         load_map 391, {8, 7}, DOWN, {Z_UPPER, NO_FADE_IN}
-        load_pal 15, MAP_SPRITE_PAL_SEALED_GATE
+        load_pal 15, SEALED_GATE
         loop 2
                 mod_bg_pal DEC, {RED, GREEN, BLUE}, 3
                 end_loop
@@ -26621,15 +26625,15 @@ _caad4c:
         wait_fade
         switch $01CC=0
         fade_out_song $D0
-        char_name UMARO, 28
-        char_prop UMARO, 28
-        create_obj UMARO
-        obj_gfx UMARO, MAP_SPRITE_GFX_MOG
-        obj_pal UMARO, MAP_SPRITE_PAL_MOG_UMARO
-        show_obj UMARO
+        char_name SCENARIO_MOG, 28
+        char_prop SCENARIO_MOG, 28
+        create_obj SCENARIO_MOG
+        obj_gfx SCENARIO_MOG, MOG
+        obj_pal SCENARIO_MOG, MOG
+        show_obj SCENARIO_MOG
         char_party TERRA, 0
-        char_party UMARO, 1
-        char_party WEDGE, 0
+        char_party SCENARIO_MOG, 1
+        char_party BANON, 0
         char_party EDGAR, 0
         char_party LOCKE, 0
         char_party CELES, 0
@@ -26637,7 +26641,7 @@ _caad4c:
         char_party CYAN, 0
         char_party GAU, 0
         delete_obj TERRA
-        delete_obj WEDGE
+        delete_obj BANON
         delete_obj EDGAR
         delete_obj LOCKE
         delete_obj CELES
@@ -27685,8 +27689,8 @@ _cab383:
         switch $0119=1
 _cab392:
         create_obj CELES
-        obj_gfx CELES, MAP_SPRITE_GFX_CELES_DRESS
-        obj_pal CELES, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx CELES, CELES_DRESS
+        obj_pal CELES, CELES
         set_party_map 7, 238
         call _cacfbd
         return
@@ -29419,8 +29423,8 @@ _cabe19:
         switch $0114=1
 _cabe21:
         switch $0113=1
-        obj_gfx CELES, MAP_SPRITE_GFX_CELES
-        obj_pal CELES, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx CELES, CELES
+        obj_pal CELES, CELES
         call _cacb95
         unlock_camera
         switch $0119=0
@@ -30026,8 +30030,8 @@ _cac128:
         dlg $04E3, TEXT_ONLY
                 ; What a performance!!
         sfx 186
-        obj_gfx CELES, MAP_SPRITE_GFX_CELES
-        obj_pal CELES, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx CELES, CELES
+        obj_pal CELES, CELES
         char_party CELES, 1
         create_obj CELES
         create_obj NPC_22
@@ -30456,8 +30460,8 @@ _cac4b0:
         fade_out 2
         wait_fade
         char_prop WEDGE, 30
-        obj_gfx WEDGE, MAP_SPRITE_GFX_MADUIN
-        obj_pal WEDGE, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        obj_gfx WEDGE, MADUIN
+        obj_pal WEDGE, CYAN_SHADOW_SETZER
         char_party LOCKE, 0
         char_party WEDGE, 1
         char_party CYAN, 0
@@ -34610,7 +34614,7 @@ _caea00:
 _caea08:
         return
 _caea09:
-        load_pal 14, MAP_SPRITE_PAL_TREASURE_CHEST
+        load_pal 14, TREASURE_CHEST
         return
 _caea0d:
         if_switch $00C6=0, EventReturn
@@ -35139,7 +35143,7 @@ _caed51 := * - 4
                 end
         return
 _caed7d:
-        load_pal 14, MAP_SPRITE_PAL_TREASURE_CHEST
+        load_pal 14, TREASURE_CHEST
         return
 _caed81:
         mod_sprite_pal SUB, {RED, GREEN, BLUE}, 0, {96, 111}
@@ -35290,7 +35294,7 @@ _caeea0:
                 end
         return
 _caeec3:
-        load_pal 15, MAP_SPRITE_PAL_SEALED_GATE
+        load_pal 15, SEALED_GATE
         loop 5
                 mod_sprite_pal INC, {RED, GREEN, BLUE}, 0, {112, 127}
                 end_loop
@@ -35403,8 +35407,8 @@ _caef76:
 _caef84:
         return
 _caef85:
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
-        load_pal 15, MAP_SPRITE_PAL_DADALUMA
+        load_pal 14, MACHINERY_2
+        load_pal 15, DADALUMA
         if_switch $01B6=1, EventReturn
         obj_script NPC_11, ASYNC
 _caef93:
@@ -35490,7 +35494,7 @@ _caefdb:
                 end
         return
 _caf004:
-        load_pal 14, MAP_SPRITE_PAL_ESPER_TERRA
+        load_pal 14, ESPER_TERRA
         return
 _caf008:
         spc_cmd $81, $10, $FF
@@ -35803,7 +35807,7 @@ _caf286:
                 .byte $66
         return
 _caf28d:
-        load_pal 5, MAP_SPRITE_PAL_KEFKAS_TOWER_PARALLAX_1
+        load_pal 5, KEFKAS_TOWER_PARALLAX_1
 _caf290:
         obj_script NPC_2, ASYNC
 _caf292:
@@ -35831,10 +35835,10 @@ _caf2a7:
                 end
         return
 _caf2ad:
-        load_pal 5, MAP_SPRITE_PAL_KEFKAS_TOWER_PARALLAX_3
+        load_pal 5, KEFKAS_TOWER_PARALLAX_3
         return
 _caf2b1:
-        load_pal 15, MAP_SPRITE_PAL_STATUE_SMOKE
+        load_pal 15, STATUE_SMOKE
         return
 _caf2b5:
         if_switch $01F0=0, _caf2c3
@@ -35863,7 +35867,7 @@ _caf2ff:
 _caf309:
         return
 _caf30a:
-        load_pal 15, MAP_SPRITE_PAL_STATUE_SMOKE
+        load_pal 15, STATUE_SMOKE
         pass_off NPC_14
         pass_off NPC_15
         pass_off NPC_16
@@ -35987,7 +35991,7 @@ _caf41b:
                 end
         return
 _caf42d:
-        load_pal 15, MAP_SPRITE_PAL_RAFT
+        load_pal 15, RAFT
         if_switch $01B6=1, EventReturn
         if_switch $00B3=1, EventReturn
         if_switch $00B4=1, EventReturn
@@ -36011,7 +36015,7 @@ _caf461:
         switch $00B4=1
         return
 _caf464:
-        load_pal 15, MAP_SPRITE_PAL_RAFT
+        load_pal 15, RAFT
         return
 _caf468:
         call _cac8f6
@@ -36021,7 +36025,7 @@ _caf468:
                 end
         return
 _caf477:
-        load_pal 15, MAP_SPRITE_PAL_RAFT
+        load_pal 15, RAFT
         return
 _caf47b:
         return
@@ -37449,8 +37453,8 @@ _cafdb9:
         char_name WEDGE, 14
         create_obj WEDGE
         char_party WEDGE, 1
-        obj_gfx WEDGE, MAP_SPRITE_GFX_BANON
-        obj_pal WEDGE, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx WEDGE, BANON
+        obj_pal WEDGE, STRAGO_RELM_GAU_GOGO
         return
 _cafdcb:
         play_song SONG_AWAKENING
@@ -38637,12 +38641,12 @@ _cb0469:
         show_obj NPC_2
 _cb0474:
         spc_cmd $81, $00, $FF
-        load_pal 15, MAP_SPRITE_PAL_RAFT
+        load_pal 15, RAFT
         return
 _cb047c:
         play_song SONG_SILENCE
         spc_cmd $10, $1E, $96
-        load_pal 15, MAP_SPRITE_PAL_RAFT
+        load_pal 15, RAFT
         return
 _cb0486:
         if_rand _cb048e
@@ -39519,8 +39523,8 @@ _cb0a5f:
         char_prop SHADOW, 3
         create_obj SHADOW
         sort_obj
-        obj_gfx SHADOW, MAP_SPRITE_GFX_SHADOW
-        obj_pal SHADOW, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        obj_gfx SHADOW, SHADOW
+        obj_pal SHADOW, SHADOW
         char_name SHADOW, 3
         name_menu SHADOW
         fade_in 8
@@ -40670,8 +40674,8 @@ _cb1126:
         create_obj VICKS
         sort_obj
         char_name VICKS, 41
-        obj_gfx VICKS, MAP_SPRITE_GFX_KEFKA
-        obj_pal VICKS, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx VICKS, KEFKA
+        obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         clr_status VICKS, MAGITEK
         call _cb0e1c
         battle 56, BATTLE_BG_IMP_CAMP
@@ -45832,9 +45836,9 @@ _cb38c8:
                 mod_sprite_pal UNDEC, BLUE, 3, {33, 47}
                 end_loop
         hide_obj TERRA
-        obj_gfx TERRA, MAP_SPRITE_GFX_ESPER_TERRA
-        obj_pal TERRA, MAP_SPRITE_PAL_RAINBOW
-        load_pal 14, MAP_SPRITE_PAL_ESPER_TERRA
+        obj_gfx TERRA, ESPER_TERRA
+        obj_pal TERRA, RAINBOW
+        load_pal 14, ESPER_TERRA
         show_obj TERRA
         obj_script TERRA
                 layer 2
@@ -45941,8 +45945,8 @@ _cb39be:
         obj_script SLOT_1
                 layer 2
                 end
-        load_pal 14, MAP_SPRITE_PAL_ROCK
-        load_pal 15, MAP_SPRITE_PAL_SEALED_GATE
+        load_pal 14, ROCK
+        load_pal 15, SEALED_GATE
         return
 _cb39ca:
         if_switch $0079=1, EventReturn
@@ -46091,8 +46095,8 @@ _cb39ca:
         create_obj VICKS
         sort_obj
         char_name VICKS, 42
-        obj_gfx VICKS, MAP_SPRITE_GFX_KEFKA
-        obj_pal VICKS, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx VICKS, KEFKA
+        obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         clr_status VICKS, MAGITEK
         max_hp VICKS
         max_mp VICKS
@@ -46196,8 +46200,8 @@ _cb39ca:
         char_party TERRA, 1
         party_chars TERRA
         resume_song $20
-        obj_gfx TERRA, MAP_SPRITE_GFX_TERRA
-        obj_pal TERRA, MAP_SPRITE_PAL_TERRA
+        obj_gfx TERRA, TERRA
+        obj_pal TERRA, TERRA
         call _cb3980
         obj_script TERRA, ASYNC
                 pos {8, 17}
@@ -47842,7 +47846,7 @@ _cb46ae:
                 end
 _cb46b7:
         call _cb46d7
-        load_pal 15, MAP_SPRITE_PAL_TREASURE_CHEST
+        load_pal 15, TREASURE_CHEST
         call _cb441d
         return
         switch $0494=0
@@ -48648,7 +48652,7 @@ _cb4cab:
                 end
         call _cb4928
 _cb4cbd:
-        load_pal 14, MAP_SPRITE_PAL_CHADARNOOK
+        load_pal 14, CHADARNOOK
         if_switch $0253=0, _cb4cca
         play_song SONG_RELM
         mod_bg_pal RESTORE_ALT, {RED, GREEN, BLUE}, 3
@@ -52466,7 +52470,7 @@ _cb61c8:
         hide_obj NPC_11
         delete_obj NPC_11
         sort_obj
-        obj_gfx GAU, MAP_SPRITE_GFX_SPIFFY_GAU
+        obj_gfx GAU, SPIFFY_GAU
         show_obj GAU
         obj_script SABIN
                 action 31
@@ -53083,7 +53087,7 @@ _cb65cc:
         call _cb606b
         switch $01CC=0
         load_map 131, {7, 12}, UP, {ASYNC, NO_FADE_IN}
-        obj_gfx GAU, MAP_SPRITE_GFX_SPIFFY_GAU
+        obj_gfx GAU, SPIFFY_GAU
         call _cac6ac
         party_chars GAU, SABIN
         obj_script GAU, ASYNC
@@ -53435,7 +53439,7 @@ _cb67d3:
         fade_out 4
         wait_fade
         switch $048E=0
-        obj_gfx GAU, MAP_SPRITE_GFX_GAU
+        obj_gfx GAU, GAU
         create_obj GAU
         sort_obj
         char_party GAU, 1
@@ -54504,7 +54508,7 @@ _cb714f:
                 ; TREASURE: Oh, yeah,
                 ; you wanna pass through here, right?
         switch $05F7=1
-        load_pal 15, MAP_SPRITE_PAL_TREASURE_CHEST
+        load_pal 15, TREASURE_CHEST
         create_obj NPC_2
         sort_obj
         show_obj NPC_2
@@ -57079,8 +57083,8 @@ _cb81c6:
         wait_30f
         char_prop GOGO, 12
         create_obj GOGO
-        obj_gfx GOGO, MAP_SPRITE_GFX_GOGO
-        obj_pal GOGO, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx GOGO, GOGO
+        obj_pal GOGO, GOGO
         char_name GOGO, 12
         name_menu GOGO
         and_status GOGO, {MAGITEK, INTERCEPTOR}
@@ -59506,8 +59510,8 @@ _cb9330:
 _cb9335:
         if_switch $0197=1, EventReturn
         switch $0543=1
-        load_pal 15, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
-        load_pal 14, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        load_pal 15, CYAN_SHADOW_SETZER
+        load_pal 14, EDGAR_SABIN_CELES
         call _cb6a4c
         create_obj NPC_1
         create_obj NPC_2
@@ -59638,7 +59642,7 @@ _cb93bf:
         switch $05F7=1
         create_obj NPC_1
         sort_obj
-        load_pal 14, MAP_SPRITE_PAL_RAINBOW
+        load_pal 14, RAINBOW
         call _cb6a22
         delete_obj NPC_1
         sort_obj
@@ -59647,7 +59651,7 @@ _cb93bf:
         unlock_camera
         wait_45f
         switch $0544=1
-        load_pal 14, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        load_pal 14, CYAN_SHADOW_SETZER
         create_obj NPC_2
         call _cb6a4c
         sort_obj
@@ -59731,7 +59735,7 @@ _cb94a1:
         return
 _cb94b2:
         if_switch $0184=1, EventReturn
-        load_pal 14, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        load_pal 14, CYAN_SHADOW_SETZER
         call _cb6a4c
         player_ctrl_on
         pass_off NPC_1
@@ -59813,7 +59817,7 @@ _cb94e7:
         create_obj NPC_2
         create_obj NPC_3
         sort_obj
-        load_pal 15, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        load_pal 15, EDGAR_SABIN_CELES
         call _cb6a55
         mosaic 14
         flash RED
@@ -59938,8 +59942,8 @@ _cb95f3:
         create_obj NPC_1
         create_obj NPC_2
         sort_obj
-        load_pal 15, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
-        load_pal 14, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        load_pal 15, EDGAR_SABIN_CELES
+        load_pal 14, CYAN_SHADOW_SETZER
         call _cb6a4c
         show_obj NPC_1
         show_obj NPC_2
@@ -59986,8 +59990,8 @@ _cb9643:
         create_obj NPC_3
         create_obj NPC_4
         sort_obj
-        load_pal 15, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
-        load_pal 14, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        load_pal 15, EDGAR_SABIN_CELES
+        load_pal 14, CYAN_SHADOW_SETZER
         call _cb6a4c
         show_obj NPC_3
         show_obj NPC_4
@@ -60073,8 +60077,8 @@ _cb96c3:
         create_obj NPC_6
         create_obj NPC_7
         sort_obj
-        load_pal 14, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
-        load_pal 15, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        load_pal 14, CYAN_SHADOW_SETZER
+        load_pal 15, EDGAR_SABIN_CELES
         call _cb6a4c
         show_obj NPC_5
         show_obj NPC_6
@@ -60271,7 +60275,7 @@ _cb97ce:
                 end
         return
 _cb97d6:
-        load_pal 15, MAP_SPRITE_PAL_ESPER_TERRA
+        load_pal 15, ESPER_TERRA
         obj_script SLOT_1
                 speed NORMAL
                 move UP, 1
@@ -60357,7 +60361,7 @@ _cb97d6:
         create_obj NPC_10
         create_obj NPC_11
         sort_obj
-        load_pal 15, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        load_pal 15, EDGAR_SABIN_CELES
         call _cb6a55
         mosaic 14
         flash RED
@@ -60790,8 +60794,8 @@ _cb9aae:
         set_case PARTY_CHARS
         if_case CHAR::SHADOW, _cba3b9
         char_prop CYAN, 2
-        obj_gfx CYAN, MAP_SPRITE_GFX_CYAN
-        obj_pal CYAN, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        obj_gfx CYAN, CYAN
+        obj_pal CYAN, CYAN
         create_obj CYAN
         char_party CYAN, 1
         switch $02E2=1
@@ -63238,8 +63242,8 @@ _cbab1f:
         char_prop STRAGO, 16
         create_obj STRAGO
         char_party STRAGO, 1
-        obj_gfx STRAGO, MAP_SPRITE_GFX_GHOST
-        obj_pal STRAGO, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx STRAGO, GHOST
+        obj_pal STRAGO, EDGAR_SABIN_CELES
         char_name STRAGO, 16
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
@@ -63250,8 +63254,8 @@ _cbab4e:
         char_prop RELM, 17
         create_obj RELM
         char_party RELM, 1
-        obj_gfx RELM, MAP_SPRITE_GFX_GHOST
-        obj_pal RELM, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx RELM, GHOST
+        obj_pal RELM, EDGAR_SABIN_CELES
         char_name RELM, 17
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
@@ -63266,8 +63270,8 @@ _cbab6c:
         char_prop STRAGO, 16
         create_obj STRAGO
         char_party STRAGO, 1
-        obj_gfx STRAGO, MAP_SPRITE_GFX_GHOST
-        obj_pal STRAGO, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx STRAGO, GHOST
+        obj_pal STRAGO, EDGAR_SABIN_CELES
         char_name STRAGO, 16
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
@@ -63278,8 +63282,8 @@ _cbab9b:
         char_prop RELM, 17
         create_obj RELM
         char_party RELM, 1
-        obj_gfx RELM, MAP_SPRITE_GFX_GHOST
-        obj_pal RELM, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx RELM, GHOST
+        obj_pal RELM, EDGAR_SABIN_CELES
         char_name RELM, 17
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
@@ -63294,8 +63298,8 @@ _cbabb9:
         char_prop STRAGO, 16
         create_obj STRAGO
         char_party STRAGO, 1
-        obj_gfx STRAGO, MAP_SPRITE_GFX_GHOST
-        obj_pal STRAGO, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx STRAGO, GHOST
+        obj_pal STRAGO, EDGAR_SABIN_CELES
         char_name STRAGO, 16
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
@@ -63306,8 +63310,8 @@ _cbabe8:
         char_prop RELM, 17
         create_obj RELM
         char_party RELM, 1
-        obj_gfx RELM, MAP_SPRITE_GFX_GHOST
-        obj_pal RELM, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx RELM, GHOST
+        obj_pal RELM, EDGAR_SABIN_CELES
         char_name RELM, 17
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
@@ -63322,8 +63326,8 @@ _cbac06:
         char_prop STRAGO, 16
         create_obj STRAGO
         char_party STRAGO, 1
-        obj_gfx STRAGO, MAP_SPRITE_GFX_GHOST
-        obj_pal STRAGO, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx STRAGO, GHOST
+        obj_pal STRAGO, EDGAR_SABIN_CELES
         char_name STRAGO, 16
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
@@ -63334,8 +63338,8 @@ _cbac35:
         char_prop RELM, 17
         create_obj RELM
         char_party RELM, 1
-        obj_gfx RELM, MAP_SPRITE_GFX_GHOST
-        obj_pal RELM, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx RELM, GHOST
+        obj_pal RELM, EDGAR_SABIN_CELES
         char_name RELM, 17
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
@@ -63350,8 +63354,8 @@ _cbac53:
         char_prop STRAGO, 16
         create_obj STRAGO
         char_party STRAGO, 1
-        obj_gfx STRAGO, MAP_SPRITE_GFX_GHOST
-        obj_pal STRAGO, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx STRAGO, GHOST
+        obj_pal STRAGO, EDGAR_SABIN_CELES
         char_name STRAGO, 16
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
@@ -63362,8 +63366,8 @@ _cbac82:
         char_prop RELM, 17
         create_obj RELM
         char_party RELM, 1
-        obj_gfx RELM, MAP_SPRITE_GFX_GHOST
-        obj_pal RELM, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx RELM, GHOST
+        obj_pal RELM, EDGAR_SABIN_CELES
         char_name RELM, 17
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
@@ -63378,8 +63382,8 @@ _cbaca0:
         char_prop STRAGO, 16
         create_obj STRAGO
         char_party STRAGO, 1
-        obj_gfx STRAGO, MAP_SPRITE_GFX_GHOST
-        obj_pal STRAGO, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx STRAGO, GHOST
+        obj_pal STRAGO, EDGAR_SABIN_CELES
         char_name STRAGO, 16
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
@@ -63390,8 +63394,8 @@ _cbaccf:
         char_prop RELM, 17
         create_obj RELM
         char_party RELM, 1
-        obj_gfx RELM, MAP_SPRITE_GFX_GHOST
-        obj_pal RELM, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx RELM, GHOST
+        obj_pal RELM, EDGAR_SABIN_CELES
         char_name RELM, 17
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
@@ -66604,8 +66608,8 @@ _cbc058:
         wait_30f
         char_prop GAU, 11
         create_obj GAU
-        obj_gfx GAU, MAP_SPRITE_GFX_GAU
-        obj_pal GAU, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx GAU, GAU
+        obj_pal GAU, GAU
         char_party GAU, 0
         switch $02EB=1
         char_name GAU, 11
@@ -68209,8 +68213,8 @@ _cbcd24:
         wait_30f
         char_prop SHADOW, 3
         create_obj SHADOW
-        obj_gfx SHADOW, MAP_SPRITE_GFX_SHADOW
-        obj_pal SHADOW, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        obj_gfx SHADOW, SHADOW
+        obj_pal SHADOW, SHADOW
         sort_obj
         char_name SHADOW, 3
         name_menu SHADOW
@@ -69859,8 +69863,8 @@ _cbd982:
         dlg $079F, {TEXT_ONLY, BOTTOM}
                 ; An elderly gentleman, pure of heart, and learned in the ways of monsters…
         wait_30f
-        obj_gfx STRAGO, MAP_SPRITE_GFX_STRAGO
-        obj_pal STRAGO, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx STRAGO, STRAGO
+        obj_pal STRAGO, STRAGO
         char_name STRAGO, 7
         name_menu STRAGO
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
@@ -70055,8 +70059,8 @@ _cbd982:
                 ; the very essence of life…
         wait_30f
         switch $01CB=1
-        obj_gfx RELM, MAP_SPRITE_GFX_RELM
-        obj_pal RELM, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx RELM, RELM
+        obj_pal RELM, RELM
         char_name RELM, 8
         name_menu RELM
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
@@ -71783,8 +71787,8 @@ _cbe538:
         player_ctrl_off
         char_prop STRAGO, 7
         create_obj STRAGO
-        obj_gfx STRAGO, MAP_SPRITE_GFX_STRAGO
-        obj_pal STRAGO, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx STRAGO, STRAGO
+        obj_pal STRAGO, STRAGO
         char_party STRAGO, 1
         sort_obj
         switch $02E7=1
@@ -76346,8 +76350,8 @@ _cbfdb2:
         char_prop WEDGE, 15
         create_obj WEDGE
         char_party WEDGE, 1
-        obj_gfx WEDGE, MAP_SPRITE_GFX_LEO
-        obj_pal WEDGE, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        obj_gfx WEDGE, LEO
+        obj_pal WEDGE, EDGAR_SABIN_CELES
         char_name WEDGE, 15
         sort_obj
         char_party RELM, 0
@@ -76456,8 +76460,8 @@ _cbfff4:
         create_obj VICKS
         sort_obj
         char_name VICKS, 44
-        obj_gfx VICKS, MAP_SPRITE_GFX_KEFKA
-        obj_pal VICKS, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx VICKS, KEFKA
+        obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         and_status VICKS, NONE
         max_hp VICKS
         max_mp VICKS
@@ -76940,8 +76944,8 @@ _cc0163:
         create_obj VICKS
         sort_obj
         char_name VICKS, 43
-        obj_gfx VICKS, MAP_SPRITE_GFX_KEFKA
-        obj_pal VICKS, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx VICKS, KEFKA
+        obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         and_status VICKS, NONE
         max_hp VICKS
         max_mp VICKS
@@ -79260,7 +79264,7 @@ _cc104d:
                 .byte $00,$00,$00,$00,$00,$00,$0E
         return
 _cc10e6:
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
+        load_pal 14, MACHINERY_2
         if_switch $01B6=1, EventReturn
         obj_script NPC_4, ASYNC
 _cc10f1:
@@ -79312,7 +79316,7 @@ _cc1137:
                 .byte $71
         return
 _cc1141:
-        load_pal 15, MAP_SPRITE_PAL_STATUE_SMOKE
+        load_pal 15, STATUE_SMOKE
         mod_bg_tiles BG1, {77, 30}, {1, 4}
                 .byte $65
                 .byte $75
@@ -79320,7 +79324,7 @@ _cc1141:
                 .byte $71
         return
 _cc114e:
-        load_pal 15, MAP_SPRITE_PAL_STATUE_SMOKE
+        load_pal 15, STATUE_SMOKE
         if_switch $0071=0, _cc115f
         call _cc12b1
         call _cc12db
@@ -79349,7 +79353,7 @@ _cc1182:
 _cc1197:
         return
 _cc1198:
-        load_pal 15, MAP_SPRITE_PAL_STATUE_SMOKE
+        load_pal 15, STATUE_SMOKE
         call _cc11ae
         call _cc10e6
         if_switch $007F=0, EventReturn
@@ -79373,7 +79377,7 @@ _cc11ae:
                 end_loop
         return
 _cc11d2:
-        load_pal 15, MAP_SPRITE_PAL_GUARDIAN
+        load_pal 15, GUARDIAN
         return
 _cc11d6:
         mod_bg_tiles BG1, {86, 46}, {1, 3}, ASYNC
@@ -80478,11 +80482,11 @@ _cc19ef:
                 end_loop
         return
 _cc19f5:
-        load_pal 14, MAP_SPRITE_PAL_ODIN
+        load_pal 14, ODIN
         filter_pal {RED, GREEN, BLUE}, {224, 239}
         return
 _cc19fd:
-        load_pal 15, MAP_SPRITE_PAL_EDGAR_SABIN_CELES
+        load_pal 15, EDGAR_SABIN_CELES
         filter_pal {RED, GREEN, BLUE}, {240, 255}
         collision_on NPC_4
         if_switch $02DE=0, EventReturn
@@ -80880,7 +80884,7 @@ _cc1a60:
                 mod_bg_pal DEC, BLUE, 3
                 end_loop
         shake ALL, 1, 1
-        load_pal 14, MAP_SPRITE_PAL_ODIN
+        load_pal 14, ODIN
         fade_in 4
         wait_fade
         wait_2s
@@ -81463,7 +81467,7 @@ _cc205b:
         player_ctrl_on
         return
 _cc206e:
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
+        load_pal 14, MACHINERY_2
         mod_bg_tiles BG1, {9, 7}, {1, 1}, ASYNC
                 .byte $17
         mod_bg_tiles BG1, {6, 6}, {2, 2}, ASYNC
@@ -81593,7 +81597,7 @@ _cc2109:
         call _cacca4
         load_map 11, {16, 8}, DOWN, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
         update_party
-        call _cce499
+        call RestoreParty
         switch $01CE=0
         switch $02BF=0
         switch $02A2=0
@@ -84235,7 +84239,7 @@ _cc33aa:
 _cc33ae:
         flash BLUE
         sfx 233
-        call _cce499
+        call RestoreParty
         player_ctrl_on
         return
 _cc33b8:
@@ -84441,7 +84445,7 @@ _cc34f3:
         mod_sprite_pal RESTORE_ALT, {RED, GREEN, BLUE}, 3, 81
         return
 _cc350c:
-        load_pal 14, MAP_SPRITE_PAL_LOCKE
+        load_pal 14, LOCKE
         return
 _cc3510:
         dlg $06DC
@@ -85191,8 +85195,8 @@ _cc3a32:
 _cc3a4c:
         char_prop MOG, 10
         create_obj MOG
-        obj_gfx MOG, MAP_SPRITE_GFX_MOG
-        obj_pal MOG, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx MOG, MOG
+        obj_pal MOG, MOG
         switch $02FA=1
         switch $02EA=1
         sort_obj
@@ -88104,7 +88108,7 @@ _cc4c1b:
                 action 22
                 speed NORMAL
                 end
-        load_pal 15, MAP_SPRITE_PAL_ESPER_TERRA
+        load_pal 15, ESPER_TERRA
         obj_script SLOT_1
                 action 9
                 end
@@ -88306,7 +88310,7 @@ _cc4c1b:
         wait_15f
         spc_cmd $82, $01, $FF
         wait_15f
-        load_pal 15, MAP_SPRITE_PAL_ESPER_TERRA
+        load_pal 15, ESPER_TERRA
         create_obj NPC_13
         sort_obj
         show_obj NPC_13
@@ -90556,7 +90560,7 @@ _cc5c8d:
         dlg $08B3
                 ; All I can do now is restore your health.
                 ; Please…go back inside and save that child!!
-        call _cce499
+        call RestoreParty
         player_ctrl_on
         return
 _cc5ca3:
@@ -91478,7 +91482,7 @@ _cc6166:
                 end
         call _cacb95
         player_ctrl_off
-        call _cce499
+        call RestoreParty
         call _cb2e2b
         switch $01CC=0
         play_song SONG_KIDS_RUN_THROUGH_THE_CITY
@@ -93669,8 +93673,8 @@ _cc6f84:
         wait_fade
         char_prop SHADOW, 3
         create_obj SHADOW
-        obj_gfx SHADOW, MAP_SPRITE_GFX_SHADOW
-        obj_pal SHADOW, MAP_SPRITE_PAL_CYAN_SHADOW_SETZER
+        obj_gfx SHADOW, SHADOW
+        obj_pal SHADOW, SHADOW
         sort_obj
         char_name SHADOW, 3
         name_menu SHADOW
@@ -94192,8 +94196,8 @@ _cc72c9:
         load_map 240, {58, 3}, DOWN, STARTUP_EVENT
         return
 _cc72d6:
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
-        load_pal 15, MAP_SPRITE_PAL_MACHINERY_1
+        load_pal 14, MACHINERY_2
+        load_pal 15, MACHINERY_1
         if_switch $0069=0, _cc7316
         shake ALL, 2, 1
         mod_bg_tiles BG1, {18, 22}, {5, 4}
@@ -94258,8 +94262,8 @@ _cc734e:
                 end
         return
 _cc7360:
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
-        load_pal 15, MAP_SPRITE_PAL_MACHINERY_1
+        load_pal 14, MACHINERY_2
+        load_pal 15, MACHINERY_1
         if_switch $01B6=1, EventReturn
         obj_script NPC_1, ASYNC
 _cc736d := * - 1
@@ -94322,8 +94326,8 @@ _cc73cc:
                 end
         return
 _cc73da:
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
-        load_pal 15, MAP_SPRITE_PAL_MACHINERY_1
+        load_pal 14, MACHINERY_2
+        load_pal 15, MACHINERY_1
         return
 _cc73e1:
         if_switch $005F=1, EventReturn
@@ -95380,7 +95384,7 @@ _cc79ed:
         wait_fade
         return
 _cc79fc:
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
+        load_pal 14, MACHINERY_2
         pass_off NPC_1
         pass_off NPC_2
         pass_off NPC_3
@@ -96144,7 +96148,7 @@ _cc7d27:
         party_chars LOCKE
         switch $02F6=0
         remove_equip CELES
-        call _cce499
+        call RestoreParty
         loop 31
                 mod_bg_pal UNDEC, RED, 3
                 mod_sprite_pal UNDEC, RED, 3
@@ -96337,7 +96341,7 @@ _cc7f43:
         obj_script NPC_1
                 anim_off
                 end
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
+        load_pal 14, MACHINERY_2
         obj_script SLOT_1, ASYNC
                 speed NORMAL
 _cc7f8a:
@@ -96408,7 +96412,7 @@ _cc7fbe:
         obj_script NPC_2
                 pos {8, 46}
                 end
-        load_pal 15, MAP_SPRITE_PAL_MACHINERY_2
+        load_pal 15, MACHINERY_2
         pass_off SLOT_1
         pass_off NPC_1
         sfx 223
@@ -96445,7 +96449,7 @@ _cc7fbe:
         player_ctrl_on
         return
 _cc801c:
-        load_pal 15, MAP_SPRITE_PAL_MACHINERY_2
+        load_pal 15, MACHINERY_2
         play_song SONG_SILENCE
         return
 _cc8022:
@@ -96572,7 +96576,7 @@ _cc8022:
         switch $06A3=1
         switch $06AE=0
         load_map 240, {64, 13}, LEFT, {ASYNC, Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
-        load_pal 14, MAP_SPRITE_PAL_MACHINERY_2
+        load_pal 14, MACHINERY_2
         pass_off SLOT_1
         pass_off NPC_2
         pass_off NPC_3
@@ -96671,7 +96675,7 @@ _cc8022:
                 end
         switch $0069=1
         switch $0666=1
-        load_pal 14, MAP_SPRITE_PAL_RAINBOW
+        load_pal 14, RAINBOW
         show_obj NPC_10
         switch $06AE=1
         switch $01CC=0
@@ -96924,7 +96928,7 @@ _cc818c:
         spc_cmd $82, $01, $FF
         play_song SONG_SILENCE
         shake ALL, 2, 2
-        load_pal 14, MAP_SPRITE_PAL_VECTOR_CRANE
+        load_pal 14, VECTOR_CRANE
         hide_obj SLOT_1
         sort_obj
         fade_in
@@ -99100,7 +99104,7 @@ _cc9163:
         hide_obj CYAN
         hide_obj SETZER
         update_party
-        call _cce499
+        call RestoreParty
         switch $062C=0
         switch $0634=0
         switch $0636=1
@@ -99444,7 +99448,7 @@ _cc93c0:
                 ; Hang in there!
         flash BLUE
         sfx 233
-        call _cce499
+        call RestoreParty
         wait_30f
         fixed_clr_off
         return
@@ -99686,7 +99690,7 @@ _cc94f2:
                 dir DOWN
                 wait 6
                 end
-        call _cce499
+        call RestoreParty
         call _cb2e2b
         call _cacb95
         resume_song $40
@@ -99703,7 +99707,7 @@ _cc9534:
                 switch $006B=0
                 switch $0079=1
                 goto _cc9540
-        load_pal 14, MAP_SPRITE_PAL_GUARDIAN
+        load_pal 14, GUARDIAN
         return
 _cc9540:
         if_switch $01B6=1, EventReturn
@@ -100730,16 +100734,21 @@ _cc9ae0:
                 mod_bg_pal UNINC, RED, 3
                 end_loop
         return
-_cc9aeb:
+
+; ------------------------------------------------------------------------------
+
+; cc/9aeb
+.proc SavePoint
         if_switch $01B5=1, EventReturn
-        if_switch $0133=0, _cc9b01
+        if_switch $0133=0, query_save_info
         sfx 209
         flash BLUE
         switch $01B5=1
         switch $01BF=1
         player_ctrl_on
         return
-_cc9b01:
+
+query_save_info:
         sfx 209
         flash BLUE
         wait_1s
@@ -100751,10 +100760,11 @@ _cc9b01:
                 ; Want info about Save Points?
                 ;  0:  Yes
                 ;  1:  No
-        choice _cc9b18, EventReturn
+        choice show_save_info, EventReturn
         player_ctrl_on
         return
-_cc9b18:
+
+show_save_info:
         dlg $06D4
                 ; At Save Points you can use a “Sleeping Bag” or “Tent”, and also save a game.
                 ; If you should perish, you’ll automatically be able to play from your last save.
@@ -100762,6 +100772,11 @@ _cc9b18:
                 ; You can save a game anywhere on the world map.
         player_ctrl_on
         return
+
+.endproc  ; SavePoint
+
+; ------------------------------------------------------------------------------
+
 _cc9b1d:
         pass_off WEDGE
         pass_off VICKS
@@ -102326,8 +102341,8 @@ _cca4a6:
         char_name VICKS, 41
         char_prop VICKS, 41
         create_obj VICKS
-        obj_gfx VICKS, MAP_SPRITE_GFX_KEFKA
-        obj_pal VICKS, MAP_SPRITE_PAL_STRAGO_RELM_GAU_GOGO
+        obj_gfx VICKS, KEFKA
+        obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         char_party VICKS, 1
         sort_obj
         set_status TERRA, MAGITEK
@@ -102558,8 +102573,8 @@ _cca5ed:
         load_map 30, {64, 33}, DOWN, {ASYNC, NO_FADE_IN}
         char_prop LOCKE, 1
         create_obj LOCKE
-        obj_gfx LOCKE, MAP_SPRITE_GFX_LOCKE
-        obj_pal LOCKE, MAP_SPRITE_PAL_LOCKE
+        obj_gfx LOCKE, LOCKE
+        obj_pal LOCKE, LOCKE
         sort_obj
         switch $02E1=1
         switch $02F1=1
@@ -102575,7 +102590,7 @@ _cca5ed:
         player_ctrl_off
         hide_obj TERRA
         sort_obj
-        call _cce499
+        call RestoreParty
         lock_camera
         obj_script LOCKE
                 pos {67, 25}
@@ -103121,58 +103136,58 @@ _cca93d:
         char_name MOG, 10
         char_prop MOG, 10
         create_obj MOG
-        obj_gfx MOG, MAP_SPRITE_GFX_MOG
-        obj_pal MOG, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx MOG, MOG
+        obj_pal MOG, MOG
         char_name CYAN, 18
         char_prop CYAN, 18
         create_obj CYAN
-        obj_gfx CYAN, MAP_SPRITE_GFX_MOG
-        obj_pal CYAN, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx CYAN, MOG
+        obj_pal CYAN, MOG_UMARO
         char_name SHADOW, 19
         char_prop SHADOW, 19
         create_obj SHADOW
-        obj_gfx SHADOW, MAP_SPRITE_GFX_MOG
-        obj_pal SHADOW, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx SHADOW, MOG
+        obj_pal SHADOW, MOG_UMARO
         char_name EDGAR, 20
         char_prop EDGAR, 20
         create_obj EDGAR
-        obj_gfx EDGAR, MAP_SPRITE_GFX_MOG
-        obj_pal EDGAR, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx EDGAR, MOG
+        obj_pal EDGAR, MOG_UMARO
         char_name SABIN, 21
         char_prop SABIN, 21
         create_obj SABIN
-        obj_gfx SABIN, MAP_SPRITE_GFX_MOG
-        obj_pal SABIN, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx SABIN, MOG
+        obj_pal SABIN, MOG_UMARO
         char_name CELES, 22
         char_prop CELES, 22
         create_obj CELES
-        obj_gfx CELES, MAP_SPRITE_GFX_MOG
-        obj_pal CELES, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx CELES, MOG
+        obj_pal CELES, MOG_UMARO
         char_name STRAGO, 23
         char_prop STRAGO, 23
         create_obj STRAGO
-        obj_gfx STRAGO, MAP_SPRITE_GFX_MOG
-        obj_pal STRAGO, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx STRAGO, MOG
+        obj_pal STRAGO, MOG_UMARO
         char_name RELM, 24
         char_prop RELM, 24
         create_obj RELM
-        obj_gfx RELM, MAP_SPRITE_GFX_MOG
-        obj_pal RELM, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx RELM, MOG
+        obj_pal RELM, MOG_UMARO
         char_name SETZER, 25
         char_prop SETZER, 25
         create_obj SETZER
-        obj_gfx SETZER, MAP_SPRITE_GFX_MOG
-        obj_pal SETZER, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx SETZER, MOG
+        obj_pal SETZER, MOG_UMARO
         char_name GAU, 26
         char_prop GAU, 26
         create_obj GAU
-        obj_gfx GAU, MAP_SPRITE_GFX_MOG
-        obj_pal GAU, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx GAU, MOG
+        obj_pal GAU, MOG_UMARO
         char_name GOGO, 27
         char_prop GOGO, 27
         create_obj GOGO
-        obj_gfx GOGO, MAP_SPRITE_GFX_MOG
-        obj_pal GOGO, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx GOGO, MOG
+        obj_pal GOGO, MOG_UMARO
         char_party LOCKE, 1
         char_party WEDGE, 0
         char_party VICKS, 0
@@ -104983,7 +104998,7 @@ _ccb4da:
         show_obj EDGAR
         show_obj WEDGE
         sort_obj
-        call _cce499
+        call RestoreParty
         create_obj NPC_2
         create_obj NPC_6
         create_obj NPC_7
@@ -106323,7 +106338,7 @@ _ccb8c0:
         fade_in_song SONG_WIND, 240
         fade_in 4
         wait_fade
-        call _cce499
+        call RestoreParty
         switch $01C1=1
         pass_on CELES
         pass_on EDGAR
@@ -106411,7 +106426,7 @@ _ccbcb1:
         char_party CELES, 0
         sort_obj
         update_party
-        call _cce499
+        call RestoreParty
         switch $01CE=0
         switch $01CA=0
         switch $01C1=0
@@ -106690,7 +106705,7 @@ _ccbcb1:
         create_obj NPC_2
         show_obj NPC_2
         sort_obj
-        load_pal 14, MAP_SPRITE_PAL_ESPER_TERRA
+        load_pal 14, ESPER_TERRA
         fade_in
         wait_fade
         loop 10
@@ -106717,7 +106732,7 @@ _ccbcb1:
         wait_obj NPC_2
         wait_90f
         pass_on NPC_2
-        load_pal 14, MAP_SPRITE_PAL_RAINBOW
+        load_pal 14, RAINBOW
         create_obj NPC_3
         show_obj NPC_3
         sort_obj
@@ -106888,7 +106903,7 @@ _ccbcb1:
         show_obj GAU
         show_obj CELES
         sort_obj
-        call _cce499
+        call RestoreParty
         wait_15f 10
         fade_in_song SONG_AWAKENING, 160
         fade_in 2
@@ -109995,7 +110010,7 @@ _ccd35c:
         sort_obj
         switch $02F3=0
         call _cacb95
-        call _cce499
+        call RestoreParty
         unlock_camera
         return
 _ccd3c6:
@@ -110378,8 +110393,8 @@ _ccd5df:
         if_switch $023F=0, EventReturn
         char_prop MOG, 10
         create_obj MOG
-        obj_gfx MOG, MAP_SPRITE_GFX_MOG
-        obj_pal MOG, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx MOG, MOG
+        obj_pal MOG, MOG
         switch $02FA=1
         switch $02EA=1
         sort_obj
@@ -110682,8 +110697,8 @@ _ccd793:
         if_switch $01AA=0, _ccd88e
         char_prop UMARO, 13
         create_obj UMARO
-        obj_gfx UMARO, MAP_SPRITE_GFX_UMARO
-        obj_pal UMARO, MAP_SPRITE_PAL_MOG_UMARO
+        obj_gfx UMARO, UMARO
+        obj_pal UMARO, UMARO
         switch $02ED=1
         switch $02FD=1
         sort_obj
@@ -112916,7 +112931,6 @@ _cce486:
 ; [ restore party hp/mp/status ]
 
 ; cc/e499
-_cce499:
 .proc RestoreParty
         max_hp SLOT_1
         max_hp SLOT_2
@@ -113097,5 +113111,11 @@ _cce499:
 ; ------------------------------------------------------------------------------
 
 end_fixed_block EventScript
+
+; ------------------------------------------------------------------------------
+
+.include "event_trigger.asm"
+.include "npc_prop.asm"
+.include "map_init_event.asm"
 
 ; ------------------------------------------------------------------------------

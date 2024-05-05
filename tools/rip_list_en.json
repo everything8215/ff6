@@ -2594,10 +2594,6 @@
       "asset_range": "0xECE400-0xECE6E7"
     },
     {
-      "file_path": "src/field/map_init_event.dat",
-      "asset_range": "0xD1FA00-0xD1FFFF"
-    },
-    {
       "file_path": "src/field/map_pal_anim_prop.dat",
       "asset_range": "0xC09825-0xC0989C"
     },
@@ -3304,15 +3300,6 @@
       "ptr_offset": "0xD00000"
     },
     {
-      "file_path": "src/field/trigger/event_trigger.dat",
-      "inc_path": "include/field/event_trigger.inc",
-      "asset_range": "0xC40342-0xC419FD",
-      "asset_const": "EVENT_TRIGGER",
-      "asset_label": "EventTrigger",
-      "ptr_range": "0xC40000-0xC4033F",
-      "ptr_offset": "0xC40000"
-    },
-    {
       "file_path": "src/field/trigger/long_entrance.dat",
       "inc_path": "include/field/long_entrance.inc",
       "asset_range": "0xEDF882-0xEDFCA9",
@@ -3320,15 +3307,6 @@
       "asset_label": "LongEntrance",
       "ptr_range": "0xEDF480-0xEDF87F",
       "ptr_offset": "0xEDF480"
-    },
-    {
-      "file_path": "src/field/trigger/npc_prop.dat",
-      "inc_path": "include/field/npc_prop.inc",
-      "asset_range": "0xC41D52-0xC46A6A",
-      "asset_const": "NPC_PROP",
-      "asset_label": "NPCProp",
-      "ptr_range": "0xC41A10-0xC41D4F",
-      "ptr_offset": "0xC41A10"
     },
     {
       "file_path": "src/field/trigger/short_entrance.dat",

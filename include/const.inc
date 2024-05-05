@@ -376,6 +376,7 @@ ITEM_EMPTY                              = $ff  ; 255
         GHOST_2                         = 8
 
 ; other characters
+        SCENARIO_MOG                    = 13
         WEDGE                           = 14
         BANON                           = 14
         MADUIN                          = 14
@@ -421,6 +422,7 @@ ITEM_EMPTY                              = $ff  ; 255
         GHOST_2                         = CHAR::GHOST_2
 
 ; other characters
+        SCENARIO_MOG                    = CHAR::SCENARIO_MOG
         WEDGE                           = CHAR::WEDGE
         BANON                           = CHAR::BANON
         MADUIN                          = CHAR::MADUIN
@@ -1320,7 +1322,7 @@ CHAR_PROP_KUSHU                         = $18
 CHAR_PROP_KURIN                         = $19
 CHAR_PROP_KURU                          = $1a
 CHAR_PROP_KAMOG                         = $1b
-CHAR_PROP_MOG_SCENARIO                  = $1c
+CHAR_PROP_SCENARIO_MOG                  = $1c
 CHAR_PROP_TERRA_INTRO                   = $1d
 CHAR_PROP_MADUIN                        = $1e
 CHAR_PROP_SHADOW_COLOSSEUM              = $1f

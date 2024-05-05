@@ -29,7 +29,7 @@ AirshipLiftOffAnim1:
         sta     $7eb664
         lda     #$000a
         sta     $7eb668
-        tdc
+        clr_a
         sta     $7eb666
         sta     $7eb5d8
 @9504:  jsr     UpdateSpriteAnim
@@ -40,7 +40,7 @@ AirshipLiftOffAnim1:
         cmp     #$03c0
         bne     @951d
         shorta
-        tdc
+        clr_a
         sta     $22
 @951d:  shorta
 @951f:  lda     $24

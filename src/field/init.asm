@@ -13,7 +13,7 @@
 
 inc_lang "text/bushido_name_%s.inc"
 
-.import WindowPal, EventScript_GameStart
+.import WindowPal, MapInitEvent, EventScript_GameStart
 
 .a8
 .i16
@@ -584,16 +584,5 @@ LoadMap:
         inc     $47
         jsr     TfrObjGfxSub            ; update object 18-23 graphics in vram
         rts
-
-; ------------------------------------------------------------------------------
-
-.pushseg
-.segment "map_init_event"
-
-; d1/fa00
-MapInitEvent:
-        .incbin "map_init_event.dat"
-
-.popseg
 
 ; ------------------------------------------------------------------------------

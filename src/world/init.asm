@@ -176,7 +176,7 @@ InitAirship:
         beq     @8493
         lda     #$19
         bra     @84a8
-@8493:  tdc
+@8493:  clr_a
         xba
         lda     $1f64
         and     #$03
@@ -382,13 +382,13 @@ InitAirship:
 @86a6:  lda     f:RNGTbl,x   ; random number table
         and     #$3f
         sta     $0b00,y
-        tdc
+        clr_a
         sta     $0b01,y
         inx
         lda     f:RNGTbl,x
         lsr2
         sta     $0b02,y
-        tdc
+        clr_a
         sta     $0b03,y
         iny4
         cpy     #$10
@@ -418,7 +418,7 @@ InitChoco:
         beq     @86f7
         lda     #$19
         bra     @870c
-@86f7:  tdc
+@86f7:  clr_a
         xba
         lda     $1f64
         and     #$03
@@ -736,7 +736,7 @@ InitWorld:
         beq     @8a0b
         lda     #$19        ; veldt music
         bra     @8a20
-@8a0b:  tdc
+@8a0b:  clr_a
         xba
         lda     $1f64       ; map index
         and     #$03
@@ -937,7 +937,7 @@ InitWorld:
         lda     f:$001f64
         sta     $f4
         shorta
-        tdc
+        clr_a
         xba
         lda     $1f68
         sta     $f6
@@ -1119,7 +1119,7 @@ InitSnakeRoad:
 @8dbf:  lda     #$a3
         sta     hCGADSUB                ; half add, sprites, bg1, bg2
         shorta
-        tdc
+        clr_a
         sta     $7e2000
         sta     $7e2001
         lda     #$80
@@ -1227,7 +1227,7 @@ EndingAirshipScene2:
 @8ed4:  shorta
         longi
         jsl     EndingAirshipScene_ext
-        tdc
+        clr_a
         pha
         plb
         lda     #$80
@@ -1279,7 +1279,7 @@ EndingAirshipScene2:
         cpx     #$0020
         bne     @8f4b
         shorta
-        tdc
+        clr_a
         pha
         plb
         lda     f:AirshipGfx2Ptr
@@ -1318,7 +1318,7 @@ EndingAirshipScene2:
 ; [ init hardware registers ]
 
 InitHWRegs:
-@8faf:  tdc
+@8faf:  clr_a
         pha
         plb
         sta     hHDMAEN                 ; disable hdma
@@ -1572,7 +1572,7 @@ InitInterruptsWorld:
 InitInterruptsTrain:
 @91a8:  shorta
         longi
-        tdc
+        clr_a
         pha
         plb
         lda     #$5c
@@ -1792,7 +1792,7 @@ ExitTrain:
 
 GameOver:
 @9335:  shorta
-        tdc
+        clr_a
         pha
         plb
         lda     #$80
@@ -1803,11 +1803,11 @@ GameOver:
         jsr     PopMode7Vars
         lda     #$03        ; load map 3
         sta     f:$001f64
-        tdc
+        clr_a
         sta     f:$001f65
         lda     #^EventScript_GameOver
         sta     f:$0011ff
-        tdc
+        clr_a
         sta     f:$0011fe
         lda     #<EventScript_GameOver
         sta     f:$0011fd

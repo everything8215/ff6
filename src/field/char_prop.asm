@@ -1,43 +1,128 @@
 ; ------------------------------------------------------------------------------
 
 .macro reset_char_prop
-        CharProp_HP                     .set 0
-        CharProp_MP                     .set 0
-        CharProp_Cmd1                   .set 0
-        CharProp_Cmd2                   .set 0
-        CharProp_Cmd3                   .set 0
-        CharProp_Cmd4                   .set 0
-        CharProp_Strength               .set 0
-        CharProp_Agility                .set 0
-        CharProp_Stamina                .set 0
-        CharProp_MagicPower             .set 0
-        CharProp_BattlePower            .set 0
-        CharProp_Defense                .set 0
-        CharProp_MagicDefense           .set 0
-        CharProp_Evade                  .set 0
-        CharProp_MagicBlock             .set 0
-        CharProp_Weapon                 .set 0
-        CharProp_Shield                 .set 0
-        CharProp_Helmet                 .set 0
-        CharProp_Armor                  .set 0
-        CharProp_Relic1                 .set 0
-        CharProp_Relic2                 .set 0
-        CharProp_RunFactor              .set 0
-        CharProp_LevelMod               .set 0
-        CharProp_FixedEquip             .set 0
+        _char_prop_hp                   .set 0
+        _char_prop_mp                   .set 0
+        _char_prop_cmd1                 .set 0
+        _char_prop_cmd2                 .set 0
+        _char_prop_cmd3                 .set 0
+        _char_prop_cmd4                 .set 0
+        _char_prop_strength             .set 0
+        _char_prop_agility              .set 0
+        _char_prop_stamina              .set 0
+        _char_prop_magic_power          .set 0
+        _char_prop_battle_power         .set 0
+        _char_prop_defense              .set 0
+        _char_prop_magic_defense        .set 0
+        _char_prop_evade                .set 0
+        _char_prop_magic_block          .set 0
+        _char_prop_weapon               .set 0
+        _char_prop_shield               .set 0
+        _char_prop_helmet               .set 0
+        _char_prop_armor                .set 0
+        _char_prop_relic1               .set 0
+        _char_prop_relic2               .set 0
+        _char_prop_flags                .set 0
 .endmac
 
 .macro make_char_prop
-        .byte CharProp_HP, CharProp_MP
-        .byte CharProp_Cmd1, CharProp_Cmd2, CharProp_Cmd3, CharProp_Cmd4
-        .byte CharProp_Strength, CharProp_Agility, CharProp_Stamina
-        .byte CharProp_MagicPower, CharProp_BattlePower
-        .byte CharProp_Defense, CharProp_MagicDefense
-        .byte CharProp_Evade, CharProp_MagicBlock
-        .byte CharProp_Weapon, CharProp_Shield
-        .byte CharProp_Helmet, CharProp_Armor
-        .byte CharProp_Relic1, CharProp_Relic2
-        .byte CharProp_RunFactor|CharProp_LevelMod|CharProp_FixedEquip
+        reset_char_prop
+.endmac
+
+reset_char_prop
+
+.mac end_char_prop
+        .byte _char_prop_hp, _char_prop_mp
+        .byte _char_prop_cmd1, _char_prop_cmd2, _char_prop_cmd3, _char_prop_cmd4
+        .byte _char_prop_strength, _char_prop_agility, _char_prop_stamina
+        .byte _char_prop_magic_power, _char_prop_battle_power
+        .byte _char_prop_defense, _char_prop_magic_defense
+        .byte _char_prop_evade, _char_prop_magic_block
+        .byte _char_prop_weapon, _char_prop_shield
+        .byte _char_prop_helmet, _char_prop_armor
+        .byte _char_prop_relic1, _char_prop_relic2
+        .byte _char_prop_flags
+.endmac
+
+.mac set_char_prop_hp_mp hp, mp
+        _char_prop_hp .set hp
+        _char_prop_mp .set mp
+.endmac
+
+.mac set_char_prop_cmds cmd1, cmd2, cmd3, cmd4
+        .ifnblank cmd1
+                _char_prop_cmd1 .set BATTLE_CMD::cmd1
+        .else
+                _char_prop_cmd1 .set BATTLE_CMD::NONE
+        .endif
+        .ifnblank cmd2
+                _char_prop_cmd2 .set BATTLE_CMD::cmd2
+        .else
+                _char_prop_cmd2 .set BATTLE_CMD::NONE
+        .endif
+        .ifnblank cmd3
+                _char_prop_cmd3 .set BATTLE_CMD::cmd3
+        .else
+                _char_prop_cmd3 .set BATTLE_CMD::NONE
+        .endif
+        .ifnblank cmd4
+                _char_prop_cmd4 .set BATTLE_CMD::cmd4
+        .else
+                _char_prop_cmd4 .set BATTLE_CMD::NONE
+        .endif
+.endmac
+
+.mac set_char_prop_stats strength, agility, stamina, magic_power, battle_power, defense, magic_defense, evade, magic_block
+        _char_prop_strength .set strength
+        _char_prop_agility .set agility
+        _char_prop_stamina .set stamina
+        _char_prop_magic_power .set magic_power
+        _char_prop_battle_power .set battle_power
+        _char_prop_defense .set defense
+        _char_prop_magic_defense .set magic_defense
+        _char_prop_evade .set evade
+        _char_prop_magic_block .set magic_block
+.endmac
+
+.mac set_char_prop_equip weapon, shield, helmet, armor, relic1, relic2
+        .ifnblank weapon
+                _char_prop_weapon .set weapon
+        .else
+                _char_prop_weapon .set ITEM_EMPTY
+        .endif
+        .ifnblank shield
+                _char_prop_shield .set shield
+        .else
+                _char_prop_shield .set ITEM_EMPTY
+        .endif
+        .ifnblank helmet
+                _char_prop_helmet .set helmet
+        .else
+                _char_prop_helmet .set ITEM_EMPTY
+        .endif
+        .ifnblank armor
+                _char_prop_armor .set armor
+        .else
+                _char_prop_armor .set ITEM_EMPTY
+        .endif
+        .ifnblank relic1
+                _char_prop_relic1 .set relic1
+        .else
+                _char_prop_relic1 .set ITEM_EMPTY
+        .endif
+        .ifnblank relic2
+                _char_prop_relic2 .set relic2
+        .else
+                _char_prop_relic2 .set ITEM_EMPTY
+        .endif
+.endmac
+
+.mac set_char_prop_flags run_factor, level_mod, fixed_equip
+        .ifblank fixed_equip
+                _char_prop_flags .set run_factor | level_mod
+        .else
+                _char_prop_flags .set run_factor | level_mod | fixed_equip
+        .endif
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -53,1002 +138,464 @@ CharProp:
 ; ------------------------------------------------------------------------------
 
 ; 0: terra
-reset_char_prop
-CharProp_HP                             .set 40
-CharProp_MP                             .set 16
-CharProp_Cmd1                           .set BATTLE_CMD::FIGHT
-CharProp_Cmd2                           .set BATTLE_CMD::MORPH
-CharProp_Cmd3                           .set BATTLE_CMD::MAGIC
-CharProp_Cmd4                           .set BATTLE_CMD::ITEM
-CharProp_Strength                       .set 31
-CharProp_Agility                        .set 33
-CharProp_Stamina                        .set 28
-CharProp_MagicPower                     .set 39
-CharProp_BattlePower                    .set 12
-CharProp_Defense                        .set 42
-CharProp_MagicDefense                   .set 33
-CharProp_Evade                          .set 5
-CharProp_MagicBlock                     .set 7
-CharProp_Weapon                         .set ITEM_MITHRILKNIFE
-CharProp_Shield                         .set ITEM_BUCKLER
-CharProp_Helmet                         .set ITEM_LEATHER_HAT
-CharProp_Armor                          .set ITEM_LEATHERARMOR
-CharProp_Relic1                         .set ITEM_EMPTY
-CharProp_Relic2                         .set ITEM_EMPTY
-CharProp_RunFactor                      .set RUN_FACTOR_NORMAL
-CharProp_LevelMod                       .set LEVEL_MOD_NORMAL
-make_char_prop
+        make_char_prop
+        set_char_prop_hp_mp 40, 16
+        set_char_prop_cmds FIGHT, MORPH, MAGIC, ITEM
+        set_char_prop_stats 31, 33, 28, 39, 12, 42, 33, 5, 7
+        set_char_prop_equip ITEM_MITHRILKNIFE, ITEM_BUCKLER, ITEM_LEATHER_HAT, ITEM_LEATHERARMOR
+        set_char_prop_flags RUN_FACTOR_NORMAL, LEVEL_MOD_NORMAL
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 1: locke
-reset_char_prop
-CharProp_HP                             .set 48
-CharProp_MP                             .set 7
-CharProp_Cmd1                           .set BATTLE_CMD::FIGHT
-CharProp_Cmd2                           .set BATTLE_CMD::STEAL
-CharProp_Cmd3                           .set BATTLE_CMD::MAGIC
-CharProp_Cmd4                           .set BATTLE_CMD::ITEM
-CharProp_Strength                       .set 37
-CharProp_Agility                        .set 40
-CharProp_Stamina                        .set 31
-CharProp_MagicPower                     .set 28
-CharProp_BattlePower                    .set 14
-CharProp_Defense                        .set 46
-CharProp_MagicDefense                   .set 23
-CharProp_Evade                          .set 15
-CharProp_MagicBlock                     .set 2
-CharProp_Weapon                         .set ITEM_DIRK
-CharProp_Shield                         .set ITEM_EMPTY
-CharProp_Helmet                         .set ITEM_LEATHER_HAT
-CharProp_Armor                          .set ITEM_LEATHERARMOR
-CharProp_Relic1                         .set ITEM_EMPTY
-CharProp_Relic2                         .set ITEM_EMPTY
-CharProp_RunFactor                      .set RUN_FACTOR_HIGH
-CharProp_LevelMod                       .set LEVEL_MOD_HIGH
-make_char_prop
+        make_char_prop
+        set_char_prop_hp_mp 48, 7
+        set_char_prop_cmds FIGHT, STEAL, MAGIC, ITEM
+        set_char_prop_stats 37, 40, 31, 28, 14, 46, 23, 15, 2
+        set_char_prop_equip ITEM_DIRK, ITEM_EMPTY, ITEM_LEATHER_HAT, ITEM_LEATHERARMOR
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_HIGH
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 2: cyan
-        .byte 53, 5
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::SWDTECH
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 40, 28, 33
-        .byte 25, 25
-        .byte 48, 20
-        .byte 6, 1
-        .byte ITEM_ASHURA
-        .byte ITEM_BUCKLER
-        .byte ITEM_LEATHER_HAT
-        .byte ITEM_LEATHERARMOR
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_LOW|LEVEL_MOD_HIGH
+        make_char_prop
+        set_char_prop_hp_mp 53, 5
+        set_char_prop_cmds FIGHT, SWDTECH, MAGIC, ITEM
+        set_char_prop_stats 40, 28, 33, 25, 25, 48, 20, 6, 1
+        set_char_prop_equip ITEM_ASHURA, ITEM_BUCKLER, ITEM_LEATHER_HAT, ITEM_LEATHERARMOR
+        set_char_prop_flags RUN_FACTOR_LOW, LEVEL_MOD_HIGH
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 3: shadow
-        .byte 51, 6
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::THROW
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 39, 38, 30
-        .byte 33, 23
-        .byte 47, 25
-        .byte 28, 9
-        .byte ITEM_IMPERIAL
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_NINJA_GEAR
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_HIGH|LEVEL_MOD_NORMAL
+        make_char_prop
+        set_char_prop_hp_mp 51, 6
+        set_char_prop_cmds FIGHT, THROW, MAGIC, ITEM
+        set_char_prop_stats 39, 38, 30, 33, 23, 47, 25, 28, 9
+        set_char_prop_equip ITEM_IMPERIAL, ITEM_EMPTY, ITEM_EMPTY, ITEM_NINJA_GEAR
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_NORMAL
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 4: edgar
-        .byte 49, 6
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::TOOLS
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 39, 30, 34
-        .byte 29, 20
-        .byte 50, 22
-        .byte 4, 1
-        .byte ITEM_MITHRILBLADE
-        .byte ITEM_BUCKLER
-        .byte ITEM_LEATHER_HAT
-        .byte ITEM_LEATHERARMOR
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_NORMAL|LEVEL_MOD_HIGH
+        make_char_prop
+        set_char_prop_hp_mp 49, 6
+        set_char_prop_cmds FIGHT, TOOLS, MAGIC, ITEM
+        set_char_prop_stats 39, 30, 34, 29, 20, 50, 22, 4, 1
+        set_char_prop_equip ITEM_MITHRILBLADE, ITEM_BUCKLER, ITEM_LEATHER_HAT, ITEM_LEATHERARMOR
+        set_char_prop_flags RUN_FACTOR_NORMAL, LEVEL_MOD_HIGH
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 5: sabin
-        .byte 58, 3
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::BLITZ
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 47, 37, 39
-        .byte 28, 26
-        .byte 53, 21
-        .byte 12, 4
-        .byte ITEM_METALKNUCKLE
-        .byte ITEM_EMPTY
-        .byte ITEM_LEATHER_HAT
-        .byte ITEM_KUNG_FU_SUIT
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_NORMAL|LEVEL_MOD_HIGH
+        make_char_prop
+        set_char_prop_hp_mp 58, 3
+        set_char_prop_cmds FIGHT, BLITZ, MAGIC, ITEM
+        set_char_prop_stats 47, 37, 39, 28, 26, 53, 21, 12, 4
+        set_char_prop_equip ITEM_METALKNUCKLE, ITEM_EMPTY, ITEM_LEATHER_HAT, ITEM_KUNG_FU_SUIT
+        set_char_prop_flags RUN_FACTOR_NORMAL, LEVEL_MOD_HIGH
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 6: celes
-        .byte 44, 15
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::RUNIC
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 34, 34, 31
-        .byte 36, 16
-        .byte 44, 31
-        .byte 7, 9
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_HAIR_BAND
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_NORMAL|LEVEL_MOD_NORMAL
+        make_char_prop
+        set_char_prop_hp_mp 44, 15
+        set_char_prop_cmds FIGHT, RUNIC, MAGIC, ITEM
+        set_char_prop_stats 34, 34, 31, 36, 16, 44, 31, 7, 9
+        set_char_prop_equip ITEM_EMPTY, ITEM_EMPTY, ITEM_HAIR_BAND, ITEM_EMPTY
+        set_char_prop_flags RUN_FACTOR_NORMAL, LEVEL_MOD_NORMAL
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 7: strago
-        .byte 35, 13
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::LORE
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 28, 25, 19
-        .byte 34, 10
-        .byte 33, 27
-        .byte 6, 7
-        .byte ITEM_MITHRIL_ROD
-        .byte ITEM_MITHRIL_SHLD
-        .byte ITEM_PLUMED_HAT
-        .byte ITEM_COTTON_ROBE
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_LOW|LEVEL_MOD_HIGH
+        make_char_prop
+        set_char_prop_hp_mp 35, 13
+        set_char_prop_cmds FIGHT, LORE, MAGIC, ITEM
+        set_char_prop_stats 28, 25, 19, 34, 10, 33, 27, 6, 7
+        set_char_prop_equip ITEM_MITHRIL_ROD, ITEM_MITHRIL_SHLD, ITEM_PLUMED_HAT, ITEM_COTTON_ROBE
+        set_char_prop_flags RUN_FACTOR_LOW, LEVEL_MOD_HIGH
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 8: relm
-        .byte 37, 18
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::SKETCH
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 26, 34, 22
-        .byte 44, 11
-        .byte 35, 30
-        .byte 13, 9
-        .byte ITEM_CHOCOBO_BRSH
-        .byte ITEM_MITHRIL_SHLD
-        .byte ITEM_PLUMED_HAT
-        .byte ITEM_SILK_ROBE
-        .byte ITEM_MEMENTO_RING
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_HIGH|LEVEL_MOD_NORMAL
+        make_char_prop
+        set_char_prop_hp_mp 37, 18
+        set_char_prop_cmds FIGHT, SKETCH, MAGIC, ITEM
+        set_char_prop_stats 26, 34, 22, 44, 11, 35, 30, 13, 9
+        set_char_prop_equip ITEM_CHOCOBO_BRSH, ITEM_MITHRIL_SHLD, ITEM_PLUMED_HAT, ITEM_SILK_ROBE, ITEM_MEMENTO_RING
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_NORMAL
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 9: setzer
-        .byte 46, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::SLOT
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 36, 32, 32
-        .byte 29, 18
-        .byte 48, 26
-        .byte 9, 1
-        .byte ITEM_CARDS
-        .byte ITEM_MITHRIL_SHLD
-        .byte ITEM_BANDANA
-        .byte ITEM_MITHRIL_VEST
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_NORMAL|LEVEL_MOD_NORMAL
+        make_char_prop
+        set_char_prop_hp_mp 46, 9
+        set_char_prop_cmds FIGHT, SLOT, MAGIC, ITEM
+        set_char_prop_stats 36, 32, 32, 29, 18, 48, 26, 9, 1
+        set_char_prop_equip ITEM_CARDS, ITEM_MITHRIL_SHLD, ITEM_BANDANA, ITEM_MITHRIL_VEST
+        set_char_prop_flags RUN_FACTOR_NORMAL, LEVEL_MOD_NORMAL
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 10: mog
-        .byte 39, 16
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::DANCE
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 29, 36, 26
-        .byte 35, 16
-        .byte 52, 36
-        .byte 10, 12
-        .byte ITEM_MITHRIL_PIKE
-        .byte ITEM_MITHRIL_SHLD
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_HIGH|LEVEL_MOD_VERY_HIGH
+        make_char_prop
+        set_char_prop_hp_mp 39, 16
+        set_char_prop_cmds FIGHT, DANCE, MAGIC, ITEM
+        set_char_prop_stats 29, 36, 26, 35, 16, 52, 36, 10, 12
+        set_char_prop_equip ITEM_MITHRIL_PIKE, ITEM_MITHRIL_SHLD
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_VERY_HIGH
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 11: gau
-        .byte 45, 10
-        .byte BATTLE_CMD::RAGE
-        .byte BATTLE_CMD::LEAP
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::ITEM
-        .byte 44, 38, 36
-        .byte 34, 99
-        .byte 44, 34
-        .byte 21, 18
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_HIGH|LEVEL_MOD_HIGH
+        make_char_prop
+        set_char_prop_hp_mp 45, 10
+        set_char_prop_cmds RAGE, LEAP, MAGIC, ITEM
+        set_char_prop_stats 44, 38, 36, 34, 99, 44, 34, 21, 18
+        set_char_prop_equip {}
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_HIGH
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 12: gogo
-        .byte 36, 12
-        .byte BATTLE_CMD::MIMIC
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte 25, 30, 20
-        .byte 26, 13
-        .byte 39, 25
-        .byte 10, 6
-        .byte ITEM_MITHRILKNIFE
-        .byte ITEM_MITHRIL_SHLD
-        .byte ITEM_PLUMED_HAT
-        .byte ITEM_MITHRIL_VEST
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_NORMAL|LEVEL_MOD_HIGH
+        make_char_prop
+        set_char_prop_hp_mp 36, 12
+        set_char_prop_cmds MIMIC
+        set_char_prop_stats 25, 30, 20, 26, 13, 39, 25, 10, 6
+        set_char_prop_equip ITEM_MITHRILKNIFE, ITEM_MITHRIL_SHLD, ITEM_PLUMED_HAT, ITEM_MITHRIL_VEST
+        set_char_prop_flags RUN_FACTOR_NORMAL, LEVEL_MOD_HIGH
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 13: umaro
-        .byte 60, 0
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte 57, 33, 46
-        .byte 37, 47
-        .byte 89, 68
-        .byte 8, 5
-        .byte ITEM_BONE_CLUB
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_SNOW_MUFFLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_LOW|LEVEL_MOD_NORMAL
+        make_char_prop
+        set_char_prop_hp_mp 60, 0
+        set_char_prop_cmds {}
+        set_char_prop_stats 57, 33, 46, 37, 47, 89, 68, 8, 5
+        set_char_prop_equip ITEM_BONE_CLUB, ITEM_EMPTY, ITEM_EMPTY, ITEM_SNOW_MUFFLER
+        set_char_prop_flags RUN_FACTOR_LOW, LEVEL_MOD_NORMAL
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 14: banon
-        .byte 46, 16
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::HEALTH
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 10, 24, 11
-        .byte 32, 6
-        .byte 56, 51
-        .byte 36, 32
-        .byte ITEM_PUNISHER
-        .byte ITEM_EMPTY
-        .byte ITEM_MAGUS_HAT
-        .byte ITEM_SILK_ROBE
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_LOW|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 46, 16
+        set_char_prop_cmds FIGHT, HEALTH, NONE, ITEM
+        set_char_prop_stats 10, 24, 11, 32, 6, 56, 51, 36, 32
+        set_char_prop_equip ITEM_PUNISHER, ITEM_EMPTY, ITEM_MAGUS_HAT, ITEM_SILK_ROBE
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_LOW, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 15: leo
-        .byte 50, 10
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::SHOCK
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 52, 38, 41
-        .byte 36, 60
-        .byte 63, 41
-        .byte 22, 21
-        .byte ITEM_CRYSTAL
-        .byte ITEM_AEGIS_SHLD
-        .byte ITEM_GOLD_HELMET
-        .byte ITEM_GOLD_ARMOR
-        .byte ITEM_ATLAS_ARMLET
-        .byte ITEM_OFFERING
-        .byte RUN_FACTOR_LOW|LEVEL_MOD_VERY_HIGH|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 50, 10
+        set_char_prop_cmds FIGHT, SHOCK, NONE, ITEM
+        set_char_prop_stats 52, 38, 41, 36, 60, 63, 41, 22, 21
+        set_char_prop_equip ITEM_CRYSTAL, ITEM_AEGIS_SHLD, ITEM_GOLD_HELMET, ITEM_GOLD_ARMOR, ITEM_ATLAS_ARMLET, ITEM_OFFERING
+        set_char_prop_flags RUN_FACTOR_LOW, LEVEL_MOD_VERY_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 16: ghost 1
-        .byte 26, 1
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::POSSESS
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 14, 15, 10
-        .byte 30, 22
-        .byte 66, 52
-        .byte 0, 0
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_RELIC_RING
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_HIGH|LEVEL_MOD_HIGH|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 26, 1
+        set_char_prop_cmds FIGHT, POSSESS, NONE, ITEM
+        set_char_prop_stats 14, 15, 10, 30, 22, 66, 52, 0, 0
+        set_char_prop_equip ITEM_EMPTY, ITEM_EMPTY, ITEM_EMPTY, ITEM_EMPTY, ITEM_RELIC_RING
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 17: ghost 2
-        .byte 20, 1
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::POSSESS
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 4, 8, 2
-        .byte 15, 10
-        .byte 17, 11
-        .byte 0, 0
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_RELIC_RING
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_LOW|LEVEL_MOD_LOW|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 20, 1
+        set_char_prop_cmds FIGHT, POSSESS, NONE, ITEM
+        set_char_prop_stats 4, 8, 2, 15, 10, 17, 11, 0, 0
+        set_char_prop_equip ITEM_EMPTY, ITEM_EMPTY, ITEM_EMPTY, ITEM_EMPTY, ITEM_RELIC_RING
+        set_char_prop_flags RUN_FACTOR_LOW, LEVEL_MOD_LOW, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 18: kupek
-        .byte 50, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 18, 11, 12
-        .byte 33, 35
-        .byte 47, 27
-        .byte 7, 5
-        .byte ITEM_MITHRIL_PIKE
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_HIGH|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 50, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 18, 11, 12, 33, 35, 47, 27, 7, 5
+        set_char_prop_equip ITEM_MITHRIL_PIKE, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 19: kupop
-        .byte 54, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 18, 14, 12
-        .byte 33, 1
-        .byte 38, 26
-        .byte 7, 5
-        .byte ITEM_MORNING_STAR
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_NORMAL|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 54, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 18, 14, 12, 33, 1, 38, 26, 7, 5
+        set_char_prop_equip ITEM_MORNING_STAR, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_NORMAL, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 20: kumama
-        .byte 48, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 18, 14, 12
-        .byte 33, 1
-        .byte 42, 33
-        .byte 7, 5
-        .byte ITEM_MITHRIL_CLAW
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_NORMAL|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 48, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 18, 14, 12, 33, 1, 42, 33, 7, 5
+        set_char_prop_equip ITEM_MITHRIL_CLAW, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_NORMAL, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 21: kuku
-        .byte 64, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 17, 14, 12
-        .byte 33, 11
-        .byte 40, 32
-        .byte 7, 5
-        .byte ITEM_FLAIL
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_LOW|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 64, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 17, 14, 12, 33, 11, 40, 32, 7, 5
+        set_char_prop_equip ITEM_FLAIL, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_LOW, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 22: kutan
-        .byte 55, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 16, 14, 12
-        .byte 33, 11
-        .byte 44, 29
-        .byte 7, 5
-        .byte ITEM_MITHRILBLADE
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_NORMAL|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 55, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 16, 14, 12, 33, 11, 44, 29, 7, 5
+        set_char_prop_equip ITEM_MITHRILBLADE, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_NORMAL, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 23: kupan
-        .byte 51, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 20, 14, 12
-        .byte 33, 21
-        .byte 45, 30
-        .byte 7, 5
-        .byte ITEM_FULL_MOON
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_HIGH|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 51, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 20, 14, 12, 33, 21, 45, 30, 7, 5
+        set_char_prop_equip ITEM_FULL_MOON, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 24: kushu
-        .byte 52, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 24, 14, 12
-        .byte 33, 27
-        .byte 41, 31
-        .byte 7, 5
-        .byte ITEM_CHOCOBO_BRSH
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_HIGH|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 52, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 24, 14, 12, 33, 27, 41, 31, 7, 5
+        set_char_prop_equip ITEM_CHOCOBO_BRSH, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 25: kurin
-        .byte 53, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 19, 14, 12
-        .byte 33, 20
-        .byte 41, 31
-        .byte 7, 5
-        .byte ITEM_MITHRIL_PIKE
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_NORMAL|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 53, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 19, 14, 12, 33, 20, 41, 31, 7, 5
+        set_char_prop_equip ITEM_MITHRIL_PIKE, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_NORMAL, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 26: kuru
-        .byte 50, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 17, 14, 12
-        .byte 33, 44
-        .byte 27, 19
-        .byte 7, 5
-        .byte ITEM_MITHRILBLADE
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_NORMAL|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 50, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 17, 14, 12, 33, 44, 27, 19, 7, 5
+        set_char_prop_equip ITEM_MITHRILBLADE, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_NORMAL, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 27: kamog
-        .byte 53, 9
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 20, 14, 12
-        .byte 33, 11
-        .byte 40, 33
-        .byte 7, 5
-        .byte ITEM_BOOMERANG
-        .byte ITEM_BUCKLER
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_HIGH|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 53, 9
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 20, 14, 12, 33, 11, 40, 33, 7, 5
+        set_char_prop_equip ITEM_BOOMERANG, ITEM_BUCKLER
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
-; 28: mog
-        .byte 12, 34
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte 12, 12, 12
-        .byte 12, 12
-        .byte 12, 12
-        .byte 12, 12
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_VERY_LOW|LEVEL_MOD_VERY_HIGH|CHAR_PROP_FIXED_EQUIP
+; 28: mog (3 scenarios)
+        make_char_prop
+        set_char_prop_hp_mp 12, 34
+        set_char_prop_cmds {}
+        set_char_prop_stats 12, 12, 12, 12, 12, 12, 12, 12, 12
+        set_char_prop_equip {}
+        set_char_prop_flags RUN_FACTOR_VERY_LOW, LEVEL_MOD_VERY_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 29:
-reset_char_prop
-make_char_prop
+        make_char_prop
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 30: maduin
-        .byte 10, 10
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte 30, 30, 30
-        .byte 30, 30
-        .byte 30, 30
-        .byte 30, 30
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_SPRINT_SHOES
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_HIGH|LEVEL_MOD_NORMAL
+        make_char_prop
+        set_char_prop_hp_mp 10, 10
+        set_char_prop_cmds {}
+        set_char_prop_stats 30, 30, 30, 30, 30, 30, 30, 30, 30
+        set_char_prop_equip ITEM_EMPTY, ITEM_EMPTY, ITEM_EMPTY, ITEM_EMPTY, ITEM_SPRINT_SHOES
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_NORMAL
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
-; 31:
-        .byte 51, 6
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::MAGIC
-        .byte BATTLE_CMD::NONE
-        .byte 40, 40, 30
-        .byte 35, 25
-        .byte 49, 27
-        .byte 30, 12
-        .byte ITEM_BLOSSOM
-        .byte ITEM_MITHRIL_SHLD
-        .byte ITEM_MITHRIL_HELM
-        .byte ITEM_NINJA_GEAR
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_HIGH|LEVEL_MOD_HIGH
+; 31: shadow at colosseum
+        make_char_prop
+        set_char_prop_hp_mp 51, 6
+        set_char_prop_cmds FIGHT, NONE, MAGIC, NONE
+        set_char_prop_stats 40, 40, 30, 35, 25, 49, 27, 30, 12
+        set_char_prop_equip ITEM_BLOSSOM, ITEM_MITHRIL_SHLD, ITEM_MITHRIL_HELM, ITEM_NINJA_GEAR
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_HIGH
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 32: wedge
-        .byte 68, 0
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 40, 35, 46
-        .byte 29, 24
-        .byte 77, 50
-        .byte 15, 0
-        .byte ITEM_MITHRILBLADE
-        .byte ITEM_BUCKLER
-        .byte ITEM_LEATHER_HAT
-        .byte ITEM_LEATHERARMOR
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_NORMAL|LEVEL_MOD_LOW|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 68, 0
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 40, 35, 46, 29, 24, 77, 50, 15, 0
+        set_char_prop_equip ITEM_MITHRILBLADE, ITEM_BUCKLER, ITEM_LEATHER_HAT, ITEM_LEATHERARMOR
+        set_char_prop_flags RUN_FACTOR_NORMAL, LEVEL_MOD_LOW, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 33: vicks
-        .byte 70, 0
-        .byte BATTLE_CMD::FIGHT
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::NONE
-        .byte BATTLE_CMD::ITEM
-        .byte 41, 36, 45
-        .byte 28, 27
-        .byte 79, 50
-        .byte 12, 0
-        .byte ITEM_MITHRILBLADE
-        .byte ITEM_BUCKLER
-        .byte ITEM_LEATHER_HAT
-        .byte ITEM_LEATHERARMOR
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte RUN_FACTOR_NORMAL|LEVEL_MOD_LOW|CHAR_PROP_FIXED_EQUIP
+        make_char_prop
+        set_char_prop_hp_mp 70, 0
+        set_char_prop_cmds FIGHT, NONE, NONE, ITEM
+        set_char_prop_stats 41, 36, 45, 28, 27, 79, 50, 12, 0
+        set_char_prop_equip ITEM_MITHRILBLADE, ITEM_BUCKLER, ITEM_LEATHER_HAT, ITEM_LEATHERARMOR
+        set_char_prop_flags RUN_FACTOR_NORMAL, LEVEL_MOD_LOW, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
-; 34:
-reset_char_prop
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 35:
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 36:
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 37:
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 38:
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 39:
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 40:
-make_char_prop
+; 34-40
+.repeat 7
+        make_char_prop
+        end_char_prop
+.endrep
 
 ; ------------------------------------------------------------------------------
 
 ; 41: kefka
-reset_char_prop
-CharProp_HP                             .set 14
-CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD::NONE
-CharProp_Cmd2                           .set BATTLE_CMD::NONE
-CharProp_Cmd3                           .set BATTLE_CMD::NONE
-CharProp_Cmd4                           .set BATTLE_CMD::NONE
-CharProp_Strength                       .set 14
-CharProp_Agility                        .set 26
-CharProp_Stamina                        .set 18
-CharProp_MagicPower                     .set 22
-CharProp_BattlePower                    .set 7
-CharProp_Defense                        .set 42
-CharProp_MagicDefense                   .set 36
-CharProp_Evade                          .set 50
-CharProp_MagicBlock                     .set 40
-CharProp_Weapon                         .set ITEM_MORNING_STAR
-CharProp_Shield                         .set ITEM_EMPTY
-CharProp_Helmet                         .set ITEM_MITHRIL_HELM
-CharProp_Armor                          .set ITEM_MITHRIL_VEST
-CharProp_Relic1                         .set ITEM_RIBBON
-CharProp_Relic2                         .set ITEM_EMPTY
-CharProp_FixedEquip                     .set CHAR_PROP_FIXED_EQUIP
-make_char_prop
+        make_char_prop
+        set_char_prop_hp_mp 14, 17
+        set_char_prop_cmds
+        set_char_prop_equip
+        set_char_prop_stats 14, 26, 18, 22, 7, 42, 36, 50, 40
+        set_char_prop_equip ITEM_MORNING_STAR, ITEM_EMPTY, ITEM_MITHRIL_HELM, ITEM_MITHRIL_VEST, ITEM_RIBBON
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_NORMAL, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 42: kefka
-reset_char_prop
-CharProp_HP                             .set 255
-CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD::NONE
-CharProp_Cmd2                           .set BATTLE_CMD::NONE
-CharProp_Cmd3                           .set BATTLE_CMD::NONE
-CharProp_Cmd4                           .set BATTLE_CMD::NONE
-CharProp_Strength                       .set 15
-CharProp_Agility                        .set 15
-CharProp_Stamina                        .set 15
-CharProp_MagicPower                     .set 15
-CharProp_BattlePower                    .set 15
-CharProp_Defense                        .set 50
-CharProp_MagicDefense                   .set 50
-CharProp_Evade                          .set 10
-CharProp_MagicBlock                     .set 10
-CharProp_Weapon                         .set ITEM_MORNING_STAR
-CharProp_Shield                         .set ITEM_EMPTY
-CharProp_Helmet                         .set ITEM_MITHRIL_HELM
-CharProp_Armor                          .set ITEM_MITHRIL_VEST
-CharProp_Relic1                         .set ITEM_RIBBON
-CharProp_Relic2                         .set ITEM_EMPTY
-CharProp_LevelMod                       .set LEVEL_MOD_HIGH
-CharProp_FixedEquip                     .set CHAR_PROP_FIXED_EQUIP
-make_char_prop
+        make_char_prop
+        set_char_prop_hp_mp 255, 17
+        set_char_prop_cmds
+        set_char_prop_stats 15, 15, 15, 15, 15, 50, 50, 10, 10
+        set_char_prop_equip ITEM_MORNING_STAR, ITEM_EMPTY, ITEM_MITHRIL_HELM, ITEM_MITHRIL_VEST, ITEM_RIBBON
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 43: kefka
-reset_char_prop
-CharProp_HP                             .set 50
-CharProp_MP                             .set 50
-CharProp_Cmd1                           .set BATTLE_CMD::NONE
-CharProp_Cmd2                           .set BATTLE_CMD::NONE
-CharProp_Cmd3                           .set BATTLE_CMD::NONE
-CharProp_Cmd4                           .set BATTLE_CMD::NONE
-CharProp_Strength                       .set 80
-CharProp_Agility                        .set 80
-CharProp_Stamina                        .set 80
-CharProp_MagicPower                     .set 80
-CharProp_BattlePower                    .set 80
-CharProp_Defense                        .set 180
-CharProp_MagicDefense                   .set 180
-CharProp_Evade                          .set 60
-CharProp_MagicBlock                     .set 60
-CharProp_Weapon                         .set ITEM_MORNING_STAR
-CharProp_Shield                         .set ITEM_PALADIN_SHLD
-CharProp_Helmet                         .set ITEM_EMPTY
-CharProp_Armor                          .set ITEM_EMPTY
-CharProp_Relic1                         .set ITEM_RIBBON
-CharProp_Relic2                         .set ITEM_EMPTY
-CharProp_LevelMod                       .set LEVEL_MOD_HIGH
-CharProp_FixedEquip                     .set CHAR_PROP_FIXED_EQUIP
-make_char_prop
+        make_char_prop
+        set_char_prop_hp_mp 50, 50
+        set_char_prop_cmds
+        set_char_prop_stats 80, 80, 80, 80, 80, 180, 180, 60, 60
+        set_char_prop_equip ITEM_MORNING_STAR, ITEM_PALADIN_SHLD, ITEM_EMPTY, ITEM_EMPTY, ITEM_RIBBON
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 44: kefka
-reset_char_prop
-CharProp_HP                             .set 22
-CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD::NONE
-CharProp_Cmd2                           .set BATTLE_CMD::NONE
-CharProp_Cmd3                           .set BATTLE_CMD::NONE
-CharProp_Cmd4                           .set BATTLE_CMD::NONE
-CharProp_Strength                       .set 15
-CharProp_Agility                        .set 15
-CharProp_Stamina                        .set 15
-CharProp_MagicPower                     .set 15
-CharProp_BattlePower                    .set 15
-CharProp_Defense                        .set 50
-CharProp_MagicDefense                   .set 50
-CharProp_Evade                          .set 10
-CharProp_MagicBlock                     .set 10
-CharProp_Weapon                         .set ITEM_MORNING_STAR
-CharProp_Shield                         .set ITEM_EMPTY
-CharProp_Helmet                         .set ITEM_MITHRIL_HELM
-CharProp_Armor                          .set ITEM_MITHRIL_VEST
-CharProp_Relic1                         .set ITEM_RIBBON
-CharProp_Relic2                         .set ITEM_EMPTY
-CharProp_LevelMod                       .set LEVEL_MOD_HIGH
-CharProp_FixedEquip                     .set CHAR_PROP_FIXED_EQUIP
-make_char_prop
+        make_char_prop
+        set_char_prop_hp_mp 22, 17
+        set_char_prop_cmds
+        set_char_prop_stats 15, 15, 15, 15, 15, 50, 50, 10, 10
+        set_char_prop_equip ITEM_MORNING_STAR, ITEM_EMPTY, ITEM_MITHRIL_HELM, ITEM_MITHRIL_VEST, ITEM_RIBBON
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 45: kefka
-reset_char_prop
-CharProp_HP                             .set 34
-CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD::NONE
-CharProp_Cmd2                           .set BATTLE_CMD::NONE
-CharProp_Cmd3                           .set BATTLE_CMD::NONE
-CharProp_Cmd4                           .set BATTLE_CMD::NONE
-CharProp_Strength                       .set 15
-CharProp_Agility                        .set 15
-CharProp_Stamina                        .set 15
-CharProp_MagicPower                     .set 15
-CharProp_BattlePower                    .set 15
-CharProp_Defense                        .set 50
-CharProp_MagicDefense                   .set 50
-CharProp_Evade                          .set 10
-CharProp_MagicBlock                     .set 10
-CharProp_Weapon                         .set ITEM_MORNING_STAR
-CharProp_Shield                         .set ITEM_EMPTY
-CharProp_Helmet                         .set ITEM_MITHRIL_HELM
-CharProp_Armor                          .set ITEM_MITHRIL_VEST
-CharProp_Relic1                         .set ITEM_RIBBON
-CharProp_Relic2                         .set ITEM_EMPTY
-CharProp_LevelMod                       .set LEVEL_MOD_HIGH
-CharProp_FixedEquip                     .set CHAR_PROP_FIXED_EQUIP
-make_char_prop
+        make_char_prop
+        set_char_prop_hp_mp 34, 17
+        set_char_prop_cmds
+        set_char_prop_stats 15, 15, 15, 15, 15, 50, 50, 10, 10
+        set_char_prop_equip ITEM_MORNING_STAR, ITEM_EMPTY, ITEM_MITHRIL_HELM, ITEM_MITHRIL_VEST, ITEM_RIBBON
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_HIGH, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 46: kefka
-reset_char_prop
-CharProp_HP                             .set 14
-CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD::NONE
-CharProp_Cmd2                           .set BATTLE_CMD::NONE
-CharProp_Cmd3                           .set BATTLE_CMD::NONE
-CharProp_Cmd4                           .set BATTLE_CMD::NONE
-CharProp_Strength                       .set 15
-CharProp_Agility                        .set 15
-CharProp_Stamina                        .set 15
-CharProp_MagicPower                     .set 15
-CharProp_BattlePower                    .set 15
-CharProp_Defense                        .set 50
-CharProp_MagicDefense                   .set 50
-CharProp_Evade                          .set 10
-CharProp_MagicBlock                     .set 10
-CharProp_Weapon                         .set ITEM_EMPTY
-CharProp_Shield                         .set ITEM_EMPTY
-CharProp_Helmet                         .set ITEM_EMPTY
-CharProp_Armor                          .set ITEM_EMPTY
-CharProp_Relic1                         .set ITEM_EMPTY
-CharProp_Relic2                         .set ITEM_EMPTY
-CharProp_FixedEquip                     .set CHAR_PROP_FIXED_EQUIP
-make_char_prop
+        make_char_prop
+        set_char_prop_hp_mp 14, 17
+        set_char_prop_cmds
+        set_char_prop_equip
+        set_char_prop_stats 15, 15, 15, 15, 15, 50, 50, 10, 10
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_NORMAL, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
 ; 47: kefka
-reset_char_prop
-CharProp_HP                             .set 14
-CharProp_MP                             .set 17
-CharProp_Cmd1                           .set BATTLE_CMD::NONE
-CharProp_Cmd2                           .set BATTLE_CMD::NONE
-CharProp_Cmd3                           .set BATTLE_CMD::NONE
-CharProp_Cmd4                           .set BATTLE_CMD::NONE
-CharProp_Strength                       .set 15
-CharProp_Agility                        .set 15
-CharProp_Stamina                        .set 15
-CharProp_MagicPower                     .set 15
-CharProp_BattlePower                    .set 15
-CharProp_Defense                        .set 50
-CharProp_MagicDefense                   .set 50
-CharProp_Evade                          .set 10
-CharProp_MagicBlock                     .set 10
-CharProp_Weapon                         .set ITEM_EMPTY
-CharProp_Shield                         .set ITEM_EMPTY
-CharProp_Helmet                         .set ITEM_EMPTY
-CharProp_Armor                          .set ITEM_EMPTY
-CharProp_Relic1                         .set ITEM_EMPTY
-CharProp_Relic2                         .set ITEM_EMPTY
-CharProp_FixedEquip                     .set CHAR_PROP_FIXED_EQUIP
-make_char_prop
+        make_char_prop
+        set_char_prop_hp_mp 14, 17
+        set_char_prop_cmds
+        set_char_prop_equip
+        set_char_prop_stats 15, 15, 15, 15, 15, 50, 50, 10, 10
+        set_char_prop_flags RUN_FACTOR_HIGH, LEVEL_MOD_NORMAL, CHAR_PROP_FIXED_EQUIP
+        end_char_prop
 
 ; ------------------------------------------------------------------------------
 
-; 48: tork
-reset_char_prop
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 49: jade
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 50: custer
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 51: fabian
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 52: drake
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 53: sara
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 54: case
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 55: siele
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 56: ray
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 57: reiker
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 58: lance
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 59: bob
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 60: pepper
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 61: tau
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 62: victor
-make_char_prop
-
-; ------------------------------------------------------------------------------
-
-; 63: ho
-make_char_prop
+; 48-63
+.repeat 16
+        make_char_prop
+        end_char_prop
+.endrep
 
 ; ------------------------------------------------------------------------------

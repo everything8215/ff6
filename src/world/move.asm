@@ -11,6 +11,8 @@
 ; | created: 5/12/2023                                                         |
 ; +----------------------------------------------------------------------------+
 
+.import EventTriggerPtrs
+
 ; ------------------------------------------------------------------------------
 
 ; [ update vehicle position ]
@@ -19,7 +21,7 @@ UpdateVehiclePos:
 @174e:  php
         phb
         shorta
-        tdc
+        clr_a
         pha
         plb
         longa
@@ -297,7 +299,7 @@ cc_grad:
         sbc     #$0010
         sta     $5a
         bne     @1940
-        tdc
+        clr_a
 @1969:  cpx     #$0200
         beq     @1976
         sta     $7e6007,x
@@ -502,7 +504,7 @@ MoveVehicle:
 @1ace:  ldx     hRDMPYH
         txa
         sta     $58
-        tdc
+        clr_a
         sec
         sbc     $58
 @1ad8:  sta     $83
@@ -869,8 +871,7 @@ MovePlayer:
         bit     #$20
         bne     @1e1f
         longa
-        tdc
-        tax
+        clr_ax
         txy
         jsr     GetWorldTileProp
         shorta

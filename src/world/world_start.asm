@@ -633,7 +633,7 @@ InitVehicleHDMA:
         stz     $ac
         stz     $b3
         stz     $ba
-        tdc
+        clr_a
         sta     $7e6006
         sta     $7e620d
         longa
@@ -730,7 +730,7 @@ InitWorldHDMA:
         stz     $ac
         stz     $b3
         stz     $ba
-        tdc
+        clr_a
         sta     $7e6006
         sta     $7e620d
         longa

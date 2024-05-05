@@ -19,7 +19,7 @@ FadeOut:
 @2292:  php
         phb
         shorta
-        tdc
+        clr_a
         pha
         plb
 @2299:  lda     $23
@@ -48,7 +48,7 @@ FadeOutSlow:
 @22b6:  php
         phb
         shorta
-        tdc
+        clr_a
         pha
         plb
 @22bd:  lda     $23

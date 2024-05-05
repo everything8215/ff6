@@ -20,7 +20,6 @@
 
 ; ------------------------------------------------------------------------------
 
-.include "field/event_trigger.inc"
 .include "field/short_entrance.inc"
 .include "gfx/world_gfx.inc"
 

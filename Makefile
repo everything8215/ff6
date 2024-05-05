@@ -23,7 +23,8 @@ ROMS = $(foreach V, $(VERSIONS), $(ROM_DIR)/$(V).sfc)
 # the SPC program
 SPC_PRG = src/sound/ff6-spc.dat
 
-.PHONY: all rip clean distclean mml spc wav rng event monster_gfx text dte $(VERSIONS) $(MODULES)
+.PHONY: all rip clean distclean mml spc wav rng event monster_gfx text dte \
+	$(VERSIONS) $(MODULES)
 
 # disable default suffix rules
 .SUFFIXES:
@@ -49,7 +50,7 @@ clean:
 	$(RM) src/sound/song_script/*.asm src/sound/sfx_script/*.asm
 	$(RM) src/sound/sample_brr/*.wav src/sound/sfx_brr/*.wav
 	$(RM) $(SPC_PRG)
-	$(RM) src/event/ff6-event.bin
+	$(RM) rom/ff6-event.bin
 
 distclean: clean
 	python3 tools/clean_assets.py
@@ -143,7 +144,8 @@ src/sound/sfx_script/%.asm: src/sound/sfx_script/%.mml
 	python3 tools/encode_sfx.py $<
 
 # rules for converting extracted BRR files to WAV files
-BRR_FILES = $(wildcard src/sound/sample_brr/*.brr) $(wildcard src/sound/sfx_brr/*.brr)
+BRR_FILES = $(wildcard src/sound/sample_brr/*.brr) \
+	$(wildcard src/sound/sfx_brr/*.brr)
 WAV_FILES = $(BRR_FILES:brr=wav)
 wav: $(WAV_FILES)
 
@@ -151,16 +153,17 @@ wav: $(WAV_FILES)
 	python3 tools/brr.py $< $@
 
 # rules for trimming monster graphics
-MONSTER_GFX_FILES = $(wildcard src/gfx/monster_gfx/*.4bpp) $(wildcard src/gfx/monster_gfx/*.3bpp)
+MONSTER_GFX_FILES = $(wildcard src/gfx/monster_gfx/*.4bpp) \
+	$(wildcard src/gfx/monster_gfx/*.3bpp)
 MONSTER_TRIMMED_FILES = $(addsuffix .trm,$(MONSTER_GFX_FILES))
 monster_gfx: $(MONSTER_TRIMMED_FILES)
 
 %.trm: %
 	python3 tools/monster_stencil.py $<
 
-event: src/event/ff6-event.bin
+event: rom/ff6-event.bin
 
-src/event/ff6-event.bin: cfg/ff6-event.cfg obj/event_en.o
+rom/ff6-event.bin: cfg/ff6-event.cfg obj/event_en.o
 	$(LINK) $(LINKFLAGS) -o $@ -C $< obj/event_en.o
 
 # rules for making ROM files

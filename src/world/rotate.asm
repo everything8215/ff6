@@ -179,7 +179,7 @@ UpdateGradientSprites:
         lda     #$21
         sta     $6cf2,y
         bra     @3918
-@3900:  tdc
+@3900:  clr_a
         sta     $6c02,y
         lda     #$04
         sta     $6c3e,y
@@ -236,7 +236,7 @@ UpdateGradientSprites:
         lda     #$22
         sta     $6cf2,y
         bra     @3993
-@397b:  tdc
+@397b:  clr_a
         sta     $6c02,y
         lda     #$04
         sta     $6c3e,y

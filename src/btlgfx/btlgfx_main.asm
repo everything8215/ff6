@@ -39151,8 +39151,7 @@ chg_color:
         asl5
         ora     $10
         sta     $7e00,x     ; set red and green components
-        inx                 ; next color
-        inx
+        inx2                ; next color
         cpx     $1a
         bne     @b446
         shorta0
