@@ -144,210 +144,210 @@ PartyCharAnim_02:
 
 @e972:  .addr   PartyCharSprite_02
         .byte   $10
-        .word   $ea89
+        .addr   PartyCharAltSprite_02
         .byte   $10
         .addr   PartyCharSprite_02
         .byte   $ff
 
 PartyCharAnim_03:
-@e97b:  .word   $ea92
+@e97b:  .addr   PartyCharSprite_03
         .byte   $10
-        .word   $ea92
+        .addr   PartyCharSprite_03
         .byte   $10
-        .word   $ea92
+        .addr   PartyCharSprite_03
         .byte   $ff
 
-@e984:  .word   $ea92
+@e984:  .addr   PartyCharSprite_03
         .byte   $10
-        .word   $ea9b
+        .addr   PartyCharAltSprite_03
         .byte   $10
-        .word   $ea92
+        .addr   PartyCharSprite_03
         .byte   $ff
 
 PartyCharAnim_04:
-@e98d:  .word   $eaa4
+@e98d:  .addr   PartyCharSprite_04
         .byte   $10
-        .word   $eaa4
+        .addr   PartyCharSprite_04
         .byte   $10
-        .word   $eaa4
+        .addr   PartyCharSprite_04
         .byte   $ff
 
-@e996:  .word   $eaa4
+@e996:  .addr   PartyCharSprite_04
         .byte   $10
-        .word   $eaad
+        .addr   PartyCharAltSprite_04
         .byte   $10
-        .word   $eaa4
+        .addr   PartyCharSprite_04
         .byte   $ff
 
 PartyCharAnim_05:
-@e99f:  .word   $eab6
+@e99f:  .addr   PartyCharSprite_05
         .byte   $10
-        .word   $eab6
+        .addr   PartyCharSprite_05
         .byte   $10
-        .word   $eab6
+        .addr   PartyCharSprite_05
         .byte   $ff
 
-@e9a8:  .word   $eab6
+@e9a8:  .addr   PartyCharSprite_05
         .byte   $10
-        .word   $eabf
+        .addr   PartyCharAltSprite_05
         .byte   $10
-        .word   $eab6
+        .addr   PartyCharSprite_05
         .byte   $ff
 
 PartyCharAnim_06:
-@e9b1:  .word   $eac8
+@e9b1:  .addr   PartyCharSprite_06
         .byte   $10
-        .word   $eac8
+        .addr   PartyCharSprite_06
         .byte   $10
-        .word   $eac8
+        .addr   PartyCharSprite_06
         .byte   $ff
 
-@e9ba:  .word   $eac8
+@e9ba:  .addr   PartyCharSprite_06
         .byte   $10
-        .word   $ead1
+        .addr   PartyCharAltSprite_06
         .byte   $10
-        .word   $eac8
+        .addr   PartyCharSprite_06
         .byte   $ff
 
 PartyCharAnim_07:
-@e9c3:  .word   $eada
+@e9c3:  .addr   PartyCharSprite_07
         .byte   $10
-        .word   $eada
+        .addr   PartyCharSprite_07
         .byte   $10
-        .word   $eada
+        .addr   PartyCharSprite_07
         .byte   $ff
 
-@e9cc:  .word   $eada
+@e9cc:  .addr   PartyCharSprite_07
         .byte   $10
-        .word   $eae3
+        .addr   PartyCharAltSprite_07
         .byte   $10
-        .word   $eada
+        .addr   PartyCharSprite_07
         .byte   $ff
 
 PartyCharAnim_08:
-@e9d5:  .word   $eaec
+@e9d5:  .addr   PartyCharSprite_08
         .byte   $10
-        .word   $eaec
+        .addr   PartyCharSprite_08
         .byte   $10
-        .word   $eaec
+        .addr   PartyCharSprite_08
         .byte   $ff
 
-@e9de:  .word   $eaec
+@e9de:  .addr   PartyCharSprite_08
         .byte   $10
-        .word   $eaf5
+        .addr   PartyCharAltSprite_08
         .byte   $10
-        .word   $eaec
+        .addr   PartyCharSprite_08
         .byte   $ff
 
 PartyCharAnim_09:
-@e9e7:  .word   $eafe
+@e9e7:  .addr   PartyCharSprite_09
         .byte   $10
-        .word   $eafe
+        .addr   PartyCharSprite_09
         .byte   $10
-        .word   $eafe
+        .addr   PartyCharSprite_09
         .byte   $ff
 
-@e9f0:  .word   $eafe
+@e9f0:  .addr   PartyCharSprite_09
         .byte   $10
-        .word   $eb07
+        .addr   PartyCharAltSprite_09
         .byte   $10
-        .word   $eafe
+        .addr   PartyCharSprite_09
         .byte   $ff
 
 PartyCharAnim_0a:
-@e9f9:  .word   $eb10
+@e9f9:  .addr   PartyCharSprite_0a
         .byte   $10
-        .word   $eb10
+        .addr   PartyCharSprite_0a
         .byte   $10
-        .word   $eb10
+        .addr   PartyCharSprite_0a
         .byte   $ff
 
-@ea02:  .word   $eb10
+@ea02:  .addr   PartyCharSprite_0a
         .byte   $10
-        .word   $eb19
+        .addr   PartyCharAltSprite_0a
         .byte   $10
-        .word   $eb10
+        .addr   PartyCharSprite_0a
         .byte   $ff
 
 PartyCharAnim_0b:
-@ea0b:  .word   $eb22
+@ea0b:  .addr   PartyCharSprite_0b
         .byte   $10
-        .word   $eb22
+        .addr   PartyCharSprite_0b
         .byte   $10
-        .word   $eb22
+        .addr   PartyCharSprite_0b
         .byte   $ff
 
-@ea14:  .word   $eb22
+@ea14:  .addr   PartyCharSprite_0b
         .byte   $10
-        .word   $eb2b
+        .addr   PartyCharAltSprite_0b
         .byte   $10
-        .word   $eb22
+        .addr   PartyCharSprite_0b
         .byte   $ff
 
 PartyCharAnim_0c:
-@ea1d:  .word   $eb34
+@ea1d:  .addr   PartyCharSprite_0c
         .byte   $10
-        .word   $eb34
+        .addr   PartyCharSprite_0c
         .byte   $10
-        .word   $eb34
+        .addr   PartyCharSprite_0c
         .byte   $ff
 
-@ea26:  .word   $eb34
+@ea26:  .addr   PartyCharSprite_0c
         .byte   $10
-        .word   $eb3d
+        .addr   PartyCharAltSprite_0c
         .byte   $10
-        .word   $eb34
+        .addr   PartyCharSprite_0c
         .byte   $ff
 
 PartyCharAnim_0d:
-@ea2f:  .word   $eb46
+@ea2f:  .addr   PartyCharSprite_0d
         .byte   $10
-        .word   $eb46
+        .addr   PartyCharSprite_0d
         .byte   $10
-        .word   $eb46
+        .addr   PartyCharSprite_0d
         .byte   $ff
 
-@ea38:  .word   $eb46
+@ea38:  .addr   PartyCharSprite_0d
         .byte   $10
-        .word   $eb4f
+        .addr   PartyCharAltSprite_0d
         .byte   $10
-        .word   $eb46
+        .addr   PartyCharSprite_0d
         .byte   $ff
 
 PartyCharAnim_0e:
-@ea41:  .word   $eb58
+@ea41:  .addr   PartyCharSprite_0e
         .byte   $fe
 
 PartyCharAnim_0f:
-@ea44:  .word   $eb61
+@ea44:  .addr   PartyCharSprite_0f
         .byte   $fe
 
 PartyCharAnim_10:
-@ea47:  .word   $eb6a
+@ea47:  .addr   PartyCharSprite_10
         .byte   $fe
 
 PartyCharAnim_11:
-@ea4a:  .word   $eb73
+@ea4a:  .addr   PartyCharSprite_11
         .byte   $fe
 
 PartyCharAnim_12:
-@ea4d:  .word   $eb7c
+@ea4d:  .addr   PartyCharSprite_12
         .byte   $fe
 
 PartyCharAnim_13:
-@ea50:  .word   $eb85
+@ea50:  .addr   PartyCharSprite_13
         .byte   $fe
 
 PartyCharAnim_14:
-@ea53:  .word   $eb8e
+@ea53:  .addr   PartyCharSprite_14
         .byte   $fe
 
 PartyCharAnim_15:
-@ea56:  .word   $eb97
+@ea56:  .addr   PartyCharSprite_15
         .byte   $fe
 
 PartyCharAnim_16:
-@ea59:  .word   $eba0
+@ea59:  .addr   PartyCharSprite_16
         .byte   $fe
 
 ; ------------------------------------------------------------------------------
@@ -378,151 +378,163 @@ PartyCharSprite_02:
         .byte   $80,$01,$20,$3d
         .byte   $80,$11,$22,$3d
 
-        .byte   2
+PartyCharAltSprite_02:
+@ea89:  .byte   2
         .byte   $80,$00,$24,$3d
         .byte   $80,$10,$26,$3d
 
 PartyCharSprite_03:
-        .byte   2
+@ea92:  .byte   2
         .byte   $80,$01,$28,$3d
         .byte   $80,$11,$2a,$3d
 
-        .byte   2
+PartyCharAltSprite_03:
+@ea9b:  .byte   2
         .byte   $80,$00,$2c,$3d
         .byte   $80,$10,$2e,$3d
 
 PartyCharSprite_04:
-        .byte   2
+@eaa4:  .byte   2
         .byte   $80,$01,$40,$35
         .byte   $80,$11,$42,$35
 
-        .byte   2
+PartyCharAltSprite_04:
+@eaad:  .byte   2
         .byte   $80,$00,$44,$35
         .byte   $80,$10,$46,$35
 
 PartyCharSprite_05:
-        .byte   2
+@eab6:  .byte   2
         .byte   $80,$01,$48,$35
         .byte   $80,$11,$4a,$35
 
-        .byte   2
+PartyCharAltSprite_05:
+@eabf:  .byte   2
         .byte   $80,$00,$4c,$35
         .byte   $80,$10,$4e,$35
 
 PartyCharSprite_06:
-        .byte   2
+@eac8:  .byte   2
         .byte   $80,$01,$60,$35
         .byte   $80,$11,$62,$35
 
-        .byte   2
+PartyCharAltSprite_06:
+@ead1:  .byte   2
         .byte   $80,$00,$64,$35
         .byte   $80,$10,$66,$35
 
 PartyCharSprite_07:
-        .byte   2
+@eada:  .byte   2
         .byte   $80,$01,$68,$3b
         .byte   $80,$11,$6a,$3b
 
-        .byte   2
+PartyCharAltSprite_07:
+@eae3:  .byte   2
         .byte   $80,$00,$6c,$3b
         .byte   $80,$10,$6e,$3b
 
 PartyCharSprite_08:
-        .byte   2
+@eaec:  .byte   2
         .byte   $80,$01,$80,$3b
         .byte   $80,$11,$82,$3b
 
-        .byte   2
+PartyCharAltSprite_08:
+@eaf5:  .byte   2
         .byte   $80,$00,$84,$3b
         .byte   $80,$10,$86,$3b
 
 PartyCharSprite_09:
-        .byte   2
+@eafe:  .byte   2
         .byte   $80,$01,$88,$3d
         .byte   $80,$11,$8a,$3d
 
-        .byte   2
+PartyCharAltSprite_09:
+@eb07:  .byte   2
         .byte   $80,$00,$8c,$3d
         .byte   $80,$10,$8e,$3d
 
 PartyCharSprite_0a:
-        .byte   2
+@eb10:  .byte   2
         .byte   $80,$01,$a0,$3f
         .byte   $80,$11,$a2,$3f
 
-        .byte   2
+PartyCharAltSprite_0a:
+@eb19:  .byte   2
         .byte   $80,$00,$a4,$3f
         .byte   $80,$10,$a6,$3f
 
 PartyCharSprite_0b:
-        .byte   2
+@eb22:  .byte   2
         .byte   $80,$01,$a8,$3b
         .byte   $80,$11,$aa,$3b
 
-        .byte   2
+PartyCharAltSprite_0b:
+@eb2b:  .byte   2
         .byte   $80,$00,$ac,$3b
         .byte   $80,$10,$ae,$3b
 
 PartyCharSprite_0c:
-        .byte   2
+@eb34:  .byte   2
         .byte   $80,$01,$c0,$3b
         .byte   $80,$11,$c2,$3b
 
-        .byte   2
+PartyCharAltSprite_0c:
+@eb3d:  .byte   2
         .byte   $80,$00,$c4,$3b
         .byte   $80,$10,$c6,$3b
 
 PartyCharSprite_0d:
-        .byte   2
+@eb46:  .byte   2
         .byte   $80,$01,$c8,$3f
         .byte   $80,$11,$ca,$3f
 
-        .byte   2
+PartyCharAltSprite_0d:
+@eb4f:  .byte   2
         .byte   $80,$00,$cc,$3f
         .byte   $80,$10,$ce,$3f
 
 PartyCharSprite_0e:
-        .byte   2
+@eb58:  .byte   2
         .byte   $80,$01,$e0,$37
         .byte   $80,$11,$e2,$37
 
 PartyCharSprite_0f:
-        .byte   2
+@eb61:  .byte   2
         .byte   $80,$01,$e8,$35
         .byte   $80,$11,$ea,$35
 
 PartyCharSprite_10:
-        .byte   2
+@eb6a:  .byte   2
         .byte   $80,$01,$04,$35
         .byte   $80,$11,$06,$35
 
 PartyCharSprite_11:
-        .byte   2
+@eb73:  .byte   2
         .byte   $80,$01,$0c,$3b
         .byte   $80,$11,$0e,$3b
 
 PartyCharSprite_12:
-        .byte   2
+@eb7c:  .byte   2
         .byte   $80,$01,$24,$39
         .byte   $80,$11,$26,$39
 
 PartyCharSprite_13:
-        .byte   2
+@eb85:  .byte   2
         .byte   $80,$01,$2c,$37
         .byte   $80,$11,$2e,$37
 
 PartyCharSprite_14:
-        .byte   2
+@eb8e:  .byte   2
         .byte   $80,$01,$44,$35
         .byte   $80,$11,$46,$35
 
 PartyCharSprite_15:
-        .byte   2
+@eb97:  .byte   2
         .byte   $80,$01,$4c,$39
         .byte   $80,$11,$4e,$39
 
 PartyCharSprite_16:
-        .byte   2
+@eba0:  .byte   2
         .byte   $80,$01,$e0,$35
         .byte   $80,$11,$e2,$35
 
@@ -733,7 +745,7 @@ ItemDetailArrowShown:
 
 ; colosseum "VS" animation data
 ColosseumVSAnim:
-@ec87:  .word   $ec8a
+@ec87:  .addr   ColosseumVSSprite
         .byte   $fe
 
 ; colosseum "VS" sprite data
@@ -745,156 +757,156 @@ ColosseumVSSprite:
 ; ------------------------------------------------------------------------------
 
 ; double-headed coin animation data (Edgar's ending scene)
-@ec93:  .word   $ed71
+@ec93:  .addr   @ed71
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ee22
+        .addr   @ee22
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ed71
+        .addr   @ed71
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ee22
+        .addr   @ee22
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ed71
+        .addr   @ed71
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ee22
+        .addr   @ee22
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ed71
+        .addr   @ed71
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ee22
+        .addr   @ee22
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ed71
+        .addr   @ed71
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ee22
+        .addr   @ee22
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ed71
+        .addr   @ed71
         .byte   $b4
-        .word   $ed71
+        .addr   @ed71
         .byte   $b4
-        .word   $ed71
+        .addr   @ed71
         .byte   $46
-        .word   $ed71
+        .addr   @ed71
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ee22
+        .addr   @ee22
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ed71
+        .addr   @ed71
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ee22
+        .addr   @ee22
         .byte   $04
-        .word   $ed96
+        .addr   @ed96
         .byte   $04
-        .word   $edbb
+        .addr   @edbb
         .byte   $04
-        .word   $ede0
+        .addr   @ede0
         .byte   $04
-        .word   $ee05
+        .addr   @ee05
         .byte   $04
-        .word   $ee22
+        .addr   @ee22
         .byte   $fe
 
-        .byte   9
+@ed71:  .byte   9
         .byte   $01,$00,$0c,$38
         .byte   $09,$00,$0d,$38
         .byte   $11,$00,$0e,$38
@@ -905,7 +917,7 @@ ColosseumVSSprite:
         .byte   $09,$10,$13,$38
         .byte   $11,$10,$14,$38
 
-        .byte   9
+@ed96:  .byte   9
         .byte   $00,$00,$15,$38
         .byte   $08,$00,$16,$38
         .byte   $10,$00,$17,$38
@@ -916,7 +928,7 @@ ColosseumVSSprite:
         .byte   $08,$10,$1c,$38
         .byte   $10,$10,$1d,$38
 
-        .byte   9
+@edbb:  .byte   9
         .byte   $02,$00,$1e,$38
         .byte   $0a,$00,$1f,$38
         .byte   $12,$00,$20,$38
@@ -927,7 +939,7 @@ ColosseumVSSprite:
         .byte   $09,$10,$25,$38
         .byte   $11,$10,$26,$38
 
-        .byte   9
+@ede0:  .byte   9
         .byte   $05,$00,$27,$38
         .byte   $0d,$00,$28,$38
         .byte   $15,$00,$29,$38
@@ -938,7 +950,7 @@ ColosseumVSSprite:
         .byte   $09,$10,$2e,$38
         .byte   $11,$10,$2f,$38
 
-        .byte   7
+@ee05:  .byte   7
         .byte   $05,$00,$30,$38
         .byte   $0d,$00,$31,$38
         .byte   $05,$08,$32,$38
@@ -947,7 +959,7 @@ ColosseumVSSprite:
         .byte   $09,$10,$35,$38
         .byte   $11,$10,$36,$38
 
-        .byte   9
+@ee22:  .byte   9
         .byte   $01,$00,$37,$38
         .byte   $09,$00,$38,$38
         .byte   $11,$00,$39,$38
