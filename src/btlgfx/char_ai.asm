@@ -81,7 +81,7 @@ CharAI:
 .byte SONG_SHADOW
 
 ; slot 0
-.byte CHAR_PROP_SHADOW|CHAR_AI_FLAG_ENEMY_CHAR
+.byte CHAR_PROP::SHADOW|CHAR_AI_FLAG_ENEMY_CHAR
 .byte CHAR_GFX::SHADOW,<MONSTER_SHADOW_COLOSSEUM
 .byte 40,48
 
@@ -110,12 +110,12 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_KEFKA_1|CHAR_AI_FLAG_NOT_IN_PARTY
+.byte CHAR_PROP::KEFKA_1|CHAR_AI_FLAG_NOT_IN_PARTY
 .byte CHAR_GFX::KEFKA,0
 .byte 255,255
 
 ; slot 1
-.byte CHAR_PROP_TERRA
+.byte CHAR_PROP::TERRA
 .byte $ff,<MONSTER_TERRA_FLASHBACK
 .byte 255,255
 
@@ -139,7 +139,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_SABIN|CHAR_AI_FLAG_NOT_IN_PARTY
+.byte CHAR_PROP::SABIN|CHAR_AI_FLAG_NOT_IN_PARTY
 .byte $ff,$ff
 .byte 60,108
 
@@ -168,7 +168,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_KEFKA_1|CHAR_AI_FLAG_ENEMY_CHAR
+.byte CHAR_PROP::KEFKA_1|CHAR_AI_FLAG_ENEMY_CHAR
 .byte CHAR_GFX::KEFKA,<MONSTER_KEFKA_IMP_CAMP
 .byte 32,48
 
@@ -197,7 +197,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_CYAN
+.byte CHAR_PROP::CYAN
 .byte CHAR_GFX::CYAN,<MONSTER_CYAN_IMP_CAMP
 .byte 80,48
 
@@ -226,7 +226,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_CYAN
+.byte CHAR_PROP::CYAN
 .byte CHAR_GFX::CYAN,<MONSTER_CYAN_IMP_CAMP
 .byte 80,48
 
@@ -284,7 +284,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
+.byte CHAR_PROP::KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
 .byte CHAR_GFX::KEFKA,<MONSTER_KEFKA_IMP_CAMP
 .byte 32,44
 
@@ -313,12 +313,12 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_KEFKA_1
+.byte CHAR_PROP::KEFKA_1
 .byte CHAR_GFX::KEFKA,$ff
 .byte 100,100
 
 ; slot 1
-.byte CHAR_PROP_TERRA
+.byte CHAR_PROP::TERRA
 .byte CHAR_GFX::TERRA,$ff
 .byte 32,60
 
@@ -342,7 +342,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_GAU|CHAR_AI_FLAG_NOT_IN_PARTY|CHAR_AI_FLAG_ENEMY_CHAR
+.byte CHAR_PROP::GAU|CHAR_AI_FLAG_NOT_IN_PARTY|CHAR_AI_FLAG_ENEMY_CHAR
 .byte CHAR_GFX::GAU,<MONSTER_GAU_VELDT
 .byte 48,52
 
@@ -371,17 +371,17 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_TERRA
+.byte CHAR_PROP::TERRA
 .byte CHAR_GFX::TERRA,$ff
 .byte 60,100
 
 ; slot 1
-.byte CHAR_PROP_LOCKE
+.byte CHAR_PROP::LOCKE
 .byte CHAR_GFX::LOCKE,$ff
 .byte 60,100
 
 ; slot 2
-.byte CHAR_PROP_CELES
+.byte CHAR_PROP::CELES
 .byte CHAR_GFX::CELES,$ff
 .byte 60,100
 
@@ -400,7 +400,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
+.byte CHAR_PROP::KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
 .byte CHAR_GFX::KEFKA,<MONSTER_KEFKA_ESPER_GATE
 .byte 100,44
 
@@ -429,7 +429,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
+.byte CHAR_PROP::KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
 .byte CHAR_GFX::KEFKA,$ff
 .byte 100,48
 
@@ -458,17 +458,17 @@ CharAI:
 .byte SONG_METAMORPHOSIS
 
 ; slot 0
-.byte CHAR_PROP_TERRA
+.byte CHAR_PROP::TERRA
 .byte CHAR_GFX::TERRA,$ff
 .byte 60,100
 
 ; slot 1
-.byte CHAR_PROP_LOCKE
+.byte CHAR_PROP::LOCKE
 .byte CHAR_GFX::LOCKE,$ff
 .byte 60,100
 
 ; slot 2
-.byte CHAR_PROP_SETZER
+.byte CHAR_PROP::SETZER
 .byte CHAR_GFX::SETZER,$ff
 .byte 60,100
 
@@ -487,7 +487,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_RELM|CHAR_AI_FLAG_NOT_IN_PARTY
+.byte CHAR_PROP::RELM|CHAR_AI_FLAG_NOT_IN_PARTY
 .byte CHAR_GFX::RELM,$ff
 .byte 255,255
 
@@ -516,7 +516,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_TERRA
+.byte CHAR_PROP::TERRA
 .byte CHAR_GFX::TERRA,$ff
 .byte 100,100
 
@@ -545,22 +545,22 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_TERRA
+.byte CHAR_PROP::TERRA
 .byte CHAR_GFX::KEFKA,$ff
 .byte 64,88
 
 ; slot 1
-.byte CHAR_PROP_LOCKE
+.byte CHAR_PROP::LOCKE
 .byte CHAR_GFX::SOLDIER,$ff
 .byte 92,80
 
 ; slot 2
-.byte CHAR_PROP_CYAN
+.byte CHAR_PROP::CYAN
 .byte CHAR_GFX::SOLDIER,$ff
 .byte 40,84
 
 ; slot 3
-.byte CHAR_PROP_SHADOW
+.byte CHAR_PROP::SHADOW
 .byte CHAR_GFX::SOLDIER,$ff
 .byte 100,100
 
@@ -574,7 +574,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_KEFKA_3
+.byte CHAR_PROP::KEFKA_3
 .byte CHAR_GFX::KEFKA,$ff
 .byte 92,44
 
@@ -603,12 +603,12 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_TERRA
+.byte CHAR_PROP::TERRA
 .byte CHAR_GFX::KEFKA,$ff
 .byte 88,84
 
 ; slot 1
-.byte CHAR_PROP_LOCKE
+.byte CHAR_PROP::LOCKE
 .byte CHAR_GFX::GESTAHL,$ff
 .byte 48,84
 
@@ -632,7 +632,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_TERRA|CHAR_AI_FLAG_NOT_IN_PARTY
+.byte CHAR_PROP::TERRA|CHAR_AI_FLAG_NOT_IN_PARTY
 .byte CHAR_GFX::KEFKA,$ff
 .byte 60,100
 
@@ -661,7 +661,7 @@ CharAI:
 .byte SONG_NONE
 
 ; slot 0
-.byte CHAR_PROP_KEFKA_1
+.byte CHAR_PROP::KEFKA_1
 .byte CHAR_GFX::KEFKA,$ff
 .byte 255,255
 

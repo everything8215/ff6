@@ -25,7 +25,7 @@
 .include "btlgfx/char_ai.inc"
 inc_lang "text/monster_name_%s.inc"
 
-.import BushidoLevelTbl, CharProp
+.import BushidoLevelTbl, CharProp, LevelUpExp, LevelUpHP, LevelUpMP
 .import RNGTbl, GenjuProp, ItemProp, NaturalMagic
 
 ; ------------------------------------------------------------------------------
@@ -342,7 +342,7 @@ _mimicinstall:
         asl
         tax
         lda     f:BattleCmdProp,x   ; return if command can't be mimicked
-        bit     #BATTLE_CMD_FLAG_MIMIC
+        bit     #BATTLE_CMD_FLAG::MIMIC
         beq     @0264
         lda     #$12        ; command $12 (mimic)
         sta     $3f28
@@ -418,11 +418,11 @@ InitPlayerAction:
         tax
         lda     f:BattleCmdProp,x   ; battle command data
         plx
-        bit     #BATTLE_CMD_FLAG_IMP
+        bit     #BATTLE_CMD_FLAG::IMP
         bne     @02da       ; return if command can't be used by imp
         stz     $3a4c       ; clear mp cost
         phx
-        tdc
+        clr_a
         cpx     #$08        ; check if attacker is a character or monster
         rol
         tax
@@ -704,7 +704,7 @@ RandCharAction:
 @0482:  lda     #$ff                    ; clear command
         sta     $01,s
         dec     $f5                     ; decrement number of available commands
-@0488:  tdc
+@0488:  clr_a
         lda     $01,s                   ; command
         ldx     #$08
 @048d:  cmp     f:RandCmdIDTbl,x
@@ -736,7 +736,7 @@ RandCharAction:
         bmi     @04ca                   ; branch if this is the randomly selected command
 @04c3:  dex2
         bpl     @04bc
-        tdc
+        clr_a
         bra     @04ce
 @04ca:  xba
         lda     $f7,x                   ; a = command, b = attack
@@ -831,7 +831,7 @@ _0534:  phx
         bmi     @054c
 @0545:  dey4
         bne     @053c
-        tdc
+        clr_a
 @054c:  ply
         plx
         rts
@@ -844,7 +844,7 @@ RandCmdInvalid:
 _054f:  dec     $f5
         lda     #$ff
         sta     $03,s
-        tdc
+        clr_a
         rts
 
 ; ------------------------------------------------------------------------------
@@ -854,7 +854,7 @@ _054f:  dec     $f5
 RandMorph:
 @0557:  lda     #$0f
         cmp     $1cf6       ; morph counter
-        tdc
+        clr_a
         bcs     RandCmdInvalid
         rts
 
@@ -879,7 +879,7 @@ RandBushido:
 ; [ blitz command (random) ]
 
 RandBlitz:
-@0575:  tdc
+@0575:  clr_a
         lda     $1d28       ; known blitzes
         jsr     RandBit
         jsr     GetBitID
@@ -904,7 +904,7 @@ RandMagitek:
 ; [ tools command (random) ]
 
 RandTools:
-@058d:  tdc
+@058d:  clr_a
         lda     $3a9b       ; tools owned
         jsr     RandBit
         jsr     GetBitID
@@ -922,7 +922,7 @@ RandDance:
         lda     $32e1,y
         cmp     #$ff
         bne     @05b2
-        tdc
+        clr_a
         lda     $1d4c       ; known dances
         jsr     RandBit
         jsr     GetBitID
@@ -961,7 +961,7 @@ DanceRateTbl:
 RandRage:
 @05d1:  phx
         php
-        tdc
+        clr_a
         sta     $33a9,y
         lda     $33a8,y
         cmp     #$ff
@@ -1229,11 +1229,7 @@ ReraiseEffect:
 ; [ update control status ]
 
 ValidateControl:
-@07ad:  ; push_status12 {DEAD, PETRIFY, ZOMBIE}, {BERSERK, CONFUSE, SLEEP}
-        ; push_status34 {DANCE, STOP}, {RAGE, FROZEN}
-        ; pea     $b0c2       ; check psyche, muddled, berserk, wound, petrify, rage, frozen, stop, dance status
-        ; pea     $0311
-        peaflg  STATUS12, {DEAD, PETRIFY, ZOMBIE, BERSERK, CONFUSE, SLEEP}
+@07ad:  peaflg  STATUS12, {DEAD, PETRIFY, ZOMBIE, BERSERK, CONFUSE, SLEEP}
         peaflg  STATUS34, {DANCE, STOP, RAGE, FROZEN}
         txy
         jsr     CheckStatus
@@ -1330,7 +1326,7 @@ AfterAction2:
 @0841:  lda     $3aa0,x
         lsr
         bcc     @08be       ; skip if $3aa0.0 is clear (target is not present)
-        asl     $32e0,x
+        asl     $32e0,x     ; clear MSB of previous attacker byte
         lsr     $32e0,x
         lda     $3ee4,x
         bmi     @0859       ; branch if target has wound status
@@ -1454,12 +1450,6 @@ _inputcheck:
         bpl     CancelAction            ; try to add action to advance wait queue if seize or charm attacker is valid
         peaflg  STATUS12, {DEAD, PETRIFY, ZOMBIE, SLEEP, CONFUSE, BERSERK}
         peaflg  STATUS34, {DANCE, HIDE, RAGE}
-        ; push_status12 {DEAD, PETRIFY, ZOMBIE}, {SLEEP, CONFUSE, BERSERK}
-        ; push_status34 DANCE, {HIDE, RAGE}
-        ; pea     STATUS34::DANCE | STATUS34::HIDE | STATUS34::RAGE
-        ; make_bitmask pea, STATUS34, 0, DANCE
-        ; pea     $b0c2                   ; wound, petrify, zombie, psyche, muddled, berserk
-        ; pea     $2101                   ; dance, hide, rage
         txy
         jsr     CheckStatus
         bcc     CancelAction            ; try to add action to advance wait queue if status set
@@ -1529,7 +1519,7 @@ StartCondemn:
         lda     #60         ; subtract from 60 (min 0)
         sbc     $ee
         bcs     @09c8
-        tdc
+        clr_a
 @09c8:  adc     #20
         sta     $3b05,x     ; set condemned number
 _09cd:  rts
@@ -1699,7 +1689,7 @@ UpdateMorph:
         eor     #$08
         lsr4
         php
-        tdc
+        clr_a
         adc     #$03
         sta     $ee         ; $ee = 3 if morphed, 4 if not morphed
         txa
@@ -1746,7 +1736,7 @@ UpdateMorph:
         bcs     @0b33       ; return if morph is permanent (phunbaba battle)
         asl
         stx     $3ee2       ; set morphed character
-        tdc
+        clr_a
         longa
         dec
         sta     $3f30       ; morph counter
@@ -2096,7 +2086,7 @@ RelicDmgEffect:
         clc
         adc     $11b0
         bcc     @0d82
-        tdc
+        clr_a
         dec
 @0d82:  sta     $11b0
 @0d85:  plp
@@ -2132,7 +2122,7 @@ CalcDmgRatio:
         lda     $3bf4,y
         sbc     $ee
         bcs     @0dbd
-        tdc
+        clr_a
         bra     @0dbd
 @0dba:  lda     $3c1c,y
 @0dbd:  jsr     CalcRatio
@@ -2233,14 +2223,12 @@ ZombieEffect:
 ; 1/16 chance to cause poison status
         cmp     #$10
         bcs     @0e2c
-        ; lda_status1 POISON
         lda     #STATUS1::POISON
         bra     SetStatus1
 
 ; 1/16 chance to cause blind status
 @0e2c:  cmp     #$20
         bcs     _0e20
-        ; lda_status1 BLIND
         lda     #STATUS1::BLIND
 ; fallthrough
 
@@ -2376,7 +2364,7 @@ UpdateEquip:
 @0f18:  lda     $11a1,x
         beq     @0f26                   ; branch if 0
         asl
-        tdc
+        clr_a
         bcs     @0f23                   ; branch if negative (set to 0)
         lda     #$ff                    ; max 255
 @0f23:  sta     $11a0,x
@@ -2480,7 +2468,7 @@ CheckHPBoost:
         beq     @0f98
         lda     #$c0        ; +12.5%
         rts
-@0f98:  tdc                 ; no boost
+@0f98:  clr_a               ; no boost
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2548,10 +2536,8 @@ CalcEquipEffect:
         asl2
         lda     $fe
         bcs     @1029                   ; branch if imp item
-        ; eor_status1 IMP
         eor     #STATUS1::IMP           ; toggle imp status
 @1029:  bit     #STATUS1::IMP
-        ; bit_status1 IMP
         bne     @1030                   ; branch if imp
         lda     #$01
         xba
@@ -2594,7 +2580,7 @@ CalcEquipEffect:
         tsb     $11d7                   ; set single earring effect
         beq     @1086
         tsb     $11d5                   ; set double earring effect
-@1086:  tdc
+@1086:  clr_a
         lda     f:ItemProp+27,x         ; block animation
         sta     $11be,y
         bit     #$0c
@@ -2602,7 +2588,7 @@ CalcEquipEffect:
         pha
         and     #$03                    ; block graphic
         tax
-        tdc
+        clr_a
         sec
 @1098:  rol                             ; a = 1 << block graphic index
         dex
@@ -2623,7 +2609,7 @@ CalcEquipEffect:
         rts
 
 ; weapon
-@10b2:  tdc
+@10b2:  clr_a
         inc
         tay
         inc
@@ -2730,7 +2716,7 @@ UpdateBattleTime:
         jsr     UpdateCounterGfxBuf
 @118b:  lda     $0e         ; current frame counter value
         sta     $3a6c       ; previous frame counter value
-@1190:  tdc
+@1190:  clr_a
         plp
         .i16
         rtl
@@ -3036,7 +3022,7 @@ ApplyDmgMP:
         sta     $3c08,y
         beq     @137c
         bcs     @138a
-@137c:  tdc
+@137c:  clr_a
         sta     $3c08,y
         lda     $3c95,y
         lsr
@@ -3055,15 +3041,12 @@ ApplyDmgMP:
 dead_sub:
 _c21390:
 @1390:  sec
-        tdc
-        tax
+        clr_ax
         stx     $3a89       ; disable random weapon spellcast
         sta     $3bf4,y     ; set current hp to zero
         lda     $3ee4,y
-        ; bit_status1 ZOMBIE
         bit     #STATUS1::ZOMBIE
         bne     _133c       ; branch if target is a zombie
-        ; lda_status1 DEAD
         lda     #STATUS1::DEAD
         jmp     SetStatus1
 
@@ -3082,7 +3065,7 @@ deal_sub:
         lda     $3018,y
         bit     $3a3c
         beq     @13b9       ; branch if target is not invincible
-        tdc
+        clr_a
         sta     $33d0,y
 @13b9:  lda     $33d0,y     ; damage taken
 @13bc:  sta     $ee
@@ -3156,7 +3139,6 @@ CheckDeadMonsters:
         beq     @144a       ; skip if monster is still alive
         xba
         lda     $3f01,x     ; status 4
-        ; bit_status4 HIDE
         bit     #STATUS4::HIDE
         bne     @1446       ; mark monster as dead if it has hide status
         lda     $3e54,x
@@ -3188,7 +3170,6 @@ _timeenable2:
         lda     #$fe
         jsr     ClearFlag0       ; clear $3aa0.0 (make target not present)
         lda     $3ef9,x     ; set hide status
-        ; set_status4 HIDE
         ora     #STATUS4::HIDE
         sta     $3ef9,x
         jsr     _c207c8
@@ -3218,13 +3199,9 @@ _timeenable:
         jsr     SetFlag0     ; set $3aa0.0 (make target present)
         lda     $3ee4,x     ; status 1
         clrflg  STATUS1, {DEAD, PETRIFY, IMP, ZOMBIE}
-        ; clr_status1 DEAD, PETRIFY, IMP, ZOMBIE
-        ; and     #<~(STATUS1::DEAD | STATUS1::PETRIFY | STATUS1::IMP | STATUS1::ZOMBIE)
         sta     $3ee4,x
         lda     $3ef9,x     ; status 4
         clrflg  STATUS4, HIDE
-        ; clr_status4 HIDE
-        ; and     #<~STATUS4::HIDE
         sta     $3ef9,x
         jsr     CheckFirstStrike
         longa
@@ -3364,7 +3341,7 @@ Cmd_10:
         ldx     #$00
 @156f:  lda     $33a8,x
         sta     $33a8,y
-        tdc
+        clr_a
         sta     $33a9,y
 @1579:  sty     $3a93
         lda     $3ef9,y
@@ -3488,7 +3465,7 @@ _163b:  stz     $fe
         beq     @1649
         cmp     $3cd1,y
         bne     @1656
-@1649:  tdc
+@1649:  clr_a
         lda     $3018,y
         eor     $3a74
         beq     @1656
@@ -3564,7 +3541,7 @@ UmaroAttack_00:
 @16bf:  dex2
         bpl     @169e
         pha
-        tdc
+        clr_a
         pla
         beq     UmaroAttack_02
         jsr     RandBit
@@ -3620,20 +3597,20 @@ DesperationAttack:
 .segment "desperation_attack"
 
 ; cf/fea0 desperation attacks for each character (unused)
-        .byte   ATTACK_RIOT_BLADE
-        .byte   ATTACK_MIRAGER
-        .byte   ATTACK_BACK_BLADE
-        .byte   ATTACK_SHADOWFANG
-        .byte   ATTACK_ROYALSHOCK
-        .byte   ATTACK_TIGERBREAK
-        .byte   ATTACK_SPIN_EDGE
-        .byte   ATTACK_SABRESOUL
-        .byte   ATTACK_STAR_PRISM
-        .byte   ATTACK_RED_CARD
-        .byte   ATTACK_MOOGLERUSH
-        .byte   ATTACK_NONE             ; gau
-        .byte   ATTACK_X_METEO
-        .byte   ATTACK_NONE             ; umaro
+        .byte   ATTACK::RIOT_BLADE
+        .byte   ATTACK::MIRAGER
+        .byte   ATTACK::BACK_BLADE
+        .byte   ATTACK::SHADOWFANG
+        .byte   ATTACK::ROYALSHOCK
+        .byte   ATTACK::TIGERBREAK
+        .byte   ATTACK::SPIN_EDGE
+        .byte   ATTACK::SABRESOUL
+        .byte   ATTACK::STAR_PRISM
+        .byte   ATTACK::RED_CARD
+        .byte   ATTACK::MOOGLERUSH
+        .byte   ATTACK::NONE            ; gau
+        .byte   ATTACK::X_METEO
+        .byte   ATTACK::NONE            ; umaro
 
 .popseg
 
@@ -3729,7 +3706,6 @@ _1765:  sta     $3412
 
 Cmd_13:
 @177d:  lda     $3ef8,y     ; set dance status
-        ; set_status3 DANCE
         ora     #STATUS3::DANCE
         sta     $3ef8,y
         lda     #$ff        ; no background change
@@ -3750,8 +3726,6 @@ Cmd_13:
         jmp     Cmd_02
 @17af:  lda     $3ef8,y     ; clear dance status
         clrflg  STATUS3, DANCE
-        ; clr_status3 DANCE
-        ; and     #<~STATUS3::DANCE
         sta     $3ef8,y
         tyx
         lda     #$06        ; battle message $06 (stumbled!!)
@@ -3781,70 +3755,70 @@ DanceBG:
 
 ; ed/8e5b
 BattleBGDance:
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_FIELD_WOB
-        .byte   DANCE_FOREST_SUITE      ; BATTLE_BG_FOREST_WOR
-        .byte   DANCE_DESERT_ARIA       ; BATTLE_BG_DESERT_WOB
-        .byte   DANCE_FOREST_SUITE      ; BATTLE_BG_FOREST_WOB
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_ZOZO_INT
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_FIELD_WOR
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_VELDT
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_CLOUDS
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_NARSHE_EXT
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_NARSHE_CAVES_1
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_CAVES
-        .byte   DANCE_EARTH_BLUES       ; BATTLE_BG_MOUNTAINS_EXT
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_MOUNTAINS_INT
-        .byte   DANCE_WATER_RONDO       ; BATTLE_BG_RIVER
-        .byte   DANCE_DESERT_ARIA       ; BATTLE_BG_IMP_CAMP
-        .byte   DANCE_FOREST_SUITE      ; BATTLE_BG_TRAIN_EXT
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_TRAIN_INT
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_NARSHE_CAVES_2
-        .byte   DANCE_SNOWMAN_JAZZ      ; BATTLE_BG_SNOWFIELDS
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_TOWN_EXT
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_IMP_CASTLE
-        .byte   DANCE_EARTH_BLUES       ; BATTLE_BG_FLOATING_ISLAND
-        .byte   DANCE_EARTH_BLUES       ; BATTLE_BG_KEFKAS_TOWER_EXT
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_OPERA_STAGE
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_OPERA_CATWALK
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_BURNING_BUILDING
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_CASTLE_INT
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_MAGITEK_LAB
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_COLOSSEUM
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_MAGITEK_FACTORY
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_VILLAGE_EXT
-        .byte   DANCE_WATER_RONDO       ; BATTLE_BG_WATERFALL
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_OWZERS_HOUSE
-        .byte   DANCE_FOREST_SUITE      ; BATTLE_BG_TRAIN_TRACKS
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_SEALED_GATE
-        .byte   DANCE_WATER_RONDO       ; BATTLE_BG_UNDERWATER
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_ZOZO
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_AIRSHIP_CENTER
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_DARILLS_TOMB
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_CASTLE_EXT
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_KEFKAS_TOWER_INT
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_AIRSHIP_WOR
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_FIRE_CAVES
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_TOWN_INT
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_MAGITEK_TRAIN
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_FANATICS_TOWER
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_CYANS_DREAM
-        .byte   DANCE_DESERT_ARIA       ; BATTLE_BG_DESERT_WOR
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_AIRSHIP_WOB
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_31
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_GHOST_TRAIN
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_1
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_2
-        .byte   DANCE_DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_3
-        .byte   DANCE_WIND_SONG         ; BATTLE_BG_FINAL_BATTLE_4
-        .byte   DANCE_LOVE_SONATA       ; BATTLE_BG_TENTACLES
-        .byte   DANCE_DUSK_REQUIUM
-        .byte   DANCE_DUSK_REQUIUM
-        .byte   DANCE_DUSK_REQUIUM
-        .byte   DANCE_DUSK_REQUIUM
-        .byte   DANCE_DUSK_REQUIUM
-        .byte   DANCE_DUSK_REQUIUM
-        .byte   DANCE_DUSK_REQUIUM
-        .byte   DANCE_DUSK_REQUIUM
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_FIELD_WOB
+        .byte   DANCE::FOREST_SUITE      ; BATTLE_BG_FOREST_WOR
+        .byte   DANCE::DESERT_ARIA       ; BATTLE_BG_DESERT_WOB
+        .byte   DANCE::FOREST_SUITE      ; BATTLE_BG_FOREST_WOB
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_ZOZO_INT
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_FIELD_WOR
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_VELDT
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_CLOUDS
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_NARSHE_EXT
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_NARSHE_CAVES_1
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_CAVES
+        .byte   DANCE::EARTH_BLUES       ; BATTLE_BG_MOUNTAINS_EXT
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_MOUNTAINS_INT
+        .byte   DANCE::WATER_RONDO       ; BATTLE_BG_RIVER
+        .byte   DANCE::DESERT_ARIA       ; BATTLE_BG_IMP_CAMP
+        .byte   DANCE::FOREST_SUITE      ; BATTLE_BG_TRAIN_EXT
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_TRAIN_INT
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_NARSHE_CAVES_2
+        .byte   DANCE::SNOWMAN_JAZZ      ; BATTLE_BG_SNOWFIELDS
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_TOWN_EXT
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_IMP_CASTLE
+        .byte   DANCE::EARTH_BLUES       ; BATTLE_BG_FLOATING_ISLAND
+        .byte   DANCE::EARTH_BLUES       ; BATTLE_BG_KEFKAS_TOWER_EXT
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_OPERA_STAGE
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_OPERA_CATWALK
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_BURNING_BUILDING
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_CASTLE_INT
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_MAGITEK_LAB
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_COLOSSEUM
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_MAGITEK_FACTORY
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_VILLAGE_EXT
+        .byte   DANCE::WATER_RONDO       ; BATTLE_BG_WATERFALL
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_OWZERS_HOUSE
+        .byte   DANCE::FOREST_SUITE      ; BATTLE_BG_TRAIN_TRACKS
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_SEALED_GATE
+        .byte   DANCE::WATER_RONDO       ; BATTLE_BG_UNDERWATER
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_ZOZO
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_AIRSHIP_CENTER
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_DARILLS_TOMB
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_CASTLE_EXT
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_KEFKAS_TOWER_INT
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_AIRSHIP_WOR
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_FIRE_CAVES
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_TOWN_INT
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_MAGITEK_TRAIN
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_FANATICS_TOWER
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_CYANS_DREAM
+        .byte   DANCE::DESERT_ARIA       ; BATTLE_BG_DESERT_WOR
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_AIRSHIP_WOB
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_31
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_GHOST_TRAIN
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_1
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_2
+        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_3
+        .byte   DANCE::WIND_SONG         ; BATTLE_BG_FINAL_BATTLE_4
+        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_TENTACLES
+        .byte   DANCE::DUSK_REQUIUM
+        .byte   DANCE::DUSK_REQUIUM
+        .byte   DANCE::DUSK_REQUIUM
+        .byte   DANCE::DUSK_REQUIUM
+        .byte   DANCE::DUSK_REQUIUM
+        .byte   DANCE::DUSK_REQUIUM
+        .byte   DANCE::DUSK_REQUIUM
+        .byte   DANCE::DUSK_REQUIUM
 
 .popseg
 
@@ -4078,7 +4052,7 @@ _1937:  php
         lda     #$08
         sta     $11ad
         bcc     @1945
-        tdc
+        clr_a
 @1945:  lsr
         tsb     $11a4
         jmp     ExecSelfAttack
@@ -4257,7 +4231,7 @@ _1a42:  rts
 ; [ find ai script terminator ]
 
 FindAIScriptEnd:
-@1a43:  tdc
+@1a43:  clr_a
 @1a44:  lda     f:AIScript,x
         inx
         cmp     #$fe
@@ -4378,7 +4352,7 @@ NextAICmd:
         ldx     $f2         ; set ai script pointer to loop address
         stx     $f0
         jsr     GetNextAICmd
-@1ad0:  tdc
+@1ad0:  clr_a
         sec
         txy
         lda     $3a2c       ; ai script command
@@ -4437,7 +4411,7 @@ AICmd_f6:
 ; b2: command 3 (1/3 chance)
 
 AICmd_f4:
-@1b1c:  tdc                 ; clear attack index (this shouldn't be used anyway)
+@1b1c:  clr_a                           ; clear attack index (this shouldn't be used anyway)
         jsr     AIRand3
         bra     _1b28
 
@@ -4461,8 +4435,6 @@ _1b28:  tyx
         sta     $b8
         lda     $3ee4,x     ; current status 1,2
         bit     #STATUS12::CONFUSE
-        ; bit_status12 NONE, CONFUSE
-        ; bit     #STATUS2::CONFUSE<<8
         beq     @1b3a       ; branch if not muddled
         stz     $b8         ; clear targets
 @1b3a:  pla
@@ -4583,7 +4555,7 @@ AICmd_fa:
 AICond_06:
 @1bb7:  jsr     AICond_17
         bcc     @1bc7
-        tdc
+        clr_a
         lda     $3a2f
         xba
         longa
@@ -4599,7 +4571,7 @@ AICond_06:
 AICond_07:
 @1bc8:  jsr     AICond_17
         bcc     @1bd6
-        tdc
+        clr_a
         lda     $3a2f
         longa
         cmp     $3c08,y
@@ -4716,11 +4688,11 @@ _1c55:  longa
 
 AICond_04:
 @1c5e:  tya
-        adc     #$15
+        adc     #$15                    ; add $15 to attacker data pointer
         tax
-        ldy     $3290,x
+        ldy     $3290,x                 ; $32a5,x (previous attacker)
         bmi     @1c6f
-        lda     $3d48,x
+        lda     $3d48,x                 ; $3d5d,x (previous element used)
         bit     $3a2e
         bne     _1c55
 @1c6f:  rts
@@ -4919,6 +4891,7 @@ InvertCarry:
         rol
         eor     #$01
         lsr
+; fallthrough
 
 ; ------------------------------------------------------------------------------
 
@@ -4933,7 +4906,7 @@ AICond_0a:
 ; [  ]
 
 AIGetBit:
-@1d2d:  tdc
+@1d2d:  clr_a
         sec
 @1d2f:  rol
         dex
@@ -5145,7 +5118,7 @@ GetBattleVar:
 
 _c21e57:
 _elnumtobit:
-@1e57:  tdc
+@1e57:  clr_a
         sec
 @1e59:  rol
         dex
@@ -5167,7 +5140,7 @@ Cmd_30:
 
 ; subcommand $00: set monster counter to 0
 MiscAIEffect_00:
-@1e67:  tdc
+@1e67:  clr_a
         sta     $3dc0,y
         sta     $3dc1,y
         rts
@@ -5492,13 +5465,16 @@ AITarget_4d:
         sta     $b8
         jsr     CheckTargetsPresent
         bra     AITarget_46
+        .a8
 
 AITarget_45:
 @1ffb:  stz     $b8
         stz     $b9
         lda     $32e0,y
-        cmp     #$b00a
-        sta     $aa0a
+        cmp     #$0a
+        bcs     AITarget_46             ; branch if not attacked by a character
+        asl
+        tax
         longa
         lda     $3018,x
         sta     $b8
@@ -5687,11 +5663,9 @@ _escape:
         lsr
         bcc     @2144       ; skip if character is not present
         lda     $3ee4,x
-        ; bit_status1 ZOMBIE
         bit     #STATUS1::ZOMBIE
         bne     @2144       ; skip if character has zombie status
         lda     $3ef9,x
-        ; bit_status4 HIDE
         bit     #STATUS4::HIDE
         bne     @2144       ; skip if character has hide status
         xba
@@ -5931,17 +5905,13 @@ CheckHit:
         pla
         rts
 @22ec:  ldx     $11a8
-        tdc
+        clr_a
         lda     $3b18,y
         jsr     Div
         txa
         bne     @22d1
         bra     @22e8
-@22fb:  ;push_status12 PETRIFY, SLEEP
-        ;push_status34 STOP, FROZEN
-        ; pea     STATUS1::PETRIFY | (STATUS2::SLEEP<<8)
-        ; pea     STATUS3::STOP | (STATUS4::FROZEN<<8)
-        peaflg  STATUS12, {PETRIFY, SLEEP}
+@22fb:  peaflg  STATUS12, {PETRIFY, SLEEP}
         peaflg  STATUS34, {STOP, FROZEN}
         jsr     CheckStatus
         bcc     @22e8
@@ -5985,8 +5955,6 @@ CheckHit:
         lsr     $ee
 @235b:  peaflg  STATUS12, {BLIND, ZOMBIE, CONFUSE}
         peaflg  STATUS34, {SLOW, RERAISE}
-        ; pea     STATUS1_BLIND|STATUS1_ZOMBIE|(STATUS2_CONFUSE<<8)
-        ; pea     STATUS3_SLOW|(STATUS4_RERAISE<<8)
         jsr     CheckStatus
         bcs     @2372
         lda     $ee
@@ -5997,8 +5965,6 @@ CheckHit:
 @2370:  sta     $ee
 @2372:  peaflg  STATUS12, {POISON, SAP, NEAR_FATAL}
         peaflg  STATUS34, HASTE
-        ; pea     STATUS1_POISON|(STATUS2_SAP|STATUS2_NEAR_FATAL)<<8
-        ; pea     STATUS3_HASTE
         jsr     CheckStatus
         bcs     @2388
         lda     $ee
@@ -6059,7 +6025,7 @@ _setevasionanima:
         lsr
         bcs     @23c7
         iny
-@23c7:  tdc
+@23c7:  clr_a
         lda     $3ce4,y
         ora     $fe
         beq     @23eb
@@ -6092,7 +6058,7 @@ InitBattle:
         stz     $3c7a,x
         dex2
         bpl     @23f3
-        tdc
+        clr_a
         dec
         ldx     #$0a0e
 @2402:  sta     $2000,x     ; $2000-$341f = #$ff
@@ -6350,7 +6316,7 @@ TargetMaskTbl:
 
 InitRAM:
 _initkernel2:
-@261e:  tdc
+@261e:  clr_a
         ldx     #$5f
 @2621:  sta     $3ee4,x     ; $3ee4-$3f43 = #$00
         dex
@@ -6397,7 +6363,6 @@ FixImmuneStatus:
         xba
         lda     $331c,x
         bmi     @2661       ; branch if not immune to wound status
-        ; set_status1 DEAD
         ora     #STATUS1::DEAD
         xba
         ora     #$04
@@ -6409,8 +6374,6 @@ FixImmuneStatus:
         beq     @2670       ; branch if not immune to poison element
         xba
         clrflg  STATUS1, POISON
-        ; clr_status1 POISON
-        ; and     #<~STATUS1::POISON
         xba
 @2670:  xba
         sta     $331c,x     ; set immune to poison status
@@ -6429,8 +6392,6 @@ _initstatus2:
         bcc     @2683                   ; branch if no float
         xba
         clrflg  STATUS4, FLOAT
-        ; clr_status4 FLOAT
-        ; and     #<~STATUS4::FLOAT
         xba
 
 ; check permanent morph
@@ -6439,8 +6400,6 @@ _initstatus2:
         beq     @268e
         xba
         clrflg  STATUS4, MORPH
-        ; clr_status4 MORPH
-        ; and     #<~STATUS4::MORPH
         xba
 @268e:  xba
         sta     $3331,x
@@ -6456,30 +6415,20 @@ _initstatus2:
         eor     #$ffff
         and     $ee
         bit     #STATUS23::REGEN
-        ; bit_status23 NONE, REGEN
-        ; bit     #STATUS3::REGEN << 8
         beq     @26b2
         bit     #STATUS23::SAP
-        ; bit_status23 SAP, NONE
-        ; bit     #STATUS2::SAP
         bne     @26b5
-@26b2:  ;and     #.loword(~(STATUS2::SAP | STATUS3::REGEN<<8))
-        ; clr_status23 SAP, REGEN
-        clrflg  STATUS23, {SAP, REGEN}
+@26b2:  clrflg  STATUS23, {SAP, REGEN}
 
 ; block both slow and haste if immune to either
 @26b5:  shorta
         sta     $331d,x
         xba
-        ; bit_status3 SLOW
         bit     #STATUS3::SLOW
         beq     @26c3
-        ; bit_status3 HASTE
         bit     #STATUS3::HASTE
         bne     @26c5
-@26c3:  ; and     #<~(STATUS3::SLOW | STATUS3::HASTE)
-        ; clr_status3 SLOW, HASTE
-        clrflg  STATUS3, {SLOW, HASTE}
+@26c3:  clrflg  STATUS3, {SLOW, HASTE}
 @26c5:  sta     $3330,x
         rts
 
@@ -6497,7 +6446,7 @@ _initstatus:
 
 ; ------------------------------------------------------------------------------
 
-; [ init attack based on command ]
+; [ init attack target ]
 
 ; _inittarget:
 InitTarget:
@@ -6736,7 +6685,7 @@ _decodehp:
 
 ; 0: no boost
 MaxHPMP_00:
-@2850:  tdc
+@2850:  clr_a
 
 ; 3: +12.5%
 MaxHPMP_03:
@@ -7131,7 +7080,7 @@ _magicitem:
         trb     $11a4
         lda     f:ItemProp+21,x
         sta     $11a8
-        tdc
+        clr_a
         lda     $01,s
         sec
         sbc     #$a3
@@ -7163,7 +7112,6 @@ ToolsEffectTbl:
 ; 0: noiseblaster
 ToolsEffect_00:
 @2b2a:  lda     #STATUS2::CONFUSE
-        ; lda_status2 CONFUSE
         sta     $11ab
 ; fallthrough
 
@@ -7241,7 +7189,7 @@ _initdamage:
 @2b69:  lda     $11af       ; level
         sta     $e8
         cmp     #$01
-        tdc
+        clr_a
         lda     $11a6
         longa
         bcc     @2b7a
@@ -7278,7 +7226,7 @@ CalcDmg:
         lda     $11af       ; level
         pha
         sta     $e8
-        tdc
+        clr_a
         lda     $11a6
         longa
         cpx     #$08
@@ -7377,8 +7325,7 @@ LoadMonsterProp:
         tax
         lda     $1ff9,y     ; monster index for name display
         sta     $3380,y
-        tdc
-        tay
+        clr_ay
 @2c56:  lda     f:MonsterName,x   ; monster name
         sta     $00f8,y
         inx2
@@ -7391,8 +7338,7 @@ LoadMonsterProp:
         phy
         asl3
         tax
-        tdc
-        tay
+        clr_ay
 @2c75:  lda     $00f8,y
         cmp     f:MonsterName,x   ; monster name
         clc
@@ -7476,7 +7422,7 @@ LoadMonsterProp:
         sta     $3c81,y
         shorti
         jsr     InitFirstStrike
-        tdc
+        clr_a
         ror
         tsb     $b1
         jsr     Rand
@@ -7740,7 +7686,7 @@ InitMonsters:
         sta     $ee
         ldx     #5
         ldy     #$0012
-@2f04:  tdc
+@2f04:  clr_a
         asl     $3a73
         asl     $ee
         rol
@@ -7817,7 +7763,7 @@ InitParty:
         bne     @2fad
         phy
         inc     $fc
-        tdc
+        clr_a
         lda     $fe
         and     #$18
         lsr2
@@ -7931,7 +7877,7 @@ InitParty:
         pha
         lda     $06,s
         sta     $3ed9,x
-        tdc
+        clr_a
         txa
         asl4
         tax
@@ -7940,7 +7886,7 @@ InitParty:
         bne     @309c
         lda     $1601,y                 ; set character graphic index
 @309c:  sta     $2eae,x
-        tdc
+        clr_a
         pla
         sta     $2ec6,x                 ; set actor index
         cmp     #$0e
@@ -7954,7 +7900,7 @@ InitParty:
         sta     $2eb3,x
         plx
         bcs     @30c4                   ; branch if actor index >= $0e
-        tdc
+        clr_a
         sec
 @30c0:  rol
         dex
@@ -7990,7 +7936,7 @@ GetCharID:
 
 ; ------------------------------------------------------------------------------
 
-; [ load battle data ]
+; [ load battle properties ]
 
 LoadBattleProp:
 @30e8:  php
@@ -8012,7 +7958,7 @@ LoadBattleProp:
         trb     $11e0
         beq     @3127
         shortai
-        tdc
+        clr_a
         jsr     Rand
         and     #$03        ; (0..3)
         longai_clc
@@ -8035,8 +7981,7 @@ LoadBattleProp:
         sec
         sbc     $11e0
         tax
-        tdc
-        tay
+        clr_ay
 @3155:  lda     f:BattleMonsters,x   ; load battle data
         sta     $3f44,y
         inx2
@@ -8534,8 +8479,6 @@ RunicEffect:
         sta     $3e4c,y     ; clear $3e4c.2 (character runic)
         peaflg  STATUS12, {DEAD, PETRIFY, SLEEP}
         peaflg  STATUS34, {STOP, FROZEN, HIDE}
-        ; pea     $80c0
-        ; pea     $2210
         jsr     CheckStatus
         bcc     @355e
         longa
@@ -8561,7 +8504,7 @@ RunicEffect:
         shorta
         lda     #$60
         sta     $11a2
-        tdc
+        clr_a
         lda     $11a5
         jsr     Div
         sta     $11a6
@@ -8639,21 +8582,29 @@ _setblacklist:
         shortai
         jsr     _c2361b
         txa
+
+; set last command used
         sta     $3290,y
         lda     $3a7c
         sta     $3d48,y
+
+; set last attack
         lda     $3410
         cmp     #$ff
         beq     @3601
         sta     $3d49,y
         txa
         sta     $3291,y
+
+; set previous item used
 @3601:  lda     $3411
         cmp     #$ff
         beq     @360f
         sta     $3d5c,y
         txa
         sta     $32a4,y
+
+; set previous element used
 @360f:  lda     $11a1
         sta     $3d5d,y
         txa
@@ -8664,15 +8615,15 @@ _setblacklist:
 
 ; ------------------------------------------------------------------------------
 
-; [ ]
+; [ set retaliation target (50% chance) ]
 
 _c2361b:
 _setblacklist2:
 @361b:  php
         shorta_sec
         lda     $32e0,y
-        bpl     @3628
-        jsr     RandCarry
+        bpl     @3628                   ; branch if waiting to retaliate
+        jsr     RandCarry               ; 50% chance to retaliate
         bcc     @362d
 @3628:  txa
         ror
@@ -8682,20 +8633,21 @@ _setblacklist2:
 
 ; ------------------------------------------------------------------------------
 
-; [ save previous attacker ]
+; [ set retaliation target ]
 
 ; +x: attacker
 ; +y: target
+; will only retaliate if carry is set when called
 
 _c2362f:
 _setblacklist3:
 @362f:  pha
         php
-        lda     $32e0,y     ; last target that attacked you
-        bmi     @363b       ; return if invalid
+        lda     $32e0,y                 ; last target that attacked you
+        bmi     @363b                   ; return if waiting to retaliate
         txa
-        ror
-        sta     $32e0,y     ; set last target that attacked you
+        ror                             ; set flag for waiting to retaliate
+        sta     $32e0,y                 ; set last target that attacked you
 @363b:  plp
         pla
         rts
@@ -8851,8 +8803,6 @@ LearnLore:
         bmi     @3708
         peaflg  STATUS12, {DEAD, PETRIFY, BLIND, ZOMBIE, SLEEP, CONFUSE, BERSERK}
         peaflg  STATUS34, {STOP, FROZEN, RAGE, HIDE}
-        ; pea     $b0c3
-        ; pea     $2310
         jsr     CheckStatus
         bcc     @3708
         lda     $b6
@@ -8873,16 +8823,16 @@ LearnLore:
 
 ; [ apply damage multiplier ]
 
-; +a *= (1 + ($bc / 2))
+; +A *= (1 + ($bc / 2))
 
 ApplyDmgMult:
 @370b:  phy
         ldy     $bc
         beq     @372d
         pha
-        lda     $b2         ; ignore damage multiplier flag (in $b3)
+        lda     $b2                     ; ignore damage multiplier flag (in $b3)
         asl
-        and     $11a1       ;
+        and     $11a1                   ;
         asl3
         pla
         bcs     @372d
@@ -8891,7 +8841,7 @@ ApplyDmgMult:
 @3721:  clc
         adc     $ee
         bcc     @3728
-        tdc                 ; max damage 65535
+        clr_a                           ; max damage 65535
         dec
 @3728:  dey
         bne     @3721
@@ -8919,10 +8869,10 @@ SetControlCmd:
         asl2
         tax
         shorta
-        tdc
+        clr_a
         sta     f:hWMADDH
         ldy     #$0004
-@3756:  tdc
+@3756:  clr_a
         pha
         lda     f:MonsterControl,x
         sta     f:hWMDATA
@@ -8971,7 +8921,7 @@ CheckSketchHit:
         jsr     MultAB
         xba
 @379f:  pha
-        tdc
+        clr_a
         lda     $3b18,x     ; attacker's level
         xba
         plx
@@ -9274,7 +9224,7 @@ TargetEffect_13:
         cmp     #$ff
         beq     @394e       ; branch if character/monster had no pending actions in the command list
         sta     $3184,y     ; clear the old command list slot
-@394e:  tdc
+@394e:  clr_a
         sta     $3620,x     ; clear old command mp cost
         longa
         sta     $3520,x     ; clear old command targets
@@ -9341,7 +9291,7 @@ TargetEffect_2b:
 
 TargetEffect_26:
         .a8
-@3989:  tdc
+@3989:  clr_a
         lda     #$ff
         jsr     RandBit
         sta     $3be0,y
@@ -9421,7 +9371,7 @@ TargetEffect_52:
         clc
         adc     $3d98,x
         bcc     @3a31
-        tdc
+        clr_a
         dec
 @3a31:  sta     $3d98,x
         shorta
@@ -9464,7 +9414,6 @@ TargetEffect_12:
         sta     $32f4,x
         lda     $3018,x
         tsb     $3a8c
-        ; lda_status1 DEAD
         lda     #STATUS1::DEAD
         jmp     SetStatus1
 _3a8a:  jmp     _c23b1b
@@ -9483,7 +9432,7 @@ MetamorphProp:
 ; [ target special effect $56: debilitator ]
 
 TargetEffect_56:
-@3a8d:  tdc
+@3a8d:  clr_a
         lda     $3be0,y
         ora     $3ec8
         eor     #$ff
@@ -9524,8 +9473,6 @@ TargetEffect_53:
         bmi     @3b16       ; miss if monster can't be controlled
         peaflg  STATUS12, {DEAD, PETRIFY, INVISIBLE, ZOMBIE, SLEEP, CONFUSE, BERSERK}
         peaflg  STATUS34, {RAGE, HIDE, MORPH}
-        ; pea     $b0d2       ; sleep, seizure, berserk, wound, petrify, clear, zombie, hide, morph, rage
-        ; pea     $2900
         jsr     CheckStatus
         bcc     @3b16       ; miss if set
         lda     $32b9,y
@@ -9638,7 +9585,7 @@ TargetEffect_54:
 
 ; ------------------------------------------------------------------------------
 
-; [ target special effect $50: possess  ]
+; [ target special effect $50: possess ]
 
 TargetEffect_50:
 @3b98:  lda     $05,s
@@ -9974,7 +9921,7 @@ TargetEffect_35:
 @3d62:  rts
 
 @3d63:  .a8
-        tdc
+        clr_a
         lda     $3de9,y
         ora     #$20
         sta     $3de9,y
@@ -10034,7 +9981,7 @@ TargetEffect_2f:
 
 TargetEffect_40:
 @3db0:  longa
-        tdc
+        clr_a
         inc
         sta     $3bf4,y     ; set hp to 1
         rts
@@ -10202,7 +10149,7 @@ AttackerEffect_01:
 AttackerEffect_1e:
 @3ea0:  stz     $3414       ; disable damage modification
         longa
-        tdc
+        clr_a
         dec
         sta     $11b0
         lda     $1867
@@ -10284,7 +10231,7 @@ _3f24:  sta     $ee
         bne     @3f4f
         lda     $3ec9
         beq     @3f4f       ; return if there are no targets
-        tdc
+        clr_a
         jsr     Rand
         and     #$07
         clc
@@ -10430,7 +10377,7 @@ AttackerEffect_51:
         bcs     @3fe4
         lda     $3d98,y
         sta     $ee
-        tdc
+        clr_a
 @3fe4:  sta     $3d98,y
         lda     $ee
 @3fe9:  ldx     #$02
@@ -10621,7 +10568,7 @@ _40d6:  sta     $3401
 ; [ attacker special effect $31: forcefield ]
 
 AttackerEffect_31:
-@40da:  tdc
+@40da:  clr_a
         lda     #$ff
         eor     $3ec8       ; elements nullified by forcefield
         beq     AttackerEffectMiss
@@ -10726,7 +10673,7 @@ AttackerEffect_09:
         tsb     $11a4       ; can't dodge
         lda     #$0f
         sta     $b6         ; disable 3rd die roll
-        tdc
+        clr_a
         jsr     Rand
         pha
         and     #$0f
@@ -10751,7 +10698,7 @@ AttackerEffect_09:
         lda     $11a8
         cmp     #$03
         bcc     @41ab       ; branch if only 2 dice
-        tdc
+        clr_a
         lda     $021e       ; game time (frames)
         ldx     #6
         jsr     Div
@@ -10781,7 +10728,7 @@ AttackerEffect_09:
         lda     $ee
         adc     $11b0
         bcc     @41d6
-        tdc
+        clr_a
         dec
 @41d6:  dex
         bpl     @41c9
@@ -11296,7 +11243,7 @@ StatusMod_02:
 ; [ reset status mod flags ]
 
 ResetStatusMod:
-@44ff:  tdc
+@44ff:  clr_a
         sta     $3dd4,y
         sta     $3de8,y
         sta     $3dfc,y
@@ -12582,7 +12529,7 @@ CheckRetal:
         stz     $b8         ; clear targets
         stz     $b9
         lda     $32e0,x     ; last character/monster that targetted this target
-        bpl     @4c86       ;
+        bpl     @4c86       ; branch if not waiting to retaliate
         asl
         sta     $ee
         cpx     $ee
@@ -12590,9 +12537,9 @@ CheckRetal:
         tay
         longa
         lda     $3018,y
-        sta     $b8
+        sta     $b8             ; set retaliation target
         lda     $3018,x
-        trb     $33fe
+        trb     $33fe           ; set retaliation attacker
 @4c86:  longa
         lda     $3018,x
         bit     $3a56
@@ -12603,7 +12550,7 @@ CheckRetal:
         bcs     @4cbe       ; skip if a counterattack (can't counter a counter)
         lda     $b8
         ora     $b9
-        beq     @4cbe
+        beq     @4cbe       ; branch if there are no retaliation targets
 @4c9d:  lda     $3269,x     ; pointer to ai counterattack script
         bmi     @4cb1
         lda     $32cd,x     ; counter queue pointer
@@ -12639,7 +12586,7 @@ CheckRetal:
         lsr
         bcc     @4cf4
         lsr
-        tdc
+        clr_a
         adc     #$fc
         sta     $3a7b
         lda     #$02
@@ -12657,8 +12604,6 @@ CheckRetal:
         txy
         peaflg  STATUS12, {DEAD, PETRIFY, MAGITEK, ZOMBIE, SLEEP, CONFUSE}
         peaflg  STATUS34, {DANCE, STOP, FROZEN, CHANT, HIDE}
-        ; pea     $a0ca       ; check for various status
-        ; pea     $3211
         jsr     CheckStatus
         bcc     @4cc2       ; return if any are set
         stz     $3a7a       ; clear command and attack
@@ -13023,7 +12968,7 @@ GetMPCost:
         .a8
 @4f08:  phx
         php
-        tdc
+        clr_a
         lda     #$40
         trb     $b1
         bne     @4f53
@@ -13271,7 +13216,7 @@ _scenechange:
         ldx     #$0a
 @508d:  stz     $3aa8,x     ; clear monster status flags
         stz     $3e54,x
-        tdc
+        clr_a
         dec
         sta     $2001,x     ; clear monster indexes
         lda     #$ffbc
@@ -13555,7 +13500,7 @@ RandBit:
         jsr     RandA
         tax
         sec
-        tdc
+        clr_a
 @523c:  rol
         bit     $ee
         beq     @523c
@@ -13631,7 +13576,7 @@ UpdateCmdList:
         sta     $ee
 @52a6:  phx
         sec
-        tdc
+        clr_a
         lda     a:$0000,x
         bmi     @52db
         pha
@@ -13643,7 +13588,7 @@ UpdateCmdList:
         asl
         tax
         lda     f:BattleCmdProp,x   ; battle command data
-        bit     #BATTLE_CMD_FLAG_IMP
+        bit     #BATTLE_CMD_FLAG::IMP
         bne     @52c3       ; branch if command can be used as imp
         sec
 @52c3:  pla
@@ -13682,8 +13627,6 @@ UpdateCmdTbl:
         .addr   UpdateCmd_05
         .addr   UpdateCmd_06
         .addr   UpdateCmd_07
-
-; $5326,$5322,$531d,$5314,$5314,$5314,$5301,$5301
 
 ; ------------------------------------------------------------------------------
 
@@ -13805,7 +13748,7 @@ InitCmdList:
 @5398:  sta     $fc,x
 @539a:  dex                 ; next command
         bpl     @535a
-@539d:  tdc
+@539d:  clr_a
         sta     $f8
         sta     f:hWMADDH     ; clear wram bank
         tay
@@ -13841,7 +13784,7 @@ InitCmdList:
         sta     f:hWMDATA     ; set command number ($202f)
         asl
         tax
-        tdc
+        clr_a
         bcs     @53f0       ; branch if command was removed
         lda     f:BattleCmdProp+1,x   ; battle command data, targetting byte
 @53f0:  sta     f:hWMDATA     ; set command data ($2030)
@@ -13994,8 +13937,7 @@ InitInventory:
         dex                 ; next item
         bpl     @54a1
         shortai
-        tdc
-        tay
+        clr_ay
 @54b4:  lda     $1869,y     ; item number
         cmp     #$a3
         bcc     @54c8       ; branch if less than tools
@@ -14014,7 +13956,7 @@ InitInventory:
 
 ; [ add item to battle inventory ]
 
-; +y = pointer to battle inventory (last byte of item)
+; +Y = pointer to battle inventory (last byte of item)
 
 CopyItemProp:
 @54cd:  .a16
@@ -14063,7 +14005,7 @@ LoadItemProp:
         asl
         and     #$20        ; item can be thrown
         tsb     $2e73
-        tdc
+        clr_a
         pla
         and     #$07        ; item type
         phx
@@ -14114,7 +14056,7 @@ InitSpellList:
         bpl     @555e
         ldy     #$17
         ldx     #$02
-        tdc
+        clr_a
         sec
 @556a:  ror
         bcc     @556f
@@ -14181,9 +14123,7 @@ InitSpellList:
 @55e7:  sta     $3034,x
         dex
         bpl     @55e7
-        tdc
-        tax
-        tay
+        clr_axy
 @55f0:  lda     $11a0,x
         inc
         bne     @5602
@@ -14215,7 +14155,7 @@ InitSpellList:
         bpl     @5620
         longi
         ldx     #$004d      ; loop through all spells and lores
-@5635:  tdc
+@5635:  clr_a
         lda     $3034,x     ; branch if no characters know the spell
         cmp     #$ff
         beq     @5688
@@ -14286,8 +14226,7 @@ ValidateSpellList:
         xba
         jsr     CalcMPCost
         sta     $0003,y
-@56c7:  tdc
-        tay
+@56c7:  clr_ay
         lda     $3ed8,x
         cmp     #$0c
         beq     @56e5       ; branch if character is gogo
@@ -14303,7 +14242,7 @@ ValidateSpellList:
         shorta
 @56e5:  tyx
         ldy     #$0138
-_56e9:  tdc
+_56e9:  clr_a
         lda     ($f2),y
         cmp     #$ff
         beq     AddToSpellList_01
@@ -14335,7 +14274,7 @@ AddToSpellList_02:
 
 ; 1: character with no spell list
 AddToSpellList_01:
-@570e:  tdc
+@570e:  clr_a
         sta     ($f4),y
         dec
         sta     ($f2),y
@@ -14529,12 +14468,12 @@ InitGfxParams:
 ; [ init skills ]
 
 InitSkills:
-@580c:  tdc
+@580c:  clr_a
         lda     $1cf7       ; known swdtechs
         jsr     CountBits
         dex
         stx     $2020       ; set number of swdtechs known (for swdtech gauge)
-        tdc
+        clr_a
         lda     $1d28       ; known blitzes
         jsr     CountBits
         stx     $3a80       ; set number of known blitzes
@@ -14552,9 +14491,7 @@ InitSkills:
         lda     #$257e      ; pointer to known rages
         sta     f:hWMADDL
         shorta
-        tdc
-        tay
-        tax
+        clr_ayx
         sta     f:hWMADDH
 @5847:  bit     #$07
         bne     @5853
@@ -14714,7 +14651,7 @@ _masktarget2:
 Retarget:
 @5937:  .a8
         stz     $b9
-        tdc
+        clr_a
         cpx     #$08
         ror
         sta     $b8
@@ -14906,37 +14843,37 @@ DecCounters:
 
 ; frame 0-9 (status counters for each character/monster)
         asl
-        tax                 ; otherwise, use it as a character/monster index
+        tax                             ; otherwise, use it as a character/monster index
         lda     $3aa0,x
         lsr
-        bcc     _5ae9       ; return if $3aa0.0 is clear (target is not present)
+        bcc     _5ae9                   ; return if $3aa0.0 is clear (target is not present)
         clc
-        lda     $3adc,x     ; slow/normal/haste counter
-        adc     $3add,x     ; add constant (+32/+64/+84)
+        lda     $3adc,x                 ; slow/normal/haste counter
+        adc     $3add,x                 ; add constant (+32/+64/+84)
         sta     $3adc,x
-        bcc     _5ae9       ; return if it didn't overflow
+        bcc     _5ae9                   ; return if it didn't overflow
         lda     $3af1,x
-        beq     @5ab1       ; branch if stop counter is 0
-        dec     $3af1,x     ; decrement stop counter
+        beq     @5ab1                   ; branch if stop counter is 0
+        dec     $3af1,x                 ; decrement stop counter
         bne     _5ae9
-        lda     #$01        ; stop just wore off
-        bra     _c25b06       ; decrement reflect, freeze, sleep counters
+        lda     #$01                    ; stop just wore off
+        bra     _c25b06                 ; decrement reflect, freeze, sleep counters
 @5ab1:  lda     $3aa0,x
         bit     #$10
-        bne     _5ae9       ; return if $3aa0.4 is set
+        bne     _5ae9                   ; return if $3aa0.4 is set
         lda     $3b05,x
         cmp     #$02
-        bcc     @5ac9       ; branch if the condemned number is less than 2
+        bcc     @5ac9                   ; branch if the condemned number is less than 2
         dec
-        sta     $3b05,x     ; decrement the condemned number
+        sta     $3b05,x                 ; decrement the condemned number
         dec
         bne     @5ac9
         jsr     CondemnDeath
 @5ac9:  jsr     CheckRunAway
         jsr     _c25b4f
-        tdc                 ; stop did not just wear off
-        jsr     _c25b06       ; decrement reflect, freeze, sleep counters
-        inc     $3af0,x     ; increment dot counter
+        clr_a                           ; stop did not just wear off
+        jsr     _c25b06                 ; decrement reflect, freeze, sleep counters
+        inc     $3af0,x                 ; increment dot counter
         lda     $3af0,x
         txy
         and     #$07
@@ -15107,7 +15044,7 @@ GlobalCounter_00:
         longa
         lda     $2f42
         jsr     BitToTargetID
-        tdc
+        clr_a
         dec
         sta     $2f42       ; clear enemy roulette target
         shorta
@@ -15233,7 +15170,7 @@ UpdateCounterGfxBuf:
 UpdateMonsterGfxBuf:
 @5c73:  longa
         ldy     #$08
-@5c77:  tdc
+@5c77:  clr_a
         sta     $2013,y     ; clear number of monsters alive for each name
         dec
         sta     $200b,y     ; clear monster names
@@ -15272,7 +15209,7 @@ UpdateMonsterGfxBuf:
         beq     @5cd0       ; branch if party can run
         lda     #$06
         tsb     $b1
-@5cd0:  tdc
+@5cd0:  clr_a
         rol
         sec
         rol
@@ -15375,7 +15312,7 @@ WinBattle:
 
 ; normal victory
 @5d91:  longi
-        tdc
+        clr_a
         ldx     $3ed4       ; battle index
         cpx     #$0200
         bcs     @5da0       ; branch if >= $0200 (no magic points)
@@ -15499,7 +15436,7 @@ WinBattle:
 @5eb9:  dey2                ; next character
         bpl     @5e92
         shorti
-        tdc
+        clr_a
         sec
         ldx     #$02
         ldy     #$17
@@ -15536,7 +15473,7 @@ WinBattle:
         lda     #$2a        ; battle message $2a "dispelled curse on shield"
         jsr     ShowMsg
 @5f0a:  ldx     #$05
-@5f0c:  tdc
+@5f0c:  clr_a
         dec
         sta     $f0,x       ; clear items dropped
         stz     $f6,x       ; zero item quantities
@@ -15549,7 +15486,7 @@ WinBattle:
         jsr     Rand
         cmp     #$20        ; 1/8 chance to get rare item
         longai
-        tdc
+        clr_a
         ror
         adc     $2001,y     ; monster index
         asl
@@ -15705,7 +15642,7 @@ LearnItemMagic:
         phx
         phy
         tax
-        tdc
+        clr_a
         lda     f:ItemProp+4,x   ; spell taught by item
         tay
         lda     f:ItemProp+3,x   ; spell learn rate
@@ -15726,7 +15663,7 @@ LearnGenjuMagic:
 @602a:  phx
         jsr     GetGenjuPropPtr
         ldy     #$0005
-@6031:  tdc
+@6031:  clr_a
         lda     f:GenjuProp+1,x   ; spell taught by esper
         cmp     #$ff
         beq     @6044
@@ -15774,7 +15711,7 @@ _606c:  rts
 
 CheckLevelUp:
 @606d:  stz     $f8         ; $f8 is the high byte of the calculated experience
-        tdc
+        clr_a
         lda     $1608,x     ; level
         cmp     #99
         bcs     _606c       ; return if >= 99
@@ -15782,9 +15719,9 @@ CheckLevelUp:
         asl
         phx
         tax
-        tdc
+        clr_a
 @607d:  clc
-        adc     $ed821e,x   ; character experience progression data
+        adc     f:LevelUpExp-2,x   ; character experience progression data
         bcc     @6086
         inc     $f8
 @6086:  dex2
@@ -15828,12 +15765,12 @@ DoLevelUp:
         stz     $fd         ; clear high byte of hp/mp increase
         stz     $ff
         phx
-        tdc
+        clr_a
         lda     $1608,x     ; level
         tax
-        lda     $e6f500,x   ; character mp progression data
+        lda     f:LevelUpMP-2,x   ; character mp progression data
         sta     $fe
-        lda     $e6f49e,x   ; character hp progression data
+        lda     f:LevelUpHP-2,x   ; character hp progression data
         sta     $fc
         plx
         lda     $161e,x     ; equipped esper
@@ -15842,7 +15779,7 @@ DoLevelUp:
         phx
         txy
         jsr     GetGenjuPropPtr
-        tdc
+        clr_a
         lda     f:GenjuProp+10,x   ; esper level up bonus
         bmi     @60f4       ; branch if no bonus
         asl
@@ -15858,9 +15795,9 @@ DoLevelUp:
         pla
         and     #$3fff      ; max hp
         adc     $fc         ; add increase (max 9999)
-        cmp     #$2710
+        cmp     #10000
         bcc     @610f
-        lda     #$270f
+        lda     #9999
 @610f:  ora     $ee         ; combine with hp boost
         sta     $160b,x     ; set new max hp
         clc
@@ -15871,9 +15808,9 @@ DoLevelUp:
         pla
         and     #$3fff      ; max mp
         adc     $fe         ; add increase (max 999)
-        cmp     #$03e8
+        cmp     #1000
         bcc     @612c
-        lda     #$03e7
+        lda     #999
 @612c:  ora     $ee         ; mp boost
         sta     $160f,x     ; set new max mp
         plp
@@ -16008,8 +15945,7 @@ GenjuBonus_0a:
 ; [ esper bonus $06: +100% hp increase ]
 
 GenjuBonus_06:
-@61b0:  tdc
-        tax
+@61b0:  clr_ax
         lda     $fc
         bra     _618e
 
@@ -16064,7 +16000,7 @@ LearnAbilities:
         bne     @621b
         pha
         phy
-        tdc
+        clr_a
         lda     f:NaturalMagic,x        ; natural magic data (spell)
         tay
         lda     ($f4),y
@@ -16280,7 +16216,7 @@ _writedamage:
         lda     $3a36
         sbc     $33d0,y
         bcs     @6320
-        tdc
+        clr_a
 @6320:  sta     $3a36
 @6323:  lda     $33e4,y
         inc
@@ -16295,7 +16231,7 @@ _writedamage:
         dec     $f2
         lda     $33e4,y
         sta     $33d0,y
-        tdc
+        clr_a
         dec
         sta     $33e4,y
 @6345:  lda     $3018,y
@@ -16327,7 +16263,7 @@ _writedamage:
         cpy     #5
         jsr     ShowDmgNumerals
         jsr     ShowDmgNumeralsMulti
-@6387:  tdc
+@6387:  clr_a
         dec
         ldx     #$12
 @638b:  sta     $33e4,x     ; invalidate all damage
@@ -16392,7 +16328,7 @@ CopyGfxParamsToBuf:
         phy
         php
         shorta
-        tdc
+        clr_a
         lda     $3a32
         pha
         longai_clc
@@ -16438,7 +16374,7 @@ ExecBtlGfx:
         shorta
         longi_clc
         pha
-        tdc
+        clr_a
         pla
         cmp     #$02
         bne     @6425       ; branch if command is not $02 (open battle menu)
@@ -16495,16 +16431,7 @@ DebugWin:
 
 ; ------------------------------------------------------------------------------
 
-.segment "ai_script"
-
-; cf/8400
-AIScriptPtr:
-        make_ptr_tbl_rel AIScript, AI_SCRIPT_ARRAY_LENGTH
-
-; cf/8700
-begin_fixed_block AIScript, $3950
-        .incbin "ai_script.dat"
-end_fixed_block AIScript
+.include "ai_script.asm"
 
 ; ------------------------------------------------------------------------------
 

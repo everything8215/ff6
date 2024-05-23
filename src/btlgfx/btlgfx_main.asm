@@ -16059,7 +16059,7 @@ UpdateMenuState_38:
 @6d90:  lda     $7bcb
         jne     @6f57                   ; branch if closing menu
         lda     $7a84
-        and     #TARGET_AUTO_CONFIRM
+        and     #TARGET::AUTO_CONFIRM
         jne     @6f25                   ; branch if auto-confirm
         lda     $201d
         and     $61ac
@@ -16127,8 +16127,8 @@ UpdateMenuState_38:
 
 ; one target group (seems to be bugged)
 @6e40:  lda     $36
-        and     #TARGET_INIT_MASK|TARGET_MANUAL
-        cmp     #TARGET_INIT_GROUP
+        andflg  TARGET, {INIT_MASK, MANUAL}
+        cmp     #TARGET::INIT_GROUP
         bne     @6e82
         lda     $05
         and     #$03
@@ -16162,7 +16162,7 @@ UpdateMenuState_38:
 
 ; check if player can move target cursor manually
 @6e82:  lda     $36
-        and     #TARGET_MANUAL
+        and     #TARGET::MANUAL
         beq     @6f05
 
 ; check L and R buttons
@@ -16173,7 +16173,7 @@ UpdateMenuState_38:
         beq     @6ed3                   ; branch if running away
         inc     $94                     ; play sound effect
         lda     $36
-        and     #TARGET_MULTI_TARGET
+        and     #TARGET::MULTI_TARGET
         beq     @6ed3                   ; branch if no multi-target
 @6e9a:  lda     $7ace
         and     #$01
@@ -17065,7 +17065,7 @@ _c17438:
 
 _c17439:
 @7439:  lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @745d                   ; branch if can't target opposite side
         lda     $7b7b
         and     $92
@@ -17092,7 +17092,7 @@ _c17463:
         cmp     #$03
         beq     @74be
         lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @7490
         lda     $7b7b
         and     $92
@@ -17133,7 +17133,7 @@ _c17463:
 
 _c174bf:
 @74bf:  lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @74e3
         lda     $7b79
         and     $92
@@ -17166,7 +17166,7 @@ _c174ea:
         cmp     #$01
         beq     @7543                   ; return if on left side characters
         lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @7515
         lda     $7b7b
         and     $92
@@ -17275,7 +17275,7 @@ _c175a3:
 @75a3:  jsr     _c17554
         bcs     @75d7
         lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @75d7                   ; branch if can't change target group
         lda     $7b7a
         and     $201d
@@ -17304,7 +17304,7 @@ _c175d8:
         lda     $7ace
         bne     @7630
         lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @7612
         lda     $7b7a
         and     $201d
@@ -17344,7 +17344,7 @@ _c17631:
 @7631:  jsr     _c17554
         bcs     @7665
         lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @7665
         lda     $7b7c
         and     $201d
@@ -17378,7 +17378,7 @@ _c17669:
 @7669:  jsr     _c1757a
         bcs     @76a1
         lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @76a1
         lda     $7b7a
         and     $201d
@@ -17411,7 +17411,7 @@ _c176a7:
         lda     $7ace
         beq     @76fd
         lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @76e1
         lda     $7b7a
         and     $201d
@@ -17450,7 +17450,7 @@ _c176fe:
 @76fe:  jsr     _c1757a
         bcs     @7732
         lda     $7a84
-        and     #TARGET_ONE_SIDE
+        and     #TARGET::ONE_SIDE
         bne     @7732
         lda     $7b7a
         and     $201d
@@ -17532,7 +17532,7 @@ _c1776b:
         bne     @777a
         stz     $e9e1
         stz     $6168
-        lda     #TARGET_SELF
+        lda     #TARGET::SELF
         sta     $7a84
         lda     #$3d                    ; go to blitz menu state
         bra     _7797
@@ -17564,7 +17564,7 @@ _7797:  pha
         lda     $7a84
         bmi     @77c4                   ; branch if roulette cursor
         sta     $36
-        cmp     #TARGET_SELF
+        cmp     #TARGET::SELF
         bne     @77d1
 
 ; self-target or roulette
@@ -17576,10 +17576,10 @@ _7797:  pha
 ; init all characters or monsters
 @77d1:  lda     $36
         and     #$0c
-        cmp     #TARGET_INIT_HALF
+        cmp     #TARGET::INIT_HALF
         bne     @77ff
         lda     $36
-        and     #TARGET_ENEMY
+        and     #TARGET::ENEMY
         beq     @77ea
         lda     $92
         sta     $7b7e                   ; target all monsters
@@ -17594,7 +17594,7 @@ _7797:  pha
         jmp     @7901
 
 ; init all characters and all monsters
-@77ff:  cmp     #TARGET_INIT_ALL
+@77ff:  cmp     #TARGET::INIT_ALL
         bne     @781d
         lda     $201d
         and     $61ac
@@ -17609,10 +17609,10 @@ _7797:  pha
 ; init single target group
 @781d:  lda     $36
         and     #$0c
-        cmp     #TARGET_INIT_GROUP
+        cmp     #TARGET::INIT_GROUP
         bne     @789b
         lda     $36
-        and     #TARGET_ENEMY
+        and     #TARGET::ENEMY
         bne     @7875                   ; branch if target monsters by default
         clr_ax
         lda     $62ca
@@ -17658,7 +17658,7 @@ _7797:  pha
 
 ; init single target
 @789b:  lda     $36
-        and     #TARGET_ENEMY
+        and     #TARGET::ENEMY
         bne     @78dd
         clr_ax
         lda     $62ca
@@ -17701,7 +17701,7 @@ _7797:  pha
         jmp     @7901
 
 @7901:  lda     $7a84
-        and     #TARGET_AUTO_CONFIRM
+        and     #TARGET::AUTO_CONFIRM
         beq     @790b
         stz     $7b7f
 @790b:  pla
@@ -18946,7 +18946,7 @@ UpdateMenuState_0e:
         sta     $ecba
         lda     $2094,x                 ; copy targeting flags
         sta     $7a84
-        and     #TARGET_ENEMY
+        and     #TARGET::ENEMY
         jeq     UpdateMenuState_3f
         jmp     _c17795
 @81eb:  inc     $95         ; play error sound effect
@@ -40440,7 +40440,7 @@ scene_init:
         sta     $10
         clr_ax
 @bdfd:  lda     $2ec6,x
-        cmp     #CHAR_PROP_KEFKA_7
+        cmp     #CHAR_PROP::KEFKA_7
         bne     @be0c
         lda     $6192                   ; exclude Kefka 7 from the party
         ora     $10
@@ -44430,10 +44430,10 @@ DoMonsterAnim:
         cmp     #$09
         bne     @e659       ; branch if not $09 (play sound effect)
         iny
-        lda     ($76),y     ; sound effect
+        lda     ($76),y     ; pan
         sta     $10
         iny
-        lda     ($76),y
+        lda     ($76),y     ; sfx id
         jsl     PlayAnimSfx_far
         rtl
 @e659:  longa

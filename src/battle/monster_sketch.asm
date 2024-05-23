@@ -1,390 +1,396 @@
 ; ------------------------------------------------------------------------------
 
+.mac make_monster_sketch attack1, attack2
+        .byte ATTACK::attack1, ATTACK::attack2
+.endmac
+
+; ------------------------------------------------------------------------------
+
 ; cf/4300
 MonsterSketch:
-.byte ATTACK_BATTLE, ATTACK_BATTLE              ; MONSTER_GUARD
-.byte ATTACK_SCAN, ATTACK_BATTLE                ; MONSTER_SOLDIER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TEMPLAR
-.byte ATTACK_FIRE_SKEAN, ATTACK_WATER_EDGE      ; MONSTER_NINJA
-.byte ATTACK_FLARE, ATTACK_DOOM                 ; MONSTER_SAMURAI
-.byte ATTACK_BIO, ATTACK_PEARL                  ; MONSTER_OROG
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MAG_ROADER_1
-.byte ATTACK_SPECIAL, ATTACK_WIND_SLASH         ; MONSTER_RETAINER
-.byte ATTACK_DRAIN, ATTACK_BATTLE               ; MONSTER_HAZER
-.byte ATTACK_MUTE, ATTACK_CURE_2                ; MONSTER_DAHLING
-.byte ATTACK_SPECIAL, ATTACK_BOLT_3             ; MONSTER_RAIN_MAN
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_BRAWLER
-.byte ATTACK_SPECIAL, ATTACK_L3_MUDDLE          ; MONSTER_APOKRYPHOS
-.byte ATTACK_L5_DOOM, ATTACK_CLEANSWEEP         ; MONSTER_DARK_FORCE
-.byte ATTACK_QUARTR, ATTACK_DEMI                ; MONSTER_WHISPER
-.byte ATTACK_DREAD, ATTACK_BATTLE               ; MONSTER_OVER_MIND
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_OSTEOSAUR
-.byte ATTACK_FIRE, ATTACK_BATTLE                ; MONSTER_COMMANDER
-.byte ATTACK_SPECIAL, ATTACK_SNARE              ; MONSTER_RHODOX
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_WERE_RAT
-.byte ATTACK_SPECIAL, ATTACK_FIRE_2             ; MONSTER_URSUS
-.byte ATTACK_MEGA_VOLT, ATTACK_GIGA_VOLT        ; MONSTER_RHINOTAUR
-.byte ATTACK_SPECIAL, ATTACK_SLIDE              ; MONSTER_STEROIDITE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_LEAFER
-.byte ATTACK_SPECIAL, ATTACK_BLASTER            ; MONSTER_STRAY_CAT
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_LOBO
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_DOBERMAN
-.byte ATTACK_SPECIAL, ATTACK_BLIZZARD           ; MONSTER_VOMAMMOTH
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_FIDOR
-.byte ATTACK_SPECIAL, ATTACK_ABSOLUTE0          ; MONSTER_BASKERVOR
-.byte ATTACK_SPECIAL, ATTACK_AQUA_RAKE          ; MONSTER_SURIANDER
-.byte ATTACK_SPECIAL, ATTACK_AQUA_RAKE          ; MONSTER_CHIMERA
-.byte ATTACK_SPECIAL, ATTACK_METEOR             ; MONSTER_BEHEMOTH
-.byte ATTACK_SPECIAL, ATTACK_STEP_MINE          ; MONSTER_MESOSAUR
-.byte ATTACK_SPECIAL, ATTACK_FIRE_BALL          ; MONSTER_PTERODON
-.byte ATTACK_SPECIAL, ATTACK_SAND_STORM         ; MONSTER_FOSSILFANG
-.byte ATTACK_FLARE, ATTACK_PEARL                ; MONSTER_WHITE_DRGN
-.byte ATTACK_FALLEN_ONE, ATTACK_N_CROSS         ; MONSTER_DOOM_DRGN
-.byte ATTACK_SPECIAL, ATTACK_STEP_MINE          ; MONSTER_BRACHOSAUR
-.byte ATTACK_SPECIAL, ATTACK_AERO               ; MONSTER_TYRANOSAUR
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_DARK_WIND
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_BEAKOR
-.byte ATTACK_SPECIAL, ATTACK_SHIMSHAM           ; MONSTER_VULTURE
-.byte ATTACK_SPECIAL, ATTACK_CYCLONIC           ; MONSTER_HARPY
-.byte ATTACK_SPECIAL, ATTACK_NET                ; MONSTER_HERMITCRAB
-.byte ATTACK_L5_DOOM, ATTACK_L3_MUDDLE          ; MONSTER_TRAPPER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_HORNET
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CRASSHOPPR
-.byte ATTACK_SPECIAL, ATTACK_MEGA_VOLT          ; MONSTER_DELTA_BUG
-.byte ATTACK_SPECIAL, ATTACK_LODE_STONE         ; MONSTER_GILOMANTIS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TRILIUM
-.byte ATTACK_SPECIAL, ATTACK_CHARM              ; MONSTER_NIGHTSHADE
-.byte ATTACK_SPECIAL, ATTACK_LIFESHAVER         ; MONSTER_TUMBLEWEED
-.byte ATTACK_SPECIAL, ATTACK_BIO                ; MONSTER_BLOOMPIRE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TRILOBITER
-.byte ATTACK_BATTLE, ATTACK_BATTLE              ; MONSTER_SIEGFRIED_1
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_NAUTILOID
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_EXOCITE
-.byte ATTACK_SPECIAL, ATTACK_AQUA_RAKE          ; MONSTER_ANGUIFORM
-.byte ATTACK_SPECIAL, ATTACK_SLIMER             ; MONSTER_REACH_FROG
-.byte ATTACK_IMP, ATTACK_REMEDY                 ; MONSTER_LIZARD
-.byte ATTACK_SPECIAL, ATTACK_QUAKE              ; MONSTER_CHICKENLIP
-.byte ATTACK_SPECIAL, ATTACK_SAND_STORM         ; MONSTER_HOOVER
-.byte ATTACK_SPECIAL, ATTACK_VIRITE             ; MONSTER_RIDER
-.byte ATTACK_BATTLE, ATTACK_BATTLE              ; MONSTER_CHUPON_COLOSSEUM
-.byte ATTACK_IMP, ATTACK_ROULETTE               ; MONSTER_PIPSQUEAK
-.byte ATTACK_TEK_LASER, ATTACK_BATTLE           ; MONSTER_M_TEKARMOR
-.byte ATTACK_SPECIAL, ATTACK_TEK_LASER          ; MONSTER_SKY_ARMOR
-.byte ATTACK_LAUNCHER, ATTACK_TEK_LASER         ; MONSTER_TELSTAR
-.byte ATTACK_SPECIAL, ATTACK_MEGAZERK           ; MONSTER_LETHAL_WPN
-.byte ATTACK_SLOW, ATTACK_BATTLE                ; MONSTER_VAPORITE
-.byte ATTACK_SPECIAL, ATTACK_SLIMER             ; MONSTER_FLAN
-.byte ATTACK_SPECIAL, ATTACK_LIFESHAVER         ; MONSTER_ING
-.byte ATTACK_SPECIAL, ATTACK_POISON             ; MONSTER_HUMPTY
-.byte ATTACK_SPECIAL, ATTACK_BLOW_FISH          ; MONSTER_BRAINPAN
-.byte ATTACK_SPECIAL, ATTACK_SLIMER             ; MONSTER_CRULLER
-.byte ATTACK_SPECIAL, ATTACK_BLOW_FISH          ; MONSTER_CACTROT
-.byte ATTACK_SPECIAL, ATTACK_FLARE              ; MONSTER_REPO_MAN
-.byte ATTACK_SPECIAL, ATTACK_FIRE_WALL          ; MONSTER_HARVESTER
-.byte ATTACK_EXPLODER, ATTACK_BLAZE             ; MONSTER_BOMB
-.byte ATTACK_SPECIAL, ATTACK_LULLABY            ; MONSTER_STILL_LIFE
-.byte ATTACK_SPECIAL, ATTACK_METEOR             ; MONSTER_BOXED_SET
-.byte ATTACK_FIRE_2, ATTACK_ICE_2               ; MONSTER_SLAMDANCER
-.byte ATTACK_SPECIAL, ATTACK_MAGNITUDE8         ; MONSTER_HADESGIGAS
-.byte ATTACK_SPECIAL, ATTACK_BREAK              ; MONSTER_PUG
-.byte ATTACK_REMEDY, ATTACK_CURE_3              ; MONSTER_MAGIC_URN
-.byte ATTACK_BATTLE, ATTACK_DISASTER            ; MONSTER_MOVER
-.byte ATTACK_SPECIAL, ATTACK_DISCHORD           ; MONSTER_FIGALIZ
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_BUFFALAX
-.byte ATTACK_SPECIAL, ATTACK_GIGA_VOLT          ; MONSTER_ASPIK
-.byte ATTACK_FIRE, ATTACK_X_ZONE                ; MONSTER_GHOST
-.byte ATTACK_SPECIAL, ATTACK_STEP_MINE          ; MONSTER_CRAWLER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SAND_RAY
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_ARENEID
-.byte ATTACK_SPECIAL, ATTACK_AQUA_RAKE          ; MONSTER_ACTANEON
-.byte ATTACK_SPECIAL, ATTACK_SAND_STORM         ; MONSTER_SAND_HORSE
-.byte ATTACK_SPECIAL, ATTACK_FIRE_3             ; MONSTER_DARK_SIDE
-.byte ATTACK_SPECIAL, ATTACK_SOUR_MOUTH         ; MONSTER_MAD_OSCAR
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CRAWLY
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_BLEARY
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MARSHAL
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TROOPER
-.byte ATTACK_SPECIAL, ATTACK_CURE_2             ; MONSTER_GENERAL
-.byte ATTACK_SPECIAL, ATTACK_WIND_SLASH         ; MONSTER_COVERT
-.byte ATTACK_BATTLE, ATTACK_METEOR              ; MONSTER_OGOR
-.byte ATTACK_SPECIAL, ATTACK_PEARL              ; MONSTER_WARLOCK
-.byte ATTACK_FLARE, ATTACK_PEARL                ; MONSTER_MADAM
-.byte ATTACK_SPECIAL, ATTACK_BOLT_2             ; MONSTER_JOKER
-.byte ATTACK_SPECIAL, ATTACK_STONE              ; MONSTER_IRON_FIST
-.byte ATTACK_FIRE_3, ATTACK_BOLT_3              ; MONSTER_GOBLIN
-.byte ATTACK_SPECIAL, ATTACK_SPECIAL            ; MONSTER_APPARITE
-.byte ATTACK_SPECIAL, ATTACK_FLARE              ; MONSTER_POWERDEMON
-.byte ATTACK_SPECIAL, ATTACK_DOOM               ; MONSTER_DISPLAYER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_VECTOR_PUP
-.byte ATTACK_SPECIAL, ATTACK_PEARL_WIND         ; MONSTER_PEEPERS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SEWER_RAT
-.byte ATTACK_SPECIAL, ATTACK_SHIMSHAM           ; MONSTER_SLATTER
-.byte ATTACK_SPECIAL, ATTACK_LIFE_3             ; MONSTER_RHINOX
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_RHOBITE
-.byte ATTACK_SPECIAL, ATTACK_BLASTER            ; MONSTER_WILD_CAT
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_RED_FANG
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_BOUNTY_MAN
-.byte ATTACK_SPECIAL, ATTACK_BLIZZARD           ; MONSTER_TUSKER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_RALPH
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CHITONID
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_WART_PUCK
-.byte ATTACK_EL_NINO, ATTACK_SURGE              ; MONSTER_RHYOS
-.byte ATTACK_SPECIAL, ATTACK_FIRE_3             ; MONSTER_SRBEHEMOTH_UNDEAD
-.byte ATTACK_SPECIAL, ATTACK_PEARL_WIND         ; MONSTER_VECTAUR
-.byte ATTACK_SPECIAL, ATTACK_CYCLONIC           ; MONSTER_WYVERN
-.byte ATTACK_SPECIAL, ATTACK_BOLT_3             ; MONSTER_ZOMBONE
-.byte ATTACK_SPECIAL, ATTACK_REVENGE            ; MONSTER_DRAGON
-.byte ATTACK_SPECIAL, ATTACK_FIRE_3             ; MONSTER_BRONTAUR
-.byte ATTACK_SPECIAL, ATTACK_DOOM               ; MONSTER_ALLOSAURUS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CIRPIUS
-.byte ATTACK_SPECIAL, ATTACK_AERO               ; MONSTER_SPRINTER
-.byte ATTACK_SPECIAL, ATTACK_SHIMSHAM           ; MONSTER_GOBBLER
-.byte ATTACK_SPECIAL, ATTACK_AERO               ; MONSTER_HARPIAI
-.byte ATTACK_SPECIAL, ATTACK_NET                ; MONSTER_GLOOMSHELL
-.byte ATTACK_SPECIAL, ATTACK_MUDDLE             ; MONSTER_DROP
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MIND_CANDY
-.byte ATTACK_SPECIAL, ATTACK_LIFESHAVER         ; MONSTER_WEEDFEEDER
-.byte ATTACK_SPECIAL, ATTACK_LAND_SLIDE         ; MONSTER_LURIDAN
-.byte ATTACK_SPECIAL, ATTACK_SHRAPNEL           ; MONSTER_TOE_CUTTER
-.byte ATTACK_SPECIAL, ATTACK_POISON             ; MONSTER_OVER_GRUNK
-.byte ATTACK_SPECIAL, ATTACK_VIRITE             ; MONSTER_EXORAY
-.byte ATTACK_SPECIAL, ATTACK_LIFESHAVER         ; MONSTER_CRUSHER
-.byte ATTACK_BIO, ATTACK_QUAKE                  ; MONSTER_UROBUROS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_PRIMORDITE
-.byte ATTACK_SPECIAL, ATTACK_ATOMIC_RAY         ; MONSTER_SKY_CAP
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CEPHALER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MALIGA
-.byte ATTACK_SPECIAL, ATTACK_SLIMER             ; MONSTER_GIGAN_TOAD
-.byte ATTACK_SPECIAL, ATTACK_BREAK              ; MONSTER_GECKOREX
-.byte ATTACK_SPECIAL, ATTACK_QUAKE              ; MONSTER_CLUCK
-.byte ATTACK_SPECIAL, ATTACK_MAGNITUDE8         ; MONSTER_LAND_WORM
-.byte ATTACK_SPECIAL, ATTACK_FLASH_RAIN         ; MONSTER_TEST_RIDER
-.byte ATTACK_SPECIAL, ATTACK_TEK_LASER          ; MONSTER_PLUTOARMOR
-.byte ATTACK_SPECIAL, ATTACK_STEP_MINE          ; MONSTER_TOMB_THUMB
-.byte ATTACK_SPECIAL, ATTACK_TEK_LASER          ; MONSTER_HEAVYARMOR
-.byte ATTACK_SPECIAL, ATTACK_PLASMA             ; MONSTER_CHASER
-.byte ATTACK_SPECIAL, ATTACK_EXPLODER           ; MONSTER_SCULLION
-.byte ATTACK_SLOW, ATTACK_BATTLE                ; MONSTER_POPLIUM
-.byte ATTACK_SPECIAL, ATTACK_STEP_MINE          ; MONSTER_INTANGIR
-.byte ATTACK_SPECIAL, ATTACK_LIFESHAVER         ; MONSTER_MISFIT
-.byte ATTACK_SPECIAL, ATTACK_BIO                ; MONSTER_ELAND
-.byte ATTACK_SPECIAL, ATTACK_CLEANSWEEP         ; MONSTER_ENUO
-.byte ATTACK_SPECIAL, ATTACK_DREAD              ; MONSTER_DEEP_EYE
-.byte ATTACK_SPECIAL, ATTACK_SPECIAL            ; MONSTER_GREASEMONK
-.byte ATTACK_SPECIAL, ATTACK_IMP                ; MONSTER_NECKHUNTER
-.byte ATTACK_SPECIAL, ATTACK_BLAZE              ; MONSTER_GRENADE
-.byte ATTACK_SPECIAL, ATTACK_CONDEMNED          ; MONSTER_CRITIC
-.byte ATTACK_SPECIAL, ATTACK_REVENGE            ; MONSTER_PAN_DORA
-.byte ATTACK_DRAIN, ATTACK_OSMOSE               ; MONSTER_SOULDANCER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_GIGANTOS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MAG_ROADER_2
-.byte ATTACK_SPECIAL, ATTACK_BLASTER            ; MONSTER_SPEK_TOR
-.byte ATTACK_SPECIAL, ATTACK_GIGA_VOLT          ; MONSTER_PARASITE
-.byte ATTACK_SPECIAL, ATTACK_BIG_GUARD          ; MONSTER_EARTHGUARD
-.byte ATTACK_SPECIAL, ATTACK_MAGNITUDE8         ; MONSTER_COELECITE
-.byte ATTACK_IMP, ATTACK_GIGA_VOLT              ; MONSTER_ANEMONE
-.byte ATTACK_ACID_RAIN, ATTACK_FLASH_RAIN       ; MONSTER_HIPOCAMPUS
-.byte ATTACK_BOLT, ATTACK_FIRE                  ; MONSTER_SPECTRE
-.byte ATTACK_POISON, ATTACK_SOUR_MOUTH          ; MONSTER_EVIL_OSCAR
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SLURM
-.byte ATTACK_SPECIAL, ATTACK_MAGNITUDE8         ; MONSTER_LATIMERIA
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_STILLGOING
-.byte ATTACK_SPECIAL, ATTACK_SPECIAL            ; MONSTER_ALLO_VER
-.byte ATTACK_SPECIAL, ATTACK_BLOW_FISH          ; MONSTER_PHASE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_OUTSIDER
-.byte ATTACK_SPECIAL, ATTACK_LOVE_TOKEN         ; MONSTER_BARB_E
-.byte ATTACK_SPECIAL, ATTACK_FLASH_RAIN         ; MONSTER_PARASOUL
-.byte ATTACK_POISON, ATTACK_DRAIN               ; MONSTER_PM_STALKER
-.byte ATTACK_SPECIAL, ATTACK_SHOCK_WAVE         ; MONSTER_HEMOPHYTE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SP_FORCES
-.byte ATTACK_CURE, ATTACK_CURE_2                ; MONSTER_NOHRABBIT
-.byte ATTACK_RASP, ATTACK_DEMI                  ; MONSTER_WIZARD
-.byte ATTACK_SPECIAL, ATTACK_ELF_FIRE           ; MONSTER_SCRAPPER
-.byte ATTACK_IMP, ATTACK_GIGA_VOLT              ; MONSTER_CERITOPS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_COMMANDO
-.byte ATTACK_SPECIAL, ATTACK_SLIDE              ; MONSTER_OPINICUS
-.byte ATTACK_IMP, ATTACK_STONE                  ; MONSTER_POPPERS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_LUNARIS
-.byte ATTACK_SPECIAL, ATTACK_ICE_3              ; MONSTER_GARM
-.byte ATTACK_SPECIAL, ATTACK_ACID_RAIN          ; MONSTER_VINDR
-.byte ATTACK_IMP, ATTACK_CYCLONIC               ; MONSTER_KIWOK
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_NASTIDON
-.byte ATTACK_SLOW, ATTACK_BATTLE                ; MONSTER_RINN
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_INSECARE
-.byte ATTACK_SPECIAL, ATTACK_BIO                ; MONSTER_VERMIN
-.byte ATTACK_SPECIAL, ATTACK_WIND_SLASH         ; MONSTER_MANTODEA
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_BOGY
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_PRUSSIAN
-.byte ATTACK_SAND_STORM, ATTACK_FALLEN_ONE      ; MONSTER_BLACK_DRGN
-.byte ATTACK_SPECIAL, ATTACK_BLASTER            ; MONSTER_ADAMANCHYT
-.byte ATTACK_SPECIAL, ATTACK_L3_MUDDLE          ; MONSTER_DANTE
-.byte ATTACK_SPECIAL, ATTACK_CYCLONIC           ; MONSTER_WIREY_DRGN
-.byte ATTACK_SPECIAL, ATTACK_GIGA_VOLT          ; MONSTER_DUELLER
-.byte ATTACK_SPECIAL, ATTACK_LIFESHAVER         ; MONSTER_PSYCHOT
-.byte ATTACK_SPECIAL, ATTACK_PEP_UP             ; MONSTER_MUUS
-.byte ATTACK_BREAK, ATTACK_BOLT_3               ; MONSTER_KARKASS
-.byte ATTACK_BATTLE, ATTACK_BATTLE              ; MONSTER_PUNISHER
-.byte ATTACK_SPECIAL, ATTACK_EXPLODER           ; MONSTER_BALLOON
-.byte ATTACK_SPECIAL, ATTACK_VANISH             ; MONSTER_GABBLDEGAK
-.byte ATTACK_SPECIAL, ATTACK_METEOR             ; MONSTER_GTBEHEMOTH
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SCORPION
-.byte ATTACK_SPECIAL, ATTACK_DISASTER           ; MONSTER_CHAOS_DRGN
-.byte ATTACK_SPECIAL, ATTACK_TEK_LASER          ; MONSTER_SPIT_FIRE
-.byte ATTACK_GIGA_VOLT, ATTACK_AQUA_RAKE        ; MONSTER_VECTAGOYLE
-.byte ATTACK_FIRE, ATTACK_FIRE_2                ; MONSTER_LICH
-.byte ATTACK_SPECIAL, ATTACK_SHIMSHAM           ; MONSTER_OSPREY
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MAG_ROADER_3
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_BUG
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SEA_FLOWER
-.byte ATTACK_SPECIAL, ATTACK_SHRAPNEL           ; MONSTER_FORTIS
-.byte ATTACK_SPECIAL, ATTACK_POISON             ; MONSTER_ABOLISHER
-.byte ATTACK_SPECIAL, ATTACK_CYCLONIC           ; MONSTER_AQUILA
-.byte ATTACK_SPECIAL, ATTACK_BOLT_3             ; MONSTER_JUNK
-.byte ATTACK_SPECIAL, ATTACK_RAID               ; MONSTER_MANDRAKE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_1ST_CLASS
-.byte ATTACK_SPECIAL, ATTACK_SLOW_2             ; MONSTER_TAP_DANCER
-.byte ATTACK_X_ZONE, ATTACK_DOOM                ; MONSTER_NECROMANCR
-.byte ATTACK_SPECIAL, ATTACK_SPECIAL            ; MONSTER_BORRAS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MAG_ROADER_4
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_WILD_RAT
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_GOLD_BEAR
-.byte ATTACK_PEARL_LORE, ATTACK_BATTLE          ; MONSTER_INNOC
-.byte ATTACK_FIRE, ATTACK_FIRE_2                ; MONSTER_TRIXTER
-.byte ATTACK_SPECIAL, ATTACK_REVENGE            ; MONSTER_RED_WOLF
-.byte ATTACK_SPECIAL, ATTACK_QUAKE              ; MONSTER_DIDALOS
-.byte ATTACK_SPECIAL, ATTACK_W_WIND             ; MONSTER_WOOLLY
-.byte ATTACK_ROULETTE, ATTACK_CONDEMNED         ; MONSTER_VETERAN
-.byte ATTACK_DOOM, ATTACK_GIGA_VOLT             ; MONSTER_SKY_BASE
-.byte ATTACK_SPECIAL, ATTACK_DISCHORD           ; MONSTER_IRONHITMAN
-.byte ATTACK_SPECIAL, ATTACK_PLASMA             ; MONSTER_IO
-.byte ATTACK_BATTLE, ATTACK_BATTLE              ; MONSTER_PUGS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_WHELK
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_PRESENTER
-.byte ATTACK_SPECIAL, ATTACK_TEK_LASER          ; MONSTER_MEGA_ARMOR
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_VARGAS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TUNNELARMR
-.byte ATTACK_SPECIAL, ATTACK_S_CROSS            ; MONSTER_PROMETHEUS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_GHOSTTRAIN
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_DADALUMA
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SHIVA
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_IFRIT
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_NUMBER_024
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_NUMBER_128
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_INFERNO
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CRANE_1
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CRANE_2
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_UMARO_1
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_UMARO_2
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_GUARDIAN_VECTOR
-.byte ATTACK_SPECIAL, ATTACK_BIG_GUARD          ; MONSTER_GUARDIAN_BOSS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_AIR_FORCE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TRITOCH_INTRO
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TRITOCH_MORPH
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_FLAMEEATER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_ATMAWEAPON
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_NERAPA
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SRBEHEMOTH
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_KEFKA_1
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TENTACLE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_DULLAHAN
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_DOOM_GAZE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CHADARNOOK_1
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CURLEY
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_LARRY
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MOE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_WREXSOUL
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_HIDON
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_KATANASOUL
-.byte ATTACK_BOLT_2, ATTACK_OSMOSE              ; MONSTER_L30_MAGIC
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_HIDONITE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_DOOM
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_GODDESS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_POLTRGEIST
-.byte ATTACK_SPECIAL, ATTACK_ULTIMA             ; MONSTER_FINAL_KEFKA
-.byte ATTACK_DRAIN, ATTACK_MUTE                 ; MONSTER_L40_MAGIC
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_ULTROS_RIVER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_ULTROS_OPERA
-.byte ATTACK_TENTACLE, ATTACK_TENTACLE          ; MONSTER_ULTROS_MOUNTAIN
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CHUPON_AIRSHIP
-.byte ATTACK_QUARTR, ATTACK_RASP                ; MONSTER_L20_MAGIC
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SIEGFRIED_2
-.byte ATTACK_BOLT, ATTACK_SLOW                  ; MONSTER_L10_MAGIC
-.byte ATTACK_BIO, ATTACK_BSERK                  ; MONSTER_L50_MAGIC
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_HEAD
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_WHELK_HEAD
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_COLOSSUS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CZARDRAGON
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MASTER_PUG
-.byte ATTACK_QUAKE, ATTACK_SLOW_2               ; MONSTER_L60_MAGIC
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MERCHANT
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_B_DAY_SUIT
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TENTACLE_1
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TENTACLE_2
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TENTACLE_3
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_RIGHTBLADE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_LEFT_BLADE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_ROUGH
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_STRIKER
-.byte ATTACK_FIRE_3, ATTACK_ICE_3               ; MONSTER_L70_MAGIC
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TRITOCH_BOSS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_LASER_GUN
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SPECK
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MISSILEBAY
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CHADARNOOK_2
-.byte ATTACK_FIRE_3, ATTACK_ICE_3               ; MONSTER_ICE_DRAGON
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_KEFKA_NARSHE
-.byte ATTACK_PEARL_WIND, ATTACK_AERO            ; MONSTER_STORM_DRGN
-.byte ATTACK_MAGNITUDE8, ATTACK_BOLT_3          ; MONSTER_DIRT_DRGN
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_IPOOH
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_LEADER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_GRUNT
-.byte ATTACK_ICE_3, ATTACK_BOLT_3               ; MONSTER_GOLD_DRGN
-.byte ATTACK_RASP, ATTACK_BATTLE                ; MONSTER_SKULL_DRGN
-.byte ATTACK_BLASTER, ATTACK_ICE_3              ; MONSTER_BLUE_DRGN
-.byte ATTACK_PEARL_LORE, ATTACK_FIRE_3          ; MONSTER_RED_DRAGON
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_PIRANHA
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_RIZOPAS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SPECTER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SHORT_ARM
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_LONG_ARM
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_FACE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TIGER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TOOLS
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_MAGIC
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_HIT
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_GIRL
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SLEEP
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_HIDONITE_1
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_HIDONITE_2
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_HIDONITE_3
-.byte ATTACK_RFLECT, ATTACK_CURE_3              ; MONSTER_L80_MAGIC
-.byte ATTACK_METEOR, ATTACK_MERTON              ; MONSTER_L90_MAGIC
-.byte ATTACK_SPECIAL, ATTACK_TEK_LASER          ; MONSTER_PROTOARMOR
-.byte ATTACK_BATTLE, ATTACK_BATTLE              ; MONSTER_MAGIMASTER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SOULSAVER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_ULTROS_AIRSHIP
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_NAUGHTY
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_PHUNBABA_1
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_PHUNBABA_2
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_PHUNBABA_3
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_PHUNBABA_4
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_TERRA_FLASHBACK
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_KEFKA_IMP_CAMP
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CYAN_IMP_CAMP
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_ZONE_EATER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_GAU_VELDT
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_KEFKA_VS_LEO
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_KEFKA_ESPER_GATE
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_OFFICER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_CADET
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_0177
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_0178
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SOLDIER_FLASHBACK
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_KEFKA_VS_ESPER
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_EVENT
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_017C
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_ATMA
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_SHADOW_COLOSSEUM
-.byte ATTACK_SPECIAL, ATTACK_BATTLE             ; MONSTER_COLOSSEUM
+        make_monster_sketch BATTLE, BATTLE              ; GUARD
+        make_monster_sketch SCAN, BATTLE                ; SOLDIER
+        make_monster_sketch SPECIAL, BATTLE             ; TEMPLAR
+        make_monster_sketch FIRE_SKEAN, WATER_EDGE      ; NINJA
+        make_monster_sketch FLARE, DOOM                 ; SAMURAI
+        make_monster_sketch BIO, PEARL                  ; OROG
+        make_monster_sketch SPECIAL, BATTLE             ; MAG_ROADER_1
+        make_monster_sketch SPECIAL, WIND_SLASH         ; RETAINER
+        make_monster_sketch DRAIN, BATTLE               ; HAZER
+        make_monster_sketch MUTE, CURE_2                ; DAHLING
+        make_monster_sketch SPECIAL, BOLT_3             ; RAIN_MAN
+        make_monster_sketch SPECIAL, BATTLE             ; BRAWLER
+        make_monster_sketch SPECIAL, L3_MUDDLE          ; APOKRYPHOS
+        make_monster_sketch L5_DOOM, CLEANSWEEP         ; DARK_FORCE
+        make_monster_sketch QUARTR, DEMI                ; WHISPER
+        make_monster_sketch DREAD, BATTLE               ; OVER_MIND
+        make_monster_sketch SPECIAL, BATTLE             ; OSTEOSAUR
+        make_monster_sketch FIRE, BATTLE                ; COMMANDER
+        make_monster_sketch SPECIAL, SNARE              ; RHODOX
+        make_monster_sketch SPECIAL, BATTLE             ; WERE_RAT
+        make_monster_sketch SPECIAL, FIRE_2             ; URSUS
+        make_monster_sketch MEGA_VOLT, GIGA_VOLT        ; RHINOTAUR
+        make_monster_sketch SPECIAL, SLIDE              ; STEROIDITE
+        make_monster_sketch SPECIAL, BATTLE             ; LEAFER
+        make_monster_sketch SPECIAL, BLASTER            ; STRAY_CAT
+        make_monster_sketch SPECIAL, BATTLE             ; LOBO
+        make_monster_sketch SPECIAL, BATTLE             ; DOBERMAN
+        make_monster_sketch SPECIAL, BLIZZARD           ; VOMAMMOTH
+        make_monster_sketch SPECIAL, BATTLE             ; FIDOR
+        make_monster_sketch SPECIAL, ABSOLUTE0          ; BASKERVOR
+        make_monster_sketch SPECIAL, AQUA_RAKE          ; SURIANDER
+        make_monster_sketch SPECIAL, AQUA_RAKE          ; CHIMERA
+        make_monster_sketch SPECIAL, METEOR             ; BEHEMOTH
+        make_monster_sketch SPECIAL, STEP_MINE          ; MESOSAUR
+        make_monster_sketch SPECIAL, FIRE_BALL          ; PTERODON
+        make_monster_sketch SPECIAL, SAND_STORM         ; FOSSILFANG
+        make_monster_sketch FLARE, PEARL                ; WHITE_DRGN
+        make_monster_sketch FALLEN_ONE, N_CROSS         ; DOOM_DRGN
+        make_monster_sketch SPECIAL, STEP_MINE          ; BRACHOSAUR
+        make_monster_sketch SPECIAL, AERO               ; TYRANOSAUR
+        make_monster_sketch SPECIAL, BATTLE             ; DARK_WIND
+        make_monster_sketch SPECIAL, BATTLE             ; BEAKOR
+        make_monster_sketch SPECIAL, SHIMSHAM           ; VULTURE
+        make_monster_sketch SPECIAL, CYCLONIC           ; HARPY
+        make_monster_sketch SPECIAL, NET                ; HERMITCRAB
+        make_monster_sketch L5_DOOM, L3_MUDDLE          ; TRAPPER
+        make_monster_sketch SPECIAL, BATTLE             ; HORNET
+        make_monster_sketch SPECIAL, BATTLE             ; CRASSHOPPR
+        make_monster_sketch SPECIAL, MEGA_VOLT          ; DELTA_BUG
+        make_monster_sketch SPECIAL, LODE_STONE         ; GILOMANTIS
+        make_monster_sketch SPECIAL, BATTLE             ; TRILIUM
+        make_monster_sketch SPECIAL, CHARM              ; NIGHTSHADE
+        make_monster_sketch SPECIAL, LIFESHAVER         ; TUMBLEWEED
+        make_monster_sketch SPECIAL, BIO                ; BLOOMPIRE
+        make_monster_sketch SPECIAL, BATTLE             ; TRILOBITER
+        make_monster_sketch BATTLE, BATTLE              ; SIEGFRIED_1
+        make_monster_sketch SPECIAL, BATTLE             ; NAUTILOID
+        make_monster_sketch SPECIAL, BATTLE             ; EXOCITE
+        make_monster_sketch SPECIAL, AQUA_RAKE          ; ANGUIFORM
+        make_monster_sketch SPECIAL, SLIMER             ; REACH_FROG
+        make_monster_sketch IMP, REMEDY                 ; LIZARD
+        make_monster_sketch SPECIAL, QUAKE              ; CHICKENLIP
+        make_monster_sketch SPECIAL, SAND_STORM         ; HOOVER
+        make_monster_sketch SPECIAL, VIRITE             ; RIDER
+        make_monster_sketch BATTLE, BATTLE              ; CHUPON_COLOSSEUM
+        make_monster_sketch IMP, ROULETTE               ; PIPSQUEAK
+        make_monster_sketch TEK_LASER, BATTLE           ; M_TEKARMOR
+        make_monster_sketch SPECIAL, TEK_LASER          ; SKY_ARMOR
+        make_monster_sketch LAUNCHER, TEK_LASER         ; TELSTAR
+        make_monster_sketch SPECIAL, MEGAZERK           ; LETHAL_WPN
+        make_monster_sketch SLOW, BATTLE                ; VAPORITE
+        make_monster_sketch SPECIAL, SLIMER             ; FLAN
+        make_monster_sketch SPECIAL, LIFESHAVER         ; ING
+        make_monster_sketch SPECIAL, POISON             ; HUMPTY
+        make_monster_sketch SPECIAL, BLOW_FISH          ; BRAINPAN
+        make_monster_sketch SPECIAL, SLIMER             ; CRULLER
+        make_monster_sketch SPECIAL, BLOW_FISH          ; CACTROT
+        make_monster_sketch SPECIAL, FLARE              ; REPO_MAN
+        make_monster_sketch SPECIAL, FIRE_WALL          ; HARVESTER
+        make_monster_sketch EXPLODER, BLAZE             ; BOMB
+        make_monster_sketch SPECIAL, LULLABY            ; STILL_LIFE
+        make_monster_sketch SPECIAL, METEOR             ; BOXED_SET
+        make_monster_sketch FIRE_2, ICE_2               ; SLAMDANCER
+        make_monster_sketch SPECIAL, MAGNITUDE8         ; HADESGIGAS
+        make_monster_sketch SPECIAL, BREAK              ; PUG
+        make_monster_sketch REMEDY, CURE_3              ; MAGIC_URN
+        make_monster_sketch BATTLE, DISASTER            ; MOVER
+        make_monster_sketch SPECIAL, DISCHORD           ; FIGALIZ
+        make_monster_sketch SPECIAL, BATTLE             ; BUFFALAX
+        make_monster_sketch SPECIAL, GIGA_VOLT          ; ASPIK
+        make_monster_sketch FIRE, X_ZONE                ; GHOST
+        make_monster_sketch SPECIAL, STEP_MINE          ; CRAWLER
+        make_monster_sketch SPECIAL, BATTLE             ; SAND_RAY
+        make_monster_sketch SPECIAL, BATTLE             ; ARENEID
+        make_monster_sketch SPECIAL, AQUA_RAKE          ; ACTANEON
+        make_monster_sketch SPECIAL, SAND_STORM         ; SAND_HORSE
+        make_monster_sketch SPECIAL, FIRE_3             ; DARK_SIDE
+        make_monster_sketch SPECIAL, SOUR_MOUTH         ; MAD_OSCAR
+        make_monster_sketch SPECIAL, BATTLE             ; CRAWLY
+        make_monster_sketch SPECIAL, BATTLE             ; BLEARY
+        make_monster_sketch SPECIAL, BATTLE             ; MARSHAL
+        make_monster_sketch SPECIAL, BATTLE             ; TROOPER
+        make_monster_sketch SPECIAL, CURE_2             ; GENERAL
+        make_monster_sketch SPECIAL, WIND_SLASH         ; COVERT
+        make_monster_sketch BATTLE, METEOR              ; OGOR
+        make_monster_sketch SPECIAL, PEARL              ; WARLOCK
+        make_monster_sketch FLARE, PEARL                ; MADAM
+        make_monster_sketch SPECIAL, BOLT_2             ; JOKER
+        make_monster_sketch SPECIAL, STONE              ; IRON_FIST
+        make_monster_sketch FIRE_3, BOLT_3              ; GOBLIN
+        make_monster_sketch SPECIAL, SPECIAL            ; APPARITE
+        make_monster_sketch SPECIAL, FLARE              ; POWERDEMON
+        make_monster_sketch SPECIAL, DOOM               ; DISPLAYER
+        make_monster_sketch SPECIAL, BATTLE             ; VECTOR_PUP
+        make_monster_sketch SPECIAL, PEARL_WIND         ; PEEPERS
+        make_monster_sketch SPECIAL, BATTLE             ; SEWER_RAT
+        make_monster_sketch SPECIAL, SHIMSHAM           ; SLATTER
+        make_monster_sketch SPECIAL, LIFE_3             ; RHINOX
+        make_monster_sketch SPECIAL, BATTLE             ; RHOBITE
+        make_monster_sketch SPECIAL, BLASTER            ; WILD_CAT
+        make_monster_sketch SPECIAL, BATTLE             ; RED_FANG
+        make_monster_sketch SPECIAL, BATTLE             ; BOUNTY_MAN
+        make_monster_sketch SPECIAL, BLIZZARD           ; TUSKER
+        make_monster_sketch SPECIAL, BATTLE             ; RALPH
+        make_monster_sketch SPECIAL, BATTLE             ; CHITONID
+        make_monster_sketch SPECIAL, BATTLE             ; WART_PUCK
+        make_monster_sketch EL_NINO, SURGE              ; RHYOS
+        make_monster_sketch SPECIAL, FIRE_3             ; SRBEHEMOTH_UNDEAD
+        make_monster_sketch SPECIAL, PEARL_WIND         ; VECTAUR
+        make_monster_sketch SPECIAL, CYCLONIC           ; WYVERN
+        make_monster_sketch SPECIAL, BOLT_3             ; ZOMBONE
+        make_monster_sketch SPECIAL, REVENGE            ; DRAGON
+        make_monster_sketch SPECIAL, FIRE_3             ; BRONTAUR
+        make_monster_sketch SPECIAL, DOOM               ; ALLOSAURUS
+        make_monster_sketch SPECIAL, BATTLE             ; CIRPIUS
+        make_monster_sketch SPECIAL, AERO               ; SPRINTER
+        make_monster_sketch SPECIAL, SHIMSHAM           ; GOBBLER
+        make_monster_sketch SPECIAL, AERO               ; HARPIAI
+        make_monster_sketch SPECIAL, NET                ; GLOOMSHELL
+        make_monster_sketch SPECIAL, MUDDLE             ; DROP
+        make_monster_sketch SPECIAL, BATTLE             ; MIND_CANDY
+        make_monster_sketch SPECIAL, LIFESHAVER         ; WEEDFEEDER
+        make_monster_sketch SPECIAL, LAND_SLIDE         ; LURIDAN
+        make_monster_sketch SPECIAL, SHRAPNEL           ; TOE_CUTTER
+        make_monster_sketch SPECIAL, POISON             ; OVER_GRUNK
+        make_monster_sketch SPECIAL, VIRITE             ; EXORAY
+        make_monster_sketch SPECIAL, LIFESHAVER         ; CRUSHER
+        make_monster_sketch BIO, QUAKE                  ; UROBUROS
+        make_monster_sketch SPECIAL, BATTLE             ; PRIMORDITE
+        make_monster_sketch SPECIAL, ATOMIC_RAY         ; SKY_CAP
+        make_monster_sketch SPECIAL, BATTLE             ; CEPHALER
+        make_monster_sketch SPECIAL, BATTLE             ; MALIGA
+        make_monster_sketch SPECIAL, SLIMER             ; GIGAN_TOAD
+        make_monster_sketch SPECIAL, BREAK              ; GECKOREX
+        make_monster_sketch SPECIAL, QUAKE              ; CLUCK
+        make_monster_sketch SPECIAL, MAGNITUDE8         ; LAND_WORM
+        make_monster_sketch SPECIAL, FLASH_RAIN         ; TEST_RIDER
+        make_monster_sketch SPECIAL, TEK_LASER          ; PLUTOARMOR
+        make_monster_sketch SPECIAL, STEP_MINE          ; TOMB_THUMB
+        make_monster_sketch SPECIAL, TEK_LASER          ; HEAVYARMOR
+        make_monster_sketch SPECIAL, PLASMA             ; CHASER
+        make_monster_sketch SPECIAL, EXPLODER           ; SCULLION
+        make_monster_sketch SLOW, BATTLE                ; POPLIUM
+        make_monster_sketch SPECIAL, STEP_MINE          ; INTANGIR
+        make_monster_sketch SPECIAL, LIFESHAVER         ; MISFIT
+        make_monster_sketch SPECIAL, BIO                ; ELAND
+        make_monster_sketch SPECIAL, CLEANSWEEP         ; ENUO
+        make_monster_sketch SPECIAL, DREAD              ; DEEP_EYE
+        make_monster_sketch SPECIAL, SPECIAL            ; GREASEMONK
+        make_monster_sketch SPECIAL, IMP                ; NECKHUNTER
+        make_monster_sketch SPECIAL, BLAZE              ; GRENADE
+        make_monster_sketch SPECIAL, CONDEMNED          ; CRITIC
+        make_monster_sketch SPECIAL, REVENGE            ; PAN_DORA
+        make_monster_sketch DRAIN, OSMOSE               ; SOULDANCER
+        make_monster_sketch SPECIAL, BATTLE             ; GIGANTOS
+        make_monster_sketch SPECIAL, BATTLE             ; MAG_ROADER_2
+        make_monster_sketch SPECIAL, BLASTER            ; SPEK_TOR
+        make_monster_sketch SPECIAL, GIGA_VOLT          ; PARASITE
+        make_monster_sketch SPECIAL, BIG_GUARD          ; EARTHGUARD
+        make_monster_sketch SPECIAL, MAGNITUDE8         ; COELECITE
+        make_monster_sketch IMP, GIGA_VOLT              ; ANEMONE
+        make_monster_sketch ACID_RAIN, FLASH_RAIN       ; HIPOCAMPUS
+        make_monster_sketch BOLT, FIRE                  ; SPECTRE
+        make_monster_sketch POISON, SOUR_MOUTH          ; EVIL_OSCAR
+        make_monster_sketch SPECIAL, BATTLE             ; SLURM
+        make_monster_sketch SPECIAL, MAGNITUDE8         ; LATIMERIA
+        make_monster_sketch SPECIAL, BATTLE             ; STILLGOING
+        make_monster_sketch SPECIAL, SPECIAL            ; ALLO_VER
+        make_monster_sketch SPECIAL, BLOW_FISH          ; PHASE
+        make_monster_sketch SPECIAL, BATTLE             ; OUTSIDER
+        make_monster_sketch SPECIAL, LOVE_TOKEN         ; BARB_E
+        make_monster_sketch SPECIAL, FLASH_RAIN         ; PARASOUL
+        make_monster_sketch POISON, DRAIN               ; PM_STALKER
+        make_monster_sketch SPECIAL, SHOCK_WAVE         ; HEMOPHYTE
+        make_monster_sketch SPECIAL, BATTLE             ; SP_FORCES
+        make_monster_sketch CURE, CURE_2                ; NOHRABBIT
+        make_monster_sketch RASP, DEMI                  ; WIZARD
+        make_monster_sketch SPECIAL, ELF_FIRE           ; SCRAPPER
+        make_monster_sketch IMP, GIGA_VOLT              ; CERITOPS
+        make_monster_sketch SPECIAL, BATTLE             ; COMMANDO
+        make_monster_sketch SPECIAL, SLIDE              ; OPINICUS
+        make_monster_sketch IMP, STONE                  ; POPPERS
+        make_monster_sketch SPECIAL, BATTLE             ; LUNARIS
+        make_monster_sketch SPECIAL, ICE_3              ; GARM
+        make_monster_sketch SPECIAL, ACID_RAIN          ; VINDR
+        make_monster_sketch IMP, CYCLONIC               ; KIWOK
+        make_monster_sketch SPECIAL, BATTLE             ; NASTIDON
+        make_monster_sketch SLOW, BATTLE                ; RINN
+        make_monster_sketch SPECIAL, BATTLE             ; INSECARE
+        make_monster_sketch SPECIAL, BIO                ; VERMIN
+        make_monster_sketch SPECIAL, WIND_SLASH         ; MANTODEA
+        make_monster_sketch SPECIAL, BATTLE             ; BOGY
+        make_monster_sketch SPECIAL, BATTLE             ; PRUSSIAN
+        make_monster_sketch SAND_STORM, FALLEN_ONE      ; BLACK_DRGN
+        make_monster_sketch SPECIAL, BLASTER            ; ADAMANCHYT
+        make_monster_sketch SPECIAL, L3_MUDDLE          ; DANTE
+        make_monster_sketch SPECIAL, CYCLONIC           ; WIREY_DRGN
+        make_monster_sketch SPECIAL, GIGA_VOLT          ; DUELLER
+        make_monster_sketch SPECIAL, LIFESHAVER         ; PSYCHOT
+        make_monster_sketch SPECIAL, PEP_UP             ; MUUS
+        make_monster_sketch BREAK, BOLT_3               ; KARKASS
+        make_monster_sketch BATTLE, BATTLE              ; PUNISHER
+        make_monster_sketch SPECIAL, EXPLODER           ; BALLOON
+        make_monster_sketch SPECIAL, VANISH             ; GABBLDEGAK
+        make_monster_sketch SPECIAL, METEOR             ; GTBEHEMOTH
+        make_monster_sketch SPECIAL, BATTLE             ; SCORPION
+        make_monster_sketch SPECIAL, DISASTER           ; CHAOS_DRGN
+        make_monster_sketch SPECIAL, TEK_LASER          ; SPIT_FIRE
+        make_monster_sketch GIGA_VOLT, AQUA_RAKE        ; VECTAGOYLE
+        make_monster_sketch FIRE, FIRE_2                ; LICH
+        make_monster_sketch SPECIAL, SHIMSHAM           ; OSPREY
+        make_monster_sketch SPECIAL, BATTLE             ; MAG_ROADER_3
+        make_monster_sketch SPECIAL, BATTLE             ; BUG
+        make_monster_sketch SPECIAL, BATTLE             ; SEA_FLOWER
+        make_monster_sketch SPECIAL, SHRAPNEL           ; FORTIS
+        make_monster_sketch SPECIAL, POISON             ; ABOLISHER
+        make_monster_sketch SPECIAL, CYCLONIC           ; AQUILA
+        make_monster_sketch SPECIAL, BOLT_3             ; JUNK
+        make_monster_sketch SPECIAL, RAID               ; MANDRAKE
+        make_monster_sketch SPECIAL, BATTLE             ; 1ST_CLASS
+        make_monster_sketch SPECIAL, SLOW_2             ; TAP_DANCER
+        make_monster_sketch X_ZONE, DOOM                ; NECROMANCR
+        make_monster_sketch SPECIAL, SPECIAL            ; BORRAS
+        make_monster_sketch SPECIAL, BATTLE             ; MAG_ROADER_4
+        make_monster_sketch SPECIAL, BATTLE             ; WILD_RAT
+        make_monster_sketch SPECIAL, BATTLE             ; GOLD_BEAR
+        make_monster_sketch PEARL_LORE, BATTLE          ; INNOC
+        make_monster_sketch FIRE, FIRE_2                ; TRIXTER
+        make_monster_sketch SPECIAL, REVENGE            ; RED_WOLF
+        make_monster_sketch SPECIAL, QUAKE              ; DIDALOS
+        make_monster_sketch SPECIAL, W_WIND             ; WOOLLY
+        make_monster_sketch ROULETTE, CONDEMNED         ; VETERAN
+        make_monster_sketch DOOM, GIGA_VOLT             ; SKY_BASE
+        make_monster_sketch SPECIAL, DISCHORD           ; IRONHITMAN
+        make_monster_sketch SPECIAL, PLASMA             ; IO
+        make_monster_sketch BATTLE, BATTLE              ; PUGS
+        make_monster_sketch SPECIAL, BATTLE             ; WHELK
+        make_monster_sketch SPECIAL, BATTLE             ; PRESENTER
+        make_monster_sketch SPECIAL, TEK_LASER          ; MEGA_ARMOR
+        make_monster_sketch SPECIAL, BATTLE             ; VARGAS
+        make_monster_sketch SPECIAL, BATTLE             ; TUNNELARMR
+        make_monster_sketch SPECIAL, S_CROSS            ; PROMETHEUS
+        make_monster_sketch SPECIAL, BATTLE             ; GHOSTTRAIN
+        make_monster_sketch SPECIAL, BATTLE             ; DADALUMA
+        make_monster_sketch SPECIAL, BATTLE             ; SHIVA
+        make_monster_sketch SPECIAL, BATTLE             ; IFRIT
+        make_monster_sketch SPECIAL, BATTLE             ; NUMBER_024
+        make_monster_sketch SPECIAL, BATTLE             ; NUMBER_128
+        make_monster_sketch SPECIAL, BATTLE             ; INFERNO
+        make_monster_sketch SPECIAL, BATTLE             ; CRANE_1
+        make_monster_sketch SPECIAL, BATTLE             ; CRANE_2
+        make_monster_sketch SPECIAL, BATTLE             ; UMARO_1
+        make_monster_sketch SPECIAL, BATTLE             ; UMARO_2
+        make_monster_sketch SPECIAL, BATTLE             ; GUARDIAN_VECTOR
+        make_monster_sketch SPECIAL, BIG_GUARD          ; GUARDIAN_BOSS
+        make_monster_sketch SPECIAL, BATTLE             ; AIR_FORCE
+        make_monster_sketch SPECIAL, BATTLE             ; TRITOCH_INTRO
+        make_monster_sketch SPECIAL, BATTLE             ; TRITOCH_MORPH
+        make_monster_sketch SPECIAL, BATTLE             ; FLAMEEATER
+        make_monster_sketch SPECIAL, BATTLE             ; ATMAWEAPON
+        make_monster_sketch SPECIAL, BATTLE             ; NERAPA
+        make_monster_sketch SPECIAL, BATTLE             ; SRBEHEMOTH
+        make_monster_sketch SPECIAL, BATTLE             ; KEFKA_1
+        make_monster_sketch SPECIAL, BATTLE             ; TENTACLE
+        make_monster_sketch SPECIAL, BATTLE             ; DULLAHAN
+        make_monster_sketch SPECIAL, BATTLE             ; DOOM_GAZE
+        make_monster_sketch SPECIAL, BATTLE             ; CHADARNOOK_1
+        make_monster_sketch SPECIAL, BATTLE             ; CURLEY
+        make_monster_sketch SPECIAL, BATTLE             ; LARRY
+        make_monster_sketch SPECIAL, BATTLE             ; MOE
+        make_monster_sketch SPECIAL, BATTLE             ; WREXSOUL
+        make_monster_sketch SPECIAL, BATTLE             ; HIDON
+        make_monster_sketch SPECIAL, BATTLE             ; KATANASOUL
+        make_monster_sketch BOLT_2, OSMOSE              ; L30_MAGIC
+        make_monster_sketch SPECIAL, BATTLE             ; HIDONITE
+        make_monster_sketch SPECIAL, BATTLE             ; DOOM
+        make_monster_sketch SPECIAL, BATTLE             ; GODDESS
+        make_monster_sketch SPECIAL, BATTLE             ; POLTRGEIST
+        make_monster_sketch SPECIAL, ULTIMA             ; FINAL_KEFKA
+        make_monster_sketch DRAIN, MUTE                 ; L40_MAGIC
+        make_monster_sketch SPECIAL, BATTLE             ; ULTROS_RIVER
+        make_monster_sketch SPECIAL, BATTLE             ; ULTROS_OPERA
+        make_monster_sketch TENTACLE, TENTACLE          ; ULTROS_MOUNTAIN
+        make_monster_sketch SPECIAL, BATTLE             ; CHUPON_AIRSHIP
+        make_monster_sketch QUARTR, RASP                ; L20_MAGIC
+        make_monster_sketch SPECIAL, BATTLE             ; SIEGFRIED_2
+        make_monster_sketch BOLT, SLOW                  ; L10_MAGIC
+        make_monster_sketch BIO, BSERK                  ; L50_MAGIC
+        make_monster_sketch SPECIAL, BATTLE             ; HEAD
+        make_monster_sketch SPECIAL, BATTLE             ; WHELK_HEAD
+        make_monster_sketch SPECIAL, BATTLE             ; COLOSSUS
+        make_monster_sketch SPECIAL, BATTLE             ; CZARDRAGON
+        make_monster_sketch SPECIAL, BATTLE             ; MASTER_PUG
+        make_monster_sketch QUAKE, SLOW_2               ; L60_MAGIC
+        make_monster_sketch SPECIAL, BATTLE             ; MERCHANT
+        make_monster_sketch SPECIAL, BATTLE             ; B_DAY_SUIT
+        make_monster_sketch SPECIAL, BATTLE             ; TENTACLE_1
+        make_monster_sketch SPECIAL, BATTLE             ; TENTACLE_2
+        make_monster_sketch SPECIAL, BATTLE             ; TENTACLE_3
+        make_monster_sketch SPECIAL, BATTLE             ; RIGHTBLADE
+        make_monster_sketch SPECIAL, BATTLE             ; LEFT_BLADE
+        make_monster_sketch SPECIAL, BATTLE             ; ROUGH
+        make_monster_sketch SPECIAL, BATTLE             ; STRIKER
+        make_monster_sketch FIRE_3, ICE_3               ; L70_MAGIC
+        make_monster_sketch SPECIAL, BATTLE             ; TRITOCH_BOSS
+        make_monster_sketch SPECIAL, BATTLE             ; LASER_GUN
+        make_monster_sketch SPECIAL, BATTLE             ; SPECK
+        make_monster_sketch SPECIAL, BATTLE             ; MISSILEBAY
+        make_monster_sketch SPECIAL, BATTLE             ; CHADARNOOK_2
+        make_monster_sketch FIRE_3, ICE_3               ; ICE_DRAGON
+        make_monster_sketch SPECIAL, BATTLE             ; KEFKA_NARSHE
+        make_monster_sketch PEARL_WIND, AERO            ; STORM_DRGN
+        make_monster_sketch MAGNITUDE8, BOLT_3          ; DIRT_DRGN
+        make_monster_sketch SPECIAL, BATTLE             ; IPOOH
+        make_monster_sketch SPECIAL, BATTLE             ; LEADER
+        make_monster_sketch SPECIAL, BATTLE             ; GRUNT
+        make_monster_sketch ICE_3, BOLT_3               ; GOLD_DRGN
+        make_monster_sketch RASP, BATTLE                ; SKULL_DRGN
+        make_monster_sketch BLASTER, ICE_3              ; BLUE_DRGN
+        make_monster_sketch PEARL_LORE, FIRE_3          ; RED_DRAGON
+        make_monster_sketch SPECIAL, BATTLE             ; PIRANHA
+        make_monster_sketch SPECIAL, BATTLE             ; RIZOPAS
+        make_monster_sketch SPECIAL, BATTLE             ; SPECTER
+        make_monster_sketch SPECIAL, BATTLE             ; SHORT_ARM
+        make_monster_sketch SPECIAL, BATTLE             ; LONG_ARM
+        make_monster_sketch SPECIAL, BATTLE             ; FACE
+        make_monster_sketch SPECIAL, BATTLE             ; TIGER
+        make_monster_sketch SPECIAL, BATTLE             ; TOOLS
+        make_monster_sketch SPECIAL, BATTLE             ; MAGIC
+        make_monster_sketch SPECIAL, BATTLE             ; HIT
+        make_monster_sketch SPECIAL, BATTLE             ; GIRL
+        make_monster_sketch SPECIAL, BATTLE             ; SLEEP
+        make_monster_sketch SPECIAL, BATTLE             ; HIDONITE_1
+        make_monster_sketch SPECIAL, BATTLE             ; HIDONITE_2
+        make_monster_sketch SPECIAL, BATTLE             ; HIDONITE_3
+        make_monster_sketch RFLECT, CURE_3              ; L80_MAGIC
+        make_monster_sketch METEOR, MERTON              ; L90_MAGIC
+        make_monster_sketch SPECIAL, TEK_LASER          ; PROTOARMOR
+        make_monster_sketch BATTLE, BATTLE              ; MAGIMASTER
+        make_monster_sketch SPECIAL, BATTLE             ; SOULSAVER
+        make_monster_sketch SPECIAL, BATTLE             ; ULTROS_AIRSHIP
+        make_monster_sketch SPECIAL, BATTLE             ; NAUGHTY
+        make_monster_sketch SPECIAL, BATTLE             ; PHUNBABA_1
+        make_monster_sketch SPECIAL, BATTLE             ; PHUNBABA_2
+        make_monster_sketch SPECIAL, BATTLE             ; PHUNBABA_3
+        make_monster_sketch SPECIAL, BATTLE             ; PHUNBABA_4
+        make_monster_sketch SPECIAL, BATTLE             ; TERRA_FLASHBACK
+        make_monster_sketch SPECIAL, BATTLE             ; KEFKA_IMP_CAMP
+        make_monster_sketch SPECIAL, BATTLE             ; CYAN_IMP_CAMP
+        make_monster_sketch SPECIAL, BATTLE             ; ZONE_EATER
+        make_monster_sketch SPECIAL, BATTLE             ; GAU_VELDT
+        make_monster_sketch SPECIAL, BATTLE             ; KEFKA_VS_LEO
+        make_monster_sketch SPECIAL, BATTLE             ; KEFKA_ESPER_GATE
+        make_monster_sketch SPECIAL, BATTLE             ; OFFICER
+        make_monster_sketch SPECIAL, BATTLE             ; CADET
+        make_monster_sketch SPECIAL, BATTLE             ; 0177
+        make_monster_sketch SPECIAL, BATTLE             ; 0178
+        make_monster_sketch SPECIAL, BATTLE             ; SOLDIER_FLASHBACK
+        make_monster_sketch SPECIAL, BATTLE             ; KEFKA_VS_ESPER
+        make_monster_sketch SPECIAL, BATTLE             ; EVENT
+        make_monster_sketch SPECIAL, BATTLE             ; 017C
+        make_monster_sketch SPECIAL, BATTLE             ; ATMA
+        make_monster_sketch SPECIAL, BATTLE             ; SHADOW_COLOSSEUM
+        make_monster_sketch SPECIAL, BATTLE             ; COLOSSEUM
 
 ; ------------------------------------------------------------------------------

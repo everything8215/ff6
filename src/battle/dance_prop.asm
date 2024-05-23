@@ -1,68 +1,36 @@
+; ------------------------------------------------------------------------------
+
+.mac make_dance_prop attack1, attack2, attack3, attack4
+        .byte ATTACK::attack1, ATTACK::attack2
+        .byte ATTACK::attack3, ATTACK::attack4
+.endmac
+
+; ------------------------------------------------------------------------------
 
 DanceProp:
 
-; ------------------------------------------------------------------------------
-
 ; 0: wind song
-        .byte ATTACK_WIND_SLASH
-        .byte ATTACK_SUN_BATH
-        .byte ATTACK_PLASMA
-        .byte ATTACK_COKATRICE
-
-; ------------------------------------------------------------------------------
+        make_dance_prop WIND_SLASH, SUN_BATH, PLASMA, COKATRICE
 
 ; 1: forest suite
-        .byte ATTACK_RAGE
-        .byte ATTACK_HARVESTER
-        .byte ATTACK_ELF_FIRE
-        .byte ATTACK_WOMBAT
-
-; ------------------------------------------------------------------------------
+        make_dance_prop RAGE, HARVESTER, ELF_FIRE, WOMBAT
 
 ; 2: desert aria
-        .byte ATTACK_SAND_STORM
-        .byte ATTACK_ANTLION
-        .byte ATTACK_WIND_SLASH
-        .byte ATTACK_KITTY
-
-; ------------------------------------------------------------------------------
+        make_dance_prop SAND_STORM, ANTLION, WIND_SLASH, KITTY
 
 ; 3: love sonata
-        .byte ATTACK_ELF_FIRE
-        .byte ATTACK_SPECTER
-        .byte ATTACK_SNARE
-        .byte ATTACK_TAPIR
-
-; ------------------------------------------------------------------------------
+        make_dance_prop ELF_FIRE, SPECTER, SNARE, TAPIR
 
 ; 4: earth blues
-        .byte ATTACK_LAND_SLIDE
-        .byte ATTACK_SONIC_BOOM
-        .byte ATTACK_SUN_BATH
-        .byte ATTACK_WHUMP
-
-; ------------------------------------------------------------------------------
+        make_dance_prop LAND_SLIDE, SONIC_BOOM, SUN_BATH, WHUMP
 
 ; 5: water rondo
-        .byte ATTACK_EL_NINO
-        .byte ATTACK_PLASMA
-        .byte ATTACK_SPECTER
-        .byte ATTACK_WILD_BEAR
-
-; ------------------------------------------------------------------------------
+        make_dance_prop EL_NINO, PLASMA, SPECTER, WILD_BEAR
 
 ; 6: dusk requiem
-        .byte ATTACK_CAVE_IN
-        .byte ATTACK_SNARE
-        .byte ATTACK_ELF_FIRE
-        .byte ATTACK_POIS_FROG
-
-; ------------------------------------------------------------------------------
+        make_dance_prop CAVE_IN, SNARE, ELF_FIRE, POIS_FROG
 
 ; 7: snowman jazz
-        .byte ATTACK_SNOWBALL
-        .byte ATTACK_SURGE
-        .byte ATTACK_SNARE
-        .byte ATTACK_ICE_RABBIT
+        make_dance_prop SNOWBALL, SURGE, SNARE, ICE_RABBIT
 
 ; ------------------------------------------------------------------------------

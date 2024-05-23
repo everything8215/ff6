@@ -22,199 +22,174 @@
 
 ; ------------------------------------------------------------------------------
 
+.mac make_battle_prop flags, target
+        make_bitmask .byte, 0, BATTLE_CMD_FLAG, flags
+        make_bitmask .byte, 0, TARGET, target
+.endmac
+
+; ------------------------------------------------------------------------------
+
 ; cf/fe00
 BattleCmdProp:
 
 ; ------------------------------------------------------------------------------
 
 ; $00: fight
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_IMP|BATTLE_CMD_FLAG_UNKNOWN
-.byte TARGET_MANUAL|TARGET_INIT_SINGLE|TARGET_ENEMY
+make_battle_prop {GOGO, MIMIC, IMP, UNKNOWN}, {MANUAL, INIT_SINGLE, ENEMY}
 
 ; ------------------------------------------------------------------------------
 
 ; $01: item
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_IMP
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC, IMP}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $02: magic
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_IMP
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC, IMP}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $03: morph
-.byte BATTLE_CMD_FLAG_NONE
-.byte TARGET_SELF
+make_battle_prop NONE, SELF
 
 ; ------------------------------------------------------------------------------
 
 ; $04: revert
-.byte BATTLE_CMD_FLAG_IMP
-.byte TARGET_SELF
+make_battle_prop IMP, SELF
 
 ; ------------------------------------------------------------------------------
 
 ; $05: steal
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_UNKNOWN
-.byte TARGET_MANUAL|TARGET_ONE_SIDE|TARGET_INIT_SINGLE|TARGET_ENEMY
+make_battle_prop {GOGO, MIMIC, UNKNOWN}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
 ; ------------------------------------------------------------------------------
 
 ; $06: capture
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_UNKNOWN
-.byte TARGET_MANUAL|TARGET_ONE_SIDE|TARGET_INIT_SINGLE|TARGET_ENEMY
+make_battle_prop {GOGO, MIMIC, UNKNOWN}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
 ; ------------------------------------------------------------------------------
 
 ; $07: swdtech
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $08: throw
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $09: tools
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $0a: blitz
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $0b: runic
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_SELF
+make_battle_prop {GOGO, MIMIC}, SELF
 
 ; ------------------------------------------------------------------------------
 
 ; $0c: lore
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $0d: sketch
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_MANUAL|TARGET_ONE_SIDE|TARGET_INIT_SINGLE|TARGET_ENEMY
+make_battle_prop {GOGO, MIMIC}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
 ; ------------------------------------------------------------------------------
 
 ; $0e: control
-.byte BATTLE_CMD_FLAG_GOGO
-.byte TARGET_MANUAL|TARGET_ONE_SIDE|TARGET_INIT_SINGLE|TARGET_ENEMY
+make_battle_prop {GOGO}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
 ; ------------------------------------------------------------------------------
 
 ; $0f: slot
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $10: rage
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_UNKNOWN
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC, UNKNOWN}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $11: leap
-.byte BATTLE_CMD_FLAG_NONE
-.byte TARGET_SELF
+make_battle_prop NONE, SELF
 
 ; ------------------------------------------------------------------------------
 
 ; $12: mimic
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_IMP
-.byte TARGET_SELF
+make_battle_prop {GOGO, IMP}, SELF
 
 ; ------------------------------------------------------------------------------
 
 ; $13: dance
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $14: row
-.byte BATTLE_CMD_FLAG_IMP
-.byte TARGET_MENU
+make_battle_prop {IMP}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $15: def
-.byte BATTLE_CMD_FLAG_IMP
-.byte TARGET_MENU
+make_battle_prop {IMP}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $16: jump
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_IMP
-.byte TARGET_MANUAL|TARGET_ONE_SIDE|TARGET_INIT_SINGLE|TARGET_ENEMY
+make_battle_prop {GOGO, IMP}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
 ; ------------------------------------------------------------------------------
 
 ; $17: x_magic
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_IMP
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC, IMP}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $18: gp_rain
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_ONE_SIDE|TARGET_INIT_GROUP|TARGET_MULTI_TARGET|TARGET_ENEMY
+make_battle_prop {GOGO, MIMIC}, {ONE_SIDE, INIT_GROUP, MULTI_TARGET, ENEMY}
 
 ; ------------------------------------------------------------------------------
 
 ; $19: summon
-.byte BATTLE_CMD_FLAG_GOGO|BATTLE_CMD_FLAG_MIMIC
-.byte TARGET_MENU
+make_battle_prop {GOGO, MIMIC}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $1a: health
-.byte BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_IMP
-.byte TARGET_ONE_SIDE|TARGET_INIT_HALF|TARGET_MULTI_TARGET
+make_battle_prop {MIMIC, IMP}, {ONE_SIDE, INIT_HALF, MULTI_TARGET}
 
 ; ------------------------------------------------------------------------------
 
 ; $1b: shock
-.byte BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_IMP
-.byte TARGET_ONE_SIDE|TARGET_INIT_HALF|TARGET_MULTI_TARGET|TARGET_ENEMY
+make_battle_prop {MIMIC, IMP}, {ONE_SIDE, INIT_HALF, MULTI_TARGET, ENEMY}
 
 ; ------------------------------------------------------------------------------
 
 ; $1c: possess
-.byte BATTLE_CMD_FLAG_GOGO
-.byte TARGET_MANUAL|TARGET_ONE_SIDE|TARGET_INIT_SINGLE|TARGET_ENEMY
+make_battle_prop {GOGO}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
 ; ------------------------------------------------------------------------------
 
 ; $1d: magitek
-.byte BATTLE_CMD_FLAG_MIMIC|BATTLE_CMD_FLAG_UNKNOWN
-.byte TARGET_MENU
+make_battle_prop {MIMIC, UNKNOWN}, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $1e:
-.byte BATTLE_CMD_FLAG_NONE
-.byte TARGET_MENU
+make_battle_prop NONE, MENU
 
 ; ------------------------------------------------------------------------------
 
 ; $1f:
-.byte BATTLE_CMD_FLAG_NONE
-.byte TARGET_MENU
+make_battle_prop NONE, MENU
 
 ; ------------------------------------------------------------------------------

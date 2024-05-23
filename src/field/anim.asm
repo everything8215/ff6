@@ -265,7 +265,7 @@ loop:   lda     $7e7200,x
 ; [ init bg animation ]
 
 .proc InitBGAnim
-@8ed5:  jsr     InitBG12Anim
+        jsr     InitBG12Anim
         jsr     InitBG3Anim
         rts
 .endproc  ; InitBGAnim

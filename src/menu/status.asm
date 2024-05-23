@@ -192,7 +192,7 @@ DrawStatusGogoWindow:
         asl
         tax
         lda     f:BattleCmdProp,x
-        and     #BATTLE_CMD_FLAG_GOGO
+        and     #BATTLE_CMD_FLAG::GOGO
         beq     @5e60                   ; branch can't be used by gogo
         lda     $e0
         sta     hWMDATA
@@ -512,7 +512,7 @@ DrawStatusCharInfoAll:
         jsr     HexToDec8
         ldx     #$7cd7
         jsr     DrawNum8
-        jsr     _c360a0
+        jsr     CalcNextLevelExp
         jsr     HexToDec8
         ldx     #$7dd7
         jsr     DrawNum8
@@ -528,15 +528,15 @@ _c36096:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ calculate experience needed to reach next level ]
 
-_c360a0:
-@60a0:  ldx     $67
+.proc CalcNextLevelExp
+        ldx     $67
         clr_a
         lda     a:$0008,x
-        cmp     #$63
-        beq     @60c3
-        jsr     _c360ca
+        cmp     #99
+        beq     max_level
+        jsr     CalcLevelExpTotal
         ldx     $67
         sec
         lda     $f1
@@ -548,23 +548,28 @@ _c360a0:
         sta     $f2
         shorta
         rts
-@60c3:  clr_ax
+
+max_level:
+        clr_ax
         stx     $f1
         stz     $f3
         rts
+.endproc  ; CalcNextLevelExp
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ calculate total experience for level -> ++$f3 ]
 
-_c360ca:
-@60ca:  asl
+; A: level
+
+.proc CalcLevelExpTotal
+        asl
         sta     $eb
         clr_ax
         stx     $f1
         stx     $f3
         stz     $ec
-@60d5:  clc
+loop:   clc
         lda     f:LevelUpExp,x   ; experience progression data
         adc     $f1
         sta     $f1
@@ -577,16 +582,15 @@ _c360ca:
         sta     $f3
         inx
         cpx     $eb
-        bne     @60d5
+        bne     loop
         longa
+.repeat 3
         asl     $f1
         rol     $f3
-        asl     $f1
-        rol     $f3
-        asl     $f1
-        rol     $f3
+.endrep
         shorta
         rts
+.endproc  ; CalcLevelExpTotal
 
 ; ------------------------------------------------------------------------------
 

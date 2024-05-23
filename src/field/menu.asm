@@ -19,11 +19,11 @@
 
 ; [ load saved game ]
 
-RestartGame:
-@c4b3:  ldx     $00
+.proc RestartGame
+        ldx     $00
         txy
         tdc
-@c4b7:  lda     $1600,y
+loop1:  lda     $1600,y
         sta     $7ff1c0,x
         lda     $1608,y
         sta     $7ff1d0,x
@@ -40,7 +40,7 @@ RestartGame:
         shorta0
         inx
         cpx     #$0010
-        bne     @c4b7
+        bne     loop1
         jsr     PushDP
         phb
         phd
@@ -56,9 +56,9 @@ RestartGame:
         jne     JmpReset
         ldx     $00
         txy
-@c509:  lda     $1600,y
+loop2:  lda     $1600,y
         cmp     $7ff1c0,x
-        jne     @c54b
+        jne     skip
         phx
         lda     $1608,y
         dec
@@ -81,16 +81,17 @@ RestartGame:
         phx
         jsr     UpdateAbilities
         plx
-@c54b:  longa_clc
+skip:   longa_clc
         tya
         adc     #$0025
         tay
         shorta0
         inx
         cpx     #$0010
-        jne     @c509
+        jne     loop2
         jsr     UpdateEquip
         rts
+.endproc  ; RestartGame
 
 ; ------------------------------------------------------------------------------
 
@@ -99,15 +100,15 @@ RestartGame:
 ; +$20 = previous level
 ; +$22 = new level
 
-UpdateMaxHP:
-@c562:  longa
+.proc UpdateMaxHP
+        longa
         lda     $160b,y
         and     #$3fff
         sta     $1e                     ; +$1e = max hp
         shorta0
         ldx     $20
-@c571:  cpx     $22                     ; branch if not at target level
-        beq     @c587
+loop:   cpx     $22                     ; branch if at target level
+        beq     done
         lda     f:LevelUpHP,x
         clc
         adc     $1e                     ; add to max hp
@@ -116,16 +117,17 @@ UpdateMaxHP:
         adc     #$00
         sta     $1f
         inx
-        bra     @c571
-@c587:  ldx     #$270f                  ; 9999 maximum
+        bra     loop
+done:   ldx     #9999
         cpx     $1e
-        bcs     @c590
+        bcs     no_max
         stx     $1e
-@c590:  longa
+no_max: longa
         lda     $1e
         sta     $160b,y                 ; set new max hp
         shorta0
         rts
+.endproc  ; UpdateMaxHP
 
 ; ------------------------------------------------------------------------------
 
@@ -134,15 +136,15 @@ UpdateMaxHP:
 ; +$20 = previous level
 ; +$22 = new level
 
-UpdateMaxMP:
-@c59b:  longa
+.proc UpdateMaxMP
+        longa
         lda     $160f,y
         and     #$3fff
         sta     $1e                     ; +$1e = max mp
         shorta0
         ldx     $20
-@c5aa:  cpx     $22                     ; branch if not at target level
-        beq     @c5c0
+loop:   cpx     $22                     ; branch if at target level
+        beq     done
         lda     f:LevelUpMP,x           ; mp progression value
         clc
         adc     $1e                     ; add to max mp
@@ -151,61 +153,63 @@ UpdateMaxMP:
         adc     #$00
         sta     $1f
         inx
-        bra     @c5aa
-@c5c0:  ldx     #$03e7                  ; 999 maximum
+        bra     loop
+done:   ldx     #999
         cpx     $1e
-        bcs     @c5c9
+        bcs     no_max
         stx     $1e
-@c5c9:  longa
+no_max: longa
         lda     $1e
         sta     $160f,y                 ; set new max mp
         shorta0
         rts
+.endproc  ; UpdateMaxMP
 
 ; ------------------------------------------------------------------------------
 
 ; [ check main menu ]
 
-CheckMenu:
-@c5d4:  lda     $59                     ; return if menu is already opening
-        bne     @c62a
+.proc CheckMenu
+        lda     $59                     ; return if menu is already opening
+        bne     done
         lda     $06                     ; return if x button not down
         and     #$40
-        beq     @c62a
+        beq     done
         lda     $56                     ; return if battle enabled
-        bne     @c62a
+        bne     done
         lda     $84                     ; return map load enabled
-        bne     @c62a
+        bne     done
         lda     $4a                     ; return if fading in/out
-        bne     @c62a
+        bne     done
         lda     $055e                   ; return if parties switching ???
-        bne     @c62a
+        bne     done
         ldx     $e5                     ; return if an event is running
         cpx     #.loword(EventScript_NoEvent)
-        bne     @c62a
+        bne     done
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     @c62a
+        bne     done
         ldy     $0803                   ; party object
         lda     $087e,y                 ; return if moving
-        bne     @c62a
+        bne     done
         lda     $0869,y                 ; return if between tiles
-        bne     @c62a
+        bne     done
         lda     $086a,y
         and     #$0f
-        bne     @c62a
+        bne     done
         lda     $086c,y
-        bne     @c62a
+        bne     done
         lda     $086d,y
         and     #$0f
-        bne     @c62a
+        bne     done
         lda     $1eb8                   ; return if main menu is disabled
         and     #$04
-        bne     @c62a
+        bne     done
         lda     #1                      ; open menu
         sta     $59
         jsr     FadeOut
-@c62a:  rts
+done:   rts
+.endproc  ; CheckMenu
 
 ; ------------------------------------------------------------------------------
 
@@ -213,13 +217,13 @@ CheckMenu:
 
 .import EventScript_Tent, EventScript_Warp
 
-OpenMainMenu:
-@c62b:  lda     $4a                     ; return if still fading out
-        bne     @c633
+.proc OpenMainMenu
+        lda     $4a                     ; return if still fading out
+        bne     done
         lda     $59                     ; return if not opening menu
-        bne     @c636
-@c633:  jmp     MainMenuRet
-@c636:  stz     $59                     ; disable menu
+        bne     :+
+done:   jmp     MainMenuRet
+:       stz     $59                     ; disable menu
         lda     #$00                    ; set menu mode to main menu
         sta     $0200
         lda     $1eb7                   ; on a save point
@@ -232,24 +236,26 @@ OpenMainMenu:
         jsr     OpenMenu
         lda     $0205
         cmp     #$02
-        beq     @c65f                   ; branch if a tent was used
+        beq     tent                    ; branch if a tent was used
         cmp     #$03
-        beq     @c670                   ; branch if warp/warp stone was used
+        beq     warp                    ; branch if warp/warp stone was used
         jmp     FieldMain               ; return to main code loop and fade in
-@c65f:  ldx     #.loword(EventScript_Tent)
+
+tent:   ldx     #.loword(EventScript_Tent)
         stx     $e5
         stx     $05f4
         lda     #^EventScript_Tent
         sta     $e7
         sta     $05f6
-        bra     @c67f
-@c670:  ldx     #.loword(EventScript_Warp)
+        bra     :+
+
+warp:   ldx     #.loword(EventScript_Warp)
         stx     $e5
         stx     $05f4
         lda     #^EventScript_Warp
         sta     $e7
         sta     $05f6
-@c67f:  ldy     $0803                   ; party object
+:       ldy     $0803                   ; party object
         lda     $087c,y                 ; set movement type to talking/interacting
         and     #$f0
         ora     #$04
@@ -269,13 +275,14 @@ OpenMainMenu:
         sta     $087c,y
         stz     $58                     ; load new map
         jmp     FieldMain               ; return to main code loop and fade in
+.endproc  ; OpenMainMenu
 
 ; ------------------------------------------------------------------------------
 
 ; [ optimize character's equipment ]
 
-OptimizeCharEquip:
-@c6b3:  jsr     PushCharFlags
+.proc OptimizeCharEquip
+        jsr     PushCharFlags
         jsr     PushDP
         php
         phb
@@ -287,20 +294,21 @@ OptimizeCharEquip:
         jsr     PopDP
         jsr     PopCharFlags
         rts
+.endproc  ; OptimizeCharEquip
 
 ; ------------------------------------------------------------------------------
 
 ; [ open menu ]
 
-OpenMenu:
-@c6ca:  jsr     DisableInterrupts
+.proc OpenMenu
+        jsr     DisableInterrupts
         jsr     PushCharFlags
         jsr     PushPartyPal
         jsr     PushPartyMap
         jsr     PushDP
         ldx     $0541                   ; save scroll position
         stx     $1f66
-        ldx     a:$00af                   ; save party position
+        ldx     a:$00af                 ; save party position
         stx     $1fc0
         ldx     $0803                   ; save pointer to party object data
         stx     $1fa6
@@ -329,5 +337,6 @@ OpenMenu:
         jsr     InitInterrupts
         stz     $4c                     ; clear screen brightness
         rts
+.endproc  ; OpenMenu
 
 ; ------------------------------------------------------------------------------

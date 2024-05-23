@@ -237,20 +237,20 @@ InitNewGame:
 DebugEvent:
         ; cutscene        intro
 
-        char_name       TERRA, CHAR_PROP_TERRA_INTRO
-        char_prop       TERRA, CHAR_PROP_TERRA
+        char_name       TERRA, CHAR_PROP::TERRA_INTRO
+        char_prop       TERRA, CHAR_PROP::TERRA
         create_obj      OBJ_TERRA
         obj_gfx         OBJ_TERRA, MAP_SPRITE_GFX_TERRA
         obj_pal         OBJ_TERRA, MAP_SPRITE_PAL_TERRA
 
-        char_name       LOCKE, CHAR_PROP_LOCKE
-        char_prop       LOCKE, CHAR_PROP_LOCKE
+        char_name       LOCKE, CHAR_PROP::LOCKE
+        char_prop       LOCKE, CHAR_PROP::LOCKE
         create_obj      OBJ_LOCKE
         obj_gfx         OBJ_LOCKE, MAP_SPRITE_GFX_LOCKE
         obj_pal         OBJ_LOCKE, MAP_SPRITE_PAL_LOCKE
 
-        char_name       EDGAR, CHAR_PROP_EDGAR
-        char_prop       EDGAR, CHAR_PROP_EDGAR
+        char_name       EDGAR, CHAR_PROP::EDGAR
+        char_prop       EDGAR, CHAR_PROP::EDGAR
         create_obj      OBJ_EDGAR
         obj_gfx         OBJ_EDGAR, MAP_SPRITE_GFX_EDGAR
         obj_pal         OBJ_EDGAR, MAP_SPRITE_PAL_EDGAR_SABIN_CELES

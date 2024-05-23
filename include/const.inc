@@ -51,6 +51,15 @@ BIT_5                                   = %00100000
 BIT_6                                   = %01000000
 BIT_7                                   = %10000000
 
+BIT_8                                   = %0000000100000000
+BIT_9                                   = %0000001000000000
+BIT_10                                  = %0000010000000000
+BIT_11                                  = %0000100000000000
+BIT_12                                  = %0001000000000000
+BIT_13                                  = %0010000000000000
+BIT_14                                  = %0100000000000000
+BIT_15                                  = %1000000000000000
+
 ; ------------------------------------------------------------------------------
 
 ; movement and facing directions (field module)
@@ -576,262 +585,264 @@ ITEM_EMPTY                              = $ff  ; 255
 ; ------------------------------------------------------------------------------
 
 ; attack ids
-ATTACK_FIRE                             = $00  ; 0
-ATTACK_ICE                              = $01  ; 1
-ATTACK_BOLT                             = $02  ; 2
-ATTACK_POISON                           = $03  ; 3
-ATTACK_DRAIN                            = $04  ; 4
-ATTACK_FIRE_2                           = $05  ; 5
-ATTACK_ICE_2                            = $06  ; 6
-ATTACK_BOLT_2                           = $07  ; 7
-ATTACK_BIO                              = $08  ; 8
-ATTACK_FIRE_3                           = $09  ; 9
-ATTACK_ICE_3                            = $0a  ; 10
-ATTACK_BOLT_3                           = $0b  ; 11
-ATTACK_BREAK                            = $0c  ; 12
-ATTACK_DOOM                             = $0d  ; 13
-ATTACK_PEARL                            = $0e  ; 14
-ATTACK_FLARE                            = $0f  ; 15
-ATTACK_DEMI                             = $10  ; 16
-ATTACK_QUARTR                           = $11  ; 17
-ATTACK_X_ZONE                           = $12  ; 18
-ATTACK_METEOR                           = $13  ; 19
-ATTACK_ULTIMA                           = $14  ; 20
-ATTACK_QUAKE                            = $15  ; 21
-ATTACK_W_WIND                           = $16  ; 22
-ATTACK_MERTON                           = $17  ; 23
-ATTACK_SCAN                             = $18  ; 24
-ATTACK_SLOW                             = $19  ; 25
-ATTACK_RASP                             = $1a  ; 26
-ATTACK_MUTE                             = $1b  ; 27
-ATTACK_SAFE                             = $1c  ; 28
-ATTACK_SLEEP                            = $1d  ; 29
-ATTACK_MUDDLE                           = $1e  ; 30
-ATTACK_HASTE                            = $1f  ; 31
-ATTACK_STOP                             = $20  ; 32
-ATTACK_BSERK                            = $21  ; 33
-ATTACK_FLOAT                            = $22  ; 34
-ATTACK_IMP                              = $23  ; 35
-ATTACK_RFLECT                           = $24  ; 36
-ATTACK_SHELL                            = $25  ; 37
-ATTACK_VANISH                           = $26  ; 38
-ATTACK_HASTE2                           = $27  ; 39
-ATTACK_SLOW_2                           = $28  ; 40
-ATTACK_OSMOSE                           = $29  ; 41
-ATTACK_WARP                             = $2a  ; 42
-ATTACK_QUICK                            = $2b  ; 43
-ATTACK_DISPEL                           = $2c  ; 44
-ATTACK_CURE                             = $2d  ; 45
-ATTACK_CURE_2                           = $2e  ; 46
-ATTACK_CURE_3                           = $2f  ; 47
-ATTACK_LIFE                             = $30  ; 48
-ATTACK_LIFE_2                           = $31  ; 49
-ATTACK_ANTDOT                           = $32  ; 50
-ATTACK_REMEDY                           = $33  ; 51
-ATTACK_REGEN                            = $34  ; 52
-ATTACK_LIFE_3                           = $35  ; 53
-ATTACK_RAMUH                            = $36  ; 54
-ATTACK_IFRIT                            = $37  ; 55
-ATTACK_SHIVA                            = $38  ; 56
-ATTACK_SIREN                            = $39  ; 57
-ATTACK_TERRATO                          = $3a  ; 58
-ATTACK_SHOAT                            = $3b  ; 59
-ATTACK_MADUIN                           = $3c  ; 60
-ATTACK_BISMARK                          = $3d  ; 61
-ATTACK_STRAY                            = $3e  ; 62
-ATTACK_PALIDOR                          = $3f  ; 63
-ATTACK_TRITOCH                          = $40  ; 64
-ATTACK_ODIN                             = $41  ; 65
-ATTACK_RAIDEN                           = $42  ; 66
-ATTACK_BAHAMUT                          = $43  ; 67
-ATTACK_ALEXANDR                         = $44  ; 68
-ATTACK_CRUSADER                         = $45  ; 69
-ATTACK_RAGNAROK                         = $46  ; 70
-ATTACK_KIRIN                            = $47  ; 71
-ATTACK_ZONESEEK                         = $48  ; 72
-ATTACK_CARBUNKL                         = $49  ; 73
-ATTACK_PHANTOM                          = $4a  ; 74
-ATTACK_SRAPHIM                          = $4b  ; 75
-ATTACK_GOLEM                            = $4c  ; 76
-ATTACK_UNICORN                          = $4d  ; 77
-ATTACK_FENRIR                           = $4e  ; 78
-ATTACK_STARLET                          = $4f  ; 79
-ATTACK_PHOENIX                          = $50  ; 80
-ATTACK_FIRE_SKEAN                       = $51  ; 81
-ATTACK_WATER_EDGE                       = $52  ; 82
-ATTACK_BOLT_EDGE                        = $53  ; 83
-ATTACK_STORM                            = $54  ; 84
-ATTACK_DISPATCH                         = $55  ; 85
-ATTACK_RETORT                           = $56  ; 86
-ATTACK_SLASH                            = $57  ; 87
-ATTACK_QUADRA_SLAM                      = $58  ; 88
-ATTACK_EMPOWERER                        = $59  ; 89
-ATTACK_STUNNER                          = $5a  ; 90
-ATTACK_QUADRA_SLICE                     = $5b  ; 91
-ATTACK_CLEAVE                           = $5c  ; 92
-ATTACK_PUMMEL                           = $5d  ; 93
-ATTACK_AURABOLT                         = $5e  ; 94
-ATTACK_SUPLEX                           = $5f  ; 95
-ATTACK_FIRE_DANCE                       = $60  ; 96
-ATTACK_MANTRA                           = $61  ; 97
-ATTACK_AIR_BLADE                        = $62  ; 98
-ATTACK_SPIRALER                         = $63  ; 99
-ATTACK_BUM_RUSH                         = $64  ; 100
-ATTACK_WIND_SLASH                       = $65  ; 101
-ATTACK_SUN_BATH                         = $66  ; 102
-ATTACK_RAGE                             = $67  ; 103
-ATTACK_HARVESTER                        = $68  ; 104
-ATTACK_SAND_STORM                       = $69  ; 105
-ATTACK_ANTLION                          = $6a  ; 106
-ATTACK_ELF_FIRE                         = $6b  ; 107
-ATTACK_SPECTER                          = $6c  ; 108
-ATTACK_LAND_SLIDE                       = $6d  ; 109
-ATTACK_SONIC_BOOM                       = $6e  ; 110
-ATTACK_EL_NINO                          = $6f  ; 111
-ATTACK_PLASMA                           = $70  ; 112
-ATTACK_SNARE                            = $71  ; 113
-ATTACK_CAVE_IN                          = $72  ; 114
-ATTACK_SNOWBALL                         = $73  ; 115
-ATTACK_SURGE                            = $74  ; 116
-ATTACK_COKATRICE                        = $75  ; 117
-ATTACK_WOMBAT                           = $76  ; 118
-ATTACK_KITTY                            = $77  ; 119
-ATTACK_TAPIR                            = $78  ; 120
-ATTACK_WHUMP                            = $79  ; 121
-ATTACK_WILD_BEAR                        = $7a  ; 122
-ATTACK_POIS_FROG                        = $7b  ; 123
-ATTACK_ICE_RABBIT                       = $7c  ; 124
-ATTACK_BIO_BLAST_TOOL                   = $7d  ; 125
-ATTACK_FLASH_TOOL                       = $7e  ; 126
-ATTACK_CHOCOBOP                         = $7f  ; 127
-ATTACK_H_BOMB                           = $80  ; 128
-ATTACK_7_FLUSH                          = $81  ; 129
-ATTACK_SHOCK                            = $82  ; 130
-ATTACK_FIRE_BEAM                        = $83  ; 131
-ATTACK_BOLT_BEAM                        = $84  ; 132
-ATTACK_ICE_BEAM                         = $85  ; 133
-ATTACK_BIO_BLAST                        = $86  ; 134
-ATTACK_HEAL_FORCE                       = $87  ; 135
-ATTACK_CONFUSER                         = $88  ; 136
-ATTACK_XFER                             = $89  ; 137
-ATTACK_TEKMISSILE                       = $8a  ; 138
-ATTACK_CONDEMNED                        = $8b  ; 139
-ATTACK_ROULETTE                         = $8c  ; 140
-ATTACK_CLEANSWEEP                       = $8d  ; 141
-ATTACK_AQUA_RAKE                        = $8e  ; 142
-ATTACK_AERO                             = $8f  ; 143
-ATTACK_BLOW_FISH                        = $90  ; 144
-ATTACK_BIG_GUARD                        = $91  ; 145
-ATTACK_REVENGE                          = $92  ; 146
-ATTACK_PEARL_WIND                       = $93  ; 147
-ATTACK_L5_DOOM                          = $94  ; 148
-ATTACK_L4_FLARE                         = $95  ; 149
-ATTACK_L3_MUDDLE                        = $96  ; 150
-ATTACK_REFLECT_LORE                     = $97  ; 151
-ATTACK_PEARL_LORE                       = $98  ; 152
-ATTACK_STEP_MINE                        = $99  ; 153
-ATTACK_FORCEFIELD                       = $9a  ; 154
-ATTACK_DISCHORD                         = $9b  ; 155
-ATTACK_SOUR_MOUTH                       = $9c  ; 156
-ATTACK_PEP_UP                           = $9d  ; 157
-ATTACK_RIPPLER                          = $9e  ; 158
-ATTACK_STONE                            = $9f  ; 159
-ATTACK_QUASAR                           = $a0  ; 160
-ATTACK_GRANDTRAIN                       = $a1  ; 161
-ATTACK_EXPLODER                         = $a2  ; 162
-ATTACK_IMP_SONG                         = $a3  ; 163
-ATTACK_CLEAR                            = $a4  ; 164
-ATTACK_VIRITE                           = $a5  ; 165
-ATTACK_CHOKESMOKE                       = $a6  ; 166
-ATTACK_SCHILLER                         = $a7  ; 167
-ATTACK_LULLABY                          = $a8  ; 168
-ATTACK_ACID_RAIN                        = $a9  ; 169
-ATTACK_CONFUSION                        = $aa  ; 170
-ATTACK_MEGAZERK                         = $ab  ; 171
-ATTACK_ENEMY_MUTE                       = $ac  ; 172
-ATTACK_NET                              = $ad  ; 173
-ATTACK_SLIMER                           = $ae  ; 174
-ATTACK_DELTA_HIT                        = $af  ; 175
-ATTACK_ENTWINE                          = $b0  ; 176
-ATTACK_BLASTER                          = $b1  ; 177
-ATTACK_CYCLONIC                         = $b2  ; 178
-ATTACK_FIRE_BALL                        = $b3  ; 179
-ATTACK_ATOMIC_RAY                       = $b4  ; 180
-ATTACK_TEK_LASER                        = $b5  ; 181
-ATTACK_DIFFUSER                         = $b6  ; 182
-ATTACK_WAVECANNON                       = $b7  ; 183
-ATTACK_MEGA_VOLT                        = $b8  ; 184
-ATTACK_GIGA_VOLT                        = $b9  ; 185
-ATTACK_BLIZZARD                         = $ba  ; 186
-ATTACK_ABSOLUTE0                        = $bb  ; 187
-ATTACK_MAGNITUDE8                       = $bc  ; 188
-ATTACK_RAID                             = $bd  ; 189
-ATTACK_FLASH_RAIN                       = $be  ; 190
-ATTACK_TEKBARRIER                       = $bf  ; 191
-ATTACK_FALLEN_ONE                       = $c0  ; 192
-ATTACK_WALLCHANGE                       = $c1  ; 193
-ATTACK_ESCAPE                           = $c2  ; 194
-ATTACK_50_GS                            = $c3  ; 195
-ATTACK_MIND_BLAST                       = $c4  ; 196
-ATTACK_N_CROSS                          = $c5  ; 197
-ATTACK_FLARE_STAR                       = $c6  ; 198
-ATTACK_LOVE_TOKEN                       = $c7  ; 199
-ATTACK_SEIZE                            = $c8  ; 200
-ATTACK_R_POLARITY                       = $c9  ; 201
-ATTACK_TARGETTING                       = $ca  ; 202
-ATTACK_SNEEZE                           = $cb  ; 203
-ATTACK_S_CROSS                          = $cc  ; 204
-ATTACK_LAUNCHER                         = $cd  ; 205
-ATTACK_CHARM                            = $ce  ; 206
-ATTACK_COLD_DUST                        = $cf  ; 207
-ATTACK_TENTACLE                         = $d0  ; 208
-ATTACK_HYPERDRIVE                       = $d1  ; 209
-ATTACK_TRAIN                            = $d2  ; 210
-ATTACK_EVIL_TOOT                        = $d3  ; 211
-ATTACK_GRAV_BOMB                        = $d4  ; 212
-ATTACK_ENGULF                           = $d5  ; 213
-ATTACK_DISASTER                         = $d6  ; 214
-ATTACK_SHRAPNEL                         = $d7  ; 215
-ATTACK_BOMBLET                          = $d8  ; 216
-ATTACK_HEART_BURN                       = $d9  ; 217
-ATTACK_ZINGER                           = $da  ; 218
-ATTACK_DISCARD                          = $db  ; 219
-ATTACK_OVERCAST                         = $dc  ; 220
-ATTACK_MISSILE                          = $dd  ; 221
-ATTACK_GONER                            = $de  ; 222
-ATTACK_METEO                            = $df  ; 223
-ATTACK_REVENGER                         = $e0  ; 224
-ATTACK_PHANTASM                         = $e1  ; 225
-ATTACK_DREAD                            = $e2  ; 226
-ATTACK_SHOCK_WAVE                       = $e3  ; 227
-ATTACK_BLAZE                            = $e4  ; 228
-ATTACK_SOUL_OUT                         = $e5  ; 229
-ATTACK_GALE_CUT                         = $e6  ; 230
-ATTACK_SHIMSHAM                         = $e7  ; 231
-ATTACK_LODE_STONE                       = $e8  ; 232
-ATTACK_SCAR_BEAM                        = $e9  ; 233
-ATTACK_BABABREATH                       = $ea  ; 234
-ATTACK_LIFESHAVER                       = $eb  ; 235
-ATTACK_FIRE_WALL                        = $ec  ; 236
-ATTACK_SLIDE                            = $ed  ; 237
-ATTACK_BATTLE                           = $ee  ; 238
-ATTACK_SPECIAL                          = $ef  ; 239
-ATTACK_RIOT_BLADE                       = $f0  ; 240
-ATTACK_MIRAGER                          = $f1  ; 241
-ATTACK_BACK_BLADE                       = $f2  ; 242
-ATTACK_SHADOWFANG                       = $f3  ; 243
-ATTACK_ROYALSHOCK                       = $f4  ; 244
-ATTACK_TIGERBREAK                       = $f5  ; 245
-ATTACK_SPIN_EDGE                        = $f6  ; 246
-ATTACK_SABRESOUL                        = $f7  ; 247
-ATTACK_STAR_PRISM                       = $f8  ; 248
-ATTACK_RED_CARD                         = $f9  ; 249
-ATTACK_MOOGLERUSH                       = $fa  ; 250
-ATTACK_X_METEO                          = $fb  ; 251
-ATTACK_TAKEDOWN                         = $fc  ; 252
-ATTACK_WILD_FANG                        = $fd  ; 253
-ATTACK_LAGOMORPH                        = $fe  ; 254
-ATTACK_NONE                             = $ff  ; 255
+.enum ATTACK
+        FIRE                            = $00  ; 0
+        ICE                             = $01  ; 1
+        BOLT                            = $02  ; 2
+        POISON                          = $03  ; 3
+        DRAIN                           = $04  ; 4
+        FIRE_2                          = $05  ; 5
+        ICE_2                           = $06  ; 6
+        BOLT_2                          = $07  ; 7
+        BIO                             = $08  ; 8
+        FIRE_3                          = $09  ; 9
+        ICE_3                           = $0a  ; 10
+        BOLT_3                          = $0b  ; 11
+        BREAK                           = $0c  ; 12
+        DOOM                            = $0d  ; 13
+        PEARL                           = $0e  ; 14
+        FLARE                           = $0f  ; 15
+        DEMI                            = $10  ; 16
+        QUARTR                          = $11  ; 17
+        X_ZONE                          = $12  ; 18
+        METEOR                          = $13  ; 19
+        ULTIMA                          = $14  ; 20
+        QUAKE                           = $15  ; 21
+        W_WIND                          = $16  ; 22
+        MERTON                          = $17  ; 23
+        SCAN                            = $18  ; 24
+        SLOW                            = $19  ; 25
+        RASP                            = $1a  ; 26
+        MUTE                            = $1b  ; 27
+        SAFE                            = $1c  ; 28
+        SLEEP                           = $1d  ; 29
+        MUDDLE                          = $1e  ; 30
+        HASTE                           = $1f  ; 31
+        STOP                            = $20  ; 32
+        BSERK                           = $21  ; 33
+        FLOAT                           = $22  ; 34
+        IMP                             = $23  ; 35
+        RFLECT                          = $24  ; 36
+        SHELL                           = $25  ; 37
+        VANISH                          = $26  ; 38
+        HASTE2                          = $27  ; 39
+        SLOW_2                          = $28  ; 40
+        OSMOSE                          = $29  ; 41
+        WARP                            = $2a  ; 42
+        QUICK                           = $2b  ; 43
+        DISPEL                          = $2c  ; 44
+        CURE                            = $2d  ; 45
+        CURE_2                          = $2e  ; 46
+        CURE_3                          = $2f  ; 47
+        LIFE                            = $30  ; 48
+        LIFE_2                          = $31  ; 49
+        ANTDOT                          = $32  ; 50
+        REMEDY                          = $33  ; 51
+        REGEN                           = $34  ; 52
+        LIFE_3                          = $35  ; 53
+        RAMUH                           = $36  ; 54
+        IFRIT                           = $37  ; 55
+        SHIVA                           = $38  ; 56
+        SIREN                           = $39  ; 57
+        TERRATO                         = $3a  ; 58
+        SHOAT                           = $3b  ; 59
+        MADUIN                          = $3c  ; 60
+        BISMARK                         = $3d  ; 61
+        STRAY                           = $3e  ; 62
+        PALIDOR                         = $3f  ; 63
+        TRITOCH                         = $40  ; 64
+        ODIN                            = $41  ; 65
+        RAIDEN                          = $42  ; 66
+        BAHAMUT                         = $43  ; 67
+        ALEXANDR                        = $44  ; 68
+        CRUSADER                        = $45  ; 69
+        RAGNAROK                        = $46  ; 70
+        KIRIN                           = $47  ; 71
+        ZONESEEK                        = $48  ; 72
+        CARBUNKL                        = $49  ; 73
+        PHANTOM                         = $4a  ; 74
+        SRAPHIM                         = $4b  ; 75
+        GOLEM                           = $4c  ; 76
+        UNICORN                         = $4d  ; 77
+        FENRIR                          = $4e  ; 78
+        STARLET                         = $4f  ; 79
+        PHOENIX                         = $50  ; 80
+        FIRE_SKEAN                      = $51  ; 81
+        WATER_EDGE                      = $52  ; 82
+        BOLT_EDGE                       = $53  ; 83
+        STORM                           = $54  ; 84
+        DISPATCH                        = $55  ; 85
+        RETORT                          = $56  ; 86
+        SLASH                           = $57  ; 87
+        QUADRA_SLAM                     = $58  ; 88
+        EMPOWERER                       = $59  ; 89
+        STUNNER                         = $5a  ; 90
+        QUADRA_SLICE                    = $5b  ; 91
+        CLEAVE                          = $5c  ; 92
+        PUMMEL                          = $5d  ; 93
+        AURABOLT                        = $5e  ; 94
+        SUPLEX                          = $5f  ; 95
+        FIRE_DANCE                      = $60  ; 96
+        MANTRA                          = $61  ; 97
+        AIR_BLADE                       = $62  ; 98
+        SPIRALER                        = $63  ; 99
+        BUM_RUSH                        = $64  ; 100
+        WIND_SLASH                      = $65  ; 101
+        SUN_BATH                        = $66  ; 102
+        RAGE                            = $67  ; 103
+        HARVESTER                       = $68  ; 104
+        SAND_STORM                      = $69  ; 105
+        ANTLION                         = $6a  ; 106
+        ELF_FIRE                        = $6b  ; 107
+        SPECTER                         = $6c  ; 108
+        LAND_SLIDE                      = $6d  ; 109
+        SONIC_BOOM                      = $6e  ; 110
+        EL_NINO                         = $6f  ; 111
+        PLASMA                          = $70  ; 112
+        SNARE                           = $71  ; 113
+        CAVE_IN                         = $72  ; 114
+        SNOWBALL                        = $73  ; 115
+        SURGE                           = $74  ; 116
+        COKATRICE                       = $75  ; 117
+        WOMBAT                          = $76  ; 118
+        KITTY                           = $77  ; 119
+        TAPIR                           = $78  ; 120
+        WHUMP                           = $79  ; 121
+        WILD_BEAR                       = $7a  ; 122
+        POIS_FROG                       = $7b  ; 123
+        ICE_RABBIT                      = $7c  ; 124
+        BIO_BLAST_TOOL                  = $7d  ; 125
+        FLASH_TOOL                      = $7e  ; 126
+        CHOCOBOP                        = $7f  ; 127
+        H_BOMB                          = $80  ; 128
+        SEVEN_FLUSH                     = $81  ; 129
+        SHOCK                           = $82  ; 130
+        FIRE_BEAM                       = $83  ; 131
+        BOLT_BEAM                       = $84  ; 132
+        ICE_BEAM                        = $85  ; 133
+        BIO_BLAST                       = $86  ; 134
+        HEAL_FORCE                      = $87  ; 135
+        CONFUSER                        = $88  ; 136
+        XFER                            = $89  ; 137
+        TEKMISSILE                      = $8a  ; 138
+        CONDEMNED                       = $8b  ; 139
+        ROULETTE                        = $8c  ; 140
+        CLEANSWEEP                      = $8d  ; 141
+        AQUA_RAKE                       = $8e  ; 142
+        AERO                            = $8f  ; 143
+        BLOW_FISH                       = $90  ; 144
+        BIG_GUARD                       = $91  ; 145
+        REVENGE                         = $92  ; 146
+        PEARL_WIND                      = $93  ; 147
+        L5_DOOM                         = $94  ; 148
+        L4_FLARE                        = $95  ; 149
+        L3_MUDDLE                       = $96  ; 150
+        REFLECT_LORE                    = $97  ; 151
+        PEARL_LORE                      = $98  ; 152
+        STEP_MINE                       = $99  ; 153
+        FORCEFIELD                      = $9a  ; 154
+        DISCHORD                        = $9b  ; 155
+        SOUR_MOUTH                      = $9c  ; 156
+        PEP_UP                          = $9d  ; 157
+        RIPPLER                         = $9e  ; 158
+        STONE                           = $9f  ; 159
+        QUASAR                          = $a0  ; 160
+        GRANDTRAIN                      = $a1  ; 161
+        EXPLODER                        = $a2  ; 162
+        IMP_SONG                        = $a3  ; 163
+        CLEAR                           = $a4  ; 164
+        VIRITE                          = $a5  ; 165
+        CHOKESMOKE                      = $a6  ; 166
+        SCHILLER                        = $a7  ; 167
+        LULLABY                         = $a8  ; 168
+        ACID_RAIN                       = $a9  ; 169
+        CONFUSION                       = $aa  ; 170
+        MEGAZERK                        = $ab  ; 171
+        ENEMY_MUTE                      = $ac  ; 172
+        NET                             = $ad  ; 173
+        SLIMER                          = $ae  ; 174
+        DELTA_HIT                       = $af  ; 175
+        ENTWINE                         = $b0  ; 176
+        BLASTER                         = $b1  ; 177
+        CYCLONIC                        = $b2  ; 178
+        FIRE_BALL                       = $b3  ; 179
+        ATOMIC_RAY                      = $b4  ; 180
+        TEK_LASER                       = $b5  ; 181
+        DIFFUSER                        = $b6  ; 182
+        WAVECANNON                      = $b7  ; 183
+        MEGA_VOLT                       = $b8  ; 184
+        GIGA_VOLT                       = $b9  ; 185
+        BLIZZARD                        = $ba  ; 186
+        ABSOLUTE0                       = $bb  ; 187
+        MAGNITUDE8                      = $bc  ; 188
+        RAID                            = $bd  ; 189
+        FLASH_RAIN                      = $be  ; 190
+        TEKBARRIER                      = $bf  ; 191
+        FALLEN_ONE                      = $c0  ; 192
+        WALLCHANGE                      = $c1  ; 193
+        ESCAPE                          = $c2  ; 194
+        FIFTY_GS                        = $c3  ; 195
+        MIND_BLAST                      = $c4  ; 196
+        N_CROSS                         = $c5  ; 197
+        FLARE_STAR                      = $c6  ; 198
+        LOVE_TOKEN                      = $c7  ; 199
+        SEIZE                           = $c8  ; 200
+        R_POLARITY                      = $c9  ; 201
+        TARGETTING                      = $ca  ; 202
+        SNEEZE                          = $cb  ; 203
+        S_CROSS                         = $cc  ; 204
+        LAUNCHER                        = $cd  ; 205
+        CHARM                           = $ce  ; 206
+        COLD_DUST                       = $cf  ; 207
+        TENTACLE                        = $d0  ; 208
+        HYPERDRIVE                      = $d1  ; 209
+        TRAIN                           = $d2  ; 210
+        EVIL_TOOT                       = $d3  ; 211
+        GRAV_BOMB                       = $d4  ; 212
+        ENGULF                          = $d5  ; 213
+        DISASTER                        = $d6  ; 214
+        SHRAPNEL                        = $d7  ; 215
+        BOMBLET                         = $d8  ; 216
+        HEART_BURN                      = $d9  ; 217
+        ZINGER                          = $da  ; 218
+        DISCARD                         = $db  ; 219
+        OVERCAST                        = $dc  ; 220
+        MISSILE                         = $dd  ; 221
+        GONER                           = $de  ; 222
+        METEO                           = $df  ; 223
+        REVENGER                        = $e0  ; 224
+        PHANTASM                        = $e1  ; 225
+        DREAD                           = $e2  ; 226
+        SHOCK_WAVE                      = $e3  ; 227
+        BLAZE                           = $e4  ; 228
+        SOUL_OUT                        = $e5  ; 229
+        GALE_CUT                        = $e6  ; 230
+        SHIMSHAM                        = $e7  ; 231
+        LODE_STONE                      = $e8  ; 232
+        SCAR_BEAM                       = $e9  ; 233
+        BABABREATH                      = $ea  ; 234
+        LIFESHAVER                      = $eb  ; 235
+        FIRE_WALL                       = $ec  ; 236
+        SLIDE                           = $ed  ; 237
+        BATTLE                          = $ee  ; 238
+        SPECIAL                         = $ef  ; 239
+        RIOT_BLADE                      = $f0  ; 240
+        MIRAGER                         = $f1  ; 241
+        BACK_BLADE                      = $f2  ; 242
+        SHADOWFANG                      = $f3  ; 243
+        ROYALSHOCK                      = $f4  ; 244
+        TIGERBREAK                      = $f5  ; 245
+        SPIN_EDGE                       = $f6  ; 246
+        SABRESOUL                       = $f7  ; 247
+        STAR_PRISM                      = $f8  ; 248
+        RED_CARD                        = $f9  ; 249
+        MOOGLERUSH                      = $fa  ; 250
+        X_METEO                         = $fb  ; 251
+        TAKEDOWN                        = $fc  ; 252
+        WILD_FANG                       = $fd  ; 253
+        LAGOMORPH                       = $fe  ; 254
+        NONE                            = $ff  ; 255
+.endenum
 
 ; ------------------------------------------------------------------------------
 
@@ -1253,111 +1264,117 @@ MONSTER_COLOSSEUM                       = $017f  ; 383
 ; ------------------------------------------------------------------------------
 
 ; dance ids
-DANCE_WIND_SONG                         = 0
-DANCE_FOREST_SUITE                      = 1
-DANCE_DESERT_ARIA                       = 2
-DANCE_LOVE_SONATA                       = 3
-DANCE_EARTH_BLUES                       = 4
-DANCE_WATER_RONDO                       = 5
-DANCE_DUSK_REQUIUM                      = 6
-DANCE_SNOWMAN_JAZZ                      = 7
+.enum DANCE
+        WIND_SONG                       = 0
+        FOREST_SUITE                    = 1
+        DESERT_ARIA                     = 2
+        LOVE_SONATA                     = 3
+        EARTH_BLUES                     = 4
+        WATER_RONDO                     = 5
+        DUSK_REQUIUM                    = 6
+        SNOWMAN_JAZZ                    = 7
+.endenum
 
 ; ------------------------------------------------------------------------------
 
 ; target selection flags
-TARGET_MANUAL                           = $01  ; can move cursor manually
-TARGET_ONE_SIDE                         = $02  ; can't target opposite side
-
-TARGET_INIT_MASK                        = $0c  ; mask for initial target
-TARGET_INIT_SINGLE                      = $00  ; single target
-TARGET_INIT_ALL                         = $04  ; all characters and monsters
-TARGET_INIT_GROUP                       = $08  ; one target group (one side)
-TARGET_INIT_HALF                        = $0c  ; all characters or all monsters
-
-TARGET_AUTO_CONFIRM                     = $10  ; don't wait for A button
-TARGET_MULTI_TARGET                     = $20  ; allow L/R button multi-target
-TARGET_ENEMY                            = $40  ; target enemy by default
-TARGET_ROULETTE                         = $80  ; random roulette cursor
+.enum TARGET
+        MANUAL                          = $01  ; can move cursor manually
+        ONE_SIDE                        = $02  ; can't target opposite side
+        INIT_MASK                       = $0c  ; mask for initial target
+        INIT_SINGLE                     = $00  ; single target
+        INIT_ALL                        = $04  ; all characters and monsters
+        INIT_GROUP                      = $08  ; one target group (one side)
+        INIT_HALF                       = $0c  ; all characters or all monsters
+        AUTO_CONFIRM                    = $10  ; don't wait for A button
+        MULTI_TARGET                    = $20  ; allow L/R button multi-target
+        ENEMY                           = $40  ; target enemy by default
+        ROULETTE                        = $80  ; random roulette cursor
 
 ; special values, not flags
-TARGET_SELF                             = $02  ; cursor on attacker
-TARGET_MENU                             = $ff  ; uses a menu to choose target
+        SELF                            = $02  ; cursor on attacker
+        MENU                            = $ff  ; uses a menu to choose target
+.endenum
 
 ; ------------------------------------------------------------------------------
 
 ; battle command flags
-BATTLE_CMD_FLAG_NONE                    = $00  ; no flags set
-BATTLE_CMD_FLAG_GOGO                    = $01  ; can be used by gogo
-BATTLE_CMD_FLAG_MIMIC                   = $02  ; can be mimicked
-BATTLE_CMD_FLAG_IMP                     = $04  ; can be used by imp
-BATTLE_CMD_FLAG_UNKNOWN                 = $08  ; unknown
+.enum BATTLE_CMD_FLAG
+        NONE                            = $00  ; no flags set
+        GOGO                            = $01  ; can be used by gogo
+        MIMIC                           = $02  ; can be mimicked
+        IMP                             = $04  ; can be used by imp
+        UNKNOWN                         = $08  ; unknown
+.endenum
 
 ; ------------------------------------------------------------------------------
 
-CHAR_PROP_TERRA                         = $00
-CHAR_PROP_LOCKE                         = $01
-CHAR_PROP_CYAN                          = $02
-CHAR_PROP_SHADOW                        = $03
-CHAR_PROP_EDGAR                         = $04
-CHAR_PROP_SABIN                         = $05
-CHAR_PROP_CELES                         = $06
-CHAR_PROP_STRAGO                        = $07
-CHAR_PROP_RELM                          = $08
-CHAR_PROP_SETZER                        = $09
-CHAR_PROP_MOG                           = $0a
-CHAR_PROP_GAU                           = $0b
-CHAR_PROP_GOGO                          = $0c
-CHAR_PROP_UMARO                         = $0d
-CHAR_PROP_BANON                         = $0e
-CHAR_PROP_LEO                           = $0f
-CHAR_PROP_GHOST_1                       = $10
-CHAR_PROP_GHOST_2                       = $11
-CHAR_PROP_KUPEK                         = $12
-CHAR_PROP_KUPOP                         = $13
-CHAR_PROP_KUMAMA                        = $14
-CHAR_PROP_KUKU                          = $15
-CHAR_PROP_KUTAN                         = $16
-CHAR_PROP_KUPAN                         = $17
-CHAR_PROP_KUSHU                         = $18
-CHAR_PROP_KURIN                         = $19
-CHAR_PROP_KURU                          = $1a
-CHAR_PROP_KAMOG                         = $1b
-CHAR_PROP_SCENARIO_MOG                  = $1c
-CHAR_PROP_TERRA_INTRO                   = $1d
-CHAR_PROP_MADUIN                        = $1e
-CHAR_PROP_SHADOW_COLOSSEUM              = $1f
-CHAR_PROP_WEDGE                         = $20
-CHAR_PROP_VICKS                         = $21
-CHAR_PROP_22                            = $22
-CHAR_PROP_23                            = $23
-CHAR_PROP_24                            = $24
-CHAR_PROP_25                            = $25
-CHAR_PROP_26                            = $26
-CHAR_PROP_27                            = $27
-CHAR_PROP_28                            = $28
-CHAR_PROP_KEFKA_1                       = $29
-CHAR_PROP_KEFKA_2                       = $2a
-CHAR_PROP_KEFKA_3                       = $2b
-CHAR_PROP_KEFKA_4                       = $2c
-CHAR_PROP_KEFKA_5                       = $2d
-CHAR_PROP_KEFKA_6                       = $2e
-CHAR_PROP_KEFKA_7                       = $2f
-CHAR_PROP_TORK                          = $30
-CHAR_PROP_JADE                          = $31
-CHAR_PROP_CUSTER                        = $32
-CHAR_PROP_FABIAN                        = $33
-CHAR_PROP_DRAKE                         = $34
-CHAR_PROP_SARA                          = $35
-CHAR_PROP_CASE                          = $36
-CHAR_PROP_SIELE                         = $37
-CHAR_PROP_RAY                           = $38
-CHAR_PROP_REIKER                        = $39
-CHAR_PROP_LANCE                         = $3a
-CHAR_PROP_BOB                           = $3b
-CHAR_PROP_PEPPER                        = $3c
-CHAR_PROP_TAU                           = $3d
-CHAR_PROP_VICTOR                        = $3e
-CHAR_PROP_HO                            = $3f
+.enum CHAR_PROP
+        TERRA                           = $00
+        LOCKE                           = $01
+        CYAN                            = $02
+        SHADOW                          = $03
+        EDGAR                           = $04
+        SABIN                           = $05
+        CELES                           = $06
+        STRAGO                          = $07
+        RELM                            = $08
+        SETZER                          = $09
+        MOG                             = $0a
+        GAU                             = $0b
+        GOGO                            = $0c
+        UMARO                           = $0d
+        BANON                           = $0e
+        LEO                             = $0f
+        GHOST_1                         = $10
+        GHOST_2                         = $11
+        KUPEK                           = $12
+        KUPOP                           = $13
+        KUMAMA                          = $14
+        KUKU                            = $15
+        KUTAN                           = $16
+        KUPAN                           = $17
+        KUSHU                           = $18
+        KURIN                           = $19
+        KURU                            = $1a
+        KAMOG                           = $1b
+        SCENARIO_MOG                    = $1c
+        TERRA_INTRO                     = $1d
+        MADUIN                          = $1e
+        SHADOW_COLOSSEUM                = $1f
+        WEDGE                           = $20
+        VICKS                           = $21
+        UNUSED_22                       = $22
+        UNUSED_23                       = $23
+        UNUSED_24                       = $24
+        UNUSED_25                       = $25
+        UNUSED_26                       = $26
+        UNUSED_27                       = $27
+        UNUSED_28                       = $28
+        KEFKA_1                         = $29
+        KEFKA_2                         = $2a
+        KEFKA_3                         = $2b
+        KEFKA_4                         = $2c
+        KEFKA_5                         = $2d
+        KEFKA_6                         = $2e
+        KEFKA_7                         = $2f
+        TORK                            = $30
+        JADE                            = $31
+        CUSTER                          = $32
+        FABIAN                          = $33
+        DRAKE                           = $34
+        SARA                            = $35
+        CASE                            = $36
+        SIELE                           = $37
+        RAY                             = $38
+        REIKER                          = $39
+        LANCE                           = $3a
+        BOB                             = $3b
+        PEPPER                          = $3c
+        TAU                             = $3d
+        VICTOR                          = $3e
+        HO                              = $3f
+.endenum
 
 ; character run factor values
 RUN_FACTOR_MASK                         = $03
@@ -1398,14 +1415,6 @@ CHAR_PROP_FIXED_EQUIP                   = $10
 ; ------------------------------------------------------------------------------
 
 ; element bitmasks
-; ELEMENT_FIRE                            = $01
-; ELEMENT_ICE                             = $02
-; ELEMENT_LIGHTNING                       = $04
-; ELEMENT_POISON                          = $08
-; ELEMENT_WIND                            = $10
-; ELEMENT_HOLY                            = $20
-; ELEMENT_EARTH                           = $40
-; ELEMENT_WATER                           = $80
 
 .enum ELEMENT
         FIRE                            = BIT_0
@@ -1420,6 +1429,41 @@ CHAR_PROP_FIXED_EQUIP                   = $10
 .endenum
 
 ; ------------------------------------------------------------------------------
+
+.enum STATUS_ID
+        BLIND
+        ZOMBIE
+        POISON
+        MAGITEK
+        INVISIBLE
+        IMP
+        PETRIFY
+        DEAD
+        CONDEMNED
+        NEAR_FATAL
+        IMAGE
+        SILENCE
+        BERSERK
+        CONFUSE
+        SAP
+        SLEEP
+        DANCE
+        REGEN
+        SLOW
+        HASTE
+        STOP
+        SHELL
+        PROTECT
+        REFLECT
+        RAGE
+        FROZEN
+        RERAISE
+        MORPH
+        CHANT
+        HIDE
+        INTERCEPTOR
+        FLOAT
+.endenum
 
 ; status 1: harmful status that persist after battle
 .enum STATUS1
@@ -1556,46 +1600,6 @@ CHAR_PROP_FIXED_EQUIP                   = $10
         FLOAT                           = STATUS4::FLOAT << 8
         NONE                            = 0
 .endenum
-
-; ; status 1: harmful status that persist after battle
-; STATUS1_BLIND                           = $01
-; STATUS1_ZOMBIE                          = $02
-; STATUS1_POISON                          = $04
-; STATUS1_MAGITEK                         = $08
-; STATUS1_INVISIBLE                       = $10
-; STATUS1_IMP                             = $20
-; STATUS1_PETRIFY                         = $40
-; STATUS1_DEAD                            = $80
-
-; ; status 2: harmful status that do not persist after battle
-; STATUS2_CONDEMNED                       = $01
-; STATUS2_NEAR_FATAL                      = $02
-; STATUS2_IMAGE                           = $04
-; STATUS2_SILENCE                         = $08
-; STATUS2_BERSERK                         = $10
-; STATUS2_CONFUSE                         = $20
-; STATUS2_SAP                             = $40
-; STATUS2_SLEEP                           = $80
-
-; ; status 3: helpful status that do not persist after battle
-; STATUS3_DANCE                           = $01
-; STATUS3_REGEN                           = $02
-; STATUS3_SLOW                            = $04
-; STATUS3_HASTE                           = $08
-; STATUS3_STOP                            = $10
-; STATUS3_SHELL                           = $20
-; STATUS3_PROTECT                         = $40
-; STATUS3_REFLECT                         = $80
-
-; ; status 4: only float and interceptor persist after battle
-; STATUS4_RAGE                            = $01
-; STATUS4_FROZEN                          = $02
-; STATUS4_RERAISE                         = $04
-; STATUS4_MORPH                           = $08
-; STATUS4_CHANT                           = $10
-; STATUS4_HIDE                            = $20
-; STATUS4_INTERCEPTOR                     = $40
-; STATUS4_FLOAT                           = $80
 
 ; ------------------------------------------------------------------------------
 

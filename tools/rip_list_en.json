@@ -3264,15 +3264,6 @@
   ],
   "array": [
     {
-      "file_path": "src/battle/ai_script.dat",
-      "inc_path": "include/battle/ai_script.inc",
-      "asset_range": "0xCF8700-0xCFC048",
-      "asset_const": "AI_SCRIPT",
-      "asset_label": "AIScript",
-      "ptr_range": "0xCF8400-0xCF86FF",
-      "ptr_offset": "0xCF8700"
-    },
-    {
       "file_path": "src/btlgfx/attack_anim_frames.dat",
       "inc_path": "include/btlgfx/attack_anim_frames.inc",
       "asset_range": "0xD10141-0xD1E988",

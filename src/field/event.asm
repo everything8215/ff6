@@ -15,7 +15,7 @@ inc_lang "text/char_name_%s.inc"
 
 .import MapSpritePal, EventScript, EventTriggerPtrs
 
-.export BushidoLevelTbl, NaturalMagic, LevelUpExp
+.export BushidoLevelTbl, NaturalMagic, LevelUpExp, LevelUpHP, LevelUpMP
 
 .a8
 .i16
@@ -25,8 +25,8 @@ inc_lang "text/char_name_%s.inc"
 
 ; [ init event script ]
 
-InitEvent:
-@989d:  ldx     $00
+.proc InitEvent
+        ldx     $00
         stx     $e3         ; clear event pause counter
         stx     $e8         ; clear event stack
         ldx     #.loword(EventScript)
@@ -43,254 +43,57 @@ InitEvent:
         sta     $e2
         stz     $e1         ; event not waiting for anything
         rts
+.endproc  ; InitEvent
 
 ; ------------------------------------------------------------------------------
 
 ; event command jump table (starts at $35)
 EventCmdTbl:
-@98c4:  .addr   EventCmd_35
-        .addr   EventCmd_36
-        .addr   EventCmd_37
-        .addr   EventCmd_38
-        .addr   EventCmd_39
-        .addr   EventCmd_3a
-        .addr   EventCmd_3b
-        .addr   EventCmd_3c
-        .addr   EventCmd_3d
-        .addr   EventCmd_3e
-        .addr   EventCmd_3f
-        .addr   EventCmd_40
-        .addr   EventCmd_41
-        .addr   EventCmd_42
-        .addr   EventCmd_43
-        .addr   EventCmd_44
-        .addr   EventCmd_45
-        .addr   EventCmd_46
-        .addr   EventCmd_47
-        .addr   EventCmd_48
-        .addr   EventCmd_49
-        .addr   EventCmd_4a
-        .addr   EventCmd_4b
-        .addr   EventCmd_4c
-        .addr   EventCmd_4d
-        .addr   EventCmd_4e
-        .addr   EventCmd_4f
-        .addr   EventCmd_50
-        .addr   EventCmd_51
-        .addr   EventCmd_52
-        .addr   EventCmd_53
-        .addr   EventCmd_54
-        .addr   EventCmd_55
-        .addr   EventCmd_56
-        .addr   EventCmd_57
-        .addr   EventCmd_58
-        .addr   EventCmd_59
-        .addr   EventCmd_5a
-        .addr   EventCmd_5b
-        .addr   EventCmd_5c
-        .addr   EventCmd_5d
-        .addr   EventCmd_5e
-        .addr   EventCmd_5f
-        .addr   EventCmd_60
-        .addr   EventCmd_61
-        .addr   EventCmd_62
-        .addr   EventCmd_63
-        .addr   EventCmd_64
-        .addr   EventCmd_65
-        .addr   EventCmd_66
-        .addr   EventCmd_67
-        .addr   EventCmd_68
-        .addr   EventCmd_69
-        .addr   EventCmd_6a
-        .addr   EventCmd_6b
-        .addr   EventCmd_6c
-        .addr   EventCmd_6d
-        .addr   EventCmd_6e
-        .addr   EventCmd_6f
-        .addr   EventCmd_70
-        .addr   EventCmd_71
-        .addr   EventCmd_72
-        .addr   EventCmd_73
-        .addr   EventCmd_74
-        .addr   EventCmd_75
-        .addr   EventCmd_76
-        .addr   EventCmd_77
-        .addr   EventCmd_78
-        .addr   EventCmd_79
-        .addr   EventCmd_7a
-        .addr   EventCmd_7b
-        .addr   EventCmd_7c
-        .addr   EventCmd_7d
-        .addr   EventCmd_7e
-        .addr   EventCmd_7f
-        .addr   EventCmd_80
-        .addr   EventCmd_81
-        .addr   EventCmd_82
-        .addr   EventCmd_83
-        .addr   EventCmd_84
-        .addr   EventCmd_85
-        .addr   EventCmd_86
-        .addr   EventCmd_87
-        .addr   EventCmd_88
-        .addr   EventCmd_89
-        .addr   EventCmd_8a
-        .addr   EventCmd_8b
-        .addr   EventCmd_8c
-        .addr   EventCmd_8d
-        .addr   EventCmd_8e
-        .addr   EventCmd_8f
-        .addr   EventCmd_90
-        .addr   EventCmd_91
-        .addr   EventCmd_92
-        .addr   EventCmd_93
-        .addr   EventCmd_94
-        .addr   EventCmd_95
-        .addr   EventCmd_96
-        .addr   EventCmd_97
-        .addr   EventCmd_98
-        .addr   EventCmd_99
-        .addr   EventCmd_9a
-        .addr   EventCmd_9b
-        .addr   EventCmd_9c
-        .addr   EventCmd_9d
-        .addr   EventCmd_9e
-        .addr   EventCmd_9f
-        .addr   EventCmd_a0
-        .addr   EventCmd_a1
-        .addr   EventCmd_a2
-        .addr   EventCmd_a3
-        .addr   EventCmd_a4
-        .addr   EventCmd_a5
-        .addr   EventCmd_a6
-        .addr   EventCmd_a7
-        .addr   EventCmd_a8
-        .addr   EventCmd_a9
-        .addr   EventCmd_aa
-        .addr   EventCmd_ab
-        .addr   EventCmd_ac
-        .addr   EventCmd_ad
-        .addr   EventCmd_ae
-        .addr   EventCmd_af
-        .addr   EventCmd_b0
-        .addr   EventCmd_b1
-        .addr   EventCmd_b2
-        .addr   EventCmd_b3
-        .addr   EventCmd_b4
-        .addr   EventCmd_b5
-        .addr   EventCmd_b6
-        .addr   EventCmd_b7
-        .addr   EventCmd_b8
-        .addr   EventCmd_b9
-        .addr   EventCmd_ba
-        .addr   EventCmd_bb
-        .addr   EventCmd_bc
-        .addr   EventCmd_bd
-        .addr   EventCmd_be
-        .addr   EventCmd_bf
-        .addr   EventCmd_c0
-        .addr   EventCmd_c1
-        .addr   EventCmd_c2
-        .addr   EventCmd_c3
-        .addr   EventCmd_c4
-        .addr   EventCmd_c5
-        .addr   EventCmd_c6
-        .addr   EventCmd_c7
-        .addr   EventCmd_c8
-        .addr   EventCmd_c9
-        .addr   EventCmd_ca
-        .addr   EventCmd_cb
-        .addr   EventCmd_cc
-        .addr   EventCmd_cd
-        .addr   EventCmd_ce
-        .addr   EventCmd_cf
-        .addr   EventCmd_d0
-        .addr   EventCmd_d1
-        .addr   EventCmd_d2
-        .addr   EventCmd_d3
-        .addr   EventCmd_d4
-        .addr   EventCmd_d5
-        .addr   EventCmd_d6
-        .addr   EventCmd_d7
-        .addr   EventCmd_d8
-        .addr   EventCmd_d9
-        .addr   EventCmd_da
-        .addr   EventCmd_db
-        .addr   EventCmd_dc
-        .addr   EventCmd_dd
-        .addr   EventCmd_de
-        .addr   EventCmd_df
-        .addr   EventCmd_e0
-        .addr   EventCmd_e1
-        .addr   EventCmd_e2
-        .addr   EventCmd_e3
-        .addr   EventCmd_e4
-        .addr   EventCmd_e5
-        .addr   EventCmd_e6
-        .addr   EventCmd_e7
-        .addr   EventCmd_e8
-        .addr   EventCmd_e9
-        .addr   EventCmd_ea
-        .addr   EventCmd_eb
-        .addr   EventCmd_ec
-        .addr   EventCmd_ed
-        .addr   EventCmd_ee
-        .addr   EventCmd_ef
-        .addr   EventCmd_f0
-        .addr   EventCmd_f1
-        .addr   EventCmd_f2
-        .addr   EventCmd_f3
-        .addr   EventCmd_f4
-        .addr   EventCmd_f5
-        .addr   EventCmd_f6
-        .addr   EventCmd_f7
-        .addr   EventCmd_f8
-        .addr   EventCmd_f9
-        .addr   EventCmd_fa
-        .addr   EventCmd_fb
-        .addr   EventCmd_fc
-        .addr   EventCmd_fd
-        .addr   EventCmd_fe
-        .addr   EventCmd_ff
+.repeat $100 - $35, i
+        .addr .ident(.sprintf("EventCmd_%02x", i + $35))
+.endrep
 
 ; ------------------------------------------------------------------------------
 
 ; [ execute events ]
 
-ExecEvent:
-@9a5a:  inc     $47
+.proc ExecEvent
+        inc     $47
         lda     $84
-        bne     _c09a6d
+        bne     continue_event
         lda     $58
-        bne     @9a6a
+        bne     :+
         lda     $47
         and     #$03
-        bne     _c09a6d
-@9a6a:  jsr     _c0714a
+        bne     continue_event
+:       jsr     _c0714a
 
-_c09a6d:
-@9a6d:  ldx     $e3         ; decrement event pause counter
-        beq     @9a75
+continue_event:
+        ldx     $e3                     ; decrement event pause counter
+        beq     :+
         dex
         stx     $e3
         rts
-@9a75:  lda     $0798       ;
-        beq     @9a7b
-@9a7a:  rts
-@9a7b:  lda     $055a       ;
-        beq     @9a84
+:       lda     $0798                   ; check if waiting to update party characters
+        beq     :+
+done:   rts
+:       lda     $055a                   ; check if bg is waiting for update
+        beq     :+
         cmp     #$05
-        bne     @9a7a
-@9a84:  lda     $055b
-        beq     @9a8d
+        bne     done
+:       lda     $055b
+        beq     :+
         cmp     #$05
-        bne     @9a7a
-@9a8d:  lda     $055c
-        beq     @9a96
+        bne     done
+:       lda     $055c
+        beq     :+
         cmp     #$05
-        bne     @9a7a
-@9a96:  jsr     UpdateCtrlFlags
+        bne     done
+:       jsr     UpdateCtrlFlags
+
+; check if waiting for object
         lda     $e1
-        bpl     @9abe                   ; branch if not waiting for object
+        bpl     check_wait_fade         ; branch if not waiting for object
         lda     $e2
         sta     hWRMPYA
         lda     #$29
@@ -299,45 +102,51 @@ _c09a6d:
         ldy     hRDMPYL
         lda     $087c,y
         and     #$0f
-        beq     @9ab6
+        beq     :+
         rts
-@9ab6:  lda     $e1
+:       lda     $e1
         and     #$7f
         sta     $e1
-        bra     @9b1b
-@9abe:  lda     $e1
+        bra     exec_cmd
+
+; check if waiting for screen to fade
+check_wait_fade:
+        lda     $e1
         and     #$40
-        beq     @9ad0
+        beq     check_wait_scroll       ; branch if not waiting for fade
         lda     $4a
-        beq     @9ac9
+        beq     :+
         rts
-@9ac9:  lda     $e1
+:       lda     $e1
         and     #$bf
         sta     $e1
         rts
-@9ad0:  lda     $e1
+
+; check if waiting for screen to scroll
+check_wait_scroll:
+        lda     $e1
         and     #$20
-        beq     @9b1b
+        beq     exec_cmd                ; branch if not waiting for scroll
         lda     $0541
         cmp     $0557
-        beq     @9aeb
+        beq     :+
         inc
         cmp     $0557
-        beq     @9aeb
+        beq     :+
         dec2
         cmp     $0557
-        bne     @9b00
-@9aeb:  lda     $0542
+        bne     done2
+:       lda     $0542
         cmp     $0558
-        beq     @9b01
+        beq     :+
         inc
         cmp     $0558
-        beq     @9b01
+        beq     :+
         dec2
         cmp     $0558
-        beq     @9b01
-@9b00:  rts
-@9b01:  lda     $e1
+        beq     :+
+done2:  rts
+:       lda     $e1
         and     #$df
         sta     $e1
         ldx     $00
@@ -347,7 +156,9 @@ _c09a6d:
         stx     $054d
         stx     $054f
         stx     $0551
-@9b1b:  ldy     #$0005
+
+exec_cmd:
+        ldy     #5
         lda     [$e5],y
         sta     $ef
         dey
@@ -376,17 +187,22 @@ _c09a6d:
         longa
         asl
         tax
-        lda     f:EventCmdTbl,x   ; event command table
+        lda     f:EventCmdTbl,x         ; event command table
         sta     $2a
         shorta0
-        jmp     ($002a)     ; jump to event command code
+        jmp     ($002a)                 ; jump to event command code
+.endproc  ; ExecEvent
+
+ContinueEvent := ExecEvent::continue_event
 
 ; ------------------------------------------------------------------------------
 
 ; [ increment event pointer and continue ]
 
-IncEventPtrContinue:
-@9b5c:  clc                 ; increment event pointer
+; A: number of bytes to increment event pc by
+
+.proc IncEventPtrContinue
+        clc                 ; increment event pointer
         adc     $e5
         sta     $e5
         lda     $e6
@@ -395,53 +211,56 @@ IncEventPtrContinue:
         lda     $e7
         adc     #0
         sta     $e7
-        jmp     _c09a6d
+        jmp     ContinueEvent
+.endproc  ; IncEventPtrContinue
 
 ; ------------------------------------------------------------------------------
 
 ; [ increment event pointer and return ]
 
-IncEventPtrReturn:
-@9b70:  clc
+.proc IncEventPtrReturn
+        clc
         adc     $e5
         sta     $e5
         lda     $e6
-        adc     #$00
+        adc     #0
         sta     $e6
         lda     $e7
-        adc     #$00
+        adc     #0
         sta     $e7
         rts
+.endproc  ; IncEventPtrReturn
 
 ; ------------------------------------------------------------------------------
 
 ; [ push event pointer ]
 
-; a: number of bytes to increment event pc by
+; A: number of bytes to increment event pc by
 
-PushEventPtr:
-@9b82:  ldx     $e8
+.proc PushEventPtr
+        ldx     $e8
         clc
         adc     $e5         ; event pc += a
         sta     $e5
         sta     $05f4,x
         lda     $e6
-        adc     #$00
+        adc     #0
         sta     $e6
         sta     $05f5,x
         lda     $e7
-        adc     #$00
+        adc     #0
         sta     $e7
         sta     f:$0005f6,x
         inx3
         stx     $e8
         rts
+.endproc  ; PushEventPtr
 
 ; ------------------------------------------------------------------------------
 
 ; [ begin object script ]
 
-; a: object index
+; A: object index
 
 InitObjScript:
 @9ba5:  sta     hWRMPYA
@@ -492,7 +311,7 @@ _9bb4:  lda     $087c,y     ; set movement type to script controlled
 
 ; [ begin object script (party character) ]
 
-; a: object index
+; A: object index
 
 ExecPartyObjScript:
 @9c0b:  sec
@@ -1372,40 +1191,40 @@ BlitzLevelTbl:
 NaturalMagic:
 
 ; terra
-        .byte ATTACK_CURE, 1
-        .byte ATTACK_FIRE, 3
-        .byte ATTACK_ANTDOT, 6
-        .byte ATTACK_DRAIN, 12
-        .byte ATTACK_LIFE, 18
-        .byte ATTACK_FIRE_2, 22
-        .byte ATTACK_WARP, 26
-        .byte ATTACK_CURE_2, 33
-        .byte ATTACK_DISPEL, 37
-        .byte ATTACK_FIRE_3, 43
-        .byte ATTACK_LIFE_2, 49
-        .byte ATTACK_PEARL, 57
-        .byte ATTACK_BREAK, 68
-        .byte ATTACK_QUARTR, 75
-        .byte ATTACK_MERTON, 86
-        .byte ATTACK_ULTIMA, 99
+        .byte ATTACK::CURE, 1
+        .byte ATTACK::FIRE, 3
+        .byte ATTACK::ANTDOT, 6
+        .byte ATTACK::DRAIN, 12
+        .byte ATTACK::LIFE, 18
+        .byte ATTACK::FIRE_2, 22
+        .byte ATTACK::WARP, 26
+        .byte ATTACK::CURE_2, 33
+        .byte ATTACK::DISPEL, 37
+        .byte ATTACK::FIRE_3, 43
+        .byte ATTACK::LIFE_2, 49
+        .byte ATTACK::PEARL, 57
+        .byte ATTACK::BREAK, 68
+        .byte ATTACK::QUARTR, 75
+        .byte ATTACK::MERTON, 86
+        .byte ATTACK::ULTIMA, 99
 
 ; celes
-        .byte ATTACK_ICE, 1
-        .byte ATTACK_CURE, 4
-        .byte ATTACK_ANTDOT, 8
-        .byte ATTACK_IMP, 13
-        .byte ATTACK_SCAN, 18
-        .byte ATTACK_SAFE, 22
-        .byte ATTACK_ICE_2, 26
-        .byte ATTACK_HASTE, 32
-        .byte ATTACK_BSERK, 40
-        .byte ATTACK_MUDDLE, 32
-        .byte ATTACK_ICE_3, 42
-        .byte ATTACK_VANISH, 48
-        .byte ATTACK_HASTE2, 52
-        .byte ATTACK_PEARL, 72
-        .byte ATTACK_FLARE, 81
-        .byte ATTACK_METEOR, 98
+        .byte ATTACK::ICE, 1
+        .byte ATTACK::CURE, 4
+        .byte ATTACK::ANTDOT, 8
+        .byte ATTACK::IMP, 13
+        .byte ATTACK::SCAN, 18
+        .byte ATTACK::SAFE, 22
+        .byte ATTACK::ICE_2, 26
+        .byte ATTACK::HASTE, 32
+        .byte ATTACK::BSERK, 40
+        .byte ATTACK::MUDDLE, 32
+        .byte ATTACK::ICE_3, 42
+        .byte ATTACK::VANISH, 48
+        .byte ATTACK::HASTE2, 52
+        .byte ATTACK::PEARL, 72
+        .byte ATTACK::FLARE, 81
+        .byte ATTACK::METEOR, 98
 
 .popseg
 
@@ -3908,7 +3727,7 @@ EventCmd_b0:
         jsr     PushEventPtr
         lda     $eb
         sta     $05c4,x     ; set loop count
-        jmp     _c09a6d
+        jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 
@@ -3926,7 +3745,7 @@ EventCmd_b1:
         sta     $e6
         lda     $05f3,x
         sta     $e7
-        jmp     _c09a6d
+        jmp     ContinueEvent
 @b162:  ldx     $e8         ; decrement stack pointer
         dex3
         stx     $e8
@@ -3961,7 +3780,7 @@ EventCmd_bc:
         sta     $e6
         lda     $05f3,x
         sta     $e7
-        jmp     _c09a6d
+        jmp     ContinueEvent
 @b194:  ldx     $e8         ; decrement stack pointer
         dex3
         stx     $e8
@@ -4007,7 +3826,7 @@ _b1a3:  ldx     $e8
         stx     $e8         ; increment stack pointer
         lda     #1
         sta     $05c4,x     ; loop count (do subroutine once)
-        jmp     _c09a6d
+        jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 
@@ -4043,7 +3862,7 @@ EventCmd_b3:
         stx     $e8         ; increment stack pointer
         lda     $eb
         sta     $05c4,x     ; set loop count
-        jmp     _c09a6d
+        jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 
@@ -4142,14 +3961,14 @@ EventCmd_bd:
         shorta0
         adc     $e7
         sta     $e7
-        jmp     _c09a6d
+        jmp     ContinueEvent
 @b28b:  ldx     $eb         ; set new event pc
         stx     $e5
         lda     $ed
         clc
         adc     #^EventScript
         sta     $e7
-        jmp     _c09a6d
+        jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 
@@ -4171,14 +3990,14 @@ EventCmd_b7:
         shorta0
         adc     $e7
         sta     $e7
-        jmp     _c09a6d
+        jmp     ContinueEvent
 @b2ba:  ldx     $ec         ; set new event pc
         stx     $e5
         lda     $ee
         clc
         adc     #^EventScript
         sta     $e7
-        jmp     _c09a6d
+        jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 
@@ -4242,7 +4061,7 @@ EventCmd_c7:
         adc     #$00
         sta     $e7
         tdc
-        jmp     _c09a6d
+        jmp     ContinueEvent
 @b312:  ldy     $20         ; set new event pc
         longa
         lda     [$e5],y
@@ -4255,7 +4074,7 @@ EventCmd_c7:
         sta     $e7
         ldy     $2a
         sty     $e5
-        jmp     _c09a6d
+        jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 
@@ -4321,7 +4140,7 @@ EventCmd_cf:
         sta     $e7
         ldy     $2a
         sty     $e5
-        jmp     _c09a6d
+        jmp     ContinueEvent
 @b37c:  ldy     $20         ; increment event pc and continue
         iny3
         longa_clc
@@ -4333,7 +4152,7 @@ EventCmd_cf:
         adc     #$00
         sta     $e7
         tdc
-        jmp     _c09a6d
+        jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 
@@ -4908,7 +4727,7 @@ EventCmd_b6:
         ldy     $1e
         sty     $e5
         stz     $056e       ; clear dialog selection
-        jmp     _c09a6d
+        jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 
@@ -4957,7 +4776,7 @@ EventCmd_be:
         adc     #$00
         sta     $e7
         tdc
-        jmp     _c09a6d
+        jmp     ContinueEvent
 @b740:  ldx     $e8
         lda     $1e
         clc
@@ -4985,7 +4804,7 @@ EventCmd_be:
         stx     $e8
         lda     #1                      ; repeat 1 time
         sta     $05c4,x
-        jmp     _c09a6d
+        jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 
@@ -5253,7 +5072,7 @@ EventCmd_fe:
         sta     $e6
         lda     $05f3,x
         sta     $e7
-        jmp     _c09a6d
+        jmp     ContinueEvent
 @b8f4:  ldx     $e8         ; decrement event stack pointer
         dex3
         stx     $e8
@@ -5268,7 +5087,7 @@ EventCmd_fe:
         ldy     $0803       ; if event stack gets back to the top, restore the party object movement type
         lda     $087d,y
         sta     $087c,y
-@b917:  jmp     _c09a6d
+@b917:  jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
 

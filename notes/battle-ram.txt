@@ -700,15 +700,15 @@ $1600-$1FFF Save RAM
          +$3268 Pointer to Start of Counterattack AI Script
           $327C Character/Monster that just attacked you
 		  $327D -
-          $3290 Last Target to Attack you
+          $3290 Last Target to Attack you with a command
 		  $3291 Last Target to Cast a Spell on you
           $32A4 Last Target to Use an Item on you
-		  $32A5 Last Target to use an element on you ???
+		  $32A5 Last Target to use an element on you
           $32B8 Target you Control (invalid if msb set)
 		  $32B9 Target Controlling you (invalid if msb set)
           $32CC Pointer to Next Pending Action in Command List, $FF if no actions pending (+$3184)
           $32CD " " for Counterattacks
-          $32E0 Last Target that Targetted you
+          $32E0 Last Target that Targetted you (MSB set if waiting to retaliate)
           $32E1 Battle Background Index for Dance
           $32F4 Obtained Item index (steal/metemorph, $FF is no item)
           $32F5 "Targetting" target
@@ -743,7 +743,7 @@ $1600-$1FFF Save RAM
           $33F9 Zinger target
          +$33FA Target that is Doom Gaze
          +$33FC Target that ???
-         +$33FE Target that ???
+         +$33FE Target that is retaliating
           $3400 Secondary Spell index ($FF = no spell)
           $3401 Battle message index
           $3402 Quick Counter
