@@ -29,13 +29,13 @@ inc_lang "text/char_name_%s.inc"
         ldx     $00
         stx     $e3         ; clear event pause counter
         stx     $e8         ; clear event stack
-        ldx     #.loword(EventScript)
+        ldx     #.loword(EventScript_NoEvent)
         stx     $e5
-        lda     #^EventScript
+        lda     #^EventScript_NoEvent
         sta     $e7
-        ldx     #.loword(EventScript)
+        ldx     #.loword(EventScript_NoEvent)
         stx     $0594
-        lda     #^EventScript
+        lda     #^EventScript_NoEvent
         sta     $0596
         lda     #1          ; set event loop count
         sta     f:$0005c4

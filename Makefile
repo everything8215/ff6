@@ -8,9 +8,6 @@ VERSION_EXT =
 LINK = ld65
 LINKFLAGS =
 
-# lzss encoder for cutscene program
-LZSS = python3 tools/encode_cutscene.py
-
 # script to fix the SNES checksum
 FIX_CHECKSUM = python3 tools/fix_checksum.py
 
@@ -171,7 +168,7 @@ rom/ff6-event.bin: cfg/ff6-event.cfg obj/event_en.o
 $(FF6_JP_PATH): cfg/ff6-jp.cfg spc mml text monster_gfx $(OBJ_FILES_JP)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_JP)
-	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
+	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
 	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
 	@mkdir -p $(ROM_DIR)
@@ -182,7 +179,7 @@ $(FF6_JP_PATH): cfg/ff6-jp.cfg spc mml text monster_gfx $(OBJ_FILES_JP)
 $(FF6_EN_PATH): cfg/ff6-en.cfg spc mml text monster_gfx $(OBJ_FILES_EN)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
-	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
+	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
 	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
 	@mkdir -p $(ROM_DIR)
@@ -193,7 +190,7 @@ $(FF6_EN_PATH): cfg/ff6-en.cfg spc mml text monster_gfx $(OBJ_FILES_EN)
 $(FF6_EN1_PATH): cfg/ff6-en.cfg spc mml text monster_gfx $(OBJ_FILES_EN1)
 	@mkdir -p $(LZ_DIR)
 	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
-	${LZSS} $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
+	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
 	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
 	@mkdir -p $(ROM_DIR)

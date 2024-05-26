@@ -163,7 +163,7 @@ VehicleCmd_b0:
         sta     $6b
         iny
         lda     [$ea],y
-        adc     #.bankbyte(EventScript)
+        adc     #^EventScript
         sta     $ec
         ldy     $6a
         sty     $ea
@@ -225,7 +225,7 @@ VehicleCmd_b8:
         sta     $6b
         iny
         lda     [$ea],y
-        adc     #.bankbyte(EventScript)
+        adc     #^EventScript
         sta     $ec
         ldy     $6a
         sty     $ea
@@ -1635,7 +1635,7 @@ WorldCmd_b0:
         sta     $6b
         iny
         lda     [$ea],y
-        adc     #.bankbyte(EventScript)
+        adc     #^EventScript
         sta     $ec
         ldy     $6a
         sty     $ea
@@ -1697,7 +1697,7 @@ WorldCmd_b8:
         sta     $6b
         iny
         lda     [$ea],y
-        adc     #.bankbyte(EventScript)
+        adc     #^EventScript
         sta     $ec
         ldy     $6a
         sty     $ea
@@ -2024,7 +2024,7 @@ WorldCmd_d4:
         sta     $6b
         iny
         lda     [$ea],y
-        adc     #.bankbyte(EventScript)
+        adc     #^EventScript
         sta     $ec
         ldx     $6a
         stx     $ea

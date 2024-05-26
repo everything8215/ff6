@@ -111,6 +111,8 @@ PartyCharAnim_00:
         .addr   PartyCharSprite_00
         .byte   $ff
 
+; alternate animation is used for jumping characters on the shop screen
+; (see ShopCharSpriteTask_01 in src/menu/shop.asm)
 PartyCharAltAnim_00:
 @e94e:  .addr   PartyCharSprite_00
         .byte   $10
@@ -565,79 +567,81 @@ ShopCharYTbl:
 
 ; shop equip symbol animation data
 
+ShopEquipIconAnim:
+
 ; "E" (already equipped)
-ShopEquipIconAnim_00:
-@ebcd:  .addr   ShopEquipIconSprite_00
+ShopEquipIconAnim1:
+@ebcd:  .addr   ShopEquipIconSprite1
         .byte   $08
-        .addr   ShopEquipIconSprite_00
+        .addr   ShopEquipIconSprite1
         .byte   $08
-        .addr   ShopEquipIconSprite_00
+        .addr   ShopEquipIconSprite1
         .byte   $08
-        .addr   ShopEquipIconSprite_00
+        .addr   ShopEquipIconSprite1
         .byte   $ff
 
 ; up arrow (better)
-ShopEquipIconAnim_01:
-@ebd9:  .addr   ShopEquipIconSprite_04
+ShopEquipIconAnim2:
+@ebd9:  .addr   ShopEquipIconSprite5
         .byte   $08
-        .addr   ShopEquipIconSprite_03
+        .addr   ShopEquipIconSprite4
         .byte   $08
-        .addr   ShopEquipIconSprite_02
+        .addr   ShopEquipIconSprite3
         .byte   $08
-        .addr   ShopEquipIconSprite_02
+        .addr   ShopEquipIconSprite3
         .byte   $ff
 
 ; down arrow (worse)
-ShopEquipIconAnim_02:
-@ebe5:  .addr   ShopEquipIconSprite_07
+ShopEquipIconAnim3:
+@ebe5:  .addr   ShopEquipIconSprite8
         .byte   $08
-        .addr   ShopEquipIconSprite_06
+        .addr   ShopEquipIconSprite7
         .byte   $08
-        .addr   ShopEquipIconSprite_05
+        .addr   ShopEquipIconSprite6
         .byte   $08
-        .addr   ShopEquipIconSprite_05
+        .addr   ShopEquipIconSprite6
         .byte   $ff
 
 ; equals sign (same)
-ShopEquipIconAnim_03:
-@ebf1:  .addr   ShopEquipIconSprite_01
+ShopEquipIconAnim4:
+@ebf1:  .addr   ShopEquipIconSprite2
         .byte   $08
-        .addr   ShopEquipIconSprite_01
+        .addr   ShopEquipIconSprite2
         .byte   $08
-        .addr   ShopEquipIconSprite_01
+        .addr   ShopEquipIconSprite2
         .byte   $08
-        .addr   ShopEquipIconSprite_01
+        .addr   ShopEquipIconSprite2
         .byte   $ff
 
-ShopEquipIconSprite_00:
+ShopEquipIconSprite1:
 @ebfd:  .byte   1
         .byte   $00,$00,$07,$3e
 
-ShopEquipIconSprite_01:
+ShopEquipIconSprite2:
 @ec02:  .byte   1
         .byte   $00,$00,$0f,$3e
 
-ShopEquipIconSprite_02:
+ShopEquipIconSprite3:
 @ec07:  .byte   1
         .byte   $00,$00,$0c,$3e
 
-ShopEquipIconSprite_03:
+ShopEquipIconSprite4:
 @ec0c:  .byte   1
         .byte   $00,$00,$0d,$3e
 
-ShopEquipIconSprite_04:
+ShopEquipIconSprite5:
 @ec11:  .byte   1
         .byte   $00,$00,$0e,$3e
 
-ShopEquipIconSprite_05:
+ShopEquipIconSprite6:
 @ec16:  .byte   1
         .byte   $00,$00,$0c,$be
 
-ShopEquipIconSprite_06:
+ShopEquipIconSprite7:
 @ec1b:  .byte   1
         .byte   $00,$00,$0d,$be
 
-ShopEquipIconSprite_07:
+ShopEquipIconSprite8:
 @ec20:  .byte   1
         .byte   $00,$00,$0e,$be
 

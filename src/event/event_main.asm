@@ -10,6 +10,10 @@
 .include "gfx/map_sprite_pal.inc"
 .include "gfx/battle_bg.inc"
 
+.include "event_trigger.asm"
+.include "npc_prop.asm"
+.include "map_init_event.asm"
+
 ; ------------------------------------------------------------------------------
 
 .export EventScript
@@ -113112,11 +113116,5 @@ _cce486:
 ; ------------------------------------------------------------------------------
 
 end_fixed_block EventScript
-
-; ------------------------------------------------------------------------------
-
-.include "event_trigger.asm"
-.include "npc_prop.asm"
-.include "map_init_event.asm"
 
 ; ------------------------------------------------------------------------------

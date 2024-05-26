@@ -325,7 +325,7 @@ loop2:  lda     $1a
         ldx     $e5
         bne     done
         lda     $e7
-        cmp     #^EventScript
+        cmp     #^EventScript_NoEvent
         bne     done
         lda     $0525
         bpl     done

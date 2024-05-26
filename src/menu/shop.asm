@@ -1977,7 +1977,7 @@ ShopCharSpriteTask_01:
         ldx     $2d
         longa_clc
         lda     $34ca,x
-        adc     #$0009      ; add 9 to sprite data pointer to get the jumping animation
+        adc     #9                      ; add 9 to sprite data pointer to get the jumping animation
         bra     @c190
 @c189:  ldx     $2d
         longa
@@ -2122,12 +2122,12 @@ ShopCharIconTaskTbl:
 ShopCharIconTask_00:
 @c25a:  ldx     $2d
         longa
-        lda     #.loword(ShopEquipIconAnim_00)
+        lda     #.loword(ShopEquipIconAnim)
         sta     $32c9,x
         sta     $34ca,x
         shorta
         inc     $3649,x
-        lda     #^ShopEquipIconAnim_00
+        lda     #^ShopEquipIconAnim
         sta     $35ca,x
         clr_a
         lda     $35c9,x
@@ -2165,28 +2165,28 @@ ShopCharIconTask_01:
 ; down arrow
         ldx     $2d
         longa_clc
-        lda     $34ca,x     ; d8/ebe5
-        adc     #$0018
+        lda     $34ca,x
+        adc     #ShopEquipIconAnim3 - ShopEquipIconAnim
         bra     @c2d5
 
 ; already equipped
 @c2b6:  ldx     $2d
         longa
-        lda     $34ca,x     ; d8/ebcd
+        lda     $34ca,x
         bra     @c2d5
 
 ; equals sign
 @c2bf:  ldx     $2d
         longa_clc
-        lda     $34ca,x     ; d8/ebf1
-        adc     #$0024
+        lda     $34ca,x
+        adc     #ShopEquipIconAnim4 - ShopEquipIconAnim
         bra     @c2d5
 
 ; up arrow
 @c2cb:  ldx     $2d
         longa_clc
-        lda     $34ca,x     ; d8/ebd9
-        adc     #$000c
+        lda     $34ca,x
+        adc     #ShopEquipIconAnim2 - ShopEquipIconAnim
 @c2d5:  sta     $32c9,x
         shorta
         jsr     UpdateAnimTask
