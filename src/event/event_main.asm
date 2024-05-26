@@ -2522,7 +2522,8 @@ _ca12f3:
         activate_party 1
         sort_obj
         call _cac8e1
-_ca1379:
+
+game_ending:
         switch $01CC=1
         lock_camera
         call _caf61a
@@ -8352,7 +8353,7 @@ _ca36b1:
 .endproc  ; FinalBattle_proc
 
 FinalBattle := FinalBattle_proc::start
-_ca1379 := FinalBattle_proc::_ca1379
+GameEnding := FinalBattle_proc::game_ending
 
 ; ------------------------------------------------------------------------------
 

@@ -16109,7 +16109,7 @@ NPCProp_0163:
 NPCProp_0164:
 
         make_npc {15, 14}, $039a
-                set_npc_event _ca1379
+                set_npc_event GameEnding
                 set_npc_dir DOWN
                 set_npc_speed SLOWER
                 set_npc_gfx KEFKA, STRAGO_RELM_GAU_GOGO
@@ -16179,7 +16179,7 @@ NPCProp_0164:
 NPCProp_0165:
 
         make_npc {15, 13}, $039a
-                set_npc_event _ca1379
+                set_npc_event GameEnding
                 set_npc_dir DOWN
                 set_npc_speed SLOWER
                 set_npc_gfx KEFKA, STRAGO_RELM_GAU_GOGO

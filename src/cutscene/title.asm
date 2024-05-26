@@ -381,7 +381,7 @@ TitleState_02:
         jsr     _7e7897
 .if !LANG_EN
         lda     #0
-        ldy     #$5323
+        ldy     #.loword(_7e5323)
         jsr     CreateTask
 .endif
         ldy     #30
@@ -430,7 +430,7 @@ TitleState_04:
         sty     $15
 .if !LANG_EN
         lda     #0
-        ldy     #$7667
+        ldy     #.loword(DefaultAnimTask)
         jsr     CreateTask
         longa
         lda     #$79f6
@@ -461,7 +461,7 @@ TitleState_05:
         jsr     _7e5306
 .else
         lda     #0
-        ldy     #$7667
+        ldy     #.loword(DefaultAnimTask)
         jsr     CreateTask
         longa
         lda     #$79f9
@@ -613,6 +613,7 @@ TitleState_0b:
 
 .if !LANG_EN
 
+_7e5323:
 @5323:  tax
         jmp     ($5327,x)
 

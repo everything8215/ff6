@@ -1428,7 +1428,7 @@ _inputcheck:
 @091f:  cpx     #$08
         bcs     _08c5                   ; return if a monster
         lda     $3ed8,x
-        cmp     #$0d
+        cmp     #CHAR::UMARO
         beq     _08c5                   ; return if umaro
         lda     $3255,x
         bpl     _08c5                   ; return if character has a valid ai script
@@ -3439,7 +3439,7 @@ Cmd_06:
 _1610:  cpy     #$08
         bcs     FightAttack
         lda     $3ed8,y
-        cmp     #$0d
+        cmp     #CHAR::UMARO
         beq     _163b                   ; branch if Umaro
 
 FightAttack:
@@ -14228,7 +14228,7 @@ ValidateSpellList:
         sta     $0003,y
 @56c7:  clr_ay
         lda     $3ed8,x
-        cmp     #$0c
+        cmp     #CHAR::GOGO
         beq     @56e5       ; branch if character is gogo
         iny2
         bcs     @56e5       ; branch if character doesn't have a spell list
@@ -15394,7 +15394,7 @@ WinBattle:
         beq     @5e59       ; branch if exp. egg not equipped
         jsr     AddExp
 @5e59:  lda     $3ed8,y     ; actor number
-        cmp     #$0c
+        cmp     #CHAR::GOGO
         bcs     @5e73       ; branch if >= $0c (gogo)
         jsr     GetSpellListPtr
         ldx     $3010,y
@@ -15430,7 +15430,7 @@ WinBattle:
         sta     $f2
         jsr     CheckLevelUp
         lda     $3ed8,y
-        cmp     #$0c
+        cmp     #CHAR::GOGO
         bcs     @5eb9       ; branch if actor >= $0c (gogo)
         jsr     ShowLearnedMagicMsg
 @5eb9:  dey2                ; next character
@@ -15450,7 +15450,7 @@ WinBattle:
         ora     $1d29,x     ; add to known lores
         sta     $1d29,x
         tya
-        adc     #$8b        ; $8b (condemned, first lore)
+        adc     #ATTACK::CONDEMNED  ; $8b (condemned, first lore)
         sta     $2f35       ; set variable 0
         lda     #$2d        ; battle message $2d "learned <s>"
         jsr     ShowMsg
@@ -15697,7 +15697,7 @@ IncLearnMagic:
         clc
         adc     $ee         ; add amount to learn
         bcs     @6064       ; branch on overflow (should never happen)
-        cmp     #$64
+        cmp     #100
         bcc     @6066       ; branch if total is less than 100
 @6064:  lda     #$80
 @6066:  sta     ($f4),y     ; set msb in learn %
@@ -15961,12 +15961,12 @@ LearnAbilities:
         cmp     #CHAR::TERRA
         beq     @61fc                   ; branch if character is terra
         ldx     #$0020
-        cmp     #$06
+        cmp     #CHAR::CELES
         beq     @61fc                   ; branch if character is celes
 
 ; learn swdtech
         ldx     #$0000
-        cmp     #$02
+        cmp     #CHAR::CYAN
         bne     @61e0                   ; branch if character is not cyan
         jsr     GetAbilityBit
         beq     @6221
@@ -15980,7 +15980,7 @@ LearnAbilities:
 
 ; learn blitz
 @61e0:  ldx     #$0008
-        cmp     #$05
+        cmp     #CHAR::SABIN
         bne     @6221                   ; return if character is not sabin
         jsr     GetAbilityBit
         beq     @6221
@@ -16039,7 +16039,7 @@ GetAbilityBit:
 
 ; [ add experience ]
 
-; x = pointer to character data (+$1600)
+; X: pointer to character data (+$1600)
 
 AddExp:
 @6235:  php

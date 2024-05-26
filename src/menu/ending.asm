@@ -28,7 +28,6 @@ EndingStateTbl:
 ; [ ending cinematic ]
 
 ; $0201: ending cinematic state ( -> $26)
-
 EndingCutscene:
 @c51c:  php
         longai
@@ -215,7 +214,7 @@ EndingState_05:
         ldy     #.loword(CreditsTextTaskScene1)
         jsr     CreateTask
         lda     #$02
-        ldy     #$c681
+        ldy     #.loword(_c3c681)
         jsr     CreateTask
         lda     #0
         ldy     #.loword(_c3d0f2)
@@ -259,13 +258,16 @@ EndingState_06:
 
 ; [ ??? thread ]
 
+_c3c681:
 @c681:  tax
-        jmp     ($c685,x)
+        jmp     (.loword(_c3c685),x)
 
-@c685:  .addr   $c68b,$c69a,$c6ba
+_c3c685:
+@c685:  .addr   _c3c68b, _c3c69a, _c3c6ba
 
 ; ------------------------------------------------------------------------------
 
+_c3c68b:
 @c68b:  ldx     $2d
         inc     $3649,x
         longa
@@ -273,6 +275,7 @@ EndingState_06:
         sta     $3349,x
         shorta
 
+_c3c69a:
 @c69a:  ldx     $2d
         lda     $23
         and     #$01
@@ -289,6 +292,7 @@ EndingState_06:
         sec
         rts
 
+_c3c6ba:
 @c6ba:  jsr     _c3c6bf
         sec
         rts
@@ -345,20 +349,20 @@ FadeOutCreditsPal:
 ; used for everything except clouds scenes
 
 _c3c703:
-@c703:  lda     #$c2        ; source = $c29754 (inverse credits palette 1)
+@c703:  lda     #^_c29754        ; source = $c29754 (inverse credits palette 1)
         sta     $ed
-        lda     #$04        ; speed = 4 frames per update
+        lda     #4        ; speed = 4 frames per update
         ldy     #$31c9      ; destination = $7e31c9 (sprite palette 4)
         sty     $e7
-        ldx     #$9754
+        ldx     #.loword(_c29754)
         stx     $eb
         jsr     CreateFadePalTask
-        lda     #$c2        ; source = $c2974c (inverse credits palette 2)
+        lda     #^_c2974c        ; source = $c2974c (inverse credits palette 2)
         sta     $ed
-        lda     #$04        ; speed = 4 frames per update
+        lda     #4        ; speed = 4 frames per update
         ldy     #$31e9      ; destination = $7e31e9 (sprite palette 5)
         sty     $e7
-        ldx     #$974c
+        ldx     #.loword(_c2974c)
         stx     $eb
         jsr     CreateFadePalTask
         rts
@@ -370,20 +374,20 @@ _c3c703:
 ; used for clouds scenes only
 
 _c3c72a:
-@c72a:  lda     #$c2        ; source = $c29744 (normal credits palette 1)
+@c72a:  lda     #^_c29744        ; source = $c29744 (normal credits palette 1)
         sta     $ed
         lda     #$04        ; speed = 4 frames per update
         ldy     #$31c9      ; destination = $7e31c9 (sprite palette 4)
         sty     $e7
-        ldx     #$9744
+        ldx     #.loword(_c29744)
         stx     $eb
         jsr     CreateFadePalTask
-        lda     #$c2        ; source = $c2973c (normal credits palette 2)
+        lda     #^_c2973c        ; source = $c2973c (normal credits palette 2)
         sta     $ed
         lda     #$04        ; speed = 4 frames per update
         ldy     #$31e9      ; destination = $7e31e9 (sprite palette 5)
         sty     $e7
-        ldx     #$973c
+        ldx     #.loword(_c2973c)
         stx     $eb
         jsr     CreateFadePalTask
         rts
@@ -393,29 +397,29 @@ _c3c72a:
 ; [ load credits sprite palettes ]
 
 LoadCreditsSpritePal:
-@c751:  lda     #$c2
+@c751:  lda     #^_c297f4
         ldy     #$3149      ; sprite palette 0
-        ldx     #$97f4
+        ldx     #.loword(_c297f4)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c29794
         ldy     #$3169      ; sprite palette 1
-        ldx     #$9794
+        ldx     #.loword(_c29794)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c297b4
         ldy     #$3189      ; sprite palette 2
-        ldx     #$97b4
+        ldx     #.loword(_c297b4)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c297d4
         ldy     #$31a9      ; sprite palette 3
-        ldx     #$97d4
+        ldx     #.loword(_c297d4)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c29834
         ldy     #$3209      ; sprite palette 6
-        ldx     #$9834
+        ldx     #.loword(_c29834)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c29814
         ldy     #$3229      ; sprite palette 7
-        ldx     #$9814
+        ldx     #.loword(_c29814)
         jsr     LoadPal
         rts
 
@@ -477,8 +481,8 @@ EndingState_09:
         jsr     LoadCreditsSpritePal
         jsr     _c3d15c       ; clear credits text palettes
         jsr     LoadCreditsBGPal
-        ldy     #$8a70      ; c2/8a70 (mode 7 scrolling data)
-        lda     #$c2
+        ldy     #.loword(CreditsScrollScene2)
+        lda     #^CreditsScrollScene2
         jsr     CreateMode7ScrollTask
         jsr     LoadCreditsTextScene2
         ldy     $00
@@ -593,8 +597,8 @@ EndingState_02:
 @c869:  jsr     _c3c87e       ; clouds init
         ldy     #$00f0
         sty     $20
-        ldy     #$8b3c
-        lda     #$c2
+        ldy     #.loword(CreditsScrollClouds1)
+        lda     #^CreditsScrollClouds1
         jsr     CreateMode7ScrollTask
         inc     $26
         jmp     CreateEndingFadeInTask
@@ -642,8 +646,8 @@ EndingState_04:
         jsr     UpdateMode7HDMA
         ldy     #$0078
         sty     $20
-        ldy     #$8b42
-        lda     #$c2
+        ldy     #.loword(CreditsScrollClouds2)
+        lda     #^CreditsScrollClouds2
         jsr     CreateMode7ScrollTask
         lda     #$03
         sta     $26
@@ -666,8 +670,8 @@ EndingState_0c:
         jsr     _c3d15c       ; clear credits text palettes
         jsr     LoadCreditsBGPal
         jsr     LoadCreditsSpritePal
-        ldy     #$8ad9
-        lda     #$c2
+        ldy     #.loword(CreditsScrollScene3)
+        lda     #^CreditsScrollScene3
         jsr     CreateMode7ScrollTask
         jsr     _c3cac7       ; create oscillating birds (boat)
         jsr     LoadCreditsTextScene3
@@ -703,12 +707,12 @@ EndingState_0d:
 
 @c926:  jsr     CreateEndingAnimTask
         longa
-        lda     #$f7fd      ; cf/f7fd (boat, right half)
+        lda     #.loword(_cff7fd)
         sta     $7e32c9,x
         lda     #$ffc0
         sta     $7e34c9,x
         shorta
-        lda     #$cf
+        lda     #^_cff7fd
         sta     $7e35ca,x
         lda     #$f8
         sta     $7e33ca,x
@@ -723,27 +727,27 @@ EndingState_0d:
 _c3c94e:
 @c94e:  jsr     CreateEndingAnimTask
         longa
-        lda     #$f809      ; cf/f809 (boat, left half)
+        lda     #.loword(_cff809)
         sta     $7e32c9,x
         lda     #$ffc0
         sta     $7e34c9,x
         shorta
-        lda     #$cf
+        lda     #^_cff809
         sta     $7e35ca,x
         lda     #$f8
         sta     $7e33ca,x
         lda     #$50
         sta     $7e344a,x
         lda     #$01
-        ldy     #$c9a2      ; boat thread (right half)
+        ldy     #.loword(_c3c9a2)      ; boat thread (right half)
         jsr     CreateTask
         longa
-        lda     #$f7fd      ; cf/f7fd (boat, right half)
+        lda     #.loword(_cff7fd)      ; cf/f7fd (boat, right half)
         sta     $7e32c9,x
         lda     #$ffc0
         sta     $7e34c9,x
         shorta
-        lda     #$cf
+        lda     #^_cff7fd
         sta     $7e35ca,x
         lda     #$f8
         sta     $7e33ca,x
@@ -755,13 +759,16 @@ _c3c94e:
 
 ; [ boat thread (right half) ]
 
+_c3c9a2:
 @c9a2:  tax
-        jmp     ($c9a6,x)
+        jmp     (.loword(_c3c9a6),x)
 
-@c9a6:  .addr   $c9aa,$c9bc
+_c3c9a6:
+@c9a6:  .addr   _c3c9aa, _c3c9bc
 
 ; ------------------------------------------------------------------------------
 
+_c3c9aa:
 @c9aa:  ldx     $2d
         inc     $3649,x
         longa
@@ -770,6 +777,7 @@ _c3c94e:
         shorta
         jsr     InitAnimTask
 
+_c3c9bc:
 @c9bc:  ldx     $2d
         ldy     $3349,x     ; start moving left after 64 frames (i think...)
         bne     @c9c8
@@ -810,13 +818,13 @@ EndingState_10:
         jsr     UpdateMode7HDMA
         jsr     _c3cafd       ; create oscillating birds (sea with airship)
         lda     #$02
-        ldy     #$cbc6      ; airship position thread (going left)
+        ldy     #.loword(_c3cbc6)      ; airship position thread (going left)
         jsr     CreateTask
         longa
-        lda     #$8bb1      ; c2/8bb1 (airship going left sprite data)
+        lda     #.loword(AirshipLeftAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$c2
+        lda     #^AirshipLeftAnim
         sta     $7e35ca,x
         lda     #$78
         sta     $7e33ca,x
@@ -824,10 +832,10 @@ EndingState_10:
         sta     $7e344a,x
         jsr     CreateEndingAnimTask
         longa
-        lda     #.loword(AirshipSplashAnim)
+        lda     #.loword(AirshipShadowAnim)
         sta     $7e32c9,x
         shorta
-        lda     #^AirshipSplashAnim
+        lda     #^AirshipShadowAnim
         sta     $7e35ca,x
         lda     #$80
         sta     $7e33ca,x
@@ -840,11 +848,11 @@ EndingState_10:
         lda     #2
         ldy     #.loword(CreditsTextTaskScene4)
         jsr     CreateTask
-        ldy     #$8b36
-        lda     #$c2
+        ldy     #.loword(CreditsScrollScene4)
+        lda     #^CreditsScrollScene4
         jsr     CreateMode7ScrollTask
         lda     #$03
-        ldy     #$caa2      ; scroll bg2 right
+        ldy     #.loword(ScrollBG2RightThread)
         jsr     CreateTask
         jsr     _c3d2a0       ; create camera control thread
         inc     $26
@@ -868,9 +876,9 @@ _c3ca71:
 ; [  ]
 
 _c3ca80:
-@ca80:  lda     #$c2
+@ca80:  lda     #^_c2953c
         ldy     #$3049
-        ldx     #$953c
+        ldx     #.loword(_c2953c)
         jsr     LoadPal
         rts
 
@@ -886,7 +894,7 @@ EndingState_11:
         ldy     #$0708
         sty     $20
         lda     #$01
-        ldy     #$cc79
+        ldy     #.loword(_c3cc79)
         jsr     CreateTask
 @caa1:  rts
 
@@ -894,6 +902,7 @@ EndingState_11:
 
 ; [ scroll bg2 right thread ]
 
+ScrollBG2RightThread:
 @caa2:  lda     $23
         and     #$01
         bne     @caae
@@ -907,6 +916,7 @@ EndingState_11:
 
 ; [ scroll bg2 left thread ]
 
+ScrollBG2LeftThread:
 @cab0:  lda     $23
         and     #$01
         bne     @cabc
@@ -945,14 +955,14 @@ _c3cac7:
         pha
         plb
         longa
-        lda     $cff7b5,x   ; sprite data pointer (+$cf0000)
+        lda     f:ShipBirdsAnim,x   ; sprite data pointer (+$cf0000)
         inx2
         sta     $32c9,y
         shorta
-        lda     $cff7b5,x   ; x position
+        lda     f:ShipBirdsAnim,x   ; x position
         inx
         sta     $34ca,y
-        lda     $cff7b5,x   ; y position
+        lda     f:ShipBirdsAnim,x   ; y position
         inx
         sta     $344a,y
         lda     #$01
@@ -977,14 +987,14 @@ _c3cafd:
         pha
         plb
         longa
-        lda     $cff7cd,x
+        lda     f:_cff7cd,x
         inx2
         sta     $32c9,y
         shorta
-        lda     $cff7cd,x
+        lda     f:_cff7cd,x
         inx
         sta     $34ca,y
-        lda     $cff7cd,x
+        lda     f:_cff7cd,x
         inx
         sta     $344a,y
         plb
@@ -1007,14 +1017,14 @@ _c3cb2e:
         pha
         plb
         longa
-        lda     $cff7e5,x
+        lda     f:_cff7e5,x
         inx2
         sta     $32c9,y
         shorta
-        lda     $cff7e5,x
+        lda     f:_cff7e5,x
         inx
         sta     $34ca,y
-        lda     $cff7e5,x
+        lda     f:_cff7e5,x
         inx
         sta     $344a,y
         plb
@@ -1038,21 +1048,24 @@ _c3cb5f:
 
 _c3cb68:
 @cb68:  tax
-        jmp     ($cb6c,x)
+        jmp     (.loword(_c3cb6c),x)
 
-@cb6c:  .addr   $cb70,$cb87
+_c3cb6c:
+@cb6c:  .addr   _c3cb70, _c3cb87
 
 ; ------------------------------------------------------------------------------
 
+_c3cb70:
 @cb70:  ldx     $2d
         inc     $3649,x
         stz     $334a,x
-        lda     $c3cb68,x               ; looks like a bug ???
+        lda     f:_c3cb68,x             ; looks like a bug ???
         sta     $3349,x
-        lda     #$cf
+        lda     #^_cff706
         sta     $35ca,x
         jsr     InitAnimTask
 
+_c3cb87:
 @cb87:  ldx     $2d
         jsr     _c3cb94                 ; update oscillating bird position
         inc     $3349,x
@@ -1093,13 +1106,16 @@ _c3cb94:
 
 ; [ airship position thread (with splash) ]
 
+_c3cbc6:
 @cbc6:  tax
-        jmp     ($cbca,x)
+        jmp     (.loword(_c3cbca),x)
 
-@cbca:  .addr   $cbce,$cbe6
+_c3cbca:
+@cbca:  .addr   _c3cbce, _c3cbe6
 
 ; ------------------------------------------------------------------------------
 
+_c3cbce:
 @cbce:  ldx     $2d
         inc     $3649,x
         stz     $334a,x
@@ -1110,6 +1126,7 @@ _c3cb94:
         sta     $354a,x
         jsr     InitAnimTask
 
+_c3cbe6:
 @cbe6:  ldx     $2d
         jsr     _c3cbff       ; update airship position (sine)
         ldx     $2d
@@ -1172,7 +1189,7 @@ _c3cc38:
         plb
         jsr     _c3c846       ; create generic thread w/ counter
         longa
-        lda     #$8d0b      ; c2/8d0b (airship splash)
+        lda     #.loword(AirshipSplashAnim)
         sta     $7e32c9,x
         lda     #$0100
         sta     $7e34c9,x
@@ -1181,7 +1198,7 @@ _c3cc38:
         shorta
         lda     #$18
         sta     $7e3349,x
-        lda     #$c2
+        lda     #^AirshipSplashAnim
         sta     $7e35ca,x
         lda     #$7e
         sta     $7e33ca,x
@@ -1194,19 +1211,22 @@ _c3cc38:
 
 ; [ airship position thread (???) ]
 
+_c3cc79:
 @cc79:  tax
-        jmp     ($cc7d,x)
+        jmp     (.loword(_c3cc7d),x)
 
-@cc7d:  .addr   $cc81,$cca8
+_c3cc7d:
+@cc7d:  .addr   _c3cc81, _c3cca8
 
 ; ------------------------------------------------------------------------------
 
+_c3cc81:
 @cc81:  ldx     $2d
         inc     $3649,x
-        lda     #$cf
+        lda     #^_cff772
         sta     $35ca,x
         longa
-        lda     #$f772      ; cf/f772 (bird 5)
+        lda     #.loword(_cff772)      ; cf/f772 (bird 5)
         sta     $32c9,x
         lda     #$0010
         sta     $3349,x
@@ -1217,6 +1237,7 @@ _c3cc38:
         sta     $354a,x
         jsr     InitAnimTask
 
+_c3cca8:
 @cca8:  ldx     $2d
         lda     $33ca,x
         cmp     #$08
@@ -1299,17 +1320,17 @@ EndingState_14:
         jsr     _c3cb2e       ; create oscillating birds (land with airship)
         jsr     _c3cfdc
         longa
-        lda     #$8c25      ; c2/8c25 (airship going right sprite data)
+        lda     #.loword(AirshipRightAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$c2
+        lda     #^AirshipRightAnim
         sta     $7e35ca,x
         lda     #$78
         sta     $7e33ca,x
         lda     #$58
         sta     $7e354a,x
-        ldy     #$8b39
-        lda     #$c2
+        ldy     #.loword(CreditsScrollScene5)
+        lda     #^CreditsScrollScene5
         jsr     CreateMode7ScrollTask
         jsr     LoadCreditsTextScene5
         ldy     $00
@@ -1318,7 +1339,7 @@ EndingState_14:
         ldy     #.loword(CreditsTextTaskScene5)
         jsr     CreateTask
         lda     #$03
-        ldy     #$cab0      ; scroll bg2 left thread
+        ldy     #.loword(ScrollBG2LeftThread)
         jsr     CreateTask
         jsr     _c3d2a0       ; create camera control thread
         inc     $26
@@ -1330,7 +1351,7 @@ EndingState_14:
 
 _c3cd97:
 @cd97:  lda     #2
-        ldy     #$cdea
+        ldy     #.loword(_c3cdea)
         jsr     CreateTask
         rts
 
@@ -1376,27 +1397,31 @@ EndingState_17:
 
 ; [  ]
 
+_c3cdea:
 @cdea:  tax
-        jmp     ($cdee,x)
+        jmp     (.loword(_c3cdee),x)
 
-@cdee:  .addr   $ce00,$ce1f,$ce1f,$ce1f,$ce1f,$ce1f,$ce1f,$ce1f
-        .addr   $ce33
+_c3cdee:
+@cdee:  .addr   _c3ce00,_c3ce1f,_c3ce1f,_c3ce1f,_c3ce1f,_c3ce1f,_c3ce1f,_c3ce1f
+        .addr   _c3ce33
 
 ; ------------------------------------------------------------------------------
 
+_c3ce00:
 @ce00:  ldx     $2d
         inc     $3649,x
         longa
-        lda     #$f74f      ; cf/f74f (bird 4)
+        lda     #.loword(_cff74f)      ; cf/f74f (bird 4)
         sta     $32c9,x
         shorta
-        lda     #$cf
+        lda     #^_cff74f
         sta     $35ca,x
         stz     $35c9,x
         jsr     _c3ce43
         ldx     $2d
         jsr     InitAnimTask
 
+_c3ce1f:
 @ce1f:  ldx     $2d
         ldy     $3349,x
         bne     @ce2b
@@ -1407,6 +1432,7 @@ EndingState_17:
         sec
         rts
 
+_c3ce33:
 @ce33:  jsr     UpdateEndingAnimTask
         ldx     $2d
         lda     $33ca,x
@@ -1429,17 +1455,18 @@ _c3ce43:
         asl3
         longa
         tax
-        lda     $c3ce6e,x
+        lda     f:_c3ce6e,x
         sta     $34c9,y
-        lda     $c3ce70,x
+        lda     f:_c3ce6e+2,x
         sta     $3549,y
-        lda     $c3ce72,x
+        lda     f:_c3ce6e+4,x
         sta     $3349,y
         shorta
         rts
 
 ; ------------------------------------------------------------------------------
 
+_c3ce6e:
 @ce6e:  .word   $0020,$fff0,$0384,$0000
         .word   $0020,$0000,$003c,$0000
         .word   $0020,$0020,$003c,$0000
@@ -1465,8 +1492,8 @@ EndingState_18:
         jsr     UpdateMode7HDMA
         jsr     _c3d15c       ; clear credits text palettes
         jsr     LoadCreditsBGPal
-        ldy     #$8afa
-        lda     #$c2
+        ldy     #.loword(CreditsScrollScene6)
+        lda     #^CreditsScrollScene6
         jsr     CreateMode7ScrollTask
         jsr     LoadCreditsTextScene6
         ldy     $00
@@ -1517,24 +1544,24 @@ EndingState_1c:
         ldy     #.loword(CreditsTextTaskScene7)
         jsr     CreateTask
         lda     #$00
-        ldy     #$cf9a      ; bg scrolling thread (big airship)
+        ldy     #.loword(_c3cf9a)      ; bg scrolling thread (big airship)
         jsr     CreateTask
-        jsr     _c3cfb2       ; create big airship propeller thread (cw)
+        jsr     InitAirshipPropellerLeftAnim
         lda     #$14
         sta     $7e354a,x
         lda     #$44
         sta     $7e33ca,x
-        jsr     _c3cfc7       ; create big airship propeller thread (ccw)
+        jsr     InitAirshipPropellerRightAnim
         lda     #$14
         sta     $7e354a,x
         lda     #$ac
         sta     $7e33ca,x
-        jsr     _c3cfb2       ; create big airship propeller thread (cw)
+        jsr     InitAirshipPropellerLeftAnim
         lda     #$e8
         sta     $7e354a,x
         lda     #$60
         sta     $7e33ca,x
-        jsr     _c3cfc7       ; create big airship propeller thread (ccw)
+        jsr     InitAirshipPropellerRightAnim
         lda     #$e8
         sta     $7e354a,x
         lda     #$90
@@ -1560,6 +1587,7 @@ EndingState_1c:
 
 ; [ bg scrolling thread (big airship) ]
 
+_c3cf9a:
 @cf9a:  lda     $23
         and     #$7f
         bne     @cfa2
@@ -1578,12 +1606,12 @@ EndingState_1c:
 
 ; [ create big airship propeller thread (left side, cw) ]
 
-_c3cfb2:
+InitAirshipPropellerLeftAnim:
 @cfb2:  jsr     _c3cfdc
-        lda     #$c2
+        lda     #^AirshipPropellerLeftAnim
         sta     $7e35ca,x
         longa
-        lda     #$8d3e      ; c2/8d3e (big airship propeller, cw)
+        lda     #.loword(AirshipPropellerLeftAnim)
         sta     $7e32c9,x
         shorta
         rts
@@ -1592,12 +1620,12 @@ _c3cfb2:
 
 ; [ create big airship propeller thread (right side, ccw) ]
 
-_c3cfc7:
+InitAirshipPropellerRightAnim:
 @cfc7:  jsr     _c3cfdc
-        lda     #$c2
+        lda     #^AirshipPropellerRightAnim
         sta     $7e35ca,x
         longa
-        lda     #$8d91      ; c2/8d3e (big airship propeller, ccw)
+        lda     #.loword(AirshipPropellerRightAnim)
         sta     $7e32c9,x
         shorta
         rts
@@ -1608,7 +1636,7 @@ _c3cfc7:
 
 _c3cfdc:
 @cfdc:  lda     #$02
-        ldy     #$cff8      ; airship position thread (no water splash)
+        ldy     #.loword(_c3cff8)      ; airship position thread (no water splash)
         jsr     CreateTask
         rts
 
@@ -1639,18 +1667,22 @@ DecTaskCounter:
 
 ; [ airship position thread (no water splash) ]
 
+_c3cff8:
 @cff8:  tax
-        jmp     ($cffc,x)
+        jmp     (.loword(_c3cffc),x)
 
-@cffc:  .addr   $d000,$d00b
+_c3cffc:
+@cffc:  .addr   _c3d000, _c3d00b
 
 ; ------------------------------------------------------------------------------
 
+_c3d000:
 @d000:  ldx     $2d
         inc     $3649,x
         stz     $3349,x
         jsr     InitAnimTask
 
+_c3d00b:
 @d00b:  ldx     $2d
         jsr     _c3cbff       ; update airship position (sine)
         inc     $3349,x
@@ -1673,13 +1705,13 @@ EndingState_1f:
 ; [  ]
 
 _c3d018:
-@d018:  lda     #$c2
+@d018:  lda     #^_c2959c
         ldy     #$3049
-        ldx     #$959c
+        ldx     #.loword(_c2959c)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c2959c
         ldy     #$3069
-        ldx     #$959c
+        ldx     #.loword(_c2959c)
         jsr     LoadPal
         rts
 
@@ -1695,13 +1727,13 @@ EndingState_20:
         jsr     _c3d60a
         jsr     InitMode7Scroll
         jsl     _d4ce55
-        lda     #$c2
+        lda     #^_c29754
         ldy     #$31c9
-        ldx     #$9754
+        ldx     #.loword(_c29754)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c2974c
         ldy     #$31e9
-        ldx     #$974c
+        ldx     #.loword(_c2974c)
         jsr     LoadPal
         jsr     LoadCreditsBGPal
         jsr     _c3d018
@@ -1716,8 +1748,8 @@ EndingState_20:
         sty     $35
         ldy     #$ffd0
         sty     $37
-        lda     #$00
-        ldy     #$d122
+        lda     #0
+        ldy     #.loword(_c3d122)
         jsr     CreateTask
         inc     $26
         ldy     #$0096
@@ -1824,6 +1856,8 @@ _c3d10e:
 EndingState_22:
 EndingState_23:
 EndingState_24:
+
+_c3d122:
 @d122:  jsr     _c3d127
         sec
         rts
@@ -1886,29 +1920,29 @@ _c3d15c:
 ; [ load credits bg palettes ]
 
 LoadCreditsBGPal:
-@d173:  lda     #$c2
+@d173:  lda     #^_c295bc
         ldy     #$3069      ; bg palette 1
-        ldx     #$95bc
+        ldx     #.loword(_c295bc)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c295dc
         ldy     #$3089      ; bg palette 2
-        ldx     #$95dc
+        ldx     #.loword(_c295dc)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c295fc
         ldy     #$30a9      ; bg palette 3
-        ldx     #$95fc
+        ldx     #.loword(_c295fc)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c2961c
         ldy     #$30c9      ; bg palette 4
-        ldx     #$961c
+        ldx     #.loword(_c2961c)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c2963c
         ldy     #$3109      ; bg palette 6
-        ldx     #$963c
+        ldx     #.loword(_c2963c)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c2965c
         ldy     #$3129      ; bg palette 7
-        ldx     #$965c
+        ldx     #.loword(_c2965c)
         jsr     LoadPal
         rts
 
@@ -2324,7 +2358,7 @@ InitMode7Scroll:
 
 _c3d40c:
 @d40c:  jsr     LoadCreditsFontGfx
-        jsr     _c3d6b1       ; load credits graphics (clouds/airship)
+        jsr     InitCreditsGfxClouds
         jsr     _c3d66b       ; load credits palette assignment (clouds/airship)
         jsr     _c3d552
         jsr     _c3d42a
@@ -2340,7 +2374,7 @@ _c3d40c:
 
 _c3d42a:
 @d42a:  jsr     _c3d68d
-        ldx     #$fc1a      ; credits layout (clouds)
+        ldx     #$fc1a      ; credits tilemap (clouds)
         stx     $f1
         lda     #$7e
         sta     $f3
@@ -2396,6 +2430,8 @@ _c3d46f:
         jmp     TfrGfx2bpp
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d497:
 @d497:  phb
@@ -2466,6 +2502,8 @@ LoadCloudsBackdropGfx:
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d518:
 @d518:  ldy     #$c000
         sty     $e7
@@ -2475,9 +2513,11 @@ _c3d518:
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d522:
 @d522:  jsr     LoadCreditsFontGfx
-        jsr     _c3d6b1       ; load credits graphics (clouds/airship)
+        jsr     InitCreditsGfxClouds
         jsr     _c3d6d6
         jsr     _c3d66b       ; load credits palette assignment (clouds/airship)
         jsr     _c3d552
@@ -2492,13 +2532,15 @@ _c3d522:
 
 _c3d543:
 @d543:  jsr     _c3d686
-        ldx     #$fc1a      ; credits layout (clouds)
+        ldx     #$fc1a      ; credits tilemap (clouds)
         stx     $f1
         lda     #$7e
         sta     $f3
         jmp     _c3d706
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d552:
 @d552:  stz     $e4
@@ -2511,6 +2553,8 @@ _c3d552:
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d562:
 @d562:  ldx     #$0080
         stx     $e4
@@ -2522,16 +2566,20 @@ _c3d562:
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d573:
 @d573:  jsr     LoadCreditsFontGfx
-        jsr     _c3d694       ; load credits graphics (land/sea)
+        jsr     InitCreditsGfxLandSea
         jsr     _c3d6d6
         jmp     _d582
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 EndingAirshipScene:
-@d57f:  jsr     _c3d694       ; load credits graphics (land/sea)
+@d57f:  jsr     InitCreditsGfxLandSea
 _d582:  jsr     _c3d664       ; load credits palette assignment (land/sea)
         jsr     _c3d552
         jsr     _c3d59b       ; load credits tile layout (land)
@@ -2544,9 +2592,11 @@ _d582:  jsr     _c3d664       ; load credits palette assignment (land/sea)
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d59b:
 @d59b:  jsr     _c3d675
-        ldx     #$dd3a      ; credits layout (land)
+        ldx     #$dd3a      ; credits tilemap (land)
         stx     $f1
         lda     #$7e
         sta     $f3
@@ -2554,9 +2604,11 @@ _c3d59b:
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d5aa:
 @d5aa:  jsr     LoadCreditsFontGfx
-        jsr     _c3d694       ; load credits graphics (land/sea)
+        jsr     InitCreditsGfxLandSea
         jsr     _c3d6d6
         jsr     _c3d664       ; load credits palette assignment (land/sea)
         jsr     _c3d552
@@ -2568,10 +2620,12 @@ _c3d5aa:
         jmp     _c3d64c
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d5cb:
 @d5cb:  jsr     _c3d67f
-        ldx     #$2cfa      ; credits layout (sea)
+        ldx     #$2cfa      ; credits tilemap (sea)
         stx     $f1
         lda     #$7f
         sta     $f3
@@ -2579,9 +2633,11 @@ _c3d5cb:
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d5da:
 @d5da:  jsr     LoadCreditsFontGfx
-        jsr     _c3d694       ; load credits graphics (land/sea)
+        jsr     InitCreditsGfxLandSea
         jsr     _c3d6d6
         jsr     _c3d664       ; load credits palette assignment (land/sea)
         jsr     _c3d552
@@ -2594,9 +2650,11 @@ _c3d5da:
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d5fb:
 @d5fb:  jsr     _c3d686
-        ldx     #$2cfa      ; credits layout (sea)
+        ldx     #$2cfa      ; credits tilemap (sea)
         stx     $f1
         lda     #$7f
         sta     $f3
@@ -2604,8 +2662,10 @@ _c3d5fb:
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d60a:
-@d60a:  jsr     _c3d6b1       ; load credits graphics (clouds/airship)
+@d60a:  jsr     InitCreditsGfxClouds
         jsr     _c3d66b       ; load credits palette assignment (clouds/airship)
         jsr     _c3d552
         jsr     _c3d625
@@ -2617,15 +2677,19 @@ _c3d60a:
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d625:
 @d625:  jsr     _c3d675
-        ldx     #$041a      ; credits layout (airship)
+        ldx     #$041a      ; credits tilemap (airship)
         stx     $f1
         lda     #$7f
         sta     $f3
         jmp     _c3d706
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d634:
 @d634:  ldy     #$b800
@@ -2640,6 +2704,8 @@ _c3d634:
         jmp     EndingTfrVRAM
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d64c:
 @d64c:  ldy     #$b800
@@ -2658,8 +2724,8 @@ _c3d64c:
 ; [ load credits palette assignments (land/sea) ]
 
 _c3d664:
-@d664:  ldx     #$f9e1      ; palette assignment
-        lda     #$cf
+@d664:  ldx     #.loword(_cff9e1)      ; palette assignment
+        lda     #^_cff9e1
         bra     _d670
 
 ; ------------------------------------------------------------------------------
@@ -2667,48 +2733,56 @@ _c3d664:
 ; [ load credits palette assignments (airship/clouds) ]
 
 _c3d66b:
-@d66b:  ldx     #$f969      ; palette assignment
-        lda     #$cf
+@d66b:  ldx     #.loword(_cff969)      ; palette assignment
+        lda     #^_cff969
 _d670:  stx     $91
         sta     $93
         rts
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d675:
-@d675:  ldx     #$fae9
-        lda     #$cf
+@d675:  ldx     #.loword(_cffae9)
+        lda     #^_cffae9
 _d67a:  stx     $f7
         sta     $f9
         rts
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d67f:
-@d67f:  ldx     #$fac9
-        lda     #$cf
+@d67f:  ldx     #.loword(_cffac9)
+        lda     #^_cffac9
         bra     _d67a
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d686:
-@d686:  ldx     #$faa9
-        lda     #$cf
+@d686:  ldx     #.loword(_cffaa9)
+        lda     #^_cffaa9
         bra     _d67a
 
 ; ------------------------------------------------------------------------------
 
+; [  ]
+
 _c3d68d:
-@d68d:  ldx     #$fb09
-        lda     #$cf
+@d68d:  ldx     #.loword(_cffb09)
+        lda     #^_cffb09
         bra     _d67a
 
 ; ------------------------------------------------------------------------------
 
 ; [ load credits graphics (land/sea) ]
 
-_c3d694:
-@d694:  jsr     _c3d6ce       ; load ending credits graphics data
+InitCreditsGfxLandSea:
+@d694:  jsr     LoadCreditsGfx
         ldx     #$141a      ; credits graphics (land/sea)
         stx     $e7
         lda     #$7f
@@ -2719,14 +2793,14 @@ _c3d694:
         sta     $ed
         ldy     #$18e0
         sty     $ef
-        jmp     _c3d6ee
+        jmp     CopyCreditsGfx
 
 ; ------------------------------------------------------------------------------
 
 ; [ load credits graphics (clouds/airship) ]
 
-_c3d6b1:
-@d6b1:  jsr     _c3d6ce       ; load ending credits graphics data
+InitCreditsGfxClouds:
+@d6b1:  jsr     LoadCreditsGfx
         ldx     #$ed3a      ; credits graphics (clouds/airship)
         stx     $e7
         lda     #$7e
@@ -2737,18 +2811,20 @@ _c3d6b1:
         sta     $ed
         ldy     #$0ee0
         sty     $ef
-        jmp     _c3d6ee
+        jmp     CopyCreditsGfx
 
 ; ------------------------------------------------------------------------------
 
 ; [ load ending credits graphics data ]
 
-_c3d6ce:
+LoadCreditsGfx:
 @d6ce:  ldy     #.loword(CreditsGfx)
         lda     #^CreditsGfx
         jmp     Decompress
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d6d6:
 @d6d6:  ldy     #$c000
@@ -2771,7 +2847,7 @@ _c3d6d6:
 ;  +$ef: size
 ;  +$f1: constant to add to each word
 
-_c3d6ee:
+CopyCreditsGfx:
 @d6ee:  stz     $f1
         stz     $f2
         longa
@@ -2787,6 +2863,8 @@ _c3d6ee:
         rts
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d706:
 @d706:  clr_ay
@@ -2807,6 +2885,8 @@ _c3d706:
         rts
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d723:
 @d723:  phb
@@ -2835,6 +2915,8 @@ _c3d723:
         rts
 
 ; ------------------------------------------------------------------------------
+
+; [  ]
 
 _c3d74f:
 @d74f:  sta     $e9
@@ -2898,256 +2980,263 @@ _c3d74f:
 
 ; [ credits text thread (airship above water) ]
 
-CreditsTextTaskScene1:
-@d7b9:  phb
+.proc CreditsTextTaskScene1
+        phb
         lda     #^*
         pha
         plb
         ldy     $cf
         cpy     #60
-        bne     @d7c8
+        bne     :+
         jsr     DrawCreditsTextScene1Page1
-@d7c8:  plb
+:       plb
         sec
         rts
+.endproc  ; CreditsTextTaskScene1
 
 ; ------------------------------------------------------------------------------
 
 ; [ credits text thread (tiny airship) ]
 
-CreditsTextTaskScene2:
-@d7cb:  phb
+.proc CreditsTextTaskScene2
+        phb
         lda     #^*
         pha
         plb
         ldy     $cf
-        cpy     #$000a
-        bne     @d7dc
+        cpy     #10
+        bne     :+
         jsr     DrawCreditsTextScene2Page1
-        bra     @d816
-@d7dc:  cpy     #$01ae
-        bne     @d7e6
+        bra     done
+:       cpy     #$01ae
+        bne     :+
         jsr     DrawCreditsTextScene2Page2
-        bra     @d816
-@d7e6:  cpy     #$0352
-        bne     @d7f0
+        bra     done
+:       cpy     #$0352
+        bne     :+
         jsr     DrawCreditsTextScene2Page3
-        bra     @d816
-@d7f0:  cpy     #$04f6
-        bne     @d7fa
+        bra     done
+:       cpy     #$04f6
+        bne     :+
         jsr     DrawCreditsTextScene2Page4
-        bra     @d816
-@d7fa:  cpy     #$069a
-        bne     @d804
+        bra     done
+:       cpy     #$069a
+        bne     :+
         jsr     DrawCreditsTextScene2Page5
-        bra     @d816
-@d804:  cpy     #$083e
-        bne     @d80e
+        bra     done
+:       cpy     #$083e
+        bne     :+
         jsr     DrawCreditsTextScene2Page6
-        bra     @d816
-@d80e:  cpy     #$09e2
-        bne     @d816
+        bra     done
+:       cpy     #$09e2
+        bne     done
         jsr     DrawCreditsTextScene2Page7
-@d816:  plb
+done:   plb
         sec
         rts
+.endproc  ; CreditsTextTaskScene2
 
 ; ------------------------------------------------------------------------------
 
 ; [ credits text thread (boat) ]
 
-CreditsTextTaskScene3:
-@d819:  phb
+.proc CreditsTextTaskScene3
+        phb
         lda     #^*
         pha
         plb
         ldy     $cf
-        cpy     #$000a
-        bne     @d82a
+        cpy     #10
+        bne     :+
         jsr     DrawCreditsTextScene3Page1
-        bra     @d846
-@d82a:  cpy     #$01ae
-        bne     @d834
+        bra     done
+:       cpy     #$01ae
+        bne     :+
         jsr     DrawCreditsTextScene3Page2
-        bra     @d846
-@d834:  cpy     #$0352
-        bne     @d83e
+        bra     done
+:       cpy     #$0352
+        bne     :+
         jsr     DrawCreditsTextScene3Page3
-        bra     @d846
-@d83e:  cpy     #$04f6
-        bne     @d846
+        bra     done
+:       cpy     #$04f6
+        bne     done
         jsr     DrawCreditsTextScene3Page4
-@d846:  plb
+done:   plb
         sec
         rts
+.endproc  ; CreditsTextTaskScene3
 
 ; ------------------------------------------------------------------------------
 
 ; [ credits text thread (airship/sea) ]
 
-CreditsTextTaskScene4:
-@d849:  phb
+.proc CreditsTextTaskScene4
+        phb
         lda     #^*
         pha
         plb
         ldy     $cf
-        cpy     #$000a
-        bne     @d85a
+        cpy     #10
+        bne     :+
         jsr     DrawCreditsTextScene4Page1
-        bra     @d894
-@d85a:  cpy     #$01ae
-        bne     @d864
+        bra     done
+:       cpy     #$01ae
+        bne     :+
         jsr     DrawCreditsTextScene4Page2
-        bra     @d894
-@d864:  cpy     #$0352
-        bne     @d86e
+        bra     done
+:       cpy     #$0352
+        bne     :+
         jsr     DrawCreditsTextScene4Page3
-        bra     @d894
-@d86e:  cpy     #$04f6
-        bne     @d878
+        bra     done
+:       cpy     #$04f6
+        bne     :+
         jsr     DrawCreditsTextScene4Page4
-        bra     @d894
-@d878:  cpy     #$069a
-        bne     @d882
+        bra     done
+:       cpy     #$069a
+        bne     :+
         jsr     DrawCreditsTextScene4Page5
-        bra     @d894
-@d882:  cpy     #$083e
-        bne     @d88c
+        bra     done
+:       cpy     #$083e
+        bne     :+
         jsr     DrawCreditsTextScene4Page6
-        bra     @d894
-@d88c:  cpy     #$09e2
-        bne     @d894
+        bra     done
+:       cpy     #$09e2
+        bne     done
         jsr     DrawCreditsTextScene4Page7
-@d894:  plb
+done:   plb
         sec
         rts
+.endproc  ; CreditsTextTaskScene4
 
 ; ------------------------------------------------------------------------------
 
 ; [ credits text thread (airship/land) ]
 
-CreditsTextTaskScene5:
-@d897:  phb
+.proc CreditsTextTaskScene5
+        phb
         lda     #^*
         pha
         plb
         ldy     $cf
-        cpy     #$000a
-        bne     @d8a8
+        cpy     #10
+        bne     :+
         jsr     DrawCreditsTextScene5Page1
-        bra     @d8e2
-@d8a8:  cpy     #$01ae
-        bne     @d8b2
+        bra     done
+:       cpy     #$01ae
+        bne     :+
         jsr     DrawCreditsTextScene5Page2
-        bra     @d8e2
-@d8b2:  cpy     #$0352
-        bne     @d8bc
+        bra     done
+:       cpy     #$0352
+        bne     :+
         jsr     DrawCreditsTextScene5Page3
-        bra     @d8e2
-@d8bc:  cpy     #$04f6
-        bne     @d8c6
+        bra     done
+:       cpy     #$04f6
+        bne     :+
         jsr     DrawCreditsTextScene5Page4
-        bra     @d8e2
-@d8c6:  cpy     #$069a
-        bne     @d8d0
+        bra     done
+:       cpy     #$069a
+        bne     :+
         jsr     DrawCreditsTextScene5Page5
-        bra     @d8e2
-@d8d0:  cpy     #$083e
-        bne     @d8da
+        bra     done
+:       cpy     #$083e
+        bne     :+
         jsr     DrawCreditsTextScene5Page6
-        bra     @d8e2
-@d8da:  cpy     #$09e2
-        bne     @d8e2
+        bra     done
+:       cpy     #$09e2
+        bne     done
         jsr     DrawCreditsTextScene5Page7
-@d8e2:  plb
+done:   plb
         sec
         rts
+.endproc  ; CreditsTextTaskScene5
 
 ; ------------------------------------------------------------------------------
 
 ; [ credits text thread (land) ]
 
-CreditsTextTaskScene6:
-@d8e5:  phb
+.proc CreditsTextTaskScene6
+        phb
         lda     #^*
         pha
         plb
         ldy     $cf
-        cpy     #$00f0
-        bne     @d8f6
+        cpy     #4 * 60
+        bne     :+
         jsr     DrawCreditsTextScene6Page1
-        bra     @d930
-@d8f6:  cpy     #$02d0
-        bne     @d900
+        bra     done
+:       cpy     #12 * 60
+        bne     :+
         jsr     DrawCreditsTextScene6Page2
-        bra     @d930
-@d900:  cpy     #$04b0
-        bne     @d90a
+        bra     done
+:       cpy     #20 * 60
+        bne     :+
         jsr     DrawCreditsTextScene6Page3
-        bra     @d930
-@d90a:  cpy     #$0690
-        bne     @d914
+        bra     done
+:       cpy     #28 * 60
+        bne     :+
         jsr     DrawCreditsTextScene6Page4
-        bra     @d930
-@d914:  cpy     #$0870
-        bne     @d91e
+        bra     done
+:       cpy     #36 * 60
+        bne     :+
         jsr     DrawCreditsTextScene6Page5
-        bra     @d930
-@d91e:  cpy     #$0a50
-        bne     @d928
+        bra     done
+:       cpy     #44 * 60
+        bne     :+
         jsr     DrawCreditsTextScene6Page6
-        bra     @d930
-@d928:  cpy     #$0c30
-        bne     @d930
+        bra     done
+:       cpy     #52 * 60
+        bne     done
         jsr     DrawCreditsTextScene6Page7
-@d930:  plb
+done:   plb
         sec
         rts
+.endproc  ; CreditsTextTaskScene6
 
 ; ------------------------------------------------------------------------------
 
 ; [ credits text thread (big airship) ]
 
-CreditsTextTaskScene7:
+.proc CreditsTextTaskScene7
 @d933:  phb
         lda     #^*
         pha
         plb
         ldy     $cf
-        cpy     #$003c
-        bne     @d944
+        cpy     #1 * 60
+        bne     :+
         jsr     DrawCreditsTextScene7Page1
-        bra     @d96a
-@d944:  cpy     #$01e0
-        bne     @d94e
+        bra     done
+:       cpy     #8 * 60
+        bne     :+
         jsr     DrawCreditsTextScene7Page2
-        bra     @d96a
-@d94e:  cpy     #$0384
-        bne     @d958
+        bra     done
+:       cpy     #15 * 60
+        bne     :+
         jsr     DrawCreditsTextScene7Page3
-        bra     @d96a
-@d958:  cpy     #$0528
-        bne     @d962
+        bra     done
+:       cpy     #22 * 60
+        bne     :+
         jsr     DrawCreditsTextScene7Page4
-        bra     @d96a
-@d962:  cpy     #$06cc
-        bne     @d96a
+        bra     done
+:       cpy     #29 * 60
+        bne     done
         jsr     DrawCreditsTextScene7Page5
-@d96a:  plb
+done:   plb
         sec
         rts
+.endproc  ; CreditsTextTaskScene7
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw credits text (airship above clouds) ]
 
 LoadCreditsTextScene1:
-@d96d:  ldx     #$9dc0      ; c2/9dc0 (producer)
-        lda     #$c2
+@d96d:  ldx     #.loword(SmallCreditsTextPtrs1)      ; c2/9dc0 (producer)
+        lda     #^SmallCreditsTextPtrs1
         ldy     #$0004      ; 1 string
         jsr     LoadSmallCreditsText
-        ldx     #$9c44      ; c2/9c44 (hironobu sakaguchi)
-        lda     #$c2
+        ldx     #.loword(BigCreditsTextPtrs1)      ; c2/9c44 (hironobu sakaguchi)
+        lda     #^BigCreditsTextPtrs1
         ldy     #$0008      ; 2 strings
         jmp     LoadBigCreditsText
 
@@ -3156,12 +3245,12 @@ LoadCreditsTextScene1:
 ; [ draw credits text (tiny airship) ]
 
 LoadCreditsTextScene2:
-@d983:  ldx     #$9dc4                  ; small text
-        lda     #$c2
+@d983:  ldx     #.loword(SmallCreditsTextPtrs2)
+        lda     #^SmallCreditsTextPtrs2
         ldy     #$0028
         jsr     LoadSmallCreditsText
-        ldx     #$9c4c                  ; big text
-        lda     #$c2
+        ldx     #.loword(BigCreditsTextPtrs2)
+        lda     #^BigCreditsTextPtrs2
         ldy     #$0060
         jmp     LoadBigCreditsText
 
@@ -3170,12 +3259,12 @@ LoadCreditsTextScene2:
 ; [ draw credits text (boat) ]
 
 LoadCreditsTextScene3:
-@d999:  ldx     #$9dec
-        lda     #$c2
+@d999:  ldx     #.loword(SmallCreditsTextPtrs3)
+        lda     #^SmallCreditsTextPtrs3
         ldy     #$0018
         jsr     LoadSmallCreditsText
-        ldx     #$9cac
-        lda     #$c2
+        ldx     #.loword(BigCreditsTextPtrs3)
+        lda     #^BigCreditsTextPtrs3
         ldy     #$0040
         jmp     LoadBigCreditsText
 
@@ -3184,12 +3273,12 @@ LoadCreditsTextScene3:
 ; [ draw credits text (airship/sea) ]
 
 LoadCreditsTextScene4:
-@d9af:  ldx     #$9e04
-        lda     #$c2
+@d9af:  ldx     #.loword(SmallCreditsTextPtrs4)
+        lda     #^SmallCreditsTextPtrs4
         ldy     #$0020
         jsr     LoadSmallCreditsText
-        ldx     #$9cec
-        lda     #$c2
+        ldx     #.loword(BigCreditsTextPtrs4)
+        lda     #^BigCreditsTextPtrs4
         ldy     #$0064
         jmp     LoadBigCreditsText
 
@@ -3198,12 +3287,12 @@ LoadCreditsTextScene4:
 ; [ draw credits text (airship/land) ]
 
 LoadCreditsTextScene5:
-@d9c5:  ldx     #$9e24
-        lda     #$c2
+@d9c5:  ldx     #.loword(SmallCreditsTextPtrs5)
+        lda     #^SmallCreditsTextPtrs5
         ldy     #$0024
         jsr     LoadSmallCreditsText
-        ldx     #$9d50
-        lda     #$c2
+        ldx     #.loword(BigCreditsTextPtrs5)
+        lda     #^BigCreditsTextPtrs5
         ldy     #$0070
         jmp     LoadBigCreditsText
 
@@ -3212,8 +3301,8 @@ LoadCreditsTextScene5:
 ; [ draw credits text (land) ]
 
 LoadCreditsTextScene6:
-@d9db:  ldx     #$9e48
-        lda     #$c2
+@d9db:  ldx     #.loword(SmallCreditsTextPtrs6)
+        lda     #^SmallCreditsTextPtrs6
         ldy     #$00e4
         jmp     LoadSmallCreditsText
 
@@ -3222,8 +3311,8 @@ LoadCreditsTextScene6:
 ; [ draw credits text (big airship) ]
 
 LoadCreditsTextScene7:
-@d9e6:  ldx     #$9f2c
-        lda     #$c2
+@d9e6:  ldx     #.loword(SmallCreditsTextPtrs7)
+        lda     #^SmallCreditsTextPtrs7
         ldy     #$006c
         jmp     LoadSmallCreditsText
 
@@ -3607,7 +3696,7 @@ InitCreditsString:
 
 CalcCreditsWordLength:
 @dd31:  stx     $e7
-        lda     #$c2
+        lda     #^CreditsText
         sta     $e9
         sty     $eb
         lda     #$7e
@@ -3825,16 +3914,19 @@ CalcSine:
 
 _c3de84:
 @de84:  tax
-        jmp     ($de88,x)
+        jmp     (.loword(_c3de88),x)
 
-@de88:  .addr   $de8c,$de94
+_c3de88:
+@de88:  .addr   _c3de8c, _c3de94
 
 ; ------------------------------------------------------------------------------
 
+_c3de8c:
 @de8c:  ldx     $2d
         inc     $3649,x
         jsr     InitAnimTask
 
+_c3de94:
 @de94:  ldx     $2d
         ldy     $3349,x     ; terminate thread when counter reaches zero
         beq     @dea9
@@ -4006,7 +4098,7 @@ DrawEndingCharName:
         tya
         asl
         tax
-        lda     $c36969,x   ; pointers to character data
+        lda     f:CharPropPtrs,x   ; pointers to character data
         tay
         shorta
         lda     $0000,y
@@ -4083,9 +4175,10 @@ _c3dfb3:
 
 ; +Y: scroll counter
 
+_c3dfed:
 @dfed:  sty     $f3
-        lda     #$00
-        ldy     #$e002
+        lda     #0
+        ldy     #.loword(_c3e002)
         jsr     CreateTask
         longa
         lda     $f3
@@ -4097,6 +4190,7 @@ _c3dfb3:
 
 ; [ bg1 h-scroll thread ]
 
+_c3e002:
 @e002:  ldx     $2d
         longa
         lda     $3349,x
@@ -4130,23 +4224,23 @@ CreateBigCharNameTask:
         adc     $e0
         tax
         longa
-        lda     $c28de4,x   ; pointer to animation data (+$c20000)
+        lda     f:EndingCharNameAnim,x   ; pointer to animation data (+$c20000)
         sta     $4d
         shorta
-        lda     $c28de6,x   ; x position
+        lda     f:EndingCharNameAnim+2,x   ; x position
         sta     $53
         longa
-        lda     $c28de7,x   ; pointer to animation data (+$c20000)
+        lda     f:EndingCharNameAnim+3,x   ; pointer to animation data (+$c20000)
         sta     $4f
         shorta
-        lda     $c28de9,x   ; x position
+        lda     f:EndingCharNameAnim+5,x   ; x position
         sta     $54
         jsr     CreateEndingBigTextTask
         longa
         lda     $4d
         sta     $7e32c9,x
         shorta
-        lda     #$c2
+        lda     #^EndingCharNameAnim
         sta     $7e35ca,x
         lda     $53
         sta     $7e33ca,x
@@ -4157,7 +4251,7 @@ CreateBigCharNameTask:
         lda     $4f
         sta     $7e32c9,x
         shorta
-        lda     #$c2
+        lda     #^EndingCharNameAnim
         sta     $7e35ca,x
         lda     $54
         sta     $7e33ca,x
@@ -4182,10 +4276,10 @@ CreateEndingBigTextTask:
 _c3e098:
 @e098:  jsr     CreateEndingBigTextTask
         longa
-        lda     #$f8ab      ; $cff8ab (animation data)
+        lda     #.loword(AndYouAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$cf
+        lda     #^AndYouAnim
         sta     $7e35ca,x
         lda     #$68        ; x position = $68
         sta     $7e33ca,x
@@ -4255,6 +4349,8 @@ DrawEndingCharText:
         lda     #$01
         tsb     $45         ; enable dma at next vblank
         jsr     CreateBigCharNameTask
+
+_c3e13d:
 @e13d:  jsr     _c3ef21       ; set up dma
         inc     $26         ; next cinematic state
         jmp     EndingWaitVblank
@@ -4305,36 +4401,36 @@ _c3e16b:
 ; [ fade in ending bg palettes ]
 
 _c3e192:
-@e192:  lda     #$c2
+@e192:  lda     #^_c2967c
         sta     $ed
-        lda     #$02
+        lda     #2
         ldy     #$3069      ; bg palette 1
         sty     $e7
-        ldx     #$967c
+        ldx     #.loword(_c2967c)
         stx     $eb
         jsr     CreateFadePalTask
-        lda     #$c2
+        lda     #^_c2969c
         sta     $ed
-        lda     #$02
+        lda     #2
         ldy     #$3089      ; bg palette 2
         sty     $e7
-        ldx     #$969c
+        ldx     #.loword(_c2969c)
         stx     $eb
         jsr     CreateFadePalTask
-        lda     #$c2
+        lda     #^_c296dc
         sta     $ed
-        lda     #$02
+        lda     #2
         ldy     #$30e9      ; bg palette 5
         sty     $e7
-        ldx     #$96dc
+        ldx     #.loword(_c296dc)
         stx     $eb
         jsr     CreateFadePalTask
-        lda     #$c2
+        lda     #^_c296fc
         sta     $ed
-        lda     #$02
+        lda     #2
         ldy     #$3109      ; bg palette 6
         sty     $e7
-        ldx     #$96fc
+        ldx     #.loword(_c296fc)
         stx     $eb
         jsr     CreateFadePalTask
         rts
@@ -4344,20 +4440,20 @@ _c3e192:
 ; [  ]
 
 _c3e1df:
-@e1df:  lda     #$c2
+@e1df:  lda     #^_c29754
         sta     $ed
-        lda     #$04
+        lda     #4
         ldy     #$3049      ; bg palette 0
         sty     $e7
-        ldx     #$9754
+        ldx     #.loword(_c29754)
         stx     $eb
         jsr     CreateFadePalTask
-        lda     #$c2
+        lda     #^_c29754
         sta     $ed
         lda     #$04
         ldy     #$3169      ; sprite palette 1
         sty     $e7
-        ldx     #$9754
+        ldx     #.loword(_c29754)
         stx     $eb
         jsr     CreateFadePalTask
         rts
@@ -4377,7 +4473,7 @@ _c3e206:
         jsr     _c3e241
         lda     #^BlackPal
         sta     $ed
-        lda     #$04
+        lda     #4
         ldy     #$3169
         sty     $e7
         ldx     #.loword(BlackPal)
@@ -4385,12 +4481,12 @@ _c3e206:
         jsr     CreateFadePalTask
 
 _c3e22d:
-@e22d:  lda     #$c2
+@e22d:  lda     #^_c29754
         sta     $ed
-        lda     #$04
+        lda     #4
         ldy     #$3149
         sty     $e7
-        ldx     #$9754
+        ldx     #.loword(_c29754)
         stx     $eb
         jsr     CreateFadePalTask
         rts
@@ -4453,12 +4549,12 @@ EndingState_28:
 ; ------------------------------------------------------------------------------
 
 _c3e28a:
-@e28a:  lda     #$c2
+@e28a:  lda     #^_c29774
         sta     $ed
         lda     #$02
         ldy     #$31c9      ; sprite palette 2
         sty     $e7
-        ldx     #$9774
+        ldx     #.loword(_c29774)
         stx     $eb
         jsr     CreateFadePalTask
         rts
@@ -4675,7 +4771,7 @@ EndingState_45:
         bne     @e3cc
         lda     #$4f
         sta     $26
-        ldy     #$00b4      ; wait 3 seconds
+        ldy     #3*60      ; wait 3 seconds
         sty     $20
         stz     $47
         ldy     #$0014
@@ -4768,8 +4864,8 @@ EndingState_46:
         jsr     _c3e192       ; fade in ending bg palettes
         jsr     _c3e839
         jsr     _c3e9e4
-        lda     #$02
-        ldy     #$e49f
+        lda     #2
+        ldy     #.loword(_c3e49f)
         jsr     CreateTask
         lda     #$b4
         lda     $7e3349,x
@@ -4793,12 +4889,12 @@ EndingState_47:
 ; ------------------------------------------------------------------------------
 
 _c3e468:
-@e468:  lda     #$c2
+@e468:  lda     #^_c2955c
         sta     $ed
-        lda     #$01
+        lda     #1
         ldy     #$31c9
         sty     $e7
-        ldx     #$955c
+        ldx     #.loword(_c2955c)
         stx     $eb
         jsr     CreateFadePalTask
         rts
@@ -4833,13 +4929,16 @@ EndingState_49:
 
 ; ------------------------------------------------------------------------------
 
+_c3e49f:
 @e49f:  tax
-        jmp     ($e4a3,x)
+        jmp     (.loword(_c3e4a3),x)
 
-@e4a3:  .addr   $e4ab,$e4ba,$e4ab,$e4df
+_c3e4a3:
+@e4a3:  .addr   _c3e4ab, _c3e4ba, _c3e4ab, _c3e4df
 
 ; ------------------------------------------------------------------------------
 
+_c3e4ab:
 @e4ab:  ldx     $2d
         lda     $3349,x
         bne     @e4b5
@@ -4848,16 +4947,17 @@ EndingState_49:
         sec
         rts
 
+_c3e4ba:
 @e4ba:  phb
         lda     #$00
         pha
         plb
-        lda     #$c2
+        lda     #^_c2957c
         sta     $ed
-        lda     #$01
+        lda     #1
         ldy     #$31c9
         sty     $e7
-        ldx     #$957c
+        ldx     #.loword(_c2957c)
         stx     $eb
         jsr     CreateFadePalTask
         plb
@@ -4868,6 +4968,7 @@ EndingState_49:
         sec
         rts
 
+_c3e4df:
 @e4df:  phb
         lda     #$00
         pha
@@ -5084,7 +5185,7 @@ EndingState_69:
 @e605:  ldy     $20
         bne     @e61d
         inc     $26
-        ldy     #$00b4      ; wait 3 seconds
+        ldy     #3*60      ; wait 3 seconds
         sty     $20
         stz     $47
         ldy     #$0014
@@ -5232,7 +5333,7 @@ EndingState_2d:
         jsr     _c3e192       ; fade in ending bg palettes
         ldy     #$02d0      ; wait 12 seconds
         sty     $20
-        jmp     $e13d
+        jmp     _c3e13d
 
 ; ------------------------------------------------------------------------------
 
@@ -5288,7 +5389,7 @@ EndingState_4a:
         sty     $20
         stz     $47
         jsr     _c3e098       ; create "and you" thread
-        jmp     $e13d
+        jmp     _c3e13d
 
 ; ------------------------------------------------------------------------------
 
@@ -5345,12 +5446,12 @@ EndingState_82:
         ldy     #$3189
         ldx     #.loword(BlackPal)
         jsr     LoadPal
-        lda     #$c2
+        lda     #^_c29774
         sta     $ed
-        lda     #$02
+        lda     #2
         ldy     #$3189
         sty     $e7
-        ldx     #$9774      ; c2/9774
+        ldx     #.loword(_c29774)
         stx     $eb
         jsr     CreateFadePalTask
         jsr     _c3e839
@@ -5485,7 +5586,7 @@ EndingState_8a:
 
 _c3e839:
 @e839:  ldy     #$04b0
-        jmp     $dfed       ; create bg1 h-scroll thread
+        jmp     _c3dfed       ; create bg1 h-scroll thread
 
 ; ------------------------------------------------------------------------------
 
@@ -5493,7 +5594,7 @@ _c3e839:
 
 _c3e83f:
 @e83f:  ldy     #$0138
-        jmp     $dfed       ; create bg1 h-scroll thread
+        jmp     _c3dfed       ; create bg1 h-scroll thread
 
 ; ------------------------------------------------------------------------------
 
@@ -5501,7 +5602,7 @@ _c3e83f:
 
 _c3e845:
 @e845:  ldy     #$00b4
-        jmp     $dfed       ; create bg1 h-scroll thread
+        jmp     _c3dfed       ; create bg1 h-scroll thread
 
 ; ------------------------------------------------------------------------------
 
@@ -5573,12 +5674,12 @@ CreateEndingCharAsTask:
         ldy     #.loword(_c3de84)      ; generic animation thread w/ counter
         jsr     CreateTask
         longa
-        lda     #$8e38      ; $c28e38 (animation data)
+        lda     #.loword(EndingCharAsAnim)
         sta     $7e32c9,x
-        lda     #$0258      ; terminat after 10 seconds
+        lda     #10*60      ; terminate after 10 seconds
         sta     $7e3349,x
         shorta
-        lda     #$c2
+        lda     #^EndingCharAsAnim
         sta     $7e35ca,x
         lda     #$79
         sta     $7e33ca,x   ; x = $79
@@ -5595,10 +5696,10 @@ CreateEndingCharAsTask:
 InitUmaroSkullAnim:
 @e8c4:  jsr     CreateEndingAnimTask
         longa
-        lda     #$f56e      ; cf/f56e (skull)
+        lda     #.loword(UmaroSkullAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$cf
+        lda     #^UmaroSkullAnim
         sta     $7e35ca,x
         lda     #$c4
         sta     $7e33ca,x
@@ -5673,10 +5774,10 @@ CreateSetzerCardTask:
         ldy     #.loword(EndingAnimTask)
         jsr     CreateTask
         longa
-        lda     #$92fa      ; c2/92fa (spinning card animation data)
+        lda     #.loword(SetzerCardAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$c2
+        lda     #^SetzerCardAnim
         sta     $7e35ca,x
         rts
 
@@ -5689,10 +5790,10 @@ CreateSetzerCardTask:
 InitGauEyesAnim:
 @e994:  jsr     CreateEndingAnimTask
         longa
-        lda     #$f647      ; cf/f647 (eyes sprite data)
+        lda     #.loword(GauEyesAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$cf
+        lda     #^GauEyesAnim
         sta     $7e35ca,x
         lda     #$cb
         sta     $7e33ca,x
@@ -5708,10 +5809,10 @@ InitGauEyesAnim:
 InitShadowAppleAnim:
 @e9b3:  jsr     CreateEndingAnimTask
         longa
-        lda     #$9497      ; $c29497 (animation data)
+        lda     #.loword(ShadowAppleAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$c2
+        lda     #^ShadowAppleAnim
         sta     $7e35ca,x
         lda     #$c0
         sta     $7e33ca,x
@@ -5744,10 +5845,10 @@ CreateEndingAnimTask:
 _c3e9e4:
 @e9e4:  jsr     CreateEndingAnimTask
         longa
-        lda     #$f450      ; cf/f450 (gogo glimmer)
+        lda     #.loword(GogoGlimmerAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$cf
+        lda     #^GogoGlimmerAnim
         sta     $7e35ca,x
         lda     #$c8
         sta     $7e33ca,x
@@ -5759,10 +5860,10 @@ _c3e9e4:
 _c3ea03:
 @ea03:  jsr     CreateEndingAnimTask
         longa
-        lda     #$f5b4      ; cf/f5b4 (paintbrush glimmer)
+        lda     #.loword(TerraPendantAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$cf
+        lda     #^TerraPendantAnim
         sta     $7e35ca,x
         lda     #$80
         sta     $7e33ca,x
@@ -5779,10 +5880,10 @@ _c3ea03:
 _c3ea24:
 @ea24:  jsr     CreateEndingAnimTask
         longa
-        lda     #$f515      ; cf/f515 (sprite animation data)
+        lda     #.loword(MogMiniMoogleAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$cf
+        lda     #^MogMiniMoogleAnim
         sta     $7e35ca,x
         lda     #$e0
         sta     $7e33ca,x
@@ -5834,7 +5935,7 @@ _c3ea7c:
         longa
         lda     #$01a4
         sta     $7e3349,x
-        lda     #$f47f      ; cf/f47f
+        lda     #.loword(UmaroMiniMoogleAnim4)
         sta     $7e37c9,x
         shorta
         jsr     _c3ea73
@@ -5844,7 +5945,7 @@ _c3ea7c:
         longa
         lda     #$01b8
         sta     $7e3349,x
-        lda     #$f485      ; cf/f485
+        lda     #.loword(UmaroMiniMoogleAnim5)
         sta     $7e37c9,x
         shorta
         jsr     _c3ea73
@@ -5854,7 +5955,7 @@ _c3ea7c:
         longa
         lda     #$01cc
         sta     $7e3349,x
-        lda     #$f48b      ; cf/f48b
+        lda     #.loword(UmaroMiniMoogleAnim6)
         sta     $7e37c9,x
         shorta
         jsr     _c3ea73
@@ -5864,7 +5965,7 @@ _c3ea7c:
         longa
         lda     #$01e0
         sta     $7e3349,x
-        lda     #$f491      ; cf/f491
+        lda     #.loword(UmaroMiniMoogleAnim7)
         sta     $7e37c9,x
         shorta
         rts
@@ -5878,40 +5979,44 @@ _c3eaf5:
 
 ; ------------------------------------------------------------------------------
 
-; [ mini-moogle task ]
+; [ umaro mini-moogle task ]
 
 _c3eafc:
 @eafc:  tax
-        jmp     ($eb00,x)
+        jmp     (.loword(_c3eb00),x)
 
-@eb00:  .addr   $eb10,$eb35,$eb5e,$eb7b,$eb97,$eb9c,$eba9,$ebd0
+_c3eb00:
+@eb00:  .addr   _c3eb10, _c3eb35, _c3eb5e, _c3eb7b
+        .addr   _c3eb97, _c3eb9c, _c3eba9, _c3ebd0
 
 ; ------------------------------------------------------------------------------
 
+_c3eb10:
 @eb10:  ldx     $2d
         inc     $3649,x
         longa
-        lda     #$f458      ; $cff458 (walking mini-mog animation data)
+        lda     #.loword(UmaroMiniMoogleAnim1)
         sta     $32c9,x
         lda     #$0168
         sta     $3349,x
         shorta
         lda     #$64
         sta     $344a,x
-        lda     #$cf
+        lda     #^UmaroMiniMoogleAnim1
         sta     $35ca,x
         jsr     _c3ea6c
         jsr     InitAnimTask
 
+_c3eb35:
 @eb35:  ldx     $2d
         ldy     $3349,x
         bne     @eb56
         inc     $3649,x
         longa
-        lda     #$f47c      ; cf/f47c
+        lda     #.loword(UmaroMiniMoogleAnim3)
         sta     $32c9,x
         shorta
-        lda     #$cf
+        lda     #^UmaroMiniMoogleAnim3
         sta     $35ca,x
         lda     #$10
         sta     $3349,x
@@ -5921,6 +6026,7 @@ _c3eafc:
         sec
         rts
 
+_c3eb5e:
 @eb5e:  ldx     $2d
         ldy     $3349,x
         bne     @eb6d
@@ -5934,6 +6040,7 @@ _c3eafc:
         sec
         rts
 
+_c3eb7b:
 @eb7b:  ldx     $2d
         ldy     $3349,x
         bne     @eb8f
@@ -5947,16 +6054,19 @@ _c3eafc:
         sec
         rts
 
+_c3eb97:
 @eb97:  jsr     UpdateEndingAnimTask
         sec
         rts
 
+_c3eb9c:
 @eb9c:  ldx     $2d
         jsr     _c3ebd5
         lda     #$70
         sta     $344a,x
         jsr     _c3ea6c
 
+_c3eba9:
 @eba9:  ldx     $2d
         ldy     $3349,x
         bne     @ebc8
@@ -5966,7 +6076,7 @@ _c3eafc:
         lda     $37c9,x
         sta     $32c9,x
         shorta
-        lda     #$cf
+        lda     #^UmaroMiniMoogleAnim1
         sta     $35ca,x
         jsr     InitAnimTask
 @ebc8:  jsr     DecTaskCounter
@@ -5974,6 +6084,7 @@ _c3eafc:
         sec
         rts
 
+_c3ebd0:
 @ebd0:  jsr     UpdateEndingAnimTask
         sec
         rts
@@ -5983,12 +6094,12 @@ _c3eafc:
 _c3ebd5:
 @ebd5:  inc     $3649,x
         longa
-        lda     #$f473      ; cf/f473
+        lda     #.loword(UmaroMiniMoogleAnim2)
         sta     $32c9,x
         lda     #$0040
         sta     $34c9,x
         shorta
-        lda     #$cf
+        lda     #^UmaroMiniMoogleAnim2
         sta     $35ca,x
         jmp     InitAnimTask
 
@@ -6001,7 +6112,7 @@ _c3ebf0:
         lda     $35c9,x
         and     #$0f
         tax
-        lda     $cff55e,x   ; y-offsets
+        lda     f:MiniMoogleJumpOffset,x
         sta     $e0
         bmi     @ec0d
         ldx     $2d
@@ -6058,7 +6169,7 @@ InitCyanSwordAnim:
 
 _c3ec3f:
 @ec3f:  lda     #2
-        ldy     #$ed14
+        ldy     #.loword(_c3ed14)
         jsr     CreateTask
         rts
 
@@ -6070,12 +6181,14 @@ _c3ec3f:
 
 RelmBrushAnimTask:
 @ec48:  tax
-        jmp     ($ec4c,x)
+        jmp     (.loword(_c3ec4c),x)
 
-@ec4c:  .addr   $ec50,$ec67
+_c3ec4c:
+@ec4c:  .addr   _c3ec50, _c3ec67
 
 ; ------------------------------------------------------------------------------
 
+_c3ec50:
 @ec50:  ldx     $2d
         inc     $3649,x
         longa
@@ -6087,6 +6200,7 @@ RelmBrushAnimTask:
         lda     #$03
         sta     $c9
 
+_c3ec67:
 @ec67:  lda     $c9
         beq     @ecac
         ldx     $2d
@@ -6102,10 +6216,10 @@ RelmBrushAnimTask:
         lda     #$68
         sta     $7e344a,x
         longa
-        lda     #$f5b4      ; cf/f5b4 (paintbrush glimmer sprite data)
+        lda     #.loword(TerraPendantAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$cf
+        lda     #^TerraPendantAnim
         sta     $7e35ca,x
         lda     $c7
         sta     $7e33ca,x
@@ -6129,12 +6243,14 @@ RelmBrushAnimTask:
 
 CyanSwordAnimTask:
 @ecae:  tax
-        jmp     ($ecb2,x)
+        jmp     (.loword(_c3ecb2),x)
 
-@ecb2:  .addr   $ecb6,$eccd
+_c3ecb2:
+@ecb2:  .addr   _c3ecb6, _c3eccd
 
 ; ------------------------------------------------------------------------------
 
+_c3ecb6:
 @ecb6:  ldx     $2d
         inc     $3649,x
         longa
@@ -6146,6 +6262,7 @@ CyanSwordAnimTask:
         lda     #$04
         sta     $c9
 
+_c3eccd:
 @eccd:  lda     $c9
         beq     @ed12
         ldx     $2d
@@ -6161,10 +6278,10 @@ CyanSwordAnimTask:
         lda     #$60
         sta     $7e344a,x
         longa
-        lda     #$f5fa      ; cf/f5fa (sword glimmer sprite data)
+        lda     #.loword(CyanKatanaAnim)
         sta     $7e32c9,x
         shorta
-        lda     #$cf
+        lda     #^CyanKatanaAnim
         sta     $7e35ca,x
         lda     $c7
         sta     $7e33ca,x
@@ -6182,21 +6299,25 @@ CyanSwordAnimTask:
 
 ; ------------------------------------------------------------------------------
 
-; [ glimmer thread ]
+; [ sparkle thread ]
 
+_c3ed14:
 @ed14:  tax
-        jmp     ($ed18,x)
+        jmp     (.loword(_c3ed18),x)
 
-@ed18:  .addr   $ed1c,$ed29
+_c3ed18:
+@ed18:  .addr   _c3ed1c, _c3ed29
 
 ; ------------------------------------------------------------------------------
 
+_c3ed1c:
 @ed1c:  ldx     $2d
         inc     $3649,x
         lda     #$01
         sta     $364a,x
         jsr     InitAnimTask
 
+_c3ed29:
 @ed29:  ldx     $2d
         lda     $36ca,x
         cmp     #$fe
@@ -6225,14 +6346,14 @@ CoinAnimTask_00:
 @ed41:  ldx     $2d
         inc     $3649,x
         longa
-        lda     #$ec93      ; d8/ec93 (spinning coin animation data)
+        lda     #.loword(EdgarCoinAnim)
         sta     $32c9,x
         lda     #$0080
         sta     $34c9,x
         shorta
         lda     #$c8
         sta     $3349,x
-        lda     #$d8
+        lda     #^EdgarCoinAnim
         sta     $35ca,x
         lda     #$10
         sta     $33ca,x
@@ -6255,10 +6376,10 @@ CoinAnimTask_01:
 _c3ed7f:
 @ed7f:  jsr     _c3edbe
         longa
-        lda     #$8b72
+        lda     #.loword(BookAnimStrago)
         sta     $7e32c9,x
         shorta
-        lda     #$c2
+        lda     #^BookAnimStrago
         sta     $7e35ca,x
         rts
 
@@ -6267,10 +6388,10 @@ _c3ed7f:
 _c3ed94:
 @ed94:  jsr     _c3edbe
         longa
-        lda     #$8b63
+        lda     #.loword(BookAnim1)
         sta     $7e32c9,x
         shorta
-        lda     #$c2
+        lda     #^BookAnim1
         sta     $7e35ca,x
         rts
 
@@ -6279,10 +6400,10 @@ _c3ed94:
 _c3eda9:
 @eda9:  jsr     _c3edbe
         longa
-        lda     #$8b45
+        lda     #.loword(BookAnim2)
         sta     $7e32c9,x
         shorta
-        lda     #$c2
+        lda     #^BookAnim2
         sta     $7e35ca,x
         rts
 
@@ -6292,8 +6413,8 @@ _c3edbe:
 @edbe:  clr_ay
         sta     $99
         sty     $60
-        lda     #$01
-        ldy     #$ee04
+        lda     #1
+        ldy     #.loword(_c3ee04)
         jsr     CreateTask
         rts
 
@@ -6332,22 +6453,27 @@ _c3edcd:
 
 ; ------------------------------------------------------------------------------
 
+_c3ee04:
 @ee04:  tax
-        jmp     ($ee08,x)
+        jmp     (.loword(_c3ee08),x)
 
-@ee08:  .addr   $ee0e,$ee18,$ee1c
+_c3ee08:
+@ee08:  .addr   _c3ee0e, _c3ee18, _c3ee1c
 
 ; ------------------------------------------------------------------------------
 
+_c3ee0e:
 @ee0e:  ldx     $2d
         inc     $3649,x
         jsr     InitAnimTask
         sec
         rts
 
+_c3ee18:
 @ee18:  lda     $99
-        bne     @ee59
+        bne     _ee59
 
+_c3ee1c:
 @ee1c:  ldx     $2d
         jsr     UpdateAnimData
         ldx     $2d
@@ -6379,17 +6505,17 @@ _c3edcd:
         jsr     _c3edcd
         sec
         rts
-@ee59:  stz     $99
+_ee59:  stz     $99
         ldx     $2d
         inc     $3649,x
         longa
-        lda     #$8b54
+        lda     #.loword(BookAnimEnd)
         sta     $32c9,x
         shorta
-        lda     #$c2
+        lda     #^BookAnimEnd
         sta     $35ca,x
         jsr     InitAnimTask
-        bra     @ee1c
+        bra     _c3ee1c
 
 ; ------------------------------------------------------------------------------
 
@@ -6478,7 +6604,7 @@ _c3ef10:
         sta     $e9
         ldy     #$0780      ; size = $0780
         sty     $ef
-        jmp     _c3d6ee       ; copy data
+        jmp     CopyCreditsGfx
 
 ; ------------------------------------------------------------------------------
 
