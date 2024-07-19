@@ -262,33 +262,33 @@ ContinueEvent := ExecEvent::continue_event
 
 ; A: object index
 
-InitObjScript:
-@9ba5:  sta     hWRMPYA
+.proc InitObjScript
+        sta     hWRMPYA
         lda     #$29
         sta     hWRMPYB
         nop4
         ldy     hRDMPYL
-_9bb4:  lda     $087c,y     ; set movement type to script controlled
+start:  lda     $087c,y                 ; set movement type to script controlled
         and     #$f0
         ora     #$01
         sta     $087c,y
         tdc
-        sta     $0886,y     ; clear number of steps to take
-        lda     $e5         ; event pc
+        sta     $0886,y                 ; clear number of steps to take
+        lda     $e5                     ; event pc
         clc
         adc     #$02
-        sta     $0883,y     ; set object script pointer
+        sta     $0883,y                 ; set object script pointer
         lda     $e6
         adc     #$00
         sta     $0884,y
         lda     $e7
         adc     #$00
         sta     $0885,y
-        lda     $eb         ; branch if not waiting until complete
-        bpl     @9c02
-        lda     $ea         ; get object number
+        lda     $eb                     ; branch if not waiting until complete
+        bpl     async
+        lda     $ea                     ; get object number
         cmp     #$31
-        bcc     @9bfc
+        bcc     :+
         sec
         sbc     #$31
         asl
@@ -299,13 +299,15 @@ _9bb4:  lda     $087c,y     ; set movement type to script controlled
         sta     hWRDIVB
         nop7
         lda     hRDDIVL
-@9bfc:  sta     $e2         ; set object to wait for
-        lda     #$80        ; waiting for object script
+:       sta     $e2                     ; set object to wait for
+        lda     #$80                    ; waiting for object script
         sta     $e1
-@9c02:  lda     $eb         ; add object script length + 2 to event pc
+
+async:  lda     $eb                     ; add object script length + 2 to event pc
         and     #$7f
         inc2
         jmp     IncEventPtrContinue
+.endproc  ; InitObjScript
 
 ; ------------------------------------------------------------------------------
 
@@ -313,29 +315,30 @@ _9bb4:  lda     $087c,y     ; set movement type to script controlled
 
 ; A: object index
 
-ExecPartyObjScript:
-@9c0b:  sec
+.proc ExecPartyObjScript
+        sec
         sbc     #$31
         asl
         tax
-        ldy     $0803,x     ; pointer to object data
+        ldy     $0803,x                 ; pointer to object data
         cpy     #$07b0
-        beq     @9c3a       ; branch if there's no character in that slot
-        lda     $0867,y     ; character's party
+        beq     :+                      ; branch if there's no character in that slot
+        lda     $0867,y                 ; character's party
         and     #$07
-        cmp     $1a6d       ; branch if not in current party
-        bne     @9c3a
+        cmp     $1a6d                   ; branch if not in current party
+        bne     :+
         sty     hWRDIVL
-        lda     #$29        ; divide by $29 to get character index
+        lda     #$29                    ; divide by $29 to get character index
         sta     hWRDIVB
         nop8
         lda     hRDDIVL
         sta     $ea
-        jmp     _9bb4
-@9c3a:  lda     #$31        ; use showing character
+        jmp     InitObjScript::start
+:       lda     #$31                    ; use showing character
         sta     $ea
         ldy     #$07d9
-        jmp     _9bb4
+        jmp     InitObjScript::start
+.endproc  ; ExecPartyObjScript
 
 ; ------------------------------------------------------------------------------
 
@@ -343,10 +346,10 @@ ExecPartyObjScript:
 
 ; $eb: object number
 
-EventCmd_35:
-@9c44:  lda     $eb
+.proc EventCmd_35
+        lda     $eb
         cmp     #$31        ; branch if not a party character
-        bcc     @9c64
+        bcc     :+
         sec
         sbc     #$31
         asl
@@ -357,11 +360,12 @@ EventCmd_35:
         sta     hWRDIVB
         nop7
         lda     hRDDIVL
-@9c64:  sta     $e2         ; object to wait for
+:       sta     $e2         ; object to wait for
         lda     #$80
         sta     $e1         ; waiting for object
         lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_35
 
 ; ------------------------------------------------------------------------------
 
@@ -369,13 +373,14 @@ EventCmd_35:
 
 ; $eb: object number
 
-EventCmd_36:
-@9c6f:  jsr     CalcObjPtr
+.proc EventCmd_36
+        jsr     CalcObjPtr
         lda     $087c,y
         and     #$ef
         sta     $087c,y
         lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_36
 
 ; ------------------------------------------------------------------------------
 
@@ -383,13 +388,14 @@ EventCmd_36:
 
 ; $eb: object number
 
-EventCmd_78:
-@9c7f:  jsr     CalcObjPtr
+.proc EventCmd_78
+        jsr     CalcObjPtr
         lda     $087c,y
         ora     #$10
         sta     $087c,y
         lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_78
 
 ; ------------------------------------------------------------------------------
 
@@ -398,17 +404,18 @@ EventCmd_78:
 ; $eb: object number
 ; $ec: graphics index
 
-EventCmd_37:
-@9c8f:  jsr     CalcObjPtr
+.proc EventCmd_37
+        jsr     CalcObjPtr
         lda     $ec
-        sta     $0879,y     ; set object graphics index
+        sta     $0879,y                 ; set object graphics index
         jsr     CalcCharPtr
         cpy     #$0250
-        bcs     @9ca4       ; branch if not a character
+        bcs     :+                      ; branch if not a character
         lda     $ec
-        sta     $1601,y     ; set character graphics index
-@9ca4:  lda     #3
+        sta     $1601,y                 ; set character graphics index
+:       lda     #3
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_37
 
 ; ------------------------------------------------------------------------------
 
@@ -417,8 +424,8 @@ EventCmd_37:
 ; $eb: object number
 ; $ec: palette index
 
-EventCmd_43:
-@9ca9:  jsr     CalcObjPtr
+.proc EventCmd_43
+        jsr     CalcObjPtr
         lda     $ec
         asl
         sta     $1a
@@ -432,6 +439,7 @@ EventCmd_43:
         sta     $0881,y
         lda     #3
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_43
 
 ; ------------------------------------------------------------------------------
 
@@ -442,8 +450,8 @@ EventCmd_43:
 ;        s: character shown
 ;        v: vehicle index (0 = no vehicle, 1 = chocobo, 2 = magitek, 3 = raft)
 
-EventCmd_44:
-@9cca:  jsr     CalcObjPtr
+.proc EventCmd_44
+        jsr     CalcObjPtr
         lda     $ec
         and     #$e0
         sta     $1a
@@ -453,15 +461,17 @@ EventCmd_44:
         sta     $0868,y
         lda     #3
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_44
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $45: validate and sort active objects ]
 
-EventCmd_45:
-@9ce2:  lda     #1
+.proc EventCmd_45
+        lda     #1
         sta     $0798
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_45
 
 ; ------------------------------------------------------------------------------
 
@@ -469,8 +479,8 @@ EventCmd_45:
 
 ; $eb: party number (0..7)
 
-EventCmd_46:
-@9cea:  lda     $eb
+.proc EventCmd_46
+        lda     $eb
         sta     $1a6d       ; set party
         ldy     #$07d9
         sty     $07fb       ; clear party character object data pointers
@@ -479,57 +489,63 @@ EventCmd_46:
         sty     $0801
         lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_46
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $47: update party objects ]
 
-EventCmd_47:
-@9d03:  jsr     GetTopChar
+.proc EventCmd_47
+        jsr     GetTopChar
         jsr     PushCharFlags
         lda     #1
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_47
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $38: lock screen ]
 
-EventCmd_38:
-@9d0e:  lda     #1
+.proc EventCmd_38
+        lda     #1
         sta     $0559
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_38
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $39: unlock screen ]
 
-EventCmd_39:
-@9d16:  stz     $0559
+.proc EventCmd_39
+        stz     $0559
         lda     #1
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_39
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $3a: make party user-controlled ]
 
-EventCmd_3a:
-@9d1e:  ldy     $0803
+.proc EventCmd_3a
+        ldy     $0803
         lda     #$02
         sta     $087c,y
         sta     $087d,y
         lda     #1
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_3a
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $3b: make party script-controlled ]
 
-EventCmd_3b:
-@9d2e:  ldy     $0803
+.proc EventCmd_3b
+        ldy     $0803
         lda     #$01
         sta     $087c,y
         lda     #1
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_3b
 
 ; ------------------------------------------------------------------------------
 
@@ -1382,6 +1398,8 @@ InitMaxMP:
 
 ; e6/f502
 LevelUpMP:
+
+.if LANG_EN
         .byte   4,4,5,5,6,6,7,8  ; 2-9
         .byte   8,9,9,10,10,10,10,10,11,11  ; 10-19
         .byte   11,11,11,12,12,12,12,12,13,13  ; 20-29
@@ -1392,6 +1410,20 @@ LevelUpMP:
         .byte   8,8,8,8,7,7,7,6,6,6  ; 70-79
         .byte   6,5,5,5,5,5,5,5,6,6  ; 80-89
         .byte   6,6,6,7,8,9,10,11,12,13  ; 90-99
+.else
+
+        .byte   $05,$06,$07,$08,$09,$0a,$0b,$0c  ; 2-9
+        .byte   $0d,$0e,$0f,$10,$11,$11,$11,$11,$10,$10  ; 10-19
+        .byte   $10,$0f,$0f,$0f,$0e,$0e,$0e,$0e,$0d,$0d  ; 20-29
+        .byte   $0d,$0d,$0c,$0c,$0c,$0c,$0b,$0b,$0b,$0b  ; 30-39
+        .byte   $0b,$0b,$0a,$0a,$0a,$0a,$0a,$0a,$0a,$0a  ; 40-49
+        .byte   $09,$09,$09,$09,$09,$09,$09,$09,$09,$09  ; 50-59
+        .byte   $0a,$08,$08,$08,$08,$08,$08,$08,$08,$08  ; 60-69
+        .byte   $08,$0a,$0a,$07,$06,$05,$04,$05,$06,$07  ; 70-79
+        .byte   $08,$09,$08,$07,$06,$05,$06,$07,$05,$06  ; 80-89
+        .byte   $07,$08,$09,$0a,$08,$08,$09,$0a,$0b,$0d  ; 90-99
+
+.endif
 
 .popseg
 
@@ -1658,7 +1690,7 @@ EventCmd_49:
 
 ; ------------------------------------------------------------------------------
 
-; [ event command $4a: wait for dialog keypress ]
+; [ event command $4a: wait for dialog text to display ]
 
 EventCmd_4a:
 @a4b0:  lda     $d3         ; dialog keypress state
@@ -3058,7 +3090,7 @@ GiveItem:
         inx
         cpx     #$0100
         bne     @acfe
-        ldx     $00         ; look for first empty slot
+        ldx     $00       ; look for first empty slot
 @ad0d:  lda     $1869,x
         cmp     #$ff
         beq     @ad17
@@ -3112,14 +3144,14 @@ EventCmd_84:
         shorta0
         adc     $1862
         sta     $1862
-        cmp     #^9999999
+        cmp     #^MAX_GIL
         bcc     @ad7a
         ldx     $1860
-        cpx     #.loword(9999999)
+        cpx     #.loword(MAX_GIL)
         bcc     @ad7a
-        ldx     #.loword(9999999)
+        ldx     #.loword(MAX_GIL)
         stx     $1860
-        lda     #^9999999
+        lda     #^MAX_GIL
         sta     $1862
 @ad7a:  lda     #3
         jmp     IncEventPtrContinue
@@ -4278,7 +4310,7 @@ EventCmd_de:
 ; [ event command $df: get characters that are enabled objects ]
 
 EventCmd_df:
-@b465:  tdc
+@b465:  clr_a
         sta     $1eb4
         sta     $1eb5
         ldx     $00
@@ -5468,8 +5500,8 @@ InitTreasureSwitches:
 
 ; called from other banks
 
-DecTimersMenuBattle:
-@bb24:  pha
+.proc DecTimersMenuBattle
+        pha
         phx
         phy
         phb
@@ -5485,118 +5517,128 @@ DecTimersMenuBattle:
         sta     $1dd1
         lda     $1188
         and     #$10
-        beq     @bb49
+        beq     :+
         lda     $1dd1
         ora     #$40
         sta     $1dd1
-@bb49:  lda     $1188
-        bmi     @bb68
+
+; timer 1
+:       lda     $1188
+        bmi     skip1
         ldx     $1189
-        beq     @bb59
+        beq     :+
         dex
         stx     $1189
-        bra     @bb68
-@bb59:  lda     $1188                   ; used during emperor's banquet
+        bra     skip1
+:       lda     $1188                   ; used during emperor's banquet
         and     #$20
-        beq     @bb68
+        beq     skip1
         lda     $1dd1
         ora     #$20
         sta     $1dd1
-@bb68:  lda     $118e
-        bmi     @bb87
+
+; timer 2
+skip1:  lda     $118e
+        bmi     skip2
         ldx     $118f
-        beq     @bb78
+        beq     :+
         dex
         stx     $118f
-        bra     @bb87
-@bb78:  lda     $118e
+        bra     skip2
+:       lda     $118e
         and     #$20
-        beq     @bb87
+        beq     skip2
         lda     $1dd1
         ora     #$20
         sta     $1dd1
-@bb87:  lda     $1194
-        bmi     @bba6
+
+; timer 3
+skip2:  lda     $1194
+        bmi     skip3
         ldx     $1195
-        beq     @bb97
+        beq     :+
         dex
         stx     $1195
-        bra     @bba6
-@bb97:  lda     $1194
+        bra     skip3
+:       lda     $1194
         and     #$20
-        beq     @bba6
+        beq     skip3
         lda     $1dd1
         ora     #$20
         sta     $1dd1
-@bba6:  lda     $119a
-        bmi     @bbc5
+
+; timer 4
+skip3:  lda     $119a
+        bmi     skip4
         ldx     $119b
-        beq     @bbb6
+        beq     :+
         dex
         stx     $119b
-        bra     @bbc5
-@bbb6:  lda     $119a
+        bra     skip4
+:       lda     $119a
         and     #$20
-        beq     @bbc5
+        beq     skip4
         lda     $1dd1
         ora     #$20
         sta     $1dd1
-@bbc5:  plp
+skip4:  plp
         pld
         plb
         ply
         plx
         pla
         rts
+.endproc  ; DecTimersMenuBattle
 
 ; ------------------------------------------------------------------------------
 
 ; [ decrement timers ]
 
-DecTimers:
-@bbcc:  ldx     $1189
-        beq     @bbd5
+.proc DecTimers
+        ldx     $1189
+        beq     :+
         dex
         stx     $1189
-@bbd5:  ldx     $118f
-        beq     @bbde
+:       ldx     $118f
+        beq     :+
         dex
         stx     $118f
-@bbde:  ldx     $1195
-        beq     @bbe7
+:       ldx     $1195
+        beq     :+
         dex
         stx     $1195
-@bbe7:  ldx     $119b
-        beq     @bbf0
+:       ldx     $119b
+        beq     :+
         dex
         stx     $119b
-@bbf0:  rts
+:       rts
+.endproc  ; DecTimers
 
 ; ------------------------------------------------------------------------------
 
 ; [ check timer events ]
 
-CheckTimer:
-@bbf1:  ldy     $00
-@bbf3:  ldx     $1189,y
-        bne     @bc63
+.proc CheckTimer
+        ldy     $00
+loop:   ldx     $1189,y
+        bne     skip
         ldx     $118b,y
-        bne     @bc02
+        bne     :+
         lda     $118d,y
-        beq     @bc63
-@bc02:  ldx     $e5
+        beq     skip
+:       ldx     $e5
         cpx     #.loword(EventScript_NoEvent)
-        bne     @bc63
+        bne     skip
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     @bc63
+        bne     skip
         ldx     $0803
         lda     $086a,x
         and     #$0f
-        bne     @bc63
+        bne     skip
         lda     $086d,x
         and     #$0f
-        bne     @bc63
+        bne     skip
         ldx     $118b,y
         stx     $e5
         stx     $05f4
@@ -5624,41 +5666,42 @@ CheckTimer:
         sta     $118d,y
         jsr     CloseMapTitleWindow
         rts
-@bc63:  iny6
+skip:   iny6
         cpy     #$0018
-        bne     @bbf3
+        bne     loop
         rts
+.endproc  ; CheckTimer
 
 ; ------------------------------------------------------------------------------
 
 ; [ check event triggers ]
 
-CheckEventTriggers:
-@bc6f:  lda     $84
-        bne     @bccf
+.proc CheckEventTriggers
+        lda     $84
+        bne     done
         lda     $59
-        bne     @bccf
+        bne     done
         ldy     $0803
         lda     $086a,y
         and     #$0f
-        bne     @bccf
+        bne     done
         lda     $0869,y
-        bne     @bccf
+        bne     done
         lda     $086d,y
         and     #$0f
-        bne     @bccf
+        bne     done
         lda     $086c,y
-        bne     @bccf
+        bne     done
         ldx     $e5
         cpx     #.loword(EventScript_NoEvent)
-        bne     @bccf
+        bne     done
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     @bccf
+        bne     done
         lda     $087c,y
         and     #$0f
         cmp     #$02
-        bne     @bccf
+        bne     done
         longa
         lda     $82
         asl
@@ -5667,20 +5710,22 @@ CheckEventTriggers:
         sta     $1e
         lda     f:EventTriggerPtrs,x
         cmp     $1e
-        beq     @bccf
+        beq     done
         tax
-@bcbd:  lda     f:EventTriggerPtrs,x
+loop:   lda     f:EventTriggerPtrs,x
         cmp     $af
-        beq     @bcd3
+        beq     do_trigger
         txa
         clc
         adc     #5
         tax
         cpx     $1e
-        bne     @bcbd
-@bccf:  shorta0
+        bne     loop
+done:   shorta0
         rts
-@bcd3:  lda     f:EventTriggerPtrs+2,x
+
+do_trigger:
+        lda     f:EventTriggerPtrs+2,x
         sta     $e5
         sta     $05f4
         tdc
@@ -5710,5 +5755,6 @@ CheckEventTriggers:
         jsr     UpdateScrollRate
         jsr     CloseMapTitleWindow
         rts
+.endproc  ; CheckEventTriggers
 
 ; ------------------------------------------------------------------------------

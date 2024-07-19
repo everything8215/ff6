@@ -1,0 +1,15 @@
+{
+  "asset_label": "MapTitle",
+  "asset_const": "MAP_TITLE",
+  "inc_path": "include/text/map_title_jp.inc",
+  "char_tables": [
+    "dialog_escape",
+    "big_symbols_jp",
+    "null_terminated_jp",
+    "kana",
+    "kanji",
+    "mte",
+    "wide_names_jp"
+  ],
+  "text": []
+}

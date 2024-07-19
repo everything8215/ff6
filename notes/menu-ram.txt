@@ -1,428 +1,482 @@
-Important ROM Locations
------------------------
-$C302F9 Draw PText (Y: source, $29: flags)
-$C30341 Draw Background Window
-$C304C7 Draw Variable Text
-$C305FE Set Cursor Data (Y: address)
-$C30637 Set Cursor Positions
-$C30640 Set Cursor Positions
-$C30648 Set Cursor Positions
-$C307B0 Create Cursor Thread
-$C30EA9 Play SE $21
-$C31173 Create New Thread (A: priority, Y: address)
-$C311B0 Execute Threads
-$C31387 NMI Routine
-$C31A24 First Block of Positioned Text (2-byte header gives destination in WRAM)
-$C369BA Draw list of fixed text
-$C36A15 Clear text off the screen
++-----------------------------------------------------------------------------+
+|                                                                             |
+|                               FINAL FANTASY VI                              |
+|                                                                             |
++-----------------------------------------------------------------------------+
+| file: notes/menu-ram.txt                                                    |
+|                                                                             |
+| description: ram map for menu module                                        |
+|                                                                             |
+| created: 5/23/2021                                                          |
++-----------------------------------------------------------------------------+
 
-Direct Page ($0000-$00FF)
------------------------
-   +$00 Constant 0000
-   +$02 Constant FFFF
-   +$04 Unmodified Buttons Pressed this Frame
-   +$06 Buttons Pressed this Frame Modified Based on Button Config
-   +$08 Buttons Pressed this Frame but not Last Frame
-   +$0A Buttons in Repeat Mode
-   +$0C Buttons Pressed Last Frame
-        axlr----
-        a: A button down
-        x: X button down
-        l: L button down
-        r: R button down
-        byetudlr
-        b: B button down
-        y: Y button down
-        e: Select button down
-        t: Start button down
-        u: Up direction down
-        d: Down direction down
-        l: Left direction down
-        r: Right direction down
-   +$0E pointer to sprite data at $0300
-   +$10 pointer to high sprite data at $0500
-   +$12 DMA 1 Size
-   +$14 DMA 1 Destination Address (VRAM)
-  ++$16 DMA 1 Source Address
-   +$19 DMA 2 Size
-   +$1B DMA 2 Destination Address (VRAM, $0000 = no DMA occurs)
-  ++$1D DMA 2 Source Address
-   +$20 Wait Frame Counter (decrements Every Frame until it reaches 0)
-    $22 
-    $23 Frame Counter (increments every frame, never gets cleared)
-    $24 Enable Interrupt
-	$25 Main Menu Cursor Position
-    $26 Current Menu State
-	$27 Next Menu State
-    $28 Current Selection (char slot, item slot, etc.)
-    $29 vhopppmm High byte of BG data
-	    for bg1: $20 = white text, $24 = teal text, $28 = gray text, $2C = blue text, $30 = 
-	    for bg3: $20 = white text, $24 = gray text, $28 = yellow text, $2C = teal text
-	$2A List Type (0 = item list, 1 = magic, 2 = lore, 3 = rage, 4 = esper, 5 = equip/relic item list)
-   +$2B Current Thread Code Pointer
-   +$2D Current Thread Data Pointer
-   +$2F Number of active threads
-   +$31 Current Number of Unused Sprites
-    $33 Pointer to High Sprite Data Masks at $C31334
-    $34 Current High Sprite Data Byte
-   +$35 BG1 HScroll
-   +$37 BG1 VScroll
-   +$39 BG2 HScroll
-   +$3B BG2 VScroll
-   +$3D BG3 HScroll
-   +$3F BG3 VScroll
-   +$41 BG1 VScroll Speed (signed)
-    $43 HDMA Enable Register (-> $420C)
-    $44 Screen Display Register (-> $2100)
-    $45 ??df???p
-        ?: 
-		?: 
-		d: disable description redraw when a direction button is pressed
-		f: force description text redraw ???
-		?: 
-		?: 
-		?: 
-        p: enables color palette DMA at VBlank
-    $46 dus?m21f Cursor/Scrolling Flags
-	    d: page can scroll down
-		u: page can scroll up
-		s: enable bg1 text scrolling
-		?: 
-		m: multi flashing cursor is active
-		2: cursor 2 is active
-		1: cursor 1 is active
-		f: flashing cursor thread is active
-	$47 ----cbba
-	$48 
-	$49 vertical page offset (16 lines)
-	$4A current page scroll position (item), current page number (config)
-    $4B cursor selected item (single number calculated from XY cursor position)
-	$4C 
-  + $4D XY cursor position (relative to page)
-  + $4F XY cursor position (absolute)
-  + $51 
-  + $53 XY max cursor positions
-  + $55 X position of cursor on screen (in pixels)
-  + $57 Y position of cursor on screen (in pixels)
-    $59 x------y
-        x: disable cursor wrap in X direction
-        y: disable cursor wrap in Y direction
-    $5A page height
-	$5B page width
-	$5C max page scroll position
-	$5D 
-  + $5E saved XY cursor position
-	$60 slot 1 portrait thread data pointer
-	$61 slot 2 portrait thread data pointer
-	$62 slot 3 portrait thread data pointer
-    $63 slot 4 portrait thread data pointer
-    $64 saved equipped item
-	$65 
-	$66 current saved game slot
-   +$67 pointer to current character data
-    $69 character in slot 1
-    $6A character in slot 2
-    $6B character in slot 3
-    $6C character in slot 4
-   +$6D pointer to character data for slot 1
-   +$6F pointer to character data for slot 2
-   +$71 pointer to character data for slot 3
-   +$73 pointer to character data for slot 4
-	$75 --rbb--- character slot 1
-	    r: battle row (back row if set)
-	    b: battle order
-	$76 --rbb--- character slot 2
-	$77 --rbb--- character slot 3
-	$78 --rbb--- character slot 4
-    $79 Text color for Espers skill ($20 = enabled, $24 = disabled)
-    $7A Text color for Magic skill
-    $7B Text color for SwdTech skill
-    $7C Text color for Blitz skill
-    $7D Text color for Lore skill
-    $7E Text color for Rage skill
-    $7F Text color for Dance skill
-$80-$84 Character Select Cursor Data
-$85-$8C Character Select Cursor Positions
-	$8D 
-   +$8E previous XY cursor position
-    $90 
-   +$91 sram checksum (slot 1)
-   +$93 sram checksum (slot 2)
-   +$95 sram checksum (slot 3)
-   +$97 
-    $99 enable flashing page cursor direction (item details)
+===============================================================================
+                              | memory overview |
+                              +-----------------+
 
-	$9C Current Character Slot ???
-   +$9C Menu scroll speed
-	$9E Previous Menu State
-	$9F Menu State for ???
++-------------+---------------------------------------------------------------+
+|   address   |                          description                          |
++-------------+---------------------------------------------------------------+
+| $0000-$00FF | direct page                                                   |
+| $0100-$FFFF | wram                                                          |
++-------------+---------------------------------------------------------------+
 
-	$A1 Character has gauntlet bonus (2-handed weapon with no shield)
+===============================================================================
+                          | system ram ($0000-$1FFF) |
+                          +--------------------------+
 
-	$AE Current Sound Effect (cleared after vblank)
++-------------+---------------------------------------------------------------+
+|   address   |                          description                          |
++-------------+---------------------------------------------------------------+
+| $0000-$00FF | direct page                                                   |
+|             |    +$00 constant 0000                                         |
+|             |    +$02 constant FFFF (unused)                                |
+|             |    +$04 unmodified controller input                           |
+|             |    +$06 current controller input                              |
+|             |    +$08 new controller input                                  |
+|             |    +$0A repeating controller input                            |
+|             |    +$0C previous frame controller input                       |
+|             |           axlr---- byetudlr                                   |
+|             |             a: A button                                       |
+|             |             x: X button                                       |
+|             |             l: L button                                       |
+|             |             r: R button                                       |
+|             |             b: B button                                       |
+|             |             y: Y button                                       |
+|             |             e: select button                                  |
+|             |             t: start button                                   |
+|             |             u: up direction                                   |
+|             |             d: down direction                                 |
+|             |             l: left direction                                 |
+|             |             r: right direction                                |
+|             |    +$0E pointer to next available sprite at $0300             |
+|             |    +$10 pointer to next available sprite high bits at $0500   |
+|             |    +$12 dma 1 size                                            |
+|             |    +$14 dma 1 destination address (vram)                      |
+|             |   ++$16 dma 1 source address                                  |
+|             |    +$19 dma 2 size                                            |
+|             |    +$1B dma 2 destination address (vram, 0 = no dma occurs)   |
+|             |   ++$1D dma 2 source address                                  |
+|             |    +$20 wait counter (decrements every frame until 0)         |
+|             |     $22 secondary wait counter                                |
+|             |     $23 frame counter (increments every frame)                |
+|             |     $24 enable interrupt                                      |
+|             |     $25 main menu cursor position                             |
+|             |     $26 current menu state                                    |
+|             |     $27 next menu state                                       |
+|             |     $28 current selection (char slot, item slot, etc.)        |
+|             |     $29 vhopppmm tilemap flags for drawing text               |
+|             |           $20: white text                                     |
+|             |           $24: teal text (bg1), gray text (bg3)               |
+|             |           $28: gray text (bg1), yellow text (bg3)             |
+|             |           $2C: blue text (bg1), teal text (bg3)               |
+|             |           $30:                                                |
+|             |           $34:                                                |
+|             |           $38: blue text (bg3)                                |
+|             |           $3C:                                                |
+|             |     $2A list type                                             |
+|             |           0: item list                                        |
+|             |           1: magic                                            |
+|             |           2: lore                                             |
+|             |           3: rage                                             |
+|             |           4: esper                                            |
+|             |           5: equip/relic item list                            |
+|             |    +$2B current thread code pointer                           |
+|             |    +$2D current thread data pointer                           |
+|             |    +$2F number of active threads                              |
+|             |    +$31 current number of unused sprites                      |
+|             |     $33 pointer to high sprite data masks at C3/1334          |
+|             |     $34 current high sprite data byte                         |
+|             |    +$35 bg1 h-scroll                                          |
+|             |    +$37 bg1 v-scroll                                          |
+|             |    +$39 bg2 h-scroll                                          |
+|             |    +$3B bg2 v-scroll                                          |
+|             |    +$3D bg3 h-scroll                                          |
+|             |    +$3F bg3 v-scroll                                          |
+|             |    +$41 bg1 v-scroll speed (signed)                           |
+|             |     $43 hdma Enable Register (-> $420C)                       |
+|             |     $44 screen display register (-> $2100)                    |
+|             |     $45 ??df?hrp misc. flags                                  |
+|             |           ?:                                                  |
+|             |           c: ignore saved cursor position                     |
+|             |           d: disable desc. redraw on direction keypress       |
+|             |           f: force description text redraw ???                |
+|             |           ?:                                                  |
+|             |           h: hide cursor                                      |
+|             |           r: ignore row when drawing portrait                 |
+|             |           p: enable color palette dma at vblank               |
+|             |     $46 dus?m21f cursor/scrolling flags                       |
+|             |           d: page can scroll down                             |
+|             |           u: page can scroll up                               |
+|             |           s: enable bg1 text scrolling                        |
+|             |           ?:                                                  |
+|             |           m: multi flashing cursor is active                  |
+|             |           2: cursor 2 is active                               |
+|             |           1: cursor 1 is active                               |
+|             |           f: flashing cursor thread is active                 |
+|             |     $47 misc. thread flags                                    |
+|             |     $48                                                       |
+|             |     $49 vertical page offset (16 lines)                       |
+|             |     $4A current page scroll position (item)                   |
+|             |     $4A current page number (config)                          |
+|             |     $4B cursor selected item (from xy cursor position)        |
+|             |     $4C menu state upon exit                                  |
+|             |    +$4D xy cursor position (relative to page)                 |
+|             |    +$4F xy cursor position (absolute)                         |
+|             |    +$51                                                       |
+|             |    +$53 xy max cursor positions                               |
+|             |    +$55 x position of cursor on screen (in pixels)            |
+|             |    +$57 y position of cursor on screen (in pixels)            |
+|             |     $59 x------y                                              |
+|             |           x: disable cursor wrap in X direction               |
+|             |           y: disable cursor wrap in Y direction               |
+|             |     $5A page height                                           |
+|             |     $5B page width                                            |
+|             |     $5C max page scroll position                              |
+|             |     $5D                                                       |
+|             |    +$5E saved xy cursor position                              |
+|             |     $60 slot 1 portrait thread data pointer                   |
+|             |     $61 slot 2 portrait thread data pointer                   |
+|             |     $62 slot 3 portrait thread data pointer                   |
+|             |     $63 slot 4 portrait thread data pointer                   |
+|             |     $64 saved equipped item                                   |
+|             |     $65                                                       |
+|             |     $66 current saved game slot                               |
+|             |    +$67 pointer to current character data                     |
+|             |     $69 character in slot 1                                   |
+|             |     $6A character in slot 2                                   |
+|             |     $6B character in slot 3                                   |
+|             |     $6C character in slot 4                                   |
+|             |    +$6D pointer to character data for slot 1                  |
+|             |    +$6F pointer to character data for slot 2                  |
+|             |    +$71 pointer to character data for slot 3                  |
+|             |    +$73 pointer to character data for slot 4                  |
+|             |     $75 --rbb--- character slot 1                             |
+|             |     $76 --rbb--- character slot 2                             |
+|             |     $77 --rbb--- character slot 3                             |
+|             |     $78 --rbb--- character slot 4                             |
+|             |           r: battle row (back row if set)                     |
+|             |           b: battle order                                     |
+|             |     $79 text color for espers skill ($20: white, $24: gray)   |
+|             |     $7A text color for magic skill                            |
+|             |     $7B text color for swdtech skill                          |
+|             |     $7C text color for blitz skill                            |
+|             |     $7D text color for lore skill                             |
+|             |     $7E text color for rage skill                             |
+|             |     $7F text color for dance skill                            |
+|             | $80-$84 character select cursor data                          |
+|             | $85-$8C character select cursor positions                     |
+|             |     $8D                                                       |
+|             |    +$8E previous xy cursor position                           |
+|             |     $90                                                       |
+|             |    +$91 sram checksum (slot 1)                                |
+|             |    +$93 sram checksum (slot 2)                                |
+|             |    +$95 sram checksum (slot 3)                                |
+|             |    +$97                                                       |
+|             |     $99 enable flashing page cursor direction (item details)  |
+|             |     $99 enable reequip message (equip menu)                   |
+|             |    +$9A                                                       |
+|             |     $9C current character slot ???                            |
+|             |    +$9C menu scroll speed                                     |
+|             |     $9E previous menu state                                   |
+|             |     $9F menu state for ???                                    |
+|             |     $A0 gauntlet bonus (saved)                                |
+|             |     $A1 gauntlet bonus (equipped)                             |
+|             | $A2-$AD -                                                     |
+|             |     $AE current sound effect (cleared after vblank)           |
+|             |     $AF                                                       |
+|             |     $B0                                                       |
+|             |     $B1                                                       |
+|             |    +$B2 hp/mp restored by item                                |
+|             |     $B4 credits text palette                                  |
+|             |           0: use inverse credits palette (color subtraction)  |
+|             |           1: use normal credits palette (color addition)      |
+|             |     $B5 screen mosaic register                                |
+|             |     $B6 font width (jp version only)                          |
+|             | $B7-$C2 mode 7 registers                                      |
+|             |    +$C3                                                       |
+|             |    +$C5                                                       |
+|             |    +$C7                                                       |
+|             |    +$C9                                                       |
+|             |    +$CB                                                       |
+|             |     $CD character has genji glove effect (equipped)           |
+|             |     $CE character has genji glove effect (saved)              |
+|             |    +$CF frame counter (increments every frame, can be cleared)|
+|             |     $D1 ??? menu state                                        |
+|             | $D2-$DF -                                                     |
+|             | $E0-$FF scratchpad                                            |
++-------------+---------------------------------------------------------------+
+|       $0200 | menu type                                                     |
+|             |   0: field menu (main menu)                                   |
+|             |   1: name change                                              |
+|             |   2: restore saved game                                       |
+|             |   3: shop                                                     |
+|             |   4: party select                                             |
+|             |   5: item details                                             |
+|             |   6: swdtech name change                                      |
+|             |   7: colosseum                                                |
+|             |   8: final battle order                                       |
+|       $0201 | (main menu) s-----wx                                          |
+|             |   s: enable save/tent                                         |
+|             |   w: enable warp (spell and item)                             |
+|             |   x: enable x-zone (doesn't do anything)                      |
+|      +$0201 | (name change) pointer to character data                       |
+|       $0201 | (party select menu) number of groups (msb: clear parties)     |
+|       $0201 | (shop) shop number                                            |
+|       $0201 | (optimize equipment) character number                         |
+|       $0201 | (controller update) active character                          |
+|       $0201 | (colosseum) shadow appears                                    |
+|      +$0202 | (party select menu) forced characters                         |
+|       $0202 | (shop) showing character graphic index                        |
+|       $0204 | -                                                             |
+|       $0205 | menu return code                                              |
+|             |   0: none                                                     |
+|             |   2: tent                                                     |
+|             |   3: warp/warp stone                                          |
+|             |   4: x-zone                                                   |
+|             |   5: timer ran out                                            |
+|             |   $FE: rename card                                            |
+|       $0205 | wagered item (colosseum)                                      |
+| $0205-$0210 | battle order (final battle order)                             |
+|       $0206 | monster number (colosseum)                                    |
+|      +$0206 | pointer to character data (rename card)                       |
+|       $0207 | colosseum item number (prize)                                 |
+|       $0208 | colosseum character number                                    |
+|       $0209 | enable colosseum prize display                                |
+|       $020F | character (saved from $0201)                                  |
+| $0210-$0212 | - (could be used for 13th and 14th character in final order)  |
+|      +$0213 | saved +$E0                                                    |
+|      +$0215 | saved +$E7                                                    |
+|      +$0217 | saved +$E9                                                    |
+|      +$0219 | saved +$EB                                                    |
+|    +++$021B | game time                                                     |
+|       $021F | save slot to load (0: don't load)                             |
+|       $0220 | aaaabbbb                                                      |
+|             |   a: A button mapping (C3/A5B4)                               |
+|             |   b: B button mapping                                         |
+|       $0221 | xxxxyyyy                                                      |
+|             |   x: X button mapping                                         |
+|             |   y: Y button mapping                                         |
+|       $0222 | llllrrrr                                                      |
+|             |   l: shoulder L button mapping                                |
+|             |   r: shoulder R button mapping                                |
+|       $0223 | ----ssss                                                      |
+|             |   s: select button mapping                                    |
+|       $0224 | current saved game slot                                       |
+|       $0225 | A button repeat frame delay counter (32 frames)               |
+|       $0226 | A button repeat frame counter                                 |
+|       $0227 | direction button repeat frame delay counter                   |
+|       $0228 | direction button repeat frame counter                         |
+|       $0229 | direction button repeat frame delay (8 frames)                |
+|       $022A | repeat rate for button repeat (3 frames per repeat)           |
+| $022B-$0249 | saved menu cursor positions                                   |
+|             |  +$022B saved main menu cursor position (x,y)                 |
+|             |  +$022D saved char slot for equip, skills, status, etc. (x,y) |
+|             |  +$022F saved item cursor position (x,y)                      |
+|             |   $0231 saved item item number at top of page                 |
+|             |  +$0232 saved rare item cursor position (x,y)                 |
+|             |  +$0234 saved item/arrange/rare cursor position (x,y)         |
+|             |  +$0236 char slot 1 saved skills cursor position (x,y)        |
+|             |  +$0238 char slot 2 saved skills cursor position (x,y)        |
+|             |  +$023A char slot 3 saved skills cursor position (x,y)        |
+|             |  +$023C char slot 4 saved skills cursor position (x,y)        |
+|             |  +$023E char slot 1 saved magic cursor position (x,y)         |
+|             |  +$0240 char slot 2 saved magic cursor position (x,y)         |
+|             |  +$0242 char slot 3 saved magic cursor position (x,y)         |
+|             |  +$0244 char slot 4 saved magic cursor position (x,y)         |
+|             |  +$0246 char slot 1 saved magic page scroll position (x,y)    |
+|             |  +$0248 char slot 2 saved magic page scroll position (x,y)    |
+|             |  +$024A char slot 3 saved magic page scroll position (x,y)    |
+|             |  +$024C char slot 4 saved magic page scroll position (x,y)    |
+| $024E-$027F | -                                                             |
+| $0280-$02DF | saved battle cursor positions (24 * 4 bytes) -> $890F-$896E   |
+| $02E0-$02FF | -                                                             |
++-------------+---------------------------------------------------------------+
+| $0300-$051F | sprite data                                                   |
+|             |   $00 x position                                              |
+|             |   $01 y position                                              |
+|             |  +$02 vhoopppm mmmmmmmm                                       |
+|             |         v: vertical flip                                      |
+|             |         h: horizontal flip                                    |
+|             |         o: layer priority                                     |
+|             |         p: palette index                                      |
+|             |         m: graphic index                                      |
+| $0500-$051F | sxsxsxsx sprite high data (2 bits per sprite)                 |
+|             |   s: large sprite flag (32x32)                                |
+|             |   x: x position MSB                                           |
+| $0520-$1FFF | not used by menu module (except mode 7 data for credits only) |
+|             |   $0600-$07C1 m7a & m7d hdma data                             |
+|             |   $07C2-$0983 m7b hdma data                                   |
+|             |   $0984-$0B47 m7c hdma data                                   |
++-------------+---------------------------------------------------------------+
+| $2000-$2FFF | not used by menu module                                       |
+| $3000-$303F | saved battle stats (from $11A0-$11DF)                         |
+| $3040-$3048 | text color for stats (equip menu)                             |
+|             |   $3040 vigor                                                 |
+|             |   $3041 speed                                                 |
+|             |   $3042 stamina                                               |
+|             |   $3043 mag.pwr                                               |
+|             |   $3044 defense                                               |
+|             |   $3045 evade                                                 |
+|             |   $3046 mag.def                                               |
+|             |   $3047 mblock                                                |
+|             |   $3048 bat.pwr                                               |
+| $3049-$3248 | color palettes                                                |
+|             |   $3149-$31C8 character portrait color palettes               |
+|             |   $3209-$3228 status icon color palette                       |
+|             |   $3229-$3248 cursor color palette                            |
+| $3249-$3848 | thread data (8 priority levels, 8 threads per level)          |
+|             |  +$3249 thread code pointer                                   |
+|             |  +$32C9 pointer to animation data                             |
+|             |  +$3349 movement counter                                      |
+|             |  +$33CA x position                                            |
+|             |  +$344A y position                                            |
+|             |  +$34CA horizontal movement speed                             |
+|             |  +$354A vertical movement speed                               |
+|             |   $35C9                                                       |
+|             |   $35CA bank byte of pointer to animation data                |
+|             |   $3649 thread state                                          |
+|             |   $364A ??????hs thread flags                                 |
+|             |           h: horizontal flip                                  |
+|             |           s: sprite doesn't scroll with bg                    |
+|             |   $36C9 animation data offset                                 |
+|             |   $36CA frame counter (decrements every frame)                |
+|             |   $3749 ----ppp-                                              |
+|             |           p: palette override (ignore if zero)                |
+|             |   $374A thread data offset                                    |
+|             |  +$37C9                                                       |
+| $3849-$9848 | bg tilemaps (32 x 32 tiles per screen, 2 bytes per tile)      |
+|             |   $3849-$4048 bg1 tilemap A (usually top left)                |
+|             |   $4049-$4848 bg1 tilemap B (usually top right)               |
+|             |   $4849-$5048 bg1 tilemap C (usually bottom left)             |
+|             |   $5049-$5848 bg1 tilemap D (usually bottom right)            |
+|             |   $5849-$6048 bg2 tilemap A (usually top left)                |
+|             |   $6049-$6848 bg2 tilemap B (usually top right)               |
+|             |   $6849-$7048 bg2 tilemap C (usually bottom left)             |
+|             |   $7049-$7848 bg2 tilemap D (usually bottom right)            |
+|             |   $7849-$8048 bg3 tilemap A (usually top left)                |
+|             |   $8049-$8848 bg3 tilemap B (usually top right)               |
+|             |   $8849-$9048 bg3 tilemap C (usually bottom left)             |
+|             |   $9049-$9848 bg3 tilemap D (usually bottom right)            |
+| $9849-      | hdma data                                                     |
+|             |   $9849-$9A08 bg1 v-scroll hdma table -> $210E (channel #7)   |
+|             |   $9A09-$9BC8 bg1 h-scroll hdma table -> $210D (channel #6)   |
+|             |   $9BC9-$9DB8 bg1 h-scroll hdma table -> $210D (channel #6)   |
+| $9D89-$AC8C | misc buffers                                                  |
+|             |   $9D89-$B0F2 end credits text buffer (71 * 70 bytes)         |
+|             |         $9D89 length of item list (used for other lists too)  |
+|             |   $9D8A-$9E88 item list (positions in inventory)              |
+|             |        +$9E89 pointer to positioned text in bg1 tilemap       |
+|             |   $9E8B-      positioned text buffer                          |
+|             |                                                               |
+|             |   $9EC9-      description text buffer                         |
+|             |                                                               |
+|             |   $9F51-$A0E0 blank portrait graphics                         |
+|             |                                                               |
+|             |   $A271-$A970 description text graphics buffer (2 lines * $380 bytes)
+|             |                                                               |
+| $AC8D-$B68C | sram buffer (save menu)                                       |
+| $AC8D-$AD8C | attack/defense power of item list (equip menu)                |
+| $AC8D-$ACB8 | forced characters (party menu)                                |
+| $B68D-$C68C | battle bg graphics/tilemap buffer (colosseum)                 |
+| $B68D-$B698 | bg1 scroll hdma data (ending)                                 |
+|             |                                                               |
+| $C000-$DFFF | buffer for decompressed data/graphics (ending)                |
+|             |                                                               |
+| $F120-$F7FF | saved $0520-$0BFF                                             |
+| $F800-$FFFF | lz buffer for decompression                                   |
++-------------+---------------------------------------------------------------+
 
-	$B4 0 = use inverse credits palette (color subtraction), 1 = use normal credits palette (color addition)
-    $B5 Screen Mosaic Register
-	$B6 
-$B7-$C2 MODE7 Registers
+===============================================================================
+                             | vram ($0000-$7FFF) |
+                             +--------------------+
 
-    $CD Character has genji glove effect
++-------------+---------------------------------------------------------------+
+|   address   |                          description                          |
++-------------+---------------------------------------------------------------+
+| $0000-$1000 | bg1 tilemap                                                   |
+| $1000-$2000 | bg2 tilemap                                                   |
+| $2000-$2400 | standard menu cursor/icon graphics                            |
+|       $2000 | cursor (16x16)                                                |
+|       $2020 | scroll up arrow (8x8)                                         |
+|       $2030 | page down arrow (16x16)                                       |
+|       $2050 | page right arrow (16x16)                                      |
+|       $2070 | equipped "E" icon (8x8)                                       |
+|       $2080 | colosseum "VS" icons (2 @ 16x16)                              |
+|       $20C0 | stat up symbols (3 @ 8x8)                                     |
+|       $20F0 | stat equal symbol (8x8)                                       |
+|       $2120 | scroll up arrow (8x8, flashing)                               |
+|       $2200 | float icon (16x16)                                            |
+|       $2220 | petrify icon (16x16)                                          |
+|       $2240 | imp icon (16x16)                                              |
+|       $2260 | invisible icon (16x16)                                        |
+|       $2280 | poison icon (16x16)                                           |
+|       $22A0 | zombie icon (16x16)                                           |
+|       $22C0 | dark icon (16x16)                                             |
+| $2600-$2E00 | character portrait graphics                                   |
+| $3000-$4000 | character sprite graphics                                     |
+| $4000-$5000 | bg3 data                                                      |
+| $5000-$6000 | bg1 graphics                                                  |
+| $6000-$6800 | bg3 graphics                                                  |
+|       $6800 | description text graphics (bg3, variable-width font)          |
+|       $7800 | menu window graphics                                          |
++-------------+---------------------------------------------------------------+
 
-   +$CF Frame Counter (increments every frame, can be cleared)
+===============================================================================
+                           | misc. data structures |
+                           +-----------------------+
 
-$E0-$FF Scratchpad
++-----------------------------------------------------------------------------+
+| cursor properties (5 bytes each)                                            |
++-----+-----------------------------------------------------------------------+
+| $00 | x------y                                                              |
+|     |   x: disable cursor wrap in x direction                               |
+|     |   y: disable cursor wrap in y direction                               |
+| $01 | initial x position (0-based)                                          |
+| $02 | initial y position                                                    |
+| $03 | maximum x position (1-based)                                          |
+| $04 | maximum y position                                                    |
++-----+-----------------------------------------------------------------------+
 
-$0200-$02FF Saved Menu RAM
------------
-      $0200 Menu Type
-            $00 = main menu
-            $01 = name change
-            $02 = restore saved game
-            $03 = shop
-            $04 = party select
-            $05 = 
-            $06 = 
-            $07 = colosseum
-            $08 = final battle order
-      $0201 (main menu) s-----wx
-	        s: enable save/tent
-            w: enable Warp (spell and item)
-            x: enable X-Zone (doesn't do anything)
-	 +$0201 (name change) pointer to character data
-	  $0201 (party select menu) number of groups (MSB = clear parties)
-	  $0201 (shop) shop number
-	  $0201 (optimize equipment) character number
-	  $0201 (controller update) active character
-	 +$0202 (party select menu) forced characters
-	  $0202 (shop) showing character graphic index
-	  $0204 -
-      $0205 menu return code ($00: none, $02: tent, $03: warp/warp stone, $04: x-zone, $05: timer ran out, $FE: rename card)
-      $0205 Wagered Item (colosseum)
-      $0206 Monster Number (colosseum)
-	 +$0206 Pointer to Character Data (rename card)
-	  $0207 Colosseum Item Number (prize)
-	  $0208 Colosseum Character Number
-	  $0209 Enable Colosseum Prize Display
-$020A-$0212 -
-      $020F Character 
-	 +$0213 
-	 +$0215 
-	 +$0217 
-	 +$0219 
-   +++$021B Game Time
-      $021F Save Slot to Load (0 = don't load)
-      $0220 aaaabbbb
-            a: A button mapping ($C3A5B4)
-            b: B button mapping
-      $0221 xxxxyyyy
-            x: X button mapping
-            y: Y button mapping
-      $0222 llllrrrr
-            l: top L button mapping
-            r: top R button mapping
-      $0223 ----ssss
-            s: select button mapping
-      $0224 current saved game slot
-      $0225 A button repeat frame delay counter (32 frames)
-      $0226 A button repeat frame counter
-      $0227 direction button repeat frame delay counter
-      $0228 direction button repeat frame counter
-      $0229 direction button repeat frame delay (8 frames)
-      $022A repeat rate for A button and direction button repeat (3 frames per repeat)
++-----------------------------------------------------------------------------+
+| cursor position properties (2 bytes per cursor position)                    |
++------+----------------------------------------------------------------------+
+| +$00 | xy 1 (if x = 0, position is disabled)                                |
+| +$02 | xy 2                                                                 |
+|  ... |                                                                      |
++------+----------------------------------------------------------------------+
 
-$022B-$0249 Saved Menu Cursor Positions
------------
-     +$022B Saved Main Menu Cursor Position (X,Y)
-     +$022D Saved Character Select Position for Equip, Skills, Status, etc. (X,Y)
-	 +$022F Saved Item Cursor Position (X,Y)
-	  $0231 Saved Item Page Scroll Position (item number at top of page)
-     +$0232 Saved Rare Item Cursor Position (X,Y)
-	 +$0234 Saved Item/Arrange/Rare Cursor Position (X,Y)
-     +$0236 Character Slot 1 Saved Skills Cursor Position (X,Y)
-     +$0238 Character Slot 2 Saved Skills Cursor Position (X,Y)
-     +$023A Character Slot 3 Saved Skills Cursor Position (X,Y)
-     +$023C Character Slot 4 Saved Skills Cursor Position (X,Y)
-     +$023E Character Slot 1 Saved Magic Cursor Position (X,Y)
-     +$0240 Character Slot 2 Saved Magic Cursor Position (X,Y)
-     +$0242 Character Slot 3 Saved Magic Cursor Position (X,Y)
-     +$0244 Character Slot 4 Saved Magic Cursor Position (X,Y)
-     +$0246 Character Slot 1 Saved Magic Page Scroll Position (X,Y)
-     +$0248 Character Slot 2 Saved Magic Page Scroll Position (X,Y)
-     +$024A Character Slot 3 Saved Magic Page Scroll Position (X,Y)
-     +$024C Character Slot 4 Saved Magic Page Scroll Position (X,Y)
++-----------------------------------------------------------------------------+
+| menu window properties (4 bytes each)                                       |
++------+----------------------------------------------------------------------+
+| +$00 | pointer to bg data in ram (+$7E0000)                                 |
+|  $01 | width (in 8x8 tiles, not including border)                           |
+|  $02 | height                                                               |
++------+----------------------------------------------------------------------+
 
-$0300-$051F Sprite Data
------------
-        $00 x position
-        $01 y position
-      + $02 vhoopppm mmmmmmmm
-            v: vertical flip
-            h: horizontal flip
-            o: layer priority
-            p: palette index
-            m: graphic index
++-----------------------------------------------------------------------------+
+| animation thread data (3 bytes per frame)                                   |
++------+----------------------------------------------------------------------+
+| +$00 | pointer to animation sprite data                                     |
+|  $02 | number of frames to wait ($FE: stop animation, $FF: repeat)          |
+| +$03 | pointer to animation sprite data                                     |
+|  $04 | number of frames to wait                                             |
+|  ... | next sprite                                                          |
++------+----------------------------------------------------------------------+
 
-$0500-$051F sxsxsxsx sprite high data (2 bits per sprite)
-            s: large sprite flag (32x32)
-            x: x position MSB
-
-$0600-$1FFF Mode 7 HDMA Data
------------
-     +$0600 
-	 +$0602 Dummy Value
-$0604-$07C1 M7A & M7D HDMA Data
-     +$07C2 
-	 +$07C4 Dummy Value
-$07C6-$0985 M7B HDMA Data
-     +$0984 
-	 +$0986 Dummy Value
-$0988-$0B47 M7C HDMA Data
-
-$3000-$303F Saved Battle Stats
-      $3040 High byte of BG data for vigor
-	  $3041 " " speed
-	  $3042 " " stamina
-	  $3043 " " mag.pwr
-	  $3044 " " defense
-	  $3045 " " evade
-	  $3046 " " mag.def
-	  $3047 " " mblock
-	  $3048 " " bat.pwr
-
-$3049-$3248 Color Palettes
------------
-      $3149 Character Portrait Color Palettes (4 palettes, 16 colors each)
-	  $3209 Status Icon Color Palette
-	  $3229 Cursor Color Palette
-
-$3249-$3848 Thread Data
------------
-     +$3249 Thread code pointer (8 priority levels, 8 threads per level)
-	 +$32C9 Pointer to animation data
-	 +$3349 Movement counter
-	 +$33CA X position
-     +$344A Y position
-     +$34CA Horizontal movement speed
-     +$354A Vertical movement speed
-      $35C9 
-	  $35CA Bank byte of pointer to animation data
-      $3649 Thread state
-	  $364A ??????hs
-            h: horizontal flip
-			s: sprite doesn't scroll with bg
-	  $36C9 Animation data offset
-	  $36CA Frame counter (decrements every frame)
-      $3749 ????ppp?
-            p: palette ($00 = use palette from sprite thread data
-	  $374A Thread data pointer
-	 +$37C9 
-
-$3849-$9049 BG Data (32 rows per screen, 32 tiles per row, 2 bytes per tile)
------------
-$3849-$4048 BG1 Data (top left screen)
-$4049-$4848 BG1 Data (top right screen)
-$4849-$5048 BG1 Data (bottom left screen)
-$5049-$5848 BG1 Data (bottom right screen)
-$5849-$6048 BG2 Data (top left screen)
-$6049-$6848 BG2 Data (top right screen)
-$6849-$7048 BG2 Data (bottom left screen)
-$7049-$7848 BG2 Data (bottom right screen)
-$7849-$8048 BG3 Data (top left screen)
-$8049-$8848 BG3 Data (top right screen)
-$8849-$9048 BG3 Data (bottom left screen)
-$9049-$9848 BG3 Data (bottom right screen)
-
-$9849-      HDMA Data
------------
-$9849-      BG1 vertical scroll hdma table -> $210E (channel #6)
-
-$9A09-      BG1 horizontal scroll hdma table -> $210D (channel #7)
-
-      $9D89 Length of Item List (used for other lists too)
-$9D8A-$9E88 Item List (positions in inventory)
-     +$9E89 Pointer to Positioned Text in BG1 Data (+$7E0000)
-$9E8B-      Positioned Text Buffer
-
-$9EC9-      Description Text Buffer
-
-$9F51-$A0E0 Blank Portrait Graphics
-
-$A271-$A970 Description Text Graphics VRAM Buffer (2 lines, $380 bytes per line)
-
-$AC8D-$AD8C Attack/Defense Power of Item List
-
-$C000-$DFFF Decompression Buffer
-
-VRAM
-----
-$0000-$1000 BG1 Data
-$1000-$2000 BG2 Data
-$2000-$2400 Standard Menu Cursor/Icon Graphics
-      $2000 Cursor (16x16)
-	  $2020 Scroll Up Arrow (8x8)
-	  $2030 Page Down Arrow (16x16)
-	  $2050 Page Right Arrow (16x16)
-	  $2070 Equipped "E" Icon (8x8)
-	  $2080 Colosseum "VS" Icons (2 @ 16x16)
-	  $20C0 Stat Up Symbols (3 @ 8x8)
-	  $20F0 Stat Equal Symbol (8x8)
-	  $2120 Scroll Up Arrow (8x8, flashing)
-	  $2200 Float Icon (16x16)
-	  $2220 Petrify Icon (16x16)
-	  $2240 Imp Icon (16x16)
-	  $2260 Invisible Icon (16x16)
-	  $2280 Poison Icon (16x16)
-	  $22A0 Zombie Icon (16x16)
-	  $22C0 Dark Icon (16x16)
-$2600-$2E00 Character Portrait Graphics
-$3000-$4000 Character Sprite Graphics
-$4000-$5000 BG3 Data
-$5000-$6000 BG1 Graphics
-$6000-$6800 BG3 Graphics
-      $6800 Description Text Graphics (BG3, variable-width font)
-	  $7800 Menu Window Graphics
-
-Cursor Data (5 bytes each)
------------
-$00 x------y
-    x: disable cursor wrap in X direction
-    y: disable cursor wrap in Y direction
-$01 Initial X Position (0-based)
-$02 Initial Y Position
-$03 Maximum X Position (1-based)
-$04 Maximum Y Position
-
-Cursor Position Data (variable size, based on max number of cursor positions)
---------------------
-+$00 XY 1 (if X = 0, position is disabled)
-+$02 XY 2
- ...
-
-Window Data
------------
-+$00 pointer to BG data in RAM (+$7E0000)
- $01 width (in 8x8 tiles, not including border)
- $02 height
-
-Animation Thread Data (3 bytes per frame)
----------------------
-+$00 pointer to animation sprite data
- $02 number of frames to wait ($FE = stop animation, $FF = repeat)
-+$03 pointer to animation sprite data
- $04 number of frames to wait
- ... next sprite
-
-Animation Sprite Data (1 byte size + 4 bytes per sprite)
----------------------
- $00 number of sprites
- $01 sxxxxxxx
-     s: large sprite flag (32x32)
-	 x: x position
- $02 y position
-+$03 vhoopppm mmmmmmmm
-     v: vertical flip
-     h: horizontal flip
-     o: layer priority
-     p: palette index
-     m: graphic index
- ... next sprite
++-----------------------------------------------------------------------------+
+| animation sprite data (1 byte size + 4 bytes per sprite)                    |
++------+----------------------------------------------------------------------+
+|  $00 | number of sprites                                                    |
+|  $01 | sxxxxxxx                                                             |
+|      |   s: large sprite flag (32x32)                                       |
+|      |   x: x position                                                      |
+|  $02 | y position                                                           |
+| +$03 | vhoopppm mmmmmmmm                                                    |
+|      |   v: vertical flip                                                   |
+|      |   h: horizontal flip                                                 |
+|      |   o: layer priority                                                  |
+|      |   p: palette index                                                   |
+|      |   m: graphic index                                                   |
+|  ... | next sprite                                                          |
++------+----------------------------------------------------------------------+

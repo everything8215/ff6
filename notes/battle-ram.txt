@@ -393,7 +393,7 @@ $11E5-$11EF -
 -----------
 $11F0-$11FF Used by Bank $C0 and $EE
 -----------
-$1200-$12FF Copy of Direct Page
+$1200-$12FF Copy of field direct Page
 -----------
 $1300-$13FF Music and Sound Direct Page (used by bank $C5)
 -----------
@@ -1165,6 +1165,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
 		  $4005 Item Index
 		  $4006 Item Quantity
 		  $4007 Item targeting flags
+$4305-$43F4
 
 		  HDMA #0 Data
 		  ------------
@@ -1185,9 +1186,9 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
     $5095-$51D4 BG3 Scroll HDMA Data (item/magic character select)
     $51D5-$53D4 BG3 Scroll HDMA Data (list)
     $53D5-$5474 BG3 Scroll HDMA Data (esper)
-    $5475-$5534 BG3 Scroll HDMA Data (weapon change)
-
-	$55D5-
+    $5475-$5534 BG3 Scroll HDMA Data (equip)
+    $5535-$55D4
+	$55D5-$56D4
 	$56D5-      BG3 Tile Data Buffer ???
 
 	      $5755
@@ -1206,23 +1207,25 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
 
 	$5E4D-$5ECC graphics ???
 
+      $5ECD-$5F6C text buffer for blank status names (48 bytes shorter in jp version)
+
     $5F6D-$5FAC tornado data
     -----------
-	      $5F6D
-		  $5F7D
-	      $5F8D
-	     +$5F8E tornado y position
-		  $5F9D
-		 +$5F9E tornado x position
+          $5F6D
+          $5F7D
+          $5F8D
+         +$5F8E tornado y position
+          $5F9D
+         +$5F9E tornado x position
 
-	$602D-$607C items received in battle (16 items, 5 bytes each, see $2686)
-
-	      $607E possible character targets
-		  $607F possible monster targets
-		  $6080 character targets hit
+    $602D-$607C items received in battle (16 items, 5 bytes each, see $2686)
+          $607D
+	    $607E possible character targets
+          $607F possible monster targets
+          $6080 character targets hit
           $6081 monster targets hit
-	      $6082
-		  $6083
+	    $6082
+          $6083
           $6084 Number of active threads (for animation command $9F)
     $6085-$6094 palette shift counters
           $6095 BG1 scroll horizontal amplitude
@@ -1245,24 +1248,25 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $60A6 BG3 scroll vertical frequency
           $60A7 Hide BG1 animation graphics
           $60A8 Hide BG3 animation graphics
-		  $60A9 Multi-target delay for animation threads
+	    $60A9 Multi-target delay for animation threads
           $60AA Shared Sprite and Extra Threads
           $60AB Monsters shown ???
           $60AC Pause BG1 Animation Threads
-		  $60AD Pause BG3 Animation Threads
+          $60AD Pause BG3 Animation Threads
           $60AE SwdTech Hit Index (0..3)
           $60AF
           $60B0
-
-    $60B3-$6132 graphics to display
-
+          $60B1
+          $60B2
+    $60B3-$6132 damage numeral graphics buffer
+    $6133-$613C -
           $613D attack from battle script command 6 param 2 [Character Targets]
           $613E ?e?????? [Monster Targets]
-                e: attack is hitting monster if set, characters if cleared
+                  e: attack is hitting monster if set, characters if cleared
           $613F character/monster (for bg1/bg3 thread starting position)
-		  $6140 current character/monster (for thread init)
-		  $6141 current character/monster (for damage numerals)
-		  $6142 (1 byte per character/monster)
+          $6140 current character/monster (for thread init)
+          $6141 current character/monster (for damage numerals)
+    $6142-$614B ??? (1 byte per character/monster)
          +$614C XY position ??
          +$614E XY position ??
          +$6150 Difference Vector Signs (+/-,+/-)
@@ -1270,7 +1274,9 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
          +$6154 Triangle XY Position (absolute screen position)
           $6156 Triangle Size (bounding circle diameter, in pixels)
           $6157 Triangle Rotation Angle ($00 = down, $80 = up)
-
+          $6158 -
+          $6159 -
+          $615A -
          +$615B Triangle Vertex 1 XY Position [relative, ($80,$80) is center of triangle]
          +$615D Triangle Vertex 2 XY Position
          +$615F Triangle Vertex 3 XY Position
@@ -1295,18 +1301,18 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $6175 Monster 4 palette index (saved)
           $6176 Monster 5 palette index (saved)
           $6177 Monster 6 palette index (saved)
-
-          $617E ??????vh Monster 1
-                v: flip vertical (unused)
-                h: flip horizontal (if controlled)
-
-          $6180 ??????vh Monster 1
-                v: flip vertical
-                h: flip horizontal
-
+          $6178
+          $6179
+          $617A -
+          $617B
+          $617C
+          $617D
+    $617E-$6189 ??????vh Monster 1 (6 * 2 bytes)
+                  v: flip vertical (unused)
+                  h: flip horizontal (if controlled)
           $618A Monster Weapon Attack
-
-		  $6191 --123456 monsters ???
+    $618B-$6190
+          $6191 --123456 monsters ???
           $6192 ----1234 characters not in the party (change with anim cmd $c7/$10)
           $6193 Characters not acting as enemies ???
 
@@ -1331,7 +1337,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
 
     $61B6-$6235 Character Graphics Data (4 items, 32 bytes each)
     -----------
-		  $61B6
+		  $61B6 unused ???
          +$61B7 Character X Position (left)
          +$61B9 Character Y Position (top)
           $61BB Character Graphical Action
@@ -1498,8 +1504,8 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
 		  $628B disable battle menu
           $628C Enable seamless scripts (i.e. don't wait 4 frames after animation is done, see C1/9558)
           $628D Victory fanfare is happening
-
-		  $628F Timer Frame Counter (counts 60 frames)
+          $628E -
+          $628F Timer Frame Counter (counts 60 frames)
          +$6290 Timer Tile Data (minute 10s place)
          +$6292 Timer Tile Data (minute 1s place)
          +$6294 Timer Tile Data (colon)
@@ -1510,28 +1516,28 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
 		  $629C char 2
 		  $629D char 3 (song index ???)
           $629E char 4
-
+          $629F
+    $62A0-$62A3
           $62A4
-         +$62A5
-         +$62A7
+    $62A5-$62A8
           $62A9
-		  $62AA Battle Menu Strip Counter (see C1/04CA)
+	    $62AA Battle Menu Strip Counter (see C1/04CA)
           $62AB Pause Battle
           $62AC
-		  $62AD bgriiiii
+          $62AD bgriiiii
           $62AE bgriiiii Fixed Color for Backdrop Gradients
-		  $62AF Monsters that are currently shown as BG1 ???
+          $62AF Monsters that are currently shown as BG1 ???
           $62B0 Esper thread 1 sprites are shown below characters/monsters
           $62B1
           $62B2
           $62B3
           $62B4
           $62B5 Enable roulette cursor (used by enemy enemy)
-		  $62B6
-		  $62B7 ??? Counter
-		  $62B8
-		  $62B9
-		  $62BA ??? Counter
+          $62B6
+          $62B7 ??? Counter
+          $62B8
+          $62B9
+          $62BA ??? Counter
          +$62BB
           $62BD Hide Characters (during esper attack)
           $62BE Hide Cursor Sprites (during esper attack)
@@ -1544,8 +1550,8 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $62C5 Enable Monster 4 Imp Graphics
           $62C6 Enable Monster 5 Imp Graphics
           $62C7 Enable Monster 6 Imp Graphics
-		  $62C8 BG1 Tile Data Quadrant (0 = top-left 16x16)
-		  $62C9 BG3 Tile Data Quadrant (0 = top-left 16x16)
+          $62C8 BG1 Tile Data Quadrant (0 = top-left 16x16)
+          $62C9 BG3 Tile Data Quadrant (0 = top-left 16x16)
          +$62CA Active Character (menu command select, used for arrow indicator)
           $62CC Char 1 is controlling a monster
           $62CD char 2 is controlling a monster
@@ -1576,19 +1582,25 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
     $6326-$6329 numeral graphics x offset (width / 2) (4 items, 1 byte each)
     $632A-$632D (4 items, 1 byte each)
           $632E Damage Numeral Counter (0..3)
-
+          $632F
     $6330-$63AF BG2 Scroll HDMA Table Buffer (+X,+Y)
     $63B0-$64AF BG1 Scroll HDMA Table Buffer (+X,+Y)
          +$64B0 Battle BG Horizontal Scroll Position
          +$64B2 Battle BG Vertical Scroll Position
          +$64B4 BG1 Horizontal Scroll Position
          +$64B6 BG1 Vertical Scroll Position
-
           $64B8 command select window type (0 = ???, 1 = short, 2 = command, 3 = RELM's "Command)
           $64B9
           $64BA magitek mode enabled
           $64BB
-
+         +$64BC
+         +$64BE
+         +$64C0
+         +$64C2
+         +$64C4
+         +$64C6
+         +$64C8
+         +$64CA
           $64CC magitek armor action for each character (0 = standing still, 1 = walking, 2 = cockpit open, 3 = jap text)
           $64D0
 		  $64D4 magitek color palette index (stored in an empty character slot palette)
@@ -1729,10 +1741,10 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
         ++$7B1A Pointer to BG1 Animation Tile Data Buffer
          +$7B1D BG1 Animation X position
          +$7B1F BG1 Animation Y position
-		  $7B21 BG3 Animation Tile Data needs to be updated
+	    $7B21 BG3 Animation Tile Data needs to be updated
          +$7B22 BG3 Animation X Offset
          +$7B24 BG3 Animation Y Offset
-		++$7B26 Pointer to BG3 Animation Tile Data Buffer
+	  ++$7B26 Pointer to BG3 Animation Tile Data Buffer
          +$7B29 BG3 Animation X position
          +$7B2B BG3 Animation Y position
          +$7B2D Weapon Graphics Frame Width/Height
@@ -1786,12 +1798,17 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $7B9C
           $7B9D
           $7B9E
-
+         +$7B9F
+         +$7BA1
+          $7BA3
+          $7BA4
           $7BA5
-
+          $7BA6
+          $7BA7
+          $7BA8
 		  $7BA9 Enable VRAM transfer for menu text updates
 		 +$7BAA VRAM destination address for menu text updates
-
+          $7BAC -
           $7BAD character needing graphical update in VRAM ($FF = none)
 		  $7BAE vhopppmm (for menu window graphics)
 		  $7BAF
@@ -1801,7 +1818,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $7BB5
           $7BB6
           $7BB7
-
+    $7BB8-$7BBA -
           $7BBB Battle Menu Update Pending (bg2 tile data)
          +$7BBC Battle Menu Tile Data Size ??? (unused, i think...)
 		 +$7BBE Pointer to Menu Tile Data in VRAM (BG2)
@@ -1811,7 +1828,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $7BCA Menu Open or Opening
           $7BCB Close Menu
           $7BCC Next/Previous Character Enable, w/ X or Y Button ($01 = next/X, $02 = prev/Y)
-
+    $7BCD-$7BD0 -
           $7BD1 Menu Window Needs to Change Size
          +$7BD2 Menu Window Horizontal Scroll Position (in pixels)
          +$7BD4 Menu Window Vertical Scroll Position (in pixels)
@@ -1878,8 +1895,8 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
          +$8087 Character Right X Coordinate for Cursor (in pixels)
          +$8093 Character Additional Center Y Coordinate for Cursor (in pixels)
          +$809F Character Front X Offset for Cursor (in pixels, 0 if facing left, 32 if facing right)
-		 +$80AB Monster ???
-		 +$80B7 Monster ???
+	   +$80AB Monster ???
+         +$80B7 Monster ???
          +$80C3 Monster Left X Position (screen location, in pixels)
          +$80CF Monster Top Y Position (screen location, in pixels)
          +$80DB vhoopppm mmmmmmmm - Monster Sprite Data
@@ -1915,12 +1932,12 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
     $822D-$824C Monster Graphics Map
           $824D Counter for Graphics Map Pointer
           $824E Pointer to Graphics Map
-
+          $824F
+          $8250
           $8251 Monster Graphics Width (calculated using graphics map)
           $8252 Monster Graphics Width (used as a counter to load graphics to RAM buffer)
           $8253 Monster Graphics Height (uses mold box height, used as a counter to load graphics to RAM buffer)
-		  $8254
-
+         +$8254
           $8256 Monster Graphics Mold Box Width
 		  $8257 Monster Graphics Mold Box Height
           $8258 Current Monster Slot (for graphics loader)
@@ -1972,7 +1989,9 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
     $88F3-$890A Same as above for character/monster cursors (6 items, 4 bytes each)
 
 	      $890B character/monster counter for sprite thread init
-
+          $890C
+          $890D
+          $890E
           $890F Character 1 Cursor Position
           $8910 Character 2 Cursor Position
           $8911 Character 3 Cursor Position
@@ -2057,9 +2076,9 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
 		  HDMA #5 Data (+++$2126)
 		  -----------------------
     $9C7F-$9D9E Window Position HDMA data -> +++$2126 (Menu Region)
-    $9D9F-$9F1E -
+    $9D9F-$9E1E
+    $9E1F-$9F1E
     $9F1F-$A17E Window Position HDMA data -> +++$2126 (Battlefield Region)
-
 	$A17F-$A37E Pointers to high byte of sprite data (4 bytes per sprite, +$0500)
 	$A37F-$A57E 32x32 sprite, x coordinate MSB = 0
 	$A57F-$A77E 32x32 sprite, x coordinate MSB = 1
@@ -2081,7 +2100,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
     $E97F-$E9BE sine wave table (A=14)
          +$E9BF VRAM destination address
           $E9C1
-
+          $E9C2
           $E9C3
          +$E9C4 X Zoom Size (higher number = smaller)
          +$E9C6
@@ -2089,7 +2108,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
          +$E9CA Y Zoom Size
          +$E9CC X Position
          +$E9CE Y Position
-
+         +$E9D0
     $E9D2-$E9D9 Pointers to Condemned Numeral Graphics for each Character (2 bytes each, $7F0000)
           $E9DA
           $E9DB Counter for Condemned Numeral Graphics
@@ -2097,7 +2116,7 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
 		  $E9DD
 		  $E9DE
 		  $E9DF
-
+          $E9E0 -
           $E9E1 blitz button input pointer (+$E9FE)
          +$E9E2 buttons pressed last frame (for blitz code)
           $E9E4 blitz code counter (64 frames)
@@ -2114,19 +2133,19 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
           $E9EF Stop Battle Time
 		  $E9F0
 		  $E9F1
-
-          $E9F5
+            ++$E9F2
+              $E9F5
 		  $E9F6 Screen is fading in
 		  $E9F7 Position of top fade bar (starts at scanline 152 and moves up)
 		  $E9F8 Position of bottom fade bar (starts at scanline 0 and moves down)
           $E9F9 Screen Brightness (0-F)
           $E9FB monster entry/exit animation type
 		  $E9FC misc. monster animation target
-
+          $E9FD
     $E9FE-$EA1D blitz button inputs (16 items, 2 bytes each)
     $EA1E-$EA31 correct button combo for current blitz (10 items, 2 bytes per button)
     $EA32-$EBF1 +/- Enable, Fixed Color HDMA data ->+$2131, 2 bytes per scanline
-
+    $EBF2-$EBF9 -
 	      $EBFA
 		  $EBFB Number on Dice 1
 		  $EBFC Number on Dice 2
@@ -2140,13 +2159,17 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
     $EC71-$ECB0 Buffer for battle BG palette processing
 	      $ECB1
 		  $ECB2
-
+              $ECB3
 		 +$ECB4 ??? Monster y position (top)
 		 +$ECB6 Pointer to ??? monster graphics data
          +$ECB8 Battle BG Index
           $ECBA Curative Menu Type (0 = item, 1 = magic)
           $ECBB Enable Animation Sound Effect Panned based on Sprite Y Position (Animation Script Command $87)
-
+     $ECBC-$ECCB
+     $ECCC-$ECDB
+     $ECDC-$ECEB
+          +$ECEC
+            $ECEE
           $ECEF ztrbemsg Battle End Event Flags
                 z: zone eater just ate you
                 t: timer is shown (beneath enemy name)
@@ -2156,9 +2179,9 @@ $4005-$4304 menu item buffer (256 * 3 bytes)
                 m: morph is available
                 s: enables scene with LOCKE and EDGAR if TERRA uses magic
                 g: game over after battle ends
-          $ECF0
-
-    $F800-$FFFF Decompression Buffer
+          $ECF0 something with big text width ??? (unused in jp version)
+    $ECF1-$F7FF -
+    $F800-$FFFF hypotenuse length table (see InitHypotenuseTbl)
 
 $7F0000-$7F1FFF Character 1 Graphics
 $7F2000-$7F3FFF Character 2 Graphics
@@ -2178,6 +2201,7 @@ $7FC200-$7FC2FF Condemned Numeral Graphics (4 * 32 bytes)
 $7FC300-$7FC3FF Backwards Condemned Numeral Graphics (4 * 32 bytes)
 $7FC400-$7FE3FF BG1 Animation Tile Data Buffer (16 frames, 16x16 tiles each, 2 bytes per tile)
 $7FE400-$7FF800 BG3 Animation Tile Data Buffer (8 frames, 16x16 tiles each, 2 bytes per tile)
+$7FF800-$7FFFFF Decompression Buffer
 
 VRAM
 ----

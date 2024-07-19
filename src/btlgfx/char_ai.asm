@@ -47,9 +47,9 @@ CharAI:
 ; $00: none
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte $ff
@@ -76,13 +76,13 @@ CharAI:
 ; $01: shadow_colosseum
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_SHADOW
+.byte SONG::SHADOW
 
 ; slot 0
 .byte CHAR_PROP::SHADOW|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX::SHADOW,<MONSTER_SHADOW_COLOSSEUM
+.byte CHAR_GFX::SHADOW,<MONSTER::SHADOW_COLOSSEUM
 .byte 40,48
 
 ; slot 1
@@ -105,9 +105,9 @@ CharAI:
 ; $02: terra_flashback
 
 .byte CHAR_AI_FLAG_HIDE_NAMES|CHAR_AI_FLAG_HIDE_PARTY
-.byte BATTLE_BG_BURNING_BUILDING
+.byte BATTLE_BG::BURNING_BUILDING
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::KEFKA_1|CHAR_AI_FLAG_NOT_IN_PARTY
@@ -116,7 +116,7 @@ CharAI:
 
 ; slot 1
 .byte CHAR_PROP::TERRA
-.byte $ff,<MONSTER_TERRA_FLASHBACK
+.byte $ff,<MONSTER::TERRA_FLASHBACK
 .byte 255,255
 
 ; slot 2
@@ -134,9 +134,9 @@ CharAI:
 ; $03: vargas
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~BIT_0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::SABIN|CHAR_AI_FLAG_NOT_IN_PARTY
@@ -163,13 +163,13 @@ CharAI:
 ; $04: kefka_imp_camp_1
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::KEFKA_1|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX::KEFKA,<MONSTER_KEFKA_IMP_CAMP
+.byte CHAR_GFX::KEFKA,<MONSTER::KEFKA_IMP_CAMP
 .byte 32,48
 
 ; slot 1
@@ -192,13 +192,13 @@ CharAI:
 ; $05: cyan_imp_camp_1
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::CYAN
-.byte CHAR_GFX::CYAN,<MONSTER_CYAN_IMP_CAMP
+.byte CHAR_GFX::CYAN,<MONSTER::CYAN_IMP_CAMP
 .byte 80,48
 
 ; slot 1
@@ -221,13 +221,13 @@ CharAI:
 ; $06: cyan_imp_camp_2
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::CYAN
-.byte CHAR_GFX::CYAN,<MONSTER_CYAN_IMP_CAMP
+.byte CHAR_GFX::CYAN,<MONSTER::CYAN_IMP_CAMP
 .byte 80,48
 
 ; slot 1
@@ -250,9 +250,9 @@ CharAI:
 ; $07: piranha
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte $ff
@@ -279,13 +279,13 @@ CharAI:
 ; $08: unused_08
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX::KEFKA,<MONSTER_KEFKA_IMP_CAMP
+.byte CHAR_GFX::KEFKA,<MONSTER::KEFKA_IMP_CAMP
 .byte 32,44
 
 ; slot 1
@@ -308,9 +308,9 @@ CharAI:
 ; $09: unused_09
 
 .byte CHAR_AI_FLAG_HIDE_PARTY
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::KEFKA_1
@@ -337,13 +337,13 @@ CharAI:
 ; $0a: gau_veldt
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::GAU|CHAR_AI_FLAG_NOT_IN_PARTY|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX::GAU,<MONSTER_GAU_VELDT
+.byte CHAR_GFX::GAU,<MONSTER::GAU_VELDT
 .byte 48,52
 
 ; slot 1
@@ -366,9 +366,9 @@ CharAI:
 ; $0b: unused_0b
 
 .byte CHAR_AI_FLAG_HIDE_NAMES|CHAR_AI_FLAG_HIDE_PARTY
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::TERRA
@@ -395,13 +395,13 @@ CharAI:
 ; $0c: sealed_gate_1
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
-.byte CHAR_GFX::KEFKA,<MONSTER_KEFKA_ESPER_GATE
+.byte CHAR_GFX::KEFKA,<MONSTER::KEFKA_ESPER_GATE
 .byte 100,44
 
 ; slot 1
@@ -424,9 +424,9 @@ CharAI:
 ; $0d: sealed_gate_2
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::KEFKA_2|CHAR_AI_FLAG_ENEMY_CHAR
@@ -453,9 +453,9 @@ CharAI:
 ; $0e: blackjack_espers
 
 .byte CHAR_AI_FLAG_HIDE_PARTY
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_METAMORPHOSIS
+.byte SONG::METAMORPHOSIS
 
 ; slot 0
 .byte CHAR_PROP::TERRA
@@ -482,9 +482,9 @@ CharAI:
 ; $0f: ultros_relm
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::RELM|CHAR_AI_FLAG_NOT_IN_PARTY
@@ -511,9 +511,9 @@ CharAI:
 ; $10: espers go to thamasa
 
 .byte CHAR_AI_FLAG_HIDE_NAMES|CHAR_AI_FLAG_HIDE_PARTY
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::TERRA
@@ -540,9 +540,9 @@ CharAI:
 ; $11: blitz_tutorial
 
 .byte CHAR_AI_FLAG_HIDE_NAMES|CHAR_AI_FLAG_HIDE_PARTY
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::TERRA
@@ -569,9 +569,9 @@ CharAI:
 ; $12: kefka_esper
 
 .byte CHAR_AI_FLAG_HIDE_NAMES|CHAR_AI_FLAG_HIDE_PARTY
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::KEFKA_3
@@ -598,9 +598,9 @@ CharAI:
 ; $13: kefka_gestahl
 
 .byte CHAR_AI_FLAG_HIDE_NAMES|CHAR_AI_FLAG_HIDE_PARTY
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::TERRA
@@ -627,9 +627,9 @@ CharAI:
 ; $14: kefka_leo
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::TERRA|CHAR_AI_FLAG_NOT_IN_PARTY
@@ -656,9 +656,9 @@ CharAI:
 ; $15: unused_15
 
 .byte CHAR_AI_FLAG_HIDE_PARTY
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte CHAR_PROP::KEFKA_1
@@ -685,9 +685,9 @@ CharAI:
 ; $16: unused_16
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~BIT_0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte $ff
@@ -714,9 +714,9 @@ CharAI:
 ; $17: unused_17
 
 .byte CHAR_AI_FLAG_NONE
-.byte BATTLE_BG_DEFAULT
+.byte BATTLE_BG::DEFAULT
 .byte <~BIT_0
-.byte SONG_NONE
+.byte SONG::NONE
 
 ; slot 0
 .byte $ff

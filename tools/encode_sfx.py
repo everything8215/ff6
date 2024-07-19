@@ -38,7 +38,7 @@ if __name__ == '__main__':
     mml = []
     # read mml file
     try:
-        with open(mml_path, 'r') as f:
+        with open(mml_path, 'r', encoding='utf8') as f:
             mml = f.readlines()
     except IOError as e:
         print(f'Error reading file {mml_path}')

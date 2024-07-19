@@ -51,7 +51,7 @@ VehicleMain:
         stz     $23
         lda     $83
         bpl     @0089
-        eor     #$ffff
+        not_a
 @0089:  lsr
         clc
         adc     $85
@@ -196,7 +196,7 @@ VehicleMain:
 @01cb:  longa
         lda     $83
         bpl     @01d4
-        eor     #$ffff
+        not_a
 @01d4:  lsr
         clc
         adc     $85
@@ -283,8 +283,7 @@ WorldMain:
         stz     $23
         lda     $83
         bpl     @0296
-        eor     #$ffff
-        inc
+        neg_a
 @0296:  lsr
         clc
         adc     $85

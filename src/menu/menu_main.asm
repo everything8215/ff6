@@ -18,6 +18,8 @@
 .include "macros.inc"
 .include "code_ext.inc"
 
+.include "menu_ram.inc"
+
 ; ------------------------------------------------------------------------------
 
 .a8
@@ -46,6 +48,7 @@
 .include "big_text.asm"
 .include "final_order.asm"
 .include "colosseum.asm"
+.include "bushido_name.asm"
 .include "shop.asm"
 .include "ending.asm"
 .include "menu_init_2.asm"

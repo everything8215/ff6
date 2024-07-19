@@ -13,12 +13,12 @@ OpenMenu:
         ldx     #$0000                  ; set direct page
         phx
         pld
-        ldx     #$0000                  ; set $00
-        stx     $00
+        ldx     #0                      ; set z0
+        stx     z0
         lda     #$7e
         sta     hWMADDH                 ; set wram bank
         jsr     InitInterrupts
-        lda     $0200
+        lda     w0200
         cmp     #$02
         bne     @003f                   ; branch if not opening game load menu
         jsr     InitSaveSlot
@@ -30,47 +30,47 @@ OpenMenu:
         stz     hNMITIMEN
         stz     hMDMAEN
         stz     hHDMAEN
-        lda     $0200
+        lda     w0200
         cmp     #$02
         bne     @006f                   ; branch if not restoring a saved game
-        lda     $0205
+        lda     w0205
         bpl     @006f                   ; branch if tent/warp/warp stone was used
         lda     $1d4e
         and     #$20
         beq     @006f                   ; branch if stereo mode
         lda     #$ff
         jsr     SetStereoMono
-@006f:  lda     $0200
+@006f:  lda     w0200
         bne     @00bf       ; branch if not main menu
-        lda     $0205
+        lda     w0205
         bpl     @00bf       ; return if return code is positive
         cmp     #$fe
         bne     @009e       ; branch if not using rename card
 
 ; rename card
         lda     #$01
-        sta     $0200
-        lda     $0201
-        sta     $020f
-        ldy     $0206
-        sty     $0201
+        sta     w0200
+        lda     w0201
+        sta     w020f
+        ldy     w0206
+        sty     w0201
         jsl     OpenMenu_ext
-        lda     $020f
-        sta     $0201
-        stz     $0200
+        lda     w020f
+        sta     w0201
+        stz     w0200
         jmp     @001b
 
 ; swdtech renaming (ff6j)
 @009e:  lda     #$06
-        sta     $0200
-        lda     $0201
-        sta     $020f
-        lda     $0206
-        sta     $0201
+        sta     w0200
+        lda     w0201
+        sta     w020f
+        lda     w0206
+        sta     w0201
         jsl     OpenMenu_ext
-        lda     $020f
-        sta     $0201
-        stz     $0200
+        lda     w020f
+        sta     w0201
+        stz     w0200
         jmp     @001b
 
 ; return from menu
@@ -84,9 +84,9 @@ InitInterrupts:
 @00c0:  lda     #$5c
         sta     $1500
         sta     $1504
-        ldx     #.loword(MenuNMI)
+        ldx     #near MenuNMI
         stx     $1501
-        ldx     #.loword(MenuIRQ)
+        ldx     #near MenuIRQ
         stx     $1505
         lda     #^MenuNMI
         sta     $1503
@@ -99,10 +99,10 @@ InitInterrupts:
 
 OpenMenuType:
 @00dd:  clr_a
-        lda     $0200
+        lda     w0200
         asl
         tax
-        jmp     (.loword(MenuTypeTbl),x)
+        jmp     (near MenuTypeTbl,x)
 
 ; menu type jump table
 MenuTypeTbl:
@@ -138,8 +138,8 @@ InitMenu:
 ; [ menu type $00: main menu ]
 
 MainMenu:
-@011a:  lda     #$04                    ; menu state $04 (main menu init)
-        sta     $26
+@011a:  lda     #MENU_STATE::FIELD_MENU_INIT
+        sta     zMenuState
         jmp     MenuLoop
 
 ; ------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ MainMenu:
 ShopMenu:
 @0121:  jsr     InitFontColor
         lda     #$24                    ; menu state $24 (shop init)
-        sta     $26
+        sta     zMenuState
         jmp     MenuLoop
 
 ; ------------------------------------------------------------------------------
@@ -160,7 +160,7 @@ PartySelectMenu:
 @012b:  jsr     InitFontColor
         jsr     ResetCursorPos
         lda     #$2c                    ; menu state $2c (party select init)
-        sta     $26
+        sta     zMenuState
         jmp     MenuLoop
 
 ; ------------------------------------------------------------------------------
@@ -180,7 +180,7 @@ ItemDetailsMenu:
 @013d:  jsr     InitFontColor
         jsr     ResetCursorPos
         lda     #$2f                    ; menu state $2f (item details)
-        sta     $26
+        sta     zMenuState
         bra     MenuLoop
 
 ; ------------------------------------------------------------------------------
@@ -190,7 +190,7 @@ ItemDetailsMenu:
 BushidoNameMenu:
 @0149:  jsr     InitFontColor
         lda     #$3f                    ; menu state $3f
-        sta     $26
+        sta     zMenuState
         bra     MenuLoop
 
 ; ------------------------------------------------------------------------------
@@ -203,9 +203,9 @@ ColosseumMenu:
         stz     $7a
         stz     $7b
         lda     #$ff
-        sta     $0205
+        sta     w0205
         lda     #$71                    ; menu state $71 (colosseum item select init)
-        sta     $26
+        sta     zMenuState
         bra     MenuLoop
 
 ; ------------------------------------------------------------------------------
@@ -215,7 +215,7 @@ ColosseumMenu:
 FinalBattleOrderMenu:
 @0166:  jsr     InitFontColor
         lda     #$73                    ; menu state $73 (final battle order init)
-        sta     $26
+        sta     zMenuState
         bra     MenuLoop
 
 ; ------------------------------------------------------------------------------
@@ -237,19 +237,19 @@ GameLoadMenu:
         sta     $1302
         jsl     ExecSound_ext
         lda     #$ff
-        sta     $0205
+        sta     w0205
         lda     #$20                    ; menu state $20 (restore game init)
-        sta     $26
+        sta     zMenuState
         bra     MenuLoop
 
 ; sram invalid
 @019f:  jsr     ResetGameTime
         lda     #1
-        sta     $0224                   ; current saved game slot = 1
-        stz     $021f                   ; don't load a saved game
-        lda     #$ff
-        sta     $26                     ; terminate menu
-        stz     $0205                   ; clear return code
+        sta     wSelSaveSlot
+        stz     wSaveSlotToLoad         ; don't load a saved game
+        lda     #MENU_STATE::TERMINATE
+        sta     zMenuState              ; terminate menu
+        stz     w0205                   ; clear return code
         bra     MenuLoop
 
 ; ------------------------------------------------------------------------------
@@ -259,7 +259,7 @@ GameLoadMenu:
 NameChangeMenu:
 @01b3:  jsr     InitFontColor
         lda     #$5d                    ; menu state $5d (name change init)
-        sta     $26
+        sta     zMenuState
 ; fall through
 
 ; ------------------------------------------------------------------------------
@@ -269,19 +269,19 @@ NameChangeMenu:
 MenuLoop:
 @01ba:  jsr     UpdatePPU
 @01bd:  clr_a
-        lda     $26                     ; return if menu state is $ff
+        lda     zMenuState                     ; return if menu state is $ff
         cmp     #$ff
         beq     @01d8
         longa
         asl
         tax
         shorta
-        jsr     (.loword(MenuStateTbl),x)
+        jsr     (near MenuStateTbl,x)
         jsr     ExecTasks
         jsr     WaitFrame
         jsr     CheckEventTimer
         bra     @01bd
-@01d8:  stz     $43                     ; disable hdma
+@01d8:  stz     zEnableHDMA
         rts
 
 ; ------------------------------------------------------------------------------
@@ -429,20 +429,20 @@ CheckEventTimer:
         beq     @02f8
         ldy     $1189       ; return unless event timer ran out
         bne     @02f8
-        lda     #$ff
-        sta     $27
-        stz     $26
+        lda     #MENU_STATE::TERMINATE
+        sta     zNextMenuState
+        stz     zMenuState
         lda     #$05
-        sta     $0205
+        sta     w0205
         sta     $b4
 @02f8:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [ draw positioned text ]
+; [ draw positioned text, latin alphabet with no dakuten ]
 
 ;  +y = source address (+$c30000)
-; $29 = flags
+; $29 = flags (zTextColor)
 
 DrawPosText:
 @02f9:  sty     $e7
@@ -450,7 +450,7 @@ DrawPosText:
         sta     $e9
 
 DrawPosTextFar:
-@02ff:  ldx     $00
+@02ff:  ldx     z0
         txy
         longa
         lda     [$e7]
@@ -467,7 +467,7 @@ DrawPosTextFar:
         sta     [$eb],y
         inx
         txy
-        lda     $29
+        lda     zTextColor
         sta     [$eb],y
         inx
         ply
@@ -477,13 +477,102 @@ DrawPosTextFar:
 
 ; ------------------------------------------------------------------------------
 
+; [ draw positioned text, kana with dakuten ]
+
+.if LANG_EN
+
+DrawPosKana := DrawPosText
+DrawPosKanaFar := DrawPosTextFar
+
+.else
+
+DrawPosKana:
+@0326:  sty     $e7
+        lda     #^*
+        sta     $e9
+
+DrawPosKanaFar:
+        ldx     z0
+        txy
+        longa
+        lda     [$e7]
+        sta     $eb
+        inc     $e7
+        inc     $e7
+        shorta
+        lda     #$7e
+        sta     $ed
+@033f:  lda     [$e7],y
+        sta     $e0
+        beq     @03a8
+        cmp     #$01
+        bne     @035a
+        longa
+        lda     $eb
+        clc
+        adc     #$0080
+        sta     $eb
+        ldx     z0
+        shorta
+        iny
+        bra     @033f
+@035a:  phy
+        cmp     #$53
+        bcc     @0365
+        lda     #$ff
+        sta     $e1
+        bra     @0385
+@0365:  cmp     #$49
+        bcc     @0376
+        lda     #$52
+        sta     $e1
+        lda     $e0
+        clc
+        adc     #$17
+        sta     $e0
+        bra     @0385
+@0376:  cmp     #$20
+        bcc     @0385
+        lda     #$51
+        sta     $e1
+        lda     $e0
+        clc
+        adc     #$40
+        sta     $e0
+@0385:  txy
+        lda     $e1
+        sta     [$eb],y
+        iny
+        lda     zTextColor
+        sta     [$eb],y
+        longa
+        txa
+        clc
+        adc     #$0040
+        tay
+        shorta
+        lda     $e0
+        sta     [$eb],y
+        iny
+        lda     zTextColor
+        sta     [$eb],y
+        inx2
+        ply
+        iny
+        bra     @033f
+@03a8:  rts
+
+.endif
+
+; ------------------------------------------------------------------------------
+
 ; [ init buffer for window tiles ]
 
 ; Y: flags applied to each tile
 
 SetWindowTileFlags:
 @0326:  sty     $e7
-        ldx     $00
+        ldx     z0
         longa
 @032c:  lda     f:WindowTileTbl,x
         clc
@@ -507,7 +596,7 @@ DrawWindow:
 
 DrawWindowFar:
 @0345:  sty     $e7
-        ldx     $00
+        ldx     z0
         txy
         longa
         lda     [$e7],y
@@ -519,7 +608,7 @@ DrawWindowFar:
         sta     $e2
         lda     #$7e
         sta     $ed
-        ldx     $00
+        ldx     z0
         txy
         shorti
         ldx     $e0
@@ -536,19 +625,18 @@ DrawWindowFar:
 
 ; [ draw window tile rows ]
 
-.a16
-
 DrawWindowRows:
-@0375:  jsr     DrawBorderTop
-        ldx     $00
+@0375:  .a16
+        jsr     DrawBorderTop
+        ldx     z0
         ldy     #$0040
         sty     $f3
 @037f:  phx
         txa
-        and     #$0003
+        and     #%11
         asl
         tax
-        jsr     (.loword(DrawWindowRowsTbl),x)
+        jsr     (near DrawWindowRowsTbl,x)
         lda     $f3
         clc
         adc     #$0040
@@ -561,17 +649,14 @@ DrawWindowRows:
         jmp     DrawBorderBtm
 
 DrawWindowRowsTbl:
-@039b:  .addr   DrawWindowRows_00
-        .addr   DrawWindowRows_01
-        .addr   DrawWindowRows_02
-        .addr   DrawWindowRows_03
+        make_jump_tbl DrawWindowRows, 4
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw border row ]
 
 DrawBorderTop:
-@03a3:  ldy     $00
+@03a3:  ldy     z0
         jsr     SetBorderPatternMask
         lda     $7e9f49
         sta     $e3
@@ -595,27 +680,27 @@ DrawBorderBtm:
 
 ; [ draw window row ]
 
-DrawWindowRows_00:
+make_jump_label DrawWindowRows, 0
 @03d1:  jsr     SetWindowPatternMask
         jsr     GetWindowBorder1
         stz     $e0
         bra     DrawWindowRow
 
-DrawWindowRows_01:
+make_jump_label DrawWindowRows, 1
 @03db:  jsr     SetWindowPatternMask
         jsr     GetWindowBorder2
         ldx     #$0008
         stx     $e0
         bra     DrawWindowRow
 
-DrawWindowRows_02:
+make_jump_label DrawWindowRows, 2
 @03e8:  jsr     SetWindowPatternMask
         jsr     GetWindowBorder1
         ldx     #$0010
         stx     $e0
         bra     DrawWindowRow
 
-DrawWindowRows_03:
+make_jump_label DrawWindowRows, 3
 @03f5:  jsr     SetWindowPatternMask
         jsr     GetWindowBorder2
         ldx     #$0018
@@ -627,7 +712,7 @@ DrawWindowRows_03:
 ; [ set window area pattern mask ]
 
 SetWindowPatternMask:
-@0402:  ldx     #3
+@0402:  ldx     #%11
         stx     $f5
         rts
 
@@ -636,7 +721,7 @@ SetWindowPatternMask:
 ; [ set border area pattern mask ]
 
 SetBorderPatternMask:
-@0408:  ldx     #1
+@0408:  ldx     #%1
         stx     $f5
         rts
 
@@ -667,7 +752,7 @@ GetWindowBorder2:
 ; [ draw one row of window ]
 
 DrawWindowRow:
-@0428:  ldx     $00
+@0428:  ldx     z0
         lda     $e3
         sta     [$eb],y
         iny2
@@ -689,8 +774,7 @@ DrawWindowRow:
 @0449:  lda     $e5
         sta     [$eb],y
         rts
-
-.a8
+        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -732,7 +816,7 @@ DrawNum4:
 DrawNum5:
 @049a:  ldy     #5
         sty     $e0
-        ldy     $00
+        ldy     z0
         bra     DrawNumText
 
 ; ------------------------------------------------------------------------------
@@ -744,7 +828,7 @@ DrawNum5:
 DrawNum8:
 @04a3:  ldy     #8
         sty     $e0
-        ldy     $00
+        ldy     z0
         bra     DrawNumText
 
 ; ------------------------------------------------------------------------------
@@ -776,29 +860,29 @@ DrawNum2:
 DrawNum3:
 @04c0:  ldy     #3
         sty     $e0
-        ldy     $00
+        ldy     z0
 ; fall through
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw number text ]
 
-;      +x = source address (+$7e0000)
-;      +y = text buffer offset
-;     $29 = vhopppmm high byte of bg data
-;    +$e0 = text length
-; $f7-$ff = text buffer
+;      +X: destination address (+$7e0000)
+;      +Y: text buffer offset
+;     $29: vhopppmm high byte of bg data (zTextColor)
+;    +$e0: text length
+; $f7-$ff: text buffer
 
 DrawNumText:
 @04c7:  stx     $eb
         lda     #$7e
         sta     $ed
         tyx
-        ldy     $00
+        ldy     z0
 @04d0:  lda     $f7,x
         sta     [$eb],y
         iny
-        lda     $29
+        lda     zTextColor
         sta     [$eb],y
         iny
         inx
@@ -815,10 +899,10 @@ DrawNumText:
 
 HexToDec3:
 @04e0:  jsr     HexToDecZeroes3
-        ldy     $00
+        ldy     z0
         ldx     #2
 @04e8:  lda     $00f7,y
-        cmp     #$b4
+        cmp     #ZERO_CHAR
         bne     @04f8
         lda     #$ff
         sta     $00f7,y
@@ -838,7 +922,7 @@ HexToDecZeroes3:
 @04f9:  sta     $e0
         lda     #$03
         sta     $e4
-        ldy     $00
+        ldy     z0
         tyx
 @0502:  stz     $e1
         lda     f:HexToDec3Tbl,x
@@ -856,7 +940,7 @@ HexToDecZeroes3:
         sta     $f3
         lda     $e1
         clc
-        adc     #$b4
+        adc     #ZERO_CHAR
         sta     $00f7,y
         iny
         dec     $e4
@@ -879,7 +963,7 @@ HexToDec3Tbl:
 HexToDec5:
 @052e:  lda     #5
         sta     $e0
-        ldy     $00
+        ldy     z0
         tyx
 @0535:  longa
         lda     f:HexToDec5Tbl,x
@@ -899,15 +983,15 @@ HexToDec5:
         shorta
         lda     $eb
         clc
-        adc     #$b4
+        adc     #ZERO_CHAR
         sta     $00f7,y
         iny
         dec     $e0
         bne     @0535
-        ldy     $00
+        ldy     z0
         ldx     #$0004
 @0567:  lda     $00f7,y
-        cmp     #$b4
+        cmp     #ZERO_CHAR
         bne     @0577
         lda     #$ff
         sta     $00f7,y
@@ -933,7 +1017,7 @@ HexToDec8:
 @0582:  stz     $f4
         lda     #$08
         sta     $e0
-        ldy     $00
+        ldy     z0
         tyx
 @058b:  longa
         stz     $eb
@@ -957,16 +1041,16 @@ HexToDec8:
         shorta
         lda     $eb
         clc
-        adc     #$b4
+        adc     #ZERO_CHAR
         sta     $00f7,y
         iny
         inx2
         dec     $e0
         bne     @058b
-        ldy     $00
+        ldy     z0
         ldx     #$0007
 @05cd:  lda     $00f7,y
-        cmp     #$b4
+        cmp     #ZERO_CHAR
         bne     @05dd
         lda     #$ff
         sta     $00f7,y
@@ -1004,7 +1088,7 @@ LoadCursor:
 
 LoadCursorFar:
 @0602:  sty     $eb
-        ldy     $00
+        ldy     z0
         lda     [$eb],y
         sta     $59
         iny
@@ -1208,7 +1292,7 @@ SetCursorPos:
         adc     $e2
         asl
         xba
-        lda     $00
+        lda     z0
         xba
         tay
         lda     [$e7],y
@@ -1228,7 +1312,7 @@ SetCursorPos:
 MoveCursor:
 
 ; up
-@072d:  lda     $0b                     ; branch if up button is not pressed
+@072d:  lda     z0a+1                     ; branch if up button is not pressed
         bit     #$08
         beq     @0750
         lda     $4e
@@ -1246,7 +1330,7 @@ MoveCursor:
         jmp     @07af
 
 ; down
-@0750:  lda     $0b                     ; branch if down button is not pressed
+@0750:  lda     z0a+1                     ; branch if down button is not pressed
         bit     #$04
         beq     @0773
         lda     $54
@@ -1264,7 +1348,7 @@ MoveCursor:
         jmp     @07af
 
 ; left
-@0773:  lda     $0b                     ; branch if left button is not pressed
+@0773:  lda     z0a+1                     ; branch if left button is not pressed
         bit     #$02
         beq     @0792
         lda     $4d
@@ -1281,7 +1365,7 @@ MoveCursor:
         bra     @07af
 
 ; right
-@0792:  lda     $0b                     ; branch if right button is not pressed
+@0792:  lda     z0a+1                     ; branch if right button is not pressed
         bit     #$01
         beq     @07af
         lda     $53
@@ -1303,7 +1387,7 @@ MoveCursor:
 
 CreateCursorTask:
 @07b0:  lda     #1                      ; priority 1
-        ldy     #.loword(CursorTask)
+        ldy     #near CursorTask
         jmp     CreateTask
 
 ; ------------------------------------------------------------------------------
@@ -1312,7 +1396,7 @@ CreateCursorTask:
 
 CursorTask:
 @07b8:  tax
-        jmp     (.loword(CursorTaskTbl),x)
+        jmp     (near CursorTaskTbl,x)
 
 CursorTaskTbl:
 @07bc:  .addr   CursorTask_00
@@ -1322,35 +1406,35 @@ CursorTaskTbl:
 
 ; state $00: init
 CursorTask_00:
-@07c0:  ldx     $2d
+@07c0:  ldx     zTaskOffset
         longa
-        lda     #.loword(CursorAnimData)
-        sta     $32c9,x
+        lda     #near CursorAnimData
+        sta     near wTaskAnimPtr,x
         shorta
         lda     #^CursorAnimData
-        sta     $35ca,x
+        sta     near wTaskAnimBank,x
         jsr     InitAnimTask
-        inc     $3649,x                 ; increment task state
+        inc     near wTaskState,x                 ; increment task state
         lda     #$01
-        sta     $364a,x                 ; sprite doesn't scroll with bg
+        sta     near wTaskFlags,x                 ; sprite doesn't scroll with bg
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
 
 ; state $01: update
 CursorTask_01:
-@07dc:  lda     $46                     ; terminate if cursor 1 & 2 are inactive
+@07dc:  lda     z46                     ; terminate if cursor 1 & 2 are inactive
         and     #$06
         beq     @07fd
-        lda     $45                     ;
+        lda     z45                     ;
         bit     #$04
         beq     @07fb
-        ldx     $2d                     ; task data pointer
+        ldx     zTaskOffset
         longa
         lda     $55                     ; set cursor x position
-        sta     $33ca,x
+        sta     near wTaskPosX,x
         lda     $57                     ; set cursor y position
-        sta     $344a,x
+        sta     near wTaskPosY,x
         shorta
         jsr     UpdateAnimTask
 @07fb:  sec
@@ -1364,7 +1448,7 @@ CursorTask_01:
 
 FlashingCursorTask:
 @07ff:  tax
-        jmp     (.loword(FlashingCursorTaskTbl),x)
+        jmp     (near FlashingCursorTaskTbl,x)
 
 FlashingCursorTaskTbl:
 @0803:  .addr   FlashingCursorTask_00
@@ -1377,41 +1461,41 @@ FlashingCursorTaskTbl:
 ; state $00, $02: init
 FlashingCursorTask_00:
 FlashingCursorTask_02:
-@080b:  ldx     $2d                     ; task data pointer
+@080b:  ldx     zTaskOffset
         lda     #$01
-        tsb     $46                     ; flashing cursor task is active
+        tsb     z46                     ; flashing cursor task is active
         longa
-        lda     #.loword(FlashingCursorAnimData)
-        sta     $32c9,x
+        lda     #near FlashingCursorAnimData
+        sta     near wTaskAnimPtr,x
         shorta
         lda     #^FlashingCursorAnimData
-        sta     $35ca,x
+        sta     near wTaskAnimBank,x
         jsr     InitAnimTask
         lda     #$01
-        sta     $364a,x                 ; sprite doesn't scroll with bg
-        inc     $3649,x                 ; increment task state
+        sta     near wTaskFlags,x                 ; sprite doesn't scroll with bg
+        inc     near wTaskState,x                 ; increment task state
 ; fall through
 
 ; ------------------------------------------------------------------------------
 
 ; state $01: update (vertical scroll)
 FlashingCursorTask_01:
-@082b:  lda     $46                     ; terminate if flashing cursor not active
+@082b:  lda     z46                     ; terminate if flashing cursor not active
         bit     #$01
         beq     _0865
-        ldx     $2d                     ; task data pointer
+        ldx     zTaskOffset
         longa
-        lda     $41
-        eor     #$ffff                  ;
-        inc
+        lda     zTextScrollRate
+        neg_a
         clc
-        adc     $344a,x
-        sta     $344a,x                 ; set vertical offset
+        adc     near wTaskPosY,x
+        sta     near wTaskPosY,x                 ; set vertical offset
         shorta
-        lda     $46
+        lda     z46
         and     #$c0
         beq     @0860
-        lda     $28                     ; $e1 = current selection
+        lda     zSelIndex                     ; $e1 = current selection
+.if LANG_EN
         sta     $e1
         inc
         sta     $e0                     ; $e0 = current selection + 1
@@ -1421,6 +1505,19 @@ FlashingCursorTask_01:
         cmp     $e1
         bcc     @0863                   ; return if flashing cursor past bottom
         lda     $4a
+.else
+        and     #$fe
+        inc
+        sta     $e0
+        lda     $4a
+        asl
+        clc
+        adc     #19
+        cmp     $e0
+        bcc     @0863
+        lda     $4a
+        asl
+.endif
         cmp     $e0
         bcs     @0863                   ; return if flashing cursor past top
 @0860:  jsr     UpdateAnimTask
@@ -1433,19 +1530,18 @@ _0865:  clc
 
 ; state $03: update (horizontal scroll)
 FlashingCursorTask_03:
-@0867:  lda     $46                     ; terminate if flashing cursor not active
+@0867:  lda     z46                     ; terminate if flashing cursor not active
         bit     #$01
         beq     _0865
-        ldx     $2d                     ; task data pointer
+        ldx     zTaskOffset
         longa
         lda     $97
-        eor     #$ffff                  ;
-        inc
+        neg_a
         clc
-        adc     $33ca,x
-        sta     $33ca,x                 ; set horizontal offset
+        adc     near wTaskPosX,x
+        sta     near wTaskPosX,x                 ; set horizontal offset
         shorta
-        ldy     $33ca,x                 ; return if offscreen to the right
+        ldy     near wTaskPosX,x                 ; return if offscreen to the right
         cpy     #$0100
         bcs     @088b
         jsr     UpdateAnimTask
@@ -1493,7 +1589,7 @@ CreateMultiCursorTask:
         beq     @08c9                   ; branch if slot is empty
         phx
         lda     #1
-        ldy     #.loword(MultiCursorTask)
+        ldy     #near MultiCursorTask
         jsr     CreateTask
         txy
         plx
@@ -1501,12 +1597,12 @@ CreateMultiCursorTask:
         pha
         plb
         lda     $85,x                   ; set cursor position
-        sta     $33ca,y
+        sta     near wTaskPosX,y
         lda     $86,x
-        sta     $344a,y
+        sta     near wTaskPosY,y
         clr_a
-        sta     $33cb,y                 ; clear high byte of x and y position
-        sta     $344b,y
+        sta     near {wTaskPosX + 1},y                 ; clear high byte of x and y position
+        sta     near {wTaskPosY + 1},y
         lda     #$00
         pha
         plb
@@ -1521,7 +1617,7 @@ CreateMultiCursorTask:
 
 MultiCursorTask:
 @08d1:  tax
-        jmp     (.loword(MultiCursorTaskTbl),x)
+        jmp     (near MultiCursorTaskTbl,x)
 
 MultiCursorTaskTbl:
 @08d5:  .addr   MultiCursorTask_00
@@ -1531,28 +1627,28 @@ MultiCursorTaskTbl:
 
 ; state 0: init
 MultiCursorTask_00:
-@08d9:  ldx     $2d
+@08d9:  ldx     zTaskOffset
         lda     #$08                    ; activate multi-cursor
-        tsb     $46
+        tsb     z46
         longa
-        lda     #.loword(FlashingCursorAnimData)
-        sta     $32c9,x
+        lda     #near FlashingCursorAnimData
+        sta     near wTaskAnimPtr,x
         shorta
         lda     #^FlashingCursorAnimData
-        sta     $35ca,x
+        sta     near wTaskAnimBank,x
         jsr     InitAnimTask
-        inc     $3649,x                 ; increment task state
+        inc     near wTaskState,x                 ; increment task state
         lda     #$01
-        sta     $364a,x                 ; sprite doesn't scroll with bg
+        sta     near wTaskFlags,x                 ; sprite doesn't scroll with bg
 
 ; ------------------------------------------------------------------------------
 
 ; state 1: update
 MultiCursorTask_01:
-@08f9:  lda     $46                     ; terminate if multi-cursor is not active
+@08f9:  lda     z46                     ; terminate if multi-cursor is not active
         bit     #$08
         beq     @0906
-        ldx     $2d
+        ldx     zTaskOffset
         jsr     UpdateAnimTask
         sec
         rts
@@ -1565,16 +1661,16 @@ MultiCursorTask_01:
 
 UpdateScrollArrowFlags:
 @0908:  lda     #$c0
-        tsb     $46
+        tsb     z46
         lda     $4a                     ; branch if not at page 0
         bne     @0914
         lda     #$40                    ; page can't scroll up
-        trb     $46
+        trb     z46
 @0914:  lda     $4a                     ; branch if not at max page scroll position
         cmp     $5c
         bne     @091e
         lda     #$80                    ; page can't scroll down
-        trb     $46
+        trb     z46
 @091e:  rts
 
 ; ------------------------------------------------------------------------------
@@ -1583,11 +1679,11 @@ UpdateScrollArrowFlags:
 
 CreateScrollArrowTask1:
 @091f:  lda     #3                      ; priority 3
-        ldy     #.loword(ScrollArrowTask)
+        ldy     #near ScrollArrowTask
         jsr     CreateTask
         longa
-        lda     #$00e8                  ; x offset
-        sta     $7e33ca,x
+        lda     #$00e8                  ; should be #$e800 -> wTaskPosLongX
+        sta     wTaskPosX,x
         shorta
         rts
 
@@ -1597,11 +1693,15 @@ CreateScrollArrowTask1:
 
 CreateScrollArrowTask2:
 @0933:  lda     #3                      ; priority 3
-        ldy     #.loword(ScrollArrowTask)
+        ldy     #near ScrollArrowTask
         jsr     CreateTask
         longa
+.if LANG_EN
         lda     #$0078                  ; x offset
-        sta     $7e33ca,x
+.else
+        lda     #$0070                  ; x offset
+.endif
+        sta     wTaskPosX,x
         shorta
         rts
 
@@ -1611,7 +1711,7 @@ CreateScrollArrowTask2:
 
 ScrollArrowTask:
 @0947:  tax
-        jmp     (.loword(ScrollArrowTaskTbl),x)
+        jmp     (near ScrollArrowTaskTbl,x)
 
 ScrollArrowTaskTbl:
 @094b:  .addr   ScrollArrowTask_00
@@ -1621,27 +1721,27 @@ ScrollArrowTaskTbl:
 
 ; state $00: init
 ScrollArrowTask_00:
-@094f:  ldx     $2d
+@094f:  ldx     zTaskOffset
         longa
-        lda     #.loword(ScrollArrowAnimData_00)
-        sta     $32c9,x
+        lda     #near ScrollArrowAnimData_00
+        sta     near wTaskAnimPtr,x
         shorta
         lda     #^ScrollArrowAnimData_00
-        sta     $35ca,x
-        inc     $3649,x                 ; increment task state
+        sta     near wTaskAnimBank,x
+        inc     near wTaskState,x                 ; increment task state
         jsr     InitAnimTask
         lda     #$c0
-        tsb     $46                     ; enable scrolling up and down
+        tsb     z46                     ; enable scrolling up and down
 ; fall through
 
 ; ------------------------------------------------------------------------------
 
 ; state $01: update
 ScrollArrowTask_01:
-@096a:  lda     $46                     ; scroll page flags
+@096a:  lda     z46                     ; scroll page flags
         and     #$c0
         beq     @09d9                   ; terminate task if page can't scroll up or down
-        ldx     $2d                     ; task data pointer
+        ldx     zTaskOffset
         jsr     UpdateScrollArrowFlags
 @0975:  lda     f:hHVBJOY               ; wait for hblank
         and     #$40
@@ -1650,16 +1750,17 @@ ScrollArrowTask_01:
         sta     f:hM7A
         lda     $354b,x
         sta     f:hM7A
-        lda     $4a                     ; page scroll position
+        lda     z4a                     ; page scroll position
         sta     f:hM7B
         sta     f:hM7B
-        lda     $4a
+.if LANG_EN
+        lda     z4a
         bmi     @09aa
         clr_a
         lda     f:hMPYM
         longa_clc
-        adc     $34ca,x
-        sta     $344a,x                 ; set vertical offset
+        adc     near wTaskSpeedX,x
+        sta     near wTaskPosY,x        ; set vertical offset
         shorta
         bra     @09bd
 @09aa:  clr_a
@@ -1667,18 +1768,26 @@ ScrollArrowTask_01:
         longa_clc
         adc     #$0070
         clc
-        adc     $34ca,x
-        sta     $344a,x                 ; set vertical offset
+        adc     near wTaskSpeedX,x
+        sta     near wTaskPosY,x        ; set vertical offset
         shorta
 @09bd:  clr_a
-        lda     $46                     ; scroll page flags
+.else
+        clr_a
+        lda     f:hMPYM
+        longa_clc
+        adc     near wTaskSpeedX,x
+        sta     near wTaskPosY,x
+        shorta
+.endif
+        lda     z46                     ; scroll page flags
         and     #$c0
         lsr5
         txy
         tax
         longa
         lda     f:ScrollArrowAnimDataTbl,x
-        sta     $32c9,y
+        sta     near wTaskAnimPtr,y
         shorta
         jsr     UpdateAnimTask
         sec
@@ -1754,21 +1863,21 @@ ScrollArrowSpriteDataDown:
 
 CreatePortraitTask1:
 @0a22:  lda     #3
-        ldy     #.loword(PortraitTask)
+        ldy     #near PortraitTask
         jsr     CreateTask
         txa
-        sta     $60
+        sta     z60
         phb
         lda     #$7e
         pha
         plb
-        ldy     $00
+        ldy     z0
         jsr     InitPortraitRowPos
-        ldy     $00
+        ldy     z0
         jsr     GetPortraitAnimDataPtr
         longa
         lda     #$0015
-        sta     $344a,x
+        sta     near wTaskPosY,x
         shorta
         jsr     InitAnimTask
         plb
@@ -1780,10 +1889,10 @@ CreatePortraitTask1:
 
 CreatePortraitTask2:
 @0a4b:  lda     #3
-        ldy     #.loword(PortraitTask)
+        ldy     #near PortraitTask
         jsr     CreateTask
         txa
-        sta     $61
+        sta     z61
         phb
         lda     #$7e
         pha
@@ -1794,7 +1903,7 @@ CreatePortraitTask2:
         jsr     GetPortraitAnimDataPtr
         longa
         lda     #$0045
-        sta     $344a,x
+        sta     near wTaskPosY,x
         shorta
         jsr     InitAnimTask
         plb
@@ -1806,10 +1915,10 @@ CreatePortraitTask2:
 
 CreatePortraitTask3:
 @0a76:  lda     #3
-        ldy     #.loword(PortraitTask)
+        ldy     #near PortraitTask
         jsr     CreateTask
         txa
-        sta     $62
+        sta     z62
         phb
         lda     #$7e
         pha
@@ -1820,7 +1929,7 @@ CreatePortraitTask3:
         jsr     GetPortraitAnimDataPtr
         longa
         lda     #$0075
-        sta     $344a,x
+        sta     near wTaskPosY,x
         shorta
         jsr     InitAnimTask
         plb
@@ -1832,10 +1941,10 @@ CreatePortraitTask3:
 
 CreatePortraitTask4:
 @0aa1:  lda     #3
-        ldy     #.loword(PortraitTask)
+        ldy     #near PortraitTask
         jsr     CreateTask
         txa
-        sta     $63
+        sta     z63
         phb
         lda     #$7e
         pha
@@ -1846,7 +1955,7 @@ CreatePortraitTask4:
         jsr     GetPortraitAnimDataPtr
         longa
         lda     #$00a5
-        sta     $344a,x
+        sta     near wTaskPosY,x
         shorta
         jsr     InitAnimTask
         plb
@@ -1862,17 +1971,17 @@ GetPortraitAnimDataPtr:
 @0acc:  phx
         phx
         tyx
-        lda     $75,x
-        and     #$18
+        lda     zCharRowOrder,x
+        and     #%00011000
         lsr2
         tax
         longa
         lda     f:PortraitAnimDataTbl,x
         ply
-        sta     $32c9,y     ; set pointer to animation data
+        sta     near wTaskAnimPtr,y
         shorta
         lda     #^Portrait1AnimData
-        sta     $35ca,y
+        sta     near wTaskAnimBank,y
         plx
         rts
 
@@ -1895,18 +2004,18 @@ InitPortraitRowPos:
 @0af1:  phx
         tyx
         lda     #$02        ;
-        bit     $45
+        bit     z45
         bne     @0aff
         lda     $75,x       ; character row
         bit     #$20
         beq     @0b06       ; branch if front row
 @0aff:  longa
-        lda     #$001a      ; x offset = 26
+        lda     #26
         bra     @0b0b
 @0b06:  longa
-        lda     #$000e      ; x offset = 14
+        lda     #14
 @0b0b:  plx
-        sta     $33ca,x
+        sta     near wTaskPosX,x
         shorta
         rts
 
@@ -1916,30 +2025,26 @@ InitPortraitRowPos:
 
 PortraitTask:
 @0b12:  tax
-        jmp     (.loword(PortraitTaskTbl),x)
+        jmp     (near PortraitTaskTbl,x)
 
 PortraitTaskTbl:
-@0b16:  .addr   PortraitTask_00
-        .addr   PortraitTask_01
-        .addr   PortraitTask_02
-        .addr   PortraitTask_03
-        .addr   PortraitTask_04
+        make_jump_tbl PortraitTask, 5
 
 ; ------------------------------------------------------------------------------
 
-; state $00: init
-PortraitTask_00:
-@0b20:  ldx     $2d
-        inc     $3649,x
+; state 0: init
+make_jump_label PortraitTask, 0
+@0b20:  ldx     zTaskOffset
+        inc     near wTaskState,x
         lda     #1
-        sta     $364a,x
+        sta     near wTaskFlags,x
 ; fall through
 
 ; ------------------------------------------------------------------------------
 
-; state $01: update
-PortraitTask_01:
-@0b2a:  ldx     $2d
+; state 1: update
+make_jump_label PortraitTask, 1
+@0b2a:  ldx     zTaskOffset
         lda     $35c9,x
         bmi     @0b36
         jsr     UpdateAnimTask
@@ -1950,45 +2055,45 @@ PortraitTask_01:
 
 ; ------------------------------------------------------------------------------
 
-; state $02: slide to the right
-PortraitTask_02:
-@0b38:  ldx     $2d
+; state 2: slide to the right
+make_jump_label PortraitTask, 2
+@0b38:  ldx     zTaskOffset
         longa
         lda     #$0001
-        sta     $34ca,x
+        sta     near wTaskSpeedX,x
         lda     #12
-        sta     $3349,x
+        sta     near w7e3349,x
         shorta
         bra     PortraitTask_04
 
 ; ------------------------------------------------------------------------------
 
-; state $03: slide to the left
-PortraitTask_03:
-@0b4c:  ldx     $2d
+; state 3: slide to the left
+make_jump_label PortraitTask, 3
+@0b4c:  ldx     zTaskOffset
         longa
         lda     #$ffff
-        sta     $34ca,x
+        sta     near wTaskSpeedX,x
         lda     #12
-        sta     $3349,x
+        sta     near w7e3349,x
         shorta
 ; fall through
 
 ; ------------------------------------------------------------------------------
 
-; state $04: wait for slide
-PortraitTask_04:
-@0b5e:  ldx     $2d
+; state 4: wait for slide
+make_jump_label PortraitTask, 4
+@0b5e:  ldx     zTaskOffset
         lda     #4                      ; state on state 4
-        sta     $3649,x
+        sta     near wTaskState,x
         longa
-        lda     $3349,x                 ; branch if slide complete
+        lda     near w7e3349,x                 ; branch if slide complete
         beq     @0b80
-        lda     $34ca,x                 ; increase horizontal position
+        lda     near wTaskSpeedX,x                 ; increase horizontal position
         clc
-        adc     $33ca,x
-        sta     $33ca,x
-        dec     $3349,x                 ; decrement movement counter
+        adc     near wTaskPosX,x
+        sta     near wTaskPosX,x
+        dec     near w7e3349,x                 ; decrement movement counter
         shorta
         jsr     UpdateAnimTask
         sec
@@ -1997,7 +2102,7 @@ PortraitTask_04:
 ; slide complete
 @0b80:  shorta
         lda     #1                      ; back to state 1
-        sta     $3649,x
+        sta     near wTaskState,x
         jsr     UpdateAnimTask
         sec
         rts
@@ -2111,7 +2216,7 @@ DrawCharBlock:
 @0c6c:  stx     $ef         ; set pointer to bg data address
         lda     #^*
         sta     $f1
-        ldx     $67         ; pointer to character data
+        ldx     zSelCharPropPtr
         lda     a:$0008,x     ; character level
         jsr     HexToDec3
         longa
@@ -2119,7 +2224,7 @@ DrawCharBlock:
         tax
         shorta
         jsr     DrawNum2
-        ldx     $67
+        ldx     zSelCharPropPtr
         lda     a:$000b,x     ; max hp
         sta     $f3
         lda     a:$000c,x
@@ -2129,7 +2234,7 @@ DrawCharBlock:
         jsr     HexToDec5
         ldy     #$0004
         jsr     DrawHPMP
-        ldy     $67
+        ldy     zSelCharPropPtr
         jsr     CheckMaxHP
         lda     $0009,y     ; current hp
         sta     $f3
@@ -2140,7 +2245,7 @@ DrawCharBlock:
         jsr     DrawHPMP
         jsr     CheckMPVisible
         bcc     @0cef
-        ldx     $67
+        ldx     zSelCharPropPtr
         lda     a:$000f,x     ; max mp
         sta     $f3
         lda     a:$0010,x
@@ -2150,7 +2255,7 @@ DrawCharBlock:
         jsr     HexToDec5
         ldy     #$0008
         jsr     DrawHPMP
-        ldy     $67
+        ldy     zSelCharPropPtr
         jsr     CheckMaxMP
         lda     $000d,y     ; current mp
         sta     $f3
@@ -2187,7 +2292,7 @@ DrawCharBlock:
 
 DrawHPMP:
 @0d21:  longa
-        lda     [$ef],y
+        lda     [zef],y
         tax
         shorta
         jmp     DrawNum4
@@ -2204,10 +2309,10 @@ CheckMPVisible:
         ora     $1a6b
         ora     $1a6c
         bne     @0d63
-        ldx     $67
+        ldx     zSelCharPropPtr
         clr_a
-        lda     a:$0000,x     ; set carry and return if the character is gogo
-        cmp     #$0c
+        lda     a:0,x     ; set carry and return if the character is gogo
+        cmp     #CHAR_PROP::GOGO
         beq     @0d63
         bcs     @0d61       ; clear carry and return if the character is higher than gogo
         sta     hWRMPYA
@@ -2246,7 +2351,7 @@ CalcMaxHPMP:
         rol4
         tax
         lda     $e7
-        jmp     (.loword(MaxHPMPTbl),x)
+        jmp     (near MaxHPMPTbl,x)
 
 ; ------------------------------------------------------------------------------
 
@@ -2309,11 +2414,11 @@ ValidateMaxMP:
 ; [ restore saved cursor position (item list) ]
 
 RestoreItemCursorPos:
-@0dac:  ldy     $022f
+@0dac:  ldy     w022f
         sty     $4f
         lda     $4f
         sta     $4d
-        lda     $0231
+        lda     w0231
         bra     _0e1e
 
 ; ------------------------------------------------------------------------------
@@ -2325,7 +2430,7 @@ SwapSavedCharCursorPos:
         lda     $4b
         asl
         tax
-        lda     $28
+        lda     zSelIndex
         asl
         tay
         longa
@@ -2345,7 +2450,7 @@ SwapSavedCharCursorPos:
         clr_a
         lda     $4b
         tax
-        lda     $28
+        lda     zSelIndex
         tay
         lda     $0246,x
         sta     $e0
@@ -2361,7 +2466,7 @@ SwapSavedCharCursorPos:
 
 RestoreSkillsCursorPos:
 @0dff:  clr_a
-        lda     $28         ; selected character slot
+        lda     zSelIndex         ; selected character slot
         asl
         tax
         ldy     $0236,x     ; saved skills cursor position
@@ -2374,14 +2479,14 @@ RestoreSkillsCursorPos:
 
 RestoreMagicCursorPos:
 @0e0a:  clr_a
-        lda     $28
+        lda     zSelIndex
         asl
         tax
         ldy     $023e,x     ; saved magic cursor position
         sty     $4f
         lda     $4f
         sta     $4d
-        lda     $28
+        lda     zSelIndex
         tax
         lda     $0246,x     ; saved magic page scroll position
 _0e1e:  sta     $4a
@@ -2398,8 +2503,8 @@ _0e1e:  sta     $4a
 TfrBG1ScreenAB:
 @0e28:  ldy     #$0000
         sty     hVMADDL
-        ldy     #$3849
-        sty     $4302
+        ldy     #near wBG1Tiles::ScreenA
+        sty     hDMA0::ADDR
         bra     TfrBGTiles
 
 ; ------------------------------------------------------------------------------
@@ -2409,8 +2514,8 @@ TfrBG1ScreenAB:
 TfrBG1ScreenBC:
 @0e36:  ldy     #$0400
         sty     hVMADDL
-        ldy     #$4049
-        sty     $4302
+        ldy     #near wBG1Tiles::ScreenB
+        sty     hDMA0::ADDR
         bra     TfrBGTiles
 
 ; ------------------------------------------------------------------------------
@@ -2420,8 +2525,8 @@ TfrBG1ScreenBC:
 TfrBG1ScreenCD:
 @0e44:  ldy     #$0800
         sty     hVMADDL
-        ldy     #$4849
-        sty     $4302
+        ldy     #near wBG1Tiles::ScreenC
+        sty     hDMA0::ADDR
         bra     TfrBGTiles
 
 ; ------------------------------------------------------------------------------
@@ -2431,8 +2536,8 @@ TfrBG1ScreenCD:
 TfrBG2ScreenAB:
 @0e52:  ldy     #$1000
         sty     hVMADDL
-        ldy     #$5849
-        sty     $4302
+        ldy     #near wBG2Tiles::ScreenA
+        sty     hDMA0::ADDR
         bra     TfrBGTiles
 
 ; ------------------------------------------------------------------------------
@@ -2442,8 +2547,8 @@ TfrBG2ScreenAB:
 TfrBG2ScreenCD:
 @0e60:  ldy     #$1800
         sty     hVMADDL
-        ldy     #$6849
-        sty     $4302
+        ldy     #near wBG2Tiles::ScreenC
+        sty     hDMA0::ADDR
         bra     TfrBGTiles
 
 ; ------------------------------------------------------------------------------
@@ -2453,8 +2558,8 @@ TfrBG2ScreenCD:
 TfrBG3ScreenAB:
 @0e6e:  ldy     #$4000
         sty     hVMADDL
-        ldy     #$7849
-        sty     $4302
+        ldy     #near wBG3Tiles::ScreenA
+        sty     hDMA0::ADDR
         bra     TfrBGTiles
 
 ; ------------------------------------------------------------------------------
@@ -2464,21 +2569,21 @@ TfrBG3ScreenAB:
 TfrBG3ScreenCD:
 @0e7c:  ldy     #$4800
         sty     hVMADDL
-        ldy     #$8849
-        sty     $4302
+        ldy     #near wBG3Tiles::ScreenC
+        sty     hDMA0::ADDR
 ; fall through
 
-; copy bg data to vram
+; copy bg data to vram, must already be in vblank
 TfrBGTiles:
 @0e88:  lda     #$01        ; two address - low, high
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldy     #$1000      ; dma size (two screens)
-        sty     $4305
-        lda     #$01
+        sty     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -2564,15 +2669,17 @@ PlayCureSfx:
 
 ; [ init dma 1 (bg1 data, screens A & B) ]
 
+; NOTE: Unlike TfrBGTiles, these routines do not need to be called during vblank
+
 InitDMA1BG1ScreenAB:
 @0ee9:  ldy     #$0000
-        sty     $14
-        ldy     #$3849
-        sty     $16
-        lda     #$7e
-        sta     $18
+        sty     zDMA1Dest
+        ldy     #near wBG1Tiles::ScreenA
+        sty     zDMA1Src
+        lda     #^wBG1Tiles::ScreenA
+        sta     zDMA1Src+2
         ldy     #$1000
-        sty     $12
+        sty     zDMA1Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2581,13 +2688,13 @@ InitDMA1BG1ScreenAB:
 
 InitDMA1BG1ScreenA:
 @0efd:  ldy     #$0000
-        sty     $14
-        ldy     #$3849
-        sty     $16
-        lda     #$7e
-        sta     $18
+        sty     zDMA1Dest
+        ldy     #near wBG1Tiles::ScreenA
+        sty     zDMA1Src
+        lda     #^wBG1Tiles::ScreenA
+        sta     zDMA1Src+2
         ldy     #$0800
-        sty     $12
+        sty     zDMA1Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2596,13 +2703,13 @@ InitDMA1BG1ScreenA:
 
 InitDMA1BG1ScreenB:
 @0f11:  ldy     #$0400
-        sty     $14
-        ldy     #$4049
-        sty     $16
-        lda     #$7e
-        sta     $18
+        sty     zDMA1Dest
+        ldy     #near wBG1Tiles::ScreenB
+        sty     zDMA1Src
+        lda     #^wBG1Tiles::ScreenB
+        sta     zDMA1Src+2
         ldy     #$0800
-        sty     $12
+        sty     zDMA1Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2611,13 +2718,13 @@ InitDMA1BG1ScreenB:
 
 InitDMA1BG3ScreenAB:
 @0f25:  ldy     #$4000
-        sty     $14
-        ldy     #$7849
-        sty     $16
-        lda     #$7e
-        sta     $18
+        sty     zDMA1Dest
+        ldy     #near wBG3Tiles::ScreenA
+        sty     zDMA1Src
+        lda     #^wBG3Tiles::ScreenA
+        sta     zDMA1Src+2
         ldy     #$1000
-        sty     $12
+        sty     zDMA1Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2626,13 +2733,13 @@ InitDMA1BG3ScreenAB:
 
 InitDMA1BG3ScreenA:
 @0f39:  ldy     #$4000
-        sty     $14
-        ldy     #$7849
-        sty     $16
-        lda     #$7e
-        sta     $18
+        sty     zDMA1Dest
+        ldy     #near wBG3Tiles::ScreenA
+        sty     zDMA1Src
+        lda     #^wBG3Tiles::ScreenA
+        sta     zDMA1Src+2
         ldy     #$0800
-        sty     $12
+        sty     zDMA1Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2641,13 +2748,13 @@ InitDMA1BG3ScreenA:
 
 InitDMA1BG3ScreenB:
 @0f4d:  ldy     #$4400
-        sty     $14
-        ldy     #$8049
-        sty     $16
-        lda     #$7e
-        sta     $18
+        sty     zDMA1Dest
+        ldy     #near wBG3Tiles::ScreenB
+        sty     zDMA1Src
+        lda     #^wBG3Tiles::ScreenB
+        sta     zDMA1Src+2
         ldy     #$0800
-        sty     $12
+        sty     zDMA1Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2656,13 +2763,13 @@ InitDMA1BG3ScreenB:
 
 InitDMA2BG3ScreenA:
 @0f61:  ldy     #$4000
-        sty     $1b
-        ldy     #$7849
-        sty     $1d
-        lda     #$7e
-        sta     $1f
+        sty     zDMA2Dest
+        ldy     #near wBG3Tiles::ScreenA
+        sty     zDMA2Src
+        lda     #^wBG3Tiles::ScreenA
+        sta     zDMA2Src+2
         ldy     #$0800
-        sty     $19
+        sty     zDMA2Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2671,13 +2778,13 @@ InitDMA2BG3ScreenA:
 
 InitDMA2BG3ScreenB:
 @0f75:  ldy     #$4400
-        sty     $1b
-        ldy     #$8049
-        sty     $1d
-        lda     #$7e
-        sta     $1f
+        sty     zDMA2Dest
+        ldy     #near wBG3Tiles::ScreenB
+        sty     zDMA2Src
+        lda     #^wBG3Tiles::ScreenB
+        sta     zDMA2Src+2
         ldy     #$0800
-        sty     $19
+        sty     zDMA2Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2685,8 +2792,8 @@ InitDMA2BG3ScreenB:
 ; [ disable dma 2 ]
 
 DisableDMA2:
-@0f89:  stz     $1b
-        stz     $1c
+@0f89:  stz     zDMA2Dest
+        stz     zDMA2Dest+1
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2703,7 +2810,7 @@ LoadPal:
         stx     $eb
         lda     #$7e
         sta     $e9
-        ldy     $00
+        ldy     z0
         longa
 @0f9c:  lda     [$eb],y
         sta     [$e7],y
@@ -2729,19 +2836,19 @@ CreateFadePalTask:
         lda     #$7e
         sta     $e9
         lda     #0
-        ldy     #.loword(FadePalTask)
+        ldy     #near FadePalTask
         jsr     CreateTask
         pla
         sta     $7e37ca,x
         lda     $e9
-        sta     $7e36c9,x
+        sta     w7e36c9,x
         lda     $ed
-        sta     $7e36ca,x
+        sta     wAnimCounter,x
         longa
         lda     $e7
-        sta     $7e33c9,x
+        sta     wTaskPosLongX,x
         lda     $eb
-        sta     $7e3449,x
+        sta     wTaskPosLongY,x
         shorta
         rts
 
@@ -2750,8 +2857,8 @@ CreateFadePalTask:
 ; [ fade in/out palette task ]
 
 ; +$3349 = color counter
-; +$33c9 = destination address (+$7e0000)
-; +$3449 = source address
+; +$33c9 = destination address (+$7e0000) wTaskPosLongX
+; +$3449 = source address wTaskPosLongY
 ;  $35c9 = frame counter
 ;  $36c9 = destination bank (always $7e)
 ;  $36ca = source bank
@@ -2759,7 +2866,7 @@ CreateFadePalTask:
 
 FadePalTask:
 @0fdd:  tax
-        jmp     (.loword(FadePalTaskTbl),x)
+        jmp     (near FadePalTaskTbl,x)
 
 FadePalTaskTbl:
 @0fe1:  .addr   FadePalTask_00
@@ -2769,12 +2876,12 @@ FadePalTaskTbl:
 
 ; state 0: init
 FadePalTask_00:
-@0fe5:  ldx     $2d
+@0fe5:  ldx     zTaskOffset
         lda     #$1f
-        sta     $3349,x                 ; set color counter to 31
-        lda     $00
+        sta     near w7e3349,x                 ; set color counter to 31
+        lda     z0
         sta     $334a,x
-        inc     $3649,x                 ; increment task state
+        inc     near wTaskState,x                 ; increment task state
         sec
         rts
 
@@ -2782,7 +2889,7 @@ FadePalTask_00:
 
 ; state 1: update
 FadePalTask_01:
-@0ff6:  ldx     $2d
+@0ff6:  ldx     zTaskOffset
         lda     $35c9,x                 ; branch if waiting for frame counter
         bne     @1032
         lda     $37ca,x                 ; set frame counter
@@ -2792,18 +2899,18 @@ FadePalTask_01:
         lda     $36ca,x                 ; +$e3 = source address
         sta     $e5
         longa
-        lda     $33c9,x
+        lda     near wTaskPosLongX,x
         sta     $e0
-        lda     $3449,x
+        lda     near wTaskPosLongY,x
         sta     $e3
-        lda     $3349,x                 ; $f1 = color counter value
+        lda     near w7e3349,x                 ; $f1 = color counter value
         sta     $f1
         jsr     UpdateFadePal
         shorta
         ldx     a:$002d                 ; task data pointer
-        lda     $3349,x                 ; decrement color counter
+        lda     near w7e3349,x                 ; decrement color counter
         beq     @1030
-        dec     $3349,x
+        dec     near w7e3349,x
         bne     @1032                   ; terminate task when color counter reaches zero
 @1030:  clc
         rts
@@ -2819,7 +2926,7 @@ FadePalTask_01:
 
 UpdateFadePal:
 @1037:  ldx     #16                     ; 16 colors
-        ldy     $00
+        ldy     z0
 @103c:  lda     [$e0],y                 ; $e7 = current color value (destination)
         sta     $e7
         lda     [$e3],y                 ; $e9 = target color value (source)
@@ -2922,9 +3029,9 @@ BlackPal:
 ; [ reset tasks ]
 
 ResetTasks:
-@1114:  ldx     $00
-        stx     $2d                     ; clear task pointer and number of active tasks
-        stx     $2f
+@1114:  ldx     z0
+        stx     zTaskOffset
+        stx     zNumTasks
         longa
         jsr     ResetSprites
         shorti
@@ -2932,14 +3039,14 @@ ResetTasks:
         phx
         plb
         ldx     #0
-@1127:  stz     $3249,x                 ; clear task data
-        stz     $3649,x
+@1127:  stz     near wTaskCodePtr,x                 ; clear task data
+        stz     near wTaskState,x
         stz     $35c9,x
-        stz     $3749,x
-        stz     $33c9,x
-        stz     $3449,x
-        stz     $34c9,x
-        stz     $3549,x
+        stz     near wTaskPal,x
+        stz     near wTaskPosLongX,x
+        stz     near wTaskPosLongY,x
+        stz     near wTaskSpeedLongX,x
+        stz     near wTaskSpeedLongY,x
         inx2
         cpx     #$80
         bne     @1127
@@ -2957,18 +3064,18 @@ ResetTasks:
 .a16
 
 ResetSprites:
-@114e:  ldx     $00
+@114e:  ldx     z0
 @1150:  lda     #$e001
-        sta     $0300,x                 ; move all sprites offscreen
+        sta     wSprites,x                 ; move all sprites offscreen
         inx2
         lda     #$0001
-        sta     $0300,x
+        sta     wSprites,x
         inx2
         cpx     #$0200
         bne     @1150
-        ldy     $00                     ; clear high sprite data
+        ldy     z0                      ; clear high sprite data
         tya
-@1168:  sta     $0500,y
+@1168:  sta     wSpritesHi,y
         iny2
         cpy     #$0020
         bne     @1168
@@ -2994,9 +3101,9 @@ CreateTask:
         lda     #$00
         pha
         plb
-        lda     $2d
+        lda     zTaskOffset
         sta     $7e374a,x               ; set task data pointer
-        inc     $2f                     ; increment the number of active tasks
+        inc     zNumTasks
         rts
 
 ; ------------------------------------------------------------------------------
@@ -3012,17 +3119,17 @@ InitTask:
         asl4
         longa
         tax
-@1196:  lda     $3249,x                 ; find the first available task in this priority level
+@1196:  lda     near wTaskCodePtr,x                 ; find the first available task in this priority level
         bne     @11a0
         tya
-        sta     $3249,x                 ; set task code pointer
+        sta     near wTaskCodePtr,x                 ; set task code pointer
         rts
 @11a0:  inx2
         cpx     #$0080
         bne     @1196
         dex2                            ; no empty task found, use the second to last one
         tya
-        sta     $3249,x                 ; set task data pointer
+        sta     near wTaskCodePtr,x                 ; set task data pointer
 @11ad:  bra     @11ad                   ; infinite loop
         rts
 
@@ -3037,35 +3144,35 @@ ExecTasks:
         lda     #$7e
         pha
         plb
-        ldx     #$0300                  ; set starting pointers to sprite data
-        stx     $0e
-        ldx     #$0500
-        stx     $10
-        lda     #$03                    ;
+        ldx     #wSprites                  ; set starting pointers to sprite data
+        stx     zSpritePtr
+        ldx     #wSpritesHi
+        stx     zSpriteHiPtr
+        lda     #$03                    ; initial mask for hi-sprite data
         sta     $33
         stz     $34
-        ldx     #$0080                  ; start with $80 unused sprites
-        stx     $31
-        ldx     $00
+        ldx     #$0080                  ; start with 128 unused sprites
+        stx     z31
+        ldx     z0
         longa
-@11ce:  lda     $3249,x                 ; task code pointer
+@11ce:  lda     near wTaskCodePtr,x                 ; task code pointer
         beq     @11f5                   ; branch if task is not active
-        stx     $2d                     ; +$2d = task data pointer
+        stx     zTaskOffset
         phx
-        sta     $2b                     ; +$2b = task code pointer
+        sta     zTaskCodePtr
         shorta
         clr_a
-        lda     $3649,x                 ; task state
+        lda     near wTaskState,x                 ; task state
         asl
         jsr     @1203                   ; execute task
         longa
         plx
         bcs     @11f5                   ; branch if task didn't terminate
-        stz     $3249,x                 ; clear task data
-        stz     $3649,x
+        stz     near wTaskCodePtr,x                 ; clear task data
+        stz     near wTaskState,x
         stz     $35c9,x
-        stz     $3749,x
-        dec     $2f                     ; decrement number of active tasks
+        stz     near wTaskPal,x
+        dec     zNumTasks
 @11f5:  inx2                            ; next task
         cpx     #$0080
         bne     @11ce
@@ -3075,7 +3182,7 @@ ExecTasks:
         rts
 
 ; execute task (carry clear: terminate, carry set: don't terminate)
-@1203:  jmp     ($002b)
+@1203:  jmp     (zTaskCodePtr)
 
 ; ------------------------------------------------------------------------------
 
@@ -3083,16 +3190,16 @@ ExecTasks:
 
 InitAnimTask:
 @1206:  clr_a
-        sta     $36c9,x
+        sta     near w7e36c9,x
         longa
-        lda     $32c9,x
+        lda     near wTaskAnimPtr,x
         sta     $eb
         shorta
-        lda     $35ca,x
+        lda     near wTaskAnimBank,x
         sta     $ed
-        ldy     #$0002
+        ldy     #2
         lda     [$eb],y
-        sta     $36ca,x
+        sta     near wAnimCounter,x
         rts
 
 ; ------------------------------------------------------------------------------
@@ -3108,31 +3215,31 @@ UpdateAnimTask:
 ; [ update animation data ]
 
 UpdateAnimData:
-@1227:  ldx     $2d                     ; task data pointer
-        ldy     $00
+@1227:  ldx     zTaskOffset
+        ldy     z0
         longa
-        lda     $32c9,x                 ; ++$eb = animation data pointer
+        lda     near wTaskAnimPtr,x     ; ++$eb = animation data pointer
         sta     $eb
         shorta
-        lda     $35ca,x
+        lda     near wTaskAnimBank,x
         sta     $ed
-@1239:  lda     $36ca,x                 ; next animation data byte
+@1239:  lda     near wAnimCounter,x     ; next animation data byte
         cmp     #$fe
         beq     @1262                   ; return if $fe (stop animation)
         cmp     #$ff
         bne     @124c                   ; branch if not $ff (repeat)
-        stz     $36c9,x                 ; reset animation data offset
+        stz     near w7e36c9,x          ; reset animation data offset
         jsr     SetAnimDur
         bra     @1239
-@124c:  lda     $36ca,x                 ; frame counter
+@124c:  lda     near wAnimCounter,x     ; frame counter
         bne     @125f                   ; decrement and return if not zero
-        lda     $36c9,x                 ; increment animation data offset
+        lda     near w7e36c9,x          ; increment animation data offset
         clc
         adc     #3
-        sta     $36c9,x
+        sta     near w7e36c9,x
         jsr     SetAnimDur
         bra     @1239
-@125f:  dec     $36ca,x                 ; decrement frame counter
+@125f:  dec     near wAnimCounter,x     ; decrement frame counter
 @1262:  rts
 
 ; ------------------------------------------------------------------------------
@@ -3141,11 +3248,11 @@ UpdateAnimData:
 
 SetAnimDur:
 @1263:  shorti
-        lda     $36c9,x                 ; animation data offset + 2
+        lda     near w7e36c9,x          ; animation data offset + 2
         tay
         iny2
         lda     [$eb],y
-        sta     $36ca,x                 ; set frame counter
+        sta     near wAnimCounter,x     ; set frame counter
         longi
         rts
 
@@ -3155,18 +3262,18 @@ SetAnimDur:
 
 UpdateAnimSprites:
 @1273:  shorti
-        lda     $36c9,x                 ; animation data offset
+        lda     near w7e36c9,x          ; animation data offset
         tay
         longa
         lda     [$eb],y                 ; ++$e7 = pointer to sprite data
         sta     $e7
         iny2
         shorta
-        lda     $35ca,x
+        lda     near wTaskAnimBank,x
         sta     $e9
         longi
-        ldy     $00
-        lda     $31                     ; return if there are no unused sprites remaining
+        ldy     z0
+        lda     z31                     ; return if there are no unused sprites remaining
         beq     @12fb
         lda     [$e7],y
         sta     $e6                     ; $e6 = number of sprites
@@ -3176,49 +3283,49 @@ UpdateAnimSprites:
         sta     $e0
         bpl     @12b0                   ; branch if not a 32x32 sprite
         clr_a
-        lda     $33
+        lda     z33
         tax
         lda     f:LargeSpriteTbl,x      ; high sprite mask
         clc
-        adc     $34
-        sta     $34
-        sta     ($10)                   ; set sprite high data
-        ldx     $2d
+        adc     z34
+        sta     z34
+        sta     (zSpriteHiPtr)                   ; set sprite high data
+        ldx     zTaskOffset
         bra     @12b4
-@12b0:  lda     $34
-        sta     ($10)                   ; set sprite high data
+@12b0:  lda     z34
+        sta     (zSpriteHiPtr)                   ; set sprite high data
 @12b4:  lda     $e0
         and     #$7f
         sta     $e0
-        lda     $364a,x
+        lda     near wTaskFlags,x
         bit     #$01
         beq     @12ce
         stz     $e1
         longa
         lda     $e0
         sec
-        sbc     $35                     ; subtract bg1 horizontal scroll
+        sbc     zBG1HScroll
         sta     $e0
         shorta
 @12ce:  jsr     DrawAnimSprite
-        dec     $33                     ; decrement pointer to high sprite data masks
+        dec     z33                     ; decrement pointer to high sprite data masks
         bpl     @12df                   ; branch if positive
-        lda     #$03                    ; reset to 3
-        sta     $33
-        stz     $34                     ; clear current high sprite data byte
+        lda     #%11                    ; reset to 3
+        sta     z33
+        stz     z34                     ; clear current high sprite data byte
         longa
-        inc     $10                     ; increment pointer to high sprite data
+        inc     zSpriteHiPtr                     ; increment pointer to high sprite data
 @12df:  longa
         lda     $e0
-        sta     ($0e)                   ; set sprite data (position)
-        inc     $0e
-        inc     $0e
+        sta     (zSpritePtr)                   ; set sprite data (position)
+        inc     zSpritePtr
+        inc     zSpritePtr
         lda     $e2
-        sta     ($0e)                   ; set sprite data (other bytes)
-        inc     $0e
-        inc     $0e
+        sta     (zSpritePtr)                   ; set sprite data (other bytes)
+        inc     zSpritePtr
+        inc     zSpritePtr
         shorta
-        dec     $31                     ; decrement number of unused sprites
+        dec     z31                     ; decrement number of unused sprites
         beq     @12fb
         dec     $e6                     ; next sprite
         bne     @1297
@@ -3231,18 +3338,18 @@ UpdateAnimSprites:
 DrawAnimSprite:
 @12fc:  lda     $e0                     ; $e0 = x position
         clc
-        adc     $33ca,x                 ; add horizontal offset
+        adc     near wTaskPosX,x                 ; add horizontal offset
         sta     $e0
         iny
         lda     [$e7],y                 ; $e1 = y position
         clc
-        adc     $344a,x                 ; add vertical offset
+        adc     near wTaskPosY,x                 ; add vertical offset
         sta     $e1
         iny
         lda     [$e7],y                 ; $e2 = graphics offset
         sta     $e2
         iny
-        lda     $364a,x                 ; branch if not flipped horizontal
+        lda     near wTaskFlags,x                 ; branch if not flipped horizontal
         bit     #$02
         beq     @1320
         lda     [$e7],y
@@ -3250,11 +3357,11 @@ DrawAnimSprite:
         bra     @1322
 @1320:  lda     [$e7],y
 @1322:  sta     $e3                     ; $e3 = vhoopppm
-        lda     $3749,x                 ; special palette
+        lda     near wTaskPal,x                 ; special palette
         beq     @1332
         lda     $e3
-        and     #$f1
-        ora     $3749,x
+        and     #%11110001
+        ora     near wTaskPal,x
         sta     $e3
 @1332:  iny
         rts
@@ -3269,20 +3376,18 @@ LargeSpriteTbl:
 
 ; [ hide unused sprites ]
 
-.a16
-
 HideUnusedSprites:
-@1338:  ldy     $31
+@1338:  .a16
+        ldy     z31
         beq     @134c
         ldx     #$01fc
         lda     #$e001
-@1342:  sta     $0300,x
+@1342:  sta     wSprites,x
         dex4
         dey
         bne     @1342
 @134c:  rts
-
-.a8
+        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -3290,16 +3395,16 @@ HideUnusedSprites:
 
 WaitFrame:
 @134d:  jsr     WaitVblank
-        lda     $46                     ; branch if not scrolling text
+        lda     z46                     ; branch if not scrolling text
         bit     #$20
         beq     @1359
         jsr     UpdateTextScroll
 @1359:  jsl     UpdateCtrlMenu
-        lda     $20
+        lda     zWaitCounter
         beq     @1367                   ; return if not waiting for menu state counter
         clr_ay
-        sty     $08                     ; clear controller buttons
-        sty     $0a
+        sty     z08                     ; clear controller buttons
+        sty     z0a
 @1367:  rts
 
 ; ------------------------------------------------------------------------------
@@ -3309,16 +3414,16 @@ WaitFrame:
 WaitVblank:
 @1368:  lda     #$81                    ; enable interrupts
         sta     hNMITIMEN
-        sta     $24
+        sta     zInterruptEnable
         cli
-@1370:  lda     $24                     ; wait for nmi
+@1370:  lda     zInterruptEnable
         bne     @1370
         sei                             ; disable interrupts
-        lda     $44                     ; set screen display register
+        lda     zScreenBrightness
         sta     hINIDISP
-        lda     $43                     ; enable hdma
+        lda     zEnableHDMA
         sta     hHDMAEN
-        lda     $b5                     ; set mosaic register
+        lda     zMosaic
         sta     hMOSAIC
         stz     $ae                     ; clear current sound effect
         rts
@@ -3343,21 +3448,21 @@ MenuNMI:
         ldx     #$0000
         phx
         pld
-        lda     $24                     ; branch if interrupt is disabled
+        lda     zInterruptEnable
         beq     @13b1
         jsr     UpdatePPU
         longa
         inc     $cf                     ; increment frame counter
         shorta
-        ldy     $20                     ; decrement menu state frame counter
+        ldy     zWaitCounter                     ; decrement menu state frame counter
         beq     @13b1
         dey
-        sty     $20
+        sty     zWaitCounter
 @13b1:  jsl     DecTimersMenuBattle_ext
         jsl     IncGameTime
-        inc     $23                     ; increment frame counter
+        inc     zFrameCounter
         clr_a
-        sta     $24                     ; disable interrupt
+        sta     zInterruptEnable
         longai
         pld
         plb
@@ -3381,35 +3486,35 @@ MenuIRQ:
 ; [ increment game time ]
 
 IncGameTime:
-@13c8:  lda     $021e
+@13c8:  lda     wGameTimeFrames
         cmp     #60
         beq     @13d1
         bra     @13fc
-@13d1:  stz     $021e
-        lda     $021d
+@13d1:  stz     wGameTimeFrames
+        lda     wGameTimeSeconds
         cmp     #59
         beq     @13e0
-        inc     $021d
+        inc     wGameTimeSeconds
         bra     @13fc
-@13e0:  stz     $021d
-        lda     $021c
+@13e0:  stz     wGameTimeSeconds
+        lda     wGameTimeMinutes
         cmp     #59
         beq     @13ef
-        inc     $021c
+        inc     wGameTimeMinutes
         bra     @13fc
-@13ef:  stz     $021c
-        lda     $021b
+@13ef:  stz     wGameTimeMinutes
+        lda     wGameTimeHours
         cmp     #99
         beq     @13fc
-        inc     $021b
-@13fc:  lda     $021b
+        inc     wGameTimeHours
+@13fc:  lda     wGameTimeHours
         cmp     #99
         bne     @140d
-        lda     $021c
+        lda     wGameTimeMinutes
         cmp     #59
         bne     @140d
-        stz     $021d
-@140d:  inc     $021e
+        stz     wGameTimeSeconds
+@140d:  inc     wGameTimeFrames
         clr_a
         rtl
 
@@ -3418,31 +3523,35 @@ IncGameTime:
 ; [ update ppu registers and transfer data to vram ]
 
 UpdatePPU:
+
+; disable DMA
 @1412:  stz     hHDMAEN
         stz     hMDMAEN
-        lda     $35         ; set bg scrolling registers
+
+; set bg scrolling registers
+        lda     zBG1HScroll
         sta     hBG1HOFS
-        lda     $36
+        lda     zBG1HScroll+1
         sta     hBG1HOFS
-        lda     $37
+        lda     zBG1VScroll
         sta     hBG1VOFS
-        lda     $38
+        lda     zBG1VScroll+1
         sta     hBG1VOFS
-        lda     $39
+        lda     zBG2HScroll
         sta     hBG2HOFS
-        lda     $3a
+        lda     zBG2HScroll+1
         sta     hBG2HOFS
-        lda     $3b
+        lda     zBG2VScroll
         sta     hBG2VOFS
-        lda     $3c
+        lda     zBG2VScroll+1
         sta     hBG2VOFS
-        lda     $3d
+        lda     zBG3HScroll
         sta     hBG3HOFS
-        lda     $3e
+        lda     zBG3HScroll+1
         sta     hBG3HOFS
-        lda     $3f
+        lda     zBG3VScroll
         sta     hBG3VOFS
-        lda     $40
+        lda     zBG3VScroll+1
         sta     hBG3VOFS
         jsr     UpdateMode7Regs
         jsr     TfrSprites
@@ -3455,19 +3564,19 @@ UpdatePPU:
 ; [ copy sprite data to ppu ]
 
 TfrSprites:
-@1463:  ldx     $00         ; clear oam address
+@1463:  ldx     z0          ; clear oam address
         stx     hOAMADDL
         txa
-        sta     $4304       ; copy sprite data
+        sta     hDMA0::ADDR_B
         lda     #$02
-        sta     $4300
-        lda     #$04
-        sta     $4301
-        ldy     #$0300
-        sty     $4302
+        sta     hDMA0::CTRL
+        lda     #<hOAMDATA
+        sta     hDMA0::HREG
+        ldy     #wSprites
+        sty     hDMA0::ADDR
         ldy     #$0220
-        sty     $4305
-        lda     #$01
+        sty     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -3476,19 +3585,19 @@ TfrSprites:
 ; [ copy data/graphics to vram 1 ]
 
 TfrVRAM1:
-@1488:  ldy     $14
+@1488:  ldy     zDMA1Dest
         sty     hVMADDL
         lda     #$01
-        sta     $4300
-        lda     #$18
-        sta     $4301
-        ldy     $16
-        sty     $4302
-        lda     $18
-        sta     $4304
-        ldy     $12
-        sty     $4305
-        lda     #$01
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
+        ldy     zDMA1Src
+        sty     hDMA0::ADDR
+        lda     zDMA1Src+2
+        sta     hDMA0::ADDR_B
+        ldy     zDMA1Size
+        sty     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -3497,20 +3606,20 @@ TfrVRAM1:
 ; [ copy data/graphics to vram 2 ]
 
 TfrVRAM2:
-@14ac:  ldy     $1b
+@14ac:  ldy     zDMA2Dest
         beq     @14d1
         sty     hVMADDL
         lda     #$01
-        sta     $4300
-        lda     #$18
-        sta     $4301
-        ldy     $1d
-        sty     $4302
-        lda     $1f
-        sta     $4304
-        ldy     $19
-        sty     $4305
-        lda     #$01
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
+        ldy     zDMA2Src
+        sty     hDMA0::ADDR
+        lda     zDMA2Src+2
+        sta     hDMA0::ADDR_B
+        ldy     zDMA2Size
+        sty     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 @14d1:  rts
 
@@ -3519,22 +3628,22 @@ TfrVRAM2:
 ; [ copy color palettes to ppu ]
 
 TfrPal:
-@14d2:  lda     $45
+@14d2:  lda     z45
         bit     #$01
         beq     @14fd
-        lda     $00
+        lda     z0
         sta     hCGADD
         lda     #$02
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #<hCGDATA
-        sta     $4301
-        ldy     #$3049
-        sty     $4302
+        sta     hDMA0::HREG
+        ldy     #near wPalBuf
+        sty     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldy     #$0200
-        sty     $4305
-        lda     #$01
+        sty     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 @14fd:  rts
 

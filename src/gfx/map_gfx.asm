@@ -14,14 +14,14 @@
 .segment "map_gfx"
 
 ; df/da00
-begin_fixed_block MapGfxPtrs, $0100
+begin_block MapGfxPtrs, $0100
         make_ptr_tbl_far MapGfx, MAP_GFX_ARRAY_LENGTH
-end_fixed_block MapGfxPtrs
+end_block MapGfxPtrs
 
 ; ------------------------------------------------------------------------------
 
 ; df/db00
-begin_fixed_block MapGfx, $061900
+begin_block MapGfx, $061900
         inc_map_gfx MAP_GFX_CASTLE_EXT_1, "castle_ext_1"
         inc_map_gfx MAP_GFX_CASTLE_EXT_2, "castle_ext_2"
         inc_map_gfx MAP_GFX_CASTLE_EXT_3, "castle_ext_3"
@@ -29,10 +29,10 @@ begin_fixed_block MapGfx, $061900
         inc_map_gfx MAP_GFX_TOWN_EXT_1, "town_ext_1"
         inc_map_gfx MAP_GFX_TOWN_EXT_2, "town_ext_2"
         inc_map_gfx MAP_GFX_TOWN_EXT_3, "town_ext_3"
-        inc_map_gfx MAP_GFX_TOWN_EXT_4, "town_ext_4"
+        inc_map_gfx MAP_GFX_TOWN_EXT_4, .concat("town_ext_4_", LANG_SUFFIX)
         inc_map_gfx MAP_GFX_TOWN_EXT_5, "town_ext_5"
         inc_map_gfx MAP_GFX_CASTLE_EXT_4, "castle_ext_4"
-        inc_map_gfx MAP_GFX_TOWN_EXT_6, "town_ext_6"
+        inc_map_gfx MAP_GFX_TOWN_EXT_6, .concat("town_ext_6_", LANG_SUFFIX)
         inc_map_gfx MAP_GFX_TOWN_EXT_7, "town_ext_7"
         inc_map_gfx MAP_GFX_DOCKS_1, "docks_1"
         inc_map_gfx MAP_GFX_DOCKS_2, "docks_2"
@@ -65,9 +65,9 @@ begin_fixed_block MapGfx, $061900
         inc_map_gfx MAP_GFX_TRAIN_EXT_3, "train_ext_3"
         inc_map_gfx MAP_GFX_FOREST_1, "forest_1"
         inc_map_gfx MAP_GFX_TRAIN_INT, "train_int"
-        inc_map_gfx MAP_GFX_ZOZO_EXT_1, "zozo_ext_1"
+        inc_map_gfx MAP_GFX_ZOZO_EXT_1, .concat("zozo_ext_1_", LANG_SUFFIX)
         inc_map_gfx MAP_GFX_ZOZO_EXT_2, "zozo_ext_2"
-        inc_map_gfx MAP_GFX_VECTOR_EXT, "vector_ext"
+        inc_map_gfx MAP_GFX_VECTOR_EXT, .concat("vector_ext_", LANG_SUFFIX)
         inc_map_gfx MAP_GFX_DARILLS_TOMB_1, "darills_tomb_1"
         inc_map_gfx MAP_GFX_MOUNTAINS_PARALLAX_1, "mountains_parallax_1"
         inc_map_gfx MAP_GFX_FLOATING_ISLAND_1, "floating_island_1"
@@ -103,8 +103,8 @@ begin_fixed_block MapGfx, $061900
         inc_map_gfx MAP_GFX_FACTORY_6, "factory_6"
         inc_map_gfx MAP_GFX_AIRSHIP_5, "airship_5"
         inc_map_gfx MAP_GFX_BEACH_PARALLAX, "beach_parallax"
-        inc_map_gfx MAP_GFX_DARILLS_TOMB_2, "darills_tomb_2"
-end_fixed_block MapGfx
+        inc_map_gfx MAP_GFX_DARILLS_TOMB_2, .concat("darills_tomb_2_", LANG_SUFFIX)
+end_block MapGfx
 
 ; ------------------------------------------------------------------------------
 

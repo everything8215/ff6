@@ -22,13 +22,15 @@ inc_lang "text/item_name_%s.inc"
 MenuState_24:
 @b466:  jsr     DisableInterrupts
         jsr     ClearBGScroll
+.if LANG_EN
         jsr     DisableWindow1PosHDMA
+.endif
         lda     #$03
         sta     hBG1SC
-        lda     #$c0
-        trb     $43
+        lda     #BIT_6 | BIT_7
+        trb     zEnableHDMA
         lda     #$02
-        sta     $46
+        sta     z46
         stz     $4a
         jsr     LoadShopOptionCursor
         jsr     InitShopOptionCursor
@@ -37,9 +39,9 @@ MenuState_24:
         jsr     InitItemBGScrollHDMA
         jsr     InitShopScrollHDMA
         lda     #$25
-        sta     $27
+        sta     zNextMenuState
         lda     #$01
-        sta     $26
+        sta     zMenuState
         jmp     EnableInterrupts
 
 ; ------------------------------------------------------------------------------
@@ -48,21 +50,21 @@ MenuState_24:
 
 MenuState_25:
 @b49b:  jsr     UpdateShopOptionCursor
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @b4aa
         jsr     PlaySelectSfx
         jmp     _c3b792
-@b4aa:  lda     $09
-        bit     #$80
+@b4aa:  lda     z08+1
+        bit     #>JOY_B
         beq     _b4bc
         jsr     PlayCancelSfx
 
 _c3b4b3:
-@b4b3:  stz     $0205
+@b4b3:  stz     w0205
         lda     #$ff
-        sta     $27
-        stz     $26
+        sta     zNextMenuState
+        stz     zMenuState
 _b4bc:  rts
 
 ; ------------------------------------------------------------------------------
@@ -71,18 +73,18 @@ _b4bc:  rts
 
 MenuState_26:
 @b4bd:  lda     #$10
-        tsb     $45
+        tsb     z45
         jsr     InitDMA1BG3ScreenA
         jsr     UpdateShopBuyMenuCursor
         jsr     _c3bc84
         jsr     _c3bca8
-        lda     $09
-        bit     #$80
+        lda     z08+1
+        bit     #>JOY_B
         beq     @b4d9
         jsr     PlayCancelSfx
         jmp     _c3b760
-@b4d9:  lda     $08
-        bit     #$80
+@b4d9:  lda     z08
+        bit     #JOY_A
         beq     @b4e5
         jsr     _c3b82f
         jsr     _c3b7e6
@@ -94,9 +96,9 @@ MenuState_26:
 
 _c3b4e6:
 @b4e6:  lda     #$10
-        trb     $45
+        trb     z45
         lda     #$20
-        tsb     $45
+        tsb     z45
         rts
 
 ; ------------------------------------------------------------------------------
@@ -129,14 +131,14 @@ MenuState_27:
         jsr     _c3b4ef
         jsr     _c3bb53
         jsr     _c3bbae
-        lda     $0b
+        lda     z0a+1
         bit     #$01
         beq     @b539
         jsr     PlayMoveSfx
-        lda     $28
+        lda     zSelIndex
         cmp     $6a
         beq     @b57c
-        inc     $28
+        inc     zSelIndex
         jsr     _c3bb53
         lda     $1860
         cmp     $f1
@@ -145,27 +147,27 @@ MenuState_27:
         lda     $1862
         sbc     $f3
         bcs     @b538
-        dec     $28
+        dec     zSelIndex
 @b538:  rts
-@b539:  lda     $0b
+@b539:  lda     z0a+1
         bit     #$02
         beq     @b54a
         jsr     PlayMoveSfx
-        lda     $28
+        lda     zSelIndex
         cmp     #$01
         beq     @b59e
-        dec     $28
-@b54a:  lda     $0b
+        dec     zSelIndex
+@b54a:  lda     z0a+1
         bit     #$08
         beq     @b583
         jsr     PlayMoveSfx
         lda     #$0a
         clc
-        adc     $28
+        adc     zSelIndex
         cmp     $6a
         beq     @b55e
         bcs     @b57f
-@b55e:  sta     $28
+@b55e:  sta     zSelIndex
         jsr     _c3bb53
         lda     $1860
         cmp     $f1
@@ -174,35 +176,35 @@ MenuState_27:
         lda     $1862
         sbc     $f3
         bcs     @b57b
-        lda     $28
+        lda     zSelIndex
         sec
         sbc     #$0a
-        sta     $28
+        sta     zSelIndex
 @b57b:  rts
 @b57c:  jmp     @b59e
-@b57f:  lda     $28
+@b57f:  lda     zSelIndex
         bra     @b55e
-@b583:  lda     $0b
+@b583:  lda     z0a+1
         bit     #$04
         beq     @b59e
         jsr     PlayMoveSfx
-        lda     $28
+        lda     zSelIndex
         sec
         sbc     #$0a
         bmi     @b59a
         cmp     #$01
         bcc     @b59e
-        sta     $28
+        sta     zSelIndex
         rts
 @b59a:  lda     #$01
-        sta     $28
-@b59e:  lda     $09
-        bit     #$80
+        sta     zSelIndex
+@b59e:  lda     z08+1
+        bit     #>JOY_B
         beq     @b5aa
         jsr     PlayCancelSfx
         jmp     _c3b7b3
-@b5aa:  lda     $08
-        bit     #$80
+@b5aa:  lda     z08
+        bit     #JOY_A
         beq     @b5b6
         jsr     PlayShopSfx
         jsr     _c3b5b7
@@ -214,24 +216,24 @@ MenuState_27:
 
 _c3b5b7:
 @b5b7:  jsr     _c3bfc2
-        ldy     $00
+        ldy     z0
 @b5bc:  cmp     $1869,y
         beq     @b5e1
         iny
         cpy     #$0100
         bne     @b5bc
-        ldy     $00
+        ldy     z0
 @b5c9:  lda     $1869,y
         cmp     #$ff
         beq     @b5d3
         iny
         bra     @b5c9
-@b5d3:  lda     $28
+@b5d3:  lda     zSelIndex
         sta     $1969,y
         lda     $7e9d89,x
         sta     $1869,y
         bra     @b5ea
-@b5e1:  lda     $28
+@b5e1:  lda     zSelIndex
         clc
         adc     $1969,y
         sta     $1969,y
@@ -246,8 +248,8 @@ _c3b5b7:
         sta     $1861
         shorta
         jsr     ValidateMaxGil
-        ldy     #.loword(ShopByeMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopByeMsgText
+        jsr     DrawPosKana
         jmp     _c3b87d
 
 ; ------------------------------------------------------------------------------
@@ -255,7 +257,7 @@ _c3b5b7:
 ; [ menu state $28: buy (return to state item select) ]
 
 MenuState_28:
-@b60e:  lda     $20
+@b60e:  lda     zWaitCounter
         bne     @b615
         jsr     _c3b7b3
 @b615:  rts
@@ -266,40 +268,40 @@ MenuState_28:
 
 MenuState_29:
 @b616:  lda     #$10
-        tsb     $45
+        tsb     z45
         clr_a
-        sta     $2a
+        sta     zListType
         jsr     InitDMA1BG1ScreenA
         jsr     ScrollListPage
         bcs     @b675
         jsr     UpdateItemListCursor
-        lda     $09
-        bit     #$80
+        lda     z08+1
+        bit     #>JOY_B
         beq     @b634       ; branch if b button is not pressed
         jsr     PlayCancelSfx
         jmp     _c3b760
-@b634:  lda     $08
-        bit     #$80
+@b634:  lda     z08
+        bit     #JOY_A
         beq     @b675       ; return if a button is not pressed
         jsr     _c3bfcb
         cmp     #$ff
         beq     @b66f       ; branch if no item
         jsr     PlaySelectSfx
         lda     #$c0
-        trb     $46
+        trb     z46
         jsr     ClearBG1ScreenA
         jsr     InitDMA1BG1ScreenA
         jsr     WaitVblank
         lda     #$2a
-        sta     $26
+        sta     zMenuState
         ldx     #$0008
         stx     $55
         ldx     #$0034
         stx     $57
         jsr     _c3baa5
         jsr     _c3bad3
-        ldy     #.loword(ShopSellQtyMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopSellQtyMsgText
+        jsr     DrawPosKana
         jsr     _c3b86d
         rts
 @b66f:  jsr     PlayInvalidSfx
@@ -315,65 +317,65 @@ MenuState_2a:
         jsr     _c3b4f8
         jsr     _c3bb65
         jsr     _c3bbb7
-        lda     $0b
+        lda     z0a+1
         bit     #$01
         beq     @b695
         jsr     PlayMoveSfx
-        lda     $28
+        lda     zSelIndex
         cmp     $64
         beq     @b6e0
-        inc     $28
+        inc     zSelIndex
         bra     @b6e0
-@b695:  lda     $0b
+@b695:  lda     z0a+1
         bit     #$02
         beq     @b6a6
         jsr     PlayMoveSfx
-        lda     $28
+        lda     zSelIndex
         cmp     #$01
         beq     @b6e0
-        dec     $28
-@b6a6:  lda     $0b
+        dec     zSelIndex
+@b6a6:  lda     z0a+1
         bit     #$08
         beq     @b6c4
         jsr     PlayMoveSfx
         lda     #$0a
         clc
-        adc     $28
+        adc     zSelIndex
         cmp     $64
         beq     @b6be
         bcs     @b6be
-        sta     $28
+        sta     zSelIndex
         bra     @b6e0
 @b6be:  lda     $64
-        sta     $28
+        sta     zSelIndex
         bra     @b6e0
-@b6c4:  lda     $0b
+@b6c4:  lda     z0a+1
         bit     #$04
         beq     @b6e0
         jsr     PlayMoveSfx
-        lda     $28
+        lda     zSelIndex
         sec
         sbc     #$0a
         bmi     @b6dc
         cmp     #$01
         bcc     @b6e0
-        sta     $28
+        sta     zSelIndex
         bra     @b6e0
 @b6dc:  lda     #$01
-        sta     $28
-@b6e0:  lda     $09
-        bit     #$80
+        sta     zSelIndex
+@b6e0:  lda     z08+1
+        bit     #>JOY_B
         beq     @b6fb
         jsr     PlayCancelSfx
-        ldx     $00
-        stx     $39
-        stx     $3b
+        ldx     z0
+        stx     zBG2HScroll
+        stx     zBG2VScroll
         jsr     _c3b95a
-        ldy     #.loword(ShopOptionsText)
-        jsr     DrawPosText
+        ldy     #near ShopOptionsText
+        jsr     DrawPosKana
         jmp     _c3b7cf
-@b6fb:  lda     $08
-        bit     #$80
+@b6fb:  lda     z08
+        bit     #JOY_A
         beq     @b707
         jsr     PlayShopSfx
         jsr     _c3b708
@@ -395,12 +397,12 @@ _c3b708:
         sta     $1861
         shorta
         lda     $64
-        cmp     $28
+        cmp     zSelIndex
         beq     @b734
         jsr     _c3bfcb
         lda     $1969,y
         sec
-        sbc     $28
+        sbc     zSelIndex
         sta     $1969,y
         bra     @b740
 @b734:  jsr     _c3bfcb
@@ -409,12 +411,12 @@ _c3b708:
         clr_a
         sta     $1969,y
 @b740:  jsr     ValidateMaxGil
-        ldy     #.loword(ShopByeMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopByeMsgText
+        jsr     DrawPosKana
         lda     #$2b
-        sta     $26
+        sta     zMenuState
         lda     #$20
-        sta     $20
+        sta     zWaitCounter
         rts
 
 ; ------------------------------------------------------------------------------
@@ -422,11 +424,11 @@ _c3b708:
 ; [ menu state $2b: sell (thank you) ]
 
 MenuState_2b:
-@b752:  lda     $20
+@b752:  lda     zWaitCounter
         bne     @b75f
-        ldx     $00
-        stx     $39
-        stx     $3b
+        ldx     z0
+        stx     zBG2HScroll
+        stx     zBG2VScroll
         jsr     _c3b7cf
 @b75f:  rts
 
@@ -436,7 +438,7 @@ MenuState_2b:
 
 _c3b760:
 @b760:  lda     #$c0
-        trb     $46
+        trb     z46
         stz     $47
         jsr     LoadShopOptionCursor
         jsr     InitShopOptionCursor
@@ -445,15 +447,15 @@ _c3b760:
         jsr     WaitVblank
         jsr     InitDMA1BG3ScreenA
         jsr     _c3b95a
-        ldy     #.loword(ShopOptionsText)
-        jsr     DrawPosText
-        ldy     #.loword(ShopGreetingMsgText)
-        jsr     DrawPosText
-        ldy     $00
-        sty     $39
-        sty     $3b
+        ldy     #near ShopOptionsText
+        jsr     DrawPosKana
+        ldy     #near ShopGreetingMsgText
+        jsr     DrawPosKana
+        ldy     z0
+        sty     zBG2HScroll
+        sty     zBG2VScroll
         lda     #$25
-        sta     $26
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -466,7 +468,7 @@ _c3b792:
         lda     $4b
         asl
         tax
-        jmp     (.loword(SelectShopOptionTbl),x)
+        jmp     (near SelectShopOptionTbl,x)
 
 SelectShopOptionTbl:
 @b79a:  .addr   SelectShopOption_00
@@ -494,13 +496,13 @@ SelectShopOption_00:
 
 _c3b7b3:
 @b7b3:  ldy     #$0100
-        sty     $39         ; bg2 h-scroll
-        ldy     $00
-        sty     $3b         ; bg2 v-scroll
+        sty     zBG2HScroll
+        ldy     z0
+        sty     zBG2VScroll
         jsr     _c3b986
         jsr     _c3bcfd
         lda     #$26
-        sta     $26
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -515,12 +517,12 @@ SelectShopOption_01:
 _c3b7cf:
 @b7cf:  jsr     _c3bc02
 _b7d2:  jsr     _c3b95a
-        ldy     #.loword(ShopOptionsText)
-        jsr     DrawPosText
-        ldy     #.loword(ShopSellMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopOptionsText
+        jsr     DrawPosKana
+        ldy     #near ShopSellMsgText
+        jsr     DrawPosKana
         lda     #$29
-        sta     $26
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -538,8 +540,8 @@ _c3b7e6:
         lda     $64
         beq     @b80a
         jsr     PlayInvalidSfx
-        ldy     #.loword(ShopOnlyOneMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopOnlyOneMsgText
+        jsr     DrawPosKana
         jmp     _c3b87d
 @b80a:  lda     $1862       ; msb of current gp
         bne     _b83e       ; branch if more than 65535 gp
@@ -554,8 +556,8 @@ _c3b7e6:
         beq     _b83e       ; branch if enough gp
         bcc     _b83e
         jsr     PlayInvalidSfx
-        ldy     #.loword(ShopNotEnoughGilMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopNotEnoughGilMsgText
+        jsr     DrawPosKana
         jmp     _c3b87d
 
 ; ------------------------------------------------------------------------------
@@ -580,8 +582,8 @@ _b83e:  lda     $69         ; item quantity
         cmp     #$63
         bcc     @b850
         jsr     PlayInvalidSfx
-        ldy     #.loword(ShopTooManyMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopTooManyMsgText
+        jsr     DrawPosKana
         jmp     _c3b87d
 @b850:  jsr     PlaySelectSfx
         ldx     #$0008
@@ -589,17 +591,17 @@ _b83e:  lda     $69         ; item quantity
         ldx     #$0034
         stx     $57
         lda     #$27        ; go to menu state $27
-        sta     $26
+        sta     zMenuState
         jsr     _c3baa5
         jsr     _c3baba
-        ldy     #.loword(ShopBuyQtyMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopBuyQtyMsgText
+        jsr     DrawPosKana
 
 _c3b86d:
 @b86d:  ldy     #$0100
-        sty     $3b
-        ldy     $00
-        sty     $39
+        sty     zBG2VScroll
+        ldy     z0
+        sty     zBG2HScroll
         jsr     ClearBigTextBuf
         jsr     _c3a6f4
         rts
@@ -608,9 +610,9 @@ _c3b86d:
 
 _c3b87d:
 @b87d:  lda     #$28
-        sta     $26
+        sta     zMenuState
         lda     #$20
-        sta     $20
+        sta     zWaitCounter
         rts
 
 ; ------------------------------------------------------------------------------
@@ -618,7 +620,7 @@ _c3b87d:
 ; [ init cursor for shop options menu ]
 
 LoadShopOptionCursor:
-@b886:  ldy     #.loword(ShopOptionCursorProp)
+@b886:  ldy     #near ShopOptionCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -629,27 +631,33 @@ UpdateShopOptionCursor:
 @b88c:  jsr     MoveCursor
 
 InitShopOptionCursor:
-@b88f:  ldy     #.loword(ShopOptionCursorPos)
+@b88f:  ldy     #near ShopOptionCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 ; cursor properties for menu state $25
 ShopOptionCursorProp:
-@b895:  .byte   $01,$00,$00,$03,$01
+        make_cursor_prop {0, 0}, {3, 1}, NO_Y_WRAP
 
 ; cursor positions for menu state $25
 ShopOptionCursorPos:
+.if LANG_EN
 @b89a:  .byte   $08,$34
         .byte   $30,$34
         .byte   $60,$34
+.else
+        .byte   $08,$34
+        .byte   $28,$34
+        .byte   $48,$34
+.endif
 
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor for shop buy menu ]
 
 LoadShopBuyMenuCursor:
-@b8a0:  ldy     #.loword(ShopBuyMenuCursorProp)
+@b8a0:  ldy     #near ShopBuyMenuCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -660,17 +668,18 @@ UpdateShopBuyMenuCursor:
 @b8a6:  jsr     MoveCursor
 
 InitShopBuyMenuCursor:
-@b8a9:  ldy     #.loword(ShopBuyMenuCursorPos)
+@b8a9:  ldy     #near ShopBuyMenuCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 ; cursor properties for menu state $26
 ShopBuyMenuCursorProp:
-@b8af:  .byte   $80,$00,$00,$01,$08
+        make_cursor_prop {0, 0}, {1, 8}, NO_X_WRAP
 
 ; cursor positions for menu state $26
 ShopBuyMenuCursorPos:
+.if LANG_EN
 @b8b4:  .byte   $00,$34
         .byte   $00,$40
         .byte   $00,$4c
@@ -679,6 +688,16 @@ ShopBuyMenuCursorPos:
         .byte   $00,$70
         .byte   $00,$7c
         .byte   $00,$88
+.else
+        .byte   $08,$34
+        .byte   $08,$40
+        .byte   $08,$4c
+        .byte   $08,$58
+        .byte   $08,$64
+        .byte   $08,$70
+        .byte   $08,$7c
+        .byte   $08,$88
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -688,35 +707,44 @@ DrawShopMenu:
 @b8c4:  jsr     ClearBG2ScreenA
         jsr     ClearBG2ScreenB
         jsr     ClearBG2ScreenC
-        ldy     #.loword(ShopSellTitleWindow)
+        ldy     #near ShopSellTitleWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopSellMsgWindow)
+        ldy     #near ShopSellMsgWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopSellOptionsWindow)
+        ldy     #near ShopSellOptionsWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopSellGilWindow)
+        ldy     #near ShopSellGilWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopSellListWindow)
+        ldy     #near ShopSellListWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopBuyTitleWindow)
+        ldy     #near ShopBuyTitleWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopBuyMsgWindow)
+        ldy     #near ShopBuyMsgWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopBuyCharWindow)
+        ldy     #near ShopBuyCharWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopBuyListWindow)
+.if LANG_EN
+        ldy     #near ShopBuyListWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopQtyTitleWindow)
+        ldy     #near ShopQtyTitleWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopQtyGilWindow)
+.else
+        ldy     #near ShopBuyListWindow1
         jsr     DrawWindow
-        ldy     #.loword(ShopQtyDescWindow)
+        ldy     #near ShopBuyListWindow2
         jsr     DrawWindow
-        ldy     #.loword(ShopQtyMsgWindow)
+        ldy     #near ShopQtyTitleWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopQtyCharWindow)
+.endif
+        ldy     #near ShopQtyGilWindow
         jsr     DrawWindow
-        ldy     #.loword(ShopQtyItemWindow)
+        ldy     #near ShopQtyDescWindow
+        jsr     DrawWindow
+        ldy     #near ShopQtyMsgWindow
+        jsr     DrawWindow
+        ldy     #near ShopQtyCharWindow
+        jsr     DrawWindow
+        ldy     #near ShopQtyItemWindow
         jsr     DrawWindow
         jsr     TfrBG2ScreenAB
         jsr     TfrBG2ScreenCD
@@ -724,10 +752,10 @@ DrawShopMenu:
         jsr     TfrBG1ScreenAB
         jsr     TfrBG1ScreenCD
         jsr     _c3b95a
-        ldy     #.loword(ShopOptionsText)
-        jsr     DrawPosText
-        ldy     #.loword(ShopGreetingMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopOptionsText
+        jsr     DrawPosKana
+        ldy     #near ShopGreetingMsgText
+        jsr     DrawPosKana
         jsr     InitBigText
         jsr     TfrBG3ScreenAB
         jmp     TfrBG3ScreenCD
@@ -752,15 +780,15 @@ _c3b95a:
         jsr     ClearBG3ScreenC
         jsr     DrawShopTypeText
         jsr     _c3c2f7
-        ldy     #.loword(ShopGilText1)
-        jsr     DrawPosText
+        ldy     #near ShopGilText1
+        jsr     DrawPosKana
         jsr     _c3c2f2
         ldy     $1860
         sty     $f1
         lda     $1862
         sta     $f3
         jsr     HexToDec8
-        ldx     #$7a33
+        ldx_pos BG3A, {21, 7}
         jsr     DrawNum7
         rts
 
@@ -770,10 +798,10 @@ _c3b95a:
 
 _c3b986:
 @b986:  jsr     _c3b95a
-        ldy     #.loword(ShopBuyMsgText)
-        jsr     DrawPosText
+        ldy     #near ShopBuyMsgText
+        jsr     DrawPosKana
         jsr     _c3c2e1
-        ldy     $00
+        ldy     z0
         sty     $f1
         stz     $e6
 @b998:  longa
@@ -784,7 +812,7 @@ _c3b986:
         sta     $7e9e89
         lda     $f1
         clc
-        adc     $67
+        adc     zSelCharPropPtr
         inc
         tax
         shorta
@@ -803,7 +831,11 @@ _c3b986:
         longa
         lda     $7e9e89
         clc
+.if LANG_EN
         adc     #$001a
+.else
+        adc     #$0056
+.endif
         tax
         shorta
         jsr     DrawNum5
@@ -823,7 +855,17 @@ _c3b986:
 ; ------------------------------------------------------------------------------
 
 _c3b9fc:
-@b9fc:  .word   $7a0d,$7a8d,$7b0d,$7b8d,$7c0d,$7c8d,$7d0d,$7d8d
+.if LANG_EN
+        @X_POS = 2
+        @Y_POS = 7
+.else
+        @X_POS = 3
+        @Y_POS = 6
+.endif
+
+.repeat 8, i
+        make_pos BG3A, {@X_POS, @Y_POS + i * 2}
+.endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -852,7 +894,7 @@ CalcShopPrice:
 
 AdjustShopPrice:
 @ba2c:  pha
-        ldx     $67
+        ldx     zSelCharPropPtr
         clr_a
         shorta
         lda     f:ShopProp,x            ; shop price adjustment
@@ -861,7 +903,7 @@ AdjustShopPrice:
         lsr2
         tax
         pla
-        jmp     (.loword(AdjustShopPriceTbl),x)
+        jmp     (near AdjustShopPriceTbl,x)
 
 ; jump table for shop price adjustment
 ;  0 = none
@@ -916,12 +958,12 @@ AdjustShopPrice_03:
 AdjustShopPrice_04:
 @ba5a:  pha
         shorta
-        lda     $0202
-        cmp     #$06
+        lda     w0202
+        cmp     #MAP_SPRITE_GFX::CELES
         beq     @ba71
-        cmp     #$08
+        cmp     #MAP_SPRITE_GFX::RELM
         beq     @ba71
-        cmp     #$00
+        cmp     #MAP_SPRITE_GFX::TERRA
         beq     @ba71
         longa
         pla
@@ -936,12 +978,12 @@ AdjustShopPrice_04:
 AdjustShopPrice_05:
 @ba76:  pha
         shorta
-        lda     $0202
-        cmp     #CHAR::CELES
+        lda     w0202
+        cmp     #MAP_SPRITE_GFX::CELES
         beq     @ba8d
-        cmp     #CHAR::RELM
+        cmp     #MAP_SPRITE_GFX::RELM
         beq     @ba8d
-        cmp     #CHAR::TERRA
+        cmp     #MAP_SPRITE_GFX::TERRA
         beq     @ba8d
         longa
         pla
@@ -956,8 +998,8 @@ AdjustShopPrice_05:
 AdjustShopPrice_06:
 @ba92:  pha
         shorta
-        lda     $0202
-        cmp     #$04
+        lda     w0202
+        cmp     #MAP_SPRITE_GFX::EDGAR
         beq     @baa0
         longa
         pla
@@ -975,7 +1017,11 @@ _c3baa5:
         jsr     _c3b95a
         jsr     _c3c2e1
         longa
-        lda     #$7a0f
+.if LANG_EN
+        lda_pos BG3A, {3, 7}
+.else
+        lda_pos BG3A, {3, 6}
+.endif
         sta     $7e9e89
         shorta
         rts
@@ -992,7 +1038,7 @@ _c3baba:
         jsr     LoadItemName
         jsr     DrawPosTextBuf
         lda     #$01
-        sta     $28
+        sta     zSelIndex
         jmp     _c3bbae
 
 ; ------------------------------------------------------------------------------
@@ -1007,7 +1053,7 @@ _c3bad3:
         jsr     LoadItemName
         jsr     DrawPosTextBuf
         lda     #$01
-        sta     $28
+        sta     zSelIndex
         jmp     _c3bbb7
 
 ; ------------------------------------------------------------------------------
@@ -1045,12 +1091,12 @@ DrawShopItemStat:
         jsr     _c3c2f2
         lda     f:ItemProp+20,x
         jsr     HexToDec3
-        ldx     #$7ba9
+        ldx_pos BG3A, {16, 13}
         jsr     DrawNum3
         jsr     _c3c2f7
-        ldy     #.loword(ShopDefenseText)
-        jsr     DrawPosText
-        ldy     #.loword(ShopDotsText)
+        ldy     #near ShopDefenseText
+        jsr     DrawPosKana
+        ldy     #near ShopDotsText
         jsr     DrawPosText
         jmp     _c3c2f2
 
@@ -1058,19 +1104,21 @@ DrawShopItemStat:
 @bb30:  jsr     _c3c2f2
         lda     f:ItemProp+20,x
         jsr     HexToDec3
-        ldx     #$7ba9
+        ldx_pos BG3A, {16, 13}
         jsr     DrawNum3
         jsr     _c3c2f7
-        ldy     #.loword(ShopPowerText)
+        ldy     #near ShopPowerText
+        jsr     DrawPosKana
+.if LANG_EN
+        ldy     #near ShopDotsText
         jsr     DrawPosText
-        ldy     #.loword(ShopDotsText)
-        jsr     DrawPosText
+.endif
         jsr     _c3c2f2
 @bb52:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ calculate buy price ]
 
 _c3bb53:
 @bb53:  clr_a
@@ -1085,7 +1133,7 @@ _c3bb53:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ calculate sell price ]
 
 _c3bb65:
 @bb65:  jsr     _c3bfcb
@@ -1095,7 +1143,7 @@ _c3bb65:
         clc
         adc     #$001c
         tax
-        lda     f:ItemProp,x
+        lda     f:ItemProp,x            ; item price / 2
         lsr
         sta     $f1
         shorta
@@ -1103,12 +1151,14 @@ _c3bb65:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ calculate total buy/sell price ]
+
+; result goes to ++$f1
 
 _c3bb81:
-@bb81:  lda     $f1
+@bb81:  lda     $f1                     ; price per item
         sta     hWRMPYA
-        lda     $28
+        lda     zSelIndex                     ; item qty
         sta     hWRMPYB
         stz     $ef
         nop2
@@ -1116,7 +1166,7 @@ _c3bb81:
         stx     $ed
         lda     $f2
         sta     hWRMPYA
-        lda     $28
+        lda     zSelIndex
         sta     hWRMPYB
         longa_clc
         lda     $ee
@@ -1151,12 +1201,12 @@ _c3bbb7:
 
 _c3bbc0:
 @bbc0:  jsr     _c3c2f7
-        ldy     #.loword(ShopGilText2)
-        jsr     DrawPosText
+        ldy     #near ShopGilText2
+        jsr     DrawPosKana
         jsr     _c3c2f2
-        lda     $28
+        lda     zSelIndex
         jsr     HexToDec3
-        ldx     #$7a2b
+        ldx_pos BG3A, {17, 7}
         jmp     DrawNum2
 
 ; ------------------------------------------------------------------------------
@@ -1165,7 +1215,7 @@ _c3bbc0:
 
 _c3bbd7:
 @bbd7:  jsr     HexToDec8
-        ldx     #$7aa1
+        ldx_pos BG3A, {12, 9}
         jmp     DrawNum7
 
 ; ------------------------------------------------------------------------------
@@ -1175,11 +1225,19 @@ _c3bbd7:
 _c3bbe0:
 @bbe0:  lda     #$01
         sta     hBG1SC
+.if LANG_EN
         lda     #$f5
+.else
+        lda     #$76
+.endif
         sta     $5c
         lda     #$0a
         sta     $5a
+.if LANG_EN
         lda     #$01
+.else
+        lda     #$02
+.endif
         sta     $5b
         jsr     LoadItemListCursor
         ldy     $4d
@@ -1194,59 +1252,46 @@ _c3bc02:
 @bc02:  jsr     InitItemListText
         jsr     CreateScrollArrowTask1
         longa
+.if LANG_EN
         lda     #$0070
-        sta     $7e354a,x
+.else
+        lda     #$00ea
+.endif
+        sta     wTaskSpeedY,x
         lda     #$0058
-        sta     $7e34ca,x
+        sta     wTaskSpeedX,x
         shorta
         rts
 
 ; ------------------------------------------------------------------------------
 
-ShopSellTitleWindow:
-@bc1b:  .byte   $8b,$58,$07,$02
+ShopSellTitleWindow:                    make_window BG2A, {1, 1}, {7, 2}
+ShopSellMsgWindow:                      make_window BG2A, {10, 1}, {19, 2}
+.if LANG_EN
+ShopSellOptionsWindow:                  make_window BG2A, {1, 5}, {16, 2}
+ShopSellGilWindow:                      make_window BG2A, {19, 5}, {10, 2}
+.else
+ShopSellOptionsWindow:                  make_window BG2A, {1, 5}, {12, 2}
+ShopSellGilWindow:                      make_window BG2A, {15, 5}, {14, 2}
+.endif
+ShopSellListWindow:                     make_window BG2A, {1, 9}, {28, 16}
 
-ShopSellMsgWindow:
-@bc1f:  .byte   $9d,$58,$13,$02
+ShopBuyTitleWindow:                     make_window BG2B, {1, 1}, {7, 2}
+ShopBuyMsgWindow:                       make_window BG2B, {10, 1}, {19, 2}
+.if LANG_EN
+ShopBuyListWindow:                      make_window BG2B, {1, 5}, {28, 12}
+.else
+ShopBuyListWindow1:                     make_window BG2B, {1, 5}, {17, 12}
+ShopBuyListWindow2:                     make_window BG2B, {20, 5}, {9, 12}
+.endif
+ShopBuyCharWindow:                      make_window BG2B, {1, 19}, {28, 6}
 
-ShopSellOptionsWindow:
-@bc23:  .byte   $8b,$59,$10,$02
-
-ShopSellGilWindow:
-@bc27:  .byte   $af,$59,$0a,$02
-
-ShopSellListWindow:
-@bc2b:  .byte   $8b,$5a,$1c,$10
-
-ShopBuyTitleWindow:
-@bc2f:  .byte   $8b,$60,$07,$02
-
-ShopBuyMsgWindow:
-@bc33:  .byte   $9d,$60,$13,$02
-
-ShopBuyListWindow:
-@bc37:  .byte   $8b,$61,$1c,$0c
-
-ShopBuyCharWindow:
-@bc3b:  .byte   $0b,$65,$1c,$06
-
-ShopQtyTitleWindow:
-@bc3f:  .byte   $8b,$68,$07,$02
-
-ShopQtyMsgWindow:
-@bc43:  .byte   $9d,$68,$13,$02
-
-ShopQtyItemWindow:
-@bc47:  .byte   $8b,$69,$11,$07
-
-ShopQtyDescWindow:
-@bc4b:  .byte   $cb,$6b,$1c,$03
-
-ShopQtyCharWindow:
-@bc4f:  .byte   $0b,$6d,$1c,$06
-
-ShopQtyGilWindow:
-@bc53:  .byte   $b1,$69,$09,$07
+ShopQtyTitleWindow:                     make_window BG2C, {1, 1}, {7, 2}
+ShopQtyMsgWindow:                       make_window BG2C, {10, 1}, {19, 2}
+ShopQtyItemWindow:                      make_window BG2C, {1, 5}, {17, 7}
+ShopQtyDescWindow:                      make_window BG2C, {1, 14}, {28, 3}
+ShopQtyCharWindow:                      make_window BG2C, {1, 19}, {28, 6}
+ShopQtyGilWindow:                       make_window BG2C, {20, 5}, {9, 7}
 
 ; ------------------------------------------------------------------------------
 
@@ -1257,7 +1302,7 @@ _c3bc57:
         stx     hWMADDL
         clr_ax
 @bc5f:  phx
-        ldy     $00
+        ldy     z0
         lda     $7e9d89,x
 @bc66:  cmp     $1869,y
         beq     @bc76
@@ -1280,9 +1325,9 @@ _c3bc57:
 
 _c3bc84:
 @bc84:  jsr     _c3bc92
-_bc87:  lda     $64
+_bc87:  lda     z64
         jsr     HexToDec3
-        ldx     #$7b3f
+        ldx_pos BG3A, {27, 11}
         jmp     DrawNum2
 
 ; ------------------------------------------------------------------------------
@@ -1291,10 +1336,10 @@ _bc87:  lda     $64
 
 _c3bc92:
 @bc92:  clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9dc9,x
-        sta     $64
+        sta     z64
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1303,10 +1348,10 @@ _c3bc92:
 
 _c3bc9d:
 @bc9d:  clr_a
-        lda     $4b
+        lda     z4b
         tay
         lda     $1969,y
-        sta     $64
+        sta     z64
         bra     _bc87
 
 ; ------------------------------------------------------------------------------
@@ -1321,18 +1366,23 @@ _c3bca8:
 
 ; [ check item equip status ]
 
-; a (out): 0 = can't equip, 1 = already equipped, 2 = up arrow, 3 = down arrow, 4 = equals sign
+; A: result (out)
+;      0: can't equip
+;      1: already equipped
+;      2: up arrow
+;      3: down arrow
+;      4: equals sign
 
 _c3bcae:
 @bcae:  jsr     _c3bcc9
         bcc     @bcc7       ; return 0 if not
         clr_a
-        lda     $4b
+        lda     z4b
         longa
         asl4
         shorta
         clc
-        adc     $e0
+        adc     ze0
         tax
         lda     $7eaa8d,x
         rts
@@ -1341,7 +1391,7 @@ _c3bcae:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ check if character can equip item ]
 
 _c3bcc9:
 @bcc9:  phb
@@ -1375,7 +1425,7 @@ _c3bcc9:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ compare shop items to currently equipped items ]
 
 _c3bcfd:
 @bcfd:  jsr     _c3bf4f
@@ -1673,7 +1723,7 @@ _c3bf69:
         stx     $e7
         lda     #$00
         sta     $e9
-        ldx     $00
+        ldx     z0
 @bf78:  phx
         longa
         txa
@@ -1685,10 +1735,10 @@ _c3bf69:
         lda     f:CharPropPtrs,x   ; pointers to character data
         tax
         shorta
-        lda     a:$0000,x
-        cmp     #$0e
+        lda     a:0,x
+        cmp     #CHAR_PROP::BANON
         bcs     @bfa5
-        ldy     $00
+        ldy     z0
 @bf97:  lda     [$e7],y
         cmp     $e0
         bne     @bf9f
@@ -1707,7 +1757,7 @@ _c3bf69:
         bne     @bf78
         lda     $65
         jsr     HexToDec3
-        ldx     #$7c3f
+        ldx_pos BG3A, {27, 15}
         jmp     DrawNum2
 
 ; ------------------------------------------------------------------------------
@@ -1741,14 +1791,14 @@ DrawShopTypeText:
 @bfd6:  lda     hHVBJOY
         and     #$40
         beq     @bfd6
-        lda     $0201
+        lda     w0201
         sta     hM7A
         stz     hM7A
         lda     #9
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        stx     $67
+        stx     zSelCharPropPtr
         lda     f:ShopProp,x            ; shop type
         and     #$07
         asl
@@ -1759,7 +1809,7 @@ DrawShopTypeText:
         shorta
         lda     #^ShopTypeText_01
         sta     $e9
-        jmp     DrawPosTextFar
+        jmp     DrawPosKanaFar
 
 ; ------------------------------------------------------------------------------
 
@@ -1777,39 +1827,39 @@ ShopTypeTextTbl:
 
 InitShopScrollHDMA:
 @c018:  lda     #$02
-        sta     $4350
+        sta     hDMA5::CTRL
         lda     #<hBG3VOFS
-        sta     $4351
-        ldy     #.loword(ShopScrollHDMATbl)
-        sty     $4352
+        sta     hDMA5::HREG
+        ldy     #near ShopScrollHDMATbl
+        sty     hDMA5::ADDR
         lda     #^ShopScrollHDMATbl
-        sta     $4354
+        sta     hDMA5::ADDR_B
         lda     #^ShopScrollHDMATbl
-        sta     $4357
-        lda     #$20
-        tsb     $43
+        sta     hDMA5::HDMA_B
+        lda     #BIT_5
+        tsb     zEnableHDMA
         rts
 
 ; ------------------------------------------------------------------------------
 
 ShopScrollHDMATbl:
-@c037:  .byte   $2f,$04,$00
-        .byte   $0c,$04,$00
-        .byte   $0c,$08,$00
-        .byte   $0c,$0c,$00
-        .byte   $0c,$10,$00
-        .byte   $0c,$14,$00
-        .byte   $0c,$18,$00
-        .byte   $0c,$1c,$00
-        .byte   $0c,$20,$00
-        .byte   $0c,$24,$00
-        .byte   $0c,$28,$00
-        .byte   $0c,$2c,$00
-        .byte   $0c,$30,$00
-        .byte   $0c,$34,$00
-        .byte   $0c,$38,$00
-        .byte   $0c,$3c,$00
-        .byte   $00
+        hdma_word 47, 4
+        hdma_word 12, 4
+        hdma_word 12, 8
+        hdma_word 12, 12
+        hdma_word 12, 16
+        hdma_word 12, 20
+        hdma_word 12, 24
+        hdma_word 12, 28
+        hdma_word 12, 32
+        hdma_word 12, 36
+        hdma_word 12, 40
+        hdma_word 12, 44
+        hdma_word 12, 48
+        hdma_word 12, 52
+        hdma_word 12, 56
+        hdma_word 12, 60
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
@@ -1853,7 +1903,7 @@ InitShopCharSprites:
         phx
         pha
         lda     #2
-        ldy     #.loword(ShopCharSpriteTask)
+        ldy     #near ShopCharSpriteTask
         jsr     CreateTask
         txy
         clr_a
@@ -1866,18 +1916,18 @@ InitShopCharSprites:
         plb
         longa
         lda     f:PartyCharAnimTbl,x
-        sta     $32c9,y
+        sta     near wTaskAnimPtr,y
         shorta
         plx
         lda     f:ShopCharSpriteXTbl,x
-        sta     $33ca,y
+        sta     near wTaskPosX,y
         lda     f:ShopCharSpriteYTbl,x
-        sta     $344a,y
+        sta     near wTaskPosY,y
         clr_a
-        sta     $33cb,y
-        sta     $344b,y
+        sta     near {wTaskPosX + 1},y
+        sta     near {wTaskPosY + 1},y
         lda     #^PartyCharAnimTbl
-        sta     $35ca,y
+        sta     near wTaskAnimBank,y
         lda     #$00
         pha
         plb
@@ -1902,7 +1952,7 @@ ShopCharSpriteYTbl:
 _c3c109:
 @c109:  ldx     #$9e09
         stx     hWMADDL
-        ldx     $00
+        ldx     z0
 @c111:  phx
         longa
         txa
@@ -1915,8 +1965,8 @@ _c3c109:
         tay
         clr_a
         shorta
-        lda     $0000,y
-        cmp     #$0e
+        lda     0,y
+        cmp     #CHAR_PROP::BANON
         bcs     @c132
         sta     hWMDATA
 @c132:  shorta
@@ -1934,7 +1984,7 @@ _c3c109:
 
 ShopCharSpriteTask:
 @c141:  tax
-        jmp     (.loword(ShopCharSpriteTaskTbl),x)
+        jmp     (near ShopCharSpriteTaskTbl,x)
 
 ShopCharSpriteTaskTbl:
 @c145:  .addr   ShopCharSpriteTask_00
@@ -1947,11 +1997,11 @@ ShopCharSpriteTaskTbl:
 ShopCharSpriteTask_00:
 @c149:  lda     #$01
         tsb     $47
-        ldx     $2d
-        inc     $3649,x
+        ldx     zTaskOffset
+        inc     near wTaskState,x
         longa
-        lda     $32c9,x     ; sprite data pointer
-        sta     $34ca,x
+        lda     near wTaskAnimPtr,x
+        sta     near wTaskSpeedX,x
         shorta
         jsr     InitAnimTask
         lda     $47
@@ -1968,21 +2018,21 @@ ShopCharSpriteTask_01:
 @c16a:  lda     $47
         and     #$01
         beq     @c19a
-        ldx     $2d
+        ldx     zTaskOffset
         lda     $47
         and     #$08
         bne     @c189
         jsr     _c3c19c
         bcc     @c189
-        ldx     $2d
+        ldx     zTaskOffset
         longa_clc
-        lda     $34ca,x
+        lda     near wTaskSpeedX,x
         adc     #9                      ; add 9 to sprite data pointer to get the jumping animation
         bra     @c190
-@c189:  ldx     $2d
+@c189:  ldx     zTaskOffset
         longa
-        lda     $34ca,x
-@c190:  sta     $32c9,x
+        lda     near wTaskSpeedX,x
+@c190:  sta     near wTaskAnimPtr,x
         shorta
         jsr     UpdateAnimTask
         sec
@@ -2028,13 +2078,13 @@ _c3c19c:
 _c3c1cc:
 @c1cc:  ldx     #$9e01
         stx     hWMADDL
-        ldx     $00
+        ldx     z0
 @c1d4:  longa
-        lda     a:$006d,x
+        lda     a:zCharPropPtr,x
         shorta
         beq     @c1e3
         tay
-        lda     $0000,y
+        lda     0,y
         bra     @c1e5
 @c1e3:  lda     #$ff
 @c1e5:  sta     hWMDATA
@@ -2048,8 +2098,8 @@ _c3c1cc:
 ; [  ]
 
 _c3c1f0:
-@c1f0:  ldy     $00
-        ldx     $2d
+@c1f0:  ldy     z0
+        ldx     zTaskOffset
 @c1f4:  lda     $35c9,x
         cmp     $9e01,y
         bne     @c234
@@ -2059,7 +2109,7 @@ _c3c1f0:
         pha
         plb
         lda     #0
-        ldy     #.loword(CharIconTask)
+        ldy     #near CharIconTask
         jsr     CreateTask
         lda     #$7e
         pha
@@ -2068,16 +2118,16 @@ _c3c1f0:
         sta     $35c9,x
         ldy     $374a,x
         longa
-        lda     $33ca,y
-        sta     $33ca,x
-        lda     $344a,y
+        lda     near wTaskPosX,y
+        sta     near wTaskPosX,x
+        lda     near wTaskPosY,y
         dec2
-        sta     $344a,x
-        lda     #.loword(PartyArrowAnim)
-        sta     $32c9,x
+        sta     near wTaskPosY,x
+        lda     #near PartyArrowAnim
+        sta     near wTaskAnimPtr,x
         shorta
         lda     #^PartyArrowAnim
-        sta     $35ca,x
+        sta     near wTaskAnimBank,x
         ply
         plx
 @c234:  iny
@@ -2093,7 +2143,7 @@ _c3c23b:
 @c23b:  clr_ay
 @c23d:  phy
         lda     #4
-        ldy     #.loword(ShopCharIconTask)
+        ldy     #near ShopCharIconTask
         jsr     CreateTask
         ply
         tya
@@ -2109,7 +2159,7 @@ _c3c23b:
 
 ShopCharIconTask:
 @c253:  tax
-        jmp     (.loword(ShopCharIconTaskTbl),x)
+        jmp     (near ShopCharIconTaskTbl,x)
 
 ShopCharIconTaskTbl:
 @c257:  .addr   ShopCharIconTask_00
@@ -2120,24 +2170,24 @@ ShopCharIconTaskTbl:
 ; [  ]
 
 ShopCharIconTask_00:
-@c25a:  ldx     $2d
+@c25a:  ldx     zTaskOffset
         longa
-        lda     #.loword(ShopEquipIconAnim)
-        sta     $32c9,x
-        sta     $34ca,x
+        lda     #near ShopEquipIconAnim
+        sta     near wTaskAnimPtr,x
+        sta     near wTaskSpeedX,x
         shorta
-        inc     $3649,x
+        inc     near wTaskState,x
         lda     #^ShopEquipIconAnim
-        sta     $35ca,x
+        sta     near wTaskAnimBank,x
         clr_a
         lda     $35c9,x
         txy
         tax
         lda     f:ShopCharXTbl,x
-        sta     $33ca,y                 ; x position (character icon)
+        sta     near wTaskPosX,y                 ; x position (character icon)
         lda     f:ShopCharYTbl,x
-        sta     $344a,y                 ; y position
-        ldx     $2d
+        sta     near wTaskPosY,y                 ; y position
+        ldx     zTaskOffset
         jsr     InitAnimTask
 ; fallthrough
 
@@ -2149,7 +2199,7 @@ ShopCharIconTask_01:
 @c28b:  lda     $47
         and     #$01
         beq     @c2df
-        ldx     $2d
+        ldx     zTaskOffset
         clr_a
         lda     $35c9,x
         sta     $e0
@@ -2163,31 +2213,31 @@ ShopCharIconTask_01:
         beq     @c2bf
 
 ; down arrow
-        ldx     $2d
+        ldx     zTaskOffset
         longa_clc
-        lda     $34ca,x
+        lda     near wTaskSpeedX,x
         adc     #ShopEquipIconAnim3 - ShopEquipIconAnim
         bra     @c2d5
 
 ; already equipped
-@c2b6:  ldx     $2d
+@c2b6:  ldx     zTaskOffset
         longa
-        lda     $34ca,x
+        lda     near wTaskSpeedX,x
         bra     @c2d5
 
 ; equals sign
-@c2bf:  ldx     $2d
+@c2bf:  ldx     zTaskOffset
         longa_clc
-        lda     $34ca,x
+        lda     near wTaskSpeedX,x
         adc     #ShopEquipIconAnim4 - ShopEquipIconAnim
         bra     @c2d5
 
 ; up arrow
-@c2cb:  ldx     $2d
+@c2cb:  ldx     zTaskOffset
         longa_clc
-        lda     $34ca,x
+        lda     near wTaskSpeedX,x
         adc     #ShopEquipIconAnim2 - ShopEquipIconAnim
-@c2d5:  sta     $32c9,x
+@c2d5:  sta     near wTaskAnimPtr,x
         shorta
         jsr     UpdateAnimTask
 @c2dd:  sec
@@ -2201,141 +2251,129 @@ ShopCharIconTask_01:
 
 _c3c2e1:
 @c2e1:  jsr     _c3c2f7
-        ldy     #.loword(ShopOwnedText)
-        jsr     DrawPosText
-        ldy     #.loword(ShopEquippedText)
-        jsr     DrawPosText
+        ldy     #near ShopOwnedText
+        jsr     DrawPosKana
+        ldy     #near ShopEquippedText
+        jsr     DrawPosKana
         bra     _c3c2f2
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ use default text color ]
 
 _c3c2f2:
-@c2f2:  lda     #$20
-        sta     $29
+@c2f2:  lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ use teal text color ]
 
 _c3c2f7:
-@c2f7:  lda     #$2c
-        sta     $29
+@c2f7:  lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
         rts
 
 ; ------------------------------------------------------------------------------
 
-; c3/c2fc: ( 2, 3) "weapon"
-ShopTypeText_01:
-@c2fc:  .word   $790d
-        .byte   $96,$9e,$9a,$a9,$a8,$a7,$00
+.if LANG_EN
 
-; c3/c305: ( 3, 3) "armor"
-ShopTypeText_02:
-@c305:  .word   $790f
-        .byte   $80,$ab,$a6,$a8,$ab,$00
+        .define ShopTypeStr_01          {$96,$9e,$9a,$a9,$a8,$a7,$00}
+        .define ShopTypeStr_02          {$80,$ab,$a6,$a8,$ab,$00}
+        .define ShopTypeStr_03          {$88,$ad,$9e,$a6,$00}
+        .define ShopTypeStr_04          {$91,$9e,$a5,$a2,$9c,$ac,$00}
+        .define ShopTypeStr_05          {$95,$9e,$a7,$9d,$a8,$ab,$00}
+        .define ShopOptionsStr          {$81,$94,$98,$ff,$ff,$92,$84,$8b,$8b,$ff,$ff,$84,$97,$88,$93,$00}
+        .define ShopGilStr              {$86,$8f,$00}
+        .define ShopOwnedStr            {$8e,$b0,$a7,$9e,$9d,$c1,$00}
+        .define ShopEquippedStr         {$84,$aa,$ae,$a2,$a9,$a9,$9e,$9d,$c1,$00}
+        .define ShopPowerStr            {$81,$9a,$ad,$ff,$8f,$b0,$ab,$00}
+        .define ShopDefenseStr          {$83,$9e,$9f,$9e,$a7,$ac,$9e,$00}
+        .define ShopDotsStr             {$c7,$00}
+        .define ShopGreetingMsgStr      {$87,$a2,$be,$ff,$82,$9a,$a7,$ff,$88,$ff,$a1,$9e,$a5,$a9,$ff,$b2,$a8,$ae,$bf,$00}
+        .define ShopBuyMsgStr           {$87,$9e,$a5,$a9,$ff,$b2,$a8,$ae,$ab,$ac,$9e,$a5,$9f,$be,$00}
+        .define ShopBuyQtyMsgStr        {$87,$a8,$b0,$ff,$a6,$9a,$a7,$b2,$bf,$00}
+        .define ShopSellMsgStr          {$96,$a1,$9a,$ad,$9c,$a1,$9a,$ff,$a0,$a8,$ad,$bf,$00}
+        .define ShopSellQtyMsgStr       {$87,$a8,$b0,$ff,$a6,$9a,$a7,$b2,$bf,$00}
+        .define ShopByeMsgStr           {$81,$b2,$9e,$be,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
+        .define ShopNotEnoughGilMsgStr  {$98,$a8,$ae,$ff,$a7,$9e,$9e,$9d,$ff,$a6,$a8,$ab,$9e,$ff,$86,$8f,$be,$00}
+        .define ShopTooManyMsgStr       {$93,$a8,$a8,$ff,$a6,$9a,$a7,$b2,$be,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
+        .define ShopOnlyOneMsgStr       {$8e,$a7,$9e,$c3,$ac,$ff,$a9,$a5,$9e,$a7,$ad,$b2,$be,$ff,$00}
 
-; c3/c30d: ( 3, 3) "item"
-ShopTypeText_03:
-@c30d:  .word   $790f
-        .byte   $88,$ad,$9e,$a6,$00
+.else
 
-; c3/c314: ( 2, 3) "relics"
-ShopTypeText_04:
-@c314:  .word   $790d
-        .byte   $91,$9e,$a5,$a2,$9c,$ac,$00
+        .define ShopTypeStr_01          {$25,$6d,$b1,$00}
+        .define ShopTypeStr_02          {$29,$89,$2f,$b1,$00}
+        .define ShopTypeStr_03          {$47,$89,$2f,$b1,$00}
+        .define ShopTypeStr_04          {$8a,$6e,$7a,$74,$a8,$c5,$b1,$00}
+        .define ShopTypeStr_05          {$2d,$c3,$89,$77,$c3,$89,$00}
+        .define ShopOptionsStr          {$6b,$89,$ff,$ff,$89,$ab,$ff,$ff,$45,$ab,$00}
+        .define ShopGilStr              {$2c,$aa,$00}
+        .define ShopOwnedStr            {$a5,$bd,$85,$8d,$ab,$6b,$39,$00}
+        .define ShopEquippedStr         {$7d,$89,$23,$77,$85,$8d,$ab,$6b,$39,$00}
+        .define ShopPowerStr            {$73,$89,$31,$6d,$a9,$c3,$6f,$ff,$c7,$00}
+        .define ShopDefenseStr          {$29,$89,$2d,$c3,$00}
+        .define ShopDotsStr             {$c7,$00}
+        .define ShopGreetingMsgStr      {$d0,$8d,$a7,$bd,$77,$bf,$8d,$c9,$47,$b9,$93,$33,$b5,$89,$71,$b9,$45,$cb,$d1,$00}
+        .define ShopBuyMsgStr           {$d0,$93,$95,$2b,$ff,$69,$77,$8d,$b9,$3f,$8d,$bd,$c9,$cb,$d1,$ff,$ff,$ff,$ff,$00}
+        .define ShopBuyQtyMsgStr        {$d0,$8d,$6f,$83,$ff,$69,$77,$8d,$b9,$3f,$8d,$bd,$c9,$cb,$d1,$00}
+        .define ShopSellMsgStr          {$d0,$93,$95,$bb,$ff,$89,$a9,$7f,$8d,$b9,$3f,$8d,$cb,$d1,$ff,$ff,$ff,$ff,$ff,$00}
+        .define ShopSellQtyMsgStr       {$d0,$8d,$6f,$83,$ff,$89,$a9,$7f,$8d,$b9,$3f,$8d,$cb,$d1,$00}
+        .define ShopByeMsgStr           {$d0,$9d,$8d,$47,$ff,$47,$c5,$a5,$c9,$d1,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
+        .define ShopNotEnoughGilMsgStr  {$d0,$c7,$c7,$91,$6b,$99,$2b,$ff,$7f,$a9,$93,$8d,$b5,$89,$3f,$99,$d1,$00}
+        .define ShopTooManyMsgStr       {$d0,$a5,$89,$ff,$a5,$85,$93,$8d,$b5,$d1,$ff,$ff,$ff,$ff,$ff,$00}
+        .define ShopOnlyOneMsgStr       {$d0,$54,$83,$8b,$ad,$21,$ff,$37,$c1,$89,$25,$b9,$3f,$b5,$d1,$00}
 
-; c3/c31d: ( 2, 3) "vendor"
-ShopTypeText_05:
-@c31d:  .word   $790d
-        .byte   $95,$9e,$a7,$9d,$a8,$ab,$00
+.endif
 
-; c3/c326: ( 3, 7) "buy  sell  exit"
-ShopOptionsText:
-@c326:  .word   $7a0f
-        .byte   $81,$94,$98,$ff,$ff,$92,$84,$8b,$8b,$ff,$ff,$84,$97,$88,$93,$00
-
-; c3/c338: (28, 7) "gp"
-ShopGilText1:
-@c338:  .word   $7a41
-        .byte   $86,$8f,$00
-
-; c3/c33d: (17,11) "gp"
-ShopGilText2:
-@c33d:  .word   $7b2b
-        .byte   $86,$8f,$00
-
-; c3/c342: (21, 9) "owned:"
-ShopOwnedText:
-@c342:  .word   $7ab3
-        .byte   $8e,$b0,$a7,$9e,$9d,$c1,$00
-
-; c3/c34b: (21,13) "equipped:"
-ShopEquippedText:
-@c34b:  .word   $7bb3
-        .byte   $84,$aa,$ae,$a2,$a9,$a9,$9e,$9d,$c1,$00
-
-; c3/c357: ( 3,13) "bat pwr"
-ShopPowerText:
-@c357:  .word   $7b8f
-        .byte   $81,$9a,$ad,$ff,$8f,$b0,$ab,$00
-
-; c3/c361: ( 3,13) "defense"
-ShopDefenseText:
-@c361:  .word   $7b8f
-        .byte   $83,$9e,$9f,$9e,$a7,$ac,$9e,$00
-
-; c3/c36b: (14,13) "_"
-ShopDotsText:
-@c36b:  .word   $7ba5
-        .byte   $c7,$00
-
-; c3/c36f: (11, 3) "hi! can i help you?"
-ShopGreetingMsgText:
-@c36f:  .word   $791f
-        .byte   $87,$a2,$be,$ff,$82,$9a,$a7,$ff,$88,$ff,$a1,$9e,$a5,$a9,$ff,$b2,$a8,$ae,$bf,$00
-
-; c3/c385: (11, 3) "help youself!"
-ShopBuyMsgText:
-@c385:  .word   $791f
-        .byte   $87,$9e,$a5,$a9,$ff,$b2,$a8,$ae,$ab,$ac,$9e,$a5,$9f,$be,$00
-
-; c3/c396: (11, 3) "how many?"
-ShopBuyQtyMsgText:
-@c396:  .word   $791f
-        .byte   $87,$a8,$b0,$ff,$a6,$9a,$a7,$b2,$bf,$00
-
-; c3/c3a2: (11, 3) "whatcha got?"
-ShopSellMsgText:
-@c3a2:  .word   $791f
-        .byte   $96,$a1,$9a,$ad,$9c,$a1,$9a,$ff,$a0,$a8,$ad,$bf,$00
-
-; c3/c3b1: (11, 3) "how many?"
-ShopSellQtyMsgText:
-@c3b1:  .word   $791f
-        .byte   $87,$a8,$b0,$ff,$a6,$9a,$a7,$b2,$bf,$00
-
-; c3/c3bd: (11, 3) "bye!          "
-ShopByeMsgText:
-@c3bd:  .word   $791f
-        .byte   $81,$b2,$9e,$be,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00
-
-; c3/c3ce: (11, 3) "you need more gp!"
-ShopNotEnoughGilMsgText:
-@c3ce:  .word   $791f
-        .byte   $98,$a8,$ae,$ff,$a7,$9e,$9e,$9d,$ff,$a6,$a8,$ab,$9e,$ff,$86,$8f,$be,$00
-
-; c3/c3e2: (11, 3) "too many!       "
-ShopTooManyMsgText:
-@c3e2:  .word   $791f
-        .byte   $93,$a8,$a8,$ff,$a6,$9a,$a7,$b2,$be,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00
-
-; c3/c3f5: (11, 3) "one's plenty!"
-ShopOnlyOneMsgText:
-@c3f5:  .word   $791f
-        .byte   $8e,$a7,$9e,$c3,$ac,$ff,$a9,$a5,$9e,$a7,$ad,$b2,$be,$ff,$00
+.if LANG_EN
+ShopTypeText_01:                pos_text BG3A, {2, 3}, ShopTypeStr_01
+ShopTypeText_02:                pos_text BG3A, {3, 3}, ShopTypeStr_02
+ShopTypeText_03:                pos_text BG3A, {3, 3}, ShopTypeStr_03
+ShopTypeText_04:                pos_text BG3A, {2, 3}, ShopTypeStr_04
+ShopTypeText_05:                pos_text BG3A, {2, 3}, ShopTypeStr_05
+ShopOptionsText:                pos_text BG3A, {3, 7}, ShopOptionsStr
+ShopGilText1:                   pos_text BG3A, {28, 7}, ShopGilStr
+ShopGilText2:                   pos_text BG3A, {17, 11}, ShopGilStr
+ShopOwnedText:                  pos_text BG3A, {21, 9}, ShopOwnedStr
+ShopEquippedText:               pos_text BG3A, {21, 13}, ShopEquippedStr
+ShopPowerText:                  pos_text BG3A, {3, 13}, ShopPowerStr
+ShopDefenseText:                pos_text BG3A, {3, 13}, ShopDefenseStr
+ShopDotsText:                   pos_text BG3A, {14, 13}, ShopDotsStr
+ShopGreetingMsgText:            pos_text BG3A, {11, 3}, ShopGreetingMsgStr
+ShopBuyMsgText:                 pos_text BG3A, {11, 3}, ShopBuyMsgStr
+ShopBuyQtyMsgText:              pos_text BG3A, {11, 3}, ShopBuyQtyMsgStr
+ShopSellMsgText:                pos_text BG3A, {11, 3}, ShopSellMsgStr
+ShopSellQtyMsgText:             pos_text BG3A, {11, 3}, ShopSellQtyMsgStr
+ShopByeMsgText:                 pos_text BG3A, {11, 3}, ShopByeMsgStr
+ShopNotEnoughGilMsgText:        pos_text BG3A, {11, 3}, ShopNotEnoughGilMsgStr
+ShopTooManyMsgText:             pos_text BG3A, {11, 3}, ShopTooManyMsgStr
+ShopOnlyOneMsgText:             pos_text BG3A, {11, 3}, ShopOnlyOneMsgStr
+.else
+ShopTypeText_01:                pos_text BG3A, {3, 2}, ShopTypeStr_01
+ShopTypeText_02:                pos_text BG3A, {3, 2}, ShopTypeStr_02
+ShopTypeText_03:                pos_text BG3A, {3, 2}, ShopTypeStr_03
+ShopTypeText_04:                pos_text BG3A, {2, 2}, ShopTypeStr_04
+ShopTypeText_05:                pos_text BG3A, {2, 2}, ShopTypeStr_05
+ShopOptionsText:                pos_text BG3A, {3, 6}, ShopOptionsStr
+ShopGilText1:                   pos_text BG3A, {28, 6}, ShopGilStr
+ShopGilText2:                   pos_text BG3A, {17, 10}, ShopGilStr
+ShopOwnedText:                  pos_text BG3A, {21, 8}, ShopOwnedStr
+ShopEquippedText:               pos_text BG3A, {21, 12}, ShopEquippedStr
+ShopPowerText:                  pos_text BG3A, {6, 12}, ShopPowerStr
+ShopDefenseText:                pos_text BG3A, {6, 12}, ShopDefenseStr
+ShopDotsText:                   pos_text BG3A, {14, 13}, ShopDotsStr
+ShopGreetingMsgText:            pos_text BG3A, {11, 2}, ShopGreetingMsgStr
+ShopBuyMsgText:                 pos_text BG3A, {11, 2}, ShopBuyMsgStr
+ShopBuyQtyMsgText:              pos_text BG3A, {11, 2}, ShopBuyQtyMsgStr
+ShopSellMsgText:                pos_text BG3A, {11, 2}, ShopSellMsgStr
+ShopSellQtyMsgText:             pos_text BG3A, {11, 2}, ShopSellQtyMsgStr
+ShopByeMsgText:                 pos_text BG3A, {11, 2}, ShopByeMsgStr
+ShopNotEnoughGilMsgText:        pos_text BG3A, {11, 2}, ShopNotEnoughGilMsgStr
+ShopTooManyMsgText:             pos_text BG3A, {11, 2}, ShopTooManyMsgStr
+ShopOnlyOneMsgText:             pos_text BG3A, {11, 2}, ShopOnlyOneMsgStr
+.endif
 
 ; ------------------------------------------------------------------------------
 

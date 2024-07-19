@@ -414,7 +414,7 @@ loop2:  tyx
         longa_clc
         lda     f:MapAnimGfxBG3Ptrs,x
         clc
-        adc     #.loword(MapAnimGfxBG3)
+        adc     #near MapAnimGfxBG3
         sta     $f3
         shorta0
         lda     #^MapAnimGfxBG3

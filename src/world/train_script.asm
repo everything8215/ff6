@@ -66,8 +66,7 @@ _ee235b:
         sec
         sbc     $58
         bpl     @237c
-        eor     #$ff
-        inc
+        neg_a
         inc     $60
 @237c:  sta     hWRMPYA
         lda     $7f0b38,x   ; pitch data 1
@@ -112,16 +111,14 @@ _ee235b:
         stx     $38
         lda     $7f0bb8,x   ; yaw data
         bpl     @23de
-        eor     #$ff
-        inc
+        neg_a
         inc     $60
 @23de:  sta     hWRMPYA
         ldy     #$0000
 @23e4:  tyx
         lda     $7f0bf8,x   ; yaw multiplier data ???
         bpl     @23f0
-        eor     #$ff
-        inc
+        neg_a
         dec     $60
 @23f0:  sta     hWRMPYB
         lda     $38
@@ -191,8 +188,7 @@ _ee235b:
         lda     f:_ee2b32,x   ; x position
         sbc     $58
         bpl     @2497
-        eor     #$ff
-        inc
+        neg_a
         inc     $5c
 @2497:  sta     hWRMPYB
         lda     $5c
@@ -210,8 +206,7 @@ _ee235b:
         sec
         sbc     $5a
         bpl     @24bf
-        eor     #$ff
-        inc
+        neg_a
         inc     $5c
 @24bf:  sta     hWRMPYB
         lda     $5c
@@ -316,24 +311,20 @@ _ee235b:
         bcs     @25a5       ; branch if > 90 degrees
         bra     @25ce
 @25a5:  lda     $5a
-        eor     #$ffff
-        inc
+        neg_a
         sta     $5a
         bra     @25ce
 @25af:  cmp     #270
         bcs     @25c6       ; branch if > 270 degrees
         lda     $58
-        eor     #$ffff
-        inc
+        neg_a
         sta     $58
         lda     $5a
-        eor     #$ffff
-        inc
+        neg_a
         sta     $5a
         bra     @25ce
 @25c6:  lda     $58
-        eor     #$ffff
-        inc
+        neg_a
         sta     $58
 @25ce:  lda     $5a
         asl
@@ -345,8 +336,7 @@ _ee235b:
         clc
         adc     $58
         sta     f:$00003f     ; m7b
-        eor     #$ffff      ; 2's complement
-        inc
+        neg_a
         sta     f:$000041     ; m7c
         shorta
         lda     $36
@@ -818,7 +808,7 @@ TrainCmd_a0:
         shorta_sec
         lda     $f0
         and     #$03
-        eor     #$ff
+        not_a
         sta     $29         ; rotation speed
         lda     #$ff
         sta     $2a
@@ -856,7 +846,7 @@ TrainCmd_e0:
         sta     f:$0011e0
         lda     f:EventBattleGroup+1,x
         sta     f:$0011e1
-        lda     #BATTLE_BG_MAGITEK_TRAIN
+        lda     #BATTLE_BG::MAGITEK_TRAIN
         sta     f:$0011e2
         clr_a
         sta     f:$0011e3
@@ -891,7 +881,7 @@ TrainCmd_e1:
         sta     f:$0011e0
         lda     f:EventBattleGroup+1,x
         sta     f:$0011e1
-        lda     #BATTLE_BG_MAGITEK_TRAIN
+        lda     #BATTLE_BG::MAGITEK_TRAIN
         sta     f:$0011e2
         clr_a
         sta     f:$0011e3

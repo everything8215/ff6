@@ -483,7 +483,7 @@ MoveVehicle:
         shorti
         lda     $29
         bpl     @1aa5
-        eor     #$ffff
+        not_a
 @1aa5:  lsr3
         tax
         stx     hWRMPYA
@@ -517,7 +517,7 @@ MoveVehicle:
         bne     @1b23
         lda     $2d
         bpl     @1aec
-        eor     #$ffff
+        not_a
 @1aec:  lsr3
         sta     $58
         lda     $26
@@ -1168,9 +1168,11 @@ GetPlayerInput:
 @204e:  lda     $04
         sta     $31
         shorta
-        lda     $e8
+.if LANG_EN
+        lda     $e8                     ; don't enter airship if menu is opening
         bit     #$01
         bne     @20b1
+.endif
         lda     $e9
         bit     #$04
         beq     @20b1

@@ -166,70 +166,70 @@ TheEnd_ext:
         sta     hVMADDL
         sta     hVMADDH
         lda     #$01
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         lda     #<TheEndGfx1
-        sta     $4302
+        sta     hDMA0::ADDR_L
         lda     #>TheEndGfx1
-        sta     $4303
+        sta     hDMA0::ADDR_H
         lda     #^TheEndGfx1
-        sta     $4304
-        lda     #$00                    ; size = $0d00
-        sta     $4305
-        lda     #$0d
-        sta     $4306
-        lda     #$01
+        sta     hDMA0::ADDR_B
+        lda     #<$0d00                    ; size = $0d00
+        sta     hDMA0::SIZE_L
+        lda     #>$0d00
+        sta     hDMA0::SIZE_H
+        lda     #BIT_0
         sta     hMDMAEN
         lda     #<TheEndGfx2
-        sta     $4302
+        sta     hDMA0::ADDR_L
         lda     #>TheEndGfx2
-        sta     $4303
+        sta     hDMA0::ADDR_H
         lda     #^TheEndGfx2
-        sta     $4304
-        lda     #$00                    ; size = $0100
-        sta     $4305
-        lda     #$01
-        sta     $4306
-        lda     #$01
+        sta     hDMA0::ADDR_B
+        lda     #<$0200                    ; size = $0100
+        sta     hDMA0::SIZE_L
+        lda     #>$0100
+        sta     hDMA0::SIZE_H
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; transfer palettes to ppu (for bg)
         lda     #$00
         sta     hCGADD
         lda     #$00
-        sta     $4300
-        lda     #$22
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hCGDATA
+        sta     hDMA0::HREG
         lda     #<TheEndPal
-        sta     $4302
+        sta     hDMA0::ADDR_L
         lda     #>TheEndPal
-        sta     $4303
+        sta     hDMA0::ADDR_H
         lda     #^TheEndPal
-        sta     $4304
-        lda     #$00                    ; size = $0100
-        sta     $4305
-        lda     #$01
-        sta     $4306
-        lda     #$01
+        sta     hDMA0::ADDR_B
+        lda     #<$0100                    ; size = $0100
+        sta     hDMA0::SIZE_L
+        lda     #>$0100
+        sta     hDMA0::SIZE_H
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; transfer palettes to ppu (for sprites)
         lda     #$00
-        sta     $4300
-        lda     #$22
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hCGDATA
+        sta     hDMA0::HREG
         lda     #<TheEndPal
-        sta     $4302
+        sta     hDMA0::ADDR_L
         lda     #>TheEndPal
-        sta     $4303
+        sta     hDMA0::ADDR_H
         lda     #^TheEndPal
-        sta     $4304
-        lda     #$00                    ; size = $0100
-        sta     $4305
-        lda     #$01
-        sta     $4306
-        lda     #$01
+        sta     hDMA0::ADDR_B
+        lda     #<$0100                    ; size = $0100
+        sta     hDMA0::SIZE_L
+        lda     #>$0100
+        sta     hDMA0::SIZE_H
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; load star color palette for fade in
@@ -1118,72 +1118,72 @@ TheEndNMI:
         phx
         pld
         lda     #$10
-        lda     #$00
+        lda     #0
         sta     hHDMAEN
         lda     #$00
         sta     hOAMADDL
         sta     hOAMADDH
         lda     #$00
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #<hOAMDATA              ; $1800 -> $2104 (sprite data)
-        sta     $4301
-        lda     #$00
-        sta     $4302
-        lda     #$18
-        sta     $4303
-        lda     #$00
-        sta     $4304
-        lda     #$20                    ; copy $0200 bytes
-        sta     $4305
-        lda     #$02
-        sta     $4306
-        lda     #$00
-        sta     $4307
-        lda     #$01
+        sta     hDMA0::HREG
+        lda     #<$001800
+        sta     hDMA0::ADDR_L
+        lda     #>$001800
+        sta     hDMA0::ADDR_H
+        lda     #^$001800
+        sta     hDMA0::ADDR_B
+        lda     #<$0220                    ; copy $0220 bytes
+        sta     hDMA0::SIZE_L
+        lda     #>$0200
+        sta     hDMA0::SIZE_H
+        lda     #^$001800
+        sta     hDMA0::HDMA_B
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; update palette 12
         lda     #$c0
         sta     hCGADD
         lda     #$00
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #<hCGDATA               ; $0980 -> $2122 (palette data)
-        sta     $4301
-        lda     #$80
-        sta     $4302
-        lda     #$09
-        sta     $4303
-        lda     #$00
-        sta     $4304
-        lda     #$20                    ; copy 32 bytes (16 colors)
-        sta     $4305
-        lda     #$00
-        sta     $4306
-        lda     #$00
-        sta     $4307
-        lda     #$01
+        sta     hDMA0::HREG
+        lda     #<$000980
+        sta     hDMA0::ADDR_L
+        lda     #>$000980
+        sta     hDMA0::ADDR_H
+        lda     #^$000980
+        sta     hDMA0::ADDR_B
+        lda     #<32
+        sta     hDMA0::SIZE_L
+        lda     #>32
+        sta     hDMA0::SIZE_H
+        lda     #^$000980
+        sta     hDMA0::HDMA_B           ; not needed
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; update palette 3
         lda     #$30
         sta     hCGADD
         lda     #$00
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #<hCGDATA               ; $09a0 -> $2122 (palette data)
-        sta     $4301
-        lda     #$a0
-        sta     $4302
-        lda     #$09
-        sta     $4303
-        lda     #$00
-        sta     $4304
-        lda     #$20                    ; copy 32 bytes (16 colors)
-        sta     $4305
-        lda     #$00
-        sta     $4306
-        lda     #$00
-        sta     $4307
-        lda     #$01
+        sta     hDMA0::HREG
+        lda     #<$0009a0
+        sta     hDMA0::ADDR_L
+        lda     #>$0009a0
+        sta     hDMA0::ADDR_H
+        lda     #^$0009a0
+        sta     hDMA0::ADDR_B
+        lda     #<32
+        sta     hDMA0::SIZE_L
+        lda     #>32
+        sta     hDMA0::SIZE_H
+        lda     #^$0009a0
+        sta     hDMA0::HDMA_B
+        lda     #BIT_0
         sta     hMDMAEN
 
         jsr     DrawTheEndStars
@@ -1200,40 +1200,40 @@ TheEndNMI:
         bcc     @fdaf
         lda     #$00
 @fdaf:  sta     $3a
-@fdb1:  lda     #$01                    ; set up hdma channel #7
-        sta     $4370                   ; $1b00 -> $2126 (window 1 position)
+@fdb1:  lda     #$01                    ; set up hdma channel #7 (window 1 position)
+        sta     hDMA7::CTRL
         lda     #<hWH0
-        sta     $4371
-        lda     #$00
-        sta     $4372
-        lda     #$1b
-        sta     $4373
-        lda     #$00
-        sta     $4374
-        sta     $4377
-        lda     #$01                    ; set up hdma channel #6
-        sta     $4360                   ; $1b00 -> $2128 (window 2 position)
+        sta     hDMA7::HREG
+        lda     #<$001b00
+        sta     hDMA7::ADDR_L
+        lda     #>$001b00
+        sta     hDMA7::ADDR_H
+        lda     #^$001b00
+        sta     hDMA7::ADDR_B
+        sta     hDMA7::HDMA_B
+        lda     #$01                    ; set up hdma channel #6 (window 2 position)
+        sta     hDMA6::CTRL
         lda     #<hWH2
-        sta     $4361
-        lda     #$00
-        sta     $4362
-        lda     #$1b
-        sta     $4363
-        lda     #$00
-        sta     $4364
-        sta     $4367
-        lda     #$02                    ; set up hdma channel #5
-        sta     $4350                   ; $1c00 -> $2110 (bg2 vertical scroll)
+        sta     hDMA6::HREG
+        lda     #<$001b00
+        sta     hDMA6::ADDR_L
+        lda     #>$001b00
+        sta     hDMA6::ADDR_H
+        lda     #^$001b00
+        sta     hDMA6::ADDR_B
+        sta     hDMA6::HDMA_B
+        lda     #$02                    ; set up hdma channel #5 (bg2 vertical scroll)
+        sta     hDMA5::CTRL
         lda     #<hBG2VOFS
-        sta     $4351
-        lda     #$00
-        sta     $4352
-        lda     #$1c
-        sta     $4353
-        lda     #$00
-        sta     $4354
-        sta     $4357
-        lda     #$e0
+        sta     hDMA5::HREG
+        lda     #<$001c00
+        sta     hDMA5::ADDR_L
+        lda     #>$001c00
+        sta     hDMA5::ADDR_H
+        lda     #^$001c00
+        sta     hDMA5::ADDR_B
+        sta     hDMA5::HDMA_B
+        lda     #BIT_5 | BIT_6 | BIT_7
         sta     hHDMAEN                 ; enable hdma channels #5, #6, #7
         longa
         longi

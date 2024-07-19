@@ -1,0 +1,12 @@
+{
+  "asset_label": "MagicName",
+  "asset_const": "MAGIC_NAME",
+  "inc_path": "include/text/magic_name_jp.inc",
+  "item_size": 5,
+  "char_tables": [
+    "small_symbols_jp",
+    "kana",
+    "fixed_length_jp"
+  ],
+  "text": []
+}

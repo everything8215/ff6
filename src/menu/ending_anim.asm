@@ -12,7 +12,6 @@
 ; +----------------------------------------------------------------------------+
 
 .segment "ending_anim1"
-.res 16
 
 ; ------------------------------------------------------------------------------
 
@@ -570,6 +569,7 @@ AirshipPropellerRightSprite4:
 .endmac
 
 EndingCharNameAnim:
+.if LANG_EN
 @8de4:  make_ending_char_name_anim "Terra",     $40, $00
         make_ending_char_name_anim "Locke",     $4c, $8c
         make_ending_char_name_anim "Cyan",      $38, $68
@@ -584,6 +584,22 @@ EndingCharNameAnim:
         make_ending_char_name_anim "Gau",       $6c, $00
         make_ending_char_name_anim "Gogo",      $68, $00
         make_ending_char_name_anim "Umaro",     $64, $00
+.else
+        make_ending_char_name_anim "Terra",     $40, $00
+        make_ending_char_name_anim "Locke",     $50, $88
+        make_ending_char_name_anim "Cyan",      $30, $78
+        make_ending_char_name_anim "Shadow",    $60, $00
+        make_ending_char_name_anim "Edgar",     $30, $98
+        make_ending_char_name_anim "Sabin",     $30, $90
+        make_ending_char_name_anim "Celes",     $48, $00
+        make_ending_char_name_anim "Strago",    $40, $00
+        make_ending_char_name_anim "Relm",      $48, $00
+        make_ending_char_name_anim "Setzer",    $38, $78
+        make_ending_char_name_anim "Mog",       $6c, $00
+        make_ending_char_name_anim "Gau",       $6c, $00
+        make_ending_char_name_anim "Gogo",      $68, $00
+        make_ending_char_name_anim "Umaro",     $64, $00
+.endif
 
 ; "as"
 EndingCharAsAnim:
@@ -709,6 +725,7 @@ EndingCharAsSprite:
         .byte   $08,$00,$2b,$33
 
 EndingTerraNameSprite:
+.if LANG_EN
 @8e98:  .byte   28
         .byte   $80,$00,$76,$31
         .byte   $00,$10,$2c,$31
@@ -738,8 +755,38 @@ EndingTerraNameSprite:
         .byte   $70,$10,$31,$31
         .byte   $78,$08,$03,$31
         .byte   $78,$10,$13,$31
+.else
+        .byte   26
+        .byte   $80,$00,$76,$31
+        .byte   $00,$10,$2c,$31
+        .byte   $08,$10,$2d,$31
+        .byte   $10,$08,$08,$31
+        .byte   $10,$10,$18,$31
+        .byte   $18,$08,$0d,$31
+        .byte   $18,$10,$1d,$31
+        .byte   $20,$08,$00,$31
+        .byte   $20,$10,$10,$31
+        .byte   $b0,$00,$42,$31
+        .byte   $30,$10,$62,$31
+        .byte   $38,$10,$63,$31
+        .byte   $40,$08,$21,$31
+        .byte   $40,$10,$31,$31
+        .byte   $48,$08,$00,$31
+        .byte   $48,$10,$10,$31
+        .byte   $50,$08,$0d,$31
+        .byte   $50,$10,$1d,$31
+        .byte   $58,$08,$05,$31
+        .byte   $58,$10,$15,$31
+        .byte   $60,$08,$0e,$31
+        .byte   $60,$10,$1e,$31
+        .byte   $68,$08,$21,$31
+        .byte   $68,$10,$31,$31
+        .byte   $70,$08,$03,$31
+        .byte   $70,$10,$13,$31
+.endif
 
 EndingLockeNameSprite:
+.if LANG_EN
 @8f09:  .byte   20
         .byte   $80,$00,$4e,$31
         .byte   $00,$10,$6e,$31
@@ -761,11 +808,33 @@ EndingLockeNameSprite:
         .byte   $50,$10,$1b,$31
         .byte   $58,$08,$04,$31
         .byte   $58,$10,$14,$31
+.else
+        .byte   18
+        .byte   $80,$00,$4e,$31
+        .byte   $00,$10,$6e,$31
+        .byte   $08,$10,$6f,$31
+        .byte   $10,$08,$0e,$31
+        .byte   $10,$10,$1e,$31
+        .byte   $18,$08,$02,$31
+        .byte   $18,$10,$12,$31
+        .byte   $20,$08,$0a,$31
+        .byte   $20,$10,$1a,$31
+        .byte   $b0,$00,$44,$31
+        .byte   $30,$10,$64,$31
+        .byte   $38,$10,$65,$31
+        .byte   $40,$08,$0e,$31
+        .byte   $40,$10,$1e,$31
+        .byte   $48,$08,$0b,$31
+        .byte   $48,$10,$1b,$31
+        .byte   $50,$08,$04,$31
+        .byte   $50,$10,$14,$31
+.endif
 
 EndingBlankNameSprite:
 @8f5a:  .byte   0
 
 EndingCyanNameSprite1:
+.if LANG_EN
 @8f5b:  .byte   9
         .byte   $80,$00,$44,$31
         .byte   $00,$10,$64,$31
@@ -776,6 +845,24 @@ EndingCyanNameSprite1:
         .byte   $18,$10,$10,$31
         .byte   $20,$08,$0d,$31
         .byte   $20,$10,$1d,$31
+.else
+        .byte   15
+        .byte   $80,$00,$44,$31
+        .byte   $00,$10,$64,$31
+        .byte   $08,$10,$65,$31
+        .byte   $10,$08,$00,$31
+        .byte   $10,$10,$10,$31
+        .byte   $18,$08,$28,$31
+        .byte   $18,$10,$38,$31
+        .byte   $20,$08,$04,$31
+        .byte   $20,$10,$14,$31
+        .byte   $28,$08,$0d,$31
+        .byte   $28,$10,$1d,$31
+        .byte   $30,$08,$0d,$31
+        .byte   $30,$10,$1d,$31
+        .byte   $38,$08,$04,$31
+        .byte   $38,$10,$14,$31
+.endif
 
 EndingCyanNameSprite2:
 @8f80:  .byte   19
@@ -855,6 +942,7 @@ EndingFigaroNameSprite:
         .byte   $30,$10,$1e,$31
 
 EndingSabinNameSprite:
+.if LANG_EN
 @9088:  .byte   20
         .byte   $80,$00,$74,$31
         .byte   $00,$10,$3e,$31
@@ -876,6 +964,27 @@ EndingSabinNameSprite:
         .byte   $50,$10,$1d,$31
         .byte   $58,$08,$04,$31
         .byte   $58,$10,$14,$31
+.else
+        .byte   18
+        .byte   $80,$00,$70,$31
+        .byte   $00,$10,$3a,$31
+        .byte   $08,$10,$3b,$31
+        .byte   $10,$08,$00,$31
+        .byte   $10,$10,$10,$31
+        .byte   $18,$08,$22,$31
+        .byte   $18,$10,$32,$31
+        .byte   $20,$08,$07,$31
+        .byte   $20,$10,$17,$31
+        .byte   $b0,$00,$72,$31
+        .byte   $30,$10,$3c,$31
+        .byte   $38,$10,$3d,$31
+        .byte   $40,$08,$04,$31
+        .byte   $40,$10,$14,$31
+        .byte   $48,$08,$0d,$31
+        .byte   $48,$10,$1d,$31
+        .byte   $50,$08,$04,$31
+        .byte   $50,$10,$14,$31
+.endif
 
 EndingCelesNameSprite:
 @90d9:  .byte   22
@@ -903,6 +1012,7 @@ EndingCelesNameSprite:
         .byte   $60,$10,$14,$31
 
 EndingStragoNameSprite:
+.if LANG_EN
 @9132:  .byte   24
         .byte   $80,$00,$74,$31
         .byte   $00,$10,$3e,$31
@@ -928,6 +1038,35 @@ EndingStragoNameSprite:
         .byte   $60,$10,$34,$31
         .byte   $68,$08,$22,$31
         .byte   $68,$10,$32,$31
+.else
+        .byte   $1a
+        .byte   $80,$00,$74,$31
+        .byte   $00,$10,$3e,$31
+        .byte   $08,$10,$3f,$31
+        .byte   $10,$08,$23,$31
+        .byte   $10,$10,$33,$31
+        .byte   $18,$08,$21,$31
+        .byte   $18,$10,$31,$31
+        .byte   $20,$08,$00,$31
+        .byte   $20,$10,$10,$31
+        .byte   $28,$08,$06,$31
+        .byte   $28,$10,$16,$31
+        .byte   $30,$08,$24,$31
+        .byte   $30,$10,$34,$31
+        .byte   $38,$08,$22,$31
+        .byte   $38,$10,$32,$31
+        .byte   $c8,$00,$70,$31
+        .byte   $48,$10,$3a,$31
+        .byte   $50,$10,$3b,$31
+        .byte   $58,$08,$00,$31
+        .byte   $58,$10,$10,$31
+        .byte   $60,$08,$06,$31
+        .byte   $60,$10,$16,$31
+        .byte   $68,$08,$24,$31
+        .byte   $68,$10,$34,$31
+        .byte   $70,$08,$22,$31
+        .byte   $70,$10,$32,$31
+.endif
 
 EndingRelmNameSprite:
 @9193:  .byte   24
@@ -1413,9 +1552,9 @@ _c29854:
 ;    $02: x position
 ;    $03: y position
 
-.macro def_credits_sprite _buf_ptr, _x, _y
-        .addr   _buf_ptr
-        .byte   _x, _y
+.macro def_credits_sprite buf_ptr, xx, yy
+        .addr   buf_ptr
+        .byte   xx, yy
 .endmac
 
 ; scene 1
@@ -1625,13 +1764,21 @@ _c29854:
 .proc CreditsSpritesScene5Page4
 @9a88:  def_credits_sprite $9e5b,$48,$88
         def_credits_sprite $9ea1,$80,$88
+.if ::LANG_EN
         def_credits_sprite $a275,$5c,$94
         def_credits_sprite $a2bb,$94,$94
         def_credits_sprite $a301,$60,$a8
         def_credits_sprite $a347,$88,$a8
+; translator Ted Woolsey added in English translation
         def_credits_sprite $a7ed,$58,$bc
         def_credits_sprite $a761,$54,$c8
         def_credits_sprite $a7a7,$74,$c8
+.else
+        def_credits_sprite $a275,$5c,$98
+        def_credits_sprite $a2bb,$94,$98
+        def_credits_sprite $a301,$60,$ac
+        def_credits_sprite $a347,$88,$ac
+.endif
 .endproc
 
 .proc CreditsSpritesScene5Page5
@@ -1736,9 +1883,16 @@ _c29854:
         def_credits_sprite $a9d7,$60,$78
         def_credits_sprite $aa1d,$60,$84
         def_credits_sprite $aa63,$60,$90
+.if ::LANG_EN
         def_credits_sprite $aaef,$60,$9c
         def_credits_sprite $ab35,$60,$a8
         def_credits_sprite $ab7b,$60,$b4
+.else
+        def_credits_sprite $aaa9,$60,$9c
+        def_credits_sprite $aaef,$60,$a8
+        def_credits_sprite $ab35,$60,$b4
+        def_credits_sprite $ab7b,$60,$c0
+.endif
 .endproc
 
 ; scene 7
@@ -1753,30 +1907,57 @@ _c29854:
 .endproc
 
 .proc CreditsSpritesScene7Page2
+.if ::LANG_EN
 @9bf0:  def_credits_sprite $afdb,$60,$6c
         def_credits_sprite $b021,$60,$78
         def_credits_sprite $b067,$60,$84
+.else
+        def_credits_sprite $af4f,$60,$6c
+        def_credits_sprite $af95,$60,$78
+        def_credits_sprite $afdb,$60,$84
+.endif
         def_credits_sprite $a71b,$60,$90
         def_credits_sprite $a761,$60,$9c
         def_credits_sprite $a7a7,$60,$a8
 .endproc
 
 .proc CreditsSpritesScene7Page3
+.if ::LANG_EN
 @9c08:  def_credits_sprite $abc1,$54,$6c
         def_credits_sprite $ac07,$5c,$78
         def_credits_sprite $ac4d,$58,$84
         def_credits_sprite $adf1,$60,$90
         def_credits_sprite $acd9,$58,$9c
+.else
+        def_credits_sprite $abc1,$60,$6c
+        def_credits_sprite $ac07,$60,$78
+        def_credits_sprite $ac4d,$60,$84
+        def_credits_sprite $ac93,$60,$90
+        def_credits_sprite $acd9,$60,$9c
+        def_credits_sprite $ad1f,$60,$a8
+        def_credits_sprite $ad65,$60,$b4
+.endif
 .endproc
 
 .proc CreditsSpritesScene7Page4
+.if ::LANG_EN
 @9c1c:  def_credits_sprite $ad1f,$58,$6c
         def_credits_sprite $ad65,$54,$78
         def_credits_sprite $adab,$4c,$84
         def_credits_sprite $ac93,$44,$90
         def_credits_sprite $ae37,$4c,$9c
+.else
+        def_credits_sprite $adab,$60,$6c
+        def_credits_sprite $adf1,$60,$78
+        def_credits_sprite $ae37,$60,$84
+        def_credits_sprite $b3af,$60,$9c
+        def_credits_sprite $b3f5,$60,$a8
+        def_credits_sprite $b43b,$60,$b4
+        def_credits_sprite $b481,$60,$c0
+.endif
 .endproc
 
+.if LANG_EN
 .proc CreditsSpritesScene7Page5
 @9c30:  def_credits_sprite $ae7d,$48,$6c
         def_credits_sprite $aec3,$50,$78
@@ -1784,6 +1965,7 @@ _c29854:
         def_credits_sprite $af4f,$48,$90
         def_credits_sprite $af95,$58,$9c
 .endproc
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -1850,7 +2032,10 @@ BigCreditsTextPtrs5:
 @9d50:  .addr   _a221,$9fb9,_a226,$9fff,_a22f,$a045,_a236,$a08b
         .addr   _a23d,$a0d1,_a247,$a117,_a24e,$a15d,_a257,$a1a3
         .addr   _a25f,$a1e9,_a264,$a22f,_a272,$a275,_a279,$a2bb
-        .addr   _a27c,$a301,_a281,$a347,_a285,$a761,_a289,$a7a7
+        .addr   _a27c,$a301,_a281,$a347
+.if LANG_EN
+        .addr   _a285,$a761,_a289,$a7a7
+.endif
         .addr   _a298,$a38d,_a2a1,$a3d3,_a2aa,$a419,_a2b1,$a45f
         .addr   _a2b7,$a4a5,_a2c0,$a4eb,_a2c8,$a531,_a2cf,$a577
         .addr   _a2e1,$a649,_a2e8,$a68f,_a2ef,$a6d5,_a2f7,$a71b
@@ -1886,7 +2071,9 @@ SmallCreditsTextPtrs4:
 SmallCreditsTextPtrs5:
 @9e24:  .addr   _a137,$9d89,_a218,$9dcf,_a101,$9e15,_a26b,$9e5b
         .addr   _a084,$9ea1,_a291,$9ee7,_a2d7,$9f2d,_9f98,$9f73
+.if LANG_EN
         .addr   _a64f,$a7ed
+.endif
 
 ; scene 6 (land with no sprites)
 SmallCreditsTextPtrs6:
@@ -1899,7 +2086,11 @@ SmallCreditsTextPtrs6:
         .addr   _a40f,$a4a5,_a418,$a4eb,_a421,$a531,_a42d,$a577
         .addr   _a436,$a5bd,_a441,$a603,_a44a,$a649,_a451,$a68f
         .addr   _a459,$a6d5,_a51c,$ae7d,_a527,$aec3,_a530,$af09
-        .addr   _a539,$a9d7,_a543,$aa1d,_a54f,$aa63,_a558,$aaef
+        .addr   _a539,$a9d7,_a543,$aa1d,_a54f,$aa63
+.if !LANG_EN
+        .addr   _a52c,$aaa9
+.endif
+        .addr   _a558,$aaef
         .addr   _a561,$ab35,_a56b,$ab7b,_a4f5,$a991,_a466,$b021
         .addr   _a46f,$b067,_a47c,$b0ad,_a4fe,$b139,_a508,$b17f
         .addr   _a511,$b1c5,_a3d1,$b20b,_a3dc,$b251,_a3e4,$b297
@@ -1908,13 +2099,23 @@ SmallCreditsTextPtrs6:
 
 ; scene 7 (big airship)
 SmallCreditsTextPtrs7:
-@9f2c:  .addr   _a4a4,$a71b,_a4ab,$a761,_a4b2,$a7a7,_a486,$afdb
-        .addr   _a492,$b021,_a49c,$b067,_a4bb,$a7ed,_a4c4,$a833
+@9f2c:  .addr   _a4a4,$a71b,_a4ab,$a761,_a4b2,$a7a7
+.if LANG_EN
+        .addr   _a486,$afdb,_a492,$b021,_a49c,$b067
+.else
+        .addr   _a486,$af4f,_a492,$af95,_a49c,$afdb
+.endif
+        .addr   _a4bb,$a7ed,_a4c4,$a833
         .addr   _a4cf,$a879,_a4d6,$a8bf,_a4e1,$a905,_a4ea,$a94b
         .addr   _a575,$abc1,_a583,$ac07,_a58f,$ac4d,_a59c,$ac93
         .addr   _a5ac,$acd9,_a5b9,$ad1f,_a5c4,$ad65,_a5d0,$adab
-        .addr   _a5de,$adf1,_a5e9,$ae37,_a5f7,$ae7d,_a607,$aec3
-        .addr   _a615,$af09,_a621,$af4f,_a631,$af95
+        .addr   _a5de,$adf1,_a5e9,$ae37
+.if LANG_EN
+        .addr   _a5f7,$ae7d,_a607,$aec3,_a615,$af09,_a621,$af4f
+        .addr   _a631,$af95
+.else
+        .addr   _a5f7,$b3af,_a607,$b3f5,_a615,$b43b,_a621,$b481
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -2079,8 +2280,10 @@ _a272:  .asciiz "WEIMIN"
 _a279:  .asciiz "LI"
 _a27c:  .asciiz "AIKO"
 _a281:  .asciiz "ITO"
+.if LANG_EN
 _a285:  .asciiz "TED"
 _a289:  .asciiz "WOOLSEY"
+.endif
 _a291:  .asciiz "system"
 _a298:  .asciiz "MASAHIRO"
 _a2a1:  .asciiz "NAKAJIMA"
@@ -2096,7 +2299,11 @@ _a2e8:  .asciiz "MIZUNO"
 _a2ef:  .asciiz "HITOSHI"
 _a2f7:  .asciiz "TAKEMURA"
 _a300:  .asciiz "test"
+.if LANG_EN
 _a305:  .asciiz "coordinator"
+.else
+_a305:  .asciiz "coordinater"           ; typo in the japanese version
+.endif
 _a311:  .asciiz "s.kajitani"
 _a31c:  .asciiz "r.kouda"
 _a324:  .asciiz "k.inagi"
@@ -2159,9 +2366,13 @@ _a530:  .asciiz "a.kawazu"
 _a539:  .asciiz "c.fujioka"
 _a543:  .asciiz "h.kobayashi"
 _a54f:  .asciiz "h.tanaka"
+.if !LANG_EN
+_a52c:  .asciiz "t.horii"
+.endif
 _a558:  .asciiz "t.mikasa"
 _a561:  .asciiz "h.nishida"
 _a56b:  .asciiz "t.takechi"
+.if LANG_EN
 _a575:  .asciiz "rich silveira"
 _a583:  .asciiz "toshi horii"
 _a58f:  .asciiz "j.yanagihara"
@@ -2177,9 +2388,31 @@ _a607:  .asciiz "brian fehdrau"
 _a615:  .asciiz "jeff petkau"
 _a621:  .asciiz "george sinfield"
 _a631:  .asciiz "alan weiss"
+.else
+_a575:  .asciiz "t.miyake"
+_a583:  .asciiz "m.oohara"
+_a58f:  .asciiz "f.nishikawa"
+_a59c:  .asciiz "a.takahashi"
+_a5ac:  .asciiz "m.nagai"
+_a5b9:  .asciiz "y.koyama"
+_a5c4:  .asciiz "k.shinoda"
+
+_a5d0:  .asciiz "t.kondo"
+_a5de:  .asciiz "h.kasuga"
+_a5e9:  .asciiz "t.tsuyuzaki"
+_a5f7:  .asciiz "j.chihara"
+_a607:  .asciiz "t.yamazaki"
+_a615:  .asciiz "r.sakakibara"
+_a621:  .asciiz "n.shimamura"
+
+.endif
+
 _a63c:  .asciiz "y.matsumura"
 _a648:  .asciiz "a.ueda"
+
+.if LANG_EN
 _a64f:  .asciiz "translator"
+.endif
 
 ; ------------------------------------------------------------------------------
 

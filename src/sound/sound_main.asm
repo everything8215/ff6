@@ -46,9 +46,9 @@
 
 ; [ make song sample list ]
 
-.macro def_song_sample _sample_id
+.macro def_song_sample sample_id
         ; use the sample id plus 1 (zero means no sample)
-        .word _sample_id+1
+        .word SAMPLE_BRR::sample_id + 1
 .endmac
 
 .macro begin_song_samples _song_id
@@ -224,8 +224,7 @@ InitSound:
         lda     #$05                    ; echo delay = 5 (80ms)
         sta     $f0
         asl3
-        eor     #$ff
-        inc
+        neg_a
         clc
         adc     #$f5
         sta     $f2                     ; +$f1 = start of echo buffer
@@ -859,8 +858,7 @@ InterruptSPC:
         and     #$0f
         sta     $f0                     ; echo delay
         asl3
-        eor     #$ff
-        inc
+        neg_a
         clc
         adc     #$f5
         sta     $f2                     ; start of echo delay buffer

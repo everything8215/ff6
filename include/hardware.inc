@@ -133,112 +133,137 @@ hSTDCNTRL4H     := $421f
 
 ; [ dma registers ]
 
-hDMAP0          := $4300
-hDMAB0          := $4301
-hDMAAL0         := $4302
-hDMAAH0         := $4303
-hDMAAB0         := $4304
-hDMADL0         := $4305
-hDMADH0         := $4306
-hDMADB0         := $4307
-hDMATL0         := $4308
-hDMATH0         := $4309
-hDMAL0          := $430a
-hDMAP1          := $4310
-hDMAB1          := $4311
-hDMAAL1         := $4312
-hDMAAH1         := $4313
-hDMAAB1         := $4314
-hDMADL1         := $4315
-hDMADH1         := $4316
-hDMADB1         := $4317
-hDMATL1         := $4318
-hDMATH1         := $4319
-hDMAL1          := $431a
-hDMAP2          := $4320
-hDMAB2          := $4321
-hDMAAL2         := $4322
-hDMAAH2         := $4323
-hDMAAB2         := $4324
-hDMADL2         := $4325
-hDMADH2         := $4326
-hDMADB2         := $4327
-hDMATL2         := $4328
-hDMATH2         := $4329
-hDMAL2          := $432a
-hDMAP3          := $4330
-hDMAB3          := $4331
-hDMAAL3         := $4332
-hDMAAH3         := $4333
-hDMAAB3         := $4334
-hDMADL3         := $4335
-hDMADH3         := $4336
-hDMADB3         := $4337
-hDMATL3         := $4338
-hDMATH3         := $4339
-hDMAL3          := $433a
-hDMAP4          := $4340
-hDMAB4          := $4341
-hDMAAL4         := $4342
-hDMAAH4         := $4343
-hDMAAB4         := $4344
-hDMADL4         := $4345
-hDMADH4         := $4346
-hDMADB4         := $4347
-hDMATL4         := $4348
-hDMATH4         := $4349
-hDMAL4          := $434a
-hDMAP5          := $4350
-hDMAB5          := $4351
-hDMAAL5         := $4352
-hDMAAH5         := $4353
-hDMAAB5         := $4354
-hDMADL5         := $4355
-hDMADH5         := $4356
-hDMADB5         := $4357
-hDMATL5         := $4358
-hDMATH5         := $4359
-hDMAL5          := $435a
-hDMAP6          := $4360
-hDMAB6          := $4361
-hDMAAL6         := $4362
-hDMAAH6         := $4363
-hDMAAB6         := $4364
-hDMADL6         := $4365
-hDMADH6         := $4366
-hDMADB6         := $4367
-hDMATL6         := $4368
-hDMATH6         := $4369
-hDMAL6          := $436a
-hDMAP7          := $4370
-hDMAB7          := $4371
-hDMAAL7         := $4372
-hDMAAH7         := $4373
-hDMAAB7         := $4374
-hDMADL7         := $4375
-hDMADH7         := $4376
-hDMADB7         := $4377
-hDMATL7         := $4378
-hDMATH7         := $4379
-hDMAL7          := $437a
+hDMA0 := $4300
+.scope hDMA0
+        CTRL    := $4300
+        HREG    := $4301
+        ADDR    := $4302
+        ADDR_L  := $4302
+        ADDR_H  := $4303
+        ADDR_B  := $4304
+        SIZE    := $4305
+        SIZE_L  := $4305
+        SIZE_H  := $4306
+        HDMA_B  := $4307
+.endscope
+
+hDMA1 := $4310
+.scope hDMA1
+        CTRL    := $4310
+        HREG    := $4311
+        ADDR    := $4312
+        ADDR_L  := $4312
+        ADDR_H  := $4313
+        ADDR_B  := $4314
+        SIZE    := $4315
+        SIZE_L  := $4315
+        SIZE_H  := $4316
+        HDMA_L  := $4315
+        HDMA_H  := $4316
+        HDMA_B  := $4317
+.endscope
+
+hDMA2 := $4320
+.scope hDMA2
+        CTRL    := $4320
+        HREG    := $4321
+        ADDR    := $4322
+        ADDR_L  := $4322
+        ADDR_H  := $4323
+        ADDR_B  := $4324
+        SIZE    := $4325
+        SIZE_L  := $4325
+        SIZE_H  := $4326
+        HDMA_B  := $4327
+.endscope
+
+hDMA3 := $4330
+.scope hDMA3
+        CTRL    := $4330
+        HREG    := $4331
+        ADDR    := $4332
+        ADDR_L  := $4332
+        ADDR_H  := $4333
+        ADDR_B  := $4334
+        SIZE    := $4335
+        SIZE_L  := $4335
+        SIZE_H  := $4336
+        HDMA_B  := $4337
+.endscope
+
+hDMA4 := $4340
+.scope hDMA4
+        CTRL    := $4340
+        HREG    := $4341
+        ADDR    := $4342
+        ADDR_L  := $4342
+        ADDR_H  := $4343
+        ADDR_B  := $4344
+        SIZE    := $4345
+        SIZE_L  := $4345
+        SIZE_H  := $4346
+        HDMA_B  := $4347
+.endscope
+
+hDMA5 := $4350
+.scope hDMA5
+        CTRL    := $4350
+        HREG    := $4351
+        ADDR    := $4352
+        ADDR_L  := $4352
+        ADDR_H  := $4353
+        ADDR_B  := $4354
+        SIZE    := $4355
+        SIZE_L  := $4355
+        SIZE_H  := $4356
+        HDMA_B  := $4357
+.endscope
+
+hDMA6 := $4360
+.scope hDMA6
+        CTRL    := $4360
+        HREG    := $4361
+        ADDR    := $4362
+        ADDR_L  := $4362
+        ADDR_H  := $4363
+        ADDR_B  := $4364
+        SIZE    := $4365
+        SIZE_L  := $4365
+        SIZE_H  := $4366
+        HDMA_B  := $4367
+.endscope
+
+hDMA7 := $4370
+.scope hDMA7
+        CTRL    := $4370
+        HREG    := $4371
+        ADDR    := $4372
+        ADDR_L  := $4372
+        ADDR_H  := $4373
+        ADDR_B  := $4374
+        SIZE    := $4375
+        SIZE_L  := $4375
+        SIZE_H  := $4376
+        HDMA_B  := $4377
+.endscope
 
 ; ------------------------------------------------------------------------------
 
 ; [ joypad button masks ]
 
-JOY_A           = %10000000
-JOY_X           = %01000000
-JOY_L           = %00100000
-JOY_R           = %00010000
+JOY_A           = %0000000010000000
+JOY_X           = %0000000001000000
+JOY_L           = %0000000000100000
+JOY_R           = %0000000000010000
 
-JOY_B           = %10000000
-JOY_Y           = %01000000
-JOY_SELECT      = %00100000
-JOY_START       = %00010000
-JOY_UP          = %00001000
-JOY_DOWN        = %00000100
-JOY_LEFT        = %00000010
-JOY_RIGHT       = %00000001
+JOY_B           = %1000000000000000
+JOY_Y           = %0100000000000000
+JOY_SELECT      = %0010000000000000
+JOY_START       = %0001000000000000
+JOY_UP          = %0000100000000000
+JOY_DOWN        = %0000010000000000
+JOY_LEFT        = %0000001000000000
+JOY_RIGHT       = %0000000100000000
 
 ; ------------------------------------------------------------------------------
 

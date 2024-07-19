@@ -1,0 +1,12 @@
+{
+  "asset_label": "RareItemName",
+  "asset_const": "RARE_ITEM_NAME",
+  "inc_path": "include/text/rare_item_name_jp.inc",
+  "item_size": 8,
+  "char_tables": [
+    "small_symbols_jp",
+    "kana",
+    "fixed_length_jp"
+  ],
+  "text": []
+}

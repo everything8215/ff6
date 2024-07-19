@@ -170,21 +170,24 @@ InitCharSpritePriority:
 
 ; [ init npc event bits ]
 
-InitNPCSwitches:
-@5228:  ldx     $00
-@522a:  lda     f:InitNPCSwitch,x
+.proc InitNPCSwitches
+        ldx     $00
+loop:   lda     f:InitNPCSwitch,x
         sta     $1ee0,x
         inx
-        cpx     #$0080
-        bne     @522a
+        cpx     #sizeof_InitNPCSwitch
+        bne     loop
         rts
+.endproc  ; InitNPCSwitches
 
 .pushseg
 .segment "init_npc_switch"
 
 ; c0/e0a0
-InitNPCSwitch:
+.proc InitNPCSwitch
         .incbin "init_npc_switch.dat"
+.endproc
+sizeof_InitNPCSwitch = .sizeof(InitNPCSwitch)
 
 .popseg
 
@@ -2975,8 +2978,13 @@ TimerTiles:
 
 LoadTimerGfx:
 
+.if LANG_EN
 @DigitGfx := SmallFontGfx+$0b40
 @ColonGfx := SmallFontGfx+$0c10
+.else
+@DigitGfx := SmallFontGfx+$0530
+@ColonGfx := SmallFontGfx+$0cf0
+.endif
 
 @6adb:  lda     $0521
         bmi     @6ae1

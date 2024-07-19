@@ -217,24 +217,24 @@ no_battle:
 WorldBattleBGTbl:
 
 ; world of balance
-        .byte   BATTLE_BG_FIELD_WOB
-        .byte   BATTLE_BG_FOREST_WOR
-        .byte   BATTLE_BG_DESERT_WOB
-        .byte   BATTLE_BG_FOREST_WOB
-        .byte   BATTLE_BG_ZOZO_INT
-        .byte   BATTLE_BG_FIELD_WOR
-        .byte   BATTLE_BG_VELDT
-        .byte   BATTLE_BG_CLOUDS
+        .byte   BATTLE_BG::FIELD_WOB
+        .byte   BATTLE_BG::FOREST_WOR
+        .byte   BATTLE_BG::DESERT_WOB
+        .byte   BATTLE_BG::FOREST_WOB
+        .byte   BATTLE_BG::ZOZO_INT
+        .byte   BATTLE_BG::FIELD_WOR
+        .byte   BATTLE_BG::VELDT
+        .byte   BATTLE_BG::CLOUDS
 
 ; world of ruin
-        .byte   BATTLE_BG_FIELD_WOB
-        .byte   BATTLE_BG_FOREST_WOR
-        .byte   BATTLE_BG_DESERT_WOR
-        .byte   BATTLE_BG_FOREST_WOB
-        .byte   BATTLE_BG_FIELD_WOR
-        .byte   BATTLE_BG_FIELD_WOR
-        .byte   BATTLE_BG_VELDT
-        .byte   BATTLE_BG_CLOUDS
+        .byte   BATTLE_BG::FIELD_WOB
+        .byte   BATTLE_BG::FOREST_WOR
+        .byte   BATTLE_BG::DESERT_WOR
+        .byte   BATTLE_BG::FOREST_WOB
+        .byte   BATTLE_BG::FIELD_WOR
+        .byte   BATTLE_BG::FIELD_WOR
+        .byte   BATTLE_BG::VELDT
+        .byte   BATTLE_BG::CLOUDS
 
 ; world map battle rate for each battle bg
 BattleBGRateTbl:
@@ -430,13 +430,13 @@ loop:   lsr2
         sta     $7b
         sta     $7d
         shorta
-        ldx     #.loword(EventScript_RandBattle)
+        ldx     #near EventScript_RandBattle
         stx     $e5
         stx     $05f4
         lda     #^EventScript_RandBattle
         sta     $e7
         sta     $05f6
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #near EventScript_NoEvent
         stx     $0594
         lda     #^EventScript_NoEvent
         sta     $0596

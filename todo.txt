@@ -12,3 +12,5 @@ organize rip list
 RAM symbols
 
 improve asm formatting and organization
+
+japanese version

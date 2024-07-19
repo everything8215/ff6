@@ -1,0 +1,12 @@
+{
+  "asset_label": "GenjuBonusName",
+  "asset_const": "GENJU_BONUS_NAME",
+  "inc_path": "include/text/genju_bonus_name_jp.inc",
+  "item_size": 8,
+  "char_tables": [
+    "small_symbols_jp",
+    "kana",
+    "fixed_length_jp"
+  ],
+  "text": []
+}

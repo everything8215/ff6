@@ -1,0 +1,12 @@
+{
+  "asset_label": "BlitzDesc",
+  "asset_const": "BLITZ_DESC",
+  "inc_path": "include/text/blitz_desc_jp.inc",
+  "char_tables": [
+    "big_symbols_jp",
+    "null_terminated_jp",
+    "kana",
+    "kanji"
+  ],
+  "text": []
+}

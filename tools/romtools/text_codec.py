@@ -62,8 +62,7 @@ class TextCodec:
 
             # check for a 2-byte code
             if i < len(text_bytes) and char_code != 0:
-                byte2 = text_bytes[i]
-                two_byte_code = (char_code << 8) | byte2
+                two_byte_code = (char_code << 8) | text_bytes[i]
                 if two_byte_code in self.decoding_table:
                     char_code = two_byte_code
                     i += 1

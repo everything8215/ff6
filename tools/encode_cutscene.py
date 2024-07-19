@@ -7,7 +7,7 @@ import romtools as rt
 from ff6_lzss import encode_lzss
 
 cutscene_path_list = {
-    0x89AF65BC: 'src/cutscene/cutscene_jp.lz',
+    0x2B78E490: 'src/cutscene/cutscene_jp.lz',
     0x8F821696: 'src/cutscene/cutscene_en.lz',
 }
 

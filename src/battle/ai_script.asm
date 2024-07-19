@@ -11,7 +11,11 @@ AIScriptPtr:
         make_ptr_tbl_rel AIScript, AI_SCRIPT_ARRAY_LENGTH
 
 ; cf/8700
-begin_fixed_block AIScript, $3950
+.if LANG_EN
+begin_block AIScript, $3950
+.else
+begin_block AIScript, $4100
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -898,11 +902,11 @@ AIScript_0023:
 AIScript_004e:
         attack BATTLE, BATTLE, SPECIAL
         wait
-        use_item ITEM_POTION
+        use_item POTION
         wait
         attack BATTLE, BATTLE, SPECIAL
         wait
-        throw_item ITEM_MITHRILKNIFE
+        throw_item MITHRILKNIFE
         end
 
         if_cmd STEAL, CAPTURE
@@ -2573,13 +2577,13 @@ AIScript_00cc:
 
 ; souldancer
 AIScript_00ad:
-        throw_item ITEM_DIRK, ITEM_MITHRILKNIFE
+        throw_item DIRK, MITHRILKNIFE
         wait
-        throw_item ITEM_MITHRILKNIFE, ITEM_GUARDIAN
+        throw_item MITHRILKNIFE, GUARDIAN
         wait
-        throw_item ITEM_AIR_LANCET, ITEM_THIEFKNIFE
+        throw_item AIR_LANCET, THIEFKNIFE
         wait
-        throw_item ITEM_THIEFKNIFE, ITEM_ASSASSIN
+        throw_item THIEFKNIFE, ASSASSIN
         end
 
         if_hit
@@ -3279,7 +3283,7 @@ AIScript_0067:
         end
 
         if_cmd THROW
-                throw_item ITEM_SHURIKEN, ITEM_NINJA_STAR
+                throw_item SHURIKEN, NINJA_STAR
                 end_if
         if_cmd FIGHT
                 set_target SELF
@@ -3337,7 +3341,7 @@ AIScript_00f0:
         end
 
         if_cmd THROW
-                throw_item ITEM_ENHANCER, ITEM_CRYSTAL
+                throw_item ENHANCER, CRYSTAL
                 end_retal
 
 ; ------------------------------------------------------------------------------
@@ -3366,22 +3370,22 @@ AIScript_0055:
                 attack ESCAPE, NOTHING, NOTHING
                 end_if
         if_status_set ALL_CHARS, PETRIFY
-                use_item ITEM_SOFT
+                use_item SOFT
                 set_target SELF
                 attack ESCAPE, NOTHING, NOTHING
                 end_if
         set_target RAND_CHAR
-        use_item ITEM_REMEDY, ITEM_TINCTURE
+        use_item REMEDY, TINCTURE
         set_target SELF
         attack ESCAPE, NOTHING, NOTHING
         wait
         set_target RAND_CHAR
-        use_item ITEM_POTION, ITEM_ELIXIR
+        use_item POTION, ELIXIR
         set_target SELF
         attack ESCAPE, NOTHING, NOTHING
         wait
         set_target RAND_CHAR
-        use_item ITEM_TINCTURE, ITEM_ETHER
+        use_item TINCTURE, ETHER
         set_target SELF
         attack ESCAPE, NOTHING, NOTHING
         end
@@ -3685,10 +3689,10 @@ AIScript_0112:
                 wait
                 attack BATTLE, SHOCK_WAVE, SHOCK_WAVE
                 wait
-                throw_item ITEM_MITHRILKNIFE, ITEM_ASHURA
-                use_item ITEM_TONIC, ITEM_POTION
-                use_item ITEM_TONIC, ITEM_POTION
-                use_item ITEM_TONIC, ITEM_POTION
+                throw_item MITHRILKNIFE, ASHURA
+                use_item TONIC, POTION
+                use_item TONIC, POTION
+                use_item TONIC, POTION
                 set_target SELF
                 attack TEKBARRIER
                 clr_monster_switch 2
@@ -3926,15 +3930,15 @@ AIScript_0016:
 
 ; outsider
 AIScript_00bd:
-        throw_item ITEM_IMPERIAL, ITEM_ASHURA
+        throw_item IMPERIAL, ASHURA
         wait
-        throw_item ITEM_KODACHI, ITEM_KOTETSU
+        throw_item KODACHI, KOTETSU
         wait
-        throw_item ITEM_BLOSSOM, ITEM_FORGED
+        throw_item BLOSSOM, FORGED
         wait
-        throw_item ITEM_HARDENED, ITEM_TEMPEST
+        throw_item HARDENED, TEMPEST
         wait
-        throw_item ITEM_STRIKER, ITEM_MURASAME
+        throw_item STRIKER, MURASAME
         wait
         set_target SELF
         attack SPECIAL, SPECIAL, NOTHING
@@ -3943,10 +3947,10 @@ AIScript_00bd:
         if_self_dead
                 end_if
         if_cmd FIGHT
-                throw_item ITEM_SHURIKEN
+                throw_item SHURIKEN
                 end_if
         if_hit
-                throw_item ITEM_NINJA_STAR, ITEM_TACK_STAR
+                throw_item NINJA_STAR, TACK_STAR
                 end_retal
 
 ; ------------------------------------------------------------------------------
@@ -4463,23 +4467,23 @@ AIScript_0107:
         if_battle_switch_clr 0, 0
         if_hp SELF, 1920
                 set_target SELF
-                use_item ITEM_POTION, ITEM_TONIC
-                use_item ITEM_POTION, ITEM_TONIC
-                use_item ITEM_POTION, ITEM_TONIC
+                use_item POTION, TONIC
+                use_item POTION, TONIC
+                use_item POTION, TONIC
                 attack SAFE
                 set_battle_switch 0, 0
                 end_if
         if_battle_var_greater 3, 4
                 set_target RAND_CHAR
-                throw_item ITEM_DIRK, ITEM_MITHRILKNIFE
+                throw_item DIRK, MITHRILKNIFE
                 set_target RAND_CHAR
-                throw_item ITEM_DIRK, ITEM_MITHRILKNIFE
+                throw_item DIRK, MITHRILKNIFE
                 set_battle_var 3, 0
                 end_if
         if_battle_var_greater 2, 2
         if_status_clr SELF, SLOW
                 set_target ALL_CHARS
-                throw_item ITEM_DIRK, ITEM_MITHRILKNIFE
+                throw_item DIRK, MITHRILKNIFE
                 wait
                 set_target RAND_CHAR
                 cmd JUMP
@@ -4905,7 +4909,7 @@ AIScript_0110:
         if_battle_switch_clr 0, 1
         if_hp SELF, 10240
                 set_target SELF
-                use_item ITEM_GREEN_CHERRY
+                use_item GREEN_CHERRY
                 flash_red MONSTER_1
                 dlg $49
 ; Power 100 times up!
@@ -4940,7 +4944,7 @@ AIScript_0110:
                 end_if
         if_battle_switch_clr 0, 0
         if_battle_switch_clr 0, 1
-        if_item ITEM_GREEN_CHERRY
+        if_item GREEN_CHERRY
                 flash_red MONSTER_1
                 dlg $49
 ; Power 100 times up!
@@ -5793,7 +5797,7 @@ AIScript_0124:
                 set_monster_switch 0
                 end_if
         if_battle_var_greater 3, 3
-                throw_item ITEM_ASHURA, ITEM_IMPERIAL
+                throw_item ASHURA, IMPERIAL
                 wait
                 set_target ALL_CHARS
                 cmd GP_RAIN
@@ -7923,7 +7927,7 @@ AIScript_0172:
         end_veldt
         end
 
-        if_item ITEM_DRIED_MEAT
+        if_item DRIED_MEAT
         if_battle_switch_clr 13, 1
                 recruit_gau
                 set_battle_switch 13, 1
@@ -7959,7 +7963,7 @@ AIScript_0174:
         if_battle_var_greater 0, 3
                 set_battle_var 0, 0
                 set_target SELF
-                use_item ITEM_TONIC, ITEM_POTION
+                use_item TONIC, POTION
                 end_if
         attack POISON, FIRE_2, DISCHORD
         wait
@@ -8162,7 +8166,7 @@ AIScript_017f:
 
 ; ------------------------------------------------------------------------------
 
-end_fixed_block AIScript
+end_block AIScript
 
 ; ------------------------------------------------------------------------------
 

@@ -577,8 +577,8 @@ set_script_mode EVENT
 .define collision_off(obj) _e_cmd_byte $7d, EVENT_OBJ::obj
 .define party_pos(xy_pos) _e_cmd_2byte $7e, xy_pos
 .define char_name(char_id, name) _e_cmd_2byte $7f, CHAR::char_id, name
-.define give_item(item) _e_cmd_byte $80, item
-.define take_item(item) _e_cmd_byte $81, item
+.define give_item(item) _e_cmd_byte $80, ITEM::item
+.define take_item(item) _e_cmd_byte $81, ITEM::item
 .define reset_default_party _e_cmd_impl $82
 .define give_gil(gil) _cmd_word $84, gil, EVENT
 .define take_gil(gil) _cmd_word $85, gil, EVENT
@@ -944,18 +944,18 @@ _multi_switch_index .set 0
 .mac play_song song_id, flags
         _e_cmd_impl $f0
         .ifnblank flags
-                make_bitmask .byte, song_id, PLAY_SONG_FLAGS, flags
+                make_bitmask .byte, SONG::song_id, PLAY_SONG_FLAGS, flags
         .else
-                .byte song_id
+                .byte SONG::song_id
         .endif
 .endmac
 
 .mac fade_in_song song_id, dur, flags
         _e_cmd_impl $f1
         .ifnblank flags
-                make_bitmask .byte, song_id, PLAY_SONG_FLAGS, flags
+                make_bitmask .byte, SONG::song_id, PLAY_SONG_FLAGS, flags
         .else
-                .byte song_id
+                .byte SONG::song_id
         .endif
         .byte dur
 .endmac

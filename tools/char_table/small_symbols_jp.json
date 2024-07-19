@@ -1,0 +1,45 @@
+{
+  "0xCD": "％",
+  "0xCE": "／",
+  "0xCF": "：",
+  "0xD0": "「",
+  "0xD1": "」",
+  "0xD2": "。",
+  "0xD3": "＋",
+  "0xD4": [
+    "{uparrow}",
+    "↑"
+  ],
+  "0xD5": [
+    "{rightarrow}",
+    "→"
+  ],
+  "0xD6": [
+    "{diagonalarrow}",
+    "↙"
+  ],
+  "0xD7": [
+    "{times}",
+    "×"
+  ],
+  "0xE0": "・",
+  "0xE3": "{dagger}",
+  "0xE4": "{sword}",
+  "0xE5": "{spear}",
+  "0xE6": "{katana}",
+  "0xE7": "{staff}",
+  "0xE8": "{brush}",
+  "0xE9": "{star}",
+  "0xEA": "{special}",
+  "0xEB": "{card}",
+  "0xEC": "{claw}",
+  "0xED": "{shield}",
+  "0xF0": "{helm}",
+  "0xF1": "{armor}",
+  "0xF2": "{tool}",
+  "0xF3": "{scroll}",
+  "0xF4": "{relic}",
+  "0xF5": "{white}",
+  "0xF6": "{black}",
+  "0xF7": "{effect}"
+}

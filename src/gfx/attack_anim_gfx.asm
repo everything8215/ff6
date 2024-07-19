@@ -39,9 +39,9 @@ AttackTiles2bpp:
 .segment "attack_gfx_3bpp"
 
 ; d3/0000
-begin_fixed_block AttackGfx3bpp, $01ca00
+begin_block AttackGfx3bpp, $01ca00
         incbin_lang "attack_gfx_%s.3bpp"
-end_fixed_block AttackGfx3bpp
+end_block AttackGfx3bpp
 
 ; ------------------------------------------------------------------------------
 

@@ -995,8 +995,7 @@ UpdateSpriteAnim_03:
         sbc     #$0008
         bpl     @4725
         dec     $60
-        eor     #$ffff
-        inc
+        neg_a
 @4725:  sta     $5a
         shorta
         sta     hWRMPYA
@@ -1031,8 +1030,7 @@ UpdateSpriteAnim_03:
         bcs     @47a9
         ldx     $60
         bpl     @4780
-        eor     #$ffff
-        inc
+        neg_a
 @4780:  clc
         adc     #$0080
         sta     $7eb5da

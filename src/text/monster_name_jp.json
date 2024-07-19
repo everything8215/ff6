@@ -1,0 +1,12 @@
+{
+  "asset_label": "MonsterName",
+  "asset_const": "MONSTER_NAME",
+  "inc_path": "include/text/monster_name_jp.inc",
+  "item_size": 8,
+  "char_tables": [
+    "small_symbols_jp",
+    "kana",
+    "fixed_length_jp"
+  ],
+  "text": []
+}

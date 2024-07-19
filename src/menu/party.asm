@@ -19,9 +19,9 @@
 
 MenuState_2c:
 @70e7:  jsr     _c370fc
-        stz     $4a
-        stz     $5a
-        stz     $99
+        stz     z4a
+        stz     z5a
+        stz     z99
         jsr     _c3762a
         jsr     LoadPartyCharCursor
         jsr     InitPartyCharCursor
@@ -36,12 +36,12 @@ _c370fc:
         jsr     ClearBGScroll
         lda     #$03
         sta     hBG1SC
-        lda     #$c0
-        trb     $43
+        lda     #BIT_6 | BIT_7
+        trb     zEnableHDMA
         lda     #$02
-        sta     $46
+        sta     z46
         lda     #$06
-        tsb     $47
+        tsb     z47
         rts
 
 ; ------------------------------------------------------------------------------
@@ -56,9 +56,9 @@ _c37114:
         jsr     _c37953
         jsr     InitDMA1BG1ScreenA
         lda     #$2d
-        sta     $27
+        sta     zNextMenuState
         lda     #$66
-        sta     $26
+        sta     zMenuState
         jmp     EnableInterrupts
 
 ; ------------------------------------------------------------------------------
@@ -67,27 +67,27 @@ _c37114:
 
 MenuState_7d:
 @7131:  jsr     _c370fc
-        lda     $5d
-        sta     $99
+        lda     z5d
+        sta     z99
         jsr     _c37677
-        lda     $90
+        lda     z90
         bne     @714b
         jsr     LoadPartyCharCursor
-        ldy     $8e
-        sty     $4d
+        ldy     z8e
+        sty     z4d
         jsr     InitPartyCharCursor
         bra     @7165
-@714b:  lda     $90
-        sta     $4a
-        lda     $8d
-        sta     $5a
+@714b:  lda     z90
+        sta     z4a
+        lda     z8d
+        sta     z5a
         jsr     _c373db
-        ldy     $8e
-        sty     $4d
+        ldy     z8e
+        sty     z4d
         lda     $79
-        sta     $59
+        sta     z59
         ldy     $7a
-        sty     $53
+        sty     z53
         jsr     UpdatePartyCursor
 @7165:  jmp     _c37114
 
@@ -98,8 +98,8 @@ MenuState_7d:
 MenuState_2d:
 @7168:  jsr     _c371b9
         bcc     @71b8
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @71a9
         lda     $4b
         clc
@@ -110,27 +110,27 @@ MenuState_2d:
         bmi     @71a2
         jsr     PlaySelectSfx
         lda     $4b
-        sta     $28
+        sta     zSelIndex
         lda     $4a
         sta     $49
         lda     $5a
         sta     $5b
         lda     #$2e
-        sta     $26
+        sta     zMenuState
         jsr     _c32f21
         lda     $4a
         beq     @71a1
-        lda     #$02
-        sta     $7e3649,x
+        lda     #2
+        sta     wTaskState,x
 @71a1:  rts
 @71a2:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
         rts
-@71a9:  lda     $09
-        bit     #$10
+@71a9:  lda     z08+1
+        bit     #>JOY_START
         bne     @71b5
-        lda     $09
-        bit     #$80
+        lda     z08+1
+        bit     #>JOY_B
         beq     @71b8
 @71b5:  jsr     _c37296
 @71b8:  rts
@@ -141,7 +141,7 @@ MenuState_2d:
 
 _c371b9:
 @71b9:  jsr     _c375b8
-        lda     $0b
+        lda     z0a+1
         bit     #$04
         beq     @71de
         lda     $4e
@@ -158,7 +158,7 @@ _c371b9:
         jsr     PlayMoveSfx
         clc
         rts
-@71de:  lda     $0b
+@71de:  lda     z0a+1
         bit     #$08
         beq     @7206
         lda     $4e
@@ -190,8 +190,8 @@ _720b:  rts
 MenuState_2e:
 @720c:  jsr     _c371b9
         bcc     _720b
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @727d
         clr_a
         lda     $4b
@@ -203,7 +203,7 @@ MenuState_2e:
         lda     $7eac8d,x
         bmi     @728f
         clr_a
-        lda     $28
+        lda     zSelIndex
         clc
         adc     $49
         adc     $5b
@@ -214,22 +214,22 @@ MenuState_2e:
         lda     $7e9d89,x
         bmi     @7277
         jsr     PlaySelectSfx
-        lda     $59
+        lda     z59
         sta     $79
-        ldy     $53
+        ldy     z53
         sty     $7a
-        ldy     $4d
-        sty     $8e
-        lda     $4a
-        sta     $90
-        lda     $5a
-        sta     $8d
-        lda     $99
-        sta     $5d
+        ldy     z4d
+        sty     z8e
+        lda     z4a
+        sta     z90
+        lda     z5a
+        sta     z8d
+        lda     z99
+        sta     z5d
         lda     #$42
-        sta     $27
+        sta     zNextMenuState
         lda     #$67
-        sta     $26
+        sta     zMenuState
         lda     #$7d
         sta     $4c
         rts
@@ -242,14 +242,14 @@ MenuState_2e:
         bra     @7286
 @7277:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
-@727d:  lda     $09
-        bit     #$80
+@727d:  lda     z08+1
+        bit     #>JOY_B
         beq     @728e
         jsr     PlayCancelSfx
 @7286:  lda     #$2d
-        sta     $26
+        sta     zMenuState
         lda     #$05
-        trb     $46
+        trb     z46
 @728e:  rts
 @728f:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
@@ -261,7 +261,7 @@ MenuState_2e:
 
 _c37296:
 @7296:  clr_ax
-        lda     $0201       ; number of parties
+        lda     w0201       ; number of parties
         and     #$7f
         asl2
         sta     $f3
@@ -279,34 +279,34 @@ _c37296:
         cpx     $f3
         bne     @72a3
         jsr     PlayCancelSfx
-        stz     $0205
+        stz     w0205
         lda     #$ff
-        sta     $27
+        sta     zNextMenuState
         lda     #$67
-        sta     $26
+        sta     zMenuState
         rts
 @72cb:  jsr     PlayInvalidSfx
-        lda     #$20
-        sta     $29
-        lda     $0201
-        and     #$07
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+        lda     w0201
+        and     #%111
         cmp     #1
         beq     @72e9                   ; branch if one party
 
 ; "You need # group(s)!"
-        ldy     #.loword(PartyErrorMsg1)
-        jsr     DrawPosText
-        ldx     #$392f
+        ldy     #near PartyErrorMsg1Text
+        jsr     DrawPosKana
+        ldx_pos BG1A, {19, 3}
         jsr     DrawNumParties
         bra     @72ef
 
 ; "No one there!"
-@72e9:  ldy     #.loword(PartyErrorMsg2)
-        jsr     DrawPosText
+@72e9:  ldy     #near PartyErrorMsg2Text
+        jsr     DrawPosKana
 @72ef:  lda     #$20
-        sta     $20
+        sta     zWaitCounter
         lda     #$69
-        sta     $26
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -315,7 +315,7 @@ _c37296:
 
 _c372f8:
 @72f8:  clr_a
-        lda     $28
+        lda     zSelIndex
         clc
         adc     $49
         adc     $5b
@@ -363,7 +363,7 @@ _c372f8:
         bne     @737a
         bra     @7391
 @7361:  clr_a
-        lda     $28
+        lda     zSelIndex
         clc
         adc     $49
         adc     $5b
@@ -395,7 +395,7 @@ _c372f8:
         tax
         lda     $e5
         sta     $7e9d89,x
-        lda     $28
+        lda     zSelIndex
         clc
         adc     $49
         adc     $5b
@@ -418,7 +418,7 @@ _c373af:
 _c373db:
 @73db:  lda     $4d
         sta     $5e
-        lda     $0201       ; number of parties
+        lda     w0201       ; number of parties
         and     #$7f
         cmp     #1
         beq     @73f5
@@ -455,7 +455,7 @@ _c373db:
 UpdatePartyCursor:
 @7415:  lda     $4a
         beq     @742f
-        lda     $0201       ; number of parties
+        lda     w0201       ; number of parties
         and     #$7f
         cmp     #$01
         beq     @742c       ; branch if one
@@ -471,11 +471,11 @@ UpdatePartyCursor:
 
 _c37432:
 @7432:  lda     $5e
-        ldx     $00
+        ldx     z0
 @7436:  cmp     f:_c37466,x
         beq     @7444
         inx2
-        cpx     #$0010
+        cpx     #sizeof__c37466
         bne     @7436
         rts
 @7444:  inx
@@ -489,11 +489,11 @@ _c37432:
 
 _c3744c:
 @744c:  lda     $5e
-        ldx     $00
+        ldx     z0
 @7450:  cmp     f:_c37476,x
         beq     @745e
         inx2
-        cpx     #$000c
+        cpx     #sizeof__c37476
         bne     @7450
         rts
 @745e:  inx
@@ -503,18 +503,20 @@ _c3744c:
 
 ; ------------------------------------------------------------------------------
 
-_c37466:
-@7466:  .byte   $00,$00,$01,$01,$02,$01,$03,$02,$04,$03,$05,$04,$06,$04,$07,$05
+begin_block _c37466
+        .byte   $00,$00,$01,$01,$02,$01,$03,$02,$04,$03,$05,$04,$06,$04,$07,$05
+end_block _c37466
 
-_c37476:
-@7476:  .byte   $00,$00,$01,$01,$02,$03,$03,$04,$04,$06,$05,$07
+begin_block _c37476
+        .byte   $00,$00,$01,$01,$02,$03,$03,$04,$04,$06,$05,$07
+end_block _c37476
 
 ; ------------------------------------------------------------------------------
 
 ; [ load character cursor for party select (lower area) ]
 
 LoadPartyCharCursor:
-@7482:  ldy     #.loword(PartyCharCursorProp)
+@7482:  ldy     #near PartyCharCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -525,7 +527,7 @@ UpdatePartyCharCursor:
 @7488:  jsr     MoveCursor
 
 InitPartyCharCursor:
-@748b:  ldy     #.loword(PartyCharCursorPos)
+@748b:  ldy     #near PartyCharCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
@@ -533,7 +535,7 @@ InitPartyCharCursor:
 ; [ load cursor for party 1 area ]
 
 LoadOnePartyCursor:
-@7491:  ldy     #.loword(OnePartyCursorProp)
+@7491:  ldy     #near OnePartyCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -544,7 +546,7 @@ UpdateOnePartyCursor:
 @7497:  jsr     MoveCursor
 
 InitOnePartyCursor:
-@749a:  ldy     #.loword(OnePartyCursorPos)
+@749a:  ldy     #near OnePartyCursorPos
         jmp     UpdateHorzCursorPos
 
 ; ------------------------------------------------------------------------------
@@ -552,7 +554,7 @@ InitOnePartyCursor:
 ; [ load cursor for party 2 area ]
 
 LoadTwoPartyCursor:
-@74a0:  ldy     #.loword(TwoPartyCursorProp)
+@74a0:  ldy     #near TwoPartyCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -563,7 +565,7 @@ UpdateTwoPartyCursor:
 @74a6:  jsr     MoveCursor
 
 InitTwoPartyCursor:
-@74a9:  ldy     #.loword(TwoPartyCursorPos)
+@74a9:  ldy     #near TwoPartyCursorPos
         jmp     UpdateHorzCursorPos
 
 ; ------------------------------------------------------------------------------
@@ -571,7 +573,7 @@ InitTwoPartyCursor:
 ; [ load cursor for party 3 area ]
 
 LoadThreePartyCursor:
-@74af:  ldy     #.loword(ThreePartyCursorProp)
+@74af:  ldy     #near ThreePartyCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -582,13 +584,13 @@ UpdateThreePartyCursor:
 @74b5:  jsr     MoveCursor
 
 InitThreePartyCursor:
-@74b8:  ldy     #.loword(ThreePartyCursorPos)
+@74b8:  ldy     #near ThreePartyCursorPos
         jmp     UpdateHorzCursorPos
 
 ; ------------------------------------------------------------------------------
 
 PartyCharCursorProp:
-@74be:  .byte   $81,$00,$00,$08,$02
+        make_cursor_prop {0, 0}, {8, 2}, {NO_X_WRAP, NO_Y_WRAP}
 
 PartyCharCursorPos:
 @74c3:  .byte   $08,$64,$24,$64,$40,$64,$5c,$64,$78,$64,$94,$64,$b0,$64,$cc,$64
@@ -597,7 +599,7 @@ PartyCharCursorPos:
 ; ------------------------------------------------------------------------------
 
 OnePartyCursorProp:
-@74e3:  .byte   $81,$00,$00,$02,$02
+        make_cursor_prop {0, 0}, {2, 2}, {NO_X_WRAP, NO_Y_WRAP}
 
 OnePartyCursorPos:
 @74e8:  .byte   $08,$a4,$28,$a4
@@ -606,7 +608,7 @@ OnePartyCursorPos:
 ; ------------------------------------------------------------------------------
 
 TwoPartyCursorProp:
-@74f0:  .byte   $81,$00,$00,$04,$02
+        make_cursor_prop {0, 0}, {4, 2}, {NO_X_WRAP, NO_Y_WRAP}
 
 TwoPartyCursorPos:
 @74f5:  .byte   $08,$a4,$28,$a4,$58,$a4,$78,$a4
@@ -615,7 +617,7 @@ TwoPartyCursorPos:
 ; ------------------------------------------------------------------------------
 
 ThreePartyCursorProp:
-@7505:  .byte   $81,$00,$00,$06,$02
+        make_cursor_prop {0, 0}, {6, 2}, {NO_X_WRAP, NO_Y_WRAP}
 
 ThreePartyCursorPos:
 @750a:  .byte   $08,$a4,$28,$a4,$58,$a4,$78,$a4
@@ -627,25 +629,25 @@ ThreePartyCursorPos:
 ; [ draw menu for party character select ]
 
 DrawPartyMenu:
-@7522:  ldy     #.loword(PartyTopWindow)
+@7522:  ldy     #near PartyTopWindow
         jsr     DrawWindow
-        ldy     #.loword(PartyBtmWindow)
+        ldy     #near PartyBtmWindow
         jsr     DrawWindow
-        ldy     #.loword(PartyMidWindow)
+        ldy     #near PartyMidWindow
         jsr     DrawWindow
-        ldy     #.loword(PartyMsgWindow)
+        ldy     #near PartyMsgWindow
         jsr     DrawWindow
-        ldy     #.loword(PartyTitleWindow)
+        ldy     #near PartyTitleWindow
         jsr     DrawWindow
         jsr     DrawPartyWindows
         jsr     TfrBG2ScreenAB
         jsr     _c3755f
         jsr     TfrBG3ScreenAB
         jsr     ClearBG1ScreenA
-        lda     #$24
-        sta     $29
-        ldy     #.loword(PartyTitleText)
-        jsr     DrawPosText
+        lda     #BG1_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldy     #near PartyTitleText
+        jsr     DrawPosKana
         jsr     DrawPartyMsg
         jmp     TfrBG1ScreenAB
 
@@ -661,11 +663,15 @@ _c3755f:
 ; [  ]
 
 DrawPartyMsg:
-@7562:  lda     #$20
-        sta     $29
-        ldy     #.loword(PartyMsgText)
-        jsr     DrawPosText
-        ldx     #$3927
+@7562:  lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+        ldy     #near PartyMsgText
+        jsr     DrawPosKana
+.if LANG_EN
+        ldx_pos BG1A, {15, 3}
+.else
+        ldx_pos BG1A, {16, 3}
+.endif
         jmp     DrawNumParties
 
 ; ------------------------------------------------------------------------------
@@ -674,11 +680,11 @@ DrawPartyMsg:
 
 DrawPartyWindows:
 @7572:  clr_a
-        lda     $0201                   ; number of parties
+        lda     w0201                   ; number of parties
         and     #$7f
         asl
         tax
-        jmp     (.loword(DrawPartyWindowsTbl),x)
+        jmp     (near DrawPartyWindowsTbl,x)
 
 DrawPartyWindowsTbl:
 @757d:  .addr   0
@@ -691,44 +697,29 @@ DrawPartyWindowsTbl:
 ; [ draw one, two, and three party windows ]
 
 DrawThreePartyWindows:
-@7585:  ldy     #.loword(Party3Window)
+@7585:  ldy     #near Party3Window
         jsr     DrawWindow
 
 DrawTwoPartyWindows:
-@758b:  ldy     #.loword(Party2Window)
+@758b:  ldy     #near Party2Window
         jsr     DrawWindow
 
 DrawOnePartyWindows:
-@7591:  ldy     #.loword(Party1Window)
+@7591:  ldy     #near Party1Window
         jsr     DrawWindow
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; window data for party select menu
-PartyTitleWindow:
-@7598:  .byte   $8b,$58,$06,$02
-
-PartyBtmWindow:
-@759c:  .byte   $cb,$5c,$1c,$07
-
-PartyTopWindow:
-@75a0:  .byte   $8b,$59,$1c,$05
-
-PartyMidWindow:
-@75a4:  .byte   $0b,$5b,$1c,$06
-
-PartyMsgWindow:
-@75a8:  .byte   $9b,$58,$14,$02
-
-Party1Window:
-@75ac:  .byte   $0b,$5d,$08,$06
-
-Party2Window:
-@75b0:  .byte   $1f,$5d,$08,$06
-
-Party3Window:
-@75b4:  .byte   $33,$5d,$08,$06
+PartyTitleWindow:                       make_window BG2A, {1, 1}, {6, 2}
+PartyBtmWindow:                         make_window BG2A, {1, 18}, {28, 7}
+PartyTopWindow:                         make_window BG2A, {1, 5}, {28, 5}
+PartyMidWindow:                         make_window BG2A, {1, 11}, {28, 6}
+PartyMsgWindow:                         make_window BG2A, {9, 1}, {20, 2}
+Party1Window:                           make_window BG2A, {1, 19}, {8, 6}
+Party2Window:                           make_window BG2A, {11, 19}, {8, 6}
+Party3Window:                           make_window BG2A, {21, 19}, {8, 6}
 
 ; ------------------------------------------------------------------------------
 
@@ -747,17 +738,17 @@ _c375b8:
 
 _c375c5:
 @75c5:  lda     #$02
-        sta     $4350
-        lda     #$0e
-        sta     $4351
-        ldy     #.loword(_c375e4)
-        sty     $4352
+        sta     hDMA5::CTRL
+        lda     #<hBG1VOFS
+        sta     hDMA5::HREG
+        ldy     #near _c375e4
+        sty     hDMA5::ADDR
         lda     #^_c375e4
-        sta     $4354
+        sta     hDMA5::ADDR_B
         lda     #^_c375e4
-        sta     $4357
-        lda     #$20
-        tsb     $43
+        sta     hDMA5::HDMA_B
+        lda     #BIT_5
+        tsb     zEnableHDMA
         rts
 
 _c375e4:
@@ -775,10 +766,10 @@ _c375e4:
 
 DrawNumParties:
 @75f7:  clr_a
-        lda     $0201                   ; number of parties
+        lda     w0201                   ; number of parties
         and     #$07
         clc
-        adc     #$b4
+        adc     #ZERO_CHAR
         sta     $f9
         stz     $fa
         stx     $f7
@@ -795,7 +786,7 @@ DrawNumParties:
 
 _c37613:
 @7613:  lda     #$ff
-        ldx     $00
+        ldx     z0
 @7617:  sta     $7e9d99,x
         inx
         cpx     #$0090
@@ -810,16 +801,16 @@ _c37613:
 
 _c3762a:
 @762a:  lda     #$ff
-        ldx     $00
+        ldx     z0
 @762e:  sta     $7e9d89,x
         inx
         cpx     #$00a0
         bne     @762e
         ldx     #$9d89
         stx     hWMADDL
-        lda     $0201       ; number of parties
+        lda     w0201       ; number of parties
         bmi     @7665       ; branch if clearing parties
-@7643:  ldx     $00
+@7643:  ldx     z0
 @7645:  lda     $1850,x
         and     #$40
         beq     @7657
@@ -834,7 +825,7 @@ _c3762a:
         lda     #$ff
         sta     hWMDATA
         jmp     _c37677
-@7665:  ldx     $00
+@7665:  ldx     z0
 @7667:  lda     $1850,x
         and     #$f8
         sta     $1850,x
@@ -858,7 +849,7 @@ _c37677:
 ; [  ]
 
 _c37683:
-@7683:  ldx     $00
+@7683:  ldx     z0
 @7685:  clr_a
         lda     $7e9d89,x
         bmi     @76bf
@@ -868,7 +859,7 @@ _c37683:
         pha
         plb
         lda     #2
-        ldy     #.loword(_c37a5f)
+        ldy     #near _c37a5f
         jsr     CreateTask
         txy
         clr_a
@@ -877,14 +868,14 @@ _c37683:
         jsr     _c378eb
         plx
         lda     f:_c376ca,x
-        sta     $33ca,y
+        sta     near wTaskPosX,y
         lda     f:_c376da,x
-        sta     $344a,y
+        sta     near wTaskPosY,y
         clr_a
-        sta     $33cb,y
-        sta     $344b,y
+        sta     near {wTaskPosX + 1},y
+        sta     near {wTaskPosY + 1},y
         lda     #^PartyCharAnimTbl
-        sta     $35ca,y
+        sta     near wTaskAnimBank,y
 @76bf:  inx
         cpx     #$0010
         bne     @7685
@@ -908,14 +899,14 @@ _c376da:
 _c376ea:
 @76ea:  ldx     #$9db9
         stx     $e7
-        lda     $0201
+        lda     w0201
         and     #$07
         sta     $e6
         lda     #$01
         sta     $e0
 @76fa:  ldx     $e7
         stx     hWMADDL
-        ldx     $00
+        ldx     z0
 @7701:  lda     $1850,x
         and     #$40
         beq     @7715
@@ -947,10 +938,10 @@ _c376ea:
 ; [  ]
 
 _c37738:
-@7738:  lda     $0201
+@7738:  lda     w0201
         and     #$07
         sta     $e6
-        ldx     $00
+        ldx     z0
 @7741:  lda     #$7e
         sta     $e9
         longa
@@ -967,38 +958,38 @@ _c37738:
         bne     @7741
         ldx     #$9d99
         stx     hWMADDL
-        lda     $0201
+        lda     w0201
         and     #$7f
         cmp     #$01
         beq     @77d6
         cmp     #$02
         beq     @77c3
         jsr     @77c3
-        ldx     $00
+        ldx     z0
 @7779:  lda     $7e9de1,x
         sta     hWMDATA
         inx
         cpx     #4
         bne     @7779
-        ldx     $00
+        ldx     z0
 @7788:  lda     $7e9df1,x
         sta     hWMDATA
         inx
         cpx     #4
         bne     @7788
-        ldx     $00
+        ldx     z0
 @7797:  lda     $7e9e01,x
         sta     hWMDATA
         inx
         cpx     #4
         bne     @7797
-        ldx     $00
+        ldx     z0
 @77a6:  lda     $7e9e11,x
         sta     hWMDATA
         inx
         cpx     #4
         bne     @77a6
-        ldx     $00
+        ldx     z0
 @77b5:  lda     $7e9e21,x
         sta     hWMDATA
         inx
@@ -1007,7 +998,7 @@ _c37738:
         rts
 
 @77c3:  jsr     @77d6
-        ldx     $00
+        ldx     z0
 @77c8:  lda     $7e9dd1,x
         sta     hWMDATA
         inx
@@ -1015,7 +1006,7 @@ _c37738:
         bne     @77c8
         rts
 
-@77d6:  ldx     $00
+@77d6:  ldx     z0
 @77d8:  lda     $7e9dc1,x
         sta     hWMDATA
         inx
@@ -1045,7 +1036,7 @@ _c37802:
 @780a:  stz     hWMDATA
         dec
         bne     @780a
-        lda     $0201
+        lda     w0201
         and     #$07
         cmp     #$01
         beq     @7839
@@ -1081,7 +1072,7 @@ _c37802:
 ; [  ]
 
 _c37853:
-@7853:  lda     $0201
+@7853:  lda     w0201
         and     #$07
         sta     $e6
         ldx     #$9dc1
@@ -1099,7 +1090,7 @@ _c37853:
         sta     hM7B
         ldx     hMPYL
         stx     $e4
-@787f:  ldx     $00
+@787f:  ldx     z0
 @7881:  clr_a
         txy
         lda     [$f3],y
@@ -1111,7 +1102,7 @@ _c37853:
         pha
         plb
         lda     #2
-        ldy     #.loword(CharIconTask)
+        ldy     #near CharIconTask
         jsr     CreateTask
         txy
         clr_a
@@ -1123,14 +1114,14 @@ _c37853:
         lda     f:_c378e3,x
         longa_clc
         adc     $e4
-        sta     $33ca,y
+        sta     near wTaskPosX,y
         shorta
         lda     f:_c378e7,x
-        sta     $344a,y
+        sta     near wTaskPosY,y
         clr_a
-        sta     $344b,y
+        sta     near {wTaskPosY + 1},y
         lda     #^PartyCharAnimTbl
-        sta     $35ca,y
+        sta     near wTaskAnimBank,y
 @78c0:  inx
         cpx     #4
         bne     @7881
@@ -1172,6 +1163,13 @@ _c378eb:
         shorta
         clr_a
         lda     a:$0001,x     ; actor number
+; fallthrough
+
+; ------------------------------------------------------------------------------
+
+; [ draw character sprite ]
+
+; A: character index
 
 _c378fa:
 @78fa:  asl
@@ -1181,7 +1179,7 @@ _c378fa:
         plb
         longa
         lda     f:PartyCharAnimTbl,x
-        sta     $32c9,y
+        sta     near wTaskAnimPtr,y
         shorta
         rts
 
@@ -1200,9 +1198,9 @@ _c3790c:
         longa
         asl
         tax
-        lda     f:_c37c0f,x
+        lda     f:ForcedCharMaskTbl,x
         sta     $e7
-        lda     $0202
+        lda     w0202
         and     $e7
         shorta
         beq     @7933
@@ -1221,10 +1219,10 @@ _c3790c:
 ; [  ]
 
 _c3793f:
-@793f:  stz     $28
+@793f:  stz     zSelIndex
         jsr     _c37ae5
         lda     #$2f
-        sta     $7e344a,x
+        sta     wTaskPosY,x
         jsr     TfrVRAM2
         jsr     _c37c2f
         jmp     _c37cae
@@ -1236,39 +1234,49 @@ _c3793f:
 _c37953:
 @7953:  jsr     _c379ac
         clr_a
-        lda     $4b
+        lda     z4b
         clc
-        adc     $4a
-        adc     $5a
+        adc     z4a
+        adc     z5a
         tax
         lda     $7e9d89,x
         bmi     @79ab
-        sta     $c9
+        sta     zc9
         asl
         tax
         longa
         lda     f:CharPropPtrs,x
-        sta     $67
+        sta     zSelCharPropPtr
         shorta
-        lda     #$24
-        sta     $29
-        ldx     #.loword(_c379c9)
-        ldy     #$0006
+        lda     #BG1_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near _c379c9
+        ldy     #sizeof__c379c9
         jsr     DrawPosList
-        ldy     #$3a5b
+.if LANG_EN
+        ldy_pos BG1A, {9, 8}
+.else
+        ldy_pos BG1A, {9, 7}
+.endif
         ldx     #$3048
         lda     #$01
-        sta     $48
+        sta     z48
         jsr     DrawStatusIcons
-        ldy     #$3adb
+.if LANG_EN
+        ldy_pos BG1A, {9, 10}
         jsr     DrawCharName
-        ldy     #$3b5b
+        ldy_pos BG1A, {9, 12}
+.else
+        ldy_pos BG1A, {9, 9}
+        jsr     DrawCharName
+        ldy_pos BG1A, {9, 11}
+.endif
         jsr     DrawEquipGenju
-        ldy     #.loword(_c379de)
+        ldy     #near _c379de
         jsr     DrawPosText
-        ldy     #.loword(_c379e2)
+        ldy     #near _c379e2
         jsr     DrawPosText
-        ldx     #.loword(_c379e6)
+        ldx     #near _c379e6
         jsr     DrawCharBlock
 @79ab:  rts
 
@@ -1280,11 +1288,11 @@ _c379ac:
 @79ac:  ldx     #$01c0
         longa
         clr_a
-        lda     $00
+        lda     z0
         ldy     #$0060
-@79b7:  sta     $7e3849,x
+@79b7:  sta     wBG1Tiles::ScreenA,x
         inx2
-        sta     $7e3849,x
+        sta     wBG1Tiles::ScreenA,x
         inx2
         dey
         bne     @79b7
@@ -1293,29 +1301,37 @@ _c379ac:
 
 ; ------------------------------------------------------------------------------
 
-_c379c9:
-@79c9:  .addr   _c379cf
+.if LANG_EN
+        .define PartyLevelStr {$8b,$95,$00}
+        .define PartyHPStr {$87,$8f,$00}
+        .define PartyMPStr {$8c,$8f,$00}
+        .define PartySlashStr {$c0,$00}
+.else
+        .define PartyLevelStr {$2b,$35,$00}
+        .define PartyHPStr {$27,$2f,$00}
+        .define PartyMPStr {$2c,$2f,$00}
+        .define PartySlashStr {$ce,$00}
+.endif
+
+begin_block _c379c9
+        .addr   _c379cf
         .addr   _c379d4
         .addr   _c379d9
+end_block _c379c9
 
-_c379cf:
-@79cf:  .byte   $6d,$3a,$8b,$95,$00
-
-_c379d4:
-@79d4:  .byte   $ed,$3a,$87,$8f,$00
-
-_c379d9:
-@79d9:  .byte   $6d,$3b,$8c,$8f,$00
-
-_c379de:
-@79de:  .byte   $fb,$3a,$c0,$00
-
-_c379e2:
-@79e2:  .byte   $7b,$3b,$c0,$00
+_c379cf: pos_text BG1A, {18, 8}, PartyLevelStr
+_c379d4: pos_text BG1A, {18, 10}, PartyHPStr
+_c379d9: pos_text BG1A, {18, 12}, PartyMPStr
+_c379de: pos_text BG1A, {25, 10}, PartySlashStr
+_c379e2: pos_text BG1A, {25, 12}, PartySlashStr
 
 ; ram addresses for lv/hp/mp text (party select)
 _c379e6:
-@79e6:  .word   $3a77,$3af3,$3afd,$3b73,$3b7d
+        make_pos BG1A, {23, 8}
+        make_pos BG1A, {21, 10}
+        make_pos BG1A, {26, 10}
+        make_pos BG1A, {21, 12}
+        make_pos BG1A, {26, 12}
 
 ; ------------------------------------------------------------------------------
 
@@ -1323,10 +1339,10 @@ _c379e6:
 
 MenuState_67:
 @79f0:  jsr     CreateFadeOutTask
-        ldy     #$0008
-        sty     $20
+        ldy     #8
+        sty     zWaitCounter
         lda     #$68
-        sta     $26
+        sta     zMenuState
         jmp     _c375b8
 
 ; ------------------------------------------------------------------------------
@@ -1335,10 +1351,10 @@ MenuState_67:
 
 MenuState_66:
 @79ff:  jsr     CreateFadeInTask
-        ldy     #$0008
-        sty     $20
+        ldy     #8
+        sty     zWaitCounter
         lda     #$68
-        sta     $26
+        sta     zMenuState
         jmp     _c375b8
 
 ; ------------------------------------------------------------------------------
@@ -1346,10 +1362,10 @@ MenuState_66:
 ; [ menu state $68: wait for fade in/out (party select) ]
 
 MenuState_68:
-@7a0e:  ldy     $20
+@7a0e:  ldy     zWaitCounter
         bne     @7a16
-        lda     $27
-        sta     $26
+        lda     zNextMenuState
+        sta     zMenuState
 @7a16:  jmp     _c375b8
 
 ; ------------------------------------------------------------------------------
@@ -1358,7 +1374,7 @@ MenuState_68:
 
 ItemDetailsArrowTask:
 @7a19:  tax
-        jmp     (.loword(ItemDetailsArrowTaskTbl),x)
+        jmp     (near ItemDetailsArrowTaskTbl,x)
 
 ItemDetailsArrowTaskTbl:
 @7a1d:  .addr   ItemDetailsArrowTask_00
@@ -1369,16 +1385,16 @@ ItemDetailsArrowTaskTbl:
 ; state 0: init
 
 ItemDetailsArrowTask_00:
-@7a21:  ldx     $2d
+@7a21:  ldx     zTaskOffset
         longa
-        lda     #.loword(ItemDetailArrowAnimShown)
-        sta     $32c9,x
-        lda     #$0008
-        sta     $33ca,x
+        lda     #near ItemDetailArrowAnimShown
+        sta     near wTaskAnimPtr,x
+        lda     #8
+        sta     near wTaskPosX,x
         shorta
         lda     #^ItemDetailArrowAnimShown
-        sta     $35ca,x
-        inc     $3649,x
+        sta     near wTaskAnimBank,x
+        inc     near wTaskState,x
         jsr     InitAnimTask
 ; fall through
 
@@ -1387,18 +1403,18 @@ ItemDetailsArrowTask_00:
 ; state 1: normal
 
 ItemDetailsArrowTask_01:
-@7a3e:  ldy     $2d
-        lda     $99
+@7a3e:  ldy     zTaskOffset
+        lda     z99
         beq     @7a4b
         bmi     @7a5d
         clr_a
-        lda     #$02
+        lda     #2
         bra     @7a4c
 @7a4b:  clr_a
 @7a4c:  tax
         longa
         lda     f:ItemDetailArrowAnimPtrs,x
-        sta     $32c9,y
+        sta     near wTaskAnimPtr,y
         shorta
         jsr     UpdateAnimTask
         sec
@@ -1412,7 +1428,7 @@ ItemDetailsArrowTask_01:
 
 _c37a5f:
 @7a5f:  tax
-        jmp     (.loword(_c37a63),x)
+        jmp     (near _c37a63,x)
 
 _c37a63:
 @7a63:  .addr   _c37a67
@@ -1424,18 +1440,18 @@ _c37a63:
 
 _c37a67:
 @7a67:  lda     #$01
-        tsb     $47
-        ldx     $2d
-        inc     $3649,x
-        lda     #$01
+        tsb     z47
+        ldx     zTaskOffset
+        inc     near wTaskState,x
+        lda     #1
         jsr     InitAnimTask
         jsr     _c37bae
 
 _c37a78:
-@7a78:  lda     $47
+@7a78:  lda     z47
         and     #$01
         beq     @7a85
-        ldx     $2d
+        ldx     zTaskOffset
         jsr     UpdateAnimTask
         sec
         rts
@@ -1447,32 +1463,37 @@ _c37a78:
 ; [ menu state $69: clear party select message ]
 
 MenuState_69:
-@7a87:  lda     $20
+@7a87:  lda     zWaitCounter
         bne     @7a92
         lda     #$2d
-        sta     $26
+        sta     zMenuState
         jsr     DrawPartyMsg
 @7a92:  jmp     _c375b8
 
 ; ------------------------------------------------------------------------------
 
-; "Form   group(s)."
-PartyMsgText:
-@7a95:  .byte   $1d,$39,$85,$a8,$ab,$a6,$ff,$ff,$ff,$a0,$ab,$a8,$ae,$a9,$cb,$ac
-        .byte   $cc,$c5,$ff,$ff,$ff,$ff,$ff,$ff,$00
+.if LANG_EN
+        .define PartyMsgStr             {$85,$a8,$ab,$a6,$ff,$ff,$ff,$a0,$ab,$a8,$ae,$a9,$cb,$ac,$cc,$c5,$ff,$ff,$ff,$ff,$ff,$ff,$00}
+        .define PartyTitleStr           {$8b,$a2,$a7,$9e,$ae,$a9,$00}
+        .define PartyErrorMsg1Str       {$98,$a8,$ae,$ff,$a7,$9e,$9e,$9d,$ff,$ff,$ff,$a0,$ab,$a8,$ae,$a9,$cb,$ac,$cc,$be,$00}
+        .define PartyErrorMsg2Str       {$8d,$a8,$ff,$a8,$a7,$9e,$ff,$ad,$a1,$9e,$ab,$9e,$be,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
+.else
+        .define PartyMsgStr             {$49,$c5,$84,$c6,$c5,$bb,$ff,$83,$ff,$83,$6f,$bd,$85,$6f,$3f,$75,$8d,$00}
+        .define PartyTitleStr           {$67,$b9,$7b,$8d,$00}
+        .define PartyErrorMsg1Str       {$49,$c5,$84,$c6,$c5,$9b,$6b,$39,$2b,$ff,$83,$8b,$a9,$9d,$7b,$b9,$c9,$00}
+        .define PartyErrorMsg2Str       {$3f,$ad,$a5,$8d,$9d,$7b,$b9,$c9,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
+.endif
 
-; "Lineup"
-PartyTitleText:
-@7aae:  .byte   $0d,$39,$8b,$a2,$a7,$9e,$ae,$a9,$00
-
-; "You need   group(s)!"
-PartyErrorMsg1:
-@7ab7:  .byte   $1d,$39,$98,$a8,$ae,$ff,$a7,$9e,$9e,$9d,$ff,$ff,$ff,$a0,$ab,$a8
-        .byte   $ae,$a9,$cb,$ac,$cc,$be,$00
-
-; "No one there!"
-PartyErrorMsg2:
-@7ace:  .byte   $1d,$39,$8d,$a8,$ff,$a8,$a7,$9e,$ff,$ad,$a1,$9e,$ab,$9e,$be,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$00
+.if LANG_EN
+PartyMsgText:           pos_text BG1A, {10, 3}, PartyMsgStr
+PartyTitleText:         pos_text BG1A, {2, 3}, PartyTitleStr
+PartyErrorMsg1Text:     pos_text BG1A, {10, 3}, PartyErrorMsg1Str
+PartyErrorMsg2Text:     pos_text BG1A, {10, 3}, PartyErrorMsg2Str
+.else
+PartyMsgText:           pos_text BG1A, {10, 2}, PartyMsgStr
+PartyTitleText:         pos_text BG1A, {3, 2}, PartyTitleStr
+PartyErrorMsg1Text:     pos_text BG1A, {10, 2}, PartyErrorMsg1Str
+PartyErrorMsg2Text:     pos_text BG1A, {10, 2}, PartyErrorMsg2Str
+.endif
 
 ; ------------------------------------------------------------------------------

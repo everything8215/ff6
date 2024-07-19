@@ -83,7 +83,7 @@ InitColorMath:
 .segment "map_color_math"
 
 ; c0/fe00
-begin_fixed_block MapColorMath, $40
+begin_block MapColorMath, $40
         .byte   $00,$17,$00
         .byte   $44,$17,$13
         .byte   $13,$13,$04
@@ -103,7 +103,7 @@ begin_fixed_block MapColorMath, $40
         .byte   $84,$13,$04
         .byte   $86,$15,$02
         .byte   $54,$17,$11
-end_fixed_block MapColorMath
+end_block MapColorMath
 
 .popseg
 

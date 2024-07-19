@@ -1844,7 +1844,7 @@ CalcTargetDmg:
 @0bd3:  lda     $11a1
         beq     @0c1e
         lda     $3ec8
-        eor     #$ff
+        not_a
         and     $11a1
         beq     @0bfa
         lda     $3bcc,y
@@ -1992,7 +1992,7 @@ CalcDmgMod:
         xba
 @0ce3:  xba
         dec
-        eor     #$ff
+        not_a
 @0ce7:  sta     $e8
         jsr     MultDmg
         lda     $01,s
@@ -2990,7 +2990,7 @@ ApplyDmgHP:
 @1338:  sta     $3bf4,y
 _133b:  clc
 _133c:  rts
-_133d:  eor     #$ffff
+_133d:  not_a
         sta     $ee
         lda     $3bf4,y
         sbc     $ee
@@ -3015,7 +3015,7 @@ ApplyDmgMP:
 @1365:  sta     $3c08,y
         clc
         bra     @138a
-@136b:  eor     #$ffff
+@136b:  not_a
         sta     $ee
         lda     $3c08,y     ; subtract from current mp
         sbc     $ee
@@ -3740,77 +3740,77 @@ Cmd_13:
 
 ; d1/f9ab
 DanceBG:
-        .byte   BATTLE_BG_FIELD_WOB                     ; 0: wind song
-        .byte   BATTLE_BG_FOREST_WOB                    ; 1: forest suite
-        .byte   BATTLE_BG_DESERT_WOB                    ; 2: desert aria
-        .byte   BATTLE_BG_TOWN_INT                      ; 3: love sonata
-        .byte   BATTLE_BG_MOUNTAINS_EXT                 ; 4: earth blues
-        .byte   BATTLE_BG_UNDERWATER                    ; 5: water rondo
-        .byte   BATTLE_BG_CAVES                         ; 6: dusk requium
-        .byte   BATTLE_BG_SNOWFIELDS                    ; 7: snowman jazz
-        .byte   BATTLE_BG_FOREST_WOR                    ; unused
-        .byte   BATTLE_BG_FOREST_WOR                    ; unused
+        .byte BATTLE_BG::FIELD_WOB      ; 0: wind song
+        .byte BATTLE_BG::FOREST_WOB     ; 1: forest suite
+        .byte BATTLE_BG::DESERT_WOB     ; 2: desert aria
+        .byte BATTLE_BG::TOWN_INT       ; 3: love sonata
+        .byte BATTLE_BG::MOUNTAINS_EXT  ; 4: earth blues
+        .byte BATTLE_BG::UNDERWATER     ; 5: water rondo
+        .byte BATTLE_BG::CAVES          ; 6: dusk requium
+        .byte BATTLE_BG::SNOWFIELDS     ; 7: snowman jazz
+        .byte BATTLE_BG::FOREST_WOR     ; unused
+        .byte BATTLE_BG::FOREST_WOR     ; unused
 
 .segment "battle_bg_dance"
 
 ; ed/8e5b
 BattleBGDance:
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_FIELD_WOB
-        .byte   DANCE::FOREST_SUITE      ; BATTLE_BG_FOREST_WOR
-        .byte   DANCE::DESERT_ARIA       ; BATTLE_BG_DESERT_WOB
-        .byte   DANCE::FOREST_SUITE      ; BATTLE_BG_FOREST_WOB
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_ZOZO_INT
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_FIELD_WOR
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_VELDT
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_CLOUDS
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_NARSHE_EXT
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_NARSHE_CAVES_1
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_CAVES
-        .byte   DANCE::EARTH_BLUES       ; BATTLE_BG_MOUNTAINS_EXT
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_MOUNTAINS_INT
-        .byte   DANCE::WATER_RONDO       ; BATTLE_BG_RIVER
-        .byte   DANCE::DESERT_ARIA       ; BATTLE_BG_IMP_CAMP
-        .byte   DANCE::FOREST_SUITE      ; BATTLE_BG_TRAIN_EXT
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_TRAIN_INT
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_NARSHE_CAVES_2
-        .byte   DANCE::SNOWMAN_JAZZ      ; BATTLE_BG_SNOWFIELDS
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_TOWN_EXT
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_IMP_CASTLE
-        .byte   DANCE::EARTH_BLUES       ; BATTLE_BG_FLOATING_ISLAND
-        .byte   DANCE::EARTH_BLUES       ; BATTLE_BG_KEFKAS_TOWER_EXT
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_OPERA_STAGE
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_OPERA_CATWALK
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_BURNING_BUILDING
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_CASTLE_INT
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_MAGITEK_LAB
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_COLOSSEUM
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_MAGITEK_FACTORY
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_VILLAGE_EXT
-        .byte   DANCE::WATER_RONDO       ; BATTLE_BG_WATERFALL
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_OWZERS_HOUSE
-        .byte   DANCE::FOREST_SUITE      ; BATTLE_BG_TRAIN_TRACKS
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_SEALED_GATE
-        .byte   DANCE::WATER_RONDO       ; BATTLE_BG_UNDERWATER
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_ZOZO
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_AIRSHIP_CENTER
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_DARILLS_TOMB
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_CASTLE_EXT
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_KEFKAS_TOWER_INT
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_AIRSHIP_WOR
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_FIRE_CAVES
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_TOWN_INT
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_MAGITEK_TRAIN
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_FANATICS_TOWER
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_CYANS_DREAM
-        .byte   DANCE::DESERT_ARIA       ; BATTLE_BG_DESERT_WOR
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_AIRSHIP_WOB
+        .byte   DANCE::WIND_SONG         ; FIELD_WOB
+        .byte   DANCE::FOREST_SUITE      ; FOREST_WOR
+        .byte   DANCE::DESERT_ARIA       ; DESERT_WOB
+        .byte   DANCE::FOREST_SUITE      ; FOREST_WOB
+        .byte   DANCE::LOVE_SONATA       ; ZOZO_INT
+        .byte   DANCE::WIND_SONG         ; FIELD_WOR
+        .byte   DANCE::WIND_SONG         ; VELDT
+        .byte   DANCE::WIND_SONG         ; CLOUDS
+        .byte   DANCE::LOVE_SONATA       ; NARSHE_EXT
+        .byte   DANCE::DUSK_REQUIUM      ; NARSHE_CAVES_1
+        .byte   DANCE::DUSK_REQUIUM      ; CAVES
+        .byte   DANCE::EARTH_BLUES       ; MOUNTAINS_EXT
+        .byte   DANCE::DUSK_REQUIUM      ; MOUNTAINS_INT
+        .byte   DANCE::WATER_RONDO       ; RIVER
+        .byte   DANCE::DESERT_ARIA       ; IMP_CAMP
+        .byte   DANCE::FOREST_SUITE      ; TRAIN_EXT
+        .byte   DANCE::LOVE_SONATA       ; TRAIN_INT
+        .byte   DANCE::DUSK_REQUIUM      ; NARSHE_CAVES_2
+        .byte   DANCE::SNOWMAN_JAZZ      ; SNOWFIELDS
+        .byte   DANCE::LOVE_SONATA       ; TOWN_EXT
+        .byte   DANCE::LOVE_SONATA       ; IMP_CASTLE
+        .byte   DANCE::EARTH_BLUES       ; FLOATING_ISLAND
+        .byte   DANCE::EARTH_BLUES       ; KEFKAS_TOWER_EXT
+        .byte   DANCE::LOVE_SONATA       ; OPERA_STAGE
+        .byte   DANCE::LOVE_SONATA       ; OPERA_CATWALK
+        .byte   DANCE::LOVE_SONATA       ; BURNING_BUILDING
+        .byte   DANCE::LOVE_SONATA       ; CASTLE_INT
+        .byte   DANCE::LOVE_SONATA       ; MAGITEK_LAB
+        .byte   DANCE::WIND_SONG         ; COLOSSEUM
+        .byte   DANCE::LOVE_SONATA       ; MAGITEK_FACTORY
+        .byte   DANCE::WIND_SONG         ; VILLAGE_EXT
+        .byte   DANCE::WATER_RONDO       ; WATERFALL
+        .byte   DANCE::LOVE_SONATA       ; OWZERS_HOUSE
+        .byte   DANCE::FOREST_SUITE      ; TRAIN_TRACKS
+        .byte   DANCE::DUSK_REQUIUM      ; SEALED_GATE
+        .byte   DANCE::WATER_RONDO       ; UNDERWATER
+        .byte   DANCE::LOVE_SONATA       ; ZOZO
+        .byte   DANCE::WIND_SONG         ; AIRSHIP_CENTER
+        .byte   DANCE::DUSK_REQUIUM      ; DARILLS_TOMB
+        .byte   DANCE::DUSK_REQUIUM      ; CASTLE_EXT
+        .byte   DANCE::DUSK_REQUIUM      ; KEFKAS_TOWER_INT
+        .byte   DANCE::WIND_SONG         ; AIRSHIP_WOR
+        .byte   DANCE::DUSK_REQUIUM      ; FIRE_CAVES
+        .byte   DANCE::LOVE_SONATA       ; TOWN_INT
+        .byte   DANCE::DUSK_REQUIUM      ; MAGITEK_TRAIN
+        .byte   DANCE::LOVE_SONATA       ; FANATICS_TOWER
+        .byte   DANCE::LOVE_SONATA       ; CYANS_DREAM
+        .byte   DANCE::DESERT_ARIA       ; DESERT_WOR
+        .byte   DANCE::WIND_SONG         ; AIRSHIP_WOB
         .byte   DANCE::WIND_SONG         ; BATTLE_BG_31
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_GHOST_TRAIN
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_1
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_2
-        .byte   DANCE::DUSK_REQUIUM      ; BATTLE_BG_FINAL_BATTLE_3
-        .byte   DANCE::WIND_SONG         ; BATTLE_BG_FINAL_BATTLE_4
-        .byte   DANCE::LOVE_SONATA       ; BATTLE_BG_TENTACLES
+        .byte   DANCE::DUSK_REQUIUM      ; GHOST_TRAIN
+        .byte   DANCE::DUSK_REQUIUM      ; FINAL_BATTLE_1
+        .byte   DANCE::DUSK_REQUIUM      ; FINAL_BATTLE_2
+        .byte   DANCE::DUSK_REQUIUM      ; FINAL_BATTLE_3
+        .byte   DANCE::WIND_SONG         ; FINAL_BATTLE_4
+        .byte   DANCE::LOVE_SONATA       ; TENTACLES
         .byte   DANCE::DUSK_REQUIUM
         .byte   DANCE::DUSK_REQUIUM
         .byte   DANCE::DUSK_REQUIUM
@@ -5081,7 +5081,7 @@ Cmd_2f:
         bpl     @1e34
         ora     $ee
         bra     _1e38
-@1e34:  eor     #$ff
+@1e34:  not_a
         and     $ee
 
 _elstorework:
@@ -5689,7 +5689,7 @@ _escape:
         jsr     InitGfxParams
         jsr     CopyGfxParamsToBuf
         longa
-        lda     #$2206      ; battle command $06 (battle animation for command $22: characters run away ???)
+        lda     #$2206      ; battle command $06 (battle animation for command $22: characters run away)
         sta     $3a28
         shorta
 @215f:  jsr     _c2629e       ; add battle script command to queue
@@ -6116,7 +6116,7 @@ InitBattle:
         sta     $ee
         asl
         adc     $ee
-        eor     #$ff
+        not_a
         sta     $3a90       ; set battle speed constant
         lda     $1d4e       ; gauge setting
         bpl     @2498       ; branch if on
@@ -6412,7 +6412,7 @@ _initstatus2:
         sta     $ee
         lda     $3c6c,x
         and     #$ee78
-        eor     #$ffff
+        not_a
         and     $ee
         bit     #STATUS23::REGEN
         beq     @26b2
@@ -6721,8 +6721,7 @@ InvertEvade:
         asl
         bcc     @2866
         lda     #$ff
-@2866:  eor     #$ff
-        inc
+@2866:  neg_a
         bne     @286c
         dec
 @286c:  rts
@@ -6882,7 +6881,7 @@ LoadMagicProp:
 
 ; c4/6ac0
 MagicProp:
-        .incbin "magic_prop.dat"
+        incbin_lang "magic_prop_%s.dat"
 
 .popseg
 
@@ -7278,7 +7277,7 @@ CalcDmg:
         beq     @2c1f
         lda     $11b0
         lsr2
-        eor     #$ffff
+        not_a
         sec
         adc     $11b0
         sta     $11b0
@@ -7510,7 +7509,7 @@ LoadRageProp:
         ora     $3be0,y
         sta     $3be0,y
         lda     f:MonsterProp+22,x   ; blocked status 3
-        eor     #$ff
+        not_a
         and     $3330,y
         sta     $3330,y
         lda     #$ff
@@ -7538,7 +7537,7 @@ LoadRageProp:
         ora     $3c6c,y
         sta     $3c6c,y
         lda     f:MonsterProp+20,x   ; blocked status 1 & 2
-        eor     #$ffff
+        not_a
         and     $331c,y
         sta     $331c,y
         lda     f:MonsterProp+23,x   ; absorbed elements
@@ -9295,7 +9294,7 @@ TargetEffect_26:
         lda     #$ff
         jsr     RandBit
         sta     $3be0,y
-        eor     #$ff
+        not_a
         sta     $3bcd,y
         jsr     RandBit
         sta     $3bcc,y
@@ -9435,8 +9434,12 @@ TargetEffect_56:
 @3a8d:  clr_a
         lda     $3be0,y
         ora     $3ec8
-        eor     #$ff
+        not_a
+.if LANG_EN
         beq     _3a8a
+.else
+        beq     _c23b1b
+.endif
         jsr     RandBit
         pha
         jsr     GetBitID
@@ -9448,7 +9451,7 @@ TargetEffect_56:
         ora     $3be0,y
         sta     $3be0,y
         pla
-        eor     #$ff
+        not_a
         pha
         and     $3be1,y
         sta     $3be1,y
@@ -9663,7 +9666,7 @@ TargetEffect_21:
         longa
         lda     $3ee4,x
         and     $3ee4,y
-        eor     #$ffff
+        not_a
         sta     $ee
         lda     $3ee4,x
         and     $ee
@@ -9675,7 +9678,7 @@ TargetEffect_21:
         sta     $3dfc,y
         lda     $3ef8,x
         and     $3ef8,y
-        eor     #$ffff
+        not_a
         sta     $ee
         lda     $3ef8,x
         and     $ee
@@ -9954,11 +9957,11 @@ TargetEffect_3f:
         bcc     @3da7
         longa
         lda     $11aa
-        eor     #$ffff
+        not_a
         and     $3dd4,y
         sta     $3dd4,y
         lda     $11ac
-        eor     #$ffff
+        not_a
         and     $3de8,y
         sta     $3de8,y
 @3da7:  rts
@@ -10542,7 +10545,7 @@ AttackerEffect_27:
 @40bb:  cpy     #$08
         bcs     _40ba       ; return if attacker is a monster
         lda     #$22
-        sta     $b5         ; command $22 (enemy roulette ???)
+        sta     $b5         ; command $22 (characters run away)
         lda     #$10
         tsb     $a0         ; disable pre-attack swirly animation
         rts
@@ -12288,7 +12291,7 @@ FinalBattleScrollTbl:
 UpdateDead:
 @4ab9:  longa
         lda     $2f4c       ; characters/monsters that can't be targetted
-        eor     #$ffff      ; invert
+        not_a
         and     $2f4e       ; clear bits in characters/monsters that can be targetted
         sta     $2f4e
         sta     $3a78       ;
@@ -13061,7 +13064,7 @@ _death:
         stz     $3a2a
         stz     $3a2b
         lda     $3a73
-        eor     #$ff
+        not_a
         trb     $b9
         lda     $b8
         asl
@@ -13569,7 +13572,7 @@ UpdateCmdList:
         sta     $ef
         lda     $3ba4,y
         ora     $3ba5,y
-        eor     #$ff
+        not_a
         and     #$82
         tsb     $ef
         lda     #$04
@@ -14914,8 +14917,6 @@ StatusCounterTbl:
         .addr   StatusCounter_06
         .addr   StatusCounter_07
 
-; $5b45,$5ae8,$5b3b,$5ae8,$5b45,$5ae8,$5ae8,$5ae8
-
 ; jump table for frame 10-15 (enemy roulette, run away, increment battle/character/monster counters)
 GlobalCounterTbl:
 @5afa:  .addr   GlobalCounter_00
@@ -14924,8 +14925,6 @@ GlobalCounterTbl:
         .addr   GlobalCounter_03
         .addr   GlobalCounter_04
         .addr   GlobalCounter_05
-
-; $5bb2,$5bfc,$5ae9,$5ae9,$5ae9,$5bd0
 
 ; ------------------------------------------------------------------------------
 
@@ -15014,7 +15013,7 @@ rigenetimer:
         and     #$02
         beq     _5b4e       ; return if target doesn't have regen status
 @5b85:  sta     $3a7b
-        lda     #$22        ; command $22 (enemy roulette/characters run away ???)
+        lda     #$22        ; command $22 (characters run away)
         sta     $3a7a
         jsr     CreateRetalAction
         bra     @5ba9
@@ -15567,7 +15566,7 @@ WinBattle:
 
 ; max gp (9999999)
 MaxGil:
-@5fc7:  .faraddr 9999999
+@5fc7:  .faraddr MAX_GIL
 
 ; ------------------------------------------------------------------------------
 
@@ -16077,7 +16076,7 @@ AddExp:
 
 ; max experience (15,000,000)
 MaxExp:
-@6276:  .faraddr 15000000
+@6276:  .faraddr MAX_EXPERIENCE
 
 ; ------------------------------------------------------------------------------
 
@@ -16444,9 +16443,9 @@ BattleProp:
         .incbin "battle_prop.dat"
 
 ; cf/6200
-begin_fixed_block BattleMonsters, $2200
+begin_block BattleMonsters, $2200
         .incbin "battle_monsters.dat"
-end_fixed_block BattleMonsters
+end_block BattleMonsters
 
 ; ------------------------------------------------------------------------------
 

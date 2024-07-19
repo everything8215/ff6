@@ -36,7 +36,7 @@ inc_lang "text/monster_name_%s.inc"
 ; [ init cursor (skills) ]
 
 LoadSkillsCursor:
-@4b50:  ldy     #.loword(SkillsCursorProp)
+@4b50:  ldy     #near SkillsCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -47,10 +47,10 @@ UpdateSkillsCursor:
 @4b56:  jsr     MoveCursor
 
 InitSkillsCursor:
-@4b59:  ldy     #.loword(SkillsCursorPos)
+@4b59:  ldy     #near SkillsCursorPos
         jsr     UpdateCursorPos
         clr_a
-        lda     $28         ; selected character
+        lda     zSelIndex         ; selected character
         asl
         tax
         lda     $4d
@@ -62,8 +62,9 @@ InitSkillsCursor:
 ; ------------------------------------------------------------------------------
 
 ; skills cursor data
+; NOTE: this is the only cursor that doesn't have an initial position of (0,0)
 SkillsCursorProp:
-@4b6f:  .byte   $80,$00,$01,$01,$07
+        make_cursor_prop {0, 1}, {1, 7}, NO_X_WRAP
 
 ; skills cursor positions
 SkillsCursorPos:
@@ -80,7 +81,7 @@ SkillsCursorPos:
 ; [ init cursor (magic) ]
 
 LoadMagicCursor:
-@4b82:  ldy     #.loword(MagicCursorProp)
+@4b82:  ldy     #near MagicCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -91,17 +92,17 @@ UpdateMagicCursor:
 @4b88:  jsr     MoveListCursor
 
 InitMagicCursor:
-@4b8b:  ldy     #.loword(MagicCursorPos)
+@4b8b:  ldy     #near MagicCursorPos
         jsr     UpdateListCursorPos
         clr_a
-        lda     $28         ; character slot
+        lda     zSelIndex         ; character slot
         asl
         tax
         lda     $4f
         sta     $023e,x     ; save cursor position
         lda     $50
         sta     $023f,x
-        lda     $28
+        lda     zSelIndex
         tax
         lda     $4a
         sta     $0246,x
@@ -111,10 +112,15 @@ InitMagicCursor:
 
 ; magic cursor data
 MagicCursorProp:
-@4ba9:  .byte   $01,$00,$00,$02,$08
+.if LANG_EN
+        make_cursor_prop {0, 0}, {2, 8}, NO_Y_WRAP
+.else
+        make_cursor_prop {0, 0}, {3, 9}, NO_Y_WRAP
+.endif
 
 ; magic cursor positions
 MagicCursorPos:
+.if LANG_EN
 @4bae:  .byte   $08,$74,$70,$74
         .byte   $08,$80,$70,$80
         .byte   $08,$8c,$70,$8c
@@ -123,13 +129,24 @@ MagicCursorPos:
         .byte   $08,$b0,$70,$b0
         .byte   $08,$bc,$70,$bc
         .byte   $08,$c8,$70,$c8
+.else
+        .byte   $08,$68,$50,$68,$98,$68
+        .byte   $08,$74,$50,$74,$98,$74
+        .byte   $08,$80,$50,$80,$98,$80
+        .byte   $08,$8c,$50,$8c,$98,$8c
+        .byte   $08,$98,$50,$98,$98,$98
+        .byte   $08,$a4,$50,$a4,$98,$a4
+        .byte   $08,$b0,$50,$b0,$98,$b0
+        .byte   $08,$bc,$50,$bc,$98,$bc
+        .byte   $08,$c8,$50,$c8,$98,$c8
+.endif
 
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (blitz/swdtech/dance) ]
 
 LoadAbilityCursor:
-@4bce:  ldy     #.loword(AbilityCursorProp)
+@4bce:  ldy     #near AbilityCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -140,7 +157,7 @@ UpdateAbilityCursor:
 @4bd4:  jsr     MoveCursor
 
 InitAbilityCursor:
-@4bd7:  ldy     #.loword(AbilityCursorPos)
+@4bd7:  ldy     #near AbilityCursorPos
         sty     $e7
         jmp     UpdateCursorPos
 
@@ -148,21 +165,29 @@ InitAbilityCursor:
 
 ; blitz/swdtech/dance cursor data
 AbilityCursorProp:
-@4bdf:  .byte   $00,$00,$00,$02,$04
+        make_cursor_prop {0, 0}, {2, 4}
 
 ; blitz/swdtech/dance cursor positions
 AbilityCursorPos:
+.if LANG_EN
 @4be4:  .byte   $08,$74,$78,$74
         .byte   $08,$8c,$78,$8c
         .byte   $08,$a4,$78,$a4
         .byte   $08,$bc,$78,$bc
-
+.else
+        .byte   $18,$74,$88,$74
+        .byte   $18,$8c,$88,$8c
+        .byte   $18,$a4,$88,$a4
+        .byte   $18,$bc,$88,$bc
+.endif
 ; ------------------------------------------------------------------------------
+
+.if LANG_EN
 
 ; [ init cursor (lore) ]
 
 LoadLoreCursor:
-@4bf4:  ldy     #.loword(LoreCursorProp)
+@4bf4:  ldy     #near LoreCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -173,14 +198,14 @@ UpdateLoreCursor:
 @4bfa:  jsr     MoveListCursor
 
 InitLoreCursor:
-@4bfd:  ldy     #.loword(LoreCursorPos)
+@4bfd:  ldy     #near LoreCursorPos
         jmp     UpdateListCursorPos
 
 ; ------------------------------------------------------------------------------
 
 ; lore cursor data
 LoreCursorProp:
-@4c03:  .byte   $01,$00,$00,$01,$08
+        make_cursor_prop {0, 0}, {1, 8}, NO_Y_WRAP
 
 ; lore cursor positions
 LoreCursorPos:
@@ -193,12 +218,20 @@ LoreCursorPos:
         .byte   $08,$bc
         .byte   $08,$c8
 
+.else
+
+        LoadLoreCursor := LoadGenjuCursor
+        UpdateLoreCursor := UpdateGenjuCursor
+        InitLoreCursor := InitGenjuCursor
+
+.endif
+
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (espers select) ]
 
 LoadGenjuCursor:
-@4c18:  ldy     #.loword(GenjuCursorProp)
+@4c18:  ldy     #near GenjuCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -209,17 +242,22 @@ UpdateGenjuCursor:
 @4c1e:  jsr     MoveListCursor
 
 InitGenjuCursor:
-@4c21:  ldy     #.loword(GenjuCursorPos)
+@4c21:  ldy     #near GenjuCursorPos
         jmp     UpdateListCursorPos
 
 ; ------------------------------------------------------------------------------
 
 ; espers select cursor data
 GenjuCursorProp:
-@4c27:  .byte   $01,$00,$00,$02,$08
+.if LANG_EN
+        make_cursor_prop {0, 0}, {2, 8}, NO_Y_WRAP
+.else
+        make_cursor_prop {0, 0}, {2, 9}, NO_Y_WRAP
+.endif
 
 ; espers select cursor positions
 GenjuCursorPos:
+.if LANG_EN
 @4c2c:  .byte   $08,$74,$78,$74
         .byte   $08,$80,$78,$80
         .byte   $08,$8c,$78,$8c
@@ -228,13 +266,24 @@ GenjuCursorPos:
         .byte   $08,$b0,$78,$b0
         .byte   $08,$bc,$78,$bc
         .byte   $08,$c8,$78,$c8
+.else
+        .byte   $08,$68,$78,$68
+        .byte   $08,$74,$78,$74
+        .byte   $08,$80,$78,$80
+        .byte   $08,$8c,$78,$8c
+        .byte   $08,$98,$78,$98
+        .byte   $08,$a4,$78,$a4
+        .byte   $08,$b0,$78,$b0
+        .byte   $08,$bc,$78,$bc
+        .byte   $08,$c8,$78,$c8
+.endif
 
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (rage) ]
 
 LoadRageCursor:
-@4c4c:  ldy     #.loword(RageCursorProp)
+@4c4c:  ldy     #near RageCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -245,17 +294,22 @@ UpdateRageCursor:
 @4c52:  jsr     MoveListCursor
 
 InitRageCursor:
-@4c55:  ldy     #.loword(RageCursorPos)
+@4c55:  ldy     #near RageCursorPos
         jmp     UpdateListCursorPos
 
 ; ------------------------------------------------------------------------------
 
 ; rage cursor data
 RageCursorProp:
-@4c5b:  .byte   $01,$00,$00,$02,$08
+.if LANG_EN
+        make_cursor_prop {0, 0}, {2, 8}, NO_Y_WRAP
+.else
+        make_cursor_prop {0, 0}, {2, 9}, NO_Y_WRAP
+.endif
 
 ; rage cursor positions
 RageCursorPos:
+.if LANG_EN
 @4c60:  .byte   $18,$74,$88,$74
         .byte   $18,$80,$88,$80
         .byte   $18,$8c,$88,$8c
@@ -264,6 +318,17 @@ RageCursorPos:
         .byte   $18,$b0,$88,$b0
         .byte   $18,$bc,$88,$bc
         .byte   $18,$c8,$88,$c8
+.else
+        .byte   $18,$68,$88,$68
+        .byte   $18,$74,$88,$74
+        .byte   $18,$80,$88,$80
+        .byte   $18,$8c,$88,$8c
+        .byte   $18,$98,$88,$98
+        .byte   $18,$a4,$88,$a4
+        .byte   $18,$b0,$88,$b0
+        .byte   $18,$bc,$88,$bc
+        .byte   $18,$c8,$88,$c8
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -276,23 +341,23 @@ _c34c80:
         sta     hBG1SC
         jsr     ClearBG2ScreenA
         jsr     ClearBG2ScreenB
-        ldy     #.loword(SkillsMagicWindow1)
+        ldy     #near SkillsMagicWindow1
         jsr     DrawWindow
-        ldy     #.loword(SkillsCharWindow1)
+        ldy     #near SkillsCharWindow1
         jsr     DrawWindow
-        ldy     #.loword(SkillsDescWindow1)
+        ldy     #near SkillsDescWindow1
         jsr     DrawWindow
-        ldy     #.loword(SkillsOptionsWindow2)
+        ldy     #near SkillsOptionsWindow2
         jsr     DrawWindow
-        ldy     #.loword(SkillsOptionsWindow1)
+        ldy     #near SkillsOptionsWindow1
         jsr     DrawWindow
-        ldy     #.loword(SkillsMagicWindow2)
+        ldy     #near SkillsMagicWindow2
         jsr     DrawWindow
-        ldy     #.loword(SkillsCharWindow2)
+        ldy     #near SkillsCharWindow2
         jsr     DrawWindow
-        ldy     #.loword(SkillsDescWindow2)
+        ldy     #near SkillsDescWindow2
         jsr     DrawWindow
-        ldy     #.loword(SkillsMPWindow)
+        ldy     #near SkillsMPWindow
         jsr     DrawWindow
         jsr     TfrBG2ScreenAB
         jsr     _c34d27
@@ -301,35 +366,38 @@ _c34c80:
         jsr     ClearBG3ScreenB
         jsr     ClearBG3ScreenC
         jsr     _c3a662
+.if !LANG_EN
+        jsr     _c3ae9a
+.endif
         jsr     _c34d3d
-        lda     $79
-        sta     $29
-        ldy     #.loword(SkillsGenjuText)
-        jsr     DrawPosText
-        lda     $7a
-        sta     $29
-        ldy     #.loword(SkillsMagicText)
-        jsr     DrawPosText
-        lda     $7b
-        sta     $29
-        ldy     #.loword(SkillsBushidoText)
-        jsr     DrawPosText
-        lda     $7c
-        sta     $29
-        ldy     #.loword(SkillsBlitzText)
-        jsr     DrawPosText
-        lda     $7d
-        sta     $29
-        ldy     #.loword(SkillsLoreText)
-        jsr     DrawPosText
-        lda     $7e
-        sta     $29
-        ldy     #.loword(SkillsRageText)
-        jsr     DrawPosText
-        lda     $7f
-        sta     $29
-        ldy     #.loword(SkillsDanceText)
-        jsr     DrawPosText
+        lda     zSkillsTextColor::Genju
+        sta     zTextColor
+        ldy     #near SkillsGenjuText
+        jsr     DrawPosKana
+        lda     zSkillsTextColor::Magic
+        sta     zTextColor
+        ldy     #near SkillsMagicText
+        jsr     DrawPosKana
+        lda     zSkillsTextColor::Bushido
+        sta     zTextColor
+        ldy     #near SkillsBushidoText
+        jsr     DrawPosKana
+        lda     zSkillsTextColor::Blitz
+        sta     zTextColor
+        ldy     #near SkillsBlitzText
+        jsr     DrawPosKana
+        lda     zSkillsTextColor::Lore
+        sta     zTextColor
+        ldy     #near SkillsLoreText
+        jsr     DrawPosKana
+        lda     zSkillsTextColor::Rage
+        sta     zTextColor
+        ldy     #near SkillsRageText
+        jsr     DrawPosKana
+        lda     zSkillsTextColor::Dance
+        sta     zTextColor
+        ldy     #near SkillsDanceText
+        jsr     DrawPosKana
         jmp     TfrBG3ScreenAB
 
 ; ------------------------------------------------------------------------------
@@ -340,9 +408,9 @@ _c34d27:
 @4d27:  jsr     ClearBG1ScreenA
         jsr     ClearBG1ScreenB
         lda     #$24
-        sta     $29
-        ldx     #.loword(SkillsCharLabelTextList)
-        ldy     #$0006
+        sta     zTextColor
+        ldx     #near SkillsCharLabelTextList
+        ldy     #sizeof_SkillsCharLabelTextList
         jsr     DrawPosList
         jmp     _c34ee5
 
@@ -352,8 +420,8 @@ _c34d27:
 
 _c34d3d:
 @4d3d:  lda     #$24        ; init all skills to gray (disabled)
-        ldx     $00
-@4d41:  sta     $79,x
+        ldx     z0
+@4d41:  sta     zSkillsTextColor,x
         inx
         cpx     #$0007
         bne     @4d41
@@ -361,32 +429,33 @@ _c34d3d:
         phy
         ldx     #$0004
 @4d50:  phx
-        ldx     $00
+        ldx     z0
 @4d53:  lda     $0016,y     ; battle command
         cmp     f:_c34d78,x
         bne     @4d60
         lda     #$20
-        sta     $79,x
+        sta     zSkillsTextColor,x
 @4d60:  inx
-        cpx     #$0007
+        cpx     #sizeof__c34d78
         bne     @4d53
         iny
         plx
         dex
         bne     @4d50
         ply
-        lda     $0000,y     ; espers always disabled for character $0c (gogo)
-        cmp     #$0c
+        lda     0,y                     ; espers always disabled for gogo
+        cmp     #CHAR_PROP::GOGO
         bne     @4d77
         lda     #$24
-        sta     $79
+        sta     zSkillsTextColor::Genju
 @4d77:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; battle commands for enabling skills (esper, magic, swdtech, blitz, lore, rage, dance)
-_c34d78:
-@4d78:  .byte   $02,$02,$07,$0a,$0c,$10,$13
+begin_block _c34d78
+        .byte   $02,$02,$07,$0a,$0c,$10,$13
+end_block _c34d78
 
 ; ------------------------------------------------------------------------------
 
@@ -397,8 +466,12 @@ DrawMagicMenu:
         jsr     CalcMagicOrder
         jsr     DrawMagicList
         lda     #$2c
-        sta     $29
-        ldy     #.loword(SkillsMPCostText)
+        sta     zTextColor
+.if !LANG_EN
+        ldy     #near SkillsBlankTitleText
+        jsr     DrawPosText
+.endif
+        ldy     #near SkillsMPCostText
         jsr     DrawPosText
         jsr     CreateSubPortraitTask
         jmp     InitDMA1BG3ScreenB
@@ -406,60 +479,41 @@ DrawMagicMenu:
 ; ------------------------------------------------------------------------------
 
 ; window data for skills menu
-; c3/4d98: bg2_0( 1, 1) [ 7x 4]
-; c3/4d9c: bg2_0( 1, 7) [ 7x10]
-; c3/4da0: bg2_0( 1, 6) [28x 5]
-; c3/4da4: bg2_0( 1,13) [28x12]
-; c3/4da8: bg2_0( 1, 1) [28x 3]
-; c3/4dac: bg2_1( 1, 6) [28x 5]
-; c3/4db0: bg2_1( 1,13) [28x12]
-; c3/4db4: bg2_1(22, 4) [ 7x 1]
-; c3/4db8: bg2_1( 1, 1) [28x 3]
+; c3/4d98: bg2_0( 1, 1) [ 7x 4] espers/magic window
+; c3/4d9c: bg2_0( 1, 7) [ 7x10] character skills list window
+; c3/4da0: bg2_0( 1, 6) [28x 5] character info window
+; c3/4da4: bg2_0( 1,13) [28x12] spell list window
+; c3/4da8: bg2_0( 1, 1) [28x 3] description window
+; c3/4dac: bg2_1( 1, 6) [28x 5] character window, top right screen
+; c3/4db0: bg2_1( 1,13) [28x12] spell list window, top right screen
+; c3/4db4: bg2_1(22, 4) [ 7x 1] mp cost window, top right screen
+; c3/4db8: bg2_1( 1, 1) [28x 3] description window, top right screen
 
-; espers/magic window
-SkillsOptionsWindow1:
-@4d98:  .word   $588b
-        .byte   $07,$04
+.if LANG_EN
 
-; character skills list window
-SkillsOptionsWindow2:
-@4d9c:  .word   $5a0b
-        .byte   $07,$0a
+SkillsOptionsWindow1:                   make_window BG2A, {1, 1}, {7, 4}
+SkillsOptionsWindow2:                   make_window BG2A, {1, 7}, {7, 10}
+SkillsCharWindow1:                      make_window BG2A, {1, 6}, {28, 5}
+SkillsMagicWindow1:                     make_window BG2A, {1, 13}, {28, 12}
+SkillsDescWindow1:                      make_window BG2A, {1, 1}, {28, 3}
+SkillsCharWindow2:                      make_window BG2B, {1, 6}, {28, 5}
+SkillsMagicWindow2:                     make_window BG2B, {1, 13}, {28, 12}
+SkillsMPWindow:                         make_window BG2B, {22, 4}, {7, 1}
+SkillsDescWindow2:                      make_window BG2B, {1, 1}, {28, 3}
 
-; character info window
-SkillsCharWindow1:
-@4da0:  .word   $59cb
-        .byte   $1c,$05
+.else
 
-; spell list window
-SkillsMagicWindow1:
-@4da4:  .word   $5b8b
-        .byte   $1c,$0c
+SkillsOptionsWindow1:                   make_window BG2A, {1, 1}, {6, 4}
+SkillsOptionsWindow2:                   make_window BG2A, {1, 7}, {6, 10}
+SkillsCharWindow1:                      make_window BG2A, {1, 5}, {28, 5}
+SkillsMagicWindow1:                     make_window BG2A, {1, 12}, {28, 13}
+SkillsDescWindow1:                      make_window BG2A, {9, 1}, {20, 2}
+SkillsCharWindow2:                      make_window BG2B, {1, 5}, {28, 5}
+SkillsMagicWindow2:                     make_window BG2B, {1, 12}, {28, 13}
+SkillsMPWindow:                         make_window BG2B, {1, 1}, {6, 2}
+SkillsDescWindow2:                      make_window BG2B, {9, 1}, {20, 2}
 
-; description window
-SkillsDescWindow1:
-@4da8:  .word   $588b
-        .byte   $1c,$03
-
-; character window, top right screen
-SkillsCharWindow2:
-@4dac:  .word   $61cb
-        .byte   $1c,$05
-
-; spell list window, top right screen
-SkillsMagicWindow2:
-@4db0:  .word   $638b
-        .byte   $1c,$0c
-
-; mp cost window, top right screen
-SkillsMPWindow:
-@4db4:  .word   $6175
-        .byte   $07,$01
-
-; description window, top right screen
-SkillsDescWindow2:
-@4db8:  .word   $608b
-        .byte   $1c,$03
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -467,64 +521,62 @@ SkillsDescWindow2:
 
 InitSkillsBGScrollHDMA:
 @4dbc:  lda     #$02        ; hdma #5 - one address, write twice, absolue addressing
-        sta     $4350
-        lda     #$12        ; destination = $2112 (bg3 vertical scroll)
-        sta     $4351
-        ldy     #.loword(SkillsBG3VScrollHDMATbl)
-        sty     $4352
+        sta     hDMA5::CTRL
+        lda     #<hBG3VOFS
+        sta     hDMA5::HREG
+        ldy     #near SkillsBG3VScrollHDMATbl
+        sty     hDMA5::ADDR
         lda     #^SkillsBG3VScrollHDMATbl
-        sta     $4354
+        sta     hDMA5::ADDR_B
         lda     #^SkillsBG3VScrollHDMATbl
-        sta     $4357
-        lda     #$20        ; enable hdma channel #5
-        tsb     $43
+        sta     hDMA5::HDMA_B
+        lda     #BIT_5
+        tsb     zEnableHDMA
         jsr     LoadSkillsBG1VScrollHDMATbl
-        ldx     $00
+        ldx     z0
 @4ddf:  lda     f:SkillsBG1HScrollHDMATbl,x   ; load bg1 horizontal scroll hdma table
         sta     $7e9a09,x
         inx
-        cpx     #$000d
+        cpx     #sizeof_SkillsBG1HScrollHDMATbl
         bne     @4ddf
         lda     #$02        ; hdma #6 - one address, write twice, absolue addressing
-        sta     $4360
-        lda     #$0d        ; destination = $210d (bg1 horizontal scroll)
-        sta     $4361
+        sta     hDMA6::CTRL
+        lda     #<hBG1HOFS
+        sta     hDMA6::HREG
         ldy     #$9a09      ; source = $7e9a09
-        sty     $4362
+        sty     hDMA6::ADDR
         lda     #$7e
-        sta     $4364
+        sta     hDMA6::ADDR_B
         lda     #$7e
-        sta     $4367
+        sta     hDMA6::HDMA_B
         lda     #$02        ; hdma #6 - one address, write twice, absolue addressing
-        sta     $4370
-        lda     #$0e        ; destination = $210e (bg1 vertical scroll)
-        sta     $4371
+        sta     hDMA7::CTRL
+        lda     #<hBG1VOFS
+        sta     hDMA7::HREG
         ldy     #$9849      ; source = $7e9849
-        sty     $4372
+        sty     hDMA7::ADDR
         lda     #$7e
-        sta     $4374
+        sta     hDMA7::ADDR_B
         lda     #$7e
-        sta     $4377
-        lda     #$c0        ; enable hdma channel #6 and #7
-        tsb     $43
+        sta     hDMA7::HDMA_B
+        lda     #BIT_6 | BIT_7
+        tsb     zEnableHDMA
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; bg3 vertical scroll hdma table (skills)
 SkillsBG3VScrollHDMATbl:
-@4e26:  .byte   $4f
-        .word   $0002
-        .byte   $40
-        .word   $0002
-        .byte   $00
+        hdma_word 79, 2
+        hdma_word 64, 2
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
 ; [ load bg1 vertical scroll hdma table (skills) ]
 
 LoadSkillsBG1VScrollHDMATbl:
-@4e2d:  ldx     $00
+@4e2d:  ldx     z0
 @4e2f:  lda     f:SkillsBG1VScrollHDMATbl,x
         sta     $7e9849,x
         inx
@@ -543,94 +595,105 @@ LoadSkillsBG1VScrollHDMATbl:
         sta     $7e9849,x
         shorta
         inx2
+.if LANG_EN
         cpx     #$005a
+.else
+        cpx     #$0063
+.endif
         bne     @4e3d
 @4e63:  lda     f:SkillsBG1VScrollHDMATbl,x
         sta     $7e9849,x
         inx
+.if LANG_EN
         cpx     #$005e
+.else
+        cpx     #$0067
+.endif
         bne     @4e63
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; bg1 horizontal scroll hdma table (skills)
-SkillsBG1HScrollHDMATbl:
-@4e72:  .byte   $27
-        .word   $0100
-        .byte   $48
-        .word   $0100
-        .byte   $60
-        .word   $0000
-        .byte   $1e
-        .word   $0100
-        .byte   $00
+begin_block SkillsBG1HScrollHDMATbl
+        hdma_word 39, $0100
+.if LANG_EN
+        hdma_word 72, $0100
+        hdma_word 96, $0000
+.else
+        hdma_word 60, $0100
+        hdma_word 108, $0000
+.endif
+        hdma_word 30, $0100
+        hdma_end
+end_block SkillsBG1HScrollHDMATbl
 
 ; bg1 vertical scroll hdma table (skills)
-SkillsBG1VScrollHDMATbl:
-@4e7f:  .byte   $3f
-        .word   $0000
-        .byte   $0c
-        .word   $0004
-        .byte   $0c
-        .word   $0008
-        .byte   $0a
-        .word   $000c
-        .byte   $01
-        .word   $000c
-        .byte   $0d
-        .word   $0008
-        .byte   $04
-        .word   $ff94
-        .byte   $04
-        .word   $ff94
-        .byte   $04
-        .word   $ff94
-        .byte   $04
-        .word   $ff98
-        .byte   $04
-        .word   $ff98
-        .byte   $04
-        .word   $ff98
-        .byte   $04
-        .word   $ff9c
-        .byte   $04
-        .word   $ff9c
-        .byte   $04
-        .word   $ff9c
-        .byte   $04
-        .word   $ffa0
-        .byte   $04
-        .word   $ffa0
-        .byte   $04
-        .word   $ffa0
-        .byte   $04
-        .word   $ffa4
-        .byte   $04
-        .word   $ffa4
-        .byte   $04
-        .word   $ffa4
-        .byte   $04
-        .word   $ffa8
-        .byte   $04
-        .word   $ffa8
-        .byte   $04
-        .word   $ffa8
-        .byte   $04
-        .word   $ffac
-        .byte   $04
-        .word   $ffac
-        .byte   $04
-        .word   $ffac
-        .byte   $04
-        .word   $ffb0
-        .byte   $04
-        .word   $ffb0
-        .byte   $04
-        .word   $ffb0
-        .byte   $1e
-        .word   $ff20
-        .byte   $00
+begin_block SkillsBG1VScrollHDMATbl
+        hdma_word 63, 0
+        hdma_word 12, 4
+        hdma_word 12, 8
+        hdma_word 10, 12
+        hdma_word 1, 12
+.if LANG_EN
+        hdma_word 13, 8
+        hdma_word 4, -108
+        hdma_word 4, -108
+        hdma_word 4, -108
+        hdma_word 4, -104
+        hdma_word 4, -104
+        hdma_word 4, -104
+        hdma_word 4, -100
+        hdma_word 4, -100
+        hdma_word 4, -100
+        hdma_word 4, -96
+        hdma_word 4, -96
+        hdma_word 4, -96
+        hdma_word 4, -92
+        hdma_word 4, -92
+        hdma_word 4, -92
+        hdma_word 4, -88
+        hdma_word 4, -88
+        hdma_word 4, -88
+        hdma_word 4, -84
+        hdma_word 4, -84
+        hdma_word 4, -84
+        hdma_word 4, -80
+        hdma_word 4, -80
+        hdma_word 4, -80
+.else
+        hdma_word 1, 12
+        hdma_word 4, -96
+        hdma_word 4, -96
+        hdma_word 4, -96
+        hdma_word 4, -92
+        hdma_word 4, -92
+        hdma_word 4, -92
+        hdma_word 4, -88
+        hdma_word 4, -88
+        hdma_word 4, -88
+        hdma_word 4, -84
+        hdma_word 4, -84
+        hdma_word 4, -84
+        hdma_word 4, -80
+        hdma_word 4, -80
+        hdma_word 4, -80
+        hdma_word 4, -76
+        hdma_word 4, -76
+        hdma_word 4, -76
+        hdma_word 4, -72
+        hdma_word 4, -72
+        hdma_word 4, -72
+        hdma_word 4, -68
+        hdma_word 4, -68
+        hdma_word 4, -68
+        hdma_word 4, -64
+        hdma_word 4, -64
+        hdma_word 4, -64
+.endif
+        hdma_word 30, -224
+        hdma_end
+end_block SkillsBG1VScrollHDMATbl
 
 ; ------------------------------------------------------------------------------
 
@@ -638,10 +701,10 @@ SkillsBG1VScrollHDMATbl:
 
 _c34edd:
 @4edd:  clr_a
-        lda     $28
+        lda     zSelIndex
         asl
         tax
-        ldy     $6d,x
+        ldy     zCharPropPtr,x
         rts
 
 ; ------------------------------------------------------------------------------
@@ -650,31 +713,44 @@ _c34edd:
 
 _c34ee5:
 @4ee5:  jsr     _c34edd
-        sty     $67
+        sty     zSelCharPropPtr
         jmp     @4eed
 
 ; ???
-@4eed:  ldy     #$42dd
+.if LANG_EN
+@4eed:  ldy_pos BG1B, {10, 10}
         ldx     #$4f50
+.else
+@4eed:  ldy_pos BG1B, {9, 10}
+        ldx     #$4748
+.endif
         jsr     DrawStatusIcons
-        ldy     #.loword(SkillsCharHPSlashText)
+        ldy     #near SkillsCharHPSlashText
         jsr     DrawPosText
-        ldy     #.loword(SkillsCharMPSlashText)
+        ldy     #near SkillsCharMPSlashText
         jsr     DrawPosText
-        ldx     #.loword(_c34f12)
+        ldx     #near _c34f12
         jsr     DrawCharBlock
 
 _c34f08:
 @4f08:  lda     #$20
-        sta     $29
-        ldy     #$421d
+        sta     zTextColor
+.if LANG_EN
+        ldy_pos BG1B, {10, 7}
+.else
+        ldy_pos BG1B, {9, 6}
+.endif
         jmp     DrawEquipGenju
 
 ; ------------------------------------------------------------------------------
 
 ; ram addresses for lv/hp/mp text (skills)
 _c34f12:
-@4f12:  .word   $4237,$42b3,$42bd,$4333,$433d
+        make_pos BG1B, {23, 7}
+        make_pos BG1B, {21, 9}
+        make_pos BG1B, {26, 9}
+        make_pos BG1B, {21, 11}
+        make_pos BG1B, {26, 11}
 
 ; ------------------------------------------------------------------------------
 
@@ -684,7 +760,11 @@ CalcMagicOrder:
 _c34f1c:
 @4f1c:  ldx     #$9d89
         stx     hWMADDL
+.if LANG_EN
         ldx     #$0036
+.else
+        ldx     #$003c
+.endif
         lda     #$ff
 @4f27:  sta     hWMDATA
         dex
@@ -739,6 +819,9 @@ _c34f61:
         iny
         dec     $e0
         bne     @4f7b
+.if !LANG_EN
+        iny3
+.endif
         rts
 
 ; ------------------------------------------------------------------------------
@@ -747,7 +830,11 @@ _c34f61:
 
 DrawMagicList:
 @4f87:  jsr     GetListTextPos
+.if LANG_EN
         ldy     #8
+.else
+        ldy     #9
+.endif
 @4f8d:  phy
         jsr     DrawMagicListRow
         lda     $e6
@@ -763,15 +850,26 @@ DrawMagicList:
 
 ; [ draw one row of magic list ]
 
+make_jump_label UpdateListText, LIST_TYPE::MAGIC
 DrawMagicListRow:
 @4f9e:  jsr     GetMagicNamePtr
         ldx     #$0003
         jsr     _c34fc4
         inc     $e5
         jsr     GetMagicNamePtr
+.if LANG_EN
         ldx     #$0010
         jsr     _c34fc4
         inc     $e5
+.else
+        ldx     #$000c
+        jsr     _c34fc4
+        inc     $e5
+        jsr     GetMagicNamePtr
+        ldx     #$0015
+        jsr     _c34fc4
+        inc     $e5
+.endif
         rts
 
 ; ------------------------------------------------------------------------------
@@ -781,7 +879,7 @@ DrawMagicListRow:
 GetMagicNamePtr:
 @4fb5:  ldy     #MAGIC_NAME_SIZE
         sty     $eb
-        ldy     #.loword(MagicName)
+        ldy     #near MagicName
         sty     $ef
         lda     #^MagicName
         sta     $f1
@@ -793,7 +891,9 @@ GetMagicNamePtr:
 
 _c34fc4:
 @4fc4:  lda     $e6
+.if LANG_EN
         inc
+.endif
         jsr     GetBG1TilemapPtr
         longa
         txa
@@ -811,7 +911,11 @@ _c34fc4:
         bne     @501a
         jsr     _c350ec
         jsr     LoadArrayItem
+.if LANG_EN
         ldx     #$9e92
+.else
+        ldx     #$9e90
+.endif
         stx     hWMADDL
         lda     #$ff
         sta     hWMDATA
@@ -822,8 +926,10 @@ _c34fc4:
         sta     hWMDATA
         lda     $f9
         sta     hWMDATA
+.if LANG_EN
         lda     #$ff
         sta     hWMDATA
+.endif
         stz     hWMDATA
         jmp     DrawPosTextBuf
 @501a:  clr_a
@@ -832,7 +938,11 @@ _c34fc4:
         lda     #$ff
         sta     $7e9d89,x
         jsr     _c351b9
+.if LANG_EN
         ldy     #$000b
+.else
+        ldy     #$0008
+.endif
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -849,7 +959,11 @@ _c34fc4:
         beq     @501a
         jsr     _c350ec
         jsr     LoadArrayItem
+.if LANG_EN
         ldx     #$9e92
+.else
+        ldx     #$9e90
+.endif
         stx     hWMADDL
         jsr     _c350ec
         jsr     _c350a2
@@ -858,9 +972,11 @@ _c34fc4:
         pha
         jsr     _c351b9
         lda     #$2c
-        sta     $29
+        sta     zTextColor
+.if LANG_EN
         lda     #$c7
         sta     hWMDATA
+.endif
         pla
         jsr     HexToDec3
         lda     $f8
@@ -872,14 +988,16 @@ _c34fc4:
 @5082:  stz     hWMDATA
         jmp     DrawPosTextBuf
 @5088:  lda     #$24
-        sta     $29
+        sta     zTextColor
         jsr     _c350ec
         jsr     _c3514d
         lda     #$ff
         sta     hWMDATA
         sta     hWMDATA
         sta     hWMDATA
+.if LANG_EN
         sta     hWMDATA
+.endif
         bra     @5082
 
 ; ------------------------------------------------------------------------------
@@ -889,8 +1007,8 @@ _c34fc4:
 _c350a2:
 @50a2:  sta     $e0
         jsr     _c34edd
-        lda     $0000,y
-        cmp     #$0c
+        lda     0,y
+        cmp     #CHAR_PROP::GOGO
         beq     _50c5
 
 _c350ae:
@@ -909,21 +1027,21 @@ _c350ae:
 _50c5:  stz     $e1
 @50c7:  clr_a
         lda     $e1
-        cmp     $28
+        cmp     zSelIndex
         beq     @50e2
         asl
         tax
-        ldy     $6d,x
+        ldy     zCharPropPtr,x
         beq     @50e2
-        lda     $0000,y
-        cmp     #$0c
+        lda     0,y
+        cmp     #CHAR_PROP::GOGO
         bcs     @50e2
         jsr     _c350ae
         cmp     #$ff
         beq     @50eb
 @50e2:  inc     $e1
         lda     $e1
-        cmp     #$04
+        cmp     #4
         bne     @50c7
         clr_a
 @50eb:  rts
@@ -967,13 +1085,13 @@ _c3510d:
         lda     f:MagicProp+5,x   ; spell data
         sta     $e0
         pla
-        cmp     #$99
+        cmp     #ATTACK::STEP_MINE
         bne     @512e
-        lda     $021b
+        lda     wGameTimeHours
         asl
         sta     $e0
-        lda     $021c
-        cmp     #$1e
+        lda     wGameTimeMinutes
+        cmp     #30
         bcc     @512e
         inc     $e0
 @512e:  lda     $11d7
@@ -997,9 +1115,9 @@ _c3510d:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ set spell text color ]
 
-_c3514d:
+.proc _c3514d
 @514d:  cmp     #$2a
         beq     @517b
         cmp     #$12
@@ -1045,22 +1163,23 @@ _c3514d:
         lda     $e5
         tax
         lda     #$20
-        sta     $29
+        sta     zTextColor
         sta     $7e9e09,x
         rts
 
-; ------------------------------------------------------------------------------
+; set spell text color to gray
 
-; [  ]
-
-_c351b9:
 _51b9:  clr_a
         lda     $e5
         tax
         lda     #$28
-        sta     $29
+        sta     zTextColor
         sta     $7e9e09,x
         rts
+
+.endproc  ; _c3514d
+
+_c351b9 := _c3514d::_51b9
 
 ; ------------------------------------------------------------------------------
 
@@ -1068,9 +1187,13 @@ _51b9:  clr_a
 
 _c351c6:
 @51c6:  lda     #$20
-        sta     $29
+        sta     zTextColor
         longa
-        lda     #$81bf
+.if LANG_EN
+        lda_pos BG3B, {27, 5}
+.else
+        lda_pos BG3B, {5, 2}
+.endif
         sta     $7e9e89
         shorta
         ldx     #$9e8b
@@ -1096,9 +1219,9 @@ _c351f9:
 @51f9:  jsr     ClearBG1ScreenA
         jsr     DrawLoreList
         lda     #$2c
-        sta     $29
-        ldy     #.loword(SkillsLoreTitleText)
-        jsr     DrawPosText
+        sta     zTextColor
+        ldy     #near SkillsLoreTitleText
+        jsr     DrawPosKana
         jsr     CreateSubPortraitTask
         jmp     InitDMA1BG3ScreenB
 
@@ -1109,7 +1232,7 @@ _c351f9:
 _c3520f:
 @520f:  ldx     #$9d89
         stx     hWMADDL
-        ldx     $00
+        ldx     z0
         stz     $e0
 @5219:  ldy     #8
         lda     $1d29,x     ; known lores
@@ -1137,7 +1260,11 @@ _c3520f:
 DrawLoreList:
 @523c:  jsr     _c3520f
         jsr     GetListTextPos
+.if LANG_EN
         ldy     #8
+.else
+        ldy     #9
+.endif
 @5245:  phy
         jsr     DrawLoreListRow
         lda     $e6
@@ -1153,13 +1280,20 @@ DrawLoreList:
 
 ; [ draw one row of lore list ]
 
+make_jump_label UpdateListText, LIST_TYPE::LORE
 DrawLoreListRow:
 @5256:  lda     #$20
-        sta     $29
+        sta     zTextColor
         jsr     _c35266
         ldx     #$0003
         jsr     _c35275
         inc     $e5
+.if !LANG_EN
+        jsr     _c35266
+        ldx     #$0011
+        jsr     _c35275
+        inc     $e5
+.endif
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1172,7 +1306,7 @@ _c35266:
 
 @5266:  ldy     #ATTACK_NAME_SIZE
         sty     $eb
-        ldy     #.loword(@LoreName)
+        ldy     #near @LoreName
         sty     $ef
         lda     #^@LoreName
         sta     $f1
@@ -1184,7 +1318,9 @@ _c35266:
 
 _c35275:
 @5275:  lda     $e6
+.if LANG_EN
         inc
+.endif
         jsr     GetBG1TilemapPtr
         longa
         txa
@@ -1198,7 +1334,11 @@ _c35275:
         beq     @52c0
         lda     $e5
         jsr     LoadArrayItem
+.if LANG_EN
         ldx     #$9e95
+.else
+        ldx     #$9e93
+.endif
         stx     hWMADDL
         lda     #$c7
         sta     hWMDATA
@@ -1215,7 +1355,11 @@ _c35275:
         sta     hWMDATA
         stz     hWMDATA
         jmp     DrawPosTextBuf
+.if LANG_EN
 @52c0:  ldy     #$000e
+.else
+@52c0:  ldy     #$000c
+.endif
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -1232,17 +1376,23 @@ _c35275:
 _c352d7:
 @52d7:  jsr     ClearBG1ScreenA
         jsr     _c3536e
+.if LANG_EN
         lda     #$20
-        sta     $29
+        sta     zTextColor
         jsr     _c352f4
+.else
+        jsr     _c3ae09
+.endif
         lda     #$2c
-        sta     $29
-        ldy     #.loword(SkillsBushidoTitleText)
-        jsr     DrawPosText
+        sta     zTextColor
+        ldy     #near SkillsBushidoTitleText
+        jsr     DrawPosKana
         jsr     CreateSubPortraitTask
         jmp     InitDMA1BG3ScreenB
 
 ; ------------------------------------------------------------------------------
+
+.if LANG_EN
 
 ; [  ]
 
@@ -1284,7 +1434,7 @@ _c35311:
 _c35328:
 @5328:  ldy     #BUSHIDO_NAME_SIZE
         sty     $eb
-        ldy     #.loword(BushidoName)
+        ldy     #near BushidoName
         sty     $ef
         lda     #^BushidoName
         sta     $f1
@@ -1319,7 +1469,10 @@ _c35337:
         stz     hWMDATA
         jmp     DrawPosTextBuf
 
+.endif
+
 ; ------------------------------------------------------------------------------
+
 
 ; [  ]
 
@@ -1345,15 +1498,15 @@ _c3536e:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init rage list ]
 
-_c35391:
+InitRageList:
 @5391:  jsr     ClearBG1ScreenA
         jsr     DrawRageList
         lda     #$2c
-        sta     $29
-        ldy     #.loword(SkillsRageTitleText)
-        jsr     DrawPosText
+        sta     zTextColor
+        ldy     #near SkillsRageTitleText
+        jsr     DrawPosKana
         jsr     CreateSubPortraitTask
         jmp     InitDMA1BG3ScreenB
 
@@ -1361,32 +1514,33 @@ _c35391:
 
 ; [ draw entire rage list ]
 
-DrawRageList:
-@53a7:  jsr     GetRageList
+.proc DrawRageList
+        jsr     ExpandRageList
         jsr     GetListTextPos
         ldy     #9
-@53b0:  phy
-        jsr     GetRageListRow
+:       phy
+        jsr     DrawRageListRow
         lda     $e6
         inc2
-        and     #$1f
+        and     #%11111
         sta     $e6
         ply
         dey
-        bne     @53b0
+        bne     :-
         rts
+.endproc  ; DrawRageList
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ expand 1-bit rage list in sram to 1-byte per rage list in wram ]
 
-GetRageList:
+ExpandRageList:
 @53c1:  ldx     #$9d89
         stx     hWMADDL
-        ldx     $00
+        ldx     z0
         stz     $e0
 @53cb:  ldy     #$0008
-        lda     $1d2c,x     ; known rages
+        lda     $1d2c,x                 ; known rages
 @53d1:  ror
         pha
         bcc     @53dc
@@ -1408,9 +1562,10 @@ GetRageList:
 
 ; [ draw one row of rage list ]
 
-GetRageListRow:
+make_jump_label UpdateListText, LIST_TYPE::RAGE
+DrawRageListRow:
 @53ee:  lda     #$20
-        sta     $29
+        sta     zTextColor
         jsr     GetMonsterNamePtr
         ldx     #$0005
         jsr     DrawRageName
@@ -1426,9 +1581,9 @@ GetRageListRow:
 ; [ get pointer to monster name ]
 
 GetMonsterNamePtr:
-@5409:  ldy     #10
+@5409:  ldy     #MONSTER_NAME_SIZE
         sty     $eb
-        ldy     #.loword(MonsterName)
+        ldy     #near MonsterName
         sty     $ef
         lda     #^MonsterName
         sta     $f1
@@ -1440,7 +1595,9 @@ GetMonsterNamePtr:
 
 DrawRageName:
 @5418:  lda     $e6
+.if LANG_EN
         inc
+.endif
         jsr     GetBG1TilemapPtr
         longa
         txa
@@ -1455,7 +1612,7 @@ DrawRageName:
         lda     $e5
         jsr     LoadArrayItem
         jmp     DrawPosTextBuf
-@543b:  ldy     #10
+@543b:  ldy     #MONSTER_NAME_SIZE
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -1472,12 +1629,12 @@ DrawRageName:
 DrawGenjuMenu:
 @5452:  jsr     ClearBG1ScreenA
         lda     #$20
-        sta     $29
+        sta     zTextColor
         jsr     DrawGenjuList
         lda     #$2c
-        sta     $29
-        ldy     #.loword(SkillsGenjuTitleText)
-        jsr     DrawPosText
+        sta     zTextColor
+        ldy     #near SkillsGenjuTitleText
+        jsr     DrawPosKana
         jsr     CreateSubPortraitTask
         jmp     InitDMA1BG3ScreenB
 
@@ -1488,7 +1645,11 @@ DrawGenjuMenu:
 DrawGenjuList:
 @546c:  jsr     GetGenjuList
         jsr     GetListTextPos
+.if LANG_EN
         ldy     #8
+.else
+        ldy     #9
+.endif
 @5475:  phy
         jsr     DrawGenjuListRow
         lda     $e6
@@ -1507,7 +1668,7 @@ DrawGenjuList:
 GetGenjuList:
 @5486:  ldx     #$9ded
         stx     hWMADDL
-        ldx     $00
+        ldx     z0
         stz     $e0
 @5490:  ldy     #8
         lda     $1a69,x     ; current espers
@@ -1592,6 +1753,7 @@ GenjuOrder:
 
 ; [ draw one row of esper list ]
 
+make_jump_label UpdateListText, LIST_TYPE::GENJU
 DrawGenjuListRow:
 @54e3:  jsr     _c354fa
         ldx     #$0003
@@ -1610,7 +1772,7 @@ DrawGenjuListRow:
 _c354fa:
 @54fa:  ldy     #GENJU_NAME_SIZE
         sty     $eb
-        ldy     #.loword(GenjuName)
+        ldy     #near GenjuName
         sty     $ef
         lda     #^GenjuName
         sta     $f1
@@ -1622,7 +1784,9 @@ _c354fa:
 
 _c35509:
 @5509:  lda     $e6
+.if LANG_EN
         inc
+.endif
         jsr     GetBG1TilemapPtr
         longa
         txa
@@ -1674,7 +1838,7 @@ _c35509:
 
 _c35574:
 @5574:  sta     $e0
-        ldx     $00
+        ldx     z0
         ldy     #$0010
 @557b:  lda     $161e,x     ; esper
         cmp     $e0
@@ -1690,7 +1854,7 @@ _c35574:
         lda     #$20
         bra     @5595
 @5593:  lda     #$28
-@5595:  sta     $29
+@5595:  sta     zTextColor
         lda     $e0
         rts
 
@@ -1700,9 +1864,13 @@ _c35574:
 
 _c3559a:
 @559a:  lda     #$20
-        sta     $29
+        sta     zTextColor
         longa
-        lda     #$40cd                  ; position
+.if LANG_EN
+        lda_pos BG1B, {2, 2}
+.else
+        lda_pos BG1B, {10, 2}
+.endif
         sta     $7e9e89
         lda     #$9e8b
         sta     hWMADDL
@@ -1715,7 +1883,7 @@ _c3559a:
         inx
         dey
         bne     @55b2
-@55c0:  ldx     $00
+@55c0:  ldx     z0
 @55c2:  lda     f:GenjuEquipErrorMsgText,x
         beq     @55ce
         sta     hWMDATA
@@ -1732,9 +1900,9 @@ DrawBlitzMenu:
 @55d4:  jsr     ClearBG1ScreenA
         jsr     DrawBlitzList
         lda     #$2c
-        sta     $29
-        ldy     #.loword(SkillsBlitzTitleText)
-        jsr     DrawPosText
+        sta     zTextColor
+        ldy     #near SkillsBlitzTitleText
+        jsr     DrawPosKana
         jsr     CreateSubPortraitTask
         jmp     InitDMA1BG3ScreenB
 
@@ -1747,6 +1915,10 @@ DrawBlitzList:
         jsr     GetListTextPos
         stz     $e5
         inc     $e6
+.if !LANG_EN
+        inc     $e6
+        inc     $e6
+.endif
         ldy     #4
 @55f7:  phy
         jsr     DrawBlitzListRow
@@ -1764,11 +1936,19 @@ DrawBlitzList:
 ; [ draw one row of blitz inputs ]
 
 DrawBlitzListRow:
-@560a:  ldx     #$0004
+.if LANG_EN
+@560a:  ldx     #4
         jsr     DrawBlitzInput
         inc     $e5
-        ldx     #$0012
+        ldx     #18
         jsr     DrawBlitzInput
+.else
+        ldx     #5
+        jsr     DrawBlitzInput
+        inc     $e5
+        ldx     #19
+        jsr     DrawBlitzInput
+.endif
         inc     $e5
         rts
 
@@ -1784,7 +1964,7 @@ GetDanceList:
 @5620:  lda     $1d4c
 _5623:  ldx     #$9d89
         stx     hWMADDL
-        ldx     $00
+        ldx     z0
         ldy     #8
 @562e:  ror
         pha
@@ -1872,7 +2052,7 @@ GetBlitzInputTiles:
 ; [  ]
 
 _c356bc:
-@56bc:  ldy     $00
+@56bc:  ldy     z0
         longa
         lda     [$e7]
         sta     $eb
@@ -1912,9 +2092,9 @@ LoadMagicDesc:
 ; [ load lore description ]
 
 LoadLoreDesc:
-@56eb:  ldx     #.loword(LoreDescPtrs)
+@56eb:  ldx     #near LoreDescPtrs
         stx     $e7
-        ldx     #.loword(LoreDesc)
+        ldx     #near LoreDesc
         stx     $eb
         lda     #^LoreDescPtrs
         sta     $e9
@@ -1927,9 +2107,9 @@ LoadLoreDesc:
 ; [ load swdtech description ]
 
 LoadBushidoDesc:
-@5700:  ldx     #.loword(BushidoDescPtrs)
+@5700:  ldx     #near BushidoDescPtrs
         stx     $e7
-        ldx     #.loword(BushidoDesc)
+        ldx     #near BushidoDesc
         stx     $eb
         lda     #^BushidoDescPtrs
         sta     $e9
@@ -1942,9 +2122,9 @@ LoadBushidoDesc:
 ; [ load blitz description ]
 
 LoadBlitzDesc:
-@5715:  ldx     #.loword(BlitzDescPtrs)
+@5715:  ldx     #near BlitzDescPtrs
         stx     $e7
-        ldx     #.loword(BlitzDesc)
+        ldx     #near BlitzDesc
         stx     $eb
         lda     #^BlitzDescPtrs
         sta     $e9
@@ -1956,8 +2136,9 @@ LoadBlitzDesc:
 
 ; [ load description text ]
 
-LoadBigText:
-@572a:  ldx     #$9ec9
+.proc LoadBigText
+
+_572a:  ldx     #$9ec9
         stx     hWMADDL
         clr_a
         lda     $4b
@@ -1965,38 +2146,44 @@ LoadBigText:
         lda     $7e9d89,x
 
 LoadItemDesc:
-@5738:  cmp     #$ff
-        beq     @576d
+_5738:  cmp     #$ff
+        beq     _576d
+
+_c35d99:
         longa
         asl
         tay
         lda     [$e7],y
         tay
         shorta
-@5745:  lda     [$eb],y
-        beq     @574f
+_5745:  lda     [$eb],y
+        beq     _574f
         sta     hWMDATA
         iny
-        bra     @5745
-@574f:  dey
+        bra     _5745
+_574f:  dey
         lda     [$eb],y
         iny
         cmp     #$1c
-        beq     @5767
+        beq     _5767
         cmp     #$1d
-        beq     @5767
+        beq     _5767
         cmp     #$1e
-        beq     @5767
+        beq     _5767
         cmp     #$1f
-        beq     @5767
-@5763:  stz     hWMDATA
+        beq     _5767
+_5763:  stz     hWMDATA
         rts
-@5767:  stz     hWMDATA
+_5767:  stz     hWMDATA
         iny
-        bra     @5745
-@576d:  lda     #$ff
+        bra     _5745
+_576d:  lda     #$ff
         sta     hWMDATA
-        bra     @5763
+        bra     _5763
+.endproc
+
+LoadItemDesc = LoadBigText::LoadItemDesc
+_c35d99 := LoadBigText::_c35d99
 
 ; ------------------------------------------------------------------------------
 
@@ -2006,9 +2193,9 @@ DrawDanceMenu:
 @5774:  jsr     ClearBG1ScreenA
         jsr     DrawDanceList
         lda     #$2c
-        sta     $29
-        ldy     #.loword(SkillsDanceTitleText)
-        jsr     DrawPosText
+        sta     zTextColor
+        ldy     #near SkillsDanceTitleText
+        jsr     DrawPosKana
         jsr     CreateSubPortraitTask
         jmp     InitDMA1BG3ScreenB
 
@@ -2020,6 +2207,9 @@ DrawDanceList:
 @578a:  jsr     GetDanceList
         jsr     GetListTextPos
         inc     $e6
+.if !LANG_EN
+        inc     $e6
+.endif
         stz     $e5
         ldy     #4
 @5797:  phy
@@ -2039,12 +2229,21 @@ DrawDanceList:
 
 DrawDanceListRow:
 @57aa:  jsr     GetDanceNamePtr
-        ldx     #$0003
+.if LANG_EN
+        ldx     #3
         jsr     DrawDanceName
         inc     $e5
         jsr     GetDanceNamePtr
-        ldx     #$0011
+        ldx     #17
         jsr     DrawDanceName
+.else
+        ldx     #5
+        jsr     DrawDanceName
+        inc     $e5
+        jsr     GetDanceNamePtr
+        ldx     #19
+        jsr     DrawDanceName
+.endif
         inc     $e5
         rts
 
@@ -2053,9 +2252,9 @@ DrawDanceListRow:
 ; [ get pointer to dance name ]
 
 GetDanceNamePtr:
-@57c1:  ldy     #12
+@57c1:  ldy     #DANCE_NAME_SIZE
         sty     $eb
-        ldy     #.loword(DanceName)
+        ldy     #near DanceName
         sty     $ef
         lda     #^DanceName
         sta     $f1
@@ -2108,18 +2307,18 @@ _c35807:
 
 _c35812:
 @5812:  jsr     ClearBG2ScreenA
-        ldy     #.loword(_c3583f)
+        ldy     #near _c3583f
         jsr     DrawWindow
-        ldy     #.loword(_c35843)
+        ldy     #near _c35843
         jsr     DrawWindow
-        ldy     #.loword(_c35847)
+        ldy     #near _c35847
         jsr     DrawWindow
         jsr     TfrBG2ScreenAB
         jsr     ClearBG1ScreenB
         ldy     #$ffc0
-        sty     $35
+        sty     zBG1HScroll
         lda     #$02
-        tsb     $45
+        tsb     z45
         jsr     _c3318a
         jsr     _c3584b
         jmp     _c3319f
@@ -2141,17 +2340,23 @@ _c35847:
 
 _c3584b:
 @584b:  lda     #$20
-        sta     $29
-        ldy     #.loword(_c35889)
+        sta     zTextColor
+        ldy     #near _c35889
+        jsr     DrawPosKana
+.if LANG_EN
+        ldy     #near _c3588e
         jsr     DrawPosText
-        ldy     #.loword(_c3588e)
-        jsr     DrawPosText
+.endif
         clr_a
         lda     $4b
         sta     $e5
         jsr     GetMagicNamePtr
         longa
-        lda     #$790d
+.if LANG_EN
+        lda_pos BG3A, {2, 3}
+.else
+        lda_pos BG3A, {3, 2}
+.endif
         sta     $7e9e89
         shorta
         jsr     _c350ec
@@ -2160,17 +2365,26 @@ _c3584b:
         jsr     _c350ec
         jsr     _c3510d
         jsr     HexToDec3
-        ldx     #$7a0f
+.if LANG_EN
+        ldx_pos BG3A, {3, 7}
+.else
+        ldx_pos BG3A, {5, 8}
+.endif
         jsr     DrawNum2
         jmp     DrawPosTextBuf
 
 ; ------------------------------------------------------------------------------
 
 _c35889:
+.if LANG_EN
 @5889:  .byte   $15,$7a,$8c,$8f,$00
 
 _c3588e:
 @588e:  .byte   $4d,$7a,$8d,$9e,$9e,$9d,$9e,$9d,$00
+
+.else
+        .byte   $cd,$79,$77,$c3,$89,$63,$ff,$5d,$5f,$00
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -2196,7 +2410,7 @@ InitEsperDetailMenu:
         sta     $49
         jsr     LoadSkillsBG1VScrollHDMATbl
         lda     #$c0
-        trb     $46
+        trb     z46
         jsr     LoadGenjuDetailCursor
         jmp     InitGenjuDetailCursor
 
@@ -2209,8 +2423,8 @@ MenuState_4d:
         jsr     _c35b93
 
 ; A button
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @590a
         clr_a
         lda     $4b
@@ -2218,17 +2432,17 @@ MenuState_4d:
         lda     $99
         jsr     _c35574
         sta     $e0
-        lda     $29
+        lda     zTextColor
         cmp     #$28
         bne     @5902
         jsr     PlayInvalidSfx
         lda     #$10
-        tsb     $45
+        tsb     z45
         jsr     _c3559a
         ldy     #$0020
-        sty     $20
+        sty     zWaitCounter
         lda     #$34
-        sta     $26
+        sta     zMenuState
         jmp     InitDMA1BG1ScreenB
 
 ; equip esper
@@ -2237,23 +2451,27 @@ MenuState_4d:
         bra     _c35913
 
 ; B button
-@590a:  lda     $09
-        bit     #$80
+@590a:  lda     z08+1
+        bit     #>JOY_B
         beq     _597c
         jsr     PlayCancelSfx
 
 _c35913:
 @5913:  lda     #$10
-        tsb     $45
+        tsb     z45
         lda     $5f
         sta     $49
         jsr     DrawGenjuList
         jsr     CreateScrollArrowTask1
         longa
+.if LANG_EN
         lda     #$1000
-        sta     $7e354a,x
+.else
+        lda     #$1333
+.endif
+        sta     wTaskSpeedY,x
         lda     #$0060
-        sta     $7e34ca,x
+        sta     wTaskSpeedX,x
         shorta
         jsr     LoadGenjuCursor
         lda     $8e
@@ -2269,9 +2487,15 @@ _c35913:
         sbc     $e0
         sta     $4e
         jsr     InitGenjuCursor
+.if LANG_EN
         lda     #$06
         sta     $5c
         lda     #$08
+.else
+        lda     #$05
+        sta     $5c
+        lda     #$09
+.endif
         sta     $5a
         lda     #$02
         sta     $5b
@@ -2282,12 +2506,12 @@ _c35913:
         sta     $7e9a10
         shorta
         ldy     #$0100
-        sty     $39
-        sty     $3d
+        sty     zBG2HScroll
+        sty     zBG3HScroll
         jsr     LoadSkillsBG1VScrollHDMATbl
         jsr     InitDMA1BG1ScreenB
         lda     #$1e
-        sta     $26
+        sta     zMenuState
 _597c:  rts
 
 ; ------------------------------------------------------------------------------
@@ -2295,7 +2519,7 @@ _597c:  rts
 ; [ load cursor for esper details ]
 
 LoadGenjuDetailCursor:
-@597d:  ldy     #.loword(GenjuDetailCursorProp)
+@597d:  ldy     #near GenjuDetailCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -2306,13 +2530,13 @@ UpdateGenjuDetailCursor:
 @5983:  jsr     MoveCursor
 
 InitGenjuDetailCursor:
-@5986:  ldy     #.loword(GenjuDetailCursorPos)
+@5986:  ldy     #near GenjuDetailCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 GenjuDetailCursorProp:
-@598c:  .byte   $80,$00,$00,$01,$07
+        make_cursor_prop {0, 0}, {1, 7}, NO_X_WRAP
 
 GenjuDetailCursorPos:
 @5991:  .byte   $10,$70
@@ -2329,17 +2553,21 @@ GenjuDetailCursorPos:
 
 DrawEsperDetailMenu:
 @599f:  lda     #$20
-        sta     $29
-        ldy     #.loword(GenjuLearnRateText)
-        jsr     DrawPosText
-        ldy     #.loword(GenjuLearnPctText)
-        jsr     DrawPosText
-        lda     $99
+        sta     zTextColor
+        ldy     #near GenjuLearnRateText
+        jsr     DrawPosKana
+        ldy     #near GenjuLearnPctText
+        jsr     DrawPosKana
+        lda     z99
         jsr     _c35574
-        ldy     #$4411
+.if LANG_EN
+        ldy_pos BG1B, {4, 15}
+.else
+        ldy_pos BG1B, {4, 16}
+.endif
         jsr     InitTextBuf
         clr_a
-        lda     $99
+        lda     z99
         asl3
         tax
         ldy     #8
@@ -2358,8 +2586,12 @@ DrawEsperDetailMenu:
         lda     #11
         sta     hWRMPYB
         lda     #$20
-        sta     $29
+        sta     zTextColor
+.if LANG_EN
         ldy     #$0011
+.else
+        ldy     #$0012
+.endif
         sty     $f5
         longa
         lda     hRDMPYL
@@ -2387,22 +2619,32 @@ DrawEsperDetailMenu:
         inc     $f5
         inc     $f5
         lda     $f5
+.if LANG_EN
         cmp     #$001b
+.else
+        cmp     #$001c
+.endif
         bne     @59f4
         shorta
         lda     f:GenjuProp,x               ; level up bonus
         cmp     #$ff
         beq     @5a67
         sta     hWRMPYA
+.if LANG_EN
         lda     #9
         sta     hWRMPYB
-        ldy     #$4713
+        ldy_pos BG1B, {5, 27}
+.else
+        lda     #8
+        sta     hWRMPYB
+        ldy_pos BG1B, {5, 28}
+.endif
         jsr     InitTextBuf
-        ldx     $00
+        ldx     z0
 @5a43:  lda     f:GenjuAtLevelUpText,x
         sta     hWMDATA
         inx
-        cpx     #$000e
+        cpx     #sizeof_GenjuAtLevelUpText
         bne     @5a43
         ldx     hRDMPYL
         ldy     #GENJU_BONUS_NAME_SIZE
@@ -2413,9 +2655,15 @@ DrawEsperDetailMenu:
         bne     @5a56
         stz     hWMDATA
         jmp     DrawPosTextBuf
-@5a67:  ldy     #$4713
+.if LANG_EN
+@5a67:  ldy_pos BG1B, {5, 27}
         jsr     InitTextBuf
         ldy     #$0017
+.else
+@5a67:  ldy_pos BG1B, {5, 28}
+        jsr     InitTextBuf
+        ldy     #$0013
+.endif
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -2430,7 +2678,7 @@ DrawEsperDetailMenu:
 ; [  ]
 
 _c35a84:
-@5a84:  jsr     _c35b3d
+@5a84:  jsr     GetBG1ScreenBPtr
         longa
         txa
         sta     $7e9e89
@@ -2456,9 +2704,9 @@ _c35a84:
         sta     hWMDATA
 @5abc:  stz     hWMDATA
         jmp     DrawPosTextBuf
-@5ac2:  lda     #$b5
+@5ac2:  lda     #ZERO_CHAR+1
         sta     hWMDATA
-        lda     #$b4
+        lda     #ZERO_CHAR
         sta     hWMDATA
         sta     hWMDATA
         bra     @5ab7
@@ -2474,7 +2722,7 @@ _c35a84:
 ; [ draw magic name and learn rate in esper/armor detail menu ]
 
 DrawGenjuMagicName:
-@5ae1:  jsr     _c35b3d
+@5ae1:  jsr     GetBG1ScreenBPtr
         longa
         txa
         sta     $7e9e89
@@ -2486,13 +2734,20 @@ DrawItemMagicName:
         cmp     #$ff
         beq     @5b26
         jsr     LoadArrayItem
+.if LANG_EN
         ldx     #$9e92
+.else
+        ldx     #$9e90
+.endif
         stx     hWMADDL
-        lda     #$c1                    ; colon
+        lda     #COLON_CHAR
         sta     hWMDATA
         lda     #$ff
         sta     hWMDATA
         sta     hWMDATA
+.if !LANG_EN
+        sta     hWMDATA
+.endif
         lda     #$d7                    ; multiplication sign
         sta     hWMDATA
         lda     $e0
@@ -2505,7 +2760,11 @@ DrawItemMagicName:
         jmp     DrawPosTextBuf
 
 ; empty magic slot
-@5b26:  ldy     #$000f
+.if LANG_EN
+@5b26:  ldy     #15
+.else
+@5b26:  ldy     #13
+.endif
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -2517,9 +2776,12 @@ DrawItemMagicName:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ get tilemap offset (bg1, screen B) ]
 
-_c35b3d:
+; Y: vertical position
+; X: horizontal position
+
+GetBG1ScreenBPtr:
 @5b3d:  longa
         tya
         asl6
@@ -2528,7 +2790,7 @@ _c35b3d:
         asl
         clc
         adc     $e7
-        adc     #$4049
+        adc     #near wBG1Tiles::ScreenB
         tax
         shorta
         rts
@@ -2623,9 +2885,9 @@ GetGenjuDescPtr:
         beq     GetGenjuBonusDescPtr
 
 GetMagicDescPtr:
-@5be3:  ldx     #.loword(MagicDescPtrs)
+@5be3:  ldx     #near MagicDescPtrs
         stx     $e7
-        ldx     #.loword(MagicDesc)
+        ldx     #near MagicDesc
         stx     $eb
         lda     #^MagicDescPtrs
         sta     $e9
@@ -2634,9 +2896,9 @@ GetMagicDescPtr:
         rts
 
 GetGenjuBonusDescPtr:
-@5bf6:  ldx     #.loword(GenjuBonusDescPtrs)
+@5bf6:  ldx     #near GenjuBonusDescPtrs
         stx     $e7
-        ldx     #.loword(GenjuBonusDesc)
+        ldx     #near GenjuBonusDesc
         stx     $eb
         lda     #^GenjuBonusDescPtrs
         sta     $e9
@@ -2645,9 +2907,9 @@ GetGenjuBonusDescPtr:
         rts
 
 GetLoadGenjuAttackDescPtr:
-@5c09:  ldx     #.loword(GenjuAttackDescPtrs)
+@5c09:  ldx     #near GenjuAttackDescPtrs
         stx     $e7
-        ldx     #.loword(GenjuAttackDesc)
+        ldx     #near GenjuAttackDesc
         stx     $eb
         lda     #^GenjuAttackDescPtrs
         sta     $e9
@@ -2657,9 +2919,68 @@ GetLoadGenjuAttackDescPtr:
 
 ; ------------------------------------------------------------------------------
 
+.if LANG_EN
+        .define SkillsGenjuStr          {2, 3}, {$84,$ac,$a9,$9e,$ab,$ac,$00}
+        .define SkillsMagicStr          {2, 5}, {$8c,$9a,$a0,$a2,$9c,$00}
+        .define SkillsBushidoStr        {2, 9}, {$92,$b0,$9d,$93,$9e,$9c,$a1,$00}
+        .define SkillsBlitzStr          {2, 11}, {$81,$a5,$a2,$ad,$b3,$00}
+        .define SkillsLoreStr           {2, 13}, {$8b,$a8,$ab,$9e,$00}
+        .define SkillsRageStr           {2, 15}, {$91,$9a,$a0,$9e,$00}
+        .define SkillsDanceStr          {2, 17}, {$83,$9a,$a7,$9c,$9e,$00}
+
+        .define SkillsMPCostStr         {$8c,$8f,$c7,$ff,$ff,$ff,$ff,$00}
+        .define SkillsLoreTitleStr      {$8b,$a8,$ab,$9e,$00}
+        .define SkillsRageTitleStr      {$91,$9a,$a0,$9e,$00}
+        .define SkillsDanceTitleStr     {$83,$9a,$a7,$9c,$9e,$00}
+        .define SkillsGenjuTitleStr     {$84,$ac,$a9,$9e,$ab,$ac,$00}
+        .define SkillsBlitzTitleStr     {$81,$a5,$a2,$ad,$b3,$00}
+        .define SkillsBushidoTitleStr   {$92,$b0,$9d,$93,$9e,$9c,$a1,$00}
+        .define SkillsCharLevelStr      {$8b,$95,$00}
+        .define SkillsCharHPStr         {$87,$8f,$00}
+        .define SkillsCharMPStr         {$8c,$8f,$00}
+        .define SkillsCharSlashStr      {$c0,$00}
+
+        .define GenjuEquipErrorMsgStr   {$ff,$a1,$9a,$ac,$ff,$a2,$ad,$be,$00}
+        .define GenjuLearnPctStr        {$92,$a4,$a2,$a5,$a5,$00}
+        .define GenjuLearnRateStr       {$8b,$9e,$9a,$ab,$a7,$c5,$91,$9a,$ad,$9e,$00}
+        .define GenjuAtLevelUpStr       {$80,$ad,$ff,$a5,$9e,$af,$9e,$a5,$ff,$ae,$a9,$c5,$c5,$c5}
+
+.else
+        .define SkillsGenjuStr          {2, 2}, {$31,$b9,$37,$c1,$89,$00}
+        .define SkillsMagicStr          {2, 4}, {$9d,$69,$89,$00}
+        .define SkillsBushidoStr        {2, 8}, {$63,$bd,$75,$83,$71,$b9,$00}
+        .define SkillsBlitzStr          {2, 10}, {$63,$bd,$75,$83,$b7,$35,$00}
+        .define SkillsLoreStr           {2, 12}, {$91,$29,$8f,$7f,$b7,$35,$00}
+        .define SkillsRageStr           {2, 14}, {$8b,$21,$ad,$ab,$00}
+        .define SkillsDanceStr          {2, 16}, {$91,$47,$a9,$00}
+
+        .define SkillsBlankTitleStr     {$ff,$ff,$ff,$ff,$ff,$ff,$00}
+        .define SkillsMPCostStr         {$2c,$2f,$c7,$ff,$ff,$ff,$00}
+        .define SkillsLoreTitleStr      {$91,$29,$8f,$7f,$b7,$35,$00}
+        .define SkillsRageTitleStr      {$8b,$21,$ad,$ab,$ff,$ff,$00}
+        .define SkillsDanceTitleStr     {$91,$47,$a9,$ff,$ff,$ff,$00}
+        .define SkillsGenjuTitleStr     {$31,$b9,$37,$c1,$89,$ff,$00}
+        .define SkillsBlitzTitleStr     {$63,$bd,$75,$83,$b7,$35,$00}
+        .define SkillsBushidoTitleStr   {$63,$bd,$75,$83,$71,$b9,$00}
+        .define SkillsCharLevelStr      {$2b,$35,$00}
+        .define SkillsCharHPStr         {$27,$2f,$00}
+        .define SkillsCharMPStr         {$2c,$2f,$00}
+        .define SkillsCharSlashStr      {$ce,$00}
+
+        .define GenjuEquipErrorMsgStr   {$2b,$a5,$bd,$85,$8d,$9d,$79,$00}
+        .define GenjuLearnPctStr        {$37,$c1,$6f,$ad,$b9,$47,$00}
+        .define GenjuLearnRateStr       {$91,$29,$8f,$ab,$78,$4b,$c5,$46,$00}
+        .define GenjuAtLevelUpStr       {$ac,$26,$aa,$8a,$bc,$4d,$9b,$87,$6d,$95,$ff}
+.endif
+
 BlitzInputTileTbl:
+.if LANG_EN
 @5c1c:  .word   $0000,$0000,$0000,$2097,$2098,$208b,$2091,$20d6
 @5c2c:  .word   $a0d4,$60d6,$20d5,$c0d6,$20d4,$a0d6,$60d5
+.else
+@5c1c:  .word   $0000,$0000,$0000,$2037,$2038,$202b,$2031,$20d6
+@5c2c:  .word   $a0d4,$60d6,$20d5,$c0d6,$20d4,$a0d6,$60d5
+.endif
 
 ; unused
 SkillsListTextPtrs:
@@ -2671,113 +2992,66 @@ SkillsListTextPtrs:
         .addr   SkillsRageText
         .addr   SkillsDanceText
 
-SkillsGenjuText:
-@5c48:  .byte   $0d,$79,$84,$ac,$a9,$9e,$ab,$ac,$00
+SkillsGenjuText:                pos_text BG3A, SkillsGenjuStr
+SkillsMagicText:                pos_text BG3A, SkillsMagicStr
+SkillsBushidoText:              pos_text BG3A, SkillsBushidoStr
+SkillsBlitzText:                pos_text BG3A, SkillsBlitzStr
+SkillsLoreText:                 pos_text BG3A, SkillsLoreStr
+SkillsRageText:                 pos_text BG3A, SkillsRageStr
+SkillsDanceText:                pos_text BG3A, SkillsDanceStr
 
-SkillsMagicText:
-@5c51:  .byte   $8d,$79,$8c,$9a,$a0,$a2,$9c,$00
-
-SkillsBushidoText:
-@5c59:  .byte   $8d,$7a,$92,$b0,$9d,$93,$9e,$9c,$a1,$00
-
-SkillsBlitzText:
-@5c63:  .byte   $0d,$7b,$81,$a5,$a2,$ad,$b3,$00
-
-SkillsLoreText:
-@5c6b:  .byte   $8d,$7b,$8b,$a8,$ab,$9e,$00
-
-SkillsRageText:
-@5c72:  .byte   $0d,$7c,$91,$9a,$a0,$9e,$00
-
-SkillsDanceText:
-@5c79:  .byte   $8d,$7c,$83,$9a,$a7,$9c,$9e,$00
-
-SkillsCharLabelTextList:
-@5c81:  .addr   SkillsCharLevelText
+begin_block SkillsCharLabelTextList
+        .addr   SkillsCharLevelText
         .addr   SkillsCharHPText
         .addr   SkillsCharMPText
+end_block SkillsCharLabelTextList
 
 ; text for small skills window
 
 ; there's a bug here: if you first select "espers" and then select "rage" for example, the last two
 ; characters of espers don't get erased and it instead displays "ragers"
 
-; c3/5c87: bg3_1(23,5) "MP_    "
-SkillsMPCostText:
-@5c87:  .word   $81b7
-        .byte   $8c,$8f,$c7,$ff,$ff,$ff,$ff,$00
+.if LANG_EN
+SkillsMPCostText:               pos_text BG3B, {23, 5}, SkillsMPCostStr
+SkillsLoreTitleText:            pos_text BG3B, {23, 5}, SkillsLoreTitleStr
+SkillsRageTitleText:            pos_text BG3B, {23, 5}, SkillsRageTitleStr
+SkillsDanceTitleText:           pos_text BG3B, {23, 5}, SkillsDanceTitleStr
+SkillsGenjuTitleText:           pos_text BG3B, {23, 5}, SkillsGenjuTitleStr
+SkillsBlitzTitleText:           pos_text BG3B, {23, 5}, SkillsBlitzTitleStr
+SkillsBushidoTitleText:         pos_text BG3B, {23, 5}, SkillsBushidoTitleStr
+SkillsCharLevelText:            pos_text BG1B, {18, 7}, SkillsCharLevelStr
+SkillsCharHPText:               pos_text BG1B, {18, 9}, SkillsCharHPStr
+SkillsCharMPText:               pos_text BG1B, {18, 11}, SkillsCharMPStr
+SkillsCharHPSlashText:          pos_text BG1B, {25, 9}, SkillsCharSlashStr
+SkillsCharMPSlashText:          pos_text BG1B, {25, 11}, SkillsCharSlashStr
 
-; c3/5c91: bg3_1(23,5) "Lore"
-SkillsLoreTitleText:
-@5c91:  .word   $81b7
-        .byte   $8b,$a8,$ab,$9e,$00
+GenjuEquipErrorMsgText:         raw_text GenjuEquipErrorMsgStr
+GenjuLearnPctText:              pos_text BG1B, {24, 15}, GenjuLearnPctStr
+GenjuLearnRateText:             pos_text BG1B, {13, 15}, GenjuLearnRateStr
+begin_block GenjuAtLevelUpText
+        raw_text GenjuAtLevelUpStr
+end_block GenjuAtLevelUpText
+.else
+SkillsBlankTitleText:           pos_text BG3B, {2, 2}, SkillsBlankTitleStr
+SkillsMPCostText:               pos_text BG3B, {2, 3}, SkillsMPCostStr
+SkillsLoreTitleText:            pos_text BG3B, {2, 2}, SkillsLoreTitleStr
+SkillsRageTitleText:            pos_text BG3B, {2, 2}, SkillsRageTitleStr
+SkillsDanceTitleText:           pos_text BG3B, {2, 2}, SkillsDanceTitleStr
+SkillsGenjuTitleText:           pos_text BG3B, {2, 2}, SkillsGenjuTitleStr
+SkillsBlitzTitleText:           pos_text BG3B, {2, 2}, SkillsBlitzTitleStr
+SkillsBushidoTitleText:         pos_text BG3B, {2, 2}, SkillsBushidoTitleStr
+SkillsCharLevelText:            pos_text BG1B, {18, 7}, SkillsCharLevelStr
+SkillsCharHPText:               pos_text BG1B, {18, 9}, SkillsCharHPStr
+SkillsCharMPText:               pos_text BG1B, {18, 11}, SkillsCharMPStr
+SkillsCharHPSlashText:          pos_text BG1B, {25, 9}, SkillsCharSlashStr
+SkillsCharMPSlashText:          pos_text BG1B, {25, 11}, SkillsCharSlashStr
 
-; c3/5c98: bg3_1(23,5) "Rage"
-SkillsRageTitleText:
-@5c98:  .word   $81b7
-        .byte   $91,$9a,$a0,$9e,$00
-
-; c3/5c9f: bg3_1(23,5) "Dance"
-SkillsDanceTitleText:
-@5c9f:  .word   $81b7
-        .byte   $83,$9a,$a7,$9c,$9e,$00
-
-; c3/5ca7: bg3_1(23,5) "Espers"
-SkillsGenjuTitleText:
-@5ca7:  .word   $81b7
-        .byte   $84,$ac,$a9,$9e,$ab,$ac,$00
-
-; c3/5cb0: bg3_1(23,5) "Blitz"
-SkillsBlitzTitleText:
-@5cb0:  .word   $81b7
-        .byte   $81,$a5,$a2,$ad,$b3,$00
-
-; c3/5cb8: bg3_1(23,5) "SwdTech"
-SkillsBushidoTitleText:
-@5cb8:  .word   $81b7
-        .byte   $92,$b0,$9d,$93,$9e,$9c,$a1,$00
-
-; "LV"
-SkillsCharLevelText:
-@5cc2:  .word   $422d
-        .byte   $8b,$95,$00
-
-; "HP"
-SkillsCharHPText:
-@5cc7:  .word   $42ad
-        .byte   $87,$8f,$00
-
-; "MP"
-SkillsCharMPText:
-@5ccc:  .word   $432d
-        .byte   $8c,$8f,$00
-
-; "/"
-SkillsCharHPSlashText:
-@5cd1:  .word   $42bb
-        .byte   $c0,$00
-
-; "/"
-SkillsCharMPSlashText:
-@5cd5:  .word   $433b
-        .byte   $c0,$00
-
-; " has it!"
-GenjuEquipErrorMsgText:
-@5cd9:  .byte   $ff,$a1,$9a,$ac,$ff,$a2,$ad,$be,$00
-
-; "Skill"
-GenjuLearnPctText:
-@5ce2:  .word   $4439
-        .byte   $92,$a4,$a2,$a5,$a5,$00
-
-; "Learn.Rate"
-GenjuLearnRateText:
-@5cea:  .word   $4423
-        .byte   $8b,$9e,$9a,$ab,$a7,$c5,$91,$9a,$ad,$9e,$00
-
-; "At level up..."
-GenjuAtLevelUpText:
-@5cf7:  .byte   $80,$ad,$ff,$a5,$9e,$af,$9e,$a5,$ff,$ae,$a9,$c5,$c5,$c5
+GenjuEquipErrorMsgText:         raw_text GenjuEquipErrorMsgStr
+GenjuLearnPctText:              pos_text BG1B, {22, 16}, GenjuLearnPctStr
+GenjuLearnRateText:             pos_text BG1B, {13, 16}, GenjuLearnRateStr
+begin_block GenjuAtLevelUpText
+        raw_text GenjuAtLevelUpStr
+end_block GenjuAtLevelUpText
+.endif
 
 ; ------------------------------------------------------------------------------

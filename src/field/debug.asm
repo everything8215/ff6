@@ -647,7 +647,7 @@ loop:   lda     $0868,y
 
 ; ------------------------------------------------------------------------------
 
-.proc Unused_c0d5d1:
+.proc Unused_c0d5d1
         lda     #$ff
         sta     $2180
         lda     #$21
@@ -667,7 +667,7 @@ loop:   lda     $0868,y
         lda     #$21
 _d5fc:  sta     $2180
         rts
-.endproc
+.endproc  ; Unused_c0d5d1
 
 Unused_c0d5fc := Unused_c0d5d1::_d5fc
 
@@ -713,7 +713,7 @@ Unused_c0d629 := Unused_c0d600::_d629
 
 ; ------------------------------------------------------------------------------
 
-.proc Unused_c0d653:
+.proc Unused_c0d653
         lda     $46
         and     #$03
         bne     @d685
@@ -776,7 +776,7 @@ Unused_c0d629 := Unused_c0d600::_d629
         lda     #$02
         jsr     $d576
         rts
-.endproc
+.endproc  ; Unused_c0d653
 
 ; ------------------------------------------------------------------------------
 

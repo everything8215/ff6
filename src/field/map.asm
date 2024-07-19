@@ -160,9 +160,9 @@ LoadMapProp:
 .segment "map_prop"
 
 ; ed/8f00
-begin_fixed_block MapProp, $3580
+begin_block MapProp, $3580
         .incbin "map_prop.dat"
-end_fixed_block MapProp
+end_block MapProp
 
 .popseg
 
@@ -199,17 +199,17 @@ TfrBG1TopTiles:
         ldx     $91
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$d9c0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B           ; not needed for normal DMA
         ldx     #$0400
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -228,17 +228,17 @@ TfrBG1BtmTiles:
         sta     hVMADDL
         shorta0
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$ddc0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B           ; not needed for normal DMA
         ldx     #$0400
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 

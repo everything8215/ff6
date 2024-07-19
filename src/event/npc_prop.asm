@@ -244,7 +244,7 @@ _npc_in_progress .set 0
 NPC_PROP_ARRAY_LENGTH = $01a0
 
 ; c4/1a10
-begin_fixed_block NPCPropPtrs, $50b0
+begin_block NPCPropPtrs, $50b0
         make_ptr_tbl_rel NPCProp, NPC_PROP_ARRAY_LENGTH, NPCPropPtrs
         .addr NPCPropEnd - NPCPropPtrs
 
@@ -18337,6 +18337,6 @@ NPCProp_019f:
 ; ------------------------------------------------------------------------------
 
 NPCPropEnd:
-end_fixed_block NPCPropPtrs
+end_block NPCPropPtrs
 
 ; ------------------------------------------------------------------------------

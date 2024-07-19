@@ -4,7 +4,7 @@
   "inc_path": "include/text/genju_bonus_name_en.inc",
   "item_size": 9,
   "char_tables": [
-    "big_symbols_en",
+    "small_symbols_en",
     "text_en",
     "fixed_length_en"
   ],

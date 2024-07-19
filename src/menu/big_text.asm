@@ -17,6 +17,99 @@
 
 ; ------------------------------------------------------------------------------
 
+.if !LANG_EN
+
+_c3ae09:
+@ae09:  ldx     #$8049
+        stx     zeb
+        lda     #$7e
+        sta     zed
+        ldx     z0
+@ae14:  longa
+        lda     f:_c3ae3a,x
+        inx2
+        sta     ze7
+        lda     f:_c3ae3a,x
+        inx2
+        tay
+        lda     f:_c3ae3a,x
+        inx2
+        sta     ze0
+        shorta
+        phx
+        jsr     _c3a783
+        plx
+        cpx     #$0060
+        bne     @ae14
+        rts
+
+_c3ae3a:
+        .word   $039c,$038a,$3580
+        .word   $03dc,$03ca,$3581
+        .word   $03b8,$03a6,$3592
+        .word   $03f8,$03e6,$3593
+        .word   $045c,$044a,$35a4
+        .word   $049c,$048a,$35a5
+        .word   $0478,$0466,$35b6
+        .word   $04b8,$04a6,$35b7
+        .word   $051c,$050a,$35c8
+        .word   $055c,$054a,$35c9
+        .word   $0538,$0526,$35da
+        .word   $0578,$0566,$35db
+        .word   $05dc,$05ca,$35ec
+        .word   $061c,$060a,$35ed
+        .word   $05f8,$05e6,$35fe
+        .word   $0638,$0626,$35ff
+
+; ------------------------------------------------------------------------------
+
+_c3ae9a:
+@ae9a:  ldx     z0
+        lda     #$01
+        jsr     _c3af24
+        ldy     #$6c00
+        jsr     _c3a5f6
+        ldx     #$0006
+        lda     #$02
+        jsr     _c3af24
+        ldy     #$6c90
+        jsr     _c3a5f6
+        ldx     #$000c
+        lda     #$04
+        jsr     _c3af24
+        ldy     #$6d20
+        jsr     _c3a5f6
+        ldx     #$0012
+        lda     #$08
+        jsr     _c3af24
+        ldy     #$6db0
+        jsr     _c3a5f6
+        ldx     #$0018
+        lda     #$10
+        jsr     _c3af24
+        ldy     #$6e40
+        jsr     _c3a5f6
+        ldx     #$001e
+        lda     #$20
+        jsr     _c3af24
+        ldy     #$6ed0
+        jsr     _c3a5f6
+        ldx     #$0024
+        lda     #$40
+        jsr     _c3af24
+        ldy     #$6f60
+        jsr     _c3a5f6
+        ldx     #$002a
+        lda     #$80
+        jsr     _c3af24
+        ldy     #$6ff0
+        jsr     _c3a5f6
+        jmp     DisableDMA2
+
+.endif
+
+; ------------------------------------------------------------------------------
+
 ; [  ]
 
 _c3a5de:
@@ -33,12 +126,44 @@ _c3a5de:
 
 ; ------------------------------------------------------------------------------
 
+.if !LANG_EN
+
+_c3af24:
+@af24:  sta     $e0
+        phx
+        jsr     _c3a5de
+        plx
+        lda     $1cf7
+        and     $e0
+        beq     @af4e
+        stz     $8d
+        stz     $ed
+        stz     $ee
+        lda     #$06
+        sta     $f1
+@af3c:  lda     $1cf8,x
+        ldy     #$3f40
+        sty     $eb
+        phx
+        jsr     CopyLetterGfx
+        plx
+        inx
+        dec     $f1
+        bne     @af3c
+@af4e:  lda     #$01
+        tsb     $45
+        rts
+
+.endif
+
+; ------------------------------------------------------------------------------
+
 ; [  ]
 
 _c3a5f6:
 @a5f6:  jsr     _c3a600
         lda     #$01
-        trb     $45
+        trb     z45
         jmp     TfrVRAM2
 
 ; ------------------------------------------------------------------------------
@@ -46,13 +171,13 @@ _c3a5f6:
 ; [  ]
 
 _c3a600:
-@a600:  sty     $1b
+@a600:  sty     zDMA2Dest
         ldy     #$a271
-        sty     $1d
+        sty     zDMA2Src
         ldy     #$0120
-        sty     $19
+        sty     zDMA2Size
         lda     #$7e
-        sta     $1f
+        sta     zDMA2Src+2
         rts
 
 ; ------------------------------------------------------------------------------
@@ -60,19 +185,28 @@ _c3a600:
 ; [  ]
 
 _c3a611:
-@a611:  ldx     #$7849
+
+.if LANG_EN
+        @X_START = 0
+        @X_END = 12
+.else
+        @X_START = 13
+        @X_END = 19
+.endif
+
+@a611:  ldx     #near wBG3Tiles::ScreenA
         stx     $eb
-        lda     #$7e
+        lda     #^wBG3Tiles::ScreenA
         sta     $ed
-        ldy     #$0598
+        ldy     #(@X_END+22*32)*2
         sty     $e7
-        ldy     #$0580
+        ldy     #(@X_START+22*32)*2
         ldx     #$2410
         stx     $e0
         jsr     _c3a783
-        ldy     #$05d8
+        ldy     #(@X_END+23*32)*2
         sty     $e7
-        ldy     #$05c0
+        ldy     #(@X_START+23*32)*2
         ldx     #$2411
         stx     $e0
         jsr     _c3a783
@@ -84,14 +218,23 @@ _c3a611:
 
 _c3a63b:
 @a63b:  jsr     _c3a5de
+.if !LANG_EN
+        lda     #8
+        sta     zb6
+.endif
         stz     $8d
         stz     $ed
         stz     $ee
         lda     #$06
         sta     $f1
-        ldx     $00
+        ldx     z0
 @a64a:  lda     $7e9e89,x
+.if LANG_EN
         jsr     GetLetter
+.else
+        ldy     #$5540
+        sty     $eb
+.endif
         phx
         jsr     CopyLetterGfx
         plx
@@ -104,12 +247,12 @@ _c3a63b:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+.if LANG_EN
 
 _c3a662:
-@a662:  ldx     #$8049
+@a662:  ldx     #near wBG3Tiles::ScreenB
         stx     $eb
-        lda     #$7e
+        lda     #^wBG3Tiles::ScreenB
         sta     $ed
         ldy     #$00bc
         sty     $e7
@@ -136,14 +279,36 @@ _c3a662:
         stx     $e0
         jmp     _c3a783
 
+.else
+
+_c3a662:
+@afc5:  ldx     #near wBG3Tiles::ScreenB
+        stx     $eb
+        lda     #^wBG3Tiles::ScreenB
+        sta     $ed
+        ldy     #$00bc
+        sty     $e7
+        ldy     #$0094
+        ldx     #$3500
+        stx     $e0
+        jsr     _c3a783
+        ldy     #$00fc
+        sty     $e7
+        ldy     #$00d4
+        ldx     #$3501
+        stx     $e0
+        jmp     _c3a783
+
+.endif
+
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
 _c3a6ab:
-@a6ab:  ldx     #$7849
+@a6ab:  ldx     #near wBG3Tiles::ScreenA
         stx     $eb
-        lda     #$7e
+        lda     #^wBG3Tiles::ScreenA
         sta     $ed
         ldy     #$01bc
         sty     $e7
@@ -175,9 +340,9 @@ _c3a6ab:
 ; [  ]
 
 _c3a6f4:
-@a6f4:  ldx     #$7849
+@a6f4:  ldx     #near wBG3Tiles::ScreenA
         stx     $eb
-        lda     #$7e
+        lda     #^wBG3Tiles::ScreenA
         sta     $ed
         ldy     #$04bc
         sty     $e7
@@ -209,9 +374,9 @@ _c3a6f4:
 ; [  ]
 
 _c3a73d:
-@a73d:  ldx     #$7849
+@a73d:  ldx     #near wBG3Tiles::ScreenA
         stx     $eb
-        lda     #$7e
+        lda     #^wBG3Tiles::ScreenA
         sta     $ed
         ldy     #$01bc
         sty     $e7
@@ -258,77 +423,50 @@ _c3a783:
 
 ; [ clear description text graphics buffer ]
 
-ClearBigTextBuf:
-@a796:  phb
+.proc ClearBigTextBuf
+        phb
         lda     #$7e
         pha
         plb
         clr_ax
         longa
-@a79f:  stz     $a271,x     ; clear $7ea271-$7ea970
-        stz     $a273,x
-        stz     $a275,x
-        stz     $a277,x
-        stz     $a279,x
-        stz     $a27b,x
-        stz     $a27d,x
-        stz     $a27f,x
-        stz     $a281,x
-        stz     $a283,x
-        stz     $a285,x
-        stz     $a287,x
-        stz     $a289,x
-        stz     $a28b,x
-        stz     $a28d,x
-        stz     $a28f,x
-        stz     $a291,x
-        stz     $a293,x
-        stz     $a295,x
-        stz     $a297,x
-        stz     $a299,x
-        stz     $a29b,x
-        stz     $a29d,x
-        stz     $a29f,x
-        stz     $a2a1,x
-        stz     $a2a3,x
-        stz     $a2a5,x
-        stz     $a2a7,x
-        stz     $a2a9,x
-        stz     $a2ab,x
-        stz     $a2ad,x
-        stz     $a2af,x
+
+; clear $7ea271-$7ea970
+loop:
+.repeat 32, i
+        stz     near {$a271 + i * 2},x
+.endrep
         txa
         clc
         adc     #$0040
         tax
         cpx     #$0700
-        bne     @a79f
+        bne     loop
         shorta
         plb
         rts
+.endproc  ; ClearBigTextBuf
 
 ; ------------------------------------------------------------------------------
 
 ; [ description text task ]
 
-; +$33ca = current text string position (+$7e9ec9)
-; +$344a = pointer to text graphics buffer (+$7ea271)
+; +$33ca = current text string position (+$7e9ec9) wTaskPosX
+; +$344a = pointer to text graphics buffer (+$7ea271) wTaskPosY
 
 BigTextTask:
 @a80e:  tax
-        jmp     (.loword(BigTextTaskTbl),x)
+        jmp     (near BigTextTaskTbl,x)
 
 ; task jump table
 BigTextTaskTbl:
-@a812:  .addr   BigTextTask_00
-        .addr   BigTextTask_01
-        .addr   BigTextTask_02
+        make_jump_tbl BigTextTask, 3
 
 ; ------------------------------------------------------------------------------
 
 ; [ task state $00: init/reset ]
 
-BigTextTask_00:
+make_jump_label BigTextTask, 0
 @a818:  jsr     ClearBigTextBuf
 ; fall through
 
@@ -336,15 +474,15 @@ BigTextTask_00:
 
 ; [ task state $02: wait ]
 
-BigTextTask_02:
+make_jump_label BigTextTask, 2
 @a81b:  stz     $8d                     ;
-        ldx     $2d                     ; task data pointer
-        lda     #$01
-        sta     $3649,x                 ; set task state to 1
+        ldx     zTaskOffset                     ; task data pointer
+        lda     #1
+        sta     near wTaskState,x                 ; set task state to 1
         clr_a
         longa
-        sta     $33ca,x                 ;
-        sta     $344a,x                 ;
+        sta     near wTaskPosX,x
+        sta     near wTaskPosY,x
         shorta
 ; fall through
 
@@ -352,29 +490,29 @@ BigTextTask_02:
 
 ; [ task state $01: write letters (one per frame) ]
 
-BigTextTask_01:
-@a82f:  lda     $26                     ; menu state
-        cmp     #$17
+make_jump_label BigTextTask, 1
+@a82f:  lda     zMenuState
+        cmp     #MENU_STATE::ITEM_OPTIONS
         beq     @a88d                   ; branch if (item, sort, rare)
-        lda     $46
+        lda     z46
         and     #$c0                    ; branch if page can't scroll up or down
         beq     @a841
-        lda     $06                     ; branch if top l or r buttons is down
+        lda     z06                     ; branch if top l or r buttons is down
         and     #$30
         bne     @a895
-@a841:  lda     $45                     ;
+@a841:  lda     z45                     ;
         bit     #$20
         bne     @a84d
-        lda     $07                     ; branch if a direction button is down
+        lda     z06+1                     ; branch if a direction button is down
         and     #$0f
         bne     @a895
-@a84d:  lda     $45                     ;
+@a84d:  lda     z45                     ;
         bit     #$10
         bne     @a895
-        ldy     $2d                     ; task data pointer
-        ldx     $344a,y                 ; +$ed = pointer to text graphics buffer
+        ldy     zTaskOffset
+        ldx     near wTaskPosY,y                 ; +$ed = pointer to text graphics buffer
         stx     $ed
-        ldx     $33ca,y                 ; pointer to text buffer
+        ldx     near wTaskPosX,y                 ; pointer to text buffer
         lda     $7e9ec9,x               ; get next letter
         beq     @a89c                   ; branch if end of string
         cmp     #$01
@@ -382,7 +520,7 @@ BigTextTask_01:
         stz     $8d
         longa
         lda     #$0380                  ; set graphics buffer pointer to beginning of second line
-        sta     $344a,y
+        sta     near wTaskPosY,y
         shorta
         bra     @a87d
 
@@ -392,10 +530,10 @@ BigTextTask_01:
         jsr     CopyLetterGfx
         plx
 @a87d:  inx                 ; increment text string position
-        ldy     $2d
+        ldy     zTaskOffset
         longa
         txa
-        sta     $33ca,y
+        sta     near wTaskPosX,y
         shorta
         jsr     TfrBigTextGfx
         sec
@@ -408,17 +546,17 @@ BigTextTask_01:
         rts
 
 ; direction button or l or r button pressed (reset text)
-@a895:  ldx     $2d
-        stz     $3649,x     ; set task state to 0
+@a895:  ldx     zTaskOffset
+        stz     near wTaskState,x     ; set task state to 0
         sec
         rts
 
 ; end of string
 @a89c:  lda     #$01        ; enable color palette dma at vblank
-        tsb     $45
-        ldx     $2d         ; set task state to 2
-        lda     #$02
-        sta     $3649,x
+        tsb     z45
+        ldx     zTaskOffset
+        lda     #2
+        sta     near wTaskState,x
         sec
         rts
 
@@ -427,11 +565,47 @@ BigTextTask_01:
 ; [ get text letter ]
 
 GetLetter:
+
+.if LANG_EN
+
 @a8a9:  sec
         sbc     #$80
         stz     $eb
         stz     $ec
         rts
+
+.else
+
+@b1ec:  cmp     #$1c
+        beq     @b205
+        cmp     #$1d
+        beq     @b20c
+        cmp     #$1e
+        beq     @b213
+        cmp     #$1f
+        beq     @b21a
+        sec
+        sbc     #$20
+        stz     $eb
+        stz     $ec
+        bra     @b226
+@b205:  ldy     #$1340
+        sty     $eb
+        bra     @b221
+@b20c:  ldy     #$2940
+        sty     $eb
+        bra     @b221
+@b213:  ldy     #$3f40
+        sty     $eb
+        bra     @b221
+@b21a:  ldy     #$5540
+        sty     $eb
+        bra     @b221
+@b221:  inx
+        lda     $7e9ec9,x
+@b226:  rts
+
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -465,7 +639,7 @@ CopyLetterGfx:
         stz     $e7
         stz     $e9
         sta     $e8
-        jsr     _c3a94f
+        jsr     ShiftBigTextGfx
         plx
         lda     $e7
         shorta
@@ -501,12 +675,18 @@ CopyLetterGfx:
         bne     @a8d9
         clr_a
         pla
+.if LANG_EN
         clc
         adc     #$20
         tax
         lda     $8d
         clc
         adc     f:FontWidth,x
+.else
+        lda     $8d
+        clc
+        adc     $b6
+.endif
         sta     $8d
         rts
 
@@ -514,78 +694,39 @@ CopyLetterGfx:
 
 ; [ shift big text graphics ]
 
-ShiftBigTextGfx:
-_c3a94f:
+.proc ShiftBigTextGfx
 @a94f:  shorta
         clr_a
         lda     $8d
-        and     #$07
+        and     #%111
         asl
         tax
         longa
-        jmp     (.loword(ShiftBigTextGfxTbl),x)
+        jmp     (near ShiftBigTextGfxTbl,x)
+.endproc  ; ShiftBigTextGfx
 
 ShiftBigTextGfxTbl:
-@a95d:  .addr   ShiftBigTextGfx_00
-        .addr   ShiftBigTextGfx_01
-        .addr   ShiftBigTextGfx_02
-        .addr   ShiftBigTextGfx_03
-        .addr   ShiftBigTextGfx_04
-        .addr   ShiftBigTextGfx_05
-        .addr   ShiftBigTextGfx_06
-        .addr   ShiftBigTextGfx_07
-        .addr   ShiftBigTextGfx_08
+        make_jump_tbl ShiftBigTextGfx, 9
 
-; ------------------------------------------------------------------------------
-
-; [  ]
-
-; shift left 4 pixels
-ShiftBigTextGfx_00:
-@a96f:  asl     $e7
+; shift text left
+.repeat 4, i
+make_jump_label ShiftBigTextGfx, i
+        asl     $e7
         rol     $e9
-
-; shift left 3 pixels
-ShiftBigTextGfx_01:
-@a973:  asl     $e7
-        rol     $e9
-
-; shift left 2 pixels
-ShiftBigTextGfx_02:
-@a977:  asl     $e7
-        rol     $e9
-
-; shift left 1 pixels
-ShiftBigTextGfx_03:
-@a97b:  asl     $e7
-        rol     $e9
+.endrep
 
 ; no shift
-ShiftBigTextGfx_04:
-@a97f:  rts
-
-; shift right 4 pixels (unused)
-ShiftBigTextGfx_08:
-@a980:  lsr     $e9
-        ror     $e7
-
-; shift right 3 pixels
-ShiftBigTextGfx_07:
-@a984:  lsr     $e9
-        ror     $e7
-
-; shift right 2 pixels
-ShiftBigTextGfx_06:
-@a988:  lsr     $e9
-        ror     $e7
-
-; shift right 1 pixels
-ShiftBigTextGfx_05:
-@a98c:  lsr     $e9
-        ror     $e7
+make_jump_label ShiftBigTextGfx, 4
         rts
 
-.a8
+; shift text right
+.repeat 4, i
+make_jump_label ShiftBigTextGfx, 8 - i
+        lsr     $e9
+        ror     $e7
+.endrep
+        rts
+        .a8
 
 ; ------------------------------------------------------------------------------
 
@@ -593,15 +734,15 @@ ShiftBigTextGfx_05:
 
 TfrBigTextGfx:
 @a991:  ldy     #$6800
-        sty     $1b
+        sty     zDMA2Dest
         ldy     #$a271
-        sty     $1d
+        sty     zDMA2Src
         ldy     #$0700
-        sty     $19
+        sty     zDMA2Size
         lda     #$7e
-        sta     $1f
+        sta     zDMA2Src+2
         lda     #$01
-        trb     $45
+        trb     z45
         rts
 
 ; ------------------------------------------------------------------------------
@@ -609,11 +750,11 @@ TfrBigTextGfx:
 ; [  ]
 
 _c3a9a9:
-@a9a9:  ldx     $00
+@a9a9:  ldx     z0
 @a9ab:  lda     f:ElementSymbols,x
         sta     $7e9ec9,x
         inx
-        cpx     #9
+        cpx     #sizeof_ElementSymbols
         bne     @a9ab
         ldy     #$6c00
         sty     $f1

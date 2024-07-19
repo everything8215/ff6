@@ -157,7 +157,7 @@ class AssetExtractor:
     def extract_text(self, json_path, asset_range, **kwargs):
 
         # read the json file
-        with open(json_path, 'r') as json_file:
+        with open(json_path, 'r', encoding='utf8') as json_file:
             asset_def = json.load(json_file)
 
         if 'item_size' in asset_def:
@@ -205,7 +205,7 @@ class AssetExtractor:
         char_table = {}
         for char_table_name in asset_def['char_tables']:
             char_table_path = 'tools/char_table/' + char_table_name + '.json'
-            with open(char_table_path, 'r') as char_table_file:
+            with open(char_table_path, 'r', encoding='utf8') as char_table_file:
                 char_table.update(json.load(char_table_file))
         text_codec = rt.TextCodec(char_table)
 
@@ -219,7 +219,7 @@ class AssetExtractor:
 
         # write text strings to the asset file
         asset_json = json.dumps(asset_def, ensure_ascii=False, indent=2)
-        with open(json_path, 'w') as f:
+        with open(json_path, 'w', encoding='utf8') as f:
             f.write(asset_json)
 
     def extract_array(self, file_path, inc_path, asset_range, asset_const, asset_label, **kwargs):

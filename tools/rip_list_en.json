@@ -257,10 +257,10 @@
         "waterfall",
         "final_battle_1",
         "final_battle_2",
-        "final_battle_3",
-        "final_battle_4",
+        "final_battle_3_en",
+        "final_battle_4_en",
         "final_battle_5",
-        "final_battle_6",
+        "final_battle_6_en",
         "final_battle_7",
         "final_battle_8",
         "fanatics_tower",
@@ -268,7 +268,7 @@
         "magitek_train_2",
         "darills_tomb_3",
         "cyans_dream_1",
-        "cyans_dream_2"
+        "cyans_dream_2_en"
       ]
     },
     {
@@ -390,7 +390,7 @@
     },
     {
       "file_path": "src/gfx/battle_char_pal/%s.pal",
-      "asset_range": "0xED6300-0xED63FF",
+      "asset_range": "0xED6300-0xED63DF",
       "item_size": 32,
       "file_list": [
         "edgar_sabin_celes",
@@ -399,8 +399,7 @@
         "strago_relm_gau_gogo",
         "cyan_shadow_setzer",
         "mog_umaro",
-        "esper_terra",
-        "unused"
+        "esper_terra"
       ]
     },
     {
@@ -502,10 +501,10 @@
         "town_ext_1",
         "town_ext_2",
         "town_ext_3",
-        "town_ext_4",
+        "town_ext_4_en",
         "town_ext_5",
         "castle_ext_4",
-        "town_ext_6",
+        "town_ext_6_en",
         "town_ext_7",
         "docks_1",
         "docks_2",
@@ -538,9 +537,9 @@
         "train_ext_3",
         "forest_1",
         "train_int",
-        "zozo_ext_1",
+        "zozo_ext_1_en",
         "zozo_ext_2",
-        "vector_ext",
+        "vector_ext_en",
         "darills_tomb_1",
         "mountains_parallax_1",
         "floating_island_1",
@@ -576,7 +575,7 @@
         "factory_6",
         "airship_5",
         "beach_parallax",
-        "darills_tomb_2"
+        "darills_tomb_2_en"
       ]
     },
     {
@@ -2380,7 +2379,7 @@
       "asset_range": "0xD2F000-0xD2FFFF"
     },
     {
-      "file_path": "src/gfx/status.4bpp.lz",
+      "file_path": "src/gfx/status_en.4bpp.lz",
       "asset_range": "0xD2E000-0xD2EB43"
     },
     {
@@ -2486,7 +2485,7 @@
       "asset_range": "0xD2EF00-0xD2EFFF"
     },
     {
-      "file_path": "src/btlgfx/attack_gfx_prop.dat",
+      "file_path": "src/btlgfx/attack_gfx_prop_en.dat",
       "asset_range": "0xD4D000-0xD4DF3B"
     },
     {
@@ -2550,7 +2549,7 @@
       "asset_range": "0xC2686C-0xC28A5F"
     },
     {
-      "file_path": "src/menu/item_prop.dat",
+      "file_path": "src/menu/item_prop_en.dat",
       "asset_range": "0xD85000-0xD86DFF"
     },
     {
@@ -2574,7 +2573,7 @@
       "asset_range": "0xED8F00-0xEDC47E"
     },
     {
-      "file_path": "src/btlgfx/attack_anim_prop.dat",
+      "file_path": "src/btlgfx/attack_anim_prop_en.dat",
       "asset_range": "0xD07FB2-0xD095E5"
     },
     {
@@ -2663,8 +2662,8 @@
         "village_ext_1_bg2",
         "doma_castle_bg1",
         "doma_castle_bg2",
-        "town_ext_bg1",
-        "town_ext_bg2",
+        "town_ext_bg1_en",
+        "town_ext_bg2_en",
         "docks_bg1",
         "docks_bg2",
         "caves_bg1",
@@ -2677,10 +2676,10 @@
         "town_int_bg1",
         "town_int_bg2",
         "mountains_ext_bg1",
-        "narshe_ext_bg1",
-        "narshe_ext_bg2",
-        "destroyed_town_bg1",
-        "destroyed_town_bg2",
+        "narshe_ext_bg1_en",
+        "narshe_ext_bg2_en",
+        "destroyed_town_bg1_en",
+        "destroyed_town_bg2_en",
         "snowfields",
         "train_ext_bg1",
         "train_int_bg1",
@@ -2711,7 +2710,7 @@
         "airship_ext_bg1",
         "airship_ext_bg2",
         "airship_int",
-        "narshe_intro_bg1",
+        "narshe_intro_bg1_en",
         "cyans_dream",
         "forest_bg1",
         "forest_bg2",
@@ -2732,7 +2731,7 @@
         "opera_house_bg1",
         "opera_house_bg2",
         "darills_tomb_bg1",
-        "darills_tomb_bg2"
+        "darills_tomb_bg2_en"
       ]
     },
     {
@@ -3164,7 +3163,7 @@
       "asset_range": "0xEF9D17-0xEFB630"
     },
     {
-      "file_path": "src/battle/magic_prop.dat",
+      "file_path": "src/battle/magic_prop_en.dat",
       "asset_range": "0xC46AC0-0xC478BF"
     },
     {
@@ -3264,8 +3263,8 @@
   ],
   "array": [
     {
-      "file_path": "src/btlgfx/attack_anim_frames.dat",
-      "inc_path": "include/btlgfx/attack_anim_frames.inc",
+      "file_path": "src/btlgfx/attack_anim_frames_en.dat",
+      "inc_path": "include/btlgfx/attack_anim_frames_en.inc",
       "asset_range": "0xD10141-0xD1E988",
       "asset_const": "ATTACK_ANIM_FRAMES",
       "asset_label": "AttackAnimFrames",
@@ -3273,8 +3272,8 @@
       "ptr_offset": "0xD10000"
     },
     {
-      "file_path": "src/btlgfx/attack_anim_script.dat",
-      "inc_path": "include/btlgfx/attack_anim_script.inc",
+      "file_path": "src/btlgfx/attack_anim_script_en.dat",
+      "inc_path": "include/btlgfx/attack_anim_script_en.inc",
       "asset_range": "0xD00000-0xD07FB1",
       "asset_const": "ATTACK_ANIM_SCRIPT",
       "asset_label": "AttackAnimScript",

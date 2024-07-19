@@ -57,7 +57,7 @@ def apply_stencil(trimmed_gfx, stencil_bytes, tile_size):
     elif len(stencil_bytes) == 32:
         num_tiles = 256
         init_mask = 0x8000
-        stencil_bytes = np.frombuffer(stencil_bytes, dtype='>i2')
+        stencil_bytes = np.frombuffer(stencil_bytes, dtype='>u2')
 
     else:
         raise ValueError(

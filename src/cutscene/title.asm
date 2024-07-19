@@ -898,8 +898,7 @@ _7e54da:
         sec
         sbc     $e2
         longa
-        eor     #$ffff
-        inc
+        neg_a
 @5524:  sta     $3dfa,y
         lda     $e7
         clc

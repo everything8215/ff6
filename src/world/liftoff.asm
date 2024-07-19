@@ -34,7 +34,9 @@ AirshipLiftOffAnim1:
         sta     $7eb5d8
 @9504:  jsr     UpdateSpriteAnim
         jsr     DrawWorldSprites
+.if LANG_EN
         jsr     UpdateWaterAnim
+.endif
         longa
         lda     $7eb662
         cmp     #$03c0

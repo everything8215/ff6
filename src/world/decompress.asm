@@ -5,81 +5,96 @@
 ; ++$d2 = source
 ; ++$d5 = destination
 
-Decompress:
-@a476:  phb
+zDecompSrc := $d2
+zDecompDest := $d5
+zDecompPtr := $d8
+zDecompRun := $da
+zDecompSize := $db
+zDecompCounter := $dd
+zDecompHeader := $de
+
+wDecompBuf := $7ef800
+
+.proc Decompress
+        phb
         phd
         ldx     #$0000
         phx
         pld
         longa
-        lda     [$d2]
-        sta     $db
-        lda     $d5
+        lda     [zDecompSrc]
+        sta     zDecompSize
+        lda     zDecompDest
         sta     f:hWMADDL
         shorta
-        lda     $d7
-        and     #$01
+        lda     zDecompDest+2
+        and     #BIT_0
         sta     f:hWMADDH
         lda     #1
-        sta     $dd
+        sta     zDecompCounter
         ldy     #2
-        lda     #$7e
+        lda     #^wDecompBuf
         pha
         plb
-        ldx     #$f800
+        ldx     #.loword(wDecompBuf)
         clr_a
-@a4a2:  sta     a:0,x
+:       sta     a:0,x
         inx
-        bne     @a4a2
-        ldx     #$ffde
-@a4ab:  dec     $dd
-        bne     @a4b8
+        bne     :-
+        ldx     #.loword(-34)
+loop:   dec     zDecompCounter
+        bne     :+
         lda     #8
-        sta     $dd
-        lda     [$d2],y
-        sta     $de
+        sta     zDecompCounter
+        lda     [zDecompSrc],y
+        sta     zDecompHeader
         iny
-@a4b8:  lsr     $de
-        bcc     @a4cd
-        lda     [$d2],y
+:       lsr     zDecompHeader
+        bcc     :+
+        lda     [zDecompSrc],y
         sta     f:hWMDATA
         sta     a:0,x
         inx
-        bne     @a4ff
-        ldx     #$f800
-        bra     @a4ff
-@a4cd:  lda     [$d2],y
+        bne     inc_ptr
+        ldx     #.loword(wDecompBuf)
+        bra     inc_ptr
+:       lda     [zDecompSrc],y
         xba
         iny
-        sty     $d8
-        lda     [$d2],y
+        sty     zDecompPtr
+        lda     [zDecompSrc],y
         lsr3
         clc
-        adc     #$03
-        sta     $da
-        lda     [$d2],y
-        ora     #$f8
+        adc     #3
+        sta     zDecompRun
+        lda     [zDecompSrc],y
+        ora     #>wDecompBuf
         xba
         tay
+
+cpy_buf:
 @a4e3:  lda     a:0,y
         sta     f:hWMDATA
         sta     a:0,x
         inx
-        bne     @a4f3
-        ldx     #$f800
-@a4f3:  iny
-        bne     @a4f9
-        ldy     #$f800
-@a4f9:  dec     $da
-        bne     @a4e3
-        ldy     $d8
-@a4ff:  iny
-        cpy     $db
-        bne     @a4ab
+        bne     :+
+        ldx     #.loword(wDecompBuf)
+:       iny
+        bne     :+
+        ldy     #.loword(wDecompBuf)
+:       dec     zDecompRun
+        bne     cpy_buf
+        ldy     zDecompPtr
+
+inc_ptr:
+        iny
+        cpy     zDecompSize
+        bne     loop
         clr_a
         xba
         pld
         plb
         rts
+.endproc  ; Decompress
 
 ; ------------------------------------------------------------------------------

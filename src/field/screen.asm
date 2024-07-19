@@ -462,8 +462,7 @@ UpdatePyramid:
         tay
         shorta0
         jmp     @0ac2
-@09f7:  eor     #$ff
-        inc
+@09f7:  neg_a
         sta     $28
         lda     $075e
         sta     $26
@@ -682,8 +681,7 @@ CalcWindowPos:
         nop6
         ldy     hRDDIVL
         rts
-@0b9b:  eor     #$ff
-        inc
+@0b9b:  neg_a
         xba
         tay
         sty     hWRDIVL

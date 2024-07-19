@@ -24,6 +24,6 @@ BattleCharPal:
         .incbin "battle_char_pal/cyan_shadow_setzer.pal"
         .incbin "battle_char_pal/mog_umaro.pal"
         .incbin "battle_char_pal/esper_terra.pal"
-        .incbin "battle_char_pal/unused.pal"
+        .res 32
 
 ; ------------------------------------------------------------------------------

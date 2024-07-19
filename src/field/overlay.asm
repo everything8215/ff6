@@ -103,9 +103,9 @@ OverlayVRAMTbl:
 .segment "overlay_gfx"
 
 ; c0/e2a0
-begin_fixed_block OverlayGfx, $0c00
+begin_block OverlayGfx, $0c00
         .incbin "src/gfx/map_overlay.1bpp"
-end_fixed_block OverlayGfx
+end_block OverlayGfx
 
 ; c0/eea0
 OverlayTilemap:
@@ -139,52 +139,52 @@ LoadOverlayData:
 .segment "overlay_prop"
 
 ; c0/f4a0
-begin_fixed_block OverlayPropPtrs, $60
-        make_ptr_tbl_rel OverlayProp, OVERLAY_PROP_ARRAY_LENGTH
-end_fixed_block OverlayPropPtrs
+begin_block OverlayPropPtrs, $60
+        make_ptr_tbl_rel OverlayProp, OVERLAY_PROP::ARRAY_LENGTH
+end_block OverlayPropPtrs
 
-.macro inc_overlay_prop _id, _file
-        .ident(.sprintf("OverlayProp_%04x", _id)) := *
-        .incbin .sprintf("overlay_prop/%s.dat.lz", _file)
+.macro inc_overlay_prop id, file
+        .ident(.sprintf("OverlayProp_%04x", OVERLAY_PROP::id)) := *
+        .incbin .sprintf("overlay_prop/%s.dat.lz", file)
 .endmac
 
 ; c0/f500
-begin_fixed_block OverlayProp, $0800
-        inc_overlay_prop OVERLAY_NONE, "none"
-        inc_overlay_prop OVERLAY_TOWN_EXT, "town_ext"
-        inc_overlay_prop OVERLAY_CAVES, "caves"
-        inc_overlay_prop OVERLAY_TOWN_INT, "town_int"
-        inc_overlay_prop OVERLAY_NARSHE_EXT, "narshe_ext"
-        inc_overlay_prop OVERLAY_CAVES_FURNITURE, "caves_furniture"
-        inc_overlay_prop OVERLAY_MOUNTAINS_EXT_1, "mountains_ext_1"
-        inc_overlay_prop OVERLAY_TRAIN_EXT, "train_ext"
-        inc_overlay_prop OVERLAY_ZOZO_EXT, "zozo_ext"
-        inc_overlay_prop OVERLAY_TRAIN_INT, "train_int"
-        inc_overlay_prop OVERLAY_IMP_CAMP, "imp_camp"
-        inc_overlay_prop OVERLAY_FOREST, "forest"
-        inc_overlay_prop OVERLAY_OPERA_HOUSE, "opera_house"
-        inc_overlay_prop OVERLAY_DESTROYED_TOWN, "destroyed_town"
-        inc_overlay_prop OVERLAY_MAGITEK_FACTORY, "magitek_factory"
-        inc_overlay_prop OVERLAY_FIGARO_CASTLE_EXT, "figaro_castle_ext"
-        inc_overlay_prop OVERLAY_DOMA_EXT, "doma_ext"
-        inc_overlay_prop OVERLAY_VILLAGE_EXT_1, "village_ext_1"
-        inc_overlay_prop OVERLAY_CASTLE_INT, "castle_int"
-        inc_overlay_prop OVERLAY_CASTLE_BASEMENT, "castle_basement"
-        inc_overlay_prop OVERLAY_VILLAGE_EXT_2, "village_ext_2"
-        inc_overlay_prop OVERLAY_FLOATING_ISLAND, "floating_island"
-        inc_overlay_prop OVERLAY_AIRSHIP_EXT, "airship_ext"
-        inc_overlay_prop OVERLAY_AIRSHIP_INT, "airship_int"
-        inc_overlay_prop OVERLAY_IMP_CASTLE_INT, "imp_castle_int"
-        inc_overlay_prop OVERLAY_VECTOR_EXT, "vector_ext"
+begin_block OverlayProp, $0800
+        inc_overlay_prop NONE, "none"
+        inc_overlay_prop TOWN_EXT, "town_ext"
+        inc_overlay_prop CAVES, "caves"
+        inc_overlay_prop TOWN_INT, "town_int"
+        inc_overlay_prop NARSHE_EXT, "narshe_ext"
+        inc_overlay_prop CAVES_FURNITURE, "caves_furniture"
+        inc_overlay_prop MOUNTAINS_EXT_1, "mountains_ext_1"
+        inc_overlay_prop TRAIN_EXT, "train_ext"
+        inc_overlay_prop ZOZO_EXT, "zozo_ext"
+        inc_overlay_prop TRAIN_INT, "train_int"
+        inc_overlay_prop IMP_CAMP, "imp_camp"
+        inc_overlay_prop FOREST, "forest"
+        inc_overlay_prop OPERA_HOUSE, "opera_house"
+        inc_overlay_prop DESTROYED_TOWN, "destroyed_town"
+        inc_overlay_prop MAGITEK_FACTORY, "magitek_factory"
+        inc_overlay_prop FIGARO_CASTLE_EXT, "figaro_castle_ext"
+        inc_overlay_prop DOMA_EXT, "doma_ext"
+        inc_overlay_prop VILLAGE_EXT_1, "village_ext_1"
+        inc_overlay_prop CASTLE_INT, "castle_int"
+        inc_overlay_prop CASTLE_BASEMENT, "castle_basement"
+        inc_overlay_prop VILLAGE_EXT_2, "village_ext_2"
+        inc_overlay_prop FLOATING_ISLAND, "floating_island"
+        inc_overlay_prop AIRSHIP_EXT, "airship_ext"
+        inc_overlay_prop AIRSHIP_INT, "airship_int"
+        inc_overlay_prop IMP_CASTLE_INT, "imp_castle_int"
+        inc_overlay_prop VECTOR_EXT, "vector_ext"
         inc_overlay_prop OVERLAY_26, "overlay_26"
-        inc_overlay_prop OVERLAY_MOUNTAINS_INT, "mountains_int"
-        inc_overlay_prop OVERLAY_IMP_CASTLE_EXT, "imp_castle_ext"
-        inc_overlay_prop OVERLAY_MAGITEK_LAB, "magitek_lab"
-        inc_overlay_prop OVERLAY_DARILLS_TOMB, "darills_tomb"
-        inc_overlay_prop OVERLAY_KEFKAS_TOWER, "kefkas_tower"
+        inc_overlay_prop MOUNTAINS_INT, "mountains_int"
+        inc_overlay_prop IMP_CASTLE_EXT, "imp_castle_ext"
+        inc_overlay_prop MAGITEK_LAB, "magitek_lab"
+        inc_overlay_prop DARILLS_TOMB, "darills_tomb"
+        inc_overlay_prop KEFKAS_TOWER, "kefkas_tower"
         inc_overlay_prop OVERLAY_32, "overlay_32"
-        inc_overlay_prop OVERLAY_MOUNTAINS_EXT_2, "mountains_ext_2"
-        inc_overlay_prop OVERLAY_SNOWFIELDS, "snowfields"
+        inc_overlay_prop MOUNTAINS_EXT_2, "mountains_ext_2"
+        inc_overlay_prop SNOWFIELDS, "snowfields"
         inc_overlay_prop OVERLAY_35, "overlay_35"
         inc_overlay_prop OVERLAY_36, "overlay_36"
         inc_overlay_prop OVERLAY_37, "overlay_37"
@@ -195,7 +195,7 @@ begin_fixed_block OverlayProp, $0800
         inc_overlay_prop OVERLAY_42, "overlay_42"
         inc_overlay_prop OVERLAY_43, "overlay_43"
         inc_overlay_prop OVERLAY_44, "overlay_44"
-end_fixed_block OverlayProp
+end_block OverlayProp
 
 .popseg
 
@@ -727,11 +727,11 @@ DrawOverlaySprites:
         dec
         and     #$0f
         inc
-        eor     #$ff
+        not_a
         bra     @ccae
 @cca8:  lda     $5c
         and     #$0f
-        eor     #$ff
+        not_a
 @ccae:  sec
         adc     $0763,x                 ; add overlay tile x position
         sta     $1a
@@ -742,11 +742,11 @@ DrawOverlaySprites:
         dec
         and     #$0f
         inc
-        eor     #$ff
+        not_a
         bra     @ccca
 @ccc4:  lda     $60
         and     #$0f
-        eor     #$ff
+        not_a
 @ccca:  sec
         adc     $0764,x                 ; add overlay tile y position
         sec

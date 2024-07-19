@@ -1,0 +1,12 @@
+{
+  "asset_label": "MagicDesc",
+  "asset_const": "MAGIC_DESC",
+  "inc_path": "include/text/magic_desc_jp.inc",
+  "char_tables": [
+    "big_symbols_jp",
+    "null_terminated_jp",
+    "kana",
+    "kanji"
+  ],
+  "text": []
+}

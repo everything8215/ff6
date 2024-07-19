@@ -11,7 +11,7 @@ def encode_text(asset_def):
     char_table = {}
     for char_table_name in asset_def['char_tables']:
         char_table_path = os.path.join('tools', 'char_table', char_table_name + '.json')
-        with open(char_table_path, 'r') as char_table_file:
+        with open(char_table_path, 'r', encoding='utf8') as char_table_file:
             char_table.update(json.load(char_table_file))
     text_codec = rt.TextCodec(char_table)
 
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     asset_path = sys.argv[1]
 
     # read asset file
-    with open(asset_path, 'r') as json_file:
+    with open(asset_path, 'r', encoding='utf8') as json_file:
         asset_def = json.load(json_file)
 
     item_offsets, encoded_bytes = encode_text(asset_def)

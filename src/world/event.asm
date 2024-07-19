@@ -406,7 +406,7 @@ VehicleCmd_c9:
         tax
         shorta
         lda     $5c
-        eor     #$ff
+        not_a
         sta     $5c
         lda     $1e80,x
         and     $5c
@@ -1203,8 +1203,7 @@ WorldCmd_80:
         ldy     #$0001
         bra     @79b5
 @796b:  lda     $f3
-        eor     #$ff
-        inc
+        neg_a
         sta     $e5
         lda     #$ff
         sta     $e6
@@ -1216,8 +1215,7 @@ WorldCmd_80:
         ldy     #$ffff
         bra     @79b5
 @7986:  lda     $f3
-        eor     #$ff
-        inc
+        neg_a
         sta     $e3
         lda     #$ff
         sta     $e4
@@ -1261,8 +1259,7 @@ WorldCmd_a0:
         lda     $f3
         sta     $e3
         stz     $e4
-        eor     #$ff
-        inc
+        neg_a
         sta     $e5
         lda     #$ff
         sta     $e6
@@ -1312,8 +1309,7 @@ WorldCmd_a2:
         lda     $f3
         sta     $e5
         stz     $e6
-        eor     #$ff
-        inc
+        neg_a
         sta     $e3
         lda     #$ff
         sta     $e4
@@ -1337,8 +1333,7 @@ WorldCmd_a2:
 WorldCmd_a3:
 @7a5d:  shorta
         lda     $f3
-        eor     #$ff
-        inc
+        neg_a
         sta     $e3
         sta     $e5
         lda     #$ff
@@ -1367,8 +1362,7 @@ WorldCmd_a4:
         sta     $e3
         stz     $e4
         asl
-        eor     #$ff
-        inc
+        neg_a
         sta     $e5
         lda     #$ff
         sta     $e6
@@ -1396,8 +1390,7 @@ WorldCmd_a5:
         sta     $e3
         stz     $e4
         lda     $f3
-        eor     #$ff
-        inc
+        neg_a
         sta     $e5
         lda     #$ff
         sta     $e6
@@ -1475,8 +1468,7 @@ WorldCmd_a8:
         sta     $e5
         stz     $e6
         lda     $f3
-        eor     #$ff
-        inc
+        neg_a
         sta     $e3
         lda     #$ff
         sta     $e4
@@ -1503,8 +1495,7 @@ WorldCmd_a9:
         sta     $e5
         stz     $e6
         asl
-        eor     #$ff
-        inc
+        neg_a
         sta     $e3
         lda     #$ff
         sta     $e4
@@ -1528,8 +1519,7 @@ WorldCmd_a9:
 WorldCmd_aa:
 @7ba6:  shorta
         lda     $f3
-        eor     #$ff
-        inc
+        neg_a
         sta     $e5
         asl
         sta     $e3
@@ -1556,8 +1546,7 @@ WorldCmd_aa:
 WorldCmd_ab:
 @7bd6:  shorta
         lda     $f3
-        eor     #$ff
-        inc
+        neg_a
         sta     $e3
         asl
         sta     $e5
@@ -1825,7 +1814,7 @@ WorldCmd_c9:
         tax
         shorta
         lda     $5c
-        eor     #$ff
+        not_a
         sta     $5c
         lda     $1e80,x
         and     $5c

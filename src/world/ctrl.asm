@@ -431,7 +431,7 @@ _6e7e:  longa
         ldx     #$0174
         lda     f:EventBattleGroup,x
         sta     $11e0
-        lda     #BATTLE_BG_AIRSHIP_WOR
+        lda     #BATTLE_BG::AIRSHIP_WOR
         sta     $11e2
         shorta
         stz     $11e4

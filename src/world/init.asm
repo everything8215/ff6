@@ -21,42 +21,42 @@
 
 ; airship songs (blackjack, searching for friends)
 AirshipSongTbl:
-@8389:  .byte   SONG_BLACKJACK
-        .byte   SONG_BLACKJACK
-        .byte   SONG_SEARCHING_FOR_FRIENDS
-        .byte   SONG_SEARCHING_FOR_FRIENDS
+@8389:  .byte   SONG::BLACKJACK
+        .byte   SONG::BLACKJACK
+        .byte   SONG::SEARCHING_FOR_FRIENDS
+        .byte   SONG::SEARCHING_FOR_FRIENDS
 
 ; ------------------------------------------------------------------------------
 
 ; chocobo songs (techno de chocobo)
 ChocoSongTbl:
-@838d:  .byte   SONG_TECHNO_DE_CHOCOBO
-        .byte   SONG_TECHNO_DE_CHOCOBO
-        .byte   SONG_TECHNO_DE_CHOCOBO
-        .byte   SONG_TECHNO_DE_CHOCOBO
+@838d:  .byte   SONG::TECHNO_DE_CHOCOBO
+        .byte   SONG::TECHNO_DE_CHOCOBO
+        .byte   SONG::TECHNO_DE_CHOCOBO
+        .byte   SONG::TECHNO_DE_CHOCOBO
 
 ; ------------------------------------------------------------------------------
 
 ; world map songs (terra, veldt, dark world, searching for friends)
 WorldSongTbl:
-@8391:  .byte   SONG_TERRA
-        .byte   SONG_VELDT              ; unused, i think
-        .byte   SONG_DARK_WORLD
-        .byte   SONG_SEARCHING_FOR_FRIENDS
+@8391:  .byte   SONG::TERRA
+        .byte   SONG::VELDT              ; unused, i think
+        .byte   SONG::DARK_WORLD
+        .byte   SONG::SEARCHING_FOR_FRIENDS
 
 ; ------------------------------------------------------------------------------
 
 ; train ride songs (save them!)
 TrainSongTbl:
-@8395:  .byte   SONG_SAVE_THEM
-        .byte   SONG_SAVE_THEM          ; unused
+@8395:  .byte   SONG::SAVE_THEM
+        .byte   SONG::SAVE_THEM          ; unused
 
 ; ------------------------------------------------------------------------------
 
 ; serpent trench songs (the serpent trench)
 SnakeSongTbl:
-@8397:  .byte   SONG_SERPENT_TRENCH
-        .byte   SONG_SERPENT_TRENCH
+@8397:  .byte   SONG::SERPENT_TRENCH
+        .byte   SONG::SERPENT_TRENCH
 
 ; ------------------------------------------------------------------------------
 
@@ -2004,7 +2004,7 @@ MagitekTrainTiles:
 .pushseg
 .segment "world_mod"
 
-begin_fixed_block _WorldModData, $0500
+begin_block _WorldModData, $0500
 
 ; ce/f600
 World1ModData:
@@ -2016,13 +2016,7 @@ WorldModDataEnd:
 ; ce/f648
 WorldModTiles:
         .incbin "world_mod_tiles.dat"
-end_fixed_block _WorldModData
-
-; ce/fb00 unused (30 * 3 bytes)
-begin_fixed_block _cefb00, $60
-        .faraddr 1,2,3,4,5,6,7,8,9,0,0,0,0,0,0
-        .faraddr 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-end_fixed_block _cefb00
+end_block _WorldModData
 
 .popseg
 

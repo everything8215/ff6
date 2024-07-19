@@ -211,8 +211,7 @@ InitNewGame:
         sta     $1eb7
 
 ; init game vars
-        tdc
-        tay
+        clr_ay
         sty     $1dc7                   ; clear save count
         stz     $1d54                   ; reset controller to default
         stz     $1d4e                   ; clear config settings
@@ -264,12 +263,12 @@ DebugEvent:
         loop_start      4
         give_gil        50000
         loop_end
-        give_item       ITEM_PALADIN_SHLD
-        give_item       ITEM_PALADIN_SHLD
-        give_item       ITEM_PALADIN_SHLD
-        give_item       ITEM_ILLUMINA
-        give_item       ITEM_WING_EDGE
-        give_item       ITEM_AURA_LANCE
+        give_item       PALADIN_SHLD
+        give_item       PALADIN_SHLD
+        give_item       PALADIN_SHLD
+        give_item       ILLUMINA
+        give_item       WING_EDGE
+        give_item       AURA_LANCE
         char_opt_equip  TERRA
         char_opt_equip  LOCKE
         char_opt_equip  EDGAR

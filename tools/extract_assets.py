@@ -13,7 +13,7 @@ def extract_rom(rom_bytes, language):
 
     # load rip info
     rip_list_path = os.path.join('tools', f'rip_list_{language}.json')
-    with open(rip_list_path, 'r') as rip_list_file:
+    with open(rip_list_path, 'r', encoding='utf8') as rip_list_file:
         rip_list = json.load(rip_list_file)
 
     # extract text

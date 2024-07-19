@@ -177,7 +177,7 @@ WaitVBlank:
 UpdateCtrl:
 @721b:  longa
         lda     $08
-        eor     #$ffff
+        not_a
         and     $04
         sta     $06
         ldy     $04
@@ -278,16 +278,16 @@ TfrSprites:
 @72b0:  ldx     $00
         stx     hOAMADDL
         txa
-        sta     $4304
+        sta     hDMA0::ADDR_B
         lda     #$02
-        sta     $4300
-        lda     #$04
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hOAMDATA
+        sta     hDMA0::HREG
         ldy     #$0300
-        sty     $4302
+        sty     hDMA0::ADDR
         ldy     #$0220
-        sty     $4305
-        lda     #$01
+        sty     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -301,16 +301,16 @@ ExecDMA:
         beq     @72fd
         sty     hVMADDL
         lda     #$01
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldy     $12
-        sty     $4302
+        sty     hDMA0::ADDR
         lda     $14
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldy     $0e
-        sty     $4305
-        lda     #$01
+        sty     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 @72fd:  rts
 

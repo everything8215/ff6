@@ -1,0 +1,12 @@
+{
+  "asset_label": "LoreDesc",
+  "asset_const": "LORE_DESC",
+  "inc_path": "include/text/lore_desc_jp.inc",
+  "char_tables": [
+    "big_symbols_jp",
+    "null_terminated_jp",
+    "kana",
+    "kanji"
+  ],
+  "text": []
+}

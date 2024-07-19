@@ -41,7 +41,7 @@
 
 .segment "event_script"
 
-begin_fixed_block EventScript, $02e600
+begin_block EventScript, $02e600
 
 ; ------------------------------------------------------------------------------
 
@@ -311,7 +311,7 @@ GameOver_ext := RandBattle::game_over
                 wait 6
                 action 39
                 end
-        play_song SONG_NIGHTY_NIGHT, PAUSE_CURRENT
+        play_song NIGHTY_NIGHT, PAUSE_CURRENT
         call _cacfbd
         wait_song
         resume_song $10
@@ -396,7 +396,7 @@ reset_turtles:
 ; ca/015e
 .proc WorldTent
         switch $01c2=0
-        play_song SONG_NIGHTY_NIGHT, PAUSE_CURRENT
+        play_song NIGHTY_NIGHT, PAUSE_CURRENT
         obj_script SLOT_1
                 action 9
                 wait 6
@@ -928,7 +928,7 @@ _ca055d:
 start:
         load_map $0150, {15, 20}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN}
         lock_camera
-        play_song SONG_SILENCE
+        play_song SILENCE
         spc_cmd $11,$4d,$a0
         sfx 251
         spc_cmd $82,$20,$60
@@ -1373,7 +1373,7 @@ start:
                 action 9
                 end
         wait_1s
-        play_song 22
+        play_song KEFKA
         wait_30f
         obj_script NPC_1
                 action 22
@@ -1937,7 +1937,7 @@ start:
 
 skip_terra_scene:
         order_menu
-        play_song SONG_SILENCE
+        play_song SILENCE
         fade_in
         pyramid_on NPC_1
         fixed_clr {GREEN, BLUE}, 0, 3
@@ -1960,10 +1960,10 @@ skip_terra_scene:
         fixed_clr_off
 
 ; this is the final battle
-        battle 101, BATTLE_BG_FINAL_BATTLE_1
+        battle 101, BATTLE_BG::FINAL_BATTLE_1
         call _ca5ea9
         delete_obj NPC_1
-        play_song SONG_SILENCE
+        play_song SILENCE
         load_pal 14, ESPER_TERRA
         load_pal 15, GREEN_MAGICITE_SMOKE
         sfx 165
@@ -2533,7 +2533,7 @@ game_ending:
         call _caf61a
         call _cac97c
         char_party TERRA, 1
-        play_song SONG_ENDING_THEME_1
+        play_song ENDING_THEME_1
         switch $02E3=1
         wait_15f 26
 
@@ -5748,7 +5748,7 @@ _ca26b6:
         ending 74
         load_map 3, {8, 8}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
         switch $02C0=0
-        play_song SONG_ENDING_THEME_2
+        play_song ENDING_THEME_2
         switch $01CC=1
         wait_2s
         call _caf61a
@@ -10177,7 +10177,7 @@ _ca4131:
         dlg $09C4, {ASYNC, TEXT_ONLY}
                 ;
                 ; ERAUQS SI DLROW EHT
-        play_song SONG_REST_IN_PEACE
+        play_song REST_IN_PEACE
         wait_dlg
         dlg $09E3, TEXT_ONLY
                 ;
@@ -10539,7 +10539,7 @@ _ca42f1:
                 action 35 | ACTION_H_FLIP
                 end
         wait_30f
-        battle 85, BATTLE_BG_DEFAULT
+        battle 85, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in
         wait_1s
@@ -10573,7 +10573,7 @@ _ca435d:
         switch $01CC=1
         fade_out_song $30
         wait_song
-        play_song SONG_EPITAPH
+        play_song EPITAPH
         char_party SETZER, 0
         update_party
         load_map 301, {23, 3}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
@@ -11088,7 +11088,7 @@ _ca46ff:
                 wait 16
                 dir DOWN
                 end
-        play_song SONG_SEARCHING_FOR_FRIENDS
+        play_song SEARCHING_FOR_FRIENDS
         dlg $09A5
                 ; SETZER: I put it in storage.
                 ; I couldn’t bear to look at it.
@@ -11264,11 +11264,13 @@ _ca46ff:
         switch $01C1=0
         switch $01C2=0
         switch $009E=0
+.if LANG_EN
         switch $034C=0
         switch $034D=0
         switch $034E=0
         switch $034F=0
         switch $0350=0
+.endif
         switch $0347=0
         switch $03F4=0
         switch $0341=0
@@ -12221,7 +12223,7 @@ _ca5189:
         wait_15f 32
         fade_out 8
         wait_fade
-        .byte $EF, $39, $08             ; SONG_WIND
+        .byte $EF, $39, $08             ; WIND
         spc_cmd $81, $FF, $80
         wait_15f 64
         create_obj CELES
@@ -12242,7 +12244,7 @@ _ca5189:
         fade_out_song $20
         fade_in 4
         wait_2s
-        play_song SONG_WINDY_SHORES
+        play_song WINDY_SHORES
         switch $01CC=0
         wait_6s
         load_map 396, {7, 8}, DOWN, Z_UPPER
@@ -12550,7 +12552,7 @@ _ca5419:
         wait_30f
         dlg $088D
                 ; CELES: Cid…
-        play_song SONG_CELES
+        play_song CELES
         obj_script SLOT_1
                 anim_off
                 speed SLOWER
@@ -12780,7 +12782,7 @@ _ca54ba:
                 ; CELES: Phew…
                 ; Why did you nurse me back to health? Did I ever ask you to help me?!
         wait_1s
-        play_song SONG_FOREVER_RACHEL
+        play_song FOREVER_RACHEL
         create_obj NPC_6
         show_obj NPC_6
         sort_obj
@@ -12882,7 +12884,7 @@ _ca55fe:
                 ; But I’ll bring ’em all back to meet you!
                 ; CID: That LOCKE fellow, too, no doubt…
         wait_1s
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         obj_script SLOT_1
                 action 33
                 wait 2
@@ -13229,7 +13231,7 @@ _ca5817:
         return
 _ca583a:
         if_switch $00A0=1, _ca597f
-        play_song SONG_SAVE_THEM
+        play_song SAVE_THEM
         switch $01CC=1
         fade_in
         wait_fade
@@ -13406,7 +13408,7 @@ _ca5915:
                 ; The Imperial Airforce (IAF)!
                 ; We’re surrounded!
                 ; Let’s give ’em a bloody lip!
-        battle 126, BATTLE_BG_AIRSHIP_CENTER
+        battle 126, BATTLE_BG::AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         obj_script NPC_10, ASYNC
@@ -13460,21 +13462,21 @@ _ca597f:
         return
 _ca598f:
         stop_timer 0
-        battle 126, BATTLE_BG_AIRSHIP_CENTER
+        battle 126, BATTLE_BG::AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         start_timer 0, 384, _ca59a0, FIELD_ONLY
         return
 _ca59a0:
         stop_timer 0
-        battle 126, BATTLE_BG_AIRSHIP_CENTER
+        battle 126, BATTLE_BG::AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         start_timer 0, 320, _ca59b1, FIELD_ONLY
         return
 _ca59b1:
         stop_timer 0
-        battle 126, BATTLE_BG_AIRSHIP_CENTER
+        battle 126, BATTLE_BG::AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         wait_45f
@@ -13526,21 +13528,21 @@ _ca59b1:
         return
 _ca59fa:
         stop_timer 0
-        battle 126, BATTLE_BG_AIRSHIP_CENTER
+        battle 126, BATTLE_BG::AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         start_timer 0, 512, _ca5a0b, FIELD_ONLY
         return
 _ca5a0b:
         stop_timer 0
-        battle 126, BATTLE_BG_AIRSHIP_CENTER
+        battle 126, BATTLE_BG::AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         return
 _ca5a16:
         if_switch $01F0=0, EventReturn
         pass_on SLOT_1
-        battle 107, BATTLE_BG_AIRSHIP_WOB
+        battle 107, BATTLE_BG::AIRSHIP_WOB
         call _ca5ea9
         fade_in
         clr_overlay
@@ -13557,7 +13559,7 @@ _ca5a16:
                 end
         switch $01CC=0
         call _cacfbd
-        battle 89, BATTLE_BG_CLOUDS
+        battle 89, BATTLE_BG::CLOUDS
         call _ca5ea9
 _ca5a42:
         load_map 394, {4, 8}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
@@ -13661,7 +13663,7 @@ _ca5ad4:
         return
 _ca5ade:
         load_map 10, {16, 6}, LEFT, {Z_UPPER, NO_FADE_IN}
-        play_song SONG_TERRA
+        play_song TERRA
         switch $01CC=1
         if_switch $009E=1, EventReturn
         call _ca5d94
@@ -13684,7 +13686,7 @@ _ca5ade:
         fade_out_song $20
         switch $0468=0
         load_map 391, {8, 10}, DOWN, {Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
-        play_song SONG_WIND
+        play_song WIND
         hide_obj TERRA
         hide_obj CELES
         hide_obj STRAGO
@@ -13821,7 +13823,7 @@ _ca5b43:
                 move DOWN, 1
                 end
         wait_45f
-        play_song SONG_CATASTROPHE
+        play_song CATASTROPHE
         shake ALL, 3, 0
         flash WHITE
         sfx 18
@@ -14380,7 +14382,7 @@ _ca5fba:
         show_obj NPC_12
         show_obj NPC_14
         sort_obj
-        play_song SONG_LOCKE
+        play_song LOCKE
         obj_script TERRA, ASYNC
                 move UP, 5
                 end
@@ -14854,7 +14856,7 @@ _ca632f:
         wait_obj NPC_17
         set_b_switch $41
         wait_obj CAMERA
-        battle 65, BATTLE_BG_DESERT_WOB
+        battle 65, BATTLE_BG::DESERT_WOB
         call _ca5ea9
         switch $03FE=0
         load_map 55, {35, 50}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN}
@@ -15125,7 +15127,7 @@ _ca648b:
                 move DOWN_LEFT
                 dir DOWN
                 end
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         wait_90f
         dlg $00A7
                 ; EDGAR: I apologize.
@@ -15309,7 +15311,7 @@ _ca6623:
         dlg $0044, {TEXT_ONLY, BOTTOM}
                 ; The young king of Figaro Castle, ally to the Empire, and a master designer of machinery…
         wait_30f
-        give_item ITEM_AUTOCROSSBOW
+        give_item AUTOCROSSBOW
         char_name EDGAR, 4
         obj_gfx EDGAR, EDGAR
         obj_pal EDGAR, EDGAR
@@ -15935,7 +15937,7 @@ _ca6a48:
         switch $02F4=1
         char_party EDGAR, 1
         opt_equip EDGAR
-        battle 84, BATTLE_BG_TENTACLES
+        battle 84, BATTLE_BG::TENTACLES
         call _ca5ea9
         if_case CHAR::SABIN, _ca6c0c
         fade_in
@@ -16094,7 +16096,7 @@ _ca6b93:
                 ; Those guys haven’t committed any serious crimes…
                 ; CELES: Come on, let’s go…
         if_case CHAR::SABIN, _ca6bf7
-        play_song SONG_FIGARO
+        play_song FIGARO
         obj_script NPC_11
                 action 34 | ACTION_H_FLIP
                 wait 2
@@ -16236,7 +16238,7 @@ _ca6c85:
         wait_15f 10
         switch $03FE=1
         load_map 60, {100, 20}, DOWN, {Z_UPPER, NO_FADE_IN}
-        fade_in_song SONG_COIN_SONG, 255, PAUSE_CURRENT
+        fade_in_song COIN_SONG, 255, PAUSE_CURRENT
         obj_gfx TERRA, EDGAR
         obj_pal TERRA, EDGAR_SABIN_CELES
         hide_obj NPC_1
@@ -16385,7 +16387,7 @@ _ca6d63:
         dlg $0074
                 ; King EDGAR!
                 ; Someone from the Empire to see you!
-        play_song SONG_KEFKA
+        play_song KEFKA
         wait_30f
         obj_script NPC_1
                 action 24 | ACTION_H_FLIP
@@ -16742,7 +16744,7 @@ _ca6f60:
         obj_script NPC_12, ASYNC
                 dir DOWN
                 end
-        play_song SONG_FIGARO
+        play_song FIGARO
         dlg $0081, BOTTOM
                 ; LOCKE: I’d say that guy’s missing a few buttons…
                 ; EDGAR: …
@@ -16951,7 +16953,7 @@ _ca700e:
         switch $01CC=1
         party_chars EDGAR
         wait_15f 10
-        play_song SONG_GESTAHL
+        play_song GESTAHL
         wait_6s
         load_map 57, {58, 14}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN}
         hide_obj NPC_1
@@ -17227,7 +17229,7 @@ _ca71d9:
         dlg $03B8
                 ; SABIN: And yet it’s all different… Mom and Dad are gone… Everyone’s gone…
                 ; Since that day…
-        play_song SONG_COIN_SONG
+        play_song COIN_SONG
         wait_15f 10
         obj_script CAMERA, ASYNC
                 speed SLOW
@@ -17797,7 +17799,7 @@ _ca71d9:
                 dir DOWN
                 end
         call _cacf96
-        play_song SONG_FIGARO
+        play_song FIGARO
         call _cacfbd
         switch $01CC=0
         return
@@ -18216,7 +18218,7 @@ _ca77ec:
                 move LEFT, 1
                 dir DOWN
                 end
-        play_song SONG_HUH
+        play_song HUH
         dlg $00EB
                 ; Imperial troops are milling about.
                 ; Gotta jam without being seen!
@@ -18701,8 +18703,8 @@ _ca7b34:
                 switch $01F0=1
                 goto EventReturn
         switch $01F0=1
-        play_song SONG_SILENCE
-        .byte $EF, $39, $08             ; SONG_WIND
+        play_song SILENCE
+        .byte $EF, $39, $08             ; WIND
         return
 _ca7b46:
         if_any
@@ -18711,7 +18713,7 @@ _ca7b46:
                 switch $01F0=1
                 goto EventReturn
         switch $01F0=1
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _ca7b55:
         if_any
@@ -19092,7 +19094,7 @@ _ca7db8:
                 ; Come to steal my cider?
         dlg $00E8
                 ; You thief!
-        battle 10, BATTLE_BG_TOWN_INT
+        battle 10, BATTLE_BG::TOWN_INT
         if_b_switch $40, _ca7dcf
         call _ca85ba
         return
@@ -19233,7 +19235,7 @@ _ca7eb2:
 _ca7eb9:
         dlg $0B70
                 ; Scram, you blockhead.
-        battle 9, BATTLE_BG_TOWN_EXT
+        battle 9, BATTLE_BG::TOWN_EXT
         return
 _ca7ec0:
         if_b_switch $4D, _ca7ecf
@@ -19909,7 +19911,7 @@ _ca828f:
         char_party SABIN, 0
         switch $02E5=1
         switch $02F5=1
-        battle 66, BATTLE_BG_MOUNTAINS_EXT
+        battle 66, BATTLE_BG::MOUNTAINS_EXT
         call _ca5ea9
         char_party SABIN, 1
         hide_obj NPC_1
@@ -20215,7 +20217,7 @@ _ca84ab:
         switch $030A=0
         switch $0358=0
         switch $0105=1
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         switch $01CC=1
         hide_obj UMARO
         hide_obj NPC_6
@@ -20344,7 +20346,7 @@ _ca85af:
 _ca85b3:
         dlg $0174
                 ; Halt!
-        battle 11, BATTLE_BG_TOWN_EXT
+        battle 11, BATTLE_BG::TOWN_EXT
         return
 _ca85ba:
         clr_overlay
@@ -20381,7 +20383,7 @@ _ca85e6:
                 ; Call me a treasure hunter,
                 ; or I’ll rip your lungs out!
 _ca85fb:
-        battle 10, BATTLE_BG_TOWN_INT
+        battle 10, BATTLE_BG::TOWN_INT
         if_b_switch $40, _ca8608
         call _ca85ba
         return
@@ -21005,7 +21007,7 @@ _ca89af:
         wait_15f
         shake ALL, 0, 1
         spc_cmd $82, $00, $FF
-        battle 67, BATTLE_BG_DEFAULT
+        battle 67, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in
         wait_1s
@@ -21194,7 +21196,7 @@ _ca8ae3:
         move_vehicle RIGHT, 32
         move_vehicle FORWARD, 1
         wait 9
-        battle 19, BATTLE_BG_UNDERWATER
+        battle 19, BATTLE_BG::UNDERWATER
         move_vehicle {LEFT, SHARP_TURNS}, 2
         wait 4
         move_vehicle {RIGHT, SHARP_TURNS}, 14
@@ -21225,7 +21227,7 @@ _ca8ae3:
         wait 4
         move_vehicle LEFT, 4
         wait 1
-        battle 20, BATTLE_BG_UNDERWATER
+        battle 20, BATTLE_BG::UNDERWATER
         move_vehicle {RIGHT, SHARP_TURNS}, 6
         wait 1
         move_vehicle {RIGHT, SHARP_TURNS}, 8
@@ -21235,7 +21237,7 @@ _ca8ae3:
         move_vehicle RIGHT, 14
         move_vehicle UP, 28
         wait 12
-        battle 21, BATTLE_BG_UNDERWATER
+        battle 21, BATTLE_BG::UNDERWATER
         move_vehicle LEFT, 14
         wait 4
         move_vehicle RIGHT, 17
@@ -21267,7 +21269,7 @@ _ca8b8e:
         move_vehicle {LEFT, BACKWARD, SHARP_TURNS}, 2
         move_vehicle {RIGHT, SHARP_TURNS}, 26
         move_vehicle UP, 48
-        battle 20, BATTLE_BG_UNDERWATER
+        battle 20, BATTLE_BG::UNDERWATER
         move_vehicle {RIGHT, SHARP_TURNS}, 13
         move_vehicle FORWARD, 2
         wait 8
@@ -21279,7 +21281,7 @@ _ca8b8e:
         move_vehicle {RIGHT, SHARP_TURNS}, 21
         move_vehicle FORWARD, 8
         wait 5
-        battle 21, BATTLE_BG_UNDERWATER
+        battle 21, BATTLE_BG::UNDERWATER
         move_vehicle {RIGHT, BACKWARD, SHARP_TURNS}, 4
         move_vehicle {RIGHT, SHARP_TURNS}, 8
         move_vehicle {LEFT, SHARP_TURNS}, 22
@@ -21319,7 +21321,7 @@ _ca8c15:
         move_vehicle {LEFT, SHARP_TURNS}, 27
         move_vehicle FORWARD, 6
         wait 8
-        battle 20, BATTLE_BG_UNDERWATER
+        battle 20, BATTLE_BG::UNDERWATER
         wait 11
         move_vehicle {RIGHT, BACKWARD, SHARP_TURNS}, 6
         move_vehicle {RIGHT, SHARP_TURNS}, 16
@@ -21354,7 +21356,7 @@ _ca8c58:
         wait 1
         move_vehicle {RIGHT, SHARP_TURNS}, 49
         wait 16
-        battle 21, BATTLE_BG_UNDERWATER
+        battle 21, BATTLE_BG::UNDERWATER
         move_vehicle LEFT, 6
         wait 4
         move_vehicle UP, 96
@@ -21418,7 +21420,7 @@ _ca8cef:
         fade_out_song $40
         switch $01CC=1
         wait_song
-        play_song SONG_WINDY_SHORES
+        play_song WINDY_SHORES
         return
 _ca8cf7:
         call _ca8cef
@@ -22500,7 +22502,7 @@ _ca943d:
         dlg $048B, BOTTOM
                 ; LOCKE: Who’s this “Wandering…”? what’s-his-name?
                 ; MASTER: You born on a farm, son?
-        play_song SONG_SETZER
+        play_song SETZER
         switch $01CC=1
         char_name SETZER, 9
         obj_gfx SETZER, SETZER
@@ -22888,7 +22890,7 @@ _ca96a9:
                 ; Can I be of service?
                 ; I hate fighting, so I’d better let you pass!
         set_b_switch $4B
-        battle 69, BATTLE_BG_DEFAULT
+        battle 69, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_14
         clr_b_switch $4B
@@ -23016,7 +23018,7 @@ _ca9749:
                 dir DOWN
                 end
         wait_30f
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         dlg $0431
                 ; TERRA?
         obj_script SLOT_3, ASYNC
@@ -23259,7 +23261,7 @@ _ca9749:
         wait_15f
         dlg $043A, BOTTOM
                 ; RAMUH: She is undamaged. But I fear she can’t understand you. As for me, I am Ramuh. The Esper, Ramuh.
-        play_song SONG_ESPER_WORLD
+        play_song ESPER_WORLD
         obj_script CAMERA, ASYNC
                 move RIGHT_DOWN_DOWN
                 end
@@ -23856,7 +23858,7 @@ _ca9749:
                 move UP_RIGHT
                 dir UP
                 end
-        fade_in_song SONG_DREAM_OF_A_TRAIN, 255
+        fade_in_song DREAM_OF_A_TRAIN, 255
         wait_2s
         if_case
                 case CHAR::LOCKE, _caad28
@@ -24117,7 +24119,7 @@ _ca9de3:
         dlg $05C3
                 ; ELDER: Let’s do it.
                 ; We have no other choice.
-        play_song SONG_TROOPS_MARCH_ON
+        play_song TROOPS_MARCH_ON
         obj_script NPC_3, ASYNC
                 move UP_RIGHT
                 dir LEFT
@@ -25028,7 +25030,7 @@ _caa2a2:
         switch $01CC=1
         load_map 217, {33, 8}, DOWN, {Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
         shake ALL, 1, 3
-        play_song SONG_GESTAHL
+        play_song GESTAHL
         hide_obj SLOT_1
         obj_script NPC_3, ASYNC
                 pos {31, 14}
@@ -25432,7 +25434,7 @@ _caa5fb:
         delete_obj WEDGE
         load_map 226, {82, 17}, LEFT, {ASYNC, Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
         wait_4s
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         wait_3s
         show_obj TERRA
         call _cac766
@@ -25531,7 +25533,7 @@ _caa5fb:
         dlg $05D9
                 ; TERRA: Come on!
         wait_song
-        play_song SONG_BLACKJACK
+        play_song BLACKJACK
         fade_out 8
         wait_fade
         switch $0459=0
@@ -25691,7 +25693,7 @@ _caa78f:
                 move UP, 1
                 end
         lock_camera
-        play_song SONG_WIND
+        play_song WIND
         obj_script CAMERA, ASYNC
                 speed NORMAL
                 move UP, 4
@@ -25848,7 +25850,7 @@ _caa890:
                 ; EDGAR: Let’s talk on the way!
         switch $0330=0
         spc_cmd $F1, $00, $00
-        play_song SONG_DREAM_OF_A_TRAIN
+        play_song DREAM_OF_A_TRAIN
         switch $01CC=1
         load_map 221, {33, 6}, DOWN, {Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
         switch $01CC=0
@@ -27277,7 +27279,7 @@ _caaf9c:
         delete_obj CELES
         char_party CELES, 7
         load_map 234, {16, 28}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
-        play_song SONG_OVERTURE_1
+        play_song OVERTURE_1
         lock_camera
         party_chars LOCKE
         wait_15f 32
@@ -27485,7 +27487,7 @@ _caaf9c:
                 wait 3
                 end_loop
         wait_song
-        play_song SONG_OVERTURE_2
+        play_song OVERTURE_2
         dlg $04A6, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; ♬ Oh Maria
                 ;    Oh Maria
@@ -27600,7 +27602,7 @@ _caaf9c:
                 wait_90f
                 end_loop
         wait_song
-        play_song SONG_OVERTURE_3
+        play_song OVERTURE_3
         call _cab342
         obj_script CAMERA, ASYNC
                 speed NORMAL
@@ -27724,7 +27726,7 @@ _cab3bb:
         dlg $04EA
                 ; IMPRESARIO: We’re all in this together!
         if_switch $0111=0, _cab3e0
-        play_song SONG_WEDDING_WALTZ_1
+        play_song WEDDING_WALTZ_1
         switch $0056=1
         switch $0057=1
         switch $0058=0
@@ -27732,7 +27734,7 @@ _cab3bb:
         switch $0346=0
         if_switch $0127=0, _cab3e2
 _cab3e0:
-        play_song SONG_OVERTURE_3
+        play_song OVERTURE_3
 _cab3e2:
         obj_script CELES, ASYNC
                 move UP_RIGHT, 2
@@ -28207,7 +28209,7 @@ _cab6d6:
                 wait 8
                 move UP, 2
                 end
-        battle 134, BATTLE_BG_DEFAULT
+        battle 134, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $0387=0
         switch $036F=0
@@ -28272,7 +28274,7 @@ _cab744:
                 ; IMPRESARIO: What!!!?
         lock_camera
         if_switch $02BA=1, _cab95f
-        play_song SONG_WEDDING_WALTZ_2
+        play_song WEDDING_WALTZ_2
         wait_15f 13
         obj_script CAMERA
                 speed FAST
@@ -28466,7 +28468,7 @@ _cab744:
                 dir DOWN
                 end
         wait_song
-        play_song SONG_WEDDING_WALTZ_3
+        play_song WEDDING_WALTZ_3
         dlg $04CF, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; ♬ Maria
         loop 3
@@ -28628,7 +28630,7 @@ _cab744:
                 end
         wait_4s
         wait_song
-        play_song SONG_WEDDING_WALTZ_4
+        play_song WEDDING_WALTZ_4
         obj_script CAMERA
                 move DOWN, 8
                 move DOWN, 8
@@ -28639,7 +28641,7 @@ _cab744:
                 ; …With that?!
         if_switch $0127=0, _cab961
 _cab95f:
-        play_song SONG_WEDDING_WALTZ_4
+        play_song WEDDING_WALTZ_4
 _cab961:
         obj_script CAMERA, ASYNC
                 speed FAST
@@ -28920,7 +28922,7 @@ _cabafd:
         fade_out_song $10
         fade_out
         wait_4s
-        play_song SONG_ARIA_DI_MEZZO_CARATERRE
+        play_song ARIA_DI_MEZZO_CARATERRE
         load_map 236, {13, 26}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN}
         loop 10
                 mod_bg_pal DEC, {RED, GREEN}, 3
@@ -29553,7 +29555,7 @@ _cabe6d:
         char_party LOCKE, 1
         char_party CELES, 0
         hide_obj CELES
-        play_song SONG_WEDDING_WALTZ_1
+        play_song WEDDING_WALTZ_1
         wait_4s
         load_map 233, {16, 30}, DOWN, {ASYNC, Z_UPPER, STARTUP_EVENT}
         hide_obj SLOT_1
@@ -29805,7 +29807,7 @@ _cabf4b:
         fade_out_song $06
         wait_3s
         call _cac8e1
-        play_song SONG_GRAND_FINALE_1
+        play_song GRAND_FINALE_1
         wait_song
         obj_script NPC_18
                 pos {23, 21}
@@ -29822,8 +29824,8 @@ _cabf4b:
         obj_script SLOT_1
                 action 9
                 end
-        play_song SONG_SILENCE
-        play_song SONG_GRAND_FINALE_1
+        play_song SILENCE
+        play_song GRAND_FINALE_1
         wait_song
         obj_script NPC_1
                 dir DOWN
@@ -29933,7 +29935,7 @@ _cabf4b:
         dlg $04E1
                 ; IMPRESARIO: Hmm…
                 ; Might as well make the most of this. MUSIC!!
-        play_song SONG_GRAND_FINALE_2
+        play_song GRAND_FINALE_2
         obj_script SLOT_1
                 dir RIGHT
                 end
@@ -29954,7 +29956,7 @@ _cabf4b:
                 speed FAST
                 move RIGHT, 2
                 end
-        battle 104, BATTLE_BG_DEFAULT
+        battle 104, BATTLE_BG::DEFAULT
         if_b_switch $40, _cac128
         call _cabdba
         return
@@ -30002,7 +30004,7 @@ _cac128:
         hide_obj NPC_20
         hide_obj SLOT_2
         hide_obj SLOT_3
-        play_song SONG_SETZER
+        play_song SETZER
         obj_script CAMERA, ASYNC
                 speed SLOW
                 move UP, 2
@@ -30201,7 +30203,7 @@ _cac326:
         unlock_camera
         return
 _cac368:
-        battle 25, BATTLE_BG_DEFAULT
+        battle 25, BATTLE_BG::DEFAULT
         if_b_switch $40, _cac375
         call _caba0b
         return
@@ -30211,7 +30213,7 @@ _cac375:
         fade_in
         return
 _cac37b:
-        battle 25, BATTLE_BG_DEFAULT
+        battle 25, BATTLE_BG::DEFAULT
         if_b_switch $40, _cac388
         call _caba0b
         return
@@ -30221,7 +30223,7 @@ _cac388:
         fade_in
         return
 _cac38e:
-        battle 25, BATTLE_BG_DEFAULT
+        battle 25, BATTLE_BG::DEFAULT
         if_b_switch $40, _cac39b
         call _caba0b
         return
@@ -30231,7 +30233,7 @@ _cac39b:
         fade_in
         return
 _cac3a1:
-        battle 25, BATTLE_BG_DEFAULT
+        battle 25, BATTLE_BG::DEFAULT
         if_b_switch $40, _cac3ae
         call _caba0b
         return
@@ -30241,7 +30243,7 @@ _cac3ae:
         fade_in
         return
 _cac3b4:
-        battle 25, BATTLE_BG_DEFAULT
+        battle 25, BATTLE_BG::DEFAULT
         if_b_switch $40, _cac3c1
         call _caba0b
         return
@@ -30252,7 +30254,7 @@ _cac3c1:
         return
 _cac3c7:
         switch $01CC=1
-        play_song SONG_BLACKJACK
+        play_song BLACKJACK
         load_map 0, {121, 188}, UP, {ASYNC, Z_UPPER, AIRSHIP}
         set_script_mode VEHICLE
         move_vehicle {UP, RIGHT, SHARP_TURNS}, 72
@@ -30460,7 +30462,7 @@ _cac4b0:
         dlg $058F
                 ; TERRA: I remember it all…
                 ; I was raised in the Esper’s world.
-        play_song SONG_ESPER_WORLD
+        play_song ESPER_WORLD
         wait_1s
         fade_out 2
         wait_fade
@@ -31434,7 +31436,7 @@ _cacd17:
         wait_1s
         fade_out 8
         wait_fade
-        play_song SONG_NIGHTY_NIGHT, PAUSE_CURRENT
+        play_song NIGHTY_NIGHT, PAUSE_CURRENT
         call _cacfbd
         wait_song
         resume_song $20
@@ -31442,7 +31444,7 @@ _cacd17:
         return
 _cacd31:
         call _cacf67
-        play_song SONG_NIGHTY_NIGHT, PAUSE_CURRENT
+        play_song NIGHTY_NIGHT, PAUSE_CURRENT
         call _cacf96
         return
 _cacd3c:
@@ -31456,7 +31458,7 @@ _cacd3c:
         show_obj SLOT_3
         show_obj SLOT_4
 _cacd57:
-        play_song SONG_NIGHTY_NIGHT, PAUSE_CURRENT
+        play_song NIGHTY_NIGHT, PAUSE_CURRENT
         wait_song
         return
 _cacd5b:
@@ -32681,7 +32683,7 @@ _cad9fc:
         call _cacfe6
         return
 _cada30:
-        battle 80, BATTLE_BG_DEFAULT
+        battle 80, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         delete_obj NPC_1
@@ -32693,7 +32695,7 @@ _cada30:
         switch $035E=0
         return
 _cada48:
-        battle 81, BATTLE_BG_DEFAULT
+        battle 81, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         switch $0361=0
@@ -32958,7 +32960,7 @@ _cadd14:
         return
 _cadd1e:
         switch $01CC=1
-        play_song SONG_CATASTROPHE
+        play_song CATASTROPHE
         set_case PARTY_CHARS
         if_switch $01A6=0, _cadd31
         switch $0266=1
@@ -33563,7 +33565,7 @@ _cadecb:
                 ; GESTAHL: Kefka, stop it!
                 ; Revive those statues, and you’ll destroy the very world we’re trying to possess!
                 ; KEFKA: Shuddap!
-        battle 127, BATTLE_BG_DEFAULT
+        battle 127, BATTLE_BG::DEFAULT
         obj_script NPC_13
                 pos {57, 7}
                 action 41
@@ -34142,7 +34144,7 @@ _cae37f:
                 ; SHADOW……
                 ; Get outta here on the double!
         remove_equip SHADOW
-        play_song SONG_METAMORPHOSIS
+        play_song METAMORPHOSIS
         switch $02BC=1
         start_timer 0, 21600, _cae414, {FIELD_VISIBLE, BANQUET, MENU_BATTLE_VISIBLE}
         start_timer 2, 21300, _ca57b3, {FIELD_VISIBLE, BANQUET, MENU_BATTLE_VISIBLE}
@@ -34479,7 +34481,7 @@ _cae8ad:
         if_switch $01FA=1, EventReturn
         stop_timer 1
         spc_cmd $82, $00, $FF
-        battle 141, BATTLE_BG_DEFAULT
+        battle 141, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $01FA=1
         fade_in
@@ -34488,7 +34490,7 @@ _cae8c4:
         if_switch $01FB=1, EventReturn
         stop_timer 1
         spc_cmd $82, $00, $FF
-        battle 142, BATTLE_BG_DEFAULT
+        battle 142, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $01FB=1
         fade_in
@@ -34500,7 +34502,7 @@ _cae8db:
                 goto EventReturn
         stop_timer 1
         spc_cmd $82, $00, $FF
-        battle 143, BATTLE_BG_DEFAULT
+        battle 143, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $01FC=1
         fade_in
@@ -34511,7 +34513,7 @@ _cae8f4:
         switch $02BD=0
         return
 _cae8ff:
-        play_song SONG_SILENCE
+        play_song SILENCE
         return
 _cae902:
         if_switch $00A6=0, EventReturn
@@ -34852,7 +34854,7 @@ _caeb73:
         if_switch $00AD=1, EventReturn
         switch $00AD=1
         switch $01CC=0
-        play_song SONG_PHANTOM_FOREST
+        play_song PHANTOM_FOREST
         return
 _caeb80:
         if_switch $01B6=1, EventReturn
@@ -34983,10 +34985,10 @@ _caec18:
 _caec39:
         if_switch $01CC=1, _caec4f
         if_switch $0305=0, _caec4d
-        play_song SONG_SHADOW
+        play_song SHADOW
         if_switch $0127=0, _caec4f
 _caec4d:
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
 _caec4f:
         if_switch $01B6=1, EventReturn
         if_switch $0303=0, EventReturn
@@ -35159,10 +35161,10 @@ _caed86:
 _caed8b:
         if_switch $00A4=0, _caed9b
         switch $02B0=1
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         if_switch $0127=0, _caed9d
 _caed9b:
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
 _caed9d:
         if_switch $01B6=1, EventReturn
         obj_script NPC_2, ASYNC
@@ -35222,25 +35224,25 @@ _caede9:
         return
 _caedf4:
         if_switch $00A4=0, _caedfd
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _caedfd:
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _caee00:
         if_switch $01B6=1, EventReturn
         if_switch $00A4=0, _caee0f
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _caee0f:
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _caee12:
         if_switch $00A4=0, _caee1b
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _caee1b:
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _caee1e:
         if_switch $01F0=0, EventReturn
@@ -35265,10 +35267,10 @@ _caee5a:
         return
 _caee8a:
         if_switch $00A4=0, _caee93
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _caee93:
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _caee96:
         if_switch $0338=0, _caeea0
@@ -36103,7 +36105,7 @@ _caf506:
                 switch $007A=0
                 switch $009D=1
                 goto _caf520
-        play_song SONG_SETZER
+        play_song SETZER
         bg_anim_rate 0, 0
         bg_anim_rate 1, 0
         bg_anim_rate 2, 0
@@ -36111,7 +36113,7 @@ _caf506:
         bg_anim_rate 4, 0
         return
 _caf520:
-        play_song SONG_SETZER
+        play_song SETZER
         bg_anim_rate 0, 32
         bg_anim_rate 1, 32
         bg_anim_rate 2, 32
@@ -36476,7 +36478,7 @@ _caf7d1:
         call _caf7dc
         return
 _caf7dc:
-        play_song SONG_NARSHE
+        play_song NARSHE
         lock_camera
         call _cac6ac
         sort_obj
@@ -36689,7 +36691,7 @@ _caf7dc:
         hide_obj LOCKE
         sort_obj
         load_map 110, {21, 48}, LEFT, {ASYNC, Z_UPPER}
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         hide_obj NPC_1
         switch $0420=1
         create_obj NPC_4
@@ -36721,10 +36723,10 @@ _caf93a:
                 switch $0012=0
                 switch $025E=1
                 goto _caf94b
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         return
 _caf94b:
-        play_song SONG_TERRA
+        play_song TERRA
         return
 _caf94e:
         if_switch $01B6=1, EventReturn
@@ -36732,10 +36734,10 @@ _caf94e:
                 switch $0012=0
                 switch $025E=1
                 goto _caf95f
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         return
 _caf95f:
-        play_song SONG_RETURNERS
+        play_song RETURNERS
         return
 _caf962:
         dlg $0122
@@ -36751,7 +36753,7 @@ _caf966:
                 ; This relic will keep you safe.
                 ;
                 ; Received “Genji Glove”!
-        give_item ITEM_GENJI_GLOVE
+        give_item GENJI_GLOVE
         dlg $0138
                 ; We truly need your help!
         switch $0017=1
@@ -37019,7 +37021,7 @@ _cafac3:
                 end
         dlg $013C
                 ; TERRA: What is this???
-        give_item ITEM_GAUNTLET
+        give_item GAUNTLET
         dlg $013E
                 ; BANON: A lucky charm. Take it!
                 ;
@@ -37092,7 +37094,7 @@ _cafb31:
                 end
         dlg $013C
                 ; TERRA: What is this???
-        give_item ITEM_GAUNTLET
+        give_item GAUNTLET
         dlg $013E
                 ; BANON: A lucky charm. Take it!
                 ;
@@ -37462,7 +37464,7 @@ _cafdb9:
         obj_pal WEDGE, STRAGO_RELM_GAU_GOGO
         return
 _cafdcb:
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         switch $0497=0
         obj_script TERRA
                 speed SLOW
@@ -37528,7 +37530,7 @@ _cafdcb:
         dlg $0143
                 ; BANON: What’s going on?
                 ; What happened?
-        play_song SONG_GESTAHL
+        play_song GESTAHL
         obj_script NPC_10
                 pos {9, 29}
                 end
@@ -37834,7 +37836,7 @@ _cafdcb:
                 ; This relic will keep you safe.
                 ;
                 ; Received “Genji Glove”!
-        give_item ITEM_GENJI_GLOVE
+        give_item GENJI_GLOVE
         obj_script TERRA
                 wait 2
                 action 33
@@ -37937,7 +37939,7 @@ _cb0072:
 _cb0080:
         switch $0497=0
         load_map 109, {24, 28}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
-        play_song SONG_RETURNERS
+        play_song RETURNERS
         call _cb0072
         obj_script SABIN, ASYNC
                 pos {24, 28}
@@ -38239,7 +38241,7 @@ _cb0106:
         dlg $0161
                 ; BANON: What?
                 ; What’s that noise?
-        play_song SONG_GESTAHL
+        play_song GESTAHL
         obj_script NPC_10
                 pos {9, 24}
                 end
@@ -38597,7 +38599,7 @@ _cb0412:
         dlg $0162
                 ; Uwaaaa!
                 ; The Empire’s invading!
-        play_song SONG_TROOPS_MARCH_ON
+        play_song TROOPS_MARCH_ON
         obj_script SLOT_1, ASYNC
                 action 31
                 wait 8
@@ -38636,7 +38638,7 @@ _cb0412:
                 ; Sleep talking?
         return
 _cb0462:
-        play_song SONG_SILENCE
+        play_song SILENCE
         spc_cmd $10, $1E, $64
         return
 _cb0469:
@@ -38649,7 +38651,7 @@ _cb0474:
         load_pal 15, RAFT
         return
 _cb047c:
-        play_song SONG_SILENCE
+        play_song SILENCE
         spc_cmd $10, $1E, $96
         load_pal 15, RAFT
         return
@@ -38664,12 +38666,12 @@ _cb048f:
 _cb0497:
         return
 _cb0498:
-        battle 7, BATTLE_BG_RIVER
+        battle 7, BATTLE_BG::RIVER
         call _ca5ea9
         fade_in
         return
 _cb04a1:
-        battle 8, BATTLE_BG_RIVER
+        battle 8, BATTLE_BG::RIVER
         call _ca5ea9
         fade_in
         return
@@ -39304,7 +39306,7 @@ _cb08db:
                 end
         dlg $0142
                 ; What? WHAT IS IT?
-        battle 103, BATTLE_BG_RIVER
+        battle 103, BATTLE_BG::RIVER
         call _ca5ea9
         delete_obj NPC_1
         hide_obj NPC_1
@@ -39412,7 +39414,7 @@ _cb094e:
                 move UP_RIGHT, 5
                 end
         wait_obj SLOT_1
-        battle 8, BATTLE_BG_RIVER
+        battle 8, BATTLE_BG::RIVER
         call _ca5ea9
         fade_in
         obj_script SLOT_1, ASYNC
@@ -39674,10 +39676,10 @@ _cb0b6b:
         set_case PARTY_CHARS
         if_switch $01A3=1, _cb0b7b
         if_switch $0039=1, _cb0b7b
-        play_song SONG_SHADOW
+        play_song SHADOW
         return
 _cb0b7b:
-        play_song SONG_HUH
+        play_song HUH
         return
 _cb0b7e:
         if_switch $0169=1, _cb0ba1
@@ -40034,7 +40036,7 @@ _cb0d87:
                 wait 2
                 end
         call _cb0e1c
-        battle 16, BATTLE_BG_IMP_CAMP
+        battle 16, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -40101,7 +40103,7 @@ _cb0dcc:
                 move UP, 1
                 end
         call _cb0e1c
-        battle 42, BATTLE_BG_IMP_CAMP
+        battle 42, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         obj_script NPC_11
@@ -40259,7 +40261,7 @@ _cb0ed6:
         player_ctrl_on
         return
         call _cb0e1c
-        battle 12, BATTLE_BG_IMP_CAMP
+        battle 12, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -40683,7 +40685,7 @@ _cb1126:
         obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         clr_status VICKS, MAGITEK
         call _cb0e1c
-        battle 56, BATTLE_BG_IMP_CAMP
+        battle 56, BATTLE_BG::IMP_CAMP
         call _cacb95
         player_ctrl_off
         call _ca5ea9
@@ -40743,7 +40745,7 @@ _cb1193:
         max_hp VICKS
         max_mp VICKS
         call _cb0e1c
-        battle 56, BATTLE_BG_IMP_CAMP
+        battle 56, BATTLE_BG::IMP_CAMP
         delete_obj VICKS
         call _ca5ea9
         call _cacb95
@@ -40808,9 +40810,9 @@ _cb1209:
                 dir LEFT
                 end
         call _cb0e1c
-        battle 44, BATTLE_BG_IMP_CAMP
+        battle 44, BATTLE_BG::IMP_CAMP
         call _ca5ea9
-        play_song SONG_SILENCE
+        play_song SILENCE
         update_party
         hide_obj NPC_8
         switch $0155=1
@@ -40820,7 +40822,7 @@ _cb1209:
                 speed FAST
                 move DOWN_LEFT, 8
                 end
-        play_song SONG_KEFKA
+        play_song KEFKA
         wait_30f
         fade_in 8
         obj_script NPC_6
@@ -40956,7 +40958,7 @@ _cb1283:
                 action 9
                 anim_on
                 end
-        play_song SONG_THE_UNFORGIVEN
+        play_song THE_UNFORGIVEN
         switch $01CC=1
         wait_2s
         obj_script CYAN
@@ -41221,7 +41223,7 @@ _cb1483:
                 ; CYAN: Thank you…
                 ; whomever you are.
         call _cb0e1c
-        battle 13, BATTLE_BG_IMP_CAMP
+        battle 13, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         switch $042C=0
@@ -41331,7 +41333,7 @@ _cb152c:
                 ; CYAN: What a mess!!
                 ; Be careful, Sir!!
         call _cb0e1c
-        battle 13, BATTLE_BG_IMP_CAMP
+        battle 13, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         switch $042E=0
@@ -41452,7 +41454,7 @@ _cb15d9:
         dlg $023F
                 ; CYAN: The thought had occurred to me as well!
         call _cb0e1c
-        battle 14, BATTLE_BG_IMP_CAMP
+        battle 14, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         switch $02BC=0
@@ -41472,7 +41474,7 @@ _cb15d9:
         create_obj CYAN
         char_party CYAN, 1
         sort_obj
-        fade_in_song SONG_TROOPS_MARCH_ON, 192
+        fade_in_song TROOPS_MARCH_ON, 192
         call _cac6ac
         call _cb2e34
         set_case PARTY_CHARS
@@ -42025,7 +42027,7 @@ _cb1955:
         dlg $024B
                 ; End of the line!
         call _cb0e1c
-        battle 15, BATTLE_BG_IMP_CAMP
+        battle 15, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -42043,7 +42045,7 @@ _cb1985:
         dlg $024B
                 ; End of the line!
         call _cb0e1c
-        battle 17, BATTLE_BG_IMP_CAMP
+        battle 17, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         mod_bg_tiles BG1, {16, 30}, {1, 1}
@@ -42073,7 +42075,7 @@ _cb19af:
                 move LEFT, 1
                 end
         call _cb0e1c
-        battle 16, BATTLE_BG_IMP_CAMP
+        battle 16, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -42094,7 +42096,7 @@ _cb19e6:
         dlg $024D
                 ; Who said anything about running?!
         call _cb0e1c
-        battle 17, BATTLE_BG_IMP_CAMP
+        battle 17, BATTLE_BG::IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -42353,7 +42355,7 @@ _cb1b46:
                 action 33
                 end
         wait_1s
-        play_song SONG_SILENCE
+        play_song SILENCE
         obj_script CELES
                 speed SLOW
                 move DOWN, 3
@@ -42756,7 +42758,7 @@ _cb1deb:
         unlock_camera
         load_map 7, {12, 10}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
         switch $0246=1
-        play_song SONG_SETZER
+        play_song SETZER
         wait_90f
         call _cacb95
         call _cb2e2b
@@ -43094,7 +43096,7 @@ _cb2007:
         if_switch $01B1=1, EventReturn
         if_switch $01F0=1, _cb2029
         switch $01CC=0
-        play_song SONG_SETZER, PAUSE_CURRENT
+        play_song SETZER, PAUSE_CURRENT
         obj_script NPC_1
                 dir RIGHT
                 wait 4
@@ -43619,7 +43621,7 @@ _cb22bb:
         unlock_camera
         call _cacb95
         wait_90f
-        play_song SONG_GESTAHL
+        play_song GESTAHL
         switch $005E=1
         switch $01B9=1
         switch $01BA=1
@@ -43948,7 +43950,7 @@ _cb2566:
         return
 _cb2569:
         call _cb0e1c
-        battle 39, BATTLE_BG_DEFAULT
+        battle 39, BATTLE_BG::DEFAULT
         call _ca5ea9
         update_party
         load_map 377, {6, 17}, LEFT, ASYNC
@@ -43975,7 +43977,7 @@ _cb258e:
 
 _cb2599:
         call _cb0e1c
-        battle 40, BATTLE_BG_DEFAULT
+        battle 40, BATTLE_BG::DEFAULT
         call _ca5ea9
         update_party
         load_map 377, {6, 17}, LEFT, ASYNC
@@ -44353,7 +44355,7 @@ _cb280f:
         wait_30f
         switch $0242=1
         load_map 6, {15, 6}, LEFT, {ASYNC, NO_FADE_IN}
-        play_song SONG_SILENCE
+        play_song SILENCE
         switch $01CC=1
         set_case PARTY_CHARS
         if_switch $01A9=0, _cb28ea
@@ -44389,7 +44391,7 @@ _cb280f:
         dlg $069A, BOTTOM
                 ; There! What’s that?
         wait_30f
-        battle 123, BATTLE_BG_AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
+        battle 123, BATTLE_BG::AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
         spc_cmd $81, $00, $96
         obj_script SETZER
                 pos {16, 6}
@@ -44442,7 +44444,7 @@ _cb28ea:
         dlg $069A, BOTTOM
                 ; There! What’s that?
         wait_30f
-        battle 123, BATTLE_BG_AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
+        battle 123, BATTLE_BG::AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
         spc_cmd $81, $00, $96
         switch $0459=0
         call _cacb95
@@ -44450,7 +44452,7 @@ _cb28ea:
         call _cb2e2b
         unlock_camera
 _cb2948:
-        fade_in_song SONG_THE_UNFORGIVEN, 32
+        fade_in_song THE_UNFORGIVEN, 32
         switch $007A=1
         switch $01BA=1
         switch $007B=1
@@ -44498,7 +44500,7 @@ _cb2948:
         show_minimap
         load_map 6, {16, 6}, DOWN, {ASYNC, NO_FADE_IN}
         set_script_mode EVENT
-        play_song SONG_FIRE_EXPLOSION
+        play_song FIRE_EXPLOSION
         spc_cmd $82, $00, $FF
         sfx 165
         wait_90f
@@ -44521,7 +44523,7 @@ _cb2948:
         wait_song
         set_parent_map 0, {83, 239}, DOWN
         load_map 6, {16, 6}, DOWN, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
-        play_song SONG_SILENCE
+        play_song SILENCE
         wait_6s
         update_party
         obj_script SLOT_1
@@ -44533,12 +44535,12 @@ _cb2948:
         return
 _cb29f3:
         if_switch $0246=0, _cb2a00
-        play_song SONG_BLACKJACK
+        play_song BLACKJACK
         call _cb2a07
         return
 _cb2a00:
         call _cb2a1e
-        play_song SONG_SILENCE
+        play_song SILENCE
         return
 _cb2a07:
         bg_anim_rate 0, 32
@@ -45177,7 +45179,7 @@ _cb307e:
         obj_script SLOT_1
                 dir LEFT
                 end
-        battle 149, BATTLE_BG_DEFAULT
+        battle 149, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         wait_fade
@@ -45205,7 +45207,7 @@ _cb30cf:
         dlg $069E
                 ;
                 ; Got “Inviz Edge.”
-        give_item ITEM_INVIZ_EDGE
+        give_item INVIZ_EDGE
         switch $024D=1
         return
 _cb30ed:
@@ -45220,7 +45222,7 @@ _cb30ed:
         dlg $06A4
                 ;
                 ; Got “Water Skean.”
-        give_item ITEM_WATER_EDGE
+        give_item WATER_EDGE
         switch $024E=1
         return
 _cb310b:
@@ -45235,7 +45237,7 @@ _cb310b:
         dlg $0121
                 ;
                 ; Found Remedy!
-        give_item ITEM_SOFT
+        give_item SOFT
         switch $024F=1
         return
 _cb3129:
@@ -46106,7 +46108,7 @@ _cb39ca:
         max_hp VICKS
         max_mp VICKS
         call _cacfbd
-        battle 121, BATTLE_BG_DEFAULT, NO_SFX
+        battle 121, BATTLE_BG::DEFAULT, NO_SFX
         call _ca5ea9
         char_party VICKS, 0
         spc_cmd $10, $39, $96
@@ -46192,7 +46194,7 @@ _cb39ca:
         clr_status VICKS, MAGITEK
         max_hp VICKS
         max_mp VICKS
-        battle 122, BATTLE_BG_DEFAULT, {NO_SFX, NO_BLUR}
+        battle 122, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
         call _ca5ea9
         sfx 199
         delete_obj VICKS
@@ -46324,7 +46326,7 @@ _cb39ca:
         return
 _cb3c58:
         spc_cmd $81, $00, $64
-        play_song SONG_FIRE_EXPLOSION
+        play_song FIRE_EXPLOSION
         shake ALL, 1, 1
         obj_script NPC_1, ASYNC
                 speed SLOWER
@@ -46581,7 +46583,7 @@ _cb3c58:
         fade_out_song $40
         shake ALL, 1, 1
         wait_90f
-        fade_in_song SONG_WIND, 32
+        fade_in_song WIND, 32
         shake ALL, 0, 1
         return
 _cb3dcb:
@@ -46848,7 +46850,7 @@ _cb3f08:
         fade_out
         wait_fade
         unlock_camera
-        play_song SONG_METAMORPHOSIS
+        play_song METAMORPHOSIS
         switch $01CC=1
         switch $04FE=0
         switch $04FB=0
@@ -47070,7 +47072,7 @@ _cb3ff1:
         call _cacb95
         player_ctrl_off
         call _cacfbd
-        battle 71, BATTLE_BG_AIRSHIP_CENTER
+        battle 71, BATTLE_BG::AIRSHIP_CENTER
         call _ca5ea9
         loop 6
                 mod_bg_pal RESTORE_ALT, {RED, GREEN, BLUE}, 3
@@ -47474,10 +47476,10 @@ _cb441a:
         return
 _cb441d:
         if_switch $00A4=1, _cb4426
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _cb4426:
-        play_song SONG_MAGIC_HOUSE
+        play_song MAGIC_HOUSE
         return
 _cb4429:
         if_switch $01B6=1, EventReturn
@@ -47981,7 +47983,7 @@ _cb47ce:
                 move DOWN, 1
                 anim_on
                 end
-        battle 146, BATTLE_BG_OWZERS_HOUSE
+        battle 146, BATTLE_BG::OWZERS_HOUSE
         call _ca5ea9
         call _cb4728
         sfx 45
@@ -48010,7 +48012,7 @@ _cb481a:
                 ;     They almost look alive…
         sfx 61
         flash RED
-        battle 147, BATTLE_BG_OWZERS_HOUSE
+        battle 147, BATTLE_BG::OWZERS_HOUSE
         call _ca5ea9
         switch $0156=1
         fade_in
@@ -48288,7 +48290,7 @@ _cb49f3:
                 wait 2
                 action 35 | ACTION_H_FLIP
                 end
-        battle 151, BATTLE_BG_DEFAULT
+        battle 151, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $0258=1
         obj_script NPC_11
@@ -48329,7 +48331,7 @@ _cb4a4e:
                 move DOWN, 4
                 layer 0
                 end
-        battle 151, BATTLE_BG_DEFAULT
+        battle 151, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $04AD=0
         delete_obj NPC_7
@@ -48365,7 +48367,7 @@ _cb4a8e:
                 move DOWN, 4
                 layer 0
                 end
-        battle 151, BATTLE_BG_DEFAULT
+        battle 151, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $04AE=0
         delete_obj NPC_8
@@ -48379,7 +48381,7 @@ _cb4a8e:
         sfx 166
         mod_bg_tiles BG1, {75, 55}, {1, 1}
                 .byte $12
-        give_item ITEM_TONIC
+        give_item TONIC
         dlg $011F
                 ;
                 ; Found Potion!
@@ -48401,7 +48403,7 @@ _cb4acd:
                 move DOWN, 4
                 layer 0
                 end
-        battle 151, BATTLE_BG_DEFAULT
+        battle 151, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $04AF=0
         delete_obj NPC_9
@@ -48415,7 +48417,7 @@ _cb4acd:
         sfx 166
         mod_bg_tiles BG1, {77, 54}, {1, 1}
                 .byte $12
-        give_item ITEM_TINCTURE
+        give_item TINCTURE
         dlg $0120
                 ;
                 ; Found Ether!
@@ -48437,7 +48439,7 @@ _cb4b0c:
                 move DOWN, 4
                 layer 0
                 end
-        battle 151, BATTLE_BG_DEFAULT
+        battle 151, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $04B0=0
         delete_obj NPC_10
@@ -48451,7 +48453,7 @@ _cb4b0c:
         sfx 166
         mod_bg_tiles BG1, {79, 55}, {1, 1}
                 .byte $12
-        give_item ITEM_SOFT
+        give_item SOFT
         dlg $0121
                 ;
                 ; Found Remedy!
@@ -48613,7 +48615,7 @@ _cb4c47:
                 move DOWN, 1
                 anim_on
                 end
-        battle 148, BATTLE_BG_OWZERS_HOUSE
+        battle 148, BATTLE_BG::OWZERS_HOUSE
         call _ca5ea9
         wait_45f
         mod_bg_tiles BG1, {75, 47}, {3, 5}, ASYNC
@@ -48643,7 +48645,7 @@ _cb4c94:
         return
 _cb4ca1:
         if_switch $0253=1, _cb4cbd
-        play_song SONG_MAGIC_HOUSE
+        play_song MAGIC_HOUSE
         obj_script NPC_4, ASYNC
 _cb4cab:
                 action 27
@@ -48659,7 +48661,7 @@ _cb4cab:
 _cb4cbd:
         load_pal 14, CHADARNOOK
         if_switch $0253=0, _cb4cca
-        play_song SONG_RELM
+        play_song RELM
         mod_bg_pal RESTORE_ALT, {RED, GREEN, BLUE}, 3
 _cb4cca:
         call _cb2caa
@@ -48725,9 +48727,9 @@ _cb4cfa:
                 ; CHADARNOOK: G’fu, fu, fu…
                 ; Who’re these numbskulls?
                 ; No one…NO ONE…is going to remove me from this fine new painting!!
-        battle 86, BATTLE_BG_OWZERS_HOUSE, NO_SFX
+        battle 86, BATTLE_BG::OWZERS_HOUSE, NO_SFX
         call _ca5ea9
-        play_song SONG_RELM
+        play_song RELM
         mod_bg_pal RESTORE_ALT, {RED, GREEN, BLUE}, 3
         fade_in 8
         obj_script CAMERA
@@ -48936,7 +48938,7 @@ _cb4e47:
         choice _cb4e5e, EventReturn
         return
 _cb4e5e:
-        play_song SONG_SPINACH_RAG
+        play_song SPINACH_RAG
         if_switch $01B3=0, _cb4e72
         obj_script SLOT_1
                 speed FAST
@@ -49229,7 +49231,7 @@ _cb4fc7:
         wait_obj CAMERA
         sfx 141
         call _cb4ec3
-        give_item ITEM_CHERUB_DOWN
+        give_item CHERUB_DOWN
         dlg $0A46
                 ;
                 ;  Bought some “Cherub Down”!
@@ -50275,7 +50277,7 @@ _cb5559:
         wait_obj CAMERA
         sfx 141
         call _cb4ec3
-        give_item ITEM_CURE_RING
+        give_item CURE_RING
         dlg $0A48
                 ;
                 ;     Bought a “Cure Ring”!
@@ -50523,7 +50525,7 @@ _cb56b4:
         wait_obj CAMERA
         sfx 141
         call _cb4ec3
-        give_item ITEM_HERO_RING
+        give_item HERO_RING
         dlg $0A4A
                 ;
                 ;     Bought a “Hero Ring”!
@@ -51581,7 +51583,7 @@ _cb5c57:
                 dir UP
                 end
         call _cb4ec3
-        give_item ITEM_ZEPHYR_CAPE
+        give_item ZEPHYR_CAPE
         dlg $0A4C
                 ; Bought a “Zephyr Cape”!
         wait_1s
@@ -52077,16 +52079,16 @@ _cb5f60:
         call _cb441d
         return
 _cb5f65:
-        play_song SONG_HUH
+        play_song HUH
         return
 _cb5f68:
         if_switch $01B6=1, EventReturn
-        play_song SONG_HUH
+        play_song HUH
         if_any
                 switch $0245=0
                 switch $0247=1
                 goto EventReturn
-        play_song SONG_GAU
+        play_song GAU
         return
 _cb5f7b:
         if_switch $01B0=1, EventReturn
@@ -52118,7 +52120,7 @@ _cb5f92:
         return
 _cb5faf:
         load_map 206, {19, 40}, DOWN, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
-        play_song SONG_JOHNNY_C_BAD
+        play_song JOHNNY_C_BAD
         call _cac6ac
         party_chars GAU, SABIN
         call _cb39b5
@@ -53145,7 +53147,7 @@ _cb65cc:
                 .byte $23
         wait_15f
         load_map 116, {116, 14}, UP, NO_FADE_IN
-        play_song SONG_GAU
+        play_song GAU
         wait_30f
         fade_in
         wait_fade
@@ -53694,7 +53696,7 @@ _cb6965:
         max_mp SLOT_2
         max_mp SLOT_3
         max_mp SLOT_4
-        play_song SONG_NIGHTY_NIGHT, PAUSE_CURRENT
+        play_song NIGHTY_NIGHT, PAUSE_CURRENT
         wait_song
         resume_song $80
         fade_in 8
@@ -54565,7 +54567,7 @@ _cb71bc:
         switch $01FC=1
         return
 _cb71d2:
-        battle 94, BATTLE_BG_DEFAULT
+        battle 94, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $055E=0
         hide_obj NPC_4
@@ -54634,7 +54636,7 @@ _cb71f7:
         load_map 349, {63, 12}, UP, {Z_UPPER, SET_PARENT, NO_FADE_IN}
         set_script_mode EVENT
         switch $01CC=0
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         wait_90f
         fade_in
         switch $01CC=1
@@ -55994,7 +55996,7 @@ _cb7a18:
                 jump_low
                 move LEFT, 1
                 end
-        battle 82, BATTLE_BG_DEFAULT
+        battle 82, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $0555=0
         hide_obj NPC_5
@@ -56053,7 +56055,7 @@ _cb7a18:
         set_script_mode EVENT
         fade_out_song $40
         wait_song
-        play_song SONG_SILENCE
+        play_song SILENCE
         lock_camera
         show_obj SLOT_1
         obj_script SLOT_1
@@ -56095,7 +56097,7 @@ _cb7a18:
         switch $0556=1
         switch $0569=1
         load_map 343, {28, 18}, DOWN, {ASYNC, NO_FADE_IN}
-        play_song SONG_SILENCE
+        play_song SILENCE
         call _cb6a6e
         hide_obj SLOT_1
         wait_2s
@@ -56210,7 +56212,7 @@ _cb7a18:
 _cb7be3:
         switch $0557=1
         load_map 349, {41, 21}, DOWN, {ASYNC, NO_FADE_IN}
-        play_song SONG_SILENCE
+        play_song SILENCE
         call _cb6a6e
         hide_obj SLOT_1
         obj_script NPC_10
@@ -56376,7 +56378,7 @@ _cb7ccf:
         wait_2s
         wait_fade
         wait_1s
-        fade_in_song SONG_STRAGO, 48
+        fade_in_song STRAGO, 48
         wait_1s
         call _cac7fe, 2
         wait_30f
@@ -57261,7 +57263,7 @@ _cb82b1:
         show_obj NPC_4
         wait_15f 4
         call _cacfbd
-        play_song SONG_NIGHTY_NIGHT, PAUSE_CURRENT
+        play_song NIGHTY_NIGHT, PAUSE_CURRENT
         wait_song
         fade_in
         wait_2s
@@ -57307,7 +57309,7 @@ _cb82b1:
                 end_loop
         fade_out_song $06
         wait_2s
-        play_song SONG_HUH
+        play_song HUH
         obj_script SLOT_1
                 dir LEFT
                 wait 4
@@ -58737,7 +58739,7 @@ _cb8bd1:
         dlg $0ACE, BOTTOM
                 ; Good, everyone’s here!
                 ; Let’s rumble!
-        battle 90, BATTLE_BG_DEFAULT
+        battle 90, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $053E=0
         switch $053F=0
@@ -59842,7 +59844,7 @@ _cb94e7:
         show_obj NPC_3
         flash RED
         wait_1s
-        fade_in_song SONG_NARSHE, 48
+        fade_in_song NARSHE, 48
         dlg $0ACF, {TEXT_ONLY, BOTTOM}
                 ;
                 ; Please…
@@ -60298,8 +60300,8 @@ _cb97d6:
                 ; His pain has reached critical mass! Nothing can stop his feelings of rage and despair!
                 ; I grow stronger now, with his anger, hatred and guilt!
                 ; And I hunger for… you!
-        battle 92, BATTLE_BG_DEFAULT
-        play_song SONG_SILENCE
+        battle 92, BATTLE_BG::DEFAULT
+        play_song SILENCE
         call _ca5ea9
         switch $01CC=1
         switch $0548=0
@@ -60393,7 +60395,7 @@ _cb97d6:
                 jump_low
                 move DOWN, 1
                 end
-        fade_in_song SONG_NARSHE, 80
+        fade_in_song NARSHE, 80
         wait_45f
         mosaic 14
         flash RED
@@ -60654,7 +60656,7 @@ _cb98bb:
         call _cb2e2b
         call _cacb95
         player_ctrl_off
-        give_item ITEM_AURA
+        give_item AURA
         obj_script SLOT_1
                 action 40
                 end
@@ -60720,7 +60722,7 @@ _cb98bb:
         dlg $0AEE
                 ;
                 ; CYAN’s swordsmanship attained its peak level of skill.
-        fade_in_song SONG_CYAN, 160
+        fade_in_song CYAN, 160
         wait_30f
         call _cb2e34
         obj_script CYAN, ASYNC
@@ -61152,7 +61154,7 @@ _cb9c58:
                 dir UP
                 end
         wait_30f
-        play_song SONG_CYAN
+        play_song CYAN
         mod_bg_tiles BG1, {16, 32}, {1, 2}
                 .byte $06
                 .byte $16
@@ -61522,7 +61524,7 @@ _cb9eb5:
                 ; CYAN: I am CYAN,
                 ; retainer to the King of Doma.
                 ; I am your worst nightmare…
-        battle 46, BATTLE_BG_DEFAULT
+        battle 46, BATTLE_BG::DEFAULT
         call _ca5ea9
         obj_script NPC_1, ASYNC
                 action 40
@@ -61740,67 +61742,67 @@ _cb9eb5:
         call _cb0bc4
         return
 _cb9ffb:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_2
         return
 _cba007:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_3
         return
 _cba013:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_4
         return
 _cba01f:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_5
         return
 _cba02b:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_6
         return
 _cba037:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_7
         return
 _cba043:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_8
         return
 _cba04f:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_9
         return
 _cba05b:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_10
         return
 _cba067:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_11
         return
 _cba073:
-        battle 43, BATTLE_BG_DEFAULT
+        battle 43, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in 4
         hide_obj NPC_12
@@ -62079,7 +62081,7 @@ _cba0ec:
         dlg $0228
                 ; CYAN: Guard our liege!
         switch $0030=1
-        play_song SONG_THE_UNFORGIVEN
+        play_song THE_UNFORGIVEN
         obj_script CYAN, ASYNC
                 action 34 | ACTION_H_FLIP
                 wait 1
@@ -62280,7 +62282,7 @@ _cba29f:
         wait_45f
         switch $01CC=0
         switch $0031=1
-        play_song SONG_CYAN
+        play_song CYAN
         obj_script CAMERA
                 speed NORMAL
                 move DOWN, 2
@@ -62383,7 +62385,7 @@ _cba406:
         continue_song
         return
 _cba412:
-        play_song SONG_SILENCE
+        play_song SILENCE
         mod_bg_tiles BG1, {58, 7}, {1, 2}, ASYNC
                 .byte $B8
                 .byte $BE
@@ -63029,7 +63031,7 @@ _cba8f1:
         wait_2s
         sfx 146
         wait_45f
-        play_song SONG_PHANTOM_TRAIN
+        play_song PHANTOM_TRAIN
         switch $01CC=0
         obj_script CYAN, ASYNC
                 action 31
@@ -63411,7 +63413,7 @@ _cbaced:
         dlg $02CB
                 ; Look out!
         call _cb69d8
-        battle 47, BATTLE_BG_DEFAULT
+        battle 47, BATTLE_BG::DEFAULT
         call _ca5ea9
         update_party
         fade_in
@@ -64325,7 +64327,7 @@ _cbb265:
                 ;
                 ; N.o…e.s.c.a.p.e…!
         call _cb69d8
-        battle 47, BATTLE_BG_DEFAULT
+        battle 47, BATTLE_BG::DEFAULT
         call _ca5ea9
         update_party
         load_map 142, {41, 9}, DOWN, ASYNC
@@ -65247,7 +65249,7 @@ _cbb7f8:
                 speed FAST
                 move LEFT, 1
                 end
-        battle 109, BATTLE_BG_DEFAULT
+        battle 109, BATTLE_BG::DEFAULT
         call _ca5ea9
         call _cacb95
         player_ctrl_off
@@ -65440,7 +65442,7 @@ _cbb9d4:
         wait_45f
         sfx 146
         wait_2s
-        battle 68, BATTLE_BG_TRAIN_TRACKS
+        battle 68, BATTLE_BG::TRAIN_TRACKS
         call _ca5ea9
         fade_in
         switch $003B=1
@@ -65452,7 +65454,7 @@ _cbb9d4:
         wait_fade
         fade_out_song $20
         wait_song
-        play_song SONG_SILENCE
+        play_song SILENCE
         hide_obj SLOT_1
         sort_obj
         load_map 138, {19, 9}, UP, {ASYNC, NO_FADE_IN}
@@ -65468,9 +65470,9 @@ _cbb9d4:
         wait_fade
         sfx 146
         wait_15f 5
-        play_song SONG_SILENCE
+        play_song SILENCE
         wait_15f 5
-        play_song SONG_TRAIN_BRAKING
+        play_song TRAIN_BRAKING
         wait_45f
         switch $01CC=1
         scroll_bg BG1, {20, 0}, ALT
@@ -65507,7 +65509,7 @@ _cbb9d4:
         wait_1s
         sfx 146
         wait_15f 7
-        play_song SONG_SILENCE
+        play_song SILENCE
         load_map 153, {8, 9}, UP, NO_FADE_IN
         call _cac6ac
         call _cb2e34
@@ -65848,7 +65850,7 @@ _cbb9d4:
                 move RIGHT, 8
                 move RIGHT, 4
                 end
-        fade_in_song SONG_NARSHE, 255
+        fade_in_song NARSHE, 255
         wait_obj CAMERA
         wait_15f 15
         obj_script CAMERA
@@ -66476,17 +66478,17 @@ _cbc058:
         wait_song
         wait_90f
         if_switch $003F=1, _cbc1fb
-        play_song SONG_SILENCE
+        play_song SILENCE
         switch $01CC=1
         call _cacfbd
-        battle 18, BATTLE_BG_DEFAULT
+        battle 18, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $050C=1
         load_map 159, {15, 0}, DOWN, {ASYNC, NO_FADE_IN}
         switch $01CC=0
         call _cb6a37
         wait_15f 10
-        play_song SONG_WINDY_SHORES
+        play_song WINDY_SHORES
         wait_15f 10
         fade_in 1
         wait_fade
@@ -66522,7 +66524,7 @@ _cbc058:
         create_obj NPC_1
         show_obj NPC_1
         sort_obj
-        play_song SONG_GAU
+        play_song GAU
         wait_2s
         obj_script NPC_1
                 speed NORMAL
@@ -67051,7 +67053,7 @@ _cbc3d2:
                 end
         dlg $0317
                 ; SABIN: Tonic…
-        give_item ITEM_TONIC
+        give_item TONIC
         obj_script SABIN, ASYNC
                 dir LEFT
                 end
@@ -67811,7 +67813,7 @@ _cbc8b6:
                 end
         return
 _cbc8d0:
-        play_song SONG_WINDY_SHORES
+        play_song WINDY_SHORES
         mod_bg_tiles BG1, {1, 5}, {24, 5}, ASYNC
                 .byte $1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E
                 .byte $1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E,$1E
@@ -68140,7 +68142,7 @@ _cbccd3:
         call _cbcce1
         return
 _cbccde:
-        play_song SONG_SHADOW
+        play_song SHADOW
         return
 _cbcce1:
         call _cac6ac
@@ -68187,7 +68189,7 @@ _cbcce1:
 _cbcd24:
         fade_out_song $10
         wait_song
-        play_song SONG_SHADOW, PAUSE_CURRENT
+        play_song SHADOW, PAUSE_CURRENT
         switch $009A=1
         wait_1s
         dlg $03E4, BOTTOM
@@ -68223,7 +68225,7 @@ _cbcd24:
         sort_obj
         char_name SHADOW, 3
         name_menu SHADOW
-        play_song SONG_SHADOW
+        play_song SHADOW
         switch $000B=1
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
         fade_in 16
@@ -68387,7 +68389,7 @@ _cbce36:
         fade_out_song $0A
         wait_fade
         wait_45f
-        play_song SONG_WINDY_SHORES
+        play_song WINDY_SHORES
         switch $01CC=1
         wait_30f
         load_map 0, {138, 206}, DOWN, {ASYNC, Z_UPPER}
@@ -68498,7 +68500,7 @@ _cbce36:
         unlock_camera
         return
 _cbcefc:
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         lock_camera
         dlg $0772
                 ; LEO: You all right?
@@ -68878,7 +68880,7 @@ _cbcfce:
                 move DOWN, 1
                 end
         wait_2s
-        play_song SONG_HUH
+        play_song HUH
         wait_15f 5
         obj_script NPC_14
                 speed SLOW
@@ -68961,7 +68963,7 @@ _cbcfce:
         switch $0565=1
         unlock_camera
         wait_1s
-        play_song SONG_WINDY_SHORES
+        play_song WINDY_SHORES
         wait_30f
         load_map 0, {193, 157}, DOWN, {ASYNC, Z_UPPER}
         set_script_mode WORLD
@@ -69420,19 +69422,19 @@ _cbd65f:
                 switch $0090=1
                 switch $008E=0
                 goto _cbd68b
-        play_song SONG_BURNING_HOUSE
+        play_song BURNING_HOUSE
         return
 _cbd682:
-        play_song SONG_RELM
+        play_song RELM
         return
 _cbd685:
-        play_song SONG_KEFKA
+        play_song KEFKA
         return
 _cbd688:
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _cbd68b:
-        play_song SONG_STRAGO
+        play_song STRAGO
         return
 _cbd68e:
         call _cbd65f
@@ -69821,7 +69823,7 @@ _cbd982:
         obj_script NPC_1
                 dir DOWN
                 end
-        play_song SONG_STRAGO
+        play_song STRAGO
         call _cac6ac
         party_chars TERRA, LOCKE, SHADOW
         sort_obj
@@ -69947,7 +69949,7 @@ _cbd982:
         wait_45f
         fade_out_song $08
         wait_song
-        play_song SONG_RELM
+        play_song RELM
         wait_1s
         dlg $07A9, BOTTOM
                 ; Grandpa!
@@ -70223,7 +70225,7 @@ _cbdb1f:
         fade_out_song $06
         wait_song
         wait_1s
-        play_song SONG_STRAGO
+        play_song STRAGO
         wait_1s
         obj_script NPC_1
                 speed SLOW
@@ -70453,9 +70455,9 @@ _cbdcc7:
         wait_fade
         wait_15f 4
         call _cacfbd
-        play_song SONG_NIGHTY_NIGHT, PAUSE_CURRENT
+        play_song NIGHTY_NIGHT, PAUSE_CURRENT
         wait_song
-        play_song SONG_SILENCE
+        play_song SILENCE
         char_party SHADOW, 0
         sort_obj
         create_obj NPC_2
@@ -71853,7 +71855,7 @@ _cbe538:
         switch $0506=0
         switch $0518=1
         load_map 351, {4, 11}, UP, ASYNC
-        play_song SONG_BURNING_HOUSE
+        play_song BURNING_HOUSE
         player_ctrl_on
         return
 _cbe5cb:
@@ -71993,7 +71995,7 @@ _cbe622:
         wait_obj NPC_6
         wait_obj NPC_7
         wait_45f
-        battle 45, BATTLE_BG_DEFAULT
+        battle 45, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_4
         hide_obj NPC_5
@@ -72012,84 +72014,84 @@ _cbe622:
         switch $050A=0
         return
 _cbe6cb:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         delete_obj NPC_1
         fade_in
         return
 _cbe6d8:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_2
         delete_obj NPC_2
         fade_in
         return
 _cbe6e5:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_3
         delete_obj NPC_3
         fade_in
         return
 _cbe6f2:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_8
         delete_obj NPC_8
         fade_in
         return
 _cbe6ff:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_10
         delete_obj NPC_10
         fade_in
         return
 _cbe70c:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_11
         delete_obj NPC_11
         fade_in
         return
 _cbe719:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_15
         delete_obj NPC_15
         fade_in
         return
 _cbe726:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_16
         delete_obj NPC_16
         fade_in
         return
 _cbe733:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_17
         delete_obj NPC_17
         fade_in
         return
 _cbe740:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_18
         delete_obj NPC_18
         fade_in
         return
 _cbe74d:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_19
         delete_obj NPC_19
         fade_in
         return
 _cbe75a:
-        battle 31, BATTLE_BG_DEFAULT
+        battle 31, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_20
         delete_obj NPC_20
@@ -72124,7 +72126,7 @@ _cbe767:
                 speed NORMAL
                 move DOWN, 2
                 end
-        battle 79, BATTLE_BG_DEFAULT
+        battle 79, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_9
         delete_obj NPC_9
@@ -72330,7 +72332,7 @@ _cbe88a:
         shake ALL, 0, 2
         sfx 137
         fade_out 8
-        play_song SONG_SILENCE
+        play_song SILENCE
         sfx 137
         sfx 137
         shake ALL, 3, 2
@@ -72379,7 +72381,7 @@ _cbe88a:
                 end
         call _cb6abf
         fade_in 4
-        play_song SONG_BURNING_HOUSE
+        play_song BURNING_HOUSE
         wait_fade
         obj_script NPC_13, ASYNC
                 speed NORMAL
@@ -72614,7 +72616,7 @@ _cbe88a:
         player_ctrl_off
         wait_30f
         load_map 349, {64, 16}, UP, {ASYNC, NO_FADE_IN}
-        play_song SONG_SILENCE
+        play_song SILENCE
         call _cac6ac
         party_chars TERRA, LOCKE, STRAGO
         sort_obj
@@ -72713,7 +72715,7 @@ _cbeabc:
         dlg $07DA
                 ; LOCKE: Can everyone here use magic? What’s going on here?
         wait_45f
-        play_song SONG_NARSHE
+        play_song NARSHE
         obj_script STRAGO
                 action 32
                 wait 6
@@ -73017,7 +73019,7 @@ _cbec92:
         fade_out
         wait_fade
         load_map 343, {29, 15}, DOWN, {ASYNC, NO_FADE_IN}
-        play_song SONG_SHADOW
+        play_song SHADOW
         remove_equip SHADOW
         obj_script NPC_25
                 pos {25, 18}
@@ -73310,7 +73312,7 @@ _cbec92:
         pass_on NPC_26
         call _cb2e2b
         unlock_camera
-        play_song SONG_STRAGO
+        play_song STRAGO
         obj_script SLOT_1
                 dir DOWN
                 end
@@ -73702,7 +73704,7 @@ _cbefee:
         switch $01CC=1
         switch $02E8=1
         switch $02F8=1
-        battle 125, BATTLE_BG_DEFAULT
+        battle 125, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $0521=0
         load_map 371, {16, 22}, DOWN, {ASYNC, NO_FADE_IN}
@@ -74113,7 +74115,7 @@ _cbf2b5:
         dlg $07FC, ASYNC
                 ; RELM: Are these…Espers?!
         wait_90f
-        fade_in_song SONG_ESPER_WORLD, 240
+        fade_in_song ESPER_WORLD, 240
         obj_script RELM
                 speed SLOW
                 move DOWN, 2
@@ -75188,7 +75190,7 @@ _cbf848:
         switch $05F7=0
         unlock_camera
         load_map 341, {24, 27}, UP, {ASYNC, NO_FADE_IN}
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         call _cac6ac
         party_chars TERRA, LOCKE, STRAGO, RELM
         sort_obj
@@ -75506,7 +75508,7 @@ _cbfa16:
                         end
                 end_loop
         wait_45f
-        play_song SONG_KEFKA
+        play_song KEFKA
         create_obj NPC_3
         sort_obj
         show_obj NPC_3
@@ -76402,7 +76404,7 @@ _cbff70:
                 .byte $C9,$C9
         wait_bg
         if_switch $00A4=1, EventReturn
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _cbffa6:
         obj_script NPC_14, ASYNC
@@ -76450,7 +76452,7 @@ _cbffe2:
                 branch _cbffe2
                 end
         if_switch $009B=1, EventReturn
-        play_song SONG_KEFKA
+        play_song KEFKA
         return
 _cbfff4:
         call _caca8d
@@ -76470,9 +76472,9 @@ _cbfff4:
         and_status VICKS, NONE
         max_hp VICKS
         max_mp VICKS
-        battle 124, BATTLE_BG_DEFAULT
+        battle 124, BATTLE_BG::DEFAULT
         call _ca5ea9
-        play_song SONG_SILENCE
+        play_song SILENCE
         obj_script SLOT_1
                 action 40
                 end
@@ -76601,7 +76603,7 @@ _cc00c5:
         switch $009B=1
         wait_90f
         call _cb3f08
-        battle 105, BATTLE_BG_DEFAULT, {NO_SFX, NO_BLUR}
+        battle 105, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
         load_map 0, {181, 197}, DOWN, {ASYNC, Z_UPPER, AIRSHIP}
         set_script_mode VEHICLE
         hide_obj
@@ -76954,7 +76956,7 @@ _cc0163:
         and_status VICKS, NONE
         max_hp VICKS
         max_mp VICKS
-        battle 97, BATTLE_BG_DEFAULT
+        battle 97, BATTLE_BG::DEFAULT
         fade_in 4
         wait_fade
         wait_1s
@@ -77277,7 +77279,7 @@ _cc0163:
                 .byte $B9,$BD
                 .byte $C9,$C9
         wait_bg
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         call _cac6ac
         call _cb2e34
         show_obj SLOT_1
@@ -77498,7 +77500,7 @@ _cc0163:
         fade_out 4
         wait_fade
         wait_1s
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         switch $01CC=1
         load_map 0, {211, 170}, RIGHT, {ASYNC, Z_UPPER, AIRSHIP}
         set_script_mode VEHICLE
@@ -78048,7 +78050,7 @@ _cc0960:
                 goto EventReturn
         dlg $0816
                 ; M.TEK TROOPER: General Leo, prepare yourself!
-        battle 75, BATTLE_BG_DEFAULT
+        battle 75, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in
         dlg $0817
@@ -78336,7 +78338,7 @@ _cc0b58:
         call _cc9ad5
         hide_obj NPC_2
         call _cc9ad5
-        give_item ITEM_RAGNAROK
+        give_item RAGNAROK
         switch $00B6=1
         return
 _cc0b6c:
@@ -78357,7 +78359,7 @@ _cc0b70:
                 ; If we could break its curse…
                 ; Imagine its defensive power!
         switch $00B8=1
-        give_item ITEM_CURSED_SHLD
+        give_item CURSED_SHLD
         return
 _cc0b88:
         dlg $05F3
@@ -78604,7 +78606,7 @@ _cc0bd8:
         wait_30f
         dlg $05E8, BOTTOM
                 ; DUNCAN: Wa, ha, ha… Nothing happened to me! The earth yawned right open to take me but I scrambled to safety!
-        play_song SONG_FIGARO
+        play_song FIGARO
         wait_1s
         obj_script NPC_1
                 action 24
@@ -79035,7 +79037,7 @@ _cc0bd8:
                 end
         fade_in 4
         wait_fade
-        play_song SONG_MT_KOLTS
+        play_song MT_KOLTS
         switch $02AF=1
         switch $06B5=0
         switch $06BF=1
@@ -80035,7 +80037,7 @@ _cc16ac:
         return
 _cc16d6:
         if_switch $0072=1, EventReturn
-        battle 98, BATTLE_BG_DEFAULT
+        battle 98, BATTLE_BG::DEFAULT
         call _ca5ea9
         create_obj NPC_7
         sort_obj
@@ -80071,7 +80073,7 @@ _cc16d6:
         return
 _cc1716:
         if_switch $0073=1, EventReturn
-        battle 99, BATTLE_BG_DEFAULT
+        battle 99, BATTLE_BG::DEFAULT
         call _ca5ea9
         create_obj NPC_4
         sort_obj
@@ -80102,7 +80104,7 @@ _cc1716:
         return
 _cc174f:
         if_switch $0074=1, EventReturn
-        battle 100, BATTLE_BG_DEFAULT
+        battle 100, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in
         wait_fade
@@ -80248,7 +80250,7 @@ _cc1827:
         sfx 108
         call _cc9ae0
         wait_30f
-        battle 140, BATTLE_BG_DEFAULT
+        battle 140, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         hide_obj NPC_2
@@ -80303,7 +80305,7 @@ _cc1872:
                 move DOWN, 2
                 end
         wait_15f
-        battle 114, BATTLE_BG_DEFAULT
+        battle 114, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         switch $06BC=0
@@ -80313,7 +80315,7 @@ _cc1872:
         player_ctrl_on
         return
 _cc18b4:
-        battle 112, BATTLE_BG_DEFAULT
+        battle 112, BATTLE_BG::DEFAULT
         call _ca5ea9
         create_obj NPC_2
         sort_obj
@@ -80353,7 +80355,7 @@ _cc18d9:
                 dir DOWN
                 wait 8
                 end
-        battle 135, BATTLE_BG_DEFAULT
+        battle 135, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         switch $06B3=0
@@ -80381,7 +80383,7 @@ _cc1906:
                 dir DOWN
                 wait 8
                 end
-        battle 136, BATTLE_BG_DEFAULT
+        battle 136, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_5
         switch $06B4=0
@@ -80475,7 +80477,7 @@ _cc1966:
         wait_30f
         fade_out 2
         wait_fade
-        play_song SONG_SILENCE
+        play_song SILENCE
         switch $02C6=0
         switch $02CA=0
         switch $02CE=0
@@ -80582,7 +80584,7 @@ _cc1a60:
         create_obj NPC_9
         sort_obj
         wait_1s
-        fade_in_song SONG_FIRE_EXPLOSION, 128
+        fade_in_song FIRE_EXPLOSION, 128
         shake ALL, 2, 1
         wait_2s
         mod_bg_tiles BG1, {14, 10}, {3, 2}
@@ -80765,7 +80767,7 @@ _cc1a60:
         loop 6
                 mod_bg_pal DEC, {RED, GREEN, BLUE}, 3
                 end_loop
-        play_song SONG_SILENCE
+        play_song SILENCE
         fade_in 8
         wait_fade
         wait_30f
@@ -80789,7 +80791,7 @@ _cc1a60:
         wait_fade
         switch $069B=1
         load_map 406, {52, 43}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
-        fade_in_song SONG_FIRE_EXPLOSION, 128
+        fade_in_song FIRE_EXPLOSION, 128
         hide_obj SLOT_1
         loop 6
                 mod_bg_pal DEC, {RED, GREEN, BLUE}, 3
@@ -80840,7 +80842,7 @@ _cc1a60:
                 mod_bg_pal DEC, {RED, GREEN, BLUE}, 3
                 end_loop
         load_map 407, {16, 32}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
-        play_song SONG_SILENCE
+        play_song SILENCE
         show_obj SLOT_1
         obj_script SLOT_2, ASYNC
                 speed NORMAL
@@ -80876,7 +80878,7 @@ _cc1a60:
         wait_fade
         switch $069B=1
         load_map 406, {34, 14}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
-        fade_in_song SONG_FIRE_EXPLOSION, 128
+        fade_in_song FIRE_EXPLOSION, 128
         hide_obj SLOT_1
         loop 6
                 mod_bg_pal DEC, {RED, GREEN, BLUE}, 3
@@ -81452,7 +81454,7 @@ _cc201d:
         player_ctrl_on
         return
 _cc2048:
-        battle 138, BATTLE_BG_DEFAULT
+        battle 138, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         switch $069C=0
@@ -81462,7 +81464,7 @@ _cc2048:
         player_ctrl_on
         return
 _cc205b:
-        battle 137, BATTLE_BG_DEFAULT
+        battle 137, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_4
         switch $06A1=0
@@ -83004,7 +83006,7 @@ _cc2baf:
         wait_fade
         switch $01CC=1
         wait_2s
-        play_song SONG_SILENCE
+        play_song SILENCE
         load_map 5, {8, 7}, LEFT, {ASYNC, NO_FADE_IN}
         hide_obj NPC_1
         sort_obj
@@ -83054,7 +83056,7 @@ _cc2baf:
         call _cacca4
         update_party
         switch $01CC=1
-        play_song SONG_SILENCE
+        play_song SILENCE
         switch $0687=1
         load_map 195, {10, 57}, LEFT, {ASYNC, NO_FADE_IN}
         hide_obj SLOT_1
@@ -83394,7 +83396,7 @@ _cc2baf:
         dlg $0A28, BOTTOM
                 ; LOCKE: Rachel!!!
         wait_1s
-        play_song SONG_FOREVER_RACHEL
+        play_song FOREVER_RACHEL
         wait_2s
         sfx 103
         loop 2
@@ -83812,7 +83814,7 @@ _cc2baf:
         switch $0687=0
         unlock_camera
         load_map 195, {37, 57}, LEFT, {ASYNC, NO_FADE_IN}
-        play_song SONG_SILENCE
+        play_song SILENCE
         hide_obj SLOT_1
         create_obj LOCKE
         create_obj CELES
@@ -83868,7 +83870,7 @@ _cc2baf:
                 end
         wait_30f
         switch $01CC=1
-        play_song SONG_LOCKE
+        play_song LOCKE
         wait_90f
         obj_script CELES
                 action 34 | ACTION_H_FLIP
@@ -84079,12 +84081,12 @@ _cc3188:
         unlock_camera
         call _cb2e2b
         call _cacb95
-        give_item ITEM_X_POTION
-        give_item ITEM_FENIX_DOWN
-        give_item ITEM_X_ETHER
-        give_item ITEM_ELIXIR
-        give_item ITEM_FLAME_SHLD
-        give_item ITEM_VALIANTKNIFE
+        give_item X_POTION
+        give_item FENIX_DOWN
+        give_item X_ETHER
+        give_item ELIXIR
+        give_item FLAME_SHLD
+        give_item VALIANTKNIFE
         switch $01CC=0
         switch $01CE=0
         switch $02BF=0
@@ -84715,7 +84717,7 @@ _cc36dc:
         collision_on NPC_2
         return
 _cc36df:
-        battle 132, BATTLE_BG_DEFAULT
+        battle 132, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_2
         switch $0695=0
@@ -84770,7 +84772,7 @@ _cc3719:
                 mod_bg_pal INC, BLUE, 3
                 end_loop
         wait_3s
-        battle 119, BATTLE_BG_DEFAULT
+        battle 119, BATTLE_BG::DEFAULT
         call _ca5ea9
         mod_bg_tiles BG3, {8, 9}, {3, 4}
                 .byte $00,$00,$00
@@ -84905,7 +84907,7 @@ _cc37fe:
         sfx 186
         call _ccd9a6
         wait_30f
-        play_song SONG_UMARO
+        play_song UMARO
         return
 _cc3839:
         load_map 33, {35, 17}, DOWN, {NO_FADE_IN, STARTUP_EVENT}
@@ -85036,15 +85038,15 @@ _cc394d:
 _cc395a:
         if_switch $01CC=1, EventReturn
         if_switch $00A4=1, _cc3969
-        play_song SONG_NARSHE
+        play_song NARSHE
         return
 _cc3969:
-        play_song SONG_DARK_WORLD
+        play_song DARK_WORLD
         return
 _cc396c:
         call _caca8d
         switch $01CC=1
-        play_song SONG_MOG
+        play_song MOG
         if_switch $029F=0, _cc3a4c
         wait_30f
         obj_script NPC_1
@@ -85312,7 +85314,7 @@ _cc3ade:
         fade_in
         wait_fade
         switch $01CC=0
-        play_song SONG_DARK_WORLD
+        play_song DARK_WORLD
         player_ctrl_on
         return
 _cc3af8:
@@ -85326,13 +85328,13 @@ _cc3af8:
 _cc3afc:
         if_switch $01F0=1, _cc3b0b
         if_switch $00D7=1, _cc3b0e
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         return
 _cc3b0b:
-        play_song SONG_LOCKE
+        play_song LOCKE
         return
 _cc3b0e:
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _cc3b11:
         dlg $0985
@@ -85343,7 +85345,7 @@ _cc3b11:
         wait_fade
         switch $0680=1
         load_map 188, {22, 22}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
-        play_song SONG_SILENCE
+        play_song SILENCE
         hide_obj SLOT_1
         pass_off NPC_15
         pass_off NPC_16
@@ -85613,7 +85615,7 @@ _cc3bf8:
                 ; SETZER: Mwa ha!
                 ; All right…you win!
                 ; I’m starting to feel lucky!!
-        play_song SONG_SETZER
+        play_song SETZER
         wait_30f
         obj_script CELES
                 action 34 | ACTION_H_FLIP
@@ -85740,7 +85742,7 @@ _cc3bf8:
         wait 6
         load_map 189, {16, 25}, DOWN, {Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
         set_script_mode EVENT
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         switch $01CC=0
         call _cac5c1
         if_switch $01A3=1, _cc3d52
@@ -86086,7 +86088,7 @@ _cc3f12:
         fade_out 8
         wait_fade
         switch $01CC=1
-        play_song SONG_WIND
+        play_song WIND
         load_map 1, {69, 184}, UP, {ASYNC, Z_UPPER, AIRSHIP}
         set_script_mode VEHICLE
         .byte $F7
@@ -86111,7 +86113,7 @@ _cc3f12:
         load_map 284, {23, 10}, LEFT, {Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
         set_script_mode EVENT
         switch $01CC=0
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         switch $067C=0
         hide_obj NPC_18
         sort_obj
@@ -86128,7 +86130,7 @@ _cc3fa7:
         switch $01CC=1
         switch $0682=1
         load_map 181, {14, 20}, UP, {NO_FADE_IN, STARTUP_EVENT}
-        play_song SONG_SILENCE
+        play_song SILENCE
         fade_in 8
         wait_fade
         lock_camera
@@ -86184,7 +86186,7 @@ _cc3fe8:
         wait_15f
         sfx 192
         wait_1s
-        play_song SONG_CYAN
+        play_song CYAN
         wait_15f 10
         obj_script NPC_3
                 dir RIGHT
@@ -86857,7 +86859,7 @@ _cc43a7:
                 end
         return
 _cc43cd:
-        battle 133, BATTLE_BG_DEFAULT
+        battle 133, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         switch $0686=0
@@ -87141,7 +87143,7 @@ _cc4565:
                 ; TERRA: The very day the world fell, Kefka turned some kind of beam on this town.
                 ; Almost all of the adults perished trying to save their children…
         switch $01CC=1
-        play_song SONG_SILENCE
+        play_song SILENCE
         mosaic 4
         fade_out 4
         wait_fade
@@ -87150,7 +87152,7 @@ _cc4565:
         filter_pal {RED, GREEN}, {4, 119}
         filter_pal {RED, GREEN}, {120, 127}
         filter_pal {RED, GREEN}, {128, 255}
-        play_song SONG_SILENCE
+        play_song SILENCE
         shake ALL, 2, 1
         hide_obj SLOT_1
         lock_camera
@@ -87460,7 +87462,7 @@ _cc4565:
                 action 32
                 end
         wait_2s
-        fade_in_song SONG_AWAKENING, 160
+        fade_in_song AWAKENING, 160
         fade_in 2
         wait_fade
         wait_30f
@@ -87579,7 +87581,7 @@ _cc4565:
         dlg $08D9
                 ; TERRA: I can honestly say I don’t know what’s going on inside of me…
                 ; And the more I try to understand it, the less inclined I am to fight.
-        play_song SONG_SILENCE
+        play_song SILENCE
         switch $0290=1
         unlock_camera
         player_ctrl_on
@@ -87634,7 +87636,7 @@ _cc4990:
                 dir DOWN
                 end
         wait_15f
-        play_song SONG_THE_UNFORGIVEN
+        play_song THE_UNFORGIVEN
         wait_1s
         fade_out
         wait_fade
@@ -87689,7 +87691,7 @@ _cc4990:
         dlg $08DB
                 ; TERRA: Phunbaba’s an ancient demon who was released when the world was undone.
         wait_30f
-        battle 128, BATTLE_BG_DEFAULT
+        battle 128, BATTLE_BG::DEFAULT
         char_party TERRA, 0
         sort_obj
         activate_party 1
@@ -87735,9 +87737,9 @@ _cc4990:
                 dir DOWN
                 end
         wait_30f
-        battle 129, BATTLE_BG_DEFAULT
+        battle 129, BATTLE_BG::DEFAULT
         call _ca5ea9
-        play_song SONG_SILENCE
+        play_song SILENCE
         switch $0670=1
         switch $0671=0
         switch $0675=0
@@ -87788,7 +87790,7 @@ _cc4990:
                 ; TERRA: Maybe after a little more time passes…
                 ; I need to understand what’s happening to me…
         switch $01CC=0
-        fade_in_song SONG_DAY_AFTER, 240
+        fade_in_song DAY_AFTER, 240
         switch $0291=1
         unlock_camera
         player_ctrl_on
@@ -88023,7 +88025,7 @@ _cc4b4b:
                 action 31
                 end
         switch $01CC=1
-        play_song SONG_THE_UNFORGIVEN
+        play_song THE_UNFORGIVEN
         obj_script SLOT_1
                 dir RIGHT
                 end
@@ -88099,7 +88101,7 @@ _cc4c1b:
                 wait_1s
                 end_loop
         switch $01CC=0
-        battle 130, BATTLE_BG_DEFAULT
+        battle 130, BATTLE_BG::DEFAULT
         call _ca5ea9
         update_party
         mod_bg_tiles BG1, {6, 19}, {1, 2}
@@ -88186,7 +88188,7 @@ _cc4c1b:
         set_status TERRA, MORPH
         set_b_switch $3A
         set_b_switch $39
-        battle 131, BATTLE_BG_DEFAULT
+        battle 131, BATTLE_BG::DEFAULT
         call _ca5ea9
         delete_obj TERRA
         char_party TERRA, 0
@@ -88196,7 +88198,7 @@ _cc4c1b:
         clr_b_switch $3A
         load_map 158, {11, 21}, DOWN, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
         update_party
-        play_song SONG_WIND
+        play_song WIND
         lock_camera
         obj_script SLOT_1
                 move DOWN, 3
@@ -88513,7 +88515,7 @@ _cc4c1b:
                 ; Mama…
                 ; It is you, isn’t it!
                 ; I can tell…
-        fade_in_song SONG_AWAKENING, 160
+        fade_in_song AWAKENING, 160
         wait_1s
         obj_script NPC_13
                 dir DOWN
@@ -88901,12 +88903,12 @@ _cc50ca:
         if_switch $01CC=1, EventReturn
         if_switch $00BF=1, _cc50dd
         spc_cmd $81, $80, $FF
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         return
 _cc50dd:
         if_switch $01CC=1, EventReturn
         spc_cmd $81, $80, $FF
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         return
 _cc50ea:
         call _cc5136
@@ -88937,26 +88939,26 @@ _cc50ea:
 _cc5136:
         if_switch $01CC=1, EventReturn
         if_switch $00A4=1, _cc5145
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _cc5145:
         if_switch $00BF=1, _cc5152
-        play_song SONG_WIND
+        play_song WIND
         spc_cmd $81, $01, $80
         return
 _cc5152:
         spc_cmd $81, $80, $FF
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         return
 _cc5159:
         if_switch $01CC=1, EventReturn
         if_switch $00BF=1, _cc516c
         spc_cmd $81, $80, $FF
-        play_song SONG_WIND
+        play_song WIND
         return
 _cc516c:
         spc_cmd $81, $80, $FF
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         return
 _cc5173:
         set_b_switch $38
@@ -89245,7 +89247,7 @@ _cc52eb:
                 ; STRAGO: RELM!
                 ; Is that you, my dear?
                 ; You’re alive!!
-        play_song SONG_RELM
+        play_song RELM
         wait_1s
         obj_script RELM
                 action 34
@@ -89660,7 +89662,7 @@ _cc544b:
                 dir UP
                 end
         wait_30f
-        battle 145, BATTLE_BG_DEFAULT
+        battle 145, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $02DB=1
         switch $0699=0
@@ -89668,7 +89670,7 @@ _cc544b:
         player_ctrl_on
         return
 _cc558b:
-        battle 139, BATTLE_BG_DEFAULT
+        battle 139, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         switch $0694=0
@@ -89677,7 +89679,7 @@ _cc558b:
         dlg $06DD
                 ;
                 ; Got “Pearl Lance”!
-        give_item ITEM_PEARL_LANCE
+        give_item PEARL_LANCE
         call _cc1f9f
         player_ctrl_on
         return
@@ -89853,7 +89855,7 @@ _cc5829:
         return
 _cc583e:
         if_switch $027D=1, EventReturn
-        play_song SONG_SILENCE
+        play_song SILENCE
         loop 3
                 flash WHITE
                 sfx 183
@@ -89885,7 +89887,7 @@ _cc583e:
                 end
         shake ALL, 2, 1
         wait_30f
-        play_song SONG_THE_UNFORGIVEN
+        play_song THE_UNFORGIVEN
         pass_off NPC_6
         pass_off NPC_8
         pass_off NPC_10
@@ -90203,7 +90205,7 @@ _cc5a2a:
         dlg $08AE
                 ; SABIN: But of course!
                 ; You think a minor thing like the end of the world was gonna do me in?
-        play_song SONG_FIGARO
+        play_song FIGARO
         wait_30f
         obj_script NPC_2
                 action 10
@@ -90399,7 +90401,7 @@ _cc5b79:
         wait_fade
         switch $0661=1
         load_map 330, {12, 20}, UP, {ASYNC, NO_FADE_IN}
-        fade_in_song SONG_JOHNNY_C_BAD, 160
+        fade_in_song JOHNNY_C_BAD, 160
         call _cc5e72
         hide_obj SLOT_1
         sort_obj
@@ -90696,13 +90698,13 @@ _cc5d68:
         if_switch $00A4=1, _cc5d86
         if_switch $009B=1, _cc5d83
         if_switch $007D=0, _cc5d83
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _cc5d83:
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _cc5d86:
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         return
 _cc5d89:
         if_switch $007D=1, _cc5dc5
@@ -90964,34 +90966,34 @@ _cc5f09:
         if_switch $009A=1, _cbccde
         if_switch $007D=0, _cc5f28
         spc_cmd $81, $01, $FF
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _cc5f28:
         spc_cmd $81, $01, $FF
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _cc5f2f:
         spc_cmd $81, $01, $FF
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         return
 _cc5f36:
         if_switch $00A4=1, _cc5f5d
         if_switch $007D=1, _cc5f56
         if_switch $027B=1, _cc5f4f
         spc_cmd $81, $01, $FF
-        play_song SONG_JOHNNY_C_BAD
+        play_song JOHNNY_C_BAD
         return
 _cc5f4f:
         spc_cmd $81, $01, $80
-        play_song SONG_JOHNNY_C_BAD
+        play_song JOHNNY_C_BAD
         return
 _cc5f56:
         spc_cmd $81, $01, $FF
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _cc5f5d:
         spc_cmd $81, $01, $FF
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         return
 _cc5f64:
         mod_bg_tiles BG2, {44, 4}, {1, 1}
@@ -91007,13 +91009,13 @@ _cc5f7a:
         if_switch $00A4=1, _cc5f92
         if_switch $009B=1, _cc5f8f
         if_switch $007D=0, _cc5f8f
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _cc5f8f:
-        play_song SONG_UNDER_MARTIAL_LAW
+        play_song UNDER_MARTIAL_LAW
         return
 _cc5f92:
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         return
 _cc5f95:
         if_switch $007D=1, EventReturn
@@ -91323,7 +91325,7 @@ _cc6166:
                 mod_bg_pal DEC, {RED, GREEN}, 3
                 end_loop
         switch $01CC=1
-        play_song SONG_SILENCE
+        play_song SILENCE
         switch $065E=0
         switch $065F=0
         switch $0660=1
@@ -91376,7 +91378,7 @@ _cc6166:
         obj_script LOCKE
                 action 35
                 end
-        play_song SONG_CELES
+        play_song CELES
         wait_90f
         obj_script CAMERA
                 speed SLOW
@@ -91490,7 +91492,7 @@ _cc6166:
         call RestoreParty
         call _cb2e2b
         switch $01CC=0
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         switch $0087=1
         unlock_camera
         player_ctrl_on
@@ -92241,10 +92243,10 @@ _cc66c7:
 _cc66d2:
         fade_out_song $80
         wait_1s
-        play_song SONG_WINDY_SHORES
+        play_song WINDY_SHORES
         switch $01CC=1
         call _cc66f5
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         switch $01CC=0
         switch $01BB=1
         obj_script NPC_8
@@ -92481,7 +92483,7 @@ _cc6878:
                 ; Please accept this as a token of my appreciation.
                 ;
                 ; Received “Tintinabar.”
-        give_item ITEM_TINTINABAR
+        give_item TINTINABAR
         switch $028D=1
         return
 _cc6888:
@@ -92808,7 +92810,7 @@ _cc6a2e:
                 ; LOCKE: …wasn’t able to…
                 ; save her when she needed me…
         switch $01CC=1
-        play_song SONG_FOREVER_RACHEL
+        play_song FOREVER_RACHEL
         wait_90f
         mosaic 2
         wait_2s
@@ -93230,7 +93232,7 @@ _cc6a2e:
         switch $004D=1
         call _cb2e2b
         call _cacb95
-        play_song SONG_SILENCE
+        play_song SILENCE
         return
 _cc6ce4:
         mod_bg_tiles BG1, {4, 17}, {1, 1}
@@ -93366,7 +93368,7 @@ _cc6d91:
         wait_90f
         fade_out 4
         wait_fade
-        play_song SONG_SILENCE
+        play_song SILENCE
         switch $01CC=1
         load_map 195, {9, 57}, DOWN, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
         update_party
@@ -93586,7 +93588,7 @@ _cc6eee:
         fade_in
         wait_fade
         switch $01CC=0
-        play_song SONG_HUH
+        play_song HUH
         call _cb2e2b
         return
 _cc6f07:
@@ -93636,16 +93638,16 @@ _cc6f4b:
         if_switch $00A4=1, _cc6f7b
         if_switch $018E=1, _cc6f66
         if_switch $005D=1, _cc6f66
-        play_song SONG_SHADOW
+        play_song SHADOW
         return
 _cc6f66:
         if_switch $02D9=1, EventReturn
         if_switch $00D7=1, _cc3b0e
         if_switch $00A4=1, _cc6f7b
-        play_song SONG_KIDS_RUN_THROUGH_THE_CITY
+        play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _cc6f7b:
-        play_song SONG_DAY_AFTER
+        play_song DAY_AFTER
         return
         if_switch $00D7=1, _cc3b0e
 _cc6f84:
@@ -94099,7 +94101,7 @@ _cc7224:
                 action 34
                 end
         wait_90f
-        play_song SONG_AWAKENING
+        play_song AWAKENING
         wait_2s
         dlg $0655, BOTTOM
                 ; TERRA…
@@ -95277,7 +95279,7 @@ _cc7937:
         pass_on SLOT_1
         flash RED
         wait_1s
-        battle 70, BATTLE_BG_DEFAULT
+        battle 70, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in
         wait_fade
@@ -95380,7 +95382,7 @@ _cc79dd:
         player_ctrl_on
         return
 _cc79ed:
-        battle 72, BATTLE_BG_DEFAULT
+        battle 72, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         sort_obj
@@ -96334,7 +96336,7 @@ _cc7f43:
                 move DOWN, 3
                 end
         switch $01CC=1
-        play_song SONG_SILENCE
+        play_song SILENCE
         load_map 266, {7, 0}, RIGHT, NO_FADE_IN
         spc_cmd $82, $10, $A0
         sfx 165
@@ -96401,7 +96403,7 @@ _cc7fbe:
         wait_2s
         switch $01CC=0
         load_map 272, {8, 46}, RIGHT, NO_FADE_IN
-        play_song SONG_SILENCE
+        play_song SILENCE
         spc_cmd $82, $01, $FF
         spc_cmd $F2, $00, $00
         obj_script SLOT_1
@@ -96455,7 +96457,7 @@ _cc7fbe:
         return
 _cc801c:
         load_pal 15, MACHINERY_2
-        play_song SONG_SILENCE
+        play_song SILENCE
         return
 _cc8022:
         call _caca8d
@@ -96572,7 +96574,7 @@ _cc8022:
         pass_on SLOT_1
         fade_out 8
         wait_fade
-        play_song SONG_SAVE_THEM
+        play_song SAVE_THEM
         switch $02BC=1
         cutscene TRAIN
         call _ca5ea9
@@ -96718,7 +96720,7 @@ _cc817f:
                 dir DOWN
                 end
 _cc818c:
-        play_song SONG_SAVE_THEM
+        play_song SAVE_THEM
         switch $01CC=1
         obj_script NPC_9
                 move UP, 8
@@ -96931,7 +96933,7 @@ _cc818c:
         wait_1s
         load_map 241, {18, 7}, UP, NO_FADE_IN
         spc_cmd $82, $01, $FF
-        play_song SONG_SILENCE
+        play_song SILENCE
         shake ALL, 2, 2
         load_pal 14, VECTOR_CRANE
         hide_obj SLOT_1
@@ -96939,7 +96941,7 @@ _cc818c:
         fade_in
         wait_fade
         wait_1s
-        play_song SONG_CRANES_RISING
+        play_song CRANES_RISING
         wait_1s
         obj_script NPC_1, ASYNC
                 move UP, 1
@@ -97003,7 +97005,7 @@ _cc8321:
         shake SPRITES, 1, 1
         sfx 50
         wait_1s
-        battle 75, BATTLE_BG_DEFAULT
+        battle 75, BATTLE_BG::DEFAULT
         call _ca5ea9
         obj_script SLOT_1
                 move DOWN, 1
@@ -97672,7 +97674,7 @@ _cc873b:
                 switch $007C=0
                 switch $013C=1
                 goto EventReturn
-        battle 26, BATTLE_BG_DEFAULT
+        battle 26, BATTLE_BG::DEFAULT
         if_b_switch $40, _cc8758
         flash RED
         if_switch $022F=0, _cc8776
@@ -97724,7 +97726,7 @@ _cc87b6:
         dlg $0741
                 ; I oppose peace!
         if_switch $0226=1, EventReturn
-        battle 27, BATTLE_BG_DEFAULT
+        battle 27, BATTLE_BG::DEFAULT
         if_b_switch $40, _cc87cf
         flash RED
         if_switch $022F=0, _cc87ed
@@ -97757,7 +97759,7 @@ _cc8809:
         dlg $0744
                 ; You deserve a thrashing!
         if_switch $0228=1, EventReturn
-        battle 27, BATTLE_BG_DEFAULT
+        battle 27, BATTLE_BG::DEFAULT
         if_b_switch $40, _cc8822
         flash RED
         if_switch $022F=0, _cc8840
@@ -97799,7 +97801,7 @@ _cc886c:
         dlg $074B
                 ; Phepppp. Returner scum!
         if_switch $022D=1, EventReturn
-        battle 27, BATTLE_BG_DEFAULT
+        battle 27, BATTLE_BG::DEFAULT
         if_b_switch $40, _cc8885
         flash RED
         if_switch $022F=0, _cc88a3
@@ -98016,7 +98018,7 @@ _cc8a47:
         return
 _cc8a58:
         start_timer 0, 7200, EventReturn, {FIELD_VISIBLE, BANQUET, MENU_BATTLE_VISIBLE}
-        battle 30, BATTLE_BG_DEFAULT
+        battle 30, BATTLE_BG::DEFAULT
         if_b_switch $40, _cc8a6e
         flash RED
         if_switch $022F=0, _cc8a8c
@@ -98062,7 +98064,7 @@ _cc8a96:
         switch $062C=1
         switch $01CC=1
         switch $02BC=1
-        play_song SONG_RETURNERS
+        play_song RETURNERS
         load_map 251, {80, 25}, UP, {NO_FADE_IN, STARTUP_EVENT}
         update_party
         fade_in 4
@@ -99230,7 +99232,7 @@ _cc9254:
                 ; And this is from the Emperor himself…
                 ;
                 ; Received “Tintinabar.”
-        give_item ITEM_TINTINABAR
+        give_item TINTINABAR
         cmp_var 0, 90
         if_case
                 case CHAR::CYAN, _cc926e
@@ -99243,7 +99245,7 @@ _cc9269:
                 ; Your behavior at the banquet was impeccable. Please take this as well!
                 ;
                 ; Received “Charm Bangle.”
-        give_item ITEM_CHARM_BANGLE
+        give_item CHARM_BANGLE
 _cc926e:
         wait_30f
         dlg $0756
@@ -99421,7 +99423,7 @@ _cc9382:
                 move LEFT, 1
                 end
         wait_45f
-        battle 1, BATTLE_BG_DEFAULT
+        battle 1, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_2
         hide_obj NPC_3
@@ -99483,7 +99485,7 @@ _cc93e8:
                 ; Hey, YOU! … …
                 ; You’re Returners!!
 _cc93f1:
-        battle 29, BATTLE_BG_DEFAULT
+        battle 29, BATTLE_BG::DEFAULT
 _cc93f4:
         call _ca5ea9
         load_map 242, {34, 58}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
@@ -99515,7 +99517,7 @@ _cc941e:
         dlg $0537
                 ; Hey, YOU! … …
                 ; You’re Returners!!
-        battle 28, BATTLE_BG_DEFAULT
+        battle 28, BATTLE_BG::DEFAULT
         call _cc93f4
         return
 _cc942f:
@@ -99599,7 +99601,7 @@ _cc9468:
         wait_fade
         fade_out_song $08
         wait_1s
-        play_song SONG_NIGHTY_NIGHT
+        play_song NIGHTY_NIGHT
         wait_song
         if_rand _cc94f2
         fixed_clr {RED, GREEN}, 3, -6
@@ -100281,7 +100283,7 @@ _cc9798:
                 speed NORMAL
                 move DOWN, 8
                 end
-        battle 75, BATTLE_BG_DEFAULT
+        battle 75, BATTLE_BG::DEFAULT
         call _ca5ea9
         load_map 242, {29, 0}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
         unlock_camera
@@ -100306,7 +100308,7 @@ _cc984a:
         return
 _cc985b:
         switch $01CC=1
-        play_song SONG_SILENCE
+        play_song SILENCE
         load_map 23, {18, 25}, DOWN, {ASYNC, NO_FADE_IN}
         lock_camera
         obj_script CAMERA
@@ -100326,7 +100328,7 @@ _cc985b:
                 speed SLOW
                 end
         wait_30f
-        play_song SONG_OPENING_THEME_2
+        play_song OPENING_THEME_2
         wait_30f
         fade_in 2
         obj_script CAMERA, ASYNC
@@ -100422,7 +100424,7 @@ _cc985b:
                 end
         wait_fade
         wait_15f 40
-        fade_in_song SONG_WIND, 160
+        fade_in_song WIND, 160
         wait_4s
         create_obj TERRA
         create_obj WEDGE
@@ -100642,7 +100644,7 @@ _cc985b:
 _cc9a4f:
         load_map 19, {38, 58}, UP, {ASYNC, NO_FADE_IN}
         wait_30f
-        fade_in_song SONG_WIND, 160
+        fade_in_song WIND, 160
         switch $01CC=0
         spc_cmd $82, $00, $FF
         wait_30f
@@ -100869,7 +100871,7 @@ _cc9b71:
                 move DOWN, 3
                 dir LEFT
                 end
-        battle 1, BATTLE_BG_DEFAULT
+        battle 1, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         hide_obj NPC_2
@@ -100921,7 +100923,7 @@ _cc9bb3:
         obj_script NPC_3
                 move LEFT, 2
                 end
-        battle 0, BATTLE_BG_DEFAULT
+        battle 0, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_3
         sort_obj
@@ -100993,7 +100995,7 @@ _cc9c08:
         obj_script NPC_4
                 move LEFT, 4
                 end
-        battle 2, BATTLE_BG_DEFAULT
+        battle 2, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_3
         hide_obj NPC_4
@@ -101014,7 +101016,7 @@ _cc9c08:
         obj_script NPC_2
                 move LEFT, 4
                 end
-        battle 1, BATTLE_BG_DEFAULT
+        battle 1, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_1
         hide_obj NPC_2
@@ -101087,7 +101089,7 @@ _cc9c94:
         obj_script NPC_2
                 move UP, 3
                 end
-        battle 3, BATTLE_BG_DEFAULT
+        battle 3, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_3
         hide_obj NPC_4
@@ -101177,7 +101179,7 @@ _cc9d0d:
                 jump_high
                 move DOWN, 1
                 end
-        battle 4, BATTLE_BG_DEFAULT
+        battle 4, BATTLE_BG::DEFAULT
         call _ca5ea9
         hide_obj NPC_3
         hide_obj NPC_4
@@ -101442,7 +101444,7 @@ _cc9f37:
         dlg $0B6F
                 ; GUARD: Whelk! Get them!
         switch $02BC=0
-        battle 64, BATTLE_BG_DEFAULT
+        battle 64, BATTLE_BG::DEFAULT
         call _ca5ea9
         fade_in
         wait_fade
@@ -101531,10 +101533,10 @@ _cc9f6d:
                 mod_bg_pal INC, BLUE, 3
                 end_loop
         wait_2s
-        play_song SONG_SILENCE
+        play_song SILENCE
         switch $01CC=1
         wait_15f
-        battle 77, BATTLE_BG_DEFAULT, {NO_SFX, NO_BLUR}
+        battle 77, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
         pass_on WEDGE
         pass_on VICKS
         and_status WEDGE, NONE
@@ -101542,8 +101544,8 @@ _cc9f6d:
         and_status TERRA, NONE
         max_hp TERRA
         max_mp TERRA
-        give_item ITEM_SLEEPING_BAG
-        give_item ITEM_SLEEPING_BAG
+        give_item SLEEPING_BAG
+        give_item SLEEPING_BAG
         switch $01C1=0
         vehicle TERRA, NONE
         vehicle WEDGE, NONE
@@ -101570,7 +101572,7 @@ _cc9f6d:
         wait_2s
         fade_in 1
         wait_fade
-        fade_in_song SONG_AWAKENING, 128
+        fade_in_song AWAKENING, 128
         obj_script NPC_2
                 move UP, 2
                 end
@@ -102256,12 +102258,12 @@ _cca2e5:
         fade_out 2
         wait_fade
         switch $01CC=1
-        play_song SONG_SILENCE
+        play_song SILENCE
         load_map 250, {112, 49}, DOWN, {ASYNC, NO_FADE_IN}
         hide_obj SLOT_1
         sort_obj
         lock_camera
-        fade_in_song SONG_GESTAHL, 64
+        fade_in_song GESTAHL, 64
         filter_pal {RED, GREEN}, {4, 119}
         filter_pal {RED, GREEN}, {128, 255}
         create_obj NPC_14
@@ -102351,9 +102353,9 @@ _cca4a6:
         char_party VICKS, 1
         sort_obj
         set_status TERRA, MAGITEK
-        battle 115, BATTLE_BG_DEFAULT, {NO_SFX, NO_BLUR}
+        battle 115, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
         and_status TERRA, NONE
-        play_song SONG_GESTAHL
+        play_song GESTAHL
         char_party VICKS, 0
         sort_obj
         delete_obj VICKS
@@ -102573,7 +102575,7 @@ _cca5ed:
         wait_4s
         fade_out 4
         wait_fade
-        play_song SONG_SILENCE
+        play_song SILENCE
         wait_2s
         load_map 30, {64, 33}, DOWN, {ASYNC, NO_FADE_IN}
         char_prop LOCKE, 1
@@ -102659,7 +102661,7 @@ _cca5ed:
         wait_30f
         switch $01CC=1
         switch $02BC=1
-        play_song SONG_LOCKE
+        play_song LOCKE
         hide_obj NPC_2
         sort_obj
         call _cad00f
@@ -103307,7 +103309,7 @@ _ccaaba:
         restore_default_party
         return
 _ccaadf:
-        battle 5, BATTLE_BG_DEFAULT, COLLISION
+        battle 5, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccaaec
         call _ccaaba
         return
@@ -103321,7 +103323,7 @@ _ccaaec:
         restore_default_party
         return
 _ccaaf7:
-        battle 5, BATTLE_BG_DEFAULT, COLLISION
+        battle 5, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccab04
         call _ccaaba
         return
@@ -103335,7 +103337,7 @@ _ccab04:
         restore_default_party
         return
 _ccab0f:
-        battle 5, BATTLE_BG_DEFAULT, COLLISION
+        battle 5, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccab1c
         call _ccaaba
         return
@@ -103349,7 +103351,7 @@ _ccab1c:
         restore_default_party
         return
 _ccab27:
-        battle 5, BATTLE_BG_DEFAULT, COLLISION
+        battle 5, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccab34
         call _ccaaba
         return
@@ -103363,7 +103365,7 @@ _ccab34:
         restore_default_party
         return
 _ccab3f:
-        battle 5, BATTLE_BG_DEFAULT, COLLISION
+        battle 5, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccab4c
         call _ccaaba
         return
@@ -103377,7 +103379,7 @@ _ccab4c:
         restore_default_party
         return
 _ccab57:
-        battle 5, BATTLE_BG_DEFAULT, COLLISION
+        battle 5, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccab64
         call _ccaaba
         return
@@ -103762,9 +103764,9 @@ _ccab6f:
 _ccada8:
         switch $01CC=0
         switch $02BC=0
-        battle 6, BATTLE_BG_DEFAULT
+        battle 6, BATTLE_BG::DEFAULT
         if_b_switch $40, _ccadbf
-        play_song SONG_LOCKE
+        play_song LOCKE
         switch $01CC=1
         switch $02BC=1
         call _ccaaba
@@ -104964,7 +104966,7 @@ _ccb3fa:
 _ccb4da:
         load_map 30, {108, 17}, DOWN, NO_FADE_IN
         spc_cmd $80, $01, $FF
-        play_song SONG_NARSHE
+        play_song NARSHE
         switch $01CC=1
         switch $02BC=1
         delete_obj UMARO
@@ -105574,7 +105576,7 @@ _ccb4da:
         wait_90f
         switch $0611=1
         load_map 56, {16, 39}, UP, {ASYNC, NO_FADE_IN}
-        fade_in_song SONG_TROOPS_MARCH_ON, 64
+        fade_in_song TROOPS_MARCH_ON, 64
         wait_90f
         hide_obj SLOT_1
         hide_obj TERRA
@@ -106340,7 +106342,7 @@ _ccb8c0:
         char_party CELES, 0
         sort_obj
         switch $0045=1
-        fade_in_song SONG_WIND, 240
+        fade_in_song WIND, 240
         fade_in 4
         wait_fade
         call RestoreParty
@@ -106356,7 +106358,7 @@ _ccb8c0:
         return
 _ccbca0:
         switch $02BC=0
-        battle 57, BATTLE_BG_DEFAULT
+        battle 57, BATTLE_BG::DEFAULT
         if_b_switch $40, _ccbcb1
         call _ccc8e7
         switch $02BC=1
@@ -106406,7 +106408,7 @@ _ccbcb1:
                 action 10
                 end
         wait_90f
-        play_song SONG_SILENCE
+        play_song SILENCE
         dlg $0378
                 ; EDGAR: Where’s the Esper?
                 ; LOCKE: Is it okay?
@@ -106480,7 +106482,7 @@ _ccbcb1:
         show_obj CYAN
         show_obj GAU
         show_obj CELES
-        fade_in_song SONG_WIND, 160
+        fade_in_song WIND, 160
         fade_in 2
         obj_script CAMERA
                 speed NORMAL
@@ -106600,7 +106602,7 @@ _ccbcb1:
         dlg $037B
                 ; TERRA: Nooo!!
         wait_1s
-        play_song SONG_SILENCE
+        play_song SILENCE
         obj_script TERRA
                 dir UP
                 end
@@ -106695,13 +106697,13 @@ _ccbcb1:
                 ; SABIN: TERRA ’n the Esper…
                 ; EDGAR: There’s…some kinda reaction!
         unlock_camera
-        play_song SONG_ESPER_WORLD
+        play_song ESPER_WORLD
         switch $01CC=1
         wait_1s
         sfx 103
         call _cc9ad5
         wait_1s
-        battle 78, BATTLE_BG_DEFAULT, {NO_SFX, NO_BLUR}
+        battle 78, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
         switch $01CC=0
         fade_out_song $A0
         wait_30f
@@ -106727,7 +106729,7 @@ _ccbcb1:
                         dir UP
                         end
                 end_loop
-        play_song SONG_SILENCE
+        play_song SILENCE
         pass_off NPC_2
         sfx 185
         obj_script NPC_2, ASYNC
@@ -106821,7 +106823,7 @@ _ccbcb1:
         switch $0606=0
         switch $0688=0
         switch $01CC=1
-        play_song SONG_WIND
+        play_song WIND
         load_map 0, {84, 34}, UP, {ASYNC, Z_UPPER, AIRSHIP}
         set_script_mode VEHICLE
         .byte $FD
@@ -106910,7 +106912,7 @@ _ccbcb1:
         sort_obj
         call RestoreParty
         wait_15f 10
-        fade_in_song SONG_AWAKENING, 160
+        fade_in_song AWAKENING, 160
         fade_in 2
         obj_script CELES
                 move UP, 2
@@ -107886,7 +107888,7 @@ _ccc645:
         fade_out_song $80
         dlg $0369
                 ; BANON: They’re coming!
-        play_song SONG_SAVE_THEM
+        play_song SAVE_THEM
         switch $01CC=1
         switch $02BC=1
         wait_30f
@@ -108253,7 +108255,7 @@ _ccc8e7:
         restore_default_party
         return
 _ccc90c:
-        battle 22, BATTLE_BG_DEFAULT, COLLISION
+        battle 22, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccc919
         call _ccc8e7
         return
@@ -108286,7 +108288,7 @@ _ccc935:
         restore_default_party
         return
 _ccc943:
-        battle 22, BATTLE_BG_DEFAULT, COLLISION
+        battle 22, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccc950
         call _ccc8e7
         return
@@ -108319,7 +108321,7 @@ _ccc96c:
         restore_default_party
         return
 _ccc97a:
-        battle 22, BATTLE_BG_DEFAULT, COLLISION
+        battle 22, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccc987
         call _ccc8e7
         return
@@ -108352,7 +108354,7 @@ _ccc9a3:
         restore_default_party
         return
 _ccc9b1:
-        battle 22, BATTLE_BG_DEFAULT, COLLISION
+        battle 22, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccc9be
         call _ccc8e7
         return
@@ -108385,7 +108387,7 @@ _ccc9da:
         restore_default_party
         return
 _ccc9e8:
-        battle 22, BATTLE_BG_DEFAULT, COLLISION
+        battle 22, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccc9f5
         call _ccc8e7
         return
@@ -108418,7 +108420,7 @@ _ccca11:
         restore_default_party
         return
 _ccca1f:
-        battle 22, BATTLE_BG_DEFAULT, COLLISION
+        battle 22, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccca2c
         call _ccc8e7
         return
@@ -108451,7 +108453,7 @@ _ccca48:
         restore_default_party
         return
 _ccca56:
-        battle 24, BATTLE_BG_DEFAULT, COLLISION
+        battle 24, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccca63
         call _ccc8e7
         return
@@ -108466,7 +108468,7 @@ _ccca63:
         restore_default_party
         return
 _ccca6f:
-        battle 23, BATTLE_BG_DEFAULT, COLLISION
+        battle 23, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _ccca7c
         call _ccc8e7
         return
@@ -108499,7 +108501,7 @@ _ccca98:
         restore_default_party
         return
 _cccaa6:
-        battle 23, BATTLE_BG_DEFAULT, COLLISION
+        battle 23, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _cccab3
         call _ccc8e7
         return
@@ -108532,7 +108534,7 @@ _cccacf:
         restore_default_party
         return
 _cccadd:
-        battle 23, BATTLE_BG_DEFAULT, COLLISION
+        battle 23, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _cccaea
         call _ccc8e7
         return
@@ -108565,7 +108567,7 @@ _cccb06:
         restore_default_party
         return
 _cccb14:
-        battle 23, BATTLE_BG_DEFAULT, COLLISION
+        battle 23, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _cccb21
         call _ccc8e7
         return
@@ -108598,7 +108600,7 @@ _cccb3d:
         restore_default_party
         return
 _cccb4b:
-        battle 23, BATTLE_BG_DEFAULT, COLLISION
+        battle 23, BATTLE_BG::DEFAULT, COLLISION
         if_b_switch $40, _cccb58
         call _ccc8e7
         return
@@ -110344,7 +110346,7 @@ _ccd594:
                 ;
                 ; Got “Gold Hairpin”!
         wait_30f
-        give_item ITEM_GOLD_HAIRPIN
+        give_item GOLD_HAIRPIN
         dlg $06CF, {TEXT_ONLY, BOTTOM}
                 ;
                 ;
@@ -110416,7 +110418,7 @@ _ccd5df:
                 wait 6
                 end
         switch $01CC=1
-        play_song SONG_MOG
+        play_song MOG
         dlg $06DE
                 ; Thankupo!
         wait_30f
@@ -110681,7 +110683,7 @@ _ccd709:
                 wait_30f
                 end_loop
         wait_obj NPC_2
-        battle 117, BATTLE_BG_DEFAULT
+        battle 117, BATTLE_BG::DEFAULT
         call _ca5ea9
         obj_script NPC_2
                 pos {59, 13}
@@ -112922,7 +112924,7 @@ _cce416:
         player_ctrl_on
         return
 _cce486:
-        battle 38, BATTLE_BG_DEFAULT
+        battle 38, BATTLE_BG::DEFAULT
         call _ca5ea9
         switch $01B5=0
         load_map 49, {111, 27}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
@@ -113096,7 +113098,7 @@ _cce486:
                 action 9
                 end
         wait_1s
-        play_song SONG_REST_IN_PEACE
+        play_song REST_IN_PEACE
         wait_1s
         dlg $06d5, {BOTTOM, TEXT_ONLY}
         fade_out_song $80
@@ -113115,6 +113117,6 @@ _cce486:
 
 ; ------------------------------------------------------------------------------
 
-end_fixed_block EventScript
+end_block EventScript
 
 ; ------------------------------------------------------------------------------

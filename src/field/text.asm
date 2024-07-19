@@ -306,7 +306,7 @@ CalcTextWidth:
 
 UpdateDlgText:
 @814c:  longa
-        lda     $00                     ; set font shadow color to black
+        lda     $00                   ; set font shadow color to black
         sta     $7e7204
         sta     $7e7404
         lda     $1d55                   ; set font color
@@ -644,7 +644,11 @@ UpdateDlgTextOneLine:
         sta     $1e
         stz     $1f
         ldx     $00
+.if LANG_EN
         lda     #$7f                    ; space
+.else
+        lda     #$ff
+.endif
 @834f:  sta     $7e9183,x
         inx
         cpx     $1e
@@ -699,7 +703,11 @@ UpdateDlgTextOneLine:
         inc     $1a
 @83b8:  lda     $0755,y
         clc
+.if LANG_EN
         adc     #$54
+.else
+        adc     #$53
+.endif
         sta     $7e9183,x
         inx
 @83c3:  iny
@@ -1407,9 +1415,9 @@ LoadLetterGfx:
 ; ------------------------------------------------------------------------------
 
 ; pointers to MTE strings
-@8c7b:  .word   $8cab,$8cae,$8cb3,$8cb6,$8cb9,$8cbe,$8cc1,$8cc4
-        .word   $8cc9,$8ccc,$8cd6,$8cde,$8ce1,$8ce4,$8ce9,$8cf1
-        .word   $8cf4,$8cf9,$8cfe,$8d04,$8d08,$8d0b,$8d0f,$8d12
+@8c7b:  .addr   @8cab,@8cae,@8cb3,@8cb6,@8cb9,@8cbe,@8cc1,@8cc4
+        .addr   @8cc9,@8ccc,@8cd6,@8cde,@8ce1,@8ce4,@8ce9,@8cf1
+        .addr   @8cf4,@8cf9,@8cfe,@8d04,@8d08,@8d0b,@8d0f,@8d12
 
 ; MTE strings carried over from ff6j (unused in English translation)
 @8cab:  .byte   $c7,$c7,$00

@@ -8,6 +8,6 @@
 
 ; d2/e000
 StatusGfx:
-        .incbin "status.4bpp.lz"
+        incbin_lang "status_%s.4bpp.lz"
 
 ; ------------------------------------------------------------------------------

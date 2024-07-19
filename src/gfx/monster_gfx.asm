@@ -53,7 +53,7 @@ inc_monster_gfx "SAMURAI", "samurai.4bpp"
 inc_monster_gfx "OROG", "orog.4bpp"
 inc_monster_gfx "MAG_ROADER_1", "mag_roader_1.4bpp"
 inc_monster_gfx "HAZER", "hazer.4bpp"
-inc_monster_gfx "DAHLING", "dahling_en.4bpp"
+inc_monster_gfx "DAHLING", .sprintf("dahling_%s.4bpp", LANG_SUFFIX)
 inc_monster_gfx "RAIN_MAN", "rain_man.4bpp"
 inc_monster_gfx "BRAWLER", "brawler.4bpp"
 inc_monster_gfx "APOKRYPHOS", "apokryphos.4bpp"
@@ -140,7 +140,7 @@ inc_monster_gfx "SAND_HORSE", "sand_horse.4bpp"
 inc_monster_gfx "MAD_OSCAR", "mad_oscar.4bpp"
 inc_monster_gfx "CRAWLY", "crawly.4bpp"
 inc_monster_gfx "BLEARY", "bleary.4bpp"
-inc_monster_gfx "CRITIC", "critic_en.4bpp"
+inc_monster_gfx "CRITIC", .sprintf("critic_%s.4bpp", LANG_SUFFIX)
 inc_monster_gfx "MAG_ROADER_2", "mag_roader_2.4bpp"
 inc_monster_gfx "FORTIS", "fortis.4bpp"
 inc_monster_gfx "TRIXTER", "trixter.4bpp"
@@ -165,14 +165,14 @@ inc_monster_gfx "FLAMEEATER", "flameeater.4bpp"
 inc_monster_gfx "ATMAWEAPON", "atmaweapon.4bpp"
 inc_monster_gfx "TENTACLE_1", "tentacle_1.3bpp"
 inc_monster_gfx "DOOM_GAZE", "doom_gaze.4bpp"
-inc_monster_gfx "CHADARNOOK_LADY", "chadarnook_lady_en.4bpp"
+inc_monster_gfx "CHADARNOOK_LADY", .sprintf("chadarnook_lady_%s.4bpp", LANG_SUFFIX)
 inc_monster_gfx "CURLEY", "curley.4bpp"
 inc_monster_gfx "LARRY", "larry.4bpp"
 inc_monster_gfx "MOE", "moe.4bpp"
 inc_monster_gfx "HIDON", "hidon.4bpp"
 inc_monster_gfx "HIDONITE", "hidonite.4bpp"
 inc_monster_gfx "DOOM", "doom.4bpp"
-inc_monster_gfx "GODDESS", "goddess_en.4bpp"
+inc_monster_gfx "GODDESS", .sprintf("goddess_%s.4bpp", LANG_SUFFIX)
 inc_monster_gfx "POLTRGEIST", "poltrgeist.4bpp"
 inc_monster_gfx "FINAL_KEFKA", "final_kefka.4bpp"
 inc_monster_gfx "ULTROS_1", "ultros_1.4bpp"
@@ -195,7 +195,7 @@ inc_monster_gfx "PIRANHA", "piranha.4bpp"
 inc_monster_gfx "SOULSAVER", "soulsaver.4bpp"
 inc_monster_gfx "RAMUH", "ramuh.4bpp"
 inc_monster_gfx "IFRIT", "ifrit.4bpp"
-inc_monster_gfx "SIREN", "siren_en.4bpp"
+inc_monster_gfx "SIREN", .sprintf("siren_%s.4bpp", LANG_SUFFIX)
 inc_monster_gfx "TERRATO", "terrato.4bpp"
 inc_monster_gfx "SHOAT", "shoat.4bpp"
 inc_monster_gfx "MADUIN", "maduin.4bpp"
@@ -216,14 +216,18 @@ inc_monster_gfx "SRAPHIM", "sraphim.4bpp"
 inc_monster_gfx "GOLEM", "golem.4bpp"
 inc_monster_gfx "UNICORN", "unicorn.4bpp"
 inc_monster_gfx "FENRIR", "fenrir.4bpp"
-inc_monster_gfx "STARLET", "starlet_en.4bpp"
+inc_monster_gfx "STARLET", .sprintf("starlet_%s.4bpp", LANG_SUFFIX)
 inc_monster_gfx "PHOENIX", "phoenix.4bpp"
 inc_monster_gfx "TIGERBREAK", "tigerbreak.4bpp"
 inc_monster_gfx "CRUSADER_2", "crusader_2.4bpp"
 inc_monster_gfx "IMP", "imp.3bpp"
 
-.res $78, 0
-.res $01c0
+.if LANG_EN
+        .res $78, 0
+        .res $01c0
+.else
+        .res $138, 0
+.endif
 
 ; ------------------------------------------------------------------------------
 

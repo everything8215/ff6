@@ -20,7 +20,7 @@
 .segment "map_gfx_bg3"
 
 ; e6/8780
-begin_fixed_block MapGfxBG3, $45e0
+begin_block MapGfxBG3, $45e0
         inc_map_gfx_bg3 MAP_GFX_BG3_MOUNTAINS_INT, "mountains_int"
         inc_map_gfx_bg3 MAP_GFX_BG3_RIVER, "river"
         inc_map_gfx_bg3 MAP_GFX_BG3_UNUSED_TRAIN, "unused_train"
@@ -41,26 +41,26 @@ begin_fixed_block MapGfxBG3, $45e0
         inc_map_gfx_bg3 MAP_GFX_BG3_MAGITEK_FACTORY, "magitek_factory"
         MapGfxBG3End := *
 
-end_fixed_block MapGfxBG3
+end_block MapGfxBG3
 
 ; e6/cd60
-begin_fixed_block MapGfxBG3Ptrs, $40
+begin_block MapGfxBG3Ptrs, $40
         make_ptr_tbl_far MapGfxBG3, MAP_GFX_BG3_ARRAY_LENGTH
         .faraddr MapGfxBG3End-MapGfxBG3
-end_fixed_block MapGfxBG3Ptrs
+end_block MapGfxBG3Ptrs
 
 ; ------------------------------------------------------------------------------
 
 ; e6/cda0
-begin_fixed_block MapAnimGfxBG3Ptrs, $20
+begin_block MapAnimGfxBG3Ptrs, $20
         make_ptr_tbl_far MapAnimGfxBG3, MAP_ANIM_GFX_BG3_ARRAY_LENGTH
         .faraddr MapAnimGfxBG3End-MapAnimGfxBG3
-end_fixed_block MapAnimGfxBG3Ptrs
+end_block MapAnimGfxBG3Ptrs
 
 ; ------------------------------------------------------------------------------
 
 ; e6/cdc0
-begin_fixed_block MapAnimGfxBG3, $2440
+begin_block MapAnimGfxBG3, $2440
         inc_map_anim_gfx_bg3 MAP_ANIM_GFX_BG3_RIVER, "river"
         inc_map_anim_gfx_bg3 MAP_ANIM_GFX_BG3_FIRE, "fire"
         inc_map_anim_gfx_bg3 MAP_ANIM_GFX_BG3_RAIN, "rain"
@@ -68,6 +68,6 @@ begin_fixed_block MapAnimGfxBG3, $2440
         inc_map_anim_gfx_bg3 MAP_ANIM_GFX_BG3_BEACH, "beach"
         inc_map_anim_gfx_bg3 MAP_ANIM_GFX_BG3_NARSHE, "narshe"
         MapAnimGfxBG3End := *
-end_fixed_block MapAnimGfxBG3
+end_block MapAnimGfxBG3
 
 ; ------------------------------------------------------------------------------

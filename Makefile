@@ -1,7 +1,7 @@
 
 # the assembler
 ASM = ca65
-ASMFLAGS = -I include
+ASMFLAGS = -g -I include
 VERSION_EXT =
 
 # the linker
@@ -12,7 +12,7 @@ LINKFLAGS =
 FIX_CHECKSUM = python3 tools/fix_checksum.py
 
 # list of ROM versions
-VERSIONS = ff6-en ff6-en1 # ff6-jp
+VERSIONS = ff6-en ff6-en1 ff6-jp
 OBJ_DIR = obj
 ROM_DIR = rom
 ROMS = $(foreach V, $(VERSIONS), $(ROM_DIR)/$(V).sfc)
@@ -166,34 +166,31 @@ rom/ff6-event.bin: cfg/ff6-event.cfg obj/event_en.o
 # rules for making ROM files
 # run linker twice: 1st for the cutscene program, 2nd for the ROM itself
 $(FF6_JP_PATH): cfg/ff6-jp.cfg spc mml text monster_gfx $(OBJ_FILES_JP)
-	@mkdir -p $(LZ_DIR)
-	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_JP)
+	@mkdir -p $(LZ_DIR) $(ROM_DIR)
+	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -o "" -C $< $(OBJ_FILES_JP)
 	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
 	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
-	@mkdir -p $(ROM_DIR)
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_JP) $(CUTSCENE_LZ).o
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@
 
 $(FF6_EN_PATH): cfg/ff6-en.cfg spc mml text monster_gfx $(OBJ_FILES_EN)
-	@mkdir -p $(LZ_DIR)
-	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
+	@mkdir -p $(LZ_DIR) $(ROM_DIR)
+	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -o "" -C $< $(OBJ_FILES_EN)
 	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
 	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
-	@mkdir -p $(ROM_DIR)
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN) $(CUTSCENE_LZ).o
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@
 
 $(FF6_EN1_PATH): cfg/ff6-en.cfg spc mml text monster_gfx $(OBJ_FILES_EN1)
-	@mkdir -p $(LZ_DIR)
-	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
+	@mkdir -p $(LZ_DIR) $(ROM_DIR)
+	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -o "" -C $< $(OBJ_FILES_EN1)
 	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
 	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
-	@mkdir -p $(ROM_DIR)
 	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN1) $(CUTSCENE_LZ).o
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@

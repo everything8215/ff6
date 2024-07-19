@@ -19,6 +19,9 @@
         wMagitekTrainTile11 := $7f0600
 
 UpdateTrainGfx:
+
+@hDP := hWMDATA & $ff00
+
 @9f14:  phb
         php
         phd
@@ -32,7 +35,7 @@ UpdateTrainGfx:
         sta     f:$000024               ; clear vblank flag
         sta     f:$0000fa               ; clear 4 frame counter
         longai
-        lda     #(>hWMDATA) << 8        ; nonzero dp, don't use clr_a
+        lda     #@hDP                   ; nonzero dp, don't use clr_a
         tcd
         ldx     #0
 @9f36:

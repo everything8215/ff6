@@ -240,7 +240,8 @@ $F3-$FF Decompression Stuff
     $FE (used by decompression subroutine)
     $FF (used by decompression subroutine)
 
-$0200-$02FF See MenuRam.txt
+$0100-$01FF see battle-ram.txt
+$0200-$02FF see menu-ram.txt
 
 $0300-$051F Sprite Data
 -----------------------
@@ -516,7 +517,7 @@ $0867-$1068 Object Data (50 items, 41 bytes each, $00-$0F are characters, $10-$2
 -----------
       $0867 verbbppp Object Settings
             v: Visible
-            e: Enabled (active)
+            e: Enabled (i.e. active)
             r: Battle Row (back row if set) \
             b: Battle Order                 |--> characters only, though $1850 is "master" data
             p: Party                        /
@@ -667,7 +668,7 @@ $10E7-$10F6 Palette Animation Data (2 items, 8 bytes each)
             r: counter 2 reset value
       $10EB first color pointer (color index * 2) [byte 2]
       $10EC (number of affected colors - 1) * 2 (-1 only for type 2 and 3) [byte 3]
-     +$10ED color index in ROM (only used by type 2 [byte 4/5]
+     +$10ED color index in ROM (only used by type 2 [byte 4/5])
 
 $10F7-$1126 Object Animation Data (24 items, 2 bytes each)
 -----------
@@ -838,14 +839,14 @@ $11E5-$11EF -
       $11FC Showing Character's Palette Index
    ++ $11FD World Map Event Pointer
 
-$1200-$12FF Copy of Direct Page
+$1200-$12FF Copy of field Direct Page
 $1300-$14FF Music and Sound Direct Page
 -----------
       $1300 SPC Command b0
       $1301 SPC Command b1
       $1302 SPC Command b2
       $1303 SPC Command b3
-      $1304 Current SPC Command (from last time a new song was played
+      $1304 Current SPC Command (from last time a new song was played)
       $1305 Current song
       $1306 Current b2
       $1307 Current b3
@@ -881,7 +882,7 @@ $1508-$15FF CPU Stack
 $1600-$1FFF Save RAM
 -----------
 $1600-$184F Character Data (16 items, 37 bytes each)
-      $1600 Actor Index
+      $1600 Actor Index (character properties)
       $1601 Graphic Index
 $1602-$1607 Name
       $1608 Level
@@ -1275,8 +1276,6 @@ $9E00-$9EFF VWF Widths
 $9F00-$A6FF BG1/BG2 Animation Graphics
 
 $BF00-$CEFF BG3 Animation Graphics
-
-$F120-$F800 Saved $0520-$0C00
 
 $7F0000-$7FBFFF Map Data
 ---------------

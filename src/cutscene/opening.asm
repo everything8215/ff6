@@ -1030,16 +1030,16 @@ UpdateOpeningBG3ScrollHDMA:
         asl2
         tax
         lda     _7e5f07,x
-        eor     #$ff
+        not_a
         sta     OpeningBG3ScrollHDMATbl+1
         lda     _7e5f07+1,x
-        eor     #$ff
+        not_a
         sta     OpeningBG3ScrollHDMATbl+4
         lda     _7e5f07+2,x
-        eor     #$ff
+        not_a
         sta     OpeningBG3ScrollHDMATbl+7
         lda     _7e5f07+3,x
-        eor     #$ff
+        not_a
         sta     OpeningBG3ScrollHDMATbl+10
         ply
         plx
@@ -1922,61 +1922,61 @@ OpeningTilePal:
 
 ; ------------------------------------------------------------------------------
 
-.charmap $20,$01
+.charmap ' ',$01
 
-.charmap $41,$02
-.charmap $42,$03
-.charmap $43,$04
-.charmap $44,$05
-.charmap $45,$06
-.charmap $46,$07
-.charmap $47,$08
-.charmap $48,$09
-.charmap $49,$0a
-.charmap $4a,$0b
-.charmap $4b,$0c
-.charmap $4c,$0d
-.charmap $4d,$0e
-.charmap $4e,$0f
-.charmap $4f,$10
-.charmap $50,$11
-.charmap $51,$12
-.charmap $52,$13
-.charmap $53,$14
-.charmap $54,$15
-.charmap $55,$16
-.charmap $56,$17
-.charmap $57,$18
-.charmap $58,$19
-.charmap $59,$1a
-.charmap $5a,$1b
+.charmap 'A',$02
+.charmap 'B',$03
+.charmap 'C',$04
+.charmap 'D',$05
+.charmap 'E',$06
+.charmap 'F',$07
+.charmap 'G',$08
+.charmap 'H',$09
+.charmap 'I',$0a
+.charmap 'J',$0b
+.charmap 'K',$0c
+.charmap 'L',$0d
+.charmap 'M',$0e
+.charmap 'N',$0f
+.charmap 'O',$10
+.charmap 'P',$11
+.charmap 'Q',$12
+.charmap 'R',$13
+.charmap 'S',$14
+.charmap 'T',$15
+.charmap 'U',$16
+.charmap 'V',$17
+.charmap 'W',$18
+.charmap 'X',$19
+.charmap 'Y',$1a
+.charmap 'Z',$1b
 
-.charmap $61,$1d
-.charmap $62,$1e
-.charmap $63,$1f
-.charmap $64,$20
-.charmap $65,$21
-.charmap $66,$22
-.charmap $67,$23
-.charmap $68,$24
-.charmap $69,$25
-.charmap $6a,$26
-.charmap $6b,$27
-.charmap $6c,$28
-.charmap $6d,$29
-.charmap $6e,$2a
-.charmap $6f,$2b
-.charmap $70,$2c
-.charmap $71,$2d
-.charmap $72,$2e
-.charmap $73,$2f
-.charmap $74,$30
-.charmap $75,$31
-.charmap $76,$32
-.charmap $77,$33
-.charmap $78,$34
-.charmap $79,$35
-.charmap $7a,$36
+.charmap 'a',$1d
+.charmap 'b',$1e
+.charmap 'c',$1f
+.charmap 'd',$20
+.charmap 'e',$21
+.charmap 'f',$22
+.charmap 'g',$23
+.charmap 'h',$24
+.charmap 'i',$25
+.charmap 'j',$26
+.charmap 'k',$27
+.charmap 'l',$28
+.charmap 'm',$29
+.charmap 'n',$2a
+.charmap 'o',$2b
+.charmap 'p',$2c
+.charmap 'q',$2d
+.charmap 'r',$2e
+.charmap 's',$2f
+.charmap 't',$30
+.charmap 'u',$31
+.charmap 'v',$32
+.charmap 'w',$33
+.charmap 'x',$34
+.charmap 'y',$35
+.charmap 'z',$36
 
 ; opening credits text
 CreditsText_00:

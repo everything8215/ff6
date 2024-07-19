@@ -182,9 +182,8 @@ $BB-$C1 HDMA table #1 (bg2 h-scroll)
     $FE
     $FF poison mosaic counter
 -----------
-$0100-$0107 interrupt jump code
-$0108-$01FF cpu stack
-$0200-$02FF menu data
+$0100-$01FF used by battle graphics module
+$0200-$02FF used by menu module
 $0300-$09FF mode 7 HDMA data
 $0A00-$0AFF dp stack
 $0B00-$0B0F doom gaze positions, first two are used (4 * 4 bytes)
@@ -288,7 +287,7 @@ $BF62-$BFE1 bg palette blue components
 
 $E000-$E200 color palettes
 
-$F120-$F7FF saved $0520-$0BFF
+$F120-$F7FF saved $0520-$0BFF (from field module)
 $F800-$FFFF decompression buffer
 -----------
 $7F0000-$7FFFFF world tilemap

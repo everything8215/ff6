@@ -328,8 +328,7 @@ VectorApproach:
         lda     $60
         bpl     @0acd
         lda     $5c
-        eor     #$ff
-        inc
+        neg_a
         sta     $5c
 @0acd:  lda     $7eb662,x
         clc
@@ -1554,8 +1553,7 @@ UpdateSpotlightHDMA:
         bcs     @1673
         inc     $5c
         inc     $5c
-        eor     #$ff
-        inc
+        neg_a
 @1673:  sta     $5e
         lda     #$ff
         sta     $5d
@@ -1565,8 +1563,7 @@ UpdateSpotlightHDMA:
         bcs     @1687
         inc     $5d
         inc     $5d
-        eor     #$ff
-        inc
+        neg_a
 @1687:  sta     $5f
         cmp     $5e
         bcs     @16c3

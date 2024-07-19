@@ -23,23 +23,23 @@
 ; [ menu state $71: colosseum item select (init) ]
 
 MenuState_71:
-@acaa:  stz     $0201
-        lda     $0205
+@acaa:  stz     w0201
+        lda     w0205
         jsr     IncItemQty
         jsr     _c31ae2
         jsr     InitItemListCursor
-        jsr     _c3ad27
+        jsr     DrawColosseumItemMenu
         clr_a
         jsl     InitGradientHDMA
         jsr     _c31b0e
         jsr     InitFontColor
         lda     #$01
-        tsb     $45
+        tsb     z45
         jsr     WaitVblank
         lda     #$72
-        sta     $27
+        sta     zNextMenuState
         lda     #$02
-        sta     $46
+        sta     z46
         jsr     CreateCursorTask
         jmp     EnableInterrupts
 
@@ -49,38 +49,38 @@ MenuState_71:
 
 MenuState_72:
 @acdc:  lda     #$10
-        trb     $45
-        stz     $2a
+        trb     z45
+        stz     zListType
         jsr     InitDMA1BG1ScreenA
         jsr     ScrollListPage
         bcs     @ad26
         jsr     UpdateItemListCursor
         jsr     InitItemDesc
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @ad14
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $1869,x
         cmp     #$ff
         beq     @ad0e
-        sta     $0205
+        sta     w0205
         jsr     PlaySelectSfx
         lda     #$75
-        sta     $27
-        stz     $26
+        sta     zNextMenuState
+        stz     zMenuState
         rts
 @ad0e:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
-@ad14:  lda     $09
-        bit     #$80
+@ad14:  lda     z08+1
+        bit     #>JOY_B
         beq     @ad26
         jsr     PlayCancelSfx
         lda     #$ff
-        sta     $0205
-        sta     $27
-        stz     $26
+        sta     w0205
+        sta     zNextMenuState
+        stz     zMenuState
 @ad26:  rts
 
 ; ------------------------------------------------------------------------------
@@ -88,16 +88,15 @@ MenuState_72:
 ; [ draw menu for colosseum item select ]
 
 DrawColosseumItemMenu:
-_c3ad27:
 @ad27:  lda     #$01
         sta     hBG1SC
-        ldy     #.loword(ColosseumItemMsgWindow)
+        ldy     #near ColosseumItemMsgWindow
         jsr     DrawWindow
-        ldy     #.loword(ColosseumItemTitleWindow)
+        ldy     #near ColosseumItemTitleWindow
         jsr     DrawWindow
-        ldy     #.loword(ColosseumItemDescWindow)
+        ldy     #near ColosseumItemDescWindow
         jsr     DrawWindow
-        ldy     #.loword(ColosseumItemListWindow)
+        ldy     #near ColosseumItemListWindow
         jsr     DrawWindow
         jsr     TfrBG2ScreenAB
         jsr     ClearBG3ScreenB
@@ -120,12 +119,12 @@ _c3ad27:
 
 DrawColosseumItemTitle:
 @ad6e:  jsr     ClearBG3ScreenA
-        lda     #$2c
-        sta     $29
-        ldy     #.loword(ColosseumItemTitleText)
-        jsr     DrawPosText
-        lda     #$20
-        sta     $29
+        lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldy     #near ColosseumItemTitleText
+        jsr     DrawPosKana
+        lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
         rts
 
 ; ------------------------------------------------------------------------------
@@ -134,8 +133,8 @@ DrawColosseumItemTitle:
 
 DrawColosseumItemMsg:
 @ad80:  jsr     _c3a73d
-        ldy     #.loword(ColosseumItemMsgText)
-        jsr     DrawPosText
+        ldy     #near ColosseumItemMsgText
+        jsr     DrawPosKana
         rts
 
 ; ------------------------------------------------------------------------------
@@ -145,25 +144,35 @@ MenuState_78:
 
 ; ------------------------------------------------------------------------------
 
-ColosseumItemTitleWindow:
-@ad8a:  .byte   $8b,$58,$09,$02
+.if LANG_EN
+ColosseumItemTitleWindow:               make_window BG2A, {1, 1}, {9, 2}
+ColosseumItemMsgWindow:                 make_window BG2A, {12, 1}, {17, 2}
+.else
+ColosseumItemTitleWindow:               make_window BG2A, {1, 1}, {5, 2}
+ColosseumItemMsgWindow:                 make_window BG2A, {8, 1}, {21, 2}
+.endif
+ColosseumItemDescWindow:                make_window BG2A, {1, 5}, {28, 3}
+ColosseumItemListWindow:                make_window BG2A, {1, 10}, {28, 15}
 
-ColosseumItemMsgWindow:
-@ad8e:  .byte   $a1,$58,$11,$02
+.if LANG_EN
 
-ColosseumItemDescWindow:
-@ad92:  .byte   $8b,$59,$1c,$03
+        .define ColosseumItemTitleStr   {$82,$a8,$a5,$a8,$ac,$ac,$9e,$ae,$a6,$00}
+        .define ColosseumItemMsgStr     {$92,$9e,$a5,$9e,$9c,$ad,$ff,$9a,$a7,$ff,$88,$ad,$9e,$a6,$00}
 
-ColosseumItemListWindow:
-@ad96:  .byte   $cb,$5a,$1c,$0f
+.else
 
-ColosseumItemTitleText:
-@ad9a:  .word   $790d
-        .byte   $82,$a8,$a5,$a8,$ac,$ac,$9e,$ae,$a6,$00
+        .define ColosseumItemTitleStr   {$72,$ae,$76,$8a,$a0,$00}
+        .define ColosseumItemMsgStr     {$8a,$8c,$84,$a0,$bb,$54,$83,$ff,$8f,$a7,$b9,$45,$6f,$3f,$75,$8d,$00}
 
-ColosseumItemMsgText:
-@ada6:  .word   $7923
-        .byte   $92,$9e,$a5,$9e,$9c,$ad,$ff,$9a,$a7,$ff,$88,$ad,$9e,$a6,$00
+.endif
+
+.if LANG_EN
+ColosseumItemTitleText:         pos_text BG3A, {2, 3}, ColosseumItemTitleStr
+ColosseumItemMsgText:           pos_text BG3A, {13, 3}, ColosseumItemMsgStr
+.else
+ColosseumItemTitleText:         pos_text BG3A, {2, 2}, ColosseumItemTitleStr
+ColosseumItemMsgText:           pos_text BG3A, {9, 2}, ColosseumItemMsgStr
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -171,7 +180,7 @@ ColosseumItemMsgText:
 
 MenuState_75:
 @adb7:  jsr     DisableInterrupts
-        stz     $43
+        stz     zEnableHDMA
         jsr     LoadWindowGfx
         jsr     InitCharProp
         lda     #$02
@@ -179,23 +188,23 @@ MenuState_75:
         jsr     InitWindow1PosHDMA
         jsr     LoadColosseumGfx
         lda     #$02
-        sta     $46
+        sta     z46
         jsr     LoadColosseumCharCursor
         jsr     InitColosseumCharCursor
         jsr     CreateCursorTask
         jsr     CreateColosseumVSTask
         jsr     _c318d1
-        jsr     _c3ae34
+        jsr     DrawColosseumCharWindow
         lda     #$01
-        tsb     $45
+        tsb     z45
         jsr     InitFontColor
         lda     #1
-        ldy     #.loword(ColosseumCharTask)
+        ldy     #near ColosseumCharTask
         jsr     CreateTask
         lda     #$76
-        sta     $27
-        lda     #$01
-        sta     $26
+        sta     zNextMenuState
+        lda     #MENU_STATE::FADE_IN
+        sta     zMenuState
         jsr     ClearBGScroll
         jsr     InitDMA1BG1ScreenA
         jsr     EnableInterrupts
@@ -207,7 +216,7 @@ MenuState_75:
 
 CreateColosseumVSTask:
 @ae07:  lda     #1
-        ldy     #.loword(ColosseumVSTask)
+        ldy     #near ColosseumVSTask
         jmp     CreateTask
 
 ; ------------------------------------------------------------------------------
@@ -217,16 +226,16 @@ CreateColosseumVSTask:
 MenuState_76:
 @ae0f:  jsr     InitDMA1BG3ScreenA
         jsr     UpdateColosseumCharCursor
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @ae33
         jsr     _c3b2ec
         bmi     @ae2d
-        sta     $0208
+        sta     w0208
         jsr     PlaySelectSfx
-        lda     #$ff
-        sta     $27
-        stz     $26
+        lda     #MENU_STATE::TERMINATE
+        sta     zNextMenuState
+        stz     zMenuState
         rts
 @ae2d:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
@@ -234,27 +243,27 @@ MenuState_76:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw colosseum character select window ]
 
-_c3ae34:
+DrawColosseumCharWindow:
 @ae34:  lda     #$01
         sta     hBG1SC
-        ldy     #.loword(ColosseumPrizeWindow)
+        ldy     #near ColosseumPrizeWindow
         jsr     DrawWindow
-        ldy     #.loword(ColosseumWagerWindow)
+        ldy     #near ColosseumWagerWindow
         jsr     DrawWindow
-        ldy     #.loword(ColosseumCharWindow)
+        ldy     #near ColosseumCharWindow
         jsr     DrawWindow
         jsr     TfrBG2ScreenAB
         jsr     ClearBG3ScreenA
-        lda     #$20
-        sta     $29
+        lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
         jsr     _c3b17d
         jsr     _c3b197
         jsr     _c3b1b1
         jsr     _c3b1cb
-        ldy     #.loword(ColosseumCharMsgText)
-        jsr     DrawPosText
+        ldy     #near ColosseumCharMsgText
+        jsr     DrawPosKana
         jsr     _c3b28d
         jsr     DrawWagerName
         jsr     DrawPrizeName
@@ -263,115 +272,115 @@ _c3ae34:
         sty     hVMADDL
         jsr     _c3b10a
         jsr     ClearBG1ScreenA
-        jsr     _c3ae93
-        lda     $0201
+        jsr     CheckColosseumShadow
+        lda     w0201
         bne     @ae8d
-        jsr     _c3af00
+        jsr     _c3af00                 ; draw colosseum monster
         jmp     TfrBG1ScreenAB
-@ae8d:  jsr     _c3aea7
+@ae8d:  jsr     _c3aea7                 ; draw shadow
         jmp     TfrBG1ScreenAB
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ check if shadow appears in the colosseum ]
 
-_c3ae93:
-@ae93:  lda     $0205
-        cmp     #$29
-        bne     @aea6       ; branch if not item $29 (striker)
+CheckColosseumShadow:
+@ae93:  lda     w0205
+        cmp     #ITEM::STRIKER
+        bne     @aea6                   ; branch if not betting striker
         lda     $1ebd
         and     #$80
         beq     @aea6
         lda     #$01
-        sta     $0201
+        sta     w0201
 @aea6:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw shadow in colosseum preview ]
 
 _c3aea7:
 @aea7:  jsr     _c3aed9
         lda     #$02
-        tsb     $47
+        tsb     z47
         lda     #2
-        ldy     #.loword(_c37a5f)
+        ldy     #near _c37a5f
         jsr     CreateTask
         lda     #$01
-        sta     $7e3649,x
-        lda     $7e364a,x
+        sta     wTaskState,x
+        lda     wTaskFlags,x
         ora     #$02
-        sta     $7e364a,x
+        sta     wTaskFlags,x
         txy
         lda     #$38
-        sta     $e1
+        sta     ze1
         lda     #$68
-        sta     $e2
+        sta     ze2
         clr_a
-        lda     #$03
+        lda     #CHAR::SHADOW
         jsr     _c378fa
         jsr     _c3b211
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw shadow's name ]
 
 _c3aed9:
 @aed9:  clr_ax
-@aedb:  stx     $e7
+@aedb:  stx     ze7
         longa
         lda     f:CharPropPtrs,x
         tax
         shorta
-        lda     a:$0000,x
-        cmp     #$03
+        lda     a:0,x
+        cmp     #CHAR_PROP::SHADOW
         beq     @aef8
-        ldx     $e7
+        ldx     ze7
         inx2
         cpx     #$0020
         bne     @aedb
-@aef6:  bra     @aef6
-@aef8:  stx     $67
-        ldy     #$7c11
+@aef6:  bra     @aef6                   ; infinite loop
+@aef8:  stx     zSelCharPropPtr
+        ldy_pos BG3A, {4, 15}
         jmp     DrawCharName
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ make monster tilemap for colosseum preview ]
 
 _c3af00:
-@af00:  ldx     $91
-        stx     $ed
-        lda     $99
+@af00:  ldx     z91
+        stx     zed
+        lda     z99
         cmp     #$08
         beq     @af16
         ldx     #$0010
-        stx     $f1
+        stx     zf1
         ldx     #$0010
-        stx     $e0
+        stx     ze0
         bra     @af1d
 @af16:  ldx     #$0008
-        stx     $f1
-        stx     $e0
+        stx     zf1
+        stx     ze0
 @af1d:  lda     #$7e
-        sta     $ef
+        sta     zef
         longa
         lda     #$2c01
-        sta     $e7
-@af28:  ldx     $e0
-        ldy     $00
-@af2c:  lda     $e7
-        sta     [$ed],y
+        sta     ze7
+@af28:  ldx     ze0
+        ldy     z0
+@af2c:  lda     ze7
+        sta     [zed],y
         iny2
-        inc     $e7
+        inc     ze7
         dex
         bne     @af2c
-        lda     $ed
+        lda     zed
         clc
         adc     #$0040
-        sta     $ed
-        dec     $f1
+        sta     zed
+        dec     zf1
         bne     @af28
         shorta
         rts
@@ -382,7 +391,7 @@ _c3af00:
 
 LoadMonsterGfx:
 @af46:  jsr     LoadColosseumProp
-        lda     $0206       ; monster index
+        lda     w0206       ; monster index
         sta     hWRMPYA
         lda     #$05        ; calculate pointer to monster graphics data
         sta     hWRMPYB
@@ -391,84 +400,84 @@ LoadMonsterGfx:
         nop2
         ldx     hRDMPYL
         lda     f:MonsterGfxProp,x   ; monster graphics data
-        sta     $e7
+        sta     ze7
         lda     f:MonsterGfxProp+1,x
-        sta     $e8
+        sta     ze8
         lda     f:MonsterGfxProp+2,x
-        sta     $f2
+        sta     zf2
         lda     f:MonsterGfxProp+3,x
-        sta     $f1
+        sta     zf1
         lda     f:MonsterGfxProp+4,x
-        sta     $e9
-        lda     $e8
+        sta     ze9
+        lda     ze8
         bmi     @af85
-        stz     $ff
+        stz     zff
         bra     @af8d
 @af85:  lda     #$01
-        sta     $ff
+        sta     zff
         lda     #$80
-        trb     $e8
+        trb     ze8
 @af8d:  lda     #$e9
-        sta     $f7
+        sta     zf7
         longa
         lda     #$7000
-        sta     $f5
-        lda     $e7
-        sta     $f9
-        stz     $fb
-        asl     $f9
-        rol     $fb
-        asl     $f9
-        rol     $fb
-        asl     $f9
-        rol     $fb
+        sta     zf5
+        lda     ze7
+        sta     zf9
+        stz     zfb
+        asl     zf9
+        rol     zfb
+        asl     zf9
+        rol     zfb
+        asl     zf9
+        rol     zfb
         clc
-        lda     $f9
-        adc     $f5
-        sta     $f5
-        lda     $fb
-        adc     $f7
-        sta     $f7
-        ldx     $00
+        lda     zf9
+        adc     zf5
+        sta     zf5
+        lda     zfb
+        adc     zf7
+        sta     zf7
+        ldx     z0
         shorta
-        lda     $f2
+        lda     zf2
         bmi     @afc8
-        ldy     #.loword(MonsterStencil)
-        sty     $e3
+        ldy     #near MonsterStencil
+        sty     ze3
         lda     #$08
         bra     @afcf
-@afc8:  ldy     #.loword(MonsterStencil+2)
-        sty     $e3
+@afc8:  ldy     #near MonsterStencil+2
+        sty     ze3
         lda     #$20
-@afcf:  sta     $e6
-        sta     $99
+@afcf:  sta     ze6
+        sta     z99
         lda     #^MonsterStencil
-        sta     $e5
-        lda     $f2
+        sta     ze5
+        lda     zf2
         and     #$40
         rol3
-        sta     $ea
-        lda     $f2
+        sta     zea
+        lda     zf2
         bmi     @afed
         longa
-        lda     $e9
+        lda     ze9
         asl3
         bra     @aff6
 @afed:  longa
-        lda     $e9
+        lda     ze9
         asl5
 @aff6:  clc
-        adc     [$e3]
-        sta     $e0
+        adc     [ze3]
+        sta     ze0
         shorta
         lda     #$d2
-        sta     $e2
+        sta     ze2
 @b001:  ldy     #$0008
         phx
         clr_a
-        lda     $e6
+        lda     ze6
         tax
-        lda     [$e0]
+        lda     [ze0]
         sta     $7e9d88,x
         plx
 @b010:  clc
@@ -484,9 +493,9 @@ LoadMonsterGfx:
         dey
         bne     @b010
         longa
-        inc     $e0
+        inc     ze0
         shorta
-        dec     $e6
+        dec     ze6
         bne     @b001
         jsr     _c3b033
         jmp     LoadMonsterPal
@@ -496,81 +505,80 @@ LoadMonsterGfx:
 ; [  ]
 
 _c3b033:
-@b033:  stz     $e0
-        stz     $e4
-        stz     $e5
-        stz     $e3
-        ldx     $00
-        lda     $99
+@b033:  stz     ze0
+        stz     ze4
+        stz     ze5
+        stz     ze3
+        ldx     z0
+        lda     z99
         cmp     #$08
         bne     @b079
 @b043:  lda     $7e9d89,x
         bne     @b050
-        inc     $e0
+        inc     ze0
         inx
         cmp     #$08
         bne     @b043
-@b050:  ldx     $00
+@b050:  ldx     z0
 @b052:  lda     $7e9d89,x
-        ora     $e3
-        sta     $e3
+        ora     ze3
+        sta     ze3
         inx
         cpx     #$0008
         bne     @b052
-@b060:  ror     $e3
+@b060:  ror     ze3
         bcs     @b068
-        inc     $e4
+        inc     ze4
         bra     @b060
-@b068:  lsr     $e4
-        asl     $e4
+@b068:  lsr     ze4
+        asl     ze4
         longa_clc
-        lda     $e4
-        adc     #$3a51
-        sta     $e7
+        lda     ze4
+        adc_pos BG1A, {4, 8}
+        sta     ze7
         shorta
         bra     @b0b4
 @b079:  lda     $7e9d89,x
         ora     $7e9d8a,x
         bne     @b08c
-        inc     $e0
+        inc     ze0
         inx2
         cpx     #$0020
         bne     @b079
-@b08c:  ldx     $00
+@b08c:  ldx     z0
 @b08e:  lda     $7e9d89,x
-        ora     $e3
-        sta     $e3
+        ora     ze3
+        sta     ze3
         inx2
         cpx     #$0020
         bne     @b08e
-@b09d:  ror     $e3
+@b09d:  ror     ze3
         bcs     @b0a5
-        inc     $e4
+        inc     ze4
         bra     @b09d
-@b0a5:  lsr     $e4
-        asl     $e4
+@b0a5:  lsr     ze4
+        asl     ze4
         longa_clc
-        lda     $e4
-        adc     #$3849
-        sta     $e7
+        lda     ze4
+        adc     #near wBG1Tiles::ScreenA
+        sta     ze7
         shorta
-@b0b4:  jmp     _c3b0b7
+@b0b4:  jmp     AlignColosseumMonster
 
 ; ------------------------------------------------------------------------------
 
 ; [ set vertical alignment for monster in colosseum menu ]
 
 AlignColosseumMonster:
-_c3b0b7:
 @b0b7:  clr_a
-        lda     $0206       ; colosseum monster number
+        lda     w0206       ; colosseum monster number
         tax
         lda     f:MonsterAlign,x
         longa
         asl
         tax
         shorta
-        jmp     (.loword(AlignColosseumMonsterPtrs),x)
+        jmp     (near AlignColosseumMonsterPtrs,x)
 
 ; jump table for monster vertical alignment
 AlignColosseumMonsterPtrs:
@@ -585,12 +593,12 @@ AlignColosseumMonsterPtrs:
 ; [ 0: ceiling (move to top) ]
 
 AlignColosseumMonster_00:
-@b0d3:  stz     $e0
+@b0d3:  stz     ze0
         longa
-        lda     $e7
+        lda     ze7
         sec
         sbc     #$00c0
-        sta     $91
+        sta     z91
         shorta
         rts
 
@@ -599,9 +607,9 @@ AlignColosseumMonster_00:
 ; [ 2: buried (shift up 8) ]
 
 AlignColosseumMonster_02:
-@b0e2:  dec     $e0
+@b0e2:  dec     ze0
         bpl     @b0e8
-        stz     $e0
+        stz     ze0
 @b0e8:  bra     _b0f8
 
 ; ------------------------------------------------------------------------------
@@ -609,7 +617,7 @@ AlignColosseumMonster_02:
 ; [ 3: floating (shift down 8) ]
 
 AlignColosseumMonster_03:
-@b0ea:  inc     $e0
+@b0ea:  inc     ze0
         bra     _b0f8
 
 ; ------------------------------------------------------------------------------
@@ -617,11 +625,11 @@ AlignColosseumMonster_03:
 ; [ 4: flying (shift up 24) ]
 
 AlignColosseumMonster_04:
-@b0ee:  dec     $e0
-        dec     $e0
-        dec     $e0
+@b0ee:  dec     ze0
+        dec     ze0
+        dec     ze0
         bpl     _b0f8
-        stz     $e0
+        stz     ze0
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -630,11 +638,11 @@ AlignColosseumMonster_04:
 
 AlignColosseumMonster_01:
 _b0f8:  clr_a
-        lda     $e0
+        lda     ze0
         longa_clc
         asl6
-        adc     $e7
-        sta     $91
+        adc     ze7
+        sta     z91
         shorta
         rts
 
@@ -644,12 +652,12 @@ _b0f8:  clr_a
 
 _c3b10a:
 @b10a:  ldy     #$0010
-        sty     $e3
+        sty     ze3
         longa
-        ldy     $00
+        ldy     z0
 @b113:  stz     hVMDATAL
         iny
-        cpy     $e3
+        cpy     ze3
         bne     @b113
         shorta
         rts
@@ -659,18 +667,18 @@ _c3b10a:
 ; [  ]
 
 _c3b11e:
-@b11e:  lda     $ff
+@b11e:  lda     zff
         bne     @b129
         ldy     #$0010
-        sty     $e3
+        sty     ze3
         bra     @b145
 @b129:  ldy     #$0008
-        sty     $e3
+        sty     ze3
         jsr     @b145
         txy
         ldx     #$0008
         clr_a
-@b136:  lda     [$f5],y
+@b136:  lda     [zf5],y
         longa
         sta     hVMDATAL
         shorta
@@ -681,13 +689,13 @@ _c3b11e:
         rts
 
 @b145:  txy
-        ldx     $00
+        ldx     z0
         longa
-@b14a:  lda     [$f5],y
+@b14a:  lda     [zf5],y
         sta     hVMDATAL
         iny2
         inx
-        cpx     $e3
+        cpx     ze3
         bne     @b14a
         shorta
         tyx
@@ -699,12 +707,12 @@ _c3b11e:
 
 LoadMonsterPal:
 @b15a:  longa
-        lda     $f1
+        lda     zf1
         and     #$03ff
         asl4
         tax
         shorta
-        ldy     #$30a9
+        ldy     #near wPalBuf::BGPal3
         sty     hWMADDL
         ldy     #$0020
 @b171:  lda     f:MonsterPal,x
@@ -716,84 +724,84 @@ LoadMonsterPal:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw colosseum party char slot 1 ]
 
 _c3b17d:
-@b17d:  ldy     $6d
+@b17d:  ldy     zCharPropPtr::Slot1
         beq     @b196
-        sty     $67
-        ldy     #$7e4f
+        sty     zSelCharPropPtr
+        ldy_pos BG3A, {3, 24}
         jsr     _c3b1e5
         lda     #$20
-        sta     $e1
+        sta     ze1
         lda     #$a8
-        sta     $e2
-        lda     $69
+        sta     ze2
+        lda     zCharID::Slot1
         jsr     _c3b1f3
 @b196:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw colosseum party char slot 2 ]
 
 _c3b197:
-@b197:  ldy     $6f
+@b197:  ldy     zCharPropPtr::Slot2
         beq     @b1b0
-        sty     $67
-        ldy     #$7e5d
+        sty     zSelCharPropPtr
+        ldy_pos BG3A, {10, 24}
         jsr     _c3b1e5
         lda     #$58
-        sta     $e1
+        sta     ze1
         lda     #$a8
-        sta     $e2
-        lda     $6a
+        sta     ze2
+        lda     zCharID::Slot2
         jsr     _c3b1f3
 @b1b0:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw colosseum party char slot 3 ]
 
 _c3b1b1:
-@b1b1:  ldy     $71
+@b1b1:  ldy     zCharPropPtr::Slot3
         beq     @b1ca
-        sty     $67
-        ldy     #$7e6b
+        sty     zSelCharPropPtr
+        ldy_pos BG3A, {17, 24}
         jsr     _c3b1e5
         lda     #$90
-        sta     $e1
+        sta     ze1
         lda     #$a8
-        sta     $e2
-        lda     $6b
+        sta     ze2
+        lda     zCharID::Slot3
         jsr     _c3b1f3
 @b1ca:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw colosseum party char slot 4 ]
 
 _c3b1cb:
-@b1cb:  ldy     $73
+@b1cb:  ldy     zCharPropPtr::Slot4
         beq     @b1e4
-        sty     $67
-        ldy     #$7e79
+        sty     zSelCharPropPtr
+        ldy_pos BG3A, {24, 24}
         jsr     _c3b1e5
         lda     #$c8
-        sta     $e1
+        sta     ze1
         lda     #$a8
-        sta     $e2
-        lda     $6c
+        sta     ze2
+        lda     zCharID::Slot4
         jsr     _c3b1f3
 @b1e4:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw colosseum party char name ]
 
 _c3b1e5:
 @b1e5:  jsr     DrawCharName
         lda     #2
-        ldy     #.loword(_c37a5f)
+        ldy     #near _c37a5f
         jsr     CreateTask
         txy
         clr_a
@@ -801,7 +809,7 @@ _c3b1e5:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw character sprite ]
 
 _c3b1f3:
 @b1f3:  asl
@@ -822,14 +830,14 @@ _c3b1f3:
 
 _c3b211:
 @b211:  lda     #^PartyCharAnimTbl
-        sta     $35ca,y
-        lda     $e1
-        sta     $33ca,y
-        lda     $e2
-        sta     $344a,y
+        sta     near wTaskAnimBank,y
+        lda     ze1
+        sta     near wTaskPosX,y
+        lda     ze2
+        sta     near wTaskPosY,y
         clr_a
-        sta     $33cb,y
-        sta     $344b,y
+        sta     near {wTaskPosX + 1},y
+        sta     near {wTaskPosY + 1},y
         lda     #$00
         pha
         plb
@@ -841,17 +849,17 @@ _c3b211:
 
 LoadColosseumProp:
 @b22c:  clr_a
-        lda     $0205                   ; item wagered
+        lda     w0205                   ; item wagered
         longa
         asl2
         tax
         shorta
         lda     f:ColosseumProp,x
-        sta     $0206
+        sta     w0206
         lda     f:ColosseumProp+2,x     ; prize
-        sta     $0207
+        sta     w0207
         lda     f:ColosseumProp+3,x
-        sta     $0209
+        sta     w0209
         rts
 
 ; ------------------------------------------------------------------------------
@@ -859,17 +867,25 @@ LoadColosseumProp:
 ; [ draw wagered item name ]
 
 DrawWagerName:
-@b24d:  lda     $0205                   ; wagered item
-        ldx     #$792b
+@b24d:  lda     w0205                   ; wagered item
+.if LANG_EN
+        ldx_pos BG3A, {17, 3}
+.else
+        ldx_pos BG3A, {19, 2}
+.endif
         bra     _b263
 
 ; [ draw prize item name ]
 
 DrawPrizeName:
-@b255:  lda     $0209                   ; prize item
+@b255:  lda     w0209                   ; prize item
         jne     _b286                   ; branch if prize name is not shown
-        lda     $0207
-        ldx     #$790d
+        lda     w0207
+.if LANG_EN
+        ldx_pos BG3A, {2, 3}
+.else
+        ldx_pos BG3A, {4, 2}
+.endif
 _b263:  pha
         ldy     #$9e8b
         sty     hWMADDL
@@ -883,9 +899,13 @@ _b263:  pha
         pla
         jsr     _c380ce
         clr_a
+.if LANG_EN
         sta     $7e9e98
+.else
+        sta     $7e9e94
+.endif
         jmp     DrawPosTextBuf
-_b286:  ldy     #.loword(ColosseumUnknownPrizeText)
+_b286:  ldy     #near ColosseumUnknownPrizeText
         jsr     DrawPosText
         rts
 
@@ -895,18 +915,22 @@ _b286:  ldy     #.loword(ColosseumUnknownPrizeText)
 
 _c3b28d:
 @b28d:  longa
-        lda     #$7c4f
+.if LANG_EN
+        lda_pos BG3A, {3, 16}
+.else
+        lda_pos BG3A, {4, 15}
+.endif
         sta     $7e9e89
         shorta
         jsr     GetMonsterNamePtr
         clr_a
-        lda     $0206
+        lda     w0206
         jsr     LoadArrayItem
         jmp     DrawPosTextBuf
 
 ; ------------------------------------------------------------------------------
 
-; [ colosseum challender sprite task ]
+; [ colosseum challenger sprite task ]
 
 ColosseumCharTask:
 @b2a5:  phb
@@ -914,27 +938,31 @@ ColosseumCharTask:
         pha
         plb
         clr_a
-        lda     $4b
+        lda     z4b
         asl
         tax
-        ldy     $6d,x
+        ldy     zCharPropPtr,x
         beq     @b2df
-        sty     $67
-        ldy     #$7c75
+        sty     zSelCharPropPtr
+.if LANG_EN
+        ldy_pos BG3A, {22, 16}
+.else
+        ldy_pos BG3A, {22, 15}
+.endif
         jsr     DrawCharName
         lda     #$02
-        tsb     $47
+        tsb     z47
         lda     #2
-        ldy     #.loword(CharIconTask)
+        ldy     #near CharIconTask
         jsr     CreateTask
         lda     #$01
-        sta     $7e3649,x
+        sta     wTaskState,x
         txy
         clr_a
         lda     #$b8
-        sta     $e1
+        sta     ze1
         lda     #$68
-        sta     $e2
+        sta     ze2
         jsr     _c3b2ec
         jsr     _c3b1f3
         bra     @b2e2
@@ -948,8 +976,8 @@ ColosseumCharTask:
 ; [ clear colosseum character name ]
 
 _c3b2e5:
-@b2e5:  ldy     #.loword(ColosseumCharBlankNameText)
-        jsr     DrawPosText
+@b2e5:  ldy     #near ColosseumCharBlankNameText
+        jsr     DrawPosKana
         rts
 
 ; ------------------------------------------------------------------------------
@@ -958,9 +986,9 @@ _c3b2e5:
 
 _c3b2ec:
 @b2ec:  clr_a
-        lda     $4b
+        lda     z4b
         tax
-        lda     $69,x
+        lda     zCharID,x
         rts
 
 ; ------------------------------------------------------------------------------
@@ -969,7 +997,7 @@ _c3b2ec:
 
 ColosseumVSTask:
 @b2f3:  tax
-        jmp     (.loword(ColosseumVSTaskTbl),x)
+        jmp     (near ColosseumVSTaskTbl,x)
 
 ColosseumVSTaskTbl:
 @b2f7:  .addr   ColosseumVSTask_00
@@ -980,18 +1008,18 @@ ColosseumVSTaskTbl:
 ; [  ]
 
 ColosseumVSTask_00:
-@b2fb:  ldx     $2d
+@b2fb:  ldx     zTaskOffset
         longa
-        lda     #.loword(ColosseumVSAnim)
-        sta     $32c9,x
+        lda     #near ColosseumVSAnim
+        sta     near wTaskAnimPtr,x
         lda     #$0070
-        sta     $33ca,x
+        sta     near wTaskPosX,x
         lda     #$0060
-        sta     $344a,x
+        sta     near wTaskPosY,x
         shorta
-        inc     $3649,x
+        inc     near wTaskState,x
         lda     #^ColosseumVSAnim
-        sta     $35ca,x
+        sta     near wTaskAnimBank,x
         jsr     InitAnimTask
 ; fallthrough
 
@@ -1009,7 +1037,7 @@ ColosseumVSTask_01:
 ; [ load colosseum character cursor ]
 
 LoadColosseumCharCursor:
-@b323:  ldy     #.loword(ColosseumCharCursorProp)
+@b323:  ldy     #near ColosseumCharCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -1020,125 +1048,135 @@ UpdateColosseumCharCursor:
 @b329:  jsr     MoveCursor
 
 InitColosseumCharCursor:
-@b32c:  ldy     #.loword(ColosseumCharCursorPos)
+@b32c:  ldy     #near ColosseumCharCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 ColosseumCharCursorProp:
-@b332:  .byte   $01,$00,$00,$04,$01
+        make_cursor_prop {0, 0}, {4, 1}, NO_Y_WRAP
 
 ColosseumCharCursorPos:
-@b337:  .byte   $10,$b0
-        .byte   $48,$b0
-        .byte   $80,$b0
-        .byte   $b8,$b0
+.repeat 4, i
+        .byte   $10 + i * $38, $b0
+.endrep
 
 ; colosseum menu windows
-ColosseumPrizeWindow:
-@b33f:  .byte   $8b,$58,$0d,$02
-
-ColosseumWagerWindow:
-@b343:  .byte   $a9,$58,$0d,$02
-
-ColosseumCharWindow:
-@b347:  .byte   $cb,$5c,$1c,$07
+ColosseumPrizeWindow:                   make_window BG2A, {1, 1}, {13, 2}
+ColosseumWagerWindow:                   make_window BG2A, {16, 1}, {13, 2}
+ColosseumCharWindow:                    make_window BG2A, {1, 18}, {28, 7}
 
 ; ------------------------------------------------------------------------------
 
 ; [ load colosseum battle bg graphics ]
 
-LoadColosseumBGGfx:
-@b34b:  longa
-        lda     f:BattleBGGfxPtrs+20*3
-        sta     $f3
+.proc LoadColosseumBGGfx
+
+gfx_offset_1 := BattleBGGfxPtrs + BATTLE_BG_GFX::FIELD_3 * 3
+gfx_offset_2 := BattleBGGfxPtrs + BATTLE_BG_GFX::COLOSSEUM * 3
+tiles_offset := BattleBGTilesPtrs + BATTLE_BG_TILES::COLOSSEUM * 2
+pal_offset := BattleBGPal + BATTLE_BG_PAL::COLOSSEUM * $60
+
+; graphics 1
+        longa
+        lda     f:gfx_offset_1
+        sta     zf3
         shorta
-        lda     f:BattleBGGfxPtrs+20*3+2
-        sta     $f5
-        jsr     _c3b3f2
+        lda     f:gfx_offset_1 + 2
+        sta     zf5
+        jsr     DecompColosseumGfx
         ldy     #$6800
         sty     hVMADDL
         ldy     #$1000
-        sty     $e7
-        ldx     $00
-        jsr     _c3b3c6
+        sty     ze7
+        ldx     z0
+        jsr     TfrColosseumBGGfx
+
+; graphics 2
         longa
-        lda     f:BattleBGGfxPtrs+22*3
-        sta     $f3
+        lda     f:gfx_offset_2
+        sta     zf3
         shorta
-        lda     f:BattleBGGfxPtrs+22*3+2
-        sta     $f5
-        jsr     _c3b3f2
+        lda     f:gfx_offset_2 + 2
+        sta     zf5
+        jsr     DecompColosseumGfx
         ldy     #$7000
         sty     hVMADDL
         ldy     #$1000
-        sty     $e7
-        ldx     $00
-        jsr     _c3b3c6
+        sty     ze7
+        ldx     z0
+        jsr     TfrColosseumBGGfx
+
+; tilemap
         longa
-        lda     f:BattleBGTilesPtrs+25*2
-        sta     $f3
+        lda     f:tiles_offset
+        sta     zf3
         shorta
-        lda     #^BattleBGTiles
-        sta     $f5
-        jsr     _c3b3f2
-        jsr     _c3b3d8
+        lda     #^tiles_offset
+        sta     zf5
+        jsr     DecompColosseumGfx
+        jsr     FixColosseumBGTiles
+
+; palette
         longa
-        lda     #$0ab0
-        sta     $e7
+        lda     #near pal_offset
+        sta     ze7
         shorta
-        lda     #$e7
-        sta     $e9
-        ldx     #$30c9
+        lda     #^pal_offset
+        sta     ze9
+        ldx     #near wPalBuf::BGPal4
         stx     hWMADDL
-        ldy     $00
-@b3ba:  lda     [$e7],y
+        ldy     z0
+loop:   lda     [ze7],y
         sta     hWMDATA
         iny
         cpy     #$0060
-        bne     @b3ba
+        bne     loop
         rts
+.endproc  ; LoadColosseumBGGfx
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ transfer battle bg graphics to vram ]
 
-_c3b3c6:
-@b3c6:  longa
-@b3c8:  lda     $7eb68d,x
+.proc TfrColosseumBGGfx
+        longa
+loop:   lda     $7eb68d,x
         sta     hVMDATAL
         inx2
-        cpx     $e7
-        bne     @b3c8
+        cpx     ze7
+        bne     loop
         shorta
         rts
+.endproc  ; TfrColosseumBGGfx
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ fix battle bg tilemap tile offset ]
 
-_c3b3d8:
-@b3d8:  ldx     $00
+.proc FixColosseumBGTiles
+        ldx     z0
         longa
-@b3dc:  lda     $7eb68d,x
+loop:   lda     $7eb68d,x
         sec
         sbc     #$0380
-        sta     $7e5949,x
+        sta     $7e5949,x               ; copy to bg2 tilemap
         inx2
         cpx     #$0580
-        bne     @b3dc
+        bne     loop
         shorta
         rts
+.endproc  ; FixColosseumBGTiles
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ decompress battle bg gfx/tilemap ]
 
-_c3b3f2:
-@b3f2:  ldy     #$b68d
-        sty     $f6
+.proc DecompColosseumGfx
+        ldy     #$b68d
+        sty     zf6
         lda     #$7e
-        sta     $f8
+        sta     zf8
         phb
         lda     #$7e
         pha
@@ -1146,78 +1184,37 @@ _c3b3f2:
         jsl     Decompress_ext
         plb
         rts
+.endproc  ; DecompColosseumGfx
 
 ; ------------------------------------------------------------------------------
+
+.if LANG_EN
+
+        .define ColosseumCharBlankNameStr       {$ff,$ff,$ff,$ff,$ff,$ff,$00}
+        .define ColosseumCharMsgStr             {$92,$9e,$a5,$9e,$9c,$ad,$ff,$ad,$a1,$9e,$ff,$9c,$a1,$9a,$a5,$a5,$9e,$a7,$a0,$9e,$ab,$00}
+        .define ColosseumUnknownPrizeStr        {$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$00}
+
+.else
+
+        .define ColosseumCharBlankNameStr       {$ff,$ff,$ff,$ff,$ff,$ff,$00}
+        .define ColosseumCharMsgStr             {$81,$c3,$89,$7b,$b9,$77,$bf,$bb,$6d,$a3,$85,$6f,$3f,$75,$8d,$00}
+        .define ColosseumUnknownPrizeStr        {$cb,$cb,$cb,$cb,$cb,$cb,$cb,$cb,$00}
+
+.endif
 
 ; c3/b406: (22,16) "      "
 ; c3/b40f: ( 6,19) "select the challenger"
 ; c3/b427: ( 2, 3) "?????????????"
 
-ColosseumCharBlankNameText:
-@b406:  .word   $7c75
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$00
-
-ColosseumCharMsgText:
-@b40f:  .word   $7d15
-        .byte   $92,$9e,$a5,$9e,$9c,$ad,$ff,$ad,$a1,$9e,$ff,$9c,$a1,$9a
-        .byte   $a5,$a5,$9e,$a7,$a0,$9e,$ab,$00
-
-ColosseumUnknownPrizeText:
-@b427:  .word   $790d
-        .byte   $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$00
-
-; ------------------------------------------------------------------------------
-
-; [ menu state $3f/$40/$41/$4e/$4f: unused ]
-MenuState_3f:
-MenuState_40:
-MenuState_41:
-MenuState_4e:
-MenuState_4f:
-
-; ------------------------------------------------------------------------------
-
-_c3b437:
-@b437:  clr_ax
-        longa
-@b43b:  sta     $7ea271,x
-        inx2
-        cpx     $f3
-        bne     @b43b
-        shorta
-        rts
-
-; ------------------------------------------------------------------------------
-
-; frame data for flashing up indicator
-NameChangeArrowSprite_00:
-@b448:  .byte   1
-        .byte   $09,$00,$02,$3e
-
-NameChangeArrowSprite_01:
-@b44d:  .byte   1
-        .byte   $09,$00,$12,$3e
-
-; flashing up indicator (name change menu)
-NameChangeArrowAnim:
-@b452:  .addr   NameChangeArrowSprite_00
-        .byte   $02
-        .addr   NameChangeArrowSprite_01
-        .byte   $02
-        .addr   NameChangeArrowSprite_00
-        .byte   $ff
-
-; page up and page down frame data
-HiddenArrowSprite:
-@b45b:  .byte   0
-
-DownArrowSprite:
-@b45c:  .byte   1
-        .byte   $80,$82,$03,$3e
-
-UpArrowSprite:
-@b461:  .byte   1
-        .byte   $80,$00,$03,$be
+.if LANG_EN
+ColosseumCharBlankNameText:     pos_text BG3A, {22, 16}, ColosseumCharBlankNameStr
+ColosseumCharMsgText:           pos_text BG3A, {6, 19}, ColosseumCharMsgStr
+ColosseumUnknownPrizeText:      pos_text BG3A, {2, 3}, ColosseumUnknownPrizeStr
+.else
+ColosseumCharBlankNameText:     pos_text BG3A, {22, 15}, ColosseumCharBlankNameStr
+ColosseumCharMsgText:           pos_text BG3A, {8, 19}, ColosseumCharMsgStr
+ColosseumUnknownPrizeText:      pos_text BG3A, {4, 3}, ColosseumUnknownPrizeStr
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -1230,11 +1227,17 @@ UpArrowSprite:
 
 ; ------------------------------------------------------------------------------
 
-.macro make_colosseum_prop _monster, _item, _hide_prize
-        .byte .ident(.sprintf("MONSTER_%s", _monster))
-        .byte $40
-        .byte .ident(.sprintf("ITEM_%s", _item))
-        .ifnblank _hide_prize
+.macro make_colosseum_prop monster, item, hide_prize
+        .ifblank monster
+                .byte MONSTER::CHUPON_COLOSSEUM
+                .byte $40
+                .byte ITEM::ELIXIR
+        .else
+                .byte MONSTER::monster
+                .byte $40
+                .byte ITEM::item
+        .endif
+        .ifnblank hide_prize
                 .byte $ff
         .else
                 .byte 0
@@ -1249,262 +1252,262 @@ UpArrowSprite:
 ; df/b600
 ColosseumProp:
 
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIRK
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRILKNIFE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GUARDIAN
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; AIR_LANCET
-make_colosseum_prop "WART_PUCK", "THIEF_GLOVE"          ; THIEFKNIFE
-make_colosseum_prop "TEST_RIDER", "SWORDBREAKER"        ; ASSASSIN
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MAN_EATER
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SWORDBREAKER
-make_colosseum_prop "KARKASS", "DIRK"                   ; GRAEDUS
-make_colosseum_prop "WOOLLY", "ASSASSIN"                ; VALIANTKNIFE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRILBLADE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; REGAL_CUTLASS
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; RUNE_EDGE
-make_colosseum_prop "EVIL_OSCAR", "OGRE_NIX"            ; FLAME_SABRE
-make_colosseum_prop "SCULLION", "OGRE_NIX"              ; BLIZZARD
-make_colosseum_prop "STEROIDITE", "OGRE_NIX"            ; THUNDERBLADE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EPEE
-make_colosseum_prop "LETHAL_WPN", "BREAK_BLADE"         ; BREAK_BLADE
-make_colosseum_prop "ENUO", "DRAINER"                   ; DRAINER
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ENHANCER
-make_colosseum_prop "BORRAS", "ENHANCER"                ; CRYSTAL
-make_colosseum_prop "OUTSIDER", "FLAME_SHLD"            ; FALCHION
-make_colosseum_prop "OPINICUS", "FALCHION"              ; SOUL_SABRE
-make_colosseum_prop "SRBEHEMOTH_UNDEAD", "SOUL_SABRE"   ; OGRE_NIX
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EXCALIBUR
-make_colosseum_prop "COVERT", "OGRE_NIX"                ; SCIMITAR
-make_colosseum_prop "SCULLION", "SCIMITAR"              ; ILLUMINA
-make_colosseum_prop "DIDALOS", "ILLUMINA", 1            ; RAGNAROK
-make_colosseum_prop "GTBEHEMOTH", "GRAEDUS"             ; ATMA_WEAPON
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_PIKE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TRIDENT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; STOUT_SPEAR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; PARTISAN
-make_colosseum_prop "SKY_BASE", "STRATO"                ; PEARL_LANCE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOLD_LANCE
-make_colosseum_prop "LAND_WORM", "SKY_RENDER"           ; AURA_LANCE
-make_colosseum_prop "ALLOSAURUS", "CAT_HOOD"            ; IMP_HALBERD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; IMPERIAL
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; KODACHI
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BLOSSOM
-make_colosseum_prop "PHASE", "MURASAME"                 ; HARDENED
-make_colosseum_prop "CHUPON_COLOSSEUM", "STRIKER", 1    ; STRIKER
-make_colosseum_prop "TEST_RIDER", "STRATO"              ; STUNNER
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ASHURA
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; KOTETSU
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FORGED
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TEMPEST
-make_colosseum_prop "BORRAS", "AURA"                    ; MURASAME
-make_colosseum_prop "RHYOS", "STRATO"                   ; AURA
-make_colosseum_prop "AQUILA", "PEARL_LANCE"             ; STRATO
-make_colosseum_prop "SCULLION", "AURA_LANCE"            ; SKY_RENDER
-make_colosseum_prop "PUG", "MAGUS_ROD"                  ; HEAL_ROD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_ROD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FIRE_ROD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ICE_ROD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; THUNDER_ROD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; POISON_ROD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; PEARL_ROD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GRAVITY_ROD
-make_colosseum_prop "OPINICUS", "GRAVITY_ROD"           ; PUNISHER
-make_colosseum_prop "ALLOSAURUS", "STRATO"              ; MAGUS_ROD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CHOCOBO_BRSH
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DAVINCI_BRSH
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MAGICAL_BRSH
-make_colosseum_prop "TEST_RIDER", "GRAVITY_ROD"         ; RAINBOW_BRSH
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SHURIKEN
-make_colosseum_prop "CHAOS_DRGN", "TACK_STAR"           ; NINJA_STAR
-make_colosseum_prop "OPINICUS", "RISING_SUN"            ; TACK_STAR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FLAIL
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FULL_MOON
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MORNING_STAR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BOOMERANG
-make_colosseum_prop "ALLOSAURUS", "BONE_CLUB"           ; RISING_SUN
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HAWK_EYE
-make_colosseum_prop "TEST_RIDER", "RED_JACKET"          ; BONE_CLUB
-make_colosseum_prop "BORRAS", "BONE_CLUB"               ; SNIPER
-make_colosseum_prop "RHYOS", "SNIPER"                   ; WING_EDGE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CARDS
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DARTS
-make_colosseum_prop "OPINICUS", "BONE_CLUB"             ; DOOM_DARTS
-make_colosseum_prop "ALLOSAURUS", "TRUMP"               ; TRUMP
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DICE
-make_colosseum_prop "TRIXTER", "FIRE_KNUCKLE"           ; FIXED_DICE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; METALKNUCKLE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_CLAW
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; KAISER
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; POISON_CLAW
-make_colosseum_prop "TUMBLEWEED", "FIRE_KNUCKLE"        ; FIRE_KNUCKLE
-make_colosseum_prop "TEST_RIDER", "SNIPER"              ; DRAGON_CLAW
-make_colosseum_prop "MANTODEA", "FIRE_KNUCKLE"          ; TIGER_FANGS
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BUCKLER
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HEAVY_SHLD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_SHLD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOLD_SHLD
-make_colosseum_prop "BORRAS", "TORTOISESHLD"            ; AEGIS_SHLD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIAMOND_SHLD
-make_colosseum_prop "IRONHITMAN", "ICE_SHLD"            ; FLAME_SHLD
-make_colosseum_prop "INNOC", "FLAME_SHLD"               ; ICE_SHLD
-make_colosseum_prop "OUTSIDER", "GENJI_SHLD"            ; THUNDER_SHLD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CRYSTAL_SHLD
-make_colosseum_prop "RETAINER", "THUNDER_SHLD"          ; GENJI_SHLD
-make_colosseum_prop "STEROIDITE", "TITANIUM"            ; TORTOISESHLD
-make_colosseum_prop "DIDALOS", "CURSED_RING"            ; CURSED_SHLD
-make_colosseum_prop "HEMOPHYTE", "FORCE_SHLD"           ; PALADIN_SHLD
-make_colosseum_prop "DARK_FORCE", "THORNLET"            ; FORCE_SHLD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; LEATHER_HAT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HAIR_BAND
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; PLUMED_HAT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BERET
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MAGUS_HAT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BANDANA
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; IRONHELMET
-make_colosseum_prop "EVIL_OSCAR", "REGAL_CROWN"         ; CORONET
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BARDS_HAT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GREEN_BERET
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HEAD_BAND
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_HELM
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TIARA
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOLD_HELMET
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TIGER_MASK
-make_colosseum_prop "RHYOS", "CORONET"                  ; RED_CAP
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MYSTERY_VEIL
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CIRCLET
-make_colosseum_prop "OPINICUS", "GENJI_HELMET"          ; REGAL_CROWN
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIAMOND_HELM
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DARK_HOOD
-make_colosseum_prop "DUELLER", "DIAMOND_HELM"           ; CRYSTAL_HELM
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; OATH_VEIL
-make_colosseum_prop "HOOVER", "MERIT_AWARD", 1          ; CAT_HOOD
-make_colosseum_prop "FORTIS", "CRYSTAL_HELM"            ; GENJI_HELMET
-make_colosseum_prop "OPINICUS", "MIRAGE_VEST"           ; THORNLET
-make_colosseum_prop "BRACHOSAUR", "CAT_HOOD"            ; TITANIUM
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; LEATHERARMOR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; COTTON_ROBE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; KUNG_FU_SUIT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; IRON_ARMOR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SILK_ROBE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_VEST
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; NINJA_GEAR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WHITE_DRESS
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRIL_MAIL
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GAIA_GEAR
-make_colosseum_prop "VECTAGOYLE", "RED_JACKET"          ; MIRAGE_VEST
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOLD_ARMOR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; POWER_SASH
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; LIGHT_ROBE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIAMOND_VEST
-make_colosseum_prop "VECTAGOYLE", "RED_JACKET"          ; RED_JACKET
-make_colosseum_prop "SRBEHEMOTH_UNDEAD", "FORCE_ARMOR"  ; FORCE_ARMOR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DIAMONDARMOR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DARK_GEAR
-make_colosseum_prop "TEST_RIDER", "TAO_ROBE"            ; TAO_ROBE
-make_colosseum_prop "COVERT", "ICE_SHLD"                ; CRYSTAL_MAIL
-make_colosseum_prop "SKY_BASE", "MINERVA"               ; CZARINA_GOWN
-make_colosseum_prop "BORRAS", "AIR_ANCHOR"              ; GENJI_ARMOR
-make_colosseum_prop "RHYOS", "TORTOISESHLD"             ; IMPS_ARMOR
-make_colosseum_prop "PUG", "CZARINA_GOWN"               ; MINERVA
-make_colosseum_prop "VECTAUR", "CHOCOBO_SUIT"           ; TABBY_SUIT
-make_colosseum_prop "VETERAN", "MOOGLE_SUIT"            ; CHOCOBO_SUIT
-make_colosseum_prop "MADAM", "NUTKIN_SUIT"              ; MOOGLE_SUIT
-make_colosseum_prop "OPINICUS", "GENJI_ARMOR"           ; NUTKIN_SUIT
-make_colosseum_prop "OUTSIDER", "SNOW_MUFFLER"          ; BEHEMOTHSUIT
-make_colosseum_prop "RETAINER", "CHARM_BANGLE"          ; SNOW_MUFFLER
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; NOISEBLASTER
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BIO_BLASTER
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FLASH
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CHAIN_SAW
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DEBILITATOR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DRILL
-make_colosseum_prop "BRONTAUR", "ZEPHYR_CAPE"           ; AIR_ANCHOR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; AUTOCROSSBOW
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FIRE_SKEAN
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WATER_EDGE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BOLT_EDGE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; INVIZ_EDGE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SHADOW_EDGE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GOGGLES
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; STAR_PENDANT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; PEACE_RING
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; AMULET
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WHITE_CAPE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; JEWEL_RING
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FAIRY_RING
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BARRIER_RING
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MITHRILGLOVE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GUARD_RING
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; RUNNINGSHOES
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WALL_RING
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CHERUB_DOWN
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CURE_RING
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TRUE_KNIGHT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DRAGOONBOOTS
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ZEPHYR_CAPE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; CZARINA_RING
-make_colosseum_prop "STEROIDITE", "AIR_ANCHOR"          ; CURSED_RING
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EARRINGS
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ATLAS_ARMLET
-make_colosseum_prop "ALLOSAURUS", "RAGE_RING"           ; BLIZZARD_ORB
-make_colosseum_prop "ALLOSAURUS", "BLIZZARD_ORB"        ; RAGE_RING
-make_colosseum_prop "TAP_DANCER", "THIEF_GLOVE"         ; SNEAK_RING
-make_colosseum_prop "HEMOPHYTE", "HERO_RING"            ; POD_BRACELET
-make_colosseum_prop "RHYOS", "POD_BRACELET"             ; HERO_RING
-make_colosseum_prop "DARK_FORCE", "GOLD_HAIRPIN"        ; RIBBON
-make_colosseum_prop "ALLOSAURUS", "CRYSTAL_ORB"         ; MUSCLE_BELT
-make_colosseum_prop "BORRAS", "GOLD_HAIRPIN"            ; CRYSTAL_ORB
-make_colosseum_prop "EVIL_OSCAR", "DRAGON_HORN"         ; GOLD_HAIRPIN
-make_colosseum_prop "VECTAGOYLE", "DRAGON_HORN"         ; ECONOMIZER
-make_colosseum_prop "HARPY", "DIRK"                     ; THIEF_GLOVE
-make_colosseum_prop "VECTAGOYLE", "THUNDER_SHLD"        ; GAUNTLET
-make_colosseum_prop "HEMOPHYTE", "THUNDER_SHLD"         ; GENJI_GLOVE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; HYPER_WRIST
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; OFFERING
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BEADS
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BLACK_BELT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; COIN_TOSS
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; FAKEMUSTACHE
-make_colosseum_prop "SRBEHEMOTH_UNDEAD", "ECONOMIZER"   ; GEM_BOX
-make_colosseum_prop "RHYOS", "GOLD_HAIRPIN"             ; DRAGON_HORN
-make_colosseum_prop "COVERT", "RENAME_CARD", 1          ; MERIT_AWARD
-make_colosseum_prop "CHUPON_COLOSSEUM", "MEMENTO_RING"  ; MEMENTO_RING
-make_colosseum_prop "PUG", "DRAGON_HORN"                ; SAFETY_BIT
-make_colosseum_prop "SKY_BASE", "CHARM_BANGLE"          ; RELIC_RING
-make_colosseum_prop "OUTSIDER", "CHARM_BANGLE"          ; MOOGLE_CHARM
-make_colosseum_prop "RETAINER", "DRAGON_HORN"           ; CHARM_BANGLE
-make_colosseum_prop "TYRANOSAUR", "TINTINABAR"          ; MARVEL_SHOES
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; BACK_GUARD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GALE_HAIRPIN
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SNIPER_SIGHT
-make_colosseum_prop "STEROIDITE", "TINTINABAR"          ; EXP_EGG
-make_colosseum_prop "DARK_FORCE", "EXP_EGG"             ; TINTINABAR
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SPRINT_SHOES
-make_colosseum_prop "DOOM_DRGN", "MARVEL_SHOES"         ; RENAME_CARD
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TONIC
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; POTION
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; X_POTION
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TINCTURE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ETHER
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; X_ETHER
-make_colosseum_prop "CACTROT", "RENAME_CARD"            ; ELIXIR
-make_colosseum_prop "SIEGFRIED_1", "TINTINABAR"         ; MEGALIXIR
-make_colosseum_prop "CACTROT", "MAGICITE"               ; FENIX_DOWN
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; REVIVIFY
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ANTIDOTE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EYEDROP
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SOFT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; REMEDY
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SLEEPING_BAG
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; TENT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; GREEN_CHERRY
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; MAGICITE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SUPER_BALL
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; ECHO_SCREEN
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; SMOKE_BOMB
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; WARP_STONE
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; DRIED_MEAT
-make_colosseum_prop "CHUPON_COLOSSEUM", "ELIXIR"        ; EMPTY
+make_colosseum_prop                                     ; DIRK
+make_colosseum_prop                                     ; MITHRILKNIFE
+make_colosseum_prop                                     ; GUARDIAN
+make_colosseum_prop                                     ; AIR_LANCET
+make_colosseum_prop WART_PUCK, THIEF_GLOVE              ; THIEFKNIFE
+make_colosseum_prop TEST_RIDER, SWORDBREAKER            ; ASSASSIN
+make_colosseum_prop                                     ; MAN_EATER
+make_colosseum_prop                                     ; SWORDBREAKER
+make_colosseum_prop KARKASS, DIRK                       ; GRAEDUS
+make_colosseum_prop WOOLLY, ASSASSIN                    ; VALIANTKNIFE
+make_colosseum_prop                                     ; MITHRILBLADE
+make_colosseum_prop                                     ; REGAL_CUTLASS
+make_colosseum_prop                                     ; RUNE_EDGE
+make_colosseum_prop EVIL_OSCAR, OGRE_NIX                ; FLAME_SABRE
+make_colosseum_prop SCULLION, OGRE_NIX                  ; BLIZZARD
+make_colosseum_prop STEROIDITE, OGRE_NIX                ; THUNDERBLADE
+make_colosseum_prop                                     ; EPEE
+make_colosseum_prop LETHAL_WPN, BREAK_BLADE             ; BREAK_BLADE
+make_colosseum_prop ENUO, DRAINER                       ; DRAINER
+make_colosseum_prop                                     ; ENHANCER
+make_colosseum_prop BORRAS, ENHANCER                    ; CRYSTAL
+make_colosseum_prop OUTSIDER, FLAME_SHLD                ; FALCHION
+make_colosseum_prop OPINICUS, FALCHION                  ; SOUL_SABRE
+make_colosseum_prop SRBEHEMOTH_UNDEAD, SOUL_SABRE       ; OGRE_NIX
+make_colosseum_prop                                     ; EXCALIBUR
+make_colosseum_prop COVERT, OGRE_NIX                    ; SCIMITAR
+make_colosseum_prop SCULLION, SCIMITAR                  ; ILLUMINA
+make_colosseum_prop DIDALOS, ILLUMINA, 1                ; RAGNAROK
+make_colosseum_prop GTBEHEMOTH, GRAEDUS                 ; ATMA_WEAPON
+make_colosseum_prop                                     ; MITHRIL_PIKE
+make_colosseum_prop                                     ; TRIDENT
+make_colosseum_prop                                     ; STOUT_SPEAR
+make_colosseum_prop                                     ; PARTISAN
+make_colosseum_prop SKY_BASE, STRATO                    ; PEARL_LANCE
+make_colosseum_prop                                     ; GOLD_LANCE
+make_colosseum_prop LAND_WORM, SKY_RENDER               ; AURA_LANCE
+make_colosseum_prop ALLOSAURUS, CAT_HOOD                ; IMP_HALBERD
+make_colosseum_prop                                     ; IMPERIAL
+make_colosseum_prop                                     ; KODACHI
+make_colosseum_prop                                     ; BLOSSOM
+make_colosseum_prop PHASE, MURASAME                     ; HARDENED
+make_colosseum_prop CHUPON_COLOSSEUM, STRIKER, 1        ; STRIKER
+make_colosseum_prop TEST_RIDER, STRATO                  ; STUNNER
+make_colosseum_prop                                     ; ASHURA
+make_colosseum_prop                                     ; KOTETSU
+make_colosseum_prop                                     ; FORGED
+make_colosseum_prop                                     ; TEMPEST
+make_colosseum_prop BORRAS, AURA                        ; MURASAME
+make_colosseum_prop RHYOS, STRATO                       ; AURA
+make_colosseum_prop AQUILA, PEARL_LANCE                 ; STRATO
+make_colosseum_prop SCULLION, AURA_LANCE                ; SKY_RENDER
+make_colosseum_prop PUG, MAGUS_ROD                      ; HEAL_ROD
+make_colosseum_prop                                     ; MITHRIL_ROD
+make_colosseum_prop                                     ; FIRE_ROD
+make_colosseum_prop                                     ; ICE_ROD
+make_colosseum_prop                                     ; THUNDER_ROD
+make_colosseum_prop                                     ; POISON_ROD
+make_colosseum_prop                                     ; PEARL_ROD
+make_colosseum_prop                                     ; GRAVITY_ROD
+make_colosseum_prop OPINICUS, GRAVITY_ROD               ; PUNISHER
+make_colosseum_prop ALLOSAURUS, STRATO                  ; MAGUS_ROD
+make_colosseum_prop                                     ; CHOCOBO_BRSH
+make_colosseum_prop                                     ; DAVINCI_BRSH
+make_colosseum_prop                                     ; MAGICAL_BRSH
+make_colosseum_prop TEST_RIDER, GRAVITY_ROD             ; RAINBOW_BRSH
+make_colosseum_prop                                     ; SHURIKEN
+make_colosseum_prop CHAOS_DRGN, TACK_STAR               ; NINJA_STAR
+make_colosseum_prop OPINICUS, RISING_SUN                ; TACK_STAR
+make_colosseum_prop                                     ; FLAIL
+make_colosseum_prop                                     ; FULL_MOON
+make_colosseum_prop                                     ; MORNING_STAR
+make_colosseum_prop                                     ; BOOMERANG
+make_colosseum_prop ALLOSAURUS, BONE_CLUB               ; RISING_SUN
+make_colosseum_prop                                     ; HAWK_EYE
+make_colosseum_prop TEST_RIDER, RED_JACKET              ; BONE_CLUB
+make_colosseum_prop BORRAS, BONE_CLUB                   ; SNIPER
+make_colosseum_prop RHYOS, SNIPER                       ; WING_EDGE
+make_colosseum_prop                                     ; CARDS
+make_colosseum_prop                                     ; DARTS
+make_colosseum_prop OPINICUS, BONE_CLUB                 ; DOOM_DARTS
+make_colosseum_prop ALLOSAURUS, TRUMP                   ; TRUMP
+make_colosseum_prop                                     ; DICE
+make_colosseum_prop TRIXTER, FIRE_KNUCKLE               ; FIXED_DICE
+make_colosseum_prop                                     ; METALKNUCKLE
+make_colosseum_prop                                     ; MITHRIL_CLAW
+make_colosseum_prop                                     ; KAISER
+make_colosseum_prop                                     ; POISON_CLAW
+make_colosseum_prop TUMBLEWEED, FIRE_KNUCKLE            ; FIRE_KNUCKLE
+make_colosseum_prop TEST_RIDER, SNIPER                  ; DRAGON_CLAW
+make_colosseum_prop MANTODEA, FIRE_KNUCKLE              ; TIGER_FANGS
+make_colosseum_prop                                     ; BUCKLER
+make_colosseum_prop                                     ; HEAVY_SHLD
+make_colosseum_prop                                     ; MITHRIL_SHLD
+make_colosseum_prop                                     ; GOLD_SHLD
+make_colosseum_prop BORRAS, TORTOISESHLD                ; AEGIS_SHLD
+make_colosseum_prop                                     ; DIAMOND_SHLD
+make_colosseum_prop IRONHITMAN, ICE_SHLD                ; FLAME_SHLD
+make_colosseum_prop INNOC, FLAME_SHLD                   ; ICE_SHLD
+make_colosseum_prop OUTSIDER, GENJI_SHLD                ; THUNDER_SHLD
+make_colosseum_prop                                     ; CRYSTAL_SHLD
+make_colosseum_prop RETAINER, THUNDER_SHLD              ; GENJI_SHLD
+make_colosseum_prop STEROIDITE, TITANIUM                ; TORTOISESHLD
+make_colosseum_prop DIDALOS, CURSED_RING                ; CURSED_SHLD
+make_colosseum_prop HEMOPHYTE, FORCE_SHLD               ; PALADIN_SHLD
+make_colosseum_prop DARK_FORCE, THORNLET                ; FORCE_SHLD
+make_colosseum_prop                                     ; LEATHER_HAT
+make_colosseum_prop                                     ; HAIR_BAND
+make_colosseum_prop                                     ; PLUMED_HAT
+make_colosseum_prop                                     ; BERET
+make_colosseum_prop                                     ; MAGUS_HAT
+make_colosseum_prop                                     ; BANDANA
+make_colosseum_prop                                     ; IRONHELMET
+make_colosseum_prop EVIL_OSCAR, REGAL_CROWN             ; CORONET
+make_colosseum_prop                                     ; BARDS_HAT
+make_colosseum_prop                                     ; GREEN_BERET
+make_colosseum_prop                                     ; HEAD_BAND
+make_colosseum_prop                                     ; MITHRIL_HELM
+make_colosseum_prop                                     ; TIARA
+make_colosseum_prop                                     ; GOLD_HELMET
+make_colosseum_prop                                     ; TIGER_MASK
+make_colosseum_prop RHYOS, CORONET                      ; RED_CAP
+make_colosseum_prop                                     ; MYSTERY_VEIL
+make_colosseum_prop                                     ; CIRCLET
+make_colosseum_prop OPINICUS, GENJI_HELMET              ; REGAL_CROWN
+make_colosseum_prop                                     ; DIAMOND_HELM
+make_colosseum_prop                                     ; DARK_HOOD
+make_colosseum_prop DUELLER, DIAMOND_HELM               ; CRYSTAL_HELM
+make_colosseum_prop                                     ; OATH_VEIL
+make_colosseum_prop HOOVER,   MERIT_AWARD, 1            ; CAT_HOOD
+make_colosseum_prop FORTIS, CRYSTAL_HELM                ; GENJI_HELMET
+make_colosseum_prop OPINICUS, MIRAGE_VEST               ; THORNLET
+make_colosseum_prop BRACHOSAUR, CAT_HOOD                ; TITANIUM
+make_colosseum_prop                                     ; LEATHERARMOR
+make_colosseum_prop                                     ; COTTON_ROBE
+make_colosseum_prop                                     ; KUNG_FU_SUIT
+make_colosseum_prop                                     ; IRON_ARMOR
+make_colosseum_prop                                     ; SILK_ROBE
+make_colosseum_prop                                     ; MITHRIL_VEST
+make_colosseum_prop                                     ; NINJA_GEAR
+make_colosseum_prop                                     ; WHITE_DRESS
+make_colosseum_prop                                     ; MITHRIL_MAIL
+make_colosseum_prop                                     ; GAIA_GEAR
+make_colosseum_prop VECTAGOYLE, RED_JACKET              ; MIRAGE_VEST
+make_colosseum_prop                                     ; GOLD_ARMOR
+make_colosseum_prop                                     ; POWER_SASH
+make_colosseum_prop                                     ; LIGHT_ROBE
+make_colosseum_prop                                     ; DIAMOND_VEST
+make_colosseum_prop VECTAGOYLE, RED_JACKET              ; RED_JACKET
+make_colosseum_prop SRBEHEMOTH_UNDEAD, FORCE_ARMOR      ; FORCE_ARMOR
+make_colosseum_prop                                     ; DIAMONDARMOR
+make_colosseum_prop                                     ; DARK_GEAR
+make_colosseum_prop TEST_RIDER, TAO_ROBE                ; TAO_ROBE
+make_colosseum_prop COVERT, ICE_SHLD                    ; CRYSTAL_MAIL
+make_colosseum_prop SKY_BASE, MINERVA                   ; CZARINA_GOWN
+make_colosseum_prop BORRAS, AIR_ANCHOR                  ; GENJI_ARMOR
+make_colosseum_prop RHYOS, TORTOISESHLD                 ; IMPS_ARMOR
+make_colosseum_prop PUG, CZARINA_GOWN                   ; MINERVA
+make_colosseum_prop VECTAUR, CHOCOBO_SUIT               ; TABBY_SUIT
+make_colosseum_prop VETERAN, MOOGLE_SUIT                ; CHOCOBO_SUIT
+make_colosseum_prop MADAM, NUTKIN_SUIT                  ; MOOGLE_SUIT
+make_colosseum_prop OPINICUS, GENJI_ARMOR               ; NUTKIN_SUIT
+make_colosseum_prop OUTSIDER, SNOW_MUFFLER              ; BEHEMOTHSUIT
+make_colosseum_prop RETAINER, CHARM_BANGLE              ; SNOW_MUFFLER
+make_colosseum_prop                                     ; NOISEBLASTER
+make_colosseum_prop                                     ; BIO_BLASTER
+make_colosseum_prop                                     ; FLASH
+make_colosseum_prop                                     ; CHAIN_SAW
+make_colosseum_prop                                     ; DEBILITATOR
+make_colosseum_prop                                     ; DRILL
+make_colosseum_prop BRONTAUR, ZEPHYR_CAPE               ; AIR_ANCHOR
+make_colosseum_prop                                     ; AUTOCROSSBOW
+make_colosseum_prop                                     ; FIRE_SKEAN
+make_colosseum_prop                                     ; WATER_EDGE
+make_colosseum_prop                                     ; BOLT_EDGE
+make_colosseum_prop                                     ; INVIZ_EDGE
+make_colosseum_prop                                     ; SHADOW_EDGE
+make_colosseum_prop                                     ; GOGGLES
+make_colosseum_prop                                     ; STAR_PENDANT
+make_colosseum_prop                                     ; PEACE_RING
+make_colosseum_prop                                     ; AMULET
+make_colosseum_prop                                     ; WHITE_CAPE
+make_colosseum_prop                                     ; JEWEL_RING
+make_colosseum_prop                                     ; FAIRY_RING
+make_colosseum_prop                                     ; BARRIER_RING
+make_colosseum_prop                                     ; MITHRILGLOVE
+make_colosseum_prop                                     ; GUARD_RING
+make_colosseum_prop                                     ; RUNNINGSHOES
+make_colosseum_prop                                     ; WALL_RING
+make_colosseum_prop                                     ; CHERUB_DOWN
+make_colosseum_prop                                     ; CURE_RING
+make_colosseum_prop                                     ; TRUE_KNIGHT
+make_colosseum_prop                                     ; DRAGOONBOOTS
+make_colosseum_prop                                     ; ZEPHYR_CAPE
+make_colosseum_prop                                     ; CZARINA_RING
+make_colosseum_prop STEROIDITE, AIR_ANCHOR              ; CURSED_RING
+make_colosseum_prop                                     ; EARRINGS
+make_colosseum_prop                                     ; ATLAS_ARMLET
+make_colosseum_prop ALLOSAURUS, RAGE_RING               ; BLIZZARD_ORB
+make_colosseum_prop ALLOSAURUS, BLIZZARD_ORB            ; RAGE_RING
+make_colosseum_prop TAP_DANCER, THIEF_GLOVE             ; SNEAK_RING
+make_colosseum_prop HEMOPHYTE, HERO_RING                ; POD_BRACELET
+make_colosseum_prop RHYOS, POD_BRACELET                 ; HERO_RING
+make_colosseum_prop DARK_FORCE, GOLD_HAIRPIN            ; RIBBON
+make_colosseum_prop ALLOSAURUS, CRYSTAL_ORB             ; MUSCLE_BELT
+make_colosseum_prop BORRAS, GOLD_HAIRPIN                ; CRYSTAL_ORB
+make_colosseum_prop EVIL_OSCAR, DRAGON_HORN             ; GOLD_HAIRPIN
+make_colosseum_prop VECTAGOYLE, DRAGON_HORN             ; ECONOMIZER
+make_colosseum_prop HARPY, DIRK                         ; THIEF_GLOVE
+make_colosseum_prop VECTAGOYLE, THUNDER_SHLD            ; GAUNTLET
+make_colosseum_prop HEMOPHYTE, THUNDER_SHLD             ; GENJI_GLOVE
+make_colosseum_prop                                     ; HYPER_WRIST
+make_colosseum_prop                                     ; OFFERING
+make_colosseum_prop                                     ; BEADS
+make_colosseum_prop                                     ; BLACK_BELT
+make_colosseum_prop                                     ; COIN_TOSS
+make_colosseum_prop                                     ; FAKEMUSTACHE
+make_colosseum_prop SRBEHEMOTH_UNDEAD, ECONOMIZER       ; GEM_BOX
+make_colosseum_prop RHYOS, GOLD_HAIRPIN                 ; DRAGON_HORN
+make_colosseum_prop COVERT, RENAME_CARD, 1              ; MERIT_AWARD
+make_colosseum_prop CHUPON_COLOSSEUM, MEMENTO_RING      ; MEMENTO_RING
+make_colosseum_prop PUG, DRAGON_HORN                    ; SAFETY_BIT
+make_colosseum_prop SKY_BASE, CHARM_BANGLE              ; RELIC_RING
+make_colosseum_prop OUTSIDER, CHARM_BANGLE              ; MOOGLE_CHARM
+make_colosseum_prop RETAINER, DRAGON_HORN               ; CHARM_BANGLE
+make_colosseum_prop TYRANOSAUR, TINTINABAR              ; MARVEL_SHOES
+make_colosseum_prop                                     ; BACK_GUARD
+make_colosseum_prop                                     ; GALE_HAIRPIN
+make_colosseum_prop                                     ; SNIPER_SIGHT
+make_colosseum_prop STEROIDITE, TINTINABAR              ; EXP_EGG
+make_colosseum_prop DARK_FORCE, EXP_EGG                 ; TINTINABAR
+make_colosseum_prop                                     ; SPRINT_SHOES
+make_colosseum_prop DOOM_DRGN, MARVEL_SHOES             ; RENAME_CARD
+make_colosseum_prop                                     ; TONIC
+make_colosseum_prop                                     ; POTION
+make_colosseum_prop                                     ; X_POTION
+make_colosseum_prop                                     ; TINCTURE
+make_colosseum_prop                                     ; ETHER
+make_colosseum_prop                                     ; X_ETHER
+make_colosseum_prop CACTROT, RENAME_CARD                ; ELIXIR
+make_colosseum_prop SIEGFRIED_1, TINTINABAR             ; MEGALIXIR
+make_colosseum_prop CACTROT, MAGICITE                   ; FENIX_DOWN
+make_colosseum_prop                                     ; REVIVIFY
+make_colosseum_prop                                     ; ANTIDOTE
+make_colosseum_prop                                     ; EYEDROP
+make_colosseum_prop                                     ; SOFT
+make_colosseum_prop                                     ; REMEDY
+make_colosseum_prop                                     ; SLEEPING_BAG
+make_colosseum_prop                                     ; TENT
+make_colosseum_prop                                     ; GREEN_CHERRY
+make_colosseum_prop                                     ; MAGICITE
+make_colosseum_prop                                     ; SUPER_BALL
+make_colosseum_prop                                     ; ECHO_SCREEN
+make_colosseum_prop                                     ; SMOKE_BOMB
+make_colosseum_prop                                     ; WARP_STONE
+make_colosseum_prop                                     ; DRIED_MEAT
+make_colosseum_prop                                     ; EMPTY
 
 .popseg
 

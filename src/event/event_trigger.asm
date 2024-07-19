@@ -16,7 +16,7 @@
 ; ------------------------------------------------------------------------------
 
 ; c4/0000
-begin_fixed_block EventTriggerPtrs, $1a10
+begin_block EventTriggerPtrs, $1a10
         make_ptr_tbl_rel EventTrigger, $01a0, EventTriggerPtrs
         .addr EventTriggerEnd - EventTriggerPtrs
 
@@ -2023,6 +2023,6 @@ EventTrigger_019f:
 
 EventTriggerEnd:
 
-end_fixed_block EventTriggerPtrs
+end_block EventTriggerPtrs
 
 ; ------------------------------------------------------------------------------

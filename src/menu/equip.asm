@@ -20,7 +20,7 @@ inc_lang "text/item_name_%s.inc"
 ; [ init cursor (equip, optimum, rmove, empty) ]
 
 LoadEquipOptionCursor:
-@8e50:  ldy     #.loword(EquipOptionCursorProp)
+@8e50:  ldy     #near EquipOptionCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -31,26 +31,33 @@ UpdateEquipOptionCursor:
 @8e56:  jsr     MoveCursor
 
 InitEquipOptionCursor:
-@8e59:  ldy     #.loword(EquipOptionCursorPos)
+@8e59:  ldy     #near EquipOptionCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 EquipOptionCursorProp:
-@8e5f:  .byte   $01,$00,$00,$04,$01
+        make_cursor_prop {0, 0}, {4, 1}, NO_Y_WRAP
 
 EquipOptionCursorPos:
+.if LANG_EN
 @8e64:  .byte   $00,$10
         .byte   $38,$10
         .byte   $80,$10
         .byte   $b8,$10
+.else
+        .byte   $10,$10
+        .byte   $38,$10
+        .byte   $70,$10
+        .byte   $a0,$10
+.endif
 
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (equip/relic slot select) ]
 
 LoadEquipSlotCursor:
-@8e6c:  ldy     #.loword(EquipSlotCursorProp)
+@8e6c:  ldy     #near EquipSlotCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -61,26 +68,33 @@ UpdateEquipSlotCursor:
 @8e72:  jsr     MoveCursor
 
 InitEquipSlotCursor:
-@8e75:  ldy     #.loword(EquipSlotCursorPos)
+@8e75:  ldy     #near EquipSlotCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 EquipSlotCursorProp:
-@8e7b:  .byte   $80,$00,$00,$01,$04
+        make_cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
 
 EquipSlotCursorPos:
+.if LANG_EN
 @8e80:  .byte   $00,$2c
         .byte   $00,$38
         .byte   $00,$44
         .byte   $00,$50
+.else
+        .byte   $38,$2c
+        .byte   $38,$38
+        .byte   $38,$44
+        .byte   $38,$50
+.endif
 
 ; ------------------------------------------------------------------------------
 
 ; [ init cursor (equip/relic item select, scrolling page) ]
 
 LoadEquipLongListCursor:
-@8e88:  ldy     #.loword(EquipListCursorProp)
+@8e88:  ldy     #near EquipListCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -91,7 +105,7 @@ UpdateEquipLongListCursor:
 @8e8e:  jsr     MoveListCursor
 
 InitEquipLongListCursor:
-@8e91:  ldy     #.loword(EquipListCursorPos)
+@8e91:  ldy     #near EquipListCursorPos
         jmp     UpdateListCursorPos
 
 ; ------------------------------------------------------------------------------
@@ -99,7 +113,7 @@ InitEquipLongListCursor:
 ; [ init cursor (equip/relic item select, single page) ]
 
 LoadEquipShortListCursor:
-@8e97:  ldy     #.loword(EquipListCursorProp)
+@8e97:  ldy     #near EquipListCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -110,13 +124,13 @@ UpdateEquipShortListCursor:
 @8e9d:  jsr     MoveCursor
 
 InitEquipShortListCursor:
-@8ea0:  ldy     #.loword(EquipListCursorPos)
+@8ea0:  ldy     #near EquipListCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 EquipListCursorProp:
-@8ea6:  .byte   $81,$00,$00,$01,$09
+        make_cursor_prop {0, 0}, {1, 9}, {NO_X_WRAP, NO_Y_WRAP}
 
 EquipListCursorPos:
 @8eab:  .byte   $00,$68
@@ -134,7 +148,7 @@ EquipListCursorPos:
 ; [ load cursor for relic options (equip/remove) ]
 
 LoadRelicOptionCursor:
-@8ebd:  ldy     #.loword(RelicOptionCursorProp)
+@8ebd:  ldy     #near RelicOptionCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -145,24 +159,29 @@ UpdateRelicOptionCursor:
 @8ec3:  jsr     MoveCursor
 
 InitRelicOptionCursor:
-@8ec6:  ldy     #.loword(RelicOptionCursorPos)
+@8ec6:  ldy     #near RelicOptionCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 RelicOptionCursorProp:
-@8ecc:  .byte   $01,$00,$00,$02,$01
+        make_cursor_prop {0, 0}, {2, 1}, NO_Y_WRAP
 
 RelicOptionCursorPos:
+.if LANG_EN
 @8ed1:  .byte   $10,$10
         .byte   $48,$10
+.else
+        .byte   $10,$10
+        .byte   $38,$10
+.endif
 
 ; ------------------------------------------------------------------------------
 
 ; [ load cursor for relic slot select ]
 
 LoadRelicSlotCursor:
-@8ed5:  ldy     #.loword(RelicSlotCursorProp)
+@8ed5:  ldy     #near RelicSlotCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -173,17 +192,22 @@ UpdateRelicSlotCursor:
 @8edb:  jsr     MoveCursor
 
 InitRelicSlotCursor:
-@8ede:  ldy     #.loword(RelicSlotCursorPos)
+@8ede:  ldy     #near RelicSlotCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 RelicSlotCursorProp:
-@8ee4:  .byte   $80,$00,$00,$01,$02
+        make_cursor_prop {0, 0}, {1, 2}, NO_X_WRAP
 
 RelicSlotCursorPos:
+.if LANG_EN
 @8ee9:  .byte   $00,$44
         .byte   $00,$50
+.else
+        .byte   $38,$44
+        .byte   $38,$50
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -193,15 +217,15 @@ DrawPartyEquipMenu:
 @8eed:  lda     #$02
         sta     hBG1SC
         jsr     ClearBG2ScreenA
-        ldy     #.loword(PartyEquipWindow)
+        ldy     #near PartyEquipWindow
         jsr     DrawWindow
         jsr     TfrBG2ScreenAB
         jsr     ClearBG1ScreenA
         jsr     ClearBG1ScreenB
-        jsr     _c38f1c
-        jsr     _c38f36
-        jsr     _c38f52
-        jsr     _c38f6e
+        jsr     DrawPartyEquipSlot1
+        jsr     DrawPartyEquipSlot2
+        jsr     DrawPartyEquipSlot3
+        jsr     DrawPartyEquipSlot4
         jsr     TfrBG1ScreenAB
         jsr     TfrBG1ScreenBC
         jsr     ClearBG3ScreenA
@@ -209,99 +233,143 @@ DrawPartyEquipMenu:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw text for character slot 1 in party equip menu ]
 
-_c38f1c:
-@8f1c:  lda     $69
+DrawPartyEquipSlot1:
+@8f1c:  lda     zCharID::Slot1
         bmi     @8f35
-        ldx     $6d
-        stx     $67
-        lda     #$20
-        sta     $29
-        ldy     #$390d
+.if !LANG_EN
+        lda     #BG1_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near _c3a9f8
+        ldy     #sizeof__c3a9f8
+        jsr     DrawPosKanaList
+.endif
+        ldx     zCharPropPtr::Slot1
+        stx     zSelCharPropPtr
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+.if LANG_EN
+        ldy_pos BG1A, {2, 3}
+.else
+        ldy_pos BG1A, {2, 2}
+.endif
         jsr     DrawCharName
-        stz     $28
+        stz     zSelIndex
         lda     #$04
-        jsr     _c38f8a
+        jsr     DrawPartyEquipItems
 @8f35:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw text for character slot 2 in party equip menu ]
 
-_c38f36:
-@8f36:  lda     $6a
+DrawPartyEquipSlot2:
+@8f36:  lda     zCharID::Slot2
         bmi     @8f51
-        ldx     $6f
-        stx     $67
-        lda     #$20
-        sta     $29
-        ldy     #$3b0d
+.if !LANG_EN
+        lda     #BG1_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near _c3aa04
+        ldy     #sizeof__c3aa04
+        jsr     DrawPosKanaList
+.endif
+        ldx     zCharPropPtr::Slot2
+        stx     zSelCharPropPtr
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+.if LANG_EN
+        ldy_pos BG1A, {2, 11}
+.else
+        ldy_pos BG1A, {2, 10}
+.endif
         jsr     DrawCharName
-        lda     #$01
-        sta     $28
+        lda     #1
+        sta     zSelIndex
         lda     #$0c
-        jsr     _c38f8a
+        jsr     DrawPartyEquipItems
 @8f51:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw text for character slot 3 in party equip menu ]
 
-_c38f52:
-@8f52:  lda     $6b
+DrawPartyEquipSlot3:
+@8f52:  lda     zCharID::Slot3
         bmi     @8f6d
-        ldx     $71
-        stx     $67
-        lda     #$20
-        sta     $29
-        ldy     #$3d0d
+.if !LANG_EN
+        lda     #BG1_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near _c3aa10
+        ldy     #sizeof__c3aa10
+        jsr     DrawPosKanaList
+.endif
+        ldx     zCharPropPtr::Slot3
+        stx     zSelCharPropPtr
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+.if LANG_EN
+        ldy_pos BG1A, {2, 19}
+.else
+        ldy_pos BG1A, {2, 18}
+.endif
         jsr     DrawCharName
-        lda     #$02
-        sta     $28
+        lda     #2
+        sta     zSelIndex
         lda     #$14
-        jsr     _c38f8a
+        jsr     DrawPartyEquipItems
 @8f6d:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw text for character slot 4 in party equip menu ]
 
-_c38f6e:
-@8f6e:  lda     $6c
+DrawPartyEquipSlot4:
+@8f6e:  lda     zCharID::Slot4
         bmi     @8f89
-        ldx     $73
-        stx     $67
-        lda     #$20
-        sta     $29
-        ldy     #$3f0d
+.if !LANG_EN
+        lda     #BG1_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near _c3aa1c
+        ldy     #sizeof__c3aa1c
+        jsr     DrawPosKanaList
+.endif
+        ldx     zCharPropPtr::Slot4
+        stx     zSelCharPropPtr
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+.if LANG_EN
+        ldy_pos BG1A, {2, 27}
+.else
+        ldy_pos BG1A, {2, 26}
+.endif
         jsr     DrawCharName
-        lda     #$03
-        sta     $28
+        lda     #3
+        sta     zSelIndex
         lda     #$1c
-        jsr     _c38f8a
+        jsr     DrawPartyEquipItems
 @8f89:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw one character's equipment in party equipment overview menu ]
 
-_c38f8a:
-@8f8a:  sta     $e2
-        stz     $e0
-        ldy     $67
+DrawPartyEquipItems:
+@8f8a:  sta     ze2
+        stz     ze0
+        ldy     zSelCharPropPtr
         clr_ax
 @8f92:  phx
         phy
         phy
         phx
-        stz     $e5
-        lda     f:_c38fd5,x
-        sta     $e4
-        lda     f:_c38fdb,x
+        stz     ze5
+        lda     f:PartyEquipItemsXTbl,x
+        sta     ze4
+        lda     f:PartyEquipItemsYTbl,x
         clc
-        adc     $e2
-        ldx     $e4
+        adc     ze2
+        ldx     ze4
         jsr     GetBG1TilemapPtr
         longa
         txa
@@ -312,7 +380,7 @@ _c38f8a:
         bcs     @8fbe
         jsr     _c3941d
         bra     @8fc0
-@8fbe:  stz     $e0
+@8fbe:  stz     ze0
 @8fc0:  ply
         clr_a
         lda     $001f,y
@@ -328,11 +396,19 @@ _c38f8a:
 
 ; ------------------------------------------------------------------------------
 
-_c38fd5:
+PartyEquipItemsXTbl:
+.if LANG_EN
 @8fd5:  .byte   $02,$11,$02,$11,$02,$11
+.else
+        .byte   $07,$15,$07,$15,$07,$15
+.endif
 
-_c38fdb:
+PartyEquipItemsYTbl:
+.if LANG_EN
 @8fdb:  .byte   $01,$01,$03,$03,$05,$05
+.else
+        .byte   $00,$00,$02,$02,$04,$04
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -346,7 +422,7 @@ _c38fe1:
         and     #$40
         beq     @8fe8
         clr_a
-        lda     $e0
+        lda     ze0
         beq     @8ff7
         pla
         bra     @8ffc
@@ -367,7 +443,7 @@ _c38fe1:
         bne     @9010
         stz     hWMDATA
         rts
-@901f:  ldy     #$000d
+@901f:  ldy     #ITEM_NAME_SIZE
         lda     #$ff
 @9024:  sta     hWMDATA
         dey
@@ -377,8 +453,7 @@ _c38fe1:
 
 ; ------------------------------------------------------------------------------
 
-PartyEquipWindow:
-@902e:  .byte   $8b,$58,$1c,$18
+PartyEquipWindow:                       make_window BG2A, {1, 1}, {28, 24}
 
 ; ------------------------------------------------------------------------------
 
@@ -387,11 +462,11 @@ PartyEquipWindow:
 DrawEquipMenu:
 @9032:  jsr     DrawEquipRelicCommon
         jsr     _c3911b
-        lda     #$2c
-        sta     $29
-        ldx     #.loword(EquipSlotTextList)
-        ldy     #$0004
-        jsr     DrawPosList
+        lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near EquipSlotTextList
+        ldy     #sizeof_EquipSlotTextList
+        jsr     DrawPosKanaList
         jsr     DrawEquipOptions
         jsr     TfrBG3ScreenAB
         jmp     _c39e0f
@@ -401,11 +476,11 @@ DrawEquipMenu:
 ; [ draw equip options (equip, optimum, remove, empty) ]
 
 DrawEquipOptions:
-@904e:  lda     #$20
-        sta     $29
-        ldx     #.loword(EquipOptionTextList)
-        ldy     #$0008
-        jsr     DrawPosList
+@904e:  lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+        ldx     #near EquipOptionTextList
+        ldy     #sizeof_EquipOptionTextList
+        jsr     DrawPosKanaList
         rts
 
 ; ------------------------------------------------------------------------------
@@ -413,11 +488,11 @@ DrawEquipOptions:
 ; [ draw relic options (equip, remove) ]
 
 DrawRelicOptions:
-@905c:  lda     #$20
-        sta     $29
-        ldx     #.loword(RelicOptionTextList)
-        ldy     #$0004
-        jsr     DrawPosList
+@905c:  lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+        ldx     #near RelicOptionTextList
+        ldy     #sizeof_RelicOptionTextList
+        jsr     DrawPosKanaList
         rts
 
 ; ------------------------------------------------------------------------------
@@ -428,15 +503,15 @@ DrawRelicMenu:
 @906a:  jsr     DrawEquipRelicCommon
         jsr     GetSelCharPropPtr
         lda     $0023,y
-        sta     $b0
+        sta     zb0
         lda     $0024,y
-        sta     $b1
+        sta     zb1
         jsr     _c39131
-        lda     #$2c
-        sta     $29
-        ldx     #.loword(RelicSlotTextList)
-        ldy     #$0004
-        jsr     DrawPosList
+        lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near RelicSlotTextList
+        ldy     #sizeof_RelicSlotTextList
+        jsr     DrawPosKanaList
         jsr     DrawRelicOptions
         jsr     _c3a6ab
         jmp     TfrBG3ScreenAB
@@ -458,17 +533,17 @@ DrawEquipRelicCommon:
         jsr     _c3960c
         jsr     ClearBG2ScreenA
         jsr     ClearBG2ScreenB
-        ldy     #.loword(EquipBtmWindow1)
+        ldy     #near EquipBtmWindow1
         jsr     DrawWindow
-        ldy     #.loword(EquipTopWindow1)
+        ldy     #near EquipTopWindow1
         jsr     DrawWindow
-        ldy     #.loword(EquipOptionsWindow)
+        ldy     #near EquipOptionsWindow
         jsr     DrawWindow
-        ldy     #.loword(EquipBtmWindow2)
+        ldy     #near EquipBtmWindow2
         jsr     DrawWindow
-        ldy     #.loword(EquipTopWindow2)
+        ldy     #near EquipTopWindow2
         jsr     DrawWindow
-        ldy     #.loword(EquipTitleWindow)
+        ldy     #near EquipTitleWindow
         jsr     DrawWindow
         jsr     TfrBG2ScreenAB
         jsr     ClearBG1ScreenA
@@ -477,18 +552,18 @@ DrawEquipRelicCommon:
         jsr     TfrBG1ScreenBC
         jsr     ClearBG3ScreenA
         jsr     ClearBG3ScreenB
-        jsr     _c393e5
+        jsr     DrawEquipCharName
         jsr     CreateEquipPortraitTask
-        lda     #$2c
-        sta     $29
-        ldx     #.loword(EquipStatTextList1)
-        ldy     #$001c
+        lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near EquipStatTextList1
+        ldy     #sizeof_EquipStatTextList1
         jsr     DrawPosList
-        lda     #$2c
-        sta     $29
-        ldx     #.loword(EquipStatTextList2)
-        ldy     #$0008
-        jsr     DrawPosList
+        lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near EquipStatTextList2
+        ldy     #sizeof_EquipStatTextList2
+        jsr     DrawPosKanaList
         jmp     TfrBG3ScreenAB
 
 ; ------------------------------------------------------------------------------
@@ -497,9 +572,9 @@ DrawEquipRelicCommon:
 
 UpdateEquipStats:
 @9110:  clr_a
-        lda     $28                     ; character slot
+        lda     zSelIndex
         tax
-        lda     $69,x                   ; character number
+        lda     zCharID,x                   ; character number
         jsl     UpdateEquip_ext
         rts
 
@@ -509,8 +584,8 @@ UpdateEquipStats:
 
 _c3911b:
 @911b:  jsr     _c39975
-        lda     #$20
-        sta     $29
+        lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
         jsr     _c3913e
         jsr     _c3922d
         jsr     _c393fc
@@ -522,8 +597,8 @@ _c3911b:
 ; [  ]
 
 _c39131:
-@9131:  lda     #$20
-        sta     $29
+@9131:  lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
         jsr     _c3913e
         jsr     _c39451
         jmp     _c3945f
@@ -544,41 +619,41 @@ _c3913e:
         jsr     _c391c4
         lda     $3006
         jsr     HexToDec3
-        ldx     #$7cb7
+        ldx_pos BG3A, {23, 17}
         jsr     DrawNum3
         lda     $3004
         jsr     HexToDec3
-        ldx     #$7d37
+        ldx_pos BG3A, {23, 19}
         jsr     DrawNum3
         lda     $3002
         jsr     HexToDec3
-        ldx     #$7db7
+        ldx_pos BG3A, {23, 21}
         jsr     DrawNum3
         lda     $3000
         jsr     HexToDec3
-        ldx     #$7e37
+        ldx_pos BG3A, {23, 23}
         jsr     DrawNum3
-        jsr     _c393ab
-        ldx     $f1
-        stx     $f3
+        jsr     CalcOldBattlePower
+        ldx     zf1
+        stx     zf3
         jsr     HexToDec5
-        ldx     #$7eb7
+        ldx_pos BG3A, {23, 25}
         jsr     Draw16BitNum
         lda     $301a
         jsr     HexToDec3
-        ldx     #$7f37
+        ldx_pos BG3A, {23, 27}
         jsr     DrawNum3
         lda     $3008
         jsr     HexToDec3
-        ldx     #$7fb7
+        ldx_pos BG3A, {23, 29}
         jsr     DrawNum3
         lda     $301b
         jsr     HexToDec3
-        ldx     #$8037
+        ldx_pos BG3A, {23, 31}
         jsr     DrawNum3
         lda     $300a
         jsr     HexToDec3
-        ldx     #$80b7
+        ldx_pos BG3B, {23, 1}
         jsr     DrawNum3
         plb
         rts
@@ -600,9 +675,9 @@ _c391c4:
 @91dc:  lda     $3034
         clc
         and     #$01
-        sta     $e0
+        sta     ze0
         ror2
-        ora     $e0
+        ora     ze0
         sta     $0015,y
 @91eb:  rts
 
@@ -612,10 +687,10 @@ _c391c4:
 
 _c391ec:
 @91ec:  and     #$25
-        eor     #$ff
-        sta     $e1
+        not_a
+        sta     ze1
         lda     $0014,y
-        and     $e1
+        and     ze1
         sta     $0014,y
         rts
 
@@ -636,37 +711,62 @@ _c391fb:
 ; [  ]
 
 _c39207:
-@9207:  ldx     $00
+@9207:  ldx     z0
         longa
-@920b:  lda     $11a0,x
-        sta     $7e3000,x
-        inx2
+loop:   .repeat 2
         lda     $11a0,x
         sta     $7e3000,x
         inx2
+.endrep
         cpx     #$0040
-        bne     @920b
+        bne     loop
         shorta
-        lda     $a1
-        sta     $a0
-        lda     $cd
-        sta     $ce
+        lda     za1
+        sta     za0
+        lda     zcd
+        sta     zce
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [ no effect ]
+; [  ]
 
 _c3922d:
+.if !LANG_EN
+@99d6:  ldy     #$abd6
+        jsr     DrawPosKana
+        ldy     #$abdf
+        jsr     DrawPosKana
+        lda     $11d8
+        and     #$20
+        beq     @99f2
+        jsr     _c3922e
+        ldy     #$abe8
+        jsr     DrawPosKana
+@99f2:  lda     $11d8
+        and     #$10
+        beq     @9a02
+        jsr     _c3922e
+        ldy     #$abf1
+        jsr     DrawPosKana
+@9a02:  lda     $11d8
+        and     #$08
+        beq     @9a12
+        jsr     _c3922e
+        ldy     #$abfa
+        jsr     DrawPosKana
+@9a12:  lda     #$20
+        sta     zTextColor
+.endif
 @922d:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [ unused ??? ]
+; [  ]
 
 _c3922e:
 @922e:  lda     #$2c
-        sta     $29
+        sta     zTextColor
         rts
 
 ; ------------------------------------------------------------------------------
@@ -680,85 +780,85 @@ _c39233:
         bcs     @9241       ; branch if item can be equipped
 @923e:  jmp     _c39c87
 @9241:  jsr     GetSelCharPropPtr
-        lda     $25         ; main menu position
+        lda     z25         ; main menu position
         cmp     #$02
         beq     @924e       ; branch if equip
         iny4                ; add 4 to character data pointer (relic)
 @924e:  longa_clc
         tya
         shorta
-        adc     $5f         ; add item slot
+        adc     z5f         ; add item slot
         tay
         clr_a
-        lda     $4b         ; selected item
+        lda     z4b         ; selected item
         tax
         lda     $7e9d8a,x   ; item number
         tax
         lda     $001f,y     ; $64 = character's equipped item
-        sta     $64
+        sta     z64
         lda     $1869,x     ; selected item
         sta     $001f,y     ; equip on character
         phy
         jsr     UpdateEquipStats
         jsr     GetSelCharPropPtr
         jsr     CheckHandEffects
-        jsr     _c39320
+        jsr     UpdateEquipStatColors
         lda     $11a6       ; vigor
         jsr     HexToDec3
-        ldx     #$7cbf      ; (27,17)
-        lda     $7e3040     ; vigor text color
-        sta     $29
+        ldx_pos BG3A, {27, 17}
+        lda     wStatTextColor::Strength
+        sta     zTextColor
         jsr     DrawNum3
         lda     $11a4
         jsr     HexToDec3
-        ldx     #$7d3f      ; (27,19)
-        lda     $7e3041
-        sta     $29
+        ldx_pos BG3A, {27, 19}
+        lda     wStatTextColor::Speed
+        sta     zTextColor
         jsr     DrawNum3
         lda     $11a2
         jsr     HexToDec3
-        ldx     #$7dbf      ; (27,21)
-        lda     $7e3042
-        sta     $29
+        ldx_pos BG3A, {27, 21}
+        lda     wStatTextColor::Stamina
+        sta     zTextColor
         jsr     DrawNum3
         lda     $11a0
         jsr     HexToDec3
-        ldx     #$7e3f      ; (27,23)
-        lda     $7e3043
-        sta     $29
+        ldx_pos BG3A, {27, 23}
+        lda     wStatTextColor::MagPwr
+        sta     zTextColor
         jsr     DrawNum3
-        jsr     _c39371
+        jsr     CalcNewBattlePower
         jsr     HexToDec5
-        ldx     #$7ebf      ; (27,25)
-        lda     $7e3048
-        sta     $29
+        ldx_pos BG3A, {27, 25}
+        lda     wStatTextColor::BatPwr
+        sta     zTextColor
         jsr     Draw16BitNum
         lda     $11ba
         jsr     HexToDec3
-        ldx     #$7f3f      ; (27,27)
-        lda     $7e3044
-        sta     $29
+        ldx_pos BG3A, {27, 27}
+        lda     wStatTextColor::Defense
+        sta     zTextColor
         jsr     DrawNum3
         lda     $11a8
         jsr     HexToDec3
-        ldx     #$7fbf      ; (27,29)
-        lda     $7e3045
-        sta     $29
+        ldx_pos BG3A, {27, 29}
+        lda     wStatTextColor::Evade
+        sta     zTextColor
         jsr     DrawNum3
         lda     $11bb
         jsr     HexToDec3
-        ldx     #$803f      ; (27,31)
-        lda     $7e3046
-        sta     $29
+        ldx_pos BG3A, {27, 31}
+        lda     wStatTextColor::MagDef
+        sta     zTextColor
         jsr     DrawNum3
         lda     $11aa
         jsr     HexToDec3
-        ldx     #$80bf      ; (27,33)
-        lda     $7e3047
-        sta     $29
+        ldx_pos BG3B, {27, 1}
+        lda     wStatTextColor::MBlock
+        sta     zTextColor
         jsr     DrawNum3
         ply
-        lda     $64         ; restore equipped item
+        lda     z64         ; restore equipped item
         sta     $001f,y
         rts
 
@@ -766,48 +866,48 @@ _c39233:
 
 ; [ update stat text colors ]
 
-_c39320:
+UpdateEquipStatColors:
 @9320:  phb
         lda     #$7e
         pha
         plb
         clr_ax
-@9327:  lda     f:_c39369,x   ; pointer to battle stat
+@9327:  lda     f:EquipStatOffsets,x    ; pointer to battle stat
         phx
         tax
-        lda     f:$0011a0,x   ; stat with item equipped
-        cmp     $3000,x     ; compare with saved stat
-        beq     @933c       ; branch if no change
-        bcc     @9340       ; branch if less
-        lda     #$28        ; yellow text
+        lda     f:$0011a0,x             ; stat with item equipped
+        cmp     $3000,x                 ; compare with saved stat
+        beq     @933c                   ; branch if no change
+        bcc     @9340                   ; branch if less
+        lda     #$28                    ; yellow text
         bra     @9342
-@933c:  lda     #$20        ; white text
+@933c:  lda     #$20                    ; white text
         bra     @9342
-@9340:  lda     #$24        ; gray text
+@9340:  lda     #$24                    ; gray text
 @9342:  plx
-        sta     $3040,x     ; set high byte of bg data
-        inx                 ; next stat
+        sta     near wStatTextColor,x
+        inx                             ; next stat
         cpx     #8
         bne     @9327
-        jsr     _c39371
-        jsr     _c393ab
-        ldy     $f3
-        cpy     $f1
+        jsr     CalcNewBattlePower
+        jsr     CalcOldBattlePower
+        ldy     zf3
+        cpy     zf1
         beq     @935e
         bcc     @9362
-        lda     #$28        ; yellow text
+        lda     #BG3_TEXT_COLOR::YELLOW
         bra     @9364
-@935e:  lda     #$20        ; white text
+@935e:  lda     #BG3_TEXT_COLOR::DEFAULT
         bra     @9364
-@9362:  lda     #$24        ; gray text
-@9364:  sta     $3048       ; set high byte of bg data for bat.pwr
+@9362:  lda     #BG3_TEXT_COLOR::GRAY
+@9364:  sta     near wStatTextColor::BatPwr
         plb
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; pointers to battle stats (+$11a0) vigor, speed, stamina, mag.pwr, defense, evade, magic defense, mblock
-_c39369:
+EquipStatOffsets:
 @9369:  .byte   $06,$04,$02,$00,$1a,$08,$1b,$0a
 
 ; ------------------------------------------------------------------------------
@@ -816,8 +916,8 @@ _c39369:
 
 ; +$f3 = battle power (out)
 
-_c39371:
-@9371:  lda     $a1         ; branch if no gauntlet bonus
+CalcNewBattlePower:
+@9371:  lda     za1         ; branch if no gauntlet bonus
         beq     @938b
         lda     f:$0011ac     ; right hand battle power
         beq     @9381       ; branch if right hand empty
@@ -826,7 +926,7 @@ _c39371:
 @9381:  lda     f:$0011ad     ; copy left hand battle power to right hand (double battle power)
         sta     f:$0011ac
         bra     @939a
-@938b:  lda     $cd         ; branch if wearing genji glove
+@938b:  lda     zcd         ; branch if wearing genji glove
         bne     @939a
         lda     f:$0011ac
         beq     @939a
@@ -835,10 +935,10 @@ _c39371:
 @939a:  lda     f:$0011ac
         clc
         adc     f:$0011ad
-        sta     $f3
+        sta     zf3
         clr_a
         adc     #$00
-        sta     $f4
+        sta     zf4
         rts
 
 ; ------------------------------------------------------------------------------
@@ -847,8 +947,8 @@ _c39371:
 
 ; +$f1 = battle power (out)
 
-_c393ab:
-@93ab:  lda     $a0
+CalcOldBattlePower:
+@93ab:  lda     za0
         beq     @93c5
         lda     $7e300c
         beq     @93bb
@@ -857,7 +957,7 @@ _c393ab:
 @93bb:  lda     $7e300d
         sta     $7e300c
         bra     @93d4
-@93c5:  lda     $ce
+@93c5:  lda     zce
         bne     @93d4
         lda     $7e300c
         beq     @93d4
@@ -866,22 +966,29 @@ _c393ab:
 @93d4:  lda     $7e300c
         clc
         adc     $7e300d
-        sta     $f1
+        sta     zf1
         clr_a
         adc     #$00
-        sta     $f2
+        sta     zf2
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw character name for equipment menus ]
 
-_c393e5:
+DrawEquipCharName:
 @93e5:  jsr     GetSelCharPropPtr
-        lda     #$20
-        sta     $29
-        ldy     #$7bb7
+        lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+.if LANG_EN
+        ldy_pos BG3A, {23, 13}
         jmp     DrawCharName
+.else
+        ldy_pos BG3A, {19, 10}
+        jsr     DrawCharName
+        ldy_pos BG3A, {19, 12}
+        jmp     DrawCharTitle
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -889,11 +996,11 @@ _c393e5:
 
 GetSelCharPropPtr:
 @93f2:  clr_a
-        lda     $28         ; character slot
+        lda     zSelIndex
         asl
         tax
-        ldy     $6d,x       ; pointer to character data
-        sty     $67
+        ldy     zCharPropPtr,x       ; pointer to character data
+        sty     zSelCharPropPtr
         rts
 
 ; ------------------------------------------------------------------------------
@@ -902,13 +1009,21 @@ GetSelCharPropPtr:
 
 _c393fc:
 @93fc:  jsr     _c3941d
-        ldx     #$7a1b
+.if LANG_EN
+        ldx_pos BG3A, {9, 7}
+.else
+        ldx_pos BG3A, {9, 6}
+.endif
         jsr     _c3946d
         lda     $001f,y
         jsr     _c38fe1
         jsr     DrawPosTextBuf
         jsr     _c3941d
-        ldx     #$7a9b
+.if LANG_EN
+        ldx_pos BG3A, {9, 9}
+.else
+        ldx_pos BG3A, {9, 8}
+.endif
         jsr     _c3946d
         lda     $0020,y
         jmp     _c39479
@@ -925,9 +1040,9 @@ _c3941d:
         lda     $0020,y
         cmp     #$ff
         bne     @9432
-        sta     $e0
+        sta     ze0
         bra     @9434
-@9432:  stz     $e0
+@9432:  stz     ze0
 @9434:  rts
 
 ; ------------------------------------------------------------------------------
@@ -935,9 +1050,13 @@ _c3941d:
 ; [  ]
 
 _c39435:
-@9435:  ldx     #$7b1b
+.if LANG_EN
+@9435:  ldx_pos BG3A, {9, 11}
+.else
+        ldx_pos BG3A, {9, 10}
+.endif
         jsr     _c3946d
-        stz     $e0
+        stz     ze0
         lda     $0021,y
         jmp     _c39479
 
@@ -946,9 +1065,13 @@ _c39435:
 ; [  ]
 
 _c39443:
-@9443:  ldx     #$7b9b
+.if LANG_EN
+@9443:  ldx_pos BG3A, {9, 13}
+.else
+        ldx_pos BG3A, {9, 12}
+.endif
         jsr     _c3946d
-        stz     $e0
+        stz     ze0
         lda     $0022,y
         jmp     _c39479
 
@@ -957,9 +1080,13 @@ _c39443:
 ; [  ]
 
 _c39451:
-@9451:  ldx     #$7b1b
+.if LANG_EN
+@9451:  ldx_pos BG3A, {9, 11}
+.else
+        ldx_pos BG3A, {9, 10}
+.endif
         jsr     _c3946d
-        stz     $e0
+        stz     ze0
         lda     $0023,y
         jmp     _c39479
 
@@ -968,9 +1095,13 @@ _c39451:
 ; [  ]
 
 _c3945f:
-@945f:  ldx     #$7b9b
+.if LANG_EN
+@945f:  ldx_pos BG3A, {9, 13}
+.else
+        ldx_pos BG3A, {9, 12}
+.endif
         jsr     _c3946d
-        stz     $e0
+        stz     ze0
         lda     $0024,y
         jmp     _c39479
 
@@ -996,28 +1127,22 @@ _c39479:
 ; ------------------------------------------------------------------------------
 
 ; inventory/stats window
-EquipBtmWindow1:
-@947f:  .byte   $4b,$5b,$1c,$0d
-
 ; current equipped items window
-EquipTopWindow1:
-@9483:  .byte   $0b,$59,$1c,$07
-
 ; equip options window (equip, optimum, remove, empty)
-EquipOptionsWindow:
-@9487:  .byte   $8b,$58,$1c,$02
-
 ; inventory/stats window
-EquipBtmWindow2:
-@948b:  .byte   $4b,$63,$1c,$0d
-
 ; current equipped items window
-EquipTopWindow2:
-@948f:  .byte   $0b,$61,$1c,$07
-
 ; equip title window
-EquipTitleWindow:
-@9493:  .byte   $b7,$60,$06,$02
+
+EquipBtmWindow1:                        make_window BG2A, {1, 12}, {28, 13}
+EquipTopWindow1:                        make_window BG2A, {1, 3}, {28, 7}
+EquipOptionsWindow:                     make_window BG2A, {1, 1}, {28, 2}
+EquipBtmWindow2:                        make_window BG2B, {1, 12}, {28, 13}
+EquipTopWindow2:                        make_window BG2B, {1, 3}, {28, 7}
+.if LANG_EN
+EquipTitleWindow:                       make_window BG2B, {23, 1}, {6, 2}
+.else
+EquipTitleWindow:                       make_window BG2B, {24, 1}, {5, 2}
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -1030,14 +1155,14 @@ InitPartyEquipScrollHDMA:
         sta     $4350
         lda     #$0e
         sta     $4351
-        ldy     #.loword(_c395d8)
+        ldy     #near _c395d8
         sty     $4352
         lda     #^_c395d8
         sta     $4354
         lda     #^_c395d8
         sta     $4357
         lda     #$20
-        tsb     $43
+        tsb     zEnableHDMA
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1047,26 +1172,26 @@ InitPartyEquipScrollHDMA:
 InitEquipScrollHDMA:
 @94b6:  lda     #$02
         sta     $4350
-        lda     #$12
+        lda     #<hBG3VOFS
         sta     $4351
-        ldy     #.loword(_c395d8)
+        ldy     #near _c395d8
         sty     $4352
         lda     #^_c395d8
         sta     $4354
         lda     #^_c395d8
         sta     $4357
         lda     #$20
-        tsb     $43
+        tsb     zEnableHDMA
         jsr     LoadEquipBG1VScrollHDMATbl
-        ldx     $00
+        ldx     z0
 @94d9:  lda     f:_c39564,x
         sta     $7e9bc9,x
         inx
-        cpx     #$000d
+        cpx     #sizeof__c39564
         bne     @94d9
         lda     #$02
         sta     $4360
-        lda     #$0d
+        lda     #<hBG1HOFS
         sta     $4361
         ldy     #$9bc9
         sty     $4362
@@ -1076,7 +1201,7 @@ InitEquipScrollHDMA:
         sta     $4367
         lda     #$02
         sta     $4370
-        lda     #$0e
+        lda     #<hBG1VOFS
         sta     $4371
         ldy     #$9849
         sty     $4372
@@ -1085,7 +1210,7 @@ InitEquipScrollHDMA:
         lda     #$7e
         sta     $4377
         lda     #$c0
-        tsb     $43
+        tsb     zEnableHDMA
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1093,7 +1218,7 @@ InitEquipScrollHDMA:
 ; [ load bg1 vertical scroll HDMA table for equip/relic item list ]
 
 LoadEquipBG1VScrollHDMATbl:
-@9520:  ldx     $00
+@9520:  ldx     z0
 @9522:  lda     f:_c39571,x
         sta     $7e9849,x
         inx
@@ -1103,7 +1228,7 @@ LoadEquipBG1VScrollHDMATbl:
         sta     $7e9849,x
         inx
         clr_a
-        lda     $49
+        lda     z49
         asl4
         and     #$ff
         longa_clc
@@ -1122,73 +1247,74 @@ LoadEquipBG1VScrollHDMATbl:
 
 ; ------------------------------------------------------------------------------
 
-_c39564:
-@9564:  .byte   $27,$00,$01
-        .byte   $3c,$00,$01
-        .byte   $6c,$00,$00
-        .byte   $1e,$00,$01
-        .byte   $00
+begin_block _c39564
+        hdma_word 39, $0100
+        hdma_word 60, $0100
+        hdma_word 108, $0000
+        hdma_word 30, $0100
+        hdma_end
+end_block _c39564
 
 ; ------------------------------------------------------------------------------
 
 _c39571:
-@9571:  .byte   $3f,$00,$00
-        .byte   $0c,$04,$00
-        .byte   $0c,$08,$00
-        .byte   $0a,$0c,$00
-        .byte   $01,$0c,$00
-        .byte   $01,$0c,$00
-        .byte   $04,$a0,$ff
-        .byte   $04,$a0,$ff
-        .byte   $04,$a0,$ff
-        .byte   $04,$a4,$ff
-        .byte   $04,$a4,$ff
-        .byte   $04,$a4,$ff
-        .byte   $04,$a8,$ff
-        .byte   $04,$a8,$ff
-        .byte   $04,$a8,$ff
-        .byte   $04,$ac,$ff
-        .byte   $04,$ac,$ff
-        .byte   $04,$ac,$ff
-        .byte   $04,$b0,$ff
-        .byte   $04,$b0,$ff
-        .byte   $04,$b0,$ff
-        .byte   $04,$b4,$ff
-        .byte   $04,$b4,$ff
-        .byte   $04,$b4,$ff
-        .byte   $04,$b8,$ff
-        .byte   $04,$b8,$ff
-        .byte   $04,$b8,$ff
-        .byte   $04,$bc,$ff
-        .byte   $04,$bc,$ff
-        .byte   $04,$bc,$ff
-        .byte   $04,$c0,$ff
-        .byte   $04,$c0,$ff
-        .byte   $04,$c0,$ff
-        .byte   $1e,$10,$00
-        .byte   $00
+        hdma_word 63, 0
+        hdma_word 12, 4
+        hdma_word 12, 8
+        hdma_word 10, 12
+        hdma_word 1, 12
+        hdma_word 1, 12
+        hdma_word 4, -96
+        hdma_word 4, -96
+        hdma_word 4, -96
+        hdma_word 4, -92
+        hdma_word 4, -92
+        hdma_word 4, -92
+        hdma_word 4, -88
+        hdma_word 4, -88
+        hdma_word 4, -88
+        hdma_word 4, -84
+        hdma_word 4, -84
+        hdma_word 4, -84
+        hdma_word 4, -80
+        hdma_word 4, -80
+        hdma_word 4, -80
+        hdma_word 4, -76
+        hdma_word 4, -76
+        hdma_word 4, -76
+        hdma_word 4, -72
+        hdma_word 4, -72
+        hdma_word 4, -72
+        hdma_word 4, -68
+        hdma_word 4, -68
+        hdma_word 4, -68
+        hdma_word 4, -64
+        hdma_word 4, -64
+        hdma_word 4, -64
+        hdma_word 30, 16
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
 _c395d8:
-@95d8:  .byte   $0f,$00,$00
-        .byte   $0c,$04,$00
-        .byte   $0c,$08,$00
-        .byte   $0c,$0c,$00
-        .byte   $0c,$10,$00
-        .byte   $0c,$14,$00
-        .byte   $0c,$18,$00
-        .byte   $0c,$1c,$00
-        .byte   $0c,$20,$00
-        .byte   $0c,$24,$00
-        .byte   $0c,$28,$00
-        .byte   $0c,$2c,$00
-        .byte   $0c,$30,$00
-        .byte   $0c,$34,$00
-        .byte   $0c,$38,$00
-        .byte   $0c,$3c,$00
-        .byte   $0c,$40,$00
-        .byte   $00
+        hdma_word 15, 0
+        hdma_word 12, 4
+        hdma_word 12, 8
+        hdma_word 12, 12
+        hdma_word 12, 16
+        hdma_word 12, 20
+        hdma_word 12, 24
+        hdma_word 12, 28
+        hdma_word 12, 32
+        hdma_word 12, 36
+        hdma_word 12, 40
+        hdma_word 12, 44
+        hdma_word 12, 48
+        hdma_word 12, 52
+        hdma_word 12, 56
+        hdma_word 12, 60
+        hdma_word 12, 64
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
@@ -1196,8 +1322,8 @@ _c395d8:
 
 _c3960c:
 @960c:  jsr     ClearEquipOptionText
-        ldy     $00
-        sty     $39
+        ldy     z0
+        sty     zBG2HScroll
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1207,9 +1333,9 @@ _c3960c:
 _c39614:
 @9614:  jsr     ClearEquipOptionText
         ldy     #$0100
-        sty     $39
-        lda     #$2c
-        sta     $29
+        sty     zBG2HScroll
+        lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1220,22 +1346,22 @@ MenuState_36:
 @9621:  jsr     _c3960c
         jsr     DrawEquipOptions
         jsr     UpdateEquipOptionCursor
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @9635
         jsr     PlaySelectSfx
         bra     SelectEquipOption
-@9635:  lda     $09
-        bit     #$80
+@9635:  lda     z08+1
+        bit     #>JOY_B
         beq     @9648
         jsr     PlayCancelSfx
         jsr     UpdateEquipStats
-        lda     #$04
-        sta     $27
-        stz     $26
+        lda     #MENU_STATE::FIELD_MENU_INIT
+        sta     zNextMenuState
+        stz     zMenuState
         rts
 @9648:  lda     #$35
-        sta     $e0
+        sta     ze0
         jmp     CheckShoulderBtns
 
 ; ------------------------------------------------------------------------------
@@ -1243,8 +1369,8 @@ MenuState_36:
 ; [ draw "EQUIP" title in equip/relic menu ]
 
 DrawEquipTitleEquip:
-@964f:  ldy     #.loword(EquipTitleEquipText)
-        jsr     DrawPosText
+@964f:  ldy     #near EquipTitleEquipText
+        jsr     DrawPosKana
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1252,8 +1378,8 @@ DrawEquipTitleEquip:
 ; [ draw "REMOVE" title in equip/relic menu ]
 
 DrawEquipTitleRemove:
-@9656:  ldy     #.loword(EquipTitleRemoveText)
-        jsr     DrawPosText
+@9656:  ldy     #near EquipTitleRemoveText
+        jsr     DrawPosKana
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1261,8 +1387,8 @@ DrawEquipTitleRemove:
 ; [ clear equip options ]
 
 ClearEquipOptionText:
-@965d:  ldy     #.loword(EquipBlankOptionsText)
-        jsr     DrawPosText
+@965d:  ldy     #near EquipBlankOptionsText
+        jsr     DrawPosKana
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1271,10 +1397,10 @@ ClearEquipOptionText:
 
 SelectEquipOption:
 @9664:  clr_a
-        lda     $4b
+        lda     z4b
         asl
         tax
-        jmp     (.loword(SelectEquipOptionTbl),x)
+        jmp     (near SelectEquipOptionTbl,x)
 
 SelectEquipOptionTbl:
 @966c:  .addr   SelectEquipOption_00
@@ -1292,7 +1418,7 @@ SelectEquipOption_00:
         jsr     LoadEquipSlotCursor
         jsr     InitEquipSlotCursor
         lda     #$55
-        sta     $26
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1302,7 +1428,7 @@ SelectEquipOption_00:
 SelectEquipOption_01:
 @9685:  jsr     EquipOptimum
         jsr     _c3911b
-        stz     $4d
+        stz     z4d
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1315,7 +1441,7 @@ SelectEquipOption_02:
         jsr     LoadEquipSlotCursor
         jsr     InitEquipSlotCursor
         lda     #$56
-        sta     $26
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1325,7 +1451,7 @@ SelectEquipOption_02:
 SelectEquipOption_03:
 @969f:  jsr     EquipRemoveAll
         jsr     _c3911b
-        stz     $4d
+        stz     z4d
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1358,15 +1484,15 @@ EquipRemoveAll:
 OptimizeCharEquip:
 @96d2:  jsr     InitCharProp
         clr_ax
-        lda     $0201                   ; character number
-@96da:  cmp     $69,x                   ; look for character in party
+        lda     w0201                   ; character number
+@96da:  cmp     zCharID,x                   ; look for character in party
         beq     @96e6
         inx
         cpx     #4
         bne     @96da
 @96e4:  bra     @96e4                   ; infinite loop
 @96e6:  txa
-        sta     $28                     ; $28 = character slot
+        sta     zSelIndex
         jsr     UpdateEquipStats
         jsr     EquipOptimum
         rtl
@@ -1379,28 +1505,28 @@ EquipOptimum:
 @96f0:  jsr     UpdateEquipStats
         jsr     EquipRemoveAll
         jsr     GetSelCharPropPtr
-        sty     $f3                     ; +$f3 = pointer to character data
+        sty     zf3                     ; +$f3 = pointer to character data
         lda     $11d8                   ; gauntlet effect
         and     #$08
         beq     @971a                   ; branch if not set
 
 ; select optimum 2-handed weapon
-        stz     $4b
+        stz     z4b
         jsr     GetValidEquip
         jsr     GetValidWeapons
         jsr     SortValidEquip
         jsr     GetBest2Hand
-        ldy     $f3
+        ldy     zf3
         sta     $001f,y                 ; set main-hand
         jsr     DecItemQty
         bra     @976b
 
 ; select optimum one-handed weapon
-@971a:  stz     $4b                     ; cursor position = 0 (main hand)
+@971a:  stz     z4b                     ; cursor position = 0 (main hand)
         jsr     GetValidEquip
         jsr     GetValidWeapons
         jsr     SortValidEquip
-        ldy     $f3
+        ldy     zf3
         jsr     GetBestEquip
         sta     $001f,y                 ; set main hand
         jsr     DecItemQty
@@ -1410,11 +1536,11 @@ EquipOptimum:
 
 ; select optimum shield
         lda     #$01                    ; cursor position = 1 (off-hand)
-        sta     $4b
+        sta     z4b
         jsr     GetValidEquip
         jsr     GetValidShields
         jsr     SortValidEquip
-        ldy     $f3
+        ldy     zf3
         jsr     GetBestEquip
         sta     $0020,y                 ; set off-hand
         jsr     DecItemQty
@@ -1422,11 +1548,11 @@ EquipOptimum:
 
 ; genji glove (equip a weapon in off-hand)
 @9751:  lda     #$01                    ; cursor position = 1 (off-hand)
-        sta     $4b
+        sta     z4b
         jsr     GetValidEquip
         jsr     GetValidWeapons
         jsr     SortValidEquip
-        ldy     $f3
+        ldy     zf3
         jsr     GetBestEquip
         sta     $0020,y                 ; set off-hand
         jsr     DecItemQty
@@ -1434,18 +1560,18 @@ EquipOptimum:
 
 ; select optimum helmet & armor
 @976b:  lda     #$02                    ; cursor position = 2 (helmet)
-        sta     $4b
+        sta     z4b
         jsr     GetValidEquip
         jsr     SortValidEquip
-        ldy     $f3
+        ldy     zf3
         jsr     GetBestEquip
         sta     $0021,y                 ; set helmet
         jsr     DecItemQty
         lda     #$03                    ; cursor position = 3 (armor)
-        sta     $4b
+        sta     z4b
         jsr     GetValidEquip
         jsr     SortValidEquip
-        ldy     $f3
+        ldy     zf3
         jsr     GetBestEquip
         sta     $0022,y                 ; set armor
         jmp     DecItemQty
@@ -1457,7 +1583,7 @@ EquipOptimum:
 GetValidWeapons:
 @9795:  jsr     ClearValidItemList
         jsr     GetCharEquipMask
-        ldx     $00
+        ldx     z0
         txy
 @979e:  clr_a
         lda     $1869,y     ; item in inventory
@@ -1471,17 +1597,17 @@ GetValidWeapons:
         bne     @97c8       ; branch if not a weapon
         longa
         lda     f:ItemProp+1,x
-        bit     $e7
+        bit     ze7
         beq     @97c8       ; branch if not equippable
         shorta
         tya
         sta     hWMDATA       ; add to list of weapons
-        inc     $e0
+        inc     ze0
 @97c8:  shorta        ; next item
         iny
         cpy     #$00ff
         bne     @979e
-        lda     $e0         ; set length of list
+        lda     ze0         ; set length of list
         sta     $7e9d89
         rts
 
@@ -1492,7 +1618,7 @@ GetValidWeapons:
 GetValidShields:
 @97d7:  jsr     ClearValidItemList
         jsr     GetCharEquipMask
-        ldx     $00
+        ldx     z0
         txy
 @97e0:  clr_a
         lda     $1869,y
@@ -1506,17 +1632,17 @@ GetValidShields:
         bne     @980a
         longa
         lda     f:ItemProp+1,x
-        bit     $e7
+        bit     ze7
         beq     @980a
         shorta
         tya
         sta     hWMDATA
-        inc     $e0
+        inc     ze0
 @980a:  shorta
         iny
         cpy     #$00ff
         bne     @97e0
-        lda     $e0
+        lda     ze0
         sta     $7e9d89
         rts
 
@@ -1556,22 +1682,22 @@ GetBestEquip:
 
 ; ed/82e4
 ImpItem:
-        .byte ITEM_CURSED_SHLD
-        .byte ITEM_THORNLET
-        .byte ITEM_IMP_HALBERD
-        .byte ITEM_TORTOISESHLD
-        .byte ITEM_TITANIUM
-        .byte ITEM_IMPS_ARMOR
-        .byte ITEM_ATMA_WEAPON
-        .byte ITEM_DRAINER
-        .byte ITEM_SOUL_SABRE
-        .byte ITEM_HEAL_ROD
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
-        .byte ITEM_EMPTY
+        .byte ITEM::CURSED_SHLD
+        .byte ITEM::THORNLET
+        .byte ITEM::IMP_HALBERD
+        .byte ITEM::TORTOISESHLD
+        .byte ITEM::TITANIUM
+        .byte ITEM::IMPS_ARMOR
+        .byte ITEM::ATMA_WEAPON
+        .byte ITEM::DRAINER
+        .byte ITEM::SOUL_SABRE
+        .byte ITEM::HEAL_ROD
+        .byte ITEM::EMPTY
+        .byte ITEM::EMPTY
+        .byte ITEM::EMPTY
+        .byte ITEM::EMPTY
+        .byte ITEM::EMPTY
+        .byte ITEM::EMPTY
 
 .popseg
 
@@ -1582,8 +1708,8 @@ ImpItem:
 GetBest2Hand:
 @983f:  lda     $7e9d89     ; branch if there are items in the list
         beq     @9881
-        sta     $cb         ; +$cb = number of items in list
-        stz     $cc
+        sta     zcb         ; +$cb = number of items in list
+        stz     zcb+1
         clr_ay
 @984b:  clr_ax
 @984d:  phx
@@ -1598,18 +1724,18 @@ GetBest2Hand:
         inx
         cpx     #$000a      ; number of imp items
         bne     @984d
-        sta     $c9         ; $c9 = item number
+        sta     zc9         ; $c9 = item number
         jsr     GetItemPropPtr
         ldx     hMPYL
         lda     f:ItemProp+19,x   ; 2-handed weapon
         and     #$40
         beq     @9878       ; branch if not 2-handed
-        lda     $c9
+        lda     zc9
         rts
 
 ; imp item
 @9878:  iny
-        cpy     $cb
+        cpy     zcb
         bne     @984b       ; branch if this is not the last item in the list
         jsr     GetBestEquip
         rts
@@ -1627,36 +1753,36 @@ MenuState_55:
         jsr     _c39975
 
 ; A button
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @98b4
         jsr     PlaySelectSfx
-        lda     $4e                     ; save cursor position
-        sta     $5f
+        lda     z4e                     ; save cursor position
+        sta     z5f
         lda     #$57                    ; go to menu state $57
-        sta     $26
+        sta     zMenuState
         jsr     GetValidEquip
         jsr     SortValidEquip
         jsr     InitEquipListCursor
         lda     #$55                    ; return to menu state $55 afterwards
-        sta     $27
+        sta     zNextMenuState
         jsr     _c39233
         jsr     ClearBG1ScreenA
         jsr     WaitVblank
         jmp     DrawEquipItemList
 
 ; B button
-@98b4:  lda     $09
-        bit     #$80
+@98b4:  lda     z08+1
+        bit     #>JOY_B
         beq     @98c8
         jsr     PlayCancelSfx
         jsr     LoadEquipOptionCursor
         jsr     InitEquipOptionCursor
         lda     #$36                    ; go to menu state $36
-        sta     $26
+        sta     zMenuState
         rts
 @98c8:  lda     #$7e                    ; go to menu state $7e if user presses top r or l button
-        sta     $e0
+        sta     ze0
         jmp     CheckShoulderBtns
 
 ; ------------------------------------------------------------------------------
@@ -1665,32 +1791,32 @@ MenuState_55:
 
 MenuState_56:
 @98cf:  jsr     UpdateEquipSlotCursor
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @98f4
         jsr     PlaySelectSfx
         jsr     GetSelCharPropPtr
         longa_clc
         tya
         shorta
-        adc     $4b
+        adc     z4b
         tay
         lda     $001f,y
         jsr     IncItemQty
         lda     #$ff
         sta     $001f,y
         jsr     _c3911b
-@98f4:  lda     $09
-        bit     #$80
+@98f4:  lda     z08+1
+        bit     #>JOY_B
         beq     @9908
         jsr     PlayCancelSfx
         jsr     LoadEquipOptionCursor
         jsr     InitEquipOptionCursor
         lda     #$36
-        sta     $26
+        sta     zMenuState
         rts
 @9908:  lda     #$7f
-        sta     $e0
+        sta     ze0
         jmp     CheckShoulderBtns
 
 ; ------------------------------------------------------------------------------
@@ -1700,8 +1826,8 @@ MenuState_56:
 MenuState_57:
 @990f:  jsr     _c39ad3
         jsr     _c39233
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @9944
         jsr     CheckCanEquipSelItem
         bcc     @996e
@@ -1711,7 +1837,7 @@ MenuState_57:
         beq     @992d
         jsr     IncItemQty
 @992d:  clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9d8a,x
         tax
@@ -1720,8 +1846,8 @@ MenuState_57:
         jsr     DecItemQty
         jsr     _c3911b
         bra     @994d
-@9944:  lda     $09
-        bit     #$80
+@9944:  lda     z08+1
+        bit     #>JOY_B
         beq     @996d
         jsr     PlayCancelSfx
 @994d:  jsr     _c39c87
@@ -1730,13 +1856,13 @@ MenuState_57:
         sta     $7e9bd0
         shorta
         lda     #$c1
-        trb     $46
+        trb     z46
         jsr     LoadEquipSlotCursor
-        lda     $5f
-        sta     $4e
+        lda     z5f
+        sta     z4e
         jsr     InitEquipSlotCursor
         lda     #$55
-        sta     $26
+        sta     zMenuState
 @996d:  rts
 @996e:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
@@ -1760,19 +1886,19 @@ _c39975:
         bra     @998f
 
 ; draw both hands with teal text
-@998f:  lda     #$2c        ; teal text
-        sta     $29
+@998f:  lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
         jsr     @9998
         bra     @999f
 
 ; draw "R-Hand" text
-@9998:  ldy     #.loword(EquipRHandText)
-        jsr     DrawPosText
+@9998:  ldy     #near EquipRHandText
+        jsr     DrawPosKana
         rts
 
 ; draw "L-Hand" text
-@999f:  ldy     #.loword(EquipLHandText)
-        jsr     DrawPosText
+@999f:  ldy     #near EquipLHandText
+        jsr     DrawPosKana
         rts
 
 ; gauntlet, main hand empty
@@ -1787,11 +1913,11 @@ _c39975:
         lda     f:ItemProp+19,x   ; weapon effects
         and     #$40
         beq     @998f       ; branch if not 2-handed
-        lda     #$24        ; gray text
-        sta     $29
+        lda     #BG3_TEXT_COLOR::GRAY
+        sta     zTextColor
         jsr     @9998       ; draw "r-hand" text
-        lda     #$2c        ; teal text
-        sta     $29
+        lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
         bra     @999f       ; draw "l-hand" text
 
 ; gauntlet, left hand empty
@@ -1801,11 +1927,11 @@ _c39975:
         lda     f:ItemProp+19,x
         and     #$40
         beq     @998f
-        lda     #$2c        ; teal text
-        sta     $29
+        lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
         jsr     @9998       ; draw "r-hand" text
-        lda     #$24        ; gray text
-        sta     $29
+        lda     #BG3_TEXT_COLOR::GRAY
+        sta     zTextColor
         bra     @999f       ; draw "l-hand" text
 
 ; ------------------------------------------------------------------------------
@@ -1818,12 +1944,12 @@ _c39975:
 ; carry clear = gauntlet w/ 2-handed weapon & no shield
 
 CheckHandEffects:
-@99e8:  stz     $cd         ; $cd = 0
+@99e8:  stz     zcd         ; $cd = 0
         lda     $11d8       ; branch if character doesn't have genji glove
         and     #$10
         beq     @99f3
-        inc     $cd         ; $cd++
-@99f3:  stz     $a1         ;
+        inc     zcd         ; $cd++
+@99f3:  stz     za1         ;
         lda     $11d8       ; branch if character doesn't have gauntlet
         and     #$08
         beq     @9a0c
@@ -1847,7 +1973,7 @@ CheckHandEffects:
         beq     @9a0c       ; set carry and return if not a 2-handed weapon
         clc
         lda     #$01
-        sta     $a1
+        sta     za1
         rts
 @9a2b:  lda     $001f,y     ; right hand
         jsr     GetItemPropPtr
@@ -1857,7 +1983,7 @@ CheckHandEffects:
         beq     @9a0c       ; set carry and return if not a 2-handed weapon
         clc
         lda     #$01
-        sta     $a1
+        sta     za1
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1867,7 +1993,7 @@ CheckHandEffects:
 CheckCanEquipSelItem:
 @9a42:  jsr     GetEquipSlotPtr
         clr_a
-        lda     $4b                     ; cursor position
+        lda     z4b                     ; cursor position
         bra     CheckCanEquipItem
 
 ; ------------------------------------------------------------------------------
@@ -1879,7 +2005,7 @@ GetEquipSlotPtr:
         longa_clc
         tya
         shorta
-        adc     $5f                     ; add item slot number
+        adc     z5f                     ; add item slot number
         tay
         rts
 
@@ -1901,9 +2027,9 @@ CheckCanEquipItem:
         ldx     hMPYL
         lda     f:ItemProp,x            ; $f6 = item type
         and     #$07
-        sta     $f6
+        sta     zf6
         ply
-        lda     $5f                     ; selected item slot
+        lda     z5f                     ; selected item slot
         cmp     #$02
         bcs     @9acf                   ; set carry and return if helmet or armor
         cmp     #$01
@@ -1926,7 +2052,7 @@ CheckCanEquipItem:
         rts
 @9a99:  lda     f:ItemProp,x            ; item type
         and     #$07
-        cmp     $f6                     ; clear carry and return if same as selected item
+        cmp     zf6                     ; clear carry and return if same as selected item
         beq     @9ad1
         sec
         rts
@@ -1948,7 +2074,7 @@ CheckCanEquipItem:
         rts
 @9ac5:  lda     f:ItemProp,x            ; item type
         and     #$07
-        cmp     $f6                     ; clear carry and return if same as selected item
+        cmp     zf6                     ; clear carry and return if same as selected item
         beq     @9ad1
 @9acf:  sec
         rts
@@ -1963,8 +2089,8 @@ _c39ad3:
 @9ad3:  lda     $7e9d89
         cmp     #$0a
         jcc     UpdateEquipShortListCursor
-        lda     #$05
-        sta     $2a
+        lda     #LIST_TYPE::EQUIP
+        sta     zListType
         jsr     ScrollListPage
         jcc     UpdateEquipLongListCursor
         rts
@@ -1981,10 +2107,10 @@ InitEquipListCursor:
 
 ; short list (less than 10 items)
         jsr     CreateEquipSlotCursorTask
-        stz     $4a
+        stz     z4a
         jsr     LoadEquipShortListCursor
         lda     $7e9d89
-        sta     $54
+        sta     z54
         jmp     InitEquipShortListCursor
 
 ; long list (10 or more items)
@@ -1997,11 +2123,11 @@ InitEquipListCursor:
 ; [  ]
 
 _c39b0d:
-@9b0d:  stz     $4a
+@9b0d:  stz     z4a
         jsr     CreateScrollArrowTask2
         longa
         lda     #$0060
-        sta     $7e34ca,x
+        sta     wTaskSpeedX,x
         lda     #$6000
         sta     hWRDIVL
         shorta
@@ -2012,20 +2138,20 @@ _c39b0d:
         nop5
         longa
         lda     hRDDIVL
-        sta     $7e354a,x
+        sta     wTaskSpeedY,x
         shorta
-        ldy     $00
-        sty     $4f
+        ldy     z0
+        sty     z4f
         jsr     LoadEquipLongListCursor
         jsr     InitEquipLongListCursor
         lda     $7e9d89
         sec
         sbc     #$09
-        sta     $5c
+        sta     z5c
         lda     #$09
-        sta     $5a
+        sta     z5a
         lda     #$01
-        sta     $5b
+        sta     z5b
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2037,9 +2163,9 @@ _c39b0d:
 GetValidEquip:
 @9b59:  jsr     ClearValidItemList
         jsr     GetCharEquipMask
-        lda     #$20
-        sta     $29
-        lda     $4b         ; cursor position
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+        lda     z4b         ; cursor position
         cmp     #$02
         beq     @9bb2       ; branch if helmet
         cmp     #$03
@@ -2048,7 +2174,7 @@ GetValidEquip:
 @9b6f:  jmp     @9bee
 
 ; weapon or shield
-@9b72:  ldx     $00
+@9b72:  ldx     z0
         txy
 @9b75:  clr_a
         lda     $1869,y     ; item number
@@ -2064,22 +2190,22 @@ GetValidEquip:
         bne     @9ba3       ; skip if not shield
 @9b91:  longa
         lda     f:ItemProp+1,x   ; equippable characters
-        bit     $e7
+        bit     ze7
         beq     @9ba3       ; branch if not equippable
         shorta
         tya
         sta     hWMDATA       ; add to list of possible items
-        inc     $e0         ; increment number of possible items
+        inc     ze0         ; increment number of possible items
 @9ba3:  shorta        ; next item
         iny
         cpy     #$00ff
         bne     @9b75
-        lda     $e0         ; set length of list
+        lda     ze0         ; set length of list
         sta     $7e9d89
         rts
 
 ; helmet
-@9bb2:  ldx     $00
+@9bb2:  ldx     z0
         txy
 @9bb5:  clr_a
         lda     $1869,y
@@ -2093,22 +2219,22 @@ GetValidEquip:
         bne     @9bdf
         longa
         lda     f:ItemProp+1,x
-        bit     $e7
+        bit     ze7
         beq     @9bdf
         shorta
         tya
         sta     hWMDATA
-        inc     $e0
+        inc     ze0
 @9bdf:  shorta
         iny
         cpy     #$00ff
         bne     @9bb5
-        lda     $e0
+        lda     ze0
         sta     $7e9d89
         rts
 
 ; armor
-@9bee:  ldx     $00
+@9bee:  ldx     z0
         txy
 @9bf1:  clr_a
         lda     $1869,y
@@ -2122,17 +2248,17 @@ GetValidEquip:
         bne     @9c1b
         longa
         lda     f:ItemProp+1,x
-        bit     $e7
+        bit     ze7
         beq     @9c1b
         shorta
         tya
         sta     hWMDATA
-        inc     $e0
+        inc     ze0
 @9c1b:  shorta
         iny
         cpy     #$00ff
         bne     @9bf1
-        lda     $e0
+        lda     ze0
         sta     $7e9d89
         rts
 
@@ -2141,7 +2267,7 @@ GetValidEquip:
 ; [ clear list of optimum items ]
 
 ClearValidItemList:
-@9c2a:  ldx     $00
+@9c2a:  ldx     z0
         lda     #$ff
 @9c2e:  sta     $7e9d8a,x
         inx
@@ -2149,7 +2275,7 @@ ClearValidItemList:
         bne     @9c2e
         ldx     #$9d8a
         stx     hWMADDL
-        stz     $e0         ; $e0 = number of possible items
+        stz     ze0         ; $e0 = number of possible items
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2161,7 +2287,7 @@ ClearValidItemList:
 GetCharEquipMask:
 @9c41:  jsr     GetSelCharPropPtr
         clr_a
-        lda     $0000,y                 ; actor number
+        lda     0,y                 ; actor number
 
 chrequinf_get1:
 _c39c48:
@@ -2169,21 +2295,23 @@ _c39c48:
         tax
         longa
         lda     f:CharEquipMaskTbl,x
-        sta     $e7
+        sta     ze7
         shorta
         lda     $11d8
         and     #$20
         beq     @9c66
         longa
-        lda     $e7
+        lda     ze7
         ora     #$8000
-        sta     $e7
+        sta     ze7
         shorta
 @9c66:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; character equippability masks
+
+; note: this is exactly the same as ForcedCharMaskTbl
 CharEquipMaskTbl:
 @9c67:  .word   $0001,$0002,$0004,$0008,$0010,$0020,$0040,$0080
         .word   $0100,$0200,$0400,$0800,$1000,$2000,$4000,$8000
@@ -2227,11 +2355,11 @@ DrawEquipItemList:
 @9cc0:  tay
 @9cc1:  phy
         jsr     DrawEquipItemListRow
-        inc     $e5
-        lda     $e6
+        inc     ze5
+        lda     ze6
         inc2
         and     #$1f
-        sta     $e6
+        sta     ze6
         ply
         dey
         bne     @9cc1
@@ -2240,34 +2368,51 @@ DrawEquipItemList:
         sta     $7e9bd0
         shorta
         rts
-@9cdd:  lda     $27
-        sta     $26
+@9cdd:  lda     zNextMenuState
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw one row of equip item list ]
 
+make_jump_label UpdateListText, LIST_TYPE::EQUIP
 DrawEquipItemListRow:
 @9ce2:  jsr     GetEquipSlotPtr
         clr_a
-        lda     $e5
+        lda     ze5
         jsr     CheckCanEquipItem
         bcs     @9cf1
-        lda     #$28
+        lda     #BG1_TEXT_COLOR::GRAY
         bra     @9cf3
-@9cf1:  lda     #$20
-@9cf3:  sta     $29
-        lda     $e6
+@9cf1:  lda     #BG1_TEXT_COLOR::DEFAULT
+@9cf3:  sta     zTextColor
+.if LANG_EN
+        lda     ze6
         inc
-        ldx     #$0002
+.else
+        clr_a
+        lda     ze5
+        tax
+        lda     $7e9d8a,x
+        tay
+        lda     $1969,y
+        jsr     HexToDec3
+        lda     ze6
+        inc
+        ldx     #12
+        jsr     GetBG1TilemapPtr
+        jsr     DrawNum2
+        lda     ze6
+.endif
+        ldx     #2
         jsr     GetBG1TilemapPtr
         longa
         txa
         sta     $7e9e89
         shorta
         clr_a
-        lda     $e5
+        lda     ze5
         tay
         jsr     LoadEquipListItemName
         jmp     DrawPosTextBuf
@@ -2301,9 +2446,17 @@ LoadEquipListItemName:
         inx
         dey
         bne     @9d40
+.if LANG_EN
         stz     hWMDATA
         rts
 @9d4f:  ldy     #ITEM_NAME_SIZE
+.else
+        lda     #COLON_CHAR
+        sta     hWMDATA
+        stz     hWMDATA
+        rts
+@9d4f:  ldy     #ITEM_NAME_SIZE+3
+.endif
         lda     #$ff
 @9d54:  sta     hWMDATA
         dey
@@ -2319,8 +2472,8 @@ LoadEquipListItemName:
 
 IncItemQty:
 @9d5e:  phy
-        sta     $e0
-        ldy     $00
+        sta     ze0
+        ldy     z0
 @9d63:  cmp     $1869,y
         beq     @9d8a
         cmp     #$ff
@@ -2328,7 +2481,7 @@ IncItemQty:
         iny
         cpy     #$0100
         bne     @9d63
-        ldy     $00
+        ldy     z0
 @9d74:  lda     $1869,y
         cmp     #$ff
         beq     @9d7e
@@ -2336,7 +2489,7 @@ IncItemQty:
         bra     @9d74
 @9d7e:  lda     #1
         sta     $1969,y
-        lda     $e0
+        lda     ze0
         sta     $1869,y
         bra     @9d95
 @9d8a:  lda     $1969,y
@@ -2355,8 +2508,8 @@ IncItemQty:
 
 DecItemQty:
 @9d97:  phy
-        sta     $e0
-        ldy     $00
+        sta     ze0
+        ldy     z0
 @9d9c:  cmp     $1869,y
         beq     @9da9
         iny
@@ -2384,13 +2537,13 @@ DecItemQty:
 
 CreateEquipSlotCursorTask:
 @9dc4:  lda     #2
-        ldy     #.loword(EquipSlotCursorTask)
+        ldy     #near EquipSlotCursorTask
         jsr     CreateTask
         longa
-        lda     $55
-        sta     $7e33ca,x
-        lda     $57
-        sta     $7e344a,x
+        lda     z55
+        sta     wTaskPosX,x
+        lda     z57
+        sta     wTaskPosY,x
         shorta
         rts
 
@@ -2400,7 +2553,7 @@ CreateEquipSlotCursorTask:
 
 EquipSlotCursorTask:
 @9ddd:  tax
-        jmp     (.loword(EquipSlotCursorTaskTbl),x)
+        jmp     (near EquipSlotCursorTaskTbl,x)
 
 EquipSlotCursorTaskTbl:
 @9de1:  .addr   EquipSlotCursorTask_00
@@ -2411,17 +2564,17 @@ EquipSlotCursorTaskTbl:
 ; [  ]
 
 EquipSlotCursorTask_00:
-@9de5:  ldx     $2d
+@9de5:  ldx     zTaskOffset
         lda     #$01
-        tsb     $46
+        tsb     z46
         longa
-        lda     #.loword(CursorAnimData)
-        sta     $32c9,x
+        lda     #near CursorAnimData
+        sta     near wTaskAnimPtr,x
         shorta
         lda     #^CursorAnimData
-        sta     $35ca,x
+        sta     near wTaskAnimBank,x
         jsr     InitAnimTask
-        inc     $3649,x
+        inc     near wTaskState,x
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -2429,10 +2582,10 @@ EquipSlotCursorTask_00:
 ; [  ]
 
 EquipSlotCursorTask_01:
-@9e00:  lda     $46
+@9e00:  lda     z46
         bit     #$01
         beq     @9e0d
-        ldx     $2d
+        ldx     zTaskOffset
         jsr     UpdateAnimTask
         sec
         rts
@@ -2453,8 +2606,8 @@ _c39e0f:
 
 _c39e14:
 @9e14:  jsr     _c39e37
-        lda     $021e
-        and     #$01
+        lda     wGameTimeFrames
+        and     #1
         beq     @9e20
         bra     _c39e23
 @9e20:  jmp     TfrBigTextGfx
@@ -2465,13 +2618,13 @@ _c39e14:
 
 _c39e23:
 @9e23:  ldy     #$4000
-        sty     $1b
-        ldy     #$7849
-        sty     $1d
-        lda     #$7e
-        sta     $1f
+        sty     zDMA2Dest
+        ldy     #near wBG3Tiles::ScreenA
+        sty     zDMA2Src
+        lda     #^wBG3Tiles::ScreenA
+        sta     zDMA2Src+2
         ldy     #$0880
-        sty     $19
+        sty     zDMA2Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2480,13 +2633,13 @@ _c39e23:
 
 _c39e37:
 @9e37:  ldy     #$0000
-        sty     $14
-        ldy     #$3849
-        sty     $16
+        sty     zDMA1Dest
+        ldy     #near wBG1Tiles::ScreenA
+        sty     zDMA1Src
         lda     #$7e
-        sta     $18
+        sta     zDMA1Src+2
         ldy     #$0800
-        sty     $12
+        sty     zDMA1Size
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2504,11 +2657,11 @@ MenuState_58:
 _c39e50:
 @9e50:  jsr     DisableInterrupts
         jsr     DisableWindow1PosHDMA
-        stz     $4a
-        stz     $49
+        stz     z4a
+        stz     z49
         lda     #$10
-        tsb     $45
-        stz     $99
+        tsb     z45
+        stz     z99
         jsr     InitBigText
         jsr     InitEquipScrollHDMA
         jsr     LoadRelicOptionCursor
@@ -2521,10 +2674,10 @@ _c39e50:
 
 _c39e6f:
 @9e6f:  jsr     DrawRelicMenu
-        lda     #$01
-        sta     $26
+        lda     #MENU_STATE::FADE_IN
+        sta     zMenuState
         lda     #$59
-        sta     $27
+        sta     zNextMenuState
         jmp     EnableInterrupts
 
 ; ------------------------------------------------------------------------------
@@ -2567,8 +2720,8 @@ _c39e99:
 _c39ea8:
 @9ea8:  jsr     LoadRelicSlotCursor
         jsr     InitRelicSlotCursor
-        lda     #$01
-        sta     $26
+        lda     #MENU_STATE::FADE_IN
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2576,7 +2729,7 @@ _c39ea8:
 ; [  ]
 
 _c39eb3:
-@9eb3:  sta     $27
+@9eb3:  sta     zNextMenuState
         jmp     EnableInterrupts
 
 ; ------------------------------------------------------------------------------
@@ -2588,19 +2741,19 @@ MenuState_59:
         jsr     _c3960c
         jsr     DrawRelicOptions
         jsr     UpdateRelicOptionCursor
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @9ed0
         jsr     PlaySelectSfx
         jmp     SelectRelicOption
-@9ed0:  lda     $09
-        bit     #$80
+@9ed0:  lda     z08+1
+        bit     #>JOY_B
         beq     @9edc
         jsr     PlayCancelSfx
-        jsr     _c39eeb
+        jsr     CheckReequip
 @9edc:  jsr     _c39ee6
         lda     #$58
-        sta     $e0
+        sta     ze0
         jmp     CheckShoulderBtns
 
 ; ------------------------------------------------------------------------------
@@ -2608,139 +2761,139 @@ MenuState_59:
 ; [  ]
 
 _c39ee6:
-@9ee6:  lda     $26
-        sta     $d1
+@9ee6:  lda     zMenuState
+        sta     zd1
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ check reequip ]
 
-_c39eeb:
+CheckReequip:
 @9eeb:  jsr     UpdateEquipStats
         jsr     GetSelCharPropPtr
-        lda     $0000,y
-        cmp     #$0d
+        lda     0,y
+        cmp     #CHAR_PROP::UMARO
         beq     @9eff
-        jsr     _c39f5c
-        lda     $99
+        jsr     CheckReequipRelics
+        lda     z99
         bne     @9f06
-@9eff:  lda     #$04
-        sta     $27
-        stz     $26
+@9eff:  lda     #MENU_STATE::FIELD_MENU_INIT
+        sta     zNextMenuState
+        stz     zMenuState
         rts
 @9f06:  lda     #$06
-        trb     $46
+        trb     z46
         jsr     _c39e37
         jsr     _c39e23
-        jsr     _c39f1c
-        lda     #$f0
-        sta     $22
+        jsr     DrawReequipMsg
+        lda     #4*60                   ; wait 4 seconds
+        sta     z22
         lda     #$6c
-        sta     $26
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw reequip message ]
 
-_c39f1c:
+DrawReequipMsg:
 @9f1c:  jsr     ClearEquipOptionText
-        ldy     #.loword(_c3a40f)
-        jsr     DrawPosText
+        ldy     #near EquipChangedMsgText
+        jsr     DrawPosKana
         lda     $1d4e
         and     #$10
         beq     @9f44
         lda     #$6e
-        sta     $27
-        lda     $d1
+        sta     zNextMenuState
+        lda     zd1
         cmp     #$59
         beq     @9f3d
-        ldy     #.loword(_c3a3fd)
-        jsr     DrawPosText
+        ldy     #near RelicEmptyMsgText
+        jsr     DrawPosKana
         rts
-@9f3d:  ldy     #.loword(_c3a3eb)
-        jsr     DrawPosText
+@9f3d:  ldy     #near EquipEmptyMsgText
+        jsr     DrawPosKana
         rts
 @9f44:  lda     #$6d
-        sta     $27
-        lda     $d1
+        sta     zNextMenuState
+        lda     zd1
         cmp     #$59
         beq     @9f55
-        ldy     #.loword(_c3a405)
-        jsr     DrawPosText
+        ldy     #near RelicOptimumMsgText
+        jsr     DrawPosKana
         rts
-@9f55:  ldy     #.loword(_c3a3f3)
-        jsr     DrawPosText
+@9f55:  ldy     #near EquipOptimumMsgText
+        jsr     DrawPosKana
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ check for relics requiring reequip ]
 
-_c39f5c:
+CheckReequipRelics:
 @9f5c:  jsr     GetSelCharPropPtr
         lda     $0023,y
-        cmp     $b0
+        cmp     zb0
         bne     @9f6f
         lda     $0024,y
-        cmp     $b1
+        cmp     zb1
         bne     @9f6f
         bra     @9fa9
-@9f6f:  lda     $b0
-        cmp     #$d1
+@9f6f:  lda     zb0
+        cmp     #ITEM::GENJI_GLOVE
         beq     @9fac
-        cmp     #$d0
+        cmp     #ITEM::GAUNTLET
         beq     @9fac
-        cmp     #$da
+        cmp     #ITEM::MERIT_AWARD
         beq     @9fac
-        lda     $b1
-        cmp     #$d1
+        lda     zb1
+        cmp     #ITEM::GENJI_GLOVE
         beq     @9fac
-        cmp     #$d0
+        cmp     #ITEM::GAUNTLET
         beq     @9fac
-        cmp     #$da
+        cmp     #ITEM::MERIT_AWARD
         beq     @9fac
         lda     $0023,y
-        cmp     #$d1
+        cmp     #ITEM::GENJI_GLOVE
         beq     @9fac
-        cmp     #$d0
+        cmp     #ITEM::GAUNTLET
         beq     @9fac
-        cmp     #$da
+        cmp     #ITEM::MERIT_AWARD
         beq     @9fac
         lda     $0024,y
-        cmp     #$d1
+        cmp     #ITEM::GENJI_GLOVE
         beq     @9fac
-        cmp     #$d0
+        cmp     #ITEM::GAUNTLET
         beq     @9fac
-        cmp     #$da
+        cmp     #ITEM::MERIT_AWARD
         beq     @9fac
-@9fa9:  stz     $99
+@9fa9:  stz     z99
         rts
-@9fac:  lda     #$01
-        sta     $99
+@9fac:  lda     #1
+        sta     z99
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $6c:  ]
+; [ menu state $6c: pause for reequip message ]
 
 MenuState_6c:
-@9fb1:  lda     $22
+@9fb1:  lda     z22
         bne     @9fb8
-        stz     $26
+        stz     zMenuState
         rts
-@9fb8:  dec     $22
-        lda     $08
-        bit     #$10
+@9fb8:  dec     z22
+        lda     z08                     ; B button or either shoulder button
+        bit     #JOY_R
         bne     @9fcc
-        lda     $08
-        bit     #$20
+        lda     z08
+        bit     #JOY_L
         bne     @9fcc
-        lda     $09
-        bit     #$80
+        lda     z08+1
+        bit     #>JOY_B
         beq     @9fce
-@9fcc:  stz     $26
+@9fcc:  stz     zMenuState
 @9fce:  rts
 
 ; ------------------------------------------------------------------------------
@@ -2749,10 +2902,10 @@ MenuState_6c:
 
 SelectRelicOption:
 @9fcf:  clr_a
-        lda     $4b
+        lda     z4b
         asl
         tax
-        jmp     (.loword(SelectRelicOptionTbl),x)
+        jmp     (near SelectRelicOptionTbl,x)
 
 SelectRelicOptionTbl:
 @9fd7:  .addr   SelectRelicOption_00
@@ -2768,7 +2921,7 @@ SelectRelicOption_00:
         jsr     LoadRelicSlotCursor
         jsr     InitRelicSlotCursor
         lda     #$5a
-        sta     $26
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2781,7 +2934,7 @@ SelectRelicOption_01:
         jsr     LoadRelicSlotCursor
         jsr     InitRelicSlotCursor
         lda     #$5c
-        sta     $26
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2791,37 +2944,37 @@ SelectRelicOption_01:
 MenuState_5a:
 @9ffd:  jsr     _c39e14
         jsr     UpdateRelicSlotCursor
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @a033
         jsr     PlaySelectSfx
-        lda     $4e
-        sta     $5f
+        lda     z4e
+        sta     z5f
         lda     #$5b
-        sta     $26
+        sta     zMenuState
         jsr     _c3a051
         jsr     SortValidEquip
         jsr     InitEquipListCursor
         lda     #$5a
-        sta     $27
+        sta     zNextMenuState
         jsr     ClearBG1ScreenA
         jsr     WaitVblank
         jsr     DrawEquipItemList
         jsr     _c39233
         jsr     _c39e23
         jmp     WaitVblank
-@a033:  lda     $09
-        bit     #$80
+@a033:  lda     z08+1
+        bit     #>JOY_B
         beq     @a047
         jsr     PlayCancelSfx
         jsr     LoadRelicOptionCursor
         jsr     InitRelicOptionCursor
         lda     #$59
-        sta     $26
+        sta     zMenuState
         rts
 @a047:  jsr     _c39ee6
         lda     #$79
-        sta     $e0
+        sta     ze0
         jmp     CheckShoulderBtns
 
 ; ------------------------------------------------------------------------------
@@ -2831,9 +2984,9 @@ MenuState_5a:
 _c3a051:
 @a051:  jsr     ClearValidItemList
         jsr     GetCharEquipMask
-        lda     #$20
-        sta     $29
-        ldx     $00
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+        ldx     z0
         txy
 @a05e:  clr_a
         lda     $1869,y
@@ -2847,17 +3000,21 @@ _c3a051:
         bne     @a088
         longa
         lda     f:ItemProp+1,x
-        bit     $e7
+        bit     ze7
         beq     @a088
         shorta
         tya
         sta     hWMDATA
-        inc     $e0
+        inc     ze0
 @a088:  shorta
         iny
+.if LANG_EN
         cpy     #$0100
+.else
+        cpy     #$00ff
+.endif
         bne     @a05e
-        lda     $e0
+        lda     ze0
         sta     $7e9d89
         rts
 
@@ -2867,27 +3024,27 @@ _c3a051:
 
 MenuState_5b:
 @a097:  lda     #$10
-        trb     $45
+        trb     z45
         jsr     _c39e14
         jsr     _c39ad3
         jsr     _c39233
         jsr     _c3a1d8
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @a0dc
         jsr     PlaySelectSfx
         jsr     GetSelCharPropPtr
         longa_clc
         tya
         shorta
-        adc     $5f
+        adc     z5f
         tay
         lda     $0023,y
         cmp     #$ff
         beq     @a0c5
         jsr     IncItemQty
 @a0c5:  clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9d8a,x
         tax
@@ -2896,25 +3053,25 @@ MenuState_5b:
         jsr     DecItemQty
         jsr     _c39131
         bra     @a0e5
-@a0dc:  lda     $09
-        bit     #$80
+@a0dc:  lda     z08+1
+        bit     #>JOY_B
         beq     @a109
         jsr     PlayCancelSfx
 @a0e5:  lda     #$10
-        tsb     $45
+        tsb     z45
         jsr     _c39c87
         longa
         lda     #$0100
         sta     $7e9bd0
         shorta
         lda     #$c1
-        trb     $46
+        trb     z46
         jsr     LoadRelicSlotCursor
-        lda     $5f
-        sta     $4e
+        lda     z5f
+        sta     z4e
         jsr     InitRelicSlotCursor
         lda     #$5a
-        sta     $26
+        sta     zMenuState
 @a109:  rts
 
 ; ------------------------------------------------------------------------------
@@ -2924,33 +3081,33 @@ MenuState_5b:
 MenuState_5c:
 @a10a:  jsr     _c39e23
         jsr     UpdateRelicSlotCursor
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @a132
         jsr     PlaySelectSfx
         jsr     GetSelCharPropPtr
         longa_clc
         tya
         shorta
-        adc     $4b
+        adc     z4b
         tay
         lda     $0023,y
         jsr     IncItemQty
         lda     #$ff
         sta     $0023,y
         jsr     _c39131
-@a132:  lda     $09
-        bit     #$80
+@a132:  lda     z08+1
+        bit     #>JOY_B
         beq     @a146
         jsr     PlayCancelSfx
         jsr     LoadRelicOptionCursor
         jsr     InitRelicOptionCursor
         lda     #$59
-        sta     $26
+        sta     zMenuState
         rts
 @a146:  jsr     _c39ee6
         lda     #$7a
-        sta     $e0
+        sta     ze0
         jmp     CheckShoulderBtns
 
 ; ------------------------------------------------------------------------------
@@ -2964,8 +3121,8 @@ SortValidEquip:
         beq     @a186
         cmp     #$01
         beq     @a186
-        sta     $e7
-        stz     $e8
+        sta     ze7
+        stz     ze8
         clr_axy
 @a167:  lda     $7e9d8a,x
         phx
@@ -2977,7 +3134,7 @@ SortValidEquip:
         sta     hWMDATA
         plx
         inx
-        cpx     $e7
+        cpx     ze7
         bne     @a167
         jsr     _c3a187
 @a186:  rts
@@ -2987,7 +3144,7 @@ SortValidEquip:
 ; [ put item list in order of decreasing attack/defense power ]
 
 _c3a187:
-@a187:  dec     $e7
+@a187:  dec     ze7
         phb
         lda     #$7e
         pha
@@ -2997,22 +3154,22 @@ _c3a187:
 @a192:  lda     $ac8d,x     ; item number
         cmp     $ac8e,x
         bcs     @a1b7
-        sta     $e0
+        sta     ze0
         lda     $9d8a,x
-        sta     $e1
+        sta     ze1
         lda     $ac8e,x
         sta     $ac8d,x
         lda     $9d8b,x
         sta     $9d8a,x
-        lda     $e0
+        lda     ze0
         sta     $ac8e,x
-        lda     $e1
+        lda     ze1
         sta     $9d8b,x
 @a1b7:  inx                 ;
-        cpx     $e7
+        cpx     ze7
         bne     @a192
         iny                 ;
-        cpy     $e7
+        cpy     ze7
         bne     @a190
         plb
         rts
@@ -3023,7 +3180,7 @@ _c3a187:
 
 @a1c3:  jsr     GetItemDescPtr
         jsr     GetSelCharPropPtr
-        lda     $4b
+        lda     z4b
         bne     @a1d2
         lda     $0023,y
         bra     @a1d5
@@ -3037,7 +3194,7 @@ _c3a187:
 _c3a1d8:
 @a1d8:  jsr     GetItemDescPtr
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9d8a,x
         tax
@@ -3046,122 +3203,203 @@ _c3a1d8:
 
 ; ------------------------------------------------------------------------------
 
+.if LANG_EN
+        .define EquipRHandStr           {$91,$c4,$a1,$9a,$a7,$9d,$00}
+        .define EquipLHandStr           {$8b,$c4,$a1,$9a,$a7,$9d,$00}
+        .define EquipHeadStr            {$87,$9e,$9a,$9d,$00}
+        .define EquipBodyStr            {$81,$a8,$9d,$b2,$00}
+        .define EquipRelicStr           {$91,$9e,$a5,$a2,$9c,$00}
+        .define EquipBlankOptionsStr    {$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
+        .define EquipTitleEquipStr      {$84,$90,$94,$88,$8f,$00}
+        .define EquipTitleRemoveStr     {$91,$84,$8c,$8e,$95,$84,$00}
+        .define EquipOptionEquipStr     {$84,$90,$94,$88,$8f,$00}
+        .define EquipOptionOptimumStr   {$8e,$8f,$93,$88,$8c,$94,$8c,$00}
+        .define EquipOptionRemoveStr    {$91,$8c,$8e,$95,$84,$00}
+        .define EquipOptionEmptyStr     {$84,$8c,$8f,$93,$98,$00}
+        .define RelicOptionEquipStr     {$84,$90,$94,$88,$8f,$00}
+        .define RelicOptionRemoveStr    {$91,$84,$8c,$8e,$95,$84,$00}
+
+        .define EquipStrengthStr        {$95,$a2,$a0,$a8,$ab,$00}
+        .define EquipStaminaStr         {$92,$ad,$9a,$a6,$a2,$a7,$9a,$00}
+        .define EquipMagPwrStr          {$8c,$9a,$a0,$c5,$8f,$b0,$ab,$00}
+        .define EquipEvadeStr           {$84,$af,$9a,$9d,$9e,$ff,$cd,$00}
+        .define EquipMagEvadeStr        {$8c,$81,$a5,$a8,$9c,$a4,$cd,$00}
+        .define EquipArrowStr           {$d5,$00}
+        .define EquipSpeedStr           {$92,$a9,$9e,$9e,$9d,$00}
+        .define EquipAttackPwrStr       {$81,$9a,$ad,$c5,$8f,$b0,$ab,$00}
+        .define EquipDefenseStr         {$83,$9e,$9f,$9e,$a7,$ac,$9e,$00}
+        .define EquipMagDefStr          {$8c,$9a,$a0,$c5,$83,$9e,$9f,$00}
+
+        .define EquipEmptyMsgStr        {$84,$a6,$a9,$ad,$b2,$00}
+        .define EquipOptimumMsgStr      {$8e,$a9,$ad,$a2,$a6,$ae,$a6,$00}
+        .define RelicEmptyMsgStr        {$84,$a6,$a9,$ad,$b2,$00}
+        .define RelicOptimumMsgStr      {$8e,$a9,$ad,$a2,$a6,$ae,$a6,$00}
+        .define EquipChangedMsgStr      {$84,$aa,$ae,$a2,$a9,$a6,$9e,$a7,$ad,$ff,$9c,$a1,$9a,$a7,$a0,$9e,$9d,$c5,$00}
+
+.else
+
+        .define EquipRHandStr           {$9f,$2d,$85,$00}
+        .define EquipLHandStr           {$63,$3f,$a9,$85,$00}
+        .define EquipHeadStr            {$8b,$7f,$9d,$00}
+        .define EquipBodyStr            {$6b,$a7,$3f,$00}
+        .define EquipRelicStr           {$8a,$6e,$7a,$74,$a8,$00}
+        .define EquipBlankOptionsStr    {$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
+        .define EquipTitleEquipStr      {$7d,$89,$23,$00}
+        .define EquipTitleRemoveStr     {$61,$39,$79,$00}
+        .define EquipOptionEquipStr     {$7d,$89,$23,$00}
+        .define EquipOptionOptimumStr   {$75,$8d,$6d,$c3,$89,$00}
+        .define EquipOptionRemoveStr    {$61,$39,$79,$00}
+        .define EquipOptionEmptyStr     {$79,$27,$85,$61,$39,$79,$ff,$00}
+        .define RelicOptionEquipStr     {$7d,$89,$23,$00}
+        .define RelicOptionRemoveStr    {$61,$39,$79,$00}
+
+        .define EquipStrengthStr        {$81,$6b,$a7,$00}
+        .define EquipStaminaStr         {$7f,$8d,$a9,$c3,$6f,$00}
+        .define EquipMagPwrStr          {$9d,$a9,$c3,$6f,$00}
+        .define EquipEvadeStr           {$6b,$8d,$63,$a9,$83,$00}
+        .define EquipMagEvadeStr        {$9d,$69,$89,$6b,$8d,$63,$a9,$83,$00}
+        .define EquipArrowStr           {$d5,$00}
+        .define EquipSpeedStr           {$79,$21,$b1,$75,$00}
+        .define EquipAttackPwrStr       {$73,$89,$31,$6d,$a9,$c3,$6f,$00}
+        .define EquipDefenseStr         {$29,$89,$2d,$c3,$00}
+        .define EquipMagDefStr          {$9d,$69,$89,$29,$89,$2d,$c3,$00}
+
+        .define EquipEmptyMsgStr        {$d0,$79,$27,$85,$61,$39,$79,$d1,$00}
+        .define EquipOptimumMsgStr      {$d0,$75,$8d,$6d,$c3,$89,$7d,$89,$23,$d1,$00}
+        .define RelicEmptyMsgStr        {$d0,$79,$27,$85,$61,$39,$79,$d1,$00}
+        .define RelicOptimumMsgStr      {$d0,$75,$8d,$6d,$c3,$89,$7d,$89,$23,$d1,$00}
+        .define EquipChangedMsgStr      {$7d,$89,$23,$95,$6b,$6b,$b7,$ab,$8a,$6e,$7a,$74,$a8,$c5,$2b,$ff,$67,$b9,$73,$89,$75,$ad,$9d,$77,$7f,$00}
+
+.endif
+
 ; pointers to party equip screen slot names
-@a1ea:  .word   $a21a,$a21f,$a225,$a22b,$a231,$a237,$a23d,$a242
-        .word   $a248,$a24e,$a254,$a25a,$a260,$a265,$a26b,$a271
-        .word   $a277,$a27d,$a283,$a288,$a28e,$a294,$a29a,$a2a0
+begin_block _c3a9f8
+        .addr   _c3a21a
+        .addr   _c3a21f
+        .addr   _c3a225
+        .addr   _c3a22b
+        .addr   _c3a231
+        .addr   _c3a237
+end_block _c3a9f8
+
+begin_block _c3aa04
+        .addr   _c3a23d
+        .addr   _c3a242
+        .addr   _c3a248
+        .addr   _c3a24e
+        .addr   _c3a254
+        .addr   _c3a25a
+end_block _c3aa04
+
+begin_block _c3aa10
+        .addr   _c3a260
+        .addr   _c3a265
+        .addr   _c3a26b
+        .addr   _c3a271
+        .addr   _c3a277
+        .addr   _c3a27d
+end_block _c3aa10
+
+begin_block _c3aa1c
+        .addr   _c3a283
+        .addr   _c3a288
+        .addr   _c3a28e
+        .addr   _c3a294
+        .addr   _c3a29a
+        .addr   _c3a2a0
+end_block _c3aa1c
 
 ; party equip screen slot names (used in Japanese version only)
-@a21a:  .byte   $4f,$39,$9f,$2d,$00
-@a21f:  .byte   $6b,$39,$63,$3f,$a9,$00
-@a225:  .byte   $cf,$39,$8b,$7f,$9d,$00
-@a22b:  .byte   $eb,$39,$6b,$a7,$3f,$00
-@a231:  .byte   $4f,$3a,$8a,$6e,$54,$00
-@a237:  .byte   $6b,$3a,$8a,$6e,$55,$00
-@a23d:  .byte   $4f,$3b,$9f,$2d,$00
-@a242:  .byte   $6b,$3b,$63,$3f,$a9,$00
-@a248:  .byte   $cf,$3b,$8b,$7f,$9d,$00
-@a24e:  .byte   $eb,$3b,$6b,$a7,$3f,$00
-@a254:  .byte   $4f,$3c,$8a,$6e,$54,$00
-@a25a:  .byte   $6b,$3c,$8a,$6e,$55,$00
-@a260:  .byte   $4f,$3d,$9f,$2d,$00
-@a265:  .byte   $6b,$3d,$63,$3f,$a9,$00
-@a26b:  .byte   $cf,$3d,$8b,$7f,$9d,$00
-@a271:  .byte   $eb,$3d,$6b,$a7,$3f,$00
-@a277:  .byte   $4f,$3e,$8a,$6e,$54,$00
-@a27d:  .byte   $6b,$3e,$8a,$6e,$55,$00
-@a283:  .byte   $4f,$3f,$9f,$2d,$00
-@a288:  .byte   $6b,$3f,$63,$3f,$a9,$00
-@a28e:  .byte   $cf,$3f,$8b,$7f,$9d,$00
-@a294:  .byte   $eb,$3f,$6b,$a7,$3f,$00
-@a29a:  .byte   $4f,$40,$8a,$6e,$54,$00
-@a2a0:  .byte   $6b,$40,$8a,$6e,$55,$00
+_c3a21a:                        pos_text BG1A, {3, 4}, {$9f,$2d,$00}
+_c3a21f:                        pos_text BG1A, {17, 4}, {$63,$3f,$a9,$00}
+_c3a225:                        pos_text BG1A, {3, 6}, {$8b,$7f,$9d,$00}
+_c3a22b:                        pos_text BG1A, {17, 6}, {$6b,$a7,$3f,$00}
+_c3a231:                        pos_text BG1A, {3, 8}, {$8a,$6e,$54,$00}
+_c3a237:                        pos_text BG1A, {17, 8}, {$8a,$6e,$55,$00}
+
+_c3a23d:                        pos_text BG1A, {3, 12}, {$9f,$2d,$00}
+_c3a242:                        pos_text BG1A, {17, 12}, {$63,$3f,$a9,$00}
+_c3a248:                        pos_text BG1A, {3, 14}, {$8b,$7f,$9d,$00}
+_c3a24e:                        pos_text BG1A, {17, 14}, {$6b,$a7,$3f,$00}
+_c3a254:                        pos_text BG1A, {3, 16}, {$8a,$6e,$54,$00}
+_c3a25a:                        pos_text BG1A, {17, 16}, {$8a,$6e,$55,$00}
+
+_c3a260:                        pos_text BG1A, {3, 20}, {$9f,$2d,$00}
+_c3a265:                        pos_text BG1A, {17, 20}, {$63,$3f,$a9,$00}
+_c3a26b:                        pos_text BG1A, {3, 22}, {$8b,$7f,$9d,$00}
+_c3a271:                        pos_text BG1A, {17, 22}, {$6b,$a7,$3f,$00}
+_c3a277:                        pos_text BG1A, {3, 24}, {$8a,$6e,$54,$00}
+_c3a27d:                        pos_text BG1A, {17, 24}, {$8a,$6e,$55,$00}
+
+_c3a283:                        pos_text BG1A, {3, 28}, {$9f,$2d,$00}
+_c3a288:                        pos_text BG1A, {17, 28}, {$63,$3f,$a9,$00}
+_c3a28e:                        pos_text BG1A, {3, 30}, {$8b,$7f,$9d,$00}
+_c3a294:                        pos_text BG1A, {17, 30}, {$6b,$a7,$3f,$00}
+_c3a29a:                        pos_text BG1A, {3, 32}, {$8a,$6e,$54,$00}
+_c3a2a0:                        pos_text BG1A, {17, 32}, {$8a,$6e,$55,$00}
 
 ; ------------------------------------------------------------------------------
 
-EquipOptionTextList:
-@a2a6:  .addr   EquipOptionEquipText
+begin_block EquipOptionTextList
+        .addr   EquipOptionEquipText
         .addr   EquipOptionOptimumText
         .addr   EquipOptionRemoveText
         .addr   EquipOptionEmptyText
+end_block EquipOptionTextList
 
-EquipSlotTextList:
-@a2ae:  .addr   EquipHeadText
+begin_block EquipSlotTextList
+        .addr   EquipHeadText
         .addr   EquipBodyText
+end_block EquipSlotTextList
 
-RelicOptionTextList:
-@a2b2:  .addr   RelicOptionEquipText
+begin_block RelicOptionTextList
+        .addr   RelicOptionEquipText
         .addr   RelicOptionRemoveText
+end_block RelicOptionTextList
 
-RelicSlotTextList:
-@a2b6:  .addr   EquipRelic1Text
+begin_block RelicSlotTextList
+        .addr   EquipRelic1Text
         .addr   EquipRelic2Text
+end_block RelicSlotTextList
 
-; c3/a2ba: "R-Hand"
-EquipRHandText:
-@a2ba:  .byte   $0d,$7a,$91,$c4,$a1,$9a,$a7,$9d,$00
-
-; c3/a2c3: "L-Hand"
-EquipLHandText:
-@a2c3:  .byte   $8d,$7a,$8b,$c4,$a1,$9a,$a7,$9d,$00
-
-; c3/a2cc: "Head"
-EquipHeadText:
-@a2cc:  .byte   $0d,$7b,$87,$9e,$9a,$9d,$00
-
-; c3/a2d3: "Body"
-EquipBodyText:
-@a2d3:  .byte   $8d,$7b,$81,$a8,$9d,$b2,$00
-
-; c3/a2da: "Relic"
-EquipRelic1Text:
-@a2da:  .byte   $0d,$7b,$91,$9e,$a5,$a2,$9c,$00
-
-; c3/a2e2: "Relic"
-EquipRelic2Text:
-@a2e2:  .byte   $8d,$7b,$91,$9e,$a5,$a2,$9c,$00
-
-; blank text for equip options and title
-EquipBlankOptionsText:
-@a2ea:  .byte   $0d,$79,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-        .byte   $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00
-
-; c3/a309: "EQUIP"
-EquipTitleEquipText:
-@a309:  .byte   $39,$79,$84,$90,$94,$88,$8f,$00
-
-; c3/a311: "REMOVE"
-EquipTitleRemoveText:
-@a311:  .byte   $39,$79,$91,$84,$8c,$8e,$95,$84,$00
-
-; c3/a31a: "EQUIP"
-EquipOptionEquipText:
-@a31a:  .byte   $0d,$79,$84,$90,$94,$88,$8f,$00
-
-; c3/a322: "OPTIMUM"
-EquipOptionOptimumText:
-@a322:  .byte   $1b,$79,$8e,$8f,$93,$88,$8c,$94,$8c,$00
-
-; c3/a32c: "RMOVE"
-EquipOptionRemoveText:
-@a32c:  .byte   $2d,$79,$91,$8c,$8e,$95,$84,$00
-
-; c3/a334: "EMPTY"
-EquipOptionEmptyText:
-@a334:  .byte   $3b,$79,$84,$8c,$8f,$93,$98,$00
-
-; c3/a33c: "EQUIP"
-RelicOptionEquipText:
-@a33c:  .byte   $11,$79,$84,$90,$94,$88,$8f,$00
-
-; c3/a344: "REMOVE"
-RelicOptionRemoveText:
-@a344:  .byte   $1f,$79,$91,$84,$8c,$8e,$95,$84,$00
+.if LANG_EN
+EquipRHandText:                 pos_text BG3A, {2, 7}, EquipRHandStr
+EquipLHandText:                 pos_text BG3A, {2, 9}, EquipLHandStr
+EquipHeadText:                  pos_text BG3A, {2, 11}, EquipHeadStr
+EquipBodyText:                  pos_text BG3A, {2, 13}, EquipBodyStr
+EquipRelic1Text:                pos_text BG3A, {2, 11}, EquipRelicStr
+EquipRelic2Text:                pos_text BG3A, {2, 13}, EquipRelicStr
+EquipBlankOptionsText:          pos_text BG3A, {2, 3}, EquipBlankOptionsStr
+EquipTitleEquipText:            pos_text BG3A, {24, 3}, EquipTitleEquipStr
+EquipTitleRemoveText:           pos_text BG3A, {24, 3}, EquipTitleRemoveStr
+EquipOptionEquipText:           pos_text BG3A, {2, 3}, EquipOptionEquipStr
+EquipOptionOptimumText:         pos_text BG3A, {9, 3}, EquipOptionOptimumStr
+EquipOptionRemoveText:          pos_text BG3A, {18, 3}, EquipOptionRemoveStr
+EquipOptionEmptyText:           pos_text BG3A, {25, 3}, EquipOptionEmptyStr
+RelicOptionEquipText:           pos_text BG3A, {4, 3}, RelicOptionEquipStr
+RelicOptionRemoveText:          pos_text BG3A, {11, 3}, RelicOptionRemoveStr
+.else
+EquipRHandText:                 pos_text BG3A, {2, 6}, EquipRHandStr
+EquipLHandText:                 pos_text BG3A, {2, 8}, EquipLHandStr
+EquipHeadText:                  pos_text BG3A, {2, 10}, EquipHeadStr
+EquipBodyText:                  pos_text BG3A, {2, 12}, EquipBodyStr
+EquipRelic1Text:                pos_text BG3A, {2, 10}, EquipRelicStr
+EquipRelic2Text:                pos_text BG3A, {2, 12}, EquipRelicStr
+EquipBlankOptionsText:          pos_text BG3A, {4, 2}, EquipBlankOptionsStr
+EquipTitleEquipText:            pos_text BG3A, {26, 2}, EquipTitleEquipStr
+EquipTitleRemoveText:           pos_text BG3A, {26, 2}, EquipTitleRemoveStr
+EquipOptionEquipText:           pos_text BG3A, {4, 2}, EquipOptionEquipStr
+EquipOptionOptimumText:         pos_text BG3A, {9, 2}, EquipOptionOptimumStr
+EquipOptionRemoveText:          pos_text BG3A, {16, 2}, EquipOptionRemoveStr
+EquipOptionEmptyText:           pos_text BG3A, {22, 2}, EquipOptionEmptyStr
+RelicOptionEquipText:           pos_text BG3A, {4, 2}, RelicOptionEquipStr
+RelicOptionRemoveText:          pos_text BG3A, {9, 2}, RelicOptionRemoveStr
+.endif
 
 ; ------------------------------------------------------------------------------
 
-EquipStatTextList1:
-@a34d:  .addr   EquipStrengthText
+begin_block EquipStatTextList1
+        .addr   EquipStrengthText
         .addr   EquipStaminaText
         .addr   EquipMagPwrText
         .addr   EquipEvadeText
@@ -3175,98 +3413,85 @@ EquipStatTextList1:
         .addr   EquipArrow7Text
         .addr   EquipArrow8Text
         .addr   EquipArrow9Text
+end_block EquipStatTextList1
 
-EquipStatTextList2:
-@a369:  .addr   EquipSpeedText
+begin_block EquipStatTextList2
+        .addr   EquipSpeedText
         .addr   EquipAttackPwrText
         .addr   EquipDefenseText
         .addr   EquipMagDefText
+end_block EquipStatTextList2
 
-; "Vigor"
-EquipStrengthText:
-@a371:  .byte   $a9,$7c,$95,$a2,$a0,$a8,$ab,$00
+.if LANG_EN
+EquipStrengthText:              pos_text BG3A, {16, 17}, EquipStrengthStr
+EquipStaminaText:               pos_text BG3A, {16, 21}, EquipStaminaStr
+EquipMagPwrText:                pos_text BG3A, {16, 23}, EquipMagPwrStr
+EquipEvadeText:                 pos_text BG3A, {16, 29}, EquipEvadeStr
+EquipMagEvadeText:              pos_text BG3B, {16, 1}, EquipMagEvadeStr
 
-; "Stamina"
-EquipStaminaText:
-@a379:  .byte   $a9,$7d,$92,$ad,$9a,$a6,$a2,$a7,$9a,$00
+EquipArrow1Text:                pos_text BG3A, {26, 17}, EquipArrowStr
+EquipArrow2Text:                pos_text BG3A, {26, 19}, EquipArrowStr
+EquipArrow3Text:                pos_text BG3A, {26, 21}, EquipArrowStr
+EquipArrow4Text:                pos_text BG3A, {26, 23}, EquipArrowStr
+EquipArrow5Text:                pos_text BG3A, {26, 27}, EquipArrowStr
+EquipArrow6Text:                pos_text BG3A, {26, 29}, EquipArrowStr
+EquipArrow7Text:                pos_text BG3A, {26, 25}, EquipArrowStr
+EquipArrow8Text:                pos_text BG3A, {26, 31}, EquipArrowStr
+EquipArrow9Text:                pos_text BG3A, {26, 33}, EquipArrowStr
 
-; "Mag.Pwr"
-EquipMagPwrText:
-@a383:  .byte   $29,$7e,$8c,$9a,$a0,$c5,$8f,$b0,$ab,$00
+EquipSpeedText:                 pos_text BG3A, {16, 19}, EquipSpeedStr
+EquipAttackPwrText:             pos_text BG3A, {16, 25}, EquipAttackPwrStr
+EquipDefenseText:               pos_text BG3A, {16, 27}, EquipDefenseStr
+EquipMagDefText:                pos_text BG3A, {16, 31}, EquipMagDefStr
 
-; "Evade %"
-EquipEvadeText:
-@a38d:  .byte   $a9,$7f,$84,$af,$9a,$9d,$9e,$ff,$cd,$00
+.else
 
-; MBlock%
-EquipMagEvadeText:
-@a397:  .byte   $a9,$80,$8c,$81,$a5,$a8,$9c,$a4,$cd,$00
+EquipStrengthText:              pos_text BG3A, {15, 17}, EquipStrengthStr
+EquipStaminaText:               pos_text BG3A, {15, 21}, EquipStaminaStr
+EquipMagPwrText:                pos_text BG3A, {15, 23}, EquipMagPwrStr
+EquipEvadeText:                 pos_text BG3A, {15, 29}, EquipEvadeStr
+EquipMagEvadeText:              pos_text BG3B, {15, 1}, EquipMagEvadeStr
 
-; right arrows
-EquipArrow1Text:
-@a3a1:  .byte   $bd,$7c,$d5,$00
+EquipArrow1Text:                pos_text BG3A, {26, 17}, EquipArrowStr
+EquipArrow2Text:                pos_text BG3A, {26, 19}, EquipArrowStr
+EquipArrow3Text:                pos_text BG3A, {26, 21}, EquipArrowStr
+EquipArrow4Text:                pos_text BG3A, {26, 23}, EquipArrowStr
+EquipArrow5Text:                pos_text BG3A, {26, 27}, EquipArrowStr
+EquipArrow6Text:                pos_text BG3A, {26, 29}, EquipArrowStr
+EquipArrow7Text:                pos_text BG3A, {26, 25}, EquipArrowStr
+EquipArrow8Text:                pos_text BG3A, {26, 31}, EquipArrowStr
+EquipArrow9Text:                pos_text BG3A, {26, 33}, EquipArrowStr
 
-EquipArrow2Text:
-@a3a5:  .byte   $3d,$7d,$d5,$00
+EquipSpeedText:                 pos_text BG3A, {15, 18}, EquipSpeedStr
+EquipAttackPwrText:             pos_text BG3A, {15, 24}, EquipAttackPwrStr
+EquipDefenseText:               pos_text BG3A, {15, 26}, EquipDefenseStr
+EquipMagDefText:                pos_text BG3A, {15, 30}, EquipMagDefStr
 
-EquipArrow3Text:
-@a3a9:  .byte   $bd,$7d,$d5,$00
-
-EquipArrow4Text:
-@a3ad:  .byte   $3d,$7e,$d5,$00
-
-EquipArrow5Text:
-@a3b1:  .byte   $3d,$7f,$d5,$00
-
-EquipArrow6Text:
-@a3b5:  .byte   $bd,$7f,$d5,$00
-
-EquipArrow7Text:
-@a3b9:  .byte   $bd,$7e,$d5,$00
-
-EquipArrow8Text:
-@a3bd:  .byte   $3d,$80,$d5,$00
-
-EquipArrow9Text:
-@a3c1:  .byte   $bd,$80,$d5,$00
-
-; "Speed"
-EquipSpeedText:
-@a3c5:  .byte   $29,$7d,$92,$a9,$9e,$9e,$9d,$00
-
-; "Bat.Pwr"
-EquipAttackPwrText:
-@a3cd:  .byte   $a9,$7e,$81,$9a,$ad,$c5,$8f,$b0,$ab,$00
-
-; "Defense"
-EquipDefenseText:
-@a3d7:  .byte   $29,$7f,$83,$9e,$9f,$9e,$a7,$ac,$9e,$00
-
-; "Mag.Def"
-EquipMagDefText:
-@a3e1:  .byte   $29,$80,$8c,$9a,$a0,$c5,$83,$9e,$9f,$00
+_c3abd6:                        pos_text BG3A, {21, 6}, {$ff,$ff,$ff,$ff,$ff,$ff,$00}
+_c3abdf:                        pos_text BG3A, {21, 8}, {$ff,$ff,$ff,$ff,$ff,$ff,$00}
+_c3abe8:                        pos_text BG3A, {19, 8}, {$37,$c1,$89,$7d,$89,$23,$00}
+_c3abf1:                        pos_text BG3A, {19, 6}, {$95,$87,$89,$a9,$c1,$89,$00}
+_c3abfa:                        pos_text BG3A, {19, 8}, {$a9,$c3,$89,$85,$a5,$81,$00}
+.endif
 
 ; ------------------------------------------------------------------------------
 
-; "Empty"
-_c3a3eb:
-@a3eb:  .byte   $23,$79,$84,$a6,$a9,$ad,$b2,$00
+.if LANG_EN
 
-; "Optimum"
-_c3a3f3:
-@a3f3:  .byte   $21,$79,$8e,$a9,$ad,$a2,$a6,$ae,$a6,$00
+EquipEmptyMsgText:              pos_text BG3A, {13, 3}, EquipEmptyMsgStr
+EquipOptimumMsgText:            pos_text BG3A, {12, 3}, EquipOptimumMsgStr
+RelicEmptyMsgText:              pos_text BG3A, {13, 5}, RelicEmptyMsgStr
+RelicOptimumMsgText:            pos_text BG3A, {12, 5}, RelicOptimumMsgStr
+EquipChangedMsgText:            pos_text BG3A, {6, 7}, EquipChangedMsgStr
 
-; "Empty"
-_c3a3fd:
-@a3fd:  .byte   $a3,$79,$84,$a6,$a9,$ad,$b2,$00
+.else
 
-; "Optimum"
-_c3a405:
-@a405:  .byte   $a1,$79,$8e,$a9,$ad,$a2,$a6,$ae,$a6,$00
+EquipEmptyMsgText:              pos_text BG3A, {12, 2}, EquipEmptyMsgStr
+EquipOptimumMsgText:            pos_text BG3A, {12, 2}, EquipOptimumMsgStr
+RelicEmptyMsgText:              pos_text BG3A, {12, 4}, RelicEmptyMsgStr
+RelicOptimumMsgText:            pos_text BG3A, {12, 4}, RelicOptimumMsgStr
+EquipChangedMsgText:            pos_text BG3A, {3, 6}, EquipChangedMsgStr
 
-; "Equipment changed."
-_c3a40f:
-@a40f:  .byte   $15,$7a,$84,$aa,$ae,$a2,$a9,$a6,$9e,$a7,$ad,$ff,$9c,$a1,$9a,$a7
-        .byte   $a0,$9e,$9d,$c5,$00
+.endif
 
 ; ------------------------------------------------------------------------------

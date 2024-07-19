@@ -63,8 +63,7 @@ UpdateBG2HScrollHDMA:
         bra     @3874
 
 ; negative rotation
-@3814:  eor     #$ffff
-        inc
+@3814:  neg_a
         xba
         lsr3
         tax
@@ -204,8 +203,7 @@ UpdateGradientSprites:
 
 ; negative rotation
         .a16
-@3933:  eor     #$ffff
-        inc
+@3933:  neg_a
         xba
         lsr3
         tax
@@ -340,8 +338,7 @@ TfrBG3Tilemap:
 
 ; negative rotation
         .a16
-@3a3e:  eor     #$ffff
-        inc
+@3a3e:  neg_a
         xba
         lsr3
         tax
@@ -420,8 +417,7 @@ UpdateMode7Rot:
         sec
         sbc     $8d
         bcs     @3ad6
-        eor     #$ffff
-        inc
+        neg_a
 @3ad6:  php
         sta     hWRDIVL
         stx     hWRDIVB
@@ -437,8 +433,7 @@ UpdateMode7Rot:
         plp
         lda     hRDDIVL
         bcs     @3aff
-        eor     #$ffff
-        inc
+        neg_a
 @3aff:  sta     $95
         lda     $89
         cmp     #$007e
@@ -501,8 +496,7 @@ UpdateMode7Rot:
         clc
         adc     hRDMPYL
         sta     $04be,y
-        eor     #$ffff
-        inc
+        neg_a
         sta     $067e,y
         dec     $66
         bne     @3b3e
@@ -546,8 +540,7 @@ UpdateMode7Rot:
         clc
         adc     hRDMPYL
         sta     $05ba,y
-        eor     #$ffff
-        inc
+        neg_a
         sta     $077a,y
         bra     @3b9c
 @3bfa:  jmp     @3e50
@@ -575,8 +568,7 @@ UpdateMode7Rot:
         lda     $6b
         clc
         adc     hRDMPYL
-        eor     #$ffff
-        inc
+        neg_a
         sta     $02ff,y
         ldx     $9b
         stx     hWRMPYA
@@ -591,8 +583,7 @@ UpdateMode7Rot:
         clc
         adc     hRDMPYL
         sta     $04be,y
-        eor     #$ffff
-        inc
+        neg_a
         sta     $067e,y
         dec     $66
         bne     @3bff
@@ -622,8 +613,7 @@ UpdateMode7Rot:
         lda     $6b
         clc
         adc     hRDMPYL
-        eor     #$ffff
-        inc
+        neg_a
         sta     $03fb,y
         ldx     $9b
         stx     hWRMPYA
@@ -638,8 +628,7 @@ UpdateMode7Rot:
         clc
         adc     hRDMPYL
         sta     $05ba,y
-        eor     #$ffff
-        inc
+        neg_a
         sta     $077a,y
         bra     @3c61
 @3cc3:  jmp     @3e50
@@ -667,8 +656,7 @@ UpdateMode7Rot:
         lda     $6b
         clc
         adc     hRDMPYL
-        eor     #$ffff
-        inc
+        neg_a
         sta     $02ff,y
         ldx     $9b
         stx     hWRMPYA
@@ -683,8 +671,7 @@ UpdateMode7Rot:
         clc
         adc     hRDMPYL
         sta     $067e,y
-        eor     #$ffff
-        inc
+        neg_a
         sta     $04be,y
         dec     $66
         bne     @3cc8
@@ -714,8 +701,7 @@ UpdateMode7Rot:
         lda     $6b
         clc
         adc     hRDMPYL
-        eor     #$ffff
-        inc
+        neg_a
         sta     $03fb,y
         ldx     $9b
         stx     hWRMPYA
@@ -730,8 +716,7 @@ UpdateMode7Rot:
         clc
         adc     hRDMPYL
         sta     $077a,y
-        eor     #$ffff
-        inc
+        neg_a
         sta     $05ba,y
         bra     @3d2a
 @3d8c:  jmp     @3e50
@@ -773,8 +758,7 @@ UpdateMode7Rot:
         clc
         adc     hRDMPYL
         sta     $067e,y
-        eor     #$ffff
-        inc
+        neg_a
         sta     $04be,y
         dec     $66
         bne     @3d91
@@ -818,8 +802,7 @@ UpdateMode7Rot:
         clc
         adc     hRDMPYL
         sta     $077a,y
-        eor     #$ffff
-        inc
+        neg_a
         sta     $05ba,y
         bra     @3def
 @3e4d:  jmp     @3e50
@@ -870,8 +853,7 @@ UpdateMode7Vars:
         sec
         sbc     $8d
         bcs     @3ea8
-        eor     #$ffff
-        inc
+        neg_a
 @3ea8:  php
         sta     hWRDIVL
         stx     hWRDIVB
@@ -887,8 +869,7 @@ UpdateMode7Vars:
         plp
         lda     hRDDIVL
         bcs     @3ed1
-        eor     #$ffff
-        inc
+        neg_a
 @3ed1:  sta     $95
         lda     $89
         cmp     #$007e

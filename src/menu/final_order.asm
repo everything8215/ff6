@@ -21,7 +21,7 @@ MenuState_73:
 @a9f8:  jsr     DisableInterrupts
         jsr     ClearBGScroll
         lda     #$02
-        sta     $46
+        sta     z46
         jsr     LoadFinalOrderCursor
         jsr     InitFinalOrderCursor
         jsr     CreateCursorTask
@@ -30,9 +30,9 @@ MenuState_73:
         jsr     DrawFinalOrderMenu
         jsr     InitPartyEquipScrollHDMA
         lda     #$74
-        sta     $27
-        lda     #$01
-        sta     $26
+        sta     zNextMenuState
+        lda     #MENU_STATE::FADE_IN
+        sta     zMenuState
         jsr     InitDMA1BG1ScreenA
         jmp     EnableInterrupts
 
@@ -47,8 +47,8 @@ MenuState_74:
         jsr     InitDMA1BG1ScreenA
 
 ; B button
-        lda     $09
-        bit     #$80
+        lda     z08+1
+        bit     #>JOY_B
         beq     @aa63
         jsr     PlayCancelSfx
         lda     $4a
@@ -61,25 +61,25 @@ MenuState_74:
         pha
         lda     #$ff
         sta     $0205,x
-        ldx     $00
+        ldx     z0
         pla
 @aa50:  cmp     $7e9d8a,x
         beq     @aa5c
         inx
         cpx     #12
         bne     @aa50
-@aa5c:  lda     #$20
+@aa5c:  lda     #BG1_TEXT_COLOR::DEFAULT
         sta     $7eaa8d,x
         rts
 
 ; check start button
-@aa63:  lda     $09
-        bit     #$10
+@aa63:  lda     z08+1
+        bit     #>JOY_START
         bne     @aa99
 
 ; A button
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @aaa6
         jsr     PlaySelectSfx
         clr_a
@@ -95,7 +95,7 @@ MenuState_74:
         dec
         tax
         lda     $7eaa8d,x
-        cmp     #$20
+        cmp     #BG1_TEXT_COLOR::DEFAULT
         bne     @aaa6                   ; do nothing if not white text
         jsr     SelectFinalOrderChar
         lda     $4a
@@ -107,8 +107,8 @@ MenuState_74:
 @aa99:  jsr     PlaySelectSfx
         jsr     FillFinalOrder
         lda     #$ff
-        sta     $27
-        stz     $26
+        sta     zNextMenuState
+        stz     zMenuState
         rts
 @aaa6:  rts
 
@@ -132,7 +132,7 @@ SelectFinalOrderChar:
         tay
         lda     $4b
         tax
-        lda     #$28
+        lda     #BG1_TEXT_COLOR::GRAY
         sta     $7eaa8c,x
         lda     $7e9d89,x
         tyx
@@ -150,7 +150,7 @@ FillFinalOrder:
         beq     @aaed
         clr_ax
 @aad2:  lda     $7eaa8d,x
-        cmp     #$20
+        cmp     #BG1_TEXT_COLOR::DEFAULT
         bne     @aae7
         clr_a
         lda     $4a
@@ -184,7 +184,7 @@ ResetFinalOrderList:
 @aafd:  clr_ax
 @aaff:  lda     #$ff
         sta     $0205,x
-        lda     #$20
+        lda     #BG1_TEXT_COLOR::DEFAULT
         sta     $7eaa8d,x
         inx
         cpx     #12
@@ -199,18 +199,18 @@ ResetFinalOrderList:
 DrawFinalOrderMenu:
 @ab13:  lda     #$02
         sta     hBG1SC
-        ldy     #.loword(FinalOrderWindow)
+        ldy     #near FinalOrderWindow
         jsr     DrawWindow
         jsr     TfrBG2ScreenAB
         jsr     ClearBG3ScreenA
         jsr     TfrBG3ScreenAB
         jsr     ClearBG1ScreenA
         jsr     ClearBG1ScreenB
-        lda     #$20                    ; use white text
-        sta     $29
-        ldx     #.loword(FinalOrderTextList)
-        ldy     #6
-        jsr     DrawPosList
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+        ldx     #near FinalOrderTextList
+        ldy     #sizeof_FinalOrderTextList
+        jsr     DrawPosKanaList
         jsr     DrawFinalOrderNum
         jsr     MakeFinalOrderCharList
         jsr     DrawFinalOrderListLeft
@@ -219,8 +219,7 @@ DrawFinalOrderMenu:
 
 ; ------------------------------------------------------------------------------
 
-FinalOrderWindow:
-@ab49:  .byte   $8b,$58,$1c,$18
+FinalOrderWindow:                       make_window BG2A, {1, 1}, {28, 24}
 
 ; ------------------------------------------------------------------------------
 
@@ -244,8 +243,8 @@ MakeFinalOrderCharList:
         lda     f:CharPropPtrs,x        ; pointers to character data
         tay
         shorta
-        lda     $0000,y
-        cmp     #$0e
+        lda     0,y
+        cmp     #CHAR_PROP::BANON
         bcs     @ab81
         clr_a
         lda     $e6
@@ -264,14 +263,18 @@ MakeFinalOrderCharList:
 ; [ draw final battle order list (left side) ]
 
 DrawFinalOrderListLeft:
-@ab89:  ldy     #$3a15
+.if LANG_EN
+@ab89:  ldy_pos BG1A, {6, 7}
+.else
+        ldy_pos BG1A, {6, 6}
+.endif
         sty     $f5
         clr_ax
 @ab90:  jsr     InitFinalOrderTextBuf
         phx
         clr_a
         lda     $7eaa8d,x
-        sta     $29
+        sta     zTextColor
         lda     $7e9d8a,x
         bmi     @aba6
         jsr     DrawFinalOrderCharName
@@ -289,9 +292,13 @@ DrawFinalOrderListLeft:
 ; [ draw final battle order list (right side) ]
 
 DrawFinalOrderListRight:
-@abb4:  lda     #$20
-        sta     $29
-        ldy     #$3a31
+@abb4:  lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+.if LANG_EN
+@ab89:  ldy_pos BG1A, {20, 7}
+.else
+        ldy_pos BG1A, {20, 6}
+.endif
         sty     $f5
         clr_ax
 @abbf:  jsr     InitFinalOrderTextBuf
@@ -369,14 +376,14 @@ DrawFinalOrderEmptyChar:
 DrawFinalOrderNum:
 @ac19:  lda     #1
         sta     $e6
-        ldy     #$3a0f                  ; left side
+        ldy_pos BG1A, {3, 7}            ; left side
         sty     $f5
         ldx     #12
         stx     $f1
         jsr     @ac3b
         lda     #1
         sta     $e6
-        ldy     #$3a2b                  ; right side
+        ldy_pos BG1A, {17, 7}           ; right side
         sty     $f5
         ldx     #12
         stx     $f1
@@ -402,7 +409,7 @@ DrawFinalOrderNum:
 ; [  ]
 
 LoadFinalOrderCursor:
-@ac54:  ldy     #.loword(FinalOrderCursorProp)
+@ac54:  ldy     #near FinalOrderCursorProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -413,51 +420,48 @@ UpdateFinalOrderCursor:
 @ac5a:  jsr     MoveCursor
 
 InitFinalOrderCursor:
-@ac5d:  ldy     #.loword(FinalOrderCursorPos)
+@ac5d:  ldy     #near FinalOrderCursorPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
 
 FinalOrderCursorProp:
-@ac63:  .byte   $80,$00,$00,$01,$0e
+        make_cursor_prop {0, 0}, {1, 14}, NO_X_WRAP
 
 FinalOrderCursorPos:
-@ac68:  .byte   $10,$20
-        .byte   $20,$2c
-        .byte   $20,$38
-        .byte   $20,$44
-        .byte   $20,$50
-        .byte   $20,$5c
-        .byte   $20,$68
-        .byte   $20,$74
-        .byte   $20,$80
-        .byte   $20,$8c
-        .byte   $20,$98
-        .byte   $20,$a4
-        .byte   $20,$b0
+        .byte   $10,$20
+.repeat 12, i
+        .byte   $20, $2c + i * 12
+.endrep
         .byte   $10,$bc
 
 ; ------------------------------------------------------------------------------
 
+.if LANG_EN
+        .define FinalOrderEndStr        {$84,$a7,$9d,$00}
+        .define FinalOrderResetStr      {$91,$9e,$ac,$9e,$ad,$00}
+        .define FinalOrderMsgStr        {$83,$9e,$ad,$9e,$ab,$a6,$a2,$a7,$9e,$ff,$a8,$ab,$9d,$9e,$ab,$00}
+.else
+        .define FinalOrderEndStr        {$91,$b7,$a9,$00}
+        .define FinalOrderResetStr      {$b1,$a9,$93,$91,$77,$00}
+        .define FinalOrderMsgStr        {$37,$c1,$b9,$21,$b9,$bb,$ff,$6d,$a3,$85,$6f,$3f,$75,$8d,$00}
+.endif
+
 ; pointers to text for final battle order menu
-FinalOrderTextList:
-@ac84:  .addr   FinalOrderEndText
+begin_block FinalOrderTextList
+        .addr   FinalOrderEndText
         .addr   FinalOrderResetText
         .addr   FinalOrderMsgText
+end_block FinalOrderTextList
 
-; c3/ac8a: ( 4,31) "end"
-FinalOrderEndText:
-@ac8a:  .word   $4011
-        .byte   $84,$a7,$9d,$00
-
-; c3/ac90: ( 4, 5) "reset"
-FinalOrderResetText:
-@ac90:  .word   $3991
-        .byte   $91,$9e,$ac,$9e,$ad,$00
-
-; c3/ac98: (10, 3) "determine order"
-FinalOrderMsgText:
-@ac98:  .word   $391d
-        .byte   $83,$9e,$ad,$9e,$ab,$a6,$a2,$a7,$9e,$ff,$a8,$ab,$9d,$9e,$ab,$00
+.if LANG_EN
+FinalOrderEndText:              pos_text BG1A, {4, 31}, FinalOrderEndStr
+FinalOrderResetText:            pos_text BG1A, {4, 5}, FinalOrderResetStr
+FinalOrderMsgText:              pos_text BG1A, {10, 3}, FinalOrderMsgStr
+.else
+FinalOrderEndText:              pos_text BG1A, {4, 30}, FinalOrderEndStr
+FinalOrderResetText:            pos_text BG1A, {4, 4}, FinalOrderResetStr
+FinalOrderMsgText:              pos_text BG1A, {10, 2}, FinalOrderMsgStr
+.endif
 
 ; ------------------------------------------------------------------------------

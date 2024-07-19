@@ -40,7 +40,7 @@ if __name__ == '__main__':
         exit(0)
 
     # read both dialogue json files
-    with open(dlg1_path, 'r') as dlg1_file, open(dlg2_path, 'r') as dlg2_file:
+    with open(dlg1_path, 'r', encoding='utf8') as dlg1_file, open(dlg2_path, 'r', encoding='utf8') as dlg2_file:
         dlg1_def = json.load(dlg1_file)
         dlg2_def = json.load(dlg2_file)
 
@@ -59,6 +59,6 @@ if __name__ == '__main__':
         raise ValueError('Invalid command:', dlg_cmd)
 
     # save both dialogue json files
-    with open(dlg1_path, 'w') as dlg1_file, open(dlg2_path, 'w') as dlg2_file:
+    with open(dlg1_path, 'w', encoding='utf8') as dlg1_file, open(dlg2_path, 'w', encoding='utf8') as dlg2_file:
         dlg1_file.write(json.dumps(dlg1_def, ensure_ascii=False, indent=2))
         dlg2_file.write(json.dumps(dlg2_def, ensure_ascii=False, indent=2))

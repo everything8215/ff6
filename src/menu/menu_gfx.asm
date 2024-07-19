@@ -29,10 +29,10 @@ LoadColosseumGfx:
 
 InitMenuGfx:
 @6a87:  clr_a
-        lda     $0200       ; menu type
+        lda     w0200       ; menu type
         asl
         tax
-        jmp     (.loword(InitMenuGfxTbl),x)
+        jmp     (near InitMenuGfxTbl,x)
 
 InitMenuGfxTbl:
 @6a90:  .addr   InitMenuGfx_00
@@ -121,7 +121,7 @@ LoadFontGfx2bpp:
 @6b13:  longa
         ldy     #$6000
         sty     hVMADDL
-        ldx     $00
+        ldx     z0
 @6b1d:  lda     f:SmallFontGfx,x   ; small font graphics
         sta     hVMDATAL
         inx2
@@ -151,7 +151,7 @@ LoadFontGfx4bpp:
         inx2
         cpx     #$0020
         bne     @6b41
-        ldx     $00
+        ldx     z0
 @6b57:  ldy     #8
 @6b5a:  lda     f:SmallFontGfx+$80,x
         sta     hVMDATAL
@@ -165,7 +165,7 @@ LoadFontGfx4bpp:
         bne     @6b57
         ldy     #$7800
         sty     hVMADDL
-        ldx     $00
+        ldx     z0
 @6b8b:  lda     f:WindowGfx,x           ; menu window graphics
         sta     hVMDATAL
         inx2
@@ -212,12 +212,12 @@ InitWindowPal:
 ; [ load menu text palettes ]
 
 LoadFontPal:
-@6be8:  ldx     $00
+@6be8:  ldx     z0
         txa
         sta     hCGADD
 @6bee:  longa
         lda     f:FontPal,x
-        sta     $7e3049,x
+        sta     wPalBuf,x
         shorta
         sta     hCGDATA
         xba
@@ -232,10 +232,10 @@ LoadFontPal:
 ; [ load character portrait color palettes ]
 
 LoadPortraitPal:
-@6c09:  ldx     $00
+@6c09:  ldx     z0
         txy
 @6c0c:  longa
-        lda     $6d,x                   ; pointer to character data
+        lda     zCharPropPtr,x                   ; pointer to character data
         phx
         phy
         tay
@@ -249,8 +249,8 @@ LoadPortraitPal:
         lda     #$0f                    ; use portrait $0f
         bra     @6c30
 @6c25:  clr_a
-        lda     $0000,y                 ; character number
-        cmp     #CHAR::LOCKE            ; if it's locke, use palette $01
+        lda     0,y                 ; character number
+        cmp     #CHAR_PROP::LOCKE            ; if it's locke, use palette $01
         beq     @6c30
         lda     $0001,y                 ; otherwise, use the actor number
 @6c30:  tax
@@ -263,7 +263,7 @@ LoadPortraitPal:
         phx
         lda     f:PortraitPal,x
         tyx
-        sta     $7e3149,x
+        sta     wPalBuf::SpritePal0,x
         shorta
         plx
         inx2                ; next color
@@ -284,10 +284,10 @@ LoadPortraitPal:
 LoadGrayCharPal:
 @6c60:  lda     #$90
         sta     hCGADD
-        ldx     $00
+        ldx     z0
 @6c67:  longa
         lda     f:GrayscalePal,x
-        sta     $7e3169,x
+        sta     wPalBuf::SpritePal1,x
         shorta
         sta     hCGDATA
         xba
@@ -303,7 +303,7 @@ LoadGrayCharPal:
 ; [ load cursor/icon palettes ]
 
 LoadMiscMenuSpritePal:
-@6c84:  ldx     $00
+@6c84:  ldx     z0
         lda     #$ec
         sta     hCGADD
 @6c8b:  longa
@@ -316,7 +316,7 @@ LoadMiscMenuSpritePal:
         inx2
         cpx     #8
         bne     @6c8b
-        ldx     $00
+        ldx     z0
         lda     #$fc
         sta     hCGADD
 @6cac:  longa
@@ -336,12 +336,12 @@ LoadMiscMenuSpritePal:
 ; [ load character sprite palettes ]
 
 LoadCharPal:
-@6cc7:  ldx     $00
+@6cc7:  ldx     z0
         lda     #$a0
         sta     hCGADD
 @6cce:  longa
         lda     f:BattleCharPal,x
-        sta     $7e3189,x
+        sta     wPalBuf::SpritePal2,x
         shorta
         sta     hCGDATA
         xba
@@ -370,7 +370,7 @@ LoadCharGfx:
         sta     $e7
         lda     f:MenuCharGfxPtrs,x     ; high word
         sta     $e9
-        ldx     $00
+        ldx     z0
 @6d05:  lda     f:MenuCharPoseOffsets,x
         sta     $ef
         jsr     _c36d44
@@ -417,7 +417,7 @@ _c36d44:
         ldy     $f3
         sty     hVMADDL
         jmp     @6d58                   ; this doesn't do anything
-@6d58:  ldy     $00
+@6d58:  ldy     z0
 @6d5a:  lda     [$eb],y
         sta     hVMDATAL
         iny2
@@ -453,7 +453,7 @@ LoadShopCharGfx:
 @6d79:  ldy     #$3000
         sty     hVMADDL
         stz     $e3
-@6d81:  ldy     $00
+@6d81:  ldy     z0
 @6d83:  shorta
         clr_a
         tyx
@@ -518,7 +518,7 @@ LoadShopCharGfx:
 ; [  ]
 
 _c36df8:
-@6df8:  ldy     $00
+@6df8:  ldy     z0
 @6dfa:  lda     [$eb],y
         sta     hVMDATAL
         iny2
@@ -548,7 +548,7 @@ LoadMiscMenuSpriteGfx:
 @6e67:  longa
         ldy     #$2000
         sty     hVMADDL
-        ldx     $00
+        ldx     z0
 @6e71:  lda     f:MenuSpriteGfx,x
         sta     hVMDATAL
         inx2
@@ -562,23 +562,23 @@ LoadMiscMenuSpriteGfx:
 ; [ load character portrait graphics ]
 
 LoadPortraitGfx:
-@6e82:  ldx     $00
+@6e82:  ldx     z0
 @6e84:  longa
         lda     f:PortraitVRAMTbl,x     ; set vram pointer
         sta     hVMADDL
-        ldy     $6d,x                   ; pointer to character data
+        ldy     zCharPropPtr,x          ; pointer to character data
         phx
         clr_a
         shorta
         lda     $0014,y                 ; imp status
-        and     #$20
+        and     #STATUS1::IMP
         beq     @6e9e
-        lda     #$0f                    ; use imp portrait
+        lda     #PORTRAIT_IMP
         bra     @6ea8
-@6e9e:  lda     $0000,y                 ; character graphics index
-        cmp     #$01                    ; if it's $01 (locke), use portrait 1
+@6e9e:  lda     0,y                     ; character properties index
+        cmp     #CHAR_PROP::LOCKE       ; if it's $01 (locke), use portrait 1
         beq     @6ea8
-        lda     $0001,y                 ; otherwise, use actor number
+        lda     1,y                     ; otherwise, use char number
 @6ea8:  longa
         asl
         tax
@@ -604,26 +604,26 @@ LoadPortraitGfx:
 
 GetPortraitGfxPtr:
 @6ebf:  lda     #^PortraitGfx
-        sta     $1f
+        sta     zDMA2Src+2
         ldy     #$0320
-        sty     $19
+        sty     zDMA2Size
         clr_a
         lda     $9c
         asl
         tax
         longa
         lda     f:PortraitVRAMTbl,x
-        sta     $1b
-        ldy     $6d,x
+        sta     zDMA2Dest
+        ldy     zCharPropPtr,x
         clr_a
         shorta
         lda     $0014,y
-        and     #$20
+        and     #STATUS1::IMP
         beq     @6ee5
-        lda     #$0f
+        lda     #PORTRAIT_IMP
         bra     @6eef
-@6ee5:  lda     $0000,y
-        cmp     #$01
+@6ee5:  lda     0,y
+        cmp     #CHAR_PROP::LOCKE
         beq     @6eef
         lda     $0001,y
 @6eef:  longa
@@ -631,8 +631,8 @@ GetPortraitGfxPtr:
         tax
         lda     f:PortraitGfxPtrs,x
         clc
-        adc     #.loword(PortraitGfx)
-        sta     $1d
+        adc     #near PortraitGfx
+        sta     zDMA2Src
         shorta
         rts
 
@@ -670,8 +670,8 @@ PortraitVRAMTbl:
 MakeSaveSlot1PalList:
 @6f61:  ldy     $91
         beq     @6f80
-        ldx     $00
-@6f67:  lda     $69,x
+        ldx     z0
+@6f67:  lda     zCharID,x
         bmi     @6f73
         jsr     GetCharGfxID
         jsr     FixSoldierPal
@@ -682,7 +682,7 @@ MakeSaveSlot1PalList:
         cpx     #4
         bne     @6f67
         rts
-@6f80:  ldx     $00
+@6f80:  ldx     z0
         bra     _6f84
 
 _6f84:  lda     #$ff
@@ -702,7 +702,7 @@ GetCharGfxID:
         txa
         asl
         tax
-        ldy     $6d,x
+        ldy     zCharPropPtr,x
         shorta
         plx
         lda     $0001,y
@@ -730,8 +730,8 @@ FixSoldierPal:
 MakeSaveSlot2PalList:
 @6fb8:  ldy     $93
         beq     @6fd7
-        ldx     $00
-@6fbe:  lda     $69,x
+        ldx     z0
+@6fbe:  lda     zCharID,x
         bmi     @6fca
         jsr     GetCharGfxID
         jsr     FixSoldierPal
@@ -752,8 +752,8 @@ MakeSaveSlot2PalList:
 MakeSaveSlot3PalList:
 @6fdc:  ldy     $95
         beq     @6ffb
-        ldx     $00
-@6fe2:  lda     $69,x
+        ldx     z0
+@6fe2:  lda     zCharID,x
         bmi     @6fee
         jsr     GetCharGfxID
         jsr     FixSoldierPal

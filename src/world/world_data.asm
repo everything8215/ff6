@@ -9,7 +9,7 @@
 
 .segment "world_data"
 
-begin_fixed_block WorldDataPtrs2, $30
+begin_block WorldDataPtrs2, $30
 
 ; ee/b260
 WorldModDataPtrs:
@@ -39,7 +39,7 @@ VehicleEvent_05:
 VehicleEvent_06:
         .faraddr EventScript_DoomGazeDefeated - EventScript
 
-end_fixed_block WorldDataPtrs2
+end_block WorldDataPtrs2
 
 ; ------------------------------------------------------------------------------
 

@@ -9,7 +9,7 @@ def clean_assets(rip_list):
     # remove text strings from all json files
     for text_def in rip_list['text']:
         json_path = text_def['json_path']
-        with open(json_path, 'r') as f:
+        with open(json_path, 'r', encoding='utf8') as f:
             text_def = json.load(f)
 
         # clear auto-generated code in the include file
@@ -22,7 +22,7 @@ def clean_assets(rip_list):
 
         # write back to the json file
         asset_json = json.dumps(text_def, ensure_ascii=False, indent=2)
-        with open(json_path, 'w') as f:
+        with open(json_path, 'w', encoding='utf8') as f:
             f.write(asset_json)
 
         # delete the binary text file
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     # read both rip lists
     for rip_list_path in ['tools/rip_list_en.json', 'tools/rip_list_jp.json']:
-        with open(rip_list_path, 'r') as f:
+        with open(rip_list_path, 'r', encoding='utf8') as f:
             rip_list = json.load(f)
         clean_assets(rip_list)
 

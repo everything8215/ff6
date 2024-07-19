@@ -575,10 +575,10 @@ DoPoisonDmg:
         and     #$c2
         bne     @4a93
         lda     $1623,y                 ; check for tintinabar
-        cmp     #ITEM_TINTINABAR
+        cmp     #ITEM::TINTINABAR
         beq     @4a7a
         lda     $1624,y
-        cmp     #ITEM_TINTINABAR
+        cmp     #ITEM::TINTINABAR
         bne     @4a93
 @4a7a:  jsr     CalcMaxHP
         lda     $161c,y
@@ -697,13 +697,13 @@ UpdatePartyFlags:
 
 IncSteps:
 @4b60:  lda     $1866                   ; 9999999 max steps
-        cmp     #.lobyte(9999999)
+        cmp     #.lobyte(MAX_STEPS)
         bne     @4b75
         lda     $1867
-        cmp     #.hibyte(9999999)
+        cmp     #.hibyte(MAX_STEPS)
         bne     @4b75
         lda     $1868
-        cmp     #.bankbyte(9999999)
+        cmp     #.bankbyte(MAX_STEPS)
         beq     @4b82
 @4b75:  inc     $1866
         bne     @4b82
@@ -812,14 +812,14 @@ CheckTreasure:
         shorta0
         adc     $1862
         sta     $1862
-        cmp     #^9999999
+        cmp     #^MAX_GIL
         bcc     @4c78
         ldx     $1860
-        cpx     #.loword(9999999)
+        cpx     #.loword(MAX_GIL)
         bcc     @4c78
-        ldx     #.loword(9999999)      ; max 9,999,999 gil
+        ldx     #.loword(MAX_GIL)      ; max 9,999,999 gil
         stx     $1860
-        lda     #^9999999
+        lda     #^MAX_GIL
         sta     $1862
 @4c78:  jsr     HexToDec
         ldx     #.loword(EventScript_TreasureGil)
@@ -1414,9 +1414,7 @@ UpdateLocalTiles:
         lda     #$7f
         pha
         plb
-        tdc
-        tax
-        tay
+        clr_axy
         shorti
         ldy     $1a
         lda     ($1e),y

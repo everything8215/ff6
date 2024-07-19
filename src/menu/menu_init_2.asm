@@ -1,5 +1,5 @@
 .segment "menu_code_far"
-begin_fixed_block MenuCodeFar, $0600
+begin_block MenuCodeFar, $0600
 
 ; ------------------------------------------------------------------------------
 
@@ -10,49 +10,52 @@ ClearCharProp:
         stz     $76
         stz     $77
         stz     $78
-        ldy     $00
-        sty     $6d                     ; clear character data pointers
-        sty     $6f
-        sty     $71
-        sty     $73
+        ldy     z0
+        sty     zCharPropPtr::Slot1
+        sty     zCharPropPtr::Slot2
+        sty     zCharPropPtr::Slot3
+        sty     zCharPropPtr::Slot4
         lda     #$ff
-        sta     $69                     ; set character numbers to $ff (no character)
-        sta     $6a
-        sta     $6b
-        sta     $6c
+        sta     zCharID::Slot1                 ; set character numbers to $ff (no character)
+        sta     zCharID::Slot2
+        sta     zCharID::Slot3
+        sta     zCharID::Slot4
         rtl
 
 ; ------------------------------------------------------------------------------
 
 ; [ init hdma for menu window gradient bars ]
 
-; a: 0 = normal, 1 = save select, 2 = colosseum
+; A: menu type
+;      0: field menu
+;      1: save select
+;      2: colosseum (select challenger)
 
 InitGradientHDMA:
 @ca1d:  xba
-        lda     $00
+        lda     z0
         xba
         asl
         tax
         longa
         lda     f:MenuFixedColorHDMATblPtrs,x
-        sta     $4332
+        sta     hDMA3::ADDR
         lda     f:MenuAddSubHDMATblPtrs,x
-        sta     $4342
+        sta     hDMA4::ADDR
         shorta
-        stz     $4330
-        lda     #$32
-        sta     $4331
+        stz     hDMA3::CTRL
+        lda     #<hCOLDATA
+        sta     hDMA3::HREG
         lda     #^*
-        sta     $4334
-        sta     $4337
-        sta     $4344
-        sta     $4347
-        stz     $4340
-        lda     #$31
-        sta     $4341
-        lda     #$18
-        tsb     $43
+        sta     hDMA3::ADDR_B
+        sta     hDMA3::HDMA_B
+        sta     hDMA4::ADDR_B
+        sta     hDMA4::HDMA_B
+        stz     hDMA4::CTRL
+        lda     #<hCGADSUB
+        sta     hDMA4::HREG
+        lda     #BIT_3 | BIT_4
+        tsb     zEnableHDMA
         lda     #$80
         sta     hCGSWSEL
         lda     #$82
@@ -75,9 +78,9 @@ MenuAddSubHDMATblPtrs:
 
 ; add/sub hdma data for normal menu window
 MenuAddSubHDMATbl_00:
-@ca77:  .byte   $70,$02
-        .byte   $70,$82
-        .byte   $00
+        hdma_byte 112, $02
+        hdma_byte 112, $82
+        hdma_end
 
 ; pointers to fixed color hdma tables
 MenuFixedColorHDMATblPtrs:
@@ -87,221 +90,189 @@ MenuFixedColorHDMATblPtrs:
 
 ; fixed color hdma data for normal menu window
 MenuFixedColorHDMATbl_00:
-@ca82:  .byte   $0a,$eb
-        .byte   $0a,$ea
-        .byte   $0a,$e9
-        .byte   $0a,$e8
-        .byte   $0a,$e7
-        .byte   $0a,$e6
-        .byte   $0a,$e5
-        .byte   $0a,$e4
-        .byte   $0a,$e3
-        .byte   $0a,$e2
-        .byte   $0a,$e1
-        .byte   $0a,$e0
-        .byte   $0a,$e1
-        .byte   $0a,$e2
-        .byte   $0a,$e3
-        .byte   $0a,$e4
-        .byte   $0a,$e5
-        .byte   $0a,$e6
-        .byte   $0a,$e7
-        .byte   $0a,$e8
-        .byte   $0a,$e9
-        .byte   $0a,$ea
-        .byte   $0a,$eb
-        .byte   $0a,$ec
-        .byte   $00
+        hdma_byte 10, FIXED_CLR::WHITE | 11
+        hdma_byte 10, FIXED_CLR::WHITE | 10
+        hdma_byte 10, FIXED_CLR::WHITE | 9
+        hdma_byte 10, FIXED_CLR::WHITE | 8
+        hdma_byte 10, FIXED_CLR::WHITE | 7
+        hdma_byte 10, FIXED_CLR::WHITE | 6
+        hdma_byte 10, FIXED_CLR::WHITE | 5
+        hdma_byte 10, FIXED_CLR::WHITE | 4
+        hdma_byte 10, FIXED_CLR::WHITE | 3
+        hdma_byte 10, FIXED_CLR::WHITE | 2
+        hdma_byte 10, FIXED_CLR::WHITE | 1
+        hdma_byte 10, FIXED_CLR::WHITE | 0
+        hdma_byte 10, FIXED_CLR::WHITE | 1
+        hdma_byte 10, FIXED_CLR::WHITE | 2
+        hdma_byte 10, FIXED_CLR::WHITE | 3
+        hdma_byte 10, FIXED_CLR::WHITE | 4
+        hdma_byte 10, FIXED_CLR::WHITE | 5
+        hdma_byte 10, FIXED_CLR::WHITE | 6
+        hdma_byte 10, FIXED_CLR::WHITE | 7
+        hdma_byte 10, FIXED_CLR::WHITE | 8
+        hdma_byte 10, FIXED_CLR::WHITE | 9
+        hdma_byte 10, FIXED_CLR::WHITE | 10
+        hdma_byte 10, FIXED_CLR::WHITE | 11
+        hdma_byte 10, FIXED_CLR::WHITE | 12
+        hdma_end
 
 ; add/sub hdma data for save select menu window
 MenuAddSubHDMATbl_01:
-@cab3:  .byte   $1f,$02
-        .byte   $10,$82
-        .byte   $1c,$02
-        .byte   $1c,$82
-        .byte   $1c,$02
-        .byte   $1c,$82
-        .byte   $1c,$02
-        .byte   $1c,$82
-        .byte   $00
+@cab3:  hdma_byte 31,$02
+        hdma_byte 16,$82
+.repeat 3
+        hdma_byte 28,$02
+        hdma_byte 28,$82
+.endrep
+        hdma_end
 
 ; add/sub hdma data for colosseum menu window
 MenuAddSubHDMATbl_02:
-@cac4:  .byte   $17,$02
-        .byte   $78,$82
-        .byte   $24,$02
-        .byte   $24,$82
-        .byte   $00
+@cac4:  hdma_byte 23,$02
+        hdma_byte 120,$82
+        hdma_byte 36,$02
+        hdma_byte 36,$82
+        hdma_end
 
 ; fixed color hdma data for save select menu window
 MenuFixedColorHDMATbl_01:
-@cacd:  .byte   $0f,$e0
-        .byte   $02,$e7
-        .byte   $02,$e6
-        .byte   $02,$e5
-        .byte   $02,$e4
-        .byte   $02,$e3
-        .byte   $02,$e2
-        .byte   $02,$e1
-        .byte   $02,$e0
-        .byte   $02,$e1
-        .byte   $02,$e2
-        .byte   $02,$e3
-        .byte   $02,$e4
-        .byte   $02,$e5
-        .byte   $02,$e6
-        .byte   $02,$e7
-        .byte   $04,$e7
-        .byte   $04,$e6
-        .byte   $04,$e5
-        .byte   $04,$e4
-        .byte   $04,$e3
-        .byte   $04,$e2
-        .byte   $04,$e1
-        .byte   $04,$e0
-        .byte   $04,$e1
-        .byte   $04,$e2
-        .byte   $04,$e3
-        .byte   $04,$e4
-        .byte   $04,$e5
-        .byte   $04,$e6
-        .byte   $04,$e7
-        .byte   $04,$e6
-        .byte   $04,$e5
-        .byte   $04,$e4
-        .byte   $04,$e3
-        .byte   $04,$e2
-        .byte   $04,$e1
-        .byte   $04,$e0
-        .byte   $04,$e1
-        .byte   $04,$e2
-        .byte   $04,$e3
-        .byte   $04,$e4
-        .byte   $04,$e5
-        .byte   $04,$e6
-        .byte   $04,$e7
-        .byte   $04,$e6
-        .byte   $04,$e5
-        .byte   $04,$e4
-        .byte   $04,$e3
-        .byte   $04,$e2
-        .byte   $04,$e1
-        .byte   $04,$e0
-        .byte   $04,$e1
-        .byte   $04,$e2
-        .byte   $04,$e3
-        .byte   $04,$e4
-        .byte   $04,$e5
-        .byte   $04,$e6
-        .byte   $00
+@cacd:  hdma_byte 15,$e0
+        hdma_byte 2,$e7
+        hdma_byte 2,$e6
+        hdma_byte 2,$e5
+        hdma_byte 2,$e4
+        hdma_byte 2,$e3
+        hdma_byte 2,$e2
+        hdma_byte 2,$e1
+        hdma_byte 2,$e0
+        hdma_byte 2,$e1
+        hdma_byte 2,$e2
+        hdma_byte 2,$e3
+        hdma_byte 2,$e4
+        hdma_byte 2,$e5
+        hdma_byte 2,$e6
+        hdma_byte 2,$e7
+.repeat 3
+        hdma_byte 4,$e7
+        hdma_byte 4,$e6
+        hdma_byte 4,$e5
+        hdma_byte 4,$e4
+        hdma_byte 4,$e3
+        hdma_byte 4,$e2
+        hdma_byte 4,$e1
+        hdma_byte 4,$e0
+        hdma_byte 4,$e1
+        hdma_byte 4,$e2
+        hdma_byte 4,$e3
+        hdma_byte 4,$e4
+        hdma_byte 4,$e5
+        hdma_byte 4,$e6
+.endrep
+        hdma_end
 
-; fixed color hdma data for colosseum menu window
+; fixed color hdma data for colosseum challenger select window
 MenuFixedColorHDMATbl_02:
-@cb42:  .byte   $07,$e0
-        .byte   $02,$e7
-        .byte   $02,$e6
-        .byte   $02,$e5
-        .byte   $02,$e4
-        .byte   $02,$e3
-        .byte   $02,$e2
-        .byte   $02,$e1
-        .byte   $02,$e0
-        .byte   $02,$e1
-        .byte   $02,$e2
-        .byte   $02,$e3
-        .byte   $02,$e4
-        .byte   $02,$e5
-        .byte   $02,$e6
-        .byte   $03,$e7
-        .byte   $67,$e0
-        .byte   $02,$ea
-        .byte   $04,$e9
-        .byte   $04,$e8
-        .byte   $04,$e7
-        .byte   $04,$e6
-        .byte   $04,$e5
-        .byte   $04,$e4
-        .byte   $04,$e3
-        .byte   $04,$e2
-        .byte   $04,$e1
-        .byte   $04,$e0
-        .byte   $04,$e1
-        .byte   $04,$e2
-        .byte   $04,$e3
-        .byte   $04,$e4
-        .byte   $04,$e5
-        .byte   $04,$e6
-        .byte   $04,$e7
-        .byte   $04,$e8
-        .byte   $04,$e9
-        .byte   $02,$ea
-        .byte   $00
+@cb42:  hdma_byte 7,$e0
+        hdma_byte 2,$e7
+        hdma_byte 2,$e6
+        hdma_byte 2,$e5
+        hdma_byte 2,$e4
+        hdma_byte 2,$e3
+        hdma_byte 2,$e2
+        hdma_byte 2,$e1
+        hdma_byte 2,$e0
+        hdma_byte 2,$e1
+        hdma_byte 2,$e2
+        hdma_byte 2,$e3
+        hdma_byte 2,$e4
+        hdma_byte 2,$e5
+        hdma_byte 2,$e6
+        hdma_byte 3,$e7
+        hdma_byte 103,$e0  ; no fixed color in battle bg region
+        hdma_byte 2,$ea
+        hdma_byte 4,$e9
+        hdma_byte 4,$e8
+        hdma_byte 4,$e7
+        hdma_byte 4,$e6
+        hdma_byte 4,$e5
+        hdma_byte 4,$e4
+        hdma_byte 4,$e3
+        hdma_byte 4,$e2
+        hdma_byte 4,$e1
+        hdma_byte 4,$e0
+        hdma_byte 4,$e1
+        hdma_byte 4,$e2
+        hdma_byte 4,$e3
+        hdma_byte 4,$e4
+        hdma_byte 4,$e5
+        hdma_byte 4,$e6
+        hdma_byte 4,$e7
+        hdma_byte 4,$e8
+        hdma_byte 4,$e9
+        hdma_byte 2,$ea
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
-; [ init mode 7 hdma ]
+; [ init mode 7 hdma (all credits scenes except clouds 3) ]
 
 _d4cb8f:
 @cb8f:  lda     #$42
-        sta     $4340
-        sta     $4350
-        sta     $4360
-        sta     $4370
-        lda     #$1b
-        sta     $4341
+        sta     hDMA4::CTRL
+        sta     hDMA5::CTRL
+        sta     hDMA6::CTRL
+        sta     hDMA7::CTRL
+        lda     #<hM7A
+        sta     hDMA4::HREG
         inc
-        sta     $4351
+        sta     hDMA5::HREG
         inc
-        sta     $4361
+        sta     hDMA6::HREG
         inc
-        sta     $4371
-        ldy     #.loword(_d4cbe7)
-        sty     $4342
-        ldy     #.loword(_d4cbee)
-        sty     $4352
-        ldy     #.loword(_d4cbf5)
-        sty     $4362
-        ldy     #.loword(_d4cbe7)
-        sty     $4372
-        lda     #^*
-        sta     $4344
-        sta     $4354
-        sta     $4364
-        sta     $4374
+        sta     hDMA7::HREG
+        ldy     #near _d4cbe7
+        sty     hDMA4::ADDR
+        ldy     #near _d4cbee
+        sty     hDMA5::ADDR
+        ldy     #near _d4cbf5
+        sty     hDMA6::ADDR
+        ldy     #near _d4cbe7
+        sty     hDMA7::ADDR
+        lda     #^_d4cbe7
+        sta     hDMA4::ADDR_B
+        sta     hDMA5::ADDR_B
+        sta     hDMA6::ADDR_B
+        sta     hDMA7::ADDR_B
         lda     #$00
-        sta     $4347
-        sta     $4357
-        sta     $4367
-        sta     $4377
-        lda     #$f0
-        tsb     $43
+        sta     hDMA4::HDMA_B
+        sta     hDMA5::HDMA_B
+        sta     hDMA6::HDMA_B
+        sta     hDMA7::HDMA_B
+        lda     #BIT_4 | BIT_5 | BIT_6 | BIT_7
+        tsb     zEnableHDMA
         rtl
 
 ; ------------------------------------------------------------------------------
 
+; hdma tables for all credits scenes except clouds 3
+
 ; m7a & m7d hdma table
 _d4cbe7:
-@cbe7:  .byte   $fb
-        .word   $0604
-        .byte   $e5
-        .word   $06f8
-        .byte   $00
+        hdma_addr 123 | BIT_7, $0604
+        hdma_addr 101 | BIT_7, $06f8
+        hdma_end
 
 ; m7b hdma table
 _d4cbee:
-@cbee:  .byte   $fb
-        .word   $07c6
-        .byte   $e5
-        .word   $08ba
-        .byte   $00
+        hdma_addr 123 | BIT_7, $07c6
+        hdma_addr 101 | BIT_7, $08ba
+        hdma_end
 
 ; m7c hdma table
 _d4cbf5:
-@cbf5:  .byte   $fb
-        .word   $0988
-        .byte   $e5
-        .word   $0a7c
-        .byte   $00
+        hdma_addr 123 | BIT_7, $0988
+        hdma_addr 101 | BIT_7, $0a7c
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
@@ -309,140 +280,134 @@ _d4cbf5:
 
 _d4cbfc:
 @cbfc:  lda     #$43
-        sta     $4310
-        sta     $4320
+        sta     hDMA1::CTRL
+        sta     hDMA2::CTRL
         lda     #$42
-        sta     $4340
-        sta     $4350
-        sta     $4360
-        sta     $4370
+        sta     hDMA4::CTRL
+        sta     hDMA5::CTRL
+        sta     hDMA6::CTRL
+        sta     hDMA7::CTRL
         lda     #<hBG1HOFS  ; channel #1 destination = $210d, $210e (bg1 hscroll, vscroll)
-        sta     $4311
+        sta     hDMA1::HREG
         lda     #<hM7X      ; channel #2 destination = $211f, $2120 (center x, y)
-        sta     $4321
+        sta     hDMA2::HREG
         lda     #<hM7A      ; channel #4 destination = $211b (m7a)
-        sta     $4341
+        sta     hDMA4::HREG
         inc                 ; channel #5 destination = $211c (m7b)
-        sta     $4351
+        sta     hDMA5::HREG
         inc                 ; channel #6 destination = $211d (m7c)
-        sta     $4361
+        sta     hDMA6::HREG
         inc                 ; channel #7 destination = $211e (m7d)
-        sta     $4371
-        ldy     #.loword(_d4cd3a)
-        sty     $4312
-        ldy     #.loword(_d4cd41)
-        sty     $4322
-        ldy     #.loword(_d4cd25)
-        sty     $4342
-        ldy     #.loword(_d4cd2c)
-        sty     $4352
-        ldy     #.loword(_d4cd33)
-        sty     $4362
-        ldy     #.loword(_d4cd25)
-        sty     $4372
-        lda     #^*
-        sta     $4314
-        sta     $4324
-        sta     $4344
-        sta     $4354
-        sta     $4364
-        sta     $4374
+        sta     hDMA7::HREG
+        ldy     #near _d4cd3a
+        sty     hDMA1::ADDR
+        ldy     #near _d4cd41
+        sty     hDMA2::ADDR
+        ldy     #near _d4cd25
+        sty     hDMA4::ADDR
+        ldy     #near _d4cd2c
+        sty     hDMA5::ADDR
+        ldy     #near _d4cd33
+        sty     hDMA6::ADDR
+        ldy     #near _d4cd25
+        sty     hDMA7::ADDR
+        lda     #^_d4cd3a
+        sta     hDMA1::ADDR_B
+        sta     hDMA2::ADDR_B
+        sta     hDMA4::ADDR_B
+        sta     hDMA5::ADDR_B
+        sta     hDMA6::ADDR_B
+        sta     hDMA7::ADDR_B
         lda     #$00
-        sta     $4347
-        sta     $4357
-        sta     $4367
-        sta     $4377
+        sta     hDMA4::HDMA_B
+        sta     hDMA5::HDMA_B
+        sta     hDMA6::HDMA_B
+        sta     hDMA7::HDMA_B
         lda     #$7e
-        sta     $4317
-        sta     $4327
+        sta     hDMA1::HDMA_B
+        sta     hDMA2::HDMA_B
         lda     #$04
-        sta     $4330
+        sta     hDMA3::CTRL
         lda     #<hCGSWSEL
-        sta     $4331
-        ldy     #.loword(FixedColorHDMATbl)
-        sty     $4332
+        sta     hDMA3::HREG
+        ldy     #near FixedColorHDMATbl
+        sty     hDMA3::ADDR
         lda     #^FixedColorHDMATbl
-        sta     $4334
-        sta     $4337
-        lda     #$fe
-        tsb     $43
+        sta     hDMA3::ADDR_B
+        sta     hDMA3::HDMA_B
+        lda     #BIT_1 | BIT_2 | BIT_3 | BIT_4 | BIT_5 | BIT_6 | BIT_7
+        tsb     zEnableHDMA
         rtl
 
 ; ------------------------------------------------------------------------------
 
 ; fixed color hdma table
 FixedColorHDMATbl:
-@cc98:  .byte   $63,$80,$01,$e0,$00
-        .byte   $01,$80,$01,$e1,$00
-        .byte   $01,$80,$01,$e2,$00
-        .byte   $01,$80,$01,$e3,$00
-        .byte   $01,$80,$01,$e4,$00
-        .byte   $01,$80,$01,$e5,$00
-        .byte   $01,$80,$01,$e6,$00
-        .byte   $01,$80,$01,$e7,$00
-        .byte   $01,$80,$01,$e8,$00
-        .byte   $01,$80,$01,$e9,$00
-        .byte   $01,$80,$01,$ea,$00
-        .byte   $01,$80,$01,$eb,$00
-        .byte   $01,$80,$01,$ec,$00
-        .byte   $02,$80,$01,$ee,$00
-        .byte   $03,$80,$01,$f0,$00
-        .byte   $03,$80,$01,$f3,$00
-        .byte   $02,$80,$01,$f6,$00
-        .byte   $01,$80,$01,$fa,$00
-        .byte   $01,$80,$01,$fb,$00
-        .byte   $01,$80,$01,$fc,$00
-        .byte   $01,$80,$01,$ef,$00
-        .byte   $01,$80,$01,$ec,$00
-        .byte   $01,$80,$01,$ea,$00
-        .byte   $01,$80,$01,$e6,$00
-        .byte   $01,$80,$01,$e3,$00
-        .byte   $02,$80,$01,$e2,$00
-        .byte   $03,$80,$01,$e1,$00
-        .byte   $01,$82,$81,$e0,$00
-        .byte   $00
+        hdma_4byte 99, {$80, $01, $e0, $00}
+        hdma_4byte 1, {$80, $01, $e1, $00}
+        hdma_4byte 1, {$80, $01, $e2, $00}
+        hdma_4byte 1, {$80, $01, $e3, $00}
+        hdma_4byte 1, {$80, $01, $e4, $00}
+        hdma_4byte 1, {$80, $01, $e5, $00}
+        hdma_4byte 1, {$80, $01, $e6, $00}
+        hdma_4byte 1, {$80, $01, $e7, $00}
+        hdma_4byte 1, {$80, $01, $e8, $00}
+        hdma_4byte 1, {$80, $01, $e9, $00}
+        hdma_4byte 1, {$80, $01, $ea, $00}
+        hdma_4byte 1, {$80, $01, $eb, $00}
+        hdma_4byte 1, {$80, $01, $ec, $00}
+        hdma_4byte 2, {$80, $01, $ee, $00}
+        hdma_4byte 3, {$80, $01, $f0, $00}
+        hdma_4byte 3, {$80, $01, $f3, $00}
+        hdma_4byte 2, {$80, $01, $f6, $00}
+        hdma_4byte 1, {$80, $01, $fa, $00}
+        hdma_4byte 1, {$80, $01, $fb, $00}
+        hdma_4byte 1, {$80, $01, $fc, $00}
+        hdma_4byte 1, {$80, $01, $ef, $00}
+        hdma_4byte 1, {$80, $01, $ec, $00}
+        hdma_4byte 1, {$80, $01, $ea, $00}
+        hdma_4byte 1, {$80, $01, $e6, $00}
+        hdma_4byte 1, {$80, $01, $e3, $00}
+        hdma_4byte 2, {$80, $01, $e2, $00}
+        hdma_4byte 3, {$80, $01, $e1, $00}
+        hdma_4byte 1, {$82, $81, $e0, $00}
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
+; hdma tables for clouds 3 (mode 7 airship above clouds)
+;   the first value writes then waits 124 frames (airship)
+;   the second value writes every frame for 100 frames (clouds)
+
 ; m7a & m7d hdma table
 _d4cd25:
-@cd25:  .byte   $7c
-        .word   $0600
-        .byte   $e4
-        .word   $06f8
-        .byte   $00
+        hdma_addr 124, $0600
+        hdma_addr 100 | BIT_7, $06f8
+        hdma_end
 
 ; m7b hdma table
 _d4cd2c:
-@cd2c:  .byte   $7c
-        .word   $07c2
-        .byte   $e4
-        .word   $08ba
-        .byte   $00
+        hdma_addr 124, $07c2
+        hdma_addr 100 | BIT_7, $08ba
+        hdma_end
 
 ; m7c hdma table
 _d4cd33:
-@cd33:  .byte   $7c
-        .word   $0984
-        .byte   $e4
-        .word   $0a7c
-        .byte   $00
+        hdma_addr 124, $0984
+        hdma_addr 100 | BIT_7, $0a7c
+        hdma_end
 
 ; bg1 scroll hdma table
 _d4cd3a:
-@cd3a:  .byte   $7c
-        .word   $b68d
-        .byte   $64
-        .word   $b691
-        .byte   $00
+        hdma_addr 124, $b68d
+        hdma_addr 100, $b691
+        hdma_end
 
 ; center x,y position hdma table
 _d4cd41:
-@cd41:  .byte   $7c
-        .word   $b695
-        .byte   $64
-        .word   $b699
-        .byte   $00
+        hdma_addr 124, $b695
+        hdma_addr 100, $b699
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
@@ -451,7 +416,7 @@ _d4cd41:
 InitHWRegsMenu:
 @cd48:  lda     #$01
         sta     hOBJSEL
-        ldx     $00
+        ldx     z0
         stx     hOAMADDL
         lda     #$09
         sta     hBGMODE
@@ -521,57 +486,57 @@ InitHWRegsMenu:
 
 InitMenuRAM:
 @cdf3:  clr_ay
-        sty     $bb         ; clear mode7 registers
-        sty     $bd
-        sty     $bf
-        sty     $c1
-        sty     $b7
-        sty     $b9
-        sty     $06         ; clear controller buttons
-        sty     $08
-        sty     $0c
-        sty     $0a
-        sty     $97         ;
-        sty     $2b         ; clear current task code pointer
-        sta     $43         ; disable hdma
-        sta     $26         ; clear menu/cinematic state
-        sta     $25         ; clear main menu selection
-        sta     $b4         ; use inverse credits palette
-        sta     $b5         ; clear mosaic register
-        sta     $28         ; clear current selection
-        sta     $29         ; clear high byte of bg data
-        sta     $60         ; clear portrait task data pointers
+        sty     zM7A                     ; clear mode7 registers
+        sty     zM7B
+        sty     zM7C
+        sty     zM7D
+        sty     zM7X
+        sty     zM7Y
+        sty     z06                     ; clear controller buttons
+        sty     z08
+        sty     z0c
+        sty     z0a
+        sty     $97                     ;
+        sty     zTaskCodePtr
+        sta     zEnableHDMA             ; disable hdma
+        sta     zMenuState
+        sta     z25                     ; clear main menu selection
+        sta     $b4                     ; use inverse credits palette
+        sta     zMosaic
+        sta     zSelIndex
+        sta     zTextColor
+        sta     $60                     ; clear portrait task data pointers
         sta     $61
         sta     $62
         sta     $63
-        sta     $46         ; clear cursor/scrolling flags
-        sta     $66         ; clear current saved game slot
-        sta     $ae         ; clear current sound effect
+        sta     z46                     ; clear cursor/scrolling flags
+        sta     zSelSaveSlot
+        sta     $ae                     ; clear current sound effect
         lda     #$ff
-        sta     $86         ; clear cursor positions
+        sta     $86                     ; clear cursor positions
         sta     $88
         sta     $8a
         sta     $8c
-        lda     #$05        ;
-        sta     $45
-        sty     $1b         ; dma 1 destination = $0000 vram
-        ldy     #$4000      ; dma 2 destination = $4000 vram
-        sty     $14
-        ldy     #$7849      ; dma 2 source = $7e7849 (bg3 data)
-        sty     $16
-        lda     #$7e
-        sta     $18
-        sta     $1f
-        ldy     #$1000      ; dma 1 & 2 size = $1000
-        sty     $12
-        sty     $19
-        lda     #$0c        ;
-        sta     $b6
+        lda     #$05                    ;
+        sta     z45
+        sty     zDMA2Dest               ; dma 1 destination = $0000 vram
+        ldy     #$4000                  ; dma 2 destination = $4000 vram
+        sty     zDMA1Dest
+        ldy     #near wBG3Tiles::ScreenA
+        sty     zDMA1Src
+        lda     #^wBG3Tiles::ScreenA
+        sta     zDMA1Src+2
+        sta     zDMA2Src+2
+        ldy     #$1000                  ; dma 1 & 2 size = $1000
+        sty     zDMA1Size
+        sty     zDMA2Size
+        lda     #$0c                    ; font width (for jp version)
+        sta     zb6
         rtl
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init unused hdma ]
 
 _d4ce55:
 @ce55:  lda     #$70
@@ -580,23 +545,25 @@ _d4ce55:
         lda     #$11
         sta     $7e9d8a
         sta     $7e9d8c
-        stz     $4310
-        lda     #$2c
-        sta     $4311
+        stz     hDMA1::CTRL
+        lda     #<hTM
+        sta     hDMA1::HREG
         ldy     #$9d89
-        sty     $4312
+        sty     hDMA1::ADDR
         lda     #$7e
-        sta     $4314
+        sta     hDMA1::ADDR_B
         lda     #$7e
-        sta     $4317
-        lda     #$02
-        tsb     $43
+        sta     hDMA1::HDMA_B
+        lda     #BIT_1
+        tsb     zEnableHDMA
         rtl
 
 ; ------------------------------------------------------------------------------
 
-@ce86:  .byte   $70,$89,$9d
-@ce89:  .byte   $70,$89,$9d
+; unused hdma table
+@ce86:  hdma_addr 112, $9d89
+        hdma_addr 112, $9d89
+; NOTE: missing hdma_end
 
 ; ------------------------------------------------------------------------------
 
@@ -605,7 +572,7 @@ _d4ce55:
 InitHWRegsEnding:
 @ce8c:  lda     #$03
         sta     hOBJSEL
-        ldx     $00
+        ldx     z0
         stx     hOAMADDL
         lda     #$09
         sta     hBGMODE
@@ -641,7 +608,7 @@ InitHWRegsEnding:
 InitHWRegsCredits:
 @ced7:  lda     #$03
         sta     hOBJSEL
-        ldx     $00
+        ldx     z0
         stx     hOAMADDL
         lda     #$07
         sta     hBGMODE
@@ -691,7 +658,7 @@ InitEndingWindowMask:
 ; [ save memory for mode 7 hdma data ]
 
 PushMode7Vars:
-@cf3b:  ldx     $00
+@cf3b:  ldx     z0
 @cf3d:  lda     $0600,x
         sta     $7f4000,x
         inx
@@ -704,7 +671,7 @@ PushMode7Vars:
 ; [ restore memory for mode 7 hdma data ]
 
 PopMode7Vars:
-@cf4b:  ldx     $00
+@cf4b:  ldx     z0
 @cf4d:  lda     $7f4000,x
         sta     $0600,x
         inx
@@ -714,4 +681,4 @@ PopMode7Vars:
 
 ; ------------------------------------------------------------------------------
 
-end_fixed_block MenuCodeFar
+end_block MenuCodeFar

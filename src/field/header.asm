@@ -13,12 +13,12 @@
 
 .segment "interrupt"
 
-begin_fixed_block JmpReset, $10
+begin_block JmpReset, $10
 @ff00:  sei
         clc
         xce
         jml     Reset
-end_fixed_block JmpReset
+end_block JmpReset
 
 ; ------------------------------------------------------------------------------
 
@@ -40,11 +40,11 @@ JmpIRQ:
 
 .if LANG_EN
 
-begin_fixed_block SnesHeaderExt, $10
+begin_block SnesHeaderExt, $10
 @ffb0:
         .byte   "C3"                    ; publisher: squaresoft
         .byte   "F6  "                  ; game code
-end_fixed_block SnesHeaderExt, 0
+end_block SnesHeaderExt, 0
 .endif
 
 ; ------------------------------------------------------------------------------

@@ -1,0 +1,13 @@
+{
+  "asset_label": "MonsterDlg",
+  "asset_const": "MONSTER_DLG",
+  "inc_path": "include/text/monster_dlg_jp.inc",
+  "char_tables": [
+    "battle_escape",
+    "big_symbols_jp",
+    "null_terminated_jp",
+    "kana",
+    "kanji"
+  ],
+  "text": []
+}

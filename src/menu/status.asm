@@ -11,7 +11,9 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.import BattleCmdName, BattleCmdProp, LevelUpExp
+inc_lang "text/battle_cmd_name_%s.inc"
+
+.import BattleCmdProp, LevelUpExp
 
 .segment "menu_code"
 
@@ -38,11 +40,11 @@ DrawStatusMainWindow:
         jsr     ClearBG3ScreenB
         jsr     ClearBG3ScreenC
         jsr     ClearBG3ScreenD
-        ldy     #.loword(StatusMainWindow)
+        ldy     #near StatusMainWindow
         jsr     DrawWindow
-        ldy     #.loword(StatusTitleWindow)
+        ldy     #near StatusTitleWindow
         jsr     DrawWindow
-        ldy     #.loword(StatusCmdWindow)
+        ldy     #near StatusCmdWindow
         jsr     DrawWindow
         rts
 
@@ -55,29 +57,29 @@ DrawStatusLabelText:
         bra     DrawStatusBtmLabelText
 
 DrawStatusTopLabelText:
-@5d41:  lda     #$20                    ; white font
-        sta     $29
-        ldx     #.loword(StatusTopLabelTextList1)
-        ldy     #$0008
+@5d41:  lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+        ldx     #near StatusTopLabelTextList1
+        ldy     #sizeof_StatusTopLabelTextList1
         jsr     DrawPosList
-        lda     #$24                    ; teal font
-        sta     $29
-        ldx     #.loword(StatusTopLabelTextList2)
-        ldy     #$0006
+        lda     #BG1_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near StatusTopLabelTextList2
+        ldy     #sizeof_StatusTopLabelTextList2
         jsr     DrawPosList
         rts
 
 DrawStatusBtmLabelText:
-@5d5c:  lda     #$2c                    ; teal font
-        sta     $29
-        ldx     #.loword(StatusBtmLabelTextList1)
-        ldy     #$001e
+@5d5c:  lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near StatusBtmLabelTextList1
+        ldy     #sizeof_StatusBtmLabelTextList1
         jsr     DrawPosList
-        lda     #$2c                    ; teal font
-        sta     $29
-        ldx     #.loword(StatusBtmLabelTextList2)
-        ldy     #$000c
-        jsr     DrawPosList
+        lda     #BG3_TEXT_COLOR::TEAL
+        sta     zTextColor
+        ldx     #near StatusBtmLabelTextList2
+        ldy     #sizeof_StatusBtmLabelTextList2
+        jsr     DrawPosKanaList
         rts
 
 ; ------------------------------------------------------------------------------
@@ -99,25 +101,25 @@ _c35d83:
         jsr     DrawStatusCharInfo
         jsr     ChangeStatusPortraitTask
         ldy     #$0000
-        sty     $14
-        ldy     #$3849
-        sty     $16
+        sty     zDMA1Dest
+        ldy     #near wBG1Tiles::ScreenA
+        sty     zDMA1Src
         ldy     #$0800
-        sty     $12
+        sty     zDMA1Size
         ldy     #$4000
-        sty     $1b
-        ldy     #$7849
-        sty     $1d
+        sty     zDMA2Dest
+        ldy     #near wBG3Tiles::ScreenA
+        sty     zDMA2Src
         ldy     #$0800
-        sty     $19
+        sty     zDMA2Size
         jsr     ExecTasks
         jsr     WaitVblank
-        ldy     $00
-        sty     $1b
+        ldy     z0
+        sty     zDMA2Dest
         ldy     #$4800
-        sty     $14
-        ldy     #$8849
-        sty     $16
+        sty     zDMA1Dest
+        ldy     #near wBG3Tiles::ScreenC
+        sty     zDMA1Src
         jmp     WaitVblank
 
 ; ------------------------------------------------------------------------------
@@ -193,7 +195,7 @@ DrawStatusGogoWindow:
         tax
         lda     f:BattleCmdProp,x
         and     #BATTLE_CMD_FLAG::GOGO
-        beq     @5e60                   ; branch can't be used by gogo
+        beq     @5e60                   ; branch if can't be used by gogo
         lda     $e0
         sta     hWMDATA
         iny
@@ -210,7 +212,7 @@ DrawStatusGogoWindow:
 @5e75:  lda     f:StatusGogoWindow,x
         sta     hWMDATA
         inx
-        cpx     #$0008
+        cpx     #8
         bne     @5e75
         tya
         sta     $e2
@@ -235,7 +237,11 @@ DrawStatusGogoWindow:
         sta     $e5
         stz     $e6
         clr_ax
-        ldy     #$80c9
+.if LANG_EN
+        ldy_pos BG3B, {0, 2}
+.else
+        ldy_pos BG3B, {1, 1}
+.endif
 @5eba:  phx
         phy
         lda     $7e9d8a,x
@@ -272,7 +278,9 @@ DrawCmdName:
 @5ee1:  jsr     CheckRelicCmd
         bmi     _5f0c
 _5ee6:  jsr     CheckCmdEnabled
+.if LANG_EN
         sta     $e2
+.endif
         pha
         asl2
         sta     $e0
@@ -280,10 +288,12 @@ _5ee6:  jsr     CheckCmdEnabled
         asl
         clc
         adc     $e0
+.if LANG_EN
         adc     $e2
+.endif
         tax
-        ldy     #7
-@5efb:  lda     f:BattleCmdName,x   ; battle command names
+        ldy     #BATTLE_CMD_NAME_SIZE
+@5efb:  lda     f:BattleCmdName,x
         sta     hWMDATA
         inx
         dey
@@ -293,13 +303,12 @@ _5f06:  stz     hWMDATA
 
 ; clear command name
 _5f0c:  lda     #$ff
+.repeat 6
         sta     hWMDATA
+.endrep
+.if LANG_EN
         sta     hWMDATA
-        sta     hWMDATA
-        sta     hWMDATA
-        sta     hWMDATA
-        sta     hWMDATA
-        sta     hWMDATA
+.endif
         bra     _5f06
 
 ; ------------------------------------------------------------------------------
@@ -308,20 +317,20 @@ _5f0c:  lda     #$ff
 
 CheckCmdEnabled:
 @5f25:  pha
-        cmp     #$0b
+        cmp     #BATTLE_CMD::RUNIC
         beq     @5f3a
-        cmp     #$07
+        cmp     #BATTLE_CMD::SWDTECH
         beq     @5f44
 
 ; use white text
-@5f2e:  lda     #$20
-        sta     $29
+@5f2e:  lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
         pla
         rts
 
 ; use gray text
-@5f34:  lda     #$24
-        sta     $29
+@5f34:  lda     #BG3_TEXT_COLOR::GRAY
+        sta     zTextColor
         pla
         rts
 
@@ -367,19 +376,17 @@ _c35f50:
 ; ------------------------------------------------------------------------------
 
 ; status menu windows
-StatusTitleWindow:
-@5f79:  .byte   $8b,$58,$06,$01
-
-StatusCmdWindow:
-@5f7d:  .byte   $eb,$5a,$09,$06
-
-StatusMainWindow:
-@5f81:  .byte   $8b,$58,$1c,$18
+.if LANG_EN
+StatusTitleWindow:                      make_window BG2A, {1, 1}, {6, 1}
+.else
+StatusTitleWindow:                      make_window BG2A, {1, 1}, {5, 1}
+.endif
+StatusCmdWindow:                        make_window BG2A, {17, 10}, {9, 6}
+StatusMainWindow:                       make_window BG2A, {1, 1}, {28, 24}
 
 ; gogo window is in 2 parts
-StatusGogoWindow:
-@5f85:  .byte   $c7,$58,$00,$12
-        .byte   $87,$60,$07,$12
+StatusGogoWindow:                       make_window BG2A, {31, 1}, {0, 18}
+                                        make_window BG2B, {31, 0}, {7, 18}
 
 ; ------------------------------------------------------------------------------
 
@@ -387,136 +394,141 @@ StatusGogoWindow:
 
 DrawStatusCharInfo:
 @5f8d:  clr_a
-        lda     $28
+        lda     zSelIndex
         asl
         tax
-        jmp     (.loword(DrawStatusCharInfoTbl),x)
+        jmp     (near DrawStatusCharInfoTbl,x)
 
 DrawStatusCharInfoTbl:
-@5f95:  .addr   DrawStatusCharInfo1
-        .addr   DrawStatusCharInfo2
-        .addr   DrawStatusCharInfo3
-        .addr   DrawStatusCharInfo4
+        make_jump_tbl DrawStatusCharInfo, 4
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw status info for character slot 1 ]
 
-DrawStatusCharInfo1:
-@5f9d:  ldx     $6d
-        stx     $67
+make_jump_label DrawStatusCharInfo, 0
+@5f9d:  ldx     zCharPropPtr::Slot1
+        stx     zSelCharPropPtr
         clr_a
-        lda     $69
+        lda     zCharID::Slot1
         jmp     DrawStatusCharInfoAll
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw status info for character slot 2 ]
 
-DrawStatusCharInfo2:
-@5fa7:  ldx     $6f
-        stx     $67
+make_jump_label DrawStatusCharInfo, 1
+@5fa7:  ldx     zCharPropPtr::Slot2
+        stx     zSelCharPropPtr
         clr_a
-        lda     $6a
+        lda     zCharID::Slot2
         jmp     DrawStatusCharInfoAll
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw status info for character slot 3 ]
 
-DrawStatusCharInfo3:
-@5fb1:  ldx     $71
-        stx     $67
+make_jump_label DrawStatusCharInfo, 2
+@5fb1:  ldx     zCharPropPtr::Slot3
+        stx     zSelCharPropPtr
         clr_a
-        lda     $6b
+        lda     zCharID::Slot3
         jmp     DrawStatusCharInfoAll
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw status info for character slot 4 ]
 
-DrawStatusCharInfo4:
-@5fbb:  ldx     $73
-        stx     $67
+make_jump_label DrawStatusCharInfo, 3
+@5fbb:  ldx     zCharPropPtr::Slot4
+        stx     zSelCharPropPtr
         clr_a
-        lda     $6c
+        lda     zCharID::Slot4
 ; fallthrough
 
 DrawStatusCharInfoAll:
 @5fc2:  jsl     UpdateEquip_ext
-        ldy     $67
+        ldy     zSelCharPropPtr
         jsr     CheckHandEffects
-        lda     #$20
-        sta     $29
+        lda     #BG3_TEXT_COLOR::DEFAULT
+        sta     zTextColor
         lda     $11a6
         jsr     HexToDec3
-        ldx     #$7ee1
+        ldx_pos BG3A, {12, 26}
         jsr     DrawNum3
         lda     $11a4
         jsr     HexToDec3
-        ldx     #$7f61
+        ldx_pos BG3A, {12, 28}
         jsr     DrawNum3
         lda     $11a2
         jsr     HexToDec3
-        ldx     #$7fe1
+        ldx_pos BG3A, {12, 30}
         jsr     DrawNum3
         lda     $11a0
         jsr     HexToDec3
-        ldx     #$8861
+        ldx_pos BG3C, {12, 0}
         jsr     DrawNum3
-        jsr     _c39371
+        jsr     CalcNewBattlePower
         lda     $11ac
         clc
         adc     $11ad
-        sta     $f3
+        sta     zf3
         clr_a
         adc     #0
-        sta     $f4
+        sta     zf4
         jsr     HexToDec5
-        ldx     #$7e7d
+        ldx_pos BG3A, {26, 24}
         jsr     Draw16BitNum
         lda     $11ba
         jsr     HexToDec3
-        ldx     #$7efd
+        ldx_pos BG3A, {26, 26}
         jsr     DrawNum3
         lda     $11a8
         jsr     HexToDec3
-        ldx     #$7f7d
+        ldx_pos BG3A, {26, 28}
         jsr     DrawNum3
         lda     $11bb
         jsr     HexToDec3
-        ldx     #$7ffd
+        ldx_pos BG3A, {26, 30}
         jsr     DrawNum3
         lda     $11aa
         jsr     HexToDec3
-        ldx     #$887d
+        ldx_pos BG3C, {26, 0}
         jsr     DrawNum3
-        ldy     #$398f
+.if LANG_EN
+        ldy_pos BG1A, {3, 5}
         jsr     DrawCharName
-        ldy     #$399d
+        ldy_pos BG1A, {10, 5}
         jsr     DrawCharTitle
-        ldy     #$39b1
+        ldy_pos BG1A, {20, 5}
+.else
+        ldy_pos BG1A, {3, 4}
+        jsr     DrawCharName
+        ldy_pos BG1A, {10, 4}
+        jsr     DrawCharTitle
+        ldy_pos BG1A, {20, 4}
+.endif
         jsr     DrawEquipGenju
         jsr     _c36102
-        lda     #$20
-        sta     $29
-        ldx     #.loword(_c36096)
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
+        ldx     #near _c36096
         jsr     DrawCharBlock
-        ldx     $67
+        ldx     zSelCharPropPtr
         lda     a:$0011,x
-        sta     $f1
+        sta     zf1
         lda     a:$0012,x
-        sta     $f2
+        sta     zf2
         lda     a:$0013,x
-        sta     $f3
+        sta     zf3
         jsr     HexToDec8
-        ldx     #$7cd7
+        ldx_pos BG3A, {7, 18}
         jsr     DrawNum8
         jsr     CalcNextLevelExp
         jsr     HexToDec8
-        ldx     #$7dd7
+        ldx_pos BG3A, {7, 22}
         jsr     DrawNum8
-        stz     $47
+        stz     z47
         jsr     ExecTasks
         jmp     _c3625b
 
@@ -524,20 +536,24 @@ DrawStatusCharInfoAll:
 
 ; ram addresses for lv/hp/mp text (status)
 _c36096:
-@6096:  .word   $3a27,$3a63,$3a6d,$3aa3,$3aad
+        make_pos BG1A, {15, 7}
+        make_pos BG1A, {13, 8}
+        make_pos BG1A, {18, 8}
+        make_pos BG1A, {13, 9}
+        make_pos BG1A, {18, 9}
 
 ; ------------------------------------------------------------------------------
 
 ; [ calculate experience needed to reach next level ]
 
 .proc CalcNextLevelExp
-        ldx     $67
+        ldx     zSelCharPropPtr
         clr_a
         lda     a:$0008,x
         cmp     #99
         beq     max_level
         jsr     CalcLevelExpTotal
-        ldx     $67
+        ldx     zSelCharPropPtr
         sec
         lda     $f1
         sbc     a:$0011,x
@@ -597,18 +613,23 @@ loop:   clc
 ; [  ]
 
 _c36102:
-@6102:  ldy     #$7bf1
+.if LANG_EN
+        @Y_POS = 14
+.else
+        @Y_POS = 13
+.endif
+@6102:  ldy_pos BG3A, {20, @Y_POS}
         jsr     InitTextBuf
         jsr     DrawCmdName
-        ldy     #$7c71
+        ldy_pos BG3A, {20, @Y_POS+2}
         jsr     InitTextBuf
         iny
         jsr     DrawCmdName
-        ldy     #$7cf1
+        ldy_pos BG3A, {20, @Y_POS+4}
         jsr     InitTextBuf
         iny2
         jsr     DrawCmdName
-        ldy     #$7d71
+        ldy_pos BG3A, {20, @Y_POS+6}
         jsr     InitTextBuf
         iny3
         jmp     DrawCmdName
@@ -710,17 +731,21 @@ CreateEquipPortraitTask:
         plb
         longa
         lda     #$00c8                  ; x position
-        sta     $33ca,x
+        sta     near wTaskPosX,x
         shorta
         clr_a
-        lda     $28
+        lda     zSelIndex
         tay
+.if LANG_EN
         jsr     GetPortraitAnimDataPtr
         longa
         lda     #$0030                  ; y position
-        sta     $344a,x
+        sta     near wTaskPosY,x
         shorta
         jsr     InitAnimTask
+.else
+        jsr     SetSubPortraitPos
+.endif
         plb
         rts
 
@@ -730,7 +755,7 @@ CreateEquipPortraitTask:
 
 CreateOnePortraitTask:
 @61da:  lda     #3
-        ldy     #.loword(PortraitTask)
+        ldy     #near PortraitTask
         jsr     CreateTask
         txa
         sta     $60
@@ -746,11 +771,11 @@ InitSubPortraitTask:
         pha
         plb
         clr_a
-        lda     $28
+        lda     zSelIndex
         tay
         jsr     InitPortraitRowPos
         clr_a
-        lda     $28
+        lda     zSelIndex
         tay
         jsr     SetSubPortraitPos
         plb
@@ -763,8 +788,12 @@ InitSubPortraitTask:
 SetSubPortraitPos:
 @61fb:  jsr     GetPortraitAnimDataPtr
         longa
+.if LANG_EN
         lda     #$0038                  ; y position
-        sta     $344a,x
+.else
+        lda     #$0030                  ; y position
+.endif
+        sta     near wTaskPosY,x
         shorta
         jmp     InitAnimTask
 
@@ -774,17 +803,17 @@ SetSubPortraitPos:
 
 InitStatusBG3ScrollHDMA:
 @620b:  lda     #$02
-        sta     $4350
-        lda     #$12
-        sta     $4351
-        ldy     #.loword(StatusBG3ScrollHDMA)
-        sty     $4352
+        sta     hDMA5::CTRL
+        lda     #<hBG3VOFS
+        sta     hDMA5::HREG
+        ldy     #near StatusBG3ScrollHDMA
+        sty     hDMA5::ADDR
         lda     #^StatusBG3ScrollHDMA
-        sta     $4354
+        sta     hDMA5::ADDR_B
         lda     #^StatusBG3ScrollHDMA
-        sta     $4357
-        lda     #$20
-        tsb     $43
+        sta     hDMA5::HDMA_B
+        lda     #BIT_5
+        tsb     zEnableHDMA
         rts
 
 ; ------------------------------------------------------------------------------
@@ -811,11 +840,16 @@ StatusBG3ScrollHDMA:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw status icons in status menu ]
 
 _c3625b:
-@625b:  ldy     #$399d
+.if LANG_EN
+@625b:  ldy_pos BG1A, {10, 5}
         ldx     #$2050
+.else
+        ldy_pos BG1A, {10, 2}
+        ldx     #$1050
+.endif
         stx     $e7
         jsr     InitTextBuf
         lda     $0014,y
@@ -840,12 +874,12 @@ _c3625b:
         bcc     @62d5
         pha
         lda     #3
-        ldy     #.loword(CharIconTask)
+        ldy     #near CharIconTask
         jsr     CreateTask
         lda     #$01
-        sta     $7e364a,x
+        sta     wTaskFlags,x
         clr_a
-        sta     $7e3649,x
+        sta     wTaskState,x
         txy
         ldx     $f1
         phb
@@ -854,17 +888,17 @@ _c3625b:
         plb
         longa
         lda     f:StatusIconAnimPtrs,x   ; pointers to status icon sprite data
-        sta     $32c9,y
+        sta     near wTaskAnimPtr,y
         shorta
         lda     $e7
-        sta     $33ca,y
+        sta     near wTaskPosX,y
         lda     $e8
-        sta     $344a,y
+        sta     near wTaskPosY,y
         clr_a
-        sta     $33cb,y
-        sta     $344b,y
+        sta     near {wTaskPosX + 1},y
+        sta     near {wTaskPosY + 1},y
         lda     #^StatusIconAnimPtrs
-        sta     $35ca,y
+        sta     near wTaskAnimBank,y
         plb
         clc
         lda     #$0a
@@ -876,31 +910,31 @@ _c3625b:
         plx
         dex
         bne     @628b
-        lda     #$20
-        sta     $29
+        lda     #BG1_TEXT_COLOR::DEFAULT
+        sta     zTextColor
 @62e1:  jsr     _c36306
         jmp     DrawPosTextBuf
 @62e7:  ldx     #$9e8b
         stx     hWMADDL
-        ldx     $00
+        ldx     z0
 @62ef:  lda     f:MainMenuWoundedText,x
         sta     hWMDATA
         inx
-        cpx     #$0008
+        cpx     #sizeof_MainMenuWoundedText
         bne     @62ef
         stz     hWMDATA
-        lda     #$28
-        sta     $29
+        lda     #BG1_TEXT_COLOR::GRAY
+        sta     zTextColor
         jmp     DrawPosTextBuf
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ hide "wounded" text ]
 
 _c36306:
 @6306:  ldx     #$9e8b
         stx     hWMADDL
-        ldx     $00
+        ldx     z0
         lda     #$ff
 @6310:  sta     hWMDATA
         inx
@@ -915,18 +949,18 @@ _c36306:
 
 MenuState_42:
 @631d:  jsr     DisableInterrupts
-        lda     $0200
-        sta     $22
-        stz     $0200
-        stz     $25
-        lda     #$40
-        trb     $43
+        lda     w0200
+        sta     z22
+        stz     w0200
+        stz     z25
+        lda     #BIT_6
+        trb     zEnableHDMA
         jsr     InitStatusBG3ScrollHDMA
         jsr     _c36354
-        lda     #$01
-        sta     $26
+        lda     #MENU_STATE::FADE_IN
+        sta     zMenuState
         lda     #$43
-        sta     $27
+        sta     zNextMenuState
         jmp     EnableInterrupts
 
 ; ------------------------------------------------------------------------------
@@ -934,15 +968,15 @@ MenuState_42:
 ; [ menu state $43: party select status menu ]
 
 MenuState_43:
-@633f:  lda     $09
-        bit     #$80
+@633f:  lda     z08+1
+        bit     #>JOY_B
         beq     @6353
         jsr     PlayCancelSfx
-        lda     $4c
-        sta     $27
-        stz     $26
-        lda     $22
-        sta     $0200
+        lda     z4c
+        sta     zNextMenuState
+        stz     zMenuState
+        lda     z22
+        sta     w0200
 @6353:  rts
 
 ; ------------------------------------------------------------------------------
@@ -961,7 +995,7 @@ _c36354:
         pha
         plb
         clr_a
-        lda     $28
+        lda     zSelIndex
         tay
         jsr     _c3638e
         clr_ay
@@ -971,25 +1005,25 @@ _c36354:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ get char index for status window (party select) ]
 
 _c36379:
 @6379:  clr_a
-        lda     $c9
-        sta     $28
+        lda     zc9
+        sta     zSelIndex
         asl
         tax
         longa
         lda     f:CharPropPtrs,x   ; pointers to character data
-        sta     $67
+        sta     zSelCharPropPtr
         shorta
         clr_a
-        lda     $c9
+        lda     zc9
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ get portrait X position for status window (party select) ]
 
 _c3638e:
 @638e:  lda     $1850,y
@@ -1000,7 +1034,7 @@ _c3638e:
         bra     @63a1
 @639c:  longa
         lda     #$000e
-@63a1:  sta     $33ca,x
+@63a1:  sta     near wTaskPosX,x
         shorta
         rts
 
@@ -1010,48 +1044,48 @@ _c3638e:
 
 MenuState_6a:
 @63a7:  jsr     UpdateGogoCmdListCursor
-        lda     $08
-        bit     #$80
+        lda     z08
+        bit     #JOY_A
         beq     @63da
         jsr     PlaySelectSfx
-        stz     a:$0065
+        stz     a:z65
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9d8a,x
-        sta     $e0
+        sta     ze0
         clr_a
-        lda     $28
+        lda     zSelIndex
         asl
         tax
-        ldy     $6d,x
+        ldy     zCharPropPtr,x
         longa
         tya
         clc
-        adc     $64
+        adc     z64
         tay
         shorta
-        lda     $e0
+        lda     ze0
         sta     $0016,y
         jsr     _c36102
         bra     @63e3
-@63da:  lda     $09
-        bit     #$80
+@63da:  lda     z08+1
+        bit     #>JOY_B
         beq     @6402
         jsr     PlayCancelSfx
 @63e3:  lda     #$01
-        trb     $46
-        lda     #$06
-        sta     $20
-        ldy     #$fff4
-        sty     $9c
-        lda     #$0c
-        sta     $27
+        trb     z46
+        lda     #6
+        sta     zWaitCounter
+        ldy     #.loword(-12)
+        sty     zMenuScrollRate
+        lda     #MENU_STATE::STATUS_SELECT
+        sta     zNextMenuState
         lda     #$65
-        sta     $26
+        sta     zMenuState
         jsr     LoadGogoStatusCursor
-        lda     $5e
-        sta     $4e
+        lda     z5e
+        sta     z4e
         jsr     InitGogoStatusCursor
 @6402:  rts
 
@@ -1060,7 +1094,7 @@ MenuState_6a:
 ; [ load cursor for gogo command list select ]
 
 LoadGogoCmdListCursor:
-@6403:  ldy     #.loword(GogoCmdListProp)
+@6403:  ldy     #near GogoCmdListProp
         jmp     LoadCursor
 
 ; ------------------------------------------------------------------------------
@@ -1071,7 +1105,7 @@ UpdateGogoCmdListCursor:
 @6409:  jsr     MoveCursor
 
 InitGogoCmdListCursor:
-@640c:  ldy     #.loword(GogoCmdListPos)
+@640c:  ldy     #near GogoCmdListPos
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
@@ -1080,12 +1114,58 @@ GogoCmdListProp:
 @6412:  .byte   $80,$00,$00,$01,$10
 
 GogoCmdListPos:
+.if LANG_EN
 @6417:  .word   $10f0,$1cf0,$28f0,$34f0,$40f0,$4cf0,$58f0,$64f0
         .word   $70f0,$7cf0,$88f0,$94f0,$a0f0,$acf0,$b8f0,$c4f0
+.else
+        .word   $10f8,$1cf8,$28f8,$34f8,$40f8,$4cf8,$58f8,$64f8
+        .word   $70f8,$7cf8,$88f8,$94f8,$a0f8,$acf8,$b8f8,$c4f8
+.endif
 
 ; ------------------------------------------------------------------------------
 
-StatusBtmLabelTextList1:
+.if LANG_EN
+        .define StatusTitleStr                  {$92,$ad,$9a,$ad,$ae,$ac,$00}
+        .define StatusSlashStr                  {$c0,$00}
+        .define StatusPercentStr                {$cd,$00}
+        .define StatusLevelStr                  {$8b,$95,$00}
+        .define StatusHPStr                     {$87,$8f,$00}
+        .define StatusMPStr                     {$8c,$8f,$00}
+        .define StatusStrengthStr               {$95,$a2,$a0,$a8,$ab,$00}
+        .define StatusStaminaStr                {$92,$ad,$9a,$a6,$a2,$a7,$9a,$00}
+        .define StatusMagPwrStr                 {$8c,$9a,$a0,$c5,$8f,$b0,$ab,$00}
+        .define StatusEvadeStr                  {$84,$af,$9a,$9d,$9e,$ff,$cd,$00}
+        .define StatusMagEvadeStr               {$8c,$81,$a5,$a8,$9c,$a4,$cd,$00}
+        .define StatusSepStr                    {$d3,$00}
+        .define StatusSpeedStr                  {$92,$a9,$9e,$9e,$9d,$00}
+        .define StatusAttackPwrStr              {$81,$9a,$ad,$c5,$8f,$b0,$ab,$00}
+        .define StatusDefenseStr                {$83,$9e,$9f,$9e,$a7,$ac,$9e,$00}
+        .define StatusMagDefStr                 {$8c,$9a,$a0,$c5,$83,$9e,$9f,$00}
+        .define StatusYourExpStr                {$98,$a8,$ae,$ab,$ff,$84,$b1,$a9,$c1,$00}
+        .define StatusLevelUpExpStr             {$85,$a8,$ab,$ff,$a5,$9e,$af,$9e,$a5,$ff,$ae,$a9,$c1,$00}
+.else
+; need to translate to jp
+        .define StatusTitleStr                  {$78,$84,$c5,$7e,$78,$00}
+        .define StatusSlashStr                  {$ce,$00}
+        .define StatusPercentStr                {$cd,$00}
+        .define StatusLevelStr                  {$2b,$35,$00}
+        .define StatusHPStr                     {$27,$2f,$00}
+        .define StatusMPStr                     {$2c,$2f,$00}
+        .define StatusStrengthStr               {$81,$6b,$a7,$00}
+        .define StatusStaminaStr                {$7f,$8d,$a9,$c3,$6f,$00}
+        .define StatusMagPwrStr                 {$9d,$a9,$c3,$6f,$00}
+        .define StatusEvadeStr                  {$6b,$8d,$63,$a9,$83,$00}
+        .define StatusMagEvadeStr               {$9d,$69,$89,$6b,$8d,$63,$a9,$83,$ff,$c7,$00}
+        .define StatusSepStr                    {$c7,$00}
+        .define StatusSpeedStr                  {$79,$21,$b1,$75,$00}
+        .define StatusAttackPwrStr              {$73,$89,$31,$6d,$a9,$c3,$6f,$ff,$ff,$c7,$00}
+        .define StatusDefenseStr                {$29,$89,$2d,$c3,$00}
+        .define StatusMagDefStr                 {$9d,$69,$89,$29,$89,$2d,$c3,$ff,$ff,$c7,$00}
+        .define StatusYourExpStr                {$31,$b9,$35,$8d,$9b,$71,$8d,$71,$b9,$81,$00}
+        .define StatusLevelUpExpStr             {$83,$2d,$9b,$ac,$26,$aa,$9d,$45,$ff,$8b,$87,$00}
+.endif
+
+begin_block StatusBtmLabelTextList1
 @6437:  .addr   StatusStrengthText
         .addr   StatusStaminaText
         .addr   StatusMagPwrText
@@ -1097,126 +1177,78 @@ StatusBtmLabelTextList1:
         .addr   StatusMagPwrSepText
         .addr   StatusDefenseSepText
         .addr   StatusEvadeSepText
+.if LANG_EN
         .addr   StatusAttackPwrSepText
         .addr   StatusMagDefSepText
         .addr   StatusMagEvadeSepText
+.endif
         .addr   StatusTitleText
+end_block StatusBtmLabelTextList1
 
-StatusTopLabelTextList2:
+begin_block StatusTopLabelTextList2
 @6455:  .addr   StatusLevelText
         .addr   StatusHPText
         .addr   StatusMPText
+end_block StatusTopLabelTextList2
 
-StatusTopLabelTextList1:
+begin_block StatusTopLabelTextList1
 @645b:  .addr   StatusHPSlashText
         .addr   StatusMPSlashText
         .addr   StatusEvadePercentText
         .addr   StatusMagEvadePercentText
+end_block StatusTopLabelTextList1
 
-StatusBtmLabelTextList2:
+begin_block StatusBtmLabelTextList2
 @6463:  .addr   StatusSpeedText
         .addr   StatusAttackPwrText
         .addr   StatusDefenseText
         .addr   StatusMagDefText
         .addr   StatusYourExpText
         .addr   StatusLevelUpExpText
+end_block StatusBtmLabelTextList2
 
-; "Status"
-StatusTitleText:
-@646f:  .byte   $cd,$78,$92,$ad,$9a,$ad,$ae,$ac,$00
-
-; "/"
-StatusHPSlashText:
-@6478:  .byte   $6b,$3a,$c0,$00
-
-; "/"
-StatusMPSlashText:
-@647c:  .byte   $ab,$3a,$c0,$00
-
-; "%"
-StatusEvadePercentText:
-@6480:  .byte   $83,$7f,$cd,$00
-
-; "%"
-StatusMagEvadePercentText:
-@6484:  .byte   $83,$88,$cd,$00
-
-; "LV"
-StatusLevelText:
-@6488:  .byte   $1d,$3a,$8b,$95,$00
-
-; "HP"
-StatusHPText:
-@648d:  .byte   $5d,$3a,$87,$8f,$00
-
-; "MP"
-StatusMPText:
-@6492:  .byte   $9d,$3a,$8c,$8f,$00
-
-; "Vigor"
-StatusStrengthText:
-@6497:  .byte   $cf,$7e,$95,$a2,$a0,$a8,$ab,$00
-
-; "Stamina"
-StatusStaminaText:
-@649f:  .byte   $cf,$7f,$92,$ad,$9a,$a6,$a2,$a7,$9a,$00
-
-; "Mag.Pwr"
-StatusMagPwrText:
-@64a9:  .byte   $4f,$88,$8c,$9a,$a0,$c5,$8f,$b0,$ab,$00
-
-; "Evade %"
-StatusEvadeText:
-@64b3:  .byte   $69,$7f,$84,$af,$9a,$9d,$9e,$ff,$cd,$00
-
-; "MBlock%"
-StatusMagEvadeText:
-@64bd:  .byte   $69,$88,$8c,$81,$a5,$a8,$9c,$a4,$cd,$00
-
-; ".."
-StatusStrengthSepText:
-@64c7:  .byte   $dd,$7e,$d3,$00
-
-StatusSpeedSepText:
-@64cb:  .byte   $5d,$7f,$d3,$00
-
-StatusStaminaSepText:
-@64cf:  .byte   $dd,$7f,$d3,$00
-
-StatusMagPwrSepText:
-@64d3:  .byte   $5d,$88,$d3,$00
-
-StatusDefenseSepText:
-@64d7:  .byte   $fb,$7e,$d3,$00
-
-StatusEvadeSepText:
-@64db:  .byte   $7b,$7f,$d3,$00
-
-StatusAttackPwrSepText:
-@64df:  .byte   $7b,$7e,$d3,$00
-
-StatusMagDefSepText:
-@64e3:  .byte   $fb,$7f,$d3,$00
-
-StatusMagEvadeSepText:
-@64e7:  .byte   $7b,$88,$d3,$00
-
-StatusSpeedText:
-@64eb:  .byte   $4f,$7f,$92,$a9,$9e,$9e,$9d,$00
-
-StatusAttackPwrText:
-@64f3:  .byte   $69,$7e,$81,$9a,$ad,$c5,$8f,$b0,$ab,$00
-
-StatusDefenseText:
-@64fd:  .byte   $e9,$7e,$83,$9e,$9f,$9e,$a7,$ac,$9e,$00
-
-StatusMagDefText:
-@6507:  .byte   $e9,$7f,$8c,$9a,$a0,$c5,$83,$9e,$9f,$00
-
-StatusYourExpText:
-@6511:  .byte   $4d,$7c,$98,$a8,$ae,$ab,$ff,$84,$b1,$a9,$c1,$00
-
-StatusLevelUpExpText:
-@651d:  .byte   $4d,$7d,$85,$a8,$ab,$ff,$a5,$9e,$af,$9e,$a5,$ff,$ae,$a9,$c1,$00
+StatusTitleText:                pos_text BG3A, {2, 2}, StatusTitleStr
+StatusHPSlashText:              pos_text BG1A, {17, 8}, StatusSlashStr
+StatusMPSlashText:              pos_text BG1A, {17, 9}, StatusSlashStr
+StatusEvadePercentText:         pos_text BG3A, {29, 28}, StatusPercentStr
+StatusMagEvadePercentText:      pos_text BG3C, {29, 0}, StatusPercentStr
+StatusLevelText:                pos_text BG1A, {10, 7}, StatusLevelStr
+StatusHPText:                   pos_text BG1A, {10, 8}, StatusHPStr
+StatusMPText:                   pos_text BG1A, {10, 9}, StatusMPStr
+.if LANG_EN
+StatusStrengthText:             pos_text BG3A, {3, 26}, StatusStrengthStr
+StatusStaminaText:              pos_text BG3A, {3, 30}, StatusStaminaStr
+StatusMagPwrText:               pos_text BG3C, {3, 0}, StatusMagPwrStr
+.else
+StatusStrengthText:             pos_text BG3A, {4, 26}, StatusStrengthStr
+StatusStaminaText:              pos_text BG3A, {4, 30}, StatusStaminaStr
+StatusMagPwrText:               pos_text BG3C, {4, 0}, StatusMagPwrStr
+.endif
+StatusEvadeText:                pos_text BG3A, {16, 28}, StatusEvadeStr
+StatusMagEvadeText:             pos_text BG3C, {16, 0}, StatusMagEvadeStr
+StatusStrengthSepText:          pos_text BG3A, {10, 26}, StatusSepStr
+StatusSpeedSepText:             pos_text BG3A, {10, 28}, StatusSepStr
+StatusStaminaSepText:           pos_text BG3A, {10, 30}, StatusSepStr
+StatusMagPwrSepText:            pos_text BG3C, {10, 0}, StatusSepStr
+StatusDefenseSepText:           pos_text BG3A, {25, 26}, StatusSepStr
+StatusEvadeSepText:             pos_text BG3A, {25, 28}, StatusSepStr
+.if LANG_EN
+StatusAttackPwrSepText:         pos_text BG3A, {25, 24}, StatusSepStr
+StatusMagDefSepText:            pos_text BG3A, {25, 30}, StatusSepStr
+StatusMagEvadeSepText:          pos_text BG3C, {25, 0}, StatusSepStr
+StatusSpeedText:                pos_text BG3A, {3, 28}, StatusSpeedStr
+StatusAttackPwrText:            pos_text BG3A, {16, 24}, StatusAttackPwrStr
+StatusDefenseText:              pos_text BG3A, {16, 26}, StatusDefenseStr
+StatusMagDefText:               pos_text BG3A, {16, 30}, StatusMagDefStr
+StatusYourExpText:              pos_text BG3A, {2, 16}, StatusYourExpStr
+StatusLevelUpExpText:           pos_text BG3A, {2, 20}, StatusLevelUpExpStr
+.else
+StatusSpeedText:                pos_text BG3A, {4, 27}, StatusSpeedStr
+StatusAttackPwrText:            pos_text BG3A, {16, 23}, StatusAttackPwrStr
+StatusDefenseText:              pos_text BG3A, {16, 25}, StatusDefenseStr
+StatusMagDefText:               pos_text BG3A, {16, 29}, StatusMagDefStr
+StatusYourExpText:              pos_text BG3A, {4, 15}, StatusYourExpStr
+StatusLevelUpExpText:           pos_text BG3A, {4, 19}, StatusLevelUpExpStr
+.endif
 
 ; ------------------------------------------------------------------------------

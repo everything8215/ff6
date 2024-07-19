@@ -12,8 +12,8 @@
 ; +$3b = vram destination address
 ; +$39 = size
 
-UnusedDMA:
-@0f95:  stz     hVMAINC
+.proc UnusedDMA
+        stz     hVMAINC
         stz     hMDMAEN
         lda     #$41
         sta     $4300
@@ -30,13 +30,14 @@ UnusedDMA:
         lda     #$01
         sta     hMDMAEN
         rts
+.endproc  ; UnusedDMA
 
 ; ------------------------------------------------------------------------------
 
 ; [ copy sprite data to vram ]
 
-TfrSprites:
-@0fbf:  stz     hOAMADDL
+.proc TfrSprites
+        stz     hOAMADDL
         stz     hMDMAEN
         lda     #$40
         sta     $4300
@@ -52,29 +53,31 @@ TfrSprites:
         lda     #$01
         sta     hMDMAEN
         rts
+.endproc  ; TfrSprites
 
 ; ------------------------------------------------------------------------------
 
 ; [ init sprite data ]
 
-ResetSprites:
-@0fe9:  ldx     #$0200
+.proc ResetSprites
+        ldx     #$0200
         lda     #$f0
-@0fee:  sta     $02fd,x
+loop1:  sta     $02fd,x
         dex4
-        bne     @0fee
+        bne     loop1
         ldx     #$0020
-@0ffa:  stz     $04ff,x
+loop2:  stz     $04ff,x
         dex
-        bne     @0ffa
+        bne     loop2
         rts
+.endproc  ; ResetSprites
 
 ; ------------------------------------------------------------------------------
 
 ; [ copy color palettes to vram ]
 
-TfrPal:
-@1001:  stz     hCGADD
+.proc TfrPal
+        stz     hCGADD
         stz     hMDMAEN
         lda     #$42
         sta     $4300
@@ -90,5 +93,6 @@ TfrPal:
         lda     #$01
         sta     hMDMAEN
         rts
+.endproc  ; TfrPal
 
 ; ------------------------------------------------------------------------------

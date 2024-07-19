@@ -20,78 +20,78 @@
 ; [ init hdma data ]
 
 InitHDMA:
-@3821:  lda     #$43        ; channel #0: bg2 scroll ($210f & $2110)
-        sta     $4300       ; 2 address, write twice
-        lda     #$0f
-        sta     $4301
+@3821:  lda     #$43                    ; channel #0: bg2 scroll ($210f & $2110)
+        sta     hDMA0::CTRL             ; 2 address, write twice
+        lda     #<hBG2HOFS
+        sta     hDMA0::HREG
         ldx     #$7c51
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
-        sta     $4307
-        lda     #$44        ; channel #7: mosaic & bg1-3 data location in vram ($2106, $2107, $2108, $2109)
-        sta     $4370       ; 4 address
-        lda     #$06
-        sta     $4371
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
+        lda     #$44                    ; channel #7: mosaic & bg1-3 data location in vram ($2106, $2107, $2108, $2109)
+        sta     hDMA7::CTRL             ; 4 address
+        lda     #<hMOSAIC
+        sta     hDMA7::HREG
         ldx     #$7b9b
-        stx     $4372
+        stx     hDMA7::ADDR
         lda     #$7e
-        sta     $4374
-        sta     $4377
-        lda     #$43        ; channel #4: bg1 scroll ($210d & $210e)
-        sta     $4340       ; 2 address, write twice
-        lda     #$0d
-        sta     $4341
+        sta     hDMA7::ADDR_B
+        sta     hDMA7::HDMA_B
+        lda     #$43                    ; channel #4: bg1 scroll ($210d & $210e)
+        sta     hDMA4::CTRL             ; 2 address, write twice
+        lda     #<hBG1HOFS
+        sta     hDMA4::HREG
         ldx     #$7bf6
-        stx     $4342
+        stx     hDMA4::ADDR
         lda     #$7e
-        sta     $4344
-        sta     $4347
-        lda     #$43        ; channel #3: bg3 scroll ($2111 & $2112)
-        sta     $4330       ; 2 address, write twice
-        lda     #$11
-        sta     $4331
+        sta     hDMA4::ADDR_B
+        sta     hDMA4::HDMA_B
+        lda     #$43                    ; channel #3: bg3 scroll ($2111 & $2112)
+        sta     hDMA3::CTRL             ; 2 address, write twice
+        lda     #<hBG3HOFS
+        sta     hDMA3::HREG
         ldx     #$7cac
-        stx     $4332
+        stx     hDMA3::ADDR
         lda     #$7e
-        sta     $4334
-        sta     $4337
-        lda     #$42        ; channel #2: fixed color add/sub values ($2132)
-        sta     $4320       ; 1 address, write twice
+        sta     hDMA3::ADDR_B
+        sta     hDMA3::HDMA_B
+        lda     #$42                    ; channel #2: fixed color add/sub values ($2132)
+        sta     hDMA2::CTRL             ; 1 address, write twice
         lda     #$32
-        sta     $4321
+        sta     hDMA2::HREG
         ldx     #$7d07
-        stx     $4322
+        stx     hDMA2::ADDR
         lda     #$7e
-        sta     $4324
-        sta     $4327
-        lda     #$41        ; channel #5: window 2 position ($2128 & $2129)
-        sta     $4350       ; 2 address
-        lda     #$28
-        sta     $4351
+        sta     hDMA2::ADDR_B
+        sta     hDMA2::HDMA_B
+        lda     #$41                    ; channel #5: window 2 position ($2128 & $2129)
+        sta     hDMA5::CTRL             ; 2 address
+        lda     #<hWH2
+        sta     hDMA5::HREG
         ldx     #$7d62
-        stx     $4352
+        stx     hDMA5::ADDR
         lda     #$7e
-        sta     $4354
-        sta     $4357
-        lda     #$41        ; channel #6: main/sub screen designation ($212c & $212d)
-        sta     $4360       ; 2 address
-        lda     #$2c
-        sta     $4361
+        sta     hDMA5::ADDR_B
+        sta     hDMA5::HDMA_B
+        lda     #$41                    ; channel #6: main/sub screen designation ($212c & $212d)
+        sta     hDMA6::CTRL             ; 2 address
+        lda     #<hTM
+        sta     hDMA6::HREG
         ldx     #$7dbd
-        stx     $4362
+        stx     hDMA6::ADDR
         lda     #$7e
-        sta     $4364
-        sta     $4367
-        lda     #$41        ; channel #1: color add/sub settings ($2130 & $2131)
-        sta     $4310       ; 2 address
-        lda     #$30
-        sta     $4311
+        sta     hDMA6::ADDR_B
+        sta     hDMA6::HDMA_B
+        lda     #$41                    ; channel #1: color add/sub settings ($2130 & $2131)
+        sta     hDMA1::CTRL             ; 2 address
+        lda     #<hCGSWSEL
+        sta     hDMA1::HREG
         ldx     #$7e18
-        stx     $4312
+        stx     hDMA1::ADDR
         lda     #$7e
-        sta     $4314
-        sta     $4317
+        sta     hDMA1::ADDR_B
+        sta     hDMA1::HDMA_B
         lda     #$7e
         pha
         plb

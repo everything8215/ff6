@@ -18,11 +18,14 @@ chr_size:
 ; [ init magitek train ride graphics ]
 
 InitTrainGfx:
+
+@hDP := hWMDATA & $ff00
+
 @9a05:  php
         phb
         phd
         longai
-        lda     #(hWMDATA & $ff00)      ; nonzero dp, don't use clr_a
+        lda     #@hDP                   ; nonzero dp, don't use clr_a
         tcd
         shorta
         ldx     #$2000                  ; $7e2000

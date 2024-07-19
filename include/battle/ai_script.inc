@@ -213,9 +213,9 @@ AI_SCRIPT_INC = 1
 .mac _op_item op, item1, item2
         .byte $f6, op
         .ifblank item2
-                .byte item1, item1
+                .byte ITEM::item1, ITEM::item1
         .else
-                .byte item1, item2
+                .byte ITEM::item1, ITEM::item2
         .endif
 .endmac
 
@@ -426,11 +426,11 @@ AI_SCRIPT_INC = 1
 ; if item used on this monster
 .mac if_item item1, item2
         .byte $fc, $03
-        .byte item1
+        .byte ITEM::item1
         .ifnblank item2
-                .byte item2
+                .byte ITEM::item2
         .else
-                .byte item1
+                .byte ITEM::item1
         .endif
 .endmac
 

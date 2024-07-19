@@ -55,10 +55,10 @@ ResetMenuCursorMemory:
         cpx     #$001f
         bne     @706b
         lda     #$01                    ; character skills cursors default to magic
-        sta     $0237
-        sta     $0239
-        sta     $023b
-        sta     $023d
+        sta     w0237
+        sta     w0239
+        sta     w023b
+        sta     w023d
         rts
 
 ; ------------------------------------------------------------------------------
@@ -104,8 +104,8 @@ InitSaveSlot:
         stz     $1862
         sty     $1866                   ; clear steps
         stz     $1868
-        sty     $021b                   ; clear menu game time
-        sty     $021d
+        sty     wGameTimeHours
+        sty     wGameTimeSeconds
         jsr     InitWindowPal
         rts
 
