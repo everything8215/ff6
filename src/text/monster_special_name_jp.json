@@ -3,9 +3,10 @@
   "inc_path": "include/text/monster_special_name_jp.inc",
   "item_size": 8,
   "char_tables": [
-    "small_symbols_jp",
+    "fixed_length_jp",
+    "big_symbols_jp",
     "kana",
-    "fixed_length_jp"
+    "kanji"
   ],
   "text": []
 }

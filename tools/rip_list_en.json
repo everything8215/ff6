@@ -57,7 +57,7 @@
       "ptr_offset": "0xCE0000"
     },
     {
-      "json_path": "src/text/dte_tbl.json",
+      "json_path": "src/text/dte_tbl_en.json",
       "asset_range": "0xC0DFA0-0xC0E09F"
     },
     {

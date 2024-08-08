@@ -3,6 +3,7 @@ import json
 import os
 from ff6_lzss import *
 
+ASM_INDENT = ' ' * 8
 
 class AssetExtractor:
 
@@ -184,20 +185,20 @@ class AssetExtractor:
             assert os.path.exists(inc_path), f'Missing include file: {inc_path}'
 
             # define the size
-            inc_text = f'        SIZE = {len(asset_bytes)}\n'
+            inc_text = ASM_INDENT + f'SIZE = {len(asset_bytes)}\n'
 
             # define the array length
-            inc_text += f'        ARRAY_LENGTH = {len(item_ranges)}\n'
+            inc_text += ASM_INDENT + f'ARRAY_LENGTH = {len(item_ranges)}\n'
 
             if 'item_size' in asset_def:
                 # fixed item size
-                inc_text += f'        ITEM_SIZE = '
+                inc_text += ASM_INDENT + f'ITEM_SIZE = '
                 inc_text += str(asset_def['item_size']) + '\n'
             else:
                 # define item offsets
                 inc_text += '\n'
                 for id, item_range in enumerate(item_ranges):
-                    inc_text += '        _%d := ' % id
+                    inc_text += ASM_INDENT + '_%d := ' % id
                     inc_text += f'{asset_label} + $%04x\n' % item_range.begin
 
             # update item offsets in the include file
@@ -240,15 +241,15 @@ class AssetExtractor:
         if os.path.exists(inc_path):
 
             # define the size
-            inc_text = f'        SIZE = {len(asset_bytes)}\n'
+            inc_text = ASM_INDENT + f'SIZE = {len(asset_bytes)}\n'
 
             # define the array length
-            inc_text += f'        ARRAY_LENGTH = {len(item_ranges)}\n'
+            inc_text += ASM_INDENT + f'ARRAY_LENGTH = {len(item_ranges)}\n'
 
             # define item offsets
             inc_text += '\n'
             for id, item_range in enumerate(item_ranges):
-                inc_text += '        _%d := ' % id
+                inc_text += ASM_INDENT + '_%d := ' % id
                 inc_text += f'{asset_label} + $%04x\n' % item_range.begin
 
             # update item offsets in the include file

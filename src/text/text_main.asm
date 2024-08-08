@@ -59,7 +59,7 @@ inc_lang "text/rare_item_name_%s.inc"
 ; c0/dfa0
 .export DTETbl := *
 .if LANG_EN
-        .incbin "dte_tbl.dat"
+        .incbin "dte_tbl_en.dat"
 .else
         .res $0100
 .endif

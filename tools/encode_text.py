@@ -5,6 +5,8 @@ import os
 import sys
 import romtools as rt
 
+ASM_INDENT = ' ' * 8
+
 def encode_text(asset_def):
 
     # create the text codec
@@ -64,17 +66,17 @@ def update_text_inc(asset_def, item_offsets):
     asset_label = asset_def['asset_label']
 
     # define the array length
-    inc_text = f'{asset_label}::ARRAY_LENGTH = {len(item_offsets)}\n'
+    inc_text = ASM_INDENT + f'ARRAY_LENGTH = {len(item_offsets)}\n'
 
     if 'item_size' in asset_def:
         # fixed item size
-        inc_text += f'{asset_label}::ITEM_SIZE = '
+        inc_text += ASM_INDENT + f'ITEM_SIZE = '
         inc_text += str(asset_def['item_size']) + '\n'
     else:
         # define item offsets
         inc_text += '\n'
         for id, offset in enumerate(item_offsets):
-            inc_text += f'{asset_label}_%04x := ' % id
+            inc_text += ASM_INDENT + f'_%d := ' % id
             inc_text += f'{asset_label} + $%04x\n' % offset
 
     # update item offsets in the include file

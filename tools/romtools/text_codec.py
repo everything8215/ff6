@@ -38,10 +38,14 @@ class TextCodec:
                 primary_value = value[0]
                 for multi_value in value:
                     assert isinstance(multi_value, str)
+                    if multi_value in self.encoding_table:
+                        raise ValueError(f'Duplicate value:', multi_value)
                     self.encoding_table[multi_value] = code
             else:
                 # single value
                 primary_value = value
+                if value in self.encoding_table:
+                    raise ValueError(f'Duplicate value:', value)
                 self.encoding_table[value] = code
 
             assert isinstance(primary_value, str)

@@ -12,7 +12,7 @@ LINKFLAGS =
 FIX_CHECKSUM = python3 tools/fix_checksum.py
 
 # list of ROM versions
-VERSIONS = ff6-en ff6-en1 ff6-jp
+VERSIONS = ff6-jp ff6-en ff6-en1
 OBJ_DIR = obj
 ROM_DIR = rom
 ROMS = $(foreach V, $(VERSIONS), $(ROM_DIR)/$(V).sfc)
@@ -107,10 +107,14 @@ $(SPC_PRG): cfg/ff6-spc.cfg $(OBJ_DIR)/ff6-spc.o
 	$(LINK) $(LINKFLAGS) -o $@ -C $< $(OBJ_DIR)/ff6-spc.o
 
 # list of all text files
-TEXT_JSON_FILES = $(wildcard src/text/*.json)
-TEXT_DAT_FILES = $(TEXT_JSON_FILES:json=dat)
+TEXT_JSON_JP = $(wildcard src/text/*jp.json)
+TEXT_JSON_EN = $(wildcard src/text/*en.json)
+TEXT_DAT_JP = $(TEXT_JSON_JP:json=dat)
+TEXT_DAT_EN = $(TEXT_JSON_EN:json=dat)
 
-text: $(TEXT_DAT_FILES)
+text_jp: $(TEXT_DAT_JP)
+text_en: $(TEXT_DAT_EN)
+text: text_jp text_en
 
 src/text/dlg1_%.dat src/text/dlg2_%.dat: src/text/dlg1_%.json src/text/dlg2_%.json
 	python3 tools/fix_dlg.py split $*
@@ -165,7 +169,7 @@ rom/ff6-event.bin: cfg/ff6-event.cfg obj/event_en.o
 
 # rules for making ROM files
 # run linker twice: 1st for the cutscene program, 2nd for the ROM itself
-$(FF6_JP_PATH): cfg/ff6-jp.cfg spc mml text monster_gfx $(OBJ_FILES_JP)
+$(FF6_JP_PATH): cfg/ff6-jp.cfg spc mml text_jp monster_gfx $(OBJ_FILES_JP)
 	@mkdir -p $(LZ_DIR) $(ROM_DIR)
 	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -o "" -C $< $(OBJ_FILES_JP)
 	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
@@ -175,7 +179,7 @@ $(FF6_JP_PATH): cfg/ff6-jp.cfg spc mml text monster_gfx $(OBJ_FILES_JP)
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@
 
-$(FF6_EN_PATH): cfg/ff6-en.cfg spc mml text monster_gfx $(OBJ_FILES_EN)
+$(FF6_EN_PATH): cfg/ff6-en.cfg spc mml text_en monster_gfx $(OBJ_FILES_EN)
 	@mkdir -p $(LZ_DIR) $(ROM_DIR)
 	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -o "" -C $< $(OBJ_FILES_EN)
 	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
@@ -185,7 +189,7 @@ $(FF6_EN_PATH): cfg/ff6-en.cfg spc mml text monster_gfx $(OBJ_FILES_EN)
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@
 
-$(FF6_EN1_PATH): cfg/ff6-en.cfg spc mml text monster_gfx $(OBJ_FILES_EN1)
+$(FF6_EN1_PATH): cfg/ff6-en.cfg spc mml text_en monster_gfx $(OBJ_FILES_EN1)
 	@mkdir -p $(LZ_DIR) $(ROM_DIR)
 	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -o "" -C $< $(OBJ_FILES_EN1)
 	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
