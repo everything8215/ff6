@@ -452,10 +452,16 @@ _c34d3d:
 
 ; ------------------------------------------------------------------------------
 
-; battle commands for enabling skills (esper, magic, swdtech, blitz, lore, rage, dance)
-begin_block _c34d78
-        .byte   $02,$02,$07,$0a,$0c,$10,$13
-end_block _c34d78
+; battle commands for enabling skills
+_c34d78:
+        .byte   BATTLE_CMD::MAGIC  ; <- magic command enables the genju skill
+        .byte   BATTLE_CMD::MAGIC
+        .byte   BATTLE_CMD::BUSHIDO
+        .byte   BATTLE_CMD::BLITZ
+        .byte   BATTLE_CMD::LORE
+        .byte   BATTLE_CMD::RAGE
+        .byte   BATTLE_CMD::DANCE
+        calc_size _c34d78
 
 ; ------------------------------------------------------------------------------
 
@@ -615,7 +621,7 @@ LoadSkillsBG1VScrollHDMATbl:
 ; ------------------------------------------------------------------------------
 
 ; bg1 horizontal scroll hdma table (skills)
-begin_block SkillsBG1HScrollHDMATbl
+SkillsBG1HScrollHDMATbl:
         hdma_word 39, $0100
 .if LANG_EN
         hdma_word 72, $0100
@@ -626,10 +632,10 @@ begin_block SkillsBG1HScrollHDMATbl
 .endif
         hdma_word 30, $0100
         hdma_end
-end_block SkillsBG1HScrollHDMATbl
+        calc_size SkillsBG1HScrollHDMATbl
 
 ; bg1 vertical scroll hdma table (skills)
-begin_block SkillsBG1VScrollHDMATbl
+SkillsBG1VScrollHDMATbl:
         hdma_word 63, 0
         hdma_word 12, 4
         hdma_word 12, 8
@@ -693,7 +699,7 @@ begin_block SkillsBG1VScrollHDMATbl
 .endif
         hdma_word 30, -224
         hdma_end
-end_block SkillsBG1VScrollHDMATbl
+        calc_size SkillsBG1VScrollHDMATbl
 
 ; ------------------------------------------------------------------------------
 
@@ -877,7 +883,7 @@ DrawMagicListRow:
 ; [ get pointer to magic spell name ]
 
 GetMagicNamePtr:
-@4fb5:  ldy     #MAGIC_NAME_SIZE
+@4fb5:  ldy     #MagicName::ITEM_SIZE
         sty     $eb
         ldy     #near MagicName
         sty     $ef
@@ -1302,9 +1308,9 @@ DrawLoreListRow:
 
 _c35266:
 
-@LoreName := AttackName+58*ATTACK_NAME_SIZE
+@LoreName := AttackName+58*AttackName::ITEM_SIZE
 
-@5266:  ldy     #ATTACK_NAME_SIZE
+@5266:  ldy     #AttackName::ITEM_SIZE
         sty     $eb
         ldy     #near @LoreName
         sty     $ef
@@ -1432,7 +1438,7 @@ _c35311:
 ; [  ]
 
 _c35328:
-@5328:  ldy     #BUSHIDO_NAME_SIZE
+@5328:  ldy     #BushidoName::ITEM_SIZE
         sty     $eb
         ldy     #near BushidoName
         sty     $ef
@@ -1581,7 +1587,7 @@ DrawRageListRow:
 ; [ get pointer to monster name ]
 
 GetMonsterNamePtr:
-@5409:  ldy     #MONSTER_NAME_SIZE
+@5409:  ldy     #MonsterName::ITEM_SIZE
         sty     $eb
         ldy     #near MonsterName
         sty     $ef
@@ -1612,7 +1618,7 @@ DrawRageName:
         lda     $e5
         jsr     LoadArrayItem
         jmp     DrawPosTextBuf
-@543b:  ldy     #MONSTER_NAME_SIZE
+@543b:  ldy     #MonsterName::ITEM_SIZE
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -1770,7 +1776,7 @@ DrawGenjuListRow:
 ; [  ]
 
 _c354fa:
-@54fa:  ldy     #GENJU_NAME_SIZE
+@54fa:  ldy     #GenjuName::ITEM_SIZE
         sty     $eb
         ldy     #near GenjuName
         sty     $ef
@@ -2252,7 +2258,7 @@ DrawDanceListRow:
 ; [ get pointer to dance name ]
 
 GetDanceNamePtr:
-@57c1:  ldy     #DANCE_NAME_SIZE
+@57c1:  ldy     #DanceName::ITEM_SIZE
         sty     $eb
         ldy     #near DanceName
         sty     $ef
@@ -2279,7 +2285,7 @@ DrawDanceName:
         beq     @57f0
         jsr     LoadArrayItem
         jmp     DrawPosTextBuf
-@57f0:  ldy     #DANCE_NAME_SIZE
+@57f0:  ldy     #DanceName::ITEM_SIZE
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -2647,7 +2653,7 @@ DrawEsperDetailMenu:
         cpx     #sizeof_GenjuAtLevelUpText
         bne     @5a43
         ldx     hRDMPYL
-        ldy     #GENJU_BONUS_NAME_SIZE
+        ldy     #GenjuBonusName::ITEM_SIZE
 @5a56:  lda     f:GenjuBonusName,x
         sta     hWMDATA
         inx
@@ -3000,11 +3006,11 @@ SkillsLoreText:                 pos_text BG3A, SkillsLoreStr
 SkillsRageText:                 pos_text BG3A, SkillsRageStr
 SkillsDanceText:                pos_text BG3A, SkillsDanceStr
 
-begin_block SkillsCharLabelTextList
+SkillsCharLabelTextList:
         .addr   SkillsCharLevelText
         .addr   SkillsCharHPText
         .addr   SkillsCharMPText
-end_block SkillsCharLabelTextList
+        calc_size SkillsCharLabelTextList
 
 ; text for small skills window
 
@@ -3028,9 +3034,9 @@ SkillsCharMPSlashText:          pos_text BG1B, {25, 11}, SkillsCharSlashStr
 GenjuEquipErrorMsgText:         raw_text GenjuEquipErrorMsgStr
 GenjuLearnPctText:              pos_text BG1B, {24, 15}, GenjuLearnPctStr
 GenjuLearnRateText:             pos_text BG1B, {13, 15}, GenjuLearnRateStr
-begin_block GenjuAtLevelUpText
+GenjuAtLevelUpText:
         raw_text GenjuAtLevelUpStr
-end_block GenjuAtLevelUpText
+        calc_size GenjuAtLevelUpText
 .else
 SkillsBlankTitleText:           pos_text BG3B, {2, 2}, SkillsBlankTitleStr
 SkillsMPCostText:               pos_text BG3B, {2, 3}, SkillsMPCostStr
@@ -3049,9 +3055,9 @@ SkillsCharMPSlashText:          pos_text BG1B, {25, 11}, SkillsCharSlashStr
 GenjuEquipErrorMsgText:         raw_text GenjuEquipErrorMsgStr
 GenjuLearnPctText:              pos_text BG1B, {22, 16}, GenjuLearnPctStr
 GenjuLearnRateText:             pos_text BG1B, {13, 16}, GenjuLearnRateStr
-begin_block GenjuAtLevelUpText
+GenjuAtLevelUpText:
         raw_text GenjuAtLevelUpStr
-end_block GenjuAtLevelUpText
+        calc_size GenjuAtLevelUpText
 .endif
 
 ; ------------------------------------------------------------------------------

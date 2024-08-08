@@ -2231,7 +2231,7 @@ FindItemsWithIcon:
         cmp     #$ff
         beq     @2739
         sta     hWRMPYA
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
@@ -4492,11 +4492,11 @@ _c33583:
 _c33583:
         lda     $0000,y
         sta     hWRMPYA
-        lda     #CHAR_TITLE_SIZE
+        lda     #CharTitle::ITEM_SIZE
         sta     hWRMPYB
         nop4
         ldx     hRDMPYL
-        ldy     #CHAR_TITLE_SIZE
+        ldy     #CharTitle::ITEM_SIZE
 @3598:  lda     f:CharTitle,x
         sta     hWMDATA
         inx
@@ -4930,92 +4930,92 @@ GogoStatusCursorPos:
 .endif
 
 ; "Wounded"
-begin_block MainMenuWoundedText
+MainMenuWoundedText:
         raw_text MainMenuWoundedStr
-end_block MainMenuWoundedText
+        calc_size MainMenuWoundedText
 
 ; "time", "steps", "order"
-begin_block MainMenuLabelTextList
+MainMenuLabelTextList:
 @3723:  .addr   MainMenuTimeText
         .addr   MainMenuStepsText
         .addr   MainMenuOrderText
-end_block MainMenuLabelTextList
+        calc_size MainMenuLabelTextList
 
 ; "item", "skills", "relic", "status"
-begin_block MainMenuOptionsTextList1
+MainMenuOptionsTextList1:
 @3729:  .addr   MainMenuItemText
         .addr   MainMenuSkillsText
         .addr   MainMenuRelicText
         .addr   MainMenuStatusText
-end_block MainMenuOptionsTextList1
+        calc_size MainMenuOptionsTextList1
 
 ; slashes for character hp/mp
-begin_block CharBlock1SlashTextList
+CharBlock1SlashTextList:
 @3731:  .addr   CharBlock1HPSlashText
         .addr   CharBlock1MPSlashText
-end_block CharBlock1SlashTextList
+        calc_size CharBlock1SlashTextList
 
-begin_block CharBlock2SlashTextList
+CharBlock2SlashTextList:
 @3735:  .addr   CharBlock2HPSlashText
         .addr   CharBlock2MPSlashText
-end_block CharBlock2SlashTextList
+        calc_size CharBlock2SlashTextList
 
-begin_block CharBlock3SlashTextList
+CharBlock3SlashTextList:
 @3739:  .addr   CharBlock3HPSlashText
         .addr   CharBlock3MPSlashText
-end_block CharBlock3SlashTextList
+        calc_size CharBlock3SlashTextList
 
-begin_block CharBlock4SlashTextList
+CharBlock4SlashTextList:
 @373d:  .addr   CharBlock4HPSlashText
         .addr   CharBlock4MPSlashText
-end_block CharBlock4SlashTextList
+        calc_size CharBlock4SlashTextList
 
-begin_block CharBlock1LabelTextList
+CharBlock1LabelTextList:
 @3741:  .addr   CharBlock1LevelText
         .addr   CharBlock1HPText
         .addr   CharBlock1MPText
-end_block CharBlock1LabelTextList
+        calc_size CharBlock1LabelTextList
 
-begin_block CharBlock2LabelTextList
+CharBlock2LabelTextList:
 @3747:  .addr   CharBlock2LevelText
         .addr   CharBlock2HPText
         .addr   CharBlock2MPText
-end_block CharBlock2LabelTextList
+        calc_size CharBlock2LabelTextList
 
-begin_block CharBlock3LabelTextList
+CharBlock3LabelTextList:
 @374d:  .addr   CharBlock3LevelText
         .addr   CharBlock3HPText
         .addr   CharBlock3MPText
-end_block CharBlock3LabelTextList
+        calc_size CharBlock3LabelTextList
 
-begin_block CharBlock4LabelTextList
+CharBlock4LabelTextList:
 @3753:  .addr   CharBlock4LevelText
         .addr   CharBlock4HPText
         .addr   CharBlock4MPText
-end_block CharBlock4LabelTextList
+        calc_size CharBlock4LabelTextList
 
 ; "Equip", "Config"
-begin_block MainMenuOptionsTextList2
+MainMenuOptionsTextList2:
 @3759:  .addr   MainMenuEquipText
         .addr   MainMenuConfigText
-end_block MainMenuOptionsTextList2
+        calc_size MainMenuOptionsTextList2
 
 ; "Yes", "No", "This", "data?"
-begin_block GameLoadChoiceTextList
+GameLoadChoiceTextList:
 @375d:  .addr   GameLoadYesText
         .addr   GameLoadNoText
         .addr   GameLoadMsgText1
         .addr   GameLoadMsgText2
-end_block GameLoadChoiceTextList
+        calc_size GameLoadChoiceTextList
 
 ; "Yes", "No", "Erasing", "data.", "Okay?"
-begin_block GameSaveChoiceTextList
+GameSaveChoiceTextList:
         .addr   GameLoadYesText
         .addr   GameLoadNoText
         .addr   GameSaveMsgText1
         .addr   GameSaveMsgText2
         .addr   GameSaveMsgText3
-end_block GameSaveChoiceTextList
+        calc_size GameSaveChoiceTextList
 
 .if LANG_EN
         .define CharBlockLevelStr {$8b,$95,$00} ; "LV"

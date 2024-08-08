@@ -1,7 +1,7 @@
 ; ------------------------------------------------------------------------------
 
 ; c5/1ec9
-begin_spc_block SfxBRR
+spc_block SfxBRR
         .incbin "src/sound/sfx_brr/sfx_0000.brr"
         .incbin "src/sound/sfx_brr/sfx_0001.brr"
         .incbin "src/sound/sfx_brr/sfx_0002.brr"
@@ -10,12 +10,12 @@ begin_spc_block SfxBRR
         .incbin "src/sound/sfx_brr/sfx_0005.brr"
         .incbin "src/sound/sfx_brr/sfx_0006.brr"
         .incbin "src/sound/sfx_brr/sfx_0007.brr"
-end_spc_block SfxBRR
+end_spc_block
 
 ; ------------------------------------------------------------------------------
 
 ; c5/2018
-begin_spc_block SfxLoopStart
+spc_block SfxLoopStart
         .word $4800,$4800
         .word $4824,$4824
         .word $4848,$4848
@@ -24,10 +24,10 @@ begin_spc_block SfxLoopStart
         .word $48d8,$48d8
         .word $48ea,$48ea
         .word $48fc,$4917
-end_spc_block SfxLoopStart
+end_spc_block
 
 ; c5/203a
-begin_spc_block SfxADSR
+spc_block SfxADSR
         make_adsr 15,7,7,0
         make_adsr 15,7,7,0
         make_adsr 15,7,7,0
@@ -36,10 +36,10 @@ begin_spc_block SfxADSR
         make_adsr 15,7,7,0
         make_adsr 15,7,7,0
         make_adsr 15,7,7,0
-end_spc_block SfxADSR
+end_spc_block
 
 ; c5/204c
-begin_spc_block SfxFreqMult
+spc_block SfxFreqMult
         .byte $e1,$a0
         .byte $e1,$a0
         .byte $e1,$a0
@@ -48,13 +48,13 @@ begin_spc_block SfxFreqMult
         .byte $e1,$a0
         .byte $e1,$a0
         .byte $00,$00
-end_spc_block SfxFreqMult
+end_spc_block
 
 ; ------------------------------------------------------------------------------
 
 ; c5/205e
 SfxPtrs:
-begin_spc_block Sfx
+spc_block Sfx
 
 .repeat 256, i
         .addr .ident(.sprintf("SfxScript_%04x_1", i)) - SfxStart + $3000
@@ -846,6 +846,6 @@ SfxStart:
 ; c5/3c4e
         .res $10
 
-end_spc_block Sfx
+end_spc_block
 
 ; ------------------------------------------------------------------------------

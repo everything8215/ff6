@@ -3538,15 +3538,15 @@ _c348f7:
 
 .endif
 
-begin_block ConfigLabelTextList1
+ConfigLabelTextList1:
         .addr   ConfigControllerText
         .addr   ConfigCursorText
-end_block ConfigLabelTextList1
+        calc_size ConfigLabelTextList1
 
-begin_block ConfigSpeedTextList
+ConfigSpeedTextList:
         .addr   ConfigFastText
         .addr   ConfigSlowText
-end_block ConfigSpeedTextList
+        calc_size ConfigSpeedTextList
 
 ConfigControllerText:           pos_text BG1A, {3, 21}, ConfigControllerStr
 ConfigWaitText:                 pos_text BG1A, {22, 5}, ConfigWaitStr
@@ -3570,7 +3570,7 @@ ConfigBattleSpeedNumText:       pos_text BG1A, {14, 7}, ConfigSpeedNumStr
 ConfigMsgSpeedNumText:          pos_text BG1A, {14, 9}, ConfigSpeedNumStr
 ConfigCursorText:               pos_text BG1A, {3, 17}, ConfigCursorStr
 
-begin_block ConfigLabelTextList2
+ConfigLabelTextList2:
         .addr   ConfigBattleModeText
         .addr   ConfigBattleSpeedText
         .addr   ConfigMsgSpeedText
@@ -3578,7 +3578,7 @@ begin_block ConfigLabelTextList2
         .addr   ConfigGaugeText
         .addr   ConfigSoundText
         .addr   ConfigReequipText
-end_block ConfigLabelTextList2
+        calc_size ConfigLabelTextList2
 
 .if LANG_EN
 ConfigTitleText:                pos_text BG3A, {24, 2}, ConfigTitleStr
@@ -3610,27 +3610,27 @@ ConfigEmptyText:                pos_text BG1A, {22, 18}, ConfigEmptyStr
 ConfigCtrlSingleText:           pos_text BG1A, {14, 22}, ConfigCtrlSingleStr
 .endif
 
-begin_block ConfigLabelTextList3
+ConfigLabelTextList3:
         .addr   ConfigMagicOrderText
         .addr   ConfigWindowLabelText
         .addr   ConfigColorText
-end_block ConfigLabelTextList3
+        calc_size ConfigLabelTextList3
 
 ; color selector bars
-begin_block ConfigColorBarTextList
+ConfigColorBarTextList:
         .addr   ConfigColorBarRText
         .addr   ConfigColorBarGText
         .addr   ConfigColorBarBText
-end_block ConfigColorBarTextList
+        calc_size ConfigColorBarTextList
 
-begin_block ConfigLabelTextList4
+ConfigLabelTextList4:
         .addr   ConfigColorRText
         .addr   ConfigColorGText
         .addr   ConfigColorBText
         .addr   ConfigMagicOrderAText
         .addr   ConfigMagicOrderBText
         .addr   ConfigMagicOrderCText
-end_block ConfigLabelTextList4
+        calc_size ConfigLabelTextList4
 
 .if LANG_EN
 
@@ -3700,7 +3700,7 @@ Char4Ctrl2Text:                 pos_text BG3A, {21, 21}, Char4Ctrl2Str
 
 .if !LANG_EN
 
-begin_block CtrlConfigTitleTextList
+CtrlConfigTitleTextList:
         .addr   CtrlConfigTitleText
         .addr   CtrlConfigButtonText1
         .addr   CtrlConfigButtonText2
@@ -3709,9 +3709,9 @@ begin_block CtrlConfigTitleTextList
         .addr   CtrlConfigButtonText5
         .addr   CtrlConfigButtonText6
         .addr   CtrlConfigButtonText7
-end_block CtrlConfigTitleTextList
+        calc_size CtrlConfigTitleTextList
 
-begin_block CtrlConfigButtonTextList
+CtrlConfigButtonTextList:
         .addr   CtrlConfigAText
         .addr   CtrlConfigBText
         .addr   CtrlConfigXText
@@ -3719,70 +3719,70 @@ begin_block CtrlConfigButtonTextList
         .addr   CtrlConfigLText
         .addr   CtrlConfigRText
         .addr   CtrlConfigSelectText
-end_block CtrlConfigButtonTextList
+        calc_size CtrlConfigButtonTextList
 
-begin_block CtrlConfigActionTextList1
+CtrlConfigActionTextList1:
         .addr   CtrlConfigConfirmText1
         .addr   CtrlConfigCancelText1
         .addr   CtrlConfigMenuText1
         .addr   CtrlConfigPartyText1
         .addr   CtrlConfigRowText1
         .addr   CtrlConfigDefText1
-end_block CtrlConfigActionTextList1
+        calc_size CtrlConfigActionTextList1
 
-begin_block CtrlConfigActionTextList2
+CtrlConfigActionTextList2:
         .addr   CtrlConfigConfirmText2
         .addr   CtrlConfigCancelText2
         .addr   CtrlConfigMenuText2
         .addr   CtrlConfigPartyText2
         .addr   CtrlConfigRowText2
         .addr   CtrlConfigDefText2
-end_block CtrlConfigActionTextList2
+        calc_size CtrlConfigActionTextList2
 
-begin_block CtrlConfigActionTextList3
+CtrlConfigActionTextList3:
         .addr   CtrlConfigConfirmText3
         .addr   CtrlConfigCancelText3
         .addr   CtrlConfigMenuText3
         .addr   CtrlConfigPartyText3
         .addr   CtrlConfigRowText3
         .addr   CtrlConfigDefText3
-end_block CtrlConfigActionTextList3
+        calc_size CtrlConfigActionTextList3
 
-begin_block CtrlConfigActionTextList4
+CtrlConfigActionTextList4:
         .addr   CtrlConfigConfirmText4
         .addr   CtrlConfigCancelText4
         .addr   CtrlConfigMenuText4
         .addr   CtrlConfigPartyText4
         .addr   CtrlConfigRowText4
         .addr   CtrlConfigDefText4
-end_block CtrlConfigActionTextList4
+        calc_size CtrlConfigActionTextList4
 
-begin_block CtrlConfigActionTextList5
+CtrlConfigActionTextList5:
         .addr   CtrlConfigConfirmText5
         .addr   CtrlConfigCancelText5
         .addr   CtrlConfigMenuText5
         .addr   CtrlConfigPartyText5
         .addr   CtrlConfigRowText5
         .addr   CtrlConfigDefText5
-end_block CtrlConfigActionTextList5
+        calc_size CtrlConfigActionTextList5
 
-begin_block CtrlConfigActionTextList6
+CtrlConfigActionTextList6:
         .addr   CtrlConfigConfirmText6
         .addr   CtrlConfigCancelText6
         .addr   CtrlConfigMenuText6
         .addr   CtrlConfigPartyText6
         .addr   CtrlConfigRowText6
         .addr   CtrlConfigDefText6
-end_block CtrlConfigActionTextList6
+        calc_size CtrlConfigActionTextList6
 
-begin_block CtrlConfigActionTextList7
+CtrlConfigActionTextList7:
         .addr   CtrlConfigConfirmText7
         .addr   CtrlConfigCancelText7
         .addr   CtrlConfigMenuText7
         .addr   CtrlConfigPartyText7
         .addr   CtrlConfigRowText7
         .addr   CtrlConfigDefText7
-end_block CtrlConfigActionTextList7
+        calc_size CtrlConfigActionTextList7
 
 CtrlConfigTitleText:            pos_text BG3A, {22, 2}, CtrlConfigTitleStr
 

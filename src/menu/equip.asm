@@ -431,11 +431,11 @@ _c38fe1:
         beq     @901f
 @8ffc:  sta     hM7A
         stz     hM7A
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #ITEM_NAME_SIZE
+        ldy     #ItemName::ITEM_SIZE
 @9010:  lda     f:ItemName,x
         sta     hWMDATA
         inx
@@ -443,7 +443,7 @@ _c38fe1:
         bne     @9010
         stz     hWMDATA
         rts
-@901f:  ldy     #ITEM_NAME_SIZE
+@901f:  ldy     #ItemName::ITEM_SIZE
         lda     #$ff
 @9024:  sta     hWMDATA
         dey
@@ -1247,13 +1247,13 @@ LoadEquipBG1VScrollHDMATbl:
 
 ; ------------------------------------------------------------------------------
 
-begin_block _c39564
+_c39564:
         hdma_word 39, $0100
         hdma_word 60, $0100
         hdma_word 108, $0000
         hdma_word 30, $0100
         hdma_end
-end_block _c39564
+        calc_size _c39564
 
 ; ------------------------------------------------------------------------------
 
@@ -2436,11 +2436,11 @@ LoadEquipListItemName:
         beq     @9d4f
         sta     hM7A
         stz     hM7A
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #ITEM_NAME_SIZE
+        ldy     #ItemName::ITEM_SIZE
 @9d40:  lda     f:ItemName,x
         sta     hWMDATA
         inx
@@ -2449,13 +2449,13 @@ LoadEquipListItemName:
 .if LANG_EN
         stz     hWMDATA
         rts
-@9d4f:  ldy     #ITEM_NAME_SIZE
+@9d4f:  ldy     #ItemName::ITEM_SIZE
 .else
         lda     #COLON_CHAR
         sta     hWMDATA
         stz     hWMDATA
         rts
-@9d4f:  ldy     #ITEM_NAME_SIZE+3
+@9d4f:  ldy     #ItemName::ITEM_SIZE+3
 .endif
         lda     #$ff
 @9d54:  sta     hWMDATA
@@ -3273,41 +3273,41 @@ _c3a1d8:
 .endif
 
 ; pointers to party equip screen slot names
-begin_block _c3a9f8
+_c3a9f8:
         .addr   _c3a21a
         .addr   _c3a21f
         .addr   _c3a225
         .addr   _c3a22b
         .addr   _c3a231
         .addr   _c3a237
-end_block _c3a9f8
+        calc_size _c3a9f8
 
-begin_block _c3aa04
+_c3aa04:
         .addr   _c3a23d
         .addr   _c3a242
         .addr   _c3a248
         .addr   _c3a24e
         .addr   _c3a254
         .addr   _c3a25a
-end_block _c3aa04
+        calc_size _c3aa04
 
-begin_block _c3aa10
+_c3aa10:
         .addr   _c3a260
         .addr   _c3a265
         .addr   _c3a26b
         .addr   _c3a271
         .addr   _c3a277
         .addr   _c3a27d
-end_block _c3aa10
+        calc_size _c3aa10
 
-begin_block _c3aa1c
+_c3aa1c:
         .addr   _c3a283
         .addr   _c3a288
         .addr   _c3a28e
         .addr   _c3a294
         .addr   _c3a29a
         .addr   _c3a2a0
-end_block _c3aa1c
+        calc_size _c3aa1c
 
 ; party equip screen slot names (used in Japanese version only)
 _c3a21a:                        pos_text BG1A, {3, 4}, {$9f,$2d,$00}
@@ -3340,27 +3340,27 @@ _c3a2a0:                        pos_text BG1A, {17, 32}, {$8a,$6e,$55,$00}
 
 ; ------------------------------------------------------------------------------
 
-begin_block EquipOptionTextList
+EquipOptionTextList:
         .addr   EquipOptionEquipText
         .addr   EquipOptionOptimumText
         .addr   EquipOptionRemoveText
         .addr   EquipOptionEmptyText
-end_block EquipOptionTextList
+        calc_size EquipOptionTextList
 
-begin_block EquipSlotTextList
+EquipSlotTextList:
         .addr   EquipHeadText
         .addr   EquipBodyText
-end_block EquipSlotTextList
+        calc_size EquipSlotTextList
 
-begin_block RelicOptionTextList
+RelicOptionTextList:
         .addr   RelicOptionEquipText
         .addr   RelicOptionRemoveText
-end_block RelicOptionTextList
+        calc_size RelicOptionTextList
 
-begin_block RelicSlotTextList
+RelicSlotTextList:
         .addr   EquipRelic1Text
         .addr   EquipRelic2Text
-end_block RelicSlotTextList
+        calc_size RelicSlotTextList
 
 .if LANG_EN
 EquipRHandText:                 pos_text BG3A, {2, 7}, EquipRHandStr
@@ -3398,7 +3398,7 @@ RelicOptionRemoveText:          pos_text BG3A, {9, 2}, RelicOptionRemoveStr
 
 ; ------------------------------------------------------------------------------
 
-begin_block EquipStatTextList1
+EquipStatTextList1:
         .addr   EquipStrengthText
         .addr   EquipStaminaText
         .addr   EquipMagPwrText
@@ -3413,14 +3413,14 @@ begin_block EquipStatTextList1
         .addr   EquipArrow7Text
         .addr   EquipArrow8Text
         .addr   EquipArrow9Text
-end_block EquipStatTextList1
+        calc_size EquipStatTextList1
 
-begin_block EquipStatTextList2
+EquipStatTextList2:
         .addr   EquipSpeedText
         .addr   EquipAttackPwrText
         .addr   EquipDefenseText
         .addr   EquipMagDefText
-end_block EquipStatTextList2
+        calc_size EquipStatTextList2
 
 .if LANG_EN
 EquipStrengthText:              pos_text BG3A, {16, 17}, EquipStrengthStr

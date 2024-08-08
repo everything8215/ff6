@@ -22,15 +22,20 @@
 
 ; [ begin/end block of SPC data ]
 
+_spc_block_seq .set 0
+
 ; each spc block is preceded by a 2-byte header containing the block size
-.macro begin_spc_block _label
-        .proc .ident(.string(_label))
-        .word .ident(.sprintf("%s_SIZE", .string(_label))) - 2
+.macro spc_block label
+        label := *
+        .word .ident(.sprintf("_spc_block_size_%d", _spc_block_seq))
+        .ident(.sprintf("_spc_block_start_%d", _spc_block_seq)) := *
 .endmac
 
-.macro end_spc_block _label
-        .endproc
-        .ident(.sprintf("%s_SIZE", .string(_label))) = .sizeof(.ident(.string(_label)))
+.macro end_spc_block
+        .local start
+        start = .ident(.sprintf("_spc_block_start_%d", _spc_block_seq))
+        .ident(.sprintf("_spc_block_size_%d", _spc_block_seq)) = * - start
+        _spc_block_seq .set _spc_block_seq + 1
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -1020,9 +1025,9 @@ PlaySongTbl:
 ; ------------------------------------------------------------------------------
 
 ; c5/070e
-begin_spc_block SPCCode
+spc_block SPCCode
         .incbin "src/sound/ff6-spc.dat"
-end_spc_block SPCCode
+end_spc_block
 
 ; ------------------------------------------------------------------------------
 

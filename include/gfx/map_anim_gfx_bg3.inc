@@ -4,14 +4,19 @@ MAP_ANIM_GFX_BG3_INC = 1
 
 .global MapAnimGfxBG3, MapAnimGfxBG3Ptrs
 
-MAP_ANIM_GFX_BG3_RIVER          = 0
-MAP_ANIM_GFX_BG3_FIRE           = 1
-MAP_ANIM_GFX_BG3_RAIN           = 2
-MAP_ANIM_GFX_BG3_CAVES          = 3
-MAP_ANIM_GFX_BG3_BEACH          = 4
-MAP_ANIM_GFX_BG3_NARSHE         = 5
+.enum MAP_ANIM_GFX_BG3
+        RIVER
+        FIRE
+        RAIN
+        CAVES
+        BEACH
+        NARSHE
+.endenum
 
-MAP_ANIM_GFX_BG3_ARRAY_LENGTH   = 6
+.scope MapAnimGfxBG3
+        ARRAY_LENGTH = MAP_ANIM_GFX_BG3::NARSHE + 1
+        Start := MapAnimGfxBG3
+.endscope
 
 .endif
 .list on

@@ -5,7 +5,7 @@
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_tile_prop id, file
-        .ident(.sprintf("MapTileProp_%04x", MAP_TILE_PROP::id)) := *
+        array_item MapTileProp, {MAP_TILE_PROP::id} := *
         .incbin .sprintf("map_tile_prop/%s.dat.lz", file)
 .endmac
 
@@ -14,7 +14,8 @@
 .segment "map_tile_prop"
 
 ; d9/a800
-begin_block MapTileProp, $2510
+MapTileProp:
+        fixed_block $2510
         inc_map_tile_prop NONE, "none"
         inc_map_tile_prop FIGARO_CASTLE, "figaro_castle"
         inc_map_tile_prop DOMA_CASTLE, "doma_castle"
@@ -58,16 +59,17 @@ begin_block MapTileProp, $2510
         inc_map_tile_prop KEFKAS_TOWER_1, "kefkas_tower_1"
         inc_map_tile_prop KEFKAS_TOWER_2, "kefkas_tower_2"
 
-MapTilePropEnd := *
-
-end_block MapTileProp
+MapTileProp::End:
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
 ; d9/cd10
-begin_block MapTilePropPtrs, $80
-        make_ptr_tbl_rel MapTileProp, MAP_TILE_PROP::ARRAY_LENGTH
-        .addr MapTilePropEnd - MapTileProp
-end_block MapTilePropPtrs
+
+MapTilePropPtrs:
+        fixed_block $80
+        ptr_tbl MapTileProp
+        end_ptr MapTileProp
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------

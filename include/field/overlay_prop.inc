@@ -52,7 +52,10 @@ OVERLAY_PROP_INC = 1
         OVERLAY_44                      ;= $2c  ; 44 (unused)
 .endenum
 
-OVERLAY_PROP::ARRAY_LENGTH               = $2d  ; 45
+.scope OverlayProp
+        ARRAY_LENGTH = OVERLAY_PROP::OVERLAY_44 + 1
+        Start = OverlayProp
+.endscope
 
 .endif
 .list on

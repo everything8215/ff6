@@ -103,9 +103,10 @@ OverlayVRAMTbl:
 .segment "overlay_gfx"
 
 ; c0/e2a0
-begin_block OverlayGfx, $0c00
+OverlayGfx:
+        fixed_block $0c00
         .incbin "src/gfx/map_overlay.1bpp"
-end_block OverlayGfx
+        end_fixed_block
 
 ; c0/eea0
 OverlayTilemap:
@@ -139,17 +140,19 @@ LoadOverlayData:
 .segment "overlay_prop"
 
 ; c0/f4a0
-begin_block OverlayPropPtrs, $60
-        make_ptr_tbl_rel OverlayProp, OVERLAY_PROP::ARRAY_LENGTH
-end_block OverlayPropPtrs
+OverlayPropPtrs:
+        fixed_block $60
+        ptr_tbl OverlayProp
+        end_fixed_block
 
 .macro inc_overlay_prop id, file
-        .ident(.sprintf("OverlayProp_%04x", OVERLAY_PROP::id)) := *
+        array_item OverlayProp, {OVERLAY_PROP::id} := *
         .incbin .sprintf("overlay_prop/%s.dat.lz", file)
 .endmac
 
 ; c0/f500
-begin_block OverlayProp, $0800
+OverlayProp:
+        fixed_block $0800
         inc_overlay_prop NONE, "none"
         inc_overlay_prop TOWN_EXT, "town_ext"
         inc_overlay_prop CAVES, "caves"
@@ -195,7 +198,7 @@ begin_block OverlayProp, $0800
         inc_overlay_prop OVERLAY_42, "overlay_42"
         inc_overlay_prop OVERLAY_43, "overlay_43"
         inc_overlay_prop OVERLAY_44, "overlay_44"
-end_block OverlayProp
+        end_fixed_block
 
 .popseg
 

@@ -62,14 +62,13 @@ def encode_text(asset_def):
 def update_text_inc(asset_def, item_offsets):
 
     asset_label = asset_def['asset_label']
-    asset_const = asset_def['asset_const']
 
     # define the array length
-    inc_text = f'{asset_const}_ARRAY_LENGTH = {len(item_offsets)}\n'
+    inc_text = f'{asset_label}::ARRAY_LENGTH = {len(item_offsets)}\n'
 
     if 'item_size' in asset_def:
         # fixed item size
-        inc_text += f'{asset_const}_SIZE = '
+        inc_text += f'{asset_label}::ITEM_SIZE = '
         inc_text += str(asset_def['item_size']) + '\n'
     else:
         # define item offsets

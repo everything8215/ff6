@@ -1,5 +1,7 @@
 ; ------------------------------------------------------------------------------
 
+.include "field/treasure_prop.inc"
+
 .a8
 .i16
 .segment "field_code"
@@ -21,16 +23,16 @@ InitTreasures:
         cpx     $1e
         beq     @1637
 @15ef:  longa
-        lda     f:TreasureProp,x
+        lda     f:TreasureProp::PosX,x
         sta     $2a
-        lda     f:TreasureProp+1,x
+        lda     f:TreasureProp::PosY,x
         sta     $2b
         phx
-        lda     f:TreasureProp+2,x
+        lda     f:TreasureProp::Switch,x
         and     #$01ff
         lsr3
         tay
-        lda     f:TreasureProp+2,x
+        lda     f:TreasureProp::Switch,x
         and     #$0007
         tax
         shorta0
@@ -83,7 +85,8 @@ InitColorMath:
 .segment "map_color_math"
 
 ; c0/fe00
-begin_block MapColorMath, $40
+MapColorMath:
+        fixed_block $40
         .byte   $00,$17,$00
         .byte   $44,$17,$13
         .byte   $13,$13,$04
@@ -103,7 +106,7 @@ begin_block MapColorMath, $40
         .byte   $84,$13,$04
         .byte   $86,$15,$02
         .byte   $54,$17,$11
-end_block MapColorMath
+        end_fixed_block
 
 .popseg
 

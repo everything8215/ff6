@@ -3194,57 +3194,39 @@ CharGfxVRAMAddr:
 
 ; pointers to character graphics
 MenuCharGfxPtrs:
-@f911:  .word   .hiword(MapSpriteGfx_0000),.loword(MapSpriteGfx_0000)
-        .word   .hiword(MapSpriteGfx_0001),.loword(MapSpriteGfx_0001)
-        .word   .hiword(MapSpriteGfx_0002),.loword(MapSpriteGfx_0002)
-        .word   .hiword(MapSpriteGfx_0003),.loword(MapSpriteGfx_0003)
-        .word   .hiword(MapSpriteGfx_0004),.loword(MapSpriteGfx_0004)
-        .word   .hiword(MapSpriteGfx_0005),.loword(MapSpriteGfx_0005)
-        .word   .hiword(MapSpriteGfx_0006),.loword(MapSpriteGfx_0006)
-        .word   .hiword(MapSpriteGfx_0007),.loword(MapSpriteGfx_0007)
-        .word   .hiword(MapSpriteGfx_0008),.loword(MapSpriteGfx_0008)
-        .word   .hiword(MapSpriteGfx_0009),.loword(MapSpriteGfx_0009)
-        .word   .hiword(MapSpriteGfx_000a),.loword(MapSpriteGfx_000a)
-        .word   .hiword(MapSpriteGfx_000b),.loword(MapSpriteGfx_000b)
-        .word   .hiword(MapSpriteGfx_000c),.loword(MapSpriteGfx_000c)
-        .word   .hiword(MapSpriteGfx_000d),.loword(MapSpriteGfx_000d)
-        .word   .hiword(MapSpriteGfx_000e),.loword(MapSpriteGfx_000e)
-        .word   .hiword(MapSpriteGfx_000f),.loword(MapSpriteGfx_000f)
-        .word   .hiword(MapSpriteGfx_0010),.loword(MapSpriteGfx_0010)
-        .word   .hiword(MapSpriteGfx_0011),.loword(MapSpriteGfx_0011)
-        .word   .hiword(MapSpriteGfx_0012),.loword(MapSpriteGfx_0012)
-        .word   .hiword(MapSpriteGfx_0013),.loword(MapSpriteGfx_0013)
-        .word   .hiword(MapSpriteGfx_0014),.loword(MapSpriteGfx_0014)
-        .word   .hiword(MapSpriteGfx_0015),.loword(MapSpriteGfx_0015)
+.repeat 22, i
+        .word   .bankbyte(array_item MapSpriteGfx, i)
+        .addr   array_item MapSpriteGfx, i
+.endrep
 
 ; ------------------------------------------------------------------------------
 
 ; airship/clouds palette assignment
 _cff969:
-@f969:  .byte   $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$01,$01,$01,$01
-        .byte   $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$01,$01,$01,$01
-        .byte   $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$01,$01,$01,$01
-        .byte   $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
-        .byte   $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
-        .byte   $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$03,$03,$03,$03,$03
-        .byte   $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03
-        .byte   $03,$03,$03,$03,$03,$03,$03,$00
+@f969:  .byte   3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1
+        .byte   3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1
+        .byte   3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1
+        .byte   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+        .byte   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+        .byte   1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3
+        .byte   3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+        .byte   3,3,3,3,3,3,3,0
 
 ; land/sea palette assignment
 _cff9e1:
-@f9e1:  .byte   $07,$07,$07,$07,$02,$02,$02,$02,$07,$07,$07,$07,$04,$04,$04,$04
-        .byte   $07,$07,$07,$07,$02,$02,$02,$02,$07,$07,$07,$07,$04,$04,$04,$04
-        .byte   $07,$07,$07,$07,$02,$02,$02,$02,$07,$07,$07,$07,$04,$04,$04,$04
-        .byte   $07,$07,$07,$07,$02,$02,$02,$02,$07,$07,$07,$07,$04,$04,$04,$04
-        .byte   $04,$04,$04,$04,$04,$04,$04,$04,$06,$07,$07,$07,$07,$06,$06,$06
-        .byte   $04,$04,$04,$04,$04,$04,$04,$04,$07,$07,$07,$07,$07,$07,$06,$06
-        .byte   $04,$04,$04,$04,$04,$04,$04,$04,$07,$07,$07,$07,$07,$07,$06,$06
-        .byte   $04,$04,$04,$04,$04,$04,$04,$04,$06,$07,$07,$07,$07,$06,$06,$06
-        .byte   $06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$04,$04,$06,$06
-        .byte   $06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$04,$04,$06,$06
-        .byte   $06,$06,$06,$06,$06,$06,$06,$04,$04,$04,$04,$06,$06,$04,$02,$02
-        .byte   $06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$02,$02,$02,$02
-        .byte   $02,$02,$02,$02,$02,$02,$02,$00
+@f9e1:  .byte   7,7,7,7,2,2,2,2,7,7,7,7,4,4,4,4
+        .byte   7,7,7,7,2,2,2,2,7,7,7,7,4,4,4,4
+        .byte   7,7,7,7,2,2,2,2,7,7,7,7,4,4,4,4
+        .byte   7,7,7,7,2,2,2,2,7,7,7,7,4,4,4,4
+        .byte   4,4,4,4,4,4,4,4,6,7,7,7,7,6,6,6
+        .byte   4,4,4,4,4,4,4,4,7,7,7,7,7,7,6,6
+        .byte   4,4,4,4,4,4,4,4,7,7,7,7,7,7,6,6
+        .byte   4,4,4,4,4,4,4,4,6,7,7,7,7,6,6,6
+        .byte   6,6,6,6,6,6,6,6,6,6,6,6,4,4,6,6
+        .byte   6,6,6,6,6,6,6,6,6,6,6,6,4,4,6,6
+        .byte   6,6,6,6,6,6,6,4,4,4,4,6,6,4,2,2
+        .byte   6,6,6,6,6,6,6,6,6,6,6,6,2,2,2,2
+        .byte   2,2,2,2,2,2,2,0
 
 ; ------------------------------------------------------------------------------
 

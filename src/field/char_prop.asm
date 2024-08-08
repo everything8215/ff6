@@ -163,7 +163,7 @@ CharProp:
 ; 2: cyan
         make_char_prop
         set_char_prop_hp_mp 53, 5
-        set_char_prop_cmds FIGHT, SWDTECH, MAGIC, ITEM
+        set_char_prop_cmds FIGHT, BUSHIDO, MAGIC, ITEM
         set_char_prop_stats 40, 28, 33, 25, 25, 48, 20, 6, 1
         set_char_prop_equip ASHURA, BUCKLER, LEATHER_HAT, LEATHERARMOR
         set_char_prop_flags RUN_FACTOR_LOW, LEVEL_MOD_HIGH

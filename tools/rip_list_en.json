@@ -217,7 +217,7 @@
         "field_3",
         "train_ext_3",
         "colosseum",
-        "unused_17",
+        "unused_23",
         "desert_1",
         "forest_1",
         "forest_2",
@@ -3266,7 +3266,6 @@
       "file_path": "src/btlgfx/attack_anim_frames_en.dat",
       "inc_path": "include/btlgfx/attack_anim_frames_en.inc",
       "asset_range": "0xD10141-0xD1E988",
-      "asset_const": "ATTACK_ANIM_FRAMES",
       "asset_label": "AttackAnimFrames",
       "ptr_range": "0xD4DF3C-0xD4F643",
       "ptr_offset": "0xD10000"
@@ -3275,7 +3274,6 @@
       "file_path": "src/btlgfx/attack_anim_script_en.dat",
       "inc_path": "include/btlgfx/attack_anim_script_en.inc",
       "asset_range": "0xD00000-0xD07FB1",
-      "asset_const": "ATTACK_ANIM_SCRIPT",
       "asset_label": "AttackAnimScript",
       "ptr_range": "0xD1EAD8-0xD1EFFF",
       "ptr_offset": "0xD00000"
@@ -3284,7 +3282,6 @@
       "file_path": "src/btlgfx/battle_event_script.dat",
       "inc_path": "include/btlgfx/battle_event_script.inc",
       "asset_range": "0xD09842-0xD0CF49",
-      "asset_const": "BATTLE_EVENT_SCRIPT",
       "asset_label": "BattleEventScript",
       "ptr_range": "0xD09800-0xD09841",
       "ptr_offset": "0xD00000"
@@ -3293,7 +3290,6 @@
       "file_path": "src/field/trigger/long_entrance.dat",
       "inc_path": "include/field/long_entrance.inc",
       "asset_range": "0xEDF882-0xEDFCA9",
-      "asset_const": "LONG_ENTRANCE",
       "asset_label": "LongEntrance",
       "ptr_range": "0xEDF480-0xEDF87F",
       "ptr_offset": "0xEDF480"
@@ -3302,7 +3298,6 @@
       "file_path": "src/field/trigger/short_entrance.dat",
       "inc_path": "include/field/short_entrance.inc",
       "asset_range": "0xDFBF02-0xDFD977",
-      "asset_const": "SHORT_ENTRANCE",
       "asset_label": "ShortEntrance",
       "ptr_range": "0xDFBB00-0xDFBEFF",
       "ptr_offset": "0xDFBB00"
@@ -3311,7 +3306,6 @@
       "file_path": "src/field/trigger/treasure_prop.dat",
       "inc_path": "include/field/treasure_prop.inc",
       "asset_range": "0xED8634-0xED8BC9",
-      "asset_const": "TREASURE_PROP",
       "asset_label": "TreasureProp",
       "ptr_range": "0xED82F4-0xED8631",
       "ptr_offset": "0xED8634"

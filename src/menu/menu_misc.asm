@@ -278,7 +278,7 @@ _c37c2f:
         lda     $0014,y
         and     #STATUS1::IMP
         beq     @7c85
-        lda     #PORTRAIT_IMP
+        lda     #PORTRAIT::IMP
         bra     @7c8f
 @7c85:  lda     0,y
         cmp     #CHAR_PROP::LOCKE

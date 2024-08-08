@@ -1,6 +1,5 @@
 {
   "asset_label": "Dlg1",
-  "asset_const": "DLG1",
   "inc_path": "include/text/dlg1_en.inc",
   "char_tables": [
     "dialog_en",

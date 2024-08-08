@@ -274,11 +274,11 @@ CalcTextWidth:
         bra     @80d2
 @8118:  lda     $0583       ; item index
         sta     hWRMPYA
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     hWRMPYB
         lda     $cf         ; return if text buffer is not empty
         bpl     @80d2
-        lda     #ITEM_NAME_SIZE-1
+        lda     #ItemName::ITEM_SIZE-1
         sta     $1a
         ldx     hRDMPYL
 @812e:  txy
@@ -723,7 +723,7 @@ UpdateDlgTextOneLine:
         bne     @840f
         lda     $0583
         sta     hWRMPYA
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
@@ -745,7 +745,7 @@ UpdateDlgTextOneLine:
         beq     @8403
         inx
         iny
-        cpy     #ITEM_NAME_SIZE-1
+        cpy     #ItemName::ITEM_SIZE-1
         bne     @83ee
 @8403:  tdc
         sta     $9183,y

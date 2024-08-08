@@ -30,42 +30,48 @@ FloatingContGfx:
 .segment "credits_gfx"
 
 ; d9/568f
-begin_block CreditsGfx, $46bc
+CreditsGfx:
+        fixed_block $46bc
         .incbin "credits.4bpp.lz"
-end_block CreditsGfx
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
 .segment "ending_gfx_1"
 
 ; c4/ba00
-begin_block EndingFontGfx, $0608
+EndingFontGfx:
+        fixed_block $0608
         .incbin "ending_font.2bpp.lz"
-end_block EndingFontGfx
+        end_fixed_block
 
 ; c4/c008
-begin_block EndingGfx1, $346f
+EndingGfx1:
+        fixed_block $346f
         .incbin "ending1.4bpp.lz"
-end_block EndingGfx1
+        end_fixed_block
 
 ; c4/f477
-begin_block EndingGfx2, $0284
+EndingGfx2:
+        fixed_block $0284
         .incbin "ending2.4bpp.lz"
-end_block EndingGfx2
+        end_fixed_block
 
 ; c4/f6fb
-begin_block EndingGfx3, $0905
+EndingGfx3:
+        fixed_block $0905
         .incbin "ending3.4bpp.lz"
-end_block EndingGfx3
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
 .segment "ending_gfx_2"
 
 ; d9/9d4b
-begin_block EndingGfx4, $079a
+EndingGfx4:
+        fixed_block $079a
         .incbin "ending4.4bpp.lz"
-end_block EndingGfx4
+        end_fixed_block
 
 ; d9/a4e5
 EndingGfx5:

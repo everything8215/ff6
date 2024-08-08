@@ -62,20 +62,20 @@ done:   rts
         shorta0
 loop:   stz     $26
         stz     $28
-        lda     f:LongEntrancePtrs+2,x
+        lda     f:LongEntrance::Length,x
         bmi     vertical
 
 ; horizontal trigger
         sta     $1a
-        lda     f:LongEntrancePtrs+1,x
+        lda     f:LongEntrance::SrcY,x
         cmp     $b0
         bne     next
         lda     $af
         sec
-        sbc     f:LongEntrancePtrs,x
+        sbc     f:LongEntrance::SrcX,x
         bcc     next
         sta     $26
-        lda     f:LongEntrancePtrs,x
+        lda     f:LongEntrance::SrcX,x
         clc
         adc     $1a
         cmp     $af
@@ -86,22 +86,22 @@ loop:   stz     $26
 vertical:
         and     #$7f
         sta     $1a
-        lda     f:LongEntrancePtrs,x
+        lda     f:LongEntrance::SrcX,x
         cmp     $af
         bne     next
         lda     $b0
         sec
-        sbc     f:LongEntrancePtrs+1,x
+        sbc     f:LongEntrance::SrcY,x
         bcc     next
         sta     $28
-        lda     f:LongEntrancePtrs+1,x
+        lda     f:LongEntrance::SrcY,x
         clc
         adc     $1a
         cmp     $b0
         bcs     do_entrance
 next:   longa_clc
         txa
-        adc     #7
+        adc     #LongEntrance::ITEM_SIZE
         tax
         shorta0
         cpx     $1e
@@ -113,22 +113,22 @@ do_entrance:
         lda     #$01
         sta     $078e
         longa
-        lda     f:LongEntrancePtrs+3,x
+        lda     f:LongEntrance::Map,x
         and     #$0200
         beq     :+
         jsr     SetParentMap
-:       lda     f:LongEntrancePtrs+3,x
+:       lda     f:LongEntrance::Map,x
         and     #$01ff
         cmp     #$01ff
         beq     load_parent_map
-        lda     f:LongEntrancePtrs+3,x
+        lda     f:LongEntrance::Map,x
         sta     $1f64
         and     #$01ff
         cmp     #$0003
         bcs     :+                      ; branch if not a world map
 
 ; to world map
-        lda     f:LongEntrancePtrs+5,x
+        lda     f:LongEntrance::DestPos,x
         sta     $1f60
         shorta0
         lda     #$01
@@ -138,19 +138,19 @@ do_entrance:
         rts
 
 ; to sub-map
-:       lda     f:LongEntrancePtrs+5,x  ; destination xy position
+:       lda     f:LongEntrance::DestPos,x  ; destination xy position
         sta     $1fc0
         shorta0
-        lda     f:LongEntrancePtrs+4,x  ; facing direction
+        lda     f:LongEntrance::Flags,x  ; facing direction
         and     #$30
         lsr4
         sta     $0743
-        lda     f:LongEntrancePtrs+4,x  ; show map name
+        lda     f:LongEntrance::Flags,x  ; show map name
         and     #$08
         sta     $0745
         lda     #$01                    ; destination z-level (0 = upper, 1 = lower)
         sta     $0744
-        lda     f:LongEntrancePtrs+4,x
+        lda     f:LongEntrance::Flags,x
         and     #$04
         beq     :+                      ; branch if upper z-layer
         lsr
@@ -166,7 +166,7 @@ do_entrance:
 load_parent_map:
         jsr     RestoreParentMap
         longa
-        lda     f:LongEntrancePtrs+3,x
+        lda     f:LongEntrance::Map,x
         and     #$fe00
         ora     $1f69
         sta     $1f64
@@ -187,7 +187,7 @@ load_parent_map:
 ; parent map is a sub-map
 :       lda     $1f68
         sta     $0743
-        lda     f:LongEntrancePtrs+4,x
+        lda     f:LongEntrance::Flags,x
         and     #$08
         sta     $0745
         jsr     FadeOut
@@ -205,13 +205,13 @@ done:   shorta0
 
 ; ed/f480
 LongEntrancePtrs:
-        make_ptr_tbl_rel LongEntrance, LONG_ENTRANCE_ARRAY_LENGTH, LongEntrancePtrs
-        .addr LongEntranceEnd - LongEntrancePtrs
+        ptr_tbl LongEntrance
+        end_ptr LongEntrance
 
 ; ed/f882
 LongEntrance:
         .incbin "trigger/long_entrance.dat"
-        LongEntranceEnd := *
+LongEntrance::End:
 
 .popseg
 
@@ -260,13 +260,9 @@ LongEntrance:
 
 ; ------------------------------------------------------------------------------
 
-; x offset for parent facing direction
-DirXTbl:
-@1a6f:  .byte   $00,$01,$00,$ff
-
-; y offset for parent facing direction
-DirYTbl:
-@1a73:  .byte   $ff,$00,$01,$00
+; x and y offsets for parent facing direction (up, right, down, left)
+DirXTbl: .lobytes +0,+1,+0,-1
+DirYTbl: .lobytes -1,+0,+1,+0
 
 ; ------------------------------------------------------------------------------
 
@@ -283,12 +279,12 @@ DirYTbl:
         tax
         cmp     $1e
         jeq     done
-loop:   lda     f:ShortEntrancePtrs,x   ; check xy position
+loop:   lda     f:ShortEntrance::SrcPos,x   ; check xy position
         cmp     $af
         beq     do_entrance
         txa
         clc
-        adc     #6
+        adc     #ShortEntrance::ITEM_SIZE
         tax
         cpx     $1e
         bne     loop
@@ -297,20 +293,20 @@ loop:   lda     f:ShortEntrancePtrs,x   ; check xy position
 do_entrance:
         lda     #$0001
         sta     $078e
-        lda     f:ShortEntrancePtrs+2,x
+        lda     f:ShortEntrance::Map,x
         and     #$0200
         beq     :+
         jsr     SetParentMap
-:       lda     f:ShortEntrancePtrs+2,x
+:       lda     f:ShortEntrance::Map,x
         and     #$01ff
         cmp     #$01ff
         beq     load_parent_map
-        lda     f:ShortEntrancePtrs+2,x
+        lda     f:ShortEntrance::Map,x
         sta     $1f64
         and     #$01ff
         cmp     #$0003
         bcs     :+
-        lda     f:ShortEntrancePtrs+4,x
+        lda     f:ShortEntrance::DestPos,x
         sta     $1f60
         shorta0
         lda     #1
@@ -318,19 +314,19 @@ do_entrance:
         jsr     PushPartyMap
         jsr     FadeOut
         rts
-:       lda     f:ShortEntrancePtrs+4,x
+:       lda     f:ShortEntrance::DestPos,x
         sta     $1fc0
         shorta0
-        lda     f:ShortEntrancePtrs+3,x   ; facing direction
+        lda     f:ShortEntrance::Flags,x   ; facing direction
         lsr4
         and     #$03
         sta     $0743
-        lda     f:ShortEntrancePtrs+3,x   ; show map name
+        lda     f:ShortEntrance::Flags,x   ; show map name
         and     #$08
         sta     $0745
         lda     #$01        ; destination z-level (0 = upper, 1 = lower)
         sta     $0744
-        lda     f:ShortEntrancePtrs+3,x
+        lda     f:ShortEntrance::Flags,x
         and     #$04
         beq     :+
         lsr
@@ -346,7 +342,7 @@ do_entrance:
 load_parent_map:
         jsr     RestoreParentMap
         longa
-        lda     f:ShortEntrancePtrs+2,x
+        lda     f:ShortEntrance::Map,x
         and     #$fe00
         ora     $1f69
         sta     $1f64
@@ -364,7 +360,7 @@ load_parent_map:
         sta     $0743
         ldy     $1f6b
         sty     $1f66
-        lda     f:ShortEntrancePtrs+3,x
+        lda     f:ShortEntrance::Flags,x
         and     #$08
         sta     $0745
         lda     #$80
@@ -384,16 +380,17 @@ done:   shorta0
 .segment "short_entrance"
 
 ; df/bb00
-begin_block ShortEntrancePtrs, $1f00
-        make_ptr_tbl_rel ShortEntrance, SHORT_ENTRANCE_ARRAY_LENGTH, ShortEntrancePtrs
-        .addr ShortEntranceEnd - ShortEntrancePtrs
+ShortEntrancePtrs:
+        fixed_block $1f00
+        ptr_tbl ShortEntrance
+        end_ptr ShortEntrance
 
 ; df/bf02
 ShortEntrance:
         .incbin "trigger/short_entrance.dat"
-        ShortEntranceEnd := *
 
-end_block ShortEntrancePtrs
+ShortEntrance::End:
+        end_fixed_block
 
 .popseg
 

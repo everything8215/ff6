@@ -80,12 +80,12 @@ CharName:
 
 ; cc/e600
 DlgBankInc:
-        .word   DLG1_ARRAY_LENGTH
+        .word   Dlg1::ARRAY_LENGTH
 
 ; cc/e602
 DlgPtrs:
-        make_ptr_tbl_rel Dlg1, DLG1_ARRAY_LENGTH
-        make_ptr_tbl_rel Dlg2, DLG2_ARRAY_LENGTH, Dlg1+$010000
+        ptr_tbl Dlg1
+        ptr_tbl Dlg2
 
 ; ------------------------------------------------------------------------------
 
@@ -93,39 +93,42 @@ DlgPtrs:
 
 ; cd/0000
 .if LANG_EN
-begin_block Dlg, $01f100
+        fixed_block $01f100
 .else
-begin_block Dlg, $01b000
+        fixed_block $01b000
 .endif
-Dlg1:
-        incbin_lang "dlg1_%s.dat"
-Dlg2:
-        incbin_lang "dlg2_%s.dat"
-end_block Dlg
+
+Dlg1:   incbin_lang "dlg1_%s.dat"
+Dlg2:   incbin_lang "dlg2_%s.dat"
+
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
 .segment "rare_item"
 
 ; ce/fb00 unused (30 * 3 bytes)
-begin_block _cefb00, $60
+_cefb00:
+        fixed_block $60
         .faraddr 1,2,3,4,5,6,7,8,9,0,0,0,0,0,0
         .faraddr 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-end_block _cefb00
+        end_fixed_block
 
 ; ce/fb60
-begin_block RareItemDescPtrs, $40
-        make_ptr_tbl_rel RareItemDesc, RARE_ITEM_DESC_ARRAY_LENGTH
-end_block RareItemDescPtrs
+RareItemDescPtrs:
+        fixed_block $40
+        ptr_tbl RareItemDesc
+        end_fixed_block
 
 ; ce/fba0
+RareItemName:
 .if LANG_EN
-begin_block RareItemName, $0110
+        fixed_block $0110
 .else
-begin_block RareItemName, $00f0
+        fixed_block $00f0
 .endif
         incbin_lang "rare_item_name_%s.dat"
-end_block RareItemName
+        end_fixed_block
 
 ; ce/fcb0
 RareItemDesc:
@@ -136,13 +139,14 @@ RareItemDesc:
 .segment "genju_attack_desc"
 
 ; cf/3940
+GenjuAttackDesc:
 .if LANG_EN
-begin_block GenjuAttackDesc, $0300
+        fixed_block $0300
 .else
-begin_block GenjuAttackDesc, $0260
+        fixed_block $0260
 .endif
         incbin_lang "genju_attack_desc_%s.dat"
-end_block GenjuAttackDesc
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
@@ -160,57 +164,62 @@ CharTitle:
 .segment "bushido_name"
 
 ; cf/3c40
+BushidoName:
 .if LANG_EN
-begin_block BushidoName, $c0
-.else
-begin_block BushidoName
-.endif
+        fixed_block $c0
         incbin_lang "bushido_name_%s.dat"
-end_block BushidoName
+        end_fixed_block
+.else
+        incbin_lang "bushido_name_%s.dat"
+.endif
 
 ; ------------------------------------------------------------------------------
 
 .segment "monster_text"
 
 ; cf/c050
+MonsterName:
 .if LANG_EN
-begin_block MonsterName, $1080
-.else
-begin_block MonsterName
-.endif
+        fixed_block $1080
         incbin_lang "monster_name_%s.dat"
-end_block MonsterName
+        end_fixed_block
+.else
+        incbin_lang "monster_name_%s.dat"
+.endif
 
 ; ------------------------------------------------------------------------------
 
 ; cf/d0d0
+MonsterSpecialName:
 .if LANG_EN
-begin_block MonsterSpecialName, $0f10
-.else
-begin_block MonsterSpecialName
-.endif
+        fixed_block $0f10
         incbin_lang "monster_special_name_%s.dat"
-end_block MonsterSpecialName
+        end_fixed_block
+.else
+        incbin_lang "monster_special_name_%s.dat"
+.endif
 
 ; ------------------------------------------------------------------------------
 
 ; cf/dfe0
+MonsterDlgPtrs:
 .if LANG_EN
-begin_block MonsterDlgPtrs
+        ptr_tbl MonsterDlg
 .else
-begin_block MonsterDlgPtrs, $0400
+        fixed_block $0400
+        ptr_tbl MonsterDlg
+        end_fixed_block
 .endif
-        make_ptr_tbl_rel MonsterDlg, MONSTER_DLG_ARRAY_LENGTH, .bankbyte(*)<<16
-end_block MonsterDlgPtrs
 
 ; cf/e1e0
+MonsterDlg:
 .if LANG_EN
-begin_block MonsterDlg
-.else
-begin_block MonsterDlg, $1000
-.endif
         incbin_lang "monster_dlg_%s.dat"
-end_block MonsterDlg
+.else
+        fixed_block $1000
+        incbin_lang "monster_dlg_%s.dat"
+        end_fixed_block
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -219,16 +228,18 @@ end_block MonsterDlg
 ; ------------------------------------------------------------------------------
 
 ; cf/fc00
-begin_block BlitzDesc, $0100
+BlitzDesc:
+        fixed_block $0100
         incbin_lang "blitz_desc_%s.dat"
-end_block BlitzDesc
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
 ; cf/fd00
-begin_block BushidoDesc, $0100
+BushidoDesc:
+        fixed_block $0100
         incbin_lang "bushido_desc_%s.dat"
-end_block BushidoDesc
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
@@ -236,20 +247,21 @@ end_block BushidoDesc
 
 ; cf/fe40
 GenjuAttackDescPtrs:
-        make_ptr_tbl_rel GenjuAttackDesc, GENJU_ATTACK_DESC_ARRAY_LENGTH
+        ptr_tbl GenjuAttackDesc
 
 ; ------------------------------------------------------------------------------
 
 .segment "genju_bonus_name"
 
 ; cf/feae
+GenjuBonusName:
 .if LANG_EN
-begin_block GenjuBonusName, $f0
+        fixed_block $f0
 .else
-begin_block GenjuBonusName, $90
+        fixed_block $90
 .endif
         incbin_lang "genju_bonus_name_%s.dat"
-end_block GenjuBonusName
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
@@ -257,21 +269,21 @@ end_block GenjuBonusName
 
 ; cf/ff9e
 BlitzDescPtrs:
-        make_ptr_tbl_rel BlitzDesc, BLITZ_DESC_ARRAY_LENGTH
+        ptr_tbl BlitzDesc
 
 ; ------------------------------------------------------------------------------
 
 ; cf/ffae
 BushidoDescPtrs:
-        make_ptr_tbl_rel BushidoDesc, BUSHIDO_DESC_ARRAY_LENGTH
+        ptr_tbl BushidoDesc
 
 ; ------------------------------------------------------------------------------
 
 .segment "battle_dlg_ptrs"
 
-BattleDlgPtrs:
 ; d0/d000
-        make_ptr_tbl_abs BattleDlg, BATTLE_DLG_ARRAY_LENGTH
+BattleDlgPtrs:
+        ptr_tbl BattleDlg
 
 .segment "battle_dlg"
 
@@ -284,26 +296,28 @@ BattleDlg:
 .segment "attack_msg"
 
 ; d1/f000
+AttackMsg:
 .if LANG_EN
-begin_block AttackMsg, $07a0
+        fixed_block $07a0
 .else
-begin_block AttackMsg, $09ab
+        fixed_block $09ab
 .endif
         incbin_lang "attack_msg_%s.dat"
-end_block AttackMsg
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
 .segment "attack_msg_ptrs"
 
 ; d1/f7a0
+AttackMsgPtrs:
 .if LANG_EN
-begin_block AttackMsgPtrs, $020b
+        fixed_block $020b
+        ptr_tbl AttackMsg
+        end_fixed_block
 .else
-begin_block AttackMsgPtrs
+        ptr_tbl AttackMsg
 .endif
-        make_ptr_tbl_rel AttackMsg, ATTACK_MSG_ARRAY_LENGTH, .bankbyte(*)<<16
-end_block AttackMsgPtrs
 
 ; ------------------------------------------------------------------------------
 
@@ -330,13 +344,14 @@ ItemName:
 .segment "magic_desc"
 
 ; d8/c9a0
+MagicDesc:
 .if LANG_EN
-begin_block MagicDesc, $0500
+        fixed_block $0500
 .else
-begin_block MagicDesc, $0400
+        fixed_block $0400
 .endif
         incbin_lang "magic_desc_%s.dat"
-end_block MagicDesc
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
@@ -352,32 +367,33 @@ BattleCmdName:
 
 ; d8/cf80
 MagicDescPtrs:
-        make_ptr_tbl_rel MagicDesc, MAGIC_DESC_ARRAY_LENGTH
+        ptr_tbl MagicDesc
 
 ; ------------------------------------------------------------------------------
 
 .segment "map_title_ptrs"
 
 ; e6/8400
+MapTitlePtrs:
 .if LANG_EN
-begin_block MapTitlePtrs, $0380
+        fixed_block $0380
 .else
-begin_block MapTitlePtrs, $c0
+        fixed_block $c0
 .endif
-        make_ptr_tbl_rel MapTitle, MAP_TITLE_ARRAY_LENGTH
-end_block MapTitlePtrs
-
-; e6/84c0
+        ptr_tbl MapTitle
+        end_fixed_block
 
 .segment "map_title"
 
+; e6/84c0
+MapTitle:
 .if LANG_EN
-begin_block MapTitle, $0500
+        fixed_block $0500
 .else
-begin_block MapTitle, $02c0
+        fixed_block $02c0
 .endif
         incbin_lang "map_title_%s.dat"
-end_block MapTitle
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
@@ -416,26 +432,28 @@ DanceName:
 .segment "item_desc"
 
 ; ed/6400
+ItemDesc:
 .if LANG_EN
-begin_block ItemDesc, $13a0
+        fixed_block $13a0
 .else
-begin_block ItemDesc, $1000
+        fixed_block $1000
 .endif
         incbin_lang "item_desc_%s.dat"
-end_block ItemDesc
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
 .segment "lore_desc"
 
 ; ed/77a0
+LoreDesc:
 .if LANG_EN
-begin_block LoreDesc, $02d0
-.else
-begin_block LoreDesc
-.endif
+        fixed_block $02d0
         incbin_lang "lore_desc_%s.dat"
-end_block LoreDesc
+        end_fixed_block
+.else
+        incbin_lang "lore_desc_%s.dat"
+.endif
 
 ; ------------------------------------------------------------------------------
 
@@ -443,7 +461,7 @@ end_block LoreDesc
 
 ; ed/7a70
 LoreDescPtrs:
-        make_ptr_tbl_rel LoreDesc, LORE_DESC_ARRAY_LENGTH
+        ptr_tbl LoreDesc
 
 ; ------------------------------------------------------------------------------
 
@@ -451,21 +469,22 @@ LoreDescPtrs:
 
 ; ed/7aa0
 ItemDescPtrs:
-        make_ptr_tbl_rel ItemDesc, ITEM_DESC_ARRAY_LENGTH
+        ptr_tbl ItemDesc
 
 ; ------------------------------------------------------------------------------
 
 .segment "genju_bonus_desc"
 
 ; ed/fe00
-begin_block GenjuBonusDesc, $01d0
+GenjuBonusDesc:
+        fixed_block $01d0
         incbin_lang "genju_bonus_desc_%s.dat"
-end_block GenjuBonusDesc
+        end_fixed_block
 
 .segment "genju_bonus_desc_ptrs"
 
 ; ed/ffd0
 GenjuBonusDescPtrs:
-        make_ptr_tbl_rel GenjuBonusDesc, GENJU_BONUS_DESC_ARRAY_LENGTH
+        ptr_tbl GenjuBonusDesc
 
 ; ------------------------------------------------------------------------------

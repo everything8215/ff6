@@ -573,7 +573,7 @@ LoadPortraitGfx:
         lda     $0014,y                 ; imp status
         and     #STATUS1::IMP
         beq     @6e9e
-        lda     #PORTRAIT_IMP
+        lda     #PORTRAIT::IMP
         bra     @6ea8
 @6e9e:  lda     0,y                     ; character properties index
         cmp     #CHAR_PROP::LOCKE       ; if it's $01 (locke), use portrait 1
@@ -620,7 +620,7 @@ GetPortraitGfxPtr:
         lda     $0014,y
         and     #STATUS1::IMP
         beq     @6ee5
-        lda     #PORTRAIT_IMP
+        lda     #PORTRAIT::IMP
         bra     @6eef
 @6ee5:  lda     0,y
         cmp     #CHAR_PROP::LOCKE
@@ -646,18 +646,18 @@ CharPortraitPalTbl:
 ; pointers to character portrait graphics
 PortraitGfxPtrs:
 @6f1b:
-.repeat 18, _i
-        .addr   _i * $0320  ; first 18 portraits are sequential
+.repeat 18, i
+        .addr   i * $0320  ; first 18 portraits are sequential
 .endrep
         .addr   0
-        .addr   PORTRAIT_SOLDIER*$0320
-        .addr   PORTRAIT_GHOST*$0320
+        .addr   PORTRAIT::SOLDIER * $0320
+        .addr   PORTRAIT::GHOST * $0320
         .addr   0
         .addr   0
         .addr   0
         .addr   0
         .addr   0
-        .addr   PORTRAIT_CELES*$0320
+        .addr   PORTRAIT::CELES * $0320
 
 ; vram pointers for character portrait graphics
 PortraitVRAMTbl:

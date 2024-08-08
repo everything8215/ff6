@@ -1,6 +1,5 @@
 {
   "asset_label": "GenjuAttackDesc",
-  "asset_const": "GENJU_ATTACK_DESC",
   "inc_path": "include/text/genju_attack_desc_jp.inc",
   "char_tables": [
     "big_symbols_jp",

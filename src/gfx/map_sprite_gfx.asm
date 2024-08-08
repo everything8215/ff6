@@ -4,9 +4,9 @@
 
 ; ------------------------------------------------------------------------------
 
-.macro inc_map_sprite_gfx _id, _name
-        .ident(.sprintf("MapSpriteGfx_%04x", MAP_SPRITE_GFX::_id)) := *
-        .incbin .sprintf("map_sprite_gfx/%s.4bpp", _name)
+.macro inc_map_sprite_gfx id, name
+        array_item MapSpriteGfx, {MAP_SPRITE_GFX::id} := *
+        .incbin .sprintf("map_sprite_gfx/%s.4bpp", name)
 .endmac
 
 ; ------------------------------------------------------------------------------

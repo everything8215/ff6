@@ -1,6 +1,5 @@
 {
   "asset_label": "MonsterDlg",
-  "asset_const": "MONSTER_DLG",
   "inc_path": "include/text/monster_dlg_en.inc",
   "char_tables": [
     "battle_escape",

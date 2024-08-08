@@ -1,6 +1,5 @@
 {
   "asset_label": "GenjuName",
-  "asset_const": "GENJU_NAME",
   "inc_path": "include/text/genju_name_en.inc",
   "item_size": 8,
   "char_tables": [

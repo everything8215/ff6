@@ -164,7 +164,6 @@ class AssetExtractor:
             kwargs['item_size'] = asset_def['item_size']
 
         asset_label = asset_def['asset_label']
-        asset_const = asset_def['asset_const']
         asset_root, _ = os.path.splitext(json_path)
 
         # check if the data file already exists
@@ -184,18 +183,21 @@ class AssetExtractor:
             inc_path = asset_def['inc_path']
             assert os.path.exists(inc_path), f'Missing include file: {inc_path}'
 
+            # define the size
+            inc_text = f'        SIZE = {len(asset_bytes)}\n'
+
             # define the array length
-            inc_text = f'{asset_const}_ARRAY_LENGTH = {len(item_ranges)}\n'
+            inc_text += f'        ARRAY_LENGTH = {len(item_ranges)}\n'
 
             if 'item_size' in asset_def:
                 # fixed item size
-                inc_text += f'{asset_const}_SIZE = '
+                inc_text += f'        ITEM_SIZE = '
                 inc_text += str(asset_def['item_size']) + '\n'
             else:
                 # define item offsets
                 inc_text += '\n'
                 for id, item_range in enumerate(item_ranges):
-                    inc_text += f'{asset_label}_%04x := ' % id
+                    inc_text += '        _%d := ' % id
                     inc_text += f'{asset_label} + $%04x\n' % item_range.begin
 
             # update item offsets in the include file
@@ -222,7 +224,7 @@ class AssetExtractor:
         with open(json_path, 'w', encoding='utf8') as f:
             f.write(asset_json)
 
-    def extract_array(self, file_path, inc_path, asset_range, asset_const, asset_label, **kwargs):
+    def extract_array(self, file_path, inc_path, asset_range, asset_label, **kwargs):
 
         # extract the array data from the ROM
         asset_bytes, item_ranges = self.extract_object(asset_range, **kwargs)
@@ -237,13 +239,16 @@ class AssetExtractor:
         # check if an include file exists
         if os.path.exists(inc_path):
 
+            # define the size
+            inc_text = f'        SIZE = {len(asset_bytes)}\n'
+
             # define the array length
-            inc_text = f'{asset_const}_ARRAY_LENGTH = {len(item_ranges)}\n'
+            inc_text += f'        ARRAY_LENGTH = {len(item_ranges)}\n'
 
             # define item offsets
             inc_text += '\n'
             for id, item_range in enumerate(item_ranges):
-                inc_text += f'{asset_label}_%04x := ' % id
+                inc_text += '        _%d := ' % id
                 inc_text += f'{asset_label} + $%04x\n' % item_range.begin
 
             # update item offsets in the include file

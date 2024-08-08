@@ -2004,7 +2004,7 @@ MagitekTrainTiles:
 .pushseg
 .segment "world_mod"
 
-begin_block _WorldModData, $0500
+        fixed_block $0500
 
 ; ce/f600
 World1ModData:
@@ -2016,7 +2016,8 @@ WorldModDataEnd:
 ; ce/f648
 WorldModTiles:
         .incbin "world_mod_tiles.dat"
-end_block _WorldModData
+
+        end_fixed_block
 
 .popseg
 

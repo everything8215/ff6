@@ -11,7 +11,7 @@
 ; | created: 5/12/2023                                                         |
 ; +----------------------------------------------------------------------------+
 
-.import EventTriggerPtrs
+.include "event/event_trigger.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -1322,20 +1322,20 @@ CheckEvent:
         beq     @21d5                   ; branch if there are no event triggers
         ldx     $58
         shorta
-@218b:  lda     f:EventTriggerPtrs,x    ; trigger x position
+@218b:  lda     f:EventTrigger::PosX,x    ; trigger x position
         cmp     $e0
         bne     @21cc
-        lda     f:EventTriggerPtrs+1,x  ; trigger y position
+        lda     f:EventTrigger::PosY,x  ; trigger y position
         cmp     $e2
         bne     @21cc
-        lda     f:EventTriggerPtrs+2,x  ; set event pointer
+        lda     f:EventTrigger::EventPtr,x  ; set event pointer
         clc
         adc     #<EventScript
         sta     $ea
-        lda     f:EventTriggerPtrs+3,x
+        lda     f:EventTrigger::EventPtr+1,x
         adc     #>EventScript
         sta     $eb
-        lda     f:EventTriggerPtrs+4,x
+        lda     f:EventTrigger::EventPtr+2,x
         adc     #^EventScript
         sta     $ec
         lda     $e7                     ; enable world event script and ???

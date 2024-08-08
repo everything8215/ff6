@@ -45,12 +45,12 @@ end_ram_array
 ; .out .sprintf("wItemList             %06x", wItemList)
 ; .out .sprintf("wItemList::Index      %06x", wItemList::Index)
 ; .out .sprintf("wItemList::Flags      %06x", wItemList::Flags)
-; .out .sprintf("wItemList::_00::Index %06x", wItemList::_00::Index)
-; .out .sprintf("wItemList::_01::Index %06x", wItemList::_01::Index)
-; .out .sprintf("wItemList::_02::Index %06x", wItemList::_02::Index)
-; .out .sprintf("wItemList::_03::Index %06x", wItemList::_03::Index)
-; .out .sprintf("wItemList::_03::Flags %06x", wItemList::_03::Flags)
-; .out .sprintf("wItemList::_ff::Flags %06x", wItemList::_ff::Flags)
+; .out .sprintf("wItemList::_0::Index  %06x", wItemList::_0::Index)
+; .out .sprintf("wItemList::_1::Index  %06x", wItemList::_1::Index)
+; .out .sprintf("wItemList::_2::Index  %06x", wItemList::_2::Index)
+; .out .sprintf("wItemList::_3::Index  %06x", wItemList::_3::Index)
+; .out .sprintf("wItemList::_3::Flags  %06x", wItemList::_3::Flags)
+; .out .sprintf("wItemList::_255::Flags %06x", wItemList::_255::Flags)
 ram_res         w7e4305, 240
 ram_res         w7e43f5, 151 * 4
 ram_res         w7e4651, 73 * 4
@@ -245,19 +245,19 @@ ram_array       wCharGfxData, 4, 32
         ram_word        w7e61d4
 end_ram_array
 
-.define wChar1GfxData wCharGfxData::_00
-.define wChar2GfxData wCharGfxData::_01
-.define wChar3GfxData wCharGfxData::_02
-.define wChar4GfxData wCharGfxData::_03
+.define wChar1GfxData wCharGfxData::_0
+.define wChar2GfxData wCharGfxData::_1
+.define wChar3GfxData wCharGfxData::_2
+.define wChar4GfxData wCharGfxData::_3
 
 ; .out .sprintf("wCharGfxData               %06x", wCharGfxData)
 ; .out .sprintf("wCharGfxData_near          %06x", wCharGfxData_near)
 ; .out .sprintf("wCharGfxData_far           %06x", wCharGfxData_far)
 ; .out .sprintf("wCharGfxData::w7e61cf      %06x", wCharGfxData::w7e61cf)
-; .out .sprintf("wCharGfxData::_00::w7e61cb %06x", wCharGfxData::_00::w7e61cb)
-; .out .sprintf("wCharGfxData::_01::w7e61cb %06x", wCharGfxData::_01::w7e61cb)
-; .out .sprintf("wCharGfxData::_02::w7e61cb %06x", wCharGfxData::_02::w7e61cb)
-; .out .sprintf("wCharGfxData::_03::w7e61cb %06x", wCharGfxData::_03::w7e61cb)
+; .out .sprintf("wCharGfxData::_0::w7e61cb  %06x", wCharGfxData::_0::w7e61cb)
+; .out .sprintf("wCharGfxData::_1::w7e61cb  %06x", wCharGfxData::_1::w7e61cb)
+; .out .sprintf("wCharGfxData::_2::w7e61cb  %06x", wCharGfxData::_2::w7e61cb)
+; .out .sprintf("wCharGfxData::_3::w7e61cb  %06x", wCharGfxData::_3::w7e61cb)
 ; .out .sprintf("wChar4GfxData::w7e61cb     %06x", wChar4GfxData::w7e61cb)
 ram_res         w7e6236, 4 * 4
 ram_res         w7e6246, 4 * 4

@@ -54,13 +54,13 @@ _c3bde6:
         hdma_word 16, $0100
         hdma_end
 
-begin_block _c3bdf3
+_c3bdf3:
         hdma_word 79, 2
         hdma_word 80, -80
         hdma_word 48, -80
         hdma_word 16, 0
         hdma_end
-end_block _c3bdf3
+        calc_size _c3bdf3
 
 ; ------------------------------------------------------------------------------
 

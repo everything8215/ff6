@@ -1,6 +1,5 @@
 {
   "asset_label": "StatusName",
-  "asset_const": "STATUS_NAME",
   "inc_path": "include/text/status_name_en.inc",
   "item_size": 10,
   "char_tables": [

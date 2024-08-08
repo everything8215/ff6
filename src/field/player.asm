@@ -765,10 +765,10 @@ CheckTreasure:
         shorta0
         cpx     $1e
         beq     @4bd3
-@4bec:  lda     f:TreasureProp,x   ; x position
+@4bec:  lda     f:TreasureProp::PosX,x   ; x position
         cmp     $2a
         bne     @4bfc
-        lda     f:TreasureProp+1,x   ; y position
+        lda     f:TreasureProp::PosY,x   ; y position
         cmp     $2b
         beq     @4c06
 @4bfc:  inx5
@@ -776,9 +776,9 @@ CheckTreasure:
         bne     @4bec
         rts
 @4c06:  longa
-        lda     f:TreasureProp+4,x   ; treasure contents
+        lda     f:TreasureProp::Content,x   ; treasure contents
         sta     $1a
-        lda     f:TreasureProp+2,x   ; treasure event bit and type
+        lda     f:TreasureProp::Switch,x   ; treasure event bit and type
         sta     $1e
         and     #$0007
         tax
@@ -908,13 +908,13 @@ TreasureOffsetY:
 
 ; ed/82f4
 TreasurePropPtrs:
-        make_ptr_tbl_rel TreasureProp, TREASURE_PROP_ARRAY_LENGTH
-        .addr TreasurePropEnd - TreasureProp
+        ptr_tbl TreasureProp
+        end_ptr TreasureProp
 
 ; ed/8634
 TreasureProp:
         .incbin "trigger/treasure_prop.dat"
-        TreasurePropEnd := *
+TreasureProp::End:
 
 .popseg
 

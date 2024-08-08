@@ -4,11 +4,10 @@
 
 .global AttackPal
 
-; ##############################################################################
-
-.define ATTACK_PAL_ARRAY_LENGTH 240
-
-; ##############################################################################
+.scope AttackPal
+        ARRAY_LENGTH = 240
+        ITEM_SIZE = 16
+.endscope
 
 .endif
 .list on

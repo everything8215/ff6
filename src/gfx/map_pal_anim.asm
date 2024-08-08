@@ -7,7 +7,8 @@
 .segment "map_pal_anim"
 
 ; e6/f200
-begin_block MapPalAnimColors, $0290
+MapPalAnimColors:
+        fixed_block $0290
         .incbin "map_pal_anim/pal_0000.pal"
         .incbin "map_pal_anim/pal_0001.pal"
         .incbin "map_pal_anim/pal_0002.pal"
@@ -26,6 +27,6 @@ begin_block MapPalAnimColors, $0290
         .incbin "map_pal_anim/pal_000f.pal"
         .incbin "map_pal_anim/pal_0010.pal"
         .incbin "map_pal_anim/pal_0011.pal"
-end_block MapPalAnimColors
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------

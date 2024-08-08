@@ -46,7 +46,7 @@ World3Pal:
 
 .segment "world_gfx_ptrs"
 
-begin_block WorldDataPtrs1, $60
+        fixed_block $60
 
 ; unused
 @b200:  .faraddr WorldBackdropGfx
@@ -133,7 +133,7 @@ AirshipGfx2Ptr:
 EndingAirshipPalPtr:
 @b254:  .faraddr EndingAirshipPal
 
-end_block WorldDataPtrs1
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 

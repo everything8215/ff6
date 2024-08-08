@@ -448,11 +448,11 @@ FinalOrderCursorPos:
 .endif
 
 ; pointers to text for final battle order menu
-begin_block FinalOrderTextList
+FinalOrderTextList:
         .addr   FinalOrderEndText
         .addr   FinalOrderResetText
         .addr   FinalOrderMsgText
-end_block FinalOrderTextList
+        calc_size FinalOrderTextList
 
 .if LANG_EN
 FinalOrderEndText:              pos_text BG1A, {4, 31}, FinalOrderEndStr

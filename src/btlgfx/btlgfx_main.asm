@@ -4584,7 +4584,7 @@ LoadMonsterGfxProp:
         asl2
         tax
         stx     $10         ; $10 = monster slot * 4
-        lda     #$c2
+        lda     #^MonsterVRAMMapPtrs
         sta     $14
         lda     $2000       ; vram map
         asl
@@ -4672,9 +4672,6 @@ LoadMonsterStencil:
 ; [ init monster graphics map ]
 
 InitStencil:
-
-@MonsterStencilBank := (^MonsterStencil)<<16
-
 @215f:  clr_ax
 @2161:  sta     w7e822d,x     ; clear monster graphics map
         inx
@@ -4693,7 +4690,7 @@ InitStencil:
         tax
         shorta0
         ldy     $00
-@2184:  lda     f:@MonsterStencilBank,x
+@2184:  lda     f:bank_start MonsterStencil,x
         sta     w7e822d,y
         iny2
         inx
@@ -4710,7 +4707,7 @@ InitStencil:
         tax
         shorta0
         ldy     $00
-@21aa:  lda     f:@MonsterStencilBank,x
+@21aa:  lda     f:bank_start MonsterStencil,x
         sta     w7e822d,y
         iny
         inx
@@ -5312,7 +5309,7 @@ LoadEsperGfxProp:
         sta     w7e81ab
         lda     f:MonsterGfxProp+4,x
         sta     w7e81aa
-        lda     #$c2
+        lda     #^MonsterVRAMMapPtrs
         sta     $14
         lda     #$06
         asl
@@ -8021,7 +8018,7 @@ one_mon_obj_set:
         and     w7e80e7+1,x
         sta     $3d
         stz     $3c
-        lda     #$c2
+        lda     #^MonsterSpriteDataPtrs
         sta     $38
         lda     w7e80f3,x
         eor     w7e617e,x
@@ -11410,7 +11407,7 @@ LoadMenuText:
 @4e5a:  pha
         asl
         tax
-        lda     #$c2
+        lda     #^MenuTextPtrs
         sta     $12
         longa
         lda     f:MenuTextPtrs,x
@@ -14161,7 +14158,7 @@ _5f16:  cmp     #$ff
         bne     @5f1b
         rts
 @5f1b:  xba
-        lda     #BATTLE_CMD_NAME_SIZE
+        lda     #BattleCmdName::ITEM_SIZE
         sta     w7e616d
         jsr     MultAB
         longa
@@ -14289,7 +14286,7 @@ _c15fb8:
         sec
         sbc     #$51
         xba
-        lda     #ATTACK_NAME_SIZE
+        lda     #AttackName::ITEM_SIZE
         sta     $10
         sta     w7e616d
         jsr     MultAB
@@ -14312,7 +14309,7 @@ _c15fb8:
 @5fef:  sec
         sbc     #$36
         xba
-        lda     #GENJU_NAME_SIZE
+        lda     #GenjuName::ITEM_SIZE
         sta     $10
         sta     w7e616d
         jsr     MultAB
@@ -14331,7 +14328,7 @@ _c15fb8:
 
 ; spell name
 @6019:  xba
-        lda     #MAGIC_NAME_SIZE
+        lda     #MagicName::ITEM_SIZE
         sta     $10
         sta     w7e616d
         jsr     MultAB
@@ -14360,10 +14357,10 @@ DlgTextCmd_0e:
 _c16048:
 @6048:  cmp     #$ff
         bne     @6051
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         jmp     _c15fa8
 @6051:  xba
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     $10
         sta     w7e616d
         jsr     MultAB
@@ -15098,15 +15095,15 @@ ListTextCmd_06:
         lda     ($4f)
         cmp     #$ff
         bne     @64fd
-        lda     #ATTACK_NAME_SIZE
+        lda     #AttackName::ITEM_SIZE
         jmp     _c166a5
 @64fd:  sta     $2c
-        lda     #ATTACK_NAME_SIZE
+        lda     #AttackName::ITEM_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@650a:  lda     f:AttackName+50*ATTACK_NAME_SIZE,x   ; magitek attack name
+@650a:  lda     f:AttackName+50*AttackName::ITEM_SIZE,x   ; magitek attack name
         jsr     DrawListLetter
         inx
         dec     $40
@@ -15131,7 +15128,7 @@ ListTextCmd_12:
 @6520:  lda     #$07
         jmp     _c166a5
 @6525:  sta     $2c
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     $2e
         jsr     Mult8NoHW
         ldx     $30
@@ -15141,7 +15138,7 @@ ListTextCmd_12:
         sec
         sbc     #$d8
         sta     $2c
-        lda     #ITEM_TYPE_NAME_SIZE
+        lda     #ItemTypeName::ITEM_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -15166,13 +15163,13 @@ ListTextCmd_0e:
         lda     ($4f)
         cmp     #$ff
         bne     @6566
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         jmp     _c166a5
 @6566:
 
 .if LANG_EN
         sta     $2c
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     $2e
         jsr     Mult8NoHW
         ldx     $30
@@ -15188,7 +15185,7 @@ ListTextCmd_0e:
 .endif
         lda     $56
         xba
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     $40
 @6578:  lda     f:ItemName,x   ; item name
         jsr     DrawListLetter
@@ -15235,7 +15232,7 @@ ListTextCmd_11:
         shorta
         lda     $56
         xba
-        lda     #GENJU_NAME_SIZE
+        lda     #GenjuName::ITEM_SIZE
         sta     $40
 @6570:  lda     f:GenjuName,x
         jsr     DrawListLetter
@@ -15283,7 +15280,7 @@ ListTextCmd_0f:
         sta     $2c
         cmp     #$ff
         bne     @65a8
-        lda     #MAGIC_NAME_SIZE
+        lda     #MagicName::ITEM_SIZE
         jmp     _c166a5
 @65a8:  cmp     #$36
         bcc     @65e8
@@ -15293,7 +15290,7 @@ ListTextCmd_0f:
         sec
         sbc     #$51
         xba
-        lda     #ATTACK_NAME_SIZE
+        lda     #AttackName::ITEM_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -15308,7 +15305,7 @@ ListTextCmd_0f:
 @65cc:  sec
         sbc     #$36
         xba
-        lda     #GENJU_NAME_SIZE
+        lda     #GenjuName::ITEM_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -15319,7 +15316,7 @@ ListTextCmd_0f:
         dec     $40
         bne     @65db
         rts
-@65e8:  lda     #MAGIC_NAME_SIZE
+@65e8:  lda     #MagicName::ITEM_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -15339,9 +15336,9 @@ ListTextCmd_17:
         sta     $2c
         cmp     #$ff
         bne     @6610
-        lda     #DANCE_NAME_SIZE
+        lda     #DanceName::ITEM_SIZE
         jmp     _c166a5
-@6610:  lda     #DANCE_NAME_SIZE
+@6610:  lda     #DanceName::ITEM_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -15362,12 +15359,12 @@ ListTextCmd_18:
         cmp     #$ff
         bne     @6638
 .if LANG_EN
-        lda     #MONSTER_NAME_SIZE + 1
+        lda     #MonsterName::ITEM_SIZE + 1
 .else
-        lda     #MONSTER_NAME_SIZE
+        lda     #MonsterName::ITEM_SIZE
 .endif
         jmp     _c166a5
-@6638:  lda     #MONSTER_NAME_SIZE
+@6638:  lda     #MonsterName::ITEM_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
@@ -15391,14 +15388,14 @@ ListTextCmd_19:
         sta     $2c
         cmp     #$ff
         bne     @6665
-        lda     #ATTACK_NAME_SIZE
+        lda     #AttackName::ITEM_SIZE
         jmp     _c166a5
-@6665:  lda     #ATTACK_NAME_SIZE
+@6665:  lda     #AttackName::ITEM_SIZE
         sta     $2e
         sta     $40
         jsr     Mult8NoHW
         ldx     $30
-@6670:  lda     f:AttackName + 58 * ATTACK_NAME_SIZE,x   ; lore name
+@6670:  lda     f:AttackName + 58 * AttackName::ITEM_SIZE,x   ; lore name
         jsr     DrawListLetter
         inx
         dec     $40
@@ -16050,7 +16047,7 @@ DrawNum3:
 
 MenuTextCmd_0b:
 @6993:  jsr     IncTextPtr
-        lda     #MONSTER_NAME_SIZE
+        lda     #MonsterName::ITEM_SIZE
         sta     $10
         lda     ($48)
         asl
@@ -16073,7 +16070,7 @@ MenuTextCmd_0b:
 .if LANG_EN
         longa
         sta     $24
-        lda     #MONSTER_NAME_SIZE
+        lda     #MonsterName::ITEM_SIZE
         sta     $22
         jsr     Mult816
         shorta0
@@ -16134,10 +16131,10 @@ MenuTextCmd_0d:
         lda     ($48)
         cmp     #$ff
         bne     @69ec       ; branch if command slot is empty
-        lda     #BATTLE_CMD_NAME_SIZE
+        lda     #BattleCmdName::ITEM_SIZE
         jmp     DrawSpaces
 @69ec:  xba
-        lda     #BATTLE_CMD_NAME_SIZE
+        lda     #BattleCmdName::ITEM_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -16160,10 +16157,10 @@ MenuTextCmd_10:
         lda     ($48)
         cmp     #$ff
         bne     @6a19
-        lda     #STATUS_NAME_SIZE
+        lda     #StatusName::ITEM_SIZE
         jmp     DrawSpaces
 @6a19:  xba
-        lda     #STATUS_NAME_SIZE
+        lda     #StatusName::ITEM_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -16195,7 +16192,7 @@ MenuTextCmd_12:
 @6a41:  lda     #7
         jmp     DrawSpaces
 @6a46:  xba
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -16208,7 +16205,7 @@ MenuTextCmd_12:
         sec
         sbc     #$d8
         xba
-        lda     #ITEM_TYPE_NAME_SIZE
+        lda     #ItemTypeName::ITEM_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -16232,10 +16229,10 @@ MenuTextCmd_0e:
         lda     ($48)
         cmp     #$ff
         bne     @6a90
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         jmp     DrawSpaces
 @6a90:  xba
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -16281,7 +16278,7 @@ MenuTextCmd_0f:
         lda     ($48)
         cmp     #$ff
         bne     @6ad0
-        lda     #MAGIC_NAME_SIZE
+        lda     #MagicName::ITEM_SIZE
         jmp     DrawSpaces
 @6ad0:  cmp     #$36
         bcc     @6b1c       ; branch if a spell
@@ -16293,7 +16290,7 @@ MenuTextCmd_0f:
         sec
         sbc     #$51
         xba
-        lda     #ATTACK_NAME_SIZE
+        lda     #AttackName::ITEM_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -16311,7 +16308,7 @@ MenuTextCmd_0f:
 @6afa:  sec
         sbc     #$36
         xba
-        lda     #GENJU_NAME_SIZE
+        lda     #GenjuName::ITEM_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -16332,7 +16329,7 @@ MenuTextCmd_0f:
 
 ; spell
 @6b1c:  xba
-        lda     #MAGIC_NAME_SIZE
+        lda     #MagicName::ITEM_SIZE
         sta     $10
         jsr     MultAB
         longa
@@ -16994,21 +16991,21 @@ UpdateMenuState_38:
 
 ; blitz code button masks
 BlitzButtonMaskTbl:
-@6f6a:  .word   $ffff                   ; BLITZ_CODE_NONE
-        .word   $0080                   ; BLITZ_CODE_A_BUTTON
-        .word   $8000                   ; BLITZ_CODE_B_BUTTON
-        .word   $0040                   ; BLITZ_CODE_X_BUTTON
-        .word   $4000                   ; BLITZ_CODE_Y_BUTTON
-        .word   $0020                   ; BLITZ_CODE_L_BUTTON
-        .word   $0010                   ; BLITZ_CODE_R_BUTTON
-        .word   $0600                   ; BLITZ_CODE_DOWN_LEFT
-        .word   $0400                   ; BLITZ_CODE_DOWN
-        .word   $0500                   ; BLITZ_CODE_DOWN_RIGHT
-        .word   $0100                   ; BLITZ_CODE_RIGHT
-        .word   $0900                   ; BLITZ_CODE_UP_RIGHT
-        .word   $0800                   ; BLITZ_CODE_UP
-        .word   $0a00                   ; BLITZ_CODE_UP_LEFT
-        .word   $0200                   ; BLITZ_CODE_LEFT
+@6f6a:  .word   $ffff                   ; BLITZ_CODE::NONE
+        .word   $0080                   ; BLITZ_CODE::A_BUTTON
+        .word   $8000                   ; BLITZ_CODE::B_BUTTON
+        .word   $0040                   ; BLITZ_CODE::X_BUTTON
+        .word   $4000                   ; BLITZ_CODE::Y_BUTTON
+        .word   $0020                   ; BLITZ_CODE::L_BUTTON
+        .word   $0010                   ; BLITZ_CODE::R_BUTTON
+        .word   $0600                   ; BLITZ_CODE::DOWN_LEFT
+        .word   $0400                   ; BLITZ_CODE::DOWN
+        .word   $0500                   ; BLITZ_CODE::DOWN_RIGHT
+        .word   $0100                   ; BLITZ_CODE::RIGHT
+        .word   $0900                   ; BLITZ_CODE::UP_RIGHT
+        .word   $0800                   ; BLITZ_CODE::UP
+        .word   $0a00                   ; BLITZ_CODE::UP_LEFT
+        .word   $0200                   ; BLITZ_CODE::LEFT
 
 ; ------------------------------------------------------------------------------
 
@@ -17019,16 +17016,16 @@ BlitzButtonMaskTbl:
 
 ; ------------------------------------------------------------------------------
 
-.macro begin_blitz_code _id
+.macro blitz_code id
         ; save where the blitz starts
-        .ident(.sprintf("BlitzCode_%04x", _id)) := *
+        .ident(.sprintf("_blitz_code_%d", id)) := *
 .endmac
 
-.macro end_blitz_code _id
+.macro end_blitz_code id
         ; add padding
         .local _blitz_length
-        _blitz_length = * - .ident(.sprintf("BlitzCode_%04x", _id))
-        .res 11 - _blitz_length, BLITZ_CODE_NONE
+        _blitz_length = * - .ident(.sprintf("_blitz_code_%d", id))
+        .res 11 - _blitz_length, BLITZ_CODE::NONE
         ; define the number of buttons
         .byte _blitz_length * 2
 .endmac
@@ -17044,100 +17041,100 @@ BlitzCode:
 ; ------------------------------------------------------------------------------
 
 ; 0: pummel
-        begin_blitz_code 0
-        .byte   BLITZ_CODE_LEFT
-        .byte   BLITZ_CODE_RIGHT
-        .byte   BLITZ_CODE_LEFT
-        .byte   BLITZ_CODE_A_BUTTON
+        blitz_code 0
+        .byte   BLITZ_CODE::LEFT
+        .byte   BLITZ_CODE::RIGHT
+        .byte   BLITZ_CODE::LEFT
+        .byte   BLITZ_CODE::A_BUTTON
         end_blitz_code 0
 
 ; ------------------------------------------------------------------------------
 
 ; 1: aura bolt
-        begin_blitz_code 1
-        .byte   BLITZ_CODE_DOWN
-        .byte   BLITZ_CODE_DOWN_LEFT
-        .byte   BLITZ_CODE_LEFT
-        .byte   BLITZ_CODE_A_BUTTON
+        blitz_code 1
+        .byte   BLITZ_CODE::DOWN
+        .byte   BLITZ_CODE::DOWN_LEFT
+        .byte   BLITZ_CODE::LEFT
+        .byte   BLITZ_CODE::A_BUTTON
         end_blitz_code 1
 
 ; ------------------------------------------------------------------------------
 
 ; 2: suplex
-        begin_blitz_code 2
-        .byte   BLITZ_CODE_X_BUTTON
-        .byte   BLITZ_CODE_Y_BUTTON
-        .byte   BLITZ_CODE_DOWN
-        .byte   BLITZ_CODE_UP
-        .byte   BLITZ_CODE_A_BUTTON
+        blitz_code 2
+        .byte   BLITZ_CODE::X_BUTTON
+        .byte   BLITZ_CODE::Y_BUTTON
+        .byte   BLITZ_CODE::DOWN
+        .byte   BLITZ_CODE::UP
+        .byte   BLITZ_CODE::A_BUTTON
         end_blitz_code 2
 
 ; ------------------------------------------------------------------------------
 
 ; 3: fire dance
-        begin_blitz_code 3
-        .byte   BLITZ_CODE_LEFT
-        .byte   BLITZ_CODE_DOWN_LEFT
-        .byte   BLITZ_CODE_DOWN
-        .byte   BLITZ_CODE_DOWN_RIGHT
-        .byte   BLITZ_CODE_RIGHT
-        .byte   BLITZ_CODE_A_BUTTON
+        blitz_code 3
+        .byte   BLITZ_CODE::LEFT
+        .byte   BLITZ_CODE::DOWN_LEFT
+        .byte   BLITZ_CODE::DOWN
+        .byte   BLITZ_CODE::DOWN_RIGHT
+        .byte   BLITZ_CODE::RIGHT
+        .byte   BLITZ_CODE::A_BUTTON
         end_blitz_code 3
 
 ; ------------------------------------------------------------------------------
 
 ; 4: matra
-        begin_blitz_code 4
-        .byte   BLITZ_CODE_R_BUTTON
-        .byte   BLITZ_CODE_L_BUTTON
-        .byte   BLITZ_CODE_R_BUTTON
-        .byte   BLITZ_CODE_L_BUTTON
-        .byte   BLITZ_CODE_X_BUTTON
-        .byte   BLITZ_CODE_Y_BUTTON
-        .byte   BLITZ_CODE_A_BUTTON
+        blitz_code 4
+        .byte   BLITZ_CODE::R_BUTTON
+        .byte   BLITZ_CODE::L_BUTTON
+        .byte   BLITZ_CODE::R_BUTTON
+        .byte   BLITZ_CODE::L_BUTTON
+        .byte   BLITZ_CODE::X_BUTTON
+        .byte   BLITZ_CODE::Y_BUTTON
+        .byte   BLITZ_CODE::A_BUTTON
         end_blitz_code 4
 
 ; ------------------------------------------------------------------------------
 
 ; 5: air blade
-        begin_blitz_code 5
-        .byte   BLITZ_CODE_UP
-        .byte   BLITZ_CODE_UP_RIGHT
-        .byte   BLITZ_CODE_RIGHT
-        .byte   BLITZ_CODE_DOWN_RIGHT
-        .byte   BLITZ_CODE_DOWN
-        .byte   BLITZ_CODE_DOWN_LEFT
-        .byte   BLITZ_CODE_LEFT
-        .byte   BLITZ_CODE_A_BUTTON
+        blitz_code 5
+        .byte   BLITZ_CODE::UP
+        .byte   BLITZ_CODE::UP_RIGHT
+        .byte   BLITZ_CODE::RIGHT
+        .byte   BLITZ_CODE::DOWN_RIGHT
+        .byte   BLITZ_CODE::DOWN
+        .byte   BLITZ_CODE::DOWN_LEFT
+        .byte   BLITZ_CODE::LEFT
+        .byte   BLITZ_CODE::A_BUTTON
         end_blitz_code 5
 
 ; ------------------------------------------------------------------------------
 
 ; 6: spiraler
-        begin_blitz_code 6
-        .byte   BLITZ_CODE_R_BUTTON
-        .byte   BLITZ_CODE_L_BUTTON
-        .byte   BLITZ_CODE_X_BUTTON
-        .byte   BLITZ_CODE_Y_BUTTON
-        .byte   BLITZ_CODE_RIGHT
-        .byte   BLITZ_CODE_LEFT
-        .byte   BLITZ_CODE_A_BUTTON
+        blitz_code 6
+        .byte   BLITZ_CODE::R_BUTTON
+        .byte   BLITZ_CODE::L_BUTTON
+        .byte   BLITZ_CODE::X_BUTTON
+        .byte   BLITZ_CODE::Y_BUTTON
+        .byte   BLITZ_CODE::RIGHT
+        .byte   BLITZ_CODE::LEFT
+        .byte   BLITZ_CODE::A_BUTTON
         end_blitz_code 6
 
 ; ------------------------------------------------------------------------------
 
 ; 7: bum rush
-        begin_blitz_code 7
-        .byte   BLITZ_CODE_LEFT
-        .byte   BLITZ_CODE_UP_LEFT
-        .byte   BLITZ_CODE_UP
-        .byte   BLITZ_CODE_UP_RIGHT
-        .byte   BLITZ_CODE_RIGHT
-        .byte   BLITZ_CODE_DOWN_RIGHT
-        .byte   BLITZ_CODE_DOWN
-        .byte   BLITZ_CODE_DOWN_LEFT
-        .byte   BLITZ_CODE_LEFT
-        .byte   BLITZ_CODE_A_BUTTON
+        blitz_code 7
+        .byte   BLITZ_CODE::LEFT
+        .byte   BLITZ_CODE::UP_LEFT
+        .byte   BLITZ_CODE::UP
+        .byte   BLITZ_CODE::UP_RIGHT
+        .byte   BLITZ_CODE::RIGHT
+        .byte   BLITZ_CODE::DOWN_RIGHT
+        .byte   BLITZ_CODE::DOWN
+        .byte   BLITZ_CODE::DOWN_LEFT
+        .byte   BLITZ_CODE::LEFT
+        .byte   BLITZ_CODE::A_BUTTON
         end_blitz_code 7
 
 ; ------------------------------------------------------------------------------
@@ -17147,8 +17144,8 @@ BlitzCode:
 ; pointers to blitz codes
 BlitzCodePtrs:
 @6f88:
-.repeat BLITZ_CODE_ARRAY_LENGTH, i
-        .byte   i * BLITZ_CODE_SIZE
+.repeat BlitzCode::ARRAY_LENGTH, i
+        .byte   i * BlitzCode::ITEM_SIZE
 .endrep
 
 ; ------------------------------------------------------------------------------
@@ -22744,7 +22741,7 @@ GfxCmd_11:
         beq     @9767
         sta     w7e57d5,y
         iny
-        cpy     #MONSTER_SPECIAL_NAME_SIZE
+        cpy     #MonsterSpecialName::ITEM_SIZE
         bne     @9758
 @9767:  clr_a
         sta     w7e57d5,y
@@ -23525,7 +23522,7 @@ LoadBG3AnimPal:
         sta     w7e7c00::_1,y
         inx2
         iny2
-        cpy     #8
+        cpy     #8                      ; load 4 colors
         bne     @9c74
         shorta0
 ; fallthrough
@@ -40922,7 +40919,7 @@ _c2bb1c:
 @bb1c:  ldy     #2
         lda     ($76),y
         sta     $22
-        lda     #BUSHIDO_NAME_SIZE
+        lda     #BushidoName::ITEM_SIZE
         sta     $24
         jsl     Mult8_far
         ldx     $26
@@ -40934,7 +40931,7 @@ _c2bb1c:
         sta     w7e57d5,y
         inx
         iny
-        cpy     #BUSHIDO_NAME_SIZE
+        cpy     #BushidoName::ITEM_SIZE
         bne     @bb2f
 .else
 @bacf:  lda     #$1e
@@ -40943,7 +40940,7 @@ _c2bb1c:
         sta     w7e57d5+1,y
         inx
         iny2
-        cpy     #BUSHIDO_NAME_SIZE*2
+        cpy     #BushidoName::ITEM_SIZE*2
         bne     @bacf
 .endif
 @bb41:  clr_a
@@ -40958,7 +40955,7 @@ _c2bb46:
 @bb46:  ldy     #2
         lda     ($76),y
         sta     $22
-        lda     #GENJU_ATTACK_NAME_SIZE
+        lda     #GenjuAttackName::ITEM_SIZE
         sta     $24
         jsl     Mult8_far
         ldx     $26
@@ -40969,7 +40966,7 @@ _c2bb46:
         sta     w7e57d5,y
         inx
         iny
-        cpy     #GENJU_ATTACK_NAME_SIZE
+        cpy     #GenjuAttackName::ITEM_SIZE
         bne     @bb59
 @bb6b:  clr_a
         sta     w7e57d5,y
@@ -42749,8 +42746,10 @@ CharPalTbl:
 
 ; pointers to character sprite graphics
 CharGfxPtrs:
-@ce43:  make_ptr_tbl_far MapSpriteGfx, 23, 0
-        .faraddr MapSpriteGfx_000e
+.repeat 23, i
+        .faraddr array_item MapSpriteGfx, i
+.endrep
+        .faraddr array_item MapSpriteGfx, MAP_SPRITE_GFX::SOLDIER
 
 ; ------------------------------------------------------------------------------
 
@@ -42890,23 +42889,28 @@ FrozenPal:
 ; ------------------------------------------------------------------------------
 
 ; pointers to monster vram maps
+
+.scope MonsterVRAMMap
+        ARRAY_LENGTH = 13
+.endscope
+
 MonsterVRAMMapPtrs:
-@d01a:  make_ptr_tbl_abs MonsterVRAMMap, 13
+@d01a:  ptr_tbl MonsterVRAMMap
 
 .macro def_monster_vram_map x_pos, y_pos, width, height
-        .word   x_pos*$20+y_pos*$200
+        .word   x_pos * $20 + y_pos * $200
         .byte   width, height
 .endmac
 
 ; monster vram map $00 (vram destination, width, height)
-MonsterVRAMMap_0000:
+MonsterVRAMMap::_0:
 @d034:  def_monster_vram_map 0,0,8,8
         def_monster_vram_map 8,0,8,8
         def_monster_vram_map 0,8,8,8
         def_monster_vram_map 8,8,8,8
 
 ; monster vram map $01
-MonsterVRAMMap_0001:
+MonsterVRAMMap::_1:
 @d044:  def_monster_vram_map 0,0,8,8
         def_monster_vram_map 8,0,8,8
         def_monster_vram_map 0,8,4,4
@@ -42915,33 +42919,33 @@ MonsterVRAMMap_0001:
         def_monster_vram_map 12,8,4,4
 
 ; monster vram map $02
-MonsterVRAMMap_0002:
+MonsterVRAMMap::_2:
 @d05c:  def_monster_vram_map 0,0,12,8
         def_monster_vram_map 0,8,12,8
 
 ; monster vram map $03
-MonsterVRAMMap_0003:
+MonsterVRAMMap::_3:
 @d064:  def_monster_vram_map 0,0,8,16
         def_monster_vram_map 8,0,8,16
 
 ; monster vram map $04
-MonsterVRAMMap_0004:
+MonsterVRAMMap::_4:
 @d06c:  def_monster_vram_map 0,0,12,8
         def_monster_vram_map 0,8,8,8
         def_monster_vram_map 8,8,8,8
 
 ; monster vram map $05
-MonsterVRAMMap_0005:
+MonsterVRAMMap::_5:
 @d078:  def_monster_vram_map 0,0,8,16
         def_monster_vram_map 8,0,8,8
         def_monster_vram_map 8,8,8,8
 
 ; monster vram map $06
-MonsterVRAMMap_0006:
+MonsterVRAMMap::_6:
 @d084:  def_monster_vram_map 0,0,16,16
 
 ; monster vram map $07
-MonsterVRAMMap_0007:
+MonsterVRAMMap::_7:
 @d088:  def_monster_vram_map 0,0,12,12
         def_monster_vram_map 12,0,4,12
         def_monster_vram_map 0,12,4,4
@@ -42950,18 +42954,18 @@ MonsterVRAMMap_0007:
         def_monster_vram_map 12,12,4,4
 
 ; monster vram map $08
-MonsterVRAMMap_0008:
+MonsterVRAMMap::_8:
 @d0a0:  def_monster_vram_map 0,0,8,8
         def_monster_vram_map 0,8,8,8
         def_monster_vram_map 8,0,4,8
         def_monster_vram_map 8,8,4,8
 
 ; monster vram map $09
-MonsterVRAMMap_0009:
+MonsterVRAMMap::_9:
 @d0b0:  def_monster_vram_map 0,0,12,12  ; height is 16 in sprite map
 
 ; monster vram map $0a
-MonsterVRAMMap_000a:
+MonsterVRAMMap::_10:
 @d0b4:  def_monster_vram_map 0,0,8,12
         def_monster_vram_map 8,0,4,8
         def_monster_vram_map 8,8,4,8
@@ -42969,7 +42973,7 @@ MonsterVRAMMap_000a:
         def_monster_vram_map 4,12,4,4
 
 ; monster vram map $0b
-MonsterVRAMMap_000b:
+MonsterVRAMMap::_11:
 @d0c8:  def_monster_vram_map 0,0,4,8
         def_monster_vram_map 4,0,4,8
         def_monster_vram_map 8,0,4,8
@@ -42977,7 +42981,7 @@ MonsterVRAMMap_000b:
         def_monster_vram_map 0,8,8,8
 
 ; monster vram map $0c
-MonsterVRAMMap_000c:
+MonsterVRAMMap::_12:
 @d0dc:  def_monster_vram_map 0,0,8,8
         def_monster_vram_map 8,0,8,8
         def_monster_vram_map 0,8,4,8
@@ -44914,16 +44918,20 @@ SummonMagicListText:
 
 ; ------------------------------------------------------------------------------
 
+.scope MenuText
+        ARRAY_LENGTH = 35
+.endscope
+
 ; pointers to menu text
 MenuTextPtrs:
-@e09a:  make_ptr_tbl_abs MenuText, $23
+@e09a:  ptr_tbl MenuText
 
 ; menu text region $22:
-MenuText_0022:
+MenuText::_34:
 @e0e0:  .byte   $05,$12,$01,$05,$12,$01,$05,$12,$01,$05,$12,$00
 
 ; menu text region $1e: swdtech numbers and gauge
-MenuText_001e:
+MenuText::_30:
 @e0ec:  .byte   $ff,$ff
         .byte   $04,$21,ZERO_CHAR+1
         .byte   $04,$21,ZERO_CHAR+2
@@ -44948,147 +44956,146 @@ MenuText_001e:
         .byte   $01,$05,$0c,$00
 
 ; menu text region $0e-$11: current hp (one character)
-MenuText_000e:
+MenuText::_14:
 @e125:  .byte   $07,$01,$00
 
-MenuText_000f:
+MenuText::_15:
 @e128:  .byte   $08,$01,$00
 
-MenuText_0010:
+MenuText::_16:
 @e12b:  .byte   $09,$01,$00
 
-MenuText_0011:
+MenuText::_17:
 @e12e:  .byte   $0a,$01,$00
 
 ; menu text region $12-$15: atb gauge or max hp (one character)
-MenuText_0012:
+MenuText::_18:
 @e131:  .byte   $07,$02,$00
 
-MenuText_0013:
+MenuText::_19:
         .byte   $08,$02,$00
 
-MenuText_0014:
+MenuText::_20:
         .byte   $09,$02,$00
 
-MenuText_0015:
+MenuText::_21:
         .byte   $0a,$02,$00
 
 ; menu text region $16-$19: morph gauge
-MenuText_0016:
+MenuText::_22:
 @e13d:  .byte   $04,$39,$07,$05,$00
 
-MenuText_0017:
+MenuText::_23:
         .byte   $04,$39,$08,$05,$00
 
-MenuText_0018:
+MenuText::_24:
         .byte   $04,$39,$09,$05,$00
 
-MenuText_0019:
+MenuText::_25:
         .byte   $04,$39,$0a,$05,$00
 
 ; menu text region $1a-$1d: condemned gauge
-MenuText_001a:
+MenuText::_26:
 @e151:  .byte   $04,$3d,$07,$06,$00
 
-MenuText_001b:
+MenuText::_27:
 @e156:  .byte   $04,$3d,$08,$06,$00
 
-MenuText_001c:
+MenuText::_28:
 @e15b:  .byte   $04,$3d,$09,$06,$00
 
-MenuText_001d:
+MenuText::_29:
 @e160:  .byte   $04,$3d,$0a,$06,$00
 
 .if LANG_EN
 
 ; menu text region $08: "row"
-MenuText_0008:
+MenuText::_8:
 @e165:  .byte   $ff,$ff,$91,$a8,$b0,$00
 
 ; menu text region $09: "def."
-MenuText_0009:
+MenuText::_9:
 @e16b:  .byte   $ff,$ff,$83,$9e,$9f,$c5,$00
 
 ; menu text region $06: "r-hand", "l-hand"
-MenuText_0006:
+MenuText::_6:
 @e172:  .byte   $05,$03,$91,$c4,$87,$9a,$a7,$9d,$05,$09,$8b,$c4,$87,$9a,$a7,$9d
         .byte   $05,$07,$00
 
 .else
-MenuText_0008:
+MenuText::_8:
         .byte   $ff,$ff,$80,$ca,$b8,$36,$ff,$00
 
-MenuText_0009:
+MenuText::_9:
         .byte   $ff,$ff,$29,$89,$2d,$c3,$ff,$00
 
-MenuText_0006:
+MenuText::_6:
         .byte   $05,$04,$9f,$2d,$85,$05,$0b,$63,$3f,$a9,$85,$00
 .endif
 
-
 ; menu text region $07: current mp/max mp (for all characters)
-MenuText_0007:
+MenuText::_7:
 @e185:  .byte   $07,$03,$03,$15,$07,$04,$01
         .byte   $08,$03,$03,$15,$08,$04,$01
         .byte   $09,$03,$03,$15,$09,$04,$01
         .byte   $0a,$03,$03,$15,$0a,$04,$00
 
 ; menu text region $0a-$0d: current mp/max mp (for one character)
-MenuText_000a:
+MenuText::_10:
 @e1a1:  .byte   $07,$03,$03,$15,$07,$04,$00
 
-MenuText_000b:
+MenuText::_11:
         .byte   $08,$03,$03,$15,$08,$04,$00
 
-MenuText_000c:
+MenuText::_12:
         .byte   $09,$03,$03,$15,$09,$04,$00
 
-MenuText_000d:
+MenuText::_13:
         .byte   $0a,$03,$03,$15,$0a,$04,$00
 
 .if LANG_EN
 
 ; menu text region $21: clear status names
-MenuText_0021:
+MenuText::_33:
 @e1bd:  .byte   $10,$1f,$01,$10,$1f,$01,$10,$1f,$01,$10,$1f,$00
 
 ; menu text region $00: monster names
-MenuText_0000:
+MenuText::_0:
 @e1c9:  .byte   $0b,$00,$ff,$01,$0b,$01,$ff,$01,$0b,$02,$ff,$01,$0b,$03,$ff,$00
 
 .else
 
-MenuText_0021:
+MenuText::_33:
         .byte   $10,$00,$01,$10,$01,$01,$10,$02,$01,$10,$03,$00
 
-MenuText_0000:
+MenuText::_0:
         .byte   $0b,$00,$ff,$0c,$00,$ff,$ff,$01,$0b,$01,$ff,$0c,$01,$ff,$ff,$01
         .byte   $0b,$02,$ff,$0c,$02,$ff,$ff,$01,$0b,$03,$ff,$0c,$03,$ff,$ff,$00
 
 .endif
 
 ; menu text region $01: character names
-MenuText_0001:
+MenuText::_1:
 @e1d9:  .byte   $07,$00,$ff,$01,$08,$00,$ff,$01,$09,$00,$ff,$01,$0a,$00,$ff,$00
 
 ; menu text region $02: current hp (all characters)
-MenuText_0002:
+MenuText::_2:
 @e1e9:  .byte   $07,$01,$01,$08,$01,$01,$09,$01,$01,$0a,$01,$00
 
 ; menu text region $03: atb gauge or max hp (all characters)
-MenuText_0003:
+MenuText::_3:
 @e1f5:  .byte   $07,$02,$01,$08,$02,$01,$09,$02,$01,$0a,$02,$00
 
 .if LANG_EN
 
 ; menu text region $1f: clear battle commands
-MenuText_001f:
+MenuText::_31:
 @e201:  .byte   $05,$06,$04,$21,$0d,$00,$05,$05,$01,$ff,$ff,$04,$21,$0d,$00,$16
         .byte   $16,$16,$ff,$ff,$04,$21,$0d,$00,$ff,$01,$16,$05,$06,$04,$21,$0d
         .byte   $00,$05,$05,$01,$05,$13,$00
 
 ; menu text region $20:
-MenuText_0020:
+MenuText::_32:
 @e228:  .byte   $ff,$04,$21,$11,$00,$ff,$16,$01
         .byte   $ff,$04,$21,$11,$00,$ff,$16,$01
         .byte   $ff,$04,$21,$11,$00,$ff,$16,$01
@@ -45097,12 +45104,12 @@ MenuText_0020:
 .else
 
 ; menu text region $1f: clear battle commands
-MenuText_001f:
+MenuText::_31:
 @e201:  .byte   $05,$06,$04,$21,$0d,$00,$05,$05,$01,$ff,$ff,$04,$21,$0d,$00,$16
         .byte   $16,$16,$ff,$ff,$04,$21,$0d,$00,$ff,$01,$16,$05,$06,$04,$21,$0d
         .byte   $00,$05,$05,$01,$05,$11,$00
 
-MenuText_0020:
+MenuText::_32:
         .byte   $ff,$ff,$04,$21,$0f,$00,$ff,$ff,$01
         .byte   $ff,$ff,$04,$21,$0f,$00,$ff,$ff,$01
         .byte   $ff,$ff,$04,$21,$0f,$00,$ff,$ff,$01
@@ -45111,14 +45118,14 @@ MenuText_0020:
 .endif
 
 ; menu text region $04: battle command names
-MenuText_0004:
+MenuText::_4:
 @e248:  .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$01
         .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$01
         .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$01
         .byte   $ff,$ff,$04,$21,$0d,$00,$ff,$00
 
 ; menu text region $05:
-MenuText_0005:
+MenuText::_5:
 @e268:  .byte   $ff,$ff,$04,$21,$1b,$00,$ff,$01
         .byte   $ff,$ff,$04,$21,$1b,$00,$ff,$01
         .byte   $ff,$ff,$04,$21,$1b,$00,$ff,$01
@@ -45321,157 +45328,171 @@ _c2e4e3:
 
 ; ------------------------------------------------------------------------------
 
+.scope MonsterExitScript
+        ARRAY_LENGTH = 18
+.endscope
+
+.scope MonsterEntryScript
+        ARRAY_LENGTH = 18
+.endscope
+
 ; pointers to monster exit animation scripts
 MonsterExitScriptPtrs:
-@e4eb:  make_ptr_tbl_abs MonsterExitScript, 18
+@e4eb:  ptr_tbl MonsterExitScript
 
 ; pointers to monster entry animation scripts
 MonsterEntryScriptPtrs:
-@e50f:  make_ptr_tbl_abs MonsterEntryScript, 18
+@e50f:  ptr_tbl MonsterEntryScript
 
 ; ------------------------------------------------------------------------------
 
 ; monster entry/exit animation scripts
-MonsterEntryScript_000e:
+MonsterEntryScript::_14:
 @e533:  .byte   $00,$04,$9a,$15,$01,$ff
 
-MonsterExitScript_000e:
+MonsterExitScript::_14:
 @e539:  .byte   $00,$03,$8c,$15,$01,$ff
 
-MonsterExitScript_0000:
-MonsterExitScript_000d:
-MonsterExitScript_000f:
-MonsterExitScript_0010:
-MonsterExitScript_0011:
-MonsterEntryScript_0000:
-MonsterEntryScript_000c:
-MonsterEntryScript_000d:
-MonsterEntryScript_0010:
-MonsterEntryScript_0011:
+MonsterExitScript::_0:
+MonsterExitScript::_13:
+MonsterExitScript::_15:
+MonsterExitScript::_16:
+MonsterExitScript::_17:
+MonsterEntryScript::_0:
+MonsterEntryScript::_12:
+MonsterEntryScript::_13:
+MonsterEntryScript::_16:
+MonsterEntryScript::_17:
 @e53f:  .byte   $ff
 
-MonsterEntryScript_0001:
+MonsterEntryScript::_1:
 @e540:  .byte   $00,$04,$b0,$13,$01,$ff
 
-MonsterExitScript_0001:
+MonsterExitScript::_1:
 @e546:  .byte   $00,$03,$54,$15,$01,$ff
 
-MonsterEntryScript_0002:
+MonsterEntryScript::_2:
 @e54c:  .byte   $00,$04,$cc,$13,$01,$ff
 
-MonsterExitScript_0002:
+MonsterExitScript::_2:
 @e552:  .byte   $00,$03,$be,$13,$01,$ff
 
-MonsterEntryScript_0003:
+MonsterEntryScript::_3:
 @e558:  .byte   $00,$04,$e8,$13,$01,$ff
 
-MonsterExitScript_0003:
+MonsterExitScript::_3:
 @e55e:  .byte   $00,$03,$da,$13,$01,$ff
 
-MonsterEntryScript_0004:
+MonsterEntryScript::_4:
 @e564:  .byte   $00,$04,$04,$14,$01,$ff
 
-MonsterExitScript_0004:
+MonsterExitScript::_4:
 @e56a:  .byte   $00,$03,$f6,$13,$01,$ff
 
-MonsterEntryScript_0005:
+MonsterEntryScript::_5:
 @e570:  .byte   $00,$04,$20,$14,$01,$ff
 
-MonsterExitScript_0005:
+MonsterExitScript::_5:
 @e576:  .byte   $00,$03,$12,$14,$01,$ff
 
-MonsterEntryScript_0006:
+MonsterEntryScript::_6:
 @e57c:  .byte   $00,$04,$3c,$14,$01,$ff
 
-MonsterExitScript_0006:
+MonsterExitScript::_6:
 @e582:  .byte   $00,$03,$2e,$14,$01,$ff
 
-MonsterEntryScript_0008:
+MonsterEntryScript::_8:
 @e588:  .byte   $00,$04,$58,$14,$01,$ff
 
-MonsterExitScript_0008:
+MonsterExitScript::_8:
 @e58e:  .byte   $00,$03,$4a,$14,$01,$ff
 
-MonsterEntryScript_0009:
+MonsterEntryScript::_9:
 @e594:  .byte   $00,$04,$74,$14,$01,$ff
 
-MonsterExitScript_0009:
+MonsterExitScript::_9:
 @e59a:  .byte   $00,$03,$66,$14,$01,$ff
 
-MonsterEntryScript_000a:
+MonsterEntryScript::_10:
 @e5a0:  .byte   $00,$04,$90,$14,$01,$ff
 
-MonsterExitScript_000a:
+MonsterExitScript::_10:
 @e5a6:  .byte   $00,$03,$82,$14,$01,$ff
 
-MonsterEntryScript_000b:
+MonsterEntryScript::_11:
 @e5ac:  .byte   $00,$04,$ac,$14,$01,$ff
 
-MonsterExitScript_000b:
+MonsterExitScript::_11:
 @e5b2:  .byte   $00,$03,$9e,$14,$01,$ff
 
-MonsterExitScript_000c:
+MonsterExitScript::_12:
 @e5b8:  .byte   $00,$03,$62,$15,$01,$ff
 
 ; unused
 @e5be:  .byte   $00,$e0,$ff
 
-MonsterEntryScript_0007:
+MonsterEntryScript::_7:
 @e5c1:  .byte   $00,$04,$b6,$15,$01,$ff
 
-MonsterExitScript_0007:
+MonsterExitScript::_7:
 @e5c7:  .byte   $00,$03,$a8,$15,$01,$ff
 
-MonsterEntryScript_000f:
+MonsterEntryScript::_15:
 @e5cd:  .byte   $00,$04,$c4,$15,$01,$ff
 
 ; ------------------------------------------------------------------------------
 
+.scope MonsterAnimScript
+        ARRAY_LENGTH = 14
+.endscope
+
 ; pointers to misc. monster animation data
 MonsterAnimScriptPtrs:
-@e5d3:  make_ptr_tbl_abs MonsterAnimScript, 14
+@e5d3:  ptr_tbl MonsterAnimScript
 
 ; ------------------------------------------------------------------------------
 
 ; misc. monster animation scripts (ai command $fa, command $2b)
-MonsterAnimScript_000d:
+MonsterAnimScript:
+
+MonsterAnimScript::_13:
 @e5ef:  .byte   $00,$04,$0a,$16,$01,$ff
 
-MonsterAnimScript_000c:
+MonsterAnimScript::_12:
 @e5f5:  .byte   $00,$04,$ee,$15,$01,$ff
 
-MonsterAnimScript_000b:
+MonsterAnimScript::_11:
 @e5fb:  .byte   $00,$04,$e0,$15,$01,$ff
 
-MonsterAnimScript_000a:
+MonsterAnimScript::_10:
 @e601:  .byte   $00,$04,$d2,$15,$01,$ff
 
-MonsterAnimScript_0005:
+MonsterAnimScript::_5:
 @e607:  .byte   $00,$05,$46,$15,$01,$fe
 
-MonsterAnimScript_0006:
+MonsterAnimScript::_6:
 @e60d:  .byte   $00,$05,$38,$15,$01,$fe
 
-MonsterAnimScript_0000:
-MonsterAnimScript_0009:
+MonsterAnimScript::_0:
+MonsterAnimScript::_9:
 @e613:  .byte   $00,$04,$fc,$0e,$01,$ff
 
-MonsterAnimScript_0001:
+MonsterAnimScript::_1:
 @e619:  .byte   $00,$04,$ee,$0e,$01,$ff
 
-MonsterAnimScript_0002:
+MonsterAnimScript::_2:
 @e61f:  .byte   $00,$04,$e0,$0e,$01,$ff
 
-MonsterAnimScript_0003:
+MonsterAnimScript::_3:
 @e625:  .byte   $00,$04,$f2,$14,$01,$ff
 
-MonsterAnimScript_0004:
+MonsterAnimScript::_4:
 @e62b:  .byte   $00,$04,$e4,$14,$01,$ff
 
-MonsterAnimScript_0007:
+MonsterAnimScript::_7:
 @e631:  .byte   $00,$04,$7e,$15,$01,$ff
 
-MonsterAnimScript_0008:
+MonsterAnimScript::_8:
 @e637:  .byte   $00,$04,$70,$15,$01,$ff
 
 ; ------------------------------------------------------------------------------
@@ -45542,7 +45563,7 @@ DoMonsterEntryExit:
         shorta0
 
 mon_mode_chg_main:
-_e6b1:  lda     #$c2        ; bank $c2
+_e6b1:  lda     #^MonsterEntryScriptPtrs
         sta     $91
 @e6b5:  lda     [$8f]
         cmp     #$ff
@@ -45722,7 +45743,7 @@ MonsterAnimCmd_02:
         lda     $10
         ora     #$80
         sta     $10
-        lda     #$c2
+        lda     #^MonsterAnimScript
         sta     $26
         jsl     _c1b1c0
         rts
@@ -48908,7 +48929,7 @@ AttackAnimScript:
 
 ; d1/ead8
 AttackAnimScriptPtrs:
-        make_ptr_tbl_rel AttackAnimScript, ATTACK_ANIM_SCRIPT_ARRAY_LENGTH, .bankbyte(*)<<16
+        ptr_tbl AttackAnimScript
 
 ; ------------------------------------------------------------------------------
 
@@ -48924,7 +48945,7 @@ AttackAnimProp:
 
 ; d0/9800
 BattleEventScriptPtrs:
-        make_ptr_tbl_rel BattleEventScript, BATTLE_EVENT_SCRIPT_ARRAY_LENGTH, .bankbyte(*)<<16
+        ptr_tbl BattleEventScript
 
 ; d0/9842
 BattleEventScript:
@@ -48935,10 +48956,12 @@ BattleEventScript:
 .segment "attack_anim_frames"
 
 ; d1/0141
-begin_block AttackAnimFrames, $e997
+AttackAnimFrames:
+        fixed_block $e997
         incbin_lang "attack_anim_frames_%s.dat"
-        AttackAnimFramesEnd := *
-end_block AttackAnimFrames
+
+AttackAnimFrames::End:
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
@@ -48946,8 +48969,8 @@ end_block AttackAnimFrames
 
 ; d4/df3c
 AttackAnimFramesPtrs:
-        make_ptr_tbl_rel AttackAnimFrames, ATTACK_ANIM_FRAMES_ARRAY_LENGTH, .bankbyte(*)<<16
-        .addr   AttackAnimFramesEnd
+        ptr_tbl AttackAnimFrames
+        end_ptr AttackAnimFrames
 
 ; ------------------------------------------------------------------------------
 

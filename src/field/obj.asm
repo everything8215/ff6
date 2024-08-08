@@ -13,8 +13,9 @@
 
 .include "gfx/portrait.inc"
 .include "gfx/map_sprite_gfx.inc"
+.include "event/npc_prop.inc"
 
-.import MapSpritePal, SmallFontGfx, NPCPropPtrs
+.import MapSpritePal, SmallFontGfx
 
 .a8
 .i16
@@ -250,11 +251,11 @@ InitNPCMap:
 
 InitNPCs:
 @52a8:  ldx     $00
-@52aa:  stz     $0af7,x                 ; clear object data for npc's $10-$28
+@52aa:  stz     $0af7,x                 ; clear object data for npcs $10-$28
         inx
         cpx     #$03d8
         bne     @52aa
-        stz     $078f                   ; clear number of active npc's
+        stz     $078f                   ; clear number of active npcs
         longa
         lda     $82                     ; map index
         asl
@@ -267,24 +268,24 @@ InitNPCs:
         ldy     #$0290                  ; start at object $10
         cpx     $1e
         jeq     @5434                   ; end loop after last npc
-@52d4:  lda     f:NPCPropPtrs,x           ; copy pointer to event script
+@52d4:  lda     f:NPCProp::EventPtr,x
         sta     $0889,y
-        lda     f:NPCPropPtrs+1,x
+        lda     f:NPCProp::EventPtr+1,x
         sta     $088a,y
-        lda     f:NPCPropPtrs+2,x
-        and     #$03
+        lda     f:NPCProp::EventPtr+2,x
+        and     #%11
         sta     $088b,y
-        lda     f:NPCPropPtrs+2,x         ; copy color palette
+        lda     f:NPCProp::Pal,x         ; copy color palette
         and     #$1c
         lsr
         sta     $0880,y
         sta     $0881,y
-        lda     f:NPCPropPtrs+2,x         ; scroll with bg2
-        and     #$20
+        lda     f:NPCProp::Scroll,x         ; scroll with bg2
+        and     #NPC_SCROLL::MASK
         asl2
         sta     $087c,y
         longa
-        lda     f:NPCPropPtrs+2,x         ; event bit to enable this object
+        lda     f:NPCProp::Switch,x
         lsr6
         shorta
         phx
@@ -292,19 +293,19 @@ InitNPCs:
         jsr     GetNPCSwitch0
         ply
         plx
-        cmp     #$00
+        cmp     #0
         beq     @531e                   ; branch if npc is not enabled
         lda     #$c0                    ; enable and show npc
 @531e:  sta     $0867,y
-        lda     f:NPCPropPtrs+4,x         ; npc shown in/on vehicle (or special npc graphics)
+        lda     f:NPCProp::SpecialNPC,x ; or special npc graphics
         and     #$80
         sta     $0868,y
         longa
-        lda     f:NPCPropPtrs+4,x         ; x position
+        lda     f:NPCProp::PosX,x
         and     #$007f
         asl4
         sta     $086a,y
-        lda     f:NPCPropPtrs+5,x         ; y position
+        lda     f:NPCProp::PosY,x
         and     #$003f
         asl4
         sta     $086d,y
@@ -314,27 +315,27 @@ InitNPCs:
         sta     $086f,y                 ; clear jump y-offset
         sta     $0870,y
         sta     $0887,y                 ; clear jump counter
-        lda     f:NPCPropPtrs+5,x         ; object speed
+        lda     f:NPCProp::Speed,x
         and     #$c0
         lsr6
         sta     $0875,y
-        lda     f:NPCPropPtrs+6,x         ; graphics index (also actor index)
+        lda     f:NPCProp::Gfx,x         ; graphics index (also actor index)
         sta     $0878,y
         sta     $0879,y
-        lda     f:NPCPropPtrs+7,x         ; movement type
-        and     #$0f
+        lda     f:NPCProp::Movement,x
+        and     #NPC_MOVEMENT::MASK
         ora     $087c,y
         sta     $087c,y
-        lda     f:NPCPropPtrs+7,x         ; sprite priority
-        and     #$30
+        lda     f:NPCProp::SpritePriority,x
+        and     #NPC_SPRITE_PRIORITY::MASK
         asl2
         sta     $088c,y
-        lda     f:NPCPropPtrs+7,x         ; vehicle index (or animation speed)
+        lda     f:NPCProp::Vehicle,x         ; vehicle index (or animation speed)
         and     #$c0
         lsr
         ora     $0868,y
         sta     $0868,y
-        lda     f:NPCPropPtrs+8,x         ; facing direction
+        lda     f:NPCProp::Dir,x
         and     #$03
         sta     $087f,y
         phx
@@ -343,27 +344,27 @@ InitNPCs:
         sta     $0877,y
         sta     $0876,y
         plx
-        lda     f:NPCPropPtrs+8,x         ; turn when activated (or 32x32 sprite)
-        and     #$04
+        lda     f:NPCProp::React,x         ; turn when activated (or 32x32 sprite)
+        and     #NPC_REACT::MASK
         asl3
         ora     $087c,y
         sta     $087c,y
-        lda     f:NPCPropPtrs+8,x         ; sprite layer priority
-        and     #$18
+        lda     f:NPCProp::LayerPriority,x         ; layer priority
+        and     #NPC_LAYER_PRIORITY::MASK
         lsr2
         sta     $1a
         lda     $0868,y
         and     #$f9
         ora     $1a
         sta     $0868,y
-        lda     f:NPCPropPtrs+8,x         ; special animation offset
-        and     #$e0
+        lda     f:NPCProp::AnimFrame,x
+        and     #NPC_ANIM_FRAME::MASK
         beq     @53f6                   ; branch if no special animation
         lsr5
         ora     $088c,y
         sta     $088c,y
-        lda     f:NPCPropPtrs+8,x         ; animated frame type
-        and     #$03
+        lda     f:NPCProp::AnimType,x
+        and     #NPC_ANIM_TYPE::MASK
         asl3
         ora     $088c,y
         ora     #$20                    ; enable animation
@@ -391,7 +392,7 @@ InitNPCs:
         tay
         txa
         clc
-        adc     #$0009
+        adc     #NPCProp::ITEM_SIZE
         tax
         shorta0
         cpx     $1e

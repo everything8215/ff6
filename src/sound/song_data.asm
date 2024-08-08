@@ -4,7 +4,7 @@
 
 ; c5/3c5e
 NumSongs:
-        .byte   SONG_SCRIPT_ARRAY_LENGTH
+        .byte   SongScript::ARRAY_LENGTH
 
 ; ------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ NumSongs:
 
 ; c5/3c5f
 SampleBRRPtrs:
-        make_ptr_tbl_far SampleBRR, SAMPLE_BRR::ARRAY_LENGTH, 0
+        ptr_tbl_far SampleBRR
 
 ; ------------------------------------------------------------------------------
 
@@ -222,7 +222,7 @@ SampleADSR:
 
 ; c5/3e96
 SongScriptPtrs:
-        make_ptr_tbl_far SongScript, $55, 0
+        ptr_tbl_far SongScript
 
 ; ------------------------------------------------------------------------------
 
@@ -1064,8 +1064,8 @@ SongSamples:
 
 ; ------------------------------------------------------------------------------
 
-.macro inc_sample_brr id, filename
-        .ident(.sprintf("SampleBRR_%04x", SAMPLE_BRR::id)) := *
+.mac inc_sample_brr id, filename
+        SampleBRR::.ident(.sprintf("_%d", SAMPLE_BRR::id)) := *
         .incbin .sprintf("src/sound/sample_brr/%s.brr", filename)
 .endmac
 
@@ -1136,97 +1136,101 @@ SongSamples:
 
 ; ------------------------------------------------------------------------------
 
-.macro inc_song_script id, filename
-        .ident(.sprintf("SongScript_%04x", SONG::id)) := *
-        .include .sprintf("song_script/%s", filename)
+.mac inc_song_script id, filename
+        .ifnblank id
+                SongScript::.ident(.sprintf("_%d", SONG::id)) := *
+        .endif
+        .ifnblank filename
+                .include .sprintf("song_script/%s.asm", filename)
+        .endif
 .endmac
 
 ; c8/5c7a
-        SongScript_0051 := *
-        inc_song_script SILENCE, "silence.asm"
-        inc_song_script PRELUDE, "prelude.asm"
-        inc_song_script AWAKENING, "awakening.asm"
-        inc_song_script TERRA, "terra.asm"
-        inc_song_script SHADOW, "shadow.asm"
-        inc_song_script STRAGO, "strago.asm"
-        inc_song_script GAU, "gau.asm"
-        inc_song_script FIGARO, "figaro.asm"
-        inc_song_script COIN_SONG, "coin_song.asm"
-        inc_song_script CYAN, "cyan.asm"
-        inc_song_script LOCKE, "locke.asm"
-        inc_song_script FOREVER_RACHEL, "forever_rachel.asm"
-        inc_song_script RELM, "relm.asm"
-        inc_song_script SETZER, "setzer.asm"
-        inc_song_script EPITAPH, "epitaph.asm"
-        inc_song_script CELES, "celes.asm"
-        inc_song_script TECHNO_DE_CHOCOBO, "techno_de_chocobo.asm"
-        .include "song_script/unused.asm"
-        inc_song_script DECISIVE_BATTLE, "decisive_battle.asm"
-        inc_song_script JOHNNY_C_BAD, "johnny_c_bad.asm"
-        inc_song_script OPENING_THEME_2, "opening_2.asm"
-        inc_song_script KEFKA, "kefka.asm"
-        inc_song_script NARSHE, "narshe.asm"
-        inc_song_script PHANTOM_FOREST, "phantom_forest.asm"
-        inc_song_script OPENING_THEME_3, "opening_3.asm"
-        inc_song_script VELDT, "veldt.asm"
-        inc_song_script SAVE_THEM, "save_them.asm"
-        inc_song_script GESTAHL, "gestahl.asm"
-        inc_song_script TROOPS_MARCH_ON, "troops_march_on.asm"
-        inc_song_script UNDER_MARTIAL_LAW, "under_martial_law.asm"
-        inc_song_script WATERFALL, "waterfall.asm"
-        inc_song_script METAMORPHOSIS, "metamorphosis.asm"
-        inc_song_script PHANTOM_TRAIN, "phantom_train.asm"
-        inc_song_script ESPER_WORLD, "esper_world.asm"
-        inc_song_script GRAND_FINALE_2, "grand_finale_2.asm"
-        inc_song_script MT_KOLTS, "mt_kolts.asm"
-        inc_song_script BATTLE_THEME, "battle_theme.asm"
-        inc_song_script FANFARE, "fanfare.asm"
-        inc_song_script WEDDING_WALTZ_1, "wedding_waltz_1.asm"
-        inc_song_script ARIA_DI_MEZZO_CARATERRE, "aria_di_mezzo_caraterre.asm"
-        inc_song_script KIDS_RUN_THROUGH_THE_CITY, "kids_run_through_the_city.asm"
-        inc_song_script GOGO, "gogo.asm"
-        inc_song_script RETURNERS, "returners.asm"
-        inc_song_script VICTORY_FANFARE, "victory_fanfare.asm"
-        inc_song_script UMARO, "umaro.asm"
-        inc_song_script MOG, "mog.asm"
-        inc_song_script THE_UNFORGIVEN, "the_unforgiven.asm"
-        inc_song_script FIERCE_BATTLE, "fierce_battle.asm"
-        inc_song_script DAY_AFTER, "day_after.asm"
-        inc_song_script BLACKJACK, "blackjack.asm"
-        inc_song_script CATASTROPHE, "catastrophe.asm"
-        inc_song_script MAGIC_HOUSE, "magic_house.asm"
-        inc_song_script NIGHTY_NIGHT, "nighty_night.asm"
-        inc_song_script WIND, "wind.asm"
-        inc_song_script WINDY_SHORES, "windy_shores.asm"
-        inc_song_script DANCING_MAD_1_2_3, "dancing_mad_1_2_3.asm"
-        inc_song_script TRAIN_BRAKING, "train_braking.asm"
-        inc_song_script SPINACH_RAG, "spinach_rag.asm"
-        inc_song_script REST_IN_PEACE, "rest_in_peace.asm"
-        inc_song_script CHOCOBOS_RUNNING, "chocobos_running.asm"
-        inc_song_script DREAM_OF_A_TRAIN, "dream_of_a_train.asm"
-        inc_song_script OVERTURE_1, "overture_1.asm"
-        inc_song_script OVERTURE_2, "overture_2.asm"
-        inc_song_script OVERTURE_3, "overture_3.asm"
-        inc_song_script WEDDING_WALTZ_2, "wedding_waltz_2.asm"
-        inc_song_script WEDDING_WALTZ_3, "wedding_waltz_3.asm"
-        inc_song_script WEDDING_WALTZ_4, "wedding_waltz_4.asm"
-        inc_song_script OPENING_THEME_1, "opening_1.asm"
-        inc_song_script DEVILS_LAB, "devils_lab.asm"
-        inc_song_script FIRE_EXPLOSION, "fire_explosion.asm"
-        inc_song_script CRANES_RISING, "cranes_rising.asm"
-        inc_song_script BURNING_HOUSE, "burning_house.asm"
-        inc_song_script HUH, "huh.asm"
-        inc_song_script SERPENT_TRENCH, "serpent_trench.asm"
-        inc_song_script SLAM_SHUFFLE, "slam_shuffle.asm"
-        inc_song_script GRAND_FINALE_1, "grand_finale_1.asm"
-        inc_song_script NEW_CONTINENT, "new_continent.asm"
-        inc_song_script SEARCHING_FOR_FRIENDS, "searching_for_friends.asm"
-        inc_song_script FANATICS, "fanatics.asm"
-        inc_song_script LAST_DUNGEON, "last_dungeon.asm"
-        inc_song_script DARK_WORLD, "dark_world.asm"
-        inc_song_script DANCING_MAD_5, "dancing_mad_5.asm"
-        inc_song_script DANCING_MAD_4, "dancing_mad_4.asm"
-        inc_song_script ENDING_THEME_1, "ending_1.asm"
-        inc_song_script ENDING_THEME_2, "ending_2.asm"
+        inc_song_script SONG_81
+        inc_song_script SILENCE, "silence"
+        inc_song_script PRELUDE, "prelude"
+        inc_song_script AWAKENING, "awakening"
+        inc_song_script TERRA, "terra"
+        inc_song_script SHADOW, "shadow"
+        inc_song_script STRAGO, "strago"
+        inc_song_script GAU, "gau"
+        inc_song_script FIGARO, "figaro"
+        inc_song_script COIN_SONG, "coin_song"
+        inc_song_script CYAN, "cyan"
+        inc_song_script LOCKE, "locke"
+        inc_song_script FOREVER_RACHEL, "forever_rachel"
+        inc_song_script RELM, "relm"
+        inc_song_script SETZER, "setzer"
+        inc_song_script EPITAPH, "epitaph"
+        inc_song_script CELES, "celes"
+        inc_song_script TECHNO_DE_CHOCOBO, "techno_de_chocobo"
+        inc_song_script {}, "unused"
+        inc_song_script DECISIVE_BATTLE, "decisive_battle"
+        inc_song_script JOHNNY_C_BAD, "johnny_c_bad"
+        inc_song_script OPENING_THEME_2, "opening_2"
+        inc_song_script KEFKA, "kefka"
+        inc_song_script NARSHE, "narshe"
+        inc_song_script PHANTOM_FOREST, "phantom_forest"
+        inc_song_script OPENING_THEME_3, "opening_3"
+        inc_song_script VELDT, "veldt"
+        inc_song_script SAVE_THEM, "save_them"
+        inc_song_script GESTAHL, "gestahl"
+        inc_song_script TROOPS_MARCH_ON, "troops_march_on"
+        inc_song_script UNDER_MARTIAL_LAW, "under_martial_law"
+        inc_song_script WATERFALL, "waterfall"
+        inc_song_script METAMORPHOSIS, "metamorphosis"
+        inc_song_script PHANTOM_TRAIN, "phantom_train"
+        inc_song_script ESPER_WORLD, "esper_world"
+        inc_song_script GRAND_FINALE_2, "grand_finale_2"
+        inc_song_script MT_KOLTS, "mt_kolts"
+        inc_song_script BATTLE_THEME, "battle_theme"
+        inc_song_script FANFARE, "fanfare"
+        inc_song_script WEDDING_WALTZ_1, "wedding_waltz_1"
+        inc_song_script ARIA_DI_MEZZO_CARATERRE, "aria_di_mezzo_caraterre"
+        inc_song_script KIDS_RUN_THROUGH_THE_CITY, "kids_run_through_the_city"
+        inc_song_script GOGO, "gogo"
+        inc_song_script RETURNERS, "returners"
+        inc_song_script VICTORY_FANFARE, "victory_fanfare"
+        inc_song_script UMARO, "umaro"
+        inc_song_script MOG, "mog"
+        inc_song_script THE_UNFORGIVEN, "the_unforgiven"
+        inc_song_script FIERCE_BATTLE, "fierce_battle"
+        inc_song_script DAY_AFTER, "day_after"
+        inc_song_script BLACKJACK, "blackjack"
+        inc_song_script CATASTROPHE, "catastrophe"
+        inc_song_script MAGIC_HOUSE, "magic_house"
+        inc_song_script NIGHTY_NIGHT, "nighty_night"
+        inc_song_script WIND, "wind"
+        inc_song_script WINDY_SHORES, "windy_shores"
+        inc_song_script DANCING_MAD_1_2_3, "dancing_mad_1_2_3"
+        inc_song_script TRAIN_BRAKING, "train_braking"
+        inc_song_script SPINACH_RAG, "spinach_rag"
+        inc_song_script REST_IN_PEACE, "rest_in_peace"
+        inc_song_script CHOCOBOS_RUNNING, "chocobos_running"
+        inc_song_script DREAM_OF_A_TRAIN, "dream_of_a_train"
+        inc_song_script OVERTURE_1, "overture_1"
+        inc_song_script OVERTURE_2, "overture_2"
+        inc_song_script OVERTURE_3, "overture_3"
+        inc_song_script WEDDING_WALTZ_2, "wedding_waltz_2"
+        inc_song_script WEDDING_WALTZ_3, "wedding_waltz_3"
+        inc_song_script WEDDING_WALTZ_4, "wedding_waltz_4"
+        inc_song_script OPENING_THEME_1, "opening_1"
+        inc_song_script DEVILS_LAB, "devils_lab"
+        inc_song_script FIRE_EXPLOSION, "fire_explosion"
+        inc_song_script CRANES_RISING, "cranes_rising"
+        inc_song_script BURNING_HOUSE, "burning_house"
+        inc_song_script HUH, "huh"
+        inc_song_script SERPENT_TRENCH, "serpent_trench"
+        inc_song_script SLAM_SHUFFLE, "slam_shuffle"
+        inc_song_script GRAND_FINALE_1, "grand_finale_1"
+        inc_song_script NEW_CONTINENT, "new_continent"
+        inc_song_script SEARCHING_FOR_FRIENDS, "searching_for_friends"
+        inc_song_script FANATICS, "fanatics"
+        inc_song_script LAST_DUNGEON, "last_dungeon"
+        inc_song_script DARK_WORLD, "dark_world"
+        inc_song_script DANCING_MAD_5, "dancing_mad_5"
+        inc_song_script DANCING_MAD_4, "dancing_mad_4"
+        inc_song_script ENDING_THEME_1, "ending_1"
+        inc_song_script ENDING_THEME_2, "ending_2"
 
 ; ------------------------------------------------------------------------------

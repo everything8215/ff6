@@ -4,24 +4,26 @@
 
 ; ------------------------------------------------------------------------------
 
-PORTRAIT_TERRA                          = $00
-PORTRAIT_LOCKE                          = $01
-PORTRAIT_CYAN                           = $02
-PORTRAIT_SHADOW                         = $03
-PORTRAIT_EDGAR                          = $04
-PORTRAIT_SABIN                          = $05
-PORTRAIT_CELES                          = $06
-PORTRAIT_STRAGO                         = $07
-PORTRAIT_RELM                           = $08
-PORTRAIT_SETZER                         = $09
-PORTRAIT_MOG                            = $0a
-PORTRAIT_GAU                            = $0b
-PORTRAIT_GOGO                           = $0c
-PORTRAIT_UMARO                          = $0d
-PORTRAIT_SOLDIER                        = $0e
-PORTRAIT_IMP                            = $0f
-PORTRAIT_LEO                            = $10
-PORTRAIT_BANON                          = $11
-PORTRAIT_GHOST                          = $12
+.enum PORTRAIT
+        TERRA                          ;= $00
+        LOCKE                          ;= $01
+        CYAN                           ;= $02
+        SHADOW                         ;= $03
+        EDGAR                          ;= $04
+        SABIN                          ;= $05
+        CELES                          ;= $06
+        STRAGO                         ;= $07
+        RELM                           ;= $08
+        SETZER                         ;= $09
+        MOG                            ;= $0a
+        GAU                            ;= $0b
+        GOGO                           ;= $0c
+        UMARO                          ;= $0d
+        SOLDIER                        ;= $0e
+        IMP                            ;= $0f
+        LEO                            ;= $10
+        BANON                          ;= $11
+        GHOST                          ;= $12
+.endenum
 
 ; ------------------------------------------------------------------------------

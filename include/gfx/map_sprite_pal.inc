@@ -60,7 +60,9 @@ MAP_SPRITE_PAL_INC = 1
         UNUSED_31                       = $1f  ; 31
 .endenum
 
-MAP_SPRITE_PAL_ARRAY_LENGTH             = $20  ; 32
+.scope MapSpritePal
+        ARRAY_LENGTH = MAP_SPRITE_PAL::UNUSED_31 + 1
+.endscope
 
 .endif
 .list on

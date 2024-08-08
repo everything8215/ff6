@@ -5676,6 +5676,8 @@ skip:   iny6
 
 ; [ check event triggers ]
 
+.include "event/event_trigger.inc"
+
 .proc CheckEventTriggers
         lda     $84
         bne     done
@@ -5712,7 +5714,7 @@ skip:   iny6
         cmp     $1e
         beq     done
         tax
-loop:   lda     f:EventTriggerPtrs,x
+loop:   lda     f:EventTrigger::Pos,x
         cmp     $af
         beq     do_trigger
         txa
@@ -5725,7 +5727,7 @@ done:   shorta0
         rts
 
 do_trigger:
-        lda     f:EventTriggerPtrs+2,x
+        lda     f:EventTrigger::EventPtr,x
         sta     $e5
         sta     $05f4
         tdc
@@ -5735,7 +5737,7 @@ do_trigger:
         sta     $087e,y
         lda     #$01
         sta     $078e
-        lda     f:EventTriggerPtrs+4,x
+        lda     f:EventTrigger::EventPtr+2,x
         clc
         adc     #^EventScript
         sta     $e7

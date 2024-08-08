@@ -1,6 +1,5 @@
 {
   "asset_label": "BattleCmdName",
-  "asset_const": "BATTLE_CMD_NAME",
   "inc_path": "include/text/battle_cmd_name_jp.inc",
   "item_size": 6,
   "char_tables": [

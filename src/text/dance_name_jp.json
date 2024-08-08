@@ -1,6 +1,5 @@
 {
   "asset_label": "DanceName",
-  "asset_const": "DANCE_NAME",
   "inc_path": "include/text/dance_name_jp.inc",
   "item_size": 8,
   "char_tables": [

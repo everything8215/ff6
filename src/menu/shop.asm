@@ -1875,11 +1875,11 @@ LoadItemName:
         pla
         sta     hM7A
         stz     hM7A
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #ITEM_NAME_SIZE
+        ldy     #ItemName::ITEM_SIZE
 @c08b:  lda     f:ItemName,x
         sta     hWMDATA
         inx

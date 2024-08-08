@@ -292,7 +292,7 @@ _5ee6:  jsr     CheckCmdEnabled
         adc     $e2
 .endif
         tax
-        ldy     #BATTLE_CMD_NAME_SIZE
+        ldy     #BattleCmdName::ITEM_SIZE
 @5efb:  lda     f:BattleCmdName,x
         sta     hWMDATA
         inx
@@ -319,7 +319,7 @@ CheckCmdEnabled:
 @5f25:  pha
         cmp     #BATTLE_CMD::RUNIC
         beq     @5f3a
-        cmp     #BATTLE_CMD::SWDTECH
+        cmp     #BATTLE_CMD::BUSHIDO
         beq     @5f44
 
 ; use white text
@@ -1165,7 +1165,7 @@ GogoCmdListPos:
         .define StatusLevelUpExpStr             {$83,$2d,$9b,$ac,$26,$aa,$9d,$45,$ff,$8b,$87,$00}
 .endif
 
-begin_block StatusBtmLabelTextList1
+StatusBtmLabelTextList1:
 @6437:  .addr   StatusStrengthText
         .addr   StatusStaminaText
         .addr   StatusMagPwrText
@@ -1183,29 +1183,29 @@ begin_block StatusBtmLabelTextList1
         .addr   StatusMagEvadeSepText
 .endif
         .addr   StatusTitleText
-end_block StatusBtmLabelTextList1
+        calc_size StatusBtmLabelTextList1
 
-begin_block StatusTopLabelTextList2
+StatusTopLabelTextList2:
 @6455:  .addr   StatusLevelText
         .addr   StatusHPText
         .addr   StatusMPText
-end_block StatusTopLabelTextList2
+        calc_size StatusTopLabelTextList2
 
-begin_block StatusTopLabelTextList1
+StatusTopLabelTextList1:
 @645b:  .addr   StatusHPSlashText
         .addr   StatusMPSlashText
         .addr   StatusEvadePercentText
         .addr   StatusMagEvadePercentText
-end_block StatusTopLabelTextList1
+        calc_size StatusTopLabelTextList1
 
-begin_block StatusBtmLabelTextList2
+StatusBtmLabelTextList2:
 @6463:  .addr   StatusSpeedText
         .addr   StatusAttackPwrText
         .addr   StatusDefenseText
         .addr   StatusMagDefText
         .addr   StatusYourExpText
         .addr   StatusLevelUpExpText
-end_block StatusBtmLabelTextList2
+        calc_size StatusBtmLabelTextList2
 
 StatusTitleText:                pos_text BG3A, {2, 2}, StatusTitleStr
 StatusHPSlashText:              pos_text BG1A, {17, 8}, StatusSlashStr

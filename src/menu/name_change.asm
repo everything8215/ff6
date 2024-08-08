@@ -642,7 +642,7 @@ NameChangeHScrollHDMATbl:
         hdma_word 16, $0100
         hdma_end
 
-begin_block NameChangeVScrollHDMATbl
+NameChangeVScrollHDMATbl:
 .if LANG_EN
         hdma_word 71, 0
 .else
@@ -652,7 +652,7 @@ begin_block NameChangeVScrollHDMATbl
         hdma_word 80, -48
         hdma_word 16, 0
         hdma_end
-end_block NameChangeVScrollHDMATbl
+        calc_size NameChangeVScrollHDMATbl
 
 ; ------------------------------------------------------------------------------
 

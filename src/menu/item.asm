@@ -295,13 +295,13 @@ LoadItemBG1VScrollHDMATbl:
 ; ------------------------------------------------------------------------------
 
 ; bg3 vertical scroll hdma table (item list)
-begin_block ItemBG3VScrollHDMATbl
+ItemBG3VScrollHDMATbl:
         hdma_word 40, $0100
         hdma_word 47, $0100
         hdma_word 120, $0000
         hdma_word 30, $0100
         hdma_end
-end_block ItemBG3VScrollHDMATbl
+        calc_size ItemBG3VScrollHDMATbl
 
 ; ------------------------------------------------------------------------------
 
@@ -506,7 +506,7 @@ LoadItemTypeName:
         tax
         ldy     #$9e8b
         sty     hWMADDL
-        ldy     #ITEM_TYPE_NAME_SIZE
+        ldy     #ItemTypeName::ITEM_SIZE
 @801a:  lda     f:ItemTypeName,x
         sta     hWMDATA
         inx
@@ -519,7 +519,7 @@ LoadItemTypeName:
 ; no type, copy 7 spaces
 @802c:  ldy     #$9e8b
         sty     hWMADDL
-        ldy     #ITEM_TYPE_NAME_SIZE
+        ldy     #ItemTypeName::ITEM_SIZE
         lda     #$ff
 @8037:  sta     hWMDATA
         inx
@@ -624,11 +624,11 @@ LoadListItemName:
 _c380ce:
 @80ce:  sta     hM7A                    ; multiply by 13 to get pointer to item name
         stz     hM7A
-        lda     #ITEM_NAME_SIZE
+        lda     #ItemName::ITEM_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #ITEM_NAME_SIZE
+        ldy     #ItemName::ITEM_SIZE
 @80e2:  lda     f:ItemName,x            ; item name
         sta     hWMDATA
         inx
@@ -639,7 +639,7 @@ _c380ce:
         stz     hWMDATA
         rts
 
-_80f6:  ldy     #ITEM_NAME_SIZE+3                     ; store 16 spaces (empty)
+_80f6:  ldy     #ItemName::ITEM_SIZE+3                     ; store 16 spaces (empty)
         lda     #$ff
 @80fb:  sta     hWMDATA
         dey
@@ -1191,7 +1191,7 @@ DrawRareItemListRow:
         jsr     DrawRareItemName
         inc     ze5
         jsr     GetRareItemNamePtr
-        ldx     #RARE_ITEM_NAME_SIZE+4
+        ldx     #RareItemName::ITEM_SIZE+4
         jsr     DrawRareItemName
         inc     ze5
 .if !LANG_EN
@@ -1207,7 +1207,7 @@ DrawRareItemListRow:
 ; [ get pointer to rare item names ]
 
 GetRareItemNamePtr:
-@8436:  ldy     #RARE_ITEM_NAME_SIZE
+@8436:  ldy     #RareItemName::ITEM_SIZE
         sty     $eb
         ldy     #near RareItemName
         sty     $ef
@@ -1450,7 +1450,7 @@ _c385ad:
         bne     @85ba
         rts
 @85cd:  inx
-        cpx     #ITEM_NAME_SIZE
+        cpx     #ItemName::ITEM_SIZE
         bne     @85b0
         bra     @85b8
 
@@ -2577,11 +2577,11 @@ par16:
 
 .endif
 
-begin_block ItemOptionTextList
+ItemOptionTextList:
         .addr   ItemOptionUseText
         .addr   ItemOptionArrangeText
         .addr   ItemOptionRareText
-end_block ItemOptionTextList
+        calc_size ItemOptionTextList
 
 .if LANG_EN
 ItemTitleText:                  pos_text BG3A, {2, 3}, ItemTitleStr
@@ -2595,12 +2595,12 @@ ItemOptionArrangeText:          pos_text BG3A, {16, 2}, ItemOptionArrangeStr
 ItemOptionRareText:             pos_text BG3A, {23, 2}, ItemOptionRareStr
 .endif
 
-begin_block ItemUsageText
+ItemUsageText:
         raw_text ItemUsageStr
-end_block ItemUsageText
+        calc_size ItemUsageText
 
 ; stat names
-begin_block ItemStatTextList1
+ItemStatTextList1:
         .addr   ItemStrengthText
         .addr   ItemStaminaText
         .addr   ItemMagPwrText
@@ -2615,22 +2615,22 @@ begin_block ItemStatTextList1
         .addr   ItemEvadeSepText
         .addr   ItemMagDefSepText
         .addr   ItemMBlockSepText
-end_block ItemStatTextList1
+        calc_size ItemStatTextList1
 
-begin_block ItemStatTextList2
+ItemStatTextList2:
         .addr   ItemSpeedText
         .addr   ItemBatPwrText
         .addr   ItemDefenseText
         .addr   ItemMagDefText
-end_block ItemStatTextList2
+        calc_size ItemStatTextList2
 
 ; element defense type names
-begin_block ItemElementTextList
+ItemElementTextList:
         .addr   ItemElementHalfText
         .addr   ItemElementAbsorbText
         .addr   ItemElementNullText
         .addr   ItemElementWeakText
-end_block ItemElementTextList
+        calc_size ItemElementTextList
 
 ItemUnknownAttackText:          pos_text BG3B, {29, 23}, ItemUnknownAttackStr
 ItemStrengthText:               pos_text BG3B, {19, 15}, ItemStrengthStr

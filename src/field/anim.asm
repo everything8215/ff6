@@ -274,6 +274,16 @@ loop:   lda     $7e7200,x
 
 ; [ init bg1/bg2 animation ]
 
+.scope MapBGAnimProp
+        ARRAY_LENGTH = 20
+        Start := MapBGAnimProp
+        AnimSpeed := Start
+        Frame1 := Start + 2
+        Frame2 := Start + 4
+        Frame3 := Start + 6
+        Frame4 := Start + 8
+.endscope
+
 .proc InitBG12Anim
         lda     $053b                   ; bg1/bg2 animation index
         and     #$1f
@@ -289,15 +299,15 @@ loop1:  lda     #$e6
         longa_clc
         clr_a
         sta     $1069,y                 ; clear animation counter
-        lda     f:MapBGAnimProp,x       ; animation speed
+        lda     f:MapBGAnimProp::AnimSpeed,x
         sta     $106b,y
-        lda     f:MapBGAnimProp+2,x     ; frame 1 pointer
+        lda     f:MapBGAnimProp::Frame1,x
         sta     $106e,y
-        lda     f:MapBGAnimProp+4,x     ; frame 2 pointer
+        lda     f:MapBGAnimProp::Frame2,x
         sta     $1070,y
-        lda     f:MapBGAnimProp+6,x     ; frame 3 pointer
+        lda     f:MapBGAnimProp::Frame3,x
         sta     $1072,y
-        lda     f:MapBGAnimProp+8,x     ; frame 4 pointer
+        lda     f:MapBGAnimProp::Frame4,x
         sta     $1074,y
         txa
         adc     #10                     ; next tile (8 tiles total)
@@ -324,7 +334,7 @@ loop1:  lda     #$e6
         shorta0
 loop2:  tyx
         longa_clc
-        lda     f:MapBGAnimProp+2,x     ; frame 1 pointer
+        lda     f:MapBGAnimProp::Frame1,x
         tax
         shorta0
         lda     #$80                    ; $1b = tile graphics counter (4 frames per tile, 32 bytes per frame)
@@ -369,6 +379,21 @@ loop2:  tyx
 
 ; [ init bg3 animation ]
 
+.scope MapBG3AnimProp
+        ARRAY_LENGTH = 6
+        Start := MapBG3AnimProp
+        AnimSpeed := Start
+        GfxSize := Start + 2
+        Frame1 := Start + 4
+        Frame2 := Start + 6
+        Frame3 := Start + 8
+        Frame4 := Start + 10
+        Frame5 := Start + 12
+        Frame6 := Start + 14
+        Frame7 := Start + 16
+        Frame8 := Start + 18
+.endscope
+
 .proc InitBG3Anim
         lda     $053b                   ; bg3 animation index
         and     #$e0
@@ -384,25 +409,25 @@ loop2:  tyx
         tax
         clr_a
         sta     $10d1                   ; clear animation counter
-        lda     f:MapBG3AnimProp,x      ; animation speed
+        lda     f:MapBG3AnimProp::AnimSpeed,x
         sta     $10d3
-        lda     f:MapBG3AnimProp+2,x    ; size
+        lda     f:MapBG3AnimProp::GfxSize,x
         sta     $10d5
-        lda     f:MapBG3AnimProp+4,x    ; frame 1 pointer
+        lda     f:MapBG3AnimProp::Frame1,x
         sta     $10d7
-        lda     f:MapBG3AnimProp+6,x    ; frame 2 pointer
+        lda     f:MapBG3AnimProp::Frame2,x
         sta     $10d9
-        lda     f:MapBG3AnimProp+8,x    ; frame 3 pointer
+        lda     f:MapBG3AnimProp::Frame3,x
         sta     $10db
-        lda     f:MapBG3AnimProp+10,x   ; frame 4 pointer
+        lda     f:MapBG3AnimProp::Frame4,x
         sta     $10dd
-        lda     f:MapBG3AnimProp+12,x   ; frame 5 pointer
+        lda     f:MapBG3AnimProp::Frame5,x
         sta     $10df
-        lda     f:MapBG3AnimProp+14,x   ; frame 6 pointer
+        lda     f:MapBG3AnimProp::Frame6,x
         sta     $10e1
-        lda     f:MapBG3AnimProp+16,x   ; frame 7 pointer
+        lda     f:MapBG3AnimProp::Frame7,x
         sta     $10e3
-        lda     f:MapBG3AnimProp+18,x   ; frame 8 pointer
+        lda     f:MapBG3AnimProp::Frame8,x
         sta     $10e5
         shorta0
         tya
@@ -632,23 +657,21 @@ done:   rts
 
 ; ------------------------------------------------------------------------------
 
-MAP_BG_ANIM_PROP_ARRAY_LENGTH = 20
-
 MapBGAnimPropPtrs:
-@91d5:  make_ptr_tbl_rel MapBGAnimProp, MAP_BG_ANIM_PROP_ARRAY_LENGTH
-        .addr   MapBGAnimPropEnd - MapBGAnimProp
+@91d5:  ptr_tbl MapBGAnimProp
+        end_ptr MapBGAnimProp
 
+MapBGAnimProp:
 @91ff:  .include "map_bg_anim_prop.asm"
-        MapBGAnimPropEnd := *
-
-MAP_BG3_ANIM_PROP_ARRAY_LENGTH = 6
+MapBGAnimProp::End:
 
 MapBG3AnimPropPtrs:
-@979f:  make_ptr_tbl_rel MapBG3AnimProp, MAP_BG3_ANIM_PROP_ARRAY_LENGTH
-        .addr   MapBG3AnimPropEnd - MapBG3AnimProp
+@979f:  ptr_tbl MapBG3AnimProp
+        end_ptr MapBG3AnimProp
 
+MapBG3AnimProp:
 @97ad:  .include "map_bg3_anim_prop.asm"
-        MapBG3AnimPropEnd := *
+MapBG3AnimProp::End:
 
 MapPalAnimProp:
 @9825:  .incbin "map_pal_anim_prop.dat"

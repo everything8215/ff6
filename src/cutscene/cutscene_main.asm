@@ -1292,13 +1292,13 @@ LoadTitleGfx:
         jsr     TfrVRAM
         clr_ax
         longa
-        lda     f:MapGfxPtrs+MAP_GFX_SEALED_GATE_1*3,x
+        lda     f:MapGfxPtrs+MAP_GFX::SEALED_GATE_1*3,x
         clc
         adc     #.loword(MapGfx)
         sta     $e7
         inx2
         shorta
-        lda     f:MapGfxPtrs+MAP_GFX_SEALED_GATE_1*3,x
+        lda     f:MapGfxPtrs+MAP_GFX::SEALED_GATE_1*3,x
         adc     #^MapGfx
         sta     $e9
         ldy     #$2000                  ; size = $2000

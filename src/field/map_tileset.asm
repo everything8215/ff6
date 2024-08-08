@@ -5,7 +5,7 @@
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_tileset id, file
-        .ident(.sprintf("MapTileset_%04x", MAP_TILESET::id)) := *
+        array_item MapTileset, {MAP_TILESET::id} := *
         .incbin .sprintf("map_tileset/%s.dat.lz", file)
 .endmac
 
@@ -14,10 +14,12 @@
 .segment "map_tileset"
 
 ; de/0000
+MapTileset:
+
 .if LANG_EN
-begin_block MapTileset, $01b400
+        fixed_block $01b400
 .else
-begin_block MapTileset, $01ba00
+        fixed_block $01ba00
 .endif
         inc_map_tileset FIGARO_CASTLE, "figaro_castle"
         inc_map_tileset VILLAGE_EXT_1_BG1, "village_ext_1_bg1"
@@ -95,18 +97,18 @@ begin_block MapTileset, $01ba00
         inc_map_tileset DARILLS_TOMB_BG1, "darills_tomb_bg1"
         inc_map_tileset DARILLS_TOMB_BG2, .concat("darills_tomb_bg2_", LANG_SUFFIX)
 
-MapTilesetEnd := *
-
-end_block MapTileset
+MapTileset::End:
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
 .segment "map_tileset_ptrs"
 
 ; df/ba00
-begin_block MapTilesetPtrs, $0100
-        make_ptr_tbl_far MapTileset, MAP_TILESET::ARRAY_LENGTH
-        .faraddr MapTilesetEnd - MapTileset
-end_block MapTilesetPtrs
+MapTilesetPtrs:
+        fixed_block $0100
+        ptr_tbl_far MapTileset
+        end_ptr_far MapTileset
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------

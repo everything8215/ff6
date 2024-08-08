@@ -1,6 +1,6 @@
 ; ------------------------------------------------------------------------------
 
-.export EventTriggerPtrs
+.include "event/event_trigger.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -16,16 +16,17 @@
 ; ------------------------------------------------------------------------------
 
 ; c4/0000
-begin_block EventTriggerPtrs, $1a10
-        make_ptr_tbl_rel EventTrigger, $01a0, EventTriggerPtrs
-        .addr EventTriggerEnd - EventTriggerPtrs
+EventTriggerPtrs:
+        fixed_block $1a10
+        ptr_tbl EventTrigger
+        end_ptr EventTrigger
 
 ; ------------------------------------------------------------------------------
 
 ; c4/0342
 EventTrigger:
 
-EventTrigger_0000:
+EventTrigger::_0:
         make_event_trigger {179, 71}, _cb0bb7
         make_event_trigger {64, 76}, _ca5eb5
         make_event_trigger {65, 76}, _ca5eb5
@@ -36,64 +37,64 @@ EventTrigger_0000:
         make_event_trigger {121, 187}, _ca5ecf
         make_event_trigger {75, 102}, _ca5ee3
 
-EventTrigger_0001:
+EventTrigger::_1:
         make_event_trigger {81, 85}, _ca5f0b
         make_event_trigger {82, 85}, _ca5f0b
         make_event_trigger {53, 58}, _ca5f18
         make_event_trigger {54, 58}, _ca5f18
         make_event_trigger {73, 231}, _ca5f39
 
-EventTrigger_0002:
+EventTrigger::_2:
 
-EventTrigger_0003:
+EventTrigger::_3:
         make_event_trigger {8, 8}, WorldTent
         make_event_trigger {8, 9}, _ca5ade
 
-EventTrigger_0004:
+EventTrigger::_4:
 
-EventTrigger_0005:
+EventTrigger::_5:
 
-EventTrigger_0006:
+EventTrigger::_6:
         make_event_trigger {14, 6}, _caf532
 
-EventTrigger_0007:
+EventTrigger::_7:
         make_event_trigger {57, 14}, _cb23d8
         make_event_trigger {8, 36}, _caf4b1
 
-EventTrigger_0008:
+EventTrigger::_8:
 
-EventTrigger_0009:
+EventTrigger::_9:
         make_event_trigger {8, 6}, SavePoint
 
-EventTrigger_000a:
+EventTrigger::_10:
         make_event_trigger {22, 5}, _ca5a16
         make_event_trigger {22, 6}, _ca5a16
         make_event_trigger {22, 7}, _ca5a16
 
-EventTrigger_000b:
+EventTrigger::_11:
         make_event_trigger {15, 8}, _caf532
 
-EventTrigger_000c:
+EventTrigger::_12:
 
-EventTrigger_000d:
+EventTrigger::_13:
 
-EventTrigger_000e:
+EventTrigger::_14:
 
-EventTrigger_000f:
+EventTrigger::_15:
         make_event_trigger {87, 47}, _cc338f
         make_event_trigger {88, 47}, _cc338f
         make_event_trigger {89, 47}, _cc338f
 
-EventTrigger_0010:
+EventTrigger::_16:
 
-EventTrigger_0011:
+EventTrigger::_17:
         make_event_trigger {15, 8}, EnterKefkasTower
         make_event_trigger {16, 8}, EnterPhoenixCave
         make_event_trigger {17, 8}, DoomGazeMagicite
 
-EventTrigger_0012:
+EventTrigger::_18:
 
-EventTrigger_0013:
+EventTrigger::_19:
         make_event_trigger {38, 50}, _cc9b1d
         make_event_trigger {38, 38}, _cc9b71
         make_event_trigger {41, 39}, _cc9bb3
@@ -101,7 +102,7 @@ EventTrigger_0013:
         make_event_trigger {38, 26}, _cc9c08
         make_event_trigger {38, 17}, _cc9c94
 
-EventTrigger_0014:
+EventTrigger::_20:
         make_event_trigger {37, 49}, _ccb054
         make_event_trigger {38, 49}, _ccb07b
         make_event_trigger {39, 49}, _ccb06a
@@ -122,15 +123,15 @@ EventTrigger_0014:
         make_event_trigger {38, 20}, _ccd456
         make_event_trigger {39, 20}, _ccd456
 
-EventTrigger_0015:
+EventTrigger::_21:
         make_event_trigger {30, 22}, _ccd48a
         make_event_trigger {31, 22}, _ccd48a
         make_event_trigger {32, 22}, _ccd48a
 
-EventTrigger_0016:
+EventTrigger::_22:
         make_event_trigger {25, 5}, _ccc581
 
-EventTrigger_0017:
+EventTrigger::_23:
         make_event_trigger {22, 20}, _ccd4a8
         make_event_trigger {8, 18}, _ccd4dd
         make_event_trigger {9, 18}, _ccd4fe
@@ -139,26 +140,26 @@ EventTrigger_0017:
         make_event_trigger {10, 19}, _ccd523
         make_event_trigger {9, 20}, _ccd523
 
-EventTrigger_0018:
+EventTrigger::_24:
         make_event_trigger {25, 14}, _cc38be
         make_event_trigger {45, 51}, _cacd17
 
-EventTrigger_0019:
+EventTrigger::_25:
         make_event_trigger {11, 12}, _cc38cb
         make_event_trigger {6, 15}, _cc38d8
 
-EventTrigger_001a:
+EventTrigger::_26:
         make_event_trigger {44, 14}, _cc38e5
 
-EventTrigger_001b:
+EventTrigger::_27:
         make_event_trigger {64, 14}, _cc38f2
 
-EventTrigger_001c:
+EventTrigger::_28:
         make_event_trigger {8, 46}, _cc38ff
 
-EventTrigger_001d:
+EventTrigger::_29:
 
-EventTrigger_001e:
+EventTrigger::_30:
         make_event_trigger {66, 35}, _ccb3fa
         make_event_trigger {79, 17}, _ccd3ce
         make_event_trigger {110, 26}, _cc390c
@@ -167,59 +168,59 @@ EventTrigger_001e:
         make_event_trigger {79, 18}, _cc3933
         make_event_trigger {80, 36}, _cc394d
 
-EventTrigger_001f:
+EventTrigger::_31:
 
-EventTrigger_0020:
+EventTrigger::_32:
         make_event_trigger {37, 50}, _cc36f2
         make_event_trigger {38, 50}, _cc36f2
         make_event_trigger {39, 50}, _cc36f2
         make_event_trigger {15, 57}, _cc388f
 
-EventTrigger_0021:
+EventTrigger::_33:
 
-EventTrigger_0022:
+EventTrigger::_34:
         make_event_trigger {25, 5}, SavePoint
 
-EventTrigger_0023:
+EventTrigger::_35:
         make_event_trigger {9, 14}, _cc3719
         make_event_trigger {9, 12}, _cc37e7
 
-EventTrigger_0024:
+EventTrigger::_36:
 
-EventTrigger_0025:
+EventTrigger::_37:
 
-EventTrigger_0026:
+EventTrigger::_38:
 
-EventTrigger_0027:
+EventTrigger::_39:
         make_event_trigger {31, 22}, _cc9db2
         make_event_trigger {32, 22}, _cc9d97
         make_event_trigger {30, 22}, _cc9da7
         make_event_trigger {30, 37}, _cc9d0d
 
-EventTrigger_0028:
+EventTrigger::_40:
 
-EventTrigger_0029:
+EventTrigger::_41:
         make_event_trigger {42, 9}, _cc9e23
         make_event_trigger {38, 34}, _cc9f2a
         make_event_trigger {42, 5}, _cc9f37
         make_event_trigger {33, 22}, SavePoint
 
-EventTrigger_002a:
+EventTrigger::_42:
         make_event_trigger {87, 12}, _cc9f6d
 
-EventTrigger_002b:
+EventTrigger::_43:
 
-EventTrigger_002c:
+EventTrigger::_44:
 
-EventTrigger_002d:
+EventTrigger::_45:
 
-EventTrigger_002e:
+EventTrigger::_46:
 
-EventTrigger_002f:
+EventTrigger::_47:
 
-EventTrigger_0030:
+EventTrigger::_48:
 
-EventTrigger_0031:
+EventTrigger::_49:
         make_event_trigger {110, 23}, _ccda4a
         make_event_trigger {113, 23}, _ccdad5
         make_event_trigger {106, 20}, _ccdb60
@@ -241,99 +242,99 @@ EventTrigger_0031:
         make_event_trigger {111, 26}, _ccd9c4
         make_event_trigger {111, 12}, _cce3f4
 
-EventTrigger_0032:
+EventTrigger::_50:
         make_event_trigger {55, 11}, _cca2e5
         make_event_trigger {66, 41}, SavePoint
 
-EventTrigger_0033:
+EventTrigger::_51:
 
-EventTrigger_0034:
+EventTrigger::_52:
 
-EventTrigger_0035:
+EventTrigger::_53:
         make_event_trigger {32, 44}, _ca7782
 
-EventTrigger_0036:
+EventTrigger::_54:
 
-EventTrigger_0037:
+EventTrigger::_55:
         make_event_trigger {27, 41}, _ca714c
         make_event_trigger {28, 41}, _ca714c
         make_event_trigger {29, 41}, _ca714c
         make_event_trigger {28, 31}, _ca89ed
         make_event_trigger {28, 40}, _ca7171
 
-EventTrigger_0038:
+EventTrigger::_56:
 
-EventTrigger_0039:
+EventTrigger::_57:
 
-EventTrigger_003a:
+EventTrigger::_58:
 
-EventTrigger_003b:
+EventTrigger::_59:
         make_event_trigger {47, 52}, _ca71bf
 
-EventTrigger_003c:
+EventTrigger::_60:
 
-EventTrigger_003d:
+EventTrigger::_61:
         make_event_trigger {5, 35}, _ca69cd
         make_event_trigger {35, 40}, _ca6a2c
         make_event_trigger {35, 35}, _ca5f25
 
-EventTrigger_003e:
+EventTrigger::_62:
 
-EventTrigger_003f:
+EventTrigger::_63:
 
-EventTrigger_0040:
+EventTrigger::_64:
 
-EventTrigger_0041:
+EventTrigger::_65:
 
-EventTrigger_0042:
+EventTrigger::_66:
 
-EventTrigger_0043:
+EventTrigger::_67:
 
-EventTrigger_0044:
+EventTrigger::_68:
 
-EventTrigger_0045:
+EventTrigger::_69:
         make_event_trigger {61, 55}, _ca7674
         make_event_trigger {22, 11}, _ca7688
 
-EventTrigger_0046:
+EventTrigger::_70:
         make_event_trigger {47, 38}, _ca89af
         make_event_trigger {50, 31}, _ca769c
         make_event_trigger {47, 29}, _cba3e4
 
-EventTrigger_0047:
+EventTrigger::_71:
         make_event_trigger {10, 48}, _ca5ef7
         make_event_trigger {11, 48}, _ca5ef7
 
-EventTrigger_0048:
+EventTrigger::_72:
         make_event_trigger {16, 42}, _ca766c
 
-EventTrigger_0049:
+EventTrigger::_73:
         make_event_trigger {47, 33}, _ca5f8a
         make_event_trigger {47, 29}, _cba3e4
 
-EventTrigger_004a:
+EventTrigger::_74:
 
-EventTrigger_004b:
+EventTrigger::_75:
         make_event_trigger {23, 17}, _ca7b46
 
-EventTrigger_004c:
+EventTrigger::_76:
         make_event_trigger {52, 15}, _ca7f92
 
-EventTrigger_004d:
+EventTrigger::_77:
         make_event_trigger {103, 17}, _ca7fc6
         make_event_trigger {114, 17}, _ca7fd3
 
-EventTrigger_004e:
+EventTrigger::_78:
         make_event_trigger {26, 53}, _ca7f78
 
-EventTrigger_004f:
+EventTrigger::_79:
 
-EventTrigger_0050:
+EventTrigger::_80:
         make_event_trigger {87, 47}, _ca8021
         make_event_trigger {88, 47}, _ca8021
         make_event_trigger {89, 47}, _ca8021
 
-EventTrigger_0051:
+EventTrigger::_81:
         make_event_trigger {16, 15}, _ca7b34
         make_event_trigger {13, 53}, _ca7b34
         make_event_trigger {7, 5}, _ca7b34
@@ -347,24 +348,24 @@ EventTrigger_0051:
         make_event_trigger {4, 17}, _ca7f9f
         make_event_trigger {16, 16}, _ca7fac
 
-EventTrigger_0052:
+EventTrigger::_82:
 
-EventTrigger_0053:
+EventTrigger::_83:
         make_event_trigger {35, 14}, _ca869c
         make_event_trigger {35, 15}, _ca868b
         make_event_trigger {29, 9}, _ca8632
         make_event_trigger {7, 11}, _ca7b34
         make_event_trigger {18, 5}, _ca7b46
 
-EventTrigger_0054:
+EventTrigger::_84:
         make_event_trigger {18, 49}, _ca7913
         make_event_trigger {12, 54}, _ca793e
         make_event_trigger {53, 57}, SavePoint
 
-EventTrigger_0055:
+EventTrigger::_85:
         make_event_trigger {104, 58}, _ca8007
 
-EventTrigger_0056:
+EventTrigger::_86:
         make_event_trigger {52, 29}, _ca8973
         make_event_trigger {3, 53}, _ca794a
         make_event_trigger {6, 38}, _ca798e
@@ -374,30 +375,30 @@ EventTrigger_0056:
         make_event_trigger {49, 55}, _ca7ffa
         make_event_trigger {52, 27}, _ca8014
 
-EventTrigger_0057:
+EventTrigger::_87:
 
-EventTrigger_0058:
+EventTrigger::_88:
         make_event_trigger {11, 34}, SavePoint
 
-EventTrigger_0059:
+EventTrigger::_89:
 
-EventTrigger_005a:
+EventTrigger::_90:
         make_event_trigger {47, 29}, _ca76b3
         make_event_trigger {47, 25}, _ca76ca
         make_event_trigger {55, 31}, _ca76e1
 
-EventTrigger_005b:
+EventTrigger::_91:
         make_event_trigger {7, 1}, _ca7f85
         make_event_trigger {8, 1}, _ca7f85
         make_event_trigger {9, 1}, _ca7f85
         make_event_trigger {12, 9}, _ca77ec
         make_event_trigger {13, 9}, _ca77ec
 
-EventTrigger_005c:
+EventTrigger::_92:
 
-EventTrigger_005d:
+EventTrigger::_93:
 
-EventTrigger_005e:
+EventTrigger::_94:
         make_event_trigger {81, 35}, _ca80bf
         make_event_trigger {75, 28}, _ca80cf
         make_event_trigger {78, 29}, _ca80df
@@ -407,73 +408,73 @@ EventTrigger_005e:
         make_event_trigger {81, 29}, _cacd17
         make_event_trigger {84, 29}, _cacd17
 
-EventTrigger_005f:
+EventTrigger::_95:
 
-EventTrigger_0060:
+EventTrigger::_96:
         make_event_trigger {16, 22}, _ca820f
         make_event_trigger {14, 12}, _ca8252
 
-EventTrigger_0061:
+EventTrigger::_97:
         make_event_trigger {34, 24}, _ca8230
 
-EventTrigger_0062:
+EventTrigger::_98:
         make_event_trigger {11, 32}, _ca8267
         make_event_trigger {10, 32}, _ca8267
 
-EventTrigger_0063:
+EventTrigger::_99:
 
-EventTrigger_0064:
+EventTrigger::_100:
 
-EventTrigger_0065:
+EventTrigger::_101:
 
-EventTrigger_0066:
+EventTrigger::_102:
 
-EventTrigger_0067:
+EventTrigger::_103:
         make_event_trigger {57, 8}, SavePoint
 
-EventTrigger_0068:
+EventTrigger::_104:
         make_event_trigger {108, 53}, _cc3940
 
-EventTrigger_0069:
+EventTrigger::_105:
 
-EventTrigger_006a:
+EventTrigger::_106:
 
-EventTrigger_006b:
+EventTrigger::_107:
         make_event_trigger {60, 32}, SavePoint
 
-EventTrigger_006c:
+EventTrigger::_108:
 
-EventTrigger_006d:
+EventTrigger::_109:
         make_event_trigger {15, 22}, _caf6f0
         make_event_trigger {22, 21}, _caf745
         make_event_trigger {15, 24}, _caf717
         make_event_trigger {25, 23}, _cb002b
 
-EventTrigger_006e:
+EventTrigger::_110:
         make_event_trigger {27, 50}, _cb0412
         make_event_trigger {50, 39}, SavePoint
 
-EventTrigger_006f:
+EventTrigger::_111:
 
-EventTrigger_0070:
+EventTrigger::_112:
 
-EventTrigger_0071:
+EventTrigger::_113:
         make_event_trigger {31, 51}, _cb059f
 
-EventTrigger_0072:
+EventTrigger::_114:
         make_event_trigger {20, 21}, SavePoint
         make_event_trigger {6, 13}, SavePoint
         make_event_trigger {20, 24}, _cb051c
         make_event_trigger {6, 15}, _cb055c
 
-EventTrigger_0073:
+EventTrigger::_115:
 
-EventTrigger_0074:
+EventTrigger::_116:
         make_event_trigger {118, 9}, _cb6912
         make_event_trigger {113, 9}, _cb6954
         make_event_trigger {116, 15}, _cb5f7b
 
-EventTrigger_0075:
+EventTrigger::_117:
         make_event_trigger {36, 3}, _cb0c2f
         make_event_trigger {37, 2}, _cb0c47
         make_event_trigger {34, 2}, _cb0c5e
@@ -510,9 +511,9 @@ EventTrigger_0075:
         make_event_trigger {32, 8}, _cb0eed
         make_event_trigger {33, 9}, _cb0eed
 
-EventTrigger_0076:
+EventTrigger::_118:
 
-EventTrigger_0077:
+EventTrigger::_119:
         make_event_trigger {1, 21}, _cb18d9
         make_event_trigger {1, 22}, _cb18d9
         make_event_trigger {1, 23}, _cb18d9
@@ -572,7 +573,7 @@ EventTrigger_0077:
         make_event_trigger {36, 14}, _cb1a23
         make_event_trigger {37, 14}, _cb1a1a
 
-EventTrigger_0078:
+EventTrigger::_120:
         make_event_trigger {32, 48}, _cb9e90
         make_event_trigger {33, 48}, _cb9e90
         make_event_trigger {34, 48}, _cb9e90
@@ -580,11 +581,11 @@ EventTrigger_0078:
         make_event_trigger {33, 57}, _cb9e9c
         make_event_trigger {35, 57}, _cb9e9c
 
-EventTrigger_0079:
+EventTrigger::_121:
 
-EventTrigger_007a:
+EventTrigger::_122:
 
-EventTrigger_007b:
+EventTrigger::_123:
         make_event_trigger {4, 34}, _cba29f
         make_event_trigger {42, 8}, _cba395
         make_event_trigger {4, 12}, _cb827d
@@ -592,16 +593,16 @@ EventTrigger_007b:
         make_event_trigger {17, 39}, _cba0d2
         make_event_trigger {10, 50}, _cba0df
 
-EventTrigger_007c:
+EventTrigger::_124:
         make_event_trigger {28, 36}, _cb1283
 
-EventTrigger_007d:
+EventTrigger::_125:
         make_event_trigger {45, 28}, _cb95f3
         make_event_trigger {46, 28}, _cb95f3
         make_event_trigger {15, 30}, _cb9643
         make_event_trigger {16, 30}, _cb9643
 
-EventTrigger_007e:
+EventTrigger::_126:
         make_event_trigger {8, 8}, SavePoint
         make_event_trigger {28, 36}, _cb96c3
         make_event_trigger {25, 11}, _cb97d6
@@ -612,21 +613,21 @@ EventTrigger_007e:
         make_event_trigger {22, 10}, _cb97c6
         make_event_trigger {28, 10}, _cb97ce
 
-EventTrigger_007f:
+EventTrigger::_127:
         make_event_trigger {7, 11}, _cc0bd8
 
-EventTrigger_0080:
+EventTrigger::_128:
 
-EventTrigger_0081:
+EventTrigger::_129:
 
-EventTrigger_0082:
+EventTrigger::_130:
 
-EventTrigger_0083:
+EventTrigger::_131:
         make_event_trigger {7, 7}, _cb6445
 
-EventTrigger_0084:
+EventTrigger::_132:
 
-EventTrigger_0085:
+EventTrigger::_133:
         make_event_trigger {3, 12}, _cba3d1
         make_event_trigger {9, 10}, _cba3e4
         make_event_trigger {8, 10}, _cba3e4
@@ -634,26 +635,26 @@ EventTrigger_0085:
         make_event_trigger {6, 10}, _cba3e4
         make_event_trigger {5, 9}, _cba3f9
 
-EventTrigger_0086:
+EventTrigger::_134:
         make_event_trigger {11, 7}, _cba3c4
 
-EventTrigger_0087:
+EventTrigger::_135:
 
-EventTrigger_0088:
+EventTrigger::_136:
 
-EventTrigger_0089:
+EventTrigger::_137:
 
-EventTrigger_008a:
+EventTrigger::_138:
 
-EventTrigger_008b:
+EventTrigger::_139:
 
-EventTrigger_008c:
+EventTrigger::_140:
         make_event_trigger {79, 13}, _cba852
         make_event_trigger {79, 11}, _cba864
         make_event_trigger {72, 10}, _cba8f1
         make_event_trigger {72, 11}, _cba8e7
 
-EventTrigger_008d:
+EventTrigger::_141:
         make_event_trigger {103, 8}, _cba406
         make_event_trigger {116, 8}, _cba63f
         make_event_trigger {82, 8}, _cba64e
@@ -665,7 +666,7 @@ EventTrigger_008d:
         make_event_trigger {32, 7}, _cbb9d4
         make_event_trigger {55, 8}, _cbad52
 
-EventTrigger_008e:
+EventTrigger::_142:
         make_event_trigger {72, 8}, _cba5f9
         make_event_trigger {74, 8}, _cba60e
         make_event_trigger {67, 8}, _cba623
@@ -679,11 +680,11 @@ EventTrigger_008e:
         make_event_trigger {34, 5}, _cbb4d5
         make_event_trigger {11, 8}, _cbb5b6
 
-EventTrigger_008f:
+EventTrigger::_143:
         make_event_trigger {38, 8}, _cb93b8
         make_event_trigger {88, 8}, _cb9335
 
-EventTrigger_0090:
+EventTrigger::_144:
         make_event_trigger {27, 5}, _cb9297
         make_event_trigger {23, 5}, _cb9330
         make_event_trigger {30, 7}, _cb9330
@@ -704,7 +705,7 @@ EventTrigger_0090:
         make_event_trigger {9, 9}, _cb8fbf
         make_event_trigger {10, 9}, _cb8fe9
 
-EventTrigger_0091:
+EventTrigger::_145:
         make_event_trigger {26, 10}, _cbaa26
         make_event_trigger {26, 11}, _cba75c
         make_event_trigger {1, 7}, _cbaac4
@@ -715,7 +716,7 @@ EventTrigger_0091:
         make_event_trigger {26, 8}, _cbb399
         make_event_trigger {27, 9}, _cbb399
 
-EventTrigger_0092:
+EventTrigger::_146:
         make_event_trigger {22, 8}, _cbaef5
         make_event_trigger {25, 7}, _cbaf12
         make_event_trigger {8, 13}, _cba808
@@ -728,12 +729,12 @@ EventTrigger_0092:
         make_event_trigger {23, 13}, _cba406
         make_event_trigger {20, 10}, SavePoint
 
-EventTrigger_0093:
+EventTrigger::_147:
         make_event_trigger {16, 6}, _cbb014
 
-EventTrigger_0094:
+EventTrigger::_148:
 
-EventTrigger_0095:
+EventTrigger::_149:
         make_event_trigger {24, 8}, _cba406
         make_event_trigger {2, 7}, _cba406
         make_event_trigger {2, 8}, _cba406
@@ -742,11 +743,11 @@ EventTrigger_0095:
         make_event_trigger {28, 5}, _cbb645
         make_event_trigger {24, 6}, SavePoint
 
-EventTrigger_0096:
+EventTrigger::_150:
         make_event_trigger {40, 52}, _cc4b4b
         make_event_trigger {40, 50}, _cc4c1b
 
-EventTrigger_0097:
+EventTrigger::_151:
         make_event_trigger {26, 8}, _cba7b1
         make_event_trigger {26, 9}, _cba7b1
         make_event_trigger {1, 8}, _cba7c6
@@ -754,9 +755,9 @@ EventTrigger_0097:
         make_event_trigger {19, 7}, _cba6bd
         make_event_trigger {9, 7}, _cba6ca
 
-EventTrigger_0098:
+EventTrigger::_152:
 
-EventTrigger_0099:
+EventTrigger::_153:
         make_event_trigger {23, 29}, _cba839
         make_event_trigger {23, 12}, _cba825
         make_event_trigger {8, 29}, _cba81e
@@ -765,16 +766,16 @@ EventTrigger_0099:
         make_event_trigger {8, 11}, _cba406
         make_event_trigger {8, 12}, _cb93ab
 
-EventTrigger_009a:
+EventTrigger::_154:
         make_event_trigger {52, 57}, _cc4447
         make_event_trigger {52, 58}, _cc4990
         make_event_trigger {50, 53}, _cc4abd
 
-EventTrigger_009b:
+EventTrigger::_155:
         make_event_trigger {10, 5}, _cb6a2f
         make_event_trigger {10, 4}, _cbc214
 
-EventTrigger_009c:
+EventTrigger::_156:
         make_event_trigger {15, 19}, _cbc027
         make_event_trigger {16, 20}, _cbc027
         make_event_trigger {14, 20}, _cbc027
@@ -805,35 +806,35 @@ EventTrigger_009c:
         make_event_trigger {20, 21}, _cbc223
         make_event_trigger {21, 21}, _cbc223
 
-EventTrigger_009d:
+EventTrigger::_157:
 
-EventTrigger_009e:
+EventTrigger::_158:
         make_event_trigger {27, 15}, _cc43e2
         make_event_trigger {27, 16}, _cc43e2
 
-EventTrigger_009f:
+EventTrigger::_159:
 
-EventTrigger_00a0:
+EventTrigger::_160:
 
-EventTrigger_00a1:
+EventTrigger::_161:
 
-EventTrigger_00a2:
+EventTrigger::_162:
         make_event_trigger {29, 26}, _cc5082
         make_event_trigger {29, 12}, _cacd17
 
-EventTrigger_00a3:
+EventTrigger::_163:
         make_event_trigger {50, 17}, _cc509a
 
-EventTrigger_00a4:
+EventTrigger::_164:
 
-EventTrigger_00a5:
+EventTrigger::_165:
         make_event_trigger {11, 26}, _cc50b2
         make_event_trigger {11, 24}, _cc4b0c
         make_event_trigger {7, 17}, _cc4b29
 
-EventTrigger_00a6:
+EventTrigger::_166:
 
-EventTrigger_00a7:
+EventTrigger::_167:
         make_event_trigger {12, 22}, _cbc228
         make_event_trigger {13, 18}, _cbc35a
         make_event_trigger {5, 16}, _cbc3d2
@@ -841,106 +842,106 @@ EventTrigger_00a7:
         make_event_trigger {25, 17}, _cbc5fb
         make_event_trigger {25, 26}, _cbc21e
 
-EventTrigger_00a8:
+EventTrigger::_168:
         make_event_trigger {8, 11}, _cbc84d
         make_event_trigger {9, 11}, _cbc84d
         make_event_trigger {8, 8}, _cbc223
         make_event_trigger {9, 8}, _cbc223
 
-EventTrigger_00a9:
+EventTrigger::_169:
 
-EventTrigger_00aa:
+EventTrigger::_170:
 
-EventTrigger_00ab:
+EventTrigger::_171:
 
-EventTrigger_00ac:
+EventTrigger::_172:
 
-EventTrigger_00ad:
+EventTrigger::_173:
 
-EventTrigger_00ae:
+EventTrigger::_174:
 
-EventTrigger_00af:
+EventTrigger::_175:
         make_event_trigger {43, 4}, _ca8c41
         make_event_trigger {6, 36}, _ca8c94
         make_event_trigger {49, 42}, _ca8cae
         make_event_trigger {55, 46}, _ca8ac4
 
-EventTrigger_00b0:
+EventTrigger::_176:
 
-EventTrigger_00b1:
+EventTrigger::_177:
 
-EventTrigger_00b2:
+EventTrigger::_178:
 
-EventTrigger_00b3:
+EventTrigger::_179:
         make_event_trigger {48, 11}, _cc4362
         make_event_trigger {40, 15}, SavePoint
 
-EventTrigger_00b4:
+EventTrigger::_180:
         make_event_trigger {44, 55}, _cc3fa7
 
-EventTrigger_00b5:
+EventTrigger::_181:
 
-EventTrigger_00b6:
+EventTrigger::_182:
 
-EventTrigger_00b7:
+EventTrigger::_183:
 
-EventTrigger_00b8:
+EventTrigger::_184:
 
-EventTrigger_00b9:
+EventTrigger::_185:
 
-EventTrigger_00ba:
+EventTrigger::_186:
 
-EventTrigger_00bb:
+EventTrigger::_187:
         make_event_trigger {17, 4}, _ca9282
 
-EventTrigger_00bc:
+EventTrigger::_188:
 
-EventTrigger_00bd:
+EventTrigger::_189:
         make_event_trigger {14, 6}, _cc3be2
 
-EventTrigger_00be:
+EventTrigger::_190:
 
-EventTrigger_00bf:
+EventTrigger::_191:
         make_event_trigger {17, 21}, _cc6999
 
-EventTrigger_00c0:
+EventTrigger::_192:
 
-EventTrigger_00c1:
+EventTrigger::_193:
 
-EventTrigger_00c2:
+EventTrigger::_194:
         make_event_trigger {21, 44}, _cc697f
         make_event_trigger {12, 40}, _cc698c
 
-EventTrigger_00c3:
+EventTrigger::_195:
         make_event_trigger {38, 62}, _cc6965
         make_event_trigger {38, 51}, _cc6972
         make_event_trigger {13, 56}, _cc6d31
 
-EventTrigger_00c4:
+EventTrigger::_196:
 
-EventTrigger_00c5:
+EventTrigger::_197:
         make_event_trigger {39, 17}, _cc6a2e
         make_event_trigger {39, 19}, _cc6958
 
-EventTrigger_00c6:
+EventTrigger::_198:
 
-EventTrigger_00c7:
+EventTrigger::_199:
 
-EventTrigger_00c8:
+EventTrigger::_200:
 
-EventTrigger_00c9:
+EventTrigger::_201:
 
-EventTrigger_00ca:
+EventTrigger::_202:
 
-EventTrigger_00cb:
+EventTrigger::_203:
 
-EventTrigger_00cc:
+EventTrigger::_204:
 
-EventTrigger_00cd:
+EventTrigger::_205:
 
-EventTrigger_00ce:
+EventTrigger::_206:
 
-EventTrigger_00cf:
+EventTrigger::_207:
         make_event_trigger {95, 60}, _cb4962
         make_event_trigger {90, 50}, _cb4b86
         make_event_trigger {92, 50}, _cb4b86
@@ -955,11 +956,11 @@ EventTrigger_00cf:
         make_event_trigger {77, 54}, _cb4acd
         make_event_trigger {79, 55}, _cb4b0c
 
-EventTrigger_00d0:
+EventTrigger::_208:
         make_event_trigger {80, 14}, _cb4dc6
         make_event_trigger {75, 20}, _cb4ce1
 
-EventTrigger_00d1:
+EventTrigger::_209:
         make_event_trigger {99, 30}, _cb47ae
         make_event_trigger {111, 18}, _cb47f4
         make_event_trigger {111, 25}, _cb4844
@@ -972,30 +973,30 @@ EventTrigger_00d1:
         make_event_trigger {118, 14}, _cb4930
         make_event_trigger {116, 17}, _cb4893
 
-EventTrigger_00d2:
+EventTrigger::_210:
 
-EventTrigger_00d3:
+EventTrigger::_211:
 
-EventTrigger_00d4:
+EventTrigger::_212:
 
-EventTrigger_00d5:
+EventTrigger::_213:
 
-EventTrigger_00d6:
+EventTrigger::_214:
 
-EventTrigger_00d7:
+EventTrigger::_215:
 
-EventTrigger_00d8:
+EventTrigger::_216:
 
-EventTrigger_00d9:
+EventTrigger::_217:
 
-EventTrigger_00da:
+EventTrigger::_218:
         make_event_trigger {56, 49}, _caa78f
 
-EventTrigger_00db:
+EventTrigger::_219:
 
-EventTrigger_00dc:
+EventTrigger::_220:
 
-EventTrigger_00dd:
+EventTrigger::_221:
         make_event_trigger {28, 39}, _ca95c6
         make_event_trigger {25, 39}, _ca95dc
         make_event_trigger {21, 39}, _ca95f2
@@ -1006,63 +1007,63 @@ EventTrigger_00dd:
         make_event_trigger {19, 33}, _ca9607
         make_event_trigger {35, 41}, _ca963d
 
-EventTrigger_00de:
+EventTrigger::_222:
 
-EventTrigger_00df:
+EventTrigger::_223:
 
-EventTrigger_00e0:
+EventTrigger::_224:
 
-EventTrigger_00e1:
+EventTrigger::_225:
         make_event_trigger {125, 46}, _ca94ff
         make_event_trigger {98, 59}, _ca96bd
         make_event_trigger {103, 55}, _ca971a
 
-EventTrigger_00e2:
+EventTrigger::_226:
 
-EventTrigger_00e3:
+EventTrigger::_227:
 
-EventTrigger_00e4:
+EventTrigger::_228:
 
-EventTrigger_00e5:
+EventTrigger::_229:
 
-EventTrigger_00e6:
+EventTrigger::_230:
 
-EventTrigger_00e7:
+EventTrigger::_231:
 
-EventTrigger_00e8:
+EventTrigger::_232:
         make_event_trigger {120, 27}, _cab484
         make_event_trigger {118, 27}, _cab497
         make_event_trigger {117, 27}, _cab570
         make_event_trigger {116, 27}, _cab6fb
 
-EventTrigger_00e9:
+EventTrigger::_233:
 
-EventTrigger_00ea:
+EventTrigger::_234:
 
-EventTrigger_00eb:
+EventTrigger::_235:
 
-EventTrigger_00ec:
+EventTrigger::_236:
         make_event_trigger {8, 9}, _cabe6d
 
-EventTrigger_00ed:
+EventTrigger::_237:
         make_event_trigger {72, 30}, _ca5f48
         make_event_trigger {48, 30}, _ca5f69
 
-EventTrigger_00ee:
+EventTrigger::_238:
         make_event_trigger {99, 18}, _cabae6
         make_event_trigger {97, 7}, _cabafd
 
-EventTrigger_00ef:
+EventTrigger::_239:
 
-EventTrigger_00f0:
+EventTrigger::_240:
         make_event_trigger {52, 39}, _cc8157
         make_event_trigger {52, 40}, _cc817f
         make_event_trigger {52, 41}, _cc816b
         make_event_trigger {58, 7}, SavePoint
 
-EventTrigger_00f1:
+EventTrigger::_241:
 
-EventTrigger_00f2:
+EventTrigger::_242:
         make_event_trigger {43, 38}, _cc96c9
         make_event_trigger {30, 59}, _cc8321
         make_event_trigger {31, 60}, _cc8321
@@ -1073,7 +1074,7 @@ EventTrigger_00f2:
         make_event_trigger {57, 39}, _cc93dc
         make_event_trigger {58, 39}, _cc93dc
 
-EventTrigger_00f3:
+EventTrigger::_243:
         make_event_trigger {11, 25}, _cc972c
         make_event_trigger {15, 26}, _cc977b
         make_event_trigger {15, 27}, _cc9781
@@ -1101,24 +1102,24 @@ EventTrigger_00f3:
         make_event_trigger {18, 31}, _cc9359
         make_event_trigger {19, 31}, _cc9359
 
-EventTrigger_00f4:
+EventTrigger::_244:
 
-EventTrigger_00f5:
+EventTrigger::_245:
         make_event_trigger {7, 58}, _cc92f5
 
-EventTrigger_00f6:
+EventTrigger::_246:
         make_event_trigger {27, 16}, _cc931d
 
-EventTrigger_00f7:
+EventTrigger::_247:
         make_event_trigger {47, 20}, _cc9345
 
-EventTrigger_00f8:
+EventTrigger::_248:
         make_event_trigger {8, 15}, _cc9331
 
-EventTrigger_00f9:
+EventTrigger::_249:
         make_event_trigger {20, 33}, _cc9309
 
-EventTrigger_00fa:
+EventTrigger::_250:
         make_event_trigger {54, 16}, _cc8490
         make_event_trigger {53, 11}, _cc85e3
         make_event_trigger {55, 11}, _cc860d
@@ -1129,30 +1130,30 @@ EventTrigger_00fa:
         make_event_trigger {51, 50}, _cc8342
         make_event_trigger {23, 12}, _cc91c0
 
-EventTrigger_00fb:
+EventTrigger::_251:
         make_event_trigger {80, 20}, _cc8e63
 
-EventTrigger_00fc:
+EventTrigger::_252:
 
-EventTrigger_00fd:
+EventTrigger::_253:
 
-EventTrigger_00fe:
+EventTrigger::_254:
 
-EventTrigger_00ff:
+EventTrigger::_255:
 
-EventTrigger_0100:
+EventTrigger::_256:
 
-EventTrigger_0101:
+EventTrigger::_257:
 
-EventTrigger_0102:
+EventTrigger::_258:
 
-EventTrigger_0103:
+EventTrigger::_259:
 
-EventTrigger_0104:
+EventTrigger::_260:
 
-EventTrigger_0105:
+EventTrigger::_261:
 
-EventTrigger_0106:
+EventTrigger::_262:
         make_event_trigger {22, 53}, _cc7651
         make_event_trigger {22, 54}, _cc765f
         make_event_trigger {10, 54}, _cc7682
@@ -1176,7 +1177,7 @@ EventTrigger_0106:
         make_event_trigger {11, 45}, _cc78d0
         make_event_trigger {28, 9}, _cc72c9
 
-EventTrigger_0107:
+EventTrigger::_263:
         make_event_trigger {40, 32}, _cc7431
         make_event_trigger {41, 32}, _cc73e1
         make_event_trigger {42, 32}, _cc7409
@@ -1188,36 +1189,36 @@ EventTrigger_0107:
         make_event_trigger {42, 41}, _cc78e0
         make_event_trigger {49, 48}, _cc7905
 
-EventTrigger_0108:
+EventTrigger::_264:
         make_event_trigger {6, 6}, _cc75f6
 
-EventTrigger_0109:
+EventTrigger::_265:
 
-EventTrigger_010a:
+EventTrigger::_266:
 
-EventTrigger_010b:
+EventTrigger::_267:
 
-EventTrigger_010c:
+EventTrigger::_268:
 
-EventTrigger_010d:
+EventTrigger::_269:
 
-EventTrigger_010e:
+EventTrigger::_270:
         make_event_trigger {25, 10}, SavePoint
 
-EventTrigger_010f:
+EventTrigger::_271:
 
-EventTrigger_0110:
+EventTrigger::_272:
         make_event_trigger {3, 55}, SavePoint
 
-EventTrigger_0111:
+EventTrigger::_273:
 
-EventTrigger_0112:
+EventTrigger::_274:
         make_event_trigger {10, 9}, _cc7a60
         make_event_trigger {20, 13}, _cc7f43
 
-EventTrigger_0113:
+EventTrigger::_275:
 
-EventTrigger_0114:
+EventTrigger::_276:
         make_event_trigger {48, 32}, _cb7e4c
         make_event_trigger {49, 32}, _cb7e4c
         make_event_trigger {47, 30}, _cb7e4c
@@ -1263,14 +1264,14 @@ EventTrigger_0114:
         make_event_trigger {46, 17}, _cb8062
         make_event_trigger {5, 6}, _cb7d9d
 
-EventTrigger_0115:
+EventTrigger::_277:
 
-EventTrigger_0116:
+EventTrigger::_278:
 
-EventTrigger_0117:
+EventTrigger::_279:
         make_event_trigger {24, 4}, SavePoint
 
-EventTrigger_0118:
+EventTrigger::_280:
         make_event_trigger {30, 42}, _cb81a2
         make_event_trigger {35, 46}, _cb81a2
         make_event_trigger {41, 44}, _cb81a2
@@ -1316,57 +1317,57 @@ EventTrigger_0118:
         make_event_trigger {12, 50}, _cb7e4c
         make_event_trigger {12, 51}, _cb807e
 
-EventTrigger_0119:
+EventTrigger::_281:
         make_event_trigger {15, 60}, _ccd8a7
         make_event_trigger {10, 54}, _ccd8b2
         make_event_trigger {11, 53}, _ccd8d4
         make_event_trigger {31, 9}, _ccd93a
         make_event_trigger {40, 12}, _ccd967
 
-EventTrigger_011a:
+EventTrigger::_282:
         make_event_trigger {14, 30}, _ccd8f6
         make_event_trigger {33, 26}, _ccd918
 
-EventTrigger_011b:
+EventTrigger::_283:
         make_event_trigger {57, 7}, _cc3839
 
-EventTrigger_011c:
+EventTrigger::_284:
 
-EventTrigger_011d:
+EventTrigger::_285:
 
-EventTrigger_011e:
+EventTrigger::_286:
 
-EventTrigger_011f:
+EventTrigger::_287:
         make_event_trigger {36, 28}, _cc101c
         make_event_trigger {36, 29}, _cc1012
 
-EventTrigger_0120:
+EventTrigger::_288:
 
-EventTrigger_0121:
+EventTrigger::_289:
 
-EventTrigger_0122:
+EventTrigger::_290:
 
-EventTrigger_0123:
+EventTrigger::_291:
         make_event_trigger {12, 14}, _cc1827
         make_event_trigger {12, 12}, SavePoint
 
-EventTrigger_0124:
+EventTrigger::_292:
         make_event_trigger {87, 12}, _cc1447
 
-EventTrigger_0125:
+EventTrigger::_293:
 
-EventTrigger_0126:
+EventTrigger::_294:
 
-EventTrigger_0127:
+EventTrigger::_295:
 
-EventTrigger_0128:
+EventTrigger::_296:
 
-EventTrigger_0129:
+EventTrigger::_297:
         make_event_trigger {8, 10}, _ca3f83
 
-EventTrigger_012a:
+EventTrigger::_298:
 
-EventTrigger_012b:
+EventTrigger::_299:
         make_event_trigger {28, 43}, _ca41a3
         make_event_trigger {100, 7}, _ca435d
         make_event_trigger {100, 14}, _ca42f1
@@ -1378,7 +1379,7 @@ EventTrigger_012b:
         make_event_trigger {79, 43}, _ca4026
         make_event_trigger {12, 39}, _ca4037
 
-EventTrigger_012c:
+EventTrigger::_300:
         make_event_trigger {61, 33}, _ca41c3
         make_event_trigger {70, 8}, _ca41e0
         make_event_trigger {71, 9}, _ca4278
@@ -1387,48 +1388,48 @@ EventTrigger_012c:
         make_event_trigger {76, 10}, _ca4216
         make_event_trigger {122, 14}, SavePoint
 
-EventTrigger_012d:
+EventTrigger::_301:
         make_event_trigger {17, 16}, _ca44ba
 
-EventTrigger_012e:
+EventTrigger::_302:
 
-EventTrigger_012f:
+EventTrigger::_303:
         make_event_trigger {7, 16}, _cc102a
         make_event_trigger {7, 18}, _cc1012
         make_event_trigger {12, 17}, _cc1008
         make_event_trigger {12, 19}, _cc1031
 
-EventTrigger_0130:
+EventTrigger::_304:
 
-EventTrigger_0131:
+EventTrigger::_305:
         make_event_trigger {22, 28}, _cc58d4
         make_event_trigger {23, 28}, _cc58d4
         make_event_trigger {22, 25}, _cc583e
         make_event_trigger {23, 25}, _cc583e
         make_event_trigger {16, 9}, _cc58ff
 
-EventTrigger_0132:
+EventTrigger::_306:
 
-EventTrigger_0133:
+EventTrigger::_307:
         make_event_trigger {34, 21}, _cc5c09
 
-EventTrigger_0134:
+EventTrigger::_308:
         make_event_trigger {18, 58}, _cc5c1d
 
-EventTrigger_0135:
+EventTrigger::_309:
         make_event_trigger {39, 51}, _cc5c31
 
-EventTrigger_0136:
+EventTrigger::_310:
         make_event_trigger {56, 52}, _cc5c45
 
-EventTrigger_0137:
+EventTrigger::_311:
         make_event_trigger {123, 61}, _cc5c59
         make_event_trigger {117, 12}, _cc5958
 
-EventTrigger_0138:
+EventTrigger::_312:
         make_event_trigger {81, 22}, _cc5c6d
 
-EventTrigger_0139:
+EventTrigger::_313:
         make_event_trigger {25, 44}, _cc286a
         make_event_trigger {40, 38}, _cc288a
         make_event_trigger {36, 34}, _cc216f
@@ -1454,9 +1455,9 @@ EventTrigger_0139:
         make_event_trigger {14, 50}, _cc23af
         make_event_trigger {14, 47}, _cc215e
 
-EventTrigger_013a:
+EventTrigger::_314:
 
-EventTrigger_013b:
+EventTrigger::_315:
         make_event_trigger {35, 55}, _cc2705
         make_event_trigger {34, 55}, _cc2729
         make_event_trigger {36, 55}, _cc2729
@@ -1524,9 +1525,9 @@ EventTrigger_013b:
         make_event_trigger {19, 22}, _cc23d1
         make_event_trigger {19, 24}, _cc23dc
 
-EventTrigger_013c:
+EventTrigger::_316:
 
-EventTrigger_013d:
+EventTrigger::_317:
         make_event_trigger {25, 51}, _cb8b69
         make_event_trigger {28, 49}, _cb8b69
         make_event_trigger {15, 43}, _cb8b83
@@ -1537,17 +1538,17 @@ EventTrigger_013d:
         make_event_trigger {46, 55}, _cb8bd1
         make_event_trigger {23, 53}, SavePoint
 
-EventTrigger_013e:
+EventTrigger::_318:
         make_event_trigger {5, 6}, _cc20e5
 
-EventTrigger_013f:
+EventTrigger::_319:
         make_event_trigger {14, 25}, _cb94e7
         make_event_trigger {24, 25}, _cb94b2
 
-EventTrigger_0140:
+EventTrigger::_320:
         make_event_trigger {22, 24}, _cb94a1
 
-EventTrigger_0141:
+EventTrigger::_321:
         make_event_trigger {22, 5}, _cb8dc3
         make_event_trigger {17, 5}, _cb8e1d
         make_event_trigger {14, 5}, _cb8e7d
@@ -1559,49 +1560,49 @@ EventTrigger_0141:
         make_event_trigger {9, 9}, _cb8fbf
         make_event_trigger {10, 9}, _cb8fe9
 
-EventTrigger_0142:
+EventTrigger::_322:
         make_event_trigger {28, 5}, SavePoint
 
-EventTrigger_0143:
+EventTrigger::_323:
         make_event_trigger {43, 26}, _cc62f2
         make_event_trigger {45, 26}, _cc632d
 
-EventTrigger_0144:
+EventTrigger::_324:
 
-EventTrigger_0145:
+EventTrigger::_325:
         make_event_trigger {58, 57}, _cc60d2
 
-EventTrigger_0146:
+EventTrigger::_326:
         make_event_trigger {4, 56}, _cc60e6
 
-EventTrigger_0147:
+EventTrigger::_327:
         make_event_trigger {101, 24}, _cc60fa
 
-EventTrigger_0148:
+EventTrigger::_328:
         make_event_trigger {37, 55}, _cc610e
 
-EventTrigger_0149:
+EventTrigger::_329:
 
-EventTrigger_014a:
+EventTrigger::_330:
         make_event_trigger {31, 22}, _cc5f95
         make_event_trigger {37, 30}, _cc5f95
         make_event_trigger {31, 21}, _cc5fa2
         make_event_trigger {8, 27}, _cc6122
         make_event_trigger {37, 31}, _cc6136
 
-EventTrigger_014b:
+EventTrigger::_331:
         make_event_trigger {81, 60}, _cc135c
         make_event_trigger {76, 51}, SavePoint
 
-EventTrigger_014c:
+EventTrigger::_332:
         make_event_trigger {21, 1}, _cbc87a
         make_event_trigger {22, 1}, _cbc87a
         make_event_trigger {10, 10}, _cbcb74
         make_event_trigger {11, 10}, _cbcbde
 
-EventTrigger_014d:
+EventTrigger::_333:
 
-EventTrigger_014e:
+EventTrigger::_334:
         make_event_trigger {57, 44}, _ca03ba
         make_event_trigger {35, 21}, _ca03c9
         make_event_trigger {8, 37}, _ca03d8
@@ -1628,24 +1629,24 @@ EventTrigger_014e:
         make_event_trigger {39, 42}, _cc1008
         make_event_trigger {39, 43}, _cc1023
 
-EventTrigger_014f:
+EventTrigger::_335:
 
-EventTrigger_0150:
+EventTrigger::_336:
 
-EventTrigger_0151:
+EventTrigger::_337:
         make_event_trigger {4, 12}, _cc14af
         make_event_trigger {12, 12}, _cc14be
         make_event_trigger {8, 6}, _cc16ac
 
-EventTrigger_0152:
+EventTrigger::_338:
         make_event_trigger {54, 29}, _cc1418
 
-EventTrigger_0153:
+EventTrigger::_339:
 
-EventTrigger_0154:
+EventTrigger::_340:
         make_event_trigger {54, 18}, _cc0977
 
-EventTrigger_0155:
+EventTrigger::_341:
         make_event_trigger {9, 29}, _cc0942
         make_event_trigger {9, 28}, _cc0942
         make_event_trigger {9, 31}, _cc0942
@@ -1663,13 +1664,13 @@ EventTrigger_0155:
         make_event_trigger {27, 16}, _cc0956
         make_event_trigger {28, 15}, _cc0956
 
-EventTrigger_0156:
+EventTrigger::_342:
 
-EventTrigger_0157:
+EventTrigger::_343:
         make_event_trigger {35, 15}, _cbd89f
         make_event_trigger {25, 12}, _cbd8f9
 
-EventTrigger_0158:
+EventTrigger::_344:
         make_event_trigger {54, 18}, _cc0977
         make_event_trigger {22, 39}, _cb75bf
         make_event_trigger {23, 39}, _cb75d5
@@ -1687,45 +1688,45 @@ EventTrigger_0158:
         make_event_trigger {24, 46}, _cb7d5c
         make_event_trigger {23, 45}, _cb7d5c
 
-EventTrigger_0159:
+EventTrigger::_345:
         make_event_trigger {10, 48}, _cbd30f
         make_event_trigger {23, 48}, _cbd336
 
-EventTrigger_015a:
+EventTrigger::_346:
         make_event_trigger {23, 24}, _cbd35d
 
-EventTrigger_015b:
+EventTrigger::_347:
         make_event_trigger {36, 45}, _cbd384
 
-EventTrigger_015c:
+EventTrigger::_348:
         make_event_trigger {60, 43}, _cbd3ab
 
-EventTrigger_015d:
+EventTrigger::_349:
         make_event_trigger {37, 25}, _cbec92
 
-EventTrigger_015e:
+EventTrigger::_350:
         make_event_trigger {44, 14}, _cbd3f3
 
-EventTrigger_015f:
+EventTrigger::_351:
         make_event_trigger {4, 10}, _cbe5e4
         make_event_trigger {21, 22}, _cbe622
         make_event_trigger {46, 53}, _cbe767
 
-EventTrigger_0160:
+EventTrigger::_352:
 
-EventTrigger_0161:
+EventTrigger::_353:
         make_event_trigger {57, 44}, SavePoint
         make_event_trigger {35, 56}, _cb799f
         make_event_trigger {43, 16}, _cb79e6
         make_event_trigger {59, 18}, _cb7a18
 
-EventTrigger_0162:
+EventTrigger::_354:
         make_event_trigger {11, 32}, _cc1716
         make_event_trigger {12, 32}, _cc1716
         make_event_trigger {13, 32}, _cc1716
         make_event_trigger {12, 31}, SavePoint
 
-EventTrigger_0163:
+EventTrigger::_355:
         make_event_trigger {35, 9}, _cc1598
         make_event_trigger {43, 9}, _cc15b2
         make_event_trigger {39, 9}, _cc15cc
@@ -1737,57 +1738,57 @@ EventTrigger_0163:
         make_event_trigger {64, 10}, _cc1803
         make_event_trigger {64, 8}, _cc1815
 
-EventTrigger_0164:
+EventTrigger::_356:
 
-EventTrigger_0165:
+EventTrigger::_357:
 
-EventTrigger_0166:
+EventTrigger::_358:
         make_event_trigger {8, 10}, SavePoint
         make_event_trigger {8, 8}, _cad940
 
-EventTrigger_0167:
+EventTrigger::_359:
 
-EventTrigger_0168:
+EventTrigger::_360:
 
-EventTrigger_0169:
+EventTrigger::_361:
 
-EventTrigger_016a:
+EventTrigger::_362:
         make_event_trigger {8, 12}, _cc5275
         make_event_trigger {7, 13}, _cc522e
         make_event_trigger {9, 13}, _cc5248
         make_event_trigger {8, 14}, _cc5262
 
-EventTrigger_016b:
+EventTrigger::_363:
 
-EventTrigger_016c:
+EventTrigger::_364:
         make_event_trigger {8, 8}, _cc544b
 
-EventTrigger_016d:
+EventTrigger::_365:
         make_event_trigger {8, 6}, _cc55a6
 
-EventTrigger_016e:
+EventTrigger::_366:
         make_event_trigger {7, 8}, _cc5440
 
-EventTrigger_016f:
+EventTrigger::_367:
 
-EventTrigger_0170:
+EventTrigger::_368:
 
-EventTrigger_0171:
+EventTrigger::_369:
 
-EventTrigger_0172:
+EventTrigger::_370:
 
-EventTrigger_0173:
+EventTrigger::_371:
         make_event_trigger {15, 22}, _cbefa5
         make_event_trigger {15, 20}, _cbf168
 
-EventTrigger_0174:
+EventTrigger::_372:
 
-EventTrigger_0175:
+EventTrigger::_373:
         make_event_trigger {20, 17}, _cbef43
 
-EventTrigger_0176:
+EventTrigger::_374:
 
-EventTrigger_0177:
+EventTrigger::_375:
         make_event_trigger {53, 17}, _cbef1b
         make_event_trigger {47, 57}, _cbef71
         make_event_trigger {8, 44}, SavePoint
@@ -1799,26 +1800,26 @@ EventTrigger_0177:
         make_event_trigger {39, 54}, _cbee71
         make_event_trigger {36, 53}, _cbee80
 
-EventTrigger_0178:
+EventTrigger::_376:
 
-EventTrigger_0179:
+EventTrigger::_377:
         make_event_trigger {6, 16}, _cb25d6
         make_event_trigger {7, 17}, _cb25d6
         make_event_trigger {6, 18}, _cb25d6
 
-EventTrigger_017a:
+EventTrigger::_378:
 
-EventTrigger_017b:
+EventTrigger::_379:
 
-EventTrigger_017c:
+EventTrigger::_380:
 
-EventTrigger_017d:
+EventTrigger::_381:
 
-EventTrigger_017e:
+EventTrigger::_382:
 
-EventTrigger_017f:
+EventTrigger::_383:
 
-EventTrigger_0180:
+EventTrigger::_384:
         make_event_trigger {5, 43}, _cb2a9f
         make_event_trigger {40, 11}, _cb2f65
         make_event_trigger {46, 11}, _cb2f00
@@ -1839,7 +1840,7 @@ EventTrigger_0180:
         make_event_trigger {75, 34}, _cb310b
         make_event_trigger {71, 26}, _cb3129
 
-EventTrigger_0181:
+EventTrigger::_385:
         make_event_trigger {3, 2}, _cb2aca
         make_event_trigger {10, 2}, _cb2ae8
         make_event_trigger {11, 3}, _cb2c6e
@@ -1881,23 +1882,23 @@ EventTrigger_0181:
         make_event_trigger {9, 11}, _cb2dd2
         make_event_trigger {15, 10}, _cb2de9
 
-EventTrigger_0182:
+EventTrigger::_386:
         make_event_trigger {74, 53}, SavePoint
 
-EventTrigger_0183:
+EventTrigger::_387:
 
-EventTrigger_0184:
+EventTrigger::_388:
 
-EventTrigger_0185:
+EventTrigger::_389:
 
-EventTrigger_0186:
+EventTrigger::_390:
 
-EventTrigger_0187:
+EventTrigger::_391:
         make_event_trigger {8, 21}, _cb39ca
 
-EventTrigger_0188:
+EventTrigger::_392:
 
-EventTrigger_0189:
+EventTrigger::_393:
         make_event_trigger {73, 11}, _cae8ad
         make_event_trigger {86, 10}, _cae8c4
         make_event_trigger {90, 13}, _cae8db
@@ -1917,7 +1918,7 @@ EventTrigger_0189:
         make_event_trigger {112, 15}, _cae402
         make_event_trigger {111, 15}, _cae40b
 
-EventTrigger_018a:
+EventTrigger::_394:
         make_event_trigger {19, 12}, _cad52b
         make_event_trigger {25, 19}, _cad53a
         make_event_trigger {40, 12}, _cad550
@@ -1942,29 +1943,29 @@ EventTrigger_018a:
         make_event_trigger {70, 29}, _ca5a6c
         make_event_trigger {90, 43}, _cad916
 
-EventTrigger_018b:
+EventTrigger::_395:
 
-EventTrigger_018c:
+EventTrigger::_396:
 
-EventTrigger_018d:
+EventTrigger::_397:
 
-EventTrigger_018e:
+EventTrigger::_398:
 
-EventTrigger_018f:
+EventTrigger::_399:
         make_event_trigger {5, 31}, _ca55f9
         make_event_trigger {6, 31}, _ca55f9
         make_event_trigger {7, 31}, _ca55f9
 
-EventTrigger_0190:
+EventTrigger::_400:
 
-EventTrigger_0191:
+EventTrigger::_401:
 
-EventTrigger_0192:
+EventTrigger::_402:
         make_event_trigger {22, 51}, SavePoint
 
-EventTrigger_0193:
+EventTrigger::_403:
 
-EventTrigger_0194:
+EventTrigger::_404:
         make_event_trigger {3, 6}, _cb6e58
         make_event_trigger {15, 4}, _cb6e63
         make_event_trigger {25, 5}, _cb6e6e
@@ -1975,7 +1976,7 @@ EventTrigger_0194:
         make_event_trigger {14, 28}, _cb6ea5
         make_event_trigger {28, 27}, _cb6eb0
 
-EventTrigger_0195:
+EventTrigger::_405:
         make_event_trigger {23, 19}, _cb70c7
         make_event_trigger {8, 9}, _cb6ebb
         make_event_trigger {7, 15}, _cb6ec6
@@ -1984,45 +1985,44 @@ EventTrigger_0195:
         make_event_trigger {23, 7}, _cb71bc
         make_event_trigger {7, 24}, _cb6e4b
 
-EventTrigger_0196:
+EventTrigger::_406:
         make_event_trigger {34, 14}, _cc1f8b
 
-EventTrigger_0197:
+EventTrigger::_407:
         make_event_trigger {15, 33}, _cc1a54
         make_event_trigger {16, 33}, _cc1a60
         make_event_trigger {17, 33}, _cc1a41
 
-EventTrigger_0198:
+EventTrigger::_408:
 
-EventTrigger_0199:
+EventTrigger::_409:
         make_event_trigger {8, 11}, _cc1803
         make_event_trigger {8, 9}, _cc1815
         make_event_trigger {5, 12}, _cc1803
         make_event_trigger {5, 10}, _cc1815
 
-EventTrigger_019a:
+EventTrigger::_410:
         make_event_trigger {8, 14}, _cc1398
         make_event_trigger {43, 23}, _cc13c6
         make_event_trigger {31, 18}, _cc1872
         make_event_trigger {37, 17}, SavePoint
 
-EventTrigger_019b:
+EventTrigger::_411:
         make_event_trigger {103, 43}, _cc193f
         make_event_trigger {109, 40}, _cc193f
         make_event_trigger {115, 42}, _cc193f
 
-EventTrigger_019c:
+EventTrigger::_412:
         make_event_trigger {82, 45}, _cc1326
         make_event_trigger {82, 47}, SavePoint
 
-EventTrigger_019d:
+EventTrigger::_413:
 
-EventTrigger_019e:
+EventTrigger::_414:
 
-EventTrigger_019f:
+EventTrigger::_415:
 
-EventTriggerEnd:
-
-end_block EventTriggerPtrs
+EventTrigger::End:
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------

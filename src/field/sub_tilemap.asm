@@ -5,7 +5,7 @@
 ; ------------------------------------------------------------------------------
 
 .macro inc_sub_tilemap id, file
-        .ident(.sprintf("SubTilemap_%04x", SUB_TILEMAP::id)) := *
+        array_item SubTilemap, {SUB_TILEMAP::id} := *
         .incbin .sprintf("sub_tilemap/%s.dat.lz", file)
 .endmac
 
@@ -14,10 +14,11 @@
 .segment "sub_tilemap"
 
 ; d9/cd90
-begin_block SubTilemapPtrs, $420
-        make_ptr_tbl_far SubTilemap, SUB_TILEMAP::ARRAY_LENGTH
-        .faraddr SubTilemapEnd - SubTilemap
-end_block SubTilemapPtrs
+SubTilemapPtrs:
+        fixed_block $420
+        ptr_tbl_far SubTilemap
+        end_ptr_far SubTilemap
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 
@@ -374,6 +375,6 @@ SubTilemap:
         inc_sub_tilemap UMAROS_CAVE_BG3, "umaros_cave_bg3"
         inc_sub_tilemap SKY_PARALLAX_BG2, "sky_parallax_bg2"
 
-SubTilemapEnd := *
+SubTilemap::End:
 
 ; ------------------------------------------------------------------------------

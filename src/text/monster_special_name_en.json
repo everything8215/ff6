@@ -1,6 +1,5 @@
 {
   "asset_label": "MonsterSpecialName",
-  "asset_const": "MONSTER_SPECIAL_NAME",
   "inc_path": "include/text/monster_special_name_en.inc",
   "item_size": 10,
   "char_tables": [

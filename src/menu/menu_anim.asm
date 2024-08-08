@@ -94,13 +94,13 @@ NameChangeLetters2:
 ; ------------------------------------------------------------------------------
 
 ; element symbols
-begin_block ElementSymbols
+ElementSymbols:
 .if LANG_EN
 @e90e:  .byte   $dd,$da,$d6,$d9,$de,$d8,$db,$dc,0
 .else
         .byte   $1e,$24,$1e,$c3,$1f,$1b,$1e,$d6,$1d,$fe,$1e,$e4,$1c,$b0,$1e,$85,$00
 .endif
-end_block ElementSymbols
+        calc_size ElementSymbols
 
 ; ------------------------------------------------------------------------------
 

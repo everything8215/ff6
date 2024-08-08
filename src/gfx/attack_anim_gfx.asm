@@ -22,8 +22,8 @@ AttackTiles3bpp:
 
 ; d2/6000
 AttackPal:
-.repeat ATTACK_PAL_ARRAY_LENGTH, _i
-        .incbin .sprintf("attack_pal/pal_%04x.pal", _i)
+.repeat AttackPal::ARRAY_LENGTH, i
+        .incbin .sprintf("attack_pal/pal_%04x.pal", i)
 .endrep
 
 ; ------------------------------------------------------------------------------
@@ -39,9 +39,10 @@ AttackTiles2bpp:
 .segment "attack_gfx_3bpp"
 
 ; d3/0000
-begin_block AttackGfx3bpp, $01ca00
+AttackGfx3bpp:
+        fixed_block $01ca00
         incbin_lang "attack_gfx_%s.3bpp"
-end_block AttackGfx3bpp
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 

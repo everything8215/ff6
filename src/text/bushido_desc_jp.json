@@ -1,6 +1,5 @@
 {
   "asset_label": "BushidoDesc",
-  "asset_const": "BUSHIDO_DESC",
   "inc_path": "include/text/bushido_desc_jp.inc",
   "char_tables": [
     "big_symbols_jp",

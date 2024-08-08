@@ -160,9 +160,10 @@ LoadMapProp:
 .segment "map_prop"
 
 ; ed/8f00
-begin_block MapProp, $3580
+MapProp:
+        fixed_block $3580
         .incbin "map_prop.dat"
-end_block MapProp
+        end_fixed_block
 
 .popseg
 

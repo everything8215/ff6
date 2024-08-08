@@ -7446,7 +7446,7 @@ InitAI:
         longa
         asl
         tax
-        lda     f:AIScriptPtr,x   ; pointer to ai script
+        lda     f:AIScriptPtrs,x   ; pointer to ai script
         sta     $3254,y
         tax
         shorta
@@ -8857,7 +8857,7 @@ SetControlCmd:
         phy
         php
         longai_clc
-        lda     f:CmdPropPtrTbl,x
+        lda     f:CmdPropPtrs,x
         adc     #$0030
         sta     f:hWMADDL
         tyx
@@ -13562,7 +13562,7 @@ UpdateCmdList:
         php
         longai
         txy
-        lda     f:CmdPropPtrTbl,x
+        lda     f:CmdPropPtrs,x
         tax
         shorta
         lda     $3018,y
@@ -13699,7 +13699,7 @@ InitCmdList:
         php
         longai
         ldy     $3010,x     ; pointer to character data (+$001600)
-        lda     f:CmdPropPtrTbl,x   ; pointer to character command list data (+$7e0000)
+        lda     f:CmdPropPtrs,x   ; pointer to character command list data (+$7e0000)
         sta     f:hWMADDL
         lda     $1616,y     ; +++$fc = battle commands
         sta     $fc
@@ -13870,7 +13870,7 @@ InitCmd_05:
 ; ------------------------------------------------------------------------------
 
 ; pointers to character command list data (+$7e0000)
-CmdPropPtrTbl:
+CmdPropPtrs:
 @544a:  .word   $202e,$203a,$2046,$2052
 
 ; ------------------------------------------------------------------------------
@@ -16443,9 +16443,10 @@ BattleProp:
         .incbin "battle_prop.dat"
 
 ; cf/6200
-begin_block BattleMonsters, $2200
+BattleMonsters:
+        fixed_block $2200
         .incbin "battle_monsters.dat"
-end_block BattleMonsters
+        end_fixed_block
 
 ; ------------------------------------------------------------------------------
 

@@ -400,6 +400,32 @@ PSW_C = %00000001
 
 ; ------------------------------------------------------------------------------
 
+; [ define bank start address ]
+
+.define bank_start(label) .bankbyte(label) << 16
+
+; ------------------------------------------------------------------------------
+
+; ; [ define ROM array ]
+
+; .mac rom_array label, array_length, item_size
+;         .scope label
+;         Start := label
+;         _array_offset .set 0
+;         .ifnblank array_length
+;                 ARRAY_LENGTH = array_length
+;         .endif
+;         .ifnblank item_size
+;                 ITEM_SIZE = item_size
+;         .endif
+; .endmac
+
+; .mac end_rom_array
+;         .endscope
+; .endmac
+
+; ------------------------------------------------------------------------------
+
 ; [ make jump table / label ]
 
 .macro make_jump_tbl label, length
@@ -412,72 +438,99 @@ PSW_C = %00000001
 
 ; ------------------------------------------------------------------------------
 
-; [ make pointer table (absolute) ]
+; [ make pointer table (near) ]
 
-.macro make_ptr_tbl_abs label, length
-.repeat length, i
-        .addr .ident(.sprintf("%s_%04x", .string(label), i))
-.endrep
-.endmacro
-
-; ------------------------------------------------------------------------------
-
-; [ make pointer table (relative) ]
-
-.macro make_ptr_tbl_rel label, length, offset
-.repeat length, i
-        .ifblank offset
-                .addr .ident(.sprintf("%s_%04x", .string(label), i)) - label
+.macro ptr_tbl label
+        .local offset
+        .ifdef label::Start
+                offset = label::Start
         .else
-                .addr .ident(.sprintf("%s_%04x", .string(label), i)) - offset
+                offset = 0
         .endif
-.endrep
+        .repeat label::ARRAY_LENGTH, i
+                .addr label::.ident(.sprintf("_%d", i)) - offset
+        .endrep
 .endmacro
 
 ; ------------------------------------------------------------------------------
 
 ; [ make pointer table (far) ]
 
-.macro make_ptr_tbl_far label, length, offset
-.repeat length, i
-        .ifblank offset
-                .faraddr .ident(.sprintf("%s_%04x", .string(label), i)) - label
+.macro ptr_tbl_far label
+        .local offset
+        .ifdef label::Start
+                offset = label::Start
         .else
-                .faraddr .ident(.sprintf("%s_%04x", .string(label), i)) - offset
+                offset = 0
         .endif
-.endrep
+        .repeat label::ARRAY_LENGTH, i
+                .faraddr label::.ident(.sprintf("_%d", i)) - offset
+        .endrep
 .endmacro
+
+; ------------------------------------------------------------------------------
+
+; [ make end pointer ]
+
+.mac end_ptr label
+        .ifdef label::Start
+                .addr label::End - label::Start
+        .else
+                .addr label::End
+        .endif
+.endmac
+
+.mac end_ptr_far label
+        .ifdef label::Start
+                .faraddr label::End - label::Start
+        .else
+                .faraddr label::End
+        .endif
+.endmac
 
 ; ------------------------------------------------------------------------------
 
 ; [ begin/end fixed length block ]
 
-.macro begin_block label, size
-        label := *
-        .scope label
-        .endscope
-        .ifnblank size
-                .ident(.concat("sizeof_", .string(label))) = size
-        .endif
+::_fixed_block_size .set 0
+::_fixed_block_seq .set 0
+
+.mac fixed_block size
+        .assert ::_fixed_block_size = 0, error, "Fixed blocks can't be nested"
+        .assert size > 0, error, "Invalid fixed block size"
+        ::_fixed_block_size .set size
+        .ident(.sprintf("_fixed_block_%d", ::_fixed_block_seq)) := *
 .endmac
 
-.macro end_block label, pad_val
-        .local pad_size
-        .ifndef .ident(.concat("sizeof_", .string(label)))
-                .ident(.concat("sizeof_", .string(label))) = * - label
-        .else
-                pad_size = (label - *) + .ident(.concat("sizeof_", .string(label)))
-                .if pad_size < 0
-                        .error .sprintf("Fixed block %s too large by %d bytes", .string(label), -pad_size)
-                .elseif pad_size > 0
-                        .ifnblank pad_val
-                                .res pad_size, pad_val
-                        .else
-                                .res pad_size
-                        .endif
+.mac end_fixed_block pad_val
+        .assert ::_fixed_block_size <> 0, error, "Invalid fixed block"
+        .local pad_size, start
+        start := .ident(.sprintf("_fixed_block_%d", ::_fixed_block_seq))
+        pad_size = (start - *) + ::_fixed_block_size
+        .if pad_size < 0
+                .error .sprintf("Fixed block too large by %d bytes", -pad_size)
+        .elseif pad_size > 0
+                .ifnblank pad_val
+                        .res pad_size, pad_val
+                .else
+                        .res pad_size
                 .endif
         .endif
-.endmacro
+        ::_fixed_block_size .set 0
+        ::_fixed_block_seq .set ::_fixed_block_seq + 1
+.endmac
+
+; ------------------------------------------------------------------------------
+
+; [ calculate the size of assembled bytecode ]
+
+; place this macro at the end of a block to define a symbol "sizeof_<labal>"
+; equal to the size of the block (i.e. the distance from the label to the
+; label to the current program counter).
+
+.mac calc_size label
+        .ident(.concat("sizeof_", .string(label))) = * - label
+.endmac
 
 ; ------------------------------------------------------------------------------
 
@@ -582,10 +635,10 @@ PSW_C = %00000001
                 ram_label label
 
                 ; define labels for array items
-                .if .defined(NUM_ITEMS) && .defined(ITEM_SIZE)
+                .if .defined(ARRAY_LENGTH) && .defined(ITEM_SIZE)
                         .local old_offset
                         old_offset = ::_ram_offset
-                        .repeat NUM_ITEMS, i
+                        .repeat ARRAY_LENGTH, i
                                 ram_label label, .ident(.sprintf("_%d", i))
                                 .ifdef BLOCK_SIZE
                                         ::_ram_offset .set ::_ram_offset + BLOCK_SIZE
@@ -649,11 +702,11 @@ PSW_C = %00000001
         .endscope
 .endmac
 
-.mac ram_array label, num_items, item_size, num_blocks
+.mac ram_array label, array_length, item_size, num_blocks
         ram_scope label
         ITEM_SIZE = item_size
-        NUM_ITEMS = num_items
-        SIZE = ITEM_SIZE * NUM_ITEMS
+        ARRAY_LENGTH = array_length
+        SIZE = ITEM_SIZE * ARRAY_LENGTH
         .ifnblank num_blocks
                 ; array with more than 1 block
                 .assert item_size .mod num_blocks = 0, error, "Item size must be divisible by the number of blocks"
@@ -663,7 +716,7 @@ PSW_C = %00000001
         .endif
 
         ; create namespaces for each array item
-        .repeat NUM_ITEMS, i
+        .repeat ARRAY_LENGTH, i
                 .scope .ident(.sprintf("_%d", i))
                 .endscope
                 ::_ram_offset .set START + i * ITEM_SIZE
@@ -695,7 +748,7 @@ PSW_C = %00000001
         .assert bytes_over <= 0, error, .sprintf("Array block too large by %d bytes", bytes_over)
 
         ; go to the next block
-        ::_ram_offset .set block_start + BLOCK_SIZE * NUM_ITEMS
+        ::_ram_offset .set block_start + BLOCK_SIZE * ARRAY_LENGTH
         block_start .set ::_ram_offset
 .endmac
 

@@ -101,7 +101,7 @@ MyScope::SIZE = 17
 MyScope::Buffer::Size = 14
 ```
 
-#### `ram_array <label>, <num_items>, <item_size>, [num_blocks]`, `end_ram_array`, `end_ram_block`
+#### `ram_array <label>, <array_length>, <item_size>, [num_blocks]`, `end_ram_array`, `end_ram_block`
 
 A `ram_array` has all the same properties as a `ram_scope`, but in addition
 it creates multiple copies of the variables declared inside it as determined
@@ -124,7 +124,7 @@ will generate the following values
 ```text
 MyArray = $c811
 MyArray::SIZE = 8
-MyArray::NUM_ITEMS = 4
+MyArray::ARRAY_LENGTH = 4
 MyArray::ITEM_SIZE = 2
 MyArray::Member1 = $c811
 MyArray::Member2 = $c812
@@ -178,7 +178,7 @@ will generate the following values:
 ```text
 BlockArray = $c819
 BlockArray::SIZE = 512
-BlockArray::NUM_ITEMS = 16
+BlockArray::ARRAY_LENGTH = 16
 BlockArray::ITEM_SIZE = 32
 BlockArray::BLOCK_SIZE = 16
 BlockArray::NUM_BLOCKS = 2
