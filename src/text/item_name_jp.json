@@ -1,6 +1,5 @@
 {
   "asset_label": "ItemName",
-  "inc_path": "include/text/item_name_jp.inc",
   "item_size": 9,
   "char_tables": [
     "small_symbols_jp",

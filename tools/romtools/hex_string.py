@@ -1,3 +1,9 @@
+'''
+Convert an integer into a string in hexadecimal format. The output string can
+optionally be padded with zeros and prefix can optionally be added to the
+front of the string.
+'''
+
 def hex_string(num, pad=None, prefix='0x'):
     if pad is not None:
         pad = int(pad)

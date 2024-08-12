@@ -1,5 +1,12 @@
 import romtools as rt
 
+'''
+Helper class to convert ROM file addresses between the address space of the
+ROM file and the memory mapper address space used by the console CPU. Because
+memory mapper address spaces are often non-contiguous at bank boundaries,
+ranges should be specified as closed intervals (end value is included). This
+is in contrast to the behavior of Python functions like range, etc.
+'''
 
 class MemoryMap:
 

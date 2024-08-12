@@ -6,12 +6,9 @@ RARE_ITEM_NAME_INC = 1
 
 .scope RareItemName
 
-; ##############################################################################
-; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
-; ##############################################################################
-
-
-; ##############################################################################
+        ARRAY_LENGTH = 30
+        ITEM_SIZE = 8
+        SIZE = ARRAY_LENGTH * ITEM_SIZE
 
 .endscope
 

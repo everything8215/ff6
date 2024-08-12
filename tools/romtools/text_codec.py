@@ -1,13 +1,27 @@
 import re
+import json
 import romtools as rt
 
+'''
+Helper object for encoding and decoding ROM text. Text characters can map to
+one- or two-byte codes, and multiple text characters can map to the same code
+value (with the first value listed in the character map being the default).
+Text strings can include escape codes enclosed in braces "{}". Escape codes
+can optionally be followed by a one- or two-bytes parameter.
+'''
 
 ESCAPE_REGEX = r'{(\w+)(?:\:(\w+))?}'
 
-
 class TextCodec:
 
-    def __init__(self, char_table):
+    def __init__(self, asset_def):
+
+        # create the character table
+        char_table = {}
+        for char_table_name in asset_def['char_tables']:
+            char_table_path = 'tools/char_table/' + char_table_name + '.json'
+            with open(char_table_path, 'r', encoding='utf8') as char_table_file:
+                char_table.update(json.load(char_table_file))
 
         # merge multiple character tables into a single list
         if isinstance(char_table, list):
@@ -49,13 +63,12 @@ class TextCodec:
                 self.encoding_table[value] = code
 
             assert isinstance(primary_value, str)
-
             self.decoding_table[code] = primary_value
 
         self.encoding_keys = self.encoding_table.keys()
         self.terminator_code = self.encoding_table.get('{0}')
 
-    def decode_text(self, text_bytes):
+    def decode(self, text_bytes):
         text = ''
         i = 0
 
@@ -118,7 +131,7 @@ class TextCodec:
 
         return text
 
-    def encode_text(self, text_str):
+    def encode(self, text_str):
         i = 0
         key_list = self.encoding_table.keys()
         text_codes = []
@@ -233,3 +246,58 @@ class TextCodec:
                     i += int(escape_match.group(1))
 
         return min(i, len(text_bytes))
+
+def encode_text(asset_def):
+
+    text_codec = TextCodec(asset_def)
+
+    # encode each string
+    encoded_bytes = bytearray()
+    item_ranges = []
+    for text_item in asset_def['text']:
+        encoded_text = text_codec.encode(text_item)
+
+        if 'item_size' in asset_def:
+            # fixed length strings
+            item_size = asset_def['item_size']
+
+            # check if text is too long
+            assert len(encoded_text) <= item_size, \
+                f'Text string \"{text_item}\" too long by ' \
+                f'{len(encoded_text) - item_size} char(s)'
+
+            # pad the text
+            if len(encoded_text) != item_size:
+                assert '{pad}' in text_codec.encoding_table, \
+                    f'Padding not found in char table'
+                pad_char = text_codec.encoding_table['{pad}']
+                item_size = asset_def['item_size']
+                while len(encoded_text) < item_size:
+                    encoded_text.append(pad_char)
+
+            item_offset = len(encoded_bytes)
+            item_ranges.append(rt.Range(item_offset, item_offset + item_size))
+            encoded_bytes += encoded_text
+
+        elif 'is_sequential' in asset_def:
+            # items must be sequential, don't allow shared items
+            item_offset = len(encoded_bytes)
+            item_size = len(encoded_text)
+            item_ranges.append(rt.Range(item_offset, item_offset + item_size))
+            encoded_bytes += encoded_text
+
+        else:
+            # allow shared items
+            shared_offset = encoded_bytes.find(encoded_text)
+            item_size = len(encoded_text)
+            if shared_offset == -1:
+                item_offset = len(encoded_bytes)
+                item_ranges.append(rt.Range(item_offset, item_offset + item_size))
+                encoded_bytes += encoded_text
+            else:
+                item_ranges.append(rt.Range(shared_offset, shared_offset + item_size))
+
+    # update the include file
+    rt.update_array_inc(encoded_bytes, item_ranges, **asset_def)
+
+    return encoded_bytes, item_ranges

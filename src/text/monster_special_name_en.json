@@ -1,6 +1,5 @@
 {
   "asset_label": "MonsterSpecialName",
-  "inc_path": "include/text/monster_special_name_en.inc",
   "item_size": 10,
   "char_tables": [
     "fixed_length_en",

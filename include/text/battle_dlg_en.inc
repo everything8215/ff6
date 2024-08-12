@@ -6,6 +6,8 @@ BATTLE_DLG_INC = 1
 
 .scope BattleDlg
 
+        Start := bank_start BattleDlg
+
 ; ##############################################################################
 ; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
 ; ##############################################################################

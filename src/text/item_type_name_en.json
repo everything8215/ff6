@@ -1,6 +1,5 @@
 {
   "asset_label": "ItemTypeName",
-  "inc_path": "include/text/item_type_name_en.inc",
   "item_size": 7,
   "char_tables": [
     "text_en",

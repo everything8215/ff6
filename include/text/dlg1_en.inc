@@ -6,7 +6,7 @@ DLG1_INC = 1
 
 .scope Dlg1
 
-Start = Dlg1
+        Start := bank_start Dlg1
 
 ; ##############################################################################
 ; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###

@@ -1,6 +1,5 @@
 {
   "asset_label": "AttackName",
-  "inc_path": "include/text/attack_name_jp.inc",
   "item_size": 8,
   "char_tables": [
     "fixed_length_jp",

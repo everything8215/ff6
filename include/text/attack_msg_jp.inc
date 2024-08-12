@@ -6,6 +6,8 @@ ATTACK_MSG_INC = 1
 
 .scope AttackMsg
 
+        Start := bank_start AttackMsg
+
 ; ##############################################################################
 ; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
 ; ##############################################################################

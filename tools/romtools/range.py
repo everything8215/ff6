@@ -1,5 +1,8 @@
 import romtools as rt
 
+'''
+Closed-interval range object suitable for defining regions in a ROM file.
+'''
 
 class Range:
 

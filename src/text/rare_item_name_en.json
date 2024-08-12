@@ -1,6 +1,5 @@
 {
   "asset_label": "RareItemName",
-  "inc_path": "include/text/rare_item_name_en.inc",
   "item_size": 13,
   "char_tables": [
     "text_en",

@@ -1,6 +1,5 @@
 {
   "asset_label": "MagicName",
-  "inc_path": "include/text/magic_name_en.inc",
   "item_size": 7,
   "char_tables": [
     "text_en",

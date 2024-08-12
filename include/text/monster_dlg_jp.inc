@@ -6,6 +6,8 @@ MONSTER_DLG_INC = 1
 
 .scope MonsterDlg
 
+        Start := bank_start MonsterDlg
+
 ; ##############################################################################
 ; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
 ; ##############################################################################

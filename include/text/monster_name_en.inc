@@ -6,12 +6,9 @@ MONSTER_NAME_INC = 1
 
 .scope MonsterName
 
-; ##############################################################################
-; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
-; ##############################################################################
-
-
-; ##############################################################################
+        ARRAY_LENGTH = 384
+        ITEM_SIZE = 10
+        SIZE = ARRAY_LENGTH * ITEM_SIZE
 
 .endscope
 

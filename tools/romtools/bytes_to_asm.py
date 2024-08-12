@@ -1,5 +1,10 @@
 import romtools as rt
 
+'''
+Converts a block of binary data into a string that can be interpreted by
+the ca65 compiler. Labels can be inserted and referenced by symbols to
+generate relocateable code.
+'''
 
 def bytes_to_asm(bytes, labels=None, symbols=None, line_width=16):
     asm_string = ''
@@ -51,7 +56,7 @@ def bytes_to_asm(bytes, labels=None, symbols=None, line_width=16):
             # determine the value size
             if type == '.byte':
                 width = 1
-            if type == '.word' or type == '.addr':
+            elif type == '.word' or type == '.addr':
                 width = 2
             elif type == '.faraddr':
                 width = 3
