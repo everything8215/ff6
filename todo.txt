@@ -1,5 +1,3 @@
-python script to optimize dte table
-
 create brr files from wav files in Makefile
 
 macros for scripts (event, attack animation, battle event, monster a.i., sound?)
@@ -12,5 +10,3 @@ organize rip list
 RAM symbols
 
 improve asm formatting and organization
-
-japanese version

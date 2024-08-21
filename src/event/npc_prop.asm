@@ -242,7 +242,7 @@ NPCProp::_4:
                 set_npc_no_react
                 set_npc_dir UP
                 set_npc_speed SLOW
-                set_npc_gfx BARAM, LOCKE
+                set_npc_gfx CLYDE, LOCKE
                 end_npc
 
         make_npc {8, 6}, $0440
@@ -6987,7 +6987,7 @@ NPCProp::_170:
                 set_npc_no_react
                 set_npc_dir RIGHT
                 set_npc_speed NORMAL
-                set_npc_gfx BARAM, LOCKE
+                set_npc_gfx CLYDE, LOCKE
                 end_npc
 
         make_npc {6, 8}, $0300
@@ -7099,7 +7099,7 @@ NPCProp::_174:
                 set_npc_no_react
                 set_npc_dir UP
                 set_npc_speed NORMAL
-                set_npc_gfx BARAM, LOCKE
+                set_npc_gfx CLYDE, LOCKE
                 end_npc
 
         make_npc {23, 7}, $03ff
@@ -7307,7 +7307,7 @@ NPCProp::_182:
                 set_npc_no_react
                 set_npc_dir UP
                 set_npc_speed SLOW
-                set_npc_gfx BARAM, LOCKE
+                set_npc_gfx CLYDE, LOCKE
                 end_npc
 
         make_npc {15, 26}, $0300
@@ -15156,7 +15156,7 @@ NPCProp::_342:
                 set_npc_no_react
                 set_npc_dir UP
                 set_npc_speed SLOW
-                set_npc_gfx BARAM, LOCKE
+                set_npc_gfx CLYDE, LOCKE
                 end_npc
 
         make_npc {8, 15}, $0475
@@ -15351,7 +15351,7 @@ NPCProp::_343:
         make_npc {28, 19}, $0569
                 set_npc_dir DOWN
                 set_npc_speed SLOWER
-                set_npc_gfx BARAM, LOCKE
+                set_npc_gfx CLYDE, LOCKE
                 end_npc
 
 ; ------------------------------------------------------------------------------
