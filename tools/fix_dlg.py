@@ -112,8 +112,6 @@ if __name__ == '__main__':
     lang_suffix = sys.argv[2]
     dlg1_path = os.path.join('src', 'text', f'dlg1_{lang_suffix}.json')
     dlg2_path = os.path.join('src', 'text', f'dlg2_{lang_suffix}.json')
-    dlg1_dat_path = os.path.join('src', 'text', f'dlg1_{lang_suffix}.dat')
-    dlg2_dat_path = os.path.join('src', 'text', f'dlg2_{lang_suffix}.dat')
 
     if not (os.path.exists(dlg1_path) and os.path.exists(dlg2_path)):
         exit(0)
@@ -133,6 +131,11 @@ if __name__ == '__main__':
             dlg2_file.write(json.dumps(dlg2_def, ensure_ascii=False, indent=2))
 
     elif dlg_cmd == 'combine':
+        dlg1_dat_path = os.path.join('src', 'text', f'dlg1_{lang_suffix}.dat')
+        dlg2_dat_path = os.path.join('src', 'text', f'dlg2_{lang_suffix}.dat')
+        if not (os.path.exists(dlg1_dat_path) and os.path.exists(dlg2_dat_path)):
+            exit(0)
+
         combine_dlg(dlg1_def, dlg2_def)
 
         # encoded dialogue data does not need to be updated after combining
