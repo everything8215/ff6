@@ -254,19 +254,19 @@ InitMaskHDMAData:
         lda     #$7e
         sta     hWMADDH
         tdc
-.repeat 16
+        .repeat 16
         sta     hWMDATA
-.endrep
+        .endrep
         ldx     #$8183
         stx     hWMADDL
         lda     #$7e
         sta     hWMADDH
         lda     #$05
         sta     hWMDATA
-.repeat 15
+        .repeat 15
         xba
         sta     hWMDATA
-.endrep
+        .endrep
         tdc
         ldx     #$8193
         stx     hWMADDL
@@ -274,10 +274,10 @@ InitMaskHDMAData:
         sta     hWMADDH
         lda     #$1f
         sta     hWMDATA
-.repeat 15
+        .repeat 15
         xba
         sta     hWMDATA
-.endrep
+        .endrep
         tdc
         ldx     #$8163
         stx     hWMADDL
@@ -288,10 +288,10 @@ InitMaskHDMAData:
         xba
         lda     $52
         sta     hWMDATA
-.repeat 14
+        .repeat 14
         xba
         sta     hWMDATA
-.endrep
+        .endrep
         tdc
         ldx     #$81a3
         stx     hWMADDL
@@ -299,10 +299,10 @@ InitMaskHDMAData:
         sta     hWMADDH
         lda     #$04
         sta     hWMDATA
-.repeat 15
+        .repeat 15
         xba
         sta     hWMDATA
-.endrep
+        .endrep
         tdc
         rts
 
@@ -978,27 +978,27 @@ UpdateScrollHDMA:
         lda     $5c                     ; bg1 horizontal scroll position
         sec
         sbc     #8
-.repeat 16, i
+        .repeat 16, i
         sta     $8273+i*4
-.endrep
+        .endrep
         lda     $64                     ; bg2 horizontal scroll position
         sec
         sbc     #8
-.repeat 16, i
+        .repeat 16, i
         sta     $82b3+i*4
-.endrep
+        .endrep
         lda     $6c                     ; bg3 horizontal scroll position
         sec
         sbc     #8
-.repeat 8, i
+        .repeat 8, i
         sta     $82f3+i*4
-.endrep
+        .endrep
         lda     $60                     ; bg1 vertical scroll position
         clc
         adc     $074c
-.repeat 16,i
+        .repeat 16,i
         sta     $8275+i*4
-.endrep
+        .endrep
 
 ; bg1
         shorta0
@@ -1016,12 +1016,12 @@ UpdateScrollHDMA:
         tax
         longa
         ldy     $60
-.repeat 16, i
+        .repeat 16, i
         tya
         clc
         adc     f:WavyScrollTbl1+i*2,x
         sta     $8275+i*4
-.endrep
+        .endrep
 
 ; bg2
 @444a:  shorta0
@@ -1041,12 +1041,12 @@ UpdateScrollHDMA:
         tax
         longa
         ldy     $68
-.repeat 16, i
+        .repeat 16, i
         tya
         clc
         adc     f:WavyScrollTbl1+i*2,x
         sta     $82b5+i*4
-.endrep
+        .endrep
 
 ; bg3
 @44f8:  shorta0
@@ -1068,12 +1068,12 @@ UpdateScrollHDMA:
         clc
         adc     f:WavyScrollTbl3,x
         sta     $82f5
-.repeat 7, i
+        .repeat 7, i
         tya
         clc
         adc     f:WavyScrollTbl3+(i+1)*2,x
         sta     $82f5+(i+1)*4
-.endrep
+        .endrep
         shorta0
         tdc
         pha

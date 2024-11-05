@@ -6,17 +6,17 @@
 ; ------------------------------------------------------------------------------
 
 .macro inc_battle_bg_tiles id, name
-        array_item BattleBGTiles, {BATTLE_BG_TILES::id} := *
+        array_label BattleBGTiles, BATTLE_BG_TILES::id
         .incbin .sprintf("battle_bg_tiles/%s.scr.lz", name)
 .endmac
 
 .macro inc_battle_bg_gfx id, name
-        array_item BattleBGGfx, {BATTLE_BG_GFX::id} := *
+        array_label BattleBGGfx, BATTLE_BG_GFX::id
         .incbin .sprintf("battle_bg_gfx/%s.4bpp.lz", name)
 .endmac
 
 .macro inc_battle_bg_gfx_lang id, name
-        array_item BattleBGGfx, {BATTLE_BG_GFX::id} := *
+        array_label BattleBGGfx, BATTLE_BG_GFX::id
         .incbin .sprintf("battle_bg_gfx/%s_%s.4bpp.lz", name, LANG_SUFFIX)
 .endmac
 

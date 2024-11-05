@@ -49,9 +49,9 @@ inc_lang "text/char_name_%s.inc"
 
 ; event command jump table (starts at $35)
 EventCmdTbl:
-.repeat $100 - $35, i
+        .repeat $100 - $35, i
         .addr .ident(.sprintf("EventCmd_%02x", i + $35))
-.endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -982,10 +982,10 @@ EventCmd_7f:
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
-.repeat 6, i
+        .repeat 6, i
         lda     f:CharName+i,x          ; copy character name (6 bytes)
         sta     $1602+i,y
-.endrep
+        .endrep
         lda     #3
         jmp     IncEventPtrContinue
 
@@ -1050,7 +1050,7 @@ EventCmd_40:
         plx
         sta     $1608,y     ; set level
         lda     f:CharProp+21,x   ; level modifier
-        and     #LEVEL_MOD_MASK
+        and     #CHAR_LEVEL_MOD::MASK
         lsr2
         tax
         lda     f:CharLevelModTbl,x   ; add level modifier

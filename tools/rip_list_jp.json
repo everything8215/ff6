@@ -61,6 +61,12 @@
       "ptr_offset": "0xCE0000"
     },
     {
+      "json_path": "src/text/mte_tbl_jp.json",
+      "asset_range": "0xC08BE0-0xC08C4B",
+      "ptr_range": "0xC08BB0-0xC08BDF",
+      "ptr_offset": "0xC00000"
+    },
+    {
       "json_path": "src/text/genju_attack_desc_jp.json",
       "asset_range": "0xD8CDA0-0xD8CF29",
       "ptr_range": "0xCFFE40-0xCFFE7F",

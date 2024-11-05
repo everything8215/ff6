@@ -526,7 +526,7 @@ PSW_C = %00000001
 
 ; place this macro at the end of a block to define a symbol "sizeof_<labal>"
 ; equal to the size of the block (i.e. the distance from the label to the
-; label to the current program counter).
+; current program counter).
 
 .mac calc_size label
         .ident(.concat("sizeof_", .string(label))) = * - label
@@ -754,6 +754,7 @@ PSW_C = %00000001
 
 .define array_item(array, index) array::.ident(.sprintf("_%d", index))
 .define array_member(array, index, member) array::.ident(.sprintf("_%d", index))::member
+.define array_label(array, index) array_item array, {index} := *
 
 ; ------------------------------------------------------------------------------
 

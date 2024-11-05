@@ -2326,8 +2326,8 @@ UpdateEquip:
         xba
         sta     $11aa
         lda     f:CharProp+21,x         ; run factor
-        and     #RUN_FACTOR_MASK
-        eor     #RUN_FACTOR_MASK
+        and     #CHAR_RUN_FACTOR::MASK
+        eor     #CHAR_RUN_FACTOR::MASK
         inc2
         sta     $11dc
         plx

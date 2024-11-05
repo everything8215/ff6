@@ -1,0 +1,11 @@
+{
+  "asset_label": "MTETbl",
+  "inc_path": "include/text/mte_tbl_jp.inc",
+  "char_tables": [
+    "big_symbols_jp",
+    "null_terminated_jp",
+    "kana",
+    "kanji"
+  ],
+  "text": []
+}

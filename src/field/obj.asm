@@ -127,10 +127,9 @@ InitPortrait:
 
 ; pointers to character portrait graphics (+$ed0000, first 16 only)
 PortraitGfxPtrs:
-@51ba:
-.repeat 16, i
+@51ba:  .repeat 16, i
         .addr   PortraitGfx+$0320*i
-.endrep
+        .endrep
 
 ; character portrait tile formation
 PortraitTiles:
@@ -1144,17 +1143,17 @@ DrawObjSprites:
         ldy     #$0020
         lda     #$ef
 @5a3e:
-.repeat 16
+        .repeat 16
         sta     <hWMDATA
-.endrep
+        .endrep
         dey
         bne     @5a3e
         ldx     #$0500
         stx     <hWMADDL
         stz     <hWMADDH
-.repeat 32
+        .repeat 32
         stz     <hWMDATA
-.endrep
+        .endrep
         ldx     #$0000
         phx
         pld
@@ -2996,13 +2995,13 @@ LoadTimerGfx:
         stx     hVMADDL
         ldx     $00
 @6aee:
-.repeat 8, i
+        .repeat 8, i
         lda     f:@DigitGfx+i*2,x
         eor     f:@DigitGfx+i*2+1,x
         sta     hVMDATAL
         lda     f:@DigitGfx+i*2+1,x
         sta     hVMDATAH
-.endrep
+        .endrep
         ldy     #$0018
 @6b81:  stz     hVMDATAL
         stz     hVMDATAH
@@ -3021,13 +3020,13 @@ LoadTimerGfx:
         dey
         bne     @6b9f
 @6ba8:
-.repeat 8, i
+        .repeat 8, i
         lda     f:@DigitGfx+i*2,x
         eor     f:@DigitGfx+i*2+1,x
         sta     hVMDATAL
         lda     f:@DigitGfx+i*2+1,x
         sta     hVMDATAH
-.endrep
+        .endrep
         ldy     #$0018
 @6c3b:  stz     hVMDATAL
         stz     hVMDATAH
@@ -3040,13 +3039,13 @@ LoadTimerGfx:
         shorta0
         cpx     #$00a0
         jne     @6ba8
-.repeat 8, i
+        .repeat 8, i
         lda     f:@ColonGfx+i*2
         eor     f:@ColonGfx+i*2+1
         sta     hVMDATAL
         lda     f:@ColonGfx+i*2+1
         sta     hVMDATAH
-.endrep
+        .endrep
         ldy     #$01a0
 @6ce9:  stz     hVMDATAL
         stz     hVMDATAH

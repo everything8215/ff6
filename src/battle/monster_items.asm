@@ -5,2308 +5,2314 @@
 ; $02: rare drop
 ; $03: common drop
 
+.mac make_monster_steal rare_item, common_item
+        .byte ITEM::rare_item, ITEM::common_item
+.endmac
+
+.define make_monster_drop make_monster_steal
+
 ; ------------------------------------------------------------------------------
 
 ; 0: guard
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 1: soldier
-        .byte ITEM::TONIC, ITEM::POTION
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, POTION
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 2: templar
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 3: ninja
-        .byte ITEM::CHERUB_DOWN, ITEM::EMPTY
-        .byte ITEM::NINJA_STAR, ITEM::EMPTY
+        make_monster_steal      CHERUB_DOWN, EMPTY
+        make_monster_drop       NINJA_STAR, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 4: samurai
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 5: orog
-        .byte ITEM::AMULET, ITEM::EMPTY
-        .byte ITEM::AMULET, ITEM::REVIVIFY
+        make_monster_steal      AMULET, EMPTY
+        make_monster_drop       AMULET, REVIVIFY
 
 ; ------------------------------------------------------------------------------
 
 ; 6: mag_roader_1
-        .byte ITEM::SHURIKEN, ITEM::BOLT_EDGE
-        .byte ITEM::WATER_EDGE, ITEM::EMPTY
+        make_monster_steal      SHURIKEN, BOLT_EDGE
+        make_monster_drop       WATER_EDGE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 7: retainer
-        .byte ITEM::AURA, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      AURA, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 8: hazer
-        .byte ITEM::POTION, ITEM::EMPTY
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      POTION, EMPTY
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 9: dahling
-        .byte ITEM::MOOGLE_SUIT, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      MOOGLE_SUIT, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 10: rain_man
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 11: brawler
-        .byte ITEM::BANDANA, ITEM::EMPTY
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      BANDANA, EMPTY
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 12: apokryphos
-        .byte ITEM::CURE_RING, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      CURE_RING, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 13: dark_force
-        .byte ITEM::CRYSTAL, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      CRYSTAL, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 14: whisper
-        .byte ITEM::POTION, ITEM::EMPTY
-        .byte ITEM::SOFT, ITEM::EMPTY
+        make_monster_steal      POTION, EMPTY
+        make_monster_drop       SOFT, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 15: over_mind
-        .byte ITEM::POTION, ITEM::EMPTY
-        .byte ITEM::REVIVIFY, ITEM::GREEN_CHERRY
+        make_monster_steal      POTION, EMPTY
+        make_monster_drop       REVIVIFY, GREEN_CHERRY
 
 ; ------------------------------------------------------------------------------
 
 ; 16: osteosaur
-        .byte ITEM::REMEDY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::REVIVIFY
+        make_monster_steal      REMEDY, EMPTY
+        make_monster_drop       EMPTY, REVIVIFY
 
 ; ------------------------------------------------------------------------------
 
 ; 17: commander
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 18: rhodox
-        .byte ITEM::TONIC, ITEM::ANTIDOTE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, ANTIDOTE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 19: were_rat
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 20: ursus
-        .byte ITEM::SNEAK_RING, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      SNEAK_RING, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 21: rhinotaur
-        .byte ITEM::MITHRIL_CLAW, ITEM::TONIC
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      MITHRIL_CLAW, TONIC
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 22: steroidite
-        .byte ITEM::THUNDER_SHLD, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      THUNDER_SHLD, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 23: leafer
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 24: stray_cat
-        .byte ITEM::POTION, ITEM::EMPTY
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      POTION, EMPTY
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 25: lobo
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 26: doberman
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 27: vomammoth
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 28: fidor
-        .byte ITEM::POTION, ITEM::FENIX_DOWN
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POTION, FENIX_DOWN
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 29: baskervor
-        .byte ITEM::GAIA_GEAR, ITEM::EMPTY
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      GAIA_GEAR, EMPTY
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 30: suriander
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 31: chimera
-        .byte ITEM::HYPER_WRIST, ITEM::EMPTY
-        .byte ITEM::GOLD_ARMOR, ITEM::EMPTY
+        make_monster_steal      HYPER_WRIST, EMPTY
+        make_monster_drop       GOLD_ARMOR, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 32: behemoth
-        .byte ITEM::RUNNINGSHOES, ITEM::EMPTY
-        .byte ITEM::X_POTION, ITEM::EMPTY
+        make_monster_steal      RUNNINGSHOES, EMPTY
+        make_monster_drop       X_POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 33: mesosaur
-        .byte ITEM::EMPTY, ITEM::ANTIDOTE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, ANTIDOTE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 34: pterodon
-        .byte ITEM::GUARDIAN, ITEM::MITHRILKNIFE
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      GUARDIAN, MITHRILKNIFE
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 35: fossilfang
-        .byte ITEM::REMEDY, ITEM::REVIVIFY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      REMEDY, REVIVIFY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 36: white_drgn
-        .byte ITEM::PEARL_LANCE, ITEM::X_POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      PEARL_LANCE, X_POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 37: doom_drgn
-        .byte ITEM::POD_BRACELET, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POD_BRACELET, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 38: brachosaur
-        .byte ITEM::RIBBON, ITEM::EMPTY
-        .byte ITEM::ECONOMIZER, ITEM::EMPTY
+        make_monster_steal      RIBBON, EMPTY
+        make_monster_drop       ECONOMIZER, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 39: tyranosaur
-        .byte ITEM::IMPS_ARMOR, ITEM::EMPTY
-        .byte ITEM::IMP_HALBERD, ITEM::EMPTY
+        make_monster_steal      IMPS_ARMOR, EMPTY
+        make_monster_drop       IMP_HALBERD, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 40: dark_wind
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 41: beakor
-        .byte ITEM::POTION, ITEM::EYEDROP
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      POTION, EYEDROP
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 42: vulture
-        .byte ITEM::FENIX_DOWN, ITEM::POTION
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, POTION
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 43: harpy
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 44: hermitcrab
-        .byte ITEM::EMPTY, ITEM::POTION
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
+        make_monster_steal      EMPTY, POTION
+        make_monster_drop       WARP_STONE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 45: trapper
-        .byte ITEM::AUTOCROSSBOW, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      AUTOCROSSBOW, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 46: hornet
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 47: crasshoppr
-        .byte ITEM::ANTIDOTE, ITEM::ANTIDOTE
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      ANTIDOTE, ANTIDOTE
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 48: delta_bug
-        .byte ITEM::EMPTY, ITEM::TONIC
-        .byte ITEM::SLEEPING_BAG, ITEM::EMPTY
+        make_monster_steal      EMPTY, TONIC
+        make_monster_drop       SLEEPING_BAG, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 49: gilomantis
-        .byte ITEM::POISON_CLAW, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POISON_CLAW, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 50: trilium
-        .byte ITEM::REMEDY, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      REMEDY, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 51: nightshade
-        .byte ITEM::NUTKIN_SUIT, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      NUTKIN_SUIT, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 52: tumbleweed
-        .byte ITEM::TITANIUM, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TITANIUM, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 53: bloompire
-        .byte ITEM::ECHO_SCREEN, ITEM::EMPTY
-        .byte ITEM::SMOKE_BOMB, ITEM::EMPTY
+        make_monster_steal      ECHO_SCREEN, EMPTY
+        make_monster_drop       SMOKE_BOMB, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 54: trilobiter
-        .byte ITEM::TONIC, ITEM::ANTIDOTE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, ANTIDOTE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 55: siegfried_1
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 56: nautiloid
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::EYEDROP, ITEM::EMPTY
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       EYEDROP, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 57: exocite
-        .byte ITEM::MITHRIL_CLAW, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      MITHRIL_CLAW, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 58: anguiform
-        .byte ITEM::POTION, ITEM::EMPTY
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      POTION, EMPTY
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 59: reach_frog
-        .byte ITEM::TACK_STAR, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TACK_STAR, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 60: lizard
-        .byte ITEM::DRAINER, ITEM::EMPTY
-        .byte ITEM::SOFT, ITEM::EMPTY
+        make_monster_steal      DRAINER, EMPTY
+        make_monster_drop       SOFT, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 61: chickenlip
-        .byte ITEM::SLEEPING_BAG, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      SLEEPING_BAG, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 62: hoover
-        .byte ITEM::REMEDY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      REMEDY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 63: rider
-        .byte ITEM::ELIXIR, ITEM::MITHRIL_VEST
-        .byte ITEM::REMEDY, ITEM::REMEDY
+        make_monster_steal      ELIXIR, MITHRIL_VEST
+        make_monster_drop       REMEDY, REMEDY
 
 ; ------------------------------------------------------------------------------
 
 ; 64: chupon_colosseum
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 65: pipsqueak
-        .byte ITEM::EMPTY, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 66: m_tekarmor
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::POTION
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       EMPTY, POTION
 
 ; ------------------------------------------------------------------------------
 
 ; 67: sky_armor
-        .byte ITEM::EMPTY, ITEM::TINCTURE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, TINCTURE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 68: telstar
-        .byte ITEM::X_POTION, ITEM::EMPTY
-        .byte ITEM::GREEN_BERET, ITEM::GREEN_BERET
+        make_monster_steal      X_POTION, EMPTY
+        make_monster_drop       GREEN_BERET, GREEN_BERET
 
 ; ------------------------------------------------------------------------------
 
 ; 69: lethal_wpn
-        .byte ITEM::DEBILITATOR, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DEBILITATOR, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 70: vaporite
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 71: flan
-        .byte ITEM::MAGICITE, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      MAGICITE, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 72: ing
-        .byte ITEM::AMULET, ITEM::EMPTY
-        .byte ITEM::REVIVIFY, ITEM::EMPTY
+        make_monster_steal      AMULET, EMPTY
+        make_monster_drop       REVIVIFY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 73: humpty
-        .byte ITEM::EMPTY, ITEM::GREEN_CHERRY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, GREEN_CHERRY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 74: brainpan
-        .byte ITEM::EARRINGS, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EARRINGS, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 75: cruller
-        .byte ITEM::EMPTY, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 76: cactrot
-        .byte ITEM::SOFT, ITEM::EMPTY
-        .byte ITEM::SOFT, ITEM::EMPTY
+        make_monster_steal      SOFT, EMPTY
+        make_monster_drop       SOFT, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 77: repo_man
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 78: harvester
-        .byte ITEM::DRAGOONBOOTS, ITEM::GOGGLES
-        .byte ITEM::BARRIER_RING, ITEM::EMPTY
+        make_monster_steal      DRAGOONBOOTS, GOGGLES
+        make_monster_drop       BARRIER_RING, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 79: bomb
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 80: still_life
-        .byte ITEM::FAKEMUSTACHE, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FAKEMUSTACHE, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 81: boxed_set
-        .byte ITEM::ANTIDOTE, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      ANTIDOTE, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 82: slamdancer
-        .byte ITEM::THIEFKNIFE, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      THIEFKNIFE, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 83: hadesgigas
-        .byte ITEM::ATLAS_ARMLET, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      ATLAS_ARMLET, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 84: pug
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::TINTINABAR, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       TINTINABAR, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 85: magic_urn
-        .byte ITEM::ELIXIR, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      ELIXIR, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 86: mover
-        .byte ITEM::EMPTY, ITEM::SUPER_BALL
-        .byte ITEM::MAGICITE, ITEM::EMPTY
+        make_monster_steal      EMPTY, SUPER_BALL
+        make_monster_drop       MAGICITE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 87: figaliz
-        .byte ITEM::POTION, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POTION, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 88: buffalax
-        .byte ITEM::DIAMOND_VEST, ITEM::TINCTURE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DIAMOND_VEST, TINCTURE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 89: aspik
-        .byte ITEM::TONIC, ITEM::EMPTY
-        .byte ITEM::X_POTION, ITEM::EMPTY
+        make_monster_steal      TONIC, EMPTY
+        make_monster_drop       X_POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 90: ghost
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 91: crawler
-        .byte ITEM::REMEDY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      REMEDY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 92: sand_ray
-        .byte ITEM::ANTIDOTE, ITEM::ANTIDOTE
-        .byte ITEM::ANTIDOTE, ITEM::EMPTY
+        make_monster_steal      ANTIDOTE, ANTIDOTE
+        make_monster_drop       ANTIDOTE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 93: areneid
-        .byte ITEM::EMPTY, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      EMPTY, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 94: actaneon
-        .byte ITEM::EMPTY, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 95: sand_horse
-        .byte ITEM::EMPTY, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 96: dark_side
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 97: mad_oscar
-        .byte ITEM::X_POTION, ITEM::EMPTY
-        .byte ITEM::REMEDY, ITEM::REVIVIFY
+        make_monster_steal      X_POTION, EMPTY
+        make_monster_drop       REMEDY, REVIVIFY
 
 ; ------------------------------------------------------------------------------
 
 ; 98: crawly
-        .byte ITEM::REMEDY, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      REMEDY, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 99: bleary
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 100: marshal
-        .byte ITEM::EMPTY, ITEM::MITHRILKNIFE
-        .byte ITEM::POTION, ITEM::POTION
+        make_monster_steal      EMPTY, MITHRILKNIFE
+        make_monster_drop       POTION, POTION
 
 ; ------------------------------------------------------------------------------
 
 ; 101: trooper
-        .byte ITEM::MITHRILBLADE, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      MITHRILBLADE, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 102: general
-        .byte ITEM::MITHRIL_SHLD, ITEM::TONIC
-        .byte ITEM::GREEN_CHERRY, ITEM::EMPTY
+        make_monster_steal      MITHRIL_SHLD, TONIC
+        make_monster_drop       GREEN_CHERRY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 103: covert
-        .byte ITEM::TACK_STAR, ITEM::SHURIKEN
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TACK_STAR, SHURIKEN
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 104: ogor
-        .byte ITEM::MURASAME, ITEM::ASHURA
-        .byte ITEM::EMPTY, ITEM::REVIVIFY
+        make_monster_steal      MURASAME, ASHURA
+        make_monster_drop       EMPTY, REVIVIFY
 
 ; ------------------------------------------------------------------------------
 
 ; 105: warlock
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
+        make_monster_steal      WARP_STONE, EMPTY
+        make_monster_drop       WARP_STONE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 106: madam
-        .byte ITEM::GOGGLES, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      GOGGLES, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 107: joker
-        .byte ITEM::GREEN_BERET, ITEM::TONIC
-        .byte ITEM::MITHRIL_ROD, ITEM::EMPTY
+        make_monster_steal      GREEN_BERET, TONIC
+        make_monster_drop       MITHRIL_ROD, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 108: iron_fist
-        .byte ITEM::HEAD_BAND, ITEM::TONIC
-        .byte ITEM::MITHRILKNIFE, ITEM::EMPTY
+        make_monster_steal      HEAD_BAND, TONIC
+        make_monster_drop       MITHRILKNIFE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 109: goblin
-        .byte ITEM::MITHRILGLOVE, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      MITHRILGLOVE, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 110: apparite
-        .byte ITEM::POTION, ITEM::REVIVIFY
-        .byte ITEM::REVIVIFY, ITEM::EMPTY
+        make_monster_steal      POTION, REVIVIFY
+        make_monster_drop       REVIVIFY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 111: powerdemon
-        .byte ITEM::DIAMOND_VEST, ITEM::POTION
-        .byte ITEM::AMULET, ITEM::REVIVIFY
+        make_monster_steal      DIAMOND_VEST, POTION
+        make_monster_drop       AMULET, REVIVIFY
 
 ; ------------------------------------------------------------------------------
 
 ; 112: displayer
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
+        make_monster_steal      WARP_STONE, EMPTY
+        make_monster_drop       WARP_STONE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 113: vector_pup
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 114: peepers
-        .byte ITEM::ELIXIR, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      ELIXIR, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 115: sewer_rat
-        .byte ITEM::EMPTY, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 116: slatter
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
+        make_monster_steal      WARP_STONE, EMPTY
+        make_monster_drop       WARP_STONE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 117: rhinox
-        .byte ITEM::FLASH, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FLASH, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 118: rhobite
-        .byte ITEM::POTION, ITEM::POTION
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      POTION, POTION
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 119: wild_cat
-        .byte ITEM::TABBY_SUIT, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TABBY_SUIT, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 120: red_fang
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::DRIED_MEAT, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       DRIED_MEAT, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 121: bounty_man
-        .byte ITEM::POTION, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POTION, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 122: tusker
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::SOFT, ITEM::EMPTY
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       SOFT, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 123: ralph
-        .byte ITEM::TIGER_MASK, ITEM::TONIC
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      TIGER_MASK, TONIC
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 124: chitonid
-        .byte ITEM::EMPTY, ITEM::POTION
-        .byte ITEM::REMEDY, ITEM::EMPTY
+        make_monster_steal      EMPTY, POTION
+        make_monster_drop       REMEDY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 125: wart_puck
-        .byte ITEM::DRIED_MEAT, ITEM::FLAIL
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DRIED_MEAT, FLAIL
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 126: rhyos
-        .byte ITEM::GOLD_LANCE, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      GOLD_LANCE, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 127: srbehemoth_undead
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::BEHEMOTHSUIT, ITEM::BEHEMOTHSUIT
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       BEHEMOTHSUIT, BEHEMOTHSUIT
 
 ; ------------------------------------------------------------------------------
 
 ; 128: vectaur
-        .byte ITEM::NINJA_STAR, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      NINJA_STAR, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 129: wyvern
-        .byte ITEM::DRAGOONBOOTS, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DRAGOONBOOTS, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 130: zombone
-        .byte ITEM::POTION, ITEM::FENIX_DOWN
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      POTION, FENIX_DOWN
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 131: dragon
-        .byte ITEM::GENJI_GLOVE, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      GENJI_GLOVE, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 132: brontaur
-        .byte ITEM::DRIED_MEAT, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DRIED_MEAT, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 133: allosaurus
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 134: cirpius
-        .byte ITEM::TONIC, ITEM::ANTIDOTE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, ANTIDOTE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 135: sprinter
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::IMPS_ARMOR, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       IMPS_ARMOR, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 136: gobbler
-        .byte ITEM::POTION, ITEM::GREEN_CHERRY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POTION, GREEN_CHERRY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 137: harpiai
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 138: gloomshell
-        .byte ITEM::POTION, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POTION, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 139: drop
-        .byte ITEM::EMPTY, ITEM::TINCTURE
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      EMPTY, TINCTURE
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 140: mind_candy
-        .byte ITEM::TONIC, ITEM::SOFT
-        .byte ITEM::SOFT, ITEM::EMPTY
+        make_monster_steal      TONIC, SOFT
+        make_monster_drop       SOFT, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 141: weedfeeder
-        .byte ITEM::ANTIDOTE, ITEM::ANTIDOTE
-        .byte ITEM::ECHO_SCREEN, ITEM::EMPTY
+        make_monster_steal      ANTIDOTE, ANTIDOTE
+        make_monster_drop       ECHO_SCREEN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 142: luridan
-        .byte ITEM::EMPTY, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 143: toe_cutter
-        .byte ITEM::EMPTY, ITEM::POISON_ROD
-        .byte ITEM::POISON_ROD, ITEM::EMPTY
+        make_monster_steal      EMPTY, POISON_ROD
+        make_monster_drop       POISON_ROD, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 144: over_grunk
-        .byte ITEM::REMEDY, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      REMEDY, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 145: exoray
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::REVIVIFY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, REVIVIFY
 
 ; ------------------------------------------------------------------------------
 
 ; 146: crusher
-        .byte ITEM::EMPTY, ITEM::SUPER_BALL
-        .byte ITEM::SUPER_BALL, ITEM::EMPTY
+        make_monster_steal      EMPTY, SUPER_BALL
+        make_monster_drop       SUPER_BALL, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 147: uroburos
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 148: primordite
-        .byte ITEM::TONIC, ITEM::EYEDROP
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, EYEDROP
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 149: sky_cap
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 150: cephaler
-        .byte ITEM::REMEDY, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      REMEDY, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 151: maliga
-        .byte ITEM::EMPTY, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 152: gigan_toad
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::SLEEPING_BAG, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       SLEEPING_BAG, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 153: geckorex
-        .byte ITEM::TORTOISESHLD, ITEM::EMPTY
-        .byte ITEM::TORTOISESHLD, ITEM::EMPTY
+        make_monster_steal      TORTOISESHLD, EMPTY
+        make_monster_drop       TORTOISESHLD, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 154: cluck
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
+        make_monster_steal      WARP_STONE, EMPTY
+        make_monster_drop       WARP_STONE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 155: land_worm
-        .byte ITEM::X_POTION, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      X_POTION, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 156: test_rider
-        .byte ITEM::PARTISAN, ITEM::EMPTY
-        .byte ITEM::STOUT_SPEAR, ITEM::EMPTY
+        make_monster_steal      PARTISAN, EMPTY
+        make_monster_drop       STOUT_SPEAR, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 157: plutoarmor
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 158: tomb_thumb
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::GREEN_CHERRY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       GREEN_CHERRY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 159: heavyarmor
-        .byte ITEM::IRONHELMET, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      IRONHELMET, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 160: chaser
-        .byte ITEM::BIO_BLASTER, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      BIO_BLASTER, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 161: scullion
-        .byte ITEM::AIR_ANCHOR, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      AIR_ANCHOR, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 162: poplium
-        .byte ITEM::POTION, ITEM::EMPTY
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      POTION, EMPTY
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 163: intangir
-        .byte ITEM::MAGICITE, ITEM::EMPTY
-        .byte ITEM::ANTIDOTE, ITEM::EMPTY
+        make_monster_steal      MAGICITE, EMPTY
+        make_monster_drop       ANTIDOTE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 164: misfit
-        .byte ITEM::BACK_GUARD, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      BACK_GUARD, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 165: eland
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
+        make_monster_steal      WARP_STONE, EMPTY
+        make_monster_drop       WARP_STONE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 166: enuo
-        .byte ITEM::X_POTION, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      X_POTION, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 167: deep_eye
-        .byte ITEM::EMPTY, ITEM::EYEDROP
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EYEDROP
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 168: greasemonk
-        .byte ITEM::BUCKLER, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      BUCKLER, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 169: neckhunter
-        .byte ITEM::DARK_HOOD, ITEM::EMPTY
-        .byte ITEM::PEACE_RING, ITEM::EMPTY
+        make_monster_steal      DARK_HOOD, EMPTY
+        make_monster_drop       PEACE_RING, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 170: grenade
-        .byte ITEM::FIRE_SKEAN, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FIRE_SKEAN, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 171: critic
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 172: pan_dora
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 173: souldancer
-        .byte ITEM::MOOGLE_SUIT, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      MOOGLE_SUIT, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 174: gigantos
-        .byte ITEM::ELIXIR, ITEM::X_POTION
-        .byte ITEM::HARDENED, ITEM::HARDENED
+        make_monster_steal      ELIXIR, X_POTION
+        make_monster_drop       HARDENED, HARDENED
 
 ; ------------------------------------------------------------------------------
 
 ; 175: mag_roader_2
-        .byte ITEM::SHURIKEN, ITEM::BOLT_EDGE
-        .byte ITEM::FIRE_SKEAN, ITEM::EMPTY
+        make_monster_steal      SHURIKEN, BOLT_EDGE
+        make_monster_drop       FIRE_SKEAN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 176: spek_tor
-        .byte ITEM::X_POTION, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      X_POTION, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 177: parasite
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 178: earthguard
-        .byte ITEM::MEGALIXIR, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      MEGALIXIR, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 179: coelecite
-        .byte ITEM::POTION, ITEM::ANTIDOTE
-        .byte ITEM::ANTIDOTE, ITEM::EMPTY
+        make_monster_steal      POTION, ANTIDOTE
+        make_monster_drop       ANTIDOTE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 180: anemone
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::GREEN_CHERRY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, GREEN_CHERRY
 
 ; ------------------------------------------------------------------------------
 
 ; 181: hipocampus
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
+        make_monster_steal      WARP_STONE, EMPTY
+        make_monster_drop       WARP_STONE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 182: spectre
-        .byte ITEM::ICE_ROD, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      ICE_ROD, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 183: evil_oscar
-        .byte ITEM::EMPTY, ITEM::WARP_STONE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, WARP_STONE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 184: slurm
-        .byte ITEM::EMPTY, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 185: latimeria
-        .byte ITEM::EMPTY, ITEM::GAIA_GEAR
-        .byte ITEM::ANTIDOTE, ITEM::EMPTY
+        make_monster_steal      EMPTY, GAIA_GEAR
+        make_monster_drop       ANTIDOTE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 186: stillgoing
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 187: allo_ver
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::TIGER_FANGS, ITEM::TIGER_FANGS
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       TIGER_FANGS, TIGER_FANGS
 
 ; ------------------------------------------------------------------------------
 
 ; 188: phase
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 189: outsider
-        .byte ITEM::BREAK_BLADE, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      BREAK_BLADE, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 190: barb_e
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 191: parasoul
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 192: pm_stalker
-        .byte ITEM::X_POTION, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      X_POTION, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 193: hemophyte
-        .byte ITEM::TACK_STAR, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TACK_STAR, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 194: sp_forces
-        .byte ITEM::EMPTY, ITEM::TONIC
-        .byte ITEM::MAGICITE, ITEM::EMPTY
+        make_monster_steal      EMPTY, TONIC
+        make_monster_drop       MAGICITE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 195: nohrabbit
-        .byte ITEM::EMPTY, ITEM::REMEDY
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      EMPTY, REMEDY
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 196: wizard
-        .byte ITEM::ICE_ROD, ITEM::THUNDER_ROD
-        .byte ITEM::FIRE_ROD, ITEM::EMPTY
+        make_monster_steal      ICE_ROD, THUNDER_ROD
+        make_monster_drop       FIRE_ROD, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 197: scrapper
-        .byte ITEM::THIEF_GLOVE, ITEM::EMPTY
-        .byte ITEM::AIR_LANCET, ITEM::EMPTY
+        make_monster_steal      THIEF_GLOVE, EMPTY
+        make_monster_drop       AIR_LANCET, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 198: ceritops
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::WHITE_CAPE, ITEM::GREEN_CHERRY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       WHITE_CAPE, GREEN_CHERRY
 
 ; ------------------------------------------------------------------------------
 
 ; 199: commando
-        .byte ITEM::MITHRIL_VEST, ITEM::TENT
-        .byte ITEM::TENT, ITEM::EMPTY
+        make_monster_steal      MITHRIL_VEST, TENT
+        make_monster_drop       TENT, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 200: opinicus
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
+        make_monster_steal      WARP_STONE, EMPTY
+        make_monster_drop       WARP_STONE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 201: poppers
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::GREEN_CHERRY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       GREEN_CHERRY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 202: lunaris
-        .byte ITEM::POTION, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POTION, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 203: garm
-        .byte ITEM::FENIX_DOWN, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 204: vindr
-        .byte ITEM::CHOCOBO_SUIT, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      CHOCOBO_SUIT, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 205: kiwok
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::WHITE_CAPE, ITEM::GREEN_CHERRY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       WHITE_CAPE, GREEN_CHERRY
 
 ; ------------------------------------------------------------------------------
 
 ; 206: nastidon
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 207: rinn
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 208: insecare
-        .byte ITEM::EMPTY, ITEM::ECHO_SCREEN
-        .byte ITEM::SMOKE_BOMB, ITEM::EMPTY
+        make_monster_steal      EMPTY, ECHO_SCREEN
+        make_monster_drop       SMOKE_BOMB, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 209: vermin
-        .byte ITEM::ANTIDOTE, ITEM::POTION
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      ANTIDOTE, POTION
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 210: mantodea
-        .byte ITEM::IMP_HALBERD, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      IMP_HALBERD, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 211: bogy
-        .byte ITEM::EMPTY, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 212: prussian
-        .byte ITEM::FULL_MOON, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FULL_MOON, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 213: black_drgn
-        .byte ITEM::EMPTY, ITEM::REVIVIFY
-        .byte ITEM::TENT, ITEM::EMPTY
+        make_monster_steal      EMPTY, REVIVIFY
+        make_monster_drop       TENT, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 214: adamanchyt
-        .byte ITEM::GOLD_SHLD, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      GOLD_SHLD, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 215: dante
-        .byte ITEM::DIAMOND_HELM, ITEM::EMPTY
-        .byte ITEM::GOLD_SHLD, ITEM::EMPTY
+        make_monster_steal      DIAMOND_HELM, EMPTY
+        make_monster_drop       GOLD_SHLD, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 216: wirey_drgn
-        .byte ITEM::DRAGOONBOOTS, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DRAGOONBOOTS, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 217: dueller
-        .byte ITEM::CHAIN_SAW, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      CHAIN_SAW, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 218: psychot
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 219: muus
-        .byte ITEM::MAGICITE, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      MAGICITE, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 220: karkass
-        .byte ITEM::SOUL_SABRE, ITEM::MITHRILBLADE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      SOUL_SABRE, MITHRILBLADE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 221: punisher
-        .byte ITEM::BONE_CLUB, ITEM::RISING_SUN
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      BONE_CLUB, RISING_SUN
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 222: balloon
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 223: gabbldegak
-        .byte ITEM::FENIX_DOWN, ITEM::EYEDROP
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EYEDROP
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 224: gtbehemoth
-        .byte ITEM::TIGER_FANGS, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TIGER_FANGS, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 225: scorpion
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 226: chaos_drgn
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 227: spit_fire
-        .byte ITEM::ELIXIR, ITEM::TINCTURE
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      ELIXIR, TINCTURE
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 228: vectagoyle
-        .byte ITEM::SWORDBREAKER, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      SWORDBREAKER, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 229: lich
-        .byte ITEM::POISON_ROD, ITEM::GREEN_CHERRY
-        .byte ITEM::GREEN_CHERRY, ITEM::EMPTY
+        make_monster_steal      POISON_ROD, GREEN_CHERRY
+        make_monster_drop       GREEN_CHERRY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 230: osprey
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::ECHO_SCREEN, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       ECHO_SCREEN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 231: mag_roader_3
-        .byte ITEM::SHURIKEN, ITEM::BOLT_EDGE
-        .byte ITEM::WATER_EDGE, ITEM::EMPTY
+        make_monster_steal      SHURIKEN, BOLT_EDGE
+        make_monster_drop       WATER_EDGE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 232: bug
-        .byte ITEM::POTION, ITEM::SOFT
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POTION, SOFT
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 233: sea_flower
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 234: fortis
-        .byte ITEM::DRILL, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DRILL, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 235: abolisher
-        .byte ITEM::EMPTY, ITEM::ANTIDOTE
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      EMPTY, ANTIDOTE
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 236: aquila
-        .byte ITEM::ECONOMIZER, ITEM::FENIX_DOWN
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      ECONOMIZER, FENIX_DOWN
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 237: junk
-        .byte ITEM::NOISEBLASTER, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      NOISEBLASTER, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 238: mandrake
-        .byte ITEM::POTION, ITEM::POTION
-        .byte ITEM::REMEDY, ITEM::EMPTY
+        make_monster_steal      POTION, POTION
+        make_monster_drop       REMEDY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 239: 1st_class
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 240: tap_dancer
-        .byte ITEM::SWORDBREAKER, ITEM::DIRK
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      SWORDBREAKER, DIRK
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 241: necromancr
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::REVIVIFY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       EMPTY, REVIVIFY
 
 ; ------------------------------------------------------------------------------
 
 ; 242: borras
-        .byte ITEM::MUSCLE_BELT, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      MUSCLE_BELT, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 243: mag_roader_4
-        .byte ITEM::SHURIKEN, ITEM::BOLT_EDGE
-        .byte ITEM::FIRE_SKEAN, ITEM::EMPTY
+        make_monster_steal      SHURIKEN, BOLT_EDGE
+        make_monster_drop       FIRE_SKEAN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 244: wild_rat
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 245: gold_bear
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::POTION, ITEM::EMPTY
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       POTION, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 246: innoc
-        .byte ITEM::BIO_BLASTER, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      BIO_BLASTER, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 247: trixter
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
-        .byte ITEM::FENIX_DOWN, ITEM::EMPTY
+        make_monster_steal      FENIX_DOWN, EMPTY
+        make_monster_drop       FENIX_DOWN, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 248: red_wolf
-        .byte ITEM::TONIC, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      TONIC, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 249: didalos
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 250: woolly
-        .byte ITEM::HARDENED, ITEM::IMPERIAL
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      HARDENED, IMPERIAL
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 251: veteran
-        .byte ITEM::EARRINGS, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EARRINGS, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 252: sky_base
-        .byte ITEM::FLASH, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FLASH, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 253: ironhitman
-        .byte ITEM::AUTOCROSSBOW, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      AUTOCROSSBOW, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 254: io
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 255: pugs
-        .byte ITEM::MINERVA, ITEM::EMPTY
-        .byte ITEM::MINERVA, ITEM::EMPTY
+        make_monster_steal      MINERVA, EMPTY
+        make_monster_drop       MINERVA, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 256: whelk
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::TINCTURE
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       TINCTURE, TINCTURE
 
 ; ------------------------------------------------------------------------------
 
 ; 257: presenter
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::DRAGON_CLAW, ITEM::DRAGON_CLAW
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       DRAGON_CLAW, DRAGON_CLAW
 
 ; ------------------------------------------------------------------------------
 
 ; 258: mega_armor
-        .byte ITEM::EMPTY, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 259: vargas
-        .byte ITEM::MITHRIL_CLAW, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      MITHRIL_CLAW, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 260: tunnelarmr
-        .byte ITEM::BIO_BLASTER, ITEM::AIR_LANCET
-        .byte ITEM::ELIXIR, ITEM::ELIXIR
+        make_monster_steal      BIO_BLASTER, AIR_LANCET
+        make_monster_drop       ELIXIR, ELIXIR
 
 ; ------------------------------------------------------------------------------
 
 ; 261: prometheus
-        .byte ITEM::DEBILITATOR, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DEBILITATOR, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 262: ghosttrain
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::TENT, ITEM::TENT
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       TENT, TENT
 
 ; ------------------------------------------------------------------------------
 
 ; 263: dadaluma
-        .byte ITEM::SNEAK_RING, ITEM::JEWEL_RING
-        .byte ITEM::THIEFKNIFE, ITEM::HEAD_BAND
+        make_monster_steal      SNEAK_RING, JEWEL_RING
+        make_monster_drop       THIEFKNIFE, HEAD_BAND
 
 ; ------------------------------------------------------------------------------
 
 ; 264: shiva
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 265: ifrit
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 266: number_024
-        .byte ITEM::DRAINER, ITEM::RUNE_EDGE
-        .byte ITEM::FLAME_SABRE, ITEM::BLIZZARD
+        make_monster_steal      DRAINER, RUNE_EDGE
+        make_monster_drop       FLAME_SABRE, BLIZZARD
 
 ; ------------------------------------------------------------------------------
 
 ; 267: number_128
-        .byte ITEM::TEMPEST, ITEM::EMPTY
-        .byte ITEM::TENT, ITEM::TENT
+        make_monster_steal      TEMPEST, EMPTY
+        make_monster_drop       TENT, TENT
 
 ; ------------------------------------------------------------------------------
 
 ; 268: inferno
-        .byte ITEM::ICE_SHLD, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      ICE_SHLD, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 269: crane_1
-        .byte ITEM::NOISEBLASTER, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      NOISEBLASTER, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 270: crane_2
-        .byte ITEM::DEBILITATOR, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DEBILITATOR, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 271: umaro_1
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 272: umaro_2
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 273: guardian_vector
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 274: guardian_boss
-        .byte ITEM::RIBBON, ITEM::FORCE_ARMOR
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      RIBBON, FORCE_ARMOR
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 275: air_force
-        .byte ITEM::EMPTY, ITEM::ELIXIR
-        .byte ITEM::CZARINA_RING, ITEM::CZARINA_RING
+        make_monster_steal      EMPTY, ELIXIR
+        make_monster_drop       CZARINA_RING, CZARINA_RING
 
 ; ------------------------------------------------------------------------------
 
 ; 276: tritoch_intro
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 277: tritoch_morph
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 278: flameeater
-        .byte ITEM::EMPTY, ITEM::FLAME_SABRE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, FLAME_SABRE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 279: atmaweapon
-        .byte ITEM::RIBBON, ITEM::ELIXIR
-        .byte ITEM::ELIXIR, ITEM::ELIXIR
+        make_monster_steal      RIBBON, ELIXIR
+        make_monster_drop       ELIXIR, ELIXIR
 
 ; ------------------------------------------------------------------------------
 
 ; 280: nerapa
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 281: srbehemoth
-        .byte ITEM::MURASAME, ITEM::EMPTY
-        .byte ITEM::BEHEMOTHSUIT, ITEM::BEHEMOTHSUIT
+        make_monster_steal      MURASAME, EMPTY
+        make_monster_drop       BEHEMOTHSUIT, BEHEMOTHSUIT
 
 ; ------------------------------------------------------------------------------
 
 ; 282: kefka_1
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 283: tentacle
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 284: dullahan
-        .byte ITEM::GENJI_GLOVE, ITEM::X_POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      GENJI_GLOVE, X_POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 285: doom_gaze
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 286: chadarnook_1
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 287: curley
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 288: larry
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 289: moe
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 290: wrexsoul
-        .byte ITEM::MEMENTO_RING, ITEM::EMPTY
-        .byte ITEM::POD_BRACELET, ITEM::POD_BRACELET
+        make_monster_steal      MEMENTO_RING, EMPTY
+        make_monster_drop       POD_BRACELET, POD_BRACELET
 
 ; ------------------------------------------------------------------------------
 
 ; 291: hidon
-        .byte ITEM::THORNLET, ITEM::WARP_STONE
-        .byte ITEM::WARP_STONE, ITEM::WARP_STONE
+        make_monster_steal      THORNLET, WARP_STONE
+        make_monster_drop       WARP_STONE, WARP_STONE
 
 ; ------------------------------------------------------------------------------
 
 ; 292: katanasoul
-        .byte ITEM::STRATO, ITEM::MURASAME
-        .byte ITEM::OFFERING, ITEM::OFFERING
+        make_monster_steal      STRATO, MURASAME
+        make_monster_drop       OFFERING, OFFERING
 
 ; ------------------------------------------------------------------------------
 
 ; 293: l30_magic
-        .byte ITEM::TINCTURE, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      TINCTURE, EMPTY
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 294: hidonite
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 295: doom
-        .byte ITEM::SAFETY_BIT, ITEM::EMPTY
-        .byte ITEM::SKY_RENDER, ITEM::SKY_RENDER
+        make_monster_steal      SAFETY_BIT, EMPTY
+        make_monster_drop       SKY_RENDER, SKY_RENDER
 
 ; ------------------------------------------------------------------------------
 
 ; 296: goddess
-        .byte ITEM::MINERVA, ITEM::EMPTY
-        .byte ITEM::EXCALIBUR, ITEM::EXCALIBUR
+        make_monster_steal      MINERVA, EMPTY
+        make_monster_drop       EXCALIBUR, EXCALIBUR
 
 ; ------------------------------------------------------------------------------
 
 ; 297: poltrgeist
-        .byte ITEM::RED_JACKET, ITEM::EMPTY
-        .byte ITEM::AURA_LANCE, ITEM::AURA_LANCE
+        make_monster_steal      RED_JACKET, EMPTY
+        make_monster_drop       AURA_LANCE, AURA_LANCE
 
 ; ------------------------------------------------------------------------------
 
 ; 298: kefka_final
-        .byte ITEM::EMPTY, ITEM::MEGALIXIR
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, MEGALIXIR
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 299: l40_magic
-        .byte ITEM::TINCTURE, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      TINCTURE, EMPTY
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 300: ultros_river
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 301: ultros_opera
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 302: ultros_mountain
-        .byte ITEM::EMPTY, ITEM::WHITE_CAPE
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, WHITE_CAPE
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 303: chupon_airship
-        .byte ITEM::EMPTY, ITEM::DIRK
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, DIRK
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 304: l20_magic
-        .byte ITEM::TINCTURE, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      TINCTURE, EMPTY
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 305: siegfried_2
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::GREEN_CHERRY, ITEM::GREEN_CHERRY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       GREEN_CHERRY, GREEN_CHERRY
 
 ; ------------------------------------------------------------------------------
 
 ; 306: l10_magic
-        .byte ITEM::TINCTURE, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      TINCTURE, EMPTY
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 307: l50_magic
-        .byte ITEM::ETHER, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      ETHER, EMPTY
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 308: head
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::POTION, ITEM::POTION
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       POTION, POTION
 
 ; ------------------------------------------------------------------------------
 
 ; 309: whelk_head
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::DRAGON_CLAW, ITEM::DRAGON_CLAW
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       DRAGON_CLAW, DRAGON_CLAW
 
 ; ------------------------------------------------------------------------------
 
 ; 310: colossus
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::BANDANA, ITEM::BANDANA
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       BANDANA, BANDANA
 
 ; ------------------------------------------------------------------------------
 
 ; 311: czardragon
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 312: master_pug
-        .byte ITEM::MEGALIXIR, ITEM::ELIXIR
-        .byte ITEM::GRAEDUS, ITEM::GRAEDUS
+        make_monster_steal      MEGALIXIR, ELIXIR
+        make_monster_drop       GRAEDUS, GRAEDUS
 
 ; ------------------------------------------------------------------------------
 
 ; 313: l60_magic
-        .byte ITEM::ETHER, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      ETHER, EMPTY
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 314: merchant
-        .byte ITEM::GUARDIAN, ITEM::PLUMED_HAT
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      GUARDIAN, PLUMED_HAT
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 315: b_day_suit
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 316: tentacle_1
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 317: tentacle_2
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 318: tentacle_3
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 319: rightblade
-        .byte ITEM::TINCTURE, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::FENIX_DOWN
+        make_monster_steal      TINCTURE, EMPTY
+        make_monster_drop       EMPTY, FENIX_DOWN
 
 ; ------------------------------------------------------------------------------
 
 ; 320: left_blade
-        .byte ITEM::TINCTURE, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::FENIX_DOWN
+        make_monster_steal      TINCTURE, EMPTY
+        make_monster_drop       EMPTY, FENIX_DOWN
 
 ; ------------------------------------------------------------------------------
 
 ; 321: rough
-        .byte ITEM::FLAME_SHLD, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FLAME_SHLD, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 322: striker
-        .byte ITEM::FLAME_SHLD, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      FLAME_SHLD, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 323: l70_magic
-        .byte ITEM::ETHER, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      ETHER, EMPTY
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 324: tritoch_boss
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 325: laser_gun
-        .byte ITEM::EMPTY, ITEM::X_ETHER
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, X_ETHER
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 326: speck
-        .byte ITEM::AMULET, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      AMULET, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 327: missilebay
-        .byte ITEM::DEBILITATOR, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      DEBILITATOR, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 328: chadarnook_2
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 329: ice_dragon
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::FORCE_SHLD, ITEM::FORCE_SHLD
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       FORCE_SHLD, FORCE_SHLD
 
 ; ------------------------------------------------------------------------------
 
 ; 330: kefka_narshe
-        .byte ITEM::ELIXIR, ITEM::ETHER
-        .byte ITEM::PEACE_RING, ITEM::PEACE_RING
+        make_monster_steal      ELIXIR, ETHER
+        make_monster_drop       PEACE_RING, PEACE_RING
 
 ; ------------------------------------------------------------------------------
 
 ; 331: storm_drgn
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::FORCE_ARMOR, ITEM::FORCE_ARMOR
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       FORCE_ARMOR, FORCE_ARMOR
 
 ; ------------------------------------------------------------------------------
 
 ; 332: dirt_drgn
-        .byte ITEM::X_POTION, ITEM::EMPTY
-        .byte ITEM::MAGUS_ROD, ITEM::MAGUS_ROD
+        make_monster_steal      X_POTION, EMPTY
+        make_monster_drop       MAGUS_ROD, MAGUS_ROD
 
 ; ------------------------------------------------------------------------------
 
 ; 333: ipooh
-        .byte ITEM::POTION, ITEM::POTION
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POTION, POTION
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 334: leader
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::FENIX_DOWN, ITEM::BLACK_BELT
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       FENIX_DOWN, BLACK_BELT
 
 ; ------------------------------------------------------------------------------
 
 ; 335: grunt
-        .byte ITEM::EMPTY, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      EMPTY, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 336: gold_drgn
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::CRYSTAL_ORB, ITEM::CRYSTAL_ORB
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       CRYSTAL_ORB, CRYSTAL_ORB
 
 ; ------------------------------------------------------------------------------
 
 ; 337: skull_drgn
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::MUSCLE_BELT, ITEM::MUSCLE_BELT
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       MUSCLE_BELT, MUSCLE_BELT
 
 ; ------------------------------------------------------------------------------
 
 ; 338: blue_drgn
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::SCIMITAR, ITEM::SCIMITAR
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       SCIMITAR, SCIMITAR
 
 ; ------------------------------------------------------------------------------
 
 ; 339: red_dragon
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::STRATO, ITEM::STRATO
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       STRATO, STRATO
 
 ; ------------------------------------------------------------------------------
 
 ; 340: piranha
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 341: rizopas
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::REMEDY, ITEM::REMEDY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       REMEDY, REMEDY
 
 ; ------------------------------------------------------------------------------
 
 ; 342: specter
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::HYPER_WRIST, ITEM::HYPER_WRIST
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       HYPER_WRIST, HYPER_WRIST
 
 ; ------------------------------------------------------------------------------
 
 ; 343: short_arm
-        .byte ITEM::EMPTY, ITEM::ELIXIR
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, ELIXIR
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 344: long_arm
-        .byte ITEM::EMPTY, ITEM::ELIXIR
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, ELIXIR
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 345: face
-        .byte ITEM::EMPTY, ITEM::ELIXIR
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, ELIXIR
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 346: tiger
-        .byte ITEM::EMPTY, ITEM::ELIXIR
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, ELIXIR
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 347: tools
-        .byte ITEM::EMPTY, ITEM::ELIXIR
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, ELIXIR
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 348: magic
-        .byte ITEM::EMPTY, ITEM::ELIXIR
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, ELIXIR
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 349: hit
-        .byte ITEM::EMPTY, ITEM::ELIXIR
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, ELIXIR
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 350: girl
-        .byte ITEM::EMPTY, ITEM::RAGNAROK
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, RAGNAROK
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 351: sleep
-        .byte ITEM::EMPTY, ITEM::ATMA_WEAPON
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, ATMA_WEAPON
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 352: hidonite_1
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 353: hidonite_2
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 354: hidonite_3
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 355: l80_magic
-        .byte ITEM::ETHER, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      ETHER, EMPTY
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 356: l90_magic
-        .byte ITEM::ETHER, ITEM::EMPTY
-        .byte ITEM::TINCTURE, ITEM::EMPTY
+        make_monster_steal      ETHER, EMPTY
+        make_monster_drop       TINCTURE, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 357: protoarmor
-        .byte ITEM::MITHRIL_MAIL, ITEM::POTION
-        .byte ITEM::BIO_BLASTER, ITEM::EMPTY
+        make_monster_steal      MITHRIL_MAIL, POTION
+        make_monster_drop       BIO_BLASTER, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 358: magimaster
-        .byte ITEM::CRYSTAL_ORB, ITEM::ELIXIR
-        .byte ITEM::MEGALIXIR, ITEM::MEGALIXIR
+        make_monster_steal      CRYSTAL_ORB, ELIXIR
+        make_monster_drop       MEGALIXIR, MEGALIXIR
 
 ; ------------------------------------------------------------------------------
 
 ; 359: soulsaver
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 360: ultros_airship
-        .byte ITEM::EMPTY, ITEM::DRIED_MEAT
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, DRIED_MEAT
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 361: naughty
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 362: phunbaba_1
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 363: phunbaba_2
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 364: phunbaba_3
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 365: phunbaba_4
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 366: terra_flashback
-        .byte ITEM::STAR_PENDANT, ITEM::FENIX_DOWN
-        .byte ITEM::REMEDY, ITEM::EMPTY
+        make_monster_steal      STAR_PENDANT, FENIX_DOWN
+        make_monster_drop       REMEDY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 367: kefka_imp_camp
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 368: cyan_imp_camp
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 369: zone_eater
-        .byte ITEM::WARP_STONE, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      WARP_STONE, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 370: gau_veldt
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 371: kefka_vs_leo
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 372: kefka_esper_gate
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 373: officer
-        .byte ITEM::POTION, ITEM::TONIC
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      POTION, TONIC
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 374: cadet
-        .byte ITEM::EMPTY, ITEM::TONIC
-        .byte ITEM::TONIC, ITEM::EMPTY
+        make_monster_steal      EMPTY, TONIC
+        make_monster_drop       TONIC, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 375: 0177
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 376: 0178
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 377: soldier_flashback
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 378: kefka_vs_esper
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 379: event
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 380: 017c
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 381: atma
-        .byte ITEM::CRYSTAL_ORB, ITEM::DRAINER
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      CRYSTAL_ORB, DRAINER
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 382: shadow_colosseum
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------
 
 ; 383: colosseum
-        .byte ITEM::EMPTY, ITEM::EMPTY
-        .byte ITEM::EMPTY, ITEM::EMPTY
+        make_monster_steal      EMPTY, EMPTY
+        make_monster_drop       EMPTY, EMPTY
 
 ; ------------------------------------------------------------------------------

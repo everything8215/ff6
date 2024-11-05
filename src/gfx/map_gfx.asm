@@ -5,7 +5,7 @@
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_gfx id, name
-        array_item MapGfx, {MAP_GFX::id} := *
+        array_label MapGfx, MAP_GFX::id
         .incbin .sprintf("map_gfx/%s.4bpp", name)
 .endmac
 

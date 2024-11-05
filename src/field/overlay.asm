@@ -55,15 +55,15 @@ LoadOverlayGfx:
         lda     [$2a],y                 ; pointer to graphics
         tax
         shorta0
-.repeat 8, i
+        .repeat 8, i
         lda     f:OverlayGfx+i,x        ; set low 8 bits only (1bpp -> 4bpp)
         sta     hVMDATAL
         stz     hVMDATAH
-.endrep
-.repeat 8
+        .endrep
+        .repeat 8
         stz     hVMDATAL                ; clear high 16 bits
         stz     hVMDATAH
-.endrep
+        .endrep
         longa_clc
         lda     $2d                     ; next 8x8 tile
         adc     #2
@@ -146,7 +146,7 @@ OverlayPropPtrs:
         end_fixed_block
 
 .macro inc_overlay_prop id, file
-        array_item OverlayProp, {OVERLAY_PROP::id} := *
+        array_label OverlayProp, OVERLAY_PROP::id
         .incbin .sprintf("overlay_prop/%s.dat.lz", file)
 .endmac
 

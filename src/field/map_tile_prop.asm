@@ -5,7 +5,7 @@
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_tile_prop id, file
-        array_item MapTileProp, {MAP_TILE_PROP::id} := *
+        array_label MapTileProp, MAP_TILE_PROP::id
         .incbin .sprintf("map_tile_prop/%s.dat.lz", file)
 .endmac
 

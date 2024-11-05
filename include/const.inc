@@ -1391,18 +1391,22 @@ MAX_EXPERIENCE                          = 15000000
 .endenum
 
 ; character run factor values
-RUN_FACTOR_MASK                         = $03
-RUN_FACTOR_HIGH                         = $00  ; 125%
-RUN_FACTOR_NORMAL                       = $01  ; 100%
-RUN_FACTOR_LOW                          = $02  ; 75%
-RUN_FACTOR_VERY_LOW                     = $03  ; 50%
+.enum CHAR_RUN_FACTOR
+        MASK                            = $03
+        HIGH                            = $00  ; 125%
+        NORMAL                          = $01  ; 100%
+        LOW                             = $02  ; 75%
+        VERY_LOW                        = $03  ; 50%
+.endenum
 
 ; character level modifiers (see CharLevelModTbl)
-LEVEL_MOD_MASK                          = $0c
-LEVEL_MOD_NORMAL                        = $00  ; +0
-LEVEL_MOD_HIGH                          = $04  ; +2
-LEVEL_MOD_VERY_HIGH                     = $08  ; +5
-LEVEL_MOD_LOW                           = $0c  ; -3
+.enum CHAR_LEVEL_MOD
+        MASK                            = $0c
+        NORMAL                          = $00  ; +0
+        HIGH                            = $04  ; +2
+        VERY_HIGH                       = $08  ; +5
+        LOW                             = $0c  ; -3
+.endenum
 
 ; character fixed equipment flag
 CHAR_PROP_FIXED_EQUIP                   = $10

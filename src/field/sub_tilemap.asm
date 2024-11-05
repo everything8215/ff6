@@ -5,7 +5,7 @@
 ; ------------------------------------------------------------------------------
 
 .macro inc_sub_tilemap id, file
-        array_item SubTilemap, {SUB_TILEMAP::id} := *
+        array_label SubTilemap, SUB_TILEMAP::id
         .incbin .sprintf("sub_tilemap/%s.dat.lz", file)
 .endmac
 

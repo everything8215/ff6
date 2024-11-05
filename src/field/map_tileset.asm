@@ -5,7 +5,7 @@
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_tileset id, file
-        array_item MapTileset, {MAP_TILESET::id} := *
+        array_label MapTileset, MAP_TILESET::id
         .incbin .sprintf("map_tileset/%s.dat.lz", file)
 .endmac
 

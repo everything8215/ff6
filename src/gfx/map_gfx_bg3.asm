@@ -6,12 +6,12 @@
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_gfx_bg3 id, name
-        array_item MapGfxBG3, {MAP_GFX_BG3::id} := *
+        array_label MapGfxBG3, MAP_GFX_BG3::id
         .incbin .sprintf("map_gfx_bg3/%s.2bpp.lz", name)
 .endmac
 
 .macro inc_map_anim_gfx_bg3 id, name
-        array_item MapAnimGfxBG3, {MAP_ANIM_GFX_BG3::id} := *
+        array_label MapAnimGfxBG3, MAP_ANIM_GFX_BG3::id
         .incbin .sprintf("map_anim_gfx_bg3/%s.2bpp.lz", name)
 .endmac
 
