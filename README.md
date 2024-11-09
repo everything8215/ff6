@@ -63,6 +63,7 @@ existing files.
 Run `make <version>` to make the version of the ROM that you want, where
 `<version>` is one of the following values:
 
+- `ff6-jp`: Final Fantasy VI 1.0 (J)
 - `ff6-en`: Final Fantasy III 1.0 (U)
 - `ff6-en1`: Final Fantasy III 1.1 (U)
 
@@ -146,7 +147,7 @@ uncompressed counterpart with an appropriate extension added at the end, e.g.
 
 ### File Organization
 
-Tge `src` directory contains all of the assembly code and game data. The
+The `src` directory contains all of the assembly code and game data. The
 `include` directory contains all of the include files.
 
 Each of the modules described above is in a separate subdirectory within the
@@ -188,23 +189,42 @@ suffix `_ext`. Also, dummy subroutines called by another bank (typically a
 `jsr` followed by `rtl` or `jsl` followed by `rts` on the 65c816) get the
 special suffix `_far` or `_near`, respectively.
 
-I've added descriptive labels for many the subroutines in the code. Labels
+I've added descriptive labels for many of the subroutines in the code. Labels
 for unknown or unlabeled subroutines are the 6-digit ROM address of the
 subroutine (including the bank) preceded by an underscore, e.g. `_c28566`.
 
-Local labels inside subroutines use mixed case with a prepended `@` symbol,
-which is ca65's default symbol to identify a local label. Most local labels
-are unnamed, and instead use the 4-digit ROM address (excluding the bank). I
-also typically include a local label at the start of each subroutine so that
-it can be compared to the original ROM file, but these are just for convenience
-and can be removed eventually.
+Originally I was using symbols beginning with `@` to generate local labels
+inside of subroutines, but this leads to issues if you need to jump into the
+middle of a subroutine for some reason. I'm slowly changing to a format where
+all subroutines are inside of a `.proc` block, and all labels are either
+given a descriptive name or are unnamed (`:` in ca65). 4-digit ROM addresses
+can still be used but they need a prepended underscore because labels can't
+begin with a digit. To jump into the middle of a subroutine, define a global
+symbol after the `.endproc` command as follows:
+
+```
+.proc SomeSubroutine
+; normal place where the subroutine starts
+        lda     #1
+        ...
+
+; you can jump or branch here using Middle from inside the subroutine or
+; SomeSubroutineMiddle from outside the subroutine
+Middle:
+        lda     #2
+        ...
+        rts
+.endproc
+
+SomeSubroutineMiddle := SomeSubroutine::Middle
+```
 
 WRAM and SRAM labels begin with a lowercase `w` or `s` followed by a
 descriptive name in PascalCase case, e.g. `wSpriteData`.
 
 Hardware registers are a slight exception to the rule. I chose to use the
 official register names from the SNES development manual in all caps,
-prepended with a lowercase 'h' (i.e. `$2100` is `hINIDISP`).
+prepended with a lowercase 'h' (i.e. `$2100` is `hINIDISP`). These are defined in `include/hardware.inc`.
 
 Instruction mnemonics and macro names are in all lowercase. Macro names can
 include underscores to improve readability. Constant expressions are in all
