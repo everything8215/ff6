@@ -168,9 +168,9 @@ class AssetExtractor:
 
         asset_root, _ = os.path.splitext(json_path)
 
-        # check if the data file already exists
+        # check if the data file already exists and is not empty
         dat_path = asset_root + '.dat'
-        if os.path.exists(dat_path):
+        if os.path.exists(dat_path) and os.stat(dat_path).st_size != 0:
             return
 
         # otherwise, we need to extract the text and create the data file
