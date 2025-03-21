@@ -145,7 +145,7 @@ InitGameSaveCursor:
 ; ------------------------------------------------------------------------------
 
 GameSaveCursorProp:
-        make_cursor_prop {0, 0}, {1, 3}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 3}, NO_X_WRAP
 
 ; ------------------------------------------------------------------------------
 
@@ -169,13 +169,13 @@ InitGameLoadCursor:
 ; ------------------------------------------------------------------------------
 
 GameLoadCursorProp:
-        make_cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
 
 GameLoadCursorPos:
-@15cc:  .byte   $08,$1c
-        .byte   $08,$3c
-        .byte   $08,$74
-        .byte   $08,$ac
+@15cc:  cursor_pos {8, 28}
+        cursor_pos {8, 60}
+        cursor_pos {8, 116}
+        cursor_pos {8, 172}
 
 ; ------------------------------------------------------------------------------
 
@@ -199,11 +199,11 @@ InitSaveConfirmCursor:
 ; ------------------------------------------------------------------------------
 
 SaveConfirmCursorProp:
-        make_cursor_prop {0, 0}, {1, 2}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 2}, NO_X_WRAP
 
 SaveConfirmCursorPos:
-@15e8:  .byte   $bf,$44
-        .byte   $bf,$54
+@15e8:  cursor_pos {191, 68}
+        cursor_pos {191, 84}
 
 ; ------------------------------------------------------------------------------
 
@@ -228,7 +228,7 @@ DrawGameSaveMenu:
 DrawGameLoadMenu:
 @1608:  jsr     ClearBG2ScreenA
         stz     $1d4e
-        jsr     InitWindowPal
+        jsr     InitWindowPal           ; use default palette for title window
         jsr     LoadWindowGfx
         ldy     #near SaveTitleWindow
         jsr     DrawWindow
@@ -808,98 +808,23 @@ MenuState_54:
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-        .define SaveSlotEmptyStr {$84,$a6,$a9,$ad,$b2,$00}
-        .define SaveSlotTimeStr {$93,$a2,$a6,$9e,$00}
-        .define SaveSlotColonStr {$c1,$00}
-        .define SaveSlotLevelStr {$8b,$95,$00}
-        .define SaveSlotSlashStr {$c0,$00}
-        .define SaveTitleStr {$92,$9a,$af,$9e,$00}
-        .define NewGameStr {$8d,$9e,$b0,$ff,$86,$9a,$a6,$9e,$00}
-.else
-        .define SaveSlotEmptyStr {$24,$2c,$2f,$33,$38,$00}
-        .define SaveSlotTimeStr {$33,$28,$2c,$24,$00}
-        .define SaveSlotColonStr {$cf,$00}
-        .define SaveSlotLevelStr {$2b,$35,$00}
-        .define SaveSlotSlashStr {$ce,$00}
-        .define SaveTitleStr {$7a,$c5,$24,$00}
-        .define NewGameStr {$94,$c0,$c5,$30,$c5,$a0,$00}
-.endif
+SaveSlot1EmptyText:                     pos_text SAVE_SLOT_1_EMPTY
+SaveSlot2EmptyText:                     pos_text SAVE_SLOT_2_EMPTY
+SaveSlot3EmptyText:                     pos_text SAVE_SLOT_3_EMPTY
+SaveSlot1TimeText:                      pos_text SAVE_SLOT_1_TIME
+SaveSlot2TimeText:                      pos_text SAVE_SLOT_2_TIME
+SaveSlot3TimeText:                      pos_text SAVE_SLOT_3_TIME
+SaveSlot1TimeColonText:                 pos_text SAVE_SLOT_1_TIME_COLON
+SaveSlot2TimeColonText:                 pos_text SAVE_SLOT_2_TIME_COLON
+SaveSlot3TimeColonText:                 pos_text SAVE_SLOT_3_TIME_COLON
+SaveSlot1LevelText:                     pos_text SAVE_SLOT_1_LEVEL
+SaveSlot2LevelText:                     pos_text SAVE_SLOT_2_LEVEL
+SaveSlot3LevelText:                     pos_text SAVE_SLOT_3_LEVEL
+SaveSlot1HPSlashText:                   pos_text SAVE_SLOT_1_HP_SLASH
+SaveSlot2HPSlashText:                   pos_text SAVE_SLOT_2_HP_SLASH
+SaveSlot3HPSlashText:                   pos_text SAVE_SLOT_3_HP_SLASH
 
-; c3/1a24: ( 3, 8) "Empty"
-SaveSlot1EmptyText:
-        pos_text BG3A, {3, 8}, SaveSlotEmptyStr
-
-; c3/1a2c: ( 3,15) "Empty"
-SaveSlot2EmptyText:
-        pos_text BG3A, {3, 15}, SaveSlotEmptyStr
-
-; c3/1a34: ( 3,22) "Empty"
-SaveSlot3EmptyText:
-        pos_text BG3A, {3, 22}, SaveSlotEmptyStr
-
-; c3/1a3c: ( 3,10) "Time"
-SaveSlot1TimeText:
-        pos_text BG3A, {3, 10}, SaveSlotTimeStr
-
-; c3/1a43: ( 3,17) "Time"
-SaveSlot2TimeText:
-        pos_text BG3A, {3, 17}, SaveSlotTimeStr
-
-; c3/1a4a: ( 3,24) "Time"
-SaveSlot3TimeText:
-        pos_text BG3A, {3, 24}, SaveSlotTimeStr
-
-; c3/1a51: ( 4,11) ":"
-SaveSlot1TimeColonText:
-        pos_text BG3A, {4, 11}, SaveSlotColonStr
-
-; c3/1a55: ( 4,18) ":"
-SaveSlot2TimeColonText:
-        pos_text BG3A, {4, 18}, SaveSlotColonStr
-
-; c3/1a59: ( 4,25) ":"
-SaveSlot3TimeColonText:
-        pos_text BG3A, {4, 25}, SaveSlotColonStr
-
-; c3/1a5d: (25, 8) "LV"
-SaveSlot1LevelText:
-        pos_text BG3A, {25, 8}, SaveSlotLevelStr
-
-; c3/1a62: (25,15) "LV"
-SaveSlot2LevelText:
-        pos_text BG3A, {25, 15}, SaveSlotLevelStr
-
-; c3/1a67: (25,22) "LV"
-SaveSlot3LevelText:
-        pos_text BG3A, {25, 22}, SaveSlotLevelStr
-
-; c3/1a6c: (25,10) "/"
-SaveSlot1HPSlashText:
-        pos_text BG3A, {25, 10}, SaveSlotSlashStr
-
-; c3/1a70: (25,17) "/"
-SaveSlot2HPSlashText:
-        pos_text BG3A, {25, 17}, SaveSlotSlashStr
-
-; c3/1a74: (25,24) "/"
-SaveSlot3HPSlashText:
-        pos_text BG3A, {25, 24}, SaveSlotSlashStr
-
-; c3/1a78: (15, 4) "Save"
-SaveTitleText:
-.if LANG_EN
-        pos_text BG3A, {15, 4}, SaveTitleStr
-.else
-        pos_text BG3A, {14, 3}, SaveTitleStr
-.endif
-
-; c3/1a7f: (13, 4) "New Game"
-NewGameText:
-.if LANG_EN
-        pos_text BG3A, {13, 4}, NewGameStr
-.else
-        pos_text BG3A, {13, 3}, NewGameStr
-.endif
+SaveTitleText:                          pos_text SAVE_TITLE
+NewGameText:                            pos_text NEW_GAME_TITLE
 
 ; ------------------------------------------------------------------------------

@@ -3194,10 +3194,10 @@ CharGfxVRAMAddr:
 
 ; pointers to character graphics
 MenuCharGfxPtrs:
-.repeat 22, i
+        .repeat 22, i
         .word   .bankbyte(array_item MapSpriteGfx, i)
         .addr   array_item MapSpriteGfx, i
-.endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 

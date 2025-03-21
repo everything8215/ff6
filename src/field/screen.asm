@@ -1,5 +1,9 @@
 ; ------------------------------------------------------------------------------
 
+        TOTAL_WINDOW_LINES = 208
+
+; ------------------------------------------------------------------------------
+
 .a8
 .i16
 .segment "field_code"
@@ -8,17 +12,17 @@
 
 ; [ update window mask settings ]
 
-SetWindowSelect:
-@063c:  lda     $077b
-        bne     @064f
+.proc SetWindowSelect
+        lda     $077b
+        bne     :+
         lda     $0781
-        bne     @064f
+        bne     :+
         lda     $0521
         and     #$20
-        bne     @064f                   ; branch if spotlights are enabled
-        bra     @066d
-@064f:  lda     $0526                   ; window mask
-        and     #$03
+        bne     :+                      ; branch if spotlights are enabled
+        bra     UseDefault
+:       lda     $0526                   ; window mask
+        and     #%11
         asl2
         tax
         lda     f:WindowSelectTbl,x
@@ -28,7 +32,9 @@ SetWindowSelect:
         lda     f:WindowSelectTbl+2,x
         sta     hWOBJSEL
         rts
-@066d:  lda     #$33                    ; use default settings
+
+UseDefault:
+        lda     #$33                    ; use default settings
         sta     hW12SEL
         lda     #$03
         sta     hW34SEL
@@ -36,34 +42,40 @@ SetWindowSelect:
         sta     hWOBJSEL
         rts
 
-; ------------------------------------------------------------------------------
-
 ; window mask settings
 WindowSelectTbl:
-@067d:  .byte   $33,$03,$f3,$00
+        .byte   $33,$03,$f3,$00         ; default
         .byte   $b3,$03,$f3,$00
         .byte   $ff,$0f,$ff,$00
         .byte   $33,$0f,$f3,$00
+.endproc  ; SetWindowSelect
 
 ; ------------------------------------------------------------------------------
 
 ; [ reset window mask hdma data ]
 
-ClearWindowPos:
-@068d:  inc     $0566
+.proc ClearWindowPos
+        inc     $0566
         lda     $0566
         lsr
-        bcs     @069e
+        bcs     OddFrame
+
+; even frames
         ldx     #$8cb3
         stx     hWMADDL
-        bra     @06a4
-@069e:  ldx     #$8e53
+        bra     :+
+
+; odd frames
+OddFrame:
+        ldx     #$8e53
         stx     hWMADDL
-@06a4:  lda     #$7e
+
+:       lda     #$7e
         sta     hWMADDH
-        lda     #$d0
+        lda     #TOTAL_WINDOW_LINES
         jsr     ResetWindowPos
         rts
+.endproc  ; ClearWindowPos
 
 ; ------------------------------------------------------------------------------
 
@@ -72,52 +84,68 @@ ClearWindowPos:
 ; use bresenham's circle algorithm (i think...) through 90 degrees to
 ; find the points of the flashlight circle
 
-UpdateFlashlight:
-@06af:  lda     $077b                   ; return if flashlight is not enabled
-        bmi     @06b5
+.proc UpdateFlashlight
+        lda     $077b                   ; return if flashlight is not enabled
+        bmi     :+
         rts
-@06b5:  and     #$1f                    ; target flashlight size * 2
+
+; update flashlight size
+:       and     #$1f                    ; target flashlight size * 2
         asl
         cmp     $077c                   ; compare to current flashlight size
-        beq     @06cd
-        bcs     @06c7
+        beq     :+
+        bcs     IncFlashlight
+
+DecFlashlight:
         dec     $077c
         dec     $077c
-        bra     @06cd
-@06c7:  inc     $077c
+        bra     :+
+
+IncFlashlight:
         inc     $077c
-@06cd:  ldy     $0803                   ; party object
+        inc     $077c
+
+; calculate flashlight position
+:       ldy     $0803                   ; party object
         lda     $086a,y                 ; x position
         sec
         sbc     $5c                     ; subtract bg1 scroll pos to get screen pos
         clc
-        adc     #$10                    ; add $10
+        adc     #16                     ; add 16 to center on object
         sta     $077d                   ; set flashlight x position
         lda     $086d,y                 ; y position
         sec
         sbc     $60                     ; subtract bg1 scroll pos to get screen pos
         sec
-        sbc     #$08                    ; subtract 8
+        sbc     #8                      ; subtract 8 to center on object
+
+; switch hdma tables every frame
         sta     $077e                   ; set flashlight y position
         inc     $0566                   ; window 2 frame counter
         lda     $0566
         lsr
-        bcs     @06f9
+        bcs     OddFrame
+
+EvenFrame:
         ldx     #$8cb3                  ; even frame
         stx     hWMADDL
-        bra     @06ff
-@06f9:  ldx     #$8e53                  ; odd frame
+        bra     :+
+
+OddFrame:
+        ldx     #$8e53                  ; odd frame
         stx     hWMADDL
-@06ff:  lda     #$7e
+:       lda     #$7e
         sta     hWMADDH
+
+; calculate window size
         lda     $077c                   ; $1a = current radius (in pixels)
         sta     $1a
-        bne     @0714
-        lda     #$d0                    ; radius 0, close window 2 in all lines
+        bne     :+
+        lda     #TOTAL_WINDOW_LINES     ; radius 0, close window 2 in all lines
         jsr     ResetWindowPos
         stz     $077b
         rts
-@0714:  ldx     #$0100                  ; $0100 / flashlight radius
+:       ldx     #$0100                  ; $0100 / flashlight radius
         stx     hWRDIVL
         lda     $1a
         sta     hWRDIVB
@@ -132,7 +160,8 @@ UpdateFlashlight:
         stz     $29
         shorti
         longa
-@073c:  ldx     $29
+
+Loop1:  ldx     $29
         stx     hWRMPYB
         lda     $26                     ; x -= y / r
         sec
@@ -147,80 +176,91 @@ UpdateFlashlight:
         clc
         adc     hRDMPYL
         sta     $28
-        bra     @073c
+        bra     Loop1
+
+; do top half of flashlight first
 @075f:  shorta0
         lda     $077e                   ; flashlight y position
         sec
         sbc     $1a                     ; subtract radius
-        bcc     @076d
+        bcc     :+
         jsr     ResetWindowPos
-@076d:  ldy     $077d                   ; do top half of flashlight first
+:       ldy     $077d
         ldx     $1a
         cpx     $077e
-        bcc     @077a
+        bcc     :+
         ldx     $077e
-@077a:  dex
-@077b:  tya                             ; flashlight x position
+:       dex
+
+TopLoop:
+        tya                             ; flashlight x position
         sec
         sbc     $7e7b00,x               ; subtract width
-        bcs     @0784
-        tdc                             ; min value is 0
-@0784:  sta     hWMDATA                 ; set left side of window
+        bcs     :+
+        clr_a                           ; min value is 0
+:       sta     hWMDATA                 ; set left side of window
         tya
         clc
         adc     $7e7b00,x               ; add width
-        bcc     @0791
+        bcc     :+
         lda     #$ff                    ; max value is $ff
-@0791:  sta     hWMDATA                 ; set right side of window
+:       sta     hWMDATA                 ; set right side of window
         dex                             ; next line
-        bne     @077b
-        ldy     $077d                   ; then do bottom half of flashlight
+        bne     TopLoop
+
+; then do bottom half of flashlight
+        ldy     $077d
         ldx     $1a
         lda     $077e
-        cmp     #$d0
-        bcs     @07df
+        cmp     #TOTAL_WINDOW_LINES
+        bcs     Done
         clc
         adc     $1a
-        cmp     #$d0
-        bcc     @07b1
-        lda     #$d0
+        cmp     #TOTAL_WINDOW_LINES
+        bcc     :+
+        lda     #TOTAL_WINDOW_LINES
         sec
         sbc     $077e
         tax
-@07b1:  stx     $2a
+:       stx     $2a
         ldx     $00
-@07b5:  tya
+
+BottomLoop:
+        tya
         sec
         sbc     $7e7b00,x
-        bcs     @07be
-        tdc
-@07be:  sta     hWMDATA
+        bcs     :+
+        clr_a
+:       sta     hWMDATA
         tya
         clc
         adc     $7e7b00,x
-        bcc     @07cb
+        bcc     :+
         lda     #$ff
-@07cb:  sta     hWMDATA
+:       sta     hWMDATA
         inx
         cpx     $2a
-        bne     @07b5
-        lda     #$d1                    ; a = 209 - (radius + y position)
+        bne     BottomLoop
+
+; clear remaining lines
+        lda     #TOTAL_WINDOW_LINES + 1         ; A = 209 - (radius + y position)
         sec
         sbc     $1a
         sec
         sbc     $077e
         jsr     ResetWindowPos
-@07df:  longi
+Done:   longi
         rts
+.endproc  ; UpdateFlashlight
 
 ; ------------------------------------------------------------------------------
 
 ; [ sine ]
 
-; a = $1a * sin($1b)
+; A: $1a * sin($1b)
 
-CalcSine:
-@07e2:  lda     $1a
+.proc CalcSine
+        lda     $1a
         sta     hWRMPYA
         lsr
         sta     $1a
@@ -235,15 +275,16 @@ CalcSine:
         sec
         sbc     $1a
         rts
+.endproc  ; CalcSine
 
 ; ------------------------------------------------------------------------------
 
 ; [ cosine ]
 
-; a = $1a * cos($1b)
+; A: $1a * cos($1b)
 
-CalcCosine:
-@0801:  lda     $1a
+.proc CalcCosine
+        lda     $1a
         sta     hWRMPYA
         lsr
         sta     $1a
@@ -260,16 +301,17 @@ CalcCosine:
         sec
         sbc     $1a
         rts
+.endproc  ; CalcCosine
 
 ; ------------------------------------------------------------------------------
 
 ; [ update pyramid ]
 
-UpdatePyramid:
-@0823:  lda     $0781
-        bne     @0829
+.proc UpdatePyramid
+        lda     $0781
+        bne     :+
         rts
-@0829:  ldy     $077f
+:       ldy     $077f
         lda     $086a,y
         sec
         sbc     $5c
@@ -353,36 +395,41 @@ UpdatePyramid:
         inc     $0566
         lda     $0566
         lsr
-        bcs     @08ea
+        bcs     OddFrame
+
+; even frame
         ldx     #$8cb3
         stx     hWMADDL
-        bra     @08f0
-@08ea:  ldx     #$8e53
+        bra     :+
+
+; odd frame
+OddFrame:
+        ldx     #$8e53
         stx     hWMADDL
-@08f0:  lda     #$7e
+:       lda     #$7e
         sta     hWMADDH
         lda     $075d
         cmp     $075f
-        bcc     @0909
+        bcc     :+
         ldx     $075c
         ldy     $075e
         stx     $075e
         sty     $075c
-@0909:  lda     $075f
+:       lda     $075f
         cmp     $0761
-        bcc     @091d
+        bcc     :+
         ldx     $075e
         ldy     $0760
         stx     $0760
         sty     $075e
-@091d:  lda     $075d
+:       lda     $075d
         cmp     $075f
-        bcc     @0931
+        bcc     :+
         ldx     $075c
         ldy     $075e
         stx     $075e
         sty     $075c
-@0931:  lda     $075d
+:       lda     $075d
         cmp     $075f
         bne     @0950
         lda     $075c
@@ -592,7 +639,7 @@ UpdatePyramid:
         dec     $22
         bne     @0af8
         shorta0
-@0b0f:  lda     #$d0
+@0b0f:  lda     #TOTAL_WINDOW_LINES
         sec
         sbc     $2f
         jsr     ResetWindowPos
@@ -639,55 +686,59 @@ UpdatePyramid:
         dec     $22
         bne     @0b4e
         shorta0
-@0b65:  lda     #$d0
+@0b65:  lda     #TOTAL_WINDOW_LINES
         sec
         sbc     $2f
         jsr     ResetWindowPos
         rts
+.endproc  ; UpdatePyramid
 
 ; ------------------------------------------------------------------------------
 
 ; [ set window 2 hdma lines to fully closed ]
 
-; x = number of lines to set
+; A: number of lines to set
 
-ResetWindowPos:
-@0b6e:  phx
+.proc ResetWindowPos
+        phx
         tax
-        beq     @0b7d
-        lda     #$ff                    ; left side if window = $ff
-@0b74:  sta     hWMDATA
-        stz     hWMDATA                 ; right side if window = $00
+        beq     Done
+        lda     #$ff                    ; left side of window = $ff
+:       sta     hWMDATA
+        stz     hWMDATA                 ; right side of window = $00
         dex                             ; left > right, so the window is empty
-        bne     @0b74
-@0b7d:  plx
+        bne     :-
+Done:   plx
         rts
+.endproc  ; ResetWindowPos
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
-CalcWindowPos:
-@0b7f:  lda     $26
+.proc CalcWindowPos
+        lda     $26
         sec
         sbc     $27
-        bcc     @0b9b
+        bcc     Negative
         xba
         tay
         sty     hWRDIVL
         lda     $28
         sta     hWRDIVB
-        tdc
+        clr_a
         nop6
         ldy     hRDDIVL
         rts
-@0b9b:  neg_a
+
+Negative:
+        neg_a
         xba
         tay
         sty     hWRDIVL
         lda     $28
         sta     hWRDIVB
-        tdc
+        clr_a
         nop5
         longa
         lda     hRDDIVL
@@ -695,15 +746,16 @@ CalcWindowPos:
         inc
         tay
         shorta0
-        lda     #$01
+        lda     #1
         rts
+.endproc  ; CalcWindowPos
 
 ; ------------------------------------------------------------------------------
 
 ; [ update spotlights ]
 
-UpdateSpotlights:
-@0bbd:  lda     $0521
+.proc UpdateSpotlights
+        lda     $0521
         and     #$20
         bne     @0bc5                   ; return if spotlights are not enabled
         rts
@@ -866,7 +918,7 @@ UpdateSpotlights:
         rts
 @0d06:  ldx     $00
         stx     $20
-        tdc
+        clr_a
         bra     @0ceb
 @0d0d:  lda     $02
         tay
@@ -906,11 +958,11 @@ UpdateSpotlights:
         rts
 @0d4f:  ldx     $00
         stx     $20
-        tdc
+        clr_a
         bra     @0d34
 @0d56:  ldy     $00
         sty     $24
-        tdc
+        clr_a
         bra     @0d3e
         lda     #$7e
         pha
@@ -932,15 +984,15 @@ UpdateSpotlights:
         cpy     #$005a
         bne     @0d66
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
 
-; ------------------------------------------------------------------------------
-
 _c00d8d:
-@0d8d:  .word   $8763,$8773,$8783,$8793
+        .word   $8763,$8773,$8783,$8793
+
+.endproc  ; UpdateSpotlights
 
 ; ------------------------------------------------------------------------------
 
@@ -948,7 +1000,7 @@ _c00d8d:
 
 ; this seems to be an unused fixed color effect for the spotlights
 
-EffectColor:
+.proc EffectColor
 @0d95:  lda     #$20                    ; set bit for red
         sta     $0752
         lda     #$40                    ; set bit for green
@@ -993,23 +1045,23 @@ EffectColor:
         bne     @0dc3
         rts
 
-; ------------------------------------------------------------------------------
-
 EffectColorRedTbl:
-@0df7:  .byte   $10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1a,$1b,$1c,$1d,$1e,$1f
+        .byte   $10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1a,$1b,$1c,$1d,$1e,$1f
         .byte   $1f,$1e,$1d,$1c,$1b,$1a,$19,$18,$17,$16,$15,$14,$13,$12,$11,$10
 
 EffectColorGreenTbl:
-@0e17:  .byte   $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$0f
+        .byte   $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$0f
         .byte   $0f,$0e,$0d,$0c,$0b,$0a,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00
+
+.endproc  ; EffectColor
 
 ; ------------------------------------------------------------------------------
 
 ; [ update mosaic hdma data ]
 
-UpdateMosaic:
-@0e37:  lda     $11f0
-        beq     @0e61
+.proc UpdateMosaic
+        lda     $11f0
+        beq     SetMosaicHDMA
         inc
         longa
         asl4
@@ -1018,14 +1070,16 @@ UpdateMosaic:
         sec
         sbc     $10
         sta     $0796
-        bpl     @0e56
+        bpl     :+
         stz     $0796
         stz     $11f0
-@0e56:  shorta0
+:       shorta0
         lda     $0797
         tax
         lda     f:MosaicTbl,x
-@0e61:  sta     $7e8233
+
+SetMosaicHDMA:
+        sta     $7e8233
         sta     $7e8237
         sta     $7e823b
         sta     $7e823f
@@ -1035,135 +1089,154 @@ UpdateMosaic:
         sta     $7e824f
         rts
 
-; ------------------------------------------------------------------------------
-
 MosaicTbl:
-@0e82:  .byte   $0f,$1f,$2f,$3f,$4f,$5f,$6f,$7f,$8f,$9f,$af,$bf,$cf,$df,$ef
+        .byte   $0f,$1f,$2f,$3f,$4f,$5f,$6f,$7f,$8f,$9f,$af,$bf,$cf,$df,$ef
         .byte   $ff,$ef,$df,$cf,$bf,$af,$9f,$8f,$7f,$6f,$5f,$4f,$3f,$2f,$1f
+
+.endproc  ; UpdateMosaic
 
 ; ------------------------------------------------------------------------------
 
 ; [ update shake screen ]
 
-UpdateShake:
-@0ea0:  lda     $46
+.proc UpdateShake
+        lda     $46
         lsr
-        bcc     @0ec8
+        bcc     EvenFrame
+
+; odd frames
         lda     $074b
         sta     hWRMPYA
-        lda     #$c0
+        lda     #$c0                    ; amplitude *= 3/4 every 2 frames
         sta     hWRMPYB
         nop3
         lda     hRDMPYH
         sta     $074b
         ldx     $00
-        stx     $074c
+        stx     $074c                   ; set shake offsets to zero
         stx     $074e
         stx     $0750
         stx     a:$007f
         rts
-@0ec8:  lda     $074a
-        and     #$03
+
+; even frames
+EvenFrame:
+        lda     $074a                   ; amplitude
+        and     #%11
         sta     $22
-        beq     @0f07
-        lda     $074a
-        and     #$0c
+        beq     SetShakeOffsets
+        lda     $074a                   ; frequency
+        and     #%1100
         lsr2
-        beq     @0ee6
+        beq     SingleShake
         tax
         jsr     Rand
-        and     f:ShakeAndTbl,x
-        bne     @0f07
-        bra     @0efa
-@0ee6:  lda     $074a
+        and     f:ShakeAndTbl,x         ; *** bug *** should be ShakeFreqTbl
+        bne     SetShakeOffsets
+        bra     RandShake
+
+; do a single shake if frequency is zero
+SingleShake:
+        lda     $074a
         and     #$fc
         sta     $074a
         lda     $22
         tax
         lda     f:ShakeAndTbl,x
         sta     $074b
-        bra     @0f07
-@0efa:  lda     $22
+        bra     SetShakeOffsets
+
+; restart the shake at a random amplitude
+RandShake:
+        lda     $22
         tax
         jsr     Rand
         and     f:ShakeAndTbl,x
         sta     $074b
-@0f07:  stz     $074d
+
+SetShakeOffsets:
+        stz     $074d                   ; clear high byte of each offset
         stz     $074f
         stz     $0751
         stz     a:$0080
+
+; set scroll offsets for each layer
         lda     $074a
         and     #$10
-        beq     @0f20
+        beq     :+
         lda     $074b
         sta     $074c
-@0f20:  lda     $074a
+:       lda     $074a
         and     #$20
-        beq     @0f2d
+        beq     :+
         lda     $074b
         sta     $074e
-@0f2d:  lda     $074a
+:       lda     $074a
         and     #$40
-        beq     @0f3a
+        beq     :+
         lda     $074b
         sta     $0750
-@0f3a:  lda     $074a
-        bpl     @0f44
+:       lda     $074a
+        bpl     :+
         lda     $074b
         sta     $7f
-@0f44:  rts
+:       rts
 
-; ------------------------------------------------------------------------------
-
-; screen shake data
-
+; screen shake bitmasks for amplitude/frequency
 ShakeAndTbl:
-@0f45:  .byte   $00,$03,$06,$0c
+        .byte   %0,%11,%110,%1100
 
-ShakeRandTbl:
-@0f49:  .byte   $00,$07,$0f,$1f
+; this is supposed to be bitmasks for frequency but it's unused
+ShakeFreqTbl:
+        .byte   %0,%111,%1111,%11111
+
+.endproc  ; UpdateShake
 
 ; ------------------------------------------------------------------------------
 
 ; [ begin fade in ]
 
-FadeIn:
-@0f4d:  lda     #$10
+.proc FadeIn
+        lda     #$10
         sta     $4a
         lda     #$10
         sta     $4c
         rts
+.endproc  ; FadeIn
 
 ; ------------------------------------------------------------------------------
 
 ; [ begin fade out ]
 
-FadeOut:
-@0f56:  lda     #$90
+.proc FadeOut
+        lda     #$90
         sta     $4a
         lda     #$f0
         sta     $4c
         rts
+.endproc  ; FadeOut
 
 ; ------------------------------------------------------------------------------
 
 ; [ update screen brightness ]
 
-UpdateBrightness:
-@0f5f:  lda     $4a
-        bmi     @0f76
+.proc UpdateBrightness
+        lda     $4a
+        bmi     FadingOut
         lda     $4c
         and     #$f0
         cmp     #$f0
-        beq     @0f89
+        beq     FadeComplete
         lda     $4a
         and     #$1f
         clc
         adc     $4c
         sta     $4c
-        bra     @0f8b
-@0f76:  lda     $4c
-        beq     @0f89
+        bra     :+
+
+FadingOut:
+        lda     $4c
+        beq     FadeComplete
         lda     $4a
         and     #$1f
         sta     $10
@@ -1171,11 +1244,14 @@ UpdateBrightness:
         sec
         sbc     $10
         sta     $4c
-        bra     @0f8b
-@0f89:  stz     $4a
-@0f8b:  lda     $4c
+        bra     :+
+
+FadeComplete:
+        stz     $4a
+:       lda     $4c
         lsr4
         sta     hINIDISP
         rts
+.endproc  ; UpdateBrightness
 
 ; ------------------------------------------------------------------------------

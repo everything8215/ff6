@@ -19,6 +19,7 @@
 .include "code_ext.inc"
 
 .include "menu_ram.inc"
+inc_lang "menu_text_%s.inc.raw"
 
 ; ------------------------------------------------------------------------------
 

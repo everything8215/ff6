@@ -158,9 +158,9 @@ LoadFontGfx4bpp:
         inx2
         dey
         bne     @6b5a
-.repeat 8
+        .repeat 8
         stz     hVMDATAL
-.endrep
+        .endrep
         cpx     #$0f80
         bne     @6b57
         ldy     #$7800
@@ -182,15 +182,17 @@ _c36b9c:
 
 ; ------------------------------------------------------------------------------
 
-; [ load window palette ]
+; [ load default window palette ]
+
+; used for save/load menus, will overwrite all custom window palette colors
 
 InitWindowPal:
-@6bbc:  ldx     #8
+@6bbc:  ldx     #8                      ; loop through all 8 windows
         stx     $e7
         ldx     #0
         txy
         longa
-@6bc7:  lda     #7
+@6bc7:  lda     #7                      ; copy 7 colors per window
         sta     $e9
 @6bcc:  lda     f:WindowPal+2,x         ; load wallpaper palettes
         sta     $1d57,y
@@ -200,7 +202,7 @@ InitWindowPal:
         bne     @6bcc
         txa
         clc
-        adc     #$0012
+        adc     #$0012                  ; skip unused colors
         tax
         dec     $e7
         bne     @6bc7
@@ -645,10 +647,9 @@ CharPortraitPalTbl:
 
 ; pointers to character portrait graphics
 PortraitGfxPtrs:
-@6f1b:
-.repeat 18, i
+@6f1b:  .repeat 18, i
         .addr   i * $0320  ; first 18 portraits are sequential
-.endrep
+        .endrep
         .addr   0
         .addr   PORTRAIT::SOLDIER * $0320
         .addr   PORTRAIT::GHOST * $0320

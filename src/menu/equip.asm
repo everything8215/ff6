@@ -37,19 +37,19 @@ InitEquipOptionCursor:
 ; ------------------------------------------------------------------------------
 
 EquipOptionCursorProp:
-        make_cursor_prop {0, 0}, {4, 1}, NO_Y_WRAP
+        cursor_prop {0, 0}, {4, 1}, NO_Y_WRAP
 
 EquipOptionCursorPos:
 .if LANG_EN
-@8e64:  .byte   $00,$10
-        .byte   $38,$10
-        .byte   $80,$10
-        .byte   $b8,$10
+@8e64:  cursor_pos {0, 16}
+        cursor_pos {56, 16}
+        cursor_pos {128, 16}
+        cursor_pos {184, 16}
 .else
-        .byte   $10,$10
-        .byte   $38,$10
-        .byte   $70,$10
-        .byte   $a0,$10
+        cursor_pos {16, 16}
+        cursor_pos {56, 16}
+        cursor_pos {112, 16}
+        cursor_pos {160, 16}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -74,19 +74,19 @@ InitEquipSlotCursor:
 ; ------------------------------------------------------------------------------
 
 EquipSlotCursorProp:
-        make_cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
 
 EquipSlotCursorPos:
 .if LANG_EN
-@8e80:  .byte   $00,$2c
-        .byte   $00,$38
-        .byte   $00,$44
-        .byte   $00,$50
+@8e80:  cursor_pos {0, 44}
+        cursor_pos {0, 56}
+        cursor_pos {0, 68}
+        cursor_pos {0, 80}
 .else
-        .byte   $38,$2c
-        .byte   $38,$38
-        .byte   $38,$44
-        .byte   $38,$50
+        cursor_pos {56, 44}
+        cursor_pos {56, 56}
+        cursor_pos {56, 68}
+        cursor_pos {56, 80}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -130,18 +130,18 @@ InitEquipShortListCursor:
 ; ------------------------------------------------------------------------------
 
 EquipListCursorProp:
-        make_cursor_prop {0, 0}, {1, 9}, {NO_X_WRAP, NO_Y_WRAP}
+        cursor_prop {0, 0}, {1, 9}, NO_XY_WRAP
 
 EquipListCursorPos:
-@8eab:  .byte   $00,$68
-        .byte   $00,$74
-        .byte   $00,$80
-        .byte   $00,$8c
-        .byte   $00,$98
-        .byte   $00,$a4
-        .byte   $00,$b0
-        .byte   $00,$bc
-        .byte   $00,$c8
+@8eab:  cursor_pos {0, 104}
+        cursor_pos {0, 116}
+        cursor_pos {0, 128}
+        cursor_pos {0, 140}
+        cursor_pos {0, 152}
+        cursor_pos {0, 164}
+        cursor_pos {0, 176}
+        cursor_pos {0, 188}
+        cursor_pos {0, 200}
 
 ; ------------------------------------------------------------------------------
 
@@ -165,15 +165,15 @@ InitRelicOptionCursor:
 ; ------------------------------------------------------------------------------
 
 RelicOptionCursorProp:
-        make_cursor_prop {0, 0}, {2, 1}, NO_Y_WRAP
+        cursor_prop {0, 0}, {2, 1}, NO_Y_WRAP
 
 RelicOptionCursorPos:
 .if LANG_EN
-@8ed1:  .byte   $10,$10
-        .byte   $48,$10
+@8ed1:  cursor_pos {16, 16}
+        cursor_pos {72, 16}
 .else
-        .byte   $10,$10
-        .byte   $38,$10
+        cursor_pos {16, 16}
+        cursor_pos {56, 16}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -198,15 +198,15 @@ InitRelicSlotCursor:
 ; ------------------------------------------------------------------------------
 
 RelicSlotCursorProp:
-        make_cursor_prop {0, 0}, {1, 2}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 2}, NO_X_WRAP
 
 RelicSlotCursorPos:
 .if LANG_EN
-@8ee9:  .byte   $00,$44
-        .byte   $00,$50
+@8ee9:  cursor_pos {0, 68}
+        cursor_pos {0, 80}
 .else
-        .byte   $38,$44
-        .byte   $38,$50
+        cursor_pos {56, 68}
+        cursor_pos {56, 80}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -241,8 +241,8 @@ DrawPartyEquipSlot1:
 .if !LANG_EN
         lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
-        ldx     #near _c3a9f8
-        ldy     #sizeof__c3a9f8
+        ldx     #near PartyEquipSlot1TextList
+        ldy     #sizeof_PartyEquipSlot1TextList
         jsr     DrawPosKanaList
 .endif
         ldx     zCharPropPtr::Slot1
@@ -270,8 +270,8 @@ DrawPartyEquipSlot2:
 .if !LANG_EN
         lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
-        ldx     #near _c3aa04
-        ldy     #sizeof__c3aa04
+        ldx     #near PartyEquipSlot2TextList
+        ldy     #sizeof_PartyEquipSlot2TextList
         jsr     DrawPosKanaList
 .endif
         ldx     zCharPropPtr::Slot2
@@ -300,8 +300,8 @@ DrawPartyEquipSlot3:
 .if !LANG_EN
         lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
-        ldx     #near _c3aa10
-        ldy     #sizeof__c3aa10
+        ldx     #near PartyEquipSlot3TextList
+        ldy     #sizeof_PartyEquipSlot3TextList
         jsr     DrawPosKanaList
 .endif
         ldx     zCharPropPtr::Slot3
@@ -330,8 +330,8 @@ DrawPartyEquipSlot4:
 .if !LANG_EN
         lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
-        ldx     #near _c3aa1c
-        ldy     #sizeof__c3aa1c
+        ldx     #near PartyEquipSlot4TextList
+        ldy     #sizeof_PartyEquipSlot4TextList
         jsr     DrawPosKanaList
 .endif
         ldx     zCharPropPtr::Slot4
@@ -717,7 +717,7 @@ loop:   .repeat 2
         lda     $11a0,x
         sta     $7e3000,x
         inx2
-.endrep
+        .endrep
         cpx     #$0040
         bne     loop
         shorta
@@ -3203,140 +3203,71 @@ _c3a1d8:
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-        .define EquipRHandStr           {$91,$c4,$a1,$9a,$a7,$9d,$00}
-        .define EquipLHandStr           {$8b,$c4,$a1,$9a,$a7,$9d,$00}
-        .define EquipHeadStr            {$87,$9e,$9a,$9d,$00}
-        .define EquipBodyStr            {$81,$a8,$9d,$b2,$00}
-        .define EquipRelicStr           {$91,$9e,$a5,$a2,$9c,$00}
-        .define EquipBlankOptionsStr    {$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define EquipTitleEquipStr      {$84,$90,$94,$88,$8f,$00}
-        .define EquipTitleRemoveStr     {$91,$84,$8c,$8e,$95,$84,$00}
-        .define EquipOptionEquipStr     {$84,$90,$94,$88,$8f,$00}
-        .define EquipOptionOptimumStr   {$8e,$8f,$93,$88,$8c,$94,$8c,$00}
-        .define EquipOptionRemoveStr    {$91,$8c,$8e,$95,$84,$00}
-        .define EquipOptionEmptyStr     {$84,$8c,$8f,$93,$98,$00}
-        .define RelicOptionEquipStr     {$84,$90,$94,$88,$8f,$00}
-        .define RelicOptionRemoveStr    {$91,$84,$8c,$8e,$95,$84,$00}
-
-        .define EquipStrengthStr        {$95,$a2,$a0,$a8,$ab,$00}
-        .define EquipStaminaStr         {$92,$ad,$9a,$a6,$a2,$a7,$9a,$00}
-        .define EquipMagPwrStr          {$8c,$9a,$a0,$c5,$8f,$b0,$ab,$00}
-        .define EquipEvadeStr           {$84,$af,$9a,$9d,$9e,$ff,$cd,$00}
-        .define EquipMagEvadeStr        {$8c,$81,$a5,$a8,$9c,$a4,$cd,$00}
-        .define EquipArrowStr           {$d5,$00}
-        .define EquipSpeedStr           {$92,$a9,$9e,$9e,$9d,$00}
-        .define EquipAttackPwrStr       {$81,$9a,$ad,$c5,$8f,$b0,$ab,$00}
-        .define EquipDefenseStr         {$83,$9e,$9f,$9e,$a7,$ac,$9e,$00}
-        .define EquipMagDefStr          {$8c,$9a,$a0,$c5,$83,$9e,$9f,$00}
-
-        .define EquipEmptyMsgStr        {$84,$a6,$a9,$ad,$b2,$00}
-        .define EquipOptimumMsgStr      {$8e,$a9,$ad,$a2,$a6,$ae,$a6,$00}
-        .define RelicEmptyMsgStr        {$84,$a6,$a9,$ad,$b2,$00}
-        .define RelicOptimumMsgStr      {$8e,$a9,$ad,$a2,$a6,$ae,$a6,$00}
-        .define EquipChangedMsgStr      {$84,$aa,$ae,$a2,$a9,$a6,$9e,$a7,$ad,$ff,$9c,$a1,$9a,$a7,$a0,$9e,$9d,$c5,$00}
-
-.else
-
-        .define EquipRHandStr           {$9f,$2d,$85,$00}
-        .define EquipLHandStr           {$63,$3f,$a9,$85,$00}
-        .define EquipHeadStr            {$8b,$7f,$9d,$00}
-        .define EquipBodyStr            {$6b,$a7,$3f,$00}
-        .define EquipRelicStr           {$8a,$6e,$7a,$74,$a8,$00}
-        .define EquipBlankOptionsStr    {$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define EquipTitleEquipStr      {$7d,$89,$23,$00}
-        .define EquipTitleRemoveStr     {$61,$39,$79,$00}
-        .define EquipOptionEquipStr     {$7d,$89,$23,$00}
-        .define EquipOptionOptimumStr   {$75,$8d,$6d,$c3,$89,$00}
-        .define EquipOptionRemoveStr    {$61,$39,$79,$00}
-        .define EquipOptionEmptyStr     {$79,$27,$85,$61,$39,$79,$ff,$00}
-        .define RelicOptionEquipStr     {$7d,$89,$23,$00}
-        .define RelicOptionRemoveStr    {$61,$39,$79,$00}
-
-        .define EquipStrengthStr        {$81,$6b,$a7,$00}
-        .define EquipStaminaStr         {$7f,$8d,$a9,$c3,$6f,$00}
-        .define EquipMagPwrStr          {$9d,$a9,$c3,$6f,$00}
-        .define EquipEvadeStr           {$6b,$8d,$63,$a9,$83,$00}
-        .define EquipMagEvadeStr        {$9d,$69,$89,$6b,$8d,$63,$a9,$83,$00}
-        .define EquipArrowStr           {$d5,$00}
-        .define EquipSpeedStr           {$79,$21,$b1,$75,$00}
-        .define EquipAttackPwrStr       {$73,$89,$31,$6d,$a9,$c3,$6f,$00}
-        .define EquipDefenseStr         {$29,$89,$2d,$c3,$00}
-        .define EquipMagDefStr          {$9d,$69,$89,$29,$89,$2d,$c3,$00}
-
-        .define EquipEmptyMsgStr        {$d0,$79,$27,$85,$61,$39,$79,$d1,$00}
-        .define EquipOptimumMsgStr      {$d0,$75,$8d,$6d,$c3,$89,$7d,$89,$23,$d1,$00}
-        .define RelicEmptyMsgStr        {$d0,$79,$27,$85,$61,$39,$79,$d1,$00}
-        .define RelicOptimumMsgStr      {$d0,$75,$8d,$6d,$c3,$89,$7d,$89,$23,$d1,$00}
-        .define EquipChangedMsgStr      {$7d,$89,$23,$95,$6b,$6b,$b7,$ab,$8a,$6e,$7a,$74,$a8,$c5,$2b,$ff,$67,$b9,$73,$89,$75,$ad,$9d,$77,$7f,$00}
-
-.endif
-
 ; pointers to party equip screen slot names
-_c3a9f8:
-        .addr   _c3a21a
-        .addr   _c3a21f
-        .addr   _c3a225
-        .addr   _c3a22b
-        .addr   _c3a231
-        .addr   _c3a237
-        calc_size _c3a9f8
+PartyEquipSlot1TextList:
+        .addr   PartyEquipSlot1RHandText
+        .addr   PartyEquipSlot1LHandText
+        .addr   PartyEquipSlot1HeadText
+        .addr   PartyEquipSlot1BodyText
+        .addr   PartyEquipSlot1Relic1Text
+        .addr   PartyEquipSlot1Relic2Text
+        calc_size PartyEquipSlot1TextList
 
-_c3aa04:
-        .addr   _c3a23d
-        .addr   _c3a242
-        .addr   _c3a248
-        .addr   _c3a24e
-        .addr   _c3a254
-        .addr   _c3a25a
-        calc_size _c3aa04
+PartyEquipSlot2TextList:
+        .addr   PartyEquipSlot2RHandText
+        .addr   PartyEquipSlot2LHandText
+        .addr   PartyEquipSlot2HeadText
+        .addr   PartyEquipSlot2BodyText
+        .addr   PartyEquipSlot2Relic1Text
+        .addr   PartyEquipSlot2Relic2Text
+        calc_size PartyEquipSlot2TextList
 
-_c3aa10:
-        .addr   _c3a260
-        .addr   _c3a265
-        .addr   _c3a26b
-        .addr   _c3a271
-        .addr   _c3a277
-        .addr   _c3a27d
-        calc_size _c3aa10
+PartyEquipSlot3TextList:
+        .addr   PartyEquipSlot3RHandText
+        .addr   PartyEquipSlot3LHandText
+        .addr   PartyEquipSlot3HeadText
+        .addr   PartyEquipSlot3BodyText
+        .addr   PartyEquipSlot3Relic1Text
+        .addr   PartyEquipSlot3Relic2Text
+        calc_size PartyEquipSlot3TextList
 
-_c3aa1c:
-        .addr   _c3a283
-        .addr   _c3a288
-        .addr   _c3a28e
-        .addr   _c3a294
-        .addr   _c3a29a
-        .addr   _c3a2a0
-        calc_size _c3aa1c
+PartyEquipSlot4TextList:
+        .addr   PartyEquipSlot4RHandText
+        .addr   PartyEquipSlot4LHandText
+        .addr   PartyEquipSlot4HeadText
+        .addr   PartyEquipSlot4BodyText
+        .addr   PartyEquipSlot4Relic1Text
+        .addr   PartyEquipSlot4Relic2Text
+        calc_size PartyEquipSlot4TextList
 
 ; party equip screen slot names (used in Japanese version only)
-_c3a21a:                        pos_text BG1A, {3, 4}, {$9f,$2d,$00}
-_c3a21f:                        pos_text BG1A, {17, 4}, {$63,$3f,$a9,$00}
-_c3a225:                        pos_text BG1A, {3, 6}, {$8b,$7f,$9d,$00}
-_c3a22b:                        pos_text BG1A, {17, 6}, {$6b,$a7,$3f,$00}
-_c3a231:                        pos_text BG1A, {3, 8}, {$8a,$6e,$54,$00}
-_c3a237:                        pos_text BG1A, {17, 8}, {$8a,$6e,$55,$00}
+PartyEquipSlot1RHandText:       pos_text PARTY_EQUIP_SLOT1_RHAND
+PartyEquipSlot1LHandText:       pos_text PARTY_EQUIP_SLOT1_LHAND
+PartyEquipSlot1HeadText:        pos_text PARTY_EQUIP_SLOT1_HEAD
+PartyEquipSlot1BodyText:        pos_text PARTY_EQUIP_SLOT1_BODY
+PartyEquipSlot1Relic1Text:      pos_text PARTY_EQUIP_SLOT1_RELIC1
+PartyEquipSlot1Relic2Text:      pos_text PARTY_EQUIP_SLOT1_RELIC2
 
-_c3a23d:                        pos_text BG1A, {3, 12}, {$9f,$2d,$00}
-_c3a242:                        pos_text BG1A, {17, 12}, {$63,$3f,$a9,$00}
-_c3a248:                        pos_text BG1A, {3, 14}, {$8b,$7f,$9d,$00}
-_c3a24e:                        pos_text BG1A, {17, 14}, {$6b,$a7,$3f,$00}
-_c3a254:                        pos_text BG1A, {3, 16}, {$8a,$6e,$54,$00}
-_c3a25a:                        pos_text BG1A, {17, 16}, {$8a,$6e,$55,$00}
+PartyEquipSlot2RHandText:       pos_text PARTY_EQUIP_SLOT2_RHAND
+PartyEquipSlot2LHandText:       pos_text PARTY_EQUIP_SLOT2_LHAND
+PartyEquipSlot2HeadText:        pos_text PARTY_EQUIP_SLOT2_HEAD
+PartyEquipSlot2BodyText:        pos_text PARTY_EQUIP_SLOT2_BODY
+PartyEquipSlot2Relic1Text:      pos_text PARTY_EQUIP_SLOT2_RELIC1
+PartyEquipSlot2Relic2Text:      pos_text PARTY_EQUIP_SLOT2_RELIC2
 
-_c3a260:                        pos_text BG1A, {3, 20}, {$9f,$2d,$00}
-_c3a265:                        pos_text BG1A, {17, 20}, {$63,$3f,$a9,$00}
-_c3a26b:                        pos_text BG1A, {3, 22}, {$8b,$7f,$9d,$00}
-_c3a271:                        pos_text BG1A, {17, 22}, {$6b,$a7,$3f,$00}
-_c3a277:                        pos_text BG1A, {3, 24}, {$8a,$6e,$54,$00}
-_c3a27d:                        pos_text BG1A, {17, 24}, {$8a,$6e,$55,$00}
+PartyEquipSlot3RHandText:       pos_text PARTY_EQUIP_SLOT3_RHAND
+PartyEquipSlot3LHandText:       pos_text PARTY_EQUIP_SLOT3_LHAND
+PartyEquipSlot3HeadText:        pos_text PARTY_EQUIP_SLOT3_HEAD
+PartyEquipSlot3BodyText:        pos_text PARTY_EQUIP_SLOT3_BODY
+PartyEquipSlot3Relic1Text:      pos_text PARTY_EQUIP_SLOT3_RELIC1
+PartyEquipSlot3Relic2Text:      pos_text PARTY_EQUIP_SLOT3_RELIC2
 
-_c3a283:                        pos_text BG1A, {3, 28}, {$9f,$2d,$00}
-_c3a288:                        pos_text BG1A, {17, 28}, {$63,$3f,$a9,$00}
-_c3a28e:                        pos_text BG1A, {3, 30}, {$8b,$7f,$9d,$00}
-_c3a294:                        pos_text BG1A, {17, 30}, {$6b,$a7,$3f,$00}
-_c3a29a:                        pos_text BG1A, {3, 32}, {$8a,$6e,$54,$00}
-_c3a2a0:                        pos_text BG1A, {17, 32}, {$8a,$6e,$55,$00}
+PartyEquipSlot4RHandText:       pos_text PARTY_EQUIP_SLOT4_RHAND
+PartyEquipSlot4LHandText:       pos_text PARTY_EQUIP_SLOT4_LHAND
+PartyEquipSlot4HeadText:        pos_text PARTY_EQUIP_SLOT4_HEAD
+PartyEquipSlot4BodyText:        pos_text PARTY_EQUIP_SLOT4_BODY
+PartyEquipSlot4Relic1Text:      pos_text PARTY_EQUIP_SLOT4_RELIC1
+PartyEquipSlot4Relic2Text:      pos_text PARTY_EQUIP_SLOT4_RELIC2
 
 ; ------------------------------------------------------------------------------
 
@@ -3362,42 +3293,25 @@ RelicSlotTextList:
         .addr   EquipRelic2Text
         calc_size RelicSlotTextList
 
-.if LANG_EN
-EquipRHandText:                 pos_text BG3A, {2, 7}, EquipRHandStr
-EquipLHandText:                 pos_text BG3A, {2, 9}, EquipLHandStr
-EquipHeadText:                  pos_text BG3A, {2, 11}, EquipHeadStr
-EquipBodyText:                  pos_text BG3A, {2, 13}, EquipBodyStr
-EquipRelic1Text:                pos_text BG3A, {2, 11}, EquipRelicStr
-EquipRelic2Text:                pos_text BG3A, {2, 13}, EquipRelicStr
-EquipBlankOptionsText:          pos_text BG3A, {2, 3}, EquipBlankOptionsStr
-EquipTitleEquipText:            pos_text BG3A, {24, 3}, EquipTitleEquipStr
-EquipTitleRemoveText:           pos_text BG3A, {24, 3}, EquipTitleRemoveStr
-EquipOptionEquipText:           pos_text BG3A, {2, 3}, EquipOptionEquipStr
-EquipOptionOptimumText:         pos_text BG3A, {9, 3}, EquipOptionOptimumStr
-EquipOptionRemoveText:          pos_text BG3A, {18, 3}, EquipOptionRemoveStr
-EquipOptionEmptyText:           pos_text BG3A, {25, 3}, EquipOptionEmptyStr
-RelicOptionEquipText:           pos_text BG3A, {4, 3}, RelicOptionEquipStr
-RelicOptionRemoveText:          pos_text BG3A, {11, 3}, RelicOptionRemoveStr
-.else
-EquipRHandText:                 pos_text BG3A, {2, 6}, EquipRHandStr
-EquipLHandText:                 pos_text BG3A, {2, 8}, EquipLHandStr
-EquipHeadText:                  pos_text BG3A, {2, 10}, EquipHeadStr
-EquipBodyText:                  pos_text BG3A, {2, 12}, EquipBodyStr
-EquipRelic1Text:                pos_text BG3A, {2, 10}, EquipRelicStr
-EquipRelic2Text:                pos_text BG3A, {2, 12}, EquipRelicStr
-EquipBlankOptionsText:          pos_text BG3A, {4, 2}, EquipBlankOptionsStr
-EquipTitleEquipText:            pos_text BG3A, {26, 2}, EquipTitleEquipStr
-EquipTitleRemoveText:           pos_text BG3A, {26, 2}, EquipTitleRemoveStr
-EquipOptionEquipText:           pos_text BG3A, {4, 2}, EquipOptionEquipStr
-EquipOptionOptimumText:         pos_text BG3A, {9, 2}, EquipOptionOptimumStr
-EquipOptionRemoveText:          pos_text BG3A, {16, 2}, EquipOptionRemoveStr
-EquipOptionEmptyText:           pos_text BG3A, {22, 2}, EquipOptionEmptyStr
-RelicOptionEquipText:           pos_text BG3A, {4, 2}, RelicOptionEquipStr
-RelicOptionRemoveText:          pos_text BG3A, {9, 2}, RelicOptionRemoveStr
-.endif
+EquipRHandText:                         pos_text EQUIP_RHAND
+EquipLHandText:                         pos_text EQUIP_LHAND
+EquipHeadText:                          pos_text EQUIP_HEAD
+EquipBodyText:                          pos_text EQUIP_BODY
+EquipRelic1Text:                        pos_text EQUIP_RELIC1
+EquipRelic2Text:                        pos_text EQUIP_RELIC2
+EquipBlankOptionsText:                  pos_text EQUIP_BLANK_OPTIONS
+EquipTitleEquipText:                    pos_text EQUIP_TITLE_EQUIP
+EquipTitleRemoveText:                   pos_text EQUIP_TITLE_REMOVE
+EquipOptionEquipText:                   pos_text EQUIP_OPTION_EQUIP
+EquipOptionOptimumText:                 pos_text EQUIP_OPTION_OPTIMUM
+EquipOptionRemoveText:                  pos_text EQUIP_OPTION_REMOVE
+EquipOptionEmptyText:                   pos_text EQUIP_OPTION_EMPTY
+RelicOptionEquipText:                   pos_text RELIC_OPTION_EQUIP
+RelicOptionRemoveText:                  pos_text RELIC_OPTION_REMOVE
 
 ; ------------------------------------------------------------------------------
 
+; these have no dakuten in the japanese version (draw with DrawPosList)
 EquipStatTextList1:
         .addr   EquipStrengthText
         .addr   EquipStaminaText
@@ -3415,6 +3329,7 @@ EquipStatTextList1:
         .addr   EquipArrow9Text
         calc_size EquipStatTextList1
 
+; these have dakuten in the japanese version (draw with DrawPosKanaList)
 EquipStatTextList2:
         .addr   EquipSpeedText
         .addr   EquipAttackPwrText
@@ -3422,76 +3337,42 @@ EquipStatTextList2:
         .addr   EquipMagDefText
         calc_size EquipStatTextList2
 
-.if LANG_EN
-EquipStrengthText:              pos_text BG3A, {16, 17}, EquipStrengthStr
-EquipStaminaText:               pos_text BG3A, {16, 21}, EquipStaminaStr
-EquipMagPwrText:                pos_text BG3A, {16, 23}, EquipMagPwrStr
-EquipEvadeText:                 pos_text BG3A, {16, 29}, EquipEvadeStr
-EquipMagEvadeText:              pos_text BG3B, {16, 1}, EquipMagEvadeStr
+EquipStrengthText:                      pos_text EQUIP_STRENGTH
+EquipStaminaText:                       pos_text EQUIP_STAMINA
+EquipMagPwrText:                        pos_text EQUIP_MAG_PWR
+EquipEvadeText:                         pos_text EQUIP_EVADE
+EquipMagEvadeText:                      pos_text EQUIP_MAG_EVADE
 
-EquipArrow1Text:                pos_text BG3A, {26, 17}, EquipArrowStr
-EquipArrow2Text:                pos_text BG3A, {26, 19}, EquipArrowStr
-EquipArrow3Text:                pos_text BG3A, {26, 21}, EquipArrowStr
-EquipArrow4Text:                pos_text BG3A, {26, 23}, EquipArrowStr
-EquipArrow5Text:                pos_text BG3A, {26, 27}, EquipArrowStr
-EquipArrow6Text:                pos_text BG3A, {26, 29}, EquipArrowStr
-EquipArrow7Text:                pos_text BG3A, {26, 25}, EquipArrowStr
-EquipArrow8Text:                pos_text BG3A, {26, 31}, EquipArrowStr
-EquipArrow9Text:                pos_text BG3A, {26, 33}, EquipArrowStr
+EquipArrow1Text:                        pos_text EQUIP_ARROW 17
+EquipArrow2Text:                        pos_text EQUIP_ARROW 19
+EquipArrow3Text:                        pos_text EQUIP_ARROW 21
+EquipArrow4Text:                        pos_text EQUIP_ARROW 23
+EquipArrow5Text:                        pos_text EQUIP_ARROW 27
+EquipArrow6Text:                        pos_text EQUIP_ARROW 29
+EquipArrow7Text:                        pos_text EQUIP_ARROW 25
+EquipArrow8Text:                        pos_text EQUIP_ARROW 31
+EquipArrow9Text:                        pos_text EQUIP_ARROW 33
 
-EquipSpeedText:                 pos_text BG3A, {16, 19}, EquipSpeedStr
-EquipAttackPwrText:             pos_text BG3A, {16, 25}, EquipAttackPwrStr
-EquipDefenseText:               pos_text BG3A, {16, 27}, EquipDefenseStr
-EquipMagDefText:                pos_text BG3A, {16, 31}, EquipMagDefStr
+EquipSpeedText:                         pos_text EQUIP_SPEED
+EquipAttackPwrText:                     pos_text EQUIP_ATTACK_PWR
+EquipDefenseText:                       pos_text EQUIP_DEFENSE
+EquipMagDefText:                        pos_text EQUIP_MAG_DEF
 
-.else
-
-EquipStrengthText:              pos_text BG3A, {15, 17}, EquipStrengthStr
-EquipStaminaText:               pos_text BG3A, {15, 21}, EquipStaminaStr
-EquipMagPwrText:                pos_text BG3A, {15, 23}, EquipMagPwrStr
-EquipEvadeText:                 pos_text BG3A, {15, 29}, EquipEvadeStr
-EquipMagEvadeText:              pos_text BG3B, {15, 1}, EquipMagEvadeStr
-
-EquipArrow1Text:                pos_text BG3A, {26, 17}, EquipArrowStr
-EquipArrow2Text:                pos_text BG3A, {26, 19}, EquipArrowStr
-EquipArrow3Text:                pos_text BG3A, {26, 21}, EquipArrowStr
-EquipArrow4Text:                pos_text BG3A, {26, 23}, EquipArrowStr
-EquipArrow5Text:                pos_text BG3A, {26, 27}, EquipArrowStr
-EquipArrow6Text:                pos_text BG3A, {26, 29}, EquipArrowStr
-EquipArrow7Text:                pos_text BG3A, {26, 25}, EquipArrowStr
-EquipArrow8Text:                pos_text BG3A, {26, 31}, EquipArrowStr
-EquipArrow9Text:                pos_text BG3A, {26, 33}, EquipArrowStr
-
-EquipSpeedText:                 pos_text BG3A, {15, 18}, EquipSpeedStr
-EquipAttackPwrText:             pos_text BG3A, {15, 24}, EquipAttackPwrStr
-EquipDefenseText:               pos_text BG3A, {15, 26}, EquipDefenseStr
-EquipMagDefText:                pos_text BG3A, {15, 30}, EquipMagDefStr
-
-_c3abd6:                        pos_text BG3A, {21, 6}, {$ff,$ff,$ff,$ff,$ff,$ff,$00}
-_c3abdf:                        pos_text BG3A, {21, 8}, {$ff,$ff,$ff,$ff,$ff,$ff,$00}
-_c3abe8:                        pos_text BG3A, {19, 8}, {$37,$c1,$89,$7d,$89,$23,$00}
-_c3abf1:                        pos_text BG3A, {19, 6}, {$95,$87,$89,$a9,$c1,$89,$00}
-_c3abfa:                        pos_text BG3A, {19, 8}, {$a9,$c3,$89,$85,$a5,$81,$00}
+.if !LANG_EN
+; unused labels for special equipment flags
+_c3abd6:                                pos_text EQUIP_WEAPON_FLAG_1
+_c3abdf:                                pos_text EQUIP_WEAPON_FLAG_2
+_c3abe8:                                pos_text EQUIP_WEAPON_FLAG_3
+_c3abf1:                                pos_text EQUIP_WEAPON_FLAG_4
+_c3abfa:                                pos_text EQUIP_WEAPON_FLAG_5
 .endif
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-
-EquipEmptyMsgText:              pos_text BG3A, {13, 3}, EquipEmptyMsgStr
-EquipOptimumMsgText:            pos_text BG3A, {12, 3}, EquipOptimumMsgStr
-RelicEmptyMsgText:              pos_text BG3A, {13, 5}, RelicEmptyMsgStr
-RelicOptimumMsgText:            pos_text BG3A, {12, 5}, RelicOptimumMsgStr
-EquipChangedMsgText:            pos_text BG3A, {6, 7}, EquipChangedMsgStr
-
-.else
-
-EquipEmptyMsgText:              pos_text BG3A, {12, 2}, EquipEmptyMsgStr
-EquipOptimumMsgText:            pos_text BG3A, {12, 2}, EquipOptimumMsgStr
-RelicEmptyMsgText:              pos_text BG3A, {12, 4}, RelicEmptyMsgStr
-RelicOptimumMsgText:            pos_text BG3A, {12, 4}, RelicOptimumMsgStr
-EquipChangedMsgText:            pos_text BG3A, {3, 6}, EquipChangedMsgStr
-
-.endif
+EquipEmptyMsgText:                      pos_text EQUIP_EMPTY_MSG
+EquipOptimumMsgText:                    pos_text EQUIP_OPTIMUM_MSG
+RelicEmptyMsgText:                      pos_text RELIC_EMPTY_MSG
+RelicOptimumMsgText:                    pos_text RELIC_OPTIMUM_MSG
+EquipChangedMsgText:                    pos_text EQUIP_CHANGED_MSG
 
 ; ------------------------------------------------------------------------------

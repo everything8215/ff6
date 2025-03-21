@@ -1,5 +1,6 @@
 {
   "asset_label": "CharTitle",
+  "inc_path": "include/text/char_title_jp.inc",
   "item_size": 7,
   "char_tables": [
     "fixed_length_jp",

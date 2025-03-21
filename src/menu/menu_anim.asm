@@ -57,49 +57,36 @@ StatusIconPal:
 ; ------------------------------------------------------------------------------
 
 ; name change letters
-.if LANG_EN
 NameChangeLetters:
-@e8c8:  .byte   $80,$81,$82,$83,$84,$9a,$9b,$9c,$9d,$9e
-        .byte   $85,$86,$87,$88,$89,$9f,$a0,$a1,$a2,$a3
-        .byte   $8a,$8b,$8c,$8d,$8e,$a4,$a5,$a6,$a7,$a8
-        .byte   $8f,$90,$91,$92,$93,$a9,$aa,$ab,$ac,$ad
-        .byte   $94,$95,$96,$97,$98,$ae,$af,$b0,$b1,$b2
-        .byte   $99,$be,$bf,$c0,$c1,$b3,$c2,$c3,$c4,$c5
-        .byte   $b4,$b5,$b6,$b7,$b8,$b9,$ba,$bb,$bc,$bd
-.else
-NameChangeLetters:
-        .byte   $8b,$8d,$89,$8f,$91,$35,$37,$39,$3b,$3d
-        .byte   $6b,$6d,$6f,$71,$73,$3f,$41,$43,$45,$47
-        .byte   $75,$77,$79,$7b,$7d,$21,$23,$25,$27,$29
-        .byte   $7f,$81,$83,$85,$87,$4a,$4c,$4e,$50,$52
-        .byte   $93,$95,$97,$99,$9b,$bd,$bf,$c1,$c3,$bb
-        .byte   $61,$63,$65,$67,$69,$c4,$c6,$c8,$ca,$cc
-        .byte   $9d,$9f,$a1,$a3,$a5,$c5,$48,$c9,$cb,$c7
-        .byte   $b1,$b3,$b5,$b7,$b9,$53,$54,$55,$56,$57
-        .byte   $a7,$a9,$ab,$ad,$af,$58,$59,$5a,$5b,$5c
-        .byte   $2b,$2d,$2f,$31,$33,$ce,$d0,$d1,$cf,$d3
-        .byte   $8a,$8c,$88,$8e,$90,$34,$36,$38,$3a,$3c
-        .byte   $6a,$6c,$6e,$70,$72,$3e,$40,$42,$44,$46
-        .byte   $74,$76,$78,$7a,$7c,$20,$22,$24,$26,$28
-        .byte   $7e,$80,$82,$84,$86,$49,$4b,$4d,$4f,$51
-        .byte   $92,$94,$96,$98,$9a,$bc,$be,$c0,$c2,$ba
-        .byte   $60,$62,$64,$66,$68,$c4,$c6,$c8,$ca,$cc
+        raw_text NAME_CHANGE_LETTERS_1
+        raw_text NAME_CHANGE_LETTERS_2
+        raw_text NAME_CHANGE_LETTERS_3
+        raw_text NAME_CHANGE_LETTERS_4
+        raw_text NAME_CHANGE_LETTERS_5
+        raw_text NAME_CHANGE_LETTERS_6
+        raw_text NAME_CHANGE_LETTERS_7
+.if !LANG_EN
+        raw_text NAME_CHANGE_LETTERS_8
+        raw_text NAME_CHANGE_LETTERS_9
+        raw_text NAME_CHANGE_LETTERS_10
+        raw_text NAME_CHANGE_LETTERS_11
+        raw_text NAME_CHANGE_LETTERS_12
+        raw_text NAME_CHANGE_LETTERS_13
+        raw_text NAME_CHANGE_LETTERS_14
+        raw_text NAME_CHANGE_LETTERS_15
+        raw_text NAME_CHANGE_LETTERS_16
 NameChangeLetters2:
-        .byte   $9c,$9e,$a0,$a2,$a4,$c5,$48,$c9,$cb,$c7
-        .byte   $b0,$b2,$b4,$b6,$b8,$53,$54,$55,$56,$57
-        .byte   $a6,$a8,$aa,$ac,$ae,$58,$59,$5a,$5b,$5c
-        .byte   $2a,$2c,$2e,$30,$32,$ce,$d0,$d1,$cf,$d3
+        raw_text NAME_CHANGE_LETTERS_17
+        raw_text NAME_CHANGE_LETTERS_18
+        raw_text NAME_CHANGE_LETTERS_19
+        raw_text NAME_CHANGE_LETTERS_20
 .endif
 
 ; ------------------------------------------------------------------------------
 
 ; element symbols
 ElementSymbols:
-.if LANG_EN
-@e90e:  .byte   $dd,$da,$d6,$d9,$de,$d8,$db,$dc,0
-.else
-        .byte   $1e,$24,$1e,$c3,$1f,$1b,$1e,$d6,$1d,$fe,$1e,$e4,$1c,$b0,$1e,$85,$00
-.endif
+        raw_text ELEMENT_SYMBOLS
         calc_size ElementSymbols
 
 ; ------------------------------------------------------------------------------

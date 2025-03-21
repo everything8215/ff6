@@ -590,39 +590,54 @@ InitThreePartyCursor:
 ; ------------------------------------------------------------------------------
 
 PartyCharCursorProp:
-        make_cursor_prop {0, 0}, {8, 2}, {NO_X_WRAP, NO_Y_WRAP}
+        cursor_prop {0, 0}, {8, 2}, NO_XY_WRAP
 
 PartyCharCursorPos:
-@74c3:  .byte   $08,$64,$24,$64,$40,$64,$5c,$64,$78,$64,$94,$64,$b0,$64,$cc,$64
-        .byte   $08,$80,$24,$80,$40,$80,$5c,$80,$78,$80,$94,$80,$b0,$80,$cc,$80
+        .repeat 2, yy
+        .repeat 8, xx
+        cursor_pos {8 + xx * 28, 100 + yy * 28}
+        .endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
 OnePartyCursorProp:
-        make_cursor_prop {0, 0}, {2, 2}, {NO_X_WRAP, NO_Y_WRAP}
+        cursor_prop {0, 0}, {2, 2}, NO_XY_WRAP
 
 OnePartyCursorPos:
-@74e8:  .byte   $08,$a4,$28,$a4
-        .byte   $08,$c0,$28,$c0
+        .repeat 2, yy
+        .repeat 2, xx
+        cursor_pos {8 + xx * 32, 164 + yy * 28}
+        .endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
 TwoPartyCursorProp:
-        make_cursor_prop {0, 0}, {4, 2}, {NO_X_WRAP, NO_Y_WRAP}
+        cursor_prop {0, 0}, {4, 2}, NO_XY_WRAP
 
 TwoPartyCursorPos:
-@74f5:  .byte   $08,$a4,$28,$a4,$58,$a4,$78,$a4
-        .byte   $08,$c0,$28,$c0,$58,$c0,$78,$c0
+        .repeat 2, yy
+        .repeat 2, pp
+        .repeat 2, xx
+        cursor_pos {8 + xx * 32 + pp * 80, 164 + yy * 28}
+        .endrep
+        .endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
 ThreePartyCursorProp:
-        make_cursor_prop {0, 0}, {6, 2}, {NO_X_WRAP, NO_Y_WRAP}
+        cursor_prop {0, 0}, {6, 2}, NO_XY_WRAP
 
 ThreePartyCursorPos:
-@750a:  .byte   $08,$a4,$28,$a4,$58,$a4,$78,$a4
-        .byte   $a8,$a4,$c8,$a4,$08,$c0,$28,$c0
-        .byte   $58,$c0,$78,$c0,$a8,$c0,$c8,$c0
+        .repeat 2, yy
+        .repeat 3, pp
+        .repeat 2, xx
+        cursor_pos {8 + xx * 32 + pp * 80, 164 + yy * 28}
+        .endrep
+        .endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -1250,8 +1265,8 @@ _c37953:
         shorta
         lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
-        ldx     #near _c379c9
-        ldy     #sizeof__c379c9
+        ldx     #near PartyCharTextList
+        ldy     #sizeof_PartyCharTextList
         jsr     DrawPosList
 .if LANG_EN
         ldy_pos BG1A, {9, 8}
@@ -1272,9 +1287,9 @@ _c37953:
         ldy_pos BG1A, {9, 11}
 .endif
         jsr     DrawEquipGenju
-        ldy     #near _c379de
+        ldy     #near PartyHPSlashText
         jsr     DrawPosText
-        ldy     #near _c379e2
+        ldy     #near PartyMPSlashText
         jsr     DrawPosText
         ldx     #near _c379e6
         jsr     DrawCharBlock
@@ -1301,29 +1316,17 @@ _c379ac:
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-        .define PartyLevelStr {$8b,$95,$00}
-        .define PartyHPStr {$87,$8f,$00}
-        .define PartyMPStr {$8c,$8f,$00}
-        .define PartySlashStr {$c0,$00}
-.else
-        .define PartyLevelStr {$2b,$35,$00}
-        .define PartyHPStr {$27,$2f,$00}
-        .define PartyMPStr {$2c,$2f,$00}
-        .define PartySlashStr {$ce,$00}
-.endif
+PartyCharTextList:
+        .addr   PartyLevelText
+        .addr   PartyHPText
+        .addr   PartyMPText
+        calc_size PartyCharTextList
 
-_c379c9:
-        .addr   _c379cf
-        .addr   _c379d4
-        .addr   _c379d9
-        calc_size _c379c9
-
-_c379cf: pos_text BG1A, {18, 8}, PartyLevelStr
-_c379d4: pos_text BG1A, {18, 10}, PartyHPStr
-_c379d9: pos_text BG1A, {18, 12}, PartyMPStr
-_c379de: pos_text BG1A, {25, 10}, PartySlashStr
-_c379e2: pos_text BG1A, {25, 12}, PartySlashStr
+PartyLevelText:                         pos_text PARTY_LEVEL
+PartyHPText:                            pos_text PARTY_HP
+PartyMPText:                            pos_text PARTY_MP
+PartyHPSlashText:                       pos_text PARTY_HP_SLASH
+PartyMPSlashText:                       pos_text PARTY_MP_SLASH
 
 ; ram addresses for lv/hp/mp text (party select)
 _c379e6:
@@ -1472,28 +1475,9 @@ MenuState_69:
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-        .define PartyMsgStr             {$85,$a8,$ab,$a6,$ff,$ff,$ff,$a0,$ab,$a8,$ae,$a9,$cb,$ac,$cc,$c5,$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define PartyTitleStr           {$8b,$a2,$a7,$9e,$ae,$a9,$00}
-        .define PartyErrorMsg1Str       {$98,$a8,$ae,$ff,$a7,$9e,$9e,$9d,$ff,$ff,$ff,$a0,$ab,$a8,$ae,$a9,$cb,$ac,$cc,$be,$00}
-        .define PartyErrorMsg2Str       {$8d,$a8,$ff,$a8,$a7,$9e,$ff,$ad,$a1,$9e,$ab,$9e,$be,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
-.else
-        .define PartyMsgStr             {$49,$c5,$84,$c6,$c5,$bb,$ff,$83,$ff,$83,$6f,$bd,$85,$6f,$3f,$75,$8d,$00}
-        .define PartyTitleStr           {$67,$b9,$7b,$8d,$00}
-        .define PartyErrorMsg1Str       {$49,$c5,$84,$c6,$c5,$9b,$6b,$39,$2b,$ff,$83,$8b,$a9,$9d,$7b,$b9,$c9,$00}
-        .define PartyErrorMsg2Str       {$3f,$ad,$a5,$8d,$9d,$7b,$b9,$c9,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
-.endif
-
-.if LANG_EN
-PartyMsgText:           pos_text BG1A, {10, 3}, PartyMsgStr
-PartyTitleText:         pos_text BG1A, {2, 3}, PartyTitleStr
-PartyErrorMsg1Text:     pos_text BG1A, {10, 3}, PartyErrorMsg1Str
-PartyErrorMsg2Text:     pos_text BG1A, {10, 3}, PartyErrorMsg2Str
-.else
-PartyMsgText:           pos_text BG1A, {10, 2}, PartyMsgStr
-PartyTitleText:         pos_text BG1A, {3, 2}, PartyTitleStr
-PartyErrorMsg1Text:     pos_text BG1A, {10, 2}, PartyErrorMsg1Str
-PartyErrorMsg2Text:     pos_text BG1A, {10, 2}, PartyErrorMsg2Str
-.endif
+PartyMsgText:           pos_text PARTY_MSG
+PartyTitleText:         pos_text PARTY_TITLE
+PartyErrorMsg1Text:     pos_text PARTY_ERROR_MSG1
+PartyErrorMsg2Text:     pos_text PARTY_ERROR_MSG2
 
 ; ------------------------------------------------------------------------------

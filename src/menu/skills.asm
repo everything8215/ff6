@@ -64,17 +64,17 @@ InitSkillsCursor:
 ; skills cursor data
 ; NOTE: this is the only cursor that doesn't have an initial position of (0,0)
 SkillsCursorProp:
-        make_cursor_prop {0, 1}, {1, 7}, NO_X_WRAP
+        cursor_prop {0, 1}, {1, 7}, NO_X_WRAP
 
 ; skills cursor positions
 SkillsCursorPos:
-@4b74:  .byte   $00,$14
-        .byte   $00,$24
-        .byte   $00,$44
-        .byte   $00,$54
-        .byte   $00,$64
-        .byte   $00,$74
-        .byte   $00,$84
+@4b74:  cursor_pos {0, 20}
+        cursor_pos {0, 36}
+        cursor_pos {0, 68}
+        cursor_pos {0, 84}
+        cursor_pos {0, 100}
+        cursor_pos {0, 116}
+        cursor_pos {0, 132}
 
 ; ------------------------------------------------------------------------------
 
@@ -113,32 +113,24 @@ InitMagicCursor:
 ; magic cursor data
 MagicCursorProp:
 .if LANG_EN
-        make_cursor_prop {0, 0}, {2, 8}, NO_Y_WRAP
+        cursor_prop {0, 0}, {2, 8}, NO_Y_WRAP
 .else
-        make_cursor_prop {0, 0}, {3, 9}, NO_Y_WRAP
+        cursor_prop {0, 0}, {3, 9}, NO_Y_WRAP
 .endif
 
 ; magic cursor positions
 MagicCursorPos:
 .if LANG_EN
-@4bae:  .byte   $08,$74,$70,$74
-        .byte   $08,$80,$70,$80
-        .byte   $08,$8c,$70,$8c
-        .byte   $08,$98,$70,$98
-        .byte   $08,$a4,$70,$a4
-        .byte   $08,$b0,$70,$b0
-        .byte   $08,$bc,$70,$bc
-        .byte   $08,$c8,$70,$c8
+        .repeat 8, yy
+        cursor_pos {8, 116 + yy * 12}
+        cursor_pos {112, 116 + yy * 12}
+        .endrep
 .else
-        .byte   $08,$68,$50,$68,$98,$68
-        .byte   $08,$74,$50,$74,$98,$74
-        .byte   $08,$80,$50,$80,$98,$80
-        .byte   $08,$8c,$50,$8c,$98,$8c
-        .byte   $08,$98,$50,$98,$98,$98
-        .byte   $08,$a4,$50,$a4,$98,$a4
-        .byte   $08,$b0,$50,$b0,$98,$b0
-        .byte   $08,$bc,$50,$bc,$98,$bc
-        .byte   $08,$c8,$50,$c8,$98,$c8
+        .repeat 9, yy
+        cursor_pos {8, 104 + yy * 12}
+        cursor_pos {80, 104 + yy * 12}
+        cursor_pos {152, 104 + yy * 12}
+        .endrep
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -165,20 +157,20 @@ InitAbilityCursor:
 
 ; blitz/swdtech/dance cursor data
 AbilityCursorProp:
-        make_cursor_prop {0, 0}, {2, 4}
+        cursor_prop {0, 0}, {2, 4}
 
 ; blitz/swdtech/dance cursor positions
 AbilityCursorPos:
 .if LANG_EN
-@4be4:  .byte   $08,$74,$78,$74
-        .byte   $08,$8c,$78,$8c
-        .byte   $08,$a4,$78,$a4
-        .byte   $08,$bc,$78,$bc
+        .repeat 4, yy
+        cursor_pos {8, 116 + yy * 24}
+        cursor_pos {120, 116 + yy * 24}
+        .endrep
 .else
-        .byte   $18,$74,$88,$74
-        .byte   $18,$8c,$88,$8c
-        .byte   $18,$a4,$88,$a4
-        .byte   $18,$bc,$88,$bc
+        .repeat 4, yy
+        cursor_pos {24, 116 + yy * 24}
+        cursor_pos {136, 116 + yy * 24}
+        .endrep
 .endif
 ; ------------------------------------------------------------------------------
 
@@ -205,18 +197,13 @@ InitLoreCursor:
 
 ; lore cursor data
 LoreCursorProp:
-        make_cursor_prop {0, 0}, {1, 8}, NO_Y_WRAP
+        cursor_prop {0, 0}, {1, 8}, NO_Y_WRAP
 
 ; lore cursor positions
 LoreCursorPos:
-@4c08:  .byte   $08,$74
-        .byte   $08,$80
-        .byte   $08,$8c
-        .byte   $08,$98
-        .byte   $08,$a4
-        .byte   $08,$b0
-        .byte   $08,$bc
-        .byte   $08,$c8
+        .repeat 8, yy
+        cursor_pos {8, 116 + yy * 12}
+        .endrep
 
 .else
 
@@ -250,32 +237,23 @@ InitGenjuCursor:
 ; espers select cursor data
 GenjuCursorProp:
 .if LANG_EN
-        make_cursor_prop {0, 0}, {2, 8}, NO_Y_WRAP
+        cursor_prop {0, 0}, {2, 8}, NO_Y_WRAP
 .else
-        make_cursor_prop {0, 0}, {2, 9}, NO_Y_WRAP
+        cursor_prop {0, 0}, {2, 9}, NO_Y_WRAP
 .endif
 
 ; espers select cursor positions
 GenjuCursorPos:
 .if LANG_EN
-@4c2c:  .byte   $08,$74,$78,$74
-        .byte   $08,$80,$78,$80
-        .byte   $08,$8c,$78,$8c
-        .byte   $08,$98,$78,$98
-        .byte   $08,$a4,$78,$a4
-        .byte   $08,$b0,$78,$b0
-        .byte   $08,$bc,$78,$bc
-        .byte   $08,$c8,$78,$c8
+        .repeat 8, yy
+        cursor_pos {8, 116 + yy * 12}
+        cursor_pos {120, 116 + yy * 12}
+        .endrep
 .else
-        .byte   $08,$68,$78,$68
-        .byte   $08,$74,$78,$74
-        .byte   $08,$80,$78,$80
-        .byte   $08,$8c,$78,$8c
-        .byte   $08,$98,$78,$98
-        .byte   $08,$a4,$78,$a4
-        .byte   $08,$b0,$78,$b0
-        .byte   $08,$bc,$78,$bc
-        .byte   $08,$c8,$78,$c8
+        .repeat 9, yy
+        cursor_pos {8, 104 + yy * 12}
+        cursor_pos {120, 104 + yy * 12}
+        .endrep
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -302,32 +280,23 @@ InitRageCursor:
 ; rage cursor data
 RageCursorProp:
 .if LANG_EN
-        make_cursor_prop {0, 0}, {2, 8}, NO_Y_WRAP
+        cursor_prop {0, 0}, {2, 8}, NO_Y_WRAP
 .else
-        make_cursor_prop {0, 0}, {2, 9}, NO_Y_WRAP
+        cursor_prop {0, 0}, {2, 9}, NO_Y_WRAP
 .endif
 
 ; rage cursor positions
 RageCursorPos:
 .if LANG_EN
-@4c60:  .byte   $18,$74,$88,$74
-        .byte   $18,$80,$88,$80
-        .byte   $18,$8c,$88,$8c
-        .byte   $18,$98,$88,$98
-        .byte   $18,$a4,$88,$a4
-        .byte   $18,$b0,$88,$b0
-        .byte   $18,$bc,$88,$bc
-        .byte   $18,$c8,$88,$c8
+        .repeat 8, yy
+        cursor_pos {24, 116 + yy * 12}
+        cursor_pos {136, 116 + yy * 12}
+        .endrep
 .else
-        .byte   $18,$68,$88,$68
-        .byte   $18,$74,$88,$74
-        .byte   $18,$80,$88,$80
-        .byte   $18,$8c,$88,$8c
-        .byte   $18,$98,$88,$98
-        .byte   $18,$a4,$88,$a4
-        .byte   $18,$b0,$88,$b0
-        .byte   $18,$bc,$88,$bc
-        .byte   $18,$c8,$88,$c8
+        .repeat 9, yy
+        cursor_pos {24, 104 + yy * 12}
+        cursor_pos {136, 104 + yy * 12}
+        .endrep
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -1136,7 +1105,7 @@ _c3510d:
         jsr     _c350ec
         jsr     _c3510d
         jmp     @5188
-@516c:  bra     _51b9
+@516c:  bra     _c351b9
 @516e:  sta     $e3
         lda     $0201
         bit     #$01
@@ -1156,7 +1125,7 @@ _c3510d:
         beq     @519b
         jsr     _c350ec
         cmp     #$23
-        bne     _51b9
+        bne     _c351b9
 @519b:  longa
         lda     $000d,y
         sta     $e0
@@ -1164,7 +1133,7 @@ _c3510d:
         ldx     $e2
         cpx     $e0
         beq     @51ac
-        bcs     _51b9
+        bcs     _c351b9
 @51ac:  clr_a
         lda     $e5
         tax
@@ -1175,7 +1144,8 @@ _c3510d:
 
 ; set spell text color to gray
 
-_51b9:  clr_a
+::_c351b9:
+        clr_a
         lda     $e5
         tax
         lda     #$28
@@ -1184,8 +1154,6 @@ _51b9:  clr_a
         rts
 
 .endproc  ; _c3514d
-
-_c351b9 := _c3514d::_51b9
 
 ; ------------------------------------------------------------------------------
 
@@ -2151,11 +2119,11 @@ _572a:  ldx     #$9ec9
         tax
         lda     $7e9d89,x
 
-LoadItemDesc:
+::LoadItemDesc:
 _5738:  cmp     #$ff
         beq     _576d
 
-_c35d99:
+::_c35d99:
         longa
         asl
         tay
@@ -2187,9 +2155,6 @@ _576d:  lda     #$ff
         sta     hWMDATA
         bra     _5763
 .endproc
-
-LoadItemDesc = LoadBigText::LoadItemDesc
-_c35d99 := LoadBigText::_c35d99
 
 ; ------------------------------------------------------------------------------
 
@@ -2542,16 +2507,16 @@ InitGenjuDetailCursor:
 ; ------------------------------------------------------------------------------
 
 GenjuDetailCursorProp:
-        make_cursor_prop {0, 0}, {1, 7}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 7}, NO_X_WRAP
 
 GenjuDetailCursorPos:
-@5991:  .byte   $10,$70
-        .byte   $18,$7c
-        .byte   $18,$88
-        .byte   $18,$94
-        .byte   $18,$a0
-        .byte   $18,$ac
-        .byte   $18,$b8
+@5991:  cursor_pos {16, 112}
+        cursor_pos {24, 124}
+        cursor_pos {24, 136}
+        cursor_pos {24, 148}
+        cursor_pos {24, 160}
+        cursor_pos {24, 172}
+        cursor_pos {24, 184}
 
 ; ------------------------------------------------------------------------------
 
@@ -2636,13 +2601,11 @@ DrawEsperDetailMenu:
         cmp     #$ff
         beq     @5a67
         sta     hWRMPYA
-.if LANG_EN
-        lda     #9
+        lda     #GenjuBonusName::ITEM_SIZE
         sta     hWRMPYB
+.if LANG_EN
         ldy_pos BG1B, {5, 27}
 .else
-        lda     #8
-        sta     hWRMPYB
         ldy_pos BG1B, {5, 28}
 .endif
         jsr     InitTextBuf
@@ -2663,13 +2626,11 @@ DrawEsperDetailMenu:
         jmp     DrawPosTextBuf
 .if LANG_EN
 @5a67:  ldy_pos BG1B, {5, 27}
-        jsr     InitTextBuf
-        ldy     #$0017
 .else
 @5a67:  ldy_pos BG1B, {5, 28}
-        jsr     InitTextBuf
-        ldy     #$0013
 .endif
+        jsr     InitTextBuf
+        ldy     #sizeof_GenjuAtLevelUpText + GenjuBonusName::ITEM_SIZE
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -2925,60 +2886,6 @@ GetLoadGenjuAttackDescPtr:
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-        .define SkillsGenjuStr          {2, 3}, {$84,$ac,$a9,$9e,$ab,$ac,$00}
-        .define SkillsMagicStr          {2, 5}, {$8c,$9a,$a0,$a2,$9c,$00}
-        .define SkillsBushidoStr        {2, 9}, {$92,$b0,$9d,$93,$9e,$9c,$a1,$00}
-        .define SkillsBlitzStr          {2, 11}, {$81,$a5,$a2,$ad,$b3,$00}
-        .define SkillsLoreStr           {2, 13}, {$8b,$a8,$ab,$9e,$00}
-        .define SkillsRageStr           {2, 15}, {$91,$9a,$a0,$9e,$00}
-        .define SkillsDanceStr          {2, 17}, {$83,$9a,$a7,$9c,$9e,$00}
-
-        .define SkillsMPCostStr         {$8c,$8f,$c7,$ff,$ff,$ff,$ff,$00}
-        .define SkillsLoreTitleStr      {$8b,$a8,$ab,$9e,$00}
-        .define SkillsRageTitleStr      {$91,$9a,$a0,$9e,$00}
-        .define SkillsDanceTitleStr     {$83,$9a,$a7,$9c,$9e,$00}
-        .define SkillsGenjuTitleStr     {$84,$ac,$a9,$9e,$ab,$ac,$00}
-        .define SkillsBlitzTitleStr     {$81,$a5,$a2,$ad,$b3,$00}
-        .define SkillsBushidoTitleStr   {$92,$b0,$9d,$93,$9e,$9c,$a1,$00}
-        .define SkillsCharLevelStr      {$8b,$95,$00}
-        .define SkillsCharHPStr         {$87,$8f,$00}
-        .define SkillsCharMPStr         {$8c,$8f,$00}
-        .define SkillsCharSlashStr      {$c0,$00}
-
-        .define GenjuEquipErrorMsgStr   {$ff,$a1,$9a,$ac,$ff,$a2,$ad,$be,$00}
-        .define GenjuLearnPctStr        {$92,$a4,$a2,$a5,$a5,$00}
-        .define GenjuLearnRateStr       {$8b,$9e,$9a,$ab,$a7,$c5,$91,$9a,$ad,$9e,$00}
-        .define GenjuAtLevelUpStr       {$80,$ad,$ff,$a5,$9e,$af,$9e,$a5,$ff,$ae,$a9,$c5,$c5,$c5}
-
-.else
-        .define SkillsGenjuStr          {2, 2}, {$31,$b9,$37,$c1,$89,$00}
-        .define SkillsMagicStr          {2, 4}, {$9d,$69,$89,$00}
-        .define SkillsBushidoStr        {2, 8}, {$63,$bd,$75,$83,$71,$b9,$00}
-        .define SkillsBlitzStr          {2, 10}, {$63,$bd,$75,$83,$b7,$35,$00}
-        .define SkillsLoreStr           {2, 12}, {$91,$29,$8f,$7f,$b7,$35,$00}
-        .define SkillsRageStr           {2, 14}, {$8b,$21,$ad,$ab,$00}
-        .define SkillsDanceStr          {2, 16}, {$91,$47,$a9,$00}
-
-        .define SkillsBlankTitleStr     {$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define SkillsMPCostStr         {$2c,$2f,$c7,$ff,$ff,$ff,$00}
-        .define SkillsLoreTitleStr      {$91,$29,$8f,$7f,$b7,$35,$00}
-        .define SkillsRageTitleStr      {$8b,$21,$ad,$ab,$ff,$ff,$00}
-        .define SkillsDanceTitleStr     {$91,$47,$a9,$ff,$ff,$ff,$00}
-        .define SkillsGenjuTitleStr     {$31,$b9,$37,$c1,$89,$ff,$00}
-        .define SkillsBlitzTitleStr     {$63,$bd,$75,$83,$b7,$35,$00}
-        .define SkillsBushidoTitleStr   {$63,$bd,$75,$83,$71,$b9,$00}
-        .define SkillsCharLevelStr      {$2b,$35,$00}
-        .define SkillsCharHPStr         {$27,$2f,$00}
-        .define SkillsCharMPStr         {$2c,$2f,$00}
-        .define SkillsCharSlashStr      {$ce,$00}
-
-        .define GenjuEquipErrorMsgStr   {$2b,$a5,$bd,$85,$8d,$9d,$79,$00}
-        .define GenjuLearnPctStr        {$37,$c1,$6f,$ad,$b9,$47,$00}
-        .define GenjuLearnRateStr       {$91,$29,$8f,$ab,$78,$4b,$c5,$46,$00}
-        .define GenjuAtLevelUpStr       {$ac,$26,$aa,$8a,$bc,$4d,$9b,$87,$6d,$95,$ff}
-.endif
-
 BlitzInputTileTbl:
 .if LANG_EN
 @5c1c:  .word   $0000,$0000,$0000,$2097,$2098,$208b,$2091,$20d6
@@ -2998,13 +2905,13 @@ SkillsListTextPtrs:
         .addr   SkillsRageText
         .addr   SkillsDanceText
 
-SkillsGenjuText:                pos_text BG3A, SkillsGenjuStr
-SkillsMagicText:                pos_text BG3A, SkillsMagicStr
-SkillsBushidoText:              pos_text BG3A, SkillsBushidoStr
-SkillsBlitzText:                pos_text BG3A, SkillsBlitzStr
-SkillsLoreText:                 pos_text BG3A, SkillsLoreStr
-SkillsRageText:                 pos_text BG3A, SkillsRageStr
-SkillsDanceText:                pos_text BG3A, SkillsDanceStr
+SkillsGenjuText:                pos_text SKILLS_LIST_GENJU
+SkillsMagicText:                pos_text SKILLS_LIST_MAGIC
+SkillsBushidoText:              pos_text SKILLS_LIST_BUSHIDO
+SkillsBlitzText:                pos_text SKILLS_LIST_BLITZ
+SkillsLoreText:                 pos_text SKILLS_LIST_LORE
+SkillsRageText:                 pos_text SKILLS_LIST_RAGE
+SkillsDanceText:                pos_text SKILLS_LIST_DANCE
 
 SkillsCharLabelTextList:
         .addr   SkillsCharLevelText
@@ -3017,47 +2924,28 @@ SkillsCharLabelTextList:
 ; there's a bug here: if you first select "espers" and then select "rage" for example, the last two
 ; characters of espers don't get erased and it instead displays "ragers"
 
-.if LANG_EN
-SkillsMPCostText:               pos_text BG3B, {23, 5}, SkillsMPCostStr
-SkillsLoreTitleText:            pos_text BG3B, {23, 5}, SkillsLoreTitleStr
-SkillsRageTitleText:            pos_text BG3B, {23, 5}, SkillsRageTitleStr
-SkillsDanceTitleText:           pos_text BG3B, {23, 5}, SkillsDanceTitleStr
-SkillsGenjuTitleText:           pos_text BG3B, {23, 5}, SkillsGenjuTitleStr
-SkillsBlitzTitleText:           pos_text BG3B, {23, 5}, SkillsBlitzTitleStr
-SkillsBushidoTitleText:         pos_text BG3B, {23, 5}, SkillsBushidoTitleStr
-SkillsCharLevelText:            pos_text BG1B, {18, 7}, SkillsCharLevelStr
-SkillsCharHPText:               pos_text BG1B, {18, 9}, SkillsCharHPStr
-SkillsCharMPText:               pos_text BG1B, {18, 11}, SkillsCharMPStr
-SkillsCharHPSlashText:          pos_text BG1B, {25, 9}, SkillsCharSlashStr
-SkillsCharMPSlashText:          pos_text BG1B, {25, 11}, SkillsCharSlashStr
-
-GenjuEquipErrorMsgText:         raw_text GenjuEquipErrorMsgStr
-GenjuLearnPctText:              pos_text BG1B, {24, 15}, GenjuLearnPctStr
-GenjuLearnRateText:             pos_text BG1B, {13, 15}, GenjuLearnRateStr
-GenjuAtLevelUpText:
-        raw_text GenjuAtLevelUpStr
-        calc_size GenjuAtLevelUpText
-.else
-SkillsBlankTitleText:           pos_text BG3B, {2, 2}, SkillsBlankTitleStr
-SkillsMPCostText:               pos_text BG3B, {2, 3}, SkillsMPCostStr
-SkillsLoreTitleText:            pos_text BG3B, {2, 2}, SkillsLoreTitleStr
-SkillsRageTitleText:            pos_text BG3B, {2, 2}, SkillsRageTitleStr
-SkillsDanceTitleText:           pos_text BG3B, {2, 2}, SkillsDanceTitleStr
-SkillsGenjuTitleText:           pos_text BG3B, {2, 2}, SkillsGenjuTitleStr
-SkillsBlitzTitleText:           pos_text BG3B, {2, 2}, SkillsBlitzTitleStr
-SkillsBushidoTitleText:         pos_text BG3B, {2, 2}, SkillsBushidoTitleStr
-SkillsCharLevelText:            pos_text BG1B, {18, 7}, SkillsCharLevelStr
-SkillsCharHPText:               pos_text BG1B, {18, 9}, SkillsCharHPStr
-SkillsCharMPText:               pos_text BG1B, {18, 11}, SkillsCharMPStr
-SkillsCharHPSlashText:          pos_text BG1B, {25, 9}, SkillsCharSlashStr
-SkillsCharMPSlashText:          pos_text BG1B, {25, 11}, SkillsCharSlashStr
-
-GenjuEquipErrorMsgText:         raw_text GenjuEquipErrorMsgStr
-GenjuLearnPctText:              pos_text BG1B, {22, 16}, GenjuLearnPctStr
-GenjuLearnRateText:             pos_text BG1B, {13, 16}, GenjuLearnRateStr
-GenjuAtLevelUpText:
-        raw_text GenjuAtLevelUpStr
-        calc_size GenjuAtLevelUpText
+.if !LANG_EN
+SkillsBlankTitleText:           pos_text SKILLS_BLANK_TITLE
 .endif
+SkillsMPCostText:               pos_text SKILLS_MP_COST
+SkillsLoreTitleText:            pos_text SKILLS_LORE_TITLE
+SkillsRageTitleText:            pos_text SKILLS_RAGE_TITLE
+SkillsDanceTitleText:           pos_text SKILLS_DANCE_TITLE
+SkillsGenjuTitleText:           pos_text SKILLS_GENJU_TITLE
+SkillsBlitzTitleText:           pos_text SKILLS_BLITZ_TITLE
+SkillsBushidoTitleText:         pos_text SKILLS_BUSHIDO_TITLE
+
+SkillsCharLevelText:            pos_text SKILLS_CHAR_LEVEL
+SkillsCharHPText:               pos_text SKILLS_CHAR_HP
+SkillsCharMPText:               pos_text SKILLS_CHAR_MP
+SkillsCharHPSlashText:          pos_text SKILLS_CHAR_HP_SLASH
+SkillsCharMPSlashText:          pos_text SKILLS_CHAR_MP_SLASH
+
+GenjuEquipErrorMsgText:         raw_text GENJU_EQUIP_ERROR_MSG
+GenjuLearnPctText:              pos_text GENJU_LEARN_PCT
+GenjuLearnRateText:             pos_text GENJU_LEARN_RATE
+GenjuAtLevelUpText:
+        raw_text GENJU_AT_LEVEL_UP
+        calc_size GenjuAtLevelUpText
 
 ; ------------------------------------------------------------------------------

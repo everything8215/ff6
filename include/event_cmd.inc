@@ -169,7 +169,7 @@ set_script_mode EVENT
 .define create_obj(obj) _e_cmd_byte $3d, EVENT_OBJ::obj
 .define delete_obj(obj) _e_cmd_byte $3e, EVENT_OBJ::obj
 .define char_party(char_id, party) _e_cmd_2byte $3f, CHAR::char_id, party
-.define char_prop(char_id, prop) _e_cmd_2byte $40, CHAR::char_id, prop
+.define char_prop(char_id, prop) _e_cmd_2byte $40, CHAR::char_id, CHAR_PROP::prop
 .define _e_show_obj(obj) _e_cmd_byte $41, EVENT_OBJ::obj
 .define _e_hide_obj(obj) _e_cmd_byte $42, EVENT_OBJ::obj
 .define obj_pal(obj, pal) _e_cmd_2byte $43, EVENT_OBJ::obj, MAP_SPRITE_PAL::pal
@@ -233,10 +233,12 @@ set_script_mode EVENT
 
 .mac battle battle_id, bg, flags
         _battle_op battle_id, flags
-        .ifblank flags
-                .byte bg & $3f
+        .ifblank bg
+                .byte BATTLE_BG::DEFAULT & $3f
+        .elseif .blank(flags)
+                .byte BATTLE_BG::bg & $3f
         .else
-                make_bitmask .byte, bg & $3f, BATTLE_FLAGS, flags
+                make_bitmask .byte, BATTLE_BG::bg & $3f, BATTLE_FLAGS, flags
         .endif
 .endmac
 
@@ -576,7 +578,7 @@ set_script_mode EVENT
 .define collision_on(obj) _e_cmd_byte $7c, EVENT_OBJ::obj
 .define collision_off(obj) _e_cmd_byte $7d, EVENT_OBJ::obj
 .define party_pos(xy_pos) _e_cmd_2byte $7e, xy_pos
-.define char_name(char_id, name) _e_cmd_2byte $7f, CHAR::char_id, name
+.define char_name(char_id, name) _e_cmd_2byte $7f, CHAR::char_id, CHAR_PROP::name
 .define give_item(item) _e_cmd_byte $80, ITEM::item
 .define take_item(item) _e_cmd_byte $81, ITEM::item
 .define reset_default_party _e_cmd_impl $82
@@ -927,9 +929,9 @@ _multi_switch_index .set 0
         .word val
 .endmac
 
-.define VAR_EQUAL                       BIT_0
-.define VAR_GREATER                     BIT_1
-.define VAR_LESS                        BIT_2
+.define VAR_EQUAL                       0
+.define VAR_GREATER                     1
+.define VAR_LESS                        2
 
 .define set_var _var_cmd $e8,
 .define add_var _var_cmd $e9,

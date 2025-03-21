@@ -1222,19 +1222,19 @@ IncSteps:
 @20b3:  php
         longa
         lda     $1866                   ; increment steps (max 9999999)
-        cmp     #$967f
+        cmp     #near MAX_STEPS
         bne     @20c9
         lda     $1868
         and     #$00ff
-        cmp     #$0098
+        cmp     #^MAX_STEPS
         beq     @20dd
 @20c9:  clc
         lda     $1866
-        adc     #$0001
+        adc     #1
         sta     $1866
         shorta
         lda     $1868
-        adc     #$00
+        adc     #0
         sta     $1868
 @20dd:  plp
         rts

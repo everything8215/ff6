@@ -48,10 +48,10 @@ _c3bd99:
         rts
 
 _c3bde6:
-        hdma_word 79, $0100
-        hdma_word 80, $0000
-        hdma_word 48, $0000
-        hdma_word 16, $0100
+        hdma_word 79, 256
+        hdma_word 80, 0
+        hdma_word 48, 0
+        hdma_word 16, 256
         hdma_end
 
 _c3bdf3:
@@ -65,7 +65,6 @@ _c3bdf3:
 ; ------------------------------------------------------------------------------
 
 MenuState_3f:
-_c3be00:
 @be00:  jsr     DisableInterrupts
         jsr     ClearBGScroll
         lda     #$41
@@ -124,7 +123,6 @@ _be79:  rts
 ; ------------------------------------------------------------------------------
 
 MenuState_41:
-_c3be7a:
 @be7a:  jsr     _c3c033
         lda     $0b
         bit     #$04
@@ -316,7 +314,7 @@ _c3bfb3:
         beq     @bff3
         jsr     GetLetter
         phx
-        jsr     CopyLetterGfx
+        jsr     CopyBigLetterGfx
         plx
         inx
         bra     @bfe2
@@ -367,7 +365,7 @@ _c3c033:
         ldy     #$3f40
         sty     $eb
         phx
-        jsr     CopyLetterGfx
+        jsr     CopyBigLetterGfx
         plx
         inx
         dec     $f1
@@ -415,15 +413,12 @@ _c3c088:
 ; ------------------------------------------------------------------------------
 
 _c3c08e:
-        make_cursor_prop {0, 0}, {6, 1}, NO_Y_WRAP
+        cursor_prop {0, 0}, {6, 1}, NO_Y_WRAP
 
 _c3c093:
-        .byte   $70,$1c
-        .byte   $7c,$1c
-        .byte   $88,$1c
-        .byte   $94,$1c
-        .byte   $a0,$1c
-        .byte   $ac,$1c
+        .repeat 6, xx
+        cursor_pos {xx * 12 + 112, 28}
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -441,65 +436,14 @@ _c3c0a8:
 ; ------------------------------------------------------------------------------
 
 _c3c0ae:
-        make_cursor_prop {0, 0}, {7, 8}, NO_Y_WRAP
+        cursor_prop {0, 0}, {7, 8}, NO_Y_WRAP
 
 _c3c0b3:
-        .byte   $10,$50
-        .byte   $30,$50
-        .byte   $50,$50
-        .byte   $70,$50
-        .byte   $90,$50
-        .byte   $b0,$50
-        .byte   $d0,$50
-        .byte   $10,$60
-        .byte   $30,$60
-        .byte   $50,$60
-        .byte   $70,$60
-        .byte   $90,$60
-        .byte   $b0,$60
-        .byte   $d0,$60
-        .byte   $10,$70
-        .byte   $30,$70
-        .byte   $50,$70
-        .byte   $70,$70
-        .byte   $90,$70
-        .byte   $b0,$70
-        .byte   $d0,$70
-        .byte   $10,$80
-        .byte   $30,$80
-        .byte   $50,$80
-        .byte   $70,$80
-        .byte   $90,$80
-        .byte   $b0,$80
-        .byte   $d0,$80
-        .byte   $10,$90
-        .byte   $30,$90
-        .byte   $50,$90
-        .byte   $70,$90
-        .byte   $90,$90
-        .byte   $b0,$90
-        .byte   $d0,$90
-        .byte   $10,$a0
-        .byte   $30,$a0
-        .byte   $50,$a0
-        .byte   $70,$a0
-        .byte   $90,$a0
-        .byte   $b0,$a0
-        .byte   $d0,$a0
-        .byte   $10,$b0
-        .byte   $30,$b0
-        .byte   $50,$b0
-        .byte   $70,$b0
-        .byte   $90,$b0
-        .byte   $b0,$b0
-        .byte   $d0,$b0
-        .byte   $10,$c0
-        .byte   $30,$c0
-        .byte   $50,$c0
-        .byte   $70,$c0
-        .byte   $90,$c0
-        .byte   $b0,$c0
-        .byte   $d0,$c0
+        .repeat 8, yy
+        .repeat 7, xx
+        cursor_pos {xx * 32 + 16, yy * 16 + 80}
+        .endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -548,29 +492,29 @@ _c3c123:
 ; ------------------------------------------------------------------------------
 
 _c3c18a:
-        .byte   $08,$00,$00,$34
-        .byte   $88,$00,$1c,$34
-        .byte   $08,$01,$38,$34
-        .byte   $88,$01,$54,$34
-        .byte   $08,$02,$70,$34
-        .byte   $88,$02,$8c,$34
-        .byte   $08,$03,$a8,$34
-        .byte   $88,$03,$c4,$34
-        .byte   $08,$04,$e0,$34
-        .byte   $88,$04,$fc,$34
-        .byte   $08,$05,$18,$35
-        .byte   $88,$05,$34,$35
-        .byte   $08,$06,$50,$35
-        .byte   $88,$06,$6c,$35
-        .byte   $08,$07,$88,$35
-        .byte   $88,$07,$a4,$35
+        .word   $0008,$3400
+        .word   $0088,$341c
+        .word   $0108,$3438
+        .word   $0188,$3454
+        .word   $0208,$3470
+        .word   $0288,$348c
+        .word   $0308,$34a8
+        .word   $0388,$34c4
+        .word   $0408,$34e0
+        .word   $0488,$34fc
+        .word   $0508,$3518
+        .word   $0588,$3534
+        .word   $0608,$3550
+        .word   $0688,$356c
+        .word   $0708,$3588
+        .word   $0788,$35a4
 
 ; ------------------------------------------------------------------------------
 
 _c3c1c9:
 @c1c9:  lda     #$20
         sta     zTextColor
-        ldy     #near _c3c251
+        ldy     #near BushidoTitleText
         jsr     DrawPosKana
         tdc
         lda     $0201
@@ -593,7 +537,7 @@ _c3c1c9:
 _c3c1f2:
 @c1f2:  lda     #$30
         sta     $29
-        ldy     #near _c3c244
+        ldy     #near BushidoGaugeText
         jsr     DrawPosText
         tdc
         lda     $0201
@@ -606,7 +550,7 @@ _c3c1f2:
         ldx     #$9e8b
         stx     $2181
         ldx     z0
-@c216:  lda     f:_c3c231,x
+@c216:  lda     f:BushidoFullGaugeText,x
         sta     $2180
         inx
         dey
@@ -621,24 +565,31 @@ _c3c1f2:
 
 ; ------------------------------------------------------------------------------
 
-_c3c231:
-        .byte   $18,$18,$18,$18,$18,$18,$18
+; filled gauge text
+BushidoFullGaugeText:
+        .repeat 7
+        .byte   GAUGE_FULL_CHAR
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
 _c3c238:
-        .byte   $8b,$58,$1c,$02
+        make_window BG2A, {1, 1}, {28, 2}
 _c3c23c:
-        .byte   $8b,$59,$1c,$02
+        make_window BG2A, {1, 5}, {28, 2}
 _c3c240:
-        .byte   $8b,$5a,$1c,$10
+        make_window BG2A, {1, 9}, {28, 16}
 
 ; ------------------------------------------------------------------------------
 
-_c3c244:
-        .byte   $0d,$39,$19,$18,$10,$10,$10,$10,$10,$10,$10,$1a,$00
-_c3c251:
-        .byte   $8f,$38,$63,$bd,$75,$83,$71,$b9,$00
+; gauge text
+BushidoGaugeText:
+        pos_text BUSHIDO_GAUGE
+
+; ひっさつけん (必殺剣)
+; "hissatsu ken", or "deadly sword"
+BushidoTitleText:
+        pos_text BUSHIDO_TITLE
 
 ; ------------------------------------------------------------------------------
 
@@ -701,7 +652,7 @@ _c3c2a5:
         sty     $f1
 @c2ac:  jsr     _c3c2de
         ldy     $f1
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         longa
         lda     $f1
         clc
@@ -746,7 +697,7 @@ _c3c2de:
         adc     #$80
         ldy     #$3f40
         sty     $eb
-        jmp     CopyLetterGfx
+        jmp     CopyBigLetterGfx
 
 ; ------------------------------------------------------------------------------
 

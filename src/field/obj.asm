@@ -25,26 +25,28 @@
 
 ; [ load sprite palettes ]
 
-InitSpritePal:
-@50eb:  ldx     $00
-@50ed:  lda     f:MapSpritePal,x
+.proc InitSpritePal
+        ldx     $00
+:       lda     f:MapSpritePal,x
         sta     $7e7300,x
         sta     $7e7500,x
         inx
         cpx     #$0100
-        bne     @50ed
+        bne     :-
         rts
+.endproc  ; InitSpritePal
 
 ; ------------------------------------------------------------------------------
 
-; unused
-@5100:  .byte   $00,$0c,$18,$24
+; unused (same as FirstObjTbl1 and FirstObjTbl2)
+UnusedFirstObjTbl:
+        .byte   $00,$0c,$18,$24
 
 ; ------------------------------------------------------------------------------
 
 ; [ init character portrait (from ending) ]
 
-InitPortrait:
+.proc InitPortrait
 @5104:  lda     f:$001eb8               ; return if portrait event bit is not set
         and     #$40
         bne     @510d
@@ -65,7 +67,7 @@ InitPortrait:
         iny
         cpy     #$0020
         bne     @5120
-        tdc
+        clr_a
         pha
         plb
         stz     hMDMAEN
@@ -74,21 +76,21 @@ InitPortrait:
         lda     #$80
         sta     hVMAINC
         lda     #$09
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$0000                  ; source = $00 (fixed address)
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$00
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$1000
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         stz     hMDMAEN
         lda     #$41
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     $0795                   ; portrait index
         asl
         tax
@@ -103,12 +105,12 @@ InitPortrait:
         lsr3
         clc
         adc     $2a
-        sta     $4302
+        sta     hDMA0::ADDR
         shorta0
-        lda     #$ed
-        sta     $4304
+        lda     #^PortraitGfx
+        sta     hDMA0::ADDR_B
         ldy     #$0020                  ; transfer one tile at a time
-        sty     $4305
+        sty     hDMA0::SIZE
         lda     f:PortraitVRAMTbl,x
         longa_clc
         asl4
@@ -116,24 +118,24 @@ InitPortrait:
         adc     #$7000
         sta     hVMADDL
         shorta0
-        lda     #$01
+        lda     #BIT_0
         sta     hMDMAEN
         inx
         cpx     #25
         bne     @517c
         rts
-
+.endproc  ; InitPortrait
 ; ------------------------------------------------------------------------------
 
 ; pointers to character portrait graphics (+$ed0000, first 16 only)
 PortraitGfxPtrs:
-@51ba:  .repeat 16, i
+        .repeat 16, i
         .addr   PortraitGfx+$0320*i
         .endrep
 
 ; character portrait tile formation
 PortraitTiles:
-@51da:  .byte   $00,$01,$02,$03,$08
+        .byte   $00,$01,$02,$03,$08
         .byte   $10,$11,$12,$13,$09
         .byte   $04,$05,$06,$07,$0a
         .byte   $14,$15,$16,$17,$0b
@@ -141,7 +143,7 @@ PortraitTiles:
 
 ; character portrait vram location
 PortraitVRAMTbl:
-@51f3:  .byte   $00,$01,$02,$03,$04
+        .byte   $00,$01,$02,$03,$04
         .byte   $10,$11,$12,$13,$14
         .byte   $20,$21,$22,$23,$24
         .byte   $30,$31,$32,$33,$34
@@ -151,9 +153,9 @@ PortraitVRAMTbl:
 
 ; [ init character object sprite priority ]
 
-InitCharSpritePriority:
-@520c:  ldy     $00
-@520e:  lda     $0868,y                 ; sprite priority/walking animation
+.proc InitCharSpritePriority
+        ldy     $00
+:       lda     $0868,y                 ; sprite priority/walking animation
         and     #$f8                    ; enable walking animation
         ora     #$01
         sta     $0868,y
@@ -163,8 +165,9 @@ InitCharSpritePriority:
         tay
         shorta0
         cpy     #$0290
-        bne     @520e
+        bne     :-
         rts
+.endproc  ; InitCharSpritePriority
 
 ; ------------------------------------------------------------------------------
 
@@ -172,11 +175,11 @@ InitCharSpritePriority:
 
 .proc InitNPCSwitches
         ldx     $00
-loop:   lda     f:InitNPCSwitch,x
+:       lda     f:InitNPCSwitch,x
         sta     $1ee0,x
         inx
         cpx     #sizeof_InitNPCSwitch
-        bne     loop
+        bne     :-
         rts
 .endproc  ; InitNPCSwitches
 
@@ -184,10 +187,9 @@ loop:   lda     f:InitNPCSwitch,x
 .segment "init_npc_switch"
 
 ; c0/e0a0
-.proc InitNPCSwitch
+InitNPCSwitch:
         .incbin "init_npc_switch.dat"
-.endproc
-sizeof_InitNPCSwitch = .sizeof(InitNPCSwitch)
+        calc_size InitNPCSwitch
 
 .popseg
 
@@ -195,30 +197,30 @@ sizeof_InitNPCSwitch = .sizeof(InitNPCSwitch)
 
 ; [ init object map data ]
 
-InitNPCMap:
-@5238:  ldy     $00                     ; loop through all objects
+.proc InitNPCMap
+        ldy     $00                     ; loop through all objects
         stz     $1b
-@523c:  cpy     $0803                   ; skip if this is the party object
-        beq     @526f
+Loop:   cpy     $0803                   ; skip if this is the party object
+        beq     Skip
         ldx     $088d,y                 ; skip if object is not on this map
         cpx     a:$0082
-        bne     @526f
+        bne     Skip
         lda     $0867,y                 ; skip if object is not visible
-        bpl     @526f
+        bpl     Skip
         lda     $087c,y                 ; skip if object scrolls with bg2
-        bmi     @526f
+        bmi     Skip
         lda     $0868,y                 ; skip if this is an npc with special graphics
         and     #$e0
         cmp     #$80
-        beq     @526f
+        beq     Skip
         lda     $088c,y                 ; skip if not normal sprite priority
         and     #$c0
-        bne     @526f
+        bne     Skip
         jsr     GetObjMapPtr
         ldx     $087a,y                 ; get pointer
         lda     $1b
         sta     $7e2000,x               ; set object map data
-@526f:  inc     $1b                     ; next object
+Skip:   inc     $1b                     ; next object
         inc     $1b
         longa_clc
         tya
@@ -226,34 +228,35 @@ InitNPCMap:
         tay
         shorta0
         cpy     #$07b0
-        bne     @523c
+        bne     Loop
         ldy     $0803                   ; pointer to party object data
         sty     hWRDIVL
         lda     #$29                    ; divide by $29 to get object number
         sta     hWRDIVB
         lda     $b8                     ; tile properties, branch if bottom sprite is lower z-level
         and     #$04
-        beq     @5299
+        beq     :+
         lda     $b2                     ; return if party is on lower z-level
         cmp     #$02
-        beq     @52a7
-@5299:  jsr     GetObjMapPtr
+        beq     Done
+:       jsr     GetObjMapPtr
         ldx     $087a,y                 ; get pointer
-        lda     hRDDIVL                   ; get object number * 2
+        lda     hRDDIVL                 ; get object number * 2
         asl
         sta     $7e2000,x               ; set object map data
-@52a7:  rts
+Done:   rts
+.endproc  ; InitNPCMap
 
 ; ------------------------------------------------------------------------------
 
 ; [ load npc data ]
 
-InitNPCs:
-@52a8:  ldx     $00
-@52aa:  stz     $0af7,x                 ; clear object data for npcs $10-$28
+.proc InitNPCs
+        ldx     $00
+:       stz     $0af7,x                 ; clear object data for npcs $10-$28
         inx
         cpx     #$03d8
-        bne     @52aa
+        bne     :-
         stz     $078f                   ; clear number of active npcs
         longa
         lda     $82                     ; map index
@@ -266,8 +269,8 @@ InitNPCs:
         shorta0
         ldy     #$0290                  ; start at object $10
         cpx     $1e
-        jeq     @5434                   ; end loop after last npc
-@52d4:  lda     f:NPCProp::EventPtr,x
+        jeq     HideRemainingNPCs
+Loop:   lda     f:NPCProp::EventPtr,x
         sta     $0889,y
         lda     f:NPCProp::EventPtr+1,x
         sta     $088a,y
@@ -293,9 +296,9 @@ InitNPCs:
         ply
         plx
         cmp     #0
-        beq     @531e                   ; branch if npc is not enabled
+        beq     :+                      ; branch if npc is not enabled
         lda     #$c0                    ; enable and show npc
-@531e:  sta     $0867,y
+:       sta     $0867,y
         lda     f:NPCProp::SpecialNPC,x ; or special npc graphics
         and     #$80
         sta     $0868,y
@@ -358,7 +361,7 @@ InitNPCs:
         sta     $0868,y
         lda     f:NPCProp::AnimFrame,x
         and     #NPC_ANIM_FRAME::MASK
-        beq     @53f6                   ; branch if no special animation
+        beq     :+                      ; branch if no special animation
         lsr5
         ora     $088c,y
         sta     $088c,y
@@ -368,12 +371,12 @@ InitNPCs:
         ora     $088c,y
         ora     #$20                    ; enable animation
         sta     $088c,y
-        bra     @53f6
-@53f6:  longa
+        bra     :+
+:       longa
         lda     $82                     ; set map index
         sta     $088d,y
         shorta0
-        tdc
+        clr_a
         sta     $087e,y                 ; clear movement direction
         sta     $0886,y                 ; clear number of steps to take
         sta     $0882,y                 ; clear script wait counter
@@ -395,10 +398,13 @@ InitNPCs:
         tax
         shorta0
         cpx     $1e
-        jne     @52d4
-@5434:  cpy     #$07b0                  ; disable and hide any remaining npcs
-        beq     @5450
-@5439:  lda     $0867,y
+        jne     Loop
+
+; disable and hide any remaining npcs
+HideRemainingNPCs:
+        cpy     #$07b0
+        beq     Done
+:       lda     $0867,y
         and     #$3f
         sta     $0867,y
         longa_clc
@@ -407,28 +413,29 @@ InitNPCs:
         tay
         shorta0
         cpy     #$07b0                  ; 32 npcs total
-        bne     @5439
-@5450:  jsr     _c0714a
+        bne     :-
+Done:   jsr     _c0714a
         rts
+.endproc  ; InitNPCs
 
 ; ------------------------------------------------------------------------------
 
 ; [ init special npc graphics ]
 
-InitSpecialNPCs:
-@5454:  lda     $078f       ; return if there are no active npc's
-        beq     @547d
+.proc InitSpecialNPCs
+        lda     $078f       ; return if there are no active npc's
+        beq     Done
         ldy     #$0290      ; start with npc $10
-        tdc
-@545d:  pha
+        clr_a
+Loop:   pha
         lda     $0868,y     ; skip if not special graphics
         and     #$e0
         cmp     #$80
-        bne     @546c
+        bne     :+
         phy
         jsr     InitSpecialNPCGfx
         ply
-@546c:  longa_clc
+:       longa_clc
         tya
         adc     #$0029      ; loop through all active npc's
         tay
@@ -436,17 +443,18 @@ InitSpecialNPCs:
         pla
         inc
         cmp     $078f
-        bne     @545d
-@547d:  rts
+        bne     Loop
+Done:   rts
+.endproc  ; InitSpecialNPCs
 
 ; ------------------------------------------------------------------------------
 
 ; [ init special graphics for npc ]
 
-; y = pointer to npc object data
+; Y: pointer to npc object data
 
-InitSpecialNPCGfx:
-@547e:  lda     $087c,y     ; passability flag
+.proc InitSpecialNPCGfx
+        lda     $087c,y     ; passability flag
         ora     #$10
         sta     $087c,y
         lda     $0879,y     ; graphic index
@@ -460,7 +468,7 @@ InitSpecialNPCGfx:
         sta     $2c
         lda     $0889,y     ; continuous animation flag
         asl
-        tdc
+        clr_a
         rol
         sta     $1b
         lda     $0868,y     ; copy to walking animation flag
@@ -481,30 +489,31 @@ InitSpecialNPCGfx:
         lsr3
         inc
         sta     $1b
-        lda     $087c,y     ; 32x32 graphics flag
+        lda     $087c,y                 ; 32x32 graphics flag
         and     #$20
-        bne     @5533
+        bne     Is32x32
 
 ; 16x16 graphics
+Is16x16:
         lda     #$41
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #$80
         sta     hVMAINC
-        lda     #$18
-        sta     $4301
-@54e3:  ldx     $3b
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
+@Loop1: ldx     $3b
         stx     $2d
-        ldy     #2      ; copy 2 tiles
-@54ea:  stz     hMDMAEN
+        ldy     #2                      ; copy 2 tiles
+@Loop2: stz     hMDMAEN
         ldx     $2d
         stx     hVMADDL
         ldx     $2a
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     $2c
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0040
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         longa_clc
         lda     $2d
@@ -518,35 +527,36 @@ InitSpecialNPCGfx:
         adc     $2c
         sta     $2c
         dey
-        bne     @54ea
+        bne     @Loop2
         longa_clc
         lda     $3b
         adc     #$0020
         sta     $3b
         shorta0
         dec     $1b
-        bne     @54e3
+        bne     @Loop1
         rts
 
 ; 32x32 graphics
-@5533:  lda     #$41
-        sta     $4300
+Is32x32:
+        lda     #$41
+        sta     hDMA0::CTRL
         lda     #$80
         sta     hVMAINC
-        lda     #$18
-        sta     $4301
-@5542:  ldx     $3b
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
+@Loop1: ldx     $3b
         stx     $2d
         ldy     #4                      ; copy 4 tiles
-@5549:  stz     hMDMAEN
+@Loop2: stz     hMDMAEN
         ldx     $2d
         stx     hVMADDL
         ldx     $2a
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     $2c
-        sta     $4304
-        ldx     #$0080      ; $80 bytes each
-        stx     $4305
+        sta     hDMA0::ADDR_B
+        ldx     #$0080                  ; $80 bytes each
+        stx     hDMA0::SIZE
         lda     #$01
         sta     hMDMAEN
         longa_clc
@@ -561,63 +571,72 @@ InitSpecialNPCGfx:
         adc     $2c
         sta     $2c
         dey
-        bne     @5549
+        bne     @Loop2
         longa_clc
         lda     $3b
         adc     #$0040
         sta     $3b
         shorta0
         dec     $1b
-        bne     @5542
+        bne     @Loop1
         rts
+.endproc  ; InitSpecialNPCGfx
 
 ; ------------------------------------------------------------------------------
 
 ; [ add object to animation queue ]
 
-; y = pointer to object data
+; called when an object is created (event command $3d)
+; Y: pointer to object data
 
-StartObjAnim:
-@5592:  ldx     $00
+.proc StartObjAnim
+        ldx     $00
         longa
-@5596:  lda     $10f7,x     ; object animation queue
+:       lda     $10f7,x                 ; object animation queue
         cmp     #$07b0
-        beq     @55a5       ; look for the next available slot
+        beq     FoundObj                ; look for the next available slot
         inx2
         cpx     #$002e
-        bne     @5596
-@55a5:  tya
-        sta     $10f7,x     ; add object to queue
+        bne     :-
+
+FoundObj:
+        tya
+        sta     $10f7,x                 ; add object to queue
         shorta0
         txa
-        sta     $088f,y     ; pointer to animation queue
+        sta     $088f,y                 ; pointer to animation queue
         rts
+.endproc  ; StartObjAnim
 
 ; ------------------------------------------------------------------------------
 
 ; [ remove object from animation queue ]
 
-; y = pointer to object data
+; called when an object is deleted (event command $3e)
+; Y: pointer to object data
 
-StopObjAnim:
-@55b1:  lda     $088f,y     ; pointer to animation queue
+.proc StopObjAnim
+        lda     $088f,y     ; pointer to animation queue
         tax
         longa
         lda     #$07b0
         sta     $10f7,x     ; no object
         shorta0
         rts
+.endproc  ; StopObjAnim
 
 ; ------------------------------------------------------------------------------
 
 ; [ init object animation ]
 
-InitObjAnim:
-@55c1:  ldy     $00
+; called when a map is loaded
+
+.proc InitObjAnim
+        ldy     $00
         tyx
-@55c4:  lda     $0867,y
+Loop:   lda     $0867,y
         and     #$40
-        beq     @55df
+        beq     :+
         longa
         tya
         sta     $10f7,x
@@ -625,51 +644,54 @@ InitObjAnim:
         txa
         sta     $088f,y
         inx2
-        cpx     #$0030
-        beq     @55ee
-@55df:  longa_clc
+        cpx     #$0030                  ; max of 24 animated objects
+        beq     Done
+:       longa_clc
         tya
         adc     #$0029
         tay
         shorta0
         cpy     #$07b0
-        bne     @55c4
-@55ee:  rts
+        bne     Loop
+Done:   rts
+.endproc  ; InitObjAnim
 
 ; ------------------------------------------------------------------------------
 
 ; [ clear object animation queue ]
 
-ResetObjAnim:
-@55ef:  longa
+.proc ResetObjAnim
+        longa
         stz     a:$0048       ; clear animation queue pointer
         stz     a:$0049
         ldx     $00
         lda     #$07b0
-@55fc:  sta     $10f7,x     ; clear animation queue
+:       sta     $10f7,x     ; clear animation queue
         inx2
         cpx     #$0030
-        bne     @55fc
+        bne     :-
         shorta0
         rts
+.endproc  ; ResetObjAnim
 
 ; ------------------------------------------------------------------------------
 
 ; [ init object graphics ]
 
-InitObjGfx:
-@560a:  jsr     ClearObjMap
+.proc InitObjGfx
+        jsr     ClearObjMap
         jsr     ClearSpriteGfx
         jsr     TfrVehicleGfx
         jsr     ResetObjAnim
         rts
+.endproc  ; InitObjGfx
 
 ; ------------------------------------------------------------------------------
 
 ; [ update object sprite priority ]
 
-UpdateSpritePriority:
-@5617:  lda     $0881,y     ; lower sprite always shown behind priority 1 bg
+.proc UpdateSpritePriority
+        lda     $0881,y     ; lower sprite always shown behind priority 1 bg
         and     #$cf
         ora     #$20
         sta     $0881,y
@@ -680,171 +702,201 @@ UpdateSpritePriority:
         and     #$07
         sta     $0888,y     ; set object z-level
         cmp     #$01
-        beq     @5649       ; branch if lower z-level
+        beq     LowerZ
         cmp     #$02
-        beq     @5654       ; branch if upper z-level
+        beq     UpperZ
         cmp     #$03
-        beq     @565f       ; branch if transition tile
-        lda     $0880,y     ; upper sprite shown in front of priority 1 bg
+        beq     Transition
+
+; bridge tile: upper sprite shown in front of priority 1 bg
+BridgeTile:
+        lda     $0880,y
         and     #$cf
         ora     #$30
         sta     $0880,y
         rts
-@5649:  lda     $0880,y     ; upper sprite shown behind priority 1 bg
+
+; lower z-level: upper sprite shown behind priority 1 bg
+LowerZ:
+        lda     $0880,y
         and     #$cf
         ora     #$20
         sta     $0880,y
         rts
-@5654:  lda     $0880,y     ; upper sprite shown behind priority 1 bg
+
+; upper z-level: upper sprite shown behind priority 1 bg
+UpperZ:
+        lda     $0880,y
         and     #$cf
         ora     #$20
         sta     $0880,y
         rts
-@565f:  lda     $0880,y     ; upper sprite shown behind priority 1 bg
+
+; transition tile: upper sprite shown behind priority 1 bg
+Transition:
+        lda     $0880,y
         and     #$cf
         ora     #$20
         sta     $0880,y
         rts
+.endproc  ; UpdateSpritePriority
 
 ; ------------------------------------------------------------------------------
 
 ; [ clear object map data ]
 
-ClearObjMap:
-@566a:  ldx     #$2000      ; clear $7e2000-$7e6000
+.proc ClearObjMap
+        ldx     #$2000                  ; clear $7e2000-$7e6000
         stx     hWMADDL
         stz     hWMADDH
         ldx     #$4000
         lda     #$ff
-@5678:  sta     hWMDATA
+:       sta     hWMDATA
         dex
-        bne     @5678
+        bne     :-
         rts
+.endproc  ; ClearObjMap
 
 ; ------------------------------------------------------------------------------
 
 ; [ copy vehicle graphics to vram ]
 
-TfrVehicleGfx:
-@567f:  stz     hMDMAEN
+.proc TfrVehicleGfx
+        stz     hMDMAEN
         lda     #$80
         sta     hVMAINC
         ldx     #$7200                  ; vram destination = $7200
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
-        ldx     #.loword(VehicleGfx) ; source address
-        stx     $4302
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
+        ldx     #near VehicleGfx        ; source address
+        stx     hDMA0::ADDR
         lda     #^VehicleGfx
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$1c00                  ; size = $1c00
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
+.endproc  ; TfrVehicleGfx
 
 ; ------------------------------------------------------------------------------
 
 ; [ clear sprite graphics in vram ]
 
-ClearSpriteGfx:
-@56b1:  stz     a:$0081
+.proc ClearSpriteGfx
+        stz     a:$0081
         lda     #$80
         sta     hVMAINC
-        ldx     #$6000      ; vram destination = $6000 (sprite graphics)
+        ldx     #$6000                  ; vram destination = $6000 (sprite graphics)
         stx     hVMADDL
-        lda     #$09        ; fixed dma source address
-        sta     $4300
-        lda     #$18
-        sta     $4301
-        ldx     #$0081      ; source address = $81 (dp)
-        stx     $4302
+        lda     #$09                    ; fixed dma source address
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
+        ldx     #$0081                  ; source address = $81 (dp)
+        stx     hDMA0::ADDR
         lda     #$00
-        sta     $4304
-        sta     $4307
-        ldx     #$2000      ; size = $2000
-        stx     $4305
-        lda     #$01
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
+        ldx     #$2000                  ; size = $2000
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
+.endproc  ; ClearSpriteGfx
 
 ; ------------------------------------------------------------------------------
 
 ; [ init sprite high data ]
 
-InitSpriteMSB:
-@56e3:  lda     #$7e
+.proc InitSpriteMSB
+        lda     #$7e
         pha
         plb
         ldy     $00
-        tdc
-@56ea:  ldx     #$0010
-@56ed:  sta     $7800,y     ; sprite high data pointers
+        clr_a
+Loop1:  ldx     #$0010
+Loop2:  sta     $7800,y     ; sprite high data pointers
         iny
         dex
-        bne     @56ed
+        bne     Loop2
         inc
         cpy     #$0100
-        bne     @56ea
+        bne     Loop1
         ldy     $00
-@56fc:  ldx     $00
-@56fe:  lda     f:SpriteMSBAndTbl,x   ; sprite high data inverse bit masks
+Loop3:  ldx     $00
+Loop4:  lda     f:SpriteMSBAndTbl,x   ; sprite high data inverse bit masks
         sta     $7900,y
         lda     f:SpriteMSBOrTbl,x   ; sprite high data bit masks
         sta     $7a00,y
         iny
         inx
         cpx     #$0010
-        bne     @56fe
+        bne     Loop4
         cpy     #$0100
-        bne     @56fc
-        tdc
+        bne     Loop3
+        clr_a
         pha
         plb
         rts
+.endproc  ; InitSpriteMSB
 
 ; ------------------------------------------------------------------------------
 
 ; sprite high data inverse bit masks
 SpriteMSBAndTbl:
-@571c:  .byte   $fe,$fe,$fe,$fe,$fb,$fb,$fb,$fb,$ef,$ef,$ef,$ef,$bf,$bf,$bf,$bf
+        .byte   $fe,$fe,$fe,$fe
+        .byte   $fb,$fb,$fb,$fb
+        .byte   $ef,$ef,$ef,$ef
+        .byte   $bf,$bf,$bf,$bf
 
 ; sprite high data bit masks
 SpriteMSBOrTbl:
-@572c:  .byte   $01,$01,$01,$01,$04,$04,$04,$04,$10,$10,$10,$10,$40,$40,$40,$40
+        .byte   $01,$01,$01,$01
+        .byte   $04,$04,$04,$04
+        .byte   $10,$10,$10,$10
+        .byte   $40,$40,$40,$40
 
 ; ------------------------------------------------------------------------------
 
 ; [ update object positions ]
 
-MoveObjs:
-@573c:  stz     $dc         ; start with object 0
-        lda     #$18        ; update 24 objects
+.proc MoveObjs
+        stz     $dc                     ; start with object 0
+        lda     #$18                    ; update 24 objects
         sta     $de
-@5742:  lda     $dc         ; return if past the last active object
+Loop:   lda     $dc                     ; return if past the last active object
         cmp     $dd
-        jcs     @5801
+        jcs     Skip
         tax
         longa
-        lda     $0803,x     ; get pointer to object data
+        lda     $0803,x                 ; get pointer to object data
         sta     $da
         tay
-        lda     $0871,y     ; get horizontal movement speed
-        bmi     @5770
-        lda     $0869,y     ; moving right, add to horizontal position
+
+; update horizontal movement
+        lda     $0871,y                 ; get horizontal movement speed
+        bmi     MoveLeft
+
+; moving right, add to horizontal position
+        lda     $0869,y
         clc
         adc     $0871,y
         sta     $0869,y
         shorta
-        tdc
+        clr_a
         adc     $086b,y
         sta     $086b,y
         longa
-        bra     @578c
-@5770:  lda     $0871,y     ; moving left, subtract from horizontal position
+        bra     :+
+
+; moving left, subtract from horizontal position
+MoveLeft:
+        lda     $0871,y
         eor     $02
         sta     $1a
         lda     $0869,y
@@ -856,18 +908,25 @@ MoveObjs:
         sbc     $00
         sta     $086b,y
         longa
-@578c:  lda     $0873,y     ; get vertical movement speed
-        bmi     @57a6
-        lda     $086c,y     ; moving down, add to vertical position
+
+; vertical movement
+:       lda     $0873,y                 ; get vertical movement speed
+        bmi     MoveUp
+
+; moving down, add to vertical position
+        lda     $086c,y
         clc
         adc     $0873,y
         sta     $086c,y
         shorta
-        tdc
+        clr_a
         adc     $086e,y
         sta     $086e,y
-        bra     @57c0
-@57a6:  lda     $0873,y     ; moving up, subtract from vertical position
+        bra     :+
+
+; moving up, subtract from vertical position
+MoveUp:
+        lda     $0873,y
         eor     $02
         sta     $1a
         lda     $086c,y
@@ -878,176 +937,202 @@ MoveObjs:
         lda     $086e,y
         sbc     $00
         sta     $086e,y
-@57c0:  tdc                 ; get jump position
+
+; update jump offset
+:       clr_a                           ; get jump position
         shorta
         lda     $0887,y
         and     #$3f
-        beq     @57d6       ; skip if not jumping
-        lda     $0887,y     ; decrement jump counter
+        beq     :+                      ; skip if not jumping
+        lda     $0887,y                 ; decrement jump counter
         tax
         dec
         sta     $0887,y
-        lda     f:ObjJumpLowTbl,x   ; set y-offset
-@57d6:  sta     $086f,y
+        lda     f:ObjJumpLowTbl,x       ; set y-offset
+
+:       sta     $086f,y
         jsr     UpdateObjFrame
-        lda     $0869,y     ; branch if object is between tiles
-        bne     @5801
+        lda     $0869,y                 ; branch if object is between tiles
+        bne     Skip
         lda     $086a,y
         and     #$0f
-        bne     @5801
+        bne     Skip
         lda     $086c,y
-        bne     @5801
+        bne     Skip
         lda     $086d,y
         and     #$0f
-        bne     @5801
-        tdc
-        sta     $0871,y     ; clear movement speed if object reached the next tile
+        bne     Skip
+
+; clear movement speed if object reached the next tile
+        clr_a
+        sta     $0871,y
         sta     $0872,y
         sta     $0873,y
         sta     $0874,y
-@5801:  inc     $dc         ; next object
+
+; next object
+Skip:   inc     $dc
         inc     $dc
         dec     $de
-        jne     @5742
+        jne     Loop
         rts
+.endproc  ; MoveObjs
 
 ; ------------------------------------------------------------------------------
 
 ; graphics positions for vehicle movement (chocobo/magitek only)
 ObjVehicleTileTbl:
-@580d:  .byte   $04,$05,$04,$03,$6e,$6f,$6e,$6f,$01,$02,$01,$00,$2e,$2f,$2e,$2f
+        .byte   $04,$05,$04,$03
+        .byte   $6e,$6f,$6e,$6f
+        .byte   $01,$02,$01,$00
+        .byte   $2e,$2f,$2e,$2f
 
 ; graphics positions for character movement
 ObjMoveTileTbl:
-@581d:  .byte   $04,$05,$04,$03,$47,$48,$47,$46,$01,$02,$01,$00,$07,$08,$07,$06
+        .byte   $04,$05,$04,$03
+        .byte   $47,$48,$47,$46
+        .byte   $01,$02,$01,$00
+        .byte   $07,$08,$07,$06
 
 ; graphics positions for standing still
 ObjStopTileTbl:
-@582d:  .byte   $04,$47,$01,$07
+        .byte   $04,$47,$01,$07
 
 ; graphics positions for special animation (animation offset)
 ObjSpecialTileTbl:
-@5831:  .byte   $00,$00,$32,$28,$00,$00,$00,$00
+        .byte   $00,$00,$32,$28,$00,$00,$00,$00
 
 ; ------------------------------------------------------------------------------
 
 ; [ update object graphics position ]
 
-UpdateObjFrame:
-@5839:  lda     $088c,y     ; check for special object animation
+.proc UpdateObjFrame
+        lda     $088c,y                 ; check for special object animation
         and     #$20
-        jne     @58e4
-        cpy     $0803       ; no special animation, check if this is the party object
-        bne     @5855
-        lda     $b9         ; tile properties
+        jne     SpecialAnim
+        cpy     $0803                   ; no special animation, check if this is the party object
+        bne     :+
+        lda     $b9                     ; tile properties
         cmp     #$ff
-        beq     @5855
-        and     #$40        ; force facing direction to be up if on a ladder tile
-        beq     @5855
-        tdc
-        bra     @5858
-@5855:  lda     $087f,y     ; facing direction
-@5858:  asl2
+        beq     :+
+        and     #$40                    ; force facing direction to be up if on a ladder tile
+        beq     :+
+        clr_a
+        bra     :++
+:       lda     $087f,y                 ; facing direction
+:       asl2
         sta     $1a
-        lda     $0868,y     ; vehicle
+        lda     $0868,y                 ; vehicle
         and     #$60
-        jne     @58ad
+        jne     OnVehicle
 
 ; no vehicle
         lda     $0868,y
-        and     #$01        ; return if walking animation is disabled
+        and     #$01                    ; return if walking animation is disabled
         beq     @58aa
-        lda     $b8         ; tile properties, diagonal movement
+        lda     $b8                     ; tile properties, diagonal movement
         and     #$c0
         beq     @587d
         ldx     $0871,y
         beq     @588a
         ldx     $0873,y
         bne     @5897
-@587d:  ldx     $0871,y     ; use horizontal direction to get frame
+@587d:  ldx     $0871,y                 ; use horizontal direction to get frame
         beq     @588a
         lda     $086a,y
         lsr3
         bra     @589d
-@588a:  ldx     $0873,y     ; use vertical direction
+@588a:  ldx     $0873,y                 ; use vertical direction
         beq     @58aa
         lda     $086d,y
         lsr3
         bra     @589d
-@5897:  lda     $46         ; diagonal, use vblank counter, but only divide by 4 (faster steps)
+@5897:  lda     $46                     ; diagonal, use vblank counter, but only divide by 4 (faster steps)
         lsr2
         bra     @589d
-@589d:  and     #$03        ; combine frame and facing direction
+@589d:  and     #$03                    ; combine frame and facing direction
         clc
         adc     $1a
         tax
-        lda     f:ObjMoveTileTbl,x   ; get graphics position
+        lda     f:ObjMoveTileTbl,x      ; get graphics position
         sta     $0877,y
-@58aa:  jmp     @5937
+@58aa:  jmp     Done
+
+OnVehicle:
+        cmp     #$60
+        beq     Raft
 
 ; chocobo or magitek
-@58ad:  cmp     #$60
-        beq     @58d8
         ldx     $0871,y
         beq     @58be
-        lda     $086a,y     ; horizontal movement
+        lda     $086a,y                 ; horizontal movement
         lsr3
         bra     @58c9
 @58be:  ldx     $0873,y
         beq     @58c9
-        lda     $086d,y     ; vertical movement
+        lda     $086d,y                 ; vertical movement
         lsr3
-@58c9:  and     #$03        ; combine frame and facing direction
+@58c9:  and     #$03                    ; combine frame and facing direction
         clc
         adc     $1a
         tax
         lda     f:ObjVehicleTileTbl,x   ; get graphics position
         sta     $0877,y
-        bra     @5937
+        bra     Done
 
-; raft
-@58d8:  lda     $1a
+Raft:
+        lda     $1a
         tax
         lda     f:ObjMoveTileTbl,x
         sta     $0877,y
-        bra     @5937
+        bra     Done
 
 ; special animation
-@58e4:  lda     $0868,y     ; special animation speed (this will always be zero for special npc graphics)
+SpecialAnim:
+        lda     $0868,y                 ; special animation speed (this will always be zero for special npc graphics)
         and     #$60
         lsr5
         tax
-        lda     $45         ; frame counter
-        lsr                 ; 0: update every 4 frames
-        lsr                 ; 1: update every 8 frames
-@58f3:  cpx     #$0000      ; 2: update every 16 frames
-        beq     @58fc       ; 3: update every 32 frames
+        lda     $45                     ; frame counter
+        lsr                             ; 0: update every 4 frames
+        lsr                             ; 1: update every 8 frames
+@58f3:  cpx     #$0000                  ; 2: update every 16 frames
+        beq     @58fc                   ; 3: update every 32 frames
         lsr
         dex
         bra     @58f3
 @58fc:  tax
-        lda     $088c,y     ; number of animated frames
+        lda     $088c,y                 ; number of animated frames
+
+; 0: one frame
         and     #$18
         bne     @5908
-        stz     $1b         ; 0: one frame
+        stz     $1b
         bra     @5927
+
+; 1: one frame, flips back and forth horizontally
 @5908:  cmp     #$08
         bne     @5917
         txa
         and     #$01
         beq     @5913
         lda     #$40
-@5913:  sta     $1b         ; 1: one frame, flips back and forth horizontally
+@5913:  sta     $1b
         bra     @5927
+
+; 2: two frames
 @5917:  cmp     #$10
         bne     @5922
         txa
         and     #$01
-        sta     $1b         ; 2: two frames
+        sta     $1b
         bra     @5927
+
+; 3: 4 frames
 @5922:  txa
         and     #$03
-        sta     $1b         ; 3: 4 frames
+        sta     $1b
+
 @5927:  lda     $088c,y     ; graphic position offset
         and     #$07
         tax
@@ -1055,13 +1140,14 @@ UpdateObjFrame:
         clc
         adc     $1b
         sta     $0877,y     ; set next graphic position
-@5937:  rts
+Done:   rts
+.endproc  ; UpdateObjFrame
 
 ; ------------------------------------------------------------------------------
 
 ; [ update party sprite data ]
 
-FixPlayerSpritePriority:
+.proc FixPlayerSpritePriority
 @5938:  ldy     $0803       ; party object
         lda     $0868,y     ; vehicle
         and     #$60
@@ -1109,19 +1195,20 @@ FixPlayerSpritePriority:
         sta     $03f9       ; hide normal priority party sprites
         sta     $03fd
         rts
+.endproc  ; FixPlayerSpritePriority
 
 ; ------------------------------------------------------------------------------
 
 ; y-offsets for objects jumping (low)
 ObjJumpLowTbl:
-@59ad:  .byte   $02,$04,$06,$08,$09,$0a,$0b,$0b,$0b,$0b,$0a,$09,$08,$06,$04,$02
+        .byte   $02,$04,$06,$08,$09,$0a,$0b,$0b,$0b,$0b,$0a,$09,$08,$06,$04,$02
         .byte   $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
         .byte   $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
         .byte   $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 
 ; y-offsets for objects jumping (high)
 ObjJumpHighTbl:
-@59ed:  .byte   $05,$09,$0e,$11,$15,$18,$1b,$1e,$20,$22,$24,$26,$27,$28,$29,$29
+        .byte   $05,$09,$0e,$11,$15,$18,$1b,$1e,$20,$22,$24,$26,$27,$28,$29,$29
         .byte   $29,$29,$28,$27,$26,$24,$22,$20,$1e,$1b,$18,$15,$11,$0e,$09,$05
         .byte   $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
         .byte   $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
@@ -1130,11 +1217,8 @@ ObjJumpHighTbl:
 
 ; [ update object sprite data ]
 
-DrawObjSprites:
-
-@hDP := hWMDATA & $ff00
-
-@5a2d:  ldx     #@hDP                   ; nonzero dp, don't use clr_a
+.proc DrawObjSprites
+        ldx     #(hWMDATA & $ff00)      ; nonzero dp, don't use clr_a
         phx
         pld
         ldx     #$0300                  ; clear $0300-$0520
@@ -1142,12 +1226,11 @@ DrawObjSprites:
         stz     <hWMADDH
         ldy     #$0020
         lda     #$ef
-@5a3e:
-        .repeat 16
+:       .repeat 16
         sta     <hWMDATA
         .endrep
         dey
-        bne     @5a3e
+        bne     :-
         ldx     #$0500
         stx     <hWMADDL
         stz     <hWMADDH
@@ -1163,21 +1246,21 @@ DrawObjSprites:
         lda     #6                      ; update graphics for 6 sprites per frame
         sta     $de
         lda     $47                     ; get first sprite to update this frame
-        and     #$03
+        and     #%11
         tax
         lda     f:FirstObjTbl1,x
         sta     $dc
-@5ac0:  lda     $dc
+Loop1:  lda     $dc
         tax
         ldy     $10f7,x                 ; pointer to object data
         cpy     #$07b0
-        beq     @5ad1                   ; branch if empty
+        beq     :+                      ; branch if empty
         lda     $0877,y
         sta     $0876,y                 ; set current graphic position
-@5ad1:  inc     $dc                     ; next object
+:       inc     $dc                     ; next object
         inc     $dc
         dec     $de
-        bne     @5ac0
+        bne     Loop1
         ldy     #$00a0                  ; normal priority sprite data pointer
         sty     $d4
         ldy     #$0020                  ; low and high priority sprite data pointer
@@ -1188,7 +1271,7 @@ DrawObjSprites:
         stz     $dc                     ; current object
 
 ; start of object loop
-_5aeb:  lda     $dc
+Loop2:  lda     $dc
         cmp     $dd                     ; branch if less than total number of active objects
         jcs     DrawNextObj
         tax
@@ -1215,31 +1298,31 @@ _5aeb:  lda     $dc
         jeq     DrawMagitek
         jmp     DrawRaft
 
-; next object
-DrawNextObj:
-@5b34:  shorta0
+::DrawNextObj:
+        shorta0
         inc     $dc
         inc     $dc
         dec     $de
-        jne     _5aeb
-@5b42:  jsr     FixPlayerSpritePriority
-        tdc
+        jne     Loop2
+        jsr     FixPlayerSpritePriority
+        clr_a
         pha
         plb
         rts
+.endproc  ; DrawObjSprites
 
 ; ------------------------------------------------------------------------------
 
 ; unused
-@5b49:  .byte   $fe,$fb,$ef,$bf
+        .byte   $fe,$fb,$ef,$bf
         .byte   $01,$04,$10,$40
 
 ; unused
-@5b51:  .word   $0000,$00f6,$01ec,$02e2,$03d8
+        .word   $0000,$00f6,$01ec,$02e2,$03d8
 
 ; object sprite graphics locations in vram
 ObjSpriteVRAMTbl:
-@5b5b:  .word   $0000,$0004,$0008,$000c
+        .word   $0000,$0004,$0008,$000c
         .word   $0020,$0024,$0028,$002c
         .word   $0040,$0044,$0048,$004c
         .word   $0060,$0064,$0068,$006c
@@ -1250,11 +1333,12 @@ ObjSpriteVRAMTbl:
 
 ; [ update object sprite data (no vehicle) ]
 
-DrawObjNoVehicle:
-@5b8b:  lda     $087c,y                 ; branch if object scrolls with bg2
-        bmi     @5bc0
+.proc DrawObjNoVehicle
+        lda     $087c,y                 ; branch if object scrolls with bg2
+        bmi     ScrollWithBG2
 
 ; object scrolls with bg1
+ScrollWithBG1:
         longa_clc
         lda     $086d,y                 ; y position
         sbc     $60                     ; bg1 vertical scroll position
@@ -1273,15 +1357,16 @@ DrawObjNoVehicle:
         sec
         sbc     $5c                     ; bg1 horizontal scroll position
         clc
-        adc     #$0008                  ; add 8
+        adc     #8                      ; add 8
         sta     $1e                     ; +$1e = x position on screen
         clc
-        adc     #$0008                  ; add 8
+        adc     #8                      ; add 8
         shorta
-        bra     @5bee
+        bra     :+
 
 ; object scrolls with bg2
-@5bc0:  longa_clc
+ScrollWithBG2:
+        longa_clc
         lda     $086d,y
         sbc     $68
         sec
@@ -1304,64 +1389,66 @@ DrawObjNoVehicle:
         clc
         adc     #$0008
         shorta
-@5bee:  xba                 ; return if sprite is off-screen to the right
+
+:       xba                             ; return if sprite is off-screen to the right
         jne     DrawNextObj
         lda     $27
-        jne     DrawNextObj   ; return if sprite is off-screen to the bottom
-        tdc
-        lda     $0876,y     ; graphics position
+        jne     DrawNextObj             ; return if sprite is off-screen to the bottom
+        clr_a
+        lda     $0876,y                 ; graphics position
         tax
-        lda     f:TopSpriteHFlip,x   ; horizontal flip flag (upper sprite)
+        lda     f:TopSpriteHFlip,x      ; horizontal flip flag (upper sprite)
         ora     $0880,y
         sta     $1b
-        lda     f:BtmSpriteHFlip,x   ; horizontal flip flag (lower sprite)
+        lda     f:BtmSpriteHFlip,x      ; horizontal flip flag (lower sprite)
         ora     $0881,y
         sta     $1d
-        lda     $088f,y     ; pointer to animation queue
+        lda     $088f,y                 ; pointer to animation queue
         tax
         lda     f:ObjSpriteVRAMTbl,x   ; object sprite graphics location in vram
-        sta     $1a         ; $1a = upper tile
+        sta     $1a                     ; $1a = upper tile
         inc2
-        sta     $1c         ; $1c = lower tile
-        lda     $088c,y     ; sprite order priority
+        sta     $1c                     ; $1c = lower tile
+        lda     $088c,y                 ; sprite order priority
         and     #$c0
-        beq     @5c31       ; branch if normal priority
+        beq     NormalPriority
         cmp     #$40
-        jeq     @5c93       ; jump if high priority
-        jmp     @5cf5       ; jump if low priority
+        jeq     HighPriority
+        jmp     LowPriority
 
 ; normal priority
-@5c31:  longa
-        lda     $d4         ; decrement normal priority sprite data pointer
+NormalPriority:
+        longa
+        lda     $d4                     ; decrement normal priority sprite data pointer
         sec
         sbc     #4
         sta     $d4
         tay
         lda     $1a
-        sta     $0342,y     ; set sprite data
+        sta     $0342,y                 ; set sprite data
         lda     $1c
         sta     $0402,y
         shorta0
         lda     $1e
-        sta     $0340,y     ; set x position
+        sta     $0340,y                 ; set x position
         sta     $0400,y
         lda     $22
-        sta     $0341,y     ; set y position
+        sta     $0341,y                 ; set y position
         lda     $24
         sta     $0401,y
-        lda     $7800,y     ; get pointer to high sprite data
+        lda     $7800,y                 ; get pointer to high sprite data
         tax
-        lda     $1f         ; branch if x position is > 255
+        lda     $1f                     ; branch if x position is > 255
         lsr
-        bcs     @5c78
-        lda     $0504,x     ; clear high bit of x position
+        bcs     :+
+        lda     $0504,x                 ; clear high bit of x position
         and     $7900,y
         sta     $0504,x
         lda     $0510,x
         and     $7900,y
         sta     $0510,x
-        bra     @5c90
-@5c78:  lda     $0504,x     ; set high bit of x position
+        bra     :++
+:       lda     $0504,x                 ; set high bit of x position
         and     $7900,y
         ora     $7a00,y
         sta     $0504,x
@@ -1369,10 +1456,11 @@ DrawObjNoVehicle:
         and     $7900,y
         ora     $7a00,y
         sta     $0510,x
-@5c90:  jmp     DrawNextObj
+:       jmp     DrawNextObj
 
 ; high priority
-@5c93:  longa
+HighPriority:
+        longa
         lda     $d6
         sec
         sbc     #4
@@ -1394,15 +1482,15 @@ DrawObjNoVehicle:
         tax
         lda     $1f
         lsr
-        bcs     @5cda
+        bcs     :+
         lda     $0500,x
         and     $7900,y
         sta     $0500,x
         lda     $0502,x
         and     $7900,y
         sta     $0502,x
-        bra     @5cf2
-@5cda:  lda     $0500,x
+        bra     :++
+:       lda     $0500,x
         and     $7900,y
         ora     $7a00,y
         sta     $0500,x
@@ -1410,10 +1498,11 @@ DrawObjNoVehicle:
         and     $7900,y
         ora     $7a00,y
         sta     $0502,x
-@5cf2:  jmp     DrawNextObj
+:       jmp     DrawNextObj
 
 ; low priority
-@5cf5:  longa
+LowPriority:
+        longa
         lda     $d8
         sec
         sbc     #4
@@ -1435,15 +1524,15 @@ DrawObjNoVehicle:
         tax
         lda     $1f
         lsr
-        bcs     @5d3c
+        bcs     :+
         lda     $051c,x
         and     $7900,y
         sta     $051c,x
         lda     $051e,x
         and     $7900,y
         sta     $051e,x
-        bra     @5d54
-@5d3c:  lda     $051c,x
+        bra     :++
+:       lda     $051c,x
         and     $7900,y
         ora     $7a00,y
         sta     $051c,x
@@ -1451,7 +1540,8 @@ DrawObjNoVehicle:
         and     $7900,y
         ora     $7a00,y
         sta     $051e,x
-@5d54:  jmp     DrawNextObj
+:       jmp     DrawNextObj
+.endproc  ; DrawObjNoVehicle
 
 ; ------------------------------------------------------------------------------
 
@@ -1459,24 +1549,24 @@ DrawObjNoVehicle:
 
 ; uses 3 top and 3 bottom sprites
 
-DrawMagitek:
-@5d57:  lda     $088f,y     ; pointer to animation queue
+.proc DrawMagitek
+        lda     $088f,y                 ; pointer to animation queue
         tax
-        lda     f:ObjSpriteVRAMTbl,x   ; sprite vram location (rider)
+        lda     f:ObjSpriteVRAMTbl,x    ; sprite vram location (rider)
         sta     $1a
         longa
-        lda     $086a,y     ; x-position
+        lda     $086a,y                 ; x-position
         sec
-        sbc     $5c         ; bg1 h-scroll
-        sta     $1e         ; $1e = left half x-position
+        sbc     $5c                     ; bg1 h-scroll
+        sta     $1e                     ; $1e = left half x-position
         clc
         adc     #$0010
-        sta     $20         ; $20 = right half x-position
-        lda     $086d,y     ; y-position
+        sta     $20                     ; $20 = right half x-position
+        lda     $086d,y                 ; y-position
         clc
-        sbc     $60         ; bg1 v-scroll
+        sbc     $60                     ; bg1 v-scroll
         sec
-        sbc     $7f         ; vertical offset for shake screen
+        sbc     $7f                     ; vertical offset for shake screen
         sec
         sbc     #8
         sta     $26
@@ -1488,40 +1578,40 @@ DrawMagitek:
         adc     #30
         shorta
         xba
-        jne     DrawNextObj ; branch if sprite is on screen
-        tdc
+        jne     DrawNextObj             ; branch if sprite is on screen
+        clr_a
         ldy     $1e
         cpy     #$0120
-        bcc     @5da6
+        bcc     :+
         cpy     #$ffe0
         jcc     DrawNextObj
-@5da6:  longa
-        lda     $d4         ; pointer to normal priority sprite
+:       longa
+        lda     $d4                     ; pointer to normal priority sprite
         sec
-        sbc     #12      ; use 3 sprites (3 top and 3 bottom)
+        sbc     #12                     ; use 3 sprites (3 top and 3 bottom)
         sta     $d4
         shorta0
         ldy     $d4
         longa
-        lda     $1e         ; left half + 8 to get rider x-position
+        lda     $1e                     ; left half + 8 to get rider x-position
         clc
         adc     #8
         sta     $2a
         shorta0
         lda     $2a
-        sta     $0340,y     ; x-position
+        sta     $0340,y                 ; x-position
         jsr     SetTopSpriteMSB
         iny4
         longa
-        lda     $1e         ; left half of vehicle (top)
+        lda     $1e                     ; left half of vehicle (top)
         sta     $2a
         shorta0
         lda     $2a
-        sta     $0340,y     ; y-position
+        sta     $0340,y                 ; y-position
         jsr     SetTopSpriteMSB
         iny4
         longa
-        lda     $20         ; right half of vehicle (top)
+        lda     $20                     ; right half of vehicle (top)
         sta     $2a
         shorta0
         lda     $2a
@@ -1530,7 +1620,7 @@ DrawMagitek:
         ldy     $d4
         longa
         lda     $1e
-        sta     $2a         ; left half of vehicle (bottom)
+        sta     $2a                     ; left half of vehicle (bottom)
         shorta0
         lda     $2a
         sta     $0400,y
@@ -1538,7 +1628,7 @@ DrawMagitek:
         iny4
         longa
         lda     $20
-        sta     $2a         ; right half of vehicle (bottom)
+        sta     $2a                     ; right half of vehicle (bottom)
         shorta0
         lda     $2a
         sta     $0400,y
@@ -1550,18 +1640,18 @@ DrawMagitek:
         lda     $26
         sta     $0401,y
         sta     $0405,y
-        ldy     $da         ; pointer to current object data
-        lda     $087f,y     ; facing direction
+        ldy     $da                     ; pointer to current object data
+        lda     $087f,y                 ; facing direction
         cmp     #$01
-        beq     @5e40       ; branch if facing right
+        beq     :+                      ; branch if facing right
         lda     $0881,y
         and     #$0e
         ora     #$20
-        bra     @5e47
-@5e40:  lda     $0881,y
+        bra     :++
+:       lda     $0881,y
         and     #$0e
-        ora     #$60        ; flip horizontally
-@5e47:  ldy     $d4
+        ora     #$60                    ; flip horizontally
+:       ldy     $d4
         sta     $0343,y
         lda     $1a
         sta     $0342,y
@@ -1569,12 +1659,12 @@ DrawMagitek:
         lda     $087f,y
         asl3
         sta     $1a
-        ldx     $0871,y     ; horizontal movement speed
-        beq     @5e65       ; branch if not moving horizontally
-        lda     $086a,y     ; x-position
-        bra     @5e68
-@5e65:  lda     $086d,y     ; y-position
-@5e68:  lsr2
+        ldx     $0871,y                 ; horizontal movement speed
+        beq     :+                      ; branch if not moving horizontally
+        lda     $086a,y                 ; x-position
+        bra     :++
+:       lda     $086d,y                 ; y-position
+:       lsr2
         sta     $1b
         and     #$06
         clc
@@ -1601,38 +1691,39 @@ DrawMagitek:
         sta     $0409,y
         ldy     $da
         lda     $0868,y
-        bmi     @5eb3       ; branch if rider is shown
+        bmi     :+                      ; branch if rider is shown
         ldy     $d4
         lda     #$ef
-        sta     $0341,y     ; hide rider sprite
-@5eb3:  jmp     DrawNextObj
+        sta     $0341,y                 ; hide rider sprite
+:       jmp     DrawNextObj
+.endproc  ; DrawMagitek
 
 ; ------------------------------------------------------------------------------
 
 ; magitek tile formation (top left)
 MagitekTopLeftTiles:
-@5eb6:  .word   $2fac,$2fc0,$2fac,$2fc4
+        .word   $2fac,$2fc0,$2fac,$2fc4
         .word   $6fca,$6fe2,$6fca,$6fea
         .word   $2fa0,$2fa4,$2fa0,$2fa8
         .word   $2fc8,$2fe0,$2fc8,$2fe8
 
 ; magitek tile formation (top right)
 MagitekTopRightTiles:
-@5ed6:  .word   $6fac,$6fc4,$6fac,$6fc0
+        .word   $6fac,$6fc4,$6fac,$6fc0
         .word   $6fc8,$6fe0,$6fc8,$6fe8
         .word   $6fa0,$6fa8,$6fa0,$6fa4
         .word   $2fca,$2fe2,$2fca,$2fea
 
 ; magitek tile formation (bottom left)
 MagitekBtmLeftTiles:
-@5ef6:  .word   $2fae,$2fc2,$2fae,$2fc6
+        .word   $2fae,$2fc2,$2fae,$2fc6
         .word   $6fce,$6fe6,$6fce,$6fee
         .word   $2fa2,$2fa6,$2fa2,$2faa
         .word   $2fcc,$2fe4,$2fcc,$2fec
 
 ; magitek tile formation (bottom right)
 MagitekBtmRightTiles:
-@5f16:  .word   $6fae,$6fc6,$6fae,$6fc2
+        .word   $6fae,$6fc6,$6fae,$6fc2
         .word   $6fcc,$6fe4,$6fcc,$6fec
         .word   $6fa2,$6faa,$6fa2,$6fa6
         .word   $2fce,$2fe6,$2fce,$2fee
@@ -1643,8 +1734,8 @@ MagitekBtmRightTiles:
 
 ; uses 3 top and 3 bottom sprites
 
-DrawRaft:
-@5f36:  lda     $088f,y
+.proc DrawRaft
+        lda     $088f,y
         tax
         lda     f:ObjSpriteVRAMTbl,x
         sta     $1a
@@ -1673,13 +1764,13 @@ DrawRaft:
         shorta
         xba
         jne     DrawNextObj
-        tdc
+        clr_a
         ldy     $1e
         cpy     #$0120
-        bcc     @5f85
+        bcc     :+
         cpy     #$ffe0
         jcc     DrawNextObj
-@5f85:  longa
+:       longa
         lda     $d4
         sec
         sbc     #12
@@ -1747,15 +1838,15 @@ DrawRaft:
         ldy     $da
         lda     $087f,y
         cmp     #$01
-        beq     @6038
+        beq     :+
         lda     $0881,y
         and     #$0e
         ora     #$20
-        bra     @603f
-@6038:  lda     $0881,y
+        bra     :++
+:       lda     $0881,y
         and     #$0e
         ora     #$60
-@603f:  ldy     $d4
+:       ldy     $d4
         sta     $0343,y
         sta     $0347,y
         lda     $1a
@@ -1784,17 +1875,18 @@ DrawRaft:
         shorta0
         ldy     $da
         lda     $0868,y
-        bmi     @6097
+        bmi     :+
         ldy     $d4
         lda     #$ef
         sta     $0341,y
         sta     $0345,y
-@6097:  jmp     DrawNextObj
+:       jmp     DrawNextObj
+.endproc  ; DrawRaft
 
 ; ------------------------------------------------------------------------------
 
 RaftTiles:
-@609a:  .word   $2f20,$2f28,$2f20,$2f28
+        .word   $2f20,$2f28,$2f20,$2f28
         .word   $2f24,$2f2c,$2f24,$2f2c
         .word   $2f22,$2f2a,$2f22,$2f2a
         .word   $2f26,$2f2e,$2f26,$2f2e
@@ -1805,19 +1897,19 @@ RaftTiles:
 
 ; uses 3 top and 3 bottom sprites
 
-DrawChoco:
-@60ba:  lda     $088f,y
+.proc DrawChoco
+        lda     $088f,y
         tax
         lda     f:ObjSpriteVRAMTbl,x
         sta     $1a
         inc2
         sta     $1c
         ldx     $0871,y
-        beq     @60d2
+        beq     :+
         lda     $086a,y
-        bra     @60d5
-@60d2:  lda     $086d,y
-@60d5:  lsr2
+        bra     :++
+:       lda     $086d,y
+:       lsr2
         and     #$06
         tax
         longa
@@ -1845,13 +1937,13 @@ DrawChoco:
         shorta
         xba
         jne     DrawNextObj
-        tdc
+        clr_a
         ldy     $1e
         cpy     #$0120
-        bcc     @611f
+        bcc     :+
         cpy     #$ffe0
         jcc     DrawNextObj
-@611f:  longa
+:       longa
         lda     $d4
         sec
         sbc     #12
@@ -1865,10 +1957,11 @@ DrawChoco:
         dec
         jeq     DrawChocoDown
         jmp     DrawChocoLeft
+.endproc  ; DrawChoco
 
 ; chocobo facing up
-DrawChocoUp:
-@6142:  ldy     $1e
+.proc DrawChocoUp
+        ldy     $1e
         sty     $2a
         ldy     $d4
         jsr     SetBtmSpriteMSB
@@ -1884,7 +1977,7 @@ DrawChocoUp:
         sta     $2a
         shorta
         sta     $0340,y
-        tdc
+        clr_a
         jsr     SetTopSpriteMSB
         lda     $24
         clc
@@ -1923,40 +2016,41 @@ DrawChocoUp:
         sta     $0409,y
         ldy     $da
         lda     $0868,y
-        bmi     @61dd
+        bmi     :+
         ldy     $d4
         lda     #$ef
         sta     $0345,y
-@61dd:  jmp     _64ca
+:       jmp     DoneChoco
+.endproc  ; DrawChocoUp
 
 ; ------------------------------------------------------------------------------
 
 ChocoUpTailX:
-@61e0:  .word   $0000,$0001,$0000,$ffff ; tail x-offset
+        .addr   0,1,0,-1                ; tail x-offset
 
 ChocoUpTailY:
-@61e8:  .word   $0009,$000a,$0009,$000a ; tail y-offset
+        .word   9,10,9,10               ; tail y-offset
 
 ChocoUpBodyX:
-@61f0:  .word   $0000,$0001,$0000,$0001 ; body y-offset
+        .word   0,1,0,1                 ; body y-offset
 
 ChocoUpTailTile:
-@61f8:  .word   $2f4a,$6f4a,$2f4a,$6f4a ; tail tile
+        .word   $2f4a,$6f4a,$2f4a,$6f4a ; tail tile
 
 ChocoUpTileFlags:
-@6200:  .word   $2000,$2000,$2000,$2000 ; unused
+        .word   $2000,$2000,$2000,$2000 ; unused
 
 ChocoUpBodyTile1:
-@6208:  .word   $2f4c,$2f60,$2f4c,$6f60 ; body tile (top)
+        .word   $2f4c,$2f60,$2f4c,$6f60 ; body tile (top)
 
 ChocoUpBodyTile2:
-@6210:  .word   $2f4e,$2f62,$2f4e,$6f62 ; body tile (bottom)
+        .word   $2f4e,$2f62,$2f4e,$6f62 ; body tile (bottom)
 
 ; ------------------------------------------------------------------------------
 
 ; chocobo facing down
-DrawChocoDown:
-@6218:  ldy     $1e
+.proc DrawChocoDown
+        ldy     $1e
         sty     $2a
         ldy     $d4
         jsr     SetTopSpriteMSB
@@ -1973,7 +2067,7 @@ DrawChocoDown:
         sta     $2a
         shorta
         sta     $0340,y
-        tdc
+        clr_a
         jsr     SetTopSpriteMSB
         lda     $24
         clc
@@ -2012,40 +2106,40 @@ DrawChocoDown:
         sta     $0409,y
         ldy     $da
         lda     $0868,y
-        bmi     @62b6
+        bmi     :+
         ldy     $d4
         lda     #$ef
         sta     $0345,y
-@62b6:  jmp     _64ca
-
-; ------------------------------------------------------------------------------
+:       jmp     DoneChoco
 
 ChocoDownHeadX:
-@62b9:  .word   $0000,$0001,$0000,$ffff ; head x-offset
+        .addr   0,1,0,-1                ; head x-offset
 
 ChocoDownHeadY:
-@62c1:  .word   $0007,$0008,$0007,$0008 ; head y-offset
+        .addr   7,8,7,8                 ; head y-offset
 
 ChocoBodyHeadX:
-@62c9:  .word   $ffff,$0001,$ffff,$0001 ; body y-offset
+        .addr   -1,1,-1,1               ; body y-offset
 
 ChocoDownHeadTile:
-@62d1:  .word   $2f40,$2f40,$2f40,$2f40 ; head tile
+        .word   $2f40,$2f40,$2f40,$2f40 ; head tile
 
 ChocoDownTileFlags:
-@62d9:  .word   $2000,$2000,$2000,$2000 ; tile flags
+        .word   $2000,$2000,$2000,$2000 ; tile flags
 
 ChocoDownBodyTopTile:
-@62e1:  .word   $2f42,$2f46,$2f42,$6f46 ; body tile (top)
+        .word   $2f42,$2f46,$2f42,$6f46 ; body tile (top)
 
 ChocoDownBodyBtmTile:
-@62e9:  .word   $2f44,$2f48,$2f44,$6f48 ; body tile (bottom)
+        .word   $2f44,$2f48,$2f44,$6f48 ; body tile (bottom)
+
+.endproc  ; DrawChocoDown
 
 ; ------------------------------------------------------------------------------
 
 ; chocobo facing right
-DrawChocoRight:
-@62f1:  ldy     $d4
+.proc DrawChocoRight
+        ldy     $d4
         longa
         lda     $1e
         sec
@@ -2085,7 +2179,7 @@ DrawChocoRight:
         ldy     $d4
         lda     $22
         clc
-        adc     f:ChocoSideYTbl,x
+        adc     f:ChocoRightYTbl,x
         sta     $0341,y
         clc
         adc     #$10
@@ -2120,35 +2214,35 @@ DrawChocoRight:
         shorta0
         ldy     $da
         lda     $0868,y
-        bmi     @63c2
+        bmi     :+
         ldy     $d4
         lda     #$ef
         sta     $0341,y
         sta     $0345,y
-@63c2:  jmp     _64ca
+:       jmp     DoneChoco
 
-; ------------------------------------------------------------------------------
-
-ChocoSideYTbl:
-@63c5:  .word   $0000,$ffff,$0000,$ffff ; y-offset
+ChocoRightYTbl:
+        .addr   0,-1,0,-1               ; y-offset
 
 ChocoRightTopLeftTiles:
-@63cd:  .word   $6f64,$6f6c,$6f64,$6f84
+        .word   $6f64,$6f6c,$6f64,$6f84
 
 ChocoRightTopRightTiles:
-@63d5:  .word   $6f68,$6f80,$6f68,$6f88
+        .word   $6f68,$6f80,$6f68,$6f88
 
 ChocoRightBtmLeftTiles:
-@63dd:  .word   $6f66,$6f6e,$6f66,$6f86
+        .word   $6f66,$6f6e,$6f66,$6f86
 
 ChocoRightBtmRightTiles:
-@63e5:  .word   $6f6a,$6f82,$6f6a,$6f8a
+        .word   $6f6a,$6f82,$6f6a,$6f8a
+
+.endproc  ; DrawChocoRight
 
 ; ------------------------------------------------------------------------------
 
 ; chocobo facing left
-DrawChocoLeft:
-@63ed:  ldy     $d4
+.proc DrawChocoLeft
+        ldy     $d4
         longa
         lda     $1e
         clc
@@ -2194,7 +2288,7 @@ DrawChocoLeft:
         ldy     $d4
         lda     $22
         clc
-        adc     f:ChocoSideYTbl,x
+        adc     f:ChocoLeftYTbl,x
         sta     $0341,y
         clc
         adc     #$10
@@ -2229,116 +2323,126 @@ DrawChocoLeft:
         shorta0
         ldy     $da
         lda     $0868,y
-        bmi     _64ca
+        bmi     DoneChoco
         ldy     $d4
         lda     #$ef
         sta     $0341,y
         sta     $0345,y
-_64ca:  jmp     DrawNextObj
 
-; ------------------------------------------------------------------------------
+::DoneChoco:
+        jmp     DrawNextObj
+
+ChocoLeftYTbl := ::DrawChocoRight::ChocoRightYTbl
 
 ChocoLeftTopLeftTiles:
-@64cd:  .word   $2f64,$2f6c,$2f64,$2f84
+        .word   $2f64,$2f6c,$2f64,$2f84
 
 ChocoLeftTopRightTiles:
-@64d5:  .word   $2f68,$2f80,$2f68,$2f88
+        .word   $2f68,$2f80,$2f68,$2f88
 
 ChocoLeftBtmLeftTiles:
-@64dd:  .word   $2f66,$2f6e,$2f66,$2f86
+        .word   $2f66,$2f6e,$2f66,$2f86
 
 ChocoLeftBtmRightTiles:
-@64e5:  .word   $2f6a,$2f82,$2f6a,$2f8a
+        .word   $2f6a,$2f82,$2f6a,$2f8a
 
 ; unused ???
-@64ed:  .word   $0000,$0010,$0020,$0030
+        .word   $0000,$0010,$0020,$0030
+
+.endproc  ; DrawChocoLeft
 
 ; ------------------------------------------------------------------------------
 
 ; [ update object sprite data (special graphics) ]
 
-DrawObjSpecial:
-@64f5:  ldx     $00
+.proc DrawObjSpecial
+        ldx     $00
         stx     $24
         stx     $20
-        lda     $087c,y     ; check if object scrolls with bg2
+        lda     $087c,y                 ; check if object scrolls with bg2
         sta     $1a
-        phy                 ; push object pointer so we can temporarily use a master object
-        lda     $088b,y     ; branch if a master object is used
+        phy                             ; push object pointer so we can temporarily use a master object
+        lda     $088b,y                 ; branch if a master object is used
         and     #$02
-        beq     @6530
+        beq     ShiftRight
 
 ; w/ master object - shift sprite right (tiles)
+ShiftRightSlave:
         lda     $088b,y
         and     #$01
-        bne     @6519
+        bne     ShiftDownSlave
         lda     $088a,y
         and     #$e0
         lsr
         sta     $20
-        bra     @6521
+        bra     :+
 
 ; w/ master object - shift sprite down (tiles)
-@6519:  lda     $088a,y
+ShiftDownSlave:
+        lda     $088a,y
         and     #$e0
         lsr
         sta     $24
-@6521:  lda     $088a,y     ; master object number
+
+:       lda     $088a,y                 ; master object number
         and     #$1f
         clc
-        adc     #$10        ; add $10 to get npc number
+        adc     #$10                    ; add $10 to get npc number
         asl
         tax
-        ldy     $0799,x     ; get pointer to master object data
-        bra     @654f
+        ldy     $0799,x                 ; get pointer to master object data
+        bra     :+
 
 ; shift sprite right (pixels * 2)
-@6530:  lda     $088b,y
+ShiftRight:
+        lda     $088b,y
         and     #$01
-        bne     @6544
+        bne     ShiftDown
         lda     $088a,y
         and     #$e0
         lsr4
         sta     $20
-        bra     @654f
+        bra     :+
 
 ; shift sprite down (pixels * 2)
-@6544:  lda     $088a,y
+ShiftDown:
+        lda     $088a,y
         and     #$e0
         lsr4
         sta     $24
-@654f:  lda     $1a
-        bmi     @6584       ; branch if object scrolls with bg2
+:       lda     $1a
+        bmi     ScrollWithBG2           ; branch if object scrolls with bg2
 
 ; object scrolls with bg1
         longa_clc
-        lda     $086d,y     ; y position
-        adc     $24         ; add add y offset
+        lda     $086d,y                 ; y position
+        adc     $24                     ; add add y offset
         clc
-        sbc     $60         ; subtract vertical scroll position
+        sbc     $60                     ; subtract vertical scroll position
         sec
-        sbc     $7f         ; subtract shake screen offset
+        sbc     $7f                     ; subtract shake screen offset
         sec
-        sbc     $086f,y     ; subtract jump offset
+        sbc     $086f,y                 ; subtract jump offset
         sec
-        sbc     #$0008      ; subtract 8
-        sta     $22         ; +$22 = top sprite y offset
+        sbc     #$0008                  ; subtract 8
+        sta     $22                     ; +$22 = top sprite y offset
         clc
         adc     #$0020
-        sta     $26         ; +$26 = bottom sprite y offset
-        lda     $086a,y     ; x position
+        sta     $26                     ; +$26 = bottom sprite y offset
+        lda     $086a,y                 ; x position
         sec
-        sbc     $5c         ; subtract horizontal scroll position
+        sbc     $5c                     ; subtract horizontal scroll position
         clc
-        adc     $20         ; add x offset
+        adc     $20                     ; add x offset
         clc
-        adc     #$0008      ; add 8
-        sta     $1e         ; +$1e = sprite x position
+        adc     #$0008                  ; add 8
+        sta     $1e                     ; +$1e = sprite x position
         shorta0
-        bra     @65b3
+        bra     :+
 
 ; object scrolls with bg2
-@6584:  longa_clc
+ScrollWithBG2:
+        longa_clc
         lda     $086d,y
         adc     $24
         clc
@@ -2362,62 +2466,64 @@ DrawObjSpecial:
         adc     #$0008
         sta     $1e
         shorta0
-@65b3:  ply                 ; no longer using master object
+
+:       ply                             ; no longer using master object
         ldx     $1e
-        cpx     #$ffe0      ; return if sprite is off-screen
-        bcs     @65c3
+        cpx     #$ffe0                  ; return if sprite is off-screen
+        bcs     :+
         cpx     #$0100
         jcs     DrawNextObj
-@65c3:  lda     $27
+:       lda     $27
         jne     DrawNextObj
-        tdc
-        lda     $0868,y     ; continuous animation flag -> horizontal flip ???
+        clr_a
+        lda     $0868,y                 ; continuous animation flag -> horizontal flip ???
         and     #$01
         lsr
         ror2
         ora     #$01
         ora     $0880,y
         sta     $1b
-        lda     $0868,y     ; animation speed (this will always be 0)
+        lda     $0868,y                 ; animation speed (this will always be 0)
         and     #$60
         lsr5
         tax
-        lda     $45         ; frame counter / 4
+        lda     $45                     ; frame counter / 4
         lsr2
-@65e9:  cpx     #$0000      ; divide by 2 (slower animation) for higher speed values
-        beq     @65f2
+:       cpx     #0                      ; divide by 2 (slower animation) for higher speed values
+        beq     :+
         lsr
         dex
-        bra     @65e9
-@65f2:  sta     $1a         ; $1a = frame counter >> (2 + speed)
-        lda     $088c,y     ;
+        bra     :-
+:       sta     $1a                     ; $1a = frame counter >> (2 + speed)
+        lda     $088c,y                 ;
         and     #$18
         lsr3
         tax
         lda     $1a
-        and     f:ObjAnimFrameMaskTbl,x   ; number of frames mask
+        and     f:ObjAnimFrameMaskTbl,x ; number of frames mask
         asl
-        sta     $1a         ; $1a = frames mask * 2
-        lda     $087c,y     ; 32x32 sprite
+        sta     $1a                     ; $1a = frames mask * 2
+        lda     $087c,y                 ; 32x32 sprite
         and     #$20
-        beq     @660f
+        beq     :+
         asl     $1a
-@660f:  lda     $0889,y     ; vram address
+:       lda     $0889,y                 ; vram address
         asl
         clc
         adc     $1a
         sta     $1a
         tyx
-        lda     $088c,y     ; sprite order
+        lda     $088c,y                 ; sprite order
         and     #$c0
-        beq     @662a       ; branch if normal
+        beq     NormalPriority
         cmp     #$40
-        jeq     @667b       ; jump if high
-        jmp     @66cc       ; jump if low
+        jeq     HighPriority
+        jmp     LowPriority
 
 ; normal sprite priority
-@662a:  longa
-        lda     $d4         ; use one sprite
+NormalPriority:
+        longa
+        lda     $d4                     ; use one sprite
         sec
         sbc     #4
         sta     $d4
@@ -2425,35 +2531,36 @@ DrawObjSpecial:
         lda     $1a
         sta     $0342,y
         shorta0
-        lda     $087c,x     ; branch if not a 32x32 sprite
+        lda     $087c,x                 ; branch if not a 32x32 sprite
         and     #$20
-        beq     @6648
-        lda     $7a00,y     ; sprite high data bit mask
-        asl                 ; << 1 to get the large sprite flag
-@6648:  sta     $1c
+        beq     :+
+        lda     $7a00,y                 ; sprite high data bit mask
+        asl                             ; << 1 to get the large sprite flag
+:       sta     $1c
         lda     $1e
-        sta     $0340,y     ; set x position
+        sta     $0340,y                 ; set x position
         lda     $22
-        sta     $0341,y     ; set y position
-        lda     $7800,y     ; pointer to high sprite data
+        sta     $0341,y                 ; set y position
+        lda     $7800,y                 ; pointer to high sprite data
         tax
         lda     $1f
         lsr
-        bcs     @666a       ; branch if x > 255
+        bcs     :+                      ; branch if x > 255
         lda     $0504,x
-        and     $7900,y     ; clear high x position msb
-        ora     $1c         ; 32x32 flag
+        and     $7900,y                 ; clear high x position msb
+        ora     $1c                     ; 32x32 flag
         sta     $0504,x
-        bra     @6678
-@666a:  lda     $0504,x
+        bra     :++
+:       lda     $0504,x
         and     $7900,y
-        ora     $7a00,y     ; set high x position msb
-        ora     $1c         ; 32x32 flag
+        ora     $7a00,y                 ; set high x position msb
+        ora     $1c                     ; 32x32 flag
         sta     $0504,x
-@6678:  jmp     DrawNextObj
+:       jmp     DrawNextObj
 
 ; high sprite priority
-@667b:  longa
+HighPriority:
+        longa
         lda     $d6         ; use one sprite
         sec
         sbc     #4
@@ -2464,10 +2571,10 @@ DrawObjSpecial:
         shorta0
         lda     $087c,x
         and     #$20
-        beq     @6699
+        beq     :+
         lda     $7a00,y
         asl
-@6699:  sta     $1c
+:       sta     $1c
         lda     $1e
         sta     $0300,y
         lda     $22
@@ -2476,21 +2583,22 @@ DrawObjSpecial:
         tax
         lda     $1f
         lsr
-        bcs     @66bb
+        bcs     :+
         lda     $0500,x
         and     $7900,y
         ora     $1c
         sta     $0500,x
-        bra     @66c9
-@66bb:  lda     $0500,x
+        bra     :++
+:       lda     $0500,x
         and     $7900,y
         ora     $7a00,y
         ora     $1c
         sta     $0500,x
-@66c9:  jmp     DrawNextObj
+:       jmp     DrawNextObj
 
 ; low sprite priority
-@66cc:  longa
+LowPriority:
+        longa
         lda     $d8         ; use one sprite
         sec
         sbc     #4
@@ -2501,10 +2609,10 @@ DrawObjSpecial:
         shorta0
         lda     $087c,x
         and     #$20
-        beq     @66ea
+        beq     :+
         lda     $7a00,y
         asl
-@66ea:  sta     $1c
+:       sta     $1c
         lda     $1e
         sta     $04c0,y
         lda     $22
@@ -2513,90 +2621,93 @@ DrawObjSpecial:
         tax
         lda     $1f
         lsr
-        bcs     @670c
+        bcs     :+
         lda     $051c,x
         and     $7900,y
         ora     $1c
         sta     $051c,x
-        bra     @671a
-@670c:  lda     $051c,x
+        bra     :++
+:       lda     $051c,x
         and     $7900,y
         ora     $7a00,y
         ora     $1c
         sta     $051c,x
-@671a:  jmp     DrawNextObj
+:       jmp     DrawNextObj
+.endproc  ; DrawObjSpecial
 
 ; ------------------------------------------------------------------------------
 
 ; bit masks for number of animation frames (animated frame type)
 ObjAnimFrameMaskTbl:
-@671d:  .byte   $00,$00,$01,$03
+        .byte   %00,%00,%01,%11
 
 ; ------------------------------------------------------------------------------
 
 ; [ set/clear sprite x position msb (top sprite) ]
 
-; $2b = 0 (clear) or 1 (set)
+; $2b: 0 (clear) or 1 (set)
 
-SetTopSpriteMSB:
-@6721:  pha
+.proc SetTopSpriteMSB
+        pha
         phx
         phy
         lda     $2b
         lsr
-        bcs     @6738
+        bcs     :+
         lda     $7800,y
         tax
         lda     $0504,x
         and     $7900,y
         sta     $0504,x
-        bra     @6748
-@6738:  lda     $7800,y
+        bra     :++
+:       lda     $7800,y
         tax
         lda     $0504,x
         and     $7900,y
         ora     $7a00,y
         sta     $0504,x
-@6748:  ply
+:       ply
         plx
         pla
         rts
+.endproc  ; SetTopSpriteMSB
 
 ; ------------------------------------------------------------------------------
 
 ; [ set/clear sprite x position msb (bottom sprite) ]
 
-; $2b = 0 (clear) or 1 (set)
+; $2b: 0 (clear) or 1 (set)
 
-SetBtmSpriteMSB:
-@674c:  pha
+.proc SetBtmSpriteMSB
+        pha
         phx
         phy
         lda     $2b
         lsr
-        bcs     @6763
+        bcs     :+
         lda     $7800,y
         tax
         lda     $0510,x
         and     $7900,y
         sta     $0510,x
-        bra     @6773
-@6763:  lda     $7800,y
+        bra     :++
+:       lda     $7800,y
         tax
         lda     $0510,x
         and     $7900,y
         ora     $7a00,y
         sta     $0510,x
-@6773:  ply
+:       ply
         plx
         pla
         rts
+.endproc  ; SetBtmSpriteMSB
 
 ; ------------------------------------------------------------------------------
 
 ; first object to update each frame
 FirstObjTbl1:
-@6777:  .byte   $00,$0c,$18,$24
+        .byte   $00,$0c,$18,$24
 
 ; ------------------------------------------------------------------------------
 
@@ -2606,14 +2717,14 @@ FirstObjTbl1:
 ; called during nmi, takes four frames to fully update
 ; called four times in a row when a map loads
 
-TfrObjGfxSub:
-@677b:  stz     hHDMAEN
+.proc TfrObjGfxSub
+        stz     hHDMAEN
         lda     #$41
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #$80
         sta     hVMAINC
-        lda     #$18
-        sta     $4301
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         lda     $47
         and     #$03
         tax
@@ -2624,15 +2735,15 @@ TfrObjGfxSub:
         asl
         tax
         longa
-        lda     f:_c0693c,x
+        lda     f:FirstObjTbl3,x
         sta     $14
         lda     #$0006
         sta     $18
-@67aa:  stz     hMDMAEN
+Loop:   stz     hMDMAEN
         ldx     $48
         ldy     $10f7,x
         cpy     #$07b0
-        jeq     @6866
+        jeq     Skip
         lda     $0879,y
         and     #$00ff
         asl
@@ -2655,72 +2766,73 @@ TfrObjGfxSub:
         clc
         adc     $12
         tax
-        ldy     #$0001
+        ldy     #BIT_0
         lda     f:MapSpriteTileOffsets,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     f:MapSpriteTileOffsets+2,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     f:MapSpriteTileOffsets+8,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     f:MapSpriteTileOffsets+10,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     $16
         sta     hVMADDL
         lda     f:MapSpriteTileOffsets+4,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     f:MapSpriteTileOffsets+6,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
-@6866:  inc     $14
+Skip:   inc     $14
         inc     $14
         inc     $48
         inc     $48
         dec     $18
-        jne     @67aa
+        jne     Loop
         shorta0
         rts
+.endproc  ; TfrObjGfxSub
 
 ; ------------------------------------------------------------------------------
 
 ; [ load character graphics (world map) ]
 
-TfrObjGfxWorld:
-@6879:  stz     hHDMAEN
+.proc TfrObjGfxWorld
+        stz     hHDMAEN
         stx     hVMADDL
         longa
         and     #$003f
@@ -2741,75 +2853,78 @@ TfrObjGfxWorld:
         shorta0
         stz     hMDMAEN
         lda     #$41
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #$80
         sta     hVMAINC
-        lda     #$18
-        sta     $4301
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         longa
         ldx     $12
-        ldy     #$0001
+        ldy     #BIT_0
         lda     f:MapSpriteTileOffsets,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     f:MapSpriteTileOffsets+2,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     f:MapSpriteTileOffsets+4,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     f:MapSpriteTileOffsets+6,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     f:MapSpriteTileOffsets+8,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         lda     f:MapSpriteTileOffsets+10,x
         clc
         adc     $0e
-        sta     $4302
-        tdc
+        sta     hDMA0::ADDR
+        clr_a
         adc     $10
-        sta     $4304
+        sta     hDMA0::ADDR_B
         sty     hMDMAEN
         shorta0
         rts
+.endproc  ; TfrObjGfxWorld
 
 ; ------------------------------------------------------------------------------
 
+; unused
 _c06934:
-@6934:  .word   $0000,$00f6,$01ec,$02e2
+        .word   $0000,$00f6,$01ec,$02e2
 
-_c0693c:
-@693c:  .word   $0000,$000c,$0018,$0024
+FirstObjTbl3:
+        .word   $0000,$000c,$0018,$0024
 
+; vram address for object graphics
 _c06944:
-@6944:  .word   $6000,$6040,$6080,$60c0,$6200,$6240
+        .word   $6000,$6040,$6080,$60c0,$6200,$6240
         .word   $6280,$62c0,$6400,$6440,$6480,$64c0
         .word   $6600,$6640,$6680,$66c0,$6800,$6840
         .word   $6880,$68c0,$6a00,$6a40,$6a80,$6ac0
@@ -2818,13 +2933,13 @@ _c06944:
 
 ; [ init terra outline graphics (unused) ]
 
-InitTerraOutline:
-@6974:  ldx     $00
+.proc InitTerraOutline
+        ldx     $00
         txa
-@6977:  sta     $7e6000,x
+:       sta     $7e6000,x
         inx
         cpx     #$6c00
-        bne     @6977
+        bne     :-
         ldx     $00
         stx     $1e
         stx     $22
@@ -2854,14 +2969,14 @@ InitTerraOutline:
         sta     $35
         ldx     $00
         stx     $20
-@69bf:  longa
+Loop:   longa
         ldx     $20
         lda     f:MapSpriteTileOffsets+12,x
         sta     $24
         shorta0
         lda     #$08
         sta     $1a
-@69d0:  ldy     $24
+:       ldy     $24
         lda     [$2d],y
         ora     [$30],y
         ora     [$33],y
@@ -2874,7 +2989,7 @@ InitTerraOutline:
         iny2
         sty     $22
         dec     $1a
-        bne     @69d0
+        bne     :-
         longa_clc
         lda     $22
         adc     #$0010
@@ -2884,19 +2999,20 @@ InitTerraOutline:
         inx2
         stx     $20
         cpx     #$006c
-        bne     @69bf
+        bne     Loop
         rts
+.endproc  ; InitTerraOutline
 
 ; ------------------------------------------------------------------------------
 
 ; [ update timer sprite data ]
 
-DrawTimer:
-@6a04:  lda     $1188                   ; return if timer is disabled
+.proc DrawTimer
+        lda     $1188                   ; return if timer is disabled
         and     #$40
-        bne     @6a0c
+        bne     :+
         rts
-@6a0c:  ldx     $1189                   ; timer value
+:       ldx     $1189                   ; timer value
         stx     hWRDIVL
         lda     #60                     ; divide by 60 to get seconds
         sta     hWRDIVB
@@ -2966,215 +3082,216 @@ DrawTimer:
         sta     $031a
         rts
 
-; ------------------------------------------------------------------------------
-
 ; timer graphics pointers (+$0100, vram)
 TimerTiles:
-@6ad1:  .byte   $60,$62,$64,$66,$68,$6a,$6c,$6e,$80,$82
+        .byte   $60,$62,$64,$66,$68,$6a,$6c,$6e,$80,$82
+
+.endproc  ; DrawTimer
 
 ; ------------------------------------------------------------------------------
 
 ; [ load timer graphics ]
 
-LoadTimerGfx:
+.proc LoadTimerGfx
 
-.if LANG_EN
-@DigitGfx := SmallFontGfx+$0b40
-@ColonGfx := SmallFontGfx+$0c10
-.else
-@DigitGfx := SmallFontGfx+$0530
-@ColonGfx := SmallFontGfx+$0cf0
-.endif
+        .if ::LANG_EN
+                DigitGfx := SmallFontGfx+$0b40
+                ColonGfx := SmallFontGfx+$0c10
+        .else
+                DigitGfx := SmallFontGfx+$0530
+                ColonGfx := SmallFontGfx+$0cf0
+        .endif
 
-@6adb:  lda     $0521
-        bmi     @6ae1
+        lda     $0521
+        bmi     :+
         rts
-@6ae1:  lda     #$80
+:       lda     #$80
         sta     hVMAINC
         ldx     #$7600
         stx     hVMADDL
         ldx     $00
-@6aee:
-        .repeat 8, i
-        lda     f:@DigitGfx+i*2,x
-        eor     f:@DigitGfx+i*2+1,x
+Loop1:  .repeat 8, i
+        lda     f:DigitGfx+i*2,x
+        eor     f:DigitGfx+i*2+1,x
         sta     hVMDATAL
-        lda     f:@DigitGfx+i*2+1,x
+        lda     f:DigitGfx+i*2+1,x
         sta     hVMDATAH
         .endrep
         ldy     #$0018
-@6b81:  stz     hVMDATAL
+:       stz     hVMDATAL
         stz     hVMDATAH
         dey
-        bne     @6b81
+        bne     :-
         longa_clc
         txa
         adc     #$0010
         tax
         shorta0
         cpx     #$0080
-        jne     @6aee
+        jne     Loop1
         ldy     #$0100
-@6b9f:  stz     hVMDATAL
+:       stz     hVMDATAL
         stz     hVMDATAH
         dey
-        bne     @6b9f
-@6ba8:
-        .repeat 8, i
-        lda     f:@DigitGfx+i*2,x
-        eor     f:@DigitGfx+i*2+1,x
+        bne     :-
+Loop2:  .repeat 8, i
+        lda     f:DigitGfx+i*2,x
+        eor     f:DigitGfx+i*2+1,x
         sta     hVMDATAL
-        lda     f:@DigitGfx+i*2+1,x
+        lda     f:DigitGfx+i*2+1,x
         sta     hVMDATAH
         .endrep
         ldy     #$0018
-@6c3b:  stz     hVMDATAL
+:       stz     hVMDATAL
         stz     hVMDATAH
         dey
-        bne     @6c3b
+        bne     :-
         longa_clc
         txa
         adc     #$0010
         tax
         shorta0
         cpx     #$00a0
-        jne     @6ba8
+        jne     Loop2
         .repeat 8, i
-        lda     f:@ColonGfx+i*2
-        eor     f:@ColonGfx+i*2+1
+        lda     f:ColonGfx+i*2
+        eor     f:ColonGfx+i*2+1
         sta     hVMDATAL
-        lda     f:@ColonGfx+i*2+1
+        lda     f:ColonGfx+i*2+1
         sta     hVMDATAH
         .endrep
         ldy     #$01a0
-@6ce9:  stz     hVMDATAL
+:       stz     hVMDATAL
         stz     hVMDATAH
         dey
-        bne     @6ce9
+        bne     :-
         rts
+.endproc  ; LoadTimerGfx
 
 ; ------------------------------------------------------------------------------
 
 ; [ update party equipment effects ]
 
-UpdateEquip:
-@6cf3:  stz     $11df                   ; clear equipment effects
+.proc UpdateEquip
+        stz     $11df                   ; clear equipment effects
         ldy     $00
         stz     $1b
-@6cfa:  lda     $0867,y                 ; check if character is enabled
+Loop:   lda     $0867,y                 ; check if character is enabled
         and     #$40
-        beq     @6d14
+        beq     :+
         lda     $0867,y                 ; check if character is in current party
         and     #$07
         cmp     $1a6d
-        bne     @6d14
+        bne     :+
         phy
         lda     $1b
         jsl     UpdateEquip_ext
-        tdc
+        clr_a
         ply
-@6d14:  longa_clc
+:       longa_clc
         tya
         adc     #$0029
         tay
         shorta0
         inc     $1b
         cpy     #$0290
-        bne     @6cfa
+        bne     Loop
         rts
+.endproc  ; UpdateEquip
 
 ; ------------------------------------------------------------------------------
 
 ; [ update party switching ]
 
-CheckChangeParty:
-@6d26:  lda     $1eb9                   ; return if party switching is disabled
+.proc CheckChangeParty
+        lda     $1eb9                   ; return if party switching is disabled
         and     #$40
-        beq     @6d76
+        beq     Done
         lda     a:$0084                 ; return if map is loading
-        bne     @6d76
+        bne     Done
         lda     $055e                   ; return if there was a party collision
-        bne     @6d76
+        bne     Done
         ldx     $e5                     ; return if running an event
         cpx     #.loword(EventScript_NoEvent)
-        bne     @6d76
+        bne     Done
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     @6d76
+        bne     Done
         ldy     $0803                   ; party object
         lda     $0869,y                 ; return if between tiles
-        bne     @6d76
+        bne     Done
         lda     $086a,y
         and     #$0f
-        bne     @6d76
+        bne     Done
         lda     $086c,y
-        bne     @6d76
+        bne     Done
         lda     $086d,y
         and     #$0f
-        bne     @6d76
+        bne     Done
         lda     $07                     ; branch if y button is down
         and     #$40
-        bne     @6d6c
+        bne     :+
         lda     #$01                    ; enable party switching and return
         sta     $0762
-        bra     @6d76
-@6d6c:  lda     $0762                   ; y button, check party switching
-        beq     @6d76
+        bra     Done
+:       lda     $0762                   ; y button, check party switching
+        beq     Done
         stz     $0762                   ; if so, switch party
         bra     ChangeParty
-@6d76:  rts
+Done:   rts
+.endproc  ; CheckChangeParty
 
 ; ------------------------------------------------------------------------------
 
 ; [ switch parties ]
 
-ChangeParty:
-@6d77:  lda     $1a6d                   ; party number
+.proc ChangeParty
+        lda     $1a6d                   ; party number
         tay
         lda     $b2                     ; save party z-level
         sta     $1ff3,y
         lda     $1a6d                   ; increment party number
         inc
         cmp     #4                      ; only switch between first 3 parties
-        bne     @6d8a
+        bne     :+
         lda     #1
-@6d8a:  sta     $1a6d
+:       sta     $1a6d
         lda     #$20                    ; look for top character in new party
         sta     $1a
         ldy     #$07d9
         sty     $07fb
         ldy     $00
-@6d99:  lda     $0867,y
+Loop:   lda     $0867,y
         and     #$40
         cmp     #$40
-        bne     @6dba
+        bne     :+
         lda     $0867,y
         and     #$07
         cmp     $1a6d
-        bne     @6dba
+        bne     :+
         lda     $0867,y
         and     #$18
         cmp     $1a
-        bcs     @6dba
+        bcs     :+
         sta     $1a
         sty     $07fb                   ; set the showing character
-@6dba:  longa_clc
+:       longa_clc
         tya
         adc     #$0029
         tay
         shorta0
         cpy     #$0290
-        bne     @6d99
+        bne     Loop
 
 ; if no characters were found, increment the party and try again
         ldy     $07fb
         cpy     #$07d9
-        beq     @6d77
+        beq     ChangeParty
         ldy     $07fb
 
 ; return if the new showing character was already the party object
         cpy     $0803
-        beq     @6e43
+        beq     Done
         ldx     #$07d9                  ; clear party slots 2 through 4
         stx     $07fd
         stx     $07ff
@@ -3195,7 +3312,7 @@ ChangeParty:
         sta     $0868,x
         ldx     $088d,y
         cpx     $82
-        bne     @6e44
+        bne     DifferentMap
 
 ; new party is on the same map
         lda     #$01                    ; reload same map
@@ -3217,10 +3334,11 @@ ChangeParty:
         lda     $1ff3,y
         and     #$03
         sta     $0744
-@6e43:  rts
+Done:   rts
 
 ; new party is on a different map
-@6e44:  lda     #$80                    ; enable map startup event
+DifferentMap:
+        lda     #$80                    ; enable map startup event
         sta     $11fa
         longa
         lda     $088d,y                 ; set new map
@@ -3234,7 +3352,7 @@ ChangeParty:
         lsr4
         shorta
         sta     $1fc1
-        tdc
+        clr_a
         jsr     FadeOut
         lda     #$80                    ; don't update party facing direction
         sta     $0743
@@ -3247,15 +3365,16 @@ ChangeParty:
         and     #$03
         sta     $0744
         rts
+.endproc  ; ChangeParty
 
 ; ------------------------------------------------------------------------------
 
 ; [ save map and position for character objects ]
 
-PushPartyMap:
-@6e88:  ldx     $00
+.proc PushPartyMap
+        ldx     $00
         txy
-@6e8b:  longa_clc
+Loop:   longa_clc
         lda     $088d,x
         sta     $1f81,y
         lda     $086a,x
@@ -3274,17 +3393,18 @@ PushPartyMap:
         shorta0
         iny2
         cpy     #$0020
-        bne     @6e8b
+        bne     Loop
         rts
+.endproc  ; PushPartyMap
 
 ; ------------------------------------------------------------------------------
 
 ; [ restore map index for character objects ]
 
-PopPartyMap:
-@6ebf:  ldx     $00
+.proc PopPartyMap
+        ldx     $00
         txy
-@6ec2:  longa_clc
+Loop:   longa_clc
         lda     $1f81,y                 ; object map index
         sta     $088d,x
         txa
@@ -3293,17 +3413,18 @@ PopPartyMap:
         shorta0
         iny2                            ; loop through 16 characters
         cpy     #$0020
-        bne     @6ec2
+        bne     Loop
         rts
+.endproc  ; PopPartyMap
 
 ; ------------------------------------------------------------------------------
 
 ; [ restore character positions ]
 
-PopPartyPos:
-@6eda:  ldx     $00
+.proc PopPartyPos
+        ldx     $00
         txy
-@6edd:  tdc
+Loop:   clr_a
         sta     $0869,x
         sta     $086c,x
         lda     $0880,x
@@ -3328,17 +3449,18 @@ PopPartyPos:
         shorta0
         iny2                            ; loop through 16 characters
         cpy     #$0020
-        bne     @6edd
+        bne     Loop
         rts
+.endproc  ; PopPartyPos
 
 ; ------------------------------------------------------------------------------
 
 ; [ save character palettes ]
 
-PushPartyPal:
-@6f21:  ldx     $00
+.proc PushPartyPal
+        ldx     $00
         txy
-@6f24:  lda     $0880,x
+Loop:   lda     $0880,x
         and     #$0e
         sta     $1f70,y
         longa_clc
@@ -3348,17 +3470,18 @@ PushPartyPal:
         shorta0
         iny
         cpy     #$0010
-        bne     @6f24
+        bne     Loop
         rts
+.endproc  ; PushPartyPal
 
 ; ------------------------------------------------------------------------------
 
 ; [ restore character palettes ]
 
-PopPartyPal:
-@6f3d:  ldx     $00
+.proc PopPartyPal
+        ldx     $00
         txy
-@6f40:  lda     $0880,x                 ; restore character palettes
+Loop:   lda     $0880,x                 ; restore character palettes
         and     #$f1
         ora     $1f70,y
         sta     $0880,x
@@ -3373,28 +3496,34 @@ PopPartyPal:
         shorta0
         iny
         cpy     #$0010
-        bne     @6f40
+        bne     Loop
         rts
+.endproc  ; PopPartyPal
 
 ; ------------------------------------------------------------------------------
 
-; [ get first character in party ]
+; [ update party objects ]
+
+; called via event command $47, after the party select menu, and when a
+; map is loaded
 
 .proc GetTopChar
-        ldy     $0803                   ; previous top char
+        ldy     $0803                   ; save previous top char
         sty     $1e
         ldx     $086a,y                 ; x position
         stx     $26
         ldx     $086d,y                 ; y position
         stx     $28
-        lda     #$20                    ; layer priority
+        lda     #$20                    ; dummy value for topmost party slot
         sta     $1a
+
+; loop through 16 characters
         ldx     $00
         txy
-loop:   lda     $1850,y
+Loop:   lda     $1850,y
         and     #$07
         cmp     $1a6d
-        bne     skip                    ; not in active party
+        bne     Skip                    ; skip if not in active party
         longa
         lda     $26
         sta     $086a,x                 ; set position
@@ -3410,31 +3539,33 @@ loop:   lda     $1850,y
         lda     #$ff
         sta     $7e2000,x               ; remove from object map data
         plx
-        lda     $1850,y
+        lda     $1850,y                 ; check if this was the top character
         and     #$18
         cmp     $1a
-        bcs     skip
+        bcs     Skip
         sta     $1a
-        stx     $07fb                   ; topmost character in active party
-skip:   longa_clc
+        stx     $07fb                   ; set top character in active party
+Skip:   longa_clc
         txa
         adc     #$0029
         tax
         shorta0
         iny
         cpy     #$0010
-        bne     loop
+        bne     Loop
 
-; check if top char changed
+; make top char visible
         ldx     $07fb
         lda     $0867,x
         ora     #$80
         sta     $0867,x
+
+; return if top char didn't change
         cpx     $1e
-        jeq     done
+        jeq     Done
         ldy     $1e
         longa
-        lda     $087a,y
+        lda     $087a,y                 ; copy obj properties from prev top char
         sta     $087a,x
         shorta0
         lda     $0880,y
@@ -3483,7 +3614,7 @@ skip:   longa_clc
         nop3
         ldy     hRDDIVL
         sta     $1850,y
-done:   ldy     #$07d9
+Done:   ldy     #$07d9
         sty     $07fd                   ; hide slots 2, 3, 4
         sty     $07ff
         sty     $0801
@@ -3496,10 +3627,10 @@ done:   ldy     #$07d9
 
 ; [ restore character data ]
 
-PopCharFlags:
-@7077:  ldx     $00
+.proc PopCharFlags
+        ldx     $00
         txy
-@707a:  lda     $1850,y
+Loop:   lda     $1850,y
         sta     $0867,x
         longa_clc
         txa
@@ -3508,17 +3639,18 @@ PopCharFlags:
         shorta0
         iny
         cpy     #$0010                  ; loop through 16 characters
-        bne     @707a
+        bne     Loop
         rts
+.endproc  ; PopCharFlags
 
 ; ------------------------------------------------------------------------------
 
 ; [ save character data ]
 
-PushCharFlags:
-@7091:  ldx     $00
+.proc PushCharFlags
+        ldx     $00
         txy
-@7094:  lda     $0867,x
+Loop:   lda     $0867,x
         and     #$e7
         sta     $1a
         lda     $1850,y                 ; battle order
@@ -3532,18 +3664,19 @@ PushCharFlags:
         shorta0
         iny
         cpy     #$0010                  ; loop through 16 characters
-        bne     @7094
+        bne     Loop
         rts
+.endproc  ; PushCharFlags
 
 ; ------------------------------------------------------------------------------
 
 ; [ calculate object data pointers ]
 
-CalcObjPtrs:
-@70b6:  lda     #$29                    ; object data is 41 bytes each
+.proc CalcObjPtrs
+        lda     #$29                    ; object data is 41 bytes each
         sta     hWRMPYA
         ldx     $00
-@70bd:  txa
+Loop:   txa
         lsr
         sta     hWRMPYB
         nop3
@@ -3553,97 +3686,111 @@ CalcObjPtrs:
         shorta0
         inx2
         cpx     #$0062                  ; $31 objects total
-        bne     @70bd
+        bne     Loop
         rts
+.endproc  ; CalcObjPtrs
 
 ; ------------------------------------------------------------------------------
 
 ; [ get pointer to first valid character ]
 
-; y = pointer to object data
+; y: pointer to object data
 
-GetTopCharPtr:
-@70d8:  cpy     $07fb
-        bne     @70ee                   ; branch if not party character 0
+.proc GetTopCharPtr
+        cpy     $07fb
+        bne     :+                      ; branch if not party character 0
         ldy     #$07d9
         sty     $07fb                   ; clear all party character slots
         sty     $07fd
         sty     $07ff
         sty     $0801
-        bra     @711c
-@70ee:  cpy     $07fd                   ; branch if not party character 1
-        bne     @7101
+        bra     Done
+:       cpy     $07fd                   ; branch if not party character 1
+        bne     :+
         ldy     #$07d9
         sty     $07fd                   ; clear party character slots 1-3
         sty     $07ff
         sty     $0801
-        bra     @711c
-@7101:  cpy     $07ff                   ; branch if not party character 2
-        bne     @7111
+        bra     Done
+:       cpy     $07ff                   ; branch if not party character 2
+        bne     :+
         ldy     #$07d9
         sty     $07ff                   ; clear party character slots 2-3
         sty     $0801
-        bra     @711c
-@7111:  cpy     $0801                   ; branch if not party character 3
-        bne     @711c
+        bra     Done
+:       cpy     $0801                   ; branch if not party character 3
+        bne     Done
         ldy     #$07d9
-        sty     $0801                   ; clear party character slots 3
-@711c:  rts
+        sty     $0801                   ; clear party character slot 3
+Done:   rts
+.endproc  ; GetTopCharPtr
 
 ; ------------------------------------------------------------------------------
 
 ; [ unused ]
 
-@711d:  ldy     $00
-@711f:  lda     $0867,y
+.proc _c0711d
+        ldy     $00
+Loop:   lda     $0867,y
         and     #$40
-        beq     @713a
+        beq     :+
         lda     $0867,y
         and     #$07
         cmp     $1a6d
-        bne     @713a
+        bne     :+
         longa
         lda     $82
         sta     $088d,y
         shorta0
-@713a:  longa_clc
+:       longa_clc
         tya
         adc     #$0029
         tay
         shorta0
         cpy     #$0290
-        bne     @711f
+        bne     Loop
         rts
+.endproc  ; _c0711d
 
 ; ------------------------------------------------------------------------------
 
 ; [ validate and sort active objects ]
 
-_c0714a:
+; This routine generates the list of object pointers at $0803-$0866, which
+; determines the order in which objects will be updated. The first object in
+; the list (the player object at $0803) is always the first character in
+; the active party. Next come the other characters in the active party. The
+; camera object always comes next, followed by all characters that are in
+; other parties (but not including NPC characters). Finally, the NPCs from
+; the map come at the end of the list. Note that if there are no characters
+; in the active party, then the camera object acts as the player object.
+
+.proc _c0714a
 sort_obj_work:
-@714a:  ldx     #$0803
+        ldx     #$0803
         stx     hWMADDL
         lda     #$00
         sta     hWMADDH
         stz     $1b
 
 ; char slot 1
+CheckSlot1:
         ldy     $07fb
         cpy     #$07d9
-        beq     @719a
+        beq     CheckSlot2
         lda     $0867,y
         and     #$40
-        bne     @7178
+        bne     :+                      ; branch if enabled
         ldy     #$07d9
-        sty     $07fb
+        sty     $07fb                   ; hide the party object
         sty     $07fd
         sty     $07ff
         sty     $0801
-        jmp     @724f
-@7178:  lda     $0867,y
+        jmp     CheckOtherSlots
+:       lda     $0867,y
         and     #$07
         cmp     $1a6d
-        bne     @719a
+        bne     CheckSlot2
         lda     $82
         sta     $088d,y
         lda     $83
@@ -3655,21 +3802,22 @@ sort_obj_work:
         inc     $1b
 
 ; char slot 2
-@719a:  ldy     $07fd
+CheckSlot2:
+        ldy     $07fd
         cpy     #$07d9
-        beq     @71da
+        beq     CheckSlot3
         lda     $0867,y
         and     #$40
-        bne     @71b8
+        bne     :+
         ldy     #$07d9
         sty     $07fd
         sty     $07ff
         sty     $0801
-        jmp     @724f
-@71b8:  lda     $0867,y
+        jmp     CheckOtherSlots
+:       lda     $0867,y
         and     #$07
         cmp     $1a6d
-        bne     @71da
+        bne     CheckSlot3
         lda     $82
         sta     $088d,y
         lda     $83
@@ -3681,20 +3829,21 @@ sort_obj_work:
         inc     $1b
 
 ; char slot 3
-@71da:  ldy     $07ff
+CheckSlot3:
+        ldy     $07ff
         cpy     #$07d9
-        beq     @7216
+        beq     CheckSlot4
         lda     $0867,y
         and     #$40
-        bne     @71f4
+        bne     :+
         ldy     #$07d9
         sty     $07ff
         sty     $0801
-        bra     @724f
-@71f4:  lda     $0867,y
+        bra     CheckOtherSlots
+:       lda     $0867,y
         and     #$07
         cmp     $1a6d
-        bne     @7216
+        bne     CheckSlot4
         lda     $82
         sta     $088d,y
         lda     $83
@@ -3706,19 +3855,20 @@ sort_obj_work:
         inc     $1b
 
 ; char slot 4
-@7216:  ldy     $0801
+CheckSlot4:
+        ldy     $0801
         cpy     #$07d9
-        beq     @724f
+        beq     CheckOtherSlots
         lda     $0867,y
         and     #$40
-        bne     @722d
+        bne     :+
         ldy     #$07d9
         sty     $0801
-        bra     @724f
-@722d:  lda     $0867,y
+        bra     CheckOtherSlots
+:       lda     $0867,y
         and     #$07
         cmp     $1a6d
-        bne     @724f
+        bne     CheckOtherSlots
         lda     $82
         sta     $088d,y
         lda     $83
@@ -3729,24 +3879,25 @@ sort_obj_work:
         sta     hWMDATA
         inc     $1b
 
-; other characters in the active party ???
-@724f:  ldx     $00
-@7251:  ldy     $0799,x
+; other characters in the active party
+CheckOtherSlots:
+        ldx     $00
+Loop:   ldy     $0799,x                 ; loop through all character objects
         cpy     $07fb
-        beq     @7295
+        beq     Skip                    ; skip if already in the list
         cpy     $07fd
-        beq     @7295
+        beq     Skip
         cpy     $07ff
-        beq     @7295
+        beq     Skip
         cpy     $0801
-        beq     @7295
+        beq     Skip
         lda     $0867,y
         and     #$40
-        beq     @7295
+        beq     Skip
         lda     $0867,y
         and     #$07
-        cmp     $1a6d
-        bne     @7295
+        cmp     $1a6d                   ; skip if not in the active party
+        bne     Skip
         lda     $82
         sta     $088d,y
         lda     $83
@@ -3758,9 +3909,9 @@ sort_obj_work:
         sta     hWMDATA
         sta     $1d
         inc     $1b
-@7295:  inx2
+Skip:   inx2
         cpx     #$0020
-        bne     @7251
+        bne     Loop
 
 ; camera object
         lda     #$b0
@@ -3771,82 +3922,85 @@ sort_obj_work:
 
 ; characters not in the active party
         ldx     $00
-@72aa:  ldy     $0799,x
+Loop2:  ldy     $0799,x
         lda     $0867,y
         and     #$40
-        beq     @72d8
+        beq     Skip2
         lda     $0867,y
         and     #$07
-        beq     @72ca
+        beq     :+
         cmp     $1a6d
-        beq     @72d8
+        beq     Skip2                   ; skip if in the active party
         phx
         ldx     $088d,y
         txy
         plx
         cpy     $82
-        bne     @72d8
-@72ca:  lda     $0799,x
+        bne     Skip2
+:       lda     $0799,x
         sta     hWMDATA
         lda     $079a,x
         sta     hWMDATA
         inc     $1b
-@72d8:  inx2
+Skip2:  inx2
         cpx     #$0020
-        bne     @72aa
+        bne     Loop2
 
 ; npc objects
         ldx     #$0020
-@72e2:  ldy     $0799,x
+Loop3:  ldy     $0799,x
         lda     $0867,y
         and     #$40
-        beq     @72fa
+        beq     :+
         lda     $0799,x
         sta     hWMDATA
         lda     $079a,x
         sta     hWMDATA
         inc     $1b
-@72fa:  inx2
+:       inx2
         cpx     #$0060
-        bne     @72e2
+        bne     Loop3
+
+; update the total number of active objects
         lda     $1b
         asl
         sta     $dd
         stz     $0798
         rts
+.endproc  ; _c0714a
 
 ; ------------------------------------------------------------------------------
 
 ; starting object to update each frame * 2
 FirstObjTbl2:
-@730a:  .byte   $00,$0c,$18,$24
+        .byte   $00,$0c,$18,$24
 
 ; ------------------------------------------------------------------------------
 
 ; [ detect object collisions ]
 
-; y = pointer to object data
+; Y: pointer to object data
 
-CheckCollosions:
-@730e:  lda     $59                     ; return if menu opening
-        bne     @7334
+.proc CheckCollosions
+        lda     $59                     ; return if menu opening
+        bne     Done
         lda     $087c,y                 ; return if not a collision object
         and     #$40
-        beq     @7334
+        beq     Done
         ldx     $e5                     ; return if an event is running
         cpx     #.loword(EventScript_NoEvent)
-        bne     @7334
+        bne     Done
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     @7334
+        bne     Done
         lda     $84                     ; return if a map is loading
-        bne     @7334
+        bne     Done
         lda     $055e                   ;
-        bne     @7334
+        bne     Done
         cpy     #$0290                  ; return if the object is a character
-        bcs     @7335
-@7334:  rts
-@7335:  lda     $087a,y                 ; pointer to object map data
+        bcs     :+
+Done:   rts
+:       lda     $087a,y                 ; pointer to object map data
         sta     $1e                     ; +$1e = tile above
         sta     $22                     ; +$22 = tile below
         inc
@@ -3881,27 +4035,28 @@ CheckCollosions:
 ; check if the object came in contact with a character
         lda     ($1e)
         cmp     #$20
-        bcc     @7390
+        bcc     DoCollision
         inc     $1b
         lda     ($20)
         cmp     #$20
-        bcc     @7390
+        bcc     DoCollision
         inc     $1b
         lda     ($22)
         cmp     #$20
-        bcc     @7390
+        bcc     DoCollision
         inc     $1b
         lda     ($24)
         cmp     #$20
-        bcc     @7390
-        tdc
+        bcc     DoCollision
+        clr_a
         pha
         plb
         rts
 
 ; do collision event
-@7390:  sta     $1a
-        tdc
+DoCollision:
+        sta     $1a
+        clr_a
         pha
         plb
         sty     $0562
@@ -3914,6 +4069,7 @@ CheckCollosions:
         lda     #1
         sta     $055e
         rts
+.endproc  ; CheckCollosions
 
 ; ------------------------------------------------------------------------------
 
@@ -4065,7 +4221,7 @@ UpdateCollisionScroll:
         sty     $07ff
         sty     $0801
         ldy     $0562                   ; colliding npc data pointer
-        tdc
+        clr_a
         sta     $0882,y                 ; clear queue counter
         lda     $055f                   ; set facing direction
         sta     $087f,y
@@ -4122,11 +4278,11 @@ UpdateObjActions:
         tax
         lda     f:FirstObjTbl2,x        ; get first object (x2)
         sta     $dc
-        lda     #$06
+        lda     #6
         sta     $de
 
 ObjActionLoop:
-@7587:  tdc                             ; start of loop
+@7587:  clr_a                           ; start of loop
         shorta
         lda     $dc
         tax
@@ -4231,7 +4387,7 @@ UpdateRandomObjAction:
 ; activated (movement)
 UpdateActiveObjAction:
 @7667:  longa
-        tdc
+        clr_a
         sta     $0871,y                 ; clear movement speed
         sta     $0873,y
         shorta
@@ -4317,7 +4473,7 @@ ExecObjScript:
         lda     $7e2000,x
         bmi     @773c
         longa
-        tdc
+        clr_a
         sta     $0871,y
         sta     $0873,y
         shorta
@@ -4538,7 +4694,7 @@ ObjCmd_c8:
 ; [ object command $cc: turn object up ]
 
 ObjCmd_cc:
-@78ab:  tdc
+@78ab:  clr_a
         sta     $087f,y
         lda     #$04
         sta     $0877,y
@@ -4619,7 +4775,7 @@ ObjCmd_d1:
 @7928:  lda     $0867,y
         and     #$7f
         sta     $0867,y
-        tdc
+        clr_a
         sta     $087d,y
         lda     $087c,y
         and     #$f0
@@ -4779,7 +4935,7 @@ ObjCmd_d5:
         lda     $1e
         sta     $086a,y
         shorta
-        tdc
+        clr_a
         sta     $086c,y
         sta     $0869,y
         jsr     GetObjMapPtr
@@ -4838,7 +4994,7 @@ ObjCmd_dd:
 
 ObjCmd_e0:
 @7aa4:  longa
-        tdc
+        clr_a
         sta     $0871,y                 ; clear movement speed
         sta     $0873,y
         shorta
@@ -4959,13 +5115,13 @@ ObjCmd_fd:
 ; [ object command $ff: end of script ]
 
 ObjCmd_ff:
-@7b70:  tdc
+@7b70:  clr_a
         sta     $0885,y                 ; clear script pointer (bank byte)
         lda     $087c,y
         and     #$f0
         sta     $087c,y                 ; clear movement type
         longa
-        tdc
+        clr_a
         sta     $0871,y                 ; clear movement speed
         sta     $0873,y
         sta     $0883,y                 ; clear script pointer
@@ -5046,7 +5202,7 @@ NPCMoveRand:
         rts
 
 ; stop object and return
-@7c1f:  tdc
+@7c1f:  clr_a
         sta     $0871,y
         sta     $0872,y
         sta     $0873,y
@@ -5125,7 +5281,7 @@ _7c94:  lda     $0880,y
 
 ; [ update object layer priority (based on destination tile) ]
 
-; x = bg1 tile index
+; X: bg1 tile index
 
 UpdateObjLayerPriorityBefore:
 @7ca9:  lda     $0868,y                 ; object sprite layer priority
@@ -5169,15 +5325,15 @@ GetObjMapPtr:
         shorta
         and     $87                     ; bg1 y clip
         sta     $087b,y                 ; high byte of object map data pointer
-        tdc
+        clr_a
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ get pointer to object map data in facing direction ]
 
-;    a = facing direction + 1
-; +$1e = pointer to object map data in facing direction (out)
+;    A: facing direction + 1
+; +$1e: pointer to object map data in facing direction (out)
 
 GetObjMapAdjacent:
 @7d03:  tax
@@ -5197,10 +5353,10 @@ GetObjMapAdjacent:
 ; ------------------------------------------------------------------------------
 
 AdjacentXTbl:
-@7d20:  .byte   $00,$00,$01,$00,$ff
+        .lobytes 0,0,1,0,-1
 
 AdjacentYTbl:
-@7d25:  .byte   $00,$ff,$00,$01,$00
+        .lobytes 0,-1,0,1,0
 
 ; ------------------------------------------------------------------------------
 

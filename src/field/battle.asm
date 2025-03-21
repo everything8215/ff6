@@ -30,16 +30,18 @@
         lda     #$c1                    ; play battle sound effect
         jsr     PlaySfx
 :       lda     $078a                   ; return if battle blur is disabled
-        bmi     done
+        bmi     Done
         stz     $46                     ; clear frame counter
-loop:   jsr     WaitVblank
+Loop:   jsr     WaitVblank
         lda     $46
         cmp     #$10
-        bcs     last_half
+        bcs     LastHalf
+
+FirstHalf:
         and     #$07                    ; increase mosaic size from 0 to 7 twice
         bra     :+
 
-last_half:
+LastHalf:
         and     #$0f                    ; then increase from 0 to 15 once
 :       asl4
         ora     #$0f                    ; enable mosaic on all bg layers
@@ -53,8 +55,8 @@ last_half:
         sta     $7e824f
         lda     $46                     ; loop for 32 frames
         cmp     #32
-        bne     loop
-done:   rts
+        bne     Loop
+Done:   rts
 .endproc  ; BattleMosaic
 
 ; ------------------------------------------------------------------------------
@@ -145,12 +147,12 @@ done:   rts
         lda     f:WorldBattleRate,x     ; world battle rates
         ldy     $22
         beq     :+
-loop:   lsr2
+Loop:   lsr2
         dey
-        bne     loop
+        bne     Loop
 :       and     #$03
         cmp     #$03
-        beq     no_battle
+        beq     NoBattle
         sta     $1a
         lda     $11df
         and     #$03
@@ -160,7 +162,7 @@ loop:   lsr2
         tax
         lda     f:WorldBattleRateTbl,x
         ora     f:WorldBattleRateTbl+1,x
-        beq     no_battle
+        beq     NoBattle
         longa
         lda     $1f6e
         clc
@@ -171,7 +173,7 @@ loop:   lsr2
         shorta0
         jsr     UpdateBattleRng
         cmp     $1f6f
-        bcs     no_battle
+        bcs     NoBattle
         stz     $1f6e
         stz     $1f6f
         lda     $24
@@ -202,7 +204,7 @@ loop:   lsr2
         lda     #1
         bra     :+
 
-no_battle:
+NoBattle:
         clr_a
 :       pha
         jsr     PushDP
@@ -271,13 +273,13 @@ SubBattleRateTbl:
         tax
 
 ; find a nonzero byte in the list of available veldt battles
-loop1:  lda     $1ddd,x
+Loop1:  lda     $1ddd,x
         bne     :+
         txa
         inc
         and     #$3f
         tax
-        bra     loop1
+        bra     Loop1
 :       sta     $1a
         txa
         sta     $1fa5
@@ -290,14 +292,14 @@ loop1:  lda     $1ddd,x
         tax
 
 ; pick a random available battle
-loop2:  lda     $1a
+Loop2:  lda     $1a
         and     f:BitOrTbl,x
         bne     :+
         txa
         inc
         and     #$07
         tax
-        bra     loop2
+        bra     Loop2
 :       longa_clc
         txa
         adc     $1e
@@ -316,33 +318,33 @@ loop2:  lda     $1a
 
 .proc CheckBattleSub
         lda     $84
-        bne     done
+        bne     Done
         lda     $078e
-        bne     done
+        bne     Done
         lda     $1eb9
         and     #$20
-        bne     done
+        bne     Done
         ldx     $e5
-        bne     done
+        bne     Done
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     done
+        bne     Done
         lda     $0525
-        bpl     done
+        bpl     Done
         ldy     $0803
         lda     $0869,y
-        bne     done
+        bne     Done
         lda     $086a,y
         and     #$0f
-        bne     done
+        bne     Done
         lda     $086c,y
-        bne     done
+        bne     Done
         lda     $086d,y
         and     #$0f
-        bne     done
+        bne     Done
         lda     $57
         bne     :+
-done:   rts
+Done:   rts
 
 :       stz     $57                     ; disable random battle
         ldx     $078c                   ; increment number of steps on map
@@ -359,9 +361,9 @@ done:   rts
         lda     f:SubBattleRate,x       ; probability data (2 bits per map)
         cpy     $00
         beq     :+
-loop:   lsr2
+Loop:   lsr2
         dey
-        bne     loop
+        bne     Loop
 :       and     #$03
         sta     $1a
         lda     $11df                   ; moogle charm and charm bangle effect
@@ -372,7 +374,7 @@ loop:   lsr2
         tax
         lda     f:SubBattleRateTbl,x
         ora     f:SubBattleRateTbl+1,x
-        jeq     moogle_charm            ; return if battle probability is zero
+        jeq     MoogleCharm             ; return if battle probability is zero
         longa_clc
         lda     $1f6e                   ; random battle counter
         adc     f:SubBattleRateTbl,x    ; add random battle rate (max #$ff00)
@@ -382,7 +384,7 @@ loop:   lsr2
         shorta0
         jsr     UpdateBattleRng
         cmp     $1f6f
-        bcs     done                    ; return if counter didn't overflow
+        bcs     Done                    ; return if counter didn't overflow
         stz     $1f6e                   ; clear random battle counter
         stz     $1f6f
         ldx     a:$0082
@@ -452,7 +454,7 @@ loop:   lsr2
         lda     #$80
         sta     $11fa                   ; enable map startup event
 
-moogle_charm:
+MoogleCharm:
         rts
 .endproc  ; CheckBattleSub
 

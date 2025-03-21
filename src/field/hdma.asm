@@ -20,7 +20,9 @@
 ; [ init hdma data ]
 
 InitHDMA:
-@3821:  lda     #$43                    ; channel #0: bg2 scroll ($210f & $2110)
+
+; channel #0: bg2 scroll ($210f & $2110)
+@3821:  lda     #$43
         sta     hDMA0::CTRL             ; 2 address, write twice
         lda     #<hBG2HOFS
         sta     hDMA0::HREG
@@ -29,7 +31,9 @@ InitHDMA:
         lda     #$7e
         sta     hDMA0::ADDR_B
         sta     hDMA0::HDMA_B
-        lda     #$44                    ; channel #7: mosaic & bg1-3 data location in vram ($2106, $2107, $2108, $2109)
+
+; channel #7: mosaic & bg1-3 data location in vram ($2106, $2107, $2108, $2109)
+        lda     #$44
         sta     hDMA7::CTRL             ; 4 address
         lda     #<hMOSAIC
         sta     hDMA7::HREG
@@ -38,7 +42,9 @@ InitHDMA:
         lda     #$7e
         sta     hDMA7::ADDR_B
         sta     hDMA7::HDMA_B
-        lda     #$43                    ; channel #4: bg1 scroll ($210d & $210e)
+
+; channel #4: bg1 scroll ($210d & $210e)
+        lda     #$43
         sta     hDMA4::CTRL             ; 2 address, write twice
         lda     #<hBG1HOFS
         sta     hDMA4::HREG
@@ -47,7 +53,9 @@ InitHDMA:
         lda     #$7e
         sta     hDMA4::ADDR_B
         sta     hDMA4::HDMA_B
-        lda     #$43                    ; channel #3: bg3 scroll ($2111 & $2112)
+
+ ; channel #3: bg3 scroll ($2111 & $2112)
+        lda     #$43
         sta     hDMA3::CTRL             ; 2 address, write twice
         lda     #<hBG3HOFS
         sta     hDMA3::HREG
@@ -56,16 +64,20 @@ InitHDMA:
         lda     #$7e
         sta     hDMA3::ADDR_B
         sta     hDMA3::HDMA_B
-        lda     #$42                    ; channel #2: fixed color add/sub values ($2132)
+
+; channel #2: fixed color add/sub values ($2132)
+        lda     #$42
         sta     hDMA2::CTRL             ; 1 address, write twice
-        lda     #$32
+        lda     #<hCOLDATA
         sta     hDMA2::HREG
         ldx     #$7d07
         stx     hDMA2::ADDR
         lda     #$7e
         sta     hDMA2::ADDR_B
         sta     hDMA2::HDMA_B
-        lda     #$41                    ; channel #5: window 2 position ($2128 & $2129)
+
+; channel #5: window 2 position ($2128 & $2129)
+        lda     #$41
         sta     hDMA5::CTRL             ; 2 address
         lda     #<hWH2
         sta     hDMA5::HREG
@@ -74,7 +86,9 @@ InitHDMA:
         lda     #$7e
         sta     hDMA5::ADDR_B
         sta     hDMA5::HDMA_B
-        lda     #$41                    ; channel #6: main/sub screen designation ($212c & $212d)
+
+; channel #6: main/sub screen designation ($212c & $212d)
+        lda     #$41
         sta     hDMA6::CTRL             ; 2 address
         lda     #<hTM
         sta     hDMA6::HREG
@@ -83,7 +97,9 @@ InitHDMA:
         lda     #$7e
         sta     hDMA6::ADDR_B
         sta     hDMA6::HDMA_B
-        lda     #$41                    ; channel #1: color add/sub settings ($2130 & $2131)
+
+; channel #1: color add/sub settings ($2130 & $2131)
+        lda     #$41
         sta     hDMA1::CTRL             ; 2 address
         lda     #<hCGSWSEL
         sta     hDMA1::HREG
@@ -92,10 +108,12 @@ InitHDMA:
         lda     #$7e
         sta     hDMA1::ADDR_B
         sta     hDMA1::HDMA_B
+
+; set up hdma tables
         lda     #$7e
         pha
         plb
-        ldx     $00         ; set up hdma tables
+        ldx     $00
         lda     #$88        ; 27 strips @ 8 scanlines each
 @38e9:  sta     $7b40,x
         sta     $7b9b,x
@@ -129,7 +147,7 @@ InitHDMA:
         sta     $7d62,x
         sta     $7dbd,x
         sta     $7e18,x
-        tdc
+        clr_a
         pha
         plb
         jsr     InitFontColorHDMATbl
@@ -137,12 +155,15 @@ InitHDMA:
         jsr     InitMosaicHDMATbl
         jsr     InitColorMathHDMATbl
         jsr     InitColorMathHDMAData
-        jsr     InitWindowHDMATbl
+        jsr     UpdateWindowHDMATbl
         jsr     InitWindowHDMAData
         jsr     InitMaskHDMATbl
         jsr     InitMaskHDMAData
         jsr     InitFixedColorHDMATbl
         jsr     InitFixedColorHDMAData
+        .if     ::DEBUG
+        jsr     DebugUpdateHDMATbl
+        .endif
         rts
 
 ; ------------------------------------------------------------------------------
@@ -167,7 +188,7 @@ InitFontColorHDMATbl:
         cpx     #$0020
         bne     @3983
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -216,7 +237,7 @@ InitFadeBars:
         cpx     #$0018
         bne     @39de
         shorta0
-        tdc
+        clr_a
         pha
         plb
 @3a04:  rts
@@ -239,7 +260,7 @@ InitMaskHDMATbl:
         lda     #$8173
         sta     $7dbe
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -253,7 +274,7 @@ InitMaskHDMAData:
         stx     hWMADDL
         lda     #$7e
         sta     hWMADDH
-        tdc
+        clr_a
         .repeat 16
         sta     hWMDATA
         .endrep
@@ -267,7 +288,7 @@ InitMaskHDMAData:
         xba
         sta     hWMDATA
         .endrep
-        tdc
+        clr_a
         ldx     #$8193
         stx     hWMADDL
         lda     #$7e
@@ -278,7 +299,7 @@ InitMaskHDMAData:
         xba
         sta     hWMDATA
         .endrep
-        tdc
+        clr_a
         ldx     #$8163
         stx     hWMADDL
         lda     #$7e
@@ -292,7 +313,7 @@ InitMaskHDMAData:
         xba
         sta     hWMDATA
         .endrep
-        tdc
+        clr_a
         ldx     #$81a3
         stx     hWMADDL
         lda     #$7e
@@ -303,61 +324,71 @@ InitMaskHDMAData:
         xba
         sta     hWMDATA
         .endrep
-        tdc
+        clr_a
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ update window 2 position hdma table ]
 
-InitWindowHDMATbl:
-@3b9b:  lda     $0566
+.proc UpdateWindowHDMATbl
+        lda     $0566
         lsr
-        bcs     @3bd0
+        bcs     OddFrames
+
+; even frames
         lda     #$7e
         pha
         plb
         longa
         ldx     $00
         lda     #$8cb3
-@3bac:  ldy     $7d66,x
+
+EvenLoop:
+        ldy     $7d66,x
         cpy     #$8ca3
-        beq     @3bb7
+        beq     :+
         sta     $7d66,x
-@3bb7:  clc
+:       clc
         adc     #$0010
         inx3
         cpx     #$004e
-        bne     @3bac
+        bne     EvenLoop
         lda     #$8ff3
         sta     $7d63
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
-@3bd0:  lda     #$7e
+
+; odd frames
+OddFrames:
+        lda     #$7e
         pha
         plb
         longa
         ldx     $00
         lda     #$8e53
-@3bdb:  ldy     $7d66,x
+
+OddLoop:
+        ldy     $7d66,x
         cpy     #$8ca3
-        beq     @3be6
+        beq     :+
         sta     $7d66,x
-@3be6:  clc
+:       clc
         adc     #$0010
         inx3
         cpx     #$004e
-        bne     @3bdb
+        bne     OddLoop
         lda     #$8ff3
         sta     $7d63
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
+.endproc  ; UpdateWindowHDMATbl
 
 ; ------------------------------------------------------------------------------
 
@@ -384,7 +415,7 @@ InitWindowHDMAData:
         cpx     #$01a0
         bne     @3c1c
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -405,7 +436,7 @@ InitFixedColorHDMATbl:
         cpx     #$0051
         bne     @3c3b
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -518,7 +549,7 @@ InitColorMathHDMATbl:
         cpx     #$0051
         bne     @3da7
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -537,7 +568,7 @@ InitColorMathHDMAData:
         sta     $8c73,x
         lda     $4e
         sta     $8c64,x
-        tdc
+        clr_a
         sta     $8c74,x
         lda     #$20
         sta     $8ad3,x
@@ -632,7 +663,7 @@ InitColorMathHDMAData:
         inx2
         cpx     #8
         jne     @3e2f
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -641,55 +672,66 @@ InitColorMathHDMAData:
 
 ; [ init mosaic/bg location hdma table and data ]
 
-InitMosaicHDMATbl:
-@3ee7:  ldx     $00
+.proc InitMosaicHDMATbl
+        ldx     $00
         lda     #$7e
         pha
         plb
         longa
-@3eef:  lda     #$8233
+:       lda     #$8233                  ; default hdma data is at $8233
         sta     $7b9c,x
         inx3
         cpx     #$0051
-        bne     @3eef
+        bne     :-
         shorta0
         ldx     $00
-@3f02:  tdc
-        sta     $81b3,x
-        sta     $81d3,x
-        sta     $8213,x
-        sta     $8253,x
-        lda     #$0f
-        sta     $81f3,x
-        sta     $8233,x
-        lda     #$40
-        sta     $81b4,x
-        sta     $81f4,x
-        lda     #$48
-        sta     $8214,x
-        sta     $8234,x
-        sta     $81d4,x
-        sta     $8254,x
-        lda     #$50
-        sta     $81d5,x
-        sta     $8215,x
-        sta     $8235,x
-        sta     $8255,x
-        lda     #$44
-        sta     $81b6,x
-        sta     $81d6,x
-        sta     $81f6,x
-        sta     $8256,x
-        lda     #$58
-        sta     $8216,x
-        sta     $8236,x
+
+Loop:
+; mosaic
+        clr_a                           ; disable mosaic
+        sta     $81b3,x                 ; dialogue window
+        sta     $81d3,x                 ; dialogue window (text only)
+        sta     $8213,x                 ; unused
+        sta     $8253,x                 ; horizontal fade bars (ending)
+        lda     #$0f                    ; enable mosaic
+        sta     $81f3,x                 ; unused
+        sta     $8233,x                 ; default map
+
+; bg1 tilemap location
+        lda     #$40                    ; dialogue window tilemap
+        sta     $81b4,x                 ; dialogue window
+        sta     $81f4,x                 ; unused
+        lda     #$48                    ; map bg1 tilemap
+        sta     $8214,x                 ; unused
+        sta     $8234,x                 ; default map
+        sta     $81d4,x                 ; dialogue window (text only)
+        sta     $8254,x                 ; horizontal fade bars (ending)
+
+; bg2 tilemap location
+        lda     #$50                    ; map bg2 tilemap
+        sta     $81d5,x                 ; dialogue window (text only)
+        sta     $8215,x                 ; unused
+        sta     $8235,x                 ; default map
+        sta     $8255,x                 ; horizontal fade bars (ending)
+
+; bg3 tilemap location
+        lda     #$44                    ; dialogue text tilemap
+        sta     $81b6,x                 ; dialogue window
+        sta     $81d6,x                 ; dialogue window (text only)
+        sta     $81f6,x                 ; unused
+        sta     $8256,x                 ; horizontal fade bars (ending)
+        lda     #$58                    ; map bg3 tilemap
+        sta     $8216,x                 ; unused
+        sta     $8236,x                 ; default map
+
         inx4
-        cpx     #$0020
-        bne     @3f02
-        tdc
+        cpx     #$0020                  ; 8 scanlines * 4 hardware registers
+        bne     Loop
+        clr_a
         pha
         plb
         rts
+.endproc  ; InitMosaicHDMATbl
 
 ; ------------------------------------------------------------------------------
 
@@ -784,19 +826,19 @@ _c04007:
         asl2
         tax
         ldy     $00
-@4012:  lda     f:RNGTbl,x   ; random number table
+@4012:  lda     f:RNGTbl,x
         cmp     #$c0
-        bcc     @4020       ; branch if less than 192 (3/4 chance)
-        and     #$30        ; set mosaic size (0..3)
-        ora     #$04        ; enable mosaic in bg3
+        bcc     @4020                   ; branch if less than 192 (3/4 chance)
+        and     #$30                    ; set mosaic size (0..3)
+        ora     #$04                    ; enable mosaic in bg3
         bra     @4021
-@4020:  tdc
+@4020:  clr_a
 @4021:  sta     $81d3,y
         inx
         iny4
         cpy     #$0020
         bne     @4012
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -826,7 +868,7 @@ InitScrollHDMATbl:
         cpx     #$004e
         bne     @403a
         ldx     $00                     ; bg1 scroll hdma data for dialog window
-        tdc
+        clr_a
 @4069:  sta     $8313,x                 ; clear horizontal scroll values
         inx2
         cpx     #$0220
@@ -842,7 +884,7 @@ InitScrollHDMATbl:
         bne     @4076
         ldx     $00                     ; bg3 scroll hdma data for dialog window
         txy
-@408d:  tdc
+@408d:  clr_a
         sta     $85f3,y                 ; clear horizontal scroll values
         lda     f:DlgWindowBG3ScrollTbl,x
         and     #$00ff
@@ -853,7 +895,7 @@ InitScrollHDMATbl:
         bne     @408d
         ldx     $00                     ; bg3 scroll hdma data for map name window
         txy
-@40a9:  tdc
+@40a9:  clr_a
         sta     $8573,y                 ; clear horizontal scroll values
         lda     f:MapTitleBG3ScrollTbl,x
         and     #$00ff
@@ -863,14 +905,14 @@ InitScrollHDMATbl:
         cpy     #$0080
         bne     @40a9
         ldx     $00                     ; bg1 scroll hdma data for map name window
-        tdc
+        clr_a
 @40c5:  sta     $8533,x                 ; clear horizontal scroll values
         inx2
         cpx     #$0020
         bne     @40c5
         ldx     $00
-        tdc
-@40d2:  tdc
+        clr_a
+@40d2:  clr_a
         sta     $8553,x
         lda     #$0028
         sta     $8555,x                 ; set vertical scroll values to $28
@@ -880,7 +922,7 @@ InitScrollHDMATbl:
         ldx     $00                     ; bg3 scroll data (unused)
 @40e7:  lda     #$00b0
         sta     $8715,x
-        tdc
+        clr_a
         sta     $8713,x
         inx4
         cpx     #$0020
@@ -888,13 +930,13 @@ InitScrollHDMATbl:
         ldx     $00                     ; bg3 scroll data for horizontal fade bars (from ending)
 @40fc:  lda     #$00b8
         sta     $8735,x
-        tdc
+        clr_a
         sta     $8733,x
         inx4
         cpx     #$0020
         bne     @40fc
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -902,52 +944,45 @@ InitScrollHDMATbl:
 ; ------------------------------------------------------------------------------
 
 ; bg3 vertical scroll values for dialog window
-bg3_mess_pos_tbl:
 DlgWindowBG3ScrollTbl:
-@4116:  .word   $fffc,$fffc,$fffc,$fffc,$fffc,$fffc,$fffc,$fffc
-        .word   $fffc,$fffc,$fffc,$fffc,$fffc,$fffc,$fffc,$fffc
-        .word   $fffc,$fffc,$fffc,$fffc,$fffd,$fffd,$fffd,$fffd
-        .word   $fffd,$fffd,$fffd,$fffd,$fffd,$fffd,$fffd,$fffd
-        .word   $fffd,$fffd,$fffd,$fffe,$fffe,$fffe,$fffe,$fffe
-        .word   $fffe,$fffe,$fffe,$fffe,$fffe,$fffe,$fffe,$fffe
-        .word   $fffe,$fffe,$ffff,$ffff,$ffff,$ffff,$ffff,$ffff
-        .word   $ffff,$ffff,$ffff,$ffff,$ffff,$ffff,$ffff,$ffff
-        .word   $ffff,$0000,$0000,$0000,$0000,$0000,$0000,$0000
-        .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
-        .word   $0001,$0001,$0001,$0001,$0001,$0001,$0001,$0001
-        .word   $0001,$0001,$0001,$0001,$0001,$0001,$0001,$0001
-        .word   $0001,$0001,$0001,$0001,$0001,$0001,$0001,$0001
-        .word   $0001,$0001,$0001,$0001,$0001,$0001
+        .addr   -4,-4,-4,-4,-4
+        .addr   -4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4
+        .addr   -3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3
+        .addr   -2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2
+        .addr   -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
+        .addr   +0,+0,+0,+0,+0,+0,+0,+0,+0,+0,+0,+0,+0,+0,+0
+        .addr   +1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1
+        .addr   +1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1,+1
 
 ; bg3 vertical scroll values for map name window
 MapTitleBG3ScrollTbl:
-@41f2:  .word   $fffa,$fffa,$fffa,$fffa,$fffa,$fffa,$fffa,$fffa
-        .word   $fffa,$fffa,$fffa,$fffa,$fffa,$fffa,$fffa,$fffa
-        .word   $fffa,$fffa,$fffa,$fffa,$fffa,$fffa,$0000,$0000
-        .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
-        .word   $0000,$0000
+        .addr   -6,-6,-6,-6,-6,-6,-6,-6
+        .addr   -6,-6,-6,-6,-6,-6,-6,-6
+        .addr   -6,-6,-6,-6,-6,-6,+0,+0
+        .addr   +0,+0,+0,+0,+0,+0,+0,+0
+        .addr   +0,+0
 
 ; bg1 vertical scroll values for dialog window (compresses window while opening)
 DlgWindowBG1ScrollTbl:
-@4236:  .byte   $f8,$f8,$f9,$f9,$f9,$f9,$fa,$fa
-        .byte   $fa,$fb,$fb,$fb,$fb,$fc,$fc,$fc
-        .byte   $fd,$fd,$fd,$fd,$fe,$fe,$fe,$ff
-        .byte   $ff,$ff,$ff,$00,$00,$01,$01,$01
-        .byte   $01,$02,$02,$02,$03,$03,$03,$03
-        .byte   $04,$04,$04,$05,$05,$05,$05,$06
-        .byte   $06,$06,$07,$07,$07,$07,$08,$08
+        .lobytes  -8, -8, -7, -7, -7, -7, -6, -6
+        .lobytes  -6, -5, -5, -5, -5, -4, -4, -4
+        .lobytes  -3, -3, -3, -3, -2, -2, -2, -1
+        .lobytes  -1, -1, -1, +0, +0, +1, +1, +1
+        .lobytes  +1, +2, +2, +2, +3, +3, +3, +3
+        .lobytes  +4, +4, +4, +5, +5, +5, +5, +6
+        .lobytes  +6, +6, +7, +7, +7, +7, +8, +8
 
-@426e:  .byte   $f0,$f1,$f2,$f2,$f3,$f4,$f5,$f6
-        .byte   $f6,$f7,$f8,$f9,$fa,$fa,$fb,$fc
-        .byte   $fd,$fe,$fe,$ff,$01,$02,$02,$03
-        .byte   $04,$05,$06,$06,$07,$08,$09,$0a
-        .byte   $0a,$0b,$0c,$0d,$0e,$0e,$0f,$10
+        .lobytes -16,-15,-14,-14,-13,-12,-11,-10
+        .lobytes -10, -9, -8, -7, -6, -6, -5, -4
+        .lobytes  -3, -2, -2, -1, +1, +2, +2, +3
+        .lobytes  +4, +5, +6, +6, +7, +8, +9,+10
+        .lobytes +10,+11,+12,+13,+14,+14,+15,+16
 
-@4296:  .byte   $e8,$ea,$ec,$ee,$f0,$f2,$f4,$f6
-        .byte   $f8,$fa,$fc,$fe,$02,$04,$06,$08
-        .byte   $0a,$0c,$0e,$10,$12,$14,$16,$18
+        .lobytes -24,-22,-20,-18,-16,-14,-12,-10
+        .lobytes  -8, -6, -4, -2, +2, +4, +6, +8
+        .lobytes +10,+12,+14,+16,+18,+20,+22,+24
 
-@42ae:  .byte   $e0,$e8,$f0,$f8,$08,$10,$18,$20
+        .lobytes -32,-24,-16, -8, +8,+16,+24,+32
 
 ; ------------------------------------------------------------------------------
 
@@ -970,7 +1005,7 @@ UpdateScrollHDMA:
         sta     hBG2VOFS
         xba
         sta     hBG2VOFS
-        tdc
+        clr_a
         lda     #$7e
         pha
         plb
@@ -1007,7 +1042,7 @@ UpdateScrollHDMA:
         jeq     @444a
 
 ; wavy bg1
-        lda     $46
+        lda     $46                     ; frame counter
         lsr
         clc
         adc     $60                     ; bg1 vertical scroll position
@@ -1019,7 +1054,7 @@ UpdateScrollHDMA:
         .repeat 16, i
         tya
         clc
-        adc     f:WavyScrollTbl1+i*2,x
+        adc     f:WavyScrollTbl+i*2,x
         sta     $8275+i*4
         .endrep
 
@@ -1044,13 +1079,13 @@ UpdateScrollHDMA:
         .repeat 16, i
         tya
         clc
-        adc     f:WavyScrollTbl1+i*2,x
+        adc     f:WavyScrollTbl+i*2,x
         sta     $82b5+i*4
         .endrep
 
 ; bg3
 @44f8:  shorta0
-        lda     $46
+        lda     $46                     ; frame counter
         lsr3
         clc
         adc     $70
@@ -1064,18 +1099,18 @@ UpdateScrollHDMA:
 @4511:  longa_clc
         lda     $70
         adc     $0750
+        .repeat 8, i
+        .if i=0
         tay
-        clc
-        adc     f:WavyScrollTbl3,x
-        sta     $82f5
-        .repeat 7, i
+        .else
         tya
+        .endif
         clc
-        adc     f:WavyScrollTbl3+(i+1)*2,x
-        sta     $82f5+(i+1)*4
+        adc     f:BG3WavyScrollTbl + i * 2,x
+        sta     $82f5 + i * 4
         .endrep
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -1083,27 +1118,21 @@ UpdateScrollHDMA:
 ; ------------------------------------------------------------------------------
 
 ; scroll HDMA values for wavy BG1 and BG2
-WavyScrollTbl1:
-@4567:  .word   $0000,$0001,$0001,$0002,$0002,$0002,$0001,$0001
-        .word   $0000,$ffff,$ffff,$fffe,$fffe,$fffe,$ffff,$ffff
-        .word   $0000,$0001,$0001,$0002,$0002,$0002,$0001,$0001
-        .word   $0000,$ffff,$ffff,$fffe,$fffe,$fffe,$ffff,$ffff
-
-; unused scroll values for BG1 and BG2
-WavyScrollTbl2:
-@45a7:  .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
-        .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
-        .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
-        .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
+WavyScrollTbl:
+@4567:  .addr   +0,+1,+1,+2,+2,+2,+1,+1
+        .addr   +0,-1,-1,-2,-2,-2,-1,-1
+        .addr   +0,+1,+1,+2,+2,+2,+1,+1
+        .addr   +0,-1,-1,-2,-2,-2,-1,-1
+        .addr   +0,+0,+0,+0,+0,+0,+0,+0
+        .addr   +0,+0,+0,+0,+0,+0,+0,+0
+        .addr   +0,+0,+0,+0,+0,+0,+0,+0
+        .addr   +0,+0,+0,+0,+0,+0,+0,+0
 
 ; scroll HDMA values for wavy BG3
-WavyScrollTbl3:
-@45e7:  .word   $0000,$0001,$0001,$0001,$0000,$ffff,$ffff,$ffff
-        .word   $0000,$0001,$0001,$0001,$0000,$ffff,$ffff,$ffff
-
-; unused scroll values for BG3
-WavyScrollTbl4:
-@4607:  .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
-        .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
+BG3WavyScrollTbl:
+@45e7:  .addr   +0,+1,+1,+1,+0,-1,-1,-1
+        .addr   +0,+1,+1,+1,+0,-1,-1,-1
+        .addr   +0,+0,+0,+0,+0,+0,+0,+0
+        .addr   +0,+0,+0,+0,+0,+0,+0,+0
 
 ; ------------------------------------------------------------------------------

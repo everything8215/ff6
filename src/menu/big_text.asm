@@ -68,42 +68,42 @@ _c3ae9a:
         lda     #$01
         jsr     _c3af24
         ldy     #$6c00
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         ldx     #$0006
         lda     #$02
         jsr     _c3af24
         ldy     #$6c90
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         ldx     #$000c
         lda     #$04
         jsr     _c3af24
         ldy     #$6d20
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         ldx     #$0012
         lda     #$08
         jsr     _c3af24
         ldy     #$6db0
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         ldx     #$0018
         lda     #$10
         jsr     _c3af24
         ldy     #$6e40
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         ldx     #$001e
         lda     #$20
         jsr     _c3af24
         ldy     #$6ed0
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         ldx     #$0024
         lda     #$40
         jsr     _c3af24
         ldy     #$6f60
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         ldx     #$002a
         lda     #$80
         jsr     _c3af24
         ldy     #$6ff0
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         jmp     DisableDMA2
 
 .endif
@@ -145,7 +145,7 @@ _c3af24:
         ldy     #$3f40
         sty     $eb
         phx
-        jsr     CopyLetterGfx
+        jsr     CopyBigLetterGfx
         plx
         inx
         dec     $f1
@@ -158,9 +158,9 @@ _c3af24:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ transfer letter graphics to vram ]
 
-_c3a5f6:
+TfrBigLetterGfx:
 @a5f6:  jsr     _c3a600
         lda     #$01
         trb     z45
@@ -236,7 +236,7 @@ _c3a63b:
         sty     $eb
 .endif
         phx
-        jsr     CopyLetterGfx
+        jsr     CopyBigLetterGfx
         plx
         inx
         dec     $f1
@@ -432,16 +432,15 @@ _c3a783:
         longa
 
 ; clear $7ea271-$7ea970
-loop:
-.repeat 32, i
+Loop:   .repeat 32, i
         stz     near {$a271 + i * 2},x
-.endrep
+        .endrep
         txa
         clc
         adc     #$0040
         tax
         cpx     #$0700
-        bne     loop
+        bne     Loop
         shorta
         plb
         rts
@@ -527,7 +526,7 @@ make_jump_label BigTextTask, 1
 ; write letter
 @a875:  jsr     GetLetter
         phx
-        jsr     CopyLetterGfx
+        jsr     CopyBigLetterGfx
         plx
 @a87d:  inx                 ; increment text string position
         ldy     zTaskOffset
@@ -611,7 +610,7 @@ GetLetter:
 
 ; [ copy letter graphics to vram buffer ]
 
-CopyLetterGfx:
+CopyBigLetterGfx:
 @a8b1:  pha
         sta     f:hWRMPYA
         lda     #$16
@@ -709,22 +708,22 @@ ShiftBigTextGfxTbl:
         make_jump_tbl ShiftBigTextGfx, 9
 
 ; shift text left
-.repeat 4, i
+        .repeat 4, i
 make_jump_label ShiftBigTextGfx, i
         asl     $e7
         rol     $e9
-.endrep
+        .endrep
 
 ; no shift
 make_jump_label ShiftBigTextGfx, 4
         rts
 
 ; shift text right
-.repeat 4, i
+        .repeat 4, i
 make_jump_label ShiftBigTextGfx, 8 - i
         lsr     $e9
         ror     $e7
-.endrep
+        .endrep
         rts
         .a8
 
@@ -747,42 +746,44 @@ TfrBigTextGfx:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init element symbol graphics ]
 
-_c3a9a9:
-@a9a9:  ldx     z0
-@a9ab:  lda     f:ElementSymbols,x
+.proc InitElementSymbolGfx
+        ldx     z0
+:       lda     f:ElementSymbols,x
         sta     $7e9ec9,x
         inx
         cpx     #sizeof_ElementSymbols
-        bne     @a9ab
+        bne     :-
         ldy     #$6c00
         sty     $f1
         clr_ax
-@a9c0:  lda     $7e9ec9,x
-        beq     @a9e2
+Loop:   lda     $7e9ec9,x
+        beq     Done
         jsr     GetLetter
         phx
-        jsr     _c3a9e5
+        jsr     LoadElementSymbolGfx
         plx
         inx
         ldy     $f1
-        jsr     _c3a5f6
+        jsr     TfrBigLetterGfx
         longa
         lda     $f1
         clc
         adc     #$0020
         sta     $f1
         shorta
-        bra     @a9c0
-@a9e2:  jmp     DisableDMA2
+        bra     Loop
+
+Done:   jmp     DisableDMA2
+.endproc
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ load graphics for one element symbol ]
 
-_c3a9e5:
-@a9e5:  pha
+.proc LoadElementSymbolGfx
+        pha
         ldy     #$0040
         sty     $f3
         jsr     _c3b437
@@ -790,6 +791,7 @@ _c3a9e5:
         stz     $ed
         stz     $ee
         pla
-        jmp     CopyLetterGfx
+        jmp     CopyBigLetterGfx
+.endproc
 
 ; ------------------------------------------------------------------------------

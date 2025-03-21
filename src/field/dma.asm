@@ -16,18 +16,18 @@
         stz     hVMAINC
         stz     hMDMAEN
         lda     #$41
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #<hVMDATAL
-        sta     $4301
+        sta     hDMA0::HREG
         lda     $2c
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     $3b
         stx     hVMADDL
         ldx     $2a
-        stx     $4302
+        stx     hDMA0::ADDR
         ldx     $39
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 .endproc  ; UnusedDMA
@@ -40,17 +40,17 @@
         stz     hOAMADDL
         stz     hMDMAEN
         lda     #$40
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #<hOAMDATA
-        sta     $4301
+        sta     hDMA0::HREG
         ldx     #$0300
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$00
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0220
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 .endproc  ; TfrSprites
@@ -62,13 +62,13 @@
 .proc ResetSprites
         ldx     #$0200
         lda     #$f0
-loop1:  sta     $02fd,x
+:       sta     $02fd,x
         dex4
-        bne     loop1
+        bne     :-
         ldx     #$0020
-loop2:  stz     $04ff,x
+:       stz     $04ff,x
         dex
-        bne     loop2
+        bne     :-
         rts
 .endproc  ; ResetSprites
 
@@ -80,17 +80,17 @@ loop2:  stz     $04ff,x
         stz     hCGADD
         stz     hMDMAEN
         lda     #$42
-        sta     $4300
-        lda     #$22
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hCGDATA
+        sta     hDMA0::HREG
         ldx     #$7400
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0200
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 .endproc  ; TfrPal

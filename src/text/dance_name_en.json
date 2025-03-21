@@ -1,5 +1,6 @@
 {
   "asset_label": "DanceName",
+  "inc_path": "include/text/dance_name_en.inc",
   "item_size": 12,
   "char_tables": [
     "text_en",

@@ -638,18 +638,18 @@ InitShopOptionCursor:
 
 ; cursor properties for menu state $25
 ShopOptionCursorProp:
-        make_cursor_prop {0, 0}, {3, 1}, NO_Y_WRAP
+        cursor_prop {0, 0}, {3, 1}, NO_Y_WRAP
 
 ; cursor positions for menu state $25
 ShopOptionCursorPos:
 .if LANG_EN
-@b89a:  .byte   $08,$34
-        .byte   $30,$34
-        .byte   $60,$34
+@b89a:  cursor_pos {8, 52}
+        cursor_pos {48, 52}
+        cursor_pos {96, 52}
 .else
-        .byte   $08,$34
-        .byte   $28,$34
-        .byte   $48,$34
+        cursor_pos {8, 52}
+        cursor_pos {40, 52}
+        cursor_pos {72, 52}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -675,28 +675,28 @@ InitShopBuyMenuCursor:
 
 ; cursor properties for menu state $26
 ShopBuyMenuCursorProp:
-        make_cursor_prop {0, 0}, {1, 8}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 8}, NO_X_WRAP
 
 ; cursor positions for menu state $26
 ShopBuyMenuCursorPos:
 .if LANG_EN
-@b8b4:  .byte   $00,$34
-        .byte   $00,$40
-        .byte   $00,$4c
-        .byte   $00,$58
-        .byte   $00,$64
-        .byte   $00,$70
-        .byte   $00,$7c
-        .byte   $00,$88
+@b8b4:  cursor_pos {0, 52}
+        cursor_pos {0, 64}
+        cursor_pos {0, 76}
+        cursor_pos {0, 88}
+        cursor_pos {0, 100}
+        cursor_pos {0, 112}
+        cursor_pos {0, 124}
+        cursor_pos {0, 136}
 .else
-        .byte   $08,$34
-        .byte   $08,$40
-        .byte   $08,$4c
-        .byte   $08,$58
-        .byte   $08,$64
-        .byte   $08,$70
-        .byte   $08,$7c
-        .byte   $08,$88
+        cursor_pos {8, 52}
+        cursor_pos {8, 64}
+        cursor_pos {8, 76}
+        cursor_pos {8, 88}
+        cursor_pos {8, 100}
+        cursor_pos {8, 112}
+        cursor_pos {8, 124}
+        cursor_pos {8, 136}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -863,9 +863,9 @@ _c3b9fc:
         @Y_POS = 6
 .endif
 
-.repeat 8, i
+        .repeat 8, i
         make_pos BG3A, {@X_POS, @Y_POS + i * 2}
-.endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -2277,103 +2277,28 @@ _c3c2f7:
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-
-        .define ShopTypeStr_01          {$96,$9e,$9a,$a9,$a8,$a7,$00}
-        .define ShopTypeStr_02          {$80,$ab,$a6,$a8,$ab,$00}
-        .define ShopTypeStr_03          {$88,$ad,$9e,$a6,$00}
-        .define ShopTypeStr_04          {$91,$9e,$a5,$a2,$9c,$ac,$00}
-        .define ShopTypeStr_05          {$95,$9e,$a7,$9d,$a8,$ab,$00}
-        .define ShopOptionsStr          {$81,$94,$98,$ff,$ff,$92,$84,$8b,$8b,$ff,$ff,$84,$97,$88,$93,$00}
-        .define ShopGilStr              {$86,$8f,$00}
-        .define ShopOwnedStr            {$8e,$b0,$a7,$9e,$9d,$c1,$00}
-        .define ShopEquippedStr         {$84,$aa,$ae,$a2,$a9,$a9,$9e,$9d,$c1,$00}
-        .define ShopPowerStr            {$81,$9a,$ad,$ff,$8f,$b0,$ab,$00}
-        .define ShopDefenseStr          {$83,$9e,$9f,$9e,$a7,$ac,$9e,$00}
-        .define ShopDotsStr             {$c7,$00}
-        .define ShopGreetingMsgStr      {$87,$a2,$be,$ff,$82,$9a,$a7,$ff,$88,$ff,$a1,$9e,$a5,$a9,$ff,$b2,$a8,$ae,$bf,$00}
-        .define ShopBuyMsgStr           {$87,$9e,$a5,$a9,$ff,$b2,$a8,$ae,$ab,$ac,$9e,$a5,$9f,$be,$00}
-        .define ShopBuyQtyMsgStr        {$87,$a8,$b0,$ff,$a6,$9a,$a7,$b2,$bf,$00}
-        .define ShopSellMsgStr          {$96,$a1,$9a,$ad,$9c,$a1,$9a,$ff,$a0,$a8,$ad,$bf,$00}
-        .define ShopSellQtyMsgStr       {$87,$a8,$b0,$ff,$a6,$9a,$a7,$b2,$bf,$00}
-        .define ShopByeMsgStr           {$81,$b2,$9e,$be,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define ShopNotEnoughGilMsgStr  {$98,$a8,$ae,$ff,$a7,$9e,$9e,$9d,$ff,$a6,$a8,$ab,$9e,$ff,$86,$8f,$be,$00}
-        .define ShopTooManyMsgStr       {$93,$a8,$a8,$ff,$a6,$9a,$a7,$b2,$be,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define ShopOnlyOneMsgStr       {$8e,$a7,$9e,$c3,$ac,$ff,$a9,$a5,$9e,$a7,$ad,$b2,$be,$ff,$00}
-
-.else
-
-        .define ShopTypeStr_01          {$25,$6d,$b1,$00}
-        .define ShopTypeStr_02          {$29,$89,$2f,$b1,$00}
-        .define ShopTypeStr_03          {$47,$89,$2f,$b1,$00}
-        .define ShopTypeStr_04          {$8a,$6e,$7a,$74,$a8,$c5,$b1,$00}
-        .define ShopTypeStr_05          {$2d,$c3,$89,$77,$c3,$89,$00}
-        .define ShopOptionsStr          {$6b,$89,$ff,$ff,$89,$ab,$ff,$ff,$45,$ab,$00}
-        .define ShopGilStr              {$2c,$aa,$00}
-        .define ShopOwnedStr            {$a5,$bd,$85,$8d,$ab,$6b,$39,$00}
-        .define ShopEquippedStr         {$7d,$89,$23,$77,$85,$8d,$ab,$6b,$39,$00}
-        .define ShopPowerStr            {$73,$89,$31,$6d,$a9,$c3,$6f,$ff,$c7,$00}
-        .define ShopDefenseStr          {$29,$89,$2d,$c3,$00}
-        .define ShopDotsStr             {$c7,$00}
-        .define ShopGreetingMsgStr      {$d0,$8d,$a7,$bd,$77,$bf,$8d,$c9,$47,$b9,$93,$33,$b5,$89,$71,$b9,$45,$cb,$d1,$00}
-        .define ShopBuyMsgStr           {$d0,$93,$95,$2b,$ff,$69,$77,$8d,$b9,$3f,$8d,$bd,$c9,$cb,$d1,$ff,$ff,$ff,$ff,$00}
-        .define ShopBuyQtyMsgStr        {$d0,$8d,$6f,$83,$ff,$69,$77,$8d,$b9,$3f,$8d,$bd,$c9,$cb,$d1,$00}
-        .define ShopSellMsgStr          {$d0,$93,$95,$bb,$ff,$89,$a9,$7f,$8d,$b9,$3f,$8d,$cb,$d1,$ff,$ff,$ff,$ff,$ff,$00}
-        .define ShopSellQtyMsgStr       {$d0,$8d,$6f,$83,$ff,$89,$a9,$7f,$8d,$b9,$3f,$8d,$cb,$d1,$00}
-        .define ShopByeMsgStr           {$d0,$9d,$8d,$47,$ff,$47,$c5,$a5,$c9,$d1,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define ShopNotEnoughGilMsgStr  {$d0,$c7,$c7,$91,$6b,$99,$2b,$ff,$7f,$a9,$93,$8d,$b5,$89,$3f,$99,$d1,$00}
-        .define ShopTooManyMsgStr       {$d0,$a5,$89,$ff,$a5,$85,$93,$8d,$b5,$d1,$ff,$ff,$ff,$ff,$ff,$00}
-        .define ShopOnlyOneMsgStr       {$d0,$54,$83,$8b,$ad,$21,$ff,$37,$c1,$89,$25,$b9,$3f,$b5,$d1,$00}
-
-.endif
-
-.if LANG_EN
-ShopTypeText_01:                pos_text BG3A, {2, 3}, ShopTypeStr_01
-ShopTypeText_02:                pos_text BG3A, {3, 3}, ShopTypeStr_02
-ShopTypeText_03:                pos_text BG3A, {3, 3}, ShopTypeStr_03
-ShopTypeText_04:                pos_text BG3A, {2, 3}, ShopTypeStr_04
-ShopTypeText_05:                pos_text BG3A, {2, 3}, ShopTypeStr_05
-ShopOptionsText:                pos_text BG3A, {3, 7}, ShopOptionsStr
-ShopGilText1:                   pos_text BG3A, {28, 7}, ShopGilStr
-ShopGilText2:                   pos_text BG3A, {17, 11}, ShopGilStr
-ShopOwnedText:                  pos_text BG3A, {21, 9}, ShopOwnedStr
-ShopEquippedText:               pos_text BG3A, {21, 13}, ShopEquippedStr
-ShopPowerText:                  pos_text BG3A, {3, 13}, ShopPowerStr
-ShopDefenseText:                pos_text BG3A, {3, 13}, ShopDefenseStr
-ShopDotsText:                   pos_text BG3A, {14, 13}, ShopDotsStr
-ShopGreetingMsgText:            pos_text BG3A, {11, 3}, ShopGreetingMsgStr
-ShopBuyMsgText:                 pos_text BG3A, {11, 3}, ShopBuyMsgStr
-ShopBuyQtyMsgText:              pos_text BG3A, {11, 3}, ShopBuyQtyMsgStr
-ShopSellMsgText:                pos_text BG3A, {11, 3}, ShopSellMsgStr
-ShopSellQtyMsgText:             pos_text BG3A, {11, 3}, ShopSellQtyMsgStr
-ShopByeMsgText:                 pos_text BG3A, {11, 3}, ShopByeMsgStr
-ShopNotEnoughGilMsgText:        pos_text BG3A, {11, 3}, ShopNotEnoughGilMsgStr
-ShopTooManyMsgText:             pos_text BG3A, {11, 3}, ShopTooManyMsgStr
-ShopOnlyOneMsgText:             pos_text BG3A, {11, 3}, ShopOnlyOneMsgStr
-.else
-ShopTypeText_01:                pos_text BG3A, {3, 2}, ShopTypeStr_01
-ShopTypeText_02:                pos_text BG3A, {3, 2}, ShopTypeStr_02
-ShopTypeText_03:                pos_text BG3A, {3, 2}, ShopTypeStr_03
-ShopTypeText_04:                pos_text BG3A, {2, 2}, ShopTypeStr_04
-ShopTypeText_05:                pos_text BG3A, {2, 2}, ShopTypeStr_05
-ShopOptionsText:                pos_text BG3A, {3, 6}, ShopOptionsStr
-ShopGilText1:                   pos_text BG3A, {28, 6}, ShopGilStr
-ShopGilText2:                   pos_text BG3A, {17, 10}, ShopGilStr
-ShopOwnedText:                  pos_text BG3A, {21, 8}, ShopOwnedStr
-ShopEquippedText:               pos_text BG3A, {21, 12}, ShopEquippedStr
-ShopPowerText:                  pos_text BG3A, {6, 12}, ShopPowerStr
-ShopDefenseText:                pos_text BG3A, {6, 12}, ShopDefenseStr
-ShopDotsText:                   pos_text BG3A, {14, 13}, ShopDotsStr
-ShopGreetingMsgText:            pos_text BG3A, {11, 2}, ShopGreetingMsgStr
-ShopBuyMsgText:                 pos_text BG3A, {11, 2}, ShopBuyMsgStr
-ShopBuyQtyMsgText:              pos_text BG3A, {11, 2}, ShopBuyQtyMsgStr
-ShopSellMsgText:                pos_text BG3A, {11, 2}, ShopSellMsgStr
-ShopSellQtyMsgText:             pos_text BG3A, {11, 2}, ShopSellQtyMsgStr
-ShopByeMsgText:                 pos_text BG3A, {11, 2}, ShopByeMsgStr
-ShopNotEnoughGilMsgText:        pos_text BG3A, {11, 2}, ShopNotEnoughGilMsgStr
-ShopTooManyMsgText:             pos_text BG3A, {11, 2}, ShopTooManyMsgStr
-ShopOnlyOneMsgText:             pos_text BG3A, {11, 2}, ShopOnlyOneMsgStr
-.endif
+ShopTypeText_01:                pos_text SHOP_TYPE_1
+ShopTypeText_02:                pos_text SHOP_TYPE_2
+ShopTypeText_03:                pos_text SHOP_TYPE_3
+ShopTypeText_04:                pos_text SHOP_TYPE_4
+ShopTypeText_05:                pos_text SHOP_TYPE_5
+ShopOptionsText:                pos_text SHOP_OPTIONS
+ShopGilText1:                   pos_text SHOP_GIL_1
+ShopGilText2:                   pos_text SHOP_GIL_2
+ShopOwnedText:                  pos_text SHOP_OWNED
+ShopEquippedText:               pos_text SHOP_EQUIPPED
+ShopPowerText:                  pos_text SHOP_POWER
+ShopDefenseText:                pos_text SHOP_DEFENSE
+ShopDotsText:                   pos_text SHOP_DOTS
+ShopGreetingMsgText:            pos_text SHOP_GREETING_MSG
+ShopBuyMsgText:                 pos_text SHOP_BUY_MSG
+ShopBuyQtyMsgText:              pos_text SHOP_BUY_QTY_MSG
+ShopSellMsgText:                pos_text SHOP_SELL_MSG
+ShopSellQtyMsgText:             pos_text SHOP_SELL_QTY_MSG
+ShopByeMsgText:                 pos_text SHOP_BYE_MSG
+ShopNotEnoughGilMsgText:        pos_text SHOP_NOT_ENOUGH_GIL_MSG
+ShopTooManyMsgText:             pos_text SHOP_TOO_MANY_MSG
+ShopOnlyOneMsgText:             pos_text SHOP_ONLY_ONE_MSG
 
 ; ------------------------------------------------------------------------------
 

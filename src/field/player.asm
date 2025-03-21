@@ -35,7 +35,7 @@ InitPlayerPos:
         sta     $086a,y                 ; set party object x position
         xba
         sta     $086b,y
-        tdc
+        clr_a
         lda     $1fc1
         longa
         asl4
@@ -43,7 +43,7 @@ InitPlayerPos:
         sta     $086d,y                 ; set party object y position
         xba
         sta     $086e,y
-        tdc
+        clr_a
         rts
 
 ; ------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ InitPlayerObj:
         lda     f:ObjStopTileTbl,x
         sta     $0876,y                 ; set graphical action
         sta     $0877,y
-@4667:  tdc
+@4667:  clr_a
         sta     $087e,y                 ; clear movement direction
         sta     $0886,y
         longa
@@ -331,7 +331,7 @@ UpdatePlayerMovement:
         jsr     UpdatePlayerLayerPriorityAfter
         ldy     $da                     ; pointer to current object data
         longa
-        tdc
+        clr_a
         sta     $0871,y                 ; clear object movement speed
         sta     $0873,y
         sta     $73                     ; clear movement bg scroll speed
@@ -484,7 +484,7 @@ UpdatePlayerMovement:
         beq     @49d1                   ; branch if up button is not pressed
         lda     #$04
         sta     $0877,y
-        tdc
+        clr_a
         sta     $087f,y
         jsr     CheckDoor
         bne     @49ef                   ; branch if a door opened
@@ -508,7 +508,7 @@ UpdatePlayerMovement:
 
 ; party didn't move
 @49ef:  ldy     $0803
-        tdc
+        clr_a
         sta     $087e,y                 ; no movement
         stz     $0886                   ; zero steps
         jsr     UpdateOverlay
@@ -1015,7 +1015,7 @@ CheckDoor:
         xba
         lda     $af
         tax
-        tdc
+        clr_a
         lda     $7e2000,x   ; return if there is an object on the door
         cmp     #$ff
         bne     @4e04
@@ -1039,7 +1039,7 @@ CheckDoor:
         jsr     PlaySfx
         lda     #$01        ; return (door opened)
         rts
-@4e04:  tdc                 ; return (no door opened)
+@4e04:  clr_a                 ; return (no door opened)
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1141,10 +1141,10 @@ CheckPlayerMove:
 @4e91:  lda     $7600,x     ; party on upper & lower, movement allowed unless destination is a bridge tile
         and     #$04
         beq     @4e9d
-@4e98:  tdc
+@4e98:  clr_a
         pha
         plb
-        tdc                 ; a = 0 (no movement)
+        clr_a                 ; A = 0 (no movement)
         rts
 
 ; movement allowed
@@ -1173,7 +1173,7 @@ CheckPlayerMove:
         lda     $b2         ; branch if party is on lower z-level (object map data doesn't get set if party is on bottom of a bridge tile)
         cmp     #$02
         beq     @4eef
-@4ed1:  tdc
+@4ed1:  clr_a
         pha
         plb
         ldx     $0803       ; get party object number
@@ -1196,7 +1196,7 @@ CheckPlayerMove:
         sta     $b2
 @4efd:  jsr     UpdatePlayerSpritePriorityBefore
         jsr     UpdatePlayerLayerPriorityBefore
-        tdc
+        clr_a
         pha
         plb
         ldy     $da         ; pointer to object data
@@ -1457,7 +1457,7 @@ UpdateLocalTiles:
         lda     $7700,x
         sta     $b9
         longi
-        tdc
+        clr_a
         pha
         plb
         rts

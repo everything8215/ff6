@@ -25,7 +25,7 @@
 .export EventScript_TreasureGil := TreasureGil
 .export EventScript_TreasureEmpty := TreasureEmpty
 .export EventScript_RandBattle := RandBattle
-.export EventScript_GameOver := GameOver_ext
+.export EventScript_PartyDefeated := PartyDefeated
 .export EventScript_Tent := Tent_ext
 .export EventScript_Warp := Warp_ext
 .export EventScript_TreasureMonster := TreasureMonster
@@ -119,13 +119,11 @@ EventScript:
         rand_battle
         if_b_switch $40, :+
 
-game_over:
+::PartyDefeated:
         call GameOver
 :       update_party
         return
 .endproc  ; RandBattle
-
-GameOver_ext := RandBattle::game_over
 
 ; ------------------------------------------------------------------------------
 
@@ -364,27 +362,27 @@ GameOver_ext := RandBattle::game_over
         switch $01cc=0
         switch $01cd=0
         switch $02bc=0
-        if_switch $02bf=1, phoenix_cave_warp
-        if_switch $02be=1, kefkas_tower_warp
-        call reset_turtles
+        if_switch $02bf=1, PhoenixCaveWarp
+        if_switch $02be=1, KefkasTowerWarp
+        call ResetTurtles
         load_map $01ff, {0, 0}, DOWN, {Z_UPPER, ASYNC}
         set_script_mode WORLD
         end
         set_script_mode EVENT
 
 ; warp event when in kefka's tower
-kefkas_tower_warp:
+KefkasTowerWarp:
         call _cc0ff6
         return
 
 ; warp event when in phoenix cave
-phoenix_cave_warp:
+PhoenixCaveWarp:
         call _cc1001
         return
 
 ; reset some turtles when in darill's tomb
 ; ca/0159
-reset_turtles:
+::ResetTurtles:
         switch $02b4=0
         switch $02b6=0
         return
@@ -423,7 +421,7 @@ reset_turtles:
 
 .proc EnterKefkasTower_proc
 
-strago_dlg:
+StragoDlg:
         obj_script STRAGO
                 speed SLOW
                 move LEFT, 1
@@ -436,7 +434,7 @@ strago_dlg:
 ; {strago}: The Espers_and magic, too, will most definitely disappear from this world.
         return
 
-celes_dlg:
+CelesDlg:
         obj_script CELES
                 dir DOWN
                 end
@@ -444,13 +442,14 @@ celes_dlg:
 ; {celes}: The Espers, and magic, too, will cease to exist.
         return
 
-skip_dlg:
+SkipDlg:
         dlg $0b8d
 ; Right. We're going in!
         if_switch $0127=0, _ca02d5
         return
 
-start:  if_switch $0029=1, skip_dlg
+::EnterKefkasTower:
+        if_switch $0029=1, SkipDlg
         dlg $0b8d
 ; Right. We're going in!
         load_map 1, {137, 198}, DOWN, {Z_UPPER, AIRSHIP}
@@ -570,8 +569,8 @@ start:  if_switch $0029=1, skip_dlg
         dlg $0ba4, BOTTOM
         set_case AVAIL_CHARS
         if_case
-                case CHAR::STRAGO, strago_dlg
-                case CHAR::CELES, celes_dlg
+                case CHAR::STRAGO, StragoDlg
+                case CHAR::CELES, CelesDlg
                 end_case
         obj_script EDGAR
                 dir RIGHT
@@ -728,8 +727,6 @@ _ca02d5:
         switch $0029=1
         return
 .endproc  ; EnterKefkasTower_proc
-
-EnterKefkasTower := EnterKefkasTower_proc::start
 
 ; ------------------------------------------------------------------------------
 
@@ -926,7 +923,7 @@ _ca055d:
         return
 
 ; ca/057d
-start:
+::FinalBattle:
         load_map $0150, {15, 20}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN}
         lock_camera
         play_song SILENCE
@@ -1072,9 +1069,9 @@ start:
                 move LEFT_UP_UP, 2
                 action 11
                 speed SLOWER
-@loop:          move UP, 1
+Loop:           move UP, 1
                 move DOWN, 1
-                branch @loop
+                branch Loop
                 end
         wait_15f
         obj_script NPC_1
@@ -1099,9 +1096,9 @@ start:
                 move RIGHT_UP_UP, 2
                 action 11
                 speed SLOWER
-@loop2:         move UP, 1
+Loop2:          move UP, 1
                 move DOWN, 1
-                branch @loop2
+                branch Loop2
                 end
         wait_15f
         obj_script NPC_1
@@ -1961,7 +1958,7 @@ skip_terra_scene:
         fixed_clr_off
 
 ; this is the final battle
-        battle 101, BATTLE_BG::FINAL_BATTLE_1
+        battle 101, FINAL_BATTLE_1
         call _ca5ea9
         delete_obj NPC_1
         play_song SILENCE
@@ -2528,7 +2525,7 @@ _ca12f3:
         sort_obj
         call _cac8e1
 
-game_ending:
+::GameEnding:
         switch $01CC=1
         lock_camera
         call _caf61a
@@ -8357,9 +8354,6 @@ _ca36b1:
         return
 .endproc  ; FinalBattle_proc
 
-FinalBattle := FinalBattle_proc::start
-GameEnding := FinalBattle_proc::game_ending
-
 ; ------------------------------------------------------------------------------
 
 _ca36ee:
@@ -10540,7 +10534,7 @@ _ca42f1:
                 action 35 | ACTION_H_FLIP
                 end
         wait_30f
-        battle 85, BATTLE_BG::DEFAULT
+        battle 85
         call _ca5ea9
         fade_in
         wait_1s
@@ -11282,7 +11276,7 @@ _ca46ff:
         switch $039B=1
         norm_lvl GAU
         unlock_camera
-        call Warp::reset_turtles
+        call ResetTurtles
         load_map 1, {25, 160}, UP, {ASYNC, Z_UPPER, AIRSHIP}
         set_script_mode VEHICLE
         altitude 32256
@@ -13409,7 +13403,7 @@ _ca5915:
                 ; The Imperial Airforce (IAF)!
                 ; We’re surrounded!
                 ; Let’s give ’em a bloody lip!
-        battle 126, BATTLE_BG::AIRSHIP_CENTER
+        battle 126, AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         obj_script NPC_10, ASYNC
@@ -13463,21 +13457,21 @@ _ca597f:
         return
 _ca598f:
         stop_timer 0
-        battle 126, BATTLE_BG::AIRSHIP_CENTER
+        battle 126, AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         start_timer 0, 384, _ca59a0, FIELD_ONLY
         return
 _ca59a0:
         stop_timer 0
-        battle 126, BATTLE_BG::AIRSHIP_CENTER
+        battle 126, AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         start_timer 0, 320, _ca59b1, FIELD_ONLY
         return
 _ca59b1:
         stop_timer 0
-        battle 126, BATTLE_BG::AIRSHIP_CENTER
+        battle 126, AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         wait_45f
@@ -13529,21 +13523,21 @@ _ca59b1:
         return
 _ca59fa:
         stop_timer 0
-        battle 126, BATTLE_BG::AIRSHIP_CENTER
+        battle 126, AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         start_timer 0, 512, _ca5a0b, FIELD_ONLY
         return
 _ca5a0b:
         stop_timer 0
-        battle 126, BATTLE_BG::AIRSHIP_CENTER
+        battle 126, AIRSHIP_CENTER
         call _ca5ea9
         fade_in
         return
 _ca5a16:
         if_switch $01F0=0, EventReturn
         pass_on SLOT_1
-        battle 107, BATTLE_BG::AIRSHIP_WOB
+        battle 107, AIRSHIP_WOB
         call _ca5ea9
         fade_in
         clr_overlay
@@ -13560,7 +13554,7 @@ _ca5a16:
                 end
         switch $01CC=0
         call _cacfbd
-        battle 89, BATTLE_BG::CLOUDS
+        battle 89, CLOUDS
         call _ca5ea9
 _ca5a42:
         load_map 394, {4, 8}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
@@ -14135,22 +14129,22 @@ _ca5e2c:
 
 GameStart:
         cutscene TITLE
-        char_name TERRA, 29
-        char_prop TERRA, 0
+        char_name TERRA, TERRA_INTRO
+        char_prop TERRA, TERRA
         create_obj TERRA
         char_party TERRA, 1
         obj_gfx TERRA, TERRA
         obj_pal TERRA, TERRA
         switch $02E0=1
         switch $02F0=1
-        char_name WEDGE, 32
-        char_prop WEDGE, 32
+        char_name WEDGE, WEDGE
+        char_prop WEDGE, WEDGE
         create_obj WEDGE
         char_party WEDGE, 1
         obj_gfx WEDGE, SOLDIER
         obj_pal WEDGE, LOCKE
-        char_name VICKS, 33
-        char_prop VICKS, 33
+        char_name VICKS, VICKS
+        char_prop VICKS, VICKS
         create_obj VICKS
         char_party VICKS, 1
         obj_gfx VICKS, SOLDIER
@@ -14857,7 +14851,7 @@ _ca632f:
         wait_obj NPC_17
         set_b_switch $41
         wait_obj CAMERA
-        battle 65, BATTLE_BG::DESERT_WOB
+        battle 65, DESERT_WOB
         call _ca5ea9
         switch $03FE=0
         load_map 55, {35, 50}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN}
@@ -15313,7 +15307,7 @@ _ca6623:
                 ; The young king of Figaro Castle, ally to the Empire, and a master designer of machinery…
         wait_30f
         give_item AUTOCROSSBOW
-        char_name EDGAR, 4
+        char_name EDGAR, EDGAR
         obj_gfx EDGAR, EDGAR
         obj_pal EDGAR, EDGAR
         name_menu EDGAR
@@ -15938,7 +15932,7 @@ _ca6a48:
         switch $02F4=1
         char_party EDGAR, 1
         opt_equip EDGAR
-        battle 84, BATTLE_BG::TENTACLES
+        battle 84, TENTACLES
         call _ca5ea9
         if_case CHAR::SABIN, _ca6c0c
         fade_in
@@ -16330,7 +16324,7 @@ _ca6c85:
         dlg $006C, {TEXT_ONLY, BOTTOM}
                 ; EDGAR’s twin brother, who traded the throne for his own freedom…
         wait_30f
-        char_name SABIN, 5
+        char_name SABIN, SABIN
         obj_gfx SABIN, SABIN
         obj_pal SABIN, SABIN
         name_menu SABIN
@@ -16400,7 +16394,7 @@ _ca6d63:
         switch $0315=0
         switch $01CC=1
         load_map 55, {28, 51}, DOWN, {Z_UPPER, NO_FADE_IN}
-        char_prop EDGAR, 4
+        char_prop EDGAR, EDGAR
         and_status EDGAR, {MAGITEK, INTERCEPTOR}
         max_hp EDGAR
         create_obj EDGAR
@@ -18917,8 +18911,8 @@ _ca7c3a:
                 ; and will do anything for money.
                 ; He comes and goes like the wind…
         wait_30f
-        char_prop SHADOW, 3
-        char_name SHADOW, 3
+        char_prop SHADOW, SHADOW
+        char_name SHADOW, SHADOW
         obj_gfx SHADOW, SHADOW
         obj_pal SHADOW, SHADOW
         name_menu SHADOW
@@ -19095,7 +19089,7 @@ _ca7db8:
                 ; Come to steal my cider?
         dlg $00E8
                 ; You thief!
-        battle 10, BATTLE_BG::TOWN_INT
+        battle 10, TOWN_INT
         if_b_switch $40, _ca7dcf
         call _ca85ba
         return
@@ -19236,7 +19230,7 @@ _ca7eb2:
 _ca7eb9:
         dlg $0B70
                 ; Scram, you blockhead.
-        battle 9, BATTLE_BG::TOWN_EXT
+        battle 9, TOWN_EXT
         return
 _ca7ec0:
         if_b_switch $4D, _ca7ecf
@@ -19905,14 +19899,14 @@ _ca828f:
                 end
         dlg $00FC
                 ; VARGAS: And how unlucky it is that you have run into me…!
-        char_prop SABIN, 5
+        char_prop SABIN, SABIN
         and_status SABIN, {MAGITEK, INTERCEPTOR}
         max_hp SABIN
         create_obj SABIN
         char_party SABIN, 0
         switch $02E5=1
         switch $02F5=1
-        battle 66, BATTLE_BG::MOUNTAINS_EXT
+        battle 66, MOUNTAINS_EXT
         call _ca5ea9
         char_party SABIN, 1
         hide_obj NPC_1
@@ -20347,7 +20341,7 @@ _ca85af:
 _ca85b3:
         dlg $0174
                 ; Halt!
-        battle 11, BATTLE_BG::TOWN_EXT
+        battle 11, TOWN_EXT
         return
 _ca85ba:
         clr_overlay
@@ -20384,7 +20378,7 @@ _ca85e6:
                 ; Call me a treasure hunter,
                 ; or I’ll rip your lungs out!
 _ca85fb:
-        battle 10, BATTLE_BG::TOWN_INT
+        battle 10, TOWN_INT
         if_b_switch $40, _ca8608
         call _ca85ba
         return
@@ -20537,8 +20531,8 @@ _ca86a4:
                 ; Product of genetic engineering,
                 ; battle-hardened Magitek Knight, with a spirit as pure as snow…
         wait_30f
-        char_name CELES, 6
-        char_prop CELES, 6
+        char_name CELES, CELES
+        char_prop CELES, CELES
         and_status CELES, {MAGITEK, INTERCEPTOR}
         max_hp CELES
         obj_gfx CELES, CELES
@@ -21008,7 +21002,7 @@ _ca89af:
         wait_15f
         shake ALL, 0, 1
         spc_cmd $82, $00, $FF
-        battle 67, BATTLE_BG::DEFAULT
+        battle 67
         call _ca5ea9
         fade_in
         wait_1s
@@ -21197,7 +21191,7 @@ _ca8ae3:
         move_vehicle RIGHT, 32
         move_vehicle FORWARD, 1
         wait 9
-        battle 19, BATTLE_BG::UNDERWATER
+        battle 19, UNDERWATER
         move_vehicle {LEFT, SHARP_TURNS}, 2
         wait 4
         move_vehicle {RIGHT, SHARP_TURNS}, 14
@@ -21228,7 +21222,7 @@ _ca8ae3:
         wait 4
         move_vehicle LEFT, 4
         wait 1
-        battle 20, BATTLE_BG::UNDERWATER
+        battle 20, UNDERWATER
         move_vehicle {RIGHT, SHARP_TURNS}, 6
         wait 1
         move_vehicle {RIGHT, SHARP_TURNS}, 8
@@ -21238,7 +21232,7 @@ _ca8ae3:
         move_vehicle RIGHT, 14
         move_vehicle UP, 28
         wait 12
-        battle 21, BATTLE_BG::UNDERWATER
+        battle 21, UNDERWATER
         move_vehicle LEFT, 14
         wait 4
         move_vehicle RIGHT, 17
@@ -21270,7 +21264,7 @@ _ca8b8e:
         move_vehicle {LEFT, BACKWARD, SHARP_TURNS}, 2
         move_vehicle {RIGHT, SHARP_TURNS}, 26
         move_vehicle UP, 48
-        battle 20, BATTLE_BG::UNDERWATER
+        battle 20, UNDERWATER
         move_vehicle {RIGHT, SHARP_TURNS}, 13
         move_vehicle FORWARD, 2
         wait 8
@@ -21282,7 +21276,7 @@ _ca8b8e:
         move_vehicle {RIGHT, SHARP_TURNS}, 21
         move_vehicle FORWARD, 8
         wait 5
-        battle 21, BATTLE_BG::UNDERWATER
+        battle 21, UNDERWATER
         move_vehicle {RIGHT, BACKWARD, SHARP_TURNS}, 4
         move_vehicle {RIGHT, SHARP_TURNS}, 8
         move_vehicle {LEFT, SHARP_TURNS}, 22
@@ -21322,7 +21316,7 @@ _ca8c15:
         move_vehicle {LEFT, SHARP_TURNS}, 27
         move_vehicle FORWARD, 6
         wait 8
-        battle 20, BATTLE_BG::UNDERWATER
+        battle 20, UNDERWATER
         wait 11
         move_vehicle {RIGHT, BACKWARD, SHARP_TURNS}, 6
         move_vehicle {RIGHT, SHARP_TURNS}, 16
@@ -21357,7 +21351,7 @@ _ca8c58:
         wait 1
         move_vehicle {RIGHT, SHARP_TURNS}, 49
         wait 16
-        battle 21, BATTLE_BG::UNDERWATER
+        battle 21, UNDERWATER
         move_vehicle LEFT, 6
         wait 4
         move_vehicle UP, 96
@@ -22505,7 +22499,7 @@ _ca943d:
                 ; MASTER: You born on a farm, son?
         play_song SETZER
         switch $01CC=1
-        char_name SETZER, 9
+        char_name SETZER, SETZER
         obj_gfx SETZER, SETZER
         obj_pal SETZER, SETZER
         and_status SETZER, {MAGITEK, INTERCEPTOR}
@@ -22891,7 +22885,7 @@ _ca96a9:
                 ; Can I be of service?
                 ; I hate fighting, so I’d better let you pass!
         set_b_switch $4B
-        battle 69, BATTLE_BG::DEFAULT
+        battle 69
         call _ca5ea9
         hide_obj NPC_14
         clr_b_switch $4B
@@ -25409,7 +25403,7 @@ _caa4e0:
         create_obj LOCKE
         create_obj SETZER
         create_obj TERRA
-        char_prop WEDGE, 32
+        char_prop WEDGE, WEDGE
         char_party LOCKE, 1
         char_party WEDGE, 0
         char_party SETZER, 1
@@ -26633,8 +26627,8 @@ _caad4c:
         wait_fade
         switch $01CC=0
         fade_out_song $D0
-        char_name SCENARIO_MOG, 28
-        char_prop SCENARIO_MOG, 28
+        char_name SCENARIO_MOG, SCENARIO_MOG
+        char_prop SCENARIO_MOG, SCENARIO_MOG
         create_obj SCENARIO_MOG
         obj_gfx SCENARIO_MOG, MOG
         obj_pal SCENARIO_MOG, MOG
@@ -28210,7 +28204,7 @@ _cab6d6:
                 wait 8
                 move UP, 2
                 end
-        battle 134, BATTLE_BG::DEFAULT
+        battle 134
         call _ca5ea9
         switch $0387=0
         switch $036F=0
@@ -29957,7 +29951,7 @@ _cabf4b:
                 speed FAST
                 move RIGHT, 2
                 end
-        battle 104, BATTLE_BG::DEFAULT
+        battle 104
         if_b_switch $40, _cac128
         call _cabdba
         return
@@ -30199,12 +30193,12 @@ _cac326:
         wait_fade
         call _cb2e2b
         switch $01CC=0
-        char_prop SETZER, 9
+        char_prop SETZER, SETZER
         call _cb1b0e
         unlock_camera
         return
 _cac368:
-        battle 25, BATTLE_BG::DEFAULT
+        battle 25
         if_b_switch $40, _cac375
         call _caba0b
         return
@@ -30214,7 +30208,7 @@ _cac375:
         fade_in
         return
 _cac37b:
-        battle 25, BATTLE_BG::DEFAULT
+        battle 25
         if_b_switch $40, _cac388
         call _caba0b
         return
@@ -30224,7 +30218,7 @@ _cac388:
         fade_in
         return
 _cac38e:
-        battle 25, BATTLE_BG::DEFAULT
+        battle 25
         if_b_switch $40, _cac39b
         call _caba0b
         return
@@ -30234,7 +30228,7 @@ _cac39b:
         fade_in
         return
 _cac3a1:
-        battle 25, BATTLE_BG::DEFAULT
+        battle 25
         if_b_switch $40, _cac3ae
         call _caba0b
         return
@@ -30244,7 +30238,7 @@ _cac3ae:
         fade_in
         return
 _cac3b4:
-        battle 25, BATTLE_BG::DEFAULT
+        battle 25
         if_b_switch $40, _cac3c1
         call _caba0b
         return
@@ -30467,7 +30461,7 @@ _cac4b0:
         wait_1s
         fade_out 2
         wait_fade
-        char_prop WEDGE, 30
+        char_prop WEDGE, MADUIN
         obj_gfx WEDGE, MADUIN
         obj_pal WEDGE, CYAN_SHADOW_SETZER
         char_party LOCKE, 0
@@ -32684,7 +32678,7 @@ _cad9fc:
         call _cacfe6
         return
 _cada30:
-        battle 80, BATTLE_BG::DEFAULT
+        battle 80
         call _ca5ea9
         hide_obj NPC_1
         delete_obj NPC_1
@@ -32696,7 +32690,7 @@ _cada30:
         switch $035E=0
         return
 _cada48:
-        battle 81, BATTLE_BG::DEFAULT
+        battle 81
         call _ca5ea9
         hide_obj NPC_1
         switch $0361=0
@@ -33566,7 +33560,7 @@ _cadecb:
                 ; GESTAHL: Kefka, stop it!
                 ; Revive those statues, and you’ll destroy the very world we’re trying to possess!
                 ; KEFKA: Shuddap!
-        battle 127, BATTLE_BG::DEFAULT
+        battle 127
         obj_script NPC_13
                 pos {57, 7}
                 action 41
@@ -34482,7 +34476,7 @@ _cae8ad:
         if_switch $01FA=1, EventReturn
         stop_timer 1
         spc_cmd $82, $00, $FF
-        battle 141, BATTLE_BG::DEFAULT
+        battle 141
         call _ca5ea9
         switch $01FA=1
         fade_in
@@ -34491,7 +34485,7 @@ _cae8c4:
         if_switch $01FB=1, EventReturn
         stop_timer 1
         spc_cmd $82, $00, $FF
-        battle 142, BATTLE_BG::DEFAULT
+        battle 142
         call _ca5ea9
         switch $01FB=1
         fade_in
@@ -34503,7 +34497,7 @@ _cae8db:
                 goto EventReturn
         stop_timer 1
         spc_cmd $82, $00, $FF
-        battle 143, BATTLE_BG::DEFAULT
+        battle 143
         call _ca5ea9
         switch $01FC=1
         fade_in
@@ -37457,8 +37451,8 @@ _cafd9e:
         switch $0428=1
         return
 _cafdb9:
-        char_prop WEDGE, 14
-        char_name WEDGE, 14
+        char_prop WEDGE, BANON
+        char_name WEDGE, BANON
         create_obj WEDGE
         char_party WEDGE, 1
         obj_gfx WEDGE, BANON
@@ -38667,12 +38661,12 @@ _cb048f:
 _cb0497:
         return
 _cb0498:
-        battle 7, BATTLE_BG::RIVER
+        battle 7, RIVER
         call _ca5ea9
         fade_in
         return
 _cb04a1:
-        battle 8, BATTLE_BG::RIVER
+        battle 8, RIVER
         call _ca5ea9
         fade_in
         return
@@ -39307,7 +39301,7 @@ _cb08db:
                 end
         dlg $0142
                 ; What? WHAT IS IT?
-        battle 103, BATTLE_BG::RIVER
+        battle 103, RIVER
         call _ca5ea9
         delete_obj NPC_1
         hide_obj NPC_1
@@ -39415,7 +39409,7 @@ _cb094e:
                 move UP_RIGHT, 5
                 end
         wait_obj SLOT_1
-        battle 8, BATTLE_BG::RIVER
+        battle 8, RIVER
         call _ca5ea9
         fade_in
         obj_script SLOT_1, ASYNC
@@ -39528,12 +39522,12 @@ _cb0a5f:
                 ; and will do anything for money.
                 ; He comes and goes like the wind…
         wait_15f 2
-        char_prop SHADOW, 3
+        char_prop SHADOW, SHADOW
         create_obj SHADOW
         sort_obj
         obj_gfx SHADOW, SHADOW
         obj_pal SHADOW, SHADOW
-        char_name SHADOW, 3
+        char_name SHADOW, SHADOW
         name_menu SHADOW
         fade_in 8
         obj_script NPC_1, ASYNC
@@ -39578,7 +39572,7 @@ _cb0aca:
                 ; SHADOW: The Reaper is always just a step behind me…
         set_b_switch $4B
         switch $02E3=1
-        char_prop SHADOW, 3
+        char_prop SHADOW, SHADOW
         create_obj SHADOW
         char_party SHADOW, 1
         sort_obj
@@ -40037,7 +40031,7 @@ _cb0d87:
                 wait 2
                 end
         call _cb0e1c
-        battle 16, BATTLE_BG::IMP_CAMP
+        battle 16, IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -40104,7 +40098,7 @@ _cb0dcc:
                 move UP, 1
                 end
         call _cb0e1c
-        battle 42, BATTLE_BG::IMP_CAMP
+        battle 42, IMP_CAMP
         call _ca5ea9
         update_party
         obj_script NPC_11
@@ -40262,7 +40256,7 @@ _cb0ed6:
         player_ctrl_on
         return
         call _cb0e1c
-        battle 12, BATTLE_BG::IMP_CAMP
+        battle 12, IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -40678,15 +40672,15 @@ _cb1126:
         dlg $0209
                 ; KEFKA: Unh? Silence!
                 ; You’re history, bub…
-        char_prop VICKS, 41
+        char_prop VICKS, KEFKA_1
         create_obj VICKS
         sort_obj
-        char_name VICKS, 41
+        char_name VICKS, KEFKA_1
         obj_gfx VICKS, KEFKA
         obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         clr_status VICKS, MAGITEK
         call _cb0e1c
-        battle 56, BATTLE_BG::IMP_CAMP
+        battle 56, IMP_CAMP
         call _cacb95
         player_ctrl_off
         call _ca5ea9
@@ -40746,7 +40740,7 @@ _cb1193:
         max_hp VICKS
         max_mp VICKS
         call _cb0e1c
-        battle 56, BATTLE_BG::IMP_CAMP
+        battle 56, IMP_CAMP
         delete_obj VICKS
         call _ca5ea9
         call _cacb95
@@ -40811,7 +40805,7 @@ _cb1209:
                 dir LEFT
                 end
         call _cb0e1c
-        battle 44, BATTLE_BG::IMP_CAMP
+        battle 44, IMP_CAMP
         call _ca5ea9
         play_song SILENCE
         update_party
@@ -41224,7 +41218,7 @@ _cb1483:
                 ; CYAN: Thank you…
                 ; whomever you are.
         call _cb0e1c
-        battle 13, BATTLE_BG::IMP_CAMP
+        battle 13, IMP_CAMP
         call _ca5ea9
         update_party
         switch $042C=0
@@ -41334,7 +41328,7 @@ _cb152c:
                 ; CYAN: What a mess!!
                 ; Be careful, Sir!!
         call _cb0e1c
-        battle 13, BATTLE_BG::IMP_CAMP
+        battle 13, IMP_CAMP
         call _ca5ea9
         update_party
         switch $042E=0
@@ -41455,7 +41449,7 @@ _cb15d9:
         dlg $023F
                 ; CYAN: The thought had occurred to me as well!
         call _cb0e1c
-        battle 14, BATTLE_BG::IMP_CAMP
+        battle 14, IMP_CAMP
         call _ca5ea9
         update_party
         switch $02BC=0
@@ -42028,7 +42022,7 @@ _cb1955:
         dlg $024B
                 ; End of the line!
         call _cb0e1c
-        battle 15, BATTLE_BG::IMP_CAMP
+        battle 15, IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -42046,7 +42040,7 @@ _cb1985:
         dlg $024B
                 ; End of the line!
         call _cb0e1c
-        battle 17, BATTLE_BG::IMP_CAMP
+        battle 17, IMP_CAMP
         call _ca5ea9
         update_party
         mod_bg_tiles BG1, {16, 30}, {1, 1}
@@ -42076,7 +42070,7 @@ _cb19af:
                 move LEFT, 1
                 end
         call _cb0e1c
-        battle 16, BATTLE_BG::IMP_CAMP
+        battle 16, IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -42097,7 +42091,7 @@ _cb19e6:
         dlg $024D
                 ; Who said anything about running?!
         call _cb0e1c
-        battle 17, BATTLE_BG::IMP_CAMP
+        battle 17, IMP_CAMP
         call _ca5ea9
         update_party
         fade_in
@@ -43951,7 +43945,7 @@ _cb2566:
         return
 _cb2569:
         call _cb0e1c
-        battle 39, BATTLE_BG::DEFAULT
+        battle 39
         call _ca5ea9
         update_party
         load_map 377, {6, 17}, LEFT, ASYNC
@@ -43978,7 +43972,7 @@ _cb258e:
 
 _cb2599:
         call _cb0e1c
-        battle 40, BATTLE_BG::DEFAULT
+        battle 40
         call _ca5ea9
         update_party
         load_map 377, {6, 17}, LEFT, ASYNC
@@ -44392,7 +44386,7 @@ _cb280f:
         dlg $069A, BOTTOM
                 ; There! What’s that?
         wait_30f
-        battle 123, BATTLE_BG::AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
+        battle 123, AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
         spc_cmd $81, $00, $96
         obj_script SETZER
                 pos {16, 6}
@@ -44445,7 +44439,7 @@ _cb28ea:
         dlg $069A, BOTTOM
                 ; There! What’s that?
         wait_30f
-        battle 123, BATTLE_BG::AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
+        battle 123, AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
         spc_cmd $81, $00, $96
         switch $0459=0
         call _cacb95
@@ -45180,7 +45174,7 @@ _cb307e:
         obj_script SLOT_1
                 dir LEFT
                 end
-        battle 149, BATTLE_BG::DEFAULT
+        battle 149
         call _ca5ea9
         fade_in 4
         wait_fade
@@ -46099,17 +46093,17 @@ _cb39ca:
         wait_fade
         hide_obj TERRA
         char_party TERRA, 0
-        char_prop VICKS, 42
+        char_prop VICKS, KEFKA_2
         create_obj VICKS
         sort_obj
-        char_name VICKS, 42
+        char_name VICKS, KEFKA_2
         obj_gfx VICKS, KEFKA
         obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         clr_status VICKS, MAGITEK
         max_hp VICKS
         max_mp VICKS
         call _cacfbd
-        battle 121, BATTLE_BG::DEFAULT, NO_SFX
+        battle 121, DEFAULT, NO_SFX
         call _ca5ea9
         char_party VICKS, 0
         spc_cmd $10, $39, $96
@@ -46195,7 +46189,7 @@ _cb39ca:
         clr_status VICKS, MAGITEK
         max_hp VICKS
         max_mp VICKS
-        battle 122, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
+        battle 122, DEFAULT, {NO_SFX, NO_BLUR}
         call _ca5ea9
         sfx 199
         delete_obj VICKS
@@ -47073,7 +47067,7 @@ _cb3ff1:
         call _cacb95
         player_ctrl_off
         call _cacfbd
-        battle 71, BATTLE_BG::AIRSHIP_CENTER
+        battle 71, AIRSHIP_CENTER
         call _ca5ea9
         loop 6
                 mod_bg_pal RESTORE_ALT, {RED, GREEN, BLUE}, 3
@@ -47984,7 +47978,7 @@ _cb47ce:
                 move DOWN, 1
                 anim_on
                 end
-        battle 146, BATTLE_BG::OWZERS_HOUSE
+        battle 146, OWZERS_HOUSE
         call _ca5ea9
         call _cb4728
         sfx 45
@@ -48013,7 +48007,7 @@ _cb481a:
                 ;     They almost look alive…
         sfx 61
         flash RED
-        battle 147, BATTLE_BG::OWZERS_HOUSE
+        battle 147, OWZERS_HOUSE
         call _ca5ea9
         switch $0156=1
         fade_in
@@ -48291,7 +48285,7 @@ _cb49f3:
                 wait 2
                 action 35 | ACTION_H_FLIP
                 end
-        battle 151, BATTLE_BG::DEFAULT
+        battle 151
         call _ca5ea9
         switch $0258=1
         obj_script NPC_11
@@ -48332,7 +48326,7 @@ _cb4a4e:
                 move DOWN, 4
                 layer 0
                 end
-        battle 151, BATTLE_BG::DEFAULT
+        battle 151
         call _ca5ea9
         switch $04AD=0
         delete_obj NPC_7
@@ -48368,7 +48362,7 @@ _cb4a8e:
                 move DOWN, 4
                 layer 0
                 end
-        battle 151, BATTLE_BG::DEFAULT
+        battle 151
         call _ca5ea9
         switch $04AE=0
         delete_obj NPC_8
@@ -48404,7 +48398,7 @@ _cb4acd:
                 move DOWN, 4
                 layer 0
                 end
-        battle 151, BATTLE_BG::DEFAULT
+        battle 151
         call _ca5ea9
         switch $04AF=0
         delete_obj NPC_9
@@ -48440,7 +48434,7 @@ _cb4b0c:
                 move DOWN, 4
                 layer 0
                 end
-        battle 151, BATTLE_BG::DEFAULT
+        battle 151
         call _ca5ea9
         switch $04B0=0
         delete_obj NPC_10
@@ -48616,7 +48610,7 @@ _cb4c47:
                 move DOWN, 1
                 anim_on
                 end
-        battle 148, BATTLE_BG::OWZERS_HOUSE
+        battle 148, OWZERS_HOUSE
         call _ca5ea9
         wait_45f
         mod_bg_tiles BG1, {75, 47}, {3, 5}, ASYNC
@@ -48728,7 +48722,7 @@ _cb4cfa:
                 ; CHADARNOOK: G’fu, fu, fu…
                 ; Who’re these numbskulls?
                 ; No one…NO ONE…is going to remove me from this fine new painting!!
-        battle 86, BATTLE_BG::OWZERS_HOUSE, NO_SFX
+        battle 86, OWZERS_HOUSE, NO_SFX
         call _ca5ea9
         play_song RELM
         mod_bg_pal RESTORE_ALT, {RED, GREEN, BLUE}, 3
@@ -54434,17 +54428,17 @@ _cb70eb:
 _cb70f7:
         cmp_var 7, 0
         if_case
-                case CHAR::CYAN, _cb711b
-                case CHAR::TERRA, _cb711b
-                case CHAR::LOCKE, _cb7107
+                case VAR_LESS, _cb711b
+                case VAR_EQUAL, _cb711b
+                case VAR_GREATER, _cb7107
                 end_case
         return
 _cb7107:
         cmp_var 7, 21
         if_case
-                case CHAR::CYAN, _cb7127
-                case CHAR::TERRA, _cb7127
-                case CHAR::LOCKE, _cb7141
+                case VAR_LESS, _cb7127
+                case VAR_EQUAL, _cb7127
+                case VAR_GREATER, _cb7141
                 end_case
         set_var 7, 0
         return
@@ -54568,7 +54562,7 @@ _cb71bc:
         switch $01FC=1
         return
 _cb71d2:
-        battle 94, BATTLE_BG::DEFAULT
+        battle 94
         call _ca5ea9
         switch $055E=0
         hide_obj NPC_4
@@ -55997,7 +55991,7 @@ _cb7a18:
                 jump_low
                 move LEFT, 1
                 end
-        battle 82, BATTLE_BG::DEFAULT
+        battle 82
         call _ca5ea9
         switch $0555=0
         hide_obj NPC_5
@@ -57089,11 +57083,11 @@ _cb81c6:
                 ; …a woman…?
                 ; …or should we ask…?
         wait_30f
-        char_prop GOGO, 12
+        char_prop GOGO, GOGO
         create_obj GOGO
         obj_gfx GOGO, GOGO
         obj_pal GOGO, GOGO
-        char_name GOGO, 12
+        char_name GOGO, GOGO
         name_menu GOGO
         and_status GOGO, {MAGITEK, INTERCEPTOR}
         max_hp GOGO
@@ -58740,7 +58734,7 @@ _cb8bd1:
         dlg $0ACE, BOTTOM
                 ; Good, everyone’s here!
                 ; Let’s rumble!
-        battle 90, BATTLE_BG::DEFAULT
+        battle 90
         call _ca5ea9
         switch $053E=0
         switch $053F=0
@@ -60301,7 +60295,7 @@ _cb97d6:
                 ; His pain has reached critical mass! Nothing can stop his feelings of rage and despair!
                 ; I grow stronger now, with his anger, hatred and guilt!
                 ; And I hunger for… you!
-        battle 92, BATTLE_BG::DEFAULT
+        battle 92
         play_song SILENCE
         call _ca5ea9
         switch $01CC=1
@@ -60801,7 +60795,7 @@ _cb9aa3:
 _cb9aae:
         set_case PARTY_CHARS
         if_case CHAR::SHADOW, _cba3b9
-        char_prop CYAN, 2
+        char_prop CYAN, CYAN
         obj_gfx CYAN, CYAN
         obj_pal CYAN, CYAN
         create_obj CYAN
@@ -61206,7 +61200,7 @@ _cb9c58:
         dlg $0225, {TEXT_ONLY, BOTTOM}
                 ; Faithful retainer to his family’s liege, with the courage and strength of a hundred men…
         wait_30f
-        char_name CYAN, 2
+        char_name CYAN, CYAN
         name_menu CYAN
         call _cacfbd
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
@@ -61525,7 +61519,7 @@ _cb9eb5:
                 ; CYAN: I am CYAN,
                 ; retainer to the King of Doma.
                 ; I am your worst nightmare…
-        battle 46, BATTLE_BG::DEFAULT
+        battle 46
         call _ca5ea9
         obj_script NPC_1, ASYNC
                 action 40
@@ -61743,67 +61737,67 @@ _cb9eb5:
         call _cb0bc4
         return
 _cb9ffb:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_2
         return
 _cba007:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_3
         return
 _cba013:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_4
         return
 _cba01f:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_5
         return
 _cba02b:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_6
         return
 _cba037:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_7
         return
 _cba043:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_8
         return
 _cba04f:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_9
         return
 _cba05b:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_10
         return
 _cba067:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_11
         return
 _cba073:
-        battle 43, BATTLE_BG::DEFAULT
+        battle 43
         call _ca5ea9
         fade_in 4
         hide_obj NPC_12
@@ -63247,24 +63241,24 @@ _cbab1f:
         if_switch $01A3=1, _cbaad9
         set_case PARTY_CHARS
         if_switch $01A7=1, _cbab4e
-        char_prop STRAGO, 16
+        char_prop STRAGO, GHOST_1
         create_obj STRAGO
         char_party STRAGO, 1
         obj_gfx STRAGO, GHOST
         obj_pal STRAGO, EDGAR_SABIN_CELES
-        char_name STRAGO, 16
+        char_name STRAGO, GHOST_1
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
         max_mp STRAGO
         hide_obj NPC_1
         return
 _cbab4e:
-        char_prop RELM, 17
+        char_prop RELM, GHOST_2
         create_obj RELM
         char_party RELM, 1
         obj_gfx RELM, GHOST
         obj_pal RELM, EDGAR_SABIN_CELES
-        char_name RELM, 17
+        char_name RELM, GHOST_2
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
         max_mp RELM
@@ -63275,24 +63269,24 @@ _cbab6c:
         if_switch $01A3=1, _cbaad9
         set_case PARTY_CHARS
         if_switch $01A7=1, _cbab9b
-        char_prop STRAGO, 16
+        char_prop STRAGO, GHOST_1
         create_obj STRAGO
         char_party STRAGO, 1
         obj_gfx STRAGO, GHOST
         obj_pal STRAGO, EDGAR_SABIN_CELES
-        char_name STRAGO, 16
+        char_name STRAGO, GHOST_1
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
         max_mp STRAGO
         hide_obj NPC_9
         return
 _cbab9b:
-        char_prop RELM, 17
+        char_prop RELM, GHOST_2
         create_obj RELM
         char_party RELM, 1
         obj_gfx RELM, GHOST
         obj_pal RELM, EDGAR_SABIN_CELES
-        char_name RELM, 17
+        char_name RELM, GHOST_2
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
         max_mp RELM
@@ -63303,24 +63297,24 @@ _cbabb9:
         if_switch $01A3=1, _cbaad9
         set_case PARTY_CHARS
         if_switch $01A7=1, _cbabe8
-        char_prop STRAGO, 16
+        char_prop STRAGO, GHOST_1
         create_obj STRAGO
         char_party STRAGO, 1
         obj_gfx STRAGO, GHOST
         obj_pal STRAGO, EDGAR_SABIN_CELES
-        char_name STRAGO, 16
+        char_name STRAGO, GHOST_1
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
         max_mp STRAGO
         hide_obj NPC_8
         return
 _cbabe8:
-        char_prop RELM, 17
+        char_prop RELM, GHOST_2
         create_obj RELM
         char_party RELM, 1
         obj_gfx RELM, GHOST
         obj_pal RELM, EDGAR_SABIN_CELES
-        char_name RELM, 17
+        char_name RELM, GHOST_2
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
         max_mp RELM
@@ -63331,24 +63325,24 @@ _cbac06:
         if_switch $01A3=1, _cbaad9
         set_case PARTY_CHARS
         if_switch $01A7=1, _cbac35
-        char_prop STRAGO, 16
+        char_prop STRAGO, GHOST_1
         create_obj STRAGO
         char_party STRAGO, 1
         obj_gfx STRAGO, GHOST
         obj_pal STRAGO, EDGAR_SABIN_CELES
-        char_name STRAGO, 16
+        char_name STRAGO, GHOST_1
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
         max_mp STRAGO
         hide_obj NPC_7
         return
 _cbac35:
-        char_prop RELM, 17
+        char_prop RELM, GHOST_2
         create_obj RELM
         char_party RELM, 1
         obj_gfx RELM, GHOST
         obj_pal RELM, EDGAR_SABIN_CELES
-        char_name RELM, 17
+        char_name RELM, GHOST_2
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
         max_mp RELM
@@ -63359,24 +63353,24 @@ _cbac53:
         if_switch $01A3=1, _cbaad9
         set_case PARTY_CHARS
         if_switch $01A7=1, _cbac82
-        char_prop STRAGO, 16
+        char_prop STRAGO, GHOST_1
         create_obj STRAGO
         char_party STRAGO, 1
         obj_gfx STRAGO, GHOST
         obj_pal STRAGO, EDGAR_SABIN_CELES
-        char_name STRAGO, 16
+        char_name STRAGO, GHOST_1
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
         max_mp STRAGO
         hide_obj NPC_2
         return
 _cbac82:
-        char_prop RELM, 17
+        char_prop RELM, GHOST_2
         create_obj RELM
         char_party RELM, 1
         obj_gfx RELM, GHOST
         obj_pal RELM, EDGAR_SABIN_CELES
-        char_name RELM, 17
+        char_name RELM, GHOST_2
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
         max_mp RELM
@@ -63387,24 +63381,24 @@ _cbaca0:
         if_switch $01A3=1, _cbaad9
         set_case PARTY_CHARS
         if_switch $01A7=1, _cbaccf
-        char_prop STRAGO, 16
+        char_prop STRAGO, GHOST_1
         create_obj STRAGO
         char_party STRAGO, 1
         obj_gfx STRAGO, GHOST
         obj_pal STRAGO, EDGAR_SABIN_CELES
-        char_name STRAGO, 16
+        char_name STRAGO, GHOST_1
         and_status STRAGO, {MAGITEK, INTERCEPTOR}
         max_hp STRAGO
         max_mp STRAGO
         hide_obj NPC_1
         return
 _cbaccf:
-        char_prop RELM, 17
+        char_prop RELM, GHOST_2
         create_obj RELM
         char_party RELM, 1
         obj_gfx RELM, GHOST
         obj_pal RELM, EDGAR_SABIN_CELES
-        char_name RELM, 17
+        char_name RELM, GHOST_2
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
         max_mp RELM
@@ -63414,7 +63408,7 @@ _cbaced:
         dlg $02CB
                 ; Look out!
         call _cb69d8
-        battle 47, BATTLE_BG::DEFAULT
+        battle 47
         call _ca5ea9
         update_party
         fade_in
@@ -64328,7 +64322,7 @@ _cbb265:
                 ;
                 ; N.o…e.s.c.a.p.e…!
         call _cb69d8
-        battle 47, BATTLE_BG::DEFAULT
+        battle 47
         call _ca5ea9
         update_party
         load_map 142, {41, 9}, DOWN, ASYNC
@@ -65250,7 +65244,7 @@ _cbb7f8:
                 speed FAST
                 move LEFT, 1
                 end
-        battle 109, BATTLE_BG::DEFAULT
+        battle 109
         call _ca5ea9
         call _cacb95
         player_ctrl_off
@@ -65443,7 +65437,7 @@ _cbb9d4:
         wait_45f
         sfx 146
         wait_2s
-        battle 68, BATTLE_BG::TRAIN_TRACKS
+        battle 68, TRAIN_TRACKS
         call _ca5ea9
         fade_in
         switch $003B=1
@@ -66482,7 +66476,7 @@ _cbc058:
         play_song SILENCE
         switch $01CC=1
         call _cacfbd
-        battle 18, BATTLE_BG::DEFAULT
+        battle 18
         call _ca5ea9
         switch $050C=1
         load_map 159, {15, 0}, DOWN, {ASYNC, NO_FADE_IN}
@@ -66614,13 +66608,13 @@ _cbc058:
         dlg $02E6, {TEXT_ONLY, BOTTOM}
                 ; Draped in monster hides, eyes shining with intelligence. A youth surviving against all odds…
         wait_30f
-        char_prop GAU, 11
+        char_prop GAU, GAU
         create_obj GAU
         obj_gfx GAU, GAU
         obj_pal GAU, GAU
         char_party GAU, 0
         switch $02EB=1
-        char_name GAU, 11
+        char_name GAU, GAU
         name_menu GAU
         and_status GAU, {MAGITEK, INTERCEPTOR}
         max_hp GAU
@@ -68219,12 +68213,12 @@ _cbcd24:
                 ; and will do anything for money.
                 ; He comes and goes like the wind…
         wait_30f
-        char_prop SHADOW, 3
+        char_prop SHADOW, SHADOW
         create_obj SHADOW
         obj_gfx SHADOW, SHADOW
         obj_pal SHADOW, SHADOW
         sort_obj
-        char_name SHADOW, 3
+        char_name SHADOW, SHADOW
         name_menu SHADOW
         play_song SHADOW
         switch $000B=1
@@ -69873,7 +69867,7 @@ _cbd982:
         wait_30f
         obj_gfx STRAGO, STRAGO
         obj_pal STRAGO, STRAGO
-        char_name STRAGO, 7
+        char_name STRAGO, STRAGO
         name_menu STRAGO
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
         fade_in 16
@@ -70069,7 +70063,7 @@ _cbd982:
         switch $01CB=1
         obj_gfx RELM, RELM
         obj_pal RELM, RELM
-        char_name RELM, 8
+        char_name RELM, RELM
         name_menu RELM
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
         fade_in 16
@@ -71793,7 +71787,7 @@ _cbe538:
         sort_obj
         call _cacb95
         player_ctrl_off
-        char_prop STRAGO, 7
+        char_prop STRAGO, STRAGO
         create_obj STRAGO
         obj_gfx STRAGO, STRAGO
         obj_pal STRAGO, STRAGO
@@ -71996,7 +71990,7 @@ _cbe622:
         wait_obj NPC_6
         wait_obj NPC_7
         wait_45f
-        battle 45, BATTLE_BG::DEFAULT
+        battle 45
         call _ca5ea9
         hide_obj NPC_4
         hide_obj NPC_5
@@ -72015,84 +72009,84 @@ _cbe622:
         switch $050A=0
         return
 _cbe6cb:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_1
         delete_obj NPC_1
         fade_in
         return
 _cbe6d8:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_2
         delete_obj NPC_2
         fade_in
         return
 _cbe6e5:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_3
         delete_obj NPC_3
         fade_in
         return
 _cbe6f2:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_8
         delete_obj NPC_8
         fade_in
         return
 _cbe6ff:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_10
         delete_obj NPC_10
         fade_in
         return
 _cbe70c:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_11
         delete_obj NPC_11
         fade_in
         return
 _cbe719:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_15
         delete_obj NPC_15
         fade_in
         return
 _cbe726:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_16
         delete_obj NPC_16
         fade_in
         return
 _cbe733:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_17
         delete_obj NPC_17
         fade_in
         return
 _cbe740:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_18
         delete_obj NPC_18
         fade_in
         return
 _cbe74d:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_19
         delete_obj NPC_19
         fade_in
         return
 _cbe75a:
-        battle 31, BATTLE_BG::DEFAULT
+        battle 31
         call _ca5ea9
         hide_obj NPC_20
         delete_obj NPC_20
@@ -72127,7 +72121,7 @@ _cbe767:
                 speed NORMAL
                 move DOWN, 2
                 end
-        battle 79, BATTLE_BG::DEFAULT
+        battle 79
         call _ca5ea9
         hide_obj NPC_9
         delete_obj NPC_9
@@ -73696,7 +73690,7 @@ _cbefee:
                 jump_low
                 move DOWN, 1
                 end
-        char_prop RELM, 8
+        char_prop RELM, RELM
         and_status RELM, {MAGITEK, INTERCEPTOR}
         max_hp RELM
         max_mp RELM
@@ -73705,7 +73699,7 @@ _cbefee:
         switch $01CC=1
         switch $02E8=1
         switch $02F8=1
-        battle 125, BATTLE_BG::DEFAULT
+        battle 125
         call _ca5ea9
         switch $0521=0
         load_map 371, {16, 22}, DOWN, {ASYNC, NO_FADE_IN}
@@ -76355,12 +76349,12 @@ _cbfdb2:
         delete_obj LOCKE
         delete_obj TERRA
         sort_obj
-        char_prop WEDGE, 15
+        char_prop WEDGE, LEO
         create_obj WEDGE
         char_party WEDGE, 1
         obj_gfx WEDGE, LEO
         obj_pal WEDGE, EDGAR_SABIN_CELES
-        char_name WEDGE, 15
+        char_name WEDGE, LEO
         sort_obj
         char_party RELM, 0
         char_party STRAGO, 0
@@ -76464,16 +76458,16 @@ _cbfff4:
                 ; LEO: Kefka!
                 ; Your behavior is dishonorable!
                 ; I can’t allow this!
-        char_prop VICKS, 44
+        char_prop VICKS, KEFKA_4
         create_obj VICKS
         sort_obj
-        char_name VICKS, 44
+        char_name VICKS, KEFKA_4
         obj_gfx VICKS, KEFKA
         obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         and_status VICKS, NONE
         max_hp VICKS
         max_mp VICKS
-        battle 124, BATTLE_BG::DEFAULT
+        battle 124
         call _ca5ea9
         play_song SILENCE
         obj_script SLOT_1
@@ -76604,7 +76598,7 @@ _cc00c5:
         switch $009B=1
         wait_90f
         call _cb3f08
-        battle 105, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
+        battle 105, DEFAULT, {NO_SFX, NO_BLUR}
         load_map 0, {181, 197}, DOWN, {ASYNC, Z_UPPER, AIRSHIP}
         set_script_mode VEHICLE
         hide_obj
@@ -76948,16 +76942,16 @@ _cc0163:
                 ; KEFKA: Eh?!
                 ; You wanna take me on?
                 ; Fine. Here I am…
-        char_prop VICKS, 43
+        char_prop VICKS, KEFKA_3
         create_obj VICKS
         sort_obj
-        char_name VICKS, 43
+        char_name VICKS, KEFKA_3
         obj_gfx VICKS, KEFKA
         obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         and_status VICKS, NONE
         max_hp VICKS
         max_mp VICKS
-        battle 97, BATTLE_BG::DEFAULT
+        battle 97
         fade_in 4
         wait_fade
         wait_1s
@@ -78051,7 +78045,7 @@ _cc0960:
                 goto EventReturn
         dlg $0816
                 ; M.TEK TROOPER: General Leo, prepare yourself!
-        battle 75, BATTLE_BG::DEFAULT
+        battle 75
         call _ca5ea9
         fade_in
         dlg $0817
@@ -80038,7 +80032,7 @@ _cc16ac:
         return
 _cc16d6:
         if_switch $0072=1, EventReturn
-        battle 98, BATTLE_BG::DEFAULT
+        battle 98
         call _ca5ea9
         create_obj NPC_7
         sort_obj
@@ -80074,7 +80068,7 @@ _cc16d6:
         return
 _cc1716:
         if_switch $0073=1, EventReturn
-        battle 99, BATTLE_BG::DEFAULT
+        battle 99
         call _ca5ea9
         create_obj NPC_4
         sort_obj
@@ -80105,7 +80099,7 @@ _cc1716:
         return
 _cc174f:
         if_switch $0074=1, EventReturn
-        battle 100, BATTLE_BG::DEFAULT
+        battle 100
         call _ca5ea9
         fade_in
         wait_fade
@@ -80251,7 +80245,7 @@ _cc1827:
         sfx 108
         call _cc9ae0
         wait_30f
-        battle 140, BATTLE_BG::DEFAULT
+        battle 140
         call _ca5ea9
         hide_obj NPC_1
         hide_obj NPC_2
@@ -80306,7 +80300,7 @@ _cc1872:
                 move DOWN, 2
                 end
         wait_15f
-        battle 114, BATTLE_BG::DEFAULT
+        battle 114
         call _ca5ea9
         hide_obj NPC_1
         switch $06BC=0
@@ -80316,7 +80310,7 @@ _cc1872:
         player_ctrl_on
         return
 _cc18b4:
-        battle 112, BATTLE_BG::DEFAULT
+        battle 112
         call _ca5ea9
         create_obj NPC_2
         sort_obj
@@ -80356,7 +80350,7 @@ _cc18d9:
                 dir DOWN
                 wait 8
                 end
-        battle 135, BATTLE_BG::DEFAULT
+        battle 135
         call _ca5ea9
         hide_obj NPC_1
         switch $06B3=0
@@ -80384,7 +80378,7 @@ _cc1906:
                 dir DOWN
                 wait 8
                 end
-        battle 136, BATTLE_BG::DEFAULT
+        battle 136
         call _ca5ea9
         hide_obj NPC_5
         switch $06B4=0
@@ -81455,7 +81449,7 @@ _cc201d:
         player_ctrl_on
         return
 _cc2048:
-        battle 138, BATTLE_BG::DEFAULT
+        battle 138
         call _ca5ea9
         hide_obj NPC_1
         switch $069C=0
@@ -81465,7 +81459,7 @@ _cc2048:
         player_ctrl_on
         return
 _cc205b:
-        battle 137, BATTLE_BG::DEFAULT
+        battle 137
         call _ca5ea9
         hide_obj NPC_4
         switch $06A1=0
@@ -84718,7 +84712,7 @@ _cc36dc:
         collision_on NPC_2
         return
 _cc36df:
-        battle 132, BATTLE_BG::DEFAULT
+        battle 132
         call _ca5ea9
         hide_obj NPC_2
         switch $0695=0
@@ -84773,7 +84767,7 @@ _cc3719:
                 mod_bg_pal INC, BLUE, 3
                 end_loop
         wait_3s
-        battle 119, BATTLE_BG::DEFAULT
+        battle 119
         call _ca5ea9
         mod_bg_tiles BG3, {8, 9}, {3, 4}
                 .byte $00,$00,$00
@@ -85201,7 +85195,7 @@ _cc3a32:
         player_ctrl_on
         return
 _cc3a4c:
-        char_prop MOG, 10
+        char_prop MOG, MOG
         create_obj MOG
         obj_gfx MOG, MOG
         obj_pal MOG, MOG
@@ -85271,7 +85265,7 @@ _cc3a4c:
         fade_out
         wait_fade
         unlock_camera
-        char_name MOG, 10
+        char_name MOG, MOG
         name_menu MOG
         show_obj SLOT_1
         sort_obj
@@ -86860,7 +86854,7 @@ _cc43a7:
                 end
         return
 _cc43cd:
-        battle 133, BATTLE_BG::DEFAULT
+        battle 133
         call _ca5ea9
         hide_obj NPC_1
         switch $0686=0
@@ -87692,7 +87686,7 @@ _cc4990:
         dlg $08DB
                 ; TERRA: Phunbaba’s an ancient demon who was released when the world was undone.
         wait_30f
-        battle 128, BATTLE_BG::DEFAULT
+        battle 128
         char_party TERRA, 0
         sort_obj
         activate_party 1
@@ -87738,7 +87732,7 @@ _cc4990:
                 dir DOWN
                 end
         wait_30f
-        battle 129, BATTLE_BG::DEFAULT
+        battle 129
         call _ca5ea9
         play_song SILENCE
         switch $0670=1
@@ -88102,7 +88096,7 @@ _cc4c1b:
                 wait_1s
                 end_loop
         switch $01CC=0
-        battle 130, BATTLE_BG::DEFAULT
+        battle 130
         call _ca5ea9
         update_party
         mod_bg_tiles BG1, {6, 19}, {1, 2}
@@ -88189,7 +88183,7 @@ _cc4c1b:
         set_status TERRA, MORPH
         set_b_switch $3A
         set_b_switch $39
-        battle 131, BATTLE_BG::DEFAULT
+        battle 131
         call _ca5ea9
         delete_obj TERRA
         char_party TERRA, 0
@@ -89663,7 +89657,7 @@ _cc544b:
                 dir UP
                 end
         wait_30f
-        battle 145, BATTLE_BG::DEFAULT
+        battle 145
         call _ca5ea9
         switch $02DB=1
         switch $0699=0
@@ -89671,7 +89665,7 @@ _cc544b:
         player_ctrl_on
         return
 _cc558b:
-        battle 139, BATTLE_BG::DEFAULT
+        battle 139
         call _ca5ea9
         hide_obj NPC_1
         switch $0694=0
@@ -93679,12 +93673,12 @@ _cc6f84:
         wait_30f
         fade_out
         wait_fade
-        char_prop SHADOW, 3
+        char_prop SHADOW, SHADOW
         create_obj SHADOW
         obj_gfx SHADOW, SHADOW
         obj_pal SHADOW, SHADOW
         sort_obj
-        char_name SHADOW, 3
+        char_name SHADOW, SHADOW
         name_menu SHADOW
         show_obj NPC_3
         show_obj NPC_5
@@ -95280,7 +95274,7 @@ _cc7937:
         pass_on SLOT_1
         flash RED
         wait_1s
-        battle 70, BATTLE_BG::DEFAULT
+        battle 70
         call _ca5ea9
         fade_in
         wait_fade
@@ -95383,7 +95377,7 @@ _cc79dd:
         player_ctrl_on
         return
 _cc79ed:
-        battle 72, BATTLE_BG::DEFAULT
+        battle 72
         call _ca5ea9
         hide_obj NPC_1
         sort_obj
@@ -97006,7 +97000,7 @@ _cc8321:
         shake SPRITES, 1, 1
         sfx 50
         wait_1s
-        battle 75, BATTLE_BG::DEFAULT
+        battle 75
         call _ca5ea9
         obj_script SLOT_1
                 move DOWN, 1
@@ -97675,7 +97669,7 @@ _cc873b:
                 switch $007C=0
                 switch $013C=1
                 goto EventReturn
-        battle 26, BATTLE_BG::DEFAULT
+        battle 26
         if_b_switch $40, _cc8758
         flash RED
         if_switch $022F=0, _cc8776
@@ -97727,7 +97721,7 @@ _cc87b6:
         dlg $0741
                 ; I oppose peace!
         if_switch $0226=1, EventReturn
-        battle 27, BATTLE_BG::DEFAULT
+        battle 27
         if_b_switch $40, _cc87cf
         flash RED
         if_switch $022F=0, _cc87ed
@@ -97760,7 +97754,7 @@ _cc8809:
         dlg $0744
                 ; You deserve a thrashing!
         if_switch $0228=1, EventReturn
-        battle 27, BATTLE_BG::DEFAULT
+        battle 27
         if_b_switch $40, _cc8822
         flash RED
         if_switch $022F=0, _cc8840
@@ -97802,7 +97796,7 @@ _cc886c:
         dlg $074B
                 ; Phepppp. Returner scum!
         if_switch $022D=1, EventReturn
-        battle 27, BATTLE_BG::DEFAULT
+        battle 27
         if_b_switch $40, _cc8885
         flash RED
         if_switch $022F=0, _cc88a3
@@ -98019,7 +98013,7 @@ _cc8a47:
         return
 _cc8a58:
         start_timer 0, 7200, EventReturn, {FIELD_VISIBLE, BANQUET, MENU_BATTLE_VISIBLE}
-        battle 30, BATTLE_BG::DEFAULT
+        battle 30
         if_b_switch $40, _cc8a6e
         flash RED
         if_switch $022F=0, _cc8a8c
@@ -99198,9 +99192,9 @@ _cc91d9:
         switch $0276=1
         cmp_var 0, 50
         if_case
-                case CHAR::CYAN, _cc926e
-                case CHAR::TERRA, _cc9223
-                case CHAR::LOCKE, _cc9223
+                case VAR_LESS, _cc926e
+                case VAR_EQUAL, _cc9223
+                case VAR_GREATER, _cc9223
                 end_case
         return
 _cc9223:
@@ -99210,9 +99204,9 @@ _cc9223:
         switch $0277=1
         cmp_var 0, 67
         if_case
-                case CHAR::CYAN, _cc926e
-                case CHAR::TERRA, _cc923b
-                case CHAR::LOCKE, _cc923b
+                case VAR_LESS, _cc926e
+                case VAR_EQUAL, _cc923b
+                case VAR_GREATER, _cc923b
                 end_case
         return
         wait_30f
@@ -99223,9 +99217,9 @@ _cc923b:
         switch $0278=1
         cmp_var 0, 77
         if_case
-                case CHAR::CYAN, _cc926e
-                case CHAR::TERRA, _cc9254
-                case CHAR::LOCKE, _cc9254
+                case VAR_LESS, _cc926e
+                case VAR_EQUAL, _cc9254
+                case VAR_GREATER, _cc9254
                 end_case
         return
 _cc9254:
@@ -99236,9 +99230,9 @@ _cc9254:
         give_item TINTINABAR
         cmp_var 0, 90
         if_case
-                case CHAR::CYAN, _cc926e
-                case CHAR::TERRA, _cc9269
-                case CHAR::LOCKE, _cc9269
+                case VAR_LESS, _cc926e
+                case VAR_EQUAL, _cc9269
+                case VAR_GREATER, _cc9269
                 end_case
         return
 _cc9269:
@@ -99424,7 +99418,7 @@ _cc9382:
                 move LEFT, 1
                 end
         wait_45f
-        battle 1, BATTLE_BG::DEFAULT
+        battle 1
         call _ca5ea9
         hide_obj NPC_2
         hide_obj NPC_3
@@ -99486,7 +99480,7 @@ _cc93e8:
                 ; Hey, YOU! … …
                 ; You’re Returners!!
 _cc93f1:
-        battle 29, BATTLE_BG::DEFAULT
+        battle 29
 _cc93f4:
         call _ca5ea9
         load_map 242, {34, 58}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
@@ -99518,7 +99512,7 @@ _cc941e:
         dlg $0537
                 ; Hey, YOU! … …
                 ; You’re Returners!!
-        battle 28, BATTLE_BG::DEFAULT
+        battle 28
         call _cc93f4
         return
 _cc942f:
@@ -100284,7 +100278,7 @@ _cc9798:
                 speed NORMAL
                 move DOWN, 8
                 end
-        battle 75, BATTLE_BG::DEFAULT
+        battle 75
         call _ca5ea9
         load_map 242, {29, 0}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
         unlock_camera
@@ -100872,7 +100866,7 @@ _cc9b71:
                 move DOWN, 3
                 dir LEFT
                 end
-        battle 1, BATTLE_BG::DEFAULT
+        battle 1
         call _ca5ea9
         hide_obj NPC_1
         hide_obj NPC_2
@@ -100924,7 +100918,7 @@ _cc9bb3:
         obj_script NPC_3
                 move LEFT, 2
                 end
-        battle 0, BATTLE_BG::DEFAULT
+        battle 0
         call _ca5ea9
         hide_obj NPC_3
         sort_obj
@@ -100996,7 +100990,7 @@ _cc9c08:
         obj_script NPC_4
                 move LEFT, 4
                 end
-        battle 2, BATTLE_BG::DEFAULT
+        battle 2
         call _ca5ea9
         hide_obj NPC_3
         hide_obj NPC_4
@@ -101017,7 +101011,7 @@ _cc9c08:
         obj_script NPC_2
                 move LEFT, 4
                 end
-        battle 1, BATTLE_BG::DEFAULT
+        battle 1
         call _ca5ea9
         hide_obj NPC_1
         hide_obj NPC_2
@@ -101090,7 +101084,7 @@ _cc9c94:
         obj_script NPC_2
                 move UP, 3
                 end
-        battle 3, BATTLE_BG::DEFAULT
+        battle 3
         call _ca5ea9
         hide_obj NPC_3
         hide_obj NPC_4
@@ -101180,7 +101174,7 @@ _cc9d0d:
                 jump_high
                 move DOWN, 1
                 end
-        battle 4, BATTLE_BG::DEFAULT
+        battle 4
         call _ca5ea9
         hide_obj NPC_3
         hide_obj NPC_4
@@ -101445,7 +101439,7 @@ _cc9f37:
         dlg $0B6F
                 ; GUARD: Whelk! Get them!
         switch $02BC=0
-        battle 64, BATTLE_BG::DEFAULT
+        battle 64
         call _ca5ea9
         fade_in
         wait_fade
@@ -101537,7 +101531,7 @@ _cc9f6d:
         play_song SILENCE
         switch $01CC=1
         wait_15f
-        battle 77, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
+        battle 77, DEFAULT, {NO_SFX, NO_BLUR}
         pass_on WEDGE
         pass_on VICKS
         and_status WEDGE, NONE
@@ -101712,7 +101706,7 @@ _cca06f:
         wait_30f
         fade_out
         wait_fade
-        char_name TERRA, 0
+        char_name TERRA, TERRA
         name_menu TERRA
         create_obj NPC_2
         obj_script NPC_2
@@ -102346,15 +102340,15 @@ _cca4a6:
         sort_obj
         fade_in
         wait_fade
-        char_name VICKS, 41
-        char_prop VICKS, 41
+        char_name VICKS, KEFKA_1
+        char_prop VICKS, KEFKA_1
         create_obj VICKS
         obj_gfx VICKS, KEFKA
         obj_pal VICKS, STRAGO_RELM_GAU_GOGO
         char_party VICKS, 1
         sort_obj
         set_status TERRA, MAGITEK
-        battle 115, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
+        battle 115, DEFAULT, {NO_SFX, NO_BLUR}
         and_status TERRA, NONE
         play_song GESTAHL
         char_party VICKS, 0
@@ -102579,7 +102573,7 @@ _cca5ed:
         play_song SILENCE
         wait_2s
         load_map 30, {64, 33}, DOWN, {ASYNC, NO_FADE_IN}
-        char_prop LOCKE, 1
+        char_prop LOCKE, LOCKE
         create_obj LOCKE
         obj_gfx LOCKE, LOCKE
         obj_pal LOCKE, LOCKE
@@ -102680,7 +102674,7 @@ _cca5ed:
         wait_30f
         fade_out
         wait_fade
-        char_name LOCKE, 1
+        char_name LOCKE, LOCKE
         name_menu LOCKE
         create_obj NPC_2
         obj_script NPC_2
@@ -103141,58 +103135,58 @@ _cca938:
         fade_out
         wait_fade
 _cca93d:
-        char_name MOG, 10
-        char_prop MOG, 10
+        char_name MOG, MOG
+        char_prop MOG, MOG
         create_obj MOG
         obj_gfx MOG, MOG
         obj_pal MOG, MOG
-        char_name CYAN, 18
-        char_prop CYAN, 18
+        char_name CYAN, KUPEK
+        char_prop CYAN, KUPEK
         create_obj CYAN
         obj_gfx CYAN, MOG
         obj_pal CYAN, MOG_UMARO
-        char_name SHADOW, 19
-        char_prop SHADOW, 19
+        char_name SHADOW, KUPOP
+        char_prop SHADOW, KUPOP
         create_obj SHADOW
         obj_gfx SHADOW, MOG
         obj_pal SHADOW, MOG_UMARO
-        char_name EDGAR, 20
-        char_prop EDGAR, 20
+        char_name EDGAR, KUMAMA
+        char_prop EDGAR, KUMAMA
         create_obj EDGAR
         obj_gfx EDGAR, MOG
         obj_pal EDGAR, MOG_UMARO
-        char_name SABIN, 21
-        char_prop SABIN, 21
+        char_name SABIN, KUKU
+        char_prop SABIN, KUKU
         create_obj SABIN
         obj_gfx SABIN, MOG
         obj_pal SABIN, MOG_UMARO
-        char_name CELES, 22
-        char_prop CELES, 22
+        char_name CELES, KUTAN
+        char_prop CELES, KUTAN
         create_obj CELES
         obj_gfx CELES, MOG
         obj_pal CELES, MOG_UMARO
-        char_name STRAGO, 23
-        char_prop STRAGO, 23
+        char_name STRAGO, KUPAN
+        char_prop STRAGO, KUPAN
         create_obj STRAGO
         obj_gfx STRAGO, MOG
         obj_pal STRAGO, MOG_UMARO
-        char_name RELM, 24
-        char_prop RELM, 24
+        char_name RELM, KUSHU
+        char_prop RELM, KUSHU
         create_obj RELM
         obj_gfx RELM, MOG
         obj_pal RELM, MOG_UMARO
-        char_name SETZER, 25
-        char_prop SETZER, 25
+        char_name SETZER, KURIN
+        char_prop SETZER, KURIN
         create_obj SETZER
         obj_gfx SETZER, MOG
         obj_pal SETZER, MOG_UMARO
-        char_name GAU, 26
-        char_prop GAU, 26
+        char_name GAU, KURU
+        char_prop GAU, KURU
         create_obj GAU
         obj_gfx GAU, MOG
         obj_pal GAU, MOG_UMARO
-        char_name GOGO, 27
-        char_prop GOGO, 27
+        char_name GOGO, KAMOG
+        char_prop GOGO, KAMOG
         create_obj GOGO
         obj_gfx GOGO, MOG
         obj_pal GOGO, MOG_UMARO
@@ -103310,7 +103304,7 @@ _ccaaba:
         restore_default_party
         return
 _ccaadf:
-        battle 5, BATTLE_BG::DEFAULT, COLLISION
+        battle 5, DEFAULT, COLLISION
         if_b_switch $40, _ccaaec
         call _ccaaba
         return
@@ -103324,7 +103318,7 @@ _ccaaec:
         restore_default_party
         return
 _ccaaf7:
-        battle 5, BATTLE_BG::DEFAULT, COLLISION
+        battle 5, DEFAULT, COLLISION
         if_b_switch $40, _ccab04
         call _ccaaba
         return
@@ -103338,7 +103332,7 @@ _ccab04:
         restore_default_party
         return
 _ccab0f:
-        battle 5, BATTLE_BG::DEFAULT, COLLISION
+        battle 5, DEFAULT, COLLISION
         if_b_switch $40, _ccab1c
         call _ccaaba
         return
@@ -103352,7 +103346,7 @@ _ccab1c:
         restore_default_party
         return
 _ccab27:
-        battle 5, BATTLE_BG::DEFAULT, COLLISION
+        battle 5, DEFAULT, COLLISION
         if_b_switch $40, _ccab34
         call _ccaaba
         return
@@ -103366,7 +103360,7 @@ _ccab34:
         restore_default_party
         return
 _ccab3f:
-        battle 5, BATTLE_BG::DEFAULT, COLLISION
+        battle 5, DEFAULT, COLLISION
         if_b_switch $40, _ccab4c
         call _ccaaba
         return
@@ -103380,7 +103374,7 @@ _ccab4c:
         restore_default_party
         return
 _ccab57:
-        battle 5, BATTLE_BG::DEFAULT, COLLISION
+        battle 5, DEFAULT, COLLISION
         if_b_switch $40, _ccab64
         call _ccaaba
         return
@@ -103765,7 +103759,7 @@ _ccab6f:
 _ccada8:
         switch $01CC=0
         switch $02BC=0
-        battle 6, BATTLE_BG::DEFAULT
+        battle 6
         if_b_switch $40, _ccadbf
         play_song LOCKE
         switch $01CC=1
@@ -106359,7 +106353,7 @@ _ccb8c0:
         return
 _ccbca0:
         switch $02BC=0
-        battle 57, BATTLE_BG::DEFAULT
+        battle 57
         if_b_switch $40, _ccbcb1
         call _ccc8e7
         switch $02BC=1
@@ -106704,7 +106698,7 @@ _ccbcb1:
         sfx 103
         call _cc9ad5
         wait_1s
-        battle 78, BATTLE_BG::DEFAULT, {NO_SFX, NO_BLUR}
+        battle 78, DEFAULT, {NO_SFX, NO_BLUR}
         switch $01CC=0
         fade_out_song $A0
         wait_30f
@@ -108256,7 +108250,7 @@ _ccc8e7:
         restore_default_party
         return
 _ccc90c:
-        battle 22, BATTLE_BG::DEFAULT, COLLISION
+        battle 22, DEFAULT, COLLISION
         if_b_switch $40, _ccc919
         call _ccc8e7
         return
@@ -108289,7 +108283,7 @@ _ccc935:
         restore_default_party
         return
 _ccc943:
-        battle 22, BATTLE_BG::DEFAULT, COLLISION
+        battle 22, DEFAULT, COLLISION
         if_b_switch $40, _ccc950
         call _ccc8e7
         return
@@ -108322,7 +108316,7 @@ _ccc96c:
         restore_default_party
         return
 _ccc97a:
-        battle 22, BATTLE_BG::DEFAULT, COLLISION
+        battle 22, DEFAULT, COLLISION
         if_b_switch $40, _ccc987
         call _ccc8e7
         return
@@ -108355,7 +108349,7 @@ _ccc9a3:
         restore_default_party
         return
 _ccc9b1:
-        battle 22, BATTLE_BG::DEFAULT, COLLISION
+        battle 22, DEFAULT, COLLISION
         if_b_switch $40, _ccc9be
         call _ccc8e7
         return
@@ -108388,7 +108382,7 @@ _ccc9da:
         restore_default_party
         return
 _ccc9e8:
-        battle 22, BATTLE_BG::DEFAULT, COLLISION
+        battle 22, DEFAULT, COLLISION
         if_b_switch $40, _ccc9f5
         call _ccc8e7
         return
@@ -108421,7 +108415,7 @@ _ccca11:
         restore_default_party
         return
 _ccca1f:
-        battle 22, BATTLE_BG::DEFAULT, COLLISION
+        battle 22, DEFAULT, COLLISION
         if_b_switch $40, _ccca2c
         call _ccc8e7
         return
@@ -108454,7 +108448,7 @@ _ccca48:
         restore_default_party
         return
 _ccca56:
-        battle 24, BATTLE_BG::DEFAULT, COLLISION
+        battle 24, DEFAULT, COLLISION
         if_b_switch $40, _ccca63
         call _ccc8e7
         return
@@ -108469,7 +108463,7 @@ _ccca63:
         restore_default_party
         return
 _ccca6f:
-        battle 23, BATTLE_BG::DEFAULT, COLLISION
+        battle 23, DEFAULT, COLLISION
         if_b_switch $40, _ccca7c
         call _ccc8e7
         return
@@ -108502,7 +108496,7 @@ _ccca98:
         restore_default_party
         return
 _cccaa6:
-        battle 23, BATTLE_BG::DEFAULT, COLLISION
+        battle 23, DEFAULT, COLLISION
         if_b_switch $40, _cccab3
         call _ccc8e7
         return
@@ -108535,7 +108529,7 @@ _cccacf:
         restore_default_party
         return
 _cccadd:
-        battle 23, BATTLE_BG::DEFAULT, COLLISION
+        battle 23, DEFAULT, COLLISION
         if_b_switch $40, _cccaea
         call _ccc8e7
         return
@@ -108568,7 +108562,7 @@ _cccb06:
         restore_default_party
         return
 _cccb14:
-        battle 23, BATTLE_BG::DEFAULT, COLLISION
+        battle 23, DEFAULT, COLLISION
         if_b_switch $40, _cccb21
         call _ccc8e7
         return
@@ -108601,7 +108595,7 @@ _cccb3d:
         restore_default_party
         return
 _cccb4b:
-        battle 23, BATTLE_BG::DEFAULT, COLLISION
+        battle 23, DEFAULT, COLLISION
         if_b_switch $40, _cccb58
         call _ccc8e7
         return
@@ -110399,7 +110393,7 @@ _ccd594:
         return
 _ccd5df:
         if_switch $023F=0, EventReturn
-        char_prop MOG, 10
+        char_prop MOG, MOG
         create_obj MOG
         obj_gfx MOG, MOG
         obj_pal MOG, MOG
@@ -110478,7 +110472,7 @@ _ccd5df:
                 move RIGHT, 2
                 end
         unlock_camera
-        char_name MOG, 10
+        char_name MOG, MOG
         name_menu MOG
         create_obj NPC_1
         create_obj NPC_12
@@ -110684,7 +110678,7 @@ _ccd709:
                 wait_30f
                 end_loop
         wait_obj NPC_2
-        battle 117, BATTLE_BG::DEFAULT
+        battle 117
         call _ca5ea9
         obj_script NPC_2
                 pos {59, 13}
@@ -110703,7 +110697,7 @@ _ccd709:
 _ccd793:
         set_case PARTY_CHARS
         if_switch $01AA=0, _ccd88e
-        char_prop UMARO, 13
+        char_prop UMARO, UMARO
         create_obj UMARO
         obj_gfx UMARO, UMARO
         obj_pal UMARO, UMARO
@@ -110789,7 +110783,7 @@ _ccd793:
         wait_30f
         fade_out
         wait_fade
-        char_name UMARO, 13
+        char_name UMARO, UMARO
         name_menu UMARO
         create_obj NPC_1
         show_obj NPC_1
@@ -112925,7 +112919,7 @@ _cce416:
         player_ctrl_on
         return
 _cce486:
-        battle 38, BATTLE_BG::DEFAULT
+        battle 38
         call _ca5ea9
         switch $01B5=0
         load_map 49, {111, 27}, UP, {ASYNC, NO_FADE_IN, STARTUP_EVENT}

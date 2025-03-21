@@ -6,9 +6,12 @@ BUSHIDO_NAME_INC = 1
 
 .scope BushidoName
 
-        ARRAY_LENGTH = 8
-        ITEM_SIZE = 12
-        SIZE = ARRAY_LENGTH * ITEM_SIZE
+; ##############################################################################
+; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
+; ##############################################################################
+
+
+; ##############################################################################
 
 .endscope
 

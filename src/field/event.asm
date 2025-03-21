@@ -29,11 +29,11 @@ inc_lang "text/char_name_%s.inc"
         ldx     $00
         stx     $e3         ; clear event pause counter
         stx     $e8         ; clear event stack
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #near EventScript_NoEvent
         stx     $e5
         lda     #^EventScript_NoEvent
         sta     $e7
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #near EventScript_NoEvent
         stx     $0594
         lda     #^EventScript_NoEvent
         sta     $0596
@@ -60,40 +60,40 @@ EventCmdTbl:
 .proc ExecEvent
         inc     $47
         lda     $84
-        bne     continue_event
+        bne     ContinueEvent
         lda     $58
-        bne     :+
+        bne     :+                      ; ignore frame check reloading same map
         lda     $47
         and     #$03
-        bne     continue_event
-:       jsr     _c0714a
+        bne     ContinueEvent
+:       jsr     _c0714a                 ; sort objects every 4 frames
 
-continue_event:
+::ContinueEvent:
         ldx     $e3                     ; decrement event pause counter
         beq     :+
         dex
         stx     $e3
         rts
-:       lda     $0798                   ; check if waiting to update party characters
+:       lda     $0798                   ; check if waiting to sort objects
         beq     :+
-done:   rts
+Done:   rts
 :       lda     $055a                   ; check if bg is waiting for update
         beq     :+
         cmp     #$05
-        bne     done
+        bne     Done
 :       lda     $055b
         beq     :+
         cmp     #$05
-        bne     done
+        bne     Done
 :       lda     $055c
         beq     :+
         cmp     #$05
-        bne     done
+        bne     Done
 :       jsr     UpdateCtrlFlags
 
 ; check if waiting for object
         lda     $e1
-        bpl     check_wait_fade         ; branch if not waiting for object
+        bpl     CheckWaitFade           ; branch if not waiting for object
         lda     $e2
         sta     hWRMPYA
         lda     #$29
@@ -107,13 +107,13 @@ done:   rts
 :       lda     $e1
         and     #$7f
         sta     $e1
-        bra     exec_cmd
+        bra     ExecCmd
 
 ; check if waiting for screen to fade
-check_wait_fade:
+CheckWaitFade:
         lda     $e1
         and     #$40
-        beq     check_wait_scroll       ; branch if not waiting for fade
+        beq     CheckWaitScroll         ; branch if not waiting for fade
         lda     $4a
         beq     :+
         rts
@@ -123,10 +123,10 @@ check_wait_fade:
         rts
 
 ; check if waiting for screen to scroll
-check_wait_scroll:
+CheckWaitScroll:
         lda     $e1
         and     #$20
-        beq     exec_cmd                ; branch if not waiting for scroll
+        beq     ExecCmd                 ; branch if not waiting for scroll
         lda     $0541
         cmp     $0557
         beq     :+
@@ -135,7 +135,7 @@ check_wait_scroll:
         beq     :+
         dec2
         cmp     $0557
-        bne     done2
+        bne     Done2
 :       lda     $0542
         cmp     $0558
         beq     :+
@@ -145,7 +145,7 @@ check_wait_scroll:
         dec2
         cmp     $0558
         beq     :+
-done2:  rts
+Done2:  rts
 :       lda     $e1
         and     #$df
         sta     $e1
@@ -157,23 +157,13 @@ done2:  rts
         stx     $054f
         stx     $0551
 
-exec_cmd:
+ExecCmd:
         ldy     #5
+        .repeat 5, i
         lda     [$e5],y
-        sta     $ef
+        sta     $eb + 4 - i
         dey
-        lda     [$e5],y
-        sta     $ee
-        dey
-        lda     [$e5],y
-        sta     $ed
-        dey
-        lda     [$e5],y
-        sta     $ec
-        dey
-        lda     [$e5],y
-        sta     $eb
-        dey
+        .endrep
         lda     [$e5],y
         sta     $ea
         cmp     #$31
@@ -193,13 +183,13 @@ exec_cmd:
         jmp     ($002a)                 ; jump to event command code
 .endproc  ; ExecEvent
 
-ContinueEvent := ExecEvent::continue_event
-
 ; ------------------------------------------------------------------------------
 
 ; [ increment event pointer and continue ]
 
-; A: number of bytes to increment event pc by
+; A: number of bytes to increment event PC by
+
+; used if event execution may continue immediately
 
 .proc IncEventPtrContinue
         clc                 ; increment event pointer
@@ -217,6 +207,11 @@ ContinueEvent := ExecEvent::continue_event
 ; ------------------------------------------------------------------------------
 
 ; [ increment event pointer and return ]
+
+; A: number of bytes to increment event pc by
+
+; used if event execution must wait at least one frame before continuing,
+; e.g. battle, menu, tilemap changes, palette mods, loading a map
 
 .proc IncEventPtrReturn
         clc
@@ -237,10 +232,22 @@ ContinueEvent := ExecEvent::continue_event
 
 ; A: number of bytes to increment event pc by
 
+; On the line marked *** below, we're storing the bank byte of the current
+; event pointer into a RAM address in bank 0. But instead of using a 16-bit
+; RAM address like they use earlier in the subroutine to store the lower
+; 16-bits of the event pointer, they unnecessarily use the 24-bit address. In
+; other places they use a 16-bit address for this same variable (but not
+; always). My guess is that there was some confusion around the syntax for
+; instructions with 24-bit addresses vs. the syntax to get the bank byte of a
+; 24-bit variable (f: vs. var_name+2 in ca65, but more than likely something
+; different in the assembler that was used during development). Rather than
+; make sure they used the right one, they used both and the extra byte wasted
+; wasn't a priority.
+
 .proc PushEventPtr
         ldx     $e8
         clc
-        adc     $e5         ; event pc += a
+        adc     $e5                     ; event pc += A
         sta     $e5
         sta     $05f4,x
         lda     $e6
@@ -250,7 +257,7 @@ ContinueEvent := ExecEvent::continue_event
         lda     $e7
         adc     #0
         sta     $e7
-        sta     f:$0005f6,x
+        sta     f:$0005f6,x             ; *** see above
         inx3
         stx     $e8
         rts
@@ -268,11 +275,11 @@ ContinueEvent := ExecEvent::continue_event
         sta     hWRMPYB
         nop4
         ldy     hRDMPYL
-start:  lda     $087c,y                 ; set movement type to script controlled
+Start:  lda     $087c,y                 ; set movement type to script controlled
         and     #$f0
         ora     #$01
         sta     $087c,y
-        tdc
+        clr_a
         sta     $0886,y                 ; clear number of steps to take
         lda     $e5                     ; event pc
         clc
@@ -285,7 +292,7 @@ start:  lda     $087c,y                 ; set movement type to script controlled
         adc     #$00
         sta     $0885,y
         lda     $eb                     ; branch if not waiting until complete
-        bpl     async
+        bpl     Async
         lda     $ea                     ; get object number
         cmp     #$31
         bcc     :+
@@ -302,8 +309,7 @@ start:  lda     $087c,y                 ; set movement type to script controlled
 :       sta     $e2                     ; set object to wait for
         lda     #$80                    ; waiting for object script
         sta     $e1
-
-async:  lda     $eb                     ; add object script length + 2 to event pc
+Async:  lda     $eb                     ; add object script length + 2 to event pc
         and     #$7f
         inc2
         jmp     IncEventPtrContinue
@@ -333,11 +339,11 @@ async:  lda     $eb                     ; add object script length + 2 to event 
         nop8
         lda     hRDDIVL
         sta     $ea
-        jmp     InitObjScript::start
+        jmp     InitObjScript::Start
 :       lda     #$31                    ; use showing character
         sta     $ea
         ldy     #$07d9
-        jmp     InitObjScript::start
+        jmp     InitObjScript::Start
 .endproc  ; ExecPartyObjScript
 
 ; ------------------------------------------------------------------------------
@@ -465,7 +471,7 @@ async:  lda     $eb                     ; add object script length + 2 to event 
 
 ; ------------------------------------------------------------------------------
 
-; [ event command $45: validate and sort active objects ]
+; [ event command $45: sort active objects ]
 
 .proc EventCmd_45
         lda     #1
@@ -554,8 +560,8 @@ async:  lda     $eb                     ; add object script length + 2 to event 
 ; $eb: character number
 ; $eb: party number (0..7, 0 = remove from party)
 
-EventCmd_3f:
-@9d3b:  jsr     PopCharFlags
+.proc EventCmd_3f
+        jsr     PopCharFlags
         lda     $ec
         jsr     FindEmptyCharSlot
         ora     $ec
@@ -566,7 +572,7 @@ EventCmd_3f:
         ora     $1a
         sta     $0867,y     ; set party and battle slot in object data
         sta     $1a
-        tdc
+        clr_a
         sta     $087d,y     ; clear saved movement type
         jsr     GetTopCharPtr
         lda     $eb
@@ -576,6 +582,7 @@ EventCmd_3f:
         jsr     UpdateEquip
         lda     #3
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_3f
 
 ; ------------------------------------------------------------------------------
 
@@ -586,32 +593,33 @@ EventCmd_3f:
 ; $ed: slot 2 character ($ff = empty slot)
 ; $ee: slot 3 character ($ff = empty slot)
 
-EventCmd_3c:
-@9d6d:  ldy     #$07d9
+.proc EventCmd_3c
+        ldy     #$07d9
         sty     $07fd
         sty     $07ff
         sty     $0801
         jsr     CalcObjPtr
         sty     $07fb
         lda     $ec
-        bmi     @9da3
+        bmi     :+
         sta     $eb
         jsr     CalcObjPtr
         sty     $07fd
         lda     $ed
-        bmi     @9da3
+        bmi     :+
         sta     $eb
         jsr     CalcObjPtr
         sty     $07ff
         lda     $ee
-        bmi     @9da3
+        bmi     :+
         sta     $eb
         jsr     CalcObjPtr
         sty     $0801
-@9da3:  lda     #$01
+:       lda     #1
         sta     $0798
         lda     #5
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_3c
 
 ; ------------------------------------------------------------------------------
 
@@ -619,34 +627,35 @@ EventCmd_3c:
 
 ; $eb: object number
 
-CalcCharPtr:
-@9dad:  lda     $eb
+.proc CalcCharPtr
+        lda     $eb
         cmp     #$31
-        bcc     @9de0
+        bcc     :++                     ; branch if not a party character
         sec
         sbc     #$31
         asl
         tax
-        ldy     $0803,x
+        ldy     $0803,x                 ; party slot pointer to object data
         cpy     #$07b0
-        beq     @9dde
+        beq     :+                      ; branch if slot is empty
         lda     $0867,y
         and     #$07
-        cmp     $1a6d
-        bne     @9dde
+        cmp     $1a6d                   ; check if in current party
+        bne     :+
         sty     hWRDIVL
         lda     #$29
         sta     hWRDIVB
         nop7
         lda     hRDDIVL
-        bra     @9de0
-@9dde:  lda     #$11
-@9de0:  sta     hWRMPYA
+        bra     :++
+:       lda     #$11
+:       sta     hWRMPYA
         lda     #$25
         sta     hWRMPYB
         nop4
         ldy     hRDMPYL
         rts
+.endproc  ; CalcCharPtr
 
 ; ------------------------------------------------------------------------------
 
@@ -654,21 +663,21 @@ CalcCharPtr:
 
 ; $eb: object number
 
-CalcObjPtr:
-@9df0:  lda     $eb
+.proc CalcObjPtr
+        lda     $eb
         cmp     #$31
-        bcc     @9e2b
+        bcc     :++
         sec
         sbc     #$31
         asl
         tax
         ldy     $0803,x
         cpy     #$07b0
-        beq     @9e23
+        beq     :+
         lda     $0867,y
         and     #$07
         cmp     $1a6d
-        bne     @9e23
+        bne     :+
         sty     hWRDIVL
         lda     #$29
         sta     hWRDIVB
@@ -676,17 +685,20 @@ CalcObjPtr:
         lda     hRDDIVL
         sta     $eb
         rts
-@9e23:  ldy     #$07d9
+
+:       ldy     #$07d9
         lda     #$31
         sta     $eb
         rts
-@9e2b:  lda     $eb
+
+:       lda     $eb
         sta     hWRMPYA
         lda     #$29
         sta     hWRMPYB
         nop3
         ldy     hRDMPYL
         rts
+.endproc  ; CalcObjPtr
 
 ; ------------------------------------------------------------------------------
 
@@ -694,25 +706,26 @@ CalcObjPtr:
 
 ; $eb: object number
 
-EventCmd_3d:
-@9e3c:  jsr     CalcObjPtr
-        lda     $0867,y     ; return if object is already enabled
+.proc EventCmd_3d
+        jsr     CalcObjPtr
+        lda     $0867,y                 ; return if object is already enabled
         and     #$40
-        bne     @9e62
-        lda     $0867,y     ; enable object, not visible
+        bne     :+
+        lda     $0867,y                 ; enable object, not visible
         and     #$3f
         ora     #$40
         sta     $0867,y
         jsr     StartObjAnim
         lda     $eb
         cmp     #$10
-        bcs     @9e62       ; return if not a character object
+        bcs     :+                      ; return if not a character object
         tay
-        lda     $1850,y     ; enable object in character data
+        lda     $1850,y                 ; enable object in character data
         ora     #$40
         sta     $1850,y
-@9e62:  lda     #2
+:       lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_3d
 
 ; ------------------------------------------------------------------------------
 
@@ -720,32 +733,33 @@ EventCmd_3d:
 
 ; $eb: object number
 
-EventCmd_3e:
-@9e67:  jsr     CalcObjPtr
-        lda     $0867,y     ; return if object is already disabled
+.proc EventCmd_3e
+        jsr     CalcObjPtr
+        lda     $0867,y                 ; return if object is already disabled
         and     #$40
-        beq     @9e9d
-        lda     $0867,y     ; disable object, not visible
+        beq     :+
+        lda     $0867,y                 ; disable object, not visible
         and     #$3f
         sta     $0867,y
-        tdc
-        sta     $087d,y     ; clear saved movement type
+        clr_a
+        sta     $087d,y                 ; clear saved movement type
         jsr     StopObjAnim
         phy
         jsr     GetTopCharPtr
         ply
-        ldx     $087a,y     ; pointer to object map data
+        ldx     $087a,y                 ; pointer to object map data
         lda     #$ff
-        sta     $7e2000,x   ; clear map data
+        sta     $7e2000,x               ; clear map data
         lda     $eb
         cmp     #$10
-        bcs     @9e9d       ; branch if not a character object
+        bcs     :+                      ; branch if not a character object
         tay
-        lda     $1850,y     ; disable object in character data
+        lda     $1850,y                 ; disable object in character data
         and     #$3f
         sta     $1850,y
-@9e9d:  lda     #2
+:       lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_3e
 
 ; ------------------------------------------------------------------------------
 
@@ -753,82 +767,86 @@ EventCmd_3e:
 
 ; A: party number (0..7)
 
-FindEmptyCharSlot:
-@9ea2:  sta     $1a
-        cmp     #$00
-        beq     @9ed4                   ; return if no party
+.proc FindEmptyCharSlot
+        sta     $1a
+        cmp     #0
+        beq     Done                    ; return if no party
         ldy     $00
-@9eaa:  lda     $0867,y                 ; branch if character is not enabled
+Loop1:  lda     $0867,y                 ; branch if character is not enabled
         and     #$40
-        beq     @9ec3
+        beq     :+
         lda     $0867,y                 ; branch if character is not in that party
         and     #$07
         cmp     $1a
-        bne     @9ec3
+        bne     :+
         lda     $0867,y
         and     #$18
         cmp     #$00
-        beq     @9ed5
-@9ec3:  longa
+        beq     CheckSlot2
+:       longa
         tya
         clc
         adc     #$0029
         tay
         shorta0
         cpy     #$0290
-        bne     @9eaa
-        tdc                             ; slot 1
-@9ed4:  rts
+        bne     Loop1
+        clr_a                           ; slot 1
+Done:   rts
 
 ; try slot 2
-@9ed5:  ldy     $00
-@9ed7:  lda     $0867,y
+CheckSlot2:
+        ldy     $00
+Loop2:  lda     $0867,y
         and     #$40
-        beq     @9ef0
+        beq     :+
         lda     $0867,y
         and     #$07
         cmp     $1a
-        bne     @9ef0
+        bne     :+
         lda     $0867,y
         and     #$18
         cmp     #$08
-        beq     @9f02
-@9ef0:  longa_clc
+        beq     CheckSlot3
+:       longa_clc
         tya
         adc     #$0029
         tay
         shorta0
         cpy     #$0290
-        bne     @9ed7
+        bne     Loop2
         lda     #$08                    ; slot 2
         rts
 
 ; try slot 3
-@9f02:  ldy     $00
-@9f04:  lda     $0867,y
+CheckSlot3:
+        ldy     $00
+Loop3:  lda     $0867,y
         and     #$40
-        beq     @9f1d
+        beq     :+
         lda     $0867,y
         and     #$07
         cmp     $1a
-        bne     @9f1d
+        bne     :+
         lda     $0867,y
         and     #$18
         cmp     #$10
-        beq     @9f2f
-@9f1d:  longa_clc
+        beq     CheckSlot4
+:       longa_clc
         tya
         adc     #$0029
         tay
         shorta0
         cpy     #$0290
-        bne     @9f04
+        bne     Loop3
         lda     #$10                    ; slot 3
         rts
 
 ; give up and use slot 4 (even if it's already occupied)
-@9f2f:  lda     #$18                    ; slot 4
+CheckSlot4:
+        lda     #$18                    ; slot 4
         rts
+.endproc  ; FindEmptyCharSlot
 
 ; ------------------------------------------------------------------------------
 
@@ -836,136 +854,149 @@ FindEmptyCharSlot:
 
 ; $eb: character number
 
-EventCmd_77:
-@9f32:  jsr     CalcAverageLevel
+.proc EventCmd_77
+        jsr     CalcAverageLevel
         pha
         jsr     CalcCharPtr
-        lda     $1608,y     ; character level
+        lda     $1608,y                 ; character level
         dec
-        sta     $20         ; +$20 = previous level - 1
+        sta     $20                     ; +$20 = previous level - 1
         stz     $21
         pla
         cmp     $1608,y
-        bcc     @9f70       ; branch if average is less than character level
-        sta     $1608,y     ; set character level to average
+        bcc     :+                      ; branch if average is less than character level
+        sta     $1608,y                 ; set character level to average
         dec
-        sta     $22         ; +$22 = new level - 1
+        sta     $22                     ; +$22 = new level - 1
         stz     $23
         jsr     UpdateMaxHP
         jsr     UpdateMaxMP
-        lda     $160b,y     ; set hp to maximum
+        lda     $160b,y                 ; set hp to maximum
         sta     $1609,y
         lda     $160c,y
         sta     $160a,y
-        lda     $160f,y     ; set mp to maximum
+        lda     $160f,y                 ; set mp to maximum
         sta     $160d,y
         lda     $1610,y
         sta     $160e,y
         jsr     UpdateAbilities
-@9f70:  jsr     UpdateExp
+:       jsr     UpdateExp
         lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_77
 
 ; ------------------------------------------------------------------------------
 
 ; [ calculate average character level ]
 
-CalcAverageLevel:
-@9f78:  ldx     $1ede       ; +$20 = characters available
+.proc CalcAverageLevel
+        ldx     $1ede                   ; +$20 = characters available
         stx     $20
         ldx     $00
         txy
-        stx     $1e         ; +$1e = sum of available characters' levels
-        stz     $1b         ;  $1b = number of active characters
-@9f84:  longa_clc
+        stx     $1e                     ; +$1e = sum of available characters' levels
+        stz     $1b                     ;  $1b = number of active characters
+Loop:   longa_clc
         lsr     $20
         shorta0
-        bcc     @9f9d
+        bcc     :+
         lda     $1e
         clc
-        adc     $1608,x     ; character level
+        adc     $1608,x                 ; character level
         sta     $1e
         lda     $1f
-        adc     #$00
+        adc     #0
         sta     $1f
         inc     $1b
-@9f9d:  iny                 ; next character
+:       iny                             ; next character
         longa_clc
         txa
         adc     #$0025
         tax
         shorta0
         cpy     #$000e
-        bne     @9f84
+        bne     Loop
+
+; divide sum of levels by number of characters available
         ldx     $1e
         stx     hWRDIVL
         lda     $1b
-        beq     @9fc5
+        beq     :+
         sta     hWRDIVB
         nop7
         lda     hRDDIVL
-        bra     @9fc7
-@9fc5:  lda     #$03        ; minimum 3
-@9fc7:  cmp     #$63
-        bcc     @9fcd
-        lda     #$63        ; maximum 99
-@9fcd:  rts
+        bra     :++
+:       lda     #3                      ; level 3 if no characters available
+:       cmp     #99
+        bcc     :+
+        lda     #99                     ; maximum 99
+:       rts
+.endproc  ; CalcAverageLevel
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $8d: remove character equipped items/esper ]
 
-EventCmd_8d:
-@9fce:  lda     $eb         ; calculate pointer to character data
+.proc EventCmd_8d
+        lda     $eb                     ; calculate pointer to character data
         sta     hWRMPYA
         lda     #$25
         sta     hWRMPYB
         nop2
-        ldy     #$0006
+        ldy     #6                      ; loop through 6 equipped items slots
         ldx     hRDMPYL
         lda     #$ff
-        sta     $161e,x     ; remove esper
-@9fe5:  phy
+        sta     $161e,x                 ; remove esper
+Loop:   phy
         phx
-        lda     $161f,x     ; item slot
+        lda     $161f,x                 ; item slot
         cmp     #$ff
-        beq     @a02c       ; branch if no item in this slot
-        sta     $1a         ; $1a = item number
+        beq     NextSlot                ; branch if no item in this slot
+        sta     $1a                     ; $1a = item number
         lda     #$ff
-        sta     $161f,x     ; clear item slot
+        sta     $161f,x                 ; clear item slot
+
+; find the equipped item in inventory
         ldx     $00
-@9ff7:  lda     $1869,x     ; look for item in inventory
+:       lda     $1869,x                 ; look for item in inventory
         cmp     $1a
-        beq     @a021       ; branch if found
+        beq     FoundItem               ; branch if found
         inx
         cpx     #$0100
-        bne     @9ff7
+        bne     :-
+
+; find an empty slot in inventory
         ldx     $00
-@a006:  lda     $1869,x     ; look for next available item slot
+:       lda     $1869,x                 ; look for next available item slot
         cmp     #$ff
-        beq     @a015
+        beq     :+
         inx
         cpx     #$0100
-        bne     @a006
-        bra     @a02c       ; branch if there are no available item slots
-@a015:  lda     $1a
-        sta     $1869,x     ; set item number
-        lda     #$01
-        sta     $1969,x     ; item quantity = 1
-        bra     @a02c
-@a021:  lda     $1969,x     ; branch if item quantity is 99
-        cmp     #$63
-        beq     @a02c
-        inc                 ; increment quantity
+        bne     :-
+        bra     NextSlot                ; branch if there are no available item slots
+:       lda     $1a
+        sta     $1869,x                 ; set item number
+        lda     #1
+        sta     $1969,x                 ; item quantity = 1
+        bra     NextSlot
+
+FoundItem:
+        lda     $1969,x                 ; branch if item quantity is 99
+        cmp     #99
+        beq     NextSlot
+        inc                             ; increment quantity
         sta     $1969,x
-@a02c:  plx                 ; next item
+
+NextSlot:
+        plx                 ; next item
         ply
         inx
         dey
-        bne     @9fe5
+        bne     Loop
         jsr     UpdateEquip
         lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_8d
 
 ; ------------------------------------------------------------------------------
 
@@ -974,20 +1005,21 @@ EventCmd_8d:
 ; $eb: character number
 ; $ec: name index
 
-EventCmd_7f:
-@a03a:  jsr     CalcCharPtr
+.proc EventCmd_7f
+        jsr     CalcCharPtr
         lda     #6                      ; calculate pointer to character name
         sta     hWRMPYA
         lda     $ec
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
-        .repeat 6, i
+        .repeat CharName::ITEM_SIZE, i
         lda     f:CharName+i,x          ; copy character name (6 bytes)
         sta     $1602+i,y
         .endrep
         lda     #3
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_7f
 
 ; ------------------------------------------------------------------------------
 
@@ -996,15 +1028,15 @@ EventCmd_7f:
 ; $eb: character number
 ; $ec: actor number
 
-EventCmd_40:
-@a07c:  jsr     CalcCharPtr
-        lda     #$16        ; calculate pointer to actor properties
+.proc EventCmd_40
+        jsr     CalcCharPtr
+        lda     #$16                    ; calculate pointer to actor properties
         sta     hWRMPYA
         lda     $ec
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
-        lda     f:CharProp+2,x   ; battle commands
+        lda     f:CharProp+2,x          ; battle commands
         sta     $1616,y
         lda     f:CharProp+3,x
         sta     $1617,y
@@ -1012,83 +1044,84 @@ EventCmd_40:
         sta     $1618,y
         lda     f:CharProp+5,x
         sta     $1619,y
-        lda     f:CharProp+6,x   ; vigor
+        lda     f:CharProp+6,x          ; vigor
         sta     $161a,y
-        lda     f:CharProp+7,x   ; speed
+        lda     f:CharProp+7,x          ; speed
         sta     $161b,y
-        lda     f:CharProp+8,x   ; stamina
+        lda     f:CharProp+8,x          ; stamina
         sta     $161c,y
-        lda     f:CharProp+9,x   ; mag. power
+        lda     f:CharProp+9,x          ; mag. power
         sta     $161d,y
-        lda     #$ff        ; clear esper
+        lda     #$ff                    ; clear esper
         sta     $161e,y
-        lda     f:CharProp+15,x   ; weapon
+        lda     f:CharProp+15,x         ; weapon
         sta     $161f,y
-        lda     f:CharProp+16,x   ; shield
+        lda     f:CharProp+16,x         ; shield
         sta     $1620,y
-        lda     f:CharProp+17,x   ; helmet
+        lda     f:CharProp+17,x         ; helmet
         sta     $1621,y
-        lda     f:CharProp+18,x   ; armor
+        lda     f:CharProp+18,x         ; armor
         sta     $1622,y
-        lda     f:CharProp+19,x   ; relics
+        lda     f:CharProp+19,x         ; relics
         sta     $1623,y
         lda     f:CharProp+20,x
         sta     $1624,y
-        lda     f:CharProp,x   ; max hp
+        lda     f:CharProp,x            ; max hp
         sta     $160b,y
-        lda     f:CharProp+1,x   ; max mp
+        lda     f:CharProp+1,x          ; max mp
         sta     $160f,y
-        tdc
+        clr_a
         sta     $160c,y
         sta     $1610,y
         phx
         phy
-        lda     $ec         ; actor
+        lda     $ec                     ; actor
         sta     $1600,y
         jsr     CalcAverageLevel
         ply
         plx
-        sta     $1608,y     ; set level
-        lda     f:CharProp+21,x   ; level modifier
+        sta     $1608,y                 ; set level
+        lda     f:CharProp+21,x         ; level modifier
         and     #CHAR_LEVEL_MOD::MASK
         lsr2
         tax
-        lda     f:CharLevelModTbl,x   ; add level modifier
+        lda     f:CharLevelModTbl,x     ; add level modifier
         clc
         adc     $1608,y
-        beq     @a12f
-        bpl     @a131
-@a12f:  lda     #1          ; minimum level = 1
-@a131:  cmp     #99         ; maximum level = 99
-        bcc     @a137
+        beq     :+
+        bpl     :++
+:       lda     #1                      ; minimum level = 1
+:       cmp     #99                     ; maximum level = 99
+        bcc     :+
         lda     #99
-@a137:  sta     $1608,y
+:       sta     $1608,y
         jsr     InitMaxHP
-        lda     $160b,y     ; set hp to max
+        lda     $160b,y                 ; set hp to max
         sta     $1609,y
         lda     $160c,y
         sta     $160a,y
         jsr     InitMaxMP
-        lda     $160f,y     ; set mp to max
+        lda     $160f,y                 ; set mp to max
         sta     $160d,y
         lda     $1610,y
         sta     $160e,y
         jsr     UpdateExp
         tyx
         jsr     CalcObjPtr
-        lda     $087c,y     ; set movement type to script-controlled
+        lda     $087c,y                 ; set movement type to script-controlled
         and     #$f0
         ora     #$01
         sta     $087c,y
-        lda     $0868,y     ; enable walking animation
+        lda     $0868,y                 ; enable walking animation
         ora     #$01
         sta     $0868,y
-        lda     #$00        ; clear object settings
+        lda     #$00                    ; clear object settings
         sta     $0867,y
         txy
         jsr     UpdateAbilities
         lda     #3
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_40
 
 ; ------------------------------------------------------------------------------
 
@@ -1096,25 +1129,26 @@ EventCmd_40:
 
 ; y: pointer to character data
 
-UpdateAbilities:
-@a17f:  lda     $1600,y                 ; actor index
+.proc UpdateAbilities
+        lda     $1600,y                 ; actor index
         cmp     #CHAR::TERRA
-        beq     @a196                   ; branch if terra
+        beq     UpdateTerra
         cmp     #CHAR::CELES
-        beq     @a1b8                   ; branch if celes
+        beq     UpdateCeles
         cmp     #CHAR::CYAN
-        beq     @a1da                   ; branch if cyan
+        beq     UpdateCyan
         cmp     #CHAR::SABIN
-        jeq     @a201                   ; branch if sabin
-@a195:  rts
+        jeq     UpdateSabin
+Done:   rts
 
 ; update terra's natural magic
-@a196:  ldx     $00
-@a198:  lda     f:NaturalMagic+1,x      ; level that the spell is learned
+UpdateTerra:
+        ldx     $00
+Loop1:  lda     f:NaturalMagic+1,x      ; level that the spell is learned
         cmp     $1608,y                 ; current level
-        beq     @a1a3
-        bcs     @a195                   ; return if greater than current level
-@a1a3:  phy
+        beq     :+
+        bcs     Done                    ; return if greater than current level
+:       phy
         lda     f:NaturalMagic,x        ; spell number
         tay
         lda     #$ff
@@ -1122,16 +1156,17 @@ UpdateAbilities:
         ply
         inx2                            ; next natural spell (16 total)
         cpx     #$0020
-        beq     @a195
-        bra     @a198
+        beq     Done
+        bra     Loop1
 
 ; update celes' natural magic
-@a1b8:  ldx     $00
-@a1ba:  lda     f:NaturalMagic+$21,x    ; level that the spell is learned
+UpdateCeles:
+        ldx     $00
+Loop2:  lda     f:NaturalMagic+$21,x    ; level that the spell is learned
         cmp     $1608,y                 ; current level
-        beq     @a1c5
-        bcs     @a195                   ; return if greater than current level
-@a1c5:  phy
+        beq     :+
+        bcs     Done                    ; return if greater than current level
+:       phy
         lda     f:NaturalMagic+$20,x    ; spell number
         tay
         lda     #$ff
@@ -1139,22 +1174,23 @@ UpdateAbilities:
         ply
         inx2                            ; next natural spell (16 total)
         cpx     #$0020
-        beq     @a195
-        bra     @a1ba
+        beq     Done
+        bra     Loop2
 
 ; update cyan's swdtech
-@a1da:  stz     $1b
+UpdateCyan:
+        stz     $1b
         ldx     $00
-@a1de:  lda     f:BushidoLevelTbl,x
+Loop3:  lda     f:BushidoLevelTbl,x
         cmp     $1608,y
-        beq     @a1e9
-        bcs     @a1f3
-@a1e9:  inc     $1b
+        beq     :+
+        bcs     :++
+:       inc     $1b
         inx
         cpx     #8
-        beq     @a1f3
-        bra     @a1de
-@a1f3:  lda     $1b
+        beq     :+
+        bra     Loop3
+:       lda     $1b
         tax
         lda     $1cf7
         ora     f:LearnAbilityTbl,x
@@ -1162,33 +1198,35 @@ UpdateAbilities:
         rts
 
 ; update sabin's blitz
-@a201:  stz     $1b
+UpdateSabin:
+        stz     $1b
         ldx     $00
-@a205:  lda     f:BlitzLevelTbl,x
+Loop4:  lda     f:BlitzLevelTbl,x
         cmp     $1608,y
-        beq     @a210
-        bcs     @a21a
-@a210:  inc     $1b
+        beq     :+
+        bcs     :++
+:       inc     $1b
         inx
         cpx     #8
-        beq     @a21a
-        bra     @a205
-@a21a:  lda     $1b
+        beq     :+
+        bra     Loop4
+:       lda     $1b
         tax
         lda     $1d28
         ora     f:LearnAbilityTbl,x
         sta     $1d28
         rts
+.endproc  ; UpdateAbilities
 
 ; ------------------------------------------------------------------------------
 
 ; character average level modifiers
 CharLevelModTbl:
-@a228:  .byte   0,2,5,<(-3)
+        .byte   0,2,5,<(-3)
 
 ; swdtech/blitz learn flags
 LearnAbilityTbl:
-@a22c:  .byte   $00,$01,$03,$07,$0f,$1f,$3f,$7f,$ff
+        .byte   $00,$01,$03,$07,$0f,$1f,$3f,$7f,$ff
 
 .pushseg
 .segment "bushido_blitz_level"
@@ -1250,41 +1288,40 @@ NaturalMagic:
 
 ; y: pointer to character data
 
-UpdateExp:
-@a235:  lda     $1608,y     ; $1b = current level
+.proc UpdateExp
+        lda     $1608,y                 ; $1b = current level
         sta     $1b
         ldx     $00
-        stx     $2a         ; ++$2a = calculated experience points
+        stx     $2a                     ; ++$2a = calculated experience points
         stz     $2c
-@a240:  dec     $1b
-        beq     @a25c       ; branch at current level
+Loop:   dec     $1b
+        beq     :+                      ; branch at current level
         longa
-        lda     f:LevelUpExp,x   ; add experience progression value
+        lda     f:LevelUpExp,x          ; add experience progression value
         clc
         adc     $2a
         sta     $2a
         shorta0
         lda     $2c
-        adc     #$00
+        adc     #0
         sta     $2c
-        inx2                ; next level
-        bra     @a240
-@a25c:  asl     $2a         ; ++$2a *= 8
+        inx2                            ; next level
+        bra     Loop
+:       .repeat 3
+        asl     $2a                     ; ++$2a *= 8
         rol     $2b
         rol     $2c
-        asl     $2a
-        rol     $2b
-        rol     $2c
-        asl     $2a
-        rol     $2b
-        rol     $2c
-        lda     $2a         ; set character experience points
+        .endrep
+        lda     $2a                     ; set character experience points
         sta     $1611,y
         lda     $2b
         sta     $1612,y
         lda     $2c
         sta     $1613,y
         rts
+.endproc  ; UpdateExp
+
+; ------------------------------------------------------------------------------
 
 .pushseg
 .segment "level_up_exp"
@@ -1309,8 +1346,8 @@ LevelUpExp:
 
 ; y = pointer to character data
 
-InitMaxHP:
-@a27e:  lda     #$16
+.proc InitMaxHP
+        lda     #$16
         sta     hWRMPYA
         lda     $1600,y
         sta     hWRMPYB
@@ -1321,22 +1358,25 @@ InitMaxHP:
         lda     f:CharProp,x               ; starting hp
         sta     $1e
         ldx     $00
-@a29b:  dec     $1b
-        beq     @a2b1
+Loop:   dec     $1b
+        beq     :+
         lda     f:LevelUpHP,x
         clc
         adc     $1e
         sta     $1e
         lda     $1f
-        adc     #$00
+        adc     #0
         sta     $1f
         inx
-        bra     @a29b
-@a2b1:  longa_clc
+        bra     Loop
+:       longa_clc
         lda     $1e
         sta     $160b,y
         shorta0
         rts
+.endproc  ; InitMaxHP
+
+; ------------------------------------------------------------------------------
 
 .pushseg
 .segment "level_up_hp"
@@ -1362,7 +1402,7 @@ LevelUpHP:
 
 ; y = pointer to character data
 
-InitMaxMP:
+.proc InitMaxMP
 @a2bc:  lda     #$16
         sta     hWRMPYA
         lda     $1600,y
@@ -1371,7 +1411,7 @@ InitMaxMP:
         sta     $1b
         stz     $1f
         ldx     hRDMPYL
-        lda     f:CharProp+1,x   ; starting mp
+        lda     f:CharProp+1,x          ; starting mp
         sta     $1e
         ldx     $00
 @a2d9:  dec     $1b
@@ -1390,6 +1430,7 @@ InitMaxMP:
         sta     $160f,y
         shorta0
         rts
+.endproc  ; InitMaxMP
 
 ; ------------------------------------------------------------------------------
 
@@ -1411,18 +1452,16 @@ LevelUpMP:
         .byte   6,5,5,5,5,5,5,5,6,6  ; 80-89
         .byte   6,6,6,7,8,9,10,11,12,13  ; 90-99
 .else
-
-        .byte   $05,$06,$07,$08,$09,$0a,$0b,$0c  ; 2-9
-        .byte   $0d,$0e,$0f,$10,$11,$11,$11,$11,$10,$10  ; 10-19
-        .byte   $10,$0f,$0f,$0f,$0e,$0e,$0e,$0e,$0d,$0d  ; 20-29
-        .byte   $0d,$0d,$0c,$0c,$0c,$0c,$0b,$0b,$0b,$0b  ; 30-39
-        .byte   $0b,$0b,$0a,$0a,$0a,$0a,$0a,$0a,$0a,$0a  ; 40-49
-        .byte   $09,$09,$09,$09,$09,$09,$09,$09,$09,$09  ; 50-59
-        .byte   $0a,$08,$08,$08,$08,$08,$08,$08,$08,$08  ; 60-69
-        .byte   $08,$0a,$0a,$07,$06,$05,$04,$05,$06,$07  ; 70-79
-        .byte   $08,$09,$08,$07,$06,$05,$06,$07,$05,$06  ; 80-89
-        .byte   $07,$08,$09,$0a,$08,$08,$09,$0a,$0b,$0d  ; 90-99
-
+        .byte   5,6,7,8,9,10,11,12  ; 2-9
+        .byte   13,14,15,16,17,17,17,17,16,16  ; 10-19
+        .byte   16,15,15,15,14,14,14,14,13,13  ; 20-29
+        .byte   13,13,12,12,12,12,11,11,11,11  ; 30-39
+        .byte   11,11,10,10,10,10,10,10,10,10  ; 40-49
+        .byte   9,9,9,9,9,9,9,9,9,9  ; 50-59
+        .byte   10,8,8,8,8,8,8,8,8,8  ; 60-69
+        .byte   8,10,10,7,6,5,4,5,6,7  ; 70-79
+        .byte   8,9,8,7,6,5,6,7,5,6  ; 80-89
+        .byte   7,8,9,10,8,8,9,10,11,13  ; 90-99
 .endif
 
 .popseg
@@ -1433,32 +1472,33 @@ LevelUpMP:
 
 ; $eb = object number
 
-EventCmd_41:
-@a2fa:  jsr     CalcObjPtr
+.proc EventCmd_41
+        jsr     CalcObjPtr
         lda     $0867,y
         and     #$40
-        beq     @a331       ; return if object is not enabled
-        lda     $0867,y     ; return if object is already visible
-        bmi     @a331
-        ora     #$80        ; make object visible
+        beq     :+                      ; return if object is not enabled
+        lda     $0867,y                 ; return if object is already visible
+        bmi     :+
+        ora     #$80                    ; make object visible
         sta     $0867,y
-        lda     $0880,y     ; set top sprite layer priority to 2
+        lda     $0880,y                 ; set top sprite layer priority to 2
         and     #$cf
         ora     #$20
         sta     $0880,y
-        lda     $0881,y     ; set bottom sprite layer priority to 2
+        lda     $0881,y                 ; set bottom sprite layer priority to 2
         and     #$cf
         ora     #$20
         sta     $0881,y
-        lda     $eb         ; return if not a character object
+        lda     $eb                     ; return if not a character object
         cmp     #$10
-        bcs     @a331
+        bcs     :+
         tay
-        lda     $1850,y     ; set character object settings
+        lda     $1850,y                 ; set character object settings
         ora     #$80
         sta     $1850,y
-@a331:  lda     #2
+:       lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_41
 
 ; ------------------------------------------------------------------------------
 
@@ -1466,12 +1506,12 @@ EventCmd_41:
 
 ; $eb = object number
 
-EventCmd_42:
-@a336:  jsr     CalcObjPtr
+.proc EventCmd_42
+        jsr     CalcObjPtr
         lda     $0867,y
         and     #$7f
         sta     $0867,y
-        tdc
+        clr_a
         sta     $087d,y
         ldx     $087a,y
         lda     #$ff
@@ -1481,13 +1521,14 @@ EventCmd_42:
         sta     $087c,y
         lda     $eb
         cmp     #$10
-        bcs     @a365
+        bcs     :+
         tay
         lda     $1850,y
         and     #$7f
         sta     $1850,y
-@a365:  lda     #2
+:       lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_42
 
 ; ------------------------------------------------------------------------------
 
@@ -1564,7 +1605,7 @@ EventCmd_7e:
         sta     $087a,y
         lda     $ec
         sta     $087b,y
-@a3fa:  longa_clc        ; next character
+@a3fa:  longa_clc                       ; next character
         tya
         adc     #$0029
         tay
@@ -1573,15 +1614,15 @@ EventCmd_7e:
         inc     $1b
         cpy     #$0290
         bne     @a3b9
-        lda     #$01        ; re-load the same map
+        lda     #1                      ; re-load the same map
         sta     $58
-        lda     $eb         ; set global map position
+        lda     $eb                     ; set global map position
         sta     $1fc0
         sta     $1f66
         lda     $ec
         sta     $1fc1
         sta     $1f67
-        lda     #$01        ; enable map load
+        lda     #1                      ; enable map load
         sta     $84
         lda     #3
         jmp     IncEventPtrReturn
@@ -1666,7 +1707,7 @@ EventCmd_48:
         lda     #$01
         bra     @a48b
 @a489:  lda     #$12
-@a48b:  sta     $bc         ; dialog window y position (1 or 12)
+@a48b:  sta     $bc         ; dialog window y position (1 or 18)
         lda     $ec
         and     #$40
         lsr6
@@ -1792,16 +1833,16 @@ EventCmd_af:
 ; [ event command $8e: initiate monster-in-a-box battle ]
 
 EventCmd_8e:
-@a54e:  lda     $0789       ; monster-in-a-box event battle group number
+@a54e:  lda     $0789                   ; monster-in-a-box event battle group number
         sta     $eb
-        lda     #$3f        ; default battle bg
+        lda     #$3f                    ; default battle bg
         sta     $ec
         jsr     EventBattle
-        ldx     $0541       ; set scroll position
+        ldx     $0541                   ; set scroll position
         stx     $1f66
-        ldx     a:$00af       ; set party position
+        ldx     a:$00af                 ; set party position
         stx     $1fc0
-        lda     #$c0        ; enable map startup event, disable auto fade-in
+        lda     #$c0                    ; enable map startup event, disable auto fade-in
         sta     $11fa
         lda     #1
         jmp     IncEventPtrReturn
@@ -1890,7 +1931,7 @@ EventBattle:
         lda     $0522       ; map's default battle bg
         and     #$7f
 @a5db:  sta     f:$0011e2     ; set battle bg
-        tdc
+        clr_a
         sta     f:$0011e3
         lda     $1ed7       ;
         and     #$10
@@ -2634,7 +2675,7 @@ EventCmd_60:
         dec     $1e
         bne     @aa20
         shorta0
-        tdc
+        clr_a
         pha
         plb
         lda     #3
@@ -2879,7 +2920,7 @@ _ab5a:  lda     #$01        ; enable map load
         lda     $e7
         adc     #$00
         sta     $11ff
-        tdc
+        clr_a
         bra     @ac06
 @abaf:  lda     $ed         ; set position
         sta     $1fc0
@@ -3048,7 +3089,7 @@ EventCmd_74:
         lda     $8e
         adc     #$00
         sta     $e7
-        tdc
+        clr_a
         lda     $ec
         and     #$c0
         bne     @acde
@@ -3462,7 +3503,7 @@ EventCmd_8c:
         sec
         sbc     f:MPTbl,x
         bpl     @af7e
-        tdc
+        clr_a
 @af7e:  sta     $160d,y
         shorta0
         bra     @af90
@@ -3666,7 +3707,7 @@ EventCmd_9a:
         beq     @b0c5       ; branch if no valid item was selected
         lda     #$40
         bra     @b0c6
-@b0c5:  tdc
+@b0c5:  clr_a
 @b0c6:  sta     $1a
         lda     $1ebd       ; set or clear event bit for valid colosseum item
         and     #$bf
@@ -3729,7 +3770,7 @@ EventCmd_a1:
         clc
         adc     $1a
         tay
-        tdc
+        clr_a
         sta     $1188,y
         sta     $1189,y
         sta     $118a,y
@@ -4090,9 +4131,9 @@ EventCmd_c7:
         sta     $e5
         shorta
         lda     $e7
-        adc     #$00
+        adc     #0
         sta     $e7
-        tdc
+        clr_a
         jmp     ContinueEvent
 @b312:  ldy     $20         ; set new event pc
         longa
@@ -4181,9 +4222,9 @@ EventCmd_cf:
         sta     $e5
         shorta
         lda     $e7
-        adc     #$00
+        adc     #0
         sta     $e7
-        tdc
+        clr_a
         jmp     ContinueEvent
 
 ; ------------------------------------------------------------------------------
@@ -4222,7 +4263,7 @@ EventCmd_e4:
 ; [ event command $e3: get characters in any party ]
 
 EventCmd_e3:
-@b3b7:  tdc
+@b3b7:  clr_a
         sta     $1eb4       ; +$1eb4 = characters in any party
         sta     $1eb5
         ldx     $00
@@ -4265,7 +4306,7 @@ EventCmd_e3:
 ; [ event command $de: get characters in active party ]
 
 EventCmd_de:
-@b40b:  tdc
+@b40b:  clr_a
         sta     $1eb4       ; +$1eb4 = characters in the active party
         sta     $1eb5
         ldx     $00
@@ -4807,7 +4848,7 @@ EventCmd_be:
         lda     $e7
         adc     #$00
         sta     $e7
-        tdc
+        clr_a
         jmp     ContinueEvent
 @b740:  ldx     $e8
         lda     $1e
@@ -5238,16 +5279,17 @@ EventCmd_aa:
 
 ; [ event command $bb: "the end" cinematic ]
 
-EventCmd_bb:
-@b9be:  jsr     DisableInterrupts
+.proc EventCmd_bb
+        jsr     DisableInterrupts
         jml     TheEnd_ext
+.endproc  ; EventCmd_bb
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $ae: magitek train ride scene ]
 
-EventCmd_ae:
-@b9c5:  jsr     PushDP
+.proc EventCmd_ae
+        jsr     PushDP
         jsr     DisableInterrupts
         phd
         phb
@@ -5256,20 +5298,21 @@ EventCmd_ae:
         plp
         plb
         pld
-        tdc
+        clr_a
         jsr     PopDP
         jsr     DisableInterrupts
         jsr     InitInterrupts
         jsr     EnableInterrupts
         lda     #1
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_ae
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $bf: ending airship scene ]
 
-EventCmd_bf:
-@b9e7:  jsr     PushDP
+.proc EventCmd_bf
+        jsr     PushDP
         jsr     DisableInterrupts
         phd
         phb
@@ -5278,23 +5321,25 @@ EventCmd_bf:
         plp
         plb
         pld
-        tdc
+        clr_a
         jsr     PopDP
         jsr     DisableInterrupts
         jsr     InitInterrupts
         jsr     EnableInterrupts
         lda     #1
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_bf
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $a6: disable pyramid ]
 
-EventCmd_a6:
-@ba09:  stz     $0781                   ; disable pyramid
+.proc EventCmd_a6
+        stz     $0781                   ; disable pyramid
         jsr     ClearWindowPos
         lda     #1
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_a6
 
 ; ------------------------------------------------------------------------------
 
@@ -5302,8 +5347,8 @@ EventCmd_a6:
 
 ; $eb = pyramid object
 
-EventCmd_a7:
-@ba14:  lda     #1
+.proc EventCmd_a7
+        lda     #1
         sta     $0781                   ; enable pyramid
         lda     $eb
         sta     hWRMPYA
@@ -5314,13 +5359,14 @@ EventCmd_a7:
         stx     $077f                   ; set pointer to pyramid object
         lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_a7
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $ba: ending cinematic ]
 
-EventCmd_ba:
-@ba31:  lda     $eb                     ; $0201: ending cinematic number
+.proc EventCmd_ba
+        lda     $eb                     ; $0201: ending cinematic number
         sta     $0201
         jsr     PushDP
         jsr     DisableInterrupts
@@ -5331,13 +5377,14 @@ EventCmd_ba:
         jsr     EnableInterrupts
         lda     #2
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_ba
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $a8: floating island cutscene ]
 
-EventCmd_a8:
-@ba51:  jsr     PushDP
+.proc EventCmd_a8
+        jsr     PushDP
         jsr     DisableInterrupts
         jsl     FloatingContScene_ext
         jsr     PopDP
@@ -5345,13 +5392,14 @@ EventCmd_a8:
         jsr     InitInterrupts
         lda     #1
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_a8
 
 ; ------------------------------------------------------------------------------
 
 ; [ event command $ad: world of ruin cutscene ]
 
-EventCmd_ad:
-@ba69:  jsr     PushDP
+.proc EventCmd_ad
+        jsr     PushDP
         jsr     DisableInterrupts
         jsl     WorldOfRuinScene_ext
         jsr     PopDP
@@ -5359,13 +5407,14 @@ EventCmd_ad:
         jsr     InitInterrupts
         lda     #1
         jmp     IncEventPtrContinue
+.endproc  ; EventCmd_ad
 
 ; ------------------------------------------------------------------------------
 
 ; [ update a button and facing direction event bits ]
 
-UpdateCtrlFlags:
-@ba81:  ldy     $0803
+.proc UpdateCtrlFlags
+        ldy     $0803
         lda     $087f,y                 ; party facing direction
         tax
         lda     $1eb6
@@ -5373,126 +5422,136 @@ UpdateCtrlFlags:
         ora     f:BitOrTbl,x
         sta     $1eb6
         lda     $06                     ; branch if A button is not down
-        bpl     @baa2
+        bpl     :+
         lda     $1eb6
         ora     #$10
         sta     $1eb6
-        bra     @baaa
-@baa2:  lda     $1eb6
+        bra     :++
+:       lda     $1eb6
         and     #$ef
         sta     $1eb6
-@baaa:  rts
+:       rts
+.endproc  ; UpdateCtrlFlags
 
 ; ------------------------------------------------------------------------------
 
 ; [ get event bit (+$1e80) ]
 
-GetEventSwitch0:
-@baab:  jsr     GetSwitchOffset
+.proc GetEventSwitch0
+        jsr     GetSwitchOffset
         lda     $1e80,y
         and     f:BitOrTbl,x
         rts
+.endproc  ; GetEventSwitch0
 
 ; ------------------------------------------------------------------------------
 
 ; [ get event bit ($0100-$01ff) ]
 
-GetEventSwitch1:
-@bab6:  jsr     GetSwitchOffset
+.proc GetEventSwitch1
+        jsr     GetSwitchOffset
         lda     $1ea0,y
         and     f:BitOrTbl,x
         rts
+.endproc  ; GetEventSwitch1
 
 ; ------------------------------------------------------------------------------
 
 ; [ get event bit ($0300-$03ff) ]
 
-GetNPCSwitch0:
-@bac1:  jsr     GetSwitchOffset
+.proc GetNPCSwitch0
+        jsr     GetSwitchOffset
         lda     $1ee0,y
         and     f:BitOrTbl,x
         rts
+.endproc  ; GetNPCSwitch0
 
 ; ------------------------------------------------------------------------------
 
 ; [ get event bit ($0400-$04ff) ]
 
-GetNPCSwitch1:
-@bacc:  jsr     GetSwitchOffset
+.proc GetNPCSwitch1
+        jsr     GetSwitchOffset
         lda     $1f00,y
         and     f:BitOrTbl,x
         rts
+.endproc  ; GetNPCSwitch1
 
 ; ------------------------------------------------------------------------------
 
 ; [ get event bit ($0500-$05ff) ]
 
-GetNPCSwitch2:
-@bad7:  jsr     GetSwitchOffset
+.proc GetNPCSwitch2
+        jsr     GetSwitchOffset
         lda     $1f20,y
         and     f:BitOrTbl,x
         rts
+.endproc  ; GetNPCSwitch2
 
 ; ------------------------------------------------------------------------------
 
 ; [ get event bit ($0600-$06ff) ]
 
-GetNPCSwitch3:
-@bae2:  jsr     GetSwitchOffset
+.proc GetNPCSwitch3
+        jsr     GetSwitchOffset
         lda     $1f40,y
         and     f:BitOrTbl,x
         rts
+.endproc  ; GetNPCSwitch3
 
 ; ------------------------------------------------------------------------------
 
 ; [ get bit pointer ]
 
-; a = bit number
+; A = bit number
 
-GetSwitchOffset:
-@baed:  longa
+.proc GetSwitchOffset
+        longa
         tax
         lsr3
-        tay                             ; y = byte pointer
+        tay                             ; Y = byte pointer
         shorta0
         txa
-        and     #$07
-        tax                             ; x = bit mask pointer
+        and     #%111
+        tax                             ; X = bit mask pointer
         rts
+.endproc  ; GetSwitchOffset
 
 ; ------------------------------------------------------------------------------
 
 ; bit masks
 BitOrTbl:
-@bafc:  .byte   $01,$02,$04,$08,$10,$20,$40,$80
+        .byte   BIT_0, BIT_1, BIT_2, BIT_3, BIT_4, BIT_5, BIT_6, BIT_7
 
 ; inverse bit masks
 BitAndTbl:
-@bb04:  .byte   $fe,$fd,$fb,$f7,$ef,$df,$bf,$7f
+        .lobytes ~BIT_0, ~BIT_1, ~BIT_2, ~BIT_3, ~BIT_4, ~BIT_5, ~BIT_6, ~BIT_7
 
 ; ------------------------------------------------------------------------------
 
 ; [ clear event bits ]
 
-InitEventSwitches:
-@bb0c:  ldx     $00
-@bb0e:  stz     $1e80,x
+.proc InitEventSwitches
+        ldx     $00
+:       stz     $1e80,x
         inx
         cpx     #$0060
-        bne     @bb0e
+        bne     :-
         rts
+.endproc  ; InitEventSwitches
 
 ; ------------------------------------------------------------------------------
 
 ; [ clear treasure bits ]
 
-InitTreasureSwitches:
-@bb18:  ldx     $00
-@bb1a:  stz     $1e40,x
+.proc InitTreasureSwitches
+        ldx     $00
+:       stz     $1e40,x
         inx
         cpx     #$0030
-        bne     @bb1a
+        bne     :-
         rts
+.endproc  ; InitTreasureSwitches
 
 ; ------------------------------------------------------------------------------
 
@@ -5509,7 +5568,7 @@ InitTreasureSwitches:
         php
         shorta0
         longi
-        tdc
+        clr_a
         pha
         plb
         lda     $1dd1
@@ -5524,64 +5583,64 @@ InitTreasureSwitches:
 
 ; timer 1
 :       lda     $1188
-        bmi     skip1
+        bmi     Skip1
         ldx     $1189
         beq     :+
         dex
         stx     $1189
-        bra     skip1
+        bra     Skip1
 :       lda     $1188                   ; used during emperor's banquet
         and     #$20
-        beq     skip1
+        beq     Skip1
         lda     $1dd1
         ora     #$20
         sta     $1dd1
 
 ; timer 2
-skip1:  lda     $118e
-        bmi     skip2
+Skip1:  lda     $118e
+        bmi     Skip2
         ldx     $118f
         beq     :+
         dex
         stx     $118f
-        bra     skip2
+        bra     Skip2
 :       lda     $118e
         and     #$20
-        beq     skip2
+        beq     Skip2
         lda     $1dd1
         ora     #$20
         sta     $1dd1
 
 ; timer 3
-skip2:  lda     $1194
-        bmi     skip3
+Skip2:  lda     $1194
+        bmi     Skip3
         ldx     $1195
         beq     :+
         dex
         stx     $1195
-        bra     skip3
+        bra     Skip3
 :       lda     $1194
         and     #$20
-        beq     skip3
+        beq     Skip3
         lda     $1dd1
         ora     #$20
         sta     $1dd1
 
 ; timer 4
-skip3:  lda     $119a
-        bmi     skip4
+Skip3:  lda     $119a
+        bmi     Skip4
         ldx     $119b
         beq     :+
         dex
         stx     $119b
-        bra     skip4
+        bra     Skip4
 :       lda     $119a
         and     #$20
-        beq     skip4
+        beq     Skip4
         lda     $1dd1
         ora     #$20
         sta     $1dd1
-skip4:  plp
+Skip4:  plp
         pld
         plb
         ply
@@ -5620,25 +5679,25 @@ skip4:  plp
 
 .proc CheckTimer
         ldy     $00
-loop:   ldx     $1189,y
-        bne     skip
+Loop:   ldx     $1189,y
+        bne     Skip
         ldx     $118b,y
         bne     :+
         lda     $118d,y
-        beq     skip
+        beq     Skip
 :       ldx     $e5
-        cpx     #.loword(EventScript_NoEvent)
-        bne     skip
+        cpx     #near EventScript_NoEvent
+        bne     Skip
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     skip
+        bne     Skip
         ldx     $0803
         lda     $086a,x
         and     #$0f
-        bne     skip
+        bne     Skip
         lda     $086d,x
         and     #$0f
-        bne     skip
+        bne     Skip
         ldx     $118b,y
         stx     $e5
         stx     $05f4
@@ -5647,7 +5706,7 @@ loop:   ldx     $1189,y
         adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #near EventScript_NoEvent
         stx     $0594
         lda     #^EventScript_NoEvent
         sta     $0596
@@ -5660,15 +5719,15 @@ loop:   ldx     $1189,y
         sta     $087d,x
         lda     #$04
         sta     $087c,x
-        tdc
+        clr_a
         sta     $118b,y
         sta     $118c,y
         sta     $118d,y
         jsr     CloseMapTitleWindow
         rts
-skip:   iny6
+Skip:   iny6
         cpy     #$0018
-        bne     loop
+        bne     Loop
         rts
 .endproc  ; CheckTimer
 
@@ -5680,30 +5739,30 @@ skip:   iny6
 
 .proc CheckEventTriggers
         lda     $84
-        bne     done
+        bne     Done
         lda     $59
-        bne     done
+        bne     Done
         ldy     $0803
         lda     $086a,y
         and     #$0f
-        bne     done
+        bne     Done
         lda     $0869,y
-        bne     done
+        bne     Done
         lda     $086d,y
         and     #$0f
-        bne     done
+        bne     Done
         lda     $086c,y
-        bne     done
+        bne     Done
         ldx     $e5
-        cpx     #.loword(EventScript_NoEvent)
-        bne     done
+        cpx     #near EventScript_NoEvent
+        bne     Done
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     done
+        bne     Done
         lda     $087c,y
         and     #$0f
         cmp     #$02
-        bne     done
+        bne     Done
         longa
         lda     $82
         asl
@@ -5712,25 +5771,25 @@ skip:   iny6
         sta     $1e
         lda     f:EventTriggerPtrs,x
         cmp     $1e
-        beq     done
+        beq     Done
         tax
-loop:   lda     f:EventTrigger::Pos,x
+Loop:   lda     f:EventTrigger::Pos,x
         cmp     $af
-        beq     do_trigger
+        beq     DoTrigger
         txa
         clc
         adc     #5
         tax
         cpx     $1e
-        bne     loop
-done:   shorta0
+        bne     Loop
+Done:   shorta0
         rts
 
-do_trigger:
+DoTrigger:
         lda     f:EventTrigger::EventPtr,x
         sta     $e5
         sta     $05f4
-        tdc
+        clr_a
         sta     $0871,y
         sta     $0873,y
         shorta
@@ -5742,7 +5801,7 @@ do_trigger:
         adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #near EventScript_NoEvent
         stx     $0594
         lda     #^EventScript_NoEvent
         sta     $0596

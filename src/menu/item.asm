@@ -45,23 +45,23 @@ InitItemListCursor:
 .if LANG_EN
 
 ItemListCursorProp:
-        make_cursor_prop {0, 0}, {1, 10}, NO_Y_WRAP
+        cursor_prop {0, 0}, {1, 10}, NO_Y_WRAP
 
 ItemListCursorPos:
-.repeat 10, i
-        .byte   8, $5c + i * 12
-.endrep
+        .repeat 10, i
+        cursor_pos {8, 92 + i * 12}
+        .endrep
 
 .else
 
 ItemListCursorProp:
-        make_cursor_prop {0, 0}, {2, 10}, NO_Y_WRAP
+        cursor_prop {0, 0}, {2, 10}, NO_Y_WRAP
 
 ItemListCursorPos:
-.repeat 10, i
-        .byte   $08, $5c + i * 12
-        .byte   $78, $5c + i * 12
-.endrep
+        .repeat 10, i
+        cursor_pos {8, 92 + i * 12}
+        cursor_pos {120, 92 + i * 12}
+        .endrep
 
 .endif
 
@@ -89,25 +89,25 @@ InitRareItemCursor:
 .if LANG_EN
 
 RareItemCursorProp:
-        make_cursor_prop {0, 0}, {2, 10}
+        cursor_prop {0, 0}, {2, 10}
 
 RareItemCursorPos:
-.repeat 10, i
-        .byte   $08, $5c + i * 12
-        .byte   $78, $5c + i * 12
-.endrep
+        .repeat 10, i
+        cursor_pos {8, 92 + i * 12}
+        cursor_pos {120, 92 + i * 12}
+        .endrep
 
 .else
 
 RareItemCursorProp:
-        make_cursor_prop {0, 0}, {3, 10}
+        cursor_prop {0, 0}, {3, 10}
 
 RareItemCursorPos:
-.repeat 10, i
-        .byte   $08, $5c + i * 12
-        .byte   $50, $5c + i * 12
-        .byte   $98, $5c + i * 12
-.endrep
+        .repeat 10, i
+        cursor_pos {8, 92 + i * 12}
+        cursor_pos {80, 92 + i * 12}
+        cursor_pos {152, 92 + i * 12}
+        .endrep
 
 .endif
 
@@ -142,13 +142,17 @@ UpdateItemOptionCursor:
 
 ; item option cursor (top of item menu)
 ItemOptionCursorProp:
-        make_cursor_prop {0, 0}, {3, 1}, NO_Y_WRAP
+        cursor_prop {0, 0}, {3, 1}, NO_Y_WRAP
 
 ItemOptionCursorPos:
 .if LANG_EN
-@7d9d:  .byte   $40,$16,$68,$16,$b0,$16
+@7d9d:  cursor_pos {64, 22}
+        cursor_pos {104, 22}
+        cursor_pos {176, 22}
 .else
-        .byte   $40,$16,$70,$16,$a8,$16
+        cursor_pos {64, 22}
+        cursor_pos {112, 22}
+        cursor_pos {168, 22}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -185,7 +189,7 @@ DrawItemListMenu:
         ldy     #sizeof_ItemOptionTextList
         jsr     DrawPosKanaList
         jsr     _c3a73d
-        jsr     _c3a9a9
+        jsr     InitElementSymbolGfx
         jsr     ClearBG1ScreenB
         jsr     InitItemListText
         jsr     InitItemDesc
@@ -1531,15 +1535,18 @@ _c385d5:
 
 ; pointers to character names in bg data (item details)
 _c38653:
-.repeat 5, yy
-.repeat 3, xx
+
 .if LANG_EN
-        make_pos BG3A, {3 + xx * 10, 23 + yy * 2}
+        @Y_POS = 23
 .else
-        make_pos BG3A, {3 + xx * 10, 22 + yy * 2}
+        @Y_POS = 22
 .endif
-.endrep
-.endrep
+
+        .repeat 5, yy
+        .repeat 3, xx
+        make_pos BG3A, {3 + xx * 10, @Y_POS + yy * 2}
+        .endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -1778,45 +1785,38 @@ _8847:  ldy     #$9e89
 
 ; ------------------------------------------------------------------------------
 
-; c3/8854: "  0", "+10", "+20", "+30", "+40", "+50", "-10", "-20", "-30", "-40", "-50"
-
+; must be 4 bytes each
 EvadeModifierTextTbl:
-.if LANG_EN
-@8854:  .byte   $ff,$ff,$b4,$00
-        .byte   $ca,$b5,$b4,$00
-        .byte   $ca,$b6,$b4,$00
-        .byte   $ca,$b7,$b4,$00
-        .byte   $ca,$b8,$b4,$00
-        .byte   $ca,$b9,$b4,$00
-        .byte   $c4,$b5,$b4,$00
-        .byte   $c4,$b6,$b4,$00
-        .byte   $c4,$b7,$b4,$00
-        .byte   $c4,$b8,$b4,$00
-        .byte   $c4,$b9,$b4,$00
-.else
-        .byte   $ff,$ff,$53,$00
-        .byte   $d3,$54,$53,$00
-        .byte   $d3,$55,$53,$00
-        .byte   $d3,$56,$53,$00
-        .byte   $d3,$57,$53,$00
-        .byte   $d3,$58,$53,$00
-        .byte   $c5,$54,$53,$00
-        .byte   $c5,$55,$53,$00
-        .byte   $c5,$56,$53,$00
-        .byte   $c5,$57,$53,$00
-        .byte   $c5,$58,$53,$00
-.endif
+        raw_text EVADE_MODIFIER_0
+        raw_text EVADE_MODIFIER_PLUS_10
+        raw_text EVADE_MODIFIER_PLUS_20
+        raw_text EVADE_MODIFIER_PLUS_30
+        raw_text EVADE_MODIFIER_PLUS_40
+        raw_text EVADE_MODIFIER_PLUS_50
+        raw_text EVADE_MODIFIER_MINUS_10
+        raw_text EVADE_MODIFIER_MINUS_20
+        raw_text EVADE_MODIFIER_MINUS_30
+        raw_text EVADE_MODIFIER_MINUS_40
+        raw_text EVADE_MODIFIER_MINUS_50
 
-; c3/8880: " 0", "+1", "+2", "+3", "+4", "+5", "-1", "-2", "-3", "-4", "-5"
-
+; must be 2 bytes each
 StatModifierTextTable:
-.if LANG_EN
-@8880:  .byte   $ff,$b4,$ca,$b5,$ca,$b6,$ca,$b7,$ca,$b8,$ca,$b9,$ca,$ba,$ca,$bb
-        .byte   $ff,$b4,$c4,$b5,$c4,$b6,$c4,$b7,$c4,$b8,$c4,$b9,$c4,$ba,$c4,$bb
-.else
-        .byte   $ff,$53,$d3,$54,$d3,$55,$d3,$56,$d3,$57,$d3,$58,$d3,$59,$d3,$5a
-        .byte   $ff,$53,$c5,$54,$c5,$55,$c5,$56,$c5,$57,$c5,$58,$c5,$59,$c5,$5a
-.endif
+        raw_text STAT_MODIFIER_0
+        raw_text STAT_MODIFIER_PLUS_1
+        raw_text STAT_MODIFIER_PLUS_2
+        raw_text STAT_MODIFIER_PLUS_3
+        raw_text STAT_MODIFIER_PLUS_4
+        raw_text STAT_MODIFIER_PLUS_5
+        raw_text STAT_MODIFIER_PLUS_6
+        raw_text STAT_MODIFIER_PLUS_7
+        raw_text STAT_MODIFIER_0
+        raw_text STAT_MODIFIER_MINUS_1
+        raw_text STAT_MODIFIER_MINUS_2
+        raw_text STAT_MODIFIER_MINUS_3
+        raw_text STAT_MODIFIER_MINUS_4
+        raw_text STAT_MODIFIER_MINUS_5
+        raw_text STAT_MODIFIER_MINUS_6
+        raw_text STAT_MODIFIER_MINUS_7
 
 ; ------------------------------------------------------------------------------
 
@@ -2500,82 +2500,14 @@ par16:
         longa
         lda     hMPYL
         sta     ze9
-.repeat 4
+        .repeat 4
         lsr     zeb
         ror     ze9
-.endrep
+        .endrep
         shorta
         rts
 
 ; ------------------------------------------------------------------------------
-
-.if LANG_EN
-; ##############################################################################
-;       .define ItemTitleStr            {"Item\0"}
-;       .define ItemOptionUseStr        {"Use\0"}
-;       .define ItemOptionArrangeStr    {"Arrange\0"}
-;       .define ItemOptionRareStr       {"Rare\0"}
-;       .define ItemUsageStr            {" can be used by:\0"}
-;       .define ItemUnknownAttackStr    {"???\0"}
-; ##############################################################################
-        .define ItemTitleStr            {$88,$ad,$9e,$a6,$00}
-        .define ItemOptionUseStr        {$94,$92,$84,$00}
-        .define ItemOptionArrangeStr    {$80,$91,$91,$80,$8d,$86,$84,$00}
-        .define ItemOptionRareStr       {$91,$80,$91,$84,$00}
-        .define ItemUsageStr            {$ff,$9c,$9a,$a7,$ff,$9b,$9e,$ff,$ae,$ac,$9e,$9d,$ff,$9b,$b2,$c1,$00}
-        .define ItemUnknownAttackStr    {$bf,$bf,$bf,$00}  ; ???
-        .define ItemStrengthStr         {$95,$a2,$a0,$a8,$ab,$00}  ; Vigor
-        .define ItemStaminaStr          {$92,$ad,$9a,$a6,$a2,$a7,$9a,$00}  ; Stamina
-        .define ItemMagPwrStr           {$8c,$9a,$a0,$c5,$8f,$b0,$ab,$00}  ; Mag.Pwr
-        .define ItemEvadeStr            {$84,$af,$9a,$9d,$9e,$ff,$cd,$00}  ; Evade %
-        .define ItemMBlockStr           {$8c,$81,$a5,$a8,$9c,$a4,$cd,$00}  ; MBlock%
-        .define ItemSepStr              {$d3,$00}  ; 2-dot separator
-        .define ItemSpeedStr            {$92,$a9,$9e,$9e,$9d,$00}  ; Speed
-        .define ItemBatPwrStr           {$81,$9a,$ad,$c5,$8f,$b0,$ab,$00}  ; Bat.Pwr
-        .define ItemDefenseStr          {$83,$9e,$9f,$9e,$a7,$ac,$9e,$00}  ; Defense
-        .define ItemMagDefStr           {$8c,$9a,$a0,$c5,$83,$9e,$9f,$00}  ; Mag.Def
-        .define ItemElementHalfStr      {$b9,$b4,$cd,$ff,$83,$a6,$a0,$00}  ; 50% Dmg
-        .define ItemElementAbsorbStr    {$80,$9b,$ac,$a8,$ab,$9b,$ff,$87,$8f,$00}  ; Absorb HP
-        .define ItemElementNullStr      {$8d,$a8,$ff,$84,$9f,$9f,$9e,$9c,$ad,$00}  ; No Effect
-        .define ItemElementWeakStr      {$96,$9e,$9a,$a4,$ff,$a9,$ad,$00}  ; Weak pt
-        .define ItemAttackElementStr    {$80,$ad,$ad,$9a,$9c,$a4,$00}
-        .define ItemBushidoStr          {$92,$b0,$9d,$93,$9e,$9c,$a1,$00}
-        .define ItemRunicStr            {$91,$ae,$a7,$a2,$9c,$00}
-        .define Item2HandStr            {$b6,$c4,$a1,$9a,$a7,$9d,$00}
-        .define ItemOwnedStr            {$8e,$b0,$a7,$9e,$9d,$c1,$00}
-        .define ItemBlankQtyStr         {$ff,$ff,$ff,$00}
-
-.else
-
-;;;;    .define ItemTitleStr            {"アイテム",0}
-        .define ItemTitleStr            {$8a,$8c,$84,$a0,$00}
-        .define ItemOptionUseStr        {$83,$6b,$89,$00}
-        .define ItemOptionArrangeStr    {$7b,$8d,$87,$b9,$00}
-        .define ItemOptionRareStr       {$3f,$8d,$37,$93,$a5,$9b,$00}
-        .define ItemUsageStr            {$bb,$ff,$7d,$89,$23,$45,$6d,$ab,$6c,$be,$a6,$6e,$7e,$c5,$00}
-        .define ItemUnknownAttackStr    {$cb,$cb,$cb,$00}
-        .define ItemStrengthStr         {$81,$6b,$a7,$00}
-        .define ItemStaminaStr          {$7f,$8d,$a9,$c3,$6f,$00}
-        .define ItemMagPwrStr           {$9d,$a9,$c3,$6f,$00}
-        .define ItemEvadeStr            {$6b,$8d,$63,$a9,$83,$00}
-        .define ItemMBlockStr           {$9d,$69,$89,$6b,$8d,$63,$a9,$83,$00}
-        .define ItemSepStr              {$c7,$00}
-        .define ItemSpeedStr            {$79,$21,$b1,$75,$00}
-        .define ItemBatPwrStr           {$73,$89,$31,$6d,$a9,$c3,$6f,$00}
-        .define ItemDefenseStr          {$29,$89,$2d,$c3,$00}
-        .define ItemMagDefStr           {$9d,$69,$89,$29,$89,$2d,$c3,$00}
-        .define ItemElementHalfStr      {$61,$b9,$31,$b9,$00}
-        .define ItemElementAbsorbStr    {$6d,$c1,$89,$77,$c1,$89,$00}
-        .define ItemElementNullStr      {$a1,$73,$89,$00}
-        .define ItemElementWeakStr      {$37,$bf,$6f,$85,$b9,$00}
-        .define ItemAttackElementStr    {$73,$89,$31,$6d,$00}
-        .define ItemBushidoStr          {$63,$bd,$75,$83,$71,$b9,$ff,$2e,$2a,$00}
-        .define ItemRunicStr            {$9d,$65,$89,$71,$b9,$ff,$ff,$2e,$2a,$00}
-        .define Item2HandStr            {$a9,$c3,$89,$85,$a5,$81,$ff,$2e,$2a,$00}
-        .define ItemOwnedStr            {$a5,$bd,$85,$8d,$ab,$6b,$39,$00}
-        .define ItemBlankQtyStr         {$ff,$ff,$ff,$00}
-
-.endif
 
 ItemOptionTextList:
         .addr   ItemOptionUseText
@@ -2583,20 +2515,13 @@ ItemOptionTextList:
         .addr   ItemOptionRareText
         calc_size ItemOptionTextList
 
-.if LANG_EN
-ItemTitleText:                  pos_text BG3A, {2, 3}, ItemTitleStr
-ItemOptionUseText:              pos_text BG3A, {10, 3}, ItemOptionUseStr
-ItemOptionArrangeText:          pos_text BG3A, {15, 3}, ItemOptionArrangeStr
-ItemOptionRareText:             pos_text BG3A, {24, 3}, ItemOptionRareStr
-.else
-ItemTitleText:                  pos_text BG3A, {2, 2}, ItemTitleStr
-ItemOptionUseText:              pos_text BG3A, {10, 2}, ItemOptionUseStr
-ItemOptionArrangeText:          pos_text BG3A, {16, 2}, ItemOptionArrangeStr
-ItemOptionRareText:             pos_text BG3A, {23, 2}, ItemOptionRareStr
-.endif
+ItemTitleText:                  pos_text ITEM_TITLE
+ItemOptionUseText:              pos_text ITEM_OPTION_USE
+ItemOptionArrangeText:          pos_text ITEM_OPTION_ARRANGE
+ItemOptionRareText:             pos_text ITEM_OPTION_RARE
 
 ItemUsageText:
-        raw_text ItemUsageStr
+        raw_text ITEM_USAGE_MSG
         calc_size ItemUsageText
 
 ; stat names
@@ -2619,7 +2544,7 @@ ItemStatTextList1:
 
 ItemStatTextList2:
         .addr   ItemSpeedText
-        .addr   ItemBatPwrText
+        .addr   ItemAttackPwrText
         .addr   ItemDefenseText
         .addr   ItemMagDefText
         calc_size ItemStatTextList2
@@ -2632,51 +2557,35 @@ ItemElementTextList:
         .addr   ItemElementWeakText
         calc_size ItemElementTextList
 
-ItemUnknownAttackText:          pos_text BG3B, {29, 23}, ItemUnknownAttackStr
-ItemStrengthText:               pos_text BG3B, {19, 15}, ItemStrengthStr
-ItemStaminaText:                pos_text BG3B, {19, 19}, ItemStaminaStr
-ItemMagPwrText:                 pos_text BG3B, {19, 21}, ItemMagPwrStr
-ItemEvadeText:                  pos_text BG3B, {19, 27}, ItemEvadeStr
-ItemMBlockText:                 pos_text BG3B, {19, 31}, ItemMBlockStr
-ItemStrengthSepText:            pos_text BG3B, {27, 15}, ItemSepStr
-ItemSpeedSepText:               pos_text BG3B, {27, 17}, ItemSepStr
-ItemStaminaSepText:             pos_text BG3B, {27, 19}, ItemSepStr
-ItemMagPwrSepText:              pos_text BG3B, {27, 21}, ItemSepStr
-ItemBatPwrSepText:              pos_text BG3B, {27, 23}, ItemSepStr
-ItemDefenseSepText:             pos_text BG3B, {27, 25}, ItemSepStr
-ItemEvadeSepText:               pos_text BG3B, {27, 27}, ItemSepStr
-ItemMagDefSepText:              pos_text BG3B, {27, 29}, ItemSepStr
-ItemMBlockSepText:              pos_text BG3B, {27, 31}, ItemSepStr
-.if LANG_EN
-ItemSpeedText:                  pos_text BG3B, {19, 17}, ItemSpeedStr
-ItemBatPwrText:                 pos_text BG3B, {19, 23}, ItemBatPwrStr
-ItemDefenseText:                pos_text BG3B, {19, 25}, ItemDefenseStr
-ItemMagDefText:                 pos_text BG3B, {19, 29}, ItemMagDefStr
-ItemElementHalfText:            pos_text BG3A, {2, 13}, ItemElementHalfStr
-ItemElementAbsorbText:          pos_text BG3A, {16, 13}, ItemElementAbsorbStr
-ItemElementNullText:            pos_text BG3A, {2, 17}, ItemElementNullStr
-ItemElementWeakText:            pos_text BG3A, {16, 17}, ItemElementWeakStr
-ItemAttackElementText:          pos_text BG3A, {2, 13}, ItemAttackElementStr
-.else
-ItemSpeedText:                  pos_text BG3B, {19, 16}, ItemSpeedStr
-ItemBatPwrText:                 pos_text BG3B, {19, 22}, ItemBatPwrStr
-ItemDefenseText:                pos_text BG3B, {19, 24}, ItemDefenseStr
-ItemMagDefText:                 pos_text BG3B, {19, 28}, ItemMagDefStr
-ItemElementHalfText:            pos_text BG3A, {2, 12}, ItemElementHalfStr
-ItemElementAbsorbText:          pos_text BG3A, {16, 12}, ItemElementAbsorbStr
-ItemElementNullText:            pos_text BG3A, {2, 16}, ItemElementNullStr
-ItemElementWeakText:            pos_text BG3A, {16, 16}, ItemElementWeakStr
-ItemAttackElementText:          pos_text BG3A, {2, 12}, ItemAttackElementStr
-.endif
-ItemBushidoText:                pos_text BG3B, {19, 7}, ItemBushidoStr
-ItemRunicText:                  pos_text BG3B, {19, 9}, ItemRunicStr
-Item2HandText:                  pos_text BG3B, {19, 11}, Item2HandStr
-.if LANG_EN
-ItemOwnedText:                  pos_text BG3A, {2, 7}, ItemOwnedStr
-.else
-ItemOwnedText:                  pos_text BG3A, {2, 6}, ItemOwnedStr
-.endif
-ItemBlankQtyText:               pos_text BG3A, {27, 9}, ItemBlankQtyStr
+ItemUnknownAttackText:          pos_text ITEM_UNKNOWN_ATTACK
+ItemStrengthText:               pos_text ITEM_STRENGTH
+ItemStaminaText:                pos_text ITEM_STAMINA
+ItemMagPwrText:                 pos_text ITEM_MAG_PWR
+ItemEvadeText:                  pos_text ITEM_EVADE
+ItemMBlockText:                 pos_text ITEM_MAG_EVADE
+ItemStrengthSepText:            pos_text ITEM_STAT_SEP 15
+ItemSpeedSepText:               pos_text ITEM_STAT_SEP 17
+ItemStaminaSepText:             pos_text ITEM_STAT_SEP 19
+ItemMagPwrSepText:              pos_text ITEM_STAT_SEP 21
+ItemBatPwrSepText:              pos_text ITEM_STAT_SEP 23
+ItemDefenseSepText:             pos_text ITEM_STAT_SEP 25
+ItemEvadeSepText:               pos_text ITEM_STAT_SEP 27
+ItemMagDefSepText:              pos_text ITEM_STAT_SEP 29
+ItemMBlockSepText:              pos_text ITEM_STAT_SEP 31
+ItemSpeedText:                  pos_text ITEM_SPEED
+ItemAttackPwrText:              pos_text ITEM_ATTACK_PWR
+ItemDefenseText:                pos_text ITEM_DEFENSE
+ItemMagDefText:                 pos_text ITEM_MAG_DEF
+ItemElementHalfText:            pos_text ITEM_ELEMENT_HALF
+ItemElementAbsorbText:          pos_text ITEM_ELEMENT_ABSORB
+ItemElementNullText:            pos_text ITEM_ELEMENT_NULL
+ItemElementWeakText:            pos_text ITEM_ELEMENT_WEAK
+ItemAttackElementText:          pos_text ITEM_ATTACK_ELEMENT
+ItemBushidoText:                pos_text ITEM_BUSHIDO
+ItemRunicText:                  pos_text ITEM_RUNIC
+Item2HandText:                  pos_text ITEM_2HAND
+ItemOwnedText:                  pos_text ITEM_OWNED
+ItemBlankQtyText:               pos_text ITEM_BLANK_QTY
 
 ; ------------------------------------------------------------------------------
 

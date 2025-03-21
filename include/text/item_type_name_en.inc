@@ -6,9 +6,12 @@ ITEM_TYPE_NAME_INC = 1
 
 .scope ItemTypeName
 
-        ARRAY_LENGTH = 16
-        ITEM_SIZE = 7
-        SIZE = ARRAY_LENGTH * ITEM_SIZE
+; ##############################################################################
+; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
+; ##############################################################################
+
+
+; ##############################################################################
 
 .endscope
 

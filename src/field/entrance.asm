@@ -13,35 +13,35 @@
 
 .proc CheckEntrances
         lda     $84                     ; return if a map is loading
-        bne     done
+        bne     Done
         lda     $59                     ; return if menu is opening
-        bne     done
+        bne     Done
         lda     $85                     ; return if entrance triggers are disabled
-        bne     done
+        bne     Done
         lda     $56                     ; return if entering battle
-        bne     done
+        bne     Done
         ldy     $0803                   ; return if between tiles
         lda     $086a,y
         and     #$0f
-        bne     done
+        bne     Done
         lda     $086d,y
         and     #$0f
-        bne     done
+        bne     Done
         ldx     $e5                     ; return if an event is running
         cpx     #.loword(EventScript_NoEvent)
-        bne     done
+        bne     Done
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     done
+        bne     Done
         lda     $b8                     ; branch if on a bridge tile
         and     #$04
         beq     :+
         lda     $b2                     ; return if party is not on upper z-level
         cmp     #$01
-        bne     done
+        bne     Done
 :       jsr     CheckLongEntrance
         jsr     CheckShortEntrance
-done:   rts
+Done:   rts
 .endproc  ; CheckEntrances
 
 ; ------------------------------------------------------------------------------
@@ -58,58 +58,59 @@ done:   rts
         lda     f:LongEntrancePtrs,x
         tax
         cmp     $1e
-        jeq     done
+        jeq     Done
         shorta0
-loop:   stz     $26
+Loop:   stz     $26
         stz     $28
         lda     f:LongEntrance::Length,x
-        bmi     vertical
+        bmi     Vertical
 
 ; horizontal trigger
+Horizontal:
         sta     $1a
         lda     f:LongEntrance::SrcY,x
         cmp     $b0
-        bne     next
+        bne     Next
         lda     $af
         sec
         sbc     f:LongEntrance::SrcX,x
-        bcc     next
+        bcc     Next
         sta     $26
         lda     f:LongEntrance::SrcX,x
         clc
         adc     $1a
         cmp     $af
-        bcs     do_entrance
-        bra     next
+        bcs     DoEntrance
+        bra     Next
 
 ; vertical trigger
-vertical:
+Vertical:
         and     #$7f
         sta     $1a
         lda     f:LongEntrance::SrcX,x
         cmp     $af
-        bne     next
+        bne     Next
         lda     $b0
         sec
         sbc     f:LongEntrance::SrcY,x
-        bcc     next
+        bcc     Next
         sta     $28
         lda     f:LongEntrance::SrcY,x
         clc
         adc     $1a
         cmp     $b0
-        bcs     do_entrance
-next:   longa_clc
+        bcs     DoEntrance
+Next:   longa_clc
         txa
         adc     #LongEntrance::ITEM_SIZE
         tax
         shorta0
         cpx     $1e
-        bne     loop
+        bne     Loop
         rts
 
 ; player is on a trigger
-do_entrance:
+DoEntrance:
         lda     #$01
         sta     $078e
         longa
@@ -120,7 +121,7 @@ do_entrance:
 :       lda     f:LongEntrance::Map,x
         and     #$01ff
         cmp     #$01ff
-        beq     load_parent_map
+        beq     LoadParentMap
         lda     f:LongEntrance::Map,x
         sta     $1f64
         and     #$01ff
@@ -163,7 +164,7 @@ do_entrance:
         sta     $11fa
         rts
 
-load_parent_map:
+LoadParentMap:
         jsr     RestoreParentMap
         longa
         lda     f:LongEntrance::Map,x
@@ -194,7 +195,7 @@ load_parent_map:
         lda     #$80
         sta     $11fa
         rts
-done:   shorta0
+Done:   shorta0
         rts
 .endproc  ; CheckLongEntrance
 
@@ -278,19 +279,19 @@ DirYTbl: .lobytes -1,+0,+1,+0
         lda     f:ShortEntrancePtrs,x
         tax
         cmp     $1e
-        jeq     done
-loop:   lda     f:ShortEntrance::SrcPos,x   ; check xy position
+        jeq     Done
+Loop:   lda     f:ShortEntrance::SrcPos,x   ; check xy position
         cmp     $af
-        beq     do_entrance
+        beq     DoEntrance
         txa
         clc
         adc     #ShortEntrance::ITEM_SIZE
         tax
         cpx     $1e
-        bne     loop
-        jmp     done
+        bne     Loop
+        jmp     Done
 
-do_entrance:
+DoEntrance:
         lda     #$0001
         sta     $078e
         lda     f:ShortEntrance::Map,x
@@ -300,7 +301,7 @@ do_entrance:
 :       lda     f:ShortEntrance::Map,x
         and     #$01ff
         cmp     #$01ff
-        beq     load_parent_map
+        beq     LoadParentMap
         lda     f:ShortEntrance::Map,x
         sta     $1f64
         and     #$01ff
@@ -339,7 +340,7 @@ do_entrance:
         jsr     PushPartyMap
         rts
 
-load_parent_map:
+LoadParentMap:
         jsr     RestoreParentMap
         longa
         lda     f:ShortEntrance::Map,x
@@ -370,7 +371,8 @@ load_parent_map:
         jsr     FadeOut
         jsr     PushPartyMap
         rts
-done:   shorta0
+
+Done:   shorta0
         rts
 .endproc  ; CheckShortEntrance
 

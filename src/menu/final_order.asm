@@ -426,26 +426,16 @@ InitFinalOrderCursor:
 ; ------------------------------------------------------------------------------
 
 FinalOrderCursorProp:
-        make_cursor_prop {0, 0}, {1, 14}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 14}, NO_X_WRAP
 
 FinalOrderCursorPos:
-        .byte   $10,$20
-.repeat 12, i
-        .byte   $20, $2c + i * 12
-.endrep
-        .byte   $10,$bc
+        cursor_pos {16, 32}
+        .repeat 12, i
+        cursor_pos {32, 44 + i * 12}
+        .endrep
+        cursor_pos {16, 188}
 
 ; ------------------------------------------------------------------------------
-
-.if LANG_EN
-        .define FinalOrderEndStr        {$84,$a7,$9d,$00}
-        .define FinalOrderResetStr      {$91,$9e,$ac,$9e,$ad,$00}
-        .define FinalOrderMsgStr        {$83,$9e,$ad,$9e,$ab,$a6,$a2,$a7,$9e,$ff,$a8,$ab,$9d,$9e,$ab,$00}
-.else
-        .define FinalOrderEndStr        {$91,$b7,$a9,$00}
-        .define FinalOrderResetStr      {$b1,$a9,$93,$91,$77,$00}
-        .define FinalOrderMsgStr        {$37,$c1,$b9,$21,$b9,$bb,$ff,$6d,$a3,$85,$6f,$3f,$75,$8d,$00}
-.endif
 
 ; pointers to text for final battle order menu
 FinalOrderTextList:
@@ -454,14 +444,8 @@ FinalOrderTextList:
         .addr   FinalOrderMsgText
         calc_size FinalOrderTextList
 
-.if LANG_EN
-FinalOrderEndText:              pos_text BG1A, {4, 31}, FinalOrderEndStr
-FinalOrderResetText:            pos_text BG1A, {4, 5}, FinalOrderResetStr
-FinalOrderMsgText:              pos_text BG1A, {10, 3}, FinalOrderMsgStr
-.else
-FinalOrderEndText:              pos_text BG1A, {4, 30}, FinalOrderEndStr
-FinalOrderResetText:            pos_text BG1A, {4, 4}, FinalOrderResetStr
-FinalOrderMsgText:              pos_text BG1A, {10, 2}, FinalOrderMsgStr
-.endif
+FinalOrderEndText:              pos_text FINAL_ORDER_END
+FinalOrderResetText:            pos_text FINAL_ORDER_RESET
+FinalOrderMsgText:              pos_text FINAL_ORDER_MSG
 
 ; ------------------------------------------------------------------------------

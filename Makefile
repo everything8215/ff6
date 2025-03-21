@@ -44,6 +44,7 @@ spc: $(SPC_PRG)
 clean:
 	$(RM) -rf $(ROM_DIR) $(OBJ_DIR)
 	$(RM) -f src/text/*.dat
+	$(RM) src/menu/menu_text_*.inc.raw
 	$(RM) src/sound/song_script/*.asm src/sound/sfx_script/*.asm
 	$(RM) src/sound/sample_brr/*.wav src/sound/sfx_brr/*.wav
 	$(RM) $(SPC_PRG)
@@ -107,13 +108,13 @@ $(SPC_PRG): cfg/ff6-spc.cfg $(OBJ_DIR)/ff6-spc.o
 	$(LINK) $(LINKFLAGS) -o $@ -C $< $(OBJ_DIR)/ff6-spc.o
 
 # list of all text files
-TEXT_JSON_JP = $(wildcard src/text/*jp.json)
-TEXT_JSON_EN = $(wildcard src/text/*en.json)
+TEXT_JSON_JP = $(wildcard src/text/*_jp.json)
+TEXT_JSON_EN = $(wildcard src/text/*_en.json) src/text/mte_tbl_jp.json
 TEXT_DAT_JP = $(TEXT_JSON_JP:json=dat)
 TEXT_DAT_EN = $(TEXT_JSON_EN:json=dat)
 
-text_jp: $(TEXT_DAT_JP)
-text_en: $(TEXT_DAT_EN)
+text_jp: $(TEXT_DAT_JP) src/menu/menu_text_jp.inc.raw
+text_en: $(TEXT_DAT_EN) src/menu/menu_text_en.inc.raw
 text: text_jp text_en
 
 src/text/dlg1_%.dat src/text/dlg2_%.dat: src/text/dlg1_%.json src/text/dlg2_%.json
@@ -128,6 +129,10 @@ src/text/%.dat: src/text/%.json
 
 dte:
 	python3 tools/fix_dlg.py dte en
+
+# rules for encoding menu text
+%.inc.raw: %.inc
+	python3 tools/encode_menu_text.py $<
 
 # rules for converting mml files to asm
 SONG_MML_FILES = $(wildcard src/sound/song_script/*.mml)
@@ -171,30 +176,30 @@ rom/ff6-event.bin: cfg/ff6-event.cfg obj/event_en.o
 # run linker twice: 1st for the cutscene program, 2nd for the ROM itself
 $(FF6_JP_PATH): cfg/ff6-jp.cfg spc mml text_jp monster_gfx $(OBJ_FILES_JP)
 	@mkdir -p $(LZ_DIR) $(ROM_DIR)
-	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -o "" -C $< $(OBJ_FILES_JP)
+	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_JP)
 	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
 	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
-	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_JP) $(CUTSCENE_LZ).o
+	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_JP) $(CUTSCENE_LZ).o
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@
 
 $(FF6_EN_PATH): cfg/ff6-en.cfg spc mml text_en monster_gfx $(OBJ_FILES_EN)
 	@mkdir -p $(LZ_DIR) $(ROM_DIR)
-	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -o "" -C $< $(OBJ_FILES_EN)
+	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN)
 	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
 	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
-	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN) $(CUTSCENE_LZ).o
+	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN) $(CUTSCENE_LZ).o
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@
 
 $(FF6_EN1_PATH): cfg/ff6-en.cfg spc mml text_en monster_gfx $(OBJ_FILES_EN1)
 	@mkdir -p $(LZ_DIR) $(ROM_DIR)
-	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -o "" -C $< $(OBJ_FILES_EN1)
+	$(LINK) $(LINKFLAGS) -o "" -C $< $(OBJ_FILES_EN1)
 	python3 tools/encode_cutscene.py $(CUTSCENE_LZ:lz=bin) $(CUTSCENE_LZ)
 	@printf '.segment "cutscene_lz"\n.incbin "cutscene.lz"' > $(CUTSCENE_LZ_ASM)
 	$(ASM) --bin-include-dir $(LZ_DIR) $(CUTSCENE_LZ_ASM) -o $(CUTSCENE_LZ).o
-	$(LINK) $(LINKFLAGS) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN1) $(CUTSCENE_LZ).o
+	$(LINK) $(LINKFLAGS) --dbgfile $(@:sfc=dbg) -m $(@:sfc=map) -o $@ -C $< $(OBJ_FILES_EN1) $(CUTSCENE_LZ).o
 	@$(RM) -rf $(LZ_DIR)
 	$(FIX_CHECKSUM) $@

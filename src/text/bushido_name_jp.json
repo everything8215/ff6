@@ -1,5 +1,6 @@
 {
   "asset_label": "BushidoName",
+  "inc_path": "include/text/bushido_name_jp.inc",
   "item_size": 6,
   "char_tables": [
     "bushido_name"

@@ -22,8 +22,8 @@
 .proc RestartGame
         ldx     $00
         txy
-        tdc
-loop1:  lda     $1600,y
+        clr_a
+Loop1:  lda     $1600,y
         sta     $7ff1c0,x
         lda     $1608,y
         sta     $7ff1d0,x
@@ -40,7 +40,7 @@ loop1:  lda     $1600,y
         shorta0
         inx
         cpx     #$0010
-        bne     loop1
+        bne     Loop1
         jsr     PushDP
         phb
         phd
@@ -51,14 +51,14 @@ loop1:  lda     $1600,y
         plb
         jsr     PopDP
         jsr     PopPartyMap
-        tdc
+        clr_a
         lda     $0205
         jne     JmpReset
         ldx     $00
         txy
-loop2:  lda     $1600,y
+Loop2:  lda     $1600,y
         cmp     $7ff1c0,x
-        jne     skip
+        jne     Skip
         phx
         lda     $1608,y
         dec
@@ -81,14 +81,14 @@ loop2:  lda     $1600,y
         phx
         jsr     UpdateAbilities
         plx
-skip:   longa_clc
+Skip:   longa_clc
         tya
         adc     #$0025
         tay
         shorta0
         inx
         cpx     #$0010
-        jne     loop2
+        jne     Loop2
         jsr     UpdateEquip
         rts
 .endproc  ; RestartGame
@@ -107,8 +107,8 @@ skip:   longa_clc
         sta     $1e                     ; +$1e = max hp
         shorta0
         ldx     $20
-loop:   cpx     $22                     ; branch if at target level
-        beq     done
+Loop:   cpx     $22                     ; branch if at target level
+        beq     Done
         lda     f:LevelUpHP,x
         clc
         adc     $1e                     ; add to max hp
@@ -117,12 +117,12 @@ loop:   cpx     $22                     ; branch if at target level
         adc     #$00
         sta     $1f
         inx
-        bra     loop
-done:   ldx     #9999
+        bra     Loop
+Done:   ldx     #9999
         cpx     $1e
-        bcs     no_max
+        bcs     :+
         stx     $1e
-no_max: longa
+:       longa
         lda     $1e
         sta     $160b,y                 ; set new max hp
         shorta0
@@ -143,8 +143,8 @@ no_max: longa
         sta     $1e                     ; +$1e = max mp
         shorta0
         ldx     $20
-loop:   cpx     $22                     ; branch if at target level
-        beq     done
+Loop:   cpx     $22                     ; branch if at target level
+        beq     Done
         lda     f:LevelUpMP,x           ; mp progression value
         clc
         adc     $1e                     ; add to max mp
@@ -153,12 +153,12 @@ loop:   cpx     $22                     ; branch if at target level
         adc     #$00
         sta     $1f
         inx
-        bra     loop
-done:   ldx     #999
+        bra     Loop
+Done:   ldx     #999
         cpx     $1e
-        bcs     no_max
+        bcs     :+
         stx     $1e
-no_max: longa
+:       longa
         lda     $1e
         sta     $160f,y                 ; set new max mp
         shorta0
@@ -171,44 +171,44 @@ no_max: longa
 
 .proc CheckMenu
         lda     $59                     ; return if menu is already opening
-        bne     done
+        bne     Done
         lda     $06                     ; return if x button not down
         and     #$40
-        beq     done
+        beq     Done
         lda     $56                     ; return if battle enabled
-        bne     done
+        bne     Done
         lda     $84                     ; return map load enabled
-        bne     done
+        bne     Done
         lda     $4a                     ; return if fading in/out
-        bne     done
+        bne     Done
         lda     $055e                   ; return if parties switching ???
-        bne     done
+        bne     Done
         ldx     $e5                     ; return if an event is running
         cpx     #.loword(EventScript_NoEvent)
-        bne     done
+        bne     Done
         lda     $e7
         cmp     #^EventScript_NoEvent
-        bne     done
+        bne     Done
         ldy     $0803                   ; party object
         lda     $087e,y                 ; return if moving
-        bne     done
+        bne     Done
         lda     $0869,y                 ; return if between tiles
-        bne     done
+        bne     Done
         lda     $086a,y
         and     #$0f
-        bne     done
+        bne     Done
         lda     $086c,y
-        bne     done
+        bne     Done
         lda     $086d,y
         and     #$0f
-        bne     done
+        bne     Done
         lda     $1eb8                   ; return if main menu is disabled
         and     #$04
-        bne     done
+        bne     Done
         lda     #1                      ; open menu
         sta     $59
         jsr     FadeOut
-done:   rts
+Done:   rts
 .endproc  ; CheckMenu
 
 ; ------------------------------------------------------------------------------
@@ -219,10 +219,10 @@ done:   rts
 
 .proc OpenMainMenu
         lda     $4a                     ; return if still fading out
-        bne     done
+        bne     Done
         lda     $59                     ; return if not opening menu
         bne     :+
-done:   jmp     MainMenuRet
+Done:   jmp     MainMenuRet
 :       stz     $59                     ; disable menu
         lda     #$00                    ; set menu mode to main menu
         sta     $0200
@@ -236,12 +236,12 @@ done:   jmp     MainMenuRet
         jsr     OpenMenu
         lda     $0205
         cmp     #$02
-        beq     tent                    ; branch if a tent was used
+        beq     Tent                    ; branch if a tent was used
         cmp     #$03
-        beq     warp                    ; branch if warp/warp stone was used
+        beq     Warp                    ; branch if warp/warp stone was used
         jmp     FieldMain               ; return to main code loop and fade in
 
-tent:   ldx     #.loword(EventScript_Tent)
+Tent:   ldx     #.loword(EventScript_Tent)
         stx     $e5
         stx     $05f4
         lda     #^EventScript_Tent
@@ -249,7 +249,7 @@ tent:   ldx     #.loword(EventScript_Tent)
         sta     $05f6
         bra     :+
 
-warp:   ldx     #.loword(EventScript_Warp)
+Warp:   ldx     #.loword(EventScript_Warp)
         stx     $e5
         stx     $05f4
         lda     #^EventScript_Warp

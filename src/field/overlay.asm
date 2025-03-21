@@ -21,24 +21,25 @@
 
 ; [ init sprite overlays ]
 
-InitOverlay:
-@c723:  jsr     LoadOverlayData
+.proc InitOverlay
+        jsr     LoadOverlayData
         jsr     LoadOverlayGfx
         rts
+.endproc  ; InitOverlay
 
 ; ------------------------------------------------------------------------------
 
 ; [ load sprite overlay graphics ]
 
-LoadOverlayGfx:
-@c72a:  lda     #$80                    ; vram settings
+.proc LoadOverlayGfx
+        lda     #$80                    ; vram settings
         sta     hVMAINC
         ldx     #.loword(OverlayVRAMTbl)
         stx     $2d
         lda     #^OverlayVRAMTbl
         sta     $2f
         ldy     $00
-@c73a:  phy
+Loop1:   phy
         lda     $0633,y                 ; overlay tile number (8 bytes per tile)
         longa
         asl3
@@ -49,7 +50,7 @@ LoadOverlayGfx:
         lda     #^OverlayTilemap
         sta     $2c
         ldy     $00
-@c752:  longa_clc
+Loop2:  longa_clc
         lda     [$2d]                   ; set vram destination
         sta     hVMADDL
         lda     [$2a],y                 ; pointer to graphics
@@ -71,18 +72,19 @@ LoadOverlayGfx:
         shorta0
         iny2
         cpy     #8
-        jne     @c752
+        jne     Loop2
         ply                             ; next 16x16 tile
         iny
         cpy     #$0010
-        jne     @c73a
+        jne     Loop1
         rts
+.endproc  ; LoadOverlayGfx
 
 ; ------------------------------------------------------------------------------
 
 ; vram destination for overlay graphics (4 per 16x16 tile)
 OverlayVRAMTbl:
-@c800:  .word   $6c00,$6c10,$6d00,$6d10
+        .word   $6c00,$6c10,$6d00,$6d10
         .word   $6c20,$6c30,$6d20,$6d30
         .word   $6c40,$6c50,$6d40,$6d50
         .word   $6c60,$6c70,$6d60,$6d70
@@ -118,13 +120,13 @@ OverlayTilemap:
 
 ; [ load sprite overlay data ]
 
-LoadOverlayData:
-@c880:  lda     $0531                   ; overlay index
+.proc LoadOverlayData
+        lda     $0531                   ; overlay index
         asl
         tax
         longa_clc
         lda     f:OverlayPropPtrs,x
-        adc     #.loword(OverlayProp)
+        adc     #near OverlayProp
         sta     $f3
         shorta0
         lda     #^OverlayProp
@@ -135,6 +137,7 @@ LoadOverlayData:
         sta     $f8
         jsl     Decompress
         rts
+.endproc  ; LoadOverlayData
 
 .pushseg
 .segment "overlay_prop"
@@ -206,14 +209,14 @@ OverlayProp:
 
 ; [ update overlay data ]
 
-UpdateOverlay:
-@c8a5:  ldy     $0803
+.proc UpdateOverlay
+        ldy     $0803
         lda     $087c,y                 ; return if player doesn't have control
         and     #$0f
         cmp     #$02
-        beq     @c8b2
+        beq     :+
         rts
-@c8b2:  longa
+:       longa
         lda     $086d,y                 ; get party xy position on screen
         clc
         sbc     $60
@@ -233,21 +236,22 @@ UpdateOverlay:
         stx     hWMADDL
         lda     $b8                     ; branch if not on a stairs tile
         and     #$c0
-        beq     @c8ec
+        beq     :+
         lda     $b8
         and     #$04
-        beq     @c8ef
+        beq     :++
         lda     $b2
         cmp     #$01
-        beq     @c8ec                   ; this branch does nothing
-@c8ec:  jmp     _ca1a
-@c8ef:  lda     $087e,y
-        beq     @c8fe
+        beq     :+                      ; this branch does nothing
+:       jmp     NotStairs
+
+:       lda     $087e,y
+        beq     :+
         cmp     #$05
-        jcc     _ca1a
+        jcc     NotStairs
         sec
         sbc     #$04
-@c8fe:  sta     $1a
+:       sta     $1a
         asl3
         clc
         adc     $1a
@@ -270,19 +274,19 @@ UpdateOverlay:
         lda     $7e7600,x
         plx
         and     #$04
-        beq     @c936
+        beq     :+
         lda     $b2
         dec
-        beq     @c944
-@c936:  lda     $0643,y
+        beq     :++
+:       lda     $0643,y
         cmp     #$ff
-        beq     @c944
+        beq     :+
         and     #$3f
         clc
         adc     #$c0
-        bra     @c945
-@c944:  tdc
-@c945:  sta     hWMDATA
+        bra     :++
+:       clr_a
+:       sta     hWMDATA
         lda     $0643,y
         and     #$c0
         sta     hWMDATA
@@ -303,19 +307,19 @@ UpdateOverlay:
         lda     $7e7600,x
         plx
         and     #$04
-        beq     @c97d
+        beq     :+
         lda     $b2
         dec
-        beq     @c98b
-@c97d:  lda     $0643,y
+        beq     :++
+:       lda     $0643,y
         cmp     #$ff
-        beq     @c98b
+        beq     :+
         and     #$3f
         clc
         adc     #$c0
-        bra     @c98c
-@c98b:  tdc
-@c98c:  sta     hWMDATA
+        bra     :++
+:       clr_a
+:       sta     hWMDATA
         lda     $0643,y
         and     #$c0
         sta     hWMDATA
@@ -336,19 +340,19 @@ UpdateOverlay:
         lda     $7e7600,x
         plx
         and     #$04
-        beq     @c9c4
+        beq     :+
         lda     $b2
         dec
-        beq     @c9d2
-@c9c4:  lda     $0643,y
+        beq     :++
+:       lda     $0643,y
         cmp     #$ff
-        beq     @c9d2
+        beq     :+
         and     #$3f
         clc
         adc     #$c0
-        bra     @c9d3
-@c9d2:  tdc
-@c9d3:  sta     hWMDATA
+        bra     :++
+:       clr_a
+:       sta     hWMDATA
         lda     $0643,y
         and     #$c0
         sta     hWMDATA
@@ -359,8 +363,6 @@ UpdateOverlay:
         sta     hWMDATA
         rts
 
-; ------------------------------------------------------------------------------
-
 ; (5 * 9 bytes)
 _c0c9ed:
 @c9ed:  .byte   $00,$00,$07,$10,$f0,$05,$10,$00,$08
@@ -369,10 +371,9 @@ _c0c9ed:
         .byte   $10,$00,$07,$10,$10,$0a,$00,$10,$09
         .byte   $10,$10,$07,$00,$00,$03,$00,$10,$06
 
-; ------------------------------------------------------------------------------
-
 ; not on a stairs tile
-_ca1a:  lda     $b8                     ; tile properties
+NotStairs:
+        lda     $b8                     ; tile properties
         and     #$04
         beq     @ca27                   ; branch if not a bridge tile
         lda     $b2
@@ -704,26 +705,26 @@ _ca1a:  lda     $b8                     ; tile properties
         sta     hWMDATA
         rts
 
-; ------------------------------------------------------------------------------
-
 _c0cc73:
-@cc73:  .byte   $00,$00,$06,$0c,$12,$18,$1e,$24,$2a,$30
+        .byte   $00,$00,$06,$0c,$12,$18,$1e,$24,$2a,$30
 
 ; (4 * 6 bytes)
 _c0cc7d:
-@cc7d:  .byte   $00,$f0,$04,$00,$e0,$01
+        .byte   $00,$f0,$04,$00,$e0,$01
         .byte   $10,$00,$08,$10,$f0,$05
         .byte   $00,$10,$0a,$00,$00,$07
         .byte   $f0,$00,$06,$f0,$f0,$03
+
+.endproc  ; UpdateOverlay
 
 ; ------------------------------------------------------------------------------
 
 ; [ update overlay sprite data ]
 
-DrawOverlaySprites:
-@cc95:  ldx     $00
+.proc DrawOverlaySprites
+        ldx     $00
         txy
-@cc98:  lda     $74                     ; horizontal scroll speed
+Loop:   lda     $74                     ; horizontal scroll speed
         beq     @cca8
         bmi     @cca8                   ; branch if not positive
         lda     $5c                     ; horizontal scroll position
@@ -786,19 +787,21 @@ DrawOverlaySprites:
 @cd1b:  iny4                            ; next tile
         inx4
         cpx     #$0010
-        jne     @cc98
+        jne     Loop
         rts
+.endproc  ; DrawOverlaySprites
 
 ; ------------------------------------------------------------------------------
 
 ; [ clear overlay tiles ]
 
-ClearOverlayTiles:
-@cd2c:  tdc
+.proc ClearOverlayTiles
+        clr_a
         sta     $0765
         sta     $0769
         sta     $076d
         sta     $0771
         rts
+.endproc  ; ClearOverlayTiles
 
 ; ------------------------------------------------------------------------------

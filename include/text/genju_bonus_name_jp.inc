@@ -6,9 +6,12 @@ GENJU_BONUS_NAME_INC = 1
 
 .scope GenjuBonusName
 
-        ARRAY_LENGTH = 17
-        ITEM_SIZE = 8
-        SIZE = ARRAY_LENGTH * ITEM_SIZE
+; ##############################################################################
+; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
+; ##############################################################################
+
+
+; ##############################################################################
 
 .endscope
 

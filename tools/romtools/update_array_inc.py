@@ -26,10 +26,9 @@ def update_array_inc(asset_bytes, item_ranges, **kwargs):
         # fixed item size
         inc_text += ASM_INDENT + f'ITEM_SIZE = '
         inc_text += str(kwargs['item_size']) + '\n'
-        inc_text += ASM_INDENT + 'SIZE = ARRAY_LENGTH * ITEM_SIZE\n'
     else:
         # variable item size
-        inc_text += ASM_INDENT + f'SIZE = {len(asset_bytes)}\n\n'
+        inc_text += '\n'
 
         # define item offsets
         for id, item_range in enumerate(item_ranges):

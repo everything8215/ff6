@@ -1,3 +1,6 @@
+
+; map tilemap routines
+
 ; ------------------------------------------------------------------------------
 
 .include "gfx/map_gfx.inc"
@@ -254,17 +257,17 @@ TfrBG2TopTiles:
         ldx     $97
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$e1c0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0400
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -283,17 +286,17 @@ TfrBG2BtmTiles:
         sta     hVMADDL
         shorta0
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$e5c0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0400
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -308,17 +311,17 @@ TfrBG3TopTiles:
         ldx     $9d
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$e9c0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0400
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -337,17 +340,17 @@ TfrBG3BtmTiles:
         sta     hVMADDL
         shorta0
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$edc0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0400
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -837,7 +840,7 @@ _2171:  and     $87
         sta     $da00,y
         lda     $c600,x
         sta     $da02,y
-        tdc
+        clr_a
         shorta_sec
         tya
         adc     #$03
@@ -861,7 +864,7 @@ _2171:  and     $87
         sta     $da00,y
         lda     $c700,x
         sta     $da02,y
-        tdc
+        clr_a
         shorta_sec
         tya
         adc     #$03
@@ -930,7 +933,7 @@ UpdateBG1HScroll:
         sta     $d880,y
         lda     $c600,x
         sta     $d882,y
-        tdc
+        clr_a
         shorta_sec
         tya
         adc     #$03
@@ -954,7 +957,7 @@ UpdateBG1HScroll:
         sta     $d880,y
         lda     $c700,x
         sta     $d882,y
-        tdc
+        clr_a
         shorta_sec
         tya
         adc     #$03
@@ -1042,7 +1045,7 @@ _22ec:  and     $89
         sta     $e200,y
         lda     $ce00,x
         sta     $e202,y
-        tdc
+        clr_a
         shorta_sec
         tya
         adc     #$03
@@ -1066,7 +1069,7 @@ _22ec:  and     $89
         sta     $e200,y
         lda     $cf00,x
         sta     $e202,y
-        tdc
+        clr_a
         shorta_sec
         tya
         adc     #$03
@@ -1135,7 +1138,7 @@ UpdateBG2HScroll:
         sta     $d900,y
         lda     $ce00,x
         sta     $d902,y
-        tdc
+        clr_a
         shorta_sec
         tya
         adc     #$03
@@ -1160,7 +1163,7 @@ UpdateBG2HScroll:
         sta     $d900,y
         lda     $cf00,x
         sta     $d902,y
-        tdc
+        clr_a
         shorta_sec
         tya
         adc     #$03
@@ -1494,7 +1497,7 @@ LoadMapPal:
         stz     $7201
         stz     $7400
         stz     $7401
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -1558,54 +1561,54 @@ TfrBG12Gfx:
         lda     #$80
         sta     hVMAINC
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         longa
         lda     f:MapGfxPtrs,x   ; ++$2a = pointer to tileset
         clc
         adc     #.loword(MapGfx)
         sta     $2a
-        sta     $4302
+        sta     hDMA0::ADDR
         shorta
         lda     f:MapGfxPtrs+2,x
         adc     #^MapGfx
         sta     $2c
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         longa
         lda     $2a
         beq     @2750
-        tdc                 ; check if tileset spans two banks
+        clr_a                           ; check if tileset spans two banks
         sec
         sbc     $2a
         cmp     #$2000
         bcs     @2750
-        sta     $4305       ; size in first bank
+        sta     hDMA0::SIZE             ; size in first bank
         sta     $1e
         lda     #$2000
         sec
         sbc     $1e         ; +$1e = remainder of tileset in the next bank
         sta     $1e
         shorta0
-        lda     #$01        ; first bank dma
+        lda     #BIT_0        ; first bank dma
         sta     hMDMAEN
         lda     $2c         ; increment bank
         inc
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     $00
-        stx     $4302
-        ldx     $1e         ; size is remainder of data
-        stx     $4305
-        lda     #$01        ; second bank dma
+        stx     hDMA0::ADDR
+        ldx     $1e                     ; size is remainder of data
+        stx     hDMA0::SIZE
+        lda     #BIT_0                    ; second bank dma
         sta     hMDMAEN
         rts
-@2750:  tdc                 ; no overflow, only need one dma
+@2750:  clr_a                           ; no overflow, only need one dma
         shorta
-        ldx     #$2000      ; full size $2000
-        stx     $4305
-        lda     #$01
+        ldx     #$2000                  ; full size $2000
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -1645,7 +1648,7 @@ TfrBG3Gfx:
         inx
         cpx     #$0040
         bne     @2799
-        tdc
+        clr_a
         pha
         plb
         stz     hMDMAEN
@@ -1654,17 +1657,17 @@ TfrBG3Gfx:
         ldx     #$3000      ; destination = $3000 (vram)
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$d080      ; source = $7fd080
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$1000      ; size = $1000
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -1879,7 +1882,7 @@ CopyMapTiles:
         sty     hWMADDL
         lda     #$7f
         sta     hWMADDH
-@29ae:  tdc
+@29ae:  clr_a
         ldy     #$0040
 @29b2:  lda     hWMDATA
         sta     $7f0000,x
@@ -1899,7 +1902,7 @@ CopyMapTiles:
         sty     hWMADDL
         lda     #$7f
         sta     hWMADDH
-@29d7:  tdc
+@29d7:  clr_a
         ldy     #$0020
 @29db:  lda     hWMDATA
         sta     $7f0000,x
@@ -1919,7 +1922,7 @@ CopyMapTiles:
         sty     hWMADDL
         lda     #$7f
         sta     hWMADDH
-@2a00:  tdc
+@2a00:  clr_a
         ldy     #$0010
 @2a04:  lda     hWMDATA
         sta     $7f0000,x
@@ -1939,7 +1942,7 @@ CopyMapTiles:
         sty     hWMADDL
         lda     #$7f
         sta     hWMADDH
-@2a29:  tdc
+@2a29:  clr_a
         ldy     #$0080
 @2a2d:  lda     hWMDATA
         sta     $7f0000,x
@@ -1967,17 +1970,17 @@ TfrBG1TilesVScroll:
         ldx     $91
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$d9c0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0080
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -1989,32 +1992,32 @@ TfrBG1TilesHScroll:
 @2a78:  stz     hMDMAEN
         lda     #$81        ; vram address increments vertically
         sta     hVMAINC
-        lda     #$18
-        sta     $4301
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         lda     #$41
-        sta     $4300
+        sta     hDMA0::CTRL
         ldx     $93
         stx     hVMADDL
         ldx     #$d840
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0040
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         stz     hMDMAEN
         ldx     $95
         stx     hVMADDL
         ldx     #$d880
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0040
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -2029,17 +2032,17 @@ TfrBG2TilesVScroll:
         ldx     $97
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$e1c0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0080
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -2051,32 +2054,32 @@ TfrBG2TilesHScroll:
 @2afb:  stz     hMDMAEN
         lda     #$81
         sta     hVMAINC
-        lda     #$18
-        sta     $4301
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         lda     #$41
-        sta     $4300
+        sta     hDMA0::CTRL
         ldx     $99
         stx     hVMADDL
         ldx     #$d8c0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0040
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         stz     hMDMAEN
         ldx     $9b
         stx     hVMADDL
         ldx     #$d900
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0040
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -2091,17 +2094,17 @@ TfrBG3TilesVScroll:
         ldx     $9d
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$e9c0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0080
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -2113,32 +2116,32 @@ TfrBG3TilesHScroll:
 @2b7e:  stz     hMDMAEN
         lda     #$81
         sta     hVMAINC
-        lda     #$18
-        sta     $4301
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         lda     #$41
-        sta     $4300
+        sta     hDMA0::CTRL
         ldx     $9f
         stx     hVMADDL
         ldx     #$d940
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0040
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         stz     hMDMAEN
         ldx     $a1
         stx     hVMADDL
         ldx     #$d980
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0040
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 

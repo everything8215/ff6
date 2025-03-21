@@ -108,7 +108,6 @@ Dlg2:   incbin_lang "dlg2_%s.dat"
 .segment "rare_item"
 
 ; ce/fb00 unused (30 * 3 bytes)
-_cefb00:
         fixed_block $60
         .faraddr 1,2,3,4,5,6,7,8,9,0,0,0,0,0,0
         .faraddr 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

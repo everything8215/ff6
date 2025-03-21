@@ -77,9 +77,9 @@ InitCharProp:
 
 ; pointers to character data
 CharPropPtrs:
-.repeat 16, i
+        .repeat 16, i
         .word $1600 + i * 37
-.endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -277,12 +277,12 @@ ClearBG3ScreenD:
         longa
         clr_a
         ldy     #$0200
-loop: .repeat 2
+:       .repeat 2
         sta     wBG1Tiles,x
         inx2
-.endrep
+        .endrep
         dey
-        bne     loop
+        bne     :-
         shorta
         rts
 .endproc  ; ClearBGTiles

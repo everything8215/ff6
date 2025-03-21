@@ -61,10 +61,10 @@ def warn(fileid, cmd, msg):
 def mlog(msg):
     global mml_log
     if __name__ == "__main__": mml_log += msg + '\n'
-    
+
 class Drum:
     def __init__(self, st):
-        s = re.findall('(.)(.[+-]?)\\1=\s*([0-9]?)([a-gr^])([+-]?)\s*(.*)', st)
+        s = re.findall(r'(.)(.[+-]?)\\1=\s*([0-9]?)([a-gr^])([+-]?)\s*(.*)', st)
         if s: s = s[0]
         mlog("{} -> {}".format(st, s))
         if len(s) >= 6:
@@ -72,8 +72,8 @@ class Drum:
             self.key = s[1]
             self.octave = int(s[2]) if s[2] else 5
             self.note = s[3] + s[4]
-            s5 = re.sub('\s*', '', s[5]).lower()
-            params = re.findall("\|[0-9a-f]|@0x[0-9a-f][0-9a-f]|%?[^|0-9][0-9,]*", s5)
+            s5 = re.sub(r'\s*', '', s[5]).lower()
+            params = re.findall(r"\|[0-9a-f]|@0x[0-9a-f][0-9a-f]|%?[^|0-9][0-9,]*", s5)
             par = {}
             for p in params:
                 if p[0] == "@" and len(p) >= 5:
@@ -92,11 +92,11 @@ class Drum:
         else:
             self.delim, self.key, self.octave, self.note, self.params = None, None, None, None, None
         mlog("DRUM: [{}] {} -- o{} {} {}".format(self.delim, self.key, self.octave, self.note, self.params))
-        
+
 def get_variant_list(mml, sfxmode=False):
     if isinstance(mml, str):
         mml = mml.splitlines()
-        
+
     all_delims = set()
     for line in mml:
         if line.startswith("#SFXV") and len(line) > 5:
@@ -122,7 +122,7 @@ def get_variant_list(mml, sfxmode=False):
     if not variants:
         variants['_default_'] = ''.join([c for c in all_delims])
     return variants
-    
+
 def get_echo_delay(mml, variant=None):
     variants = get_variant_list(mml)
     if not variant:
@@ -145,7 +145,7 @@ def get_echo_delay(mml, variant=None):
                 return None
             return num
     return None
-                        
+
 def get_brr_imports(mml, variant=None):
     variants = get_variant_list(mml)
     if variant not in variants:
@@ -157,7 +157,7 @@ def get_brr_imports(mml, variant=None):
     vtokens = variants[variant]
     try: #if it's not a list of lines, we need it to be one
         mml = mml.split('\n')
-    except AttributeError: 
+    except AttributeError:
         pass
     for line in mml:
         if line.upper().startswith("#BRR") and len(line) > 4:
@@ -169,7 +169,7 @@ def get_brr_imports(mml, variant=None):
                 line = ';'.join(spline)
             if ';' in line:
                 prog, _, meta = line.partition(';')
-            
+
                 prog = prog.strip().lower().split()
                 if prog == "":
                     continue
@@ -182,7 +182,7 @@ def get_brr_imports(mml, variant=None):
                     continue
                 if prog < 0x20 or prog >= 0x30:
                     continue
-                    
+
                 meta = meta.strip().split(',')
                 if len(meta) < 2:
                     print(f"BRRIMPORT: no loop specified for program 0x{prog:02X}, defaulting to 0")
@@ -195,7 +195,7 @@ def get_brr_imports(mml, variant=None):
                     meta.append('FFE0')
                 brr_import_info[prog] = meta
     return brr_import_info
-    
+
 def parse_brr_loop(looptext):
     looptext = looptext.strip().lower()
     if looptext == "brr" or looptext == "inline" or looptext is None:
@@ -221,7 +221,7 @@ def parse_brr_loop(looptext):
         byteloop = b"\x00\x00"
         print(f"PARSEBRRINFO: bad loop data formatting ({looptext}), defaulting to 0000")
     return byteloop
-       
+
 def parse_brr_tuning(pitchtext):
     pitchtext = pitchtext.strip().lower()
     keytable = {"a": 0, "b": 10, "c": 9, "d": 7, "e": 5, "f": 4, "g": 2}
@@ -253,7 +253,7 @@ def parse_brr_tuning(pitchtext):
             pitchscale = 10 ** ((semitones / 12) * math.log(2, 10))
             #print(f"DEBUG: pitch scale {pitchscale}")
         elif len(pitchtext) and pitchtext[0] == "*":
-            pitchscale = float(pitchtext[1:])  
+            pitchscale = float(pitchtext[1:])
         if pitchscale is not None:
             max_pitchscale = 1.5 - (1 / 65536)
             while pitchscale < 0.5:
@@ -270,7 +270,7 @@ def parse_brr_tuning(pitchtext):
         bytepitch = b"\x00\x00"
         print(f"PARSEBRRINFO: bad tuning data formatting ({pitchtext}), defaulting to 0000")
     return bytepitch
-        
+
 def parse_brr_env(envtext):
     envtext = envtext.strip().lower()
     byteenv = None
@@ -294,7 +294,7 @@ def parse_brr_env(envtext):
         byteenv = b"\xFF\xE0"
         print(f"PARSEBRRINFO: bad adsr data formatting ({envtext}), defaulting to a15d7s7r0")
     return byteenv
-    
+
 def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None, inst_only=False):
     #preprocessor
     #returns dict of (data, inst) tuples (4096, 32 bytes max)
@@ -320,7 +320,7 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None, inst_only=False)
         for line in mml:
             newmml.append(line.translate(trans))
         mml = newmml
-    
+
     variants = get_variant_list(mml, sfxmode)
     if variant:
         if variant not in variants:
@@ -328,7 +328,7 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None, inst_only=False)
             variants = {'_default_': variants['_default_']}
         else:
             variants = {variant: variants[variant]}
-        
+
     #generate instruments
     isets = {}
     for k, v in variants.items():
@@ -347,7 +347,7 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None, inst_only=False)
                 line = "#WAVE " + line
                 uline = line.upper()
             if uline.startswith("#WAVE") and len(line) > 5:
-                line = re.sub('[^x\da-fA-F]', ' ', line[5:])
+                line = re.sub(r'[^x\da-fA-F]', ' ', line[5:])
                 tokens = line.split()
                 if len(tokens) < 2: continue
                 numbers = []
@@ -371,31 +371,31 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None, inst_only=False)
         for slot, inst in iset.items():
             raw_iset = byte_insert(raw_iset, (slot - 0x20)*2, bytes([inst]))
         isets[k] = raw_iset
-                
+
     #return if only parsing for inst
     if inst_only:
         if variant in variants:
             return isets[variant]
         else:
             return isets
-        
+
     #generate data
     datas, channels, jumps = {}, {}, {}
     for k, v in variants.items():
         if variant in variants and k != variant:
             continue
         datas[k], channels[k], jumps[k] = mml_to_akao_main(mml, v, fileid)
-    
+
     if variant in variants:
         return (datas[variant], channels[variant], jumps[variant], isets[variant])
     else:
         output = {}
         for k, v in variants.items():
             output[k] = (datas[k], channels[k], jumps[k], isets[k])
-        
+
         return output
-        
-        
+
+
 def mml_to_akao_main(mml, ignore='', fileid='mml'):
     mml = copy.copy(mml)
     ##final bit of preprocessing
@@ -429,18 +429,18 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                         post = re.sub(re.escape(c)+".*?"+re.escape(c), "", post)
                     post = "".join(post.split())
                 macros[pre] = post.lower()
-    
+
     for i, line in enumerate(mml):
         while True:
             r = re.search("'(.*?)'", line)
             if not r: break
             mx = r.group(1)
             #
-            m = re.search("([^+\-*]+)", mx).group(1)
+            m = re.search(r"([^+\-*]+)", mx).group(1)
             tweaks = {}
             tweak_text = ""
             while True:
-                twx = re.search("([+\-*])([%a-z]+)([0-9.,]+)", mx)
+                twx = re.search(r"([+\-*])([%a-z]+)([0-9.,]+)", mx)
                 if not twx: break
                 tweak_text += twx.group(0)
                 cmd = twx.group(2) + ''.join([c for c in twx.group(3) if c == ','])
@@ -494,7 +494,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                             except:
                                 try: dn = int(d[j],16)
                                 except:
-                                    warn(fileid, m, "error parsing {} into {}".format(r.group(0), s))      
+                                    warn(fileid, m, "error parsing {} into {}".format(r.group(0), s))
                                     dn = 0
                             if sign == "*":
                                 result = dn * en
@@ -513,11 +513,11 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     else: c += d
                     sr += c
                 s = sr
-                                                    
+
             line = line.replace(r.group(0), s, 1)
-            
+
         mml[i] = line.replace('\n', ' ')
-        
+
     #drums
     drums = {}
     for line in mml:
@@ -530,16 +530,16 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 except Exception:
                     c = "\\" + c
                     s = re.sub(re.escape(c)+".*?"+re.escape(c), "", s)
-            for c in ["~", "/", "`", "\?", "_"]:
+            for c in ["~", "/", "`", r"\?", "_"]:
                 s = re.sub(c, '', s)
             d = Drum(s.strip())
             if d.delim:
                 if d.delim not in drums: drums[d.delim] = {}
                 drums[d.delim][d.key] = d
-    
+
     for i, line in enumerate(mml):
         mml[i] = line.split('#')[0].lower()
-            
+
     m = list(" ".join(mml))
     targets, channels, pendingjumps, jumps = {}, {}, {}, {}
     data = b"\x00" * 0x26
@@ -548,10 +548,10 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
     next_jumpid = 1
     state = {}
     jumpout = []
-    
+
     while len(m):
         command = m.pop(0)
-                        
+
         #single character macros
         if command in cdefs:
             repl = list(cdefs[command] + " ")
@@ -565,7 +565,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             continue
         #inline comment // channel marker
         elif command == "{":
-            thisnumber = ""    
+            thisnumber = ""
             numbers = []
             while len(m):
                 command += m.pop(0)
@@ -648,7 +648,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                             elif k in ["%a0", "%y0", "%s0", "%r0"]:
                                 #print(f"deferring {k},{v}")
                                 deferred_env_params[k] = v
-                        elif k == "%y" and not ( "%a0" in state or "%y0" in state or 
+                        elif k == "%y" and not ( "%a0" in state or "%y0" in state or
                                                  "%s0" in state or "%r0" in state):
                              pass
                         else:
@@ -665,7 +665,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                         s = t + s if k == "@0" else s + t
                         if k != "%y":
                             state[k] = v
-                        
+
                     if 'o0' in state:
                         if isinstance(state['o0'], str): state['o0'] = int(state['o0'])
                         ochg = drumset[dcom].octave - int(state['o0'])
@@ -685,7 +685,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             mls.extend(m)
             m = mls
             continue
-            
+
         #populate command variables
         if command == "%": command += m.pop(0)
         if command == "s": command += m.pop(0)
@@ -694,7 +694,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             while m[0] in "1234567890,.+-x":
                 command += m.pop(0)
                 if not len(m): break
-        
+
         #catch @0x before parsing params
         if "|" in command:
             command = "@0x2" + command[1:]
@@ -708,7 +708,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 warn(fileid, command, "Invalid instrument {}, falling back to 0x20".format(number))
                 number = 0x20
             command = "@" + str(number)
-                    
+
         modifier = ""
         params = []
         for c in command:
@@ -726,11 +726,11 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 thisnumber = ""
                 is_negative = False
         dots = len([c for c in command if c == "."])
-        
+
         if (prefix, len(params)) not in command_tbl and len(params):
             if (prefix + str(params[0]), len(params) - 1) in command_tbl:
                 prefix += str(params.pop(0))
-        
+
         #print("processing command {} -> {} {} mod {} dots {}".format(command, prefix, params, modifier, dots))
         #case: notes
         if prefix in "abcdefg^r":
@@ -780,7 +780,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     pendingjumps[jumpout.pop()] = "jo%d"%next_jumpid
                     jumps[jumpout.pop()] = "jo%d"%next_jumpid
                 targets["jo%d"%next_jumpid] = len(data) + 1
-                next_jumpid += 1    
+                next_jumpid += 1
             #general case
             akao = bytes([command_tbl[prefix, len(params)]])
             #special case: pansweep
@@ -867,7 +867,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 pendingjumps[len(data)+1] = params[0]
                 jumps[len(data)+1] = params[0]
             data += b"\xFC" + int_insert(b"\x00\x00",0,target,2)
-    
+
     #insert pending jumps
     for k, v in pendingjumps.items():
         if v in targets:
@@ -875,7 +875,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             jumps[k] = targets[v]
         else:
             warn(fileid, command, "Jump destination {} not found in file".format(v))
-            
+
     #set up header
     header = int_insert(b"\x00"*0x26, 0, len(data)-3, 2)
     header = int_insert(header, 2, 0x26, 2)
@@ -893,24 +893,24 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
     channels.update(temp)
 
     return data, channels, jumps
-    
+
 def clean_end():
     print("Processing ended.")
     input("Press enter to close.")
     quit()
-    
+
 if __name__ == "__main__":
     mml_log = "\n"
 
     print("mfvitools MML to AKAO SNESv4 converter")
     print()
-    
+
     if len(sys.argv) >= 2:
         fn = sys.argv[1]
     else:
         print("Enter MML filename..")
         fn = input(" > ").replace('"','').strip()
-    
+
     try:
         with open(fn, 'r') as f:
             mml = f.readlines()
@@ -923,11 +923,11 @@ if __name__ == "__main__":
     except Exception:
         traceback.print_exc()
         clean_end()
-    
+
     fn = os.path.splitext(fn)[0]
     for k, v in variants.items():
         vfn = ".bin" if k in ("_default_", "") else "_{}.bin".format(k)
-        
+
         thisfn = fn + "_data" + vfn
         try:
             with open(thisfn, 'wb') as f:
@@ -936,7 +936,7 @@ if __name__ == "__main__":
             print("Error writing file {}".format(thisfn))
             clean_end()
         print("Wrote {} - {} bytes".format(thisfn, hex(len(v[0]))))
-        
+
         thisfn = fn + "_inst" + vfn
         try:
             with open(thisfn, 'wb') as f:
@@ -945,15 +945,15 @@ if __name__ == "__main__":
             print("Error writing file {}".format(thisfn))
             clean_end()
         print("Wrote {}".format(thisfn))
-        
+
     try:
         with open(os.path.join(os.path.split(sys.argv[0])[0],"mml_log.txt"), 'w') as f:
             f.write(mml_log)
     except IOError:
         print("Couldn't write log file, displaying...")
         print(mml_log)
-            
+
     print("Conversion successful.")
     print()
-    
+
     clean_end()

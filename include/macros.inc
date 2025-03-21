@@ -24,28 +24,28 @@ MACROS_INC = 1
 ; clear accumulator, x, y registers
 ; note: don't use if dp register is nonzero
 
-.macro clr_a
+.mac clr_a
         tdc
 .endmacro
 
-.macro clr_ax
-        tdc
+.mac clr_ax
+        clr_a
         tax
 .endmacro
 
-.macro clr_ay
-        tdc
+.mac clr_ay
+        clr_a
         tay
 .endmacro
 
-.macro clr_axy
-        tdc
+.mac clr_axy
+        clr_a
         tax
         tay
 .endmacro
 
-.macro clr_ayx
-        tdc
+.mac clr_ayx
+        clr_a
         tay
         tax
 .endmacro
@@ -58,38 +58,38 @@ PSW_A = %00100000
 PSW_I = %00010000
 PSW_C = %00000001
 
-.macro longa
+.mac longa
         .a16
         rep #PSW_A
 .endmacro
 
-.macro shorta
+.mac shorta
         .a8
         sep #PSW_A
 .endmacro
 
-.macro shorta0                          ; battle code almost always clears
+.mac shorta0                          ; battle code almost always clears
         clr_a                           ; accumulator before a shorta
         shorta
 .endmacro
 
-.macro longi
+.mac longi
         .i16
         rep #PSW_I
 .endmacro
 
-.macro shorti
+.mac shorti
         .i8
         sep #PSW_I
 .endmacro
 
-.macro longai
+.mac longai
         .a16
         .i16
         rep #PSW_A|PSW_I
 .endmacro
 
-.macro shortai
+.mac shortai
         .a8
         .i8
         sep #PSW_A|PSW_I
@@ -99,33 +99,33 @@ PSW_C = %00000001
 
 ; [ set the size of accumulator/index registers and carry ]
 
-.macro longa_clc
+.mac longa_clc
         .a16
         rep #PSW_A|PSW_C
 .endmacro
 
-.macro shorta_sec
+.mac shorta_sec
         .a8
         sep #PSW_A|PSW_C
 .endmacro
 
-.macro longi_clc
+.mac longi_clc
         .i16
         rep #PSW_I|PSW_C
 .endmacro
 
-.macro shorti_sec
+.mac shorti_sec
         .i8
         sep #PSW_I|PSW_C
 .endmacro
 
-.macro longai_clc
+.mac longai_clc
         .a16
         .i16
         rep #PSW_A|PSW_I|PSW_C
 .endmacro
 
-.macro shortai_sec
+.mac shortai_sec
         .a8
         .i8
         sep #PSW_A|PSW_I|PSW_C
@@ -133,201 +133,112 @@ PSW_C = %00000001
 
 ; ------------------------------------------------------------------------------
 
-; [ repeated no operation ]
+; [ repeated operation ]
 
-.macro nop_n n
-.repeat n
-        nop
-.endrep
-.endmacro
+.mac op_n op, n
+        .repeat n
+        op
+        .endrep
+.endmac
 
-.define nop2 nop_n 2
-.define nop3 nop_n 3
-.define nop4 nop_n 4
-.define nop5 nop_n 5
-.define nop6 nop_n 6
-.define nop7 nop_n 7
-.define nop8 nop_n 8
+; no operation
+.define nop2 op_n nop, 2
+.define nop3 op_n nop, 3
+.define nop4 op_n nop, 4
+.define nop5 op_n nop, 5
+.define nop6 op_n nop, 6
+.define nop7 op_n nop, 7
+.define nop8 op_n nop, 8
 
-; ------------------------------------------------------------------------------
+; shift left
+.define asl2 op_n asl, 2
+.define asl3 op_n asl, 3
+.define asl4 op_n asl, 4
+.define asl5 op_n asl, 5
+.define asl6 op_n asl, 6
+.define asl7 op_n asl, 7
+.define asl8 op_n asl, 8
 
-; [ repeated shift left ]
+; shift right
+.define lsr2 op_n lsr, 2
+.define lsr3 op_n lsr, 3
+.define lsr4 op_n lsr, 4
+.define lsr5 op_n lsr, 5
+.define lsr6 op_n lsr, 6
+.define lsr7 op_n lsr, 7
+.define lsr8 op_n lsr, 8
 
-.macro asl_n n
-.repeat n
-        asl
-.endrep
-.endmacro
+; rotate left
+.define rol2 op_n rol, 2
+.define rol3 op_n rol, 3
+.define rol4 op_n rol, 4
+.define rol5 op_n rol, 5
+.define rol6 op_n rol, 6
+.define rol7 op_n rol, 7
+.define rol8 op_n rol, 8
 
-.define asl2 asl_n 2
-.define asl3 asl_n 3
-.define asl4 asl_n 4
-.define asl5 asl_n 5
-.define asl6 asl_n 6
-.define asl7 asl_n 7
-.define asl8 asl_n 8
+; rotate right
+.define ror2 op_n ror, 2
+.define ror3 op_n ror, 3
+.define ror4 op_n ror, 4
+.define ror5 op_n ror, 5
+.define ror6 op_n ror, 6
+.define ror7 op_n ror, 7
+.define ror8 op_n ror, 8
 
-; ------------------------------------------------------------------------------
+; increment
+.define inc2 op_n inc, 2
+.define inc3 op_n inc, 3
+.define inc4 op_n inc, 4
+.define inc5 op_n inc, 5
+.define inc6 op_n inc, 6
+.define inc7 op_n inc, 7
+.define inc8 op_n inc, 8
 
-; [ repeated shift right ]
+; decrement
+.define dec2 op_n dec, 2
+.define dec3 op_n dec, 3
+.define dec4 op_n dec, 4
+.define dec5 op_n dec, 5
+.define dec6 op_n dec, 6
+.define dec7 op_n dec, 7
+.define dec8 op_n dec, 8
 
-.macro lsr_n n
-.repeat n
-        lsr
-.endrep
-.endmacro
+; increment x
+.define inx2 op_n inx, 2
+.define inx3 op_n inx, 3
+.define inx4 op_n inx, 4
+.define inx5 op_n inx, 5
+.define inx6 op_n inx, 6
+.define inx7 op_n inx, 7
+.define inx8 op_n inx, 8
 
-.define lsr2 lsr_n 2
-.define lsr3 lsr_n 3
-.define lsr4 lsr_n 4
-.define lsr5 lsr_n 5
-.define lsr6 lsr_n 6
-.define lsr7 lsr_n 7
-.define lsr8 lsr_n 8
+; decrement x
+.define dex2 op_n dex, 2
+.define dex3 op_n dex, 3
+.define dex4 op_n dex, 4
+.define dex5 op_n dex, 5
+.define dex6 op_n dex, 6
+.define dex7 op_n dex, 7
+.define dex8 op_n dex, 8
 
-; ------------------------------------------------------------------------------
+; increment y
+.define iny2 op_n iny, 2
+.define iny3 op_n iny, 3
+.define iny4 op_n iny, 4
+.define iny5 op_n iny, 5
+.define iny6 op_n iny, 6
+.define iny7 op_n iny, 7
+.define iny8 op_n iny, 8
 
-; [ repeated rotate left ]
-
-.macro rol_n n
-.repeat n
-        rol
-.endrep
-.endmacro
-
-.define rol2 rol_n 2
-.define rol3 rol_n 3
-.define rol4 rol_n 4
-.define rol5 rol_n 5
-.define rol6 rol_n 6
-.define rol7 rol_n 7
-.define rol8 rol_n 8
-
-; ------------------------------------------------------------------------------
-
-; [ repeated rotate right ]
-
-.macro ror_n n
-.repeat n
-        ror
-.endrep
-.endmacro
-
-.define ror2 ror_n 2
-.define ror3 ror_n 3
-.define ror4 ror_n 4
-.define ror5 ror_n 5
-.define ror6 ror_n 6
-.define ror7 ror_n 7
-.define ror8 ror_n 8
-
-; ------------------------------------------------------------------------------
-
-; [ repeated increment ]
-
-.macro inc_n n
-.repeat n
-        inc
-.endrep
-.endmacro
-
-.define inc2 inc_n 2
-.define inc3 inc_n 3
-.define inc4 inc_n 4
-.define inc5 inc_n 5
-.define inc6 inc_n 6
-.define inc7 inc_n 7
-.define inc8 inc_n 8
-
-; ------------------------------------------------------------------------------
-
-; [ repeated decrement ]
-
-.macro dec_n n
-.repeat n
-        dec
-.endrep
-.endmacro
-
-.define dec2 dec_n 2
-.define dec3 dec_n 3
-.define dec4 dec_n 4
-.define dec5 dec_n 5
-.define dec6 dec_n 6
-.define dec7 dec_n 7
-.define dec8 dec_n 8
-
-; ------------------------------------------------------------------------------
-
-; [ repeated increment x ]
-
-.macro inx_n n
-.repeat n
-        inx
-.endrep
-.endmacro
-
-.define inx2 inx_n 2
-.define inx3 inx_n 3
-.define inx4 inx_n 4
-.define inx5 inx_n 5
-.define inx6 inx_n 6
-.define inx7 inx_n 7
-.define inx8 inx_n 8
-
-; ------------------------------------------------------------------------------
-
-; [ repeated decrement x ]
-
-.macro dex_n n
-.repeat n
-        dex
-.endrep
-.endmacro
-
-.define dex2 dex_n 2
-.define dex3 dex_n 3
-.define dex4 dex_n 4
-.define dex5 dex_n 5
-.define dex6 dex_n 6
-.define dex7 dex_n 7
-.define dex8 dex_n 8
-
-; ------------------------------------------------------------------------------
-
-; [ repeated increment y ]
-
-.macro iny_n n
-.repeat n
-        iny
-.endrep
-.endmacro
-
-.define iny2 iny_n 2
-.define iny3 iny_n 3
-.define iny4 iny_n 4
-.define iny5 iny_n 5
-.define iny6 iny_n 6
-.define iny7 iny_n 7
-.define iny8 iny_n 8
-
-; ------------------------------------------------------------------------------
-
-; [ repeated decrement y ]
-
-.macro dey_n n
-.repeat n
-        dey
-.endrep
-.endmacro
-
-.define dey2 dey_n 2
-.define dey3 dey_n 3
-.define dey4 dey_n 4
-.define dey5 dey_n 5
-.define dey6 dey_n 6
-.define dey7 dey_n 7
-.define dey8 dey_n 8
+; decrement y
+.define dey2 op_n dey, 2
+.define dey3 op_n dey, 3
+.define dey4 op_n dey, 4
+.define dey5 op_n dey, 5
+.define dey6 op_n dey, 6
+.define dey7 op_n dey, 7
+.define dey8 op_n dey, 8
 
 ; ------------------------------------------------------------------------------
 
@@ -352,42 +263,42 @@ PSW_C = %00000001
 
 ; [ long branch instructions ]
 
-.macro  jeq     addr
+.mac  jeq     addr
         bne     *+5
         jmp     addr
 .endmacro
 
-.macro  jne     addr
+.mac  jne     addr
         beq     *+5
         jmp     addr
 .endmacro
 
-.macro  jmi     addr
+.mac  jmi     addr
         bpl     *+5
         jmp     addr
 .endmacro
 
-.macro  jpl     addr
+.mac  jpl     addr
         bmi     *+5
         jmp     addr
 .endmacro
 
-.macro  jcs     addr
+.mac  jcs     addr
         bcc     *+5
         jmp     addr
 .endmacro
 
-.macro  jcc     addr
+.mac  jcc     addr
         bcs     *+5
         jmp     addr
 .endmacro
 
-.macro  jvs     addr
+.mac  jvs     addr
         bvc     *+5
         jmp     addr
 .endmacro
 
-.macro  jvc     addr
+.mac  jvc     addr
         bvs     *+5
         jmp     addr
 .endmacro
@@ -428,10 +339,10 @@ PSW_C = %00000001
 
 ; [ make jump table / label ]
 
-.macro make_jump_tbl label, length
-.repeat length, id
+.mac make_jump_tbl label, length
+        .repeat length, id
         .addr   .ident(.sprintf("%s_%02x", .string(label), id))
-.endrep
+        .endrep
 .endmacro
 
 .define make_jump_label(label, id) .ident(.sprintf("%s_%02x", .string(label), id)):
@@ -440,7 +351,7 @@ PSW_C = %00000001
 
 ; [ make pointer table (near) ]
 
-.macro ptr_tbl label
+.mac ptr_tbl label
         .local offset
         .ifdef label::Start
                 offset = label::Start
@@ -456,7 +367,7 @@ PSW_C = %00000001
 
 ; [ make pointer table (far) ]
 
-.macro ptr_tbl_far label
+.mac ptr_tbl_far label
         .local offset
         .ifdef label::Start
                 offset = label::Start

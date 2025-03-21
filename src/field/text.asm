@@ -67,7 +67,7 @@ inc_lang "text/map_title_%s.inc"
         jsr     ClearTextGfxBuf
         jsr     ClearDlgTextVRAM
         rts
-.endproc
+.endproc  ; InitDlgText
 
 ; ------------------------------------------------------------------------------
 
@@ -91,7 +91,7 @@ inc_lang "text/map_title_%s.inc"
         lda     #1                      ; enable dialog display
         sta     $0568
         rts
-.endproc
+.endproc  ; GetDlgPtr
 
 ; ------------------------------------------------------------------------------
 
@@ -168,7 +168,7 @@ Done:   txa
         nop3
         ldy     hRDMPYL
         sty     $c1
-:       jsr     UpdateMapTitleText
+:       jsr     UpdateDlgTextOneLine
         jsr     TfrMapTitleGfx
         lda     $0568                   ; branch until complete
         bpl     :-
@@ -176,7 +176,7 @@ Done:   txa
         stz     $cc                     ; text region (will not erase text)
         jsr     OpenMapTitleWindow
         rts
-.endproc
+.endproc  ; ShowMapTitle
 
 ; ------------------------------------------------------------------------------
 
@@ -315,7 +315,7 @@ Loop3:  txy
         dec     $1a                     ; return after 12 letters
         bne     Loop3
         bra     Done
-.endproc
+.endproc  ; CalcTextWidth
 
 .endif  ; LANG_EN
 
@@ -435,7 +435,7 @@ _8242:  lda     $0568                   ; dialog flags
         stz     $0568
         rts
 
-UpdateDlgTextOneLine:
+::UpdateDlgTextOneLine:
 
 .if ::LANG_EN
         jsr     CalcTextWidth
@@ -578,7 +578,7 @@ _82e3:  lda     $1602,y
         inx
         cpx     #CharName::ITEM_SIZE
         bne     _82e3
-_82f8:  tdc
+_82f8:  clr_a
         sta     $7e9183,x
         stz     $cf
         jmp     _8263
@@ -595,7 +595,7 @@ _821c:  lda     #$1f
         inx2
         cpx     #12
         bne     _821c
-_8235:  tdc
+_8235:  clr_a
         sta     $7e9183,x
         stz     $cf
         jmp     _8263
@@ -619,7 +619,7 @@ _8253:  lda     $1602,y
         inx
         cpx     #CharName::ITEM_SIZE
         bne     _8253
-_8265:  tdc
+_8265:  clr_a
         sta     $7e9183,x
         stz     $cf
         jmp     _8263
@@ -673,7 +673,7 @@ _834f:  sta     $7e9183,x
         inx
         cpx     $1e
         bne     _834f
-        tdc                             ; end of string
+        clr_a                             ; end of string
         sta     $7e9183,x
         stz     $cf
         jmp     _829d                   ; increment dialog pointer by 1
@@ -733,7 +733,7 @@ _83b8:  lda     $0755,y
 _83c3:  iny
         cpy     #7
         bne     _83ad
-        tdc
+        clr_a
         sta     $7e9183,x
         stz     $cf
         jmp     _8263
@@ -767,9 +767,9 @@ _83ee:  lda     f:ItemName+1,x          ; ignore symbol
         iny
         cpy     #ItemName::ITEM_SIZE-1
         bne     _83ee
-_8403:  tdc
+_8403:  clr_a
         sta     $9183,y
-        tdc
+        clr_a
         pha
         plb
         stz     $cf
@@ -803,9 +803,9 @@ _842a:  lda     f:MagicName+1,x
         iny
         cpy     #4                      ; copy up to 4 bytes (should be 7)
         bne     _842a
-_843f:  tdc
+_843f:  clr_a
         sta     $9183,y                 ; store $00 in the last byte
-        tdc
+        clr_a
         pha
         plb
         stz     $cf
@@ -841,7 +841,7 @@ _8466:  and     #$7f
         iny
         lda     [$2a],y
         sta     $7e9184                 ; store second byte in text buffer
-        tdc
+        clr_a
         sta     $7e9185                 ; end of string
         stz     $cf                     ; set text position to 0
         jmp     _8263                   ; write both letters
@@ -853,7 +853,7 @@ _83cd:  sec
         rep     #$20
         lda     f:MTETblPtrs,x
         sta     $2a
-        tdc
+        clr_a
         sep     #$20
         lda     #^MTETbl
         sta     $2c
@@ -875,9 +875,7 @@ _83fc:  sta     $7e9183,x
         stz     $cf
         jmp     _8263
 .endif
-.endproc
-
-UpdateMapTitleText := UpdateDlgText::UpdateDlgTextOneLine
+.endproc  ; UpdateDlgText
 
 ; ------------------------------------------------------------------------------
 
@@ -918,7 +916,7 @@ UpdateMapTitleText := UpdateDlgText::UpdateDlgTextOneLine
         cpy     #$0100
         bne     :-
         rts
-.endproc
+.endproc  ; InitDlgVWF
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -959,7 +957,7 @@ UpdateMapTitleText := UpdateDlgText::UpdateDlgTextOneLine
         adc     f:FontWidth,x           ; add letter width
         sta     $bf                     ; set new x position
         rts
-.endproc
+.endproc  ; DrawDlgText
 
 ; ------------------------------------------------------------------------------
 
@@ -991,7 +989,7 @@ UpdateMapTitleText := UpdateDlgText::UpdateDlgTextOneLine
         lda     #$02                    ; waiting for key release
         sta     $d3
 :       rts
-.endproc
+.endproc  ; NewLine
 
 ; ------------------------------------------------------------------------------
 
@@ -1017,7 +1015,7 @@ UpdateMapTitleText := UpdateDlgText::UpdateDlgTextOneLine
         lda     #$02                    ; waiting for key release
         sta     $d3
         rts
-.endproc
+.endproc  ; NewPage
 
 ; ------------------------------------------------------------------------------
 
@@ -1043,7 +1041,7 @@ UpdateMapTitleText := UpdateDlgText::UpdateDlgTextOneLine
         lda     #BIT_0
         sta     hMDMAEN
         rts
-.endproc
+.endproc  ; ClearDlgTextVRAM
 
 ; ------------------------------------------------------------------------------
 
@@ -1082,7 +1080,7 @@ Done:   rts
 ; pointers to dialog text regions in vram
 DlgTextRegionPtrs:
         .word   $3ee0,$3e00,$3ce0,$3c00,$3ae0,$3a00,$38e0,$3800
-.endproc
+.endproc  ; ClearDlgTextRegion
 
 ; ------------------------------------------------------------------------------
 
@@ -1093,7 +1091,7 @@ DlgTextRegionPtrs:
         beq     Done
         stz     $c5
 
-TfrMapTitleGfx:
+::TfrMapTitleGfx:
         stz     hMDMAEN
         lda     #$80                    ; vram control register
         sta     hVMAINC
@@ -1116,9 +1114,7 @@ TfrMapTitleGfx:
         lda     #BIT_0
         sta     hMDMAEN
 Done:   rts
-.endproc
-
-TfrMapTitleGfx := TfrDlgTextGfx::TfrMapTitleGfx
+.endproc  ; TfrDlgTextGfx
 
 ; ------------------------------------------------------------------------------
 
@@ -1152,11 +1148,11 @@ TfrMapTitleGfx := TfrDlgTextGfx::TfrMapTitleGfx
         lda     $9143+i*2
         sta     $90ac+i*2
         .endrep
-        tdc
+        clr_a
         pha
         plb
         rts
-.endproc
+.endproc  ; CopyDlgTextToBuf
 
 ; ------------------------------------------------------------------------------
 
@@ -1198,7 +1194,7 @@ DlgCursorGfx:
         .byte   %00110000
         .byte   %00100000
         .byte   %00000000
-.endproc
+.endproc  ; DrawDlgCursor
 
 ; ------------------------------------------------------------------------------
 
@@ -1245,7 +1241,7 @@ DlgCursorGfx:
         lda     #BIT_0
         sta     hMDMAEN
 Done:   rts
-.endproc
+.endproc  ; TfrDlgCursorGfx
 
 ; ------------------------------------------------------------------------------
 
@@ -1263,7 +1259,7 @@ Done:   rts
         dex
         bne     :-
         rts
-.endproc
+.endproc  ; ClearTextGfxBuf
 
 ; ------------------------------------------------------------------------------
 
@@ -1293,7 +1289,7 @@ Done:   rts
         inx2
         cpx     #$0020
         bne     :-
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -1315,11 +1311,11 @@ EvenTile:
         inx2
         cpx     #$0020
         bne     :-
-        tdc
+        clr_a
         pha
         plb
         rts
-.endproc
+.endproc  ; DrawLetter
 
 ; ------------------------------------------------------------------------------
 
@@ -1334,17 +1330,17 @@ EvenTile:
         sta     $9103,x
         lda     $9163,x
         sta     $9143,x
-        tdc
+        clr_a
         sta     $9123,x     ; clear next tile
         sta     $9163,x
         inx
         cpx     #$0020
         bne     :-
-        tdc
+        clr_a
         pha
         plb
         rts
-.endproc
+.endproc  ; ShiftPrevLetter
 
 ; ------------------------------------------------------------------------------
 
@@ -1406,7 +1402,7 @@ LeftShift:
         sta     $9045+i*2               ; shadow
         .endrep
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -1424,7 +1420,7 @@ NoShift:
         cpy     #22
         bne     :-
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -1451,11 +1447,11 @@ RightShift:
         sta     $9065+i*2
         .endrep
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
-.endproc
+.endproc  ; LoadLetterGfx
 
 ; ------------------------------------------------------------------------------
 

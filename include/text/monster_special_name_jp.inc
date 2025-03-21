@@ -6,9 +6,12 @@ MONSTER_SPECIAL_NAME_INC = 1
 
 .scope MonsterSpecialName
 
-        ARRAY_LENGTH = 384
-        ITEM_SIZE = 8
-        SIZE = ARRAY_LENGTH * ITEM_SIZE
+; ##############################################################################
+; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
+; ##############################################################################
+
+
+; ##############################################################################
 
 .endscope
 

@@ -161,11 +161,18 @@ class TextCodec:
 
             escape_str = escape_match.group(0)
 
-            if escape_match.group(1).startswith('{0x'):
+            if re.match(r'{0x[\dA-Fa-f]+}', escape_str):
                 # parse raw hex value
                 value = escape_match.group(1)
+                text_codes.append(int(value, 16))
+                i += len(escape_str)
+                continue
+
+            elif re.match(r'{\d+}', escape_str):
+                # parse raw decimal value
+                value = escape_match.group(1)
                 text_codes.append(int(value))
-                i += len(escape_match)
+                i += len(escape_str)
                 continue
 
             elif escape_str == '{0}':
@@ -195,9 +202,13 @@ class TextCodec:
 
             elif escape_str in key_list:
                 # escape code with no parameter
-                i += len(escape_match.group(0))
+                i += len(escape_str)
                 text_codes.append(self.encoding_table[escape_str])
                 continue
+
+            else:
+                # invalid escape code
+                raise ValueError('Invalid escape code:', escape_str)
 
         text_bytes = bytearray()
         for code in text_codes:

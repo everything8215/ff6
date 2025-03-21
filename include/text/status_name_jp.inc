@@ -6,9 +6,12 @@ STATUS_NAME_INC = 1
 
 .scope StatusName
 
-        ARRAY_LENGTH = 32
-        ITEM_SIZE = 7
-        SIZE = ARRAY_LENGTH * ITEM_SIZE
+; ##############################################################################
+; ###          AUTOMATICALLY GENERATED CODE, DO NOT MODIFY MANUALLY          ###
+; ##############################################################################
+
+
+; ##############################################################################
 
 .endscope
 

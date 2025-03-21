@@ -1,5 +1,6 @@
 {
   "asset_label": "StatusName",
+  "inc_path": "include/text/status_name_jp.inc",
   "item_size": 7,
   "char_tables": [
     "small_symbols_jp",

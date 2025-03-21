@@ -1,4 +1,8 @@
 {
+  "0xD3": [
+    "{2dot}",
+    "‥"
+  ],
   "0xD4": [
     "{uparrow}",
     "↑"
@@ -33,5 +37,9 @@
   "0xE7": "{relic}",
   "0xE8": "{white}",
   "0xE9": "{black}",
-  "0xEA": "{effect}"
+  "0xEA": "{effect}",
+  "0xF0": "{gauge_empty}",
+  "0xF8": "{gauge_full}",
+  "0xF9": "{gauge_left}",
+  "0xFA": "{gauge_right}"
 }

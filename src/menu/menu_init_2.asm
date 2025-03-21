@@ -121,10 +121,10 @@ MenuFixedColorHDMATbl_00:
 MenuAddSubHDMATbl_01:
 @cab3:  hdma_byte 31,$02
         hdma_byte 16,$82
-.repeat 3
+        .repeat 3
         hdma_byte 28,$02
         hdma_byte 28,$82
-.endrep
+        .endrep
         hdma_end
 
 ; add/sub hdma data for colosseum menu window
@@ -153,7 +153,7 @@ MenuFixedColorHDMATbl_01:
         hdma_byte 2,$e5
         hdma_byte 2,$e6
         hdma_byte 2,$e7
-.repeat 3
+        .repeat 3
         hdma_byte 4,$e7
         hdma_byte 4,$e6
         hdma_byte 4,$e5
@@ -168,7 +168,7 @@ MenuFixedColorHDMATbl_01:
         hdma_byte 4,$e4
         hdma_byte 4,$e5
         hdma_byte 4,$e6
-.endrep
+        .endrep
         hdma_end
 
 ; fixed color hdma data for colosseum challenger select window

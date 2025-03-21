@@ -1,5 +1,6 @@
 {
   "asset_label": "GenjuBonusName",
+  "inc_path": "include/text/genju_bonus_name_en.inc",
   "item_size": 9,
   "char_tables": [
     "small_symbols_en",

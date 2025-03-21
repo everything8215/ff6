@@ -56,7 +56,7 @@ DlgWindowGfxPtrs:
         .repeat 8, i
         .word   i*$0380
         .endrep
-.endproc
+.endproc  ; TfrWindowGfx
 
 ; ------------------------------------------------------------------------------
 
@@ -67,62 +67,37 @@ DlgWindowGfxPtrs:
         pha
         plb
         longa
-        lda     $7bfa       ; save hdma tables
-        sta     $7ed1
-        lda     $7bfd
-        sta     $7ed4
-        lda     $7c00
-        sta     $7ed7
-        lda     $7c03
-        sta     $7eda
-        lda     $7cb0
-        sta     $7f85
-        lda     $7cb3
-        sta     $7f88
-        lda     $7cb6
-        sta     $7f8b
-        lda     $7cb9
-        sta     $7f8e
-        lda     $7d66
-        sta     $8039
-        lda     $7d69
-        sta     $803c
-        lda     $7d6c
-        sta     $803f
-        lda     $7d6f
-        sta     $8042
-        lda     $7e1c
-        sta     $80ed
-        lda     $7e1f
-        sta     $80f0
-        lda     $7e22
-        sta     $80f3
-        lda     $7e25
-        sta     $80f6
-        lda     $7b9f
-        sta     $7e77
-        lda     $7ba2
-        sta     $7e7a
-        lda     $7ba5
-        sta     $7e7d
-        lda     $7ba8
-        sta     $7e80
-        lda     $7d0b
-        sta     $7fdf
-        lda     $7d0e
-        sta     $7fe2
-        lda     $7d11
-        sta     $7fe5
-        lda     $7d14
-        sta     $7fe8
-        lda     $7dc1
-        sta     $8093
-        lda     $7dc4
-        sta     $8096
-        lda     $7dc7
-        sta     $8099
-        lda     $7dca
-        sta     $809c
+
+; save hdma tables
+        .repeat 4, i
+        lda     $7bfa + i * 3
+        sta     $7ed1 + i * 3
+        .endrep
+        .repeat 4, i
+        lda     $7cb0 + i * 3
+        sta     $7f85 + i * 3
+        .endrep
+        .repeat 4, i
+        lda     $7d66 + i * 3
+        sta     $8039 + i * 3
+        .endrep
+        .repeat 4, i
+        lda     $7e1c + i * 3
+        sta     $80ed + i * 3
+        .endrep
+        .repeat 4, i
+        lda     $7b9f + i * 3
+        sta     $7e77 + i * 3
+        .endrep
+        .repeat 4, i
+        lda     $7d0b + i * 3
+        sta     $7fdf + i * 3
+        .endrep
+        .repeat 4, i
+        lda     $7dc1 + i * 3
+        sta     $8093 + i * 3
+        .endrep
+
         lda     #$8533      ; set bg1 scroll hdma data
         sta     $7bfa
         sta     $7bfd
@@ -172,11 +147,11 @@ DlgWindowGfxPtrs:
         sta     $7dc7
         sta     $7dca
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
-.endproc
+.endproc  ; OpenMapTitleWindow
 
 ; ------------------------------------------------------------------------------
 
@@ -208,7 +183,7 @@ DlgWindowGfxPtrs:
         cpx     #12
         bne     :-
         shorta0
-        tdc
+        clr_a
         pha
         plb
         stz     $0745       ; map name dialog window closed
@@ -217,7 +192,7 @@ DlgWindowGfxPtrs:
         lda     #$09        ; dialog region = 9
         sta     $cc
 Done:   rts
-.endproc
+.endproc  ; CloseMapTitleWindow
 
 ; ------------------------------------------------------------------------------
 
@@ -227,14 +202,14 @@ Done:   rts
         lda     #$7e
         pha
         plb
-        lda     $bc
+        lda     $bc                     ; window position * 3 = hdma pointer
         asl
         clc
         adc     $bc
         tax
         ldy     #8
         longa
-:       lda     $7b9c,x
+:       lda     $7b9c,x                 ; save hdma tables
         sta     $7e74,x
         lda     $7bf7,x
         sta     $7ece,x
@@ -250,11 +225,11 @@ Done:   rts
         dey
         bne     :-
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
-.endproc
+.endproc  ; _c03040
 
 ; ------------------------------------------------------------------------------
 
@@ -264,7 +239,7 @@ Done:   rts
         lda     $ba
         bne     :+
 Done:   rts
-:       lda     $bc
+:       lda     $bc                     ; window position * 3 = hdma pointer
         asl
         clc
         adc     $bc
@@ -328,7 +303,7 @@ Loop1:  lda     DlgOpenMaskTbl,y
         bne     Loop1
         shorta0
         inc     $bb
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -354,7 +329,7 @@ Loop2:  lda     DlgOpenMaskTbl,y
         lda     $7e7dbe,x
         sta     $7e8090,x
 :       lda     DlgOpenBG3ScrollTbl,y
-        beq     :+
+        beq     :++
         sta     $7e7cad,x
         lda     DlgOpenWindowPosTbl,y
         sta     $7e7d63,x
@@ -362,15 +337,15 @@ Loop2:  lda     DlgOpenMaskTbl,y
         sta     $7e7b9c,x
         lda     f:$001ed8               ; check for fade bars (ending)
         and     #$0001
-        bne     EndingFadeBars
+        bne     :+
         lda     #$8c73
         sta     $7e7e19,x
         lda     DlgTextOpenMainSubTbl,y
         sta     $7e7dbe,x
-        bra     :+
+        bra     :++
 
-EndingFadeBars:
-        lda     #$81a3
+; ending fade bars
+:       lda     #$81a3
         sta     $7e7dbe,x
 :       iny2
         inx3
@@ -378,7 +353,7 @@ EndingFadeBars:
         bne     Loop2
         shorta0
         inc     $bb
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -424,7 +399,7 @@ Loop3:  lda     DlgOpenMaskTbl,y
         dec     $1e
         bne     Loop3
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -454,7 +429,7 @@ Loop4:  lda     DlgOpenMaskTbl,y
         dec     $1e
         bne     Loop4
         shorta0
-        tdc
+        clr_a
         pha
         plb
         rts
@@ -542,7 +517,7 @@ DlgTextOpenMainSubTbl:
         .word   $0000,$0000,$8193,$8193,$8193,$8193,$8193,$0000,$0000
         .word   $0000,$8193,$8193,$8193,$8193,$8193,$8193,$8193,$0000
         .word   $8193,$8193,$8193,$8193,$8193,$8193,$8193,$8193,$8193
-.endproc
+.endproc  ; UpdateDlgWindow
 
 ; ------------------------------------------------------------------------------
 
@@ -671,6 +646,6 @@ DlgWindowTilesMid:
 DlgWindowTilesBtm:
         .byte   $f8,$f8,$f9,$fa,$f9,$fa,$f9,$fa,$f9,$fa,$f9,$fa,$f9,$fa,$f9,$fa
         .byte   $f9,$fa,$f9,$fa,$f9,$fa,$f9,$fa,$f9,$fa,$f9,$fa,$f9,$fa,$fb,$fb
-.endproc
+.endproc  ; InitDlgWindow
 
 ; ------------------------------------------------------------------------------

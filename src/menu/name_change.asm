@@ -323,31 +323,29 @@ InitNameChangeCursor:
 
 NameChangeCursorProp:
 .if LANG_EN
-        make_cursor_prop {0, 0}, {10, 7}, NO_Y_WRAP
+        cursor_prop {0, 0}, {10, 7}, NO_Y_WRAP
 .else
-        make_cursor_prop {0, 0}, {10, 10}, NO_Y_WRAP
+        cursor_prop {0, 0}, {10, 10}, NO_Y_WRAP
 .endif
 
 NameChangeCursorPos:
+
 .if LANG_EN
-.repeat 7, yy
-        .repeat 5, xx
-                .byte $38 + xx * $10, $58 + yy * $10
-        .endrep
-        .repeat 5, xx
-                .byte $90 + xx * $10, $58 + yy * $10
-        .endrep
-.endrep
+        @NUM_ROWS = 7
+        @Y_OFFSET = 88
 .else
-.repeat 10, yy
-        .repeat 5, xx
-                .byte $38 + xx * $10, $38 + yy * $10
-        .endrep
-        .repeat 5, xx
-                .byte $90 + xx * $10, $38 + yy * $10
-        .endrep
-.endrep
+        @NUM_ROWS = 10
+        @Y_OFFSET = 56
 .endif
+
+        .repeat @NUM_ROWS, yy
+        .repeat 5, xx
+        cursor_pos {$38 + xx * $10, @Y_OFFSET + yy * $10}
+        .endrep
+        .repeat 5, xx
+        cursor_pos {$90 + xx * $10, @Y_OFFSET + yy * $10}
+        .endrep
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -764,9 +762,8 @@ NameChangeArrowXTbl:
 
 .if LANG_EN
 
-.define NameChangeMsgStr {$8f,$a5,$9e,$9a,$ac,$9e,$ff,$9e,$a7,$ad,$9e,$ab,$ff,$9a,$ff,$a7,$9a,$a6,$9e,$c5,$00}
-; "Please enter a name…"
-NameChangeMsgText:      pos_text BG1B, {9, 3}, NameChangeMsgStr
+; "Please enter a name."
+NameChangeMsgText:      pos_text NAME_CHANGE_MSG
 
 .endif
 

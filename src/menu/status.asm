@@ -303,9 +303,9 @@ _5f06:  stz     hWMDATA
 
 ; clear command name
 _5f0c:  lda     #$ff
-.repeat 6
+        .repeat 6
         sta     hWMDATA
-.endrep
+        .endrep
 .if LANG_EN
         sta     hWMDATA
 .endif
@@ -600,10 +600,10 @@ loop:   clc
         cpx     $eb
         bne     loop
         longa
-.repeat 3
+        .repeat 3
         asl     $f1
         rol     $f3
-.endrep
+        .endrep
         shorta
         rts
 .endproc  ; CalcLevelExpTotal
@@ -1111,59 +1111,19 @@ InitGogoCmdListCursor:
 ; ------------------------------------------------------------------------------
 
 GogoCmdListProp:
-@6412:  .byte   $80,$00,$00,$01,$10
+        cursor_prop {0, 0}, {1, 16}, NO_X_WRAP
 
 GogoCmdListPos:
 .if LANG_EN
-@6417:  .word   $10f0,$1cf0,$28f0,$34f0,$40f0,$4cf0,$58f0,$64f0
-        .word   $70f0,$7cf0,$88f0,$94f0,$a0f0,$acf0,$b8f0,$c4f0
+        @X_OFFSET = 240
 .else
-        .word   $10f8,$1cf8,$28f8,$34f8,$40f8,$4cf8,$58f8,$64f8
-        .word   $70f8,$7cf8,$88f8,$94f8,$a0f8,$acf8,$b8f8,$c4f8
+        @X_OFFSET = 248
 .endif
+        .repeat 16, i
+        cursor_pos {@X_OFFSET, 16 + i * 12}
+        .endrep
 
 ; ------------------------------------------------------------------------------
-
-.if LANG_EN
-        .define StatusTitleStr                  {$92,$ad,$9a,$ad,$ae,$ac,$00}
-        .define StatusSlashStr                  {$c0,$00}
-        .define StatusPercentStr                {$cd,$00}
-        .define StatusLevelStr                  {$8b,$95,$00}
-        .define StatusHPStr                     {$87,$8f,$00}
-        .define StatusMPStr                     {$8c,$8f,$00}
-        .define StatusStrengthStr               {$95,$a2,$a0,$a8,$ab,$00}
-        .define StatusStaminaStr                {$92,$ad,$9a,$a6,$a2,$a7,$9a,$00}
-        .define StatusMagPwrStr                 {$8c,$9a,$a0,$c5,$8f,$b0,$ab,$00}
-        .define StatusEvadeStr                  {$84,$af,$9a,$9d,$9e,$ff,$cd,$00}
-        .define StatusMagEvadeStr               {$8c,$81,$a5,$a8,$9c,$a4,$cd,$00}
-        .define StatusSepStr                    {$d3,$00}
-        .define StatusSpeedStr                  {$92,$a9,$9e,$9e,$9d,$00}
-        .define StatusAttackPwrStr              {$81,$9a,$ad,$c5,$8f,$b0,$ab,$00}
-        .define StatusDefenseStr                {$83,$9e,$9f,$9e,$a7,$ac,$9e,$00}
-        .define StatusMagDefStr                 {$8c,$9a,$a0,$c5,$83,$9e,$9f,$00}
-        .define StatusYourExpStr                {$98,$a8,$ae,$ab,$ff,$84,$b1,$a9,$c1,$00}
-        .define StatusLevelUpExpStr             {$85,$a8,$ab,$ff,$a5,$9e,$af,$9e,$a5,$ff,$ae,$a9,$c1,$00}
-.else
-; need to translate to jp
-        .define StatusTitleStr                  {$78,$84,$c5,$7e,$78,$00}
-        .define StatusSlashStr                  {$ce,$00}
-        .define StatusPercentStr                {$cd,$00}
-        .define StatusLevelStr                  {$2b,$35,$00}
-        .define StatusHPStr                     {$27,$2f,$00}
-        .define StatusMPStr                     {$2c,$2f,$00}
-        .define StatusStrengthStr               {$81,$6b,$a7,$00}
-        .define StatusStaminaStr                {$7f,$8d,$a9,$c3,$6f,$00}
-        .define StatusMagPwrStr                 {$9d,$a9,$c3,$6f,$00}
-        .define StatusEvadeStr                  {$6b,$8d,$63,$a9,$83,$00}
-        .define StatusMagEvadeStr               {$9d,$69,$89,$6b,$8d,$63,$a9,$83,$ff,$c7,$00}
-        .define StatusSepStr                    {$c7,$00}
-        .define StatusSpeedStr                  {$79,$21,$b1,$75,$00}
-        .define StatusAttackPwrStr              {$73,$89,$31,$6d,$a9,$c3,$6f,$ff,$ff,$c7,$00}
-        .define StatusDefenseStr                {$29,$89,$2d,$c3,$00}
-        .define StatusMagDefStr                 {$9d,$69,$89,$29,$89,$2d,$c3,$ff,$ff,$c7,$00}
-        .define StatusYourExpStr                {$31,$b9,$35,$8d,$9b,$71,$8d,$71,$b9,$81,$00}
-        .define StatusLevelUpExpStr             {$83,$2d,$9b,$ac,$26,$aa,$9d,$45,$ff,$8b,$87,$00}
-.endif
 
 StatusBtmLabelTextList1:
 @6437:  .addr   StatusStrengthText
@@ -1207,48 +1167,35 @@ StatusBtmLabelTextList2:
         .addr   StatusLevelUpExpText
         calc_size StatusBtmLabelTextList2
 
-StatusTitleText:                pos_text BG3A, {2, 2}, StatusTitleStr
-StatusHPSlashText:              pos_text BG1A, {17, 8}, StatusSlashStr
-StatusMPSlashText:              pos_text BG1A, {17, 9}, StatusSlashStr
-StatusEvadePercentText:         pos_text BG3A, {29, 28}, StatusPercentStr
-StatusMagEvadePercentText:      pos_text BG3C, {29, 0}, StatusPercentStr
-StatusLevelText:                pos_text BG1A, {10, 7}, StatusLevelStr
-StatusHPText:                   pos_text BG1A, {10, 8}, StatusHPStr
-StatusMPText:                   pos_text BG1A, {10, 9}, StatusMPStr
+StatusTitleText:                pos_text STATUS_TITLE
+StatusHPSlashText:              pos_text STATUS_HP_SLASH
+StatusMPSlashText:              pos_text STATUS_MP_SLASH
+StatusEvadePercentText:         pos_text STATUS_EVADE_PERCENT
+StatusMagEvadePercentText:      pos_text STATUS_MAG_EVADE_PERCENT
+StatusLevelText:                pos_text STATUS_LEVEL
+StatusHPText:                   pos_text STATUS_HP
+StatusMPText:                   pos_text STATUS_MP
+StatusStrengthText:             pos_text STATUS_STRENGTH
+StatusStaminaText:              pos_text STATUS_STAMINA
+StatusMagPwrText:               pos_text STATUS_MAG_PWR
+StatusEvadeText:                pos_text STATUS_EVADE
+StatusMagEvadeText:             pos_text STATUS_MAG_EVADE
+StatusStrengthSepText:          pos_text STATUS_STRENGTH_SEP
+StatusSpeedSepText:             pos_text STATUS_SPEED_SEP
+StatusStaminaSepText:           pos_text STATUS_STAMINA_SEP
+StatusMagPwrSepText:            pos_text STATUS_MAG_PWR_SEP
+StatusDefenseSepText:           pos_text STATUS_DEFENSE_SEP
+StatusEvadeSepText:             pos_text STATUS_EVADE_SEP
 .if LANG_EN
-StatusStrengthText:             pos_text BG3A, {3, 26}, StatusStrengthStr
-StatusStaminaText:              pos_text BG3A, {3, 30}, StatusStaminaStr
-StatusMagPwrText:               pos_text BG3C, {3, 0}, StatusMagPwrStr
-.else
-StatusStrengthText:             pos_text BG3A, {4, 26}, StatusStrengthStr
-StatusStaminaText:              pos_text BG3A, {4, 30}, StatusStaminaStr
-StatusMagPwrText:               pos_text BG3C, {4, 0}, StatusMagPwrStr
+StatusAttackPwrSepText:         pos_text STATUS_ATTACK_PWR_SEP
+StatusMagDefSepText:            pos_text STATUS_MAG_DEF_SEP
+StatusMagEvadeSepText:          pos_text STATUS_MAG_EVADE_SEP
 .endif
-StatusEvadeText:                pos_text BG3A, {16, 28}, StatusEvadeStr
-StatusMagEvadeText:             pos_text BG3C, {16, 0}, StatusMagEvadeStr
-StatusStrengthSepText:          pos_text BG3A, {10, 26}, StatusSepStr
-StatusSpeedSepText:             pos_text BG3A, {10, 28}, StatusSepStr
-StatusStaminaSepText:           pos_text BG3A, {10, 30}, StatusSepStr
-StatusMagPwrSepText:            pos_text BG3C, {10, 0}, StatusSepStr
-StatusDefenseSepText:           pos_text BG3A, {25, 26}, StatusSepStr
-StatusEvadeSepText:             pos_text BG3A, {25, 28}, StatusSepStr
-.if LANG_EN
-StatusAttackPwrSepText:         pos_text BG3A, {25, 24}, StatusSepStr
-StatusMagDefSepText:            pos_text BG3A, {25, 30}, StatusSepStr
-StatusMagEvadeSepText:          pos_text BG3C, {25, 0}, StatusSepStr
-StatusSpeedText:                pos_text BG3A, {3, 28}, StatusSpeedStr
-StatusAttackPwrText:            pos_text BG3A, {16, 24}, StatusAttackPwrStr
-StatusDefenseText:              pos_text BG3A, {16, 26}, StatusDefenseStr
-StatusMagDefText:               pos_text BG3A, {16, 30}, StatusMagDefStr
-StatusYourExpText:              pos_text BG3A, {2, 16}, StatusYourExpStr
-StatusLevelUpExpText:           pos_text BG3A, {2, 20}, StatusLevelUpExpStr
-.else
-StatusSpeedText:                pos_text BG3A, {4, 27}, StatusSpeedStr
-StatusAttackPwrText:            pos_text BG3A, {16, 23}, StatusAttackPwrStr
-StatusDefenseText:              pos_text BG3A, {16, 25}, StatusDefenseStr
-StatusMagDefText:               pos_text BG3A, {16, 29}, StatusMagDefStr
-StatusYourExpText:              pos_text BG3A, {4, 15}, StatusYourExpStr
-StatusLevelUpExpText:           pos_text BG3A, {4, 19}, StatusLevelUpExpStr
-.endif
+StatusSpeedText:                pos_text STATUS_SPEED
+StatusAttackPwrText:            pos_text STATUS_ATTACK_PWR
+StatusDefenseText:              pos_text STATUS_DEFENSE
+StatusMagDefText:               pos_text STATUS_MAG_DEF
+StatusYourExpText:              pos_text STATUS_YOUR_EXP
+StatusLevelUpExpText:           pos_text STATUS_LEVEL_UP_EXP
 
 ; ------------------------------------------------------------------------------

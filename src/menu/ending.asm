@@ -3879,9 +3879,9 @@ TfrGfx2bpp:
         iny2
         dex
         bne     @dd90
-.repeat 8
+        .repeat 8
         stz     hVMDATAL      ; clear 8 words (high bitplanes)
-.endrep
+        .endrep
         cpy     $eb
         bne     @dd8d
         shorta

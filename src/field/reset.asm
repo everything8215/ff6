@@ -51,16 +51,16 @@
         sta     $11fa
         jsr     InitNewGame
 
-field_main:
+::FieldMain:
         stz     $4a                     ; disable fade
         lda     #1                      ; enable map load
         sta     $84
 
-field_loop:
+FieldLoop:
         lda     $4a                     ; branch if fading
-        bne     no_map_load
+        bne     NoMapLoad
         lda     $84                     ; branch if map is already loaded
-        beq     no_map_load
+        beq     NoMapLoad
         longa
         lda     $1f64                   ; map index
         and     #$03ff
@@ -71,13 +71,13 @@ field_loop:
         cpx     #$0003                  ; branch if not a 3d map
         bcs     :+
         jsr     LoadWorldMap
-        jmp     field_main
+        jmp     FieldMain
 
 ; load sub-map
 :       jsr     LoadMap
         jsr     EnableInterrupts
 
-no_map_load:
+NoMapLoad:
         jsr     WaitVblank
         jsr     UpdateShake
         jsr     UpdatePalAnim
@@ -100,12 +100,12 @@ no_map_load:
         lda     $4a                     ; loop if map is loading and fade out is complete
         bne     :+
         lda     $84
-        bne     field_loop
+        bne     FieldLoop
 :       jsr     CheckEntrances
         lda     $4a                     ; loop if map is loading and fade out is complete
         bne     :+
         lda     $84
-        bne     field_loop
+        bne     FieldLoop
 :       jsr     CheckBattleSub
 
 ; check restore saved game
@@ -118,14 +118,14 @@ no_map_load:
         sta     $e7
         jsr     RestartGame
         jsr     InitSavedGame
-        jmp     field_main
+        jmp     FieldMain
 
 ; check battle
 :       lda     $56                     ; branch if battle not enabled
         beq     :+
         stz     $56                     ; disable battle
         jsr     ExecBattle
-        jmp     field_main
+        jmp     FieldMain
 
 ; no battle
 :       jsr     UpdateDlgText
@@ -145,6 +145,9 @@ no_map_load:
         jsr     UpdatePyramid
         jsr     UpdateSpotlights
         jsr     DrawTimer
+        .if ::DEBUG
+        jsr     DebugUpdate
+        .endif
 
 ; reset max vertical scanline position every 256 frames
         lda     $46                     ; vblank counter
@@ -166,16 +169,13 @@ no_map_load:
 :       jsr     CheckMenu
         jmp     OpenMainMenu
 
-main_menu_ret:
-        jmp     field_loop
+::MainMenuRet:
+        jmp     FieldLoop
 
 ; unused
         jsr     DisableInterrupts
-        jmp     field_main
+        jmp     FieldMain
 .endproc  ; Reset
-
-FieldMain := Reset::field_main
-MainMenuRet := Reset::main_menu_ret
 
 ; ------------------------------------------------------------------------------
 
@@ -206,40 +206,57 @@ MainMenuRet := Reset::main_menu_ret
         jsr     TfrPal
         jsr     TfrSprites
         jsr     TfrMapTiles
+        .if ::DEBUG
+        ldx     #$45e0                  ; transfer debug tiles to vram
+        stx     $3b
+        ldx     #$6c00
+        stx     $2a
+        lda     #$7e
+        sta     $2c
+        lda     #$80                    ; 2 rows
+        sta     $39
+        jsr     UnusedDMA
+        .endif
         lda     $0586                   ; bg1 horizontal scroll status
         cmp     #$02
-        bne     @01bd                   ; branch if no update is needed
+        bne     :+                      ; branch if no update is needed
         jsr     TfrBG1TilesHScroll
         stz     $0586
-@01bd:  lda     $0588                   ; bg2 horizontal scroll status
+:       lda     $0588                   ; bg2 horizontal scroll status
         cmp     #$02
-        bne     @01cc
+        bne     CheckVerticalScroll
         jsr     TfrBG2TilesHScroll
         stz     $0588
-        bra     @01e8
-@01cc:  lda     $0585                   ; bg1 vertical scroll status
+        bra     CheckBG3Scroll
+
+CheckVerticalScroll:
+        lda     $0585                   ; bg1 vertical scroll status
         cmp     #$02
-        bne     @01d9
+        bne     :+
         jsr     TfrBG1TilesVScroll
         stz     $0585
-@01d9:  lda     $0587                   ; bg2 vertical scroll status
+:       lda     $0587                   ; bg2 vertical scroll status
         cmp     #$02
-        bne     @01e8
+        bne     CheckBG3Scroll
         jsr     TfrBG2TilesVScroll
         stz     $0587
-        bra     @01cc
-@01e8:  lda     $058a                   ; bg3 horizontal scroll status
+        bra     CheckVerticalScroll
+
+CheckBG3Scroll:
+        lda     $058a                   ; bg3 horizontal scroll status
         cmp     #$02
-        bne     @01f7
+        bne     :+
         jsr     TfrBG3TilesHScroll
         stz     $058a
-        bra     @0204
-@01f7:  lda     $0589                   ; bg3 vertical scroll status
+        bra     DoneScroll
+:       lda     $0589                   ; bg3 vertical scroll status
         cmp     #$02
-        bne     @0204
+        bne     DoneScroll
         jsr     TfrBG3TilesVScroll
         stz     $0589
-@0204:  jsr     TfrObjGfxSub
+
+DoneScroll:
+        jsr     TfrObjGfxSub
         jsr     TfrDlgCursorGfx
         jsr     TfrDlgTextGfx
         jsr     ClearDlgTextRegion
@@ -247,14 +264,14 @@ MainMenuRet := Reset::main_menu_ret
         sta     hCOLDATA
         stz     hMDMAEN                 ; disable dma
         lda     #$43                    ; set up hdma channel 0
-        sta     $4300
-        lda     #$0f
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hBG2HOFS
+        sta     hDMA0::HREG
         ldx     #$7c51
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         lda     $0521                   ; wavy bg2 graphics
         and     #$08
         lsr3
@@ -263,7 +280,7 @@ MainMenuRet := Reset::main_menu_ret
         jsr     UpdateScrollHDMA
         jsr     UpdateFixedColor
         jsr     UpdateMosaic
-        jsr     InitWindowHDMATbl
+        jsr     UpdateWindowHDMATbl
         jsr     SetWindowSelect
         jsr     UpdateCtrl
         jsl     IncGameTime_ext
@@ -305,7 +322,7 @@ MainMenuRet := Reset::main_menu_ret
         pha
         plb
         lda     hTIMEUP                 ; reset irq flag register
-        bpl     done                    ; branch if vertical timer didn't end
+        bpl     :++                     ; branch if vertical timer didn't end
         lda     #$81                    ; enable nmi and controller, disable irq
         sta     hNMITIMEN
         stz     hHDMAEN                 ; disable hdma
@@ -313,10 +330,9 @@ MainMenuRet := Reset::main_menu_ret
         lsr
         bcs     :+
         jsr     TfrBGAnimGfx            ; update bg1/2 on even frames
-        bra     done
+        bra     :++
 :       jsr     TfrBG3AnimGfx           ; update bg3 on odd frames
-
-done:   longai
+:       longai
         pld
         plb
         ply
@@ -338,7 +354,7 @@ done:   longai
         stx     $2a
         lda     #$c0                    ; start in bank $c0
         sta     $2c
-loop:   ldy     #0
+Loop:   ldy     #0
 :       lda     [$2a],y
         clc
         adc     $1e
@@ -352,15 +368,15 @@ loop:   ldy     #0
         inc
         sta     $2c
         cmp     #$f0                    ; end in bank $f0
-        bne     loop
+        bne     Loop
         lda     f:HeaderChecksum+1
         cmp     $1f
-        bne     fail
+        bne     Fail
         lda     f:HeaderChecksum
         cmp     $1e
-        bne     fail
+        bne     Fail
         rts
-fail:   jmp     fail                    ; infinite loop
+Fail:   jmp     Fail                    ; infinite loop
 .endproc  ; ValidateChecksum
 
 ; ------------------------------------------------------------------------------
@@ -389,9 +405,9 @@ fail:   jmp     fail                    ; infinite loop
         phx
         phy
         ldx     $00
-@02e9:  ldy     #0
+Loop:   ldy     #0
         stz     $25
-@02ee:  longa
+:       longa
         lda     $22
         sec
         sbc     f:Pow10Lo,x
@@ -401,7 +417,7 @@ fail:   jmp     fail                    ; infinite loop
         sta     $24
         bcc     :+
         iny
-        jmp     @02ee
+        jmp     :-
 :       lda     $22
         clc
         adc     f:Pow10Lo,x
@@ -419,7 +435,7 @@ fail:   jmp     fail                    ; infinite loop
         plx
         inx2
         cpx     #$0010
-        bne     @02e9
+        bne     Loop
         ply
         plx
         rts
@@ -455,13 +471,13 @@ Pow10Hi:
 .proc PlayMapSong
         lda     $1eb9
         and     #$10
-        bne     override
+        bne     Override
         lda     $053c                   ; map's default song
-        beq     done
+        beq     Done
         sta     $1f80
         bra     :+
 
-override:
+Override:
         lda     $1f80
 
 :       sta     $1301
@@ -470,7 +486,7 @@ override:
         lda     #$ff
         sta     $1302
         jsl     ExecSound_ext
-done:   rts
+Done:   rts
 .endproc  ; PlayMapSong
 
 ; ------------------------------------------------------------------------------
@@ -640,7 +656,7 @@ wDecompBuf := $7ff800
         inx
         bne     :-
         ldx     #.loword(-34)
-loop:   dec     zDecompCounter
+Loop:   dec     zDecompCounter
         bne     :+
         lda     #8                      ; load the next header byte
         sta     zDecompCounter
@@ -653,9 +669,9 @@ loop:   dec     zDecompCounter
         sta     f:hWMDATA
         sta     a:0,x
         inx
-        bne     inc_ptr
+        bne     IncPtr
         ldx     #.loword(wDecompBuf)
-        bra     inc_ptr
+        bra     IncPtr
 :       lda     [zDecompSrc],y
         xba
         iny
@@ -670,7 +686,7 @@ loop:   dec     zDecompCounter
         xba
         tay
 
-cpy_buf:
+CopyBuf:
         lda     0,y
         sta     f:hWMDATA
         sta     a:0,x
@@ -681,13 +697,13 @@ cpy_buf:
         bne     :+
         ldy     #.loword(wDecompBuf)
 :       dec     zDecompRun
-        bne     cpy_buf
+        bne     CopyBuf
         ldy     zDecompPtr
 
-inc_ptr:
+IncPtr:
         iny
         cpy     zDecompSize
-        bne     loop
+        bne     Loop
         clr_a
         xba
         plb

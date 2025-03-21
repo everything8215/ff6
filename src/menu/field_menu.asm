@@ -797,7 +797,7 @@ MenuState_37:
 
 _1ef6:  rts
 
-start:
+::MenuState_08:
 _1ef7:  lda     #$10
         trb     z45
         clr_a
@@ -824,7 +824,7 @@ _1ef7:  lda     #$10
         ldy     w0234
         sty     $4d
 
-goto_item_option:
+::GotoItemOption:
 _1f2c:  jsr     InitItemOptionCursor
         lda     #MENU_STATE::ITEM_OPTIONS
         sta     zMenuState
@@ -845,9 +845,6 @@ _1f3b:  lda     z08
 _1f4f:  rts
 
 .endproc
-
-        MenuState_08 := MenuState_08_proc::start
-        GotoItemOption := MenuState_08_proc::goto_item_option
 
 ; ------------------------------------------------------------------------------
 
@@ -875,7 +872,7 @@ _1f56:  lda     $54
 _1f62:  clc
         rts
 
-start:
+::ScrollListPage:
 _1f64:  lda     zWaitCounter
         bne     _1f62                   ; branch if wait frame counter not zero
 
@@ -981,8 +978,6 @@ make_jump_label ScrollListPage, LIST_TYPE::EQUIP
         jmp     DrawEquipItemList
 
 .endproc
-
-        ScrollListPage := ScrollListPage_proc::start
 
 ; ------------------------------------------------------------------------------
 
@@ -1674,7 +1669,7 @@ SelectConfigOption_0e:
         beq     @239b
 
 ; window color
-        jsr     _c323a7
+        jsr     RevertWindowPal
         jsr     LoadWindowGfx
         jmp     UpdateConfigColorBars
 
@@ -1686,27 +1681,31 @@ SelectConfigOption_0e:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ revert window palette to default ]
 
-_c323a7:
+RevertWindowPal:
 @23a7:  clr_a
-        lda     $1d4e
+        lda     $1d4e                   ; window index
         and     #$0f
+
+; calculate pointers to window palette in rom and sram
         longa
         tay
         stz     $eb
         stz     $ed
 @23b4:  dey
         bmi     @23c9
-        lda     #$000e
+        lda     #14                     ; palettes are 7 colors in SRAM
         clc
         adc     $eb
         sta     $eb
-        lda     #$0020
+        lda     #$0020                  ; palettes are 16 colors in ROM
         clc
         adc     $ed
         sta     $ed
         bra     @23b4
+
+; copy default palette to SRAM and WRAM
 @23c9:  ldx     #$312b
         stx     hWMADDL
         lda     $eb
@@ -1714,7 +1713,7 @@ _c323a7:
         lda     $ed
         tax
         shorta
-        lda     #$0e
+        lda     #14                     ; copy 14 bytes (7 colors)
         sta     $e9
 @23db:  lda     f:WindowPal+2,x
         sta     $1d57,y
@@ -3564,29 +3563,25 @@ MainMenuCursorTask_01:
 
 ; main menu cursor data
 MainMenuCursorProp:
-        make_cursor_prop {0, 0}, {1, 7}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 7}, NO_X_WRAP
 
 ; ------------------------------------------------------------------------------
 
 ; main menu cursor positions
 MainMenuCursorPos:
 .if LANG_EN
-@2f8a:  .byte   $af,$12
-        .byte   $af,$21
-        .byte   $af,$30
-        .byte   $af,$3f
-        .byte   $af,$4e
-        .byte   $af,$5d
-        .byte   $af,$6c
+        @X_OFFSET = 175
 .else
-@2f8a:  .byte   $b7,$12
-        .byte   $b7,$21
-        .byte   $b7,$30
-        .byte   $b7,$3f
-        .byte   $b7,$4e
-        .byte   $b7,$5d
-        .byte   $b7,$6c
+        @X_OFFSET = 183
 .endif
+
+        cursor_pos {@X_OFFSET, 18}
+        cursor_pos {@X_OFFSET, 33}
+        cursor_pos {@X_OFFSET, 48}
+        cursor_pos {@X_OFFSET, 63}
+        cursor_pos {@X_OFFSET, 78}
+        cursor_pos {@X_OFFSET, 93}
+        cursor_pos {@X_OFFSET, 108}
 
 ; ------------------------------------------------------------------------------
 
@@ -3715,16 +3710,16 @@ make_jump_label CharSelectCursorTask, 1
 
 ; character select cursor data
 CharSelectCursorProp:
-        make_cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
 
 ; ------------------------------------------------------------------------------
 
 ; character select cursor positions
 CharSelectCursorPos:
-@3047:  .byte   $08,$28
-        .byte   $08,$58
-        .byte   $08,$88
-        .byte   $08,$b8
+@3047:  cursor_pos {8, 40}
+        cursor_pos {8, 88}
+        cursor_pos {8, 136}
+        cursor_pos {8, 184}
 
 ; ------------------------------------------------------------------------------
 
@@ -4913,35 +4908,26 @@ InitGogoStatusCursor:
 ; ------------------------------------------------------------------------------
 
 GogoStatusCursorProp:
-        make_cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
 
 GogoStatusCursorPos:
-@3713:  .byte   $90,$59
-        .byte   $90,$65
-        .byte   $90,$71
-        .byte   $90,$7d
+@3713:  cursor_pos {144, 89}
+        cursor_pos {144, 101}
+        cursor_pos {144, 113}
+        cursor_pos {144, 125}
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-        .define MainMenuWoundedStr {$96,$a8,$ae,$a7,$9d,$9e,$9d,$ff}
-.else
-        .define MainMenuWoundedStr {$7b,$b9,$87,$89,$65,$9b,$89,$ff}
-.endif
-
-; "Wounded"
 MainMenuWoundedText:
-        raw_text MainMenuWoundedStr
+        raw_text MAIN_MENU_WOUNDED
         calc_size MainMenuWoundedText
 
-; "time", "steps", "order"
 MainMenuLabelTextList:
 @3723:  .addr   MainMenuTimeText
         .addr   MainMenuStepsText
         .addr   MainMenuOrderText
         calc_size MainMenuLabelTextList
 
-; "item", "skills", "relic", "status"
 MainMenuOptionsTextList1:
 @3729:  .addr   MainMenuItemText
         .addr   MainMenuSkillsText
@@ -4949,7 +4935,6 @@ MainMenuOptionsTextList1:
         .addr   MainMenuStatusText
         calc_size MainMenuOptionsTextList1
 
-; slashes for character hp/mp
 CharBlock1SlashTextList:
 @3731:  .addr   CharBlock1HPSlashText
         .addr   CharBlock1MPSlashText
@@ -4994,13 +4979,11 @@ CharBlock4LabelTextList:
         .addr   CharBlock4MPText
         calc_size CharBlock4LabelTextList
 
-; "Equip", "Config"
 MainMenuOptionsTextList2:
 @3759:  .addr   MainMenuEquipText
         .addr   MainMenuConfigText
         calc_size MainMenuOptionsTextList2
 
-; "Yes", "No", "This", "data?"
 GameLoadChoiceTextList:
 @375d:  .addr   GameLoadYesText
         .addr   GameLoadNoText
@@ -5008,7 +4991,6 @@ GameLoadChoiceTextList:
         .addr   GameLoadMsgText2
         calc_size GameLoadChoiceTextList
 
-; "Yes", "No", "Erasing", "data.", "Okay?"
 GameSaveChoiceTextList:
         .addr   GameLoadYesText
         .addr   GameLoadNoText
@@ -5017,129 +4999,54 @@ GameSaveChoiceTextList:
         .addr   GameSaveMsgText3
         calc_size GameSaveChoiceTextList
 
-.if LANG_EN
-        .define CharBlockLevelStr {$8b,$95,$00} ; "LV"
-        .define CharBlockHPStr {$87,$8f,$00}    ; "HP"
-        .define CharBlockMPStr {$8c,$8f,$00}    ; "MP"
-        .define CharBlockSlashStr {$c0,$00}     ; "/"
-        .define MainMenuItemStr {$88,$ad,$9e,$a6,$00}
-        .define MainMenuSkillsStr {$92,$a4,$a2,$a5,$a5,$ac,$00}
-        .define MainMenuEquipStr {$84,$aa,$ae,$a2,$a9,$00}
-        .define MainMenuRelicStr {$91,$9e,$a5,$a2,$9c,$00}
-        .define MainMenuStatusStr {$92,$ad,$9a,$ad,$ae,$ac,$00}
-        .define MainMenuConfigStr {$82,$a8,$a7,$9f,$a2,$a0,$00}
-        .define MainMenuSaveStr {$92,$9a,$af,$9e,$00}
-        .define MainMenuTimeStr {$93,$a2,$a6,$9e,$00}
-        .define MainMenuColonStr {$c1,$00}
-        .define MainMenuStepsStr {$92,$ad,$9e,$a9,$ac,$00}
-        .define MainMenuGilStr {$86,$a9,$00}
-        .define GameLoadYesStr {$98,$9e,$ac,$00}
-        .define GameLoadNoStr {$8d,$a8,$00}
-        .define GameLoadMsgStr1 {$93,$a1,$a2,$ac,$00}
-        .define GameLoadMsgStr2 {$9d,$9a,$ad,$9a,$bf,$00}
-        .define GameSaveMsgStr1 {$84,$ab,$9a,$ac,$a2,$a7,$a0,$00}
-        .define GameSaveMsgStr2 {$9d,$9a,$ad,$9a,$c5,$00}
-        .define GameSaveMsgStr3 {$8e,$a4,$9a,$b2,$bf,$00}
-        .define MainMenuOrderStr {$8e,$ab,$9d,$9e,$ab,$00}
-.else
-        .define CharBlockLevelStr {$2b,$35,$00} ; "LV"
-        .define CharBlockHPStr {$27,$2f,$00}    ; "HP"
-        .define CharBlockMPStr {$2c,$2f,$00}    ; "MP"
-        .define CharBlockSlashStr {$ce,$00}     ; "/"
-        .define MainMenuItemStr {$8a,$8c,$84,$a0,$00}
-        .define MainMenuSkillsStr {$87,$6f,$77,$c1,$00}
-        .define MainMenuEquipStr {$7d,$89,$23,$00}
-        .define MainMenuRelicStr {$8a,$6e,$7a,$74,$a8,$00}
-        .define MainMenuStatusStr {$78,$84,$c5,$7e,$78,$00}
-        .define MainMenuConfigStr {$72,$b8,$64,$c6,$2e,$00}
-        .define MainMenuSaveStr {$7a,$c5,$24,$00}
-        .define MainMenuTimeStr {$33,$28,$2c,$24,$00}
-        .define MainMenuColonStr {$cf,$00}
-        .define MainMenuStepsStr {$69,$79,$89,$00}
-        .define MainMenuGilStr {$2c,$aa,$00}
-        .define GameLoadYesStr {$61,$8d,$00}
-        .define GameLoadNoStr {$8d,$8d,$8f,$00}
-        .define GameLoadMsgStr1 {$73,$9b,$44,$c5,$7e,$45,$00}
-        .define GameLoadMsgStr2 {$61,$37,$a3,$9d,$79,$6b,$cb,$00}
-        .define GameSaveMsgStr1 {$73,$ad,$bb,$71,$77,$85,$00}
-        .define GameSaveMsgStr2 {$6b,$6d,$73,$9f,$9d,$79,$d2,$00}
-        .define GameSaveMsgStr3 {$8d,$8d,$45,$79,$6b,$cb,$00}
-        .define GameSaveUnusedStr {$7a,$c5,$24,$77,$9d,$77,$7f,$d2,$00}
-        .define MainMenuOrderStr {$7f,$8d,$71,$8d,$00}
+CharBlock1LevelText:            pos_text CHAR_BLOCK_1_LEVEL
+CharBlock1HPText:               pos_text CHAR_BLOCK_1_HP
+CharBlock1MPText:               pos_text CHAR_BLOCK_1_MP
+CharBlock1HPSlashText:          pos_text CHAR_BLOCK_1_HP_SLASH
+CharBlock1MPSlashText:          pos_text CHAR_BLOCK_1_MP_SLASH
+
+CharBlock2LevelText:            pos_text CHAR_BLOCK_2_LEVEL
+CharBlock2HPText:               pos_text CHAR_BLOCK_2_HP
+CharBlock2MPText:               pos_text CHAR_BLOCK_2_MP
+CharBlock2HPSlashText:          pos_text CHAR_BLOCK_2_HP_SLASH
+CharBlock2MPSlashText:          pos_text CHAR_BLOCK_2_MP_SLASH
+
+CharBlock3LevelText:            pos_text CHAR_BLOCK_3_LEVEL
+CharBlock3HPText:               pos_text CHAR_BLOCK_3_HP
+CharBlock3MPText:               pos_text CHAR_BLOCK_3_MP
+CharBlock3HPSlashText:          pos_text CHAR_BLOCK_3_HP_SLASH
+CharBlock3MPSlashText:          pos_text CHAR_BLOCK_3_MP_SLASH
+
+CharBlock4LevelText:            pos_text CHAR_BLOCK_4_LEVEL
+CharBlock4HPText:               pos_text CHAR_BLOCK_4_HP
+CharBlock4MPText:               pos_text CHAR_BLOCK_4_MP
+CharBlock4HPSlashText:          pos_text CHAR_BLOCK_4_HP_SLASH
+CharBlock4MPSlashText:          pos_text CHAR_BLOCK_4_MP_SLASH
+
+MainMenuItemText:               pos_text MAIN_MENU_ITEM
+MainMenuSkillsText:             pos_text MAIN_MENU_SKILLS
+MainMenuEquipText:              pos_text MAIN_MENU_EQUIP
+MainMenuRelicText:              pos_text MAIN_MENU_RELIC
+MainMenuStatusText:             pos_text MAIN_MENU_STATUS
+MainMenuConfigText:             pos_text MAIN_MENU_CONFIG
+MainMenuSaveText:               pos_text MAIN_MENU_SAVE
+MainMenuTimeText:               pos_text MAIN_MENU_TIME
+MainMenuColonText:              pos_text MAIN_MENU_COLON
+MainMenuStepsText:              pos_text MAIN_MENU_STEPS
+MainMenuGilText:                pos_text MAIN_MENU_GIL
+
+GameLoadYesText:                pos_text GAME_LOAD_YES
+GameLoadNoText:                 pos_text GAME_LOAD_NO
+GameLoadMsgText1:               pos_text GAME_LOAD_MSG_1
+GameLoadMsgText2:               pos_text GAME_LOAD_MSG_2
+
+GameSaveMsgText1:               pos_text GAME_SAVE_MSG_1
+GameSaveMsgText2:               pos_text GAME_SAVE_MSG_2
+GameSaveMsgText3:               pos_text GAME_SAVE_MSG_3
+.if !LANG_EN
+GameSaveUnusedText:             pos_text GAME_SAVE_UNUSED
 .endif
 
-CharBlock1LevelText:            pos_text BG1A, {10, 5}, CharBlockLevelStr
-CharBlock1HPText:               pos_text BG1A, {10, 6}, CharBlockHPStr
-CharBlock1MPText:               pos_text BG1A, {10, 7}, CharBlockMPStr
-CharBlock1HPSlashText:          pos_text BG1A, {17, 6}, CharBlockSlashStr
-CharBlock1MPSlashText:          pos_text BG1A, {17, 7}, CharBlockSlashStr
-
-CharBlock2LevelText:            pos_text BG1A, {10, 11}, CharBlockLevelStr
-CharBlock2HPText:               pos_text BG1A, {10, 12}, CharBlockHPStr
-CharBlock2MPText:               pos_text BG1A, {10, 13}, CharBlockMPStr
-CharBlock2HPSlashText:          pos_text BG1A, {17, 12}, CharBlockSlashStr
-CharBlock2MPSlashText:          pos_text BG1A, {17, 13}, CharBlockSlashStr
-
-CharBlock3LevelText:            pos_text BG1A, {10, 17}, CharBlockLevelStr
-CharBlock3HPText:               pos_text BG1A, {10, 18}, CharBlockHPStr
-CharBlock3MPText:               pos_text BG1A, {10, 19}, CharBlockMPStr
-CharBlock3HPSlashText:          pos_text BG1A, {17, 18}, CharBlockSlashStr
-CharBlock3MPSlashText:          pos_text BG1A, {17, 19}, CharBlockSlashStr
-
-CharBlock4LevelText:            pos_text BG1A, {10, 23}, CharBlockLevelStr
-CharBlock4HPText:               pos_text BG1A, {10, 24}, CharBlockHPStr
-CharBlock4MPText:               pos_text BG1A, {10, 25}, CharBlockMPStr
-CharBlock4HPSlashText:          pos_text BG1A, {17, 24}, CharBlockSlashStr
-CharBlock4MPSlashText:          pos_text BG1A, {17, 25}, CharBlockSlashStr
-
-.if LANG_EN
-MainMenuItemText:               pos_text BG3A, {24, 3}, MainMenuItemStr
-MainMenuSkillsText:             pos_text BG3A, {24, 5}, MainMenuSkillsStr
-MainMenuEquipText:              pos_text BG3A, {24, 7}, MainMenuEquipStr
-MainMenuRelicText:              pos_text BG3A, {24, 9}, MainMenuRelicStr
-MainMenuStatusText:             pos_text BG3A, {24, 11}, MainMenuStatusStr
-MainMenuConfigText:             pos_text BG3A, {24, 13}, MainMenuConfigStr
-MainMenuSaveText:               pos_text BG3A, {24, 15}, MainMenuSaveStr
-MainMenuTimeText:               pos_text BG3A, {25, 17}, MainMenuTimeStr
-MainMenuColonText:              pos_text BG3A, {27, 18}, MainMenuColonStr
-MainMenuStepsText:              pos_text BG3A, {23, 21}, MainMenuStepsStr
-MainMenuGilText:                pos_text BG3A, {23, 24}, MainMenuGilStr
-
-GameLoadYesText:                pos_text BG3A, {26, 9}, GameLoadYesStr
-GameLoadNoText:                 pos_text BG3A, {26, 11}, GameLoadNoStr
-GameLoadMsgText1:               pos_text BG3A, {23, 3}, GameLoadMsgStr1
-GameLoadMsgText2:               pos_text BG3A, {23, 5}, GameLoadMsgStr2
-
-GameSaveMsgText1:               pos_text BG3A, {23, 3}, GameSaveMsgStr1
-GameSaveMsgText2:               pos_text BG3A, {23, 5}, GameSaveMsgStr2
-GameSaveMsgText3:               pos_text BG3A, {23, 7}, GameSaveMsgStr3
-
-.else
-
-MainMenuItemText:               pos_text BG3A, {25, 3}, MainMenuItemStr
-MainMenuSkillsText:             pos_text BG3A, {25, 5}, MainMenuSkillsStr
-MainMenuEquipText:              pos_text BG3A, {25, 6}, MainMenuEquipStr
-MainMenuRelicText:              pos_text BG3A, {25, 9}, MainMenuRelicStr
-MainMenuStatusText:             pos_text BG3A, {25, 11}, MainMenuStatusStr
-MainMenuConfigText:             pos_text BG3A, {25, 12}, MainMenuConfigStr
-MainMenuSaveText:               pos_text BG3A, {25, 14}, MainMenuSaveStr
-MainMenuTimeText:               pos_text BG3A, {25, 17}, MainMenuTimeStr
-MainMenuColonText:              pos_text BG3A, {27, 18}, MainMenuColonStr
-MainMenuStepsText:              pos_text BG3A, {23, 21}, MainMenuStepsStr
-MainMenuGilText:                pos_text BG3A, {23, 23}, MainMenuGilStr
-
-GameLoadYesText:                pos_text BG3A, {26, 8}, GameLoadYesStr
-GameLoadNoText:                 pos_text BG3A, {26, 10}, GameLoadNoStr
-GameLoadMsgText1:               pos_text BG3A, {23, 2}, GameLoadMsgStr1
-GameLoadMsgText2:               pos_text BG3A, {23, 4}, GameLoadMsgStr2
-
-GameSaveMsgText1:               pos_text BG3A, {23, 2}, GameSaveMsgStr1
-GameSaveMsgText2:               pos_text BG3A, {23, 4}, GameSaveMsgStr2
-GameSaveMsgText3:               pos_text BG3A, {23, 6}, GameSaveMsgStr3
-GameSaveUnusedText:             pos_text BG3A, {23, 16}, GameSaveUnusedStr
-
-.endif
-
-MainMenuOrderText:              pos_text BG3B, {26, 3}, MainMenuOrderStr
+MainMenuOrderText:              pos_text MAIN_MENU_ORDER
 
 ; ------------------------------------------------------------------------------

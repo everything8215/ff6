@@ -37,25 +37,18 @@ InitConfigPage1Cursor:
 ; ------------------------------------------------------------------------------
 
 .if LANG_EN
-ConfigPage1CursorProp:
-        make_cursor_prop {0, 0}, {1, 9}, {NO_X_WRAP, NO_Y_WRAP}
-
-ConfigPage1CursorPos:
-.repeat 9, i
-        .byte   $60, $29 + i * $10
-.endrep
-
+        CONFIG_PAGE_1_NUM_ROWS = 9
 .else
+        CONFIG_PAGE_1_NUM_ROWS = 10
+.endif
 
 ConfigPage1CursorProp:
-        make_cursor_prop {0, 0}, {1, 10}, {NO_X_WRAP, NO_Y_WRAP}
+        cursor_prop {0, 0}, {1, CONFIG_PAGE_1_NUM_ROWS}, NO_XY_WRAP
 
 ConfigPage1CursorPos:
-.repeat 10, i
-        .byte   $60, $29 + i * $10
-.endrep
-
-.endif
+        .repeat CONFIG_PAGE_1_NUM_ROWS, i
+        cursor_pos {96, 41 + i * 16}
+        .endrep
 
 ; ------------------------------------------------------------------------------
 
@@ -79,15 +72,15 @@ InitConfigPage2Cursor:
 ; ------------------------------------------------------------------------------
 
 ConfigPage2CursorProp:
-        make_cursor_prop {0, 0}, {1, 6}, {NO_X_WRAP, NO_Y_WRAP}
+        cursor_prop {0, 0}, {1, 6}, NO_XY_WRAP
 
 ConfigPage2CursorPos:
-@3892:  .byte   $60,$29
-        .byte   $60,$69
-        .byte   $60,$79
-        .byte   $60,$99
-        .byte   $60,$a9
-        .byte   $60,$b9
+@3892:  cursor_pos {96, 41}
+        cursor_pos {96, 105}
+        cursor_pos {96, 121}
+        cursor_pos {96, 153}
+        cursor_pos {96, 169}
+        cursor_pos {96, 185}
 
 ; ------------------------------------------------------------------------------
 
@@ -1392,10 +1385,10 @@ DrawConfigMagicTypeName:
 @4058:  clr_a
         lda     f:ConfigMagicTypeTextPtrs,x
         tax
-.repeat 10, i
+        .repeat 10, i
         lda     f:ConfigMagicTypeText+i,x
         sta     $7e9e8b+i
-.endrep
+        .endrep
         clr_a
         dey
         tya
@@ -1416,10 +1409,10 @@ DrawConfigMagicTypeName:
 
 @4175:  lda     f:ConfigMagicTypeTextPtrs,x
         tax
-.repeat 4, i
+        .repeat 4, i
         lda     f:ConfigMagicTypeText+i,x
         sta     zf9+i
-.endrep
+        .endrep
         dey
         tya
         asl
@@ -1581,10 +1574,6 @@ DrawConfigColors:
 
 ; ------------------------------------------------------------------------------
 
-        .define ConfigColorArrowBlankStr {$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define ConfigColorArrowStr {$d4,$00}
-
-
 ConfigColorArrowTbl:
 @418d:  .addr   ConfigColorArrowBlankText
         .addr   ConfigColorArrowText1
@@ -1596,14 +1585,14 @@ ConfigColorArrowTbl:
         .addr   ConfigColorArrowText7
 
 ; blank text for clearing arrow area and if font color is selected
-ConfigColorArrowBlankText:      pos_text BG1B, {22, 18}, ConfigColorArrowBlankStr
-ConfigColorArrowText1:          pos_text BG1B, {22, 18}, ConfigColorArrowStr
-ConfigColorArrowText2:          pos_text BG1B, {23, 18}, ConfigColorArrowStr
-ConfigColorArrowText3:          pos_text BG1B, {24, 18}, ConfigColorArrowStr
-ConfigColorArrowText4:          pos_text BG1B, {25, 18}, ConfigColorArrowStr
-ConfigColorArrowText5:          pos_text BG1B, {26, 18}, ConfigColorArrowStr
-ConfigColorArrowText6:          pos_text BG1B, {27, 18}, ConfigColorArrowStr
-ConfigColorArrowText7:          pos_text BG1B, {28, 18}, ConfigColorArrowStr
+ConfigColorArrowBlankText:      pos_text CONFIG_COLOR_ARROW_BLANK
+ConfigColorArrowText1:          pos_text CONFIG_COLOR_ARROW 22
+ConfigColorArrowText2:          pos_text CONFIG_COLOR_ARROW 23
+ConfigColorArrowText3:          pos_text CONFIG_COLOR_ARROW 24
+ConfigColorArrowText4:          pos_text CONFIG_COLOR_ARROW 25
+ConfigColorArrowText5:          pos_text CONFIG_COLOR_ARROW 26
+ConfigColorArrowText6:          pos_text CONFIG_COLOR_ARROW 27
+ConfigColorArrowText7:          pos_text CONFIG_COLOR_ARROW 28
 
 ; ------------------------------------------------------------------------------
 
@@ -2277,15 +2266,15 @@ InitCmdArrangeCharCursor:
 
 ; cursor data (battle command arrange, char select)
 CmdArrangeCharCursorProp:
-        make_cursor_prop {0, 0}, {1, 5}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 5}, NO_X_WRAP
 
 ; cursor positions (battle command arrange, char select)
 CmdArrangeCharCursorPos:
-@45ca:  .byte   $08,$20
-        .byte   $08,$50
-        .byte   $08,$80
-        .byte   $08,$b0
-        .byte   $08,$0c
+@45ca:  cursor_pos {8, 32}
+        cursor_pos {8, 80}
+        cursor_pos {8, 128}
+        cursor_pos {8, 176}
+        cursor_pos {8, 12}
 
 ; ------------------------------------------------------------------------------
 
@@ -2407,32 +2396,32 @@ GetCmdArrangeCursorInput:
 
 ; cursor data (battle command arrange, command select/move)
 CmdArrangeCursorProp:
-        make_cursor_prop {0, 0}, {1, 4}, {NO_X_WRAP, NO_Y_WRAP}
+        cursor_prop {0, 0}, {1, 4}, NO_XY_WRAP
 
 ; cursor positions (battle command arrange, 4 positions per character slot)
 Char1CmdArrangeCursorPos:
-@464f:  .byte   $80,$20
-        .byte   $58,$2c
-        .byte   $a8,$2c
-        .byte   $80,$38
+@464f:  cursor_pos {128, 32}
+        cursor_pos {88, 44}
+        cursor_pos {168, 44}
+        cursor_pos {128, 56}
 
 Char2CmdArrangeCursorPos:
-@4657:  .byte   $80,$50
-        .byte   $58,$5c
-        .byte   $a8,$5c
-        .byte   $80,$68
+@4657:  cursor_pos {128, 80}
+        cursor_pos {88, 92}
+        cursor_pos {168, 92}
+        cursor_pos {128, 104}
 
 Char3CmdArrangeCursorPos:
-@465f:  .byte   $80,$80
-        .byte   $58,$8c
-        .byte   $a8,$8c
-        .byte   $80,$98
+@465f:  cursor_pos {128, 128}
+        cursor_pos {88, 140}
+        cursor_pos {168, 140}
+        cursor_pos {128, 152}
 
 Char4CmdArrangeCursorPos:
-@4667:  .byte   $80,$b0
-        .byte   $58,$bc
-        .byte   $a8,$bc
-        .byte   $80,$c8
+@4667:  cursor_pos {128, 176}
+        cursor_pos {88, 188}
+        cursor_pos {168, 188}
+        cursor_pos {128, 200}
 
 ; ------------------------------------------------------------------------------
 
@@ -2872,13 +2861,13 @@ InitCharCtrlCursor:
 ; ------------------------------------------------------------------------------
 
 CharCtrlCursorProp:
-        make_cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
+        cursor_prop {0, 0}, {1, 4}, NO_X_WRAP
 
 CharCtrlCursorPos:
-@48eb:  .byte   $50,$7b
-        .byte   $50,$8b
-        .byte   $50,$9b
-        .byte   $50,$ab
+@48eb:  cursor_pos {80, 123}
+        cursor_pos {80, 139}
+        cursor_pos {80, 155}
+        cursor_pos {80, 171}
 
 ; ------------------------------------------------------------------------------
 
@@ -2980,16 +2969,16 @@ InitCtrlConfigCursor:
 ; ------------------------------------------------------------------------------
 
 _c34ae3:
-@4ae3:  make_cursor_prop {0, 0}, {1, 7}
+@4ae3:  cursor_prop {0, 0}, {1, 7}
 
 _c34ae8:
-@4ae8:  .byte   $10,$23
-        .byte   $10,$3B
-        .byte   $10,$53
-        .byte   $10,$6B
-        .byte   $10,$83
-        .byte   $10,$9B
-        .byte   $10,$B3
+@4ae8:  cursor_pos {16, 35}
+        cursor_pos {16, 59}
+        cursor_pos {16, 83}
+        cursor_pos {16, 107}
+        cursor_pos {16, 131}
+        cursor_pos {16, 155}
+        cursor_pos {16, 179}
 
 ; ------------------------------------------------------------------------------
 
@@ -3397,147 +3386,6 @@ _c348f7:
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-        .define ConfigControllerStr     {$82,$a8,$a7,$ad,$ab,$a8,$a5,$a5,$9e,$ab,$00}
-        .define ConfigWaitStr           {$96,$9a,$a2,$ad,$00}
-        .define ConfigFastStr           {$85,$9a,$ac,$ad,$00}
-        .define ConfigSlowStr           {$92,$a5,$a8,$b0,$00}
-        .define ConfigCmdShortStr       {$92,$a1,$a8,$ab,$ad,$00}
-        .define ConfigGaugeOnStr        {$8e,$a7,$00}
-        .define ConfigGaugeOffStr       {$8e,$9f,$9f,$00}
-        .define ConfigStereoStr         {$92,$ad,$9e,$ab,$9e,$a8,$00}
-        .define ConfigMonoStr           {$8c,$a8,$a7,$a8,$00}
-        .define ConfigMemoryStr         {$8c,$9e,$a6,$a8,$ab,$b2,$00}
-        .define ConfigOptimumStr        {$8e,$a9,$ad,$a2,$a6,$ae,$a6,$00}
-        .define ConfigCtrlMultiStr      {$8c,$ae,$a5,$ad,$a2,$a9,$a5,$9e,$00}
-        .define ConfigSpeedNumStr       {$b5,$ff,$b6,$ff,$b7,$ff,$b8,$ff,$b9,$ff,$ba,$00}
-        .define ConfigCursorStr         {$82,$ae,$ab,$ac,$a8,$ab,$00}
-        .define ConfigTitleStr          {$82,$a8,$a7,$9f,$a2,$a0,$00}
-        .define ConfigBattleModeStr     {$81,$9a,$ad,$c5,$8c,$a8,$9d,$9e,$00}
-        .define ConfigBattleSpeedStr    {$81,$9a,$ad,$c5,$92,$a9,$9e,$9e,$9d,$00}
-        .define ConfigMsgSpeedStr       {$8c,$ac,$a0,$c5,$92,$a9,$9e,$9e,$9d,$00}
-        .define ConfigCmdSetStr         {$82,$a6,$9d,$c5,$92,$9e,$ad,$00}
-        .define ConfigGaugeStr          {$86,$9a,$ae,$a0,$9e,$00}
-        .define ConfigSoundStr          {$92,$a8,$ae,$a7,$9d,$00}
-        .define ConfigReequipStr        {$91,$9e,$9e,$aa,$ae,$a2,$a9,$00}
-        .define ConfigActiveStr         {$80,$9c,$ad,$a2,$af,$9e,$00}
-        .define ConfigCmdWindowStr      {$96,$a2,$a7,$9d,$a8,$b0,$00}
-        .define ConfigResetStr          {$91,$9e,$ac,$9e,$ad,$00}
-        .define ConfigEmptyStr          {$84,$a6,$a9,$ad,$b2,$00}
-        .define ConfigCtrlSingleStr     {$92,$a2,$a7,$a0,$a5,$9e,$00}
-        .define ConfigMagicOrderStr     {$8c,$9a,$a0,$c5,$8e,$ab,$9d,$9e,$ab,$00}
-        .define ConfigWindowLabelStr    {$96,$a2,$a7,$9d,$a8,$b0,$00}
-        .define ConfigColorStr          {$82,$a8,$a5,$a8,$ab,$00}
-        .define ConfigMagicOrderAStr    {$80,$d3,$00}
-        .define ConfigMagicOrderBStr    {$81,$d3,$00}
-        .define ConfigMagicOrderCStr    {$82,$d3,$00}
-        .define ConfigColorBarStr       {$f9,$f0,$f0,$f0,$f0,$f0,$f0,$f0,$f0,$fa,$00}
-        .define ConfigColorRStr         {$91,$00}
-        .define ConfigColorGStr         {$86,$00}
-        .define ConfigColorBStr         {$81,$00}
-        .define ConfigWindowNumStr      {$b5,$ff,$b6,$ff,$b7,$ff,$b8,$ff,$b9,$ff,$ba,$ff,$bb,$ff,$bc,$00}
-        .define ConfigMagicOrderNumStr  {$b5,$ff,$b6,$ff,$b7,$ff,$b8,$ff,$b9,$ff,$ba,$00}
-        .define ConfigFontStr           {$85,$a8,$a7,$ad,$00}
-        .define ConfigWindowStr         {$96,$a2,$a7,$9d,$a8,$b0,$00}
-        .define ConfigReturnStr         {$a5,$47,$79,$00}  ; "もどす" (Return)
-        .define ConfigColorBoxStr       {$01,$02,$03,$04,$05,$06,$07,$00}
-        .define ConfigMagicTypeStr1     {$e8,$87,$9e,$9a,$a5,$a2,$a7,$a0,$ff,$ff}
-        .define ConfigMagicTypeStr2     {$e9,$80,$ad,$ad,$9a,$9c,$a4,$ff,$ff,$ff}
-        .define ConfigMagicTypeStr3     {$ea,$84,$9f,$9f,$9e,$9c,$ad,$ff,$ff,$ff}
-        .define CmdArrangeTitleStr      {$80,$ab,$ab,$9a,$a7,$a0,$9e,$00}
-        .define CharCtrlTitleStr        {$82,$a8,$a7,$ad,$ab,$a8,$a5,$a5,$9e,$ab,$00}
-        .define Char1Ctrl1Str           {$82,$a7,$ad,$a5,$ab,$b5,$00}
-        .define Char1Ctrl2Str           {$82,$a7,$ad,$a5,$ab,$b6,$00}
-        .define Char2Ctrl1Str           {$82,$a7,$ad,$a5,$ab,$b5,$00}
-        .define Char2Ctrl2Str           {$82,$a7,$ad,$a5,$ab,$b6,$00}
-        .define Char3Ctrl1Str           {$82,$a7,$ad,$a5,$ab,$b5,$00}
-        .define Char3Ctrl2Str           {$82,$a7,$ad,$a5,$ab,$b6,$00}
-        .define Char4Ctrl1Str           {$82,$a7,$ad,$a5,$ab,$b5,$00}
-        .define Char4Ctrl2Str           {$82,$a7,$ad,$a5,$ab,$b6,$00}
-
-.else
-        .define ConfigControllerStr     {$72,$b8,$86,$ae,$c5,$a6,$c5,$00}
-        .define ConfigWaitStr           {$88,$ca,$8c,$86,$00}
-        .define ConfigFastStr           {$61,$b1,$8d,$00}
-        .define ConfigSlowStr           {$91,$7d,$8d,$00}  ; "おそい" (slow)
-        .define ConfigCmdShortStr       {$7f,$b9,$77,$c1,$6f,$00}
-        .define ConfigGaugeOnStr        {$90,$b8,$00}
-        .define ConfigGaugeOffStr       {$90,$64,$00}
-        .define ConfigStereoStr         {$78,$84,$ac,$90,$00}
-        .define ConfigMonoStr           {$a4,$9a,$a6,$aa,$00}
-        .define ConfigMemoryStr         {$6d,$91,$6f,$00}
-        .define ConfigOptimumStr        {$75,$8d,$6d,$c3,$89,$00}  ; "さいきょう" (optimum)
-        .define ConfigCtrlNormalStr     {$9a,$c5,$9c,$aa,$00}  ; "ノーマル" (normal)
-        .define ConfigCtrlCustomStr     {$6a,$78,$7e,$a0,$00}  ; "カスタム" (custom)
-        .define ConfigCtrlMultiStr      {$9c,$aa,$80,$00}  ; "マルチ" (multi)
-        .define ConfigSpeedNumStr       {$54,$ff,$55,$ff,$56,$ff,$57,$ff,$58,$ff,$59,$00}
-        .define ConfigCursorStr         {$6a,$c5,$7c,$aa,$8d,$81,$00}
-
-        .define ConfigTitleStr          {$72,$b8,$64,$c6,$2e,$00}
-        .define ConfigBattleModeStr     {$20,$86,$aa,$a4,$c5,$46,$00}
-        .define ConfigBattleSpeedStr    {$78,$4b,$c5,$46,$00}
-        .define ConfigMsgSpeedStr       {$a2,$bc,$7a,$c5,$36,$00}
-        .define ConfigCmdSetStr         {$72,$9c,$b8,$46,$77,$85,$8d,$00}
-        .define ConfigGaugeStr          {$30,$c5,$36,$00}
-        .define ConfigSoundStr          {$74,$88,$b8,$46,$00}
-        .define ConfigReequipStr        {$75,$8d,$7d,$89,$23,$00}
-        .define ConfigActiveStr         {$8a,$6e,$84,$c6,$48,$00}
-        .define ConfigCmdWindowStr      {$88,$c6,$b8,$46,$88,$00}
-        .define ConfigResetStr          {$a5,$47,$79,$00}
-        .define ConfigEmptyStr          {$79,$27,$85,$61,$39,$79,$00}
-        .define ConfigCtrlSingleStr     {$76,$b8,$2e,$aa,$00}
-
-        .define ConfigMagicOrderStr     {$9d,$69,$89,$9b,$93,$a7,$23,$6b,$7f,$00}
-        .define ConfigWindowLabelStr    {$88,$c6,$b8,$46,$88,$00}
-        .define ConfigColorStr          {$6a,$a6,$c5,$00}
-        .define ConfigMagicOrderAStr    {$54,$c7,$00}
-        .define ConfigMagicOrderBStr    {$55,$c7,$00}
-        .define ConfigMagicOrderCStr    {$56,$c7,$00}
-        .define ConfigColorBarStr       {$19,$10,$10,$10,$10,$10,$10,$10,$10,$1a,$00}
-        .define ConfigColorRStr         {$31,$00}
-        .define ConfigColorGStr         {$26,$00}
-        .define ConfigColorBStr         {$21,$00}
-        .define ConfigWindowNumStr      {$54,$ff,$55,$ff,$56,$ff,$57,$ff,$58,$ff,$59,$ff,$5a,$ff,$5b,$00}
-        .define ConfigMagicOrderNumStr  {$54,$ff,$55,$ff,$56,$ff,$57,$ff,$58,$ff,$59,$00}
-        .define ConfigFontStr           {$64,$cc,$b8,$86,$00}
-        .define ConfigWindowStr         {$88,$c6,$b8,$46,$88,$00}
-        .define ConfigReturnStr         {$a5,$47,$79,$00}
-        .define ConfigColorBoxStr       {$01,$02,$03,$04,$05,$06,$07,$00}
-
-        .define ConfigMagicTypeStr1     {$6b,$8d,$65,$6f}
-        .define ConfigMagicTypeStr2     {$73,$89,$31,$6d}
-        .define ConfigMagicTypeStr3     {$6b,$b9,$7b,$83}
-
-        .define CmdArrangeTitleStr      {$7b,$8d,$87,$b9,$00}
-        .define CharCtrlTitleStr        {$72,$b8,$86,$ae,$c5,$a6,$c5,$9b,$b7,$a9,$65,$a9,$00}
-        .define Char1Ctrl1Str           {$72,$b8,$86,$ae,$c5,$a6,$c5,$54,$00}
-        .define Char1Ctrl2Str           {$72,$b8,$86,$ae,$c5,$a6,$c5,$55,$00}
-        .define Char2Ctrl1Str           {$72,$b8,$86,$ae,$c5,$a6,$c5,$54,$00}
-        .define Char2Ctrl2Str           {$72,$b8,$86,$ae,$c5,$a6,$c5,$55,$00}
-        .define Char3Ctrl1Str           {$72,$b8,$86,$ae,$c5,$a6,$c5,$54,$00}
-        .define Char3Ctrl2Str           {$72,$b8,$86,$ae,$c5,$a6,$c5,$55,$00}
-        .define Char4Ctrl1Str           {$72,$b8,$86,$ae,$c5,$a6,$c5,$54,$00}
-        .define Char4Ctrl2Str           {$72,$b8,$86,$ae,$c5,$a6,$c5,$55,$00}
-
-        .define CtrlConfigTitleStr      {$28,$7e,$b8,$9b,$7b,$bd,$85,$8d,$00}
-        .define CtrlConfigConfirmStr    {$71,$bd,$85,$8d,$00}
-        .define CtrlConfigCancelStr     {$81,$c1,$89,$77,$00}
-        .define CtrlConfigMenuStr       {$a2,$94,$c0,$c5,$00}
-        .define CtrlConfigPartyStr      {$49,$c5,$84,$c6,$c5,$00}
-        .define CtrlConfigRowStr        {$80,$ca,$b8,$36,$00}
-        .define CtrlConfigDefStr        {$29,$89,$2d,$c3,$00}
-
-        .define CtrlConfigButtonStr     {$28,$7e,$b8,$00}
-        .define CtrlConfigAStr          {$20,$00}
-        .define CtrlConfigBStr          {$21,$00}
-        .define CtrlConfigXStr          {$37,$00}
-        .define CtrlConfigYStr          {$38,$00}
-        .define CtrlConfigLStr          {$2b,$00}
-        .define CtrlConfigRStr          {$31,$00}
-        .define CtrlConfigSelectStr     {$32,$24,$2b,$00}
-
-.endif
-
 ConfigLabelTextList1:
         .addr   ConfigControllerText
         .addr   ConfigCursorText
@@ -3548,27 +3396,25 @@ ConfigSpeedTextList:
         .addr   ConfigSlowText
         calc_size ConfigSpeedTextList
 
-ConfigControllerText:           pos_text BG1A, {3, 21}, ConfigControllerStr
-ConfigWaitText:                 pos_text BG1A, {22, 5}, ConfigWaitStr
-ConfigFastText:                 pos_text BG1A, {14, 8}, ConfigFastStr
-ConfigSlowText:                 pos_text BG1A, {22, 8}, ConfigSlowStr
-ConfigCmdShortText:             pos_text BG1A, {22, 11}, ConfigCmdShortStr
-ConfigGaugeOnText:              pos_text BG1A, {14, 13}, ConfigGaugeOnStr
-ConfigGaugeOffText:             pos_text BG1A, {22, 13}, ConfigGaugeOffStr
-ConfigStereoText:               pos_text BG1A, {14, 15}, ConfigStereoStr
-ConfigMonoText:                 pos_text BG1A, {22, 15}, ConfigMonoStr
-ConfigMemoryText:               pos_text BG1A, {22, 17}, ConfigMemoryStr
-ConfigOptimumText:              pos_text BG1A, {14, 19}, ConfigOptimumStr
-.if LANG_EN
-ConfigCtrlMultiText:            pos_text BG1A, {22, 21}, ConfigCtrlMultiStr
-.else
-ConfigCtrlNormalText:           pos_text BG1A, {14, 21}, ConfigCtrlNormalStr
-ConfigCtrlCustomText:           pos_text BG1A, {22, 21}, ConfigCtrlCustomStr
-ConfigCtrlMultiText:            pos_text BG1A, {22, 23}, ConfigCtrlMultiStr
+ConfigControllerText:           pos_text CONFIG_CONTROLLER
+ConfigWaitText:                 pos_text CONFIG_WAIT
+ConfigFastText:                 pos_text CONFIG_FAST
+ConfigSlowText:                 pos_text CONFIG_SLOW
+ConfigCmdShortText:             pos_text CONFIG_CMD_SHORT
+ConfigGaugeOnText:              pos_text CONFIG_GAUGE_ON
+ConfigGaugeOffText:             pos_text CONFIG_GAUGE_OFF
+ConfigStereoText:               pos_text CONFIG_STEREO
+ConfigMonoText:                 pos_text CONFIG_MONO
+ConfigMemoryText:               pos_text CONFIG_MEMORY
+ConfigOptimumText:              pos_text CONFIG_OPTIMUM
+.if !LANG_EN
+ConfigCtrlNormalText:           pos_text CONFIG_CTRL_NORMAL
+ConfigCtrlCustomText:           pos_text CONFIG_CTRL_CUSTOM
 .endif
-ConfigBattleSpeedNumText:       pos_text BG1A, {14, 7}, ConfigSpeedNumStr
-ConfigMsgSpeedNumText:          pos_text BG1A, {14, 9}, ConfigSpeedNumStr
-ConfigCursorText:               pos_text BG1A, {3, 17}, ConfigCursorStr
+ConfigCtrlMultiText:            pos_text CONFIG_CTRL_MULTI
+ConfigBattleSpeedNumText:       pos_text CONFIG_BATTLE_SPEED_NUM
+ConfigMsgSpeedNumText:          pos_text CONFIG_MSG_SPEED_NUM
+ConfigCursorText:               pos_text CONFIG_CURSOR
 
 ConfigLabelTextList2:
         .addr   ConfigBattleModeText
@@ -3580,35 +3426,19 @@ ConfigLabelTextList2:
         .addr   ConfigReequipText
         calc_size ConfigLabelTextList2
 
-.if LANG_EN
-ConfigTitleText:                pos_text BG3A, {24, 2}, ConfigTitleStr
-ConfigBattleModeText:           pos_text BG1A, {3, 5}, ConfigBattleModeStr
-ConfigBattleSpeedText:          pos_text BG1A, {3, 7}, ConfigBattleSpeedStr
-ConfigMsgSpeedText:             pos_text BG1A, {3, 9}, ConfigMsgSpeedStr
-ConfigCmdSetText:               pos_text BG1A, {3, 11}, ConfigCmdSetStr
-ConfigGaugeText:                pos_text BG1A, {3, 13}, ConfigGaugeStr
-ConfigSoundText:                pos_text BG1A, {3, 15}, ConfigSoundStr
-ConfigReequipText:              pos_text BG1A, {3, 19}, ConfigReequipStr
-ConfigActiveText:               pos_text BG1A, {14, 5}, ConfigActiveStr
-ConfigCmdWindowText:            pos_text BG1A, {14, 11}, ConfigCmdWindowStr
-ConfigResetText:                pos_text BG1A, {14, 17}, ConfigResetStr
-ConfigEmptyText:                pos_text BG1A, {22, 19}, ConfigEmptyStr
-ConfigCtrlSingleText:           pos_text BG1A, {14, 21}, ConfigCtrlSingleStr
-.else
-ConfigTitleText:                pos_text BG3A, {25, 1}, ConfigTitleStr
-ConfigBattleModeText:           pos_text BG1A, {3, 4}, ConfigBattleModeStr
-ConfigBattleSpeedText:          pos_text BG1A, {5, 6}, ConfigBattleSpeedStr
-ConfigMsgSpeedText:             pos_text BG1A, {5, 8}, ConfigMsgSpeedStr
-ConfigCmdSetText:               pos_text BG1A, {5, 10}, ConfigCmdSetStr
-ConfigGaugeText:                pos_text BG1A, {5, 12}, ConfigGaugeStr
-ConfigSoundText:                pos_text BG1A, {3, 14}, ConfigSoundStr
-ConfigReequipText:              pos_text BG1A, {3, 18}, ConfigReequipStr
-ConfigActiveText:               pos_text BG1A, {14, 4}, ConfigActiveStr
-ConfigCmdWindowText:            pos_text BG1A, {14, 10}, ConfigCmdWindowStr
-ConfigResetText:                pos_text BG1A, {14, 16}, ConfigResetStr
-ConfigEmptyText:                pos_text BG1A, {22, 18}, ConfigEmptyStr
-ConfigCtrlSingleText:           pos_text BG1A, {14, 22}, ConfigCtrlSingleStr
-.endif
+ConfigTitleText:                pos_text CONFIG_TITLE
+ConfigBattleModeText:           pos_text CONFIG_BATTLE_MODE
+ConfigBattleSpeedText:          pos_text CONFIG_BATTLE_SPEED
+ConfigMsgSpeedText:             pos_text CONFIG_MSG_SPEED
+ConfigCmdSetText:               pos_text CONFIG_CMD_SET
+ConfigGaugeText:                pos_text CONFIG_GAUGE
+ConfigSoundText:                pos_text CONFIG_SOUND
+ConfigReequipText:              pos_text CONFIG_REEQUIP
+ConfigActiveText:               pos_text CONFIG_ACTIVE
+ConfigCmdWindowText:            pos_text CONFIG_CMD_WINDOW
+ConfigResetText:                pos_text CONFIG_RESET
+ConfigEmptyText:                pos_text CONFIG_EMPTY
+ConfigCtrlSingleText:           pos_text CONFIG_CTRL_SINGLE
 
 ConfigLabelTextList3:
         .addr   ConfigMagicOrderText
@@ -3632,69 +3462,42 @@ ConfigLabelTextList4:
         .addr   ConfigMagicOrderCText
         calc_size ConfigLabelTextList4
 
-.if LANG_EN
+ConfigMagicOrderText:           pos_text CONFIG_MAGIC_ORDER
+ConfigWindowLabelText:          pos_text CONFIG_WINDOW_LABEL
+ConfigColorText:                pos_text CONFIG_COLOR
+ConfigMagicOrderAText:          pos_text CONFIG_MAGIC_ORDER_A
+ConfigMagicOrderBText:          pos_text CONFIG_MAGIC_ORDER_B
+ConfigMagicOrderCText:          pos_text CONFIG_MAGIC_ORDER_C
+ConfigColorBarRText:            pos_text CONFIG_COLOR_BAR_R
+ConfigColorBarGText:            pos_text CONFIG_COLOR_BAR_G
+ConfigColorBarBText:            pos_text CONFIG_COLOR_BAR_B
+ConfigColorRText:               pos_text CONFIG_COLOR_R
+ConfigColorGText:               pos_text CONFIG_COLOR_G
+ConfigColorBText:               pos_text CONFIG_COLOR_B
+ConfigWindowNumText:            pos_text CONFIG_WINDOW_NUM
+ConfigMagicOrderNumText:        pos_text CONFIG_MAGIC_ORDER_NUM
+ConfigFontText:                 pos_text CONFIG_FONT
+ConfigWindowText:               pos_text CONFIG_WINDOW
 
-ConfigMagicOrderText:           pos_text BG1B, {3, 5}, ConfigMagicOrderStr
-ConfigWindowLabelText:          pos_text BG1B, {3, 13}, ConfigWindowLabelStr
-ConfigColorText:                pos_text BG1B, {3, 15}, ConfigColorStr
-ConfigMagicOrderAText:          pos_text BG1B, {14, 7}, ConfigMagicOrderAStr
-ConfigMagicOrderBText:          pos_text BG1B, {14, 9}, ConfigMagicOrderBStr
-ConfigMagicOrderCText:          pos_text BG1B, {14, 11}, ConfigMagicOrderCStr
-ConfigColorBarRText:            pos_text BG1B, {18, 19}, ConfigColorBarStr
-ConfigColorBarGText:            pos_text BG1B, {18, 21}, ConfigColorBarStr
-ConfigColorBarBText:            pos_text BG1B, {18, 23}, ConfigColorBarStr
-ConfigColorRText:               pos_text BG1B, {14, 19}, ConfigColorRStr
-ConfigColorGText:               pos_text BG1B, {14, 21}, ConfigColorGStr
-ConfigColorBText:               pos_text BG1B, {14, 23}, ConfigColorBStr
-ConfigWindowNumText:            pos_text BG1B, {14, 13}, ConfigWindowNumStr
-ConfigMagicOrderNumText:        pos_text BG1B, {14, 5}, ConfigMagicOrderNumStr
-ConfigFontText:                 pos_text BG1B, {14, 15}, ConfigFontStr
-ConfigWindowText:               pos_text BG1B, {22, 15}, ConfigWindowStr
-
-.else
-
-ConfigMagicOrderText:           pos_text BG1B, {3, 4}, ConfigMagicOrderStr
-ConfigWindowLabelText:          pos_text BG1B, {3, 12}, ConfigWindowLabelStr
-ConfigColorText:                pos_text BG1B, {3, 14}, ConfigColorStr
-ConfigMagicOrderAText:          pos_text BG1B, {14, 7}, ConfigMagicOrderAStr
-ConfigMagicOrderBText:          pos_text BG1B, {14, 9}, ConfigMagicOrderBStr
-ConfigMagicOrderCText:          pos_text BG1B, {14, 11}, ConfigMagicOrderCStr
-ConfigColorBarRText:            pos_text BG1B, {18, 19}, ConfigColorBarStr
-ConfigColorBarGText:            pos_text BG1B, {18, 21}, ConfigColorBarStr
-ConfigColorBarBText:            pos_text BG1B, {18, 23}, ConfigColorBarStr
-ConfigColorRText:               pos_text BG1B, {14, 19}, ConfigColorRStr
-ConfigColorGText:               pos_text BG1B, {14, 21}, ConfigColorGStr
-ConfigColorBText:               pos_text BG1B, {14, 23}, ConfigColorBStr
-ConfigWindowNumText:            pos_text BG1B, {14, 13}, ConfigWindowNumStr
-ConfigMagicOrderNumText:        pos_text BG1B, {14, 5}, ConfigMagicOrderNumStr
-ConfigFontText:                 pos_text BG1B, {14, 15}, ConfigFontStr
-ConfigWindowText:               pos_text BG1B, {22, 14}, ConfigWindowStr
-
-.endif
-
-ConfigReturnText:               pos_text BG1B, {25, 14}, ConfigReturnStr
-ConfigColorBoxText:             pos_text BG1B, {22, 17}, ConfigColorBoxStr
-ConfigMagicTypeText:            raw_text ConfigMagicTypeStr1
-                                raw_text ConfigMagicTypeStr2
-                                raw_text ConfigMagicTypeStr3
+ConfigReturnText:               pos_text CONFIG_RETURN
+ConfigColorBoxText:             pos_text CONFIG_COLOR_BOX
+ConfigMagicTypeText:            raw_text CONFIG_MAGIC_TYPE_1
+                                raw_text CONFIG_MAGIC_TYPE_2
+                                raw_text CONFIG_MAGIC_TYPE_3
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-CmdArrangeTitleText:            pos_text BG3A, {3, 2}, CmdArrangeTitleStr
-.else
-CmdArrangeTitleText:            pos_text BG3A, {3, 1}, CmdArrangeTitleStr
-.endif
+CmdArrangeTitleText:            pos_text CMD_ARRANGE_TITLE
 
-CharCtrlTitleText:              pos_text BG3A, {2, 12}, CharCtrlTitleStr
-Char1Ctrl1Text:                 pos_text BG3A, {12, 15}, Char1Ctrl1Str
-Char1Ctrl2Text:                 pos_text BG3A, {21, 15}, Char1Ctrl2Str
-Char2Ctrl1Text:                 pos_text BG3A, {12, 17}, Char2Ctrl1Str
-Char2Ctrl2Text:                 pos_text BG3A, {21, 17}, Char2Ctrl2Str
-Char3Ctrl1Text:                 pos_text BG3A, {12, 19}, Char3Ctrl1Str
-Char3Ctrl2Text:                 pos_text BG3A, {21, 19}, Char3Ctrl2Str
-Char4Ctrl1Text:                 pos_text BG3A, {12, 21}, Char4Ctrl1Str
-Char4Ctrl2Text:                 pos_text BG3A, {21, 21}, Char4Ctrl2Str
+CharCtrlTitleText:              pos_text CHAR_CTRL_TITLE
+Char1Ctrl1Text:                 pos_text CHAR_1_CTRL_1
+Char1Ctrl2Text:                 pos_text CHAR_1_CTRL_2
+Char2Ctrl1Text:                 pos_text CHAR_2_CTRL_1
+Char2Ctrl2Text:                 pos_text CHAR_2_CTRL_2
+Char3Ctrl1Text:                 pos_text CHAR_3_CTRL_1
+Char3Ctrl2Text:                 pos_text CHAR_3_CTRL_2
+Char4Ctrl1Text:                 pos_text CHAR_4_CTRL_1
+Char4Ctrl2Text:                 pos_text CHAR_4_CTRL_2
 
 ; ------------------------------------------------------------------------------
 
@@ -3784,72 +3587,72 @@ CtrlConfigActionTextList7:
         .addr   CtrlConfigDefText7
         calc_size CtrlConfigActionTextList7
 
-CtrlConfigTitleText:            pos_text BG3A, {22, 2}, CtrlConfigTitleStr
+CtrlConfigTitleText:            pos_text CTRL_CONFIG_TITLE
 
-CtrlConfigConfirmText1:         pos_text BG3A, {2, 6}, CtrlConfigConfirmStr
-CtrlConfigCancelText1:          pos_text BG3A, {7, 6}, CtrlConfigCancelStr
-CtrlConfigMenuText1:            pos_text BG3A, {12, 6}, CtrlConfigMenuStr
-CtrlConfigPartyText1:           pos_text BG3A, {16, 6}, CtrlConfigPartyStr
-CtrlConfigRowText1:             pos_text BG3A, {21, 6}, CtrlConfigRowStr
-CtrlConfigDefText1:             pos_text BG3A, {26, 6}, CtrlConfigDefStr
+CtrlConfigConfirmText1:         pos_text CTRL_CONFIG_CONFIRM_1
+CtrlConfigCancelText1:          pos_text CTRL_CONFIG_CANCEL_1
+CtrlConfigMenuText1:            pos_text CTRL_CONFIG_MENU_1
+CtrlConfigPartyText1:           pos_text CTRL_CONFIG_PARTY_1
+CtrlConfigRowText1:             pos_text CTRL_CONFIG_ROW_1
+CtrlConfigDefText1:             pos_text CTRL_CONFIG_DEF_1
 
-CtrlConfigConfirmText2:         pos_text BG3A, {2, 10}, CtrlConfigConfirmStr
-CtrlConfigCancelText2:          pos_text BG3A, {7, 10}, CtrlConfigCancelStr
-CtrlConfigMenuText2:            pos_text BG3A, {12, 10}, CtrlConfigMenuStr
-CtrlConfigPartyText2:           pos_text BG3A, {16, 10}, CtrlConfigPartyStr
-CtrlConfigRowText2:             pos_text BG3A, {21, 10}, CtrlConfigRowStr
-CtrlConfigDefText2:             pos_text BG3A, {26, 10}, CtrlConfigDefStr
+CtrlConfigConfirmText2:         pos_text CTRL_CONFIG_CONFIRM_2
+CtrlConfigCancelText2:          pos_text CTRL_CONFIG_CANCEL_2
+CtrlConfigMenuText2:            pos_text CTRL_CONFIG_MENU_2
+CtrlConfigPartyText2:           pos_text CTRL_CONFIG_PARTY_2
+CtrlConfigRowText2:             pos_text CTRL_CONFIG_ROW_2
+CtrlConfigDefText2:             pos_text CTRL_CONFIG_DEF_2
 
-CtrlConfigConfirmText3:         pos_text BG3A, {2, 14}, CtrlConfigConfirmStr
-CtrlConfigCancelText3:          pos_text BG3A, {7, 14}, CtrlConfigCancelStr
-CtrlConfigMenuText3:            pos_text BG3A, {12, 14}, CtrlConfigMenuStr
-CtrlConfigPartyText3:           pos_text BG3A, {16, 14}, CtrlConfigPartyStr
-CtrlConfigRowText3:             pos_text BG3A, {21, 14}, CtrlConfigRowStr
-CtrlConfigDefText3:             pos_text BG3A, {26, 14}, CtrlConfigDefStr
+CtrlConfigConfirmText3:         pos_text CTRL_CONFIG_CONFIRM_3
+CtrlConfigCancelText3:          pos_text CTRL_CONFIG_CANCEL_3
+CtrlConfigMenuText3:            pos_text CTRL_CONFIG_MENU_3
+CtrlConfigPartyText3:           pos_text CTRL_CONFIG_PARTY_3
+CtrlConfigRowText3:             pos_text CTRL_CONFIG_ROW_3
+CtrlConfigDefText3:             pos_text CTRL_CONFIG_DEF_3
 
-CtrlConfigConfirmText4:         pos_text BG3A, {2, 18}, CtrlConfigConfirmStr
-CtrlConfigCancelText4:          pos_text BG3A, {7, 18}, CtrlConfigCancelStr
-CtrlConfigMenuText4:            pos_text BG3A, {12, 18}, CtrlConfigMenuStr
-CtrlConfigPartyText4:           pos_text BG3A, {16, 18}, CtrlConfigPartyStr
-CtrlConfigRowText4:             pos_text BG3A, {21, 18}, CtrlConfigRowStr
-CtrlConfigDefText4:             pos_text BG3A, {26, 18}, CtrlConfigDefStr
+CtrlConfigConfirmText4:         pos_text CTRL_CONFIG_CONFIRM_4
+CtrlConfigCancelText4:          pos_text CTRL_CONFIG_CANCEL_4
+CtrlConfigMenuText4:            pos_text CTRL_CONFIG_MENU_4
+CtrlConfigPartyText4:           pos_text CTRL_CONFIG_PARTY_4
+CtrlConfigRowText4:             pos_text CTRL_CONFIG_ROW_4
+CtrlConfigDefText4:             pos_text CTRL_CONFIG_DEF_4
 
-CtrlConfigConfirmText5:         pos_text BG3A, {2, 22}, CtrlConfigConfirmStr
-CtrlConfigCancelText5:          pos_text BG3A, {7, 22}, CtrlConfigCancelStr
-CtrlConfigMenuText5:            pos_text BG3A, {12, 22}, CtrlConfigMenuStr
-CtrlConfigPartyText5:           pos_text BG3A, {16, 22}, CtrlConfigPartyStr
-CtrlConfigRowText5:             pos_text BG3A, {21, 22}, CtrlConfigRowStr
-CtrlConfigDefText5:             pos_text BG3A, {26, 22}, CtrlConfigDefStr
+CtrlConfigConfirmText5:         pos_text CTRL_CONFIG_CONFIRM_5
+CtrlConfigCancelText5:          pos_text CTRL_CONFIG_CANCEL_5
+CtrlConfigMenuText5:            pos_text CTRL_CONFIG_MENU_5
+CtrlConfigPartyText5:           pos_text CTRL_CONFIG_PARTY_5
+CtrlConfigRowText5:             pos_text CTRL_CONFIG_ROW_5
+CtrlConfigDefText5:             pos_text CTRL_CONFIG_DEF_5
 
-CtrlConfigConfirmText6:         pos_text BG3A, {2, 26}, CtrlConfigConfirmStr
-CtrlConfigCancelText6:          pos_text BG3A, {7, 26}, CtrlConfigCancelStr
-CtrlConfigMenuText6:            pos_text BG3A, {12, 26}, CtrlConfigMenuStr
-CtrlConfigPartyText6:           pos_text BG3A, {16, 26}, CtrlConfigPartyStr
-CtrlConfigRowText6:             pos_text BG3A, {21, 26}, CtrlConfigRowStr
-CtrlConfigDefText6:             pos_text BG3A, {26, 26}, CtrlConfigDefStr
+CtrlConfigConfirmText6:         pos_text CTRL_CONFIG_CONFIRM_6
+CtrlConfigCancelText6:          pos_text CTRL_CONFIG_CANCEL_6
+CtrlConfigMenuText6:            pos_text CTRL_CONFIG_MENU_6
+CtrlConfigPartyText6:           pos_text CTRL_CONFIG_PARTY_6
+CtrlConfigRowText6:             pos_text CTRL_CONFIG_ROW_6
+CtrlConfigDefText6:             pos_text CTRL_CONFIG_DEF_6
 
-CtrlConfigConfirmText7:         pos_text BG3A, {2, 30}, CtrlConfigConfirmStr
-CtrlConfigCancelText7:          pos_text BG3A, {7, 30}, CtrlConfigCancelStr
-CtrlConfigMenuText7:            pos_text BG3A, {12, 30}, CtrlConfigMenuStr
-CtrlConfigPartyText7:           pos_text BG3A, {16, 30}, CtrlConfigPartyStr
-CtrlConfigRowText7:             pos_text BG3A, {21, 30}, CtrlConfigRowStr
-CtrlConfigDefText7:             pos_text BG3A, {26, 30}, CtrlConfigDefStr
+CtrlConfigConfirmText7:         pos_text CTRL_CONFIG_CONFIRM_7
+CtrlConfigCancelText7:          pos_text CTRL_CONFIG_CANCEL_7
+CtrlConfigMenuText7:            pos_text CTRL_CONFIG_MENU_7
+CtrlConfigPartyText7:           pos_text CTRL_CONFIG_PARTY_7
+CtrlConfigRowText7:             pos_text CTRL_CONFIG_ROW_7
+CtrlConfigDefText7:             pos_text CTRL_CONFIG_DEF_7
 
-CtrlConfigButtonText1:          pos_text BG3A, {5, 4}, CtrlConfigButtonStr
-CtrlConfigButtonText2:          pos_text BG3A, {5, 8}, CtrlConfigButtonStr
-CtrlConfigButtonText3:          pos_text BG3A, {5, 12}, CtrlConfigButtonStr
-CtrlConfigButtonText4:          pos_text BG3A, {5, 16}, CtrlConfigButtonStr
-CtrlConfigButtonText5:          pos_text BG3A, {5, 20}, CtrlConfigButtonStr
-CtrlConfigButtonText6:          pos_text BG3A, {5, 24}, CtrlConfigButtonStr
-CtrlConfigButtonText7:          pos_text BG3A, {7, 28}, CtrlConfigButtonStr
+CtrlConfigButtonText1:          pos_text CTRL_CONFIG_BUTTON_1
+CtrlConfigButtonText2:          pos_text CTRL_CONFIG_BUTTON_2
+CtrlConfigButtonText3:          pos_text CTRL_CONFIG_BUTTON_3
+CtrlConfigButtonText4:          pos_text CTRL_CONFIG_BUTTON_4
+CtrlConfigButtonText5:          pos_text CTRL_CONFIG_BUTTON_5
+CtrlConfigButtonText6:          pos_text CTRL_CONFIG_BUTTON_6
+CtrlConfigButtonText7:          pos_text CTRL_CONFIG_BUTTON_7
 
-CtrlConfigAText:                pos_text BG3A, {4, 5}, CtrlConfigAStr
-CtrlConfigBText:                pos_text BG3A, {4, 9}, CtrlConfigBStr
-CtrlConfigXText:                pos_text BG3A, {4, 13}, CtrlConfigXStr
-CtrlConfigYText:                pos_text BG3A, {4, 17}, CtrlConfigYStr
-CtrlConfigLText:                pos_text BG3A, {4, 21}, CtrlConfigLStr
-CtrlConfigRText:                pos_text BG3A, {4, 25}, CtrlConfigRStr
-CtrlConfigSelectText:           pos_text BG3A, {4, 29}, CtrlConfigSelectStr
+CtrlConfigAText:                pos_text CTRL_CONFIG_A
+CtrlConfigBText:                pos_text CTRL_CONFIG_B
+CtrlConfigXText:                pos_text CTRL_CONFIG_X
+CtrlConfigYText:                pos_text CTRL_CONFIG_Y
+CtrlConfigLText:                pos_text CTRL_CONFIG_L
+CtrlConfigRText:                pos_text CTRL_CONFIG_R
+CtrlConfigSelectText:           pos_text CTRL_CONFIG_SELECT
 
 .endif
 

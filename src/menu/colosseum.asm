@@ -104,7 +104,7 @@ DrawColosseumItemMenu:
         jsr     ClearBG3ScreenD
         jsr     DrawColosseumItemTitle
         jsr     DrawColosseumItemMsg
-        jsr     _c3a9a9
+        jsr     InitElementSymbolGfx
         jsr     TfrBG3ScreenAB
         jsr     TfrBG3ScreenCD
         jsr     ClearBG1ScreenB
@@ -154,25 +154,8 @@ ColosseumItemMsgWindow:                 make_window BG2A, {8, 1}, {21, 2}
 ColosseumItemDescWindow:                make_window BG2A, {1, 5}, {28, 3}
 ColosseumItemListWindow:                make_window BG2A, {1, 10}, {28, 15}
 
-.if LANG_EN
-
-        .define ColosseumItemTitleStr   {$82,$a8,$a5,$a8,$ac,$ac,$9e,$ae,$a6,$00}
-        .define ColosseumItemMsgStr     {$92,$9e,$a5,$9e,$9c,$ad,$ff,$9a,$a7,$ff,$88,$ad,$9e,$a6,$00}
-
-.else
-
-        .define ColosseumItemTitleStr   {$72,$ae,$76,$8a,$a0,$00}
-        .define ColosseumItemMsgStr     {$8a,$8c,$84,$a0,$bb,$54,$83,$ff,$8f,$a7,$b9,$45,$6f,$3f,$75,$8d,$00}
-
-.endif
-
-.if LANG_EN
-ColosseumItemTitleText:         pos_text BG3A, {2, 3}, ColosseumItemTitleStr
-ColosseumItemMsgText:           pos_text BG3A, {13, 3}, ColosseumItemMsgStr
-.else
-ColosseumItemTitleText:         pos_text BG3A, {2, 2}, ColosseumItemTitleStr
-ColosseumItemMsgText:           pos_text BG3A, {9, 2}, ColosseumItemMsgStr
-.endif
+ColosseumItemTitleText:                 pos_text COLOSSEUM_ITEM_TITLE
+ColosseumItemMsgText:                   pos_text COLOSSEUM_ITEM_MSG
 
 ; ------------------------------------------------------------------------------
 
@@ -1054,12 +1037,12 @@ InitColosseumCharCursor:
 ; ------------------------------------------------------------------------------
 
 ColosseumCharCursorProp:
-        make_cursor_prop {0, 0}, {4, 1}, NO_Y_WRAP
+        cursor_prop {0, 0}, {4, 1}, NO_Y_WRAP
 
 ColosseumCharCursorPos:
-.repeat 4, i
-        .byte   $10 + i * $38, $b0
-.endrep
+        .repeat 4, i
+        cursor_pos {16 + i * 56, 176}
+        .endrep
 
 ; colosseum menu windows
 ColosseumPrizeWindow:                   make_window BG2A, {1, 1}, {13, 2}
@@ -1188,33 +1171,9 @@ loop:   lda     $7eb68d,x
 
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-
-        .define ColosseumCharBlankNameStr       {$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define ColosseumCharMsgStr             {$92,$9e,$a5,$9e,$9c,$ad,$ff,$ad,$a1,$9e,$ff,$9c,$a1,$9a,$a5,$a5,$9e,$a7,$a0,$9e,$ab,$00}
-        .define ColosseumUnknownPrizeStr        {$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$00}
-
-.else
-
-        .define ColosseumCharBlankNameStr       {$ff,$ff,$ff,$ff,$ff,$ff,$00}
-        .define ColosseumCharMsgStr             {$81,$c3,$89,$7b,$b9,$77,$bf,$bb,$6d,$a3,$85,$6f,$3f,$75,$8d,$00}
-        .define ColosseumUnknownPrizeStr        {$cb,$cb,$cb,$cb,$cb,$cb,$cb,$cb,$00}
-
-.endif
-
-; c3/b406: (22,16) "      "
-; c3/b40f: ( 6,19) "select the challenger"
-; c3/b427: ( 2, 3) "?????????????"
-
-.if LANG_EN
-ColosseumCharBlankNameText:     pos_text BG3A, {22, 16}, ColosseumCharBlankNameStr
-ColosseumCharMsgText:           pos_text BG3A, {6, 19}, ColosseumCharMsgStr
-ColosseumUnknownPrizeText:      pos_text BG3A, {2, 3}, ColosseumUnknownPrizeStr
-.else
-ColosseumCharBlankNameText:     pos_text BG3A, {22, 15}, ColosseumCharBlankNameStr
-ColosseumCharMsgText:           pos_text BG3A, {8, 19}, ColosseumCharMsgStr
-ColosseumUnknownPrizeText:      pos_text BG3A, {4, 3}, ColosseumUnknownPrizeStr
-.endif
+ColosseumCharBlankNameText:             pos_text COLOSSEUM_CHAR_BLANK_NAME
+ColosseumCharMsgText:                   pos_text COLOSSEUM_CHAR_MSG
+ColosseumUnknownPrizeText:              pos_text COLOSSEUM_UNKNOWN_PRIZE
 
 ; ------------------------------------------------------------------------------
 
@@ -1380,7 +1339,7 @@ make_colosseum_prop                                     ; DIAMOND_HELM
 make_colosseum_prop                                     ; DARK_HOOD
 make_colosseum_prop DUELLER, DIAMOND_HELM               ; CRYSTAL_HELM
 make_colosseum_prop                                     ; OATH_VEIL
-make_colosseum_prop HOOVER,   MERIT_AWARD, 1            ; CAT_HOOD
+make_colosseum_prop HOOVER, MERIT_AWARD, 1              ; CAT_HOOD
 make_colosseum_prop FORTIS, CRYSTAL_HELM                ; GENJI_HELMET
 make_colosseum_prop OPINICUS, MIRAGE_VEST               ; THORNLET
 make_colosseum_prop BRACHOSAUR, CAT_HOOD                ; TITANIUM

@@ -171,7 +171,7 @@ VehicleMain:
         sei
         lda     $1dd1
         bit     #$01
-        jne     GameOver                ; branch if party lost the battle
+        jne     PartyDefeated                ; branch if party lost the battle
         lda     $11f6
         bit     #$20
         beq     @01c8
@@ -468,7 +468,7 @@ WorldMain:
         beq     @045f
         lda     $1dd1
         bit     #$01
-        jne     GameOver
+        jne     PartyDefeated
         bit     #$80
         beq     @045c
         lda     f:VehicleEvent_05     ; ca/008f (enter gogo's lair)
@@ -584,7 +584,7 @@ TrainMain:
         sei
         lda     $1dd1
         bit     #$01
-        jne     GameOver                ; branch if party lost the battle
+        jne     PartyDefeated           ; branch if party lost the battle
         jmp     MagitekTrain            ; re-init magitek train ride
 
 ; no battle

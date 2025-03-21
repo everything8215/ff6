@@ -507,12 +507,12 @@ $0790-$0794 Pyramid/Spotlights data
     + $0796 Screen Mosaic Counter
       $0798 Wait for character objects to get updated
 $0799-$07FA Pointers to Object Data (multiples of $29, 2 bytes each)
-$07FB-$0866 Pointers to Active Objects
     + $07FB Party Character 0
     + $07FD Party Character 1
     + $07FF Party Character 2
     + $0801 Party Character 3
-    + $0803 Showing Character
+$0803-$0866 Pointers to Active Objects
+    + $0803 Player Object
 $0867-$1068 Object Data (50 items, 41 bytes each, $00-$0F are characters, $10-$2F are NPC's, $30 is camera ($07B0), $31 is showing character or for unused objects ($07D9))
 -----------
       $0867 verbbppp Object Settings
@@ -673,6 +673,7 @@ $10E7-$10F6 Palette Animation Data (2 items, 8 bytes each)
 $10F7-$1126 Object Animation Data (24 items, 2 bytes each)
 -----------
     + $10F7 pointer to object data, $07B0 if a slot is empty, only 6 get updated per frame
+            this list determines where object graphics are placed in VRAM
 
     + $1127 Open Door Count (x2)
 $1129-$1158 Open Door XY positions
@@ -1219,7 +1220,7 @@ $7D07-$7D61 Channel #2: Fixed Color Add/Sub HDMA Table ($2132)
 $7D62-$7DBC Channel #5: Window 2 Position HDMA Table (+$2128)
 $7DBD-$7E17 Channel #6: Main/Sub Screen Designation HDMA Table (+212C)
 $7E18-$7E72 Channel #1: Color Add/Sub Settings HDMA Table (+2130) ****
-$7E73-$7ECC Saved Screen Pixelation/BG Location HDMA Table
+$7E73-$7ECC Saved Screen Pixelation/BG Location HDMA Table (+++$2106)
 $7ECD-$7F26 Saved BG1 Scroll HDMA Table (+$210D)
 $7F27-$7F80 Saved BG2 Scroll HDMA Table (+$210F)
 $7F81-$7FDA Saved BG3 Scroll HDMA Table (+$2111)
@@ -1242,7 +1243,7 @@ $8313-$8532 BG1 Scroll Data for Dialog Window
 $8533-$8572 BG1 Scroll Data for Map Name Dialog Window
 $8573-$85F2 BG3 Scroll Data for Map Name Dialog Window
 $85F3-$8712 BG3 Scroll Data for Dialog Window
-$8713-$8732 BG3 Scroll Data (unused)
+$8713-$8732 BG3 Scroll Data (debug ???)
 $8733-$8752 BG3 Scroll Data for Horizontal Fade Bars (from ending)
 $8753-$8762 Fixed Color Add/Sub Data (default)
 $8763-$87A2 Fixed Color Add/Sub Data for Spotlights (unused)

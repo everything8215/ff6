@@ -1,65 +1,51 @@
 ; ------------------------------------------------------------------------------
 
-.if LANG_EN
-        ZERO_CHAR                       = $b4
-        COLON_CHAR                      = $c1
-        GAUGE_EMPTY_CHAR                = $f0
-        GAUGE_FULL_CHAR                 = $f8
-.else
-        GAUGE_EMPTY_CHAR                = $10
-        GAUGE_FULL_CHAR                 = $18
-        ZERO_CHAR                       = $53
-        COLON_CHAR                      = $cf
-.endif
-
-; ------------------------------------------------------------------------------
-
 .enum MENU_STATE
-      FADE_OUT                          ; = $00 // 0
-      FADE_IN                           ; = $01 // 1
-      WAIT_FADE                         ; = $02 // 2
-      FIELD_MENU_REINIT                 ; = $03 // 3
-      FIELD_MENU_INIT                   ; = $04 // 4
-      FIELD_MENU_SELECT                 ; = $05 // 5
-      FIELD_MENU_CHAR                   ; = $06 // 6
-      ITEM_INIT                         ; = $07 // 7
-      ITEM_SELECT                       ; = $08 // 8
-      SKILLS_INIT                       ; = $09 // 9
-      SKILLS_SELECT                     ; = $0a // 10
-      STATUS_INIT                       ; = $0b // 11
-      STATUS_SELECT                     ; = $0c // 12
-      CONFIG_INIT                       ; = $0d // 13
-      CONFIG_SELECT                     ; = $0e // 14
-      ORDER_SELECT                      ; = $0f // 15
-      ORDER_MOVE                        ; = $10 // 16
-      ORDER_CHANGE                      ; = $11 // 17
-      ORDER_WAIT                        ; = $12 // 18
-      SAVE_INIT                         ; = $13 // 19
-      SAVE_SELECT                       ; = $14 // 20
-      SAVE_CONFIRM_INIT                 ; = $15 // 21
-      SAVE_CONFIRM                      ; = $16 // 22
-      ITEM_OPTIONS                      ; = $17 // 23
-      ITEM_RARE                         ; = $18 // 24
-      ITEM_MOVE                         ; = $19 // 25
-      SKILLS_MAGIC                      ; = $1a // 26
-      SKILLS_LORE                       ; = $1b // 27
-      SKILLS_DANCE                      ; = $1c // 28
-      SKILLS_RAGE                       ; = $1d // 29
-      SKILLS_GENJU                      ; = $1e // 30
-      UNUSED_1F                         ; = $1f // 31
-      LOAD_INIT                         ; = $20 // 32
-      LOAD_SELECT                       ; = $21 // 33
+        FADE_OUT                        ; = $00 // 0
+        FADE_IN                         ; = $01 // 1
+        WAIT_FADE                       ; = $02 // 2
+        FIELD_MENU_REINIT               ; = $03 // 3
+        FIELD_MENU_INIT                 ; = $04 // 4
+        FIELD_MENU_SELECT               ; = $05 // 5
+        FIELD_MENU_CHAR                 ; = $06 // 6
+        ITEM_INIT                       ; = $07 // 7
+        ITEM_SELECT                     ; = $08 // 8
+        SKILLS_INIT                     ; = $09 // 9
+        SKILLS_SELECT                   ; = $0a // 10
+        STATUS_INIT                     ; = $0b // 11
+        STATUS_SELECT                   ; = $0c // 12
+        CONFIG_INIT                     ; = $0d // 13
+        CONFIG_SELECT                   ; = $0e // 14
+        ORDER_SELECT                    ; = $0f // 15
+        ORDER_MOVE                      ; = $10 // 16
+        ORDER_CHANGE                    ; = $11 // 17
+        ORDER_WAIT                      ; = $12 // 18
+        SAVE_INIT                       ; = $13 // 19
+        SAVE_SELECT                     ; = $14 // 20
+        SAVE_CONFIRM_INIT               ; = $15 // 21
+        SAVE_CONFIRM                    ; = $16 // 22
+        ITEM_OPTIONS                    ; = $17 // 23
+        ITEM_RARE                       ; = $18 // 24
+        ITEM_MOVE                       ; = $19 // 25
+        SKILLS_MAGIC                    ; = $1a // 26
+        SKILLS_LORE                     ; = $1b // 27
+        SKILLS_DANCE                    ; = $1c // 28
+        SKILLS_RAGE                     ; = $1d // 29
+        SKILLS_GENJU                    ; = $1e // 30
+        UNUSED_1F                       ; = $1f // 31
+        LOAD_INIT                       ; = $20 // 32
+        LOAD_SELECT                     ; = $21 // 33
 
-      TERMINATE                         = $ff
+        TERMINATE                       = $ff
 .endenum
 
 .enum LIST_TYPE
-      ITEM
-      MAGIC
-      LORE
-      RAGE
-      GENJU
-      EQUIP
+        ITEM
+        MAGIC
+        LORE
+        RAGE
+        GENJU
+        EQUIP
 .endenum
 
 .enum BG1_TEXT_COLOR
@@ -584,13 +570,17 @@ end_ram_scope
         NO_XY_WRAP = BIT_0 | BIT_7
 .endenum
 
-.mac make_cursor_prop init_xy, max_xy, flags
+.mac cursor_prop init_xy, max_xy, flags
         .ifnblank flags
                 opflg .byte, CURSOR_PROP_FLAGS, {flags}
         .else
                 .byte 0
         .endif
         .byte init_xy, max_xy
+.endmac
+
+.mac cursor_pos xy_pos
+        .byte xy_pos
 .endmac
 
 ; ------------------------------------------------------------------------------

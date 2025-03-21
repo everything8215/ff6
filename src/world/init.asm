@@ -15,7 +15,7 @@
 
 .import RNGTbl
 .import World1BGPal, World2BGPal, World1SpritePal, World2SpritePal, World3Pal
-.import EventScript_NoEvent, EventScript_GameOver
+.import EventScript_NoEvent, EventScript_PartyDefeated
 
 ; ------------------------------------------------------------------------------
 
@@ -1790,7 +1790,7 @@ ExitTrain:
 
 ; [ terminate world map (game over) ]
 
-GameOver:
+PartyDefeated:
 @9335:  shorta
         clr_a
         pha
@@ -1805,11 +1805,11 @@ GameOver:
         sta     f:$001f64
         clr_a
         sta     f:$001f65
-        lda     #^EventScript_GameOver
+        lda     #^EventScript_PartyDefeated
         sta     f:$0011ff
         clr_a
         sta     f:$0011fe
-        lda     #<EventScript_GameOver
+        lda     #<EventScript_PartyDefeated
         sta     f:$0011fd
         lda     $11f6       ; disable battle
         and     #$fd

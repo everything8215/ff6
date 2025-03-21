@@ -4,9 +4,9 @@
 .i16
 .segment "field_code"
 
-zFixedColorRate := $4b
-zFixedColorCounter := $4d
-zFixedColorTarget := $54
+        zFixedColorRate := $4b
+        zFixedColorCounter := $4d
+        zFixedColorTarget := $54
 
 ; ------------------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ zFixedColorTarget := $54
 
 .proc UpdateFixedColor
         lda     zFixedColorRate
-        bpl     dec_fixed_color
+        bpl     DecFixedColor
         and     #$7f
         clc
         adc     zFixedColorCounter      ; add speed to current intensity
@@ -59,42 +59,42 @@ zFixedColorTarget := $54
         and     #$1f
         asl3
         cmp     zFixedColorCounter
-        bcs     set_color
+        bcs     SetColor
         lda     zFixedColorCounter      ; clear lower 3 bits (target intensity reached)
         and     #$f8
         sta     zFixedColorCounter
-        jmp     set_color
+        jmp     SetColor
 
-dec_fixed_color:
+DecFixedColor:
         lda     zFixedColorCounter
-        beq     restore_color
+        beq     RestoreColor
         sec
         sbc     zFixedColorRate         ; subtract speed from current intensity
         sta     zFixedColorCounter
-        bra     set_color
+        bra     SetColor
 
-restore_color:
+RestoreColor:
         lda     $4f
         sta     $4e
         lda     $53
         sta     $52
         stz     zFixedColorRate
 
-set_color:
+SetColor:
         lda     zFixedColorCounter
         lsr3
         sta     $0e
-        beq     default_color
+        beq     UseDefaultColor
         lda     zFixedColorTarget
         and     #FIXED_CLR::MASK
-        beq     default_color
+        beq     UseDefaultColor
         ora     $0e
-        bra     set_hdma
+        bra     SetHDMA
 
-default_color:
+UseDefaultColor:
         lda     #FIXED_CLR::WHITE       ; default value
 
-set_hdma:
+SetHDMA:
         sta     $7e8753                 ; set fixed color hdma data ($2132)
         sta     $7e8755
         sta     $7e8757
@@ -191,7 +191,7 @@ FixedColorRateTbl:
         plb
         shorti
         ldy     $df                     ; first color
-loop:   lda     $7400,y                 ; red component (active color palette)
+Loop:   lda     $7400,y                 ; red component (active color palette)
         and     #$1f
         cmp     $1a                     ; branch if greater than red constant
         bcs     :+
@@ -214,7 +214,7 @@ loop:   lda     $7400,y                 ; red component (active color palette)
         shorta0                         ; next color
         iny2
         cpy     $e0                     ; end of color range
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -232,7 +232,7 @@ loop:   lda     $7400,y                 ; red component (active color palette)
         plb
         shorti
         ldy     $df
-loop:   lda     $7200,y                   ; unmodified red component
+Loop:   lda     $7200,y                   ; unmodified red component
         and     #$1f
         sta     $1a
         lda     $7400,y                   ; active red component
@@ -264,7 +264,7 @@ loop:   lda     $7200,y                   ; unmodified red component
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -286,7 +286,7 @@ loop:   lda     $7200,y                   ; unmodified red component
         plb
         shorti
         ldy     $df
-loop:   lda     $7400,y
+Loop:   lda     $7400,y
         and     #$1f
         cmp     $1a
         beq     :+
@@ -312,7 +312,7 @@ loop:   lda     $7400,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -330,7 +330,7 @@ loop:   lda     $7400,y
         plb
         shorti
         ldy     $df
-loop:   lda     $7200,y
+Loop:   lda     $7200,y
         and     #$1f
         sta     $1a
         lda     $7400,y
@@ -362,7 +362,7 @@ loop:   lda     $7200,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -386,7 +386,7 @@ loop:   lda     $7200,y
         plb
         shorti
         ldy     $df
-loop:   lda     $7400,y
+Loop:   lda     $7400,y
         and     #$1f
         clc
         adc     $1a
@@ -415,7 +415,7 @@ loop:   lda     $7400,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -447,7 +447,7 @@ loop:   lda     $7400,y
         plb
         shorti
         ldy     $df
-loop:   lda     $7400,y
+Loop:   lda     $7400,y
         and     #$1f
         sec
         sbc     $1a
@@ -473,7 +473,7 @@ loop:   lda     $7400,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -492,7 +492,7 @@ loop:   lda     $7400,y
         longa
         shorti
         ldx     $00
-loop:   lda     $7200,x     ; copy unmodified palette to active palette
+Loop:   lda     $7200,x     ; copy unmodified palette to active palette
         sta     $7400,x
         lda     $7202,x
         sta     $7402,x
@@ -512,7 +512,7 @@ loop:   lda     $7200,x     ; copy unmodified palette to active palette
         clc
         adc     #$0010
         tax
-        bne     loop
+        bne     Loop
         shorta0
         longi
         clr_a
@@ -537,7 +537,7 @@ loop:   lda     $7200,x     ; copy unmodified palette to active palette
         plb
         shorti
         ldy     $df
-loop:   lda     $7500,y
+Loop:   lda     $7500,y
         and     #$1f
         cmp     $1a
         bcs     :+
@@ -560,7 +560,7 @@ loop:   lda     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -581,7 +581,7 @@ loop:   lda     $7500,y
         plb
         shorti
         ldy     $df
-loop:   lda     $7300,y
+Loop:   lda     $7300,y
         and     #$1f
         sta     $1a
         lda     $7500,y
@@ -613,7 +613,7 @@ loop:   lda     $7300,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -637,7 +637,7 @@ loop:   lda     $7300,y
         plb
         shorti
         ldy     $df
-loop:   lda     $7500,y
+Loop:   lda     $7500,y
         and     #$1f
         cmp     $1a
         beq     :+
@@ -663,7 +663,7 @@ loop:   lda     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -684,7 +684,7 @@ loop:   lda     $7500,y
         plb
         shorti
         ldy     $df
-loop:   lda     $7300,y
+Loop:   lda     $7300,y
         and     #$1f
         sta     $1a
         lda     $7500,y
@@ -716,7 +716,7 @@ loop:   lda     $7300,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -743,7 +743,7 @@ loop:   lda     $7300,y
         plb
         shorti
         ldy     $df
-loop:   lda     $7500,y
+Loop:   lda     $7500,y
         and     #$1f
         clc
         adc     $1a
@@ -772,7 +772,7 @@ loop:   lda     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -806,7 +806,7 @@ loop:   lda     $7500,y
         plb
         shorti
         ldy     $df
-loop:   lda     $7500,y
+Loop:   lda     $7500,y
         and     #$1f
         sec
         sbc     $1a
@@ -832,7 +832,7 @@ loop:   lda     $7500,y
         shorta0
         iny2
         cpy     $e0
-        bne     loop
+        bne     Loop
         longi
         clr_a
         pha
@@ -851,7 +851,7 @@ loop:   lda     $7500,y
         longa
         shorti
         ldx     $00
-loop:   lda     $7300,x
+Loop:   lda     $7300,x
         sta     $7500,x
         lda     $7302,x
         sta     $7502,x
@@ -871,7 +871,7 @@ loop:   lda     $7300,x
         clc
         adc     #$0010
         tax
-        bne     loop
+        bne     Loop
         shorta0
         longi
         clr_a

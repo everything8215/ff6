@@ -34,7 +34,7 @@
         nop3
         ldx     hRDMPYL
         ldy     $00
-loop:   lda     f:MapPalAnimProp,x
+Loop:   lda     f:MapPalAnimProp,x
         sta     $10ea,y
         lda     f:MapPalAnimProp+1,x
         sta     $10e8,y
@@ -59,7 +59,7 @@ loop:   lda     f:MapPalAnimProp,x
         adc     #8
         tay
         cmp     #16
-        bne     loop
+        bne     Loop
         rts
 .endproc  ; InitPalAnim
 
@@ -69,10 +69,10 @@ loop:   lda     f:MapPalAnimProp,x
 
 .proc UpdatePalAnim
         lda     $053a                   ; palette animation index
-        beq     done
+        beq     Done
         ldy     $00
-loop:   lda     $10ea,y                 ; palette animation type
-        bmi     skip
+Loop:   lda     $10ea,y                 ; palette animation type
+        bmi     Skip
         and     #$f0
         lsr4
 
@@ -80,17 +80,17 @@ loop:   lda     $10ea,y                 ; palette animation type
         bne     :+
         jsr     IncPalAnimCounter
         cmp     #0
-        bne     skip                    ; branch if no reset
-        jmp     skip                    ; branch anyway
+        bne     Skip                    ; branch if no reset
+        jmp     Skip                    ; branch anyway
 
 ; 1 (cycle)
 :       dec
         bne     :+
         jsr     IncPalAnimCounter
         cmp     #0
-        bne     skip
+        bne     Skip
         jsr     UpdatePalAnimCycle
-        jmp     skip
+        jmp     Skip
 
 ; 2 (rom)
 :       dec
@@ -99,23 +99,23 @@ loop:   lda     $10ea,y                 ; palette animation type
         phy
         jsr     LoadPalAnimColors
         ply
-        jmp     skip
+        jmp     Skip
 
 ; 3 (pulse)
 :       dec
-        bne     skip
+        bne     Skip
         jsr     IncPalAnimCounter
         phy
         jsr     UpdatePalAnimPulse
         ply
 
-skip:   tya
+Skip:   tya
         clc
         adc     #8
         tay
         cmp     #16
-        jne     loop
-done:   rts
+        jne     Loop
+Done:   rts
 .endproc  ; UpdatePalAnim
 
 ; ------------------------------------------------------------------------------
@@ -127,7 +127,7 @@ done:   rts
         inc
         sta     $10e7,y
         cmp     $10e8,y
-        bne     no_reset
+        bne     NoReset
         lda     #$00
         sta     $10e7,y
         lda     $10e9,y                 ; increment color counter
@@ -136,12 +136,12 @@ done:   rts
         lda     $10ea,y
         and     #$0f
         cmp     $10e9,y
-        bne     no_reset
+        bne     NoReset
         clr_a                           ; return 0 for reset
         sta     $10e9,y
         rts
 
-no_reset:
+NoReset:
         lda     #1                      ; return 1 for no reset
         rts
 .endproc
@@ -166,7 +166,7 @@ PalAnimPulseTbl:
         lda     $10ec,y
         inc2
         tay
-loop:   lda     $7e7200,x
+Loop:   lda     $7e7200,x
         and     #$1f
         sta     hWRMPYB
         nop3
@@ -196,7 +196,7 @@ loop:   lda     $7e7200,x
         shorta0
         inx2
         dey2
-        bne     loop
+        bne     Loop
         rts
 .endproc  ; UpdatePalAnimPulse
 
@@ -294,7 +294,7 @@ loop:   lda     $7e7200,x
         tax
         shorta0
         ldy     $00
-loop1:  lda     #$e6
+Loop1:  lda     #$e6
         sta     $106d,y                 ; graphics bank = $e6
         longa_clc
         clr_a
@@ -317,7 +317,7 @@ loop1:  lda     #$e6
         tay
         shorta0
         cpy     #13*8
-        bne     loop1
+        bne     Loop1
         lda     #$10                    ; $1a = tile counter (16 tiles, last 8 don't get animated)
         sta     $1a
         ldy     #$9f00                  ; destination address = $7e9f00
@@ -332,7 +332,7 @@ loop1:  lda     #$e6
         lda     f:MapBGAnimPropPtrs,x
         tay
         shorta0
-loop2:  tyx
+Loop2:  tyx
         longa_clc
         lda     f:MapBGAnimProp::Frame1,x
         tax
@@ -351,7 +351,7 @@ loop2:  tyx
         tay
         shorta0
         dec     $1a
-        bne     loop2
+        bne     Loop2
         stz     hHDMAEN                 ; dma graphics to vram
         stz     hMDMAEN
         lda     #$80
@@ -359,17 +359,17 @@ loop2:  tyx
         ldx     #$2800                  ; destination = $2800 vram
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$9f00                  ; source = $7e9f00
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
-        sta     $4307
+        sta     hDMA0::ADDR_B
+        sta     hDMA0::HDMA_B
         ldx     #$0800                  ; size = $0800
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         stz     hMDMAEN
         rts
@@ -460,7 +460,7 @@ loop2:  tyx
 
 .proc TfrBGAnimGfx
         lda     $053b
-        bne     do_tfr
+        bne     DoTfr
 
 ; no animation graphics, wait a few cycles then return
         ldx     #8
@@ -470,136 +470,41 @@ loop2:  tyx
         sta     hINIDISP
         rts
 
-do_tfr: stz     hMDMAEN
+DoTfr:
+        stz     hMDMAEN
         lda     #$80
         sta     hVMAINC
         ldx     #$2800
         stx     hVMADDL
         lda     #$41
-        sta     $4300
-        lda     #$18
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
         ldx     #$1000                  ; nonzero dp, don't use clr_a
         phx
         pld
         shorti
         longa_clc
-        ldy     #$01
+        ldy     #BIT_0
         nop5
         ldx     #$80
         stx     hINIDISP
-        lda     $69
+        .repeat 8, i
+        lda     $69 + i * 13
         clc
-        adc     $6b
-        sta     $69
+        adc     $6b + i * 13
+        sta     $69 + i * 13
         and     #$0600
         xba
         tax
-        lda     $6e,x                   ; graphics pointer
-        sta     $4302
-        ldx     $6d                     ; graphics bank
-        stx     $4304
+        lda     $6e + i * 13,x          ; graphics pointer
+        sta     hDMA0::ADDR
+        ldx     $6d + i * 13            ; graphics bank
+        stx     hDMA0::ADDR_B
         ldx     #$80
-        stx     $4305
+        stx     hDMA0::SIZE
         sty     hMDMAEN
-        lda     $76
-        clc
-        adc     $78
-        sta     $76
-        and     #$0600
-        xba
-        tax
-        lda     $7b,x
-        sta     $4302
-        ldx     $7a
-        stx     $4304
-        ldx     #$80
-        stx     $4305
-        sty     hMDMAEN
-        lda     $83
-        clc
-        adc     $85
-        sta     $83
-        and     #$0600
-        xba
-        tax
-        lda     $88,x
-        sta     $4302
-        ldx     $87
-        stx     $4304
-        ldx     #$80
-        stx     $4305
-        sty     hMDMAEN
-        lda     $90
-        clc
-        adc     $92
-        sta     $90
-        and     #$0600
-        xba
-        tax
-        lda     $95,x
-        sta     $4302
-        ldx     $94
-        stx     $4304
-        ldx     #$80
-        stx     $4305
-        sty     hMDMAEN
-        lda     $9d
-        clc
-        adc     $9f
-        sta     $9d
-        and     #$0600
-        xba
-        tax
-        lda     $a2,x
-        sta     $4302
-        ldx     $a1
-        stx     $4304
-        ldx     #$80
-        stx     $4305
-        sty     hMDMAEN
-        lda     $aa
-        clc
-        adc     $ac
-        sta     $aa
-        and     #$0600
-        xba
-        tax
-        lda     $af,x
-        sta     $4302
-        ldx     $ae
-        stx     $4304
-        ldx     #$80
-        stx     $4305
-        sty     hMDMAEN
-        lda     $b7
-        clc
-        adc     $b9
-        sta     $b7
-        and     #$0600
-        xba
-        tax
-        lda     $bc,x
-        sta     $4302
-        ldx     $bb
-        stx     $4304
-        ldx     #$80
-        stx     $4305
-        sty     hMDMAEN
-        lda     $c4
-        clc
-        adc     $c6
-        sta     $c4
-        and     #$0600
-        xba
-        tax
-        lda     $c9,x
-        sta     $4302
-        ldx     $c8
-        stx     $4304
-        ldx     #$80
-        stx     $4305
-        sty     hMDMAEN
+        .endrep
         shorta
         longi
         ldx     #$0000
@@ -622,20 +527,20 @@ do_tfr: stz     hMDMAEN
         ldx     #$3000
         stx     hVMADDL                 ; destination = $3000 (vram)
         lda     #$41
-        sta     $4300                   ; dma settings
-        lda     #$18
-        sta     $4301                   ; dma to $2118 (vram)
-        ldx     #$0005
+        sta     hDMA0::CTRL             ; dma settings
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG             ; dma to $2118 (vram)
+        ldx     #5
 :       dex
         bne     :-                      ; wait
         lda     #$80
         sta     hINIDISP                ; screen off
         lda     $053b                   ; bg3 animation index
         and     #$e0
-        beq     done                    ; return if bg3 animation is disabled
+        beq     Done                    ; return if bg3 animation is disabled
         longa_clc
         lda     $10d5                   ; size
-        sta     $4305
+        sta     hDMA0::SIZE
         lda     $10d1                   ; add animation speed to animation counter
         adc     $10d3
         sta     $10d1
@@ -646,13 +551,13 @@ do_tfr: stz     hMDMAEN
         longa_clc
         lda     $10d7,x                 ; frame pointer
         adc     #$bf00
-        sta     $4302
+        sta     hDMA0::ADDR
         shorta0
         lda     #$7e
-        sta     $4304
-        lda     #$01                    ; enable dma
+        sta     hDMA0::ADDR_B
+        lda     #BIT_0                  ; enable dma
         sta     hMDMAEN
-done:   rts
+Done:   rts
 .endproc  ; TfrBG3AnimGfx
 
 ; ------------------------------------------------------------------------------

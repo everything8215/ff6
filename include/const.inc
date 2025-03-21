@@ -24,9 +24,9 @@ CONST_INC = 1
         .endif
 .endmacro
 
-def_config ROM_VERSION,0
-def_config DEBUG,0
-def_config LANG_EN,0
+def_config ROM_VERSION, 0
+def_config DEBUG, 0
+def_config LANG_EN, 0
 .if (LANG_EN && ROM_VERSION)
         LANG_EN_REV1 = 1
 .else
@@ -728,7 +728,7 @@ MAX_EXPERIENCE                          = 15000000
         FIRE_BEAM                       ;= $83  ; 131
         BOLT_BEAM                       ;= $84  ; 132
         ICE_BEAM                        ;= $85  ; 133
-        BIO_BLAST                       ;= $86  ; 134
+        BIO_BLAST_MAGITEK               ;= $86  ; 134
         HEAL_FORCE                      ;= $87  ; 135
         CONFUSER                        ;= $88  ; 136
         XFER                            ;= $89  ; 137
@@ -1392,20 +1392,20 @@ MAX_EXPERIENCE                          = 15000000
 
 ; character run factor values
 .enum CHAR_RUN_FACTOR
-        MASK                            = $03
         HIGH                            = $00  ; 125%
         NORMAL                          = $01  ; 100%
         LOW                             = $02  ; 75%
         VERY_LOW                        = $03  ; 50%
+        MASK                            = $03
 .endenum
 
 ; character level modifiers (see CharLevelModTbl)
 .enum CHAR_LEVEL_MOD
-        MASK                            = $0c
         NORMAL                          = $00  ; +0
         HIGH                            = $04  ; +2
         VERY_HIGH                       = $08  ; +5
         LOW                             = $0c  ; -3
+        MASK                            = $0c
 .endenum
 
 ; character fixed equipment flag
@@ -1414,20 +1414,20 @@ CHAR_PROP_FIXED_EQUIP                   = $10
 ; ------------------------------------------------------------------------------
 
 .enum CHAR_FLAG
-        TERRA                           = $0001
-        LOCKE                           = $0002
-        CYAN                            = $0004
-        SHADOW                          = $0008
-        EDGAR                           = $0010
-        SABIN                           = $0020
-        CELES                           = $0040
-        STRAGO                          = $0080
-        RELM                            = $0100
-        SETZER                          = $0200
-        MOG                             = $0400
-        GAU                             = $0800
-        GOGO                            = $1000
-        UMARO                           = $2000
+        TERRA                           = BIT_0
+        LOCKE                           = BIT_1
+        CYAN                            = BIT_2
+        SHADOW                          = BIT_3
+        EDGAR                           = BIT_4
+        SABIN                           = BIT_5
+        CELES                           = BIT_6
+        STRAGO                          = BIT_7
+        RELM                            = BIT_8
+        SETZER                          = BIT_9
+        MOG                             = BIT_10
+        GAU                             = BIT_11
+        GOGO                            = BIT_12
+        UMARO                           = BIT_13
 .endenum
 
 ; ------------------------------------------------------------------------------
