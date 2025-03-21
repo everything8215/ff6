@@ -179,9 +179,6 @@ class AssetExtractor:
         # extract the text from the ROM
         asset_bytes, item_ranges = self.extract_object(asset_range, **kwargs)
 
-        # write data file
-        self.write_asset_file(asset_bytes, dat_path)
-
         # update include file
         rt.update_array_inc(asset_bytes, item_ranges, **asset_def)
 
@@ -200,6 +197,9 @@ class AssetExtractor:
         asset_json = json.dumps(asset_def, ensure_ascii=False, indent=2)
         with open(json_path, 'w', encoding='utf8') as f:
             f.write(asset_json)
+
+        # write data file
+        self.write_asset_file(asset_bytes, dat_path)
 
     def extract_array(self, file_path, asset_range, **kwargs):
 

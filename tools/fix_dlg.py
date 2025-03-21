@@ -138,14 +138,14 @@ if __name__ == '__main__':
 
         combine_dlg(dlg1_def, dlg2_def)
 
-        # encoded dialogue data does not need to be updated after combining
-        os.utime(dlg1_dat_path)
-        os.utime(dlg2_dat_path)
-
         # save both dialogue json files
         with open(dlg1_path, 'w', encoding='utf8') as dlg1_file, open(dlg2_path, 'w', encoding='utf8') as dlg2_file:
             dlg1_file.write(json.dumps(dlg1_def, ensure_ascii=False, indent=2))
             dlg2_file.write(json.dumps(dlg2_def, ensure_ascii=False, indent=2))
+
+        # encoded dialogue data does not need to be updated after combining
+        os.utime(dlg1_dat_path)
+        os.utime(dlg2_dat_path)
 
     elif dlg_cmd == 'dte':
         optimize_dte(dlg1_def)
