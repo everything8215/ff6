@@ -8,6 +8,6 @@
 
 ; c0/fd00
 RNGTbl:
-        .incbin "rng_tbl.dat"
+        .incbin "assets/data/field/rng_tbl.bin"
 
 ; ------------------------------------------------------------------------------

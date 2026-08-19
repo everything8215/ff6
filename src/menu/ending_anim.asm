@@ -3190,7 +3190,7 @@ CharGfxVRAMAddr:
 
 ; ------------------------------------------------------------------------------
 
-.include "gfx/map_sprite_gfx.inc"
+.include "src/gfx/map_sprite_gfx.inc"
 
 ; pointers to character graphics
 MenuCharGfxPtrs:

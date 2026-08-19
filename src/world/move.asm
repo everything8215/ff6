@@ -11,7 +11,8 @@
 ; | created: 5/12/2023                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "event/event_trigger.inc"
+.include "src/sound/sfx.inc"
+.include "src/event/event_trigger.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -185,7 +186,7 @@ VehicleBattleEffect:
         shorta
         lda     #$80                    ; play battle sound effect
         sta     hAPUIO2
-        lda     #$c1
+        lda     #SFX::BATTLE_SFX
         sta     hAPUIO1
         lda     #$18
         sta     hAPUIO0
@@ -410,13 +411,13 @@ MoveVehicle:
         bit     #$04
         beq     @1a27       ; branch if serpent trench arrows are not shown
         lda     $05
-        bit     #$01
+        bit     #>JOY_RIGHT
         beq     @1a1b       ; branch if right direction is not pressed
         lda     $1eb6
         and     #$7f
         sta     $1eb6       ; set serpent trench arrow direction
         bra     @1a27
-@1a1b:  bit     #$02
+@1a1b:  bit     #>JOY_LEFT
         beq     @1a27       ; branch if left direction is not pressed
         lda     $1eb6
         ora     #$80
@@ -939,7 +940,7 @@ MovePlayer:
         sta     $ff
         lda     #$80                    ; play poison sound effect
         sta     hAPUIO2
-        lda     #$ec
+        lda     #SFX::POISON_DMG
         sta     hAPUIO1
         lda     #$18
         sta     hAPUIO0
@@ -999,7 +1000,7 @@ GetPlayerInput:
         and     #$ff7f
         sta     $e7
         lda     $04
-        bit     #$0100
+        bit     #JOY_RIGHT
         beq     @1f0d
         shortai
         lda     #$01
@@ -1031,7 +1032,7 @@ GetPlayerInput:
         jsr     IncSteps
         longa
 @1f0a:  jmp     @1ff3
-@1f0d:  bit     #$0200
+@1f0d:  bit     #JOY_LEFT
         beq     @1f5b
         shortai
         lda     #$03
@@ -1063,7 +1064,7 @@ GetPlayerInput:
         jsr     IncSteps
         longa
 @1f58:  jmp     @1ff3
-@1f5b:  bit     #$0400
+@1f5b:  bit     #JOY_DOWN
         beq     @1fa8
         shortai
         lda     #$02
@@ -1095,7 +1096,7 @@ GetPlayerInput:
         jsr     IncSteps
         longa
 @1fa6:  bra     @1ff3
-@1fa8:  bit     #$0800
+@1fa8:  bit     #JOY_UP
         beq     @1ff3
         shortai
         lda     #$00
@@ -1139,7 +1140,7 @@ GetPlayerInput:
         bit     #$10
         bne     @201f
         lda     $08                     ; check X button
-        bit     #$40
+        bit     #JOY_X
         beq     @201f
         lda     $e8                     ; open menu
         ora     #$01
@@ -1149,10 +1150,10 @@ GetPlayerInput:
         sta     $11f6
 @201f:  longa
         lda     $32
-        bit     #$0010
+        bit     #>JOY_START
         bne     @204e
         lda     $05
-        bit     #$0010
+        bit     #>JOY_START
         beq     @204e
         lda     $11f6
         bit     #$0001
@@ -1180,7 +1181,7 @@ GetPlayerInput:
         bit     #$02
         beq     @20b1
         lda     $08
-        bit     #$80
+        bit     #JOY_A
         beq     @20b1
         lda     $e0
         cmp     $1f62
@@ -1403,7 +1404,7 @@ BattleZoom:
         longi
         lda     #$80                    ; battle sound effect
         sta     hAPUIO2
-        lda     #$c1
+        lda     #SFX::BATTLE_SFX
         sta     hAPUIO1
         lda     #$18
         sta     hAPUIO0

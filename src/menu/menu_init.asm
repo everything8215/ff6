@@ -14,7 +14,7 @@ InitRAM:
 ; [ clear bg scrolling registers ]
 
 ClearBGScroll:
-@6904:  ldy     z0
+@6904:  ldy     zZero
         sty     zBG1HScroll
         sty     zBG2HScroll
         sty     zBG3HScroll
@@ -42,7 +42,7 @@ InitCharProp:
         lda     $1850,x     ; battle order
         pha
         and     #$18
-        sta     $e0
+        sta     ze0
         lsr3
         tay
         pla
@@ -52,7 +52,7 @@ InitCharProp:
 @6941:  inx                 ; next character
         cpx     #16
         bne     @691c
-        ldy     z0
+        ldy     zZero
 @6949:  clr_a
         lda     zCharID,y
         cmp     #$ff
@@ -92,12 +92,12 @@ _c36989:
         tay
         lda     zCharRowOrder,x
         and     #%11100111
-        sta     $e0
+        sta     ze0
         clr_a
         txa
         asl3
         clc
-        adc     $e0
+        adc     ze0
         sta     $1850,y
 @69a2:  inx
         cpx     #4
@@ -110,9 +110,9 @@ _c36989:
 
 _c369a9:
 @69a9:  longa
-        lda     zCharID::Slot1          ; characters in slots 1-2
+        lda     zCharID::_0          ; characters in slots 1-2
         sta     $7eaa89
-        lda     zCharID::Slot3          ; characters in slots 3-4
+        lda     zCharID::_2          ; characters in slots 3-4
         sta     $7eaa8b
         shorta
         rts
@@ -125,22 +125,22 @@ _c369a9:
 ; +y: length of list
 
 DrawPosList:
-@69ba:  stx     $f1
-        sty     $ef
+@69ba:  stx     zf1
+        sty     zef
         lda     #^*
-        sta     $f3
-        ldy     z0
+        sta     zf3
+        ldy     zZero
 @69c4:  longa
-        lda     [$f1],y
-        sta     $e7
+        lda     [zf1],y
+        sta     ze7
         phy
         shorta
         lda     #^*
-        sta     $e9
+        sta     ze9
         jsr     DrawPosTextFar
         ply
         iny2
-        cpy     $ef
+        cpy     zef
         bne     @69c4
         rts
 
@@ -158,22 +158,22 @@ DrawPosKanaList := DrawPosList
 .else
 
 .proc DrawPosKanaList
-        stx     $f1
-        sty     $ef
+        stx     zf1
+        sty     zef
         lda     #^*
-        sta     $f3
-        ldy     z0
+        sta     zf3
+        ldy     zZero
 loop:   longa
-        lda     [$f1],y
-        sta     $e7
+        lda     [zf1],y
+        sta     ze7
         phy
         shorta
         lda     #^*
-        sta     $e9
+        sta     ze9
         jsr     DrawPosKanaFar
         ply
         iny2
-        cpy     $ef
+        cpy     zef
         bne     loop
         rts
 .endproc  ; DrawPosKanaList
@@ -226,7 +226,7 @@ DisableWindow1PosHDMA:
 ; [ clear bg tiles ]
 
 ClearBG1ScreenA:
-@6a15:  ldx     z0                      ; clear bg1 data (top left screen)
+@6a15:  ldx     zZero                      ; clear bg1 data (top left screen)
         bra     ClearBGTiles
 
 ClearBG1ScreenB:

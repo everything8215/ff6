@@ -11,13 +11,15 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-inc_lang "text/item_desc_%s.inc"
-inc_lang "text/item_name_%s.inc"
+.include "src/text/item_desc.inc"
+.include "src/text/item_name.inc"
 .if LANG_EN
-inc_lang "text/item_type_name_%s.inc"
+.include "src/text/item_symbol_name.inc"
 .endif
-inc_lang "text/rare_item_desc_%s.inc"
-inc_lang "text/rare_item_name_%s.inc"
+.include "src/text/rare_item_desc.inc"
+.include "src/text/rare_item_name.inc"
+
+.import ItemProp
 
 .segment "menu_code"
 
@@ -135,7 +137,7 @@ UpdateItemOptionCursor:
 @7d8c:  jsr     MoveCursor
         jsr     InitItemOptionCursor
         ldy     z4d
-        sty     w0234
+        sty     r0234
         rts
 
 ; ------------------------------------------------------------------------------
@@ -208,36 +210,40 @@ InitItemListText:
 
 ; ------------------------------------------------------------------------------
 
-ItemTitleWindow:                        make_window BG2A, {1, 1}, {4, 2}
-ItemOptionsWindow:                      make_window BG2A, {7, 1}, {22, 2}
-ItemDescWindow:                         make_window BG2A, {1, 5}, {28, 3}
-ItemListWindow:                         make_window BG2A, {1, 10}, {28, 15}
-ItemDetailsWindow1:                     make_window BG2B, {18, 1}, {13, 24}
-ItemDetailsWindow2:                     make_window BG2A, {30, 0}, {1, 24}
+ItemTitleWindow:                        window_pos BG2A, {1, 1}, {4, 2}
+ItemOptionsWindow:                      window_pos BG2A, {7, 1}, {22, 2}
+ItemDescWindow:                         window_pos BG2A, {1, 5}, {28, 3}
+ItemListWindow:                         window_pos BG2A, {1, 10}, {28, 15}
+ItemDetailsWindow1:                     window_pos BG2B, {18, 1}, {13, 24}
+ItemDetailsWindow2:                     window_pos BG2A, {30, 0}, {1, 24}
 
 ; ------------------------------------------------------------------------------
 
 ; [ init bg scrolling hdma (item list) ]
 
 InitItemBGScrollHDMA:
+
+; bg3 vertical scroll
 @7e2b:  lda     #$02
         sta     hDMA5::CTRL
         lda     #<hBG3VOFS
         sta     hDMA5::HREG
-        ldy     #near ItemBG1HScrollHDMATbl
+        ldy     #near ItemBG3VScrollHDMATbl
         sty     hDMA5::ADDR
-        lda     #^ItemBG1HScrollHDMATbl
+        lda     #^ItemBG3VScrollHDMATbl
         sta     hDMA5::ADDR_B
-        lda     #^ItemBG1HScrollHDMATbl
+        lda     #^ItemBG3VScrollHDMATbl
         sta     hDMA5::HDMA_B
         lda     #BIT_5
         tsb     zEnableHDMA
+
+; bg1 horizontal and vertical scroll
         jsr     LoadItemBG1VScrollHDMATbl
-        ldx     z0
-@7e4e:  lda     f:ItemBG3VScrollHDMATbl,x
+        ldx     zZero
+@7e4e:  lda     f:ItemBG1HScrollHDMATbl,x
         sta     $7e9a09,x
         inx
-        cpx     #sizeof_ItemBG3VScrollHDMATbl
+        cpx     #sizeof_ItemBG1HScrollHDMATbl
         bne     @7e4e
         lda     #$02
         sta     hDMA6::CTRL
@@ -268,7 +274,7 @@ InitItemBGScrollHDMA:
 ; [ load bg1 vertical scroll hdma table (item list) ]
 
 LoadItemBG1VScrollHDMATbl:
-@7e95:  ldx     z0
+@7e95:  ldx     zZero
 @7e97:  lda     f:ItemBG1VScrollHDMATbl,x
         sta     $7e9849,x
         inx
@@ -298,14 +304,14 @@ LoadItemBG1VScrollHDMATbl:
 
 ; ------------------------------------------------------------------------------
 
-; bg3 vertical scroll hdma table (item list)
-ItemBG3VScrollHDMATbl:
+; bg1 horizontal scroll hdma table (item list)
+ItemBG1HScrollHDMATbl:
         hdma_word 40, $0100
         hdma_word 47, $0100
         hdma_word 120, $0000
         hdma_word 30, $0100
         hdma_end
-        calc_size ItemBG3VScrollHDMATbl
+        calc_size ItemBG1HScrollHDMATbl
 
 ; ------------------------------------------------------------------------------
 
@@ -352,8 +358,9 @@ ItemBG1VScrollHDMATbl:
 
 ; ------------------------------------------------------------------------------
 
-; bg1 horizontal scroll hdma table (item list)
-ItemBG1HScrollHDMATbl:
+; bg3 vertical scroll hdma table (item list)
+
+ItemBG3VScrollHDMATbl:
         hdma_word 47, 0
         hdma_word 12, 4
         hdma_word 12, 8
@@ -401,8 +408,8 @@ DrawItemList:
 ; $e5 = position in inventory
 ; $e6 = vertical position on screen
 
-make_jump_label UpdateListText, LIST_TYPE::ITEM
-DrawItemListRow:
+        array_label UPDATE_LIST_TEXT, LIST_TYPE::ITEM
+        DrawItemListRow:
 @7fa1:  clr_a
         lda     ze5                     ; position in inventory
         tay
@@ -436,12 +443,12 @@ DrawItemListRow:
 
 .if LANG_EN
 
-        jmp     LoadItemTypeName
+        jmp     LoadItemSymbolName
 
 .else
 
         clr_a
-        lda     $e5
+        lda     ze5
         tay
         iny
         jsr     GetItemNameColor
@@ -486,7 +493,7 @@ DrawPosTextBuf:
 
 ; [ load item symbol name text ]
 
-LoadItemTypeName:
+LoadItemSymbolName:
 @7fe6:  longa
         lda     $7e9e89                 ; skip 18 tiles
         clc
@@ -510,8 +517,8 @@ LoadItemTypeName:
         tax
         ldy     #$9e8b
         sty     hWMADDL
-        ldy     #ItemTypeName::ITEM_SIZE
-@801a:  lda     f:ItemTypeName,x
+        ldy     #ITEM_SYMBOL_NAME::ITEM_SIZE
+@801a:  lda     f:ItemSymbolName,x
         sta     hWMDATA
         inx
         dey
@@ -523,7 +530,7 @@ LoadItemTypeName:
 ; no type, copy 7 spaces
 @802c:  ldy     #$9e8b
         sty     hWMADDL
-        ldy     #ItemTypeName::ITEM_SIZE
+        ldy     #ITEM_SYMBOL_NAME::ITEM_SIZE
         lda     #$ff
 @8037:  sta     hWMDATA
         inx
@@ -540,14 +547,14 @@ LoadItemTypeName:
 ; [ update item text color ]
 
 GetItemNameColor:
-@8045:  lda     w0200       ; menu mode
-        cmp     #$03
+@8045:  lda     r0200       ; menu mode
+        cmp     #MENU_TYPE::SHOP
         beq     @8085       ; branch if shop
-        cmp     #$07
+        cmp     #MENU_TYPE::COLOSSEUM
         beq     @8085       ; branch if colosseum
         bra     @8056
         clr_a
-        lda     $4b
+        lda     z4b
         tay
 @8056:  lda     $1869,y     ; item number
         cmp     #ITEM::MEGALIXIR
@@ -577,12 +584,12 @@ GetItemNameColor:
         rts
 
 ; tent/sleeping bag
-@808f:  lda     w0201
+@808f:  lda     r0201
         bmi     @8085       ; white text if on a save point
         bra     @808a       ; gray text if not
 
 ; warp stone
-@8096:  lda     w0201
+@8096:  lda     r0201
         bit     #$02
         bne     @8085       ; white text if warp is enabled
         bra     @808a       ; gray text if warp is enabled
@@ -596,15 +603,15 @@ GetItemNameColor:
 
 GetBG1TilemapPtr:
 @809f:  xba
-        lda     z0
+        lda     zZero
         xba
         longa
         asl6
-        sta     $e7
+        sta     ze7
         txa
         asl
         clc
-        adc     $e7
+        adc     ze7
         adc     #near wBG1Tiles::ScreenA
         tax
         shorta
@@ -622,17 +629,17 @@ LoadListItemName:
         beq     @80bf
         clr_a
         lda     $1869,y                 ; item number
-        cmp     #$ff                    ; branch if empty
+        cmp     #ITEM::EMPTY
         beq     _80f6
 
 _c380ce:
 @80ce:  sta     hM7A                    ; multiply by 13 to get pointer to item name
         stz     hM7A
-        lda     #ItemName::ITEM_SIZE
+        lda     #ITEM_NAME::ITEM_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #ItemName::ITEM_SIZE
+        ldy     #ITEM_NAME::ITEM_SIZE
 @80e2:  lda     f:ItemName,x            ; item name
         sta     hWMDATA
         inx
@@ -643,7 +650,7 @@ _c380ce:
         stz     hWMDATA
         rts
 
-_80f6:  ldy     #ItemName::ITEM_SIZE+3                     ; store 16 spaces (empty)
+_80f6:  ldy     #ITEM_NAME::ITEM_SIZE+3                     ; store 16 spaces (empty)
         lda     #$ff
 @80fb:  sta     hWMDATA
         dey
@@ -758,8 +765,8 @@ TextScrollTask_01:
 
 TextScrollTask_02:
 @81a7:  ldx     zTaskOffset
-        lda     #$03        ; set thread state to 3
-        sta     near wTaskState,x
+        lda     #$03        ; set task state to 3
+        sta     near wTaskProp::State,x
         sta     zWaitCounter         ; set wait counter to 3
 
 ; ------------------------------------------------------------------------------
@@ -774,11 +781,11 @@ TextScrollTask_03:
         tsb     z46         ; enable bg1 text scrolling
         sec
         rts
-@81bc:  ldy     z0          ; clear bg1 vscroll speed
+@81bc:  ldy     zZero          ; clear bg1 vscroll speed
         sty     zTextScrollRate
         lda     #$20        ; disable bg1 text scrolling
         trb     z46
-        clc                 ; terminate thread
+        clc                 ; terminate task
         rts
 
 ; ------------------------------------------------------------------------------
@@ -792,104 +799,104 @@ MoveListCursor:
         bne     _81c6
 
 ; up button pressed
-        lda     z0a+1         ; branch if up button is not pressed
-        bit     #$08
+        lda     zRepCtrlState_H         ; branch if up button is not pressed
+        bit     #>JOY_UP
         beq     @81ea
-        lda     $4e         ; cursor y position (relative to page)
+        lda     z4e         ; cursor y position (relative to page)
         bne     @81e2       ; branch if not at top of page
-        lda     $4a         ; return if at top of first page
+        lda     z4a         ; return if at top of first page
         beq     _81c6
-        dec     $50         ; decrement absolute cursor position
+        dec     z50         ; decrement absolute cursor position
         jsr     ScrollListUp
         jsr     PlayMoveSfx
         rts
-@81e2:  dec     $50         ; decrement absolute cursor position
-        dec     $4e         ; decrement relative cursor position
+@81e2:  dec     z50         ; decrement absolute cursor position
+        dec     z4e         ; decrement relative cursor position
         jsr     PlayMoveSfx
         rts
 
 ; down button pressed
-@81ea:  lda     z0a+1
-        bit     #$04
+@81ea:  lda     zRepCtrlState_H
+        bit     #>JOY_DOWN
         beq     @8210
-        lda     $54
+        lda     z54
         dec
-        cmp     $4e
+        cmp     z4e
         bne     @8209
-        lda     $4a
-        cmp     $5c
+        lda     z4a
+        cmp     z5c
         beq     @8206
-        inc     $50
+        inc     z50
         jsr     ScrollListDown
         jsr     PlayMoveSfx
         rts
 @8206:  jmp     @8285
-@8209:  inc     $50
-        inc     $4e
+@8209:  inc     z50
+        inc     z4e
         jsr     PlayMoveSfx
 
 ; left button pressed
-@8210:  lda     z0a+1
-        bit     #$02
+@8210:  lda     zRepCtrlState_H
+        bit     #>JOY_LEFT
         beq     @8249
-        lda     $4d
+        lda     z4d
         bne     @8241
-        lda     $4e
+        lda     z4e
         beq     @822d
-        dec     $4e         ; decrement relative cursor position
-        dec     $50         ; decrement absolute cursor position
-        lda     $53
+        dec     z4e         ; decrement relative cursor position
+        dec     z50         ; decrement absolute cursor position
+        lda     z53
         dec
-        sta     $4d         ; x position = max x position
-        sta     $4f
+        sta     z4d         ; x position = max x position
+        sta     z4f
         jsr     PlayMoveSfx
         rts
-@822d:  lda     $4a
+@822d:  lda     z4a
         beq     _81c6
         jsr     ScrollListUp
-        lda     $53
+        lda     z53
         dec
-        sta     $4d
-        sta     $4f
-        dec     $50
+        sta     z4d
+        sta     z4f
+        dec     z50
         jsr     PlayMoveSfx
         rts
-@8241:  dec     $4d
-        dec     $4f
+@8241:  dec     z4d
+        dec     z4f
         jsr     PlayMoveSfx
         rts
 
 ; right button pressed
-@8249:  lda     z0a+1
-        bit     #$01
+@8249:  lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @8285
-        lda     $53
+        lda     z53
         dec
-        cmp     $4d
+        cmp     z4d
         bne     @827e
-        lda     $54
+        lda     z54
         dec
-        cmp     $4e
+        cmp     z4e
         beq     @826a
         clr_a
-        sta     $4d
-        sta     $4f
-        inc     $4e
-        inc     $50
+        sta     z4d
+        sta     z4f
+        inc     z4e
+        inc     z50
         jsr     PlayMoveSfx
         rts
-@826a:  lda     $4a
-        cmp     $5c
+@826a:  lda     z4a
+        cmp     z5c
         beq     @8285
         jsr     ScrollListDown
         clr_a
-        sta     $4d
-        sta     $4f
-        inc     $50
+        sta     z4d
+        sta     z4f
+        inc     z50
         jsr     PlayMoveSfx
         rts
-@827e:  inc     $4d
-        inc     $4f
+@827e:  inc     z4d
+        inc     z4f
         jsr     PlayMoveSfx
 @8285:  rts
 
@@ -898,15 +905,15 @@ MoveListCursor:
 ; [ scroll list up ]
 
 ScrollListUp:
-@8286:  dec     $4a         ; decrement page scroll position
-        dec     $49         ; decrement vertical scroll position
+@8286:  dec     z4a         ; decrement page scroll position
+        dec     z49         ; decrement vertical scroll position
         jsr     GetListTextPos
         jsr     UpdateListText
         lda     #0
         ldy     #near TextScrollTask
         jsr     CreateTask
         clr_a
-        sta     wTaskState,x   ; set thread state to 0 (scroll up)
+        sta     wTaskProp::State,x   ; set task state to 0 (scroll up)
         rts
 
 ; ------------------------------------------------------------------------------
@@ -917,30 +924,30 @@ ScrollListDown:
 @829e:  lda     hHVBJOY                 ; wait for hblank
         and     #$40
         beq     @829e
-        lda     $5a
+        lda     z5a
         clc
-        adc     $4a
+        adc     z4a
         sta     hM7A
         stz     hM7A
-        lda     $5b
+        lda     z5b
         sta     hM7B
         sta     hM7B
         lda     hMPYL
-        sta     $e5
-        lda     $49
+        sta     ze5
+        lda     z49
         clc
-        adc     $5a
+        adc     z5a
         asl
         and     #$1f
-        sta     $e6
-        inc     $4a
-        inc     $49
+        sta     ze6
+        inc     z4a
+        inc     z49
         jsr     UpdateListText
         lda     #0
         ldy     #near TextScrollTask
         jsr     CreateTask
         lda     #$01
-        sta     wTaskState,x               ; thread state 1 (scroll down)
+        sta     wTaskProp::State,x               ; task state 1 (scroll down)
         rts
 
 ; ------------------------------------------------------------------------------
@@ -956,7 +963,7 @@ UpdateListText:
 
 ; jump table for list types
 UpdateListTextTbl:
-        make_jump_tbl UpdateListText, 6
+        ptr_tbl UPDATE_LIST_TEXT
 
 ; ------------------------------------------------------------------------------
 
@@ -965,7 +972,7 @@ UpdateListTextTbl:
 InitItemDesc:
 @82f1:  jsr     GetItemDescPtr
         clr_a
-        lda     $4b
+        lda     z4b
         tay
         lda     $1869,y
         jsr     LoadItemDesc
@@ -980,13 +987,13 @@ InitItemDesc:
 
 GetItemDescPtr:
 @8308:  ldx     #near ItemDescPtrs
-        stx     $e7
+        stx     ze7
         ldx     #near ItemDesc
-        stx     $eb
+        stx     zeb
         lda     #^ItemDescPtrs
-        sta     $e9
+        sta     ze9
         lda     #^ItemDesc
-        sta     $ed
+        sta     zed
         ldx     #$9ec9
         stx     hWMADDL
         rts
@@ -995,8 +1002,8 @@ GetItemDescPtr:
 
 ; [ calculate pointer to item data ]
 
-;      a = item number
-; +$2134 = pointer (+$d85000)
+;      A: item number
+; +$2134: pointer (+$d85000)
 
 GetItemPropPtr:
 @8321:  pha
@@ -1017,12 +1024,12 @@ GetItemPropPtr:
 
 InitRareItemDesc:
 @8339:  ldx     #near RareItemDescPtrs
-        stx     $e7
+        stx     ze7
         ldx     #near RareItemDesc
-        stx     $eb
+        stx     zeb
         lda     #^RareItemDescPtrs
-        sta     $e9
-        sta     $ed
+        sta     ze9
+        sta     zed
         jsr     LoadBigText
         jsr     CountRareItems
         lda     #BG3_TEXT_COLOR::DEFAULT
@@ -1036,14 +1043,14 @@ InitRareItemDesc:
 CountInventoryItems:
 @8356:  clr_axy
 @8359:  lda     $1869,x                 ; current items
-        cmp     #$ff
+        cmp     #ITEM::EMPTY
         beq     @8361
         iny
 @8361:  inx
         cpx     #$0100
         bne     @8359
         tya
-        sta     $64
+        sta     z64
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1057,7 +1064,7 @@ CountRareItems:
         inx
         bra     @836d
 @8376:  txa
-        sta     $64
+        sta     z64
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1065,7 +1072,7 @@ CountRareItems:
 ; [ draw item count ]
 
 DrawItemCount:
-@837a:  lda     $64
+@837a:  lda     z64
         jsr     HexToDec3
         ldx_pos BG3A, {27, 9}
         jmp     DrawNum3
@@ -1106,35 +1113,35 @@ GetRareItemList:
         ldx     #$9d89
         stx     hWMADDL
         ldx     $1eba                   ; rare item event bits (28 total)
-        stx     $ef
+        stx     zef
         lda     $1ebc
-        sta     $f1
+        sta     zf1
         lda     $1ebd
 .if LANG_EN
         and     #$0f
-        stz     $f2
+        stz     zf2
 .else
         and     #$3f                    ; 30 bits for japanese version
-        sta     $f2
+        sta     zf2
 .endif
         clr_a
-        sta     $e0
+        sta     ze0
         tax
         lda     #$04
-        sta     $e1
+        sta     ze1
 @83c4:  ldy     #$0008
-        lda     $ef,x
+        lda     zef,x
 @83c9:  ror
         pha
         bcc     @83d2
-        lda     $e0
+        lda     ze0
         sta     hWMDATA
-@83d2:  inc     $e0
+@83d2:  inc     ze0
         pla
         dey
         bne     @83c9
         inx
-        dec     $e1
+        dec     ze1
         bne     @83c4
         rts
 
@@ -1144,15 +1151,15 @@ GetRareItemList:
 
 DrawRareItemList:
 @83de:  jsr     GetListTextPos
-        stz     $e5
+        stz     ze5
         ldy     #10
 @83e6:  phy
         jsr     DrawRareItemListRow
-        lda     $e6
+        lda     ze6
         inc
         inc
         and     #$1f
-        sta     $e6
+        sta     ze6
         ply
         dey
         bne     @83e6
@@ -1166,21 +1173,21 @@ DrawRareItemList:
 ; $e6 = vertical position in bg1 data
 
 GetListTextPos:
-@83f7:  lda     $49                     ; vertical scroll position
+@83f7:  lda     z49                     ; vertical scroll position
         asl
         and     #$1f
-        sta     $e6
+        sta     ze6
 @83fe:  lda     hHVBJOY                 ; wait for hblank
         and     #$40
         beq     @83fe
-        lda     $4a                     ; page scroll position * page width
+        lda     z4a                     ; page scroll position * page width
         sta     hM7A
         stz     hM7A
-        lda     $5b
+        lda     z5b
         sta     hM7B
         sta     hM7B
         lda     hMPYL
-        sta     $e5
+        sta     ze5
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1195,7 +1202,7 @@ DrawRareItemListRow:
         jsr     DrawRareItemName
         inc     ze5
         jsr     GetRareItemNamePtr
-        ldx     #RareItemName::ITEM_SIZE+4
+        ldx     #RARE_ITEM_NAME::ITEM_SIZE+4
         jsr     DrawRareItemName
         inc     ze5
 .if !LANG_EN
@@ -1211,12 +1218,12 @@ DrawRareItemListRow:
 ; [ get pointer to rare item names ]
 
 GetRareItemNamePtr:
-@8436:  ldy     #RareItemName::ITEM_SIZE
-        sty     $eb
+@8436:  ldy     #RARE_ITEM_NAME::ITEM_SIZE
+        sty     zeb
         ldy     #near RareItemName
-        sty     $ef
+        sty     zef
         lda     #^RareItemName
-        sta     $f1
+        sta     zf1
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1226,7 +1233,7 @@ GetRareItemNamePtr:
 ; X: text x position
 
 DrawRareItemName:
-@8445:  lda     $e6
+@8445:  lda     ze6
 .if LANG_EN
         inc
 .endif
@@ -1236,7 +1243,7 @@ DrawRareItemName:
         sta     $7e9e89
         shorta
         clr_a
-        lda     $e5
+        lda     ze5
         tax
         lda     $7e9d89,x
         cmp     #$ff
@@ -1263,12 +1270,12 @@ LoadArrayItem:
         sta     hM7A
         stz     hM7A
         clr_a
-        lda     $eb
+        lda     zeb
         sta     hM7B
         sta     hM7B
         ldy     hMPYL
-        ldx     $eb
-@848a:  lda     [$ef],y
+        ldx     zeb
+@848a:  lda     [zef],y
         sta     hWMDATA
         iny
         dex
@@ -1282,14 +1289,14 @@ LoadArrayItem:
 
 UseItem:
 @8497:  clr_a
-        lda     $4b
+        lda     z4b
         sta     zSelIndex
         tay
         lda     $1869,y                 ; item
-        cmp     #$ff
+        cmp     #ITEM::EMPTY
         beq     @8510                   ; branch if slot is empty
-        cmp     #$ef
-        beq     @8510                   ; branch if ???
+        cmp     #ITEM::MEGALIXIR
+        beq     @8510                   ; branch if megalixir
         jsr     GetItemPropPtr
         ldx     hMPYL
         lda     f:ItemProp,x
@@ -1303,48 +1310,48 @@ UseItem:
         lda     zSelIndex
         tay
         lda     $1869,y                 ; item index
-        cmp     #$f7
+        cmp     #ITEM::TENT
         beq     @84f8                   ; branch if a tent was used
-        cmp     #$f6
+        cmp     #ITEM::SLEEPING_BAG
         beq     @84e2                   ; branch if a sleeping bag was used
-        cmp     #$fd
+        cmp     #ITEM::WARP_STONE
         beq     @84eb                   ; branch if a warp stone was used
-@84d3:  ldy     $4f
-        sty     $8e
-        lda     $4a
-        sta     $90
-        lda     #$6f                    ; menu state $6f (select item target)
+@84d3:  ldy     z4f
+        sty     z8e
+        lda     z4a
+        sta     z90
+        lda     #MENU_STATE::ITEM_CHAR_INIT
         sta     zNextMenuState
         stz     zMenuState
         rts
 
 ; sleeping bag
-@84e2:  sta     $e6
-        lda     w0201
+@84e2:  sta     ze6
+        lda     r0201
         bpl     @8510                   ; branch if not on a save point
         bra     @84d3                   ; go to character select
 
 ; warp stone
-@84eb:  sta     $e6
-        lda     w0201
+@84eb:  sta     ze6
+        lda     r0201
         bit     #$02
         beq     @8510                   ; branch if warp is disabled
         lda     #$03                    ; return code $03 (warp/warp stone)
         bra     @8501
 
 ; tent
-@84f8:  sta     $e6
-        lda     w0201
+@84f8:  sta     ze6
+        lda     r0201
         bpl     @8510                   ; branch if not on a save point
         lda     #$02                    ; return code $02 (tent)
-@8501:  sta     w0205
-        lda     $e6
+@8501:  sta     r0205
+        lda     ze6
         jsr     DecItemQty
-        lda     #$ff                    ; terminate menu after fade out
+        lda     #MENU_STATE::TERMINATE  ; terminate menu after fade out
         sta     zNextMenuState
-        stz     zMenuState                     ; menu state $00 (fade out)
+        stz     zMenuState              ; menu state $00 (fade out)
         rts
-@8510:  lda     #$08                    ; menu state $08 (item select)
+@8510:  lda     #MENU_STATE::ITEM_SELECT
         sta     zMenuState
         rts
 
@@ -1353,20 +1360,20 @@ UseItem:
         sty     hWMADDL
         cmp     #$00
         beq     @8510                   ; branch if a tool (back to item select)
-        stz     $e0
+        stz     ze0
         longa
         lda     f:ItemProp+1,x          ; equippable characters
-        ldx     z0
+        ldx     zZero
 @8529:  lsr
         bcc     @8537                   ; skip characters that can't equip this item
         pha
         shorta
-        lda     $e0
+        lda     ze0
         sta     hWMDATA                 ; store character index
         longa
         pla
 @8537:  shorta
-        inc     $e0                     ; increment character index
+        inc     ze0                     ; increment character index
         longa
         inx                             ; next character
         cpx     #$000e
@@ -1389,7 +1396,7 @@ UseItem:
         jsr     _c3858c
         jsr     CreateItemDetailsArrowTask
         clr_a
-        lda     $4b                     ; selected item
+        lda     z4b                     ; selected item
         tay
         jsr     LoadListItemName
         jsr     _c385ad
@@ -1402,7 +1409,7 @@ UseItem:
         jsr     DrawItemDetails
         jsr     InitDMA1BG3ScreenAB
         jsr     DisableDMA2
-        lda     #$64                    ; menu state $64 (item details)
+        lda     #MENU_STATE::ITEM_DETAILS_1
         sta     zMenuState
         rts
 
@@ -1428,9 +1435,9 @@ CreateItemDetailsArrowTask:
         ldy     #near ItemDetailsArrowTask
         jsr     CreateTask
         lda     #$80
-        sta     wTaskPosY,x             ; y position
+        sta     wTaskProp::PosY_H,x             ; y position
         clr_a
-        sta     wTaskPosY + 1,x
+        sta     wTaskProp::PosY_H + 1,x
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1442,7 +1449,7 @@ _c385ad:
 @85b0:  lda     $7e9e8b,x
         cmp     #$ff
         bne     @85cd
-@85b8:  ldy     z0
+@85b8:  ldy     zZero
 @85ba:  phx
         tyx
         lda     f:ItemUsageText,x       ; " can be used by:"
@@ -1454,7 +1461,7 @@ _c385ad:
         bne     @85ba
         rts
 @85cd:  inx
-        cpx     #ItemName::ITEM_SIZE
+        cpx     #ITEM_NAME::ITEM_SIZE
         bne     @85b0
         bra     @85b8
 
@@ -1465,25 +1472,25 @@ _c385ad:
 _c385d5:
 @85d5:  ldx     #$9e09
         stx     hWMADDL
-        ldx     z0
+        ldx     zZero
 @85dd:  lda     $7e9d89,x
         bmi     @8623                   ; branch if no character
-        sta     $e5
-        ldy     z0
-        sty     $e7
-@85e9:  stx     $f3
-        lda     $e5
+        sta     ze5
+        ldy     zZero
+        sty     ze7
+@85e9:  stx     zf3
+        lda     ze5
         cmp     $1600,y
         bne     @860a
         longa
-        lda     $e7
+        lda     ze7
         asl
         tax
         lda     $1edc                   ; initialized characters
         and     f:CharEquipMaskTbl,x
         shorta
         beq     @861b                   ; branch if character is not initialized
-        lda     $e7
+        lda     ze7
         sta     hWMDATA
         bra     @861b
 @860a:  longa_clc                          ; check next character
@@ -1491,18 +1498,18 @@ _c385d5:
         adc     #$0025
         tay
         shorta
-        inc     $e7
-        lda     $e7
+        inc     ze7
+        lda     ze7
         cmp     #$10
         bne     @85e9
-@861b:  ldx     $f3
+@861b:  ldx     zf3
         inx
         cpx     #$0010
         bne     @85dd
 @8623:  lda     #$ff
         sta     hWMDATA
 .if LANG_EN
-        ldx     z0
+        ldx     zZero
 @862a:  clr_a
 .else
         clr_ax
@@ -1544,7 +1551,7 @@ _c38653:
 
         .repeat 5, yy
         .repeat 3, xx
-        make_pos BG3A, {3 + xx * 10, @Y_POS + yy * 2}
+        bg_pos BG3A, {3 + xx * 10, @Y_POS + yy * 2}
         .endrep
         .endrep
 
@@ -1567,7 +1574,7 @@ DrawItemDetails:
         lda     #BG3_TEXT_COLOR::DEFAULT
         sta     zTextColor
         clr_a
-        lda     $4b                     ; cursor position
+        lda     z4b                     ; cursor position
         tay
         lda     $1869,y                 ; item index
         jsr     GetItemPropPtr
@@ -1654,21 +1661,21 @@ DrawItemDetails:
         lda     f:ItemProp+19,x         ; weapon properties
         bpl     @876e
         ldy     #near ItemRunicText
-        sty     $e7
+        sty     ze7
         jsr     _c38795
 @876e:  ldx     hMPYL
         lda     f:ItemProp+19,x
         and     #WEAPON_FLAG::TWO_HAND
         beq     @8781
         ldy     #near Item2HandText
-        sty     $e7
+        sty     ze7
         jsr     _c38795
 @8781:  ldx     hMPYL
         lda     f:ItemProp+19,x
-        and     #WEAPON_FLAG::SWDTECH
+        and     #WEAPON_FLAG::BUSHIDO
         beq     @8794
         ldy     #near ItemBushidoText
-        sty     $e7
+        sty     ze7
         jsr     _c38795
 @8794:  rts
 
@@ -1678,7 +1685,7 @@ DrawItemDetails:
 
 _c38795:
 @8795:  lda     #^*                     ; bank byte of text pointer
-        sta     $e9
+        sta     ze9
         jmp     DrawPosTextFar
 
 ; ------------------------------------------------------------------------------
@@ -1687,7 +1694,7 @@ _c38795:
 
 DrawWeaponPower:
 @879c:  clr_a
-        lda     $4b
+        lda     z4b
         tay
         lda     $1869,y                 ; current items
         cmp     #ITEM::ATMA_WEAPON
@@ -1716,9 +1723,9 @@ DrawWeaponLearnedMagic:
         ldx     hMPYL
         lda     f:ItemProp+3,x   ; spell learn rate
         beq     @87ea
-        sta     $e0
+        sta     ze0
         lda     f:ItemProp+4,x   ; spell learned
-        sta     $e1
+        sta     ze1
         longa
 .if LANG_EN
         lda_pos BG3B, {19, 11}
@@ -1777,9 +1784,9 @@ DrawItemStatModifier:
         lda     f:StatModifierTextTable+1,x
         sta     $7e9e8c
 _8847:  ldy     #$9e89
-        sty     $e7
+        sty     ze7
         lda     #$7e
-        sta     $e9
+        sta     ze9
         jsr     DrawPosTextFar
         rts
 
@@ -1838,15 +1845,15 @@ _c388a0:
 _c388ae:
 @88ae:  ldy     #$aa8d
         sty     hWMADDL
-        stz     $e0
+        stz     ze0
         ldy     #$0008
 @88b9:  rol
         bcc     @88c3
         pha
-        lda     $e0
+        lda     ze0
         sta     hWMDATA
         pla
-@88c3:  inc     $e0
+@88c3:  inc     ze0
         dey
         bne     @88b9
         lda     #$ff
@@ -1860,33 +1867,33 @@ _c388ae:
 ; weapon/50% elements
 _c388ce:
 @88ce:  ldx_pos BG3A, {2, 14}
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles
-        sta     $ed
+        sta     zed
         jmp     _88fe
 
 ; absorbed elements
 _c388da:
 @88da:  ldx_pos BG3A, {16, 14}
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles
-        sta     $ed
+        sta     zed
         jmp     _88fe
 
 ; no effect elements
 _c388e6:
 @88e6:  ldx_pos BG3A, {2, 18}
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles
-        sta     $ed
+        sta     zed
         jmp     _88fe
 
 ; weak point elements
 _c388f2:
 @88f2:  ldx_pos BG3A, {16, 18}
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles
-        sta     $ed
+        sta     zed
         jmp     _88fe
 
 _88fe:  clr_ax
@@ -1898,12 +1905,12 @@ _88fe:  clr_ax
         asl
         tax
         lda     f:_c38927,x
-        sta     $e0
+        sta     ze0
         jsr     _c38937
-        lda     $eb
+        lda     zeb
         clc
         adc     #$0004
-        sta     $eb
+        sta     zeb
         shorta
         plx
         inx
@@ -1922,20 +1929,20 @@ _c38927:
 
 _c38937:
 @8937:  clr_ay
-        lda     $e0
-        sta     [$eb],y
-        inc     $e0
+        lda     ze0
+        sta     [zeb],y
+        inc     ze0
         ldy     #$0040
-        lda     $e0
-        sta     [$eb],y
-        inc     $e0
+        lda     ze0
+        sta     [zeb],y
+        inc     ze0
         ldy     #$0002
-        lda     $e0
-        sta     [$eb],y
-        inc     $e0
+        lda     ze0
+        sta     [zeb],y
+        inc     ze0
         ldy     #$0042
-        lda     $e0
-        sta     [$eb],y
+        lda     ze0
+        sta     [zeb],y
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1963,35 +1970,35 @@ _c38959:
 
 ; [ menu state $64: item details ]
 
-MenuState_64:
-@8983:  lda     z08
+        array_label MENU_STATE, MENU_STATE::ITEM_DETAILS_1
+@8983:  lda     zNewCtrlState_L
         bit     #JOY_A
         bne     @898f                   ; branch if A button is pressed
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_LEFT
         beq     @89a8                   ; branch if left button is not pressed
 
 ; left button or A button
 @898f:  jsr     PlaySelectSfx
         lda     #$ff
-        sta     $99
-        lda     #$0a
+        sta     z99
+        lda     #10
         sta     zWaitCounter
-        ldy     #.loword(-12)
+        ldy     #near -12
         sty     zMenuScrollRate
-        lda     #$5e                    ; next menu state $5e (item stats)
+        lda     #MENU_STATE::ITEM_DETAILS_2
         sta     zNextMenuState
-        lda     #$65                    ; menu state $65 (scroll menu horizontal)
+        lda     #MENU_STATE::H_SCROLL
         sta     zMenuState
         rts
 
 ; B button
-@89a8:  lda     z08+1
+@89a8:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @89dd                   ; return if B button is not pressed
         jsr     PlayCancelSfx
         lda     #$ff
-        sta     $99
+        sta     z99
         ldx_pos BG3A, {0, 12}
         stx     hWMADDL
         ldx     #$0280
@@ -2006,7 +2013,7 @@ MenuState_64:
         jsr     WaitVblank
         clr_a
         sta     $7e9a10
-        lda     #$08        ; menu state $08 (item, select)
+        lda     #MENU_STATE::ITEM_SELECT
         sta     zMenuState
 @89dd:  rts
 
@@ -2024,11 +2031,11 @@ _c389de:
 
 ; [ menu state $5e: item details ]
 
-MenuState_5e:
-@89e6:  lda     z08+1
+        array_label MENU_STATE, MENU_STATE::ITEM_DETAILS_2
+@89e6:  lda     zNewCtrlState_H
         bit     #>JOY_B
         bne     @89f2                   ; branch if B button is pressed
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_RIGHT
         beq     @8a0d                   ; branch if right button is not pressed
 
@@ -2040,9 +2047,9 @@ MenuState_5e:
         sty     zMenuScrollRate
         lda     #$05
         trb     z46
-        lda     #$64                    ; next menu state $64 (item details)
+        lda     #MENU_STATE::ITEM_DETAILS_1
         sta     zNextMenuState
-        lda     #$65                    ; menu state $65 (scroll menu horizontal)
+        lda     #MENU_STATE::H_SCROLL
         sta     zMenuState
         jsr     CreateItemDetailsArrowTask
 @8a0d:  rts
@@ -2071,13 +2078,13 @@ DrawItemTargetMenu:
 
 ; ------------------------------------------------------------------------------
 
-ItemTargetCharWindow:                   make_window BG2A, {10, 1}, {19, 24}
+ItemTargetCharWindow:                   window_pos BG2A, {10, 1}, {19, 24}
 .if LANG_EN
-ItemTargetItemNameWindow:               make_window BG2A, {1, 1}, {13, 2}
+ItemTargetItemNameWindow:               window_pos BG2A, {1, 1}, {13, 2}
 .else
-ItemTargetItemNameWindow:               make_window BG2A, {1, 1}, {8, 2}
+ItemTargetItemNameWindow:               window_pos BG2A, {1, 1}, {8, 2}
 .endif
-ItemTargetQtyWindow:                    make_window BG2A, {1, 5}, {7, 3}
+ItemTargetQtyWindow:                    window_pos BG2A, {1, 5}, {7, 3}
 
 ; ------------------------------------------------------------------------------
 
@@ -2129,7 +2136,7 @@ ItemTargetDrawQty:
 
 ; [ menu state $6f: use item (character select, init) ]
 
-MenuState_6f:
+        array_label MENU_STATE, MENU_STATE::ITEM_CHAR_INIT
 @8a84:  jsr     _c32a76
         jsr     DrawItemTargetMenu
         jsr     CreateCursorTask
@@ -2142,26 +2149,26 @@ MenuState_6f:
 
 ; [ menu state $70: use item (character select) ]
 
-MenuState_70:
+        array_label MENU_STATE, MENU_STATE::ITEM_CHAR_SELECT
 @8a96:  jsr     InitDMA1BG1ScreenA
         jsr     InitDMA2BG3ScreenA
 
 ; A button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @8aac
         jsr     GetInventoryItemID
         cmp     #ITEM::RENAME_CARD
         beq     @8ac0                   ; branch if rename card
         jsr     @8ae7
-@8aac:  lda     z08+1
+@8aac:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @8abf                   ; return if B button is not pressed
         jsr     PlayCancelSfx
 
 @8ab5:  lda     #$42
         trb     z45
-        lda     #$77                    ; menu state $77 (return to item select)
+        lda     #MENU_STATE::ITEM_CHAR_RETURN
         sta     zNextMenuState
         stz     zMenuState
 @8abf:  rts
@@ -2171,10 +2178,10 @@ MenuState_70:
         lda     0,y                     ; actor index
         cmp     #CHAR_PROP::BANON
         bcs     @8ae0                   ; branch if actor index >= 14
-        sty     w0206
+        sty     r0206
         jsr     PlaySelectSfx
         lda     #$fe                    ; return code $fe (rename card)
-        sta     w0205
+        sta     r0205
         lda     #MENU_STATE::TERMINATE  ; terminate menu after fade out
         sta     zNextMenuState
         stz     zMenuState              ; menu state $00 (fade out)
@@ -2287,43 +2294,43 @@ CheckCanUseItem:
 
 ; revivify
 @8b8e:  lda     $0014,y
-        and     #$02
+        and     #STATUS1::ZOMBIE
         beq     @8bd0
         bra     @8be3
 
 ; eyedrop
 @8b97:  lda     $0014,y
-        and     #$01
+        and     #STATUS1::BLIND
         beq     @8bd0
         bra     @8be3
 
 ; soft
 @8ba0:  lda     $0014,y
-        and     #$40
+        and     #STATUS1::PETRIFY
         beq     @8bd0
         bra     @8be3
 
 ; green cherry
 @8ba9:  lda     $0014,y
-        and     #$20
+        and     #STATUS1::IMP
         beq     @8bd0
         bra     @8be3
 
 ; remedy
 @8bb2:  lda     $0014,y
-        and     #$65        ; isolate petrify, imp, poison, dark
+        andflg  STATUS1, {PETRIFY, IMP, POISON, BLIND}
         beq     @8bd0
         bra     @8be3
 
 ; antidote
 @8bbb:  lda     $0014,y
-        and     #$04
+        and     #STATUS1::POISON
         beq     @8bd0
         bra     @8be3
 
 ; dried meat, tonic, potion, x-potion
 @8bc4:  lda     $0014,y
-        and     #$c2
+        andflg  STATUS1, {DEAD, PETRIFY, ZOMBIE}
         bne     @8bd0
         jsr     CheckMaxHP
         bcc     @8be3
@@ -2335,7 +2342,7 @@ CheckCanUseItem:
 
 ; tincture, ether, x-ether
 @8bd5:  lda     $0014,y
-        and     #$c2        ; isolate wound, petrify, and zombie
+        andflg  STATUS1, {DEAD, PETRIFY, ZOMBIE}
         bne     @8bd0
         jsr     CheckMaxMP
         bcc     @8be3
@@ -2347,7 +2354,7 @@ CheckCanUseItem:
 
 ; elixir
 @8be5:  lda     $0014,y
-        and     #$c2        ; isolate wound, petrify, and zombie
+        andflg  STATUS1, {DEAD, PETRIFY, ZOMBIE}
         bne     @8bd0
         jsr     CheckMaxHP
         bcc     @8be3
@@ -2370,7 +2377,7 @@ CheckCanUseItem:
 
 ; sleeping bag
 @8c11:  lda     $0014,y
-        clrflg  STATUS1, MAGITEK
+        andflg  STATUS1, {DEAD, PETRIFY, IMP, VANISH, POISON, ZOMBIE, BLIND}
         bne     @8be3
         lda     $0015,y
         and     #STATUS4::FLOAT
@@ -2474,8 +2481,8 @@ _c38c33:
 _c38ccd:
 lpget:
 @8ccd:  lda     f:ItemProp+20,x         ; hp/mp restored
-        sta     zb2
-        stz     zb2+1
+        sta     zb2_L
+        stz     zb2_H
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2586,18 +2593,5 @@ ItemRunicText:                  pos_text ITEM_RUNIC
 Item2HandText:                  pos_text ITEM_2HAND
 ItemOwnedText:                  pos_text ITEM_OWNED
 ItemBlankQtyText:               pos_text ITEM_BLANK_QTY
-
-; ------------------------------------------------------------------------------
-
-.export ItemProp
-
-.pushseg
-.segment "item_prop"
-
-; d8/5000
-ItemProp:
-        incbin_lang "item_prop_%s.dat"
-
-.popseg
 
 ; ------------------------------------------------------------------------------

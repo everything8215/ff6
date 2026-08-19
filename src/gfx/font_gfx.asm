@@ -8,11 +8,12 @@
 
 ; c4/7fc0
 SmallFontGfx:
-        incbin_lang "small_font_%s.2bpp"
+        .incbin "assets/gfx/small_font.2bpp"
 
 ; c4/8fc0
 FontWidth:
 .if LANG_EN
+; $0100 values
         .byte   12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12
         .byte   12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12
         .byte   8,8,8,8,7,7,8,8,5,8,9,7,10,9,8,8
@@ -30,6 +31,7 @@ FontWidth:
         .byte   12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12
         .byte   12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,6
 .else
+; $0500 values
         .res $0420, 12
         .res $00b4, 8
         .res $002c, 12
@@ -37,7 +39,7 @@ FontWidth:
 
 ; c4/90c0
 LargeFontGfx:
-        incbin_lang "large_font_%s.1bpp"
+        .incbin "assets/gfx/large_font.1bpp"
 
 ; ------------------------------------------------------------------------------
 
@@ -45,6 +47,6 @@ LargeFontGfx:
 
 ; c0/e120
 DebugFontGfx:
-        .incbin "debug_font.2bpp"
+        .incbin "assets/gfx/debug_font.2bpp"
 
 ; ------------------------------------------------------------------------------

@@ -8,7 +8,7 @@
 
 ; e9/6300
 TheEndGfx1:
-        .incbin "the_end_1.4bpp"
+        .incbin "assets/gfx/the_end/the_end_1.4bpp"
 
 ; ------------------------------------------------------------------------------
 
@@ -16,10 +16,10 @@ TheEndGfx1:
 
 ; c9/fe00
 TheEndGfx2:
-        .incbin "the_end_2.4bpp"
+        .incbin "assets/gfx/the_end/the_end_2.4bpp"
 
 ; c9/ff00
 TheEndPal:
-        .incbin "the_end.pal"
+        .incbin "assets/gfx/the_end/the_end.pal"
 
 ; ------------------------------------------------------------------------------

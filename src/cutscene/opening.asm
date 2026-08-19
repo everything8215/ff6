@@ -100,7 +100,7 @@ OpeningLoop:
         bmi     @588f
         asl
         tax
-        jsr     (.loword(OpeningStateTbl),x)
+        jsr     (near OpeningStateTbl,x)
         lda     $06
         bit     #$80
         bne     @588a
@@ -112,7 +112,7 @@ OpeningLoop:
 @588f:  ldy     #15
         sty     $15
         lda     #0
-        ldy     #.loword(_7e55a0)
+        ldy     #near _7e55a0
         jsr     CreateTask
 @589c:  ldy     $15
         beq     @58a8
@@ -146,34 +146,34 @@ OpeningState_00:
         jsr     _7e5c45
         jsr     ResetTasks
         ldx     #$3100
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3120
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3160
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3180
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$31a0
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3000
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3020
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3040
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3060
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$30e0
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
 
 ; set magitek armor x positions
@@ -198,7 +198,7 @@ OpeningState_00:
         stz     $37
         stz     $38
         lda     #0
-        ldy     #.loword(ArmorOffsetTask)
+        ldy     #near ArmorOffsetTask
         jsr     CreateTask
         clr_a
         jsr     CreateArmorTask
@@ -207,49 +207,49 @@ OpeningState_00:
         lda     #2
         jsr     CreateArmorTask
         ldx     #$3120
-        ldy     #.loword(OpeningSnowSpritePal)
+        ldy     #near OpeningSnowSpritePal
         lda     #$01
         jsr     CreateFadePalTask
         ldx     #$3160
-        ldy     #.loword(OpeningSnowSpritePal)
+        ldy     #near OpeningSnowSpritePal
         lda     #$02
         jsr     CreateFadePalTask
         ldx     #$3180
-        ldy     #.loword(OpeningSnowSpritePal)
+        ldy     #near OpeningSnowSpritePal
         lda     #$04
         jsr     CreateFadePalTask
         ldx     #$31a0
-        ldy     #.loword(OpeningSnowSpritePal)
+        ldy     #near OpeningSnowSpritePal
         lda     #$06
         jsr     CreateFadePalTask
         ldx     #$3100
-        ldy     #.loword(OpeningArmorPal)
+        ldy     #near OpeningArmorPal
         lda     #$03
         jsr     CreateFadePalTask
         ldx     #$3020
-        ldy     #.loword(OpeningBGPal1)
+        ldy     #near OpeningBGPal1
         lda     #$02
         jsr     CreateFadePalTask
         ldx     #$3040
-        ldy     #.loword(OpeningBGPal2)
+        ldy     #near OpeningBGPal2
         lda     #$02
         jsr     CreateFadePalTask
         ldx     #$3060
-        ldy     #.loword(OpeningBGPal3)
+        ldy     #near OpeningBGPal3
         lda     #$02
         jsr     CreateFadePalTask
         ldx     #$30e0
-        ldy     #.loword(TownPal1)
+        ldy     #near TownPal1
         lda     #$04
         jsr     CreateFadePalTask
         lda     #0
-        ldy     #.loword(OpeningSnowTask)
+        ldy     #near OpeningSnowTask
         jsr     CreateTask
         lda     #0
-        ldy     #.loword(_7e5aed)
+        ldy     #near _7e5aed
         jsr     CreateTask
         lda     #0
-        ldy     #.loword(ArmorMoveTask)
+        ldy     #near ArmorMoveTask
         jsr     CreateTask
         clr_a
         sta     $3901,x
@@ -262,7 +262,7 @@ OpeningState_00:
         sta     $3800,x
         shorta
         lda     #0
-        ldy     #.loword(ArmorMoveTask)
+        ldy     #near ArmorMoveTask
         jsr     CreateTask
         lda     #$01
         sta     $3901,x
@@ -275,7 +275,7 @@ OpeningState_00:
         sta     $3800,x
         shorta
         lda     #0
-        ldy     #.loword(ArmorMoveTask)
+        ldy     #near ArmorMoveTask
         jsr     CreateTask
         lda     #$02
         sta     $3901,x
@@ -316,7 +316,7 @@ OpeningState_01:
 .endif
         sty     $15
         lda     #0
-        ldy     #.loword(CreditsTextTask)
+        ldy     #near CreditsTextTask
         jsr     CreateTask
         jsr     CreateTownLightsThread
 @5a62:  jsr     UpdateMode7Pos
@@ -365,7 +365,7 @@ UpdateMode7Pos:
 
 ArmorMoveTask:
 @5a92:  tax
-        jmp     (.loword(ArmorMoveTaskTbl),x)
+        jmp     (near ArmorMoveTaskTbl,x)
 
 ArmorMoveTaskTbl:
 @5a96:  .addr   ArmorMoveTask_00
@@ -461,7 +461,7 @@ CreateArmorTask:
         ldy     $00
 @5b11:  phy
         lda     #2
-        ldy     #.loword(ArmorTask)
+        ldy     #near ArmorTask
         jsr     CreateTask
         lda     $f4
         sta     $3900,x
@@ -520,7 +520,7 @@ InitOpeningHDMA:
         stz     $4320
         lda     #<hCOLDATA
         sta     $4321
-        ldy     #.loword(OpeningFixedColorHDMATbl)
+        ldy     #near OpeningFixedColorHDMATbl
         sty     $4322
         lda     #^OpeningFixedColorHDMATbl
         sta     $4324
@@ -530,7 +530,7 @@ InitOpeningHDMA:
         stz     $4330
         lda     #<hBGMODE
         sta     $4331
-        ldy     #.loword(OpeningBGModeHDMATbl)
+        ldy     #near OpeningBGModeHDMATbl
         sty     $4332
         lda     #^OpeningBGModeHDMATbl
         sta     $4334
@@ -541,7 +541,7 @@ InitOpeningHDMA:
         sta     $4340
         lda     #<hCGSWSEL
         sta     $4341
-        ldy     #.loword(OpeningColorMathHDMATbl)
+        ldy     #near OpeningColorMathHDMATbl
         sty     $4342
         lda     #^OpeningColorMathHDMATbl
         sta     $4344
@@ -554,7 +554,7 @@ InitOpeningHDMA:
         sta     $4350
         lda     #<hBG3HOFS
         sta     $4351
-        ldy     #.loword(OpeningBG3ScrollHDMATbl)
+        ldy     #near OpeningBG3ScrollHDMATbl
         sty     $4352
 
 ; mode7 A & B
@@ -562,7 +562,7 @@ InitOpeningHDMA:
         sta     $4360
         lda     #<hM7A
         sta     $4361
-        ldy     #.loword(OpeningM7ABHDMATbl)
+        ldy     #near OpeningM7ABHDMATbl
         sty     $4362
         lda     #^OpeningM7ABHDMATbl
         sta     $4364
@@ -573,7 +573,7 @@ InitOpeningHDMA:
         sta     $4370
         lda     #<hM7C
         sta     $4371
-        ldy     #.loword(OpeningM7CDHDMATbl)
+        ldy     #near OpeningM7CDHDMATbl
         sty     $4372
         lda     #^OpeningM7CDHDMATbl
         sta     $4374
@@ -721,7 +721,7 @@ _7e5cb1:
 
 CreateTownLightsThread:
 @5cbd:  lda     #0
-        ldy     #.loword(TownLightsThread)
+        ldy     #near TownLightsThread
         jsr     CreateTask
         rts
 
@@ -734,11 +734,11 @@ TownLightsThread:
         and     #$01
         bne     @5cd7
         ldx     #$30e0
-        ldy     #.loword(TownPal1)
+        ldy     #near TownPal1
         jsr     LoadPal
         bra     @5ce0
 @5cd7:  ldx     #$30e0
-        ldy     #.loword(TownPal2)
+        ldy     #near TownPal2
         jsr     LoadPal
 @5ce0:  sec
         rts
@@ -749,7 +749,7 @@ TownLightsThread:
 
 CreditsTextTask:
 @5ce2:  tax
-        jmp     (.loword(CreditsTextTaskTbl),x)
+        jmp     (near CreditsTextTaskTbl,x)
 
 CreditsTextTaskTbl:
 @5ce6:  .addr   CreditsTextTask_00
@@ -763,7 +763,7 @@ CreditsTextTask_00:
 @5cea:  ldx     $1d
         inc     $3a00,x
         longa
-        lda     #.loword(CreditsTextTbl)
+        lda     #near CreditsTextTbl
         sta     $3500,x
         shorta
         jsr     InitAnimTask
@@ -778,7 +778,7 @@ CreditsTextTask_01:
         cmp     #$01
         bne     @5d10
         ldx     #$3000
-        ldy     #.loword(OpeningFontPal)
+        ldy     #near OpeningFontPal
         lda     #$01
         jsr     CreateFadePalTask
 @5d10:  ldx     $1d
@@ -786,7 +786,7 @@ CreditsTextTask_01:
         cmp     #$20
         bne     @5d24
         ldx     #$3000
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         lda     #$01
         jsr     CreateFadePalTask
 @5d24:  ldx     $1d
@@ -1068,7 +1068,7 @@ OpeningSnowTask:
         lda     #$40
         trb     $33
         lda     #0
-        ldy     #.loword(DefaultAnimTask)
+        ldy     #near DefaultAnimTask
         jsr     CreateTask
         clr_a
         lda     $18
@@ -1117,7 +1117,7 @@ OpeningSnowAnimTbl:
 
 ArmorTask:
 @5f7e:  tax
-        jmp     (.loword(ArmorTaskTbl),x)
+        jmp     (near ArmorTaskTbl,x)
 
 ArmorTaskTbl:
 @5f82:  .addr   ArmorTask_00
@@ -1170,7 +1170,7 @@ ArmorTask_01:
 
 ArmorOffsetTask:
 @5fc0:  tax
-        jmp     (.loword(ArmorOffsetTaskTbl),x)
+        jmp     (near ArmorOffsetTaskTbl,x)
 
 ArmorOffsetTaskTbl:
 @5fc4:  .addr   ArmorOffsetTask_00
@@ -1184,7 +1184,7 @@ ArmorOffsetTask_00:
 @5fc8:  ldx     $1d
         inc     $3a00,x                 ; increment thread state
         longa
-        lda     #.loword(ArmorOffsetTbl)
+        lda     #near ArmorOffsetTbl
         sta     $3500,x                 ; pointer to data below
         shorta
         lda     #$08
@@ -1573,7 +1573,7 @@ InitOpeningGfx:
 ; load map graphics 34
         longa_clc
         lda     f:MapGfxPtrs+MAP_GFX::NARSHE_EXT_4*3
-        adc     #.loword(MapGfx)
+        adc     #near MapGfx
         sta     $e7
         shorta
         lda     f:MapGfxPtrs+MAP_GFX::NARSHE_EXT_4*3+2
@@ -1607,7 +1607,7 @@ InitOpeningGfx:
 ; load map graphics 32
         longa_clc
         lda     f:MapGfxPtrs+MAP_GFX::NARSHE_EXT_3*3
-        adc     #.loword(MapGfx)
+        adc     #near MapGfx
         sta     $e7
         shorta
         lda     f:MapGfxPtrs+MAP_GFX::NARSHE_EXT_3*3+2

@@ -11,9 +11,9 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-inc_lang "text/bushido_name_%s.inc"
+.include "src/text/bushido_name.inc"
 
-.import WindowPal, MapInitEvent, EventScript_GameStart
+.import WindowPal, MapInitEvent
 
 .a8
 .i16
@@ -131,7 +131,11 @@ Loop:   lda     $1600,y                 ; actor
 :       lda     f:BushidoName,x
         sta     $1cf8,x
         inx
-        cpx     #$0030
+.if ::LANG_EN
+        cpx     #$0030                  ; carried over from japanese version
+.else
+        cpx     #BUSHIDO_NAME::SIZE
+.endif
         bne     :-
 
 ; clear espers
@@ -207,15 +211,15 @@ Loop:   lda     $1600,y                 ; actor
         jsr     InitEventSwitches
         jsr     InitNPCSwitches
         jsr     InitTreasureSwitches
-        ldx     #.loword(EventScript_GameStart)
+        ldx     #.loword(EventScript::GameStart)
         stx     $e5
         stx     $05f4
-        lda     #^EventScript_GameStart
+        lda     #^EventScript::GameStart
         sta     $e7
         sta     $05f6
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #.loword(EventScript::NoEvent)
         stx     $0594
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596
         lda     #1                      ; loop once
         sta     $05c7
@@ -226,12 +230,14 @@ Loop:   lda     $1600,y                 ; actor
         stz     $47                     ; clear event counter
         .if     .not ::DEBUG
         rts
+.endproc  ; InitNewGame
+
         .else
 
 ; set event pc
-        ldx     #.loword(DebugEvent)
+        ldx     #.loword(EventScript::DebugEvent)
         stx     $e5
-        lda     #^DebugEvent
+        lda     #^EventScript::DebugEvent
         sta     $e7
 
 ; set airship position
@@ -259,92 +265,9 @@ Loop:   lda     $1600,y                 ; actor
         sty     $021d
         jsl     InitCtrl_ext
         rts
-
-        .pushcpu
-
-        .include "event_cmd.inc"
-        .include "gfx/map_sprite_gfx.inc"
-        .include "gfx/map_sprite_pal.inc"
-
-DebugEvent:
-
-        char_name       TERRA, TERRA
-        char_prop       TERRA, TERRA
-        create_obj      TERRA
-        obj_gfx         TERRA, TERRA
-        obj_pal         TERRA, TERRA
-
-        char_name       LOCKE, LOCKE
-        char_prop       LOCKE, LOCKE
-        create_obj      LOCKE
-        obj_gfx         LOCKE, LOCKE
-        obj_pal         LOCKE, LOCKE
-
-        char_name       EDGAR, EDGAR
-        char_prop       EDGAR, EDGAR
-        create_obj      EDGAR
-        obj_gfx         EDGAR, EDGAR
-        obj_pal         EDGAR, EDGAR
-
-        char_name       CYAN, CYAN
-        char_prop       CYAN, CYAN
-        create_obj      CYAN
-        obj_gfx         CYAN, CYAN
-        obj_pal         CYAN, CYAN
-
-        char_party      TERRA,1
-        char_party      LOCKE,1
-        char_party      EDGAR,1
-        char_party      CYAN,1
-        activate_party  1
-        show_obj        TERRA
-
-        loop            4
-        give_gil        50000
-        end_loop
-        give_item       PALADIN_SHLD
-        give_item       PALADIN_SHLD
-        give_item       PALADIN_SHLD
-        give_item       PALADIN_SHLD
-        give_item       ILLUMINA
-        give_item       WING_EDGE
-        give_item       AURA_LANCE
-        give_item       SKY_RENDER
-        opt_equip       TERRA
-        opt_equip       LOCKE
-        opt_equip       EDGAR
-        opt_equip       CYAN
-        give_bushido
-
-        give_genju      BAHAMUT
-        give_genju      PHOENIX
-        give_genju      ALEXANDR
-        give_genju      CRUSADER
-        give_genju      RAIDEN
-        give_genju      ODIN
-        give_genju      RAGNAROK
-
-        set_switch      $02e0
-        set_switch      $02f0
-        clr_switch      $01cc
-        set_switch      $01c1
-        set_switch      $010b
-        set_switch      $01e3
-        set_switch      $016f
-        set_switch      $0170
-
-        set_parent_map 0, {85, 110}, UP
-        load_map $4b, {2, 28}, RIGHT, NO_FADE_IN
-        fade_in
-        unlock_camera
-
-        return
-
-        .popcpu
-        .undef loop
+.endproc  ; InitNewGame
 
 .endif
-.endproc  ; InitNewGame
 
 ; ------------------------------------------------------------------------------
 
@@ -353,14 +276,31 @@ DebugEvent:
 
 ; c4/7aa0
 InitRage:
-        .byte   $00,$48,$28,$02,$00,$40,$40,$02,$04,$00,$00,$00,$00,$00,$00,$00
-        .byte   $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+        bitlist 256
+        bitlist_set MONSTER::BRAWLER
+        bitlist_set MONSTER::WHISPER
+        bitlist_set MONSTER::WERE_RAT
+        bitlist_set MONSTER::RHINOTAUR
+        bitlist_set MONSTER::LOBO
+        bitlist_set MONSTER::HORNET
+        bitlist_set MONSTER::TRILOBITER
+        bitlist_set MONSTER::EXOCITE
+        bitlist_set MONSTER::M_TEKARMOR
+        end_bitlist
 
 .segment "init_lore"
 
+.mac lore_bit lore
+        bitlist_set (ATTACK::lore - ATTACK::FIRST_LORE)
+.endmac
+
 ; e6/f564
 InitLore:
-        .byte   $88,$00,$10
+        bitlist 24
+        lore_bit AQUA_RAKE
+        lore_bit REVENGE
+        lore_bit STONE
+        end_bitlist
 
 .popseg
 
@@ -416,7 +356,7 @@ InitLore:
         ldx     $e5                     ; branch if an event is running
         bne     :+
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     :+
         jsr     GetTopChar
 :       stz     $84                     ; disable map load
@@ -571,7 +511,7 @@ StartupEventLoop:
         ldy     $0594,x                 ; branch unless there's an address on the event stack
         bne     SkipStartupEvent
         lda     $0596,x
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     SkipStartupEvent
         jsr     ExecEvent
 

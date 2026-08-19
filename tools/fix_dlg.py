@@ -32,11 +32,19 @@ def optimize_dte(dlg_def):
     char_tables.remove('dte')
     dlg_def['char_tables'] = char_tables
 
+    # create a text codec
+    text_codec = rt.TextCodec()
+    for char_table in dlg_def['char_tables']:
+        char_table_path = os.path.join('tools', 'char_table', f'{char_table}.json')
+        text_codec.load_char_table(char_table_path)
+
     # encode all of the dialogue
-    dlg_bytes, _ = rt.encode_text(dlg_def)
+    item_list = [text_codec.encode(item) for item in dlg_def['text']]
+
+    # condense the array and generate a pointer table
+    dlg_bytes, _ = rt.condense_array(item_list, **dlg_def)
 
     # find all valid pairs of characters
-    text_codec = rt.TextCodec(dlg_def)
     dte_pairs = {}
 
     i = 0
@@ -68,7 +76,7 @@ def optimize_dte(dlg_def):
     print('Most common char pairs:')
     for i in range(128):
         pair = sorted_pairs[i]
-        dte_char_table[rt.hex_string(i + 128)] = pair[0]
+        dte_char_table['0x%02X' % (i + 128)] = pair[0]
         print(pair[0], pair[1])
 
     # update the dte char table
@@ -78,7 +86,7 @@ def optimize_dte(dlg_def):
 
     # update the dte text file
     dte_list = [item[0] for item in sorted_pairs[:128]]
-    dte_json_path = os.path.join('src', 'text', 'dte_tbl_en.json')
+    dte_json_path = os.path.join('assets', 'text', 'dte_tbl.en.json')
     with open(dte_json_path, 'r', encoding='utf8') as dte_json_file:
         dte_json = json.load(dte_json_file)
         dte_json['text'] = dte_list
@@ -88,8 +96,17 @@ def optimize_dte(dlg_def):
 
 def split_dlg(dlg1_def, dlg2_def):
 
+    # create a text codec
+    text_codec = rt.TextCodec()
+    for char_table in dlg1_def['char_tables']:
+        char_table_path = os.path.join('tools', 'char_table', f'{char_table}.json')
+        text_codec.load_char_table(char_table_path)
+
+    # encode each string
+    item_list = [text_codec.encode(item) for item in dlg1_def['text']]
+
     # find the first dialog offset beyond the first bank
-    _, item_ranges = rt.encode_text(dlg1_def)
+    _, item_ranges = rt.condense_array(item_list, **dlg1_def)
     bank_inc = len(dlg1_def['text'])
     for index, range in enumerate(item_ranges):
         if range.begin >= 0x010000:
@@ -110,8 +127,8 @@ def combine_dlg(dlg1_def, dlg2_def):
 if __name__ == '__main__':
     dlg_cmd = sys.argv[1]
     lang_suffix = sys.argv[2]
-    dlg1_path = os.path.join('src', 'text', f'dlg1_{lang_suffix}.json')
-    dlg2_path = os.path.join('src', 'text', f'dlg2_{lang_suffix}.json')
+    dlg1_path = os.path.join('assets', 'text', f'dlg1.{lang_suffix}.json')
+    dlg2_path = os.path.join('assets', 'text', f'dlg2.{lang_suffix}.json')
 
     if not (os.path.exists(dlg1_path) and os.path.exists(dlg2_path)):
         exit(0)
@@ -131,8 +148,8 @@ if __name__ == '__main__':
             dlg2_file.write(json.dumps(dlg2_def, ensure_ascii=False, indent=2))
 
     elif dlg_cmd == 'combine':
-        dlg1_dat_path = os.path.join('src', 'text', f'dlg1_{lang_suffix}.dat')
-        dlg2_dat_path = os.path.join('src', 'text', f'dlg2_{lang_suffix}.dat')
+        dlg1_dat_path = os.path.join('build', lang_suffix, 'assets', 'text', 'dlg1.dat')
+        dlg2_dat_path = os.path.join('build', lang_suffix, 'assets', 'text', 'dlg2.dat')
         if not (os.path.exists(dlg1_dat_path) and os.path.exists(dlg2_dat_path)):
             exit(0)
 

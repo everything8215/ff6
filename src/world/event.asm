@@ -750,14 +750,14 @@ VehicleCmd_f4:
         ldx     #$6400
         stx     hVMADDL
         ldx     #$1801
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$2000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$1800
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         ldx     #$0000
 @751b:  lda     f:World2SpritePal,x
@@ -1702,7 +1702,14 @@ WorldCmd_b8:
 
 ; bitmasks
 BitOrTbl:
-@7cfa:  .byte   $01,$02,$04,$08,$10,$20,$40,$80
+        .byte   %00000001
+        .byte   %00000010
+        .byte   %00000100
+        .byte   %00001000
+        .byte   %00010000
+        .byte   %00100000
+        .byte   %01000000
+        .byte   %10000000
 
 ; ------------------------------------------------------------------------------
 
@@ -2000,7 +2007,7 @@ WorldCmd_d3:
 WorldCmd_d4:
 @7ea7:  shorta
         lda     $08
-        bit     #$80
+        bit     #JOY_A
         bne     @7ed1       ; branch if a button is pressed
         ldy     $ed
         lda     [$ea],y

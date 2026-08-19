@@ -84,14 +84,14 @@ FloatingContLoop:
         bmi     @6a22
         asl
         tax
-        jsr     (.loword(FloatingContStateTbl),x)
+        jsr     (near FloatingContStateTbl,x)
         jsr     ExecTasks
         jsr     WaitVBlank
         bra     @6a10
 @6a22:  ldy     #15
         sty     $15
         lda     #0
-        ldy     #.loword(_7e55a0)
+        ldy     #near _7e55a0
         jsr     CreateTask
 @6a2f:  ldy     $15
         beq     @6a3b
@@ -115,21 +115,21 @@ FloatingContStateTbl:
 FloatingContState_00:
 @6a48:  jsr     _7e6bc3
         ldx     #$3100
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3000
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3100
-        ldy     #.loword(FloatingContPal)
+        ldy     #near FloatingContPal
         lda     #$02
         jsr     CreateFadePalTask
         ldx     #$3000
-        ldy     #.loword(FloatingContPal)
+        ldy     #near FloatingContPal
         lda     #$02
         jsr     CreateFadePalTask
         lda     #0
-        ldy     #.loword(_7e6b8c)
+        ldy     #near _7e6b8c
         jsr     CreateTask
         inc     $19
         lda     #$0f
@@ -149,7 +149,7 @@ FloatingContState_01:
         ldy     #600
         sty     $15
         lda     #0
-        ldy     #.loword(_7e6b18)
+        ldy     #near _7e6b18
         jsr     CreateTask
 @6a9a:  jsr     _7e6acf
         rts
@@ -239,7 +239,7 @@ _7e6acf:
 
 _7e6b18:
 @6b18:  tax
-        jmp     (.loword(_7e6b1c),x)
+        jmp     (near _7e6b1c,x)
 
 _7e6b1c:
 @6b1c:  .addr   _7e6b20
@@ -366,7 +366,7 @@ _7e6bc3:
 ; [ load graphic for floating island cutscene ]
 
 LoadFloatingContGfx:
-@6be5:  ldy     #.loword(FloatingContGfx)
+@6be5:  ldy     #near FloatingContGfx
         sty     $f3
         lda     #^FloatingContGfx
         sta     $f5

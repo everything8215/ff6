@@ -38,10 +38,9 @@ UpdateTrainGfx:
         lda     #@hDP                   ; nonzero dp, don't use clr_a
         tcd
         ldx     #0
-@9f36:
-.repeat 40,i
+@9f36:  .repeat 40,i
         stz     $9618+i*2,x             ; clear graphics buffer
-.endrep
+        .endrep
         txa                             ; next tile
         clc
         adc     #$0100
@@ -49,10 +48,10 @@ UpdateTrainGfx:
         cmp     #$5000
         jne     @9f36
 
-        ldy     #.loword(wMagitekTrainTile0)
+        ldy     #near wMagitekTrainTile0
 
 ; macro to draw each tile size
-.macro update_train_tile tile_id
+.mac update_train_tile tile_id
 
         .local tile_size, tile_start, temp1, temp2
 
@@ -64,14 +63,14 @@ UpdateTrainGfx:
                 tile_size = tile_id + 4
         .endif
 
-        temp1 = $8000-(tile_size-1)>>1
-        temp2 = .loword(.ident(.sprintf("wMagitekTrainTile%d", tile_id+1)))
+        temp1 = $8000 - (tile_size - 1) >> 1
+        temp2 = .loword(.ident(.sprintf("wMagitekTrainTile%d", tile_id + 1)))
 
 @9fbf:  ldx     a:2,y                   ; tile index
-        lda     $0814-tile_id*2,x       ; pointer to tile graphics
+        lda     $0814 - tile_id * 2,x   ; pointer to tile graphics
         sta     <hWMADDL                ; $2181
         ldx     a:0,y                   ; tile position
-        .if (tile_id < 10)
+        .if     (tile_id < 10)
         beq     @9ffd
         .else
         jeq     @9ffd                   ; branch if tile is not shown
@@ -80,12 +79,11 @@ UpdateTrainGfx:
         ldy     #tile_size
 @9fd2:  shorta
 
-.repeat tile_size,i
+        .repeat tile_size,i
         lda     <hWMDATA
         beq     :+
-        sta     temp1+i,x
-:
-.endrep
+        sta     temp1 + i,x
+:       .endrep
 
         longa_clc
         txa
@@ -96,16 +94,16 @@ UpdateTrainGfx:
         ldy     $0c5c
 @9ffd:  iny4                            ; next tile
         cpy     #temp2
-        .if (tile_id < 9)
+        .if     (tile_id < 9)
         bne     @9fbf
         .else
         jne     @9fbf
         .endif
 .endmac
 
-.repeat 11,i
+        .repeat 11,i
         update_train_tile i
-.endrep
+        .endrep
 
 @a46b:  lda     #1
         sta     f:$000024

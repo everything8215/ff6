@@ -1,6 +1,6 @@
 ; ------------------------------------------------------------------------------
 
-.include "field/treasure_prop.inc"
+.include "treasure_prop.inc"
 
 .a8
 .i16
@@ -46,7 +46,9 @@ InitTreasures:
         lda     #$12
         sta     $7f0000,x
 @162d:  plx
-        inx5
+        .repeat TREASURE_PROP::TRIGGER_SIZE
+        inx
+        .endrep
         cpx     $1e
         bne     @15ef
 @1637:  rts
@@ -193,7 +195,7 @@ InitParallax:
 
 ; c0/fe40
 MapParallax:
-        .incbin "map_parallax.dat"
+        .incbin "assets/data/field/map_parallax.bin"
 
 .popseg
 

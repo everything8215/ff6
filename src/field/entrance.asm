@@ -1,7 +1,7 @@
 ; ------------------------------------------------------------------------------
 
-.include "field/long_entrance.inc"
-.include "field/short_entrance.inc"
+.include "long_entrance.inc"
+.include "short_entrance.inc"
 
 .a8
 .i16
@@ -28,10 +28,10 @@
         and     #$0f
         bne     Done
         ldx     $e5                     ; return if an event is running
-        cpx     #.loword(EventScript_NoEvent)
+        cpx     #.loword(EventScript::NoEvent)
         bne     Done
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     Done
         lda     $b8                     ; branch if on a bridge tile
         and     #$04
@@ -102,7 +102,7 @@ Vertical:
         bcs     DoEntrance
 Next:   longa_clc
         txa
-        adc     #LongEntrance::ITEM_SIZE
+        adc     #LONG_ENTRANCE::TRIGGER_SIZE
         tax
         shorta0
         cpx     $1e
@@ -206,13 +206,13 @@ Done:   shorta0
 
 ; ed/f480
 LongEntrancePtrs:
-        ptr_tbl LongEntrance
-        end_ptr LongEntrance
+        ptr_tbl LONG_ENTRANCE
+        end_ptr LONG_ENTRANCE
 
 ; ed/f882
 LongEntrance:
-        .incbin "trigger/long_entrance.dat"
-LongEntrance::End:
+        .incbin "assets/data/field/long_entrance.bin"
+        LONG_ENTRANCE::END := * - LongEntrance
 
 .popseg
 
@@ -285,7 +285,7 @@ Loop:   lda     f:ShortEntrance::SrcPos,x   ; check xy position
         beq     DoEntrance
         txa
         clc
-        adc     #ShortEntrance::ITEM_SIZE
+        adc     #SHORT_ENTRANCE::TRIGGER_SIZE
         tax
         cpx     $1e
         bne     Loop
@@ -384,14 +384,13 @@ Done:   shorta0
 ; df/bb00
 ShortEntrancePtrs:
         fixed_block $1f00
-        ptr_tbl ShortEntrance
-        end_ptr ShortEntrance
+        ptr_tbl SHORT_ENTRANCE
+        end_ptr SHORT_ENTRANCE
 
 ; df/bf02
 ShortEntrance:
-        .incbin "trigger/short_entrance.dat"
-
-ShortEntrance::End:
+        .incbin "assets/data/field/short_entrance.bin"
+        SHORT_ENTRANCE::END := * - ShortEntrance
         end_fixed_block
 
 .popseg

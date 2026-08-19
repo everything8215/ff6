@@ -1,204 +1,222 @@
 {
   "text": [
     {
-      "json_path": "src/text/attack_msg_en.json",
+      "asset_path": "assets/text/attack_msg.en.txt",
       "asset_range": "0xD1F000-0xD1F750",
       "ptr_range": "0xD1F7A0-0xD1F99F",
       "ptr_offset": "0xD10000"
     },
     {
-      "json_path": "src/text/attack_name_en.json",
-      "asset_range": "0xE6F7B9-0xE6FE8E"
+      "asset_path": "assets/text/attack_name.en.txt",
+      "asset_range": "0xE6F7B9-0xE6FE8E",
+      "item_size": 10
     },
     {
-      "json_path": "src/text/battle_cmd_name_en.json",
-      "asset_range": "0xD8CEA0-0xD8CF7F"
+      "asset_path": "assets/text/battle_cmd_name.en.txt",
+      "asset_range": "0xD8CEA0-0xD8CF7F",
+      "item_size": 7
     },
     {
-      "json_path": "src/text/battle_dlg_en.json",
+      "asset_path": "assets/text/battle_dlg.en.txt",
       "asset_range": "0xD0D200-0xD0FC79",
       "ptr_range": "0xD0D000-0xD0D1FF",
       "ptr_offset": "0xD00000"
     },
     {
-      "json_path": "src/text/blitz_desc_en.json",
+      "asset_path": "assets/text/blitz_desc.en.txt",
       "asset_range": "0xCFFC00-0xCFFCDF",
       "ptr_range": "0xCFFF9E-0xCFFFAD",
       "ptr_offset": "0xCFFC00"
     },
     {
-      "json_path": "src/text/bushido_desc_en.json",
+      "asset_path": "assets/text/bushido_desc.en.txt",
       "asset_range": "0xCFFD00-0xCFFD9F",
       "ptr_range": "0xCFFFAE-0xCFFFBD",
       "ptr_offset": "0xCFFD00"
     },
     {
-      "json_path": "src/text/bushido_name_en.json",
-      "asset_range": "0xCF3C40-0xCF3C9F"
+      "asset_path": "assets/text/bushido_name.en.txt",
+      "asset_range": "0xCF3C40-0xCF3C9F",
+      "item_size": 12
     },
     {
-      "json_path": "src/text/char_name_en.json",
-      "asset_range": "0xC478C0-0xC47A3F"
+      "asset_path": "assets/text/char_name.en.txt",
+      "asset_range": "0xC478C0-0xC47A3F",
+      "item_size": 6
     },
     {
-      "json_path": "src/text/dance_name_en.json",
-      "asset_range": "0xE6FF9D-0xE6FFFC"
+      "asset_path": "assets/text/dance_name.en.txt",
+      "asset_range": "0xE6FF9D-0xE6FFFC",
+      "item_size": 12
     },
     {
-      "json_path": "src/text/dlg1_en.json",
-      "asset_range": "0xCD0000-0xCE000B",
-      "ptr_range": "0xCCE602-0xCCF24D",
-      "ptr_offset": "0xCD0000"
+      "asset_path": "assets/text/dlg.en.txt",
+      "asset_range": "0xCD0000-0xCEEFBA",
+      "ptr_range": "0xCCE602-0xCCFE19",
+      "ptr_offset": "0xCD0000",
+      "is_sequential": true,
+      "auto_bank": true
     },
     {
-      "json_path": "src/text/dlg2_en.json",
-      "asset_range": "0xCE000C-0xCEEFBA",
-      "ptr_range": "0xCCF24E-0xCCFE19",
-      "ptr_offset": "0xCE0000"
+      "asset_path": "assets/text/dte_tbl.en.txt",
+      "asset_range": "0xC0DFA0-0xC0E09F",
+      "item_size": 2
     },
     {
-      "json_path": "src/text/mte_tbl_jp.json",
-      "asset_range": "0xC08CAB-0xC08D16",
-      "ptr_range": "0xC08C7B-0xC08CAA",
-      "ptr_offset": "0xC00000"
-    },
-    {
-      "json_path": "src/text/dte_tbl_en.json",
-      "asset_range": "0xC0DFA0-0xC0E09F"
-    },
-    {
-      "json_path": "src/text/genju_attack_desc_en.json",
+      "asset_path": "assets/text/genju_attack_desc.en.txt",
       "asset_range": "0xCF3940-0xCF3BAC",
       "ptr_range": "0xCFFE40-0xCFFE7F",
       "ptr_offset": "0xCF3940"
     },
     {
-      "json_path": "src/text/genju_attack_name_en.json",
-      "asset_range": "0xE6FE8F-0xE6FF9C"
+      "asset_path": "assets/text/genju_attack_name.en.txt",
+      "asset_range": "0xE6FE8F-0xE6FF9C",
+      "item_size": 10
     },
     {
-      "json_path": "src/text/genju_bonus_desc_en.json",
+      "asset_path": "assets/text/genju_bonus_desc.en.txt",
       "asset_range": "0xEDFE00-0xEDFFA6",
       "ptr_range": "0xEDFFD0-0xEDFFFF",
       "ptr_offset": "0xEDFE00"
     },
     {
-      "json_path": "src/text/genju_bonus_name_en.json",
-      "asset_range": "0xCFFEAE-0xCFFF46"
+      "asset_path": "assets/text/genju_bonus_name.en.txt",
+      "asset_range": "0xCFFEAE-0xCFFF46",
+      "item_size": 9
     },
     {
-      "json_path": "src/text/genju_name_en.json",
-      "asset_range": "0xE6F6E1-0xE6F7B8"
+      "asset_path": "assets/text/genju_name.en.txt",
+      "asset_range": "0xE6F6E1-0xE6F7B8",
+      "item_size": 8
     },
     {
-      "json_path": "src/text/item_desc_en.json",
+      "asset_path": "assets/text/item_desc.en.txt",
       "asset_range": "0xED6400-0xED7786",
       "ptr_range": "0xED7AA0-0xED7C9F",
       "ptr_offset": "0xED6400"
     },
     {
-      "json_path": "src/text/item_name_en.json",
-      "asset_range": "0xD2B300-0xD2BFFF"
+      "asset_path": "assets/text/item_name.en.txt",
+      "asset_range": "0xD2B300-0xD2BFFF",
+      "item_size": 13
     },
     {
-      "json_path": "src/text/item_type_name_en.json",
-      "asset_range": "0xD26F00-0xD26F6F"
+      "asset_path": "assets/text/item_symbol_name.en.txt",
+      "asset_range": "0xD26F00-0xD26F6F",
+      "item_size": 7
     },
     {
-      "json_path": "src/text/lore_desc_en.json",
+      "asset_path": "assets/text/lore_desc.en.txt",
       "asset_range": "0xED77A0-0xED7A60",
       "ptr_range": "0xED7A70-0xED7A9F",
       "ptr_offset": "0xED77A0"
     },
     {
-      "json_path": "src/text/magic_desc_en.json",
+      "asset_path": "assets/text/magic_desc.en.txt",
       "asset_range": "0xD8C9A0-0xD8CE50",
       "ptr_range": "0xD8CF80-0xD8CFEB",
       "ptr_offset": "0xD8C9A0"
     },
     {
-      "json_path": "src/text/magic_name_en.json",
-      "asset_range": "0xE6F567-0xE6F6E0"
+      "asset_path": "assets/text/magic_name.en.txt",
+      "asset_range": "0xE6F567-0xE6F6E0",
+      "item_size": 7
     },
     {
-      "json_path": "src/text/map_title_en.json",
+      "asset_path": "assets/text/map_title.en.txt",
       "asset_range": "0xCEF100-0xCEF462",
       "ptr_range": "0xE68400-0xE68491",
       "ptr_offset": "0xCEF100"
     },
     {
-      "json_path": "src/text/monster_dlg_en.json",
+      "asset_path": "assets/text/monster_dlg.en.txt",
       "asset_range": "0xCFE1E0-0xCFF441",
       "ptr_range": "0xCFDFE0-0xCFE1DF",
-      "ptr_offset": "0xCF0000"
+      "ptr_offset": "0xCF0000",
+      "is_sequential": true
     },
     {
-      "json_path": "src/text/monster_name_en.json",
-      "asset_range": "0xCFC050-0xCFCF4F"
+      "asset_path": "assets/text/monster_name.en.txt",
+      "asset_range": "0xCFC050-0xCFCF4F",
+      "item_size": 10
     },
     {
-      "json_path": "src/text/monster_special_name_en.json",
-      "asset_range": "0xCFD0D0-0xCFDFCF"
+      "asset_path": "assets/text/monster_special_name.en.txt",
+      "asset_range": "0xCFD0D0-0xCFDFCF",
+      "item_size": 10
     },
     {
-      "json_path": "src/text/rare_item_desc_en.json",
+      "asset_path": "assets/text/mte_tbl.en.txt",
+      "asset_range": "0xC08CAB-0xC08D16",
+      "ptr_range": "0xC08C7B-0xC08CAA",
+      "ptr_offset": "0xC00000"
+    },
+    {
+      "asset_path": "assets/text/rare_item_desc.en.txt",
       "asset_range": "0xCEFCB0-0xCEFEDE",
       "ptr_range": "0xCEFB60-0xCEFB87",
       "ptr_offset": "0xCEFCB0"
     },
     {
-      "json_path": "src/text/rare_item_name_en.json",
-      "asset_range": "0xCEFBA0-0xCEFCA3"
+      "asset_path": "assets/text/rare_item_name.en.txt",
+      "asset_range": "0xCEFBA0-0xCEFCA3",
+      "item_size": 13
     },
     {
-      "json_path": "src/text/status_name_en.json",
-      "asset_range": "0xC2ADE1-0xC2AF20"
+      "asset_path": "assets/text/status_name.en.txt",
+      "asset_range": "0xC2ADE1-0xC2AF20",
+      "item_size": 10
     }
   ],
   "data": [
     {
-      "file_path": "src/gfx/airship1.4bpp.lz",
-      "asset_range": "0xEEC702-0xEED433"
+      "asset_path": "assets/gfx/airship1.4bpp",
+      "asset_range": "0xEEC702-0xEED433",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/airship2.4bpp.lz",
-      "asset_range": "0xEFED26-0xEFFAC7"
+      "asset_path": "assets/gfx/airship2.4bpp",
+      "asset_range": "0xEFED26-0xEFFAC7",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/attack_gfx.2bpp",
+      "asset_path": "assets/gfx/attack_gfx.2bpp",
       "asset_range": "0xD87000-0xD8C99F"
     },
     {
-      "file_path": "src/gfx/attack_gfx_en.3bpp",
+      "asset_path": "assets/gfx/attack_gfx.en.3bpp",
       "asset_range": "0xD30000-0xD4C997"
     },
     {
-      "file_path": "src/gfx/attack_mode7.4bpp.lz",
-      "asset_range": "0xD8D000-0xD8DAF1"
+      "asset_path": "assets/gfx/attack_mode7.4bpp",
+      "asset_range": "0xD8D000-0xD8DAF1",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/attack_2bpp.scr",
+      "asset_path": "assets/gfx/attack_2bpp.scr",
       "asset_range": "0xD2C000-0xD2DFFF"
     },
     {
-      "file_path": "src/gfx/attack_3bpp_en.scr",
+      "asset_path": "assets/gfx/attack_3bpp.en.scr",
       "asset_range": "0xD20000-0xD25FFF"
     },
     {
-      "file_path": "src/gfx/attack_mode7.scr.lz",
-      "asset_range": "0xD8DAF2-0xD8DCD1"
+      "asset_path": "assets/gfx/attack_mode7.scr",
+      "asset_range": "0xD8DAF2-0xD8DCD1",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/attack_pal/pal_%s.pal",
+      "asset_path": "assets/gfx/attack_pal/pal_%s.pal",
       "asset_range": "0xD26000-0xD26EFF",
       "item_size": 16
     },
     {
-      "file_path": "src/gfx/battle_bg_gfx/%s.4bpp.lz",
+      "asset_path": "assets/gfx/battle_bg_gfx/%s.4bpp",
       "asset_range": "0xE7A9E7-0xE962C0",
       "ptr_range": "0xE71650-0xE71730",
       "ptr_size": 3,
       "is_mapped": true,
+      "format": "lz",
       "file_list": [
         "town_ext_1",
         "town_ext_2",
@@ -263,10 +281,10 @@
         "waterfall",
         "final_battle_1",
         "final_battle_2",
-        "final_battle_3_en",
-        "final_battle_4_en",
+        "final_battle_3.en",
+        "final_battle_4.en",
         "final_battle_5",
-        "final_battle_6_en",
+        "final_battle_6.en",
         "final_battle_7",
         "final_battle_8",
         "fanatics_tower",
@@ -274,14 +292,15 @@
         "magitek_train_2",
         "darills_tomb_3",
         "cyans_dream_1",
-        "cyans_dream_2_en"
+        "cyans_dream_2"
       ]
     },
     {
-      "file_path": "src/gfx/battle_bg_tiles/%s.scr.lz",
+      "asset_path": "assets/gfx/battle_bg_tiles/%s.scr",
       "asset_range": "0xE71928-0xE7A9E6",
       "ptr_range": "0xE71848-0xE718A9",
       "ptr_offset": "0xE70000",
+      "format": "lz",
       "file_list": [
         "field_wob",
         "narshe_ext",
@@ -335,7 +354,7 @@
       ]
     },
     {
-      "file_path": "src/gfx/battle_bg_pal/%s.pal",
+      "asset_path": "assets/gfx/battle_bg_pal/%s.pal",
       "asset_range": "0xE70150-0xE7152F",
       "item_size": 96,
       "file_list": [
@@ -395,7 +414,7 @@
       ]
     },
     {
-      "file_path": "src/gfx/battle_char_pal/%s.pal",
+      "asset_path": "assets/gfx/battle_char_pal/%s.pal",
       "asset_range": "0xED6300-0xED63DF",
       "item_size": 32,
       "file_list": [
@@ -409,81 +428,86 @@
       ]
     },
     {
-      "file_path": "src/gfx/battle_font_pal/pal_%s.pal",
+      "asset_path": "assets/gfx/battle_font_pal/pal_%s.pal",
       "asset_range": "0xED62C0-0xED62FF",
-      "item_size": 16
-    },
-    {
-      "file_path": "src/gfx/credits.4bpp.lz",
-      "asset_range": "0xD9568F-0xD99A50"
-    },
-    {
-      "file_path": "src/gfx/debug_font.2bpp",
-      "asset_range": "0xC0E120-0xC0E29F"
-    },
-    {
-      "file_path": "src/gfx/ending_airship.pal",
-      "asset_range": "0xEFFAC8-0xEFFBC7"
-    },
-    {
-      "file_path": "src/gfx/ending_font.2bpp.lz",
-      "asset_range": "0xC4BA00-0xC4BFB8"
-    },
-    {
-      "file_path": "src/gfx/ending1.4bpp.lz",
-      "asset_range": "0xC4C008-0xC4F1C1"
-    },
-    {
-      "file_path": "src/gfx/ending2.4bpp.lz",
-      "asset_range": "0xC4F477-0xC4F6F7"
-    },
-    {
-      "file_path": "src/gfx/ending3.4bpp.lz",
-      "asset_range": "0xC4F6FB-0xC4FF71"
-    },
-    {
-      "file_path": "src/gfx/ending4.4bpp.lz",
-      "asset_range": "0xD99D4B-0xD9A4E3"
-    },
-    {
-      "file_path": "src/gfx/ending5.4bpp.lz",
-      "asset_range": "0xD9A4E5-0xD9A568"
-    },
-    {
-      "file_path": "src/gfx/floating_cont.4bpp.lz",
-      "asset_range": "0xD94E96-0xD9568B"
-    },
-    {
-      "file_path": "src/gfx/font_pal/pal_%s.pal",
-      "asset_range": "0xD8E800-0xD8E89F",
       "item_size": 8
     },
     {
-      "file_path": "src/gfx/small_font_en.2bpp",
+      "asset_path": "assets/gfx/credits.4bpp",
+      "asset_range": "0xD9568F-0xD99A50",
+      "format": "lz"
+    },
+    {
+      "asset_path": "assets/gfx/debug_font.2bpp",
+      "asset_range": "0xC0E120-0xC0E29F"
+    },
+    {
+      "asset_path": "assets/gfx/ending_airship.pal",
+      "asset_range": "0xEFFAC8-0xEFFBC7"
+    },
+    {
+      "asset_path": "assets/gfx/ending_font.2bpp",
+      "asset_range": "0xC4BA00-0xC4BFB8",
+      "format": "lz"
+    },
+    {
+      "asset_path": "assets/gfx/ending1.4bpp",
+      "asset_range": "0xC4C008-0xC4F1C1",
+      "format": "lz"
+    },
+    {
+      "asset_path": "assets/gfx/ending2.4bpp",
+      "asset_range": "0xC4F477-0xC4F6F7",
+      "format": "lz"
+    },
+    {
+      "asset_path": "assets/gfx/ending3.4bpp",
+      "asset_range": "0xC4F6FB-0xC4FF71",
+      "format": "lz"
+    },
+    {
+      "asset_path": "assets/gfx/ending4.4bpp",
+      "asset_range": "0xD99D4B-0xD9A4E3",
+      "format": "lz"
+    },
+    {
+      "asset_path": "assets/gfx/ending5.4bpp",
+      "asset_range": "0xD9A4E5-0xD9A568",
+      "format": "lz"
+    },
+    {
+      "asset_path": "assets/gfx/floating_cont.4bpp",
+      "asset_range": "0xD94E96-0xD9568B",
+      "format": "lz"
+    },
+    {
+      "asset_path": "assets/gfx/small_font.en.2bpp",
       "asset_range": "0xC47FC0-0xC48FBF"
     },
     {
-      "file_path": "src/gfx/large_font_en.1bpp",
+      "asset_path": "assets/gfx/large_font.en.1bpp",
       "asset_range": "0xC490C0-0xC4A4BF"
     },
     {
-      "file_path": "src/gfx/magitek_train.cgx.lz",
-      "asset_range": "0xEF3250-0xEF4845"
+      "asset_path": "assets/gfx/magitek_train.cgx",
+      "asset_range": "0xEF3250-0xEF4845",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/magitek_train.pal",
+      "asset_path": "assets/gfx/magitek_train.pal",
       "asset_range": "0xEF4846-0xEF4A45"
     },
     {
-      "file_path": "src/gfx/map_anim.4bpp",
+      "asset_path": "assets/gfx/map_anim.4bpp",
       "asset_range": "0xE60000-0xE67FFF"
     },
     {
-      "file_path": "src/gfx/map_anim_gfx_bg3/%s.2bpp.lz",
+      "asset_path": "assets/gfx/map_anim_gfx_bg3/%s.2bpp",
       "asset_range": "0xE6CDC0-0xE6F197",
       "ptr_range": "0xE6CDA0-0xE6CDB1",
       "ptr_offset": "0xE6CDC0",
       "ptr_size": 3,
+      "format": "lz",
       "file_list": [
         "river",
         "fire",
@@ -494,7 +518,7 @@
       ]
     },
     {
-      "file_path": "src/gfx/map_gfx/%s.4bpp",
+      "asset_path": "assets/gfx/map_gfx/%s.4bpp",
       "asset_range": "0xDFDB00-0xE5F35F",
       "ptr_range": "0xDFDA00-0xDFDAF5",
       "ptr_offset": "0xDFDB00",
@@ -507,10 +531,10 @@
         "town_ext_1",
         "town_ext_2",
         "town_ext_3",
-        "town_ext_4_en",
+        "town_ext_4.en",
         "town_ext_5",
         "castle_ext_4",
-        "town_ext_6_en",
+        "town_ext_6.en",
         "town_ext_7",
         "docks_1",
         "docks_2",
@@ -543,9 +567,9 @@
         "train_ext_3",
         "forest_1",
         "train_int",
-        "zozo_ext_1_en",
+        "zozo_ext_1.en",
         "zozo_ext_2",
-        "vector_ext_en",
+        "vector_ext.en",
         "darills_tomb_1",
         "mountains_parallax_1",
         "floating_island_1",
@@ -581,15 +605,16 @@
         "factory_6",
         "airship_5",
         "beach_parallax",
-        "darills_tomb_2_en"
+        "darills_tomb_2.en"
       ]
     },
     {
-      "file_path": "src/gfx/map_gfx_bg3/%s.2bpp.lz",
+      "asset_path": "assets/gfx/map_gfx_bg3/%s.2bpp",
       "asset_range": "0xE68780-0xE6CD3C",
       "ptr_range": "0xE6CD60-0xE6CD95",
       "ptr_offset": "0xE68780",
       "ptr_size": 3,
+      "format": "lz",
       "file_list": [
         "mountains_int",
         "river",
@@ -612,7 +637,7 @@
       ]
     },
     {
-      "file_path": "src/gfx/map_pal/%s.pal",
+      "asset_path": "assets/gfx/map_pal/%s.pal",
       "asset_range": "0xEDC480-0xEDF47F",
       "item_size": 256,
       "file_list": [
@@ -667,12 +692,12 @@
       ]
     },
     {
-      "file_path": "src/gfx/map_pal_anim/pal_%s.pal",
+      "asset_path": "assets/gfx/map_pal_anim/pal_%s.pal",
       "asset_range": "0xE6F200-0xE6F43F",
       "item_size": 32
     },
     {
-      "file_path": "src/gfx/map_sprite_gfx/%s.4bpp",
+      "asset_path": "assets/gfx/map_sprite_gfx/%s.4bpp",
       "asset_range": "0xD50000-0xD82FFF",
       "file_list": [
         "terra",
@@ -752,7 +777,7 @@
         "shiva",
         "unicorn",
         "bismark",
-        "carbuncl",
+        "carbunkl",
         "shoat",
         "owzer_1",
         "owzer_2",
@@ -1010,7 +1035,7 @@
       ]
     },
     {
-      "file_path": "src/gfx/map_sprite_pal/%s.pal",
+      "asset_path": "assets/gfx/map_sprite_pal/%s.pal",
       "asset_range": "0xE68000-0xE683FF",
       "item_size": 32,
       "file_list": [
@@ -1049,25 +1074,28 @@
       ]
     },
     {
-      "file_path": "src/gfx/menu_pal/pal_%s.pal",
+      "asset_path": "assets/gfx/menu_pal/pal_%s.pal",
       "asset_range": "0xD8E800-0xD8E8C7",
       "item_size": 8
     },
     {
-      "file_path": "src/gfx/menu_sprite.4bpp",
+      "asset_path": "assets/gfx/menu_sprite.4bpp",
       "asset_range": "0xED5AC0-0xED62BF"
     },
     {
-      "file_path": "src/gfx/minimap_1.4bpp.lz",
-      "asset_range": "0xEFE49B-0xEFE8B2"
+      "asset_path": "assets/gfx/minimap_1.4bpp",
+      "asset_range": "0xEFE49B-0xEFE8B2",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/minimap_2.4bpp.lz",
-      "asset_range": "0xEFE8B3-0xEFED25"
+      "asset_path": "assets/gfx/minimap_2.4bpp",
+      "asset_range": "0xEFE8B3-0xEFED25",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/monster_gfx/%s.trm",
-      "asset_range": "0xE97000-0xECE187",
+      "asset_path": "build/en/assets/gfx/monster_gfx/%s.stn",
+      "asset_range": "0xD2A824-0xD2AC23",
+      "item_size": 8,
       "file_list": [
         "guard.4bpp",
         "soldier.4bpp",
@@ -1077,7 +1105,197 @@
         "orog.4bpp",
         "mag_roader_1.4bpp",
         "hazer.4bpp",
-        "dahling_en.4bpp",
+        "dahling.4bpp",
+        "rain_man.4bpp",
+        "brawler.4bpp",
+        "apokryphos.4bpp",
+        "dark_force.4bpp",
+        "whisper.3bpp",
+        "over_mind.4bpp",
+        "rhodox.3bpp",
+        "were_rat.4bpp",
+        "ursus.3bpp",
+        "rhinotaur.4bpp",
+        "leafer.4bpp",
+        "stray_cat.3bpp",
+        "lobo.3bpp",
+        "doberman.4bpp",
+        "vomammoth.4bpp",
+        "fidor.4bpp",
+        "baskervor.4bpp",
+        "suriander.3bpp",
+        "mesosaur.4bpp",
+        "pterodon.4bpp",
+        "fossilfang.4bpp",
+        "tyranosaur.4bpp",
+        "dark_wind.4bpp",
+        "beakor.4bpp",
+        "vulture.4bpp",
+        "hermitcrab.4bpp",
+        "trapper.4bpp",
+        "hornet.4bpp",
+        "crasshoppr.4bpp",
+        "delta_bug.4bpp",
+        "gilomantis.4bpp",
+        "trilium.4bpp",
+        "nightshade.4bpp",
+        "tumbleweed.4bpp",
+        "bloompire.4bpp",
+        "trilobiter.3bpp",
+        "siegfried.4bpp",
+        "nautiloid.4bpp",
+        "exocite.4bpp",
+        "anguiform.4bpp",
+        "reach_frog.4bpp",
+        "lizard.4bpp",
+        "chickenlip.4bpp",
+        "pipsqueak.4bpp",
+        "mtekarmor.4bpp",
+        "sky_armor.4bpp",
+        "telstar.4bpp",
+        "vaporite.3bpp",
+        "flan.4bpp",
+        "ing.4bpp",
+        "humpty.3bpp",
+        "brainpan.4bpp",
+        "cruller.4bpp",
+        "cactrot.3bpp",
+        "repo_man.4bpp",
+        "harvester.4bpp",
+        "bomb.4bpp",
+        "still_life.4bpp",
+        "boxed_set.4bpp",
+        "slamdancer.4bpp",
+        "pug.4bpp",
+        "magic_urn.4bpp",
+        "mover.3bpp",
+        "figaliz.4bpp",
+        "aspik.3bpp",
+        "ghost.4bpp",
+        "areneid.3bpp",
+        "actaneon.4bpp",
+        "sand_horse.4bpp",
+        "mad_oscar.4bpp",
+        "crawly.4bpp",
+        "bleary.4bpp",
+        "mag_roader_2.4bpp",
+        "fortis.4bpp",
+        "trixter.4bpp",
+        "woolly.4bpp",
+        "veteran.4bpp",
+        "whelk_shell.3bpp",
+        "ghosttrain.4bpp",
+        "shiva.4bpp",
+        "ifrit_boss.4bpp",
+        "umaro.4bpp",
+        "flameeater.4bpp",
+        "tentacle_1.3bpp",
+        "curley.4bpp",
+        "larry.4bpp",
+        "moe.4bpp",
+        "hidonite.4bpp",
+        "ultros_1.4bpp",
+        "ultros_2.4bpp",
+        "whelk_head_1.4bpp",
+        "whelk_head_2.4bpp",
+        "merchant.4bpp",
+        "b_day_suit.4bpp",
+        "tentacle_2.3bpp",
+        "right_blade.4bpp",
+        "left_blade.4bpp",
+        "rough.4bpp",
+        "striker.4bpp",
+        "laser_gun.4bpp",
+        "speck.3bpp",
+        "missilebay.4bpp",
+        "kefka.4bpp",
+        "piranha.4bpp",
+        "soulsaver.4bpp",
+        "ramuh.4bpp",
+        "siren.4bpp",
+        "shoat.4bpp",
+        "maduin.4bpp",
+        "stray.4bpp",
+        "kirin.4bpp",
+        "zoneseek.4bpp",
+        "carbunkl.4bpp",
+        "phantom.3bpp",
+        "sraphim.4bpp",
+        "golem.4bpp",
+        "unicorn.4bpp",
+        "tigerbreak.4bpp",
+        "imp.3bpp"
+      ]
+    },
+    {
+      "asset_path": "build/en/assets/gfx/monster_gfx/%s.stn",
+      "asset_range": "0xD2AC24-0xD2B223",
+      "item_size": 32,
+      "file_list": [
+        "osteosaur.4bpp",
+        "phunbaba.4bpp",
+        "chimera.4bpp",
+        "behemoth.4bpp",
+        "dragon.4bpp",
+        "czardragon.4bpp",
+        "brachosaur.4bpp",
+        "harpy.4bpp",
+        "hoover.4bpp",
+        "rider.4bpp",
+        "chupon.4bpp",
+        "lethal_wpn.4bpp",
+        "hadesgigas.4bpp",
+        "buffalax.4bpp",
+        "critic.4bpp",
+        "didalos.4bpp",
+        "vargas.4bpp",
+        "tunnelarmr.4bpp",
+        "dadaluma.4bpp",
+        "number_024.4bpp",
+        "number_128.4bpp",
+        "crane.4bpp",
+        "guardian.4bpp",
+        "air_force.4bpp",
+        "tritoch_boss.4bpp",
+        "atmaweapon.4bpp",
+        "doom_gaze.4bpp",
+        "chadarnook_lady.4bpp",
+        "hidon.4bpp",
+        "doom.4bpp",
+        "goddess.4bpp",
+        "poltrgeist.4bpp",
+        "final_kefka.4bpp",
+        "chadarnook_demon.4bpp",
+        "ifrit.4bpp",
+        "terrato.4bpp",
+        "bismark.3bpp",
+        "palidor.4bpp",
+        "tritoch.4bpp",
+        "odin.4bpp",
+        "raiden.4bpp",
+        "bahamut.4bpp",
+        "alexandr.4bpp",
+        "crusader_1.4bpp",
+        "fenrir.4bpp",
+        "starlet.4bpp",
+        "phoenix.4bpp",
+        "crusader_2.4bpp"
+      ]
+    },
+    {
+      "asset_path": "assets/gfx/monster_gfx/%s",
+      "asset_range": "0xE97000-0xECE187",
+      "format": "stc",
+      "file_list": [
+        "guard.4bpp",
+        "soldier.4bpp",
+        "templar.4bpp",
+        "ninja.4bpp",
+        "samurai.4bpp",
+        "orog.4bpp",
+        "mag_roader_1.4bpp",
+        "hazer.4bpp",
+        "dahling.en.4bpp",
         "rain_man.4bpp",
         "brawler.4bpp",
         "apokryphos.4bpp",
@@ -1164,7 +1382,7 @@
         "mad_oscar.4bpp",
         "crawly.4bpp",
         "bleary.4bpp",
-        "critic_en.4bpp",
+        "critic.en.4bpp",
         "mag_roader_2.4bpp",
         "fortis.4bpp",
         "trixter.4bpp",
@@ -1189,14 +1407,14 @@
         "atmaweapon.4bpp",
         "tentacle_1.3bpp",
         "doom_gaze.4bpp",
-        "chadarnook_lady_en.4bpp",
+        "chadarnook_lady.en.4bpp",
         "curley.4bpp",
         "larry.4bpp",
         "moe.4bpp",
         "hidon.4bpp",
         "hidonite.4bpp",
         "doom.4bpp",
-        "goddess_en.4bpp",
+        "goddess.en.4bpp",
         "poltrgeist.4bpp",
         "final_kefka.4bpp",
         "ultros_1.4bpp",
@@ -1219,7 +1437,7 @@
         "soulsaver.4bpp",
         "ramuh.4bpp",
         "ifrit.4bpp",
-        "siren_en.4bpp",
+        "siren.en.4bpp",
         "terrato.4bpp",
         "shoat.4bpp",
         "maduin.4bpp",
@@ -1240,7 +1458,7 @@
         "golem.4bpp",
         "unicorn.4bpp",
         "fenrir.4bpp",
-        "starlet_en.4bpp",
+        "starlet.en.4bpp",
         "phoenix.4bpp",
         "tigerbreak.4bpp",
         "crusader_2.4bpp",
@@ -1426,198 +1644,8 @@
       ]
     },
     {
-      "file_path": "src/gfx/monster_gfx/%s.stn",
-      "asset_range": "0xD2A824-0xD2AC23",
-      "item_size": 8,
-      "file_list": [
-        "guard",
-        "soldier",
-        "templar",
-        "ninja",
-        "samurai",
-        "orog",
-        "mag_roader_1",
-        "hazer",
-        "dahling_en",
-        "rain_man",
-        "brawler",
-        "apokryphos",
-        "dark_force",
-        "whisper",
-        "over_mind",
-        "rhodox",
-        "were_rat",
-        "ursus",
-        "rhinotaur",
-        "leafer",
-        "stray_cat",
-        "lobo",
-        "doberman",
-        "vomammoth",
-        "fidor",
-        "baskervor",
-        "suriander",
-        "mesosaur",
-        "pterodon",
-        "fossilfang",
-        "tyranosaur",
-        "dark_wind",
-        "beakor",
-        "vulture",
-        "hermitcrab",
-        "trapper",
-        "hornet",
-        "crasshoppr",
-        "delta_bug",
-        "gilomantis",
-        "trilium",
-        "nightshade",
-        "tumbleweed",
-        "bloompire",
-        "trilobiter",
-        "siegfried",
-        "nautiloid",
-        "exocite",
-        "anguiform",
-        "reach_frog",
-        "lizard",
-        "chickenlip",
-        "pipsqueak",
-        "mtekarmor",
-        "sky_armor",
-        "telstar",
-        "vaporite",
-        "flan",
-        "ing",
-        "humpty",
-        "brainpan",
-        "cruller",
-        "cactrot",
-        "repo_man",
-        "harvester",
-        "bomb",
-        "still_life",
-        "boxed_set",
-        "slamdancer",
-        "pug",
-        "magic_urn",
-        "mover",
-        "figaliz",
-        "aspik",
-        "ghost",
-        "areneid",
-        "actaneon",
-        "sand_horse",
-        "mad_oscar",
-        "crawly",
-        "bleary",
-        "mag_roader_2",
-        "fortis",
-        "trixter",
-        "woolly",
-        "veteran",
-        "whelk_shell",
-        "ghosttrain",
-        "shiva",
-        "ifrit_boss",
-        "umaro",
-        "flameeater",
-        "tentacle_1",
-        "curley",
-        "larry",
-        "moe",
-        "hidonite",
-        "ultros_1",
-        "ultros_2",
-        "whelk_head_1",
-        "whelk_head_2",
-        "merchant",
-        "b_day_suit",
-        "tentacle_2",
-        "right_blade",
-        "left_blade",
-        "rough",
-        "striker",
-        "laser_gun",
-        "speck",
-        "missilebay",
-        "kefka",
-        "piranha",
-        "soulsaver",
-        "ramuh",
-        "siren_en",
-        "shoat",
-        "maduin",
-        "stray",
-        "kirin",
-        "zoneseek",
-        "carbunkl",
-        "phantom",
-        "sraphim",
-        "golem",
-        "unicorn",
-        "tigerbreak",
-        "imp"
-      ]
-    },
-    {
-      "file_path": "src/gfx/monster_gfx/%s.stn",
-      "asset_range": "0xD2AC24-0xD2B223",
-      "item_size": 32,
-      "file_list": [
-        "osteosaur",
-        "phunbaba",
-        "chimera",
-        "behemoth",
-        "dragon",
-        "czardragon",
-        "brachosaur",
-        "harpy",
-        "hoover",
-        "rider",
-        "chupon",
-        "lethal_wpn",
-        "hadesgigas",
-        "buffalax",
-        "critic_en",
-        "didalos",
-        "vargas",
-        "tunnelarmr",
-        "dadaluma",
-        "number_024",
-        "number_128",
-        "crane",
-        "guardian",
-        "air_force",
-        "tritoch_boss",
-        "atmaweapon",
-        "doom_gaze",
-        "chadarnook_lady_en",
-        "hidon",
-        "doom",
-        "goddess_en",
-        "poltrgeist",
-        "final_kefka",
-        "chadarnook_demon",
-        "ifrit",
-        "terrato",
-        "bismark",
-        "palidor",
-        "tritoch",
-        "odin",
-        "raiden",
-        "bahamut",
-        "alexandr",
-        "crusader_1",
-        "fenrir",
-        "starlet_en",
-        "phoenix",
-        "crusader_2"
-      ]
-    },
-    {
-      "file_path": "src/gfx/monster_gfx/%s.pal",
-      "asset_range": "0xD27820-0xD2A81F",
+      "asset_path": "assets/gfx/monster_gfx/%s.pal",
+      "asset_range": "0xD27820-0xD2A12F",
       "item_size": 32,
       "file_list": [
         "guard",
@@ -2321,11 +2349,11 @@
       ]
     },
     {
-      "file_path": "src/gfx/map_overlay.1bpp",
+      "asset_path": "assets/gfx/map_overlay.1bpp",
       "asset_range": "0xC0E2A0-0xC0EC1F"
     },
     {
-      "file_path": "src/gfx/portrait_gfx/%s.4bpp",
+      "asset_path": "assets/gfx/portrait/%s/%s.4bpp",
       "asset_range": "0xED1D00-0xED585F",
       "item_size": "0x0320",
       "file_list": [
@@ -2351,7 +2379,7 @@
       ]
     },
     {
-      "file_path": "src/gfx/portrait_gfx/%s.pal",
+      "asset_path": "assets/gfx/portrait/%s/%s.pal",
       "asset_range": "0xED5860-0xED5ABF",
       "item_size": 32,
       "file_list": [
@@ -2377,240 +2405,192 @@
       ]
     },
     {
-      "file_path": "src/gfx/ruin_cutscene.4bpp.lz",
-      "asset_range": "0xECE900-0xECFFFE"
+      "asset_path": "assets/gfx/ruin_cutscene.4bpp",
+      "asset_range": "0xECE900-0xECFFFE",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/slot.4bpp",
+      "asset_path": "assets/gfx/slot.4bpp",
       "asset_range": "0xD2F000-0xD2FFFF"
     },
     {
-      "file_path": "src/gfx/status_en.4bpp.lz",
-      "asset_range": "0xD2E000-0xD2EB43"
+      "asset_path": "assets/gfx/status.en.4bpp",
+      "asset_range": "0xD2E000-0xD2EB43",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/the_end_1.4bpp",
+      "asset_path": "assets/gfx/the_end/the_end_1.4bpp",
       "asset_range": "0xE96300-0xE96FFF"
     },
     {
-      "file_path": "src/gfx/the_end_2.4bpp",
+      "asset_path": "assets/gfx/the_end/the_end_2.4bpp",
       "asset_range": "0xC9FE00-0xC9FEFF"
     },
     {
-      "file_path": "src/gfx/the_end.pal",
+      "asset_path": "assets/gfx/the_end/the_end.pal",
       "asset_range": "0xC9FF00-0xC9FFFF"
     },
     {
-      "file_path": "src/gfx/title_opening_en.4bpp.lz",
-      "asset_range": "0xD8F000-0xD94E71"
+      "asset_path": "assets/gfx/title_opening.en.4bpp",
+      "asset_range": "0xD8F000-0xD94E71",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/vector_approach.4bpp.lz",
-      "asset_range": "0xD8DFB8-0xD8E5BE"
+      "asset_path": "assets/gfx/vector_approach/vector_approach.4bpp",
+      "asset_range": "0xD8DFB8-0xD8E5BE",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/vector_approach.pal",
+      "asset_path": "assets/gfx/vector_approach/vector_approach.pal",
       "asset_range": "0xEFCE77-0xEFCE96"
     },
     {
-      "file_path": "src/gfx/vector_approach.scr.lz",
-      "asset_range": "0xD8E5BF-0xD8E6B9"
+      "asset_path": "assets/gfx/vector_approach/vector_approach.scr",
+      "asset_range": "0xD8E5BF-0xD8E6B9",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/vehicle.4bpp",
+      "asset_path": "assets/gfx/vehicle.4bpp",
       "asset_range": "0xD83000-0xD84FFF"
     },
     {
-      "file_path": "src/gfx/window/window_%s.4bpp",
+      "asset_path": "assets/gfx/window/window_%s.4bpp",
       "asset_range": "0xED0000-0xED1BFF",
       "item_size": "0x0380"
     },
     {
-      "file_path": "src/gfx/window/window_%s.pal",
+      "asset_path": "assets/gfx/window/window_%s.pal",
       "asset_range": "0xED1C00-0xED1CFF",
       "item_size": 32
     },
     {
-      "file_path": "src/gfx/world_backdrop.4bpp.lz",
-      "asset_range": "0xEEB290-0xEEC294"
+      "asset_path": "assets/gfx/world_backdrop/world_backdrop.4bpp",
+      "asset_range": "0xEEB290-0xEEC294",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_backdrop.scr.lz",
-      "asset_range": "0xEEC295-0xEEC701"
+      "asset_path": "assets/gfx/world_backdrop/world_backdrop.scr",
+      "asset_range": "0xEEC295-0xEEC701",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_1_bg.pal",
+      "asset_path": "assets/gfx/world_1_bg.pal",
       "asset_range": "0xD2EC00-0xD2ECFF"
     },
     {
-      "file_path": "src/gfx/world_2_bg.pal",
+      "asset_path": "assets/gfx/world_2_bg.pal",
       "asset_range": "0xD2ED00-0xD2EDFF"
     },
     {
-      "file_path": "src/gfx/world_3.pal.lz",
-      "asset_range": "0xD8E6BA-0xD8E7B0"
+      "asset_path": "assets/gfx/world_3.pal",
+      "asset_range": "0xD8E6BA-0xD8E7B0",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_esper_terra.pal",
+      "asset_path": "assets/gfx/world_esper_terra.pal",
       "asset_range": "0xEFCE97-0xEFCEB6"
     },
     {
-      "file_path": "src/gfx/world_choco_1.4bpp.lz",
-      "asset_range": "0xEFC624-0xEFCE76"
+      "asset_path": "assets/gfx/world_choco_1.4bpp",
+      "asset_range": "0xEFC624-0xEFCE76",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_choco_2.4bpp.lz",
-      "asset_range": "0xEFDC4C-0xEFE49A"
+      "asset_path": "assets/gfx/world_choco_2.4bpp",
+      "asset_range": "0xEFDC4C-0xEFE49A",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_1_bg.4bpp.lz",
-      "asset_range": "0xEF114F-0xEF324F"
+      "asset_path": "assets/gfx/world_1_bg.4bpp",
+      "asset_range": "0xEF114F-0xEF324F",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_2_bg.4bpp.lz",
-      "asset_range": "0xEF4A46-0xEF6A55"
+      "asset_path": "assets/gfx/world_2_bg.4bpp",
+      "asset_range": "0xEF4A46-0xEF6A55",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_3_bg.4bpp.lz",
-      "asset_range": "0xEFB631-0xEFC623"
+      "asset_path": "assets/gfx/world_3_bg.4bpp",
+      "asset_range": "0xEFB631-0xEFC623",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_anim_sprite.4bpp.lz",
-      "asset_range": "0xEFCEB7-0xEFCFB8"
+      "asset_path": "assets/gfx/world_anim_sprite.4bpp",
+      "asset_range": "0xEFCEB7-0xEFCFB8",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_misc_sprite.4bpp.lz",
-      "asset_range": "0xEFCFB9-0xEFDC4B"
+      "asset_path": "assets/gfx/world_misc_sprite.4bpp",
+      "asset_range": "0xEFCFB9-0xEFDC4B",
+      "format": "lz"
     },
     {
-      "file_path": "src/gfx/world_1_sprite.pal",
+      "asset_path": "assets/gfx/world_1_sprite.pal",
       "asset_range": "0xD2EE00-0xD2EEFF"
     },
     {
-      "file_path": "src/gfx/world_2_sprite.pal",
+      "asset_path": "assets/gfx/world_2_sprite.pal",
       "asset_range": "0xD2EF00-0xD2EFFF"
     },
     {
-      "file_path": "src/btlgfx/attack_gfx_prop_en.dat",
+      "asset_path": "assets/data/btlgfx/attack_gfx_prop.en.bin",
       "asset_range": "0xD4D000-0xD4DF3B"
     },
     {
-      "file_path": "src/battle/battle_magic_points.dat",
-      "asset_range": "0xDFB400-0xDFB5FF"
-    },
-    {
-      "file_path": "src/battle/monster_prop.dat",
-      "asset_range": "0xCF0000-0xCF2FFF"
-    },
-    {
-      "file_path": "src/battle/monster_special_anim.dat",
-      "asset_range": "0xCF37C0-0xCF393F"
-    },
-    {
-      "file_path": "src/battle/battle_monsters.dat",
+      "asset_path": "assets/data/battle/battle_monsters.bin",
       "asset_range": "0xCF6200-0xCF83BF"
     },
     {
-      "file_path": "src/battle/battle_prop.dat",
+      "asset_path": "assets/data/battle/battle_prop.bin",
       "asset_range": "0xCF5900-0xCF61FF"
     },
     {
-      "file_path": "src/battle/cond_battle.dat",
-      "asset_range": "0xCF3780-0xCF37BF"
-    },
-    {
-      "file_path": "src/field/init_npc_switch.dat",
-      "asset_range": "0xC0E0A0-0xC0E11F"
-    },
-    {
-      "file_path": "src/field/event_battle_group.dat",
+      "asset_path": "assets/data/field/event_battle_group.bin",
       "asset_range": "0xCF5000-0xCF53FF"
     },
     {
-      "file_path": "src/field/rand_battle_group.dat",
+      "asset_path": "assets/data/field/rand_battle_group.bin",
       "asset_range": "0xCF4800-0xCF4FFF"
     },
     {
-      "file_path": "src/field/sub_battle_group.dat",
+      "asset_path": "assets/data/field/sub_battle_group.bin",
       "asset_range": "0xCF5600-0xCF57FF"
     },
     {
-      "file_path": "src/field/sub_battle_rate.dat",
-      "asset_range": "0xCF5880-0xCF58FF"
-    },
-    {
-      "file_path": "src/field/world_battle_group.dat",
+      "asset_path": "assets/data/field/world_battle_group.bin",
       "asset_range": "0xCF5400-0xCF55FF"
     },
     {
-      "file_path": "src/field/world_battle_rate.dat",
-      "asset_range": "0xCF5800-0xCF587F"
-    },
-    {
-      "file_path": "src/field/rng_tbl.dat",
+      "asset_path": "assets/data/field/rng_tbl.bin",
       "asset_range": "0xC0FD00-0xC0FDFF"
     },
     {
-      "file_path": "src/cutscene/cutscene_en.lz",
+      "asset_path": "build/en/bin/cutscene_code.bin.lz",
       "asset_range": "0xC2686C-0xC28A5F"
     },
     {
-      "file_path": "src/menu/item_prop_en.dat",
-      "asset_range": "0xD85000-0xD86DFF"
-    },
-    {
-      "file_path": "src/world/magitek_train_tiles.dat",
+      "asset_path": "assets/data/world/magitek_train_tiles.bin",
       "asset_range": "0xD8DD00-0xD8DFB7"
     },
     {
-      "file_path": "src/world/world_1_mod.dat",
-      "asset_range": "0xCEF600-0xCEF63B"
-    },
-    {
-      "file_path": "src/world/world_2_mod.dat",
-      "asset_range": "0xCEF63C-0xCEF647"
-    },
-    {
-      "file_path": "src/world/world_mod_tiles.dat",
-      "asset_range": "0xCEF648-0xCEFAE5"
-    },
-    {
-      "file_path": "src/field/map_prop.dat",
+      "asset_path": "assets/data/field/map_prop.bin",
       "asset_range": "0xED8F00-0xEDC47E"
     },
     {
-      "file_path": "src/btlgfx/attack_anim_prop_en.dat",
-      "asset_range": "0xD07FB2-0xD095E5"
-    },
-    {
-      "file_path": "src/btlgfx/monster_align.dat",
-      "asset_range": "0xECE800-0xECE8FF"
-    },
-    {
-      "file_path": "src/btlgfx/monster_attack_anim_prop.dat",
-      "asset_range": "0xECE6E8-0xECE7FF"
-    },
-    {
-      "file_path": "src/btlgfx/item_jump_throw_anim.dat",
-      "asset_range": "0xD10040-0xD10140"
-    },
-    {
-      "file_path": "src/btlgfx/weapon_anim_prop.dat",
-      "asset_range": "0xECE400-0xECE6E7"
-    },
-    {
-      "file_path": "src/field/map_pal_anim_prop.dat",
+      "asset_path": "assets/data/field/map_pal_anim_prop.bin",
       "asset_range": "0xC09825-0xC0989C"
     },
     {
-      "file_path": "src/field/map_parallax.dat",
+      "asset_path": "assets/data/field/map_parallax.bin",
       "asset_range": "0xC0FE40-0xC0FEE7"
     },
     {
-      "file_path": "src/field/map_tile_prop/%s.dat.lz",
+      "asset_path": "assets/data/field/map_tile_prop/%s.bin",
       "asset_range": "0xD9A800-0xD9CC4B",
       "ptr_range": "0xD9CD10-0xD9CD63",
       "ptr_offset": "0xD9A800",
+      "format": "lz",
       "file_list": [
         "none",
         "figaro_castle",
@@ -2657,19 +2637,20 @@
       ]
     },
     {
-      "file_path": "src/field/map_tileset/%s.dat.lz",
+      "asset_path": "assets/data/field/map_tileset/%s.bin",
       "asset_range": "0xDE0000-0xDFB3D3",
       "ptr_range": "0xDFBA00-0xDFBAE0",
       "ptr_offset": "0xDE0000",
       "ptr_size": 3,
+      "format": "lz",
       "file_list": [
         "figaro_castle",
         "village_ext_1_bg1",
         "village_ext_1_bg2",
         "doma_castle_bg1",
         "doma_castle_bg2",
-        "town_ext_bg1_en",
-        "town_ext_bg2_en",
+        "town_ext_bg1.en",
+        "town_ext_bg2.en",
         "docks_bg1",
         "docks_bg2",
         "caves_bg1",
@@ -2682,10 +2663,10 @@
         "town_int_bg1",
         "town_int_bg2",
         "mountains_ext_bg1",
-        "narshe_ext_bg1_en",
-        "narshe_ext_bg2_en",
-        "destroyed_town_bg1_en",
-        "destroyed_town_bg2_en",
+        "narshe_ext_bg1.en",
+        "narshe_ext_bg2.en",
+        "destroyed_town_bg1.en",
+        "destroyed_town_bg2.en",
         "snowfields",
         "train_ext_bg1",
         "train_int_bg1",
@@ -2716,7 +2697,7 @@
         "airship_ext_bg1",
         "airship_ext_bg2",
         "airship_int",
-        "narshe_intro_bg1_en",
+        "narshe_intro_bg1.en",
         "cyans_dream",
         "forest_bg1",
         "forest_bg2",
@@ -2737,14 +2718,15 @@
         "opera_house_bg1",
         "opera_house_bg2",
         "darills_tomb_bg1",
-        "darills_tomb_bg2_en"
+        "darills_tomb_bg2.en"
       ]
     },
     {
-      "file_path": "src/field/overlay_prop/%s.dat.lz",
+      "asset_path": "assets/data/field/overlay_prop/%s.bin",
       "asset_range": "0xC0F500-0xC0FCAA",
       "ptr_range": "0xC0F4A0-0xC0F4F9",
       "ptr_offset": "0xC0F500",
+      "format": "lz",
       "file_list": [
         "none",
         "town_ext",
@@ -2794,15 +2776,16 @@
       ]
     },
     {
-      "file_path": "src/field/overlay_tilemap.dat",
+      "asset_path": "assets/data/field/overlay_tilemap.bin",
       "asset_range": "0xC0EEA0-0xC0F49F"
     },
     {
-      "file_path": "src/field/sub_tilemap/%s.dat.lz",
+      "asset_path": "assets/data/field/sub_tilemap/%s.bin",
       "asset_range": "0xD9D1B0-0xDDFFF1",
       "ptr_range": "0xD9CD90-0xD9D1A9",
       "ptr_offset": "0xD9D1B0",
       "ptr_size": 3,
+      "format": "lz",
       "file_list": [
         "none",
         "kohlingen_ext_bg1",
@@ -3157,31 +3140,26 @@
       ]
     },
     {
-      "file_path": "src/world/world_1_tilemap.dat.lz",
-      "asset_range": "0xEED434-0xEF114E"
+      "asset_path": "assets/data/world/world_1_tilemap.bin",
+      "asset_range": "0xEED434-0xEF114E",
+      "format": "lz"
     },
     {
-      "file_path": "src/world/world_2_tilemap.dat.lz",
-      "asset_range": "0xEF6A56-0xEF9D16"
+      "asset_path": "assets/data/world/world_2_tilemap.bin",
+      "asset_range": "0xEF6A56-0xEF9D16",
+      "format": "lz"
     },
     {
-      "file_path": "src/world/world_3_tilemap.dat.lz",
-      "asset_range": "0xEF9D17-0xEFB630"
+      "asset_path": "assets/data/world/world_3_tilemap.bin",
+      "asset_range": "0xEF9D17-0xEFB630",
+      "format": "lz"
     },
     {
-      "file_path": "src/battle/magic_prop_en.dat",
+      "asset_path": "assets/data/battle/magic_prop.en.bin",
       "asset_range": "0xC46AC0-0xC478BF"
     },
     {
-      "file_path": "src/battle/metamorph_prop.dat",
-      "asset_range": "0xC47F40-0xC47FBF"
-    },
-    {
-      "file_path": "src/menu/shop_prop.dat",
-      "asset_range": "0xC47AC0-0xC47F3F"
-    },
-    {
-      "file_path": "src/sound/sample_brr/%s.brr",
+      "asset_path": "assets/sound/sample_brr/%s.brr",
       "asset_range": "0xC54A35-0xC85C79",
       "ptr_range": "0xC53C5F-0xC53D1B",
       "ptr_size": 3,
@@ -3253,7 +3231,7 @@
       ]
     },
     {
-      "file_path": "src/sound/sfx_brr/sfx_%s.brr",
+      "asset_path": "assets/sound/sfx_brr/sfx_%s.brr",
       "asset_range": "0xC51EC9-0xC52015",
       "item_offsets": [
         "0xC51EC9",
@@ -3269,50 +3247,32 @@
   ],
   "array": [
     {
-      "file_path": "src/btlgfx/attack_anim_frames_en.dat",
-      "inc_path": "include/btlgfx/attack_anim_frames_en.inc",
+      "asset_path": "assets/data/btlgfx/attack_anim_frames.en.bin",
       "asset_range": "0xD10141-0xD1E988",
-      "asset_label": "AttackAnimFrames",
       "ptr_range": "0xD4DF3C-0xD4F643",
       "ptr_offset": "0xD10000"
     },
     {
-      "file_path": "src/btlgfx/attack_anim_script_en.dat",
-      "inc_path": "include/btlgfx/attack_anim_script_en.inc",
-      "asset_range": "0xD00000-0xD07FB1",
-      "asset_label": "AttackAnimScript",
-      "ptr_range": "0xD1EAD8-0xD1EFFF",
-      "ptr_offset": "0xD00000"
-    },
-    {
-      "file_path": "src/btlgfx/battle_event_script.dat",
-      "inc_path": "include/btlgfx/battle_event_script.inc",
+      "asset_path": "assets/data/btlgfx/battle_event_script.bin",
       "asset_range": "0xD09842-0xD0CF49",
-      "asset_label": "BattleEventScript",
       "ptr_range": "0xD09800-0xD09841",
       "ptr_offset": "0xD00000"
     },
     {
-      "file_path": "src/field/trigger/long_entrance.dat",
-      "inc_path": "include/field/long_entrance.inc",
+      "asset_path": "assets/data/field/long_entrance.bin",
       "asset_range": "0xEDF882-0xEDFCA9",
-      "asset_label": "LongEntrance",
       "ptr_range": "0xEDF480-0xEDF87F",
       "ptr_offset": "0xEDF480"
     },
     {
-      "file_path": "src/field/trigger/short_entrance.dat",
-      "inc_path": "include/field/short_entrance.inc",
+      "asset_path": "assets/data/field/short_entrance.bin",
       "asset_range": "0xDFBF02-0xDFD977",
-      "asset_label": "ShortEntrance",
       "ptr_range": "0xDFBB00-0xDFBEFF",
       "ptr_offset": "0xDFBB00"
     },
     {
-      "file_path": "src/field/trigger/treasure_prop.dat",
-      "inc_path": "include/field/treasure_prop.inc",
+      "asset_path": "assets/data/field/treasure_prop.bin",
       "asset_range": "0xED8634-0xED8BC9",
-      "asset_label": "TreasureProp",
       "ptr_range": "0xED82F4-0xED8631",
       "ptr_offset": "0xED8634"
     }

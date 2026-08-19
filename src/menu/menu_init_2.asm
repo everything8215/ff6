@@ -7,20 +7,20 @@
 ; [ clear party character data ]
 
 ClearCharProp:
-@ca00:  stz     $75                     ; clear battle order
-        stz     $76
-        stz     $77
-        stz     $78
-        ldy     z0
-        sty     zCharPropPtr::Slot1
-        sty     zCharPropPtr::Slot2
-        sty     zCharPropPtr::Slot3
-        sty     zCharPropPtr::Slot4
+@ca00:  stz     zCharRowOrder::_0                     ; clear battle order
+        stz     zCharRowOrder::_1
+        stz     zCharRowOrder::_2
+        stz     zCharRowOrder::_3
+        ldy     zZero
+        sty     zCharPropPtr::_0
+        sty     zCharPropPtr::_1
+        sty     zCharPropPtr::_2
+        sty     zCharPropPtr::_3
         lda     #$ff
-        sta     zCharID::Slot1                 ; set character numbers to $ff (no character)
-        sta     zCharID::Slot2
-        sta     zCharID::Slot3
-        sta     zCharID::Slot4
+        sta     zCharID::_0                 ; set character numbers to $ff (no character)
+        sta     zCharID::_1
+        sta     zCharID::_2
+        sta     zCharID::_3
         rtl
 
 ; ------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ ClearCharProp:
 
 InitGradientHDMA:
 @ca1d:  xba
-        lda     z0
+        lda     zZero
         xba
         asl
         tax
@@ -417,7 +417,7 @@ _d4cd41:
 InitHWRegsMenu:
 @cd48:  lda     #$01
         sta     hOBJSEL
-        ldx     z0
+        ldx     zZero
         stx     hOAMADDL
         lda     #$09
         sta     hBGMODE
@@ -493,31 +493,31 @@ InitMenuRAM:
         sty     zM7D
         sty     zM7X
         sty     zM7Y
-        sty     z06                     ; clear controller buttons
-        sty     z08
-        sty     z0c
-        sty     z0a
-        sty     $97                     ;
+        sty     zCurrCtrlState          ; clear controller buttons
+        sty     zNewCtrlState
+        sty     zPrevCtrlState
+        sty     zRepCtrlState
+        sty     z97                     ;
         sty     zTaskCodePtr
         sta     zEnableHDMA             ; disable hdma
         sta     zMenuState
         sta     z25                     ; clear main menu selection
-        sta     $b4                     ; use inverse credits palette
+        sta     zb4                     ; use inverse credits palette
         sta     zMosaic
         sta     zSelIndex
         sta     zTextColor
-        sta     $60                     ; clear portrait task data pointers
-        sta     $61
-        sta     $62
-        sta     $63
+        sta     z60                     ; clear portrait task data pointers
+        sta     z60 + 1
+        sta     z60 + 2
+        sta     z60 + 3
         sta     z46                     ; clear cursor/scrolling flags
         sta     zSelSaveSlot
-        sta     $ae                     ; clear current sound effect
+        sta     zae                     ; clear current sound effect
         lda     #$ff
-        sta     $86                     ; clear cursor positions
-        sta     $88
-        sta     $8a
-        sta     $8c
+        sta     z85 + 1                 ; clear cursor positions
+        sta     z85 + 3
+        sta     z85 + 5
+        sta     z85 + 7
         lda     #$05                    ;
         sta     z45
         sty     zDMA2Dest               ; dma 1 destination = $0000 vram
@@ -526,8 +526,8 @@ InitMenuRAM:
         ldy     #near wBG3Tiles::ScreenA
         sty     zDMA1Src
         lda     #^wBG3Tiles::ScreenA
-        sta     zDMA1Src+2
-        sta     zDMA2Src+2
+        sta     zDMA1Src_B
+        sta     zDMA2Src_B
         ldy     #$1000                  ; dma 1 & 2 size = $1000
         sty     zDMA1Size
         sty     zDMA2Size
@@ -573,7 +573,7 @@ _d4ce55:
 InitHWRegsEnding:
 @ce8c:  lda     #$03
         sta     hOBJSEL
-        ldx     z0
+        ldx     zZero
         stx     hOAMADDL
         lda     #$09
         sta     hBGMODE
@@ -609,7 +609,7 @@ InitHWRegsEnding:
 InitHWRegsCredits:
 @ced7:  lda     #$03
         sta     hOBJSEL
-        ldx     z0
+        ldx     zZero
         stx     hOAMADDL
         lda     #$07
         sta     hBGMODE
@@ -659,7 +659,7 @@ InitEndingWindowMask:
 ; [ save memory for mode 7 hdma data ]
 
 PushMode7Vars:
-@cf3b:  ldx     z0
+@cf3b:  ldx     zZero
 @cf3d:  lda     $0600,x
         sta     $7f4000,x
         inx
@@ -672,7 +672,7 @@ PushMode7Vars:
 ; [ restore memory for mode 7 hdma data ]
 
 PopMode7Vars:
-@cf4b:  ldx     z0
+@cf4b:  ldx     zZero
 @cf4d:  lda     $7f4000,x
         sta     $0600,x
         inx

@@ -1,392 +1,392 @@
 ; ------------------------------------------------------------------------------
 
-.segment "monster_overlap"
+        .segment "monster_overlap"
 
 ; cf/3600
 MonsterOverlap:
-        .byte   0                       ; GUARD
-        .byte   0                       ; SOLDIER
-        .byte   0                       ; TEMPLAR
-        .byte   0                       ; NINJA
-        .byte   0                       ; SAMURAI
-        .byte   0                       ; OROG
-        .byte   0                       ; MAG_ROADER_1
-        .byte   0                       ; RETAINER
-        .byte   0                       ; HAZER
-        .byte   0                       ; DAHLING
-        .byte   0                       ; RAIN_MAN
-        .byte   0                       ; BRAWLER
-        .byte   0                       ; APOKRYPHOS
-        .byte   0                       ; DARK_FORCE
-        .byte   0                       ; WHISPER
-        .byte   0                       ; OVER_MIND
-        .byte   0                       ; OSTEOSAUR
-        .byte   0                       ; COMMANDER
-        .byte   0                       ; RHODOX
-        .byte   0                       ; WERE_RAT
-        .byte   0                       ; URSUS
-        .byte   0                       ; RHINOTAUR
-        .byte   0                       ; STEROIDITE
-        .byte   0                       ; LEAFER
-        .byte   0                       ; STRAY_CAT
-        .byte   0                       ; LOBO
-        .byte   0                       ; DOBERMAN
-        .byte   0                       ; VOMAMMOTH
-        .byte   0                       ; FIDOR
-        .byte   0                       ; BASKERVOR
-        .byte   0                       ; SURIANDER
-        .byte   0                       ; CHIMERA
-        .byte   0                       ; BEHEMOTH
-        .byte   0                       ; MESOSAUR
-        .byte   0                       ; PTERODON
-        .byte   0                       ; FOSSILFANG
-        .byte   0                       ; WHITE_DRGN
-        .byte   0                       ; DOOM_DRGN
-        .byte   0                       ; BRACHOSAUR
-        .byte   0                       ; TYRANOSAUR
-        .byte   0                       ; DARK_WIND
-        .byte   0                       ; BEAKOR
-        .byte   0                       ; VULTURE
-        .byte   0                       ; HARPY
-        .byte   0                       ; HERMITCRAB
-        .byte   0                       ; TRAPPER
-        .byte   0                       ; HORNET
-        .byte   0                       ; CRASSHOPPR
-        .byte   0                       ; DELTA_BUG
-        .byte   0                       ; GILOMANTIS
-        .byte   0                       ; TRILIUM
-        .byte   0                       ; NIGHTSHADE
-        .byte   0                       ; TUMBLEWEED
-        .byte   0                       ; BLOOMPIRE
-        .byte   0                       ; TRILOBITER
-        .byte   0                       ; SIEGFRIED_1
-        .byte   0                       ; NAUTILOID
-        .byte   0                       ; EXOCITE
-        .byte   0                       ; ANGUIFORM
-        .byte   0                       ; REACH_FROG
-        .byte   0                       ; LIZARD
-        .byte   0                       ; CHICKENLIP
-        .byte   0                       ; HOOVER
-        .byte   0                       ; RIDER
-        .byte   0                       ; CHUPON_COLOSSEUM
-        .byte   0                       ; PIPSQUEAK
-        .byte   0                       ; M_TEKARMOR
-        .byte   0                       ; SKY_ARMOR
-        .byte   0                       ; TELSTAR
-        .byte   0                       ; LETHAL_WPN
-        .byte   0                       ; VAPORITE
-        .byte   0                       ; FLAN
-        .byte   0                       ; ING
-        .byte   0                       ; HUMPTY
-        .byte   0                       ; BRAINPAN
-        .byte   0                       ; CRULLER
-        .byte   0                       ; CACTROT
-        .byte   0                       ; REPO_MAN
-        .byte   0                       ; HARVESTER
-        .byte   0                       ; BOMB
-        .byte   0                       ; STILL_LIFE
-        .byte   0                       ; BOXED_SET
-        .byte   0                       ; SLAMDANCER
-        .byte   0                       ; HADESGIGAS
-        .byte   0                       ; PUG
-        .byte   0                       ; MAGIC_URN
-        .byte   0                       ; MOVER
-        .byte   0                       ; FIGALIZ
-        .byte   0                       ; BUFFALAX
-        .byte   0                       ; ASPIK
-        .byte   0                       ; GHOST
-        .byte   0                       ; CRAWLER
-        .byte   0                       ; SAND_RAY
-        .byte   0                       ; ARENEID
-        .byte   0                       ; ACTANEON
-        .byte   0                       ; SAND_HORSE
-        .byte   0                       ; DARK_SIDE
-        .byte   0                       ; MAD_OSCAR
-        .byte   0                       ; CRAWLY
-        .byte   0                       ; BLEARY
-        .byte   0                       ; MARSHAL
-        .byte   0                       ; TROOPER
-        .byte   0                       ; GENERAL
-        .byte   0                       ; COVERT
-        .byte   0                       ; OGOR
-        .byte   0                       ; WARLOCK
-        .byte   0                       ; MADAM
-        .byte   0                       ; JOKER
-        .byte   0                       ; IRON_FIST
-        .byte   0                       ; GOBLIN
-        .byte   0                       ; APPARITE
-        .byte   0                       ; POWERDEMON
-        .byte   0                       ; DISPLAYER
-        .byte   0                       ; VECTOR_PUP
-        .byte   0                       ; PEEPERS
-        .byte   0                       ; SEWER_RAT
-        .byte   0                       ; SLATTER
-        .byte   0                       ; RHINOX
-        .byte   0                       ; RHOBITE
-        .byte   0                       ; WILD_CAT
-        .byte   0                       ; RED_FANG
-        .byte   0                       ; BOUNTY_MAN
-        .byte   0                       ; TUSKER
-        .byte   0                       ; RALPH
-        .byte   0                       ; CHITONID
-        .byte   0                       ; WART_PUCK
-        .byte   0                       ; RHYOS
-        .byte   0                       ; SRBEHEMOTH_UNDEAD
-        .byte   0                       ; VECTAUR
-        .byte   0                       ; WYVERN
-        .byte   0                       ; ZOMBONE
-        .byte   0                       ; DRAGON
-        .byte   0                       ; BRONTAUR
-        .byte   0                       ; ALLOSAURUS
-        .byte   0                       ; CIRPIUS
-        .byte   0                       ; SPRINTER
-        .byte   0                       ; GOBBLER
-        .byte   0                       ; HARPIAI
-        .byte   0                       ; GLOOMSHELL
-        .byte   0                       ; DROP
-        .byte   0                       ; MIND_CANDY
-        .byte   0                       ; WEEDFEEDER
-        .byte   0                       ; LURIDAN
-        .byte   0                       ; TOE_CUTTER
-        .byte   0                       ; OVER_GRUNK
-        .byte   0                       ; EXORAY
-        .byte   0                       ; CRUSHER
-        .byte   0                       ; UROBUROS
-        .byte   0                       ; PRIMORDITE
-        .byte   0                       ; SKY_CAP
-        .byte   0                       ; CEPHALER
-        .byte   0                       ; MALIGA
-        .byte   0                       ; GIGAN_TOAD
-        .byte   0                       ; GECKOREX
-        .byte   0                       ; CLUCK
-        .byte   0                       ; LAND_WORM
-        .byte   0                       ; TEST_RIDER
-        .byte   0                       ; PLUTOARMOR
-        .byte   0                       ; TOMB_THUMB
-        .byte   0                       ; HEAVYARMOR
-        .byte   0                       ; CHASER
-        .byte   0                       ; SCULLION
-        .byte   0                       ; POPLIUM
-        .byte   0                       ; INTANGIR
-        .byte   0                       ; MISFIT
-        .byte   0                       ; ELAND
-        .byte   0                       ; ENUO
-        .byte   0                       ; DEEP_EYE
-        .byte   0                       ; GREASEMONK
-        .byte   0                       ; NECKHUNTER
-        .byte   0                       ; GRENADE
-        .byte   0                       ; CRITIC
-        .byte   0                       ; PAN_DORA
-        .byte   0                       ; SOULDANCER
-        .byte   0                       ; GIGANTOS
-        .byte   0                       ; MAG_ROADER_2
-        .byte   0                       ; SPEK_TOR
-        .byte   0                       ; PARASITE
-        .byte   0                       ; EARTHGUARD
-        .byte   0                       ; COELECITE
-        .byte   0                       ; ANEMONE
-        .byte   0                       ; HIPOCAMPUS
-        .byte   0                       ; SPECTRE
-        .byte   0                       ; EVIL_OSCAR
-        .byte   0                       ; SLURM
-        .byte   0                       ; LATIMERIA
-        .byte   0                       ; STILLGOING
-        .byte   0                       ; ALLO_VER
-        .byte   0                       ; PHASE
-        .byte   0                       ; OUTSIDER
-        .byte   0                       ; BARB_E
-        .byte   0                       ; PARASOUL
-        .byte   0                       ; PM_STALKER
-        .byte   0                       ; HEMOPHYTE
-        .byte   0                       ; SP_FORCES
-        .byte   0                       ; NOHRABBIT
-        .byte   0                       ; WIZARD
-        .byte   0                       ; SCRAPPER
-        .byte   0                       ; CERITOPS
-        .byte   0                       ; COMMANDO
-        .byte   0                       ; OPINICUS
-        .byte   0                       ; POPPERS
-        .byte   0                       ; LUNARIS
-        .byte   0                       ; GARM
-        .byte   0                       ; VINDR
-        .byte   0                       ; KIWOK
-        .byte   0                       ; NASTIDON
-        .byte   0                       ; RINN
-        .byte   0                       ; INSECARE
-        .byte   0                       ; VERMIN
-        .byte   0                       ; MANTODEA
-        .byte   0                       ; BOGY
-        .byte   0                       ; PRUSSIAN
-        .byte   0                       ; BLACK_DRGN
-        .byte   0                       ; ADAMANCHYT
-        .byte   0                       ; DANTE
-        .byte   0                       ; WIREY_DRGN
-        .byte   0                       ; DUELLER
-        .byte   0                       ; PSYCHOT
-        .byte   0                       ; MUUS
-        .byte   0                       ; KARKASS
-        .byte   0                       ; PUNISHER
-        .byte   0                       ; BALLOON
-        .byte   0                       ; GABBLDEGAK
-        .byte   0                       ; GTBEHEMOTH
-        .byte   0                       ; SCORPION
-        .byte   0                       ; CHAOS_DRGN
-        .byte   0                       ; SPIT_FIRE
-        .byte   0                       ; VECTAGOYLE
-        .byte   0                       ; LICH
-        .byte   0                       ; OSPREY
-        .byte   0                       ; MAG_ROADER_3
-        .byte   0                       ; BUG
-        .byte   0                       ; SEA_FLOWER
-        .byte   0                       ; FORTIS
-        .byte   0                       ; ABOLISHER
-        .byte   0                       ; AQUILA
-        .byte   0                       ; JUNK
-        .byte   0                       ; MANDRAKE
-        .byte   0                       ; 1ST_CLASS
-        .byte   0                       ; TAP_DANCER
-        .byte   0                       ; NECROMANCR
-        .byte   0                       ; BORRAS
-        .byte   0                       ; MAG_ROADER_4
-        .byte   0                       ; WILD_RAT
-        .byte   72                      ; GOLD_BEAR
-        .byte   0                       ; INNOC
-        .byte   0                       ; TRIXTER
-        .byte   0                       ; RED_WOLF
-        .byte   0                       ; DIDALOS
-        .byte   0                       ; WOOLLY
-        .byte   0                       ; VETERAN
-        .byte   0                       ; SKY_BASE
-        .byte   0                       ; IRONHITMAN
-        .byte   72                      ; IO
-        .byte   0                       ; PUGS
-        .byte   0                       ; WHELK
-        .byte   0                       ; PRESENTER
-        .byte   0                       ; MEGA_ARMOR
-        .byte   0                       ; VARGAS
-        .byte   0                       ; TUNNELARMR
-        .byte   0                       ; PROMETHEUS
-        .byte   0                       ; GHOSTTRAIN
-        .byte   0                       ; DADALUMA
-        .byte   0                       ; SHIVA
-        .byte   0                       ; IFRIT
-        .byte   0                       ; NUMBER_024
-        .byte   0                       ; NUMBER_128
-        .byte   0                       ; INFERNO
-        .byte   0                       ; CRANE_1
-        .byte   0                       ; CRANE_2
-        .byte   0                       ; UMARO_1
-        .byte   0                       ; UMARO_2
-        .byte   0                       ; GUARDIAN_VECTOR
-        .byte   0                       ; GUARDIAN_BOSS
-        .byte   0                       ; AIR_FORCE
-        .byte   0                       ; TRITOCH_INTRO
-        .byte   0                       ; TRITOCH_MORPH
-        .byte   0                       ; FLAMEEATER
-        .byte   0                       ; ATMAWEAPON
-        .byte   0                       ; NERAPA
-        .byte   0                       ; SRBEHEMOTH
-        .byte   0                       ; KEFKA_1
-        .byte   72                      ; TENTACLE
-        .byte   0                       ; DULLAHAN
-        .byte   0                       ; DOOM_GAZE
-        .byte   0                       ; CHADARNOOK_1
-        .byte   0                       ; CURLEY
-        .byte   0                       ; LARRY
-        .byte   0                       ; MOE
-        .byte   0                       ; WREXSOUL
-        .byte   0                       ; HIDON
-        .byte   0                       ; KATANASOUL
-        .byte   0                       ; L30_MAGIC
-        .byte   0                       ; HIDONITE
-        .byte   0                       ; DOOM
-        .byte   0                       ; GODDESS
-        .byte   0                       ; POLTRGEIST
-        .byte   0                       ; FINAL_KEFKA
-        .byte   0                       ; L40_MAGIC
-        .byte   0                       ; ULTROS_RIVER
-        .byte   0                       ; ULTROS_OPERA
-        .byte   0                       ; ULTROS_MOUNTAIN
-        .byte   0                       ; CHUPON_AIRSHIP
-        .byte   0                       ; L20_MAGIC
-        .byte   0                       ; SIEGFRIED_2
-        .byte   0                       ; L10_MAGIC
-        .byte   0                       ; L50_MAGIC
-        .byte   8                       ; HEAD
-        .byte   8                       ; WHELK_HEAD
-        .byte   0                       ; COLOSSUS
-        .byte   0                       ; CZARDRAGON
-        .byte   0                       ; MASTER_PUG
-        .byte   0                       ; L60_MAGIC
-        .byte   0                       ; MERCHANT
-        .byte   0                       ; B_DAY_SUIT
-        .byte   72                      ; TENTACLE_1
-        .byte   32                      ; TENTACLE_2
-        .byte   32                      ; TENTACLE_3
-        .byte   48                      ; RIGHTBLADE
-        .byte   64                      ; LEFT_BLADE
-        .byte   48                      ; ROUGH
-        .byte   16                      ; STRIKER
-        .byte   0                       ; L70_MAGIC
-        .byte   0                       ; TRITOCH_BOSS
-        .byte   0                       ; LASER_GUN
-        .byte   0                       ; SPECK
-        .byte   24                      ; MISSILEBAY
-        .byte   0                       ; CHADARNOOK_2
-        .byte   0                       ; ICE_DRAGON
-        .byte   0                       ; KEFKA_NARSHE
-        .byte   0                       ; STORM_DRGN
-        .byte   0                       ; DIRT_DRGN
-        .byte   0                       ; IPOOH
-        .byte   0                       ; LEADER
-        .byte   0                       ; GRUNT
-        .byte   0                       ; GOLD_DRGN
-        .byte   0                       ; SKULL_DRGN
-        .byte   0                       ; BLUE_DRGN
-        .byte   0                       ; RED_DRAGON
-        .byte   0                       ; PIRANHA
-        .byte   0                       ; RIZOPAS
-        .byte   0                       ; SPECTER
-        .byte   0                       ; SHORT_ARM
-        .byte   0                       ; LONG_ARM
-        .byte   0                       ; FACE
-        .byte   0                       ; TIGER
-        .byte   0                       ; TOOLS
-        .byte   0                       ; MAGIC
-        .byte   0                       ; HIT
-        .byte   0                       ; GIRL
-        .byte   0                       ; SLEEP
-        .byte   1                       ; HIDONITE_1
-        .byte   0                       ; HIDONITE_2
-        .byte   0                       ; HIDONITE_3
-        .byte   0                       ; L80_MAGIC
-        .byte   0                       ; L90_MAGIC
-        .byte   0                       ; PROTOARMOR
-        .byte   0                       ; MAGIMASTER
-        .byte   0                       ; SOULSAVER
-        .byte   0                       ; ULTROS_AIRSHIP
-        .byte   0                       ; NAUGHTY
-        .byte   0                       ; PHUNBABA_1
-        .byte   0                       ; PHUNBABA_2
-        .byte   0                       ; PHUNBABA_3
-        .byte   0                       ; PHUNBABA_4
-        .byte   0                       ; TERRA_FLASHBACK
-        .byte   0                       ; KEFKA_IMP_CAMP
-        .byte   0                       ; CYAN_IMP_CAMP
-        .byte   0                       ; ZONE_EATER
-        .byte   0                       ; GAU_VELDT
-        .byte   0                       ; KEFKA_VS_LEO
-        .byte   0                       ; KEFKA_ESPER_GATE
-        .byte   0                       ; OFFICER
-        .byte   0                       ; CADET
-        .byte   0                       ; MONSTER_0177
-        .byte   0                       ; MONSTER_0178
-        .byte   0                       ; SOLDIER_FLASHBACK
-        .byte   0                       ; KEFKA_VS_ESPER
-        .byte   0                       ; EVENT
-        .byte   0                       ; MONSTER_017C
-        .byte   0                       ; ATMA
-        .byte   0                       ; SHADOW_COLOSSEUM
-        .byte   0                       ; COLOSSEUM
+        .byte   0                       ; 0: GUARD
+        .byte   0                       ; 1: SOLDIER
+        .byte   0                       ; 2: TEMPLAR
+        .byte   0                       ; 3: NINJA
+        .byte   0                       ; 4: SAMURAI
+        .byte   0                       ; 5: OROG
+        .byte   0                       ; 6: MAG_ROADER_1
+        .byte   0                       ; 7: RETAINER
+        .byte   0                       ; 8: HAZER
+        .byte   0                       ; 9: DAHLING
+        .byte   0                       ; 10: RAIN_MAN
+        .byte   0                       ; 11: BRAWLER
+        .byte   0                       ; 12: APOKRYPHOS
+        .byte   0                       ; 13: DARK_FORCE
+        .byte   0                       ; 14: WHISPER
+        .byte   0                       ; 15: OVER_MIND
+        .byte   0                       ; 16: OSTEOSAUR
+        .byte   0                       ; 17: COMMANDER
+        .byte   0                       ; 18: RHODOX
+        .byte   0                       ; 19: WERE_RAT
+        .byte   0                       ; 20: URSUS
+        .byte   0                       ; 21: RHINOTAUR
+        .byte   0                       ; 22: STEROIDITE
+        .byte   0                       ; 23: LEAFER
+        .byte   0                       ; 24: STRAY_CAT
+        .byte   0                       ; 25: LOBO
+        .byte   0                       ; 26: DOBERMAN
+        .byte   0                       ; 27: VOMAMMOTH
+        .byte   0                       ; 28: FIDOR
+        .byte   0                       ; 29: BASKERVOR
+        .byte   0                       ; 30: SURIANDER
+        .byte   0                       ; 31: CHIMERA
+        .byte   0                       ; 32: BEHEMOTH
+        .byte   0                       ; 33: MESOSAUR
+        .byte   0                       ; 34: PTERODON
+        .byte   0                       ; 35: FOSSILFANG
+        .byte   0                       ; 36: WHITE_DRGN
+        .byte   0                       ; 37: DOOM_DRGN
+        .byte   0                       ; 38: BRACHOSAUR
+        .byte   0                       ; 39: TYRANOSAUR
+        .byte   0                       ; 40: DARK_WIND
+        .byte   0                       ; 41: BEAKOR
+        .byte   0                       ; 42: VULTURE
+        .byte   0                       ; 43: HARPY
+        .byte   0                       ; 44: HERMITCRAB
+        .byte   0                       ; 45: TRAPPER
+        .byte   0                       ; 46: HORNET
+        .byte   0                       ; 47: CRASSHOPPR
+        .byte   0                       ; 48: DELTA_BUG
+        .byte   0                       ; 49: GILOMANTIS
+        .byte   0                       ; 50: TRILIUM
+        .byte   0                       ; 51: NIGHTSHADE
+        .byte   0                       ; 52: TUMBLEWEED
+        .byte   0                       ; 53: BLOOMPIRE
+        .byte   0                       ; 54: TRILOBITER
+        .byte   0                       ; 55: SIEGFRIED_1
+        .byte   0                       ; 56: NAUTILOID
+        .byte   0                       ; 57: EXOCITE
+        .byte   0                       ; 58: ANGUIFORM
+        .byte   0                       ; 59: REACH_FROG
+        .byte   0                       ; 60: LIZARD
+        .byte   0                       ; 61: CHICKENLIP
+        .byte   0                       ; 62: HOOVER
+        .byte   0                       ; 63: RIDER
+        .byte   0                       ; 64: CHUPON_COLOSSEUM
+        .byte   0                       ; 65: PIPSQUEAK
+        .byte   0                       ; 66: M_TEKARMOR
+        .byte   0                       ; 67: SKY_ARMOR
+        .byte   0                       ; 68: TELSTAR
+        .byte   0                       ; 69: LETHAL_WPN
+        .byte   0                       ; 70: VAPORITE
+        .byte   0                       ; 71: FLAN
+        .byte   0                       ; 72: ING
+        .byte   0                       ; 73: HUMPTY
+        .byte   0                       ; 74: BRAINPAN
+        .byte   0                       ; 75: CRULLER
+        .byte   0                       ; 76: CACTROT
+        .byte   0                       ; 77: REPO_MAN
+        .byte   0                       ; 78: HARVESTER
+        .byte   0                       ; 79: BOMB
+        .byte   0                       ; 80: STILL_LIFE
+        .byte   0                       ; 81: BOXED_SET
+        .byte   0                       ; 82: SLAMDANCER
+        .byte   0                       ; 83: HADESGIGAS
+        .byte   0                       ; 84: PUG
+        .byte   0                       ; 85: MAGIC_URN
+        .byte   0                       ; 86: MOVER
+        .byte   0                       ; 87: FIGALIZ
+        .byte   0                       ; 88: BUFFALAX
+        .byte   0                       ; 89: ASPIK
+        .byte   0                       ; 90: GHOST
+        .byte   0                       ; 91: CRAWLER
+        .byte   0                       ; 92: SAND_RAY
+        .byte   0                       ; 93: ARENEID
+        .byte   0                       ; 94: ACTANEON
+        .byte   0                       ; 95: SAND_HORSE
+        .byte   0                       ; 96: DARK_SIDE
+        .byte   0                       ; 97: MAD_OSCAR
+        .byte   0                       ; 98: CRAWLY
+        .byte   0                       ; 99: BLEARY
+        .byte   0                       ; 100: MARSHAL
+        .byte   0                       ; 101: TROOPER
+        .byte   0                       ; 102: GENERAL
+        .byte   0                       ; 103: COVERT
+        .byte   0                       ; 104: OGOR
+        .byte   0                       ; 105: WARLOCK
+        .byte   0                       ; 106: MADAM
+        .byte   0                       ; 107: JOKER
+        .byte   0                       ; 108: IRON_FIST
+        .byte   0                       ; 109: GOBLIN
+        .byte   0                       ; 110: APPARITE
+        .byte   0                       ; 111: POWERDEMON
+        .byte   0                       ; 112: DISPLAYER
+        .byte   0                       ; 113: VECTOR_PUP
+        .byte   0                       ; 114: PEEPERS
+        .byte   0                       ; 115: SEWER_RAT
+        .byte   0                       ; 116: SLATTER
+        .byte   0                       ; 117: RHINOX
+        .byte   0                       ; 118: RHOBITE
+        .byte   0                       ; 119: WILD_CAT
+        .byte   0                       ; 120: RED_FANG
+        .byte   0                       ; 121: BOUNTY_MAN
+        .byte   0                       ; 122: TUSKER
+        .byte   0                       ; 123: RALPH
+        .byte   0                       ; 124: CHITONID
+        .byte   0                       ; 125: WART_PUCK
+        .byte   0                       ; 126: RHYOS
+        .byte   0                       ; 127: SRBEHEMOTH_UNDEAD
+        .byte   0                       ; 128: VECTAUR
+        .byte   0                       ; 129: WYVERN
+        .byte   0                       ; 130: ZOMBONE
+        .byte   0                       ; 131: DRAGON
+        .byte   0                       ; 132: BRONTAUR
+        .byte   0                       ; 133: ALLOSAURUS
+        .byte   0                       ; 134: CIRPIUS
+        .byte   0                       ; 135: SPRINTER
+        .byte   0                       ; 136: GOBBLER
+        .byte   0                       ; 137: HARPIAI
+        .byte   0                       ; 138: GLOOMSHELL
+        .byte   0                       ; 139: DROP
+        .byte   0                       ; 140: MIND_CANDY
+        .byte   0                       ; 141: WEEDFEEDER
+        .byte   0                       ; 142: LURIDAN
+        .byte   0                       ; 143: TOE_CUTTER
+        .byte   0                       ; 144: OVER_GRUNK
+        .byte   0                       ; 145: EXORAY
+        .byte   0                       ; 146: CRUSHER
+        .byte   0                       ; 147: UROBUROS
+        .byte   0                       ; 148: PRIMORDITE
+        .byte   0                       ; 149: SKY_CAP
+        .byte   0                       ; 150: CEPHALER
+        .byte   0                       ; 151: MALIGA
+        .byte   0                       ; 152: GIGAN_TOAD
+        .byte   0                       ; 153: GECKOREX
+        .byte   0                       ; 154: CLUCK
+        .byte   0                       ; 155: LAND_WORM
+        .byte   0                       ; 156: TEST_RIDER
+        .byte   0                       ; 157: PLUTOARMOR
+        .byte   0                       ; 158: TOMB_THUMB
+        .byte   0                       ; 159: HEAVYARMOR
+        .byte   0                       ; 160: CHASER
+        .byte   0                       ; 161: SCULLION
+        .byte   0                       ; 162: POPLIUM
+        .byte   0                       ; 163: INTANGIR
+        .byte   0                       ; 164: MISFIT
+        .byte   0                       ; 165: ELAND
+        .byte   0                       ; 166: ENUO
+        .byte   0                       ; 167: DEEP_EYE
+        .byte   0                       ; 168: GREASEMONK
+        .byte   0                       ; 169: NECKHUNTER
+        .byte   0                       ; 170: GRENADE
+        .byte   0                       ; 171: CRITIC
+        .byte   0                       ; 172: PAN_DORA
+        .byte   0                       ; 173: SOULDANCER
+        .byte   0                       ; 174: GIGANTOS
+        .byte   0                       ; 175: MAG_ROADER_2
+        .byte   0                       ; 176: SPEK_TOR
+        .byte   0                       ; 177: PARASITE
+        .byte   0                       ; 178: EARTHGUARD
+        .byte   0                       ; 179: COELECITE
+        .byte   0                       ; 180: ANEMONE
+        .byte   0                       ; 181: HIPOCAMPUS
+        .byte   0                       ; 182: SPECTRE
+        .byte   0                       ; 183: EVIL_OSCAR
+        .byte   0                       ; 184: SLURM
+        .byte   0                       ; 185: LATIMERIA
+        .byte   0                       ; 186: STILLGOING
+        .byte   0                       ; 187: ALLO_VER
+        .byte   0                       ; 188: PHASE
+        .byte   0                       ; 189: OUTSIDER
+        .byte   0                       ; 190: BARB_E
+        .byte   0                       ; 191: PARASOUL
+        .byte   0                       ; 192: PM_STALKER
+        .byte   0                       ; 193: HEMOPHYTE
+        .byte   0                       ; 194: SP_FORCES
+        .byte   0                       ; 195: NOHRABBIT
+        .byte   0                       ; 196: WIZARD
+        .byte   0                       ; 197: SCRAPPER
+        .byte   0                       ; 198: CERITOPS
+        .byte   0                       ; 199: COMMANDO
+        .byte   0                       ; 200: OPINICUS
+        .byte   0                       ; 201: POPPERS
+        .byte   0                       ; 202: LUNARIS
+        .byte   0                       ; 203: GARM
+        .byte   0                       ; 204: VINDR
+        .byte   0                       ; 205: KIWOK
+        .byte   0                       ; 206: NASTIDON
+        .byte   0                       ; 207: RINN
+        .byte   0                       ; 208: INSECARE
+        .byte   0                       ; 209: VERMIN
+        .byte   0                       ; 210: MANTODEA
+        .byte   0                       ; 211: BOGY
+        .byte   0                       ; 212: PRUSSIAN
+        .byte   0                       ; 213: BLACK_DRGN
+        .byte   0                       ; 214: ADAMANCHYT
+        .byte   0                       ; 215: DANTE
+        .byte   0                       ; 216: WIREY_DRGN
+        .byte   0                       ; 217: DUELLER
+        .byte   0                       ; 218: PSYCHOT
+        .byte   0                       ; 219: MUUS
+        .byte   0                       ; 220: KARKASS
+        .byte   0                       ; 221: PUNISHER
+        .byte   0                       ; 222: BALLOON
+        .byte   0                       ; 223: GABBLDEGAK
+        .byte   0                       ; 224: GTBEHEMOTH
+        .byte   0                       ; 225: SCORPION
+        .byte   0                       ; 226: CHAOS_DRGN
+        .byte   0                       ; 227: SPIT_FIRE
+        .byte   0                       ; 228: VECTAGOYLE
+        .byte   0                       ; 229: LICH
+        .byte   0                       ; 230: OSPREY
+        .byte   0                       ; 231: MAG_ROADER_3
+        .byte   0                       ; 232: BUG
+        .byte   0                       ; 233: SEA_FLOWER
+        .byte   0                       ; 234: FORTIS
+        .byte   0                       ; 235: ABOLISHER
+        .byte   0                       ; 236: AQUILA
+        .byte   0                       ; 237: JUNK
+        .byte   0                       ; 238: MANDRAKE
+        .byte   0                       ; 239: FIRST_CLASS
+        .byte   0                       ; 240: TAP_DANCER
+        .byte   0                       ; 241: NECROMANCR
+        .byte   0                       ; 242: BORRAS
+        .byte   0                       ; 243: MAG_ROADER_4
+        .byte   0                       ; 244: WILD_RAT
+        .byte   72                      ; 245: GOLD_BEAR
+        .byte   0                       ; 246: INNOC
+        .byte   0                       ; 247: TRIXTER
+        .byte   0                       ; 248: RED_WOLF
+        .byte   0                       ; 249: DIDALOS
+        .byte   0                       ; 250: WOOLLY
+        .byte   0                       ; 251: VETERAN
+        .byte   0                       ; 252: SKY_BASE
+        .byte   0                       ; 253: IRONHITMAN
+        .byte   72                      ; 254: IO
+        .byte   0                       ; 255: PUGS
+        .byte   0                       ; 256: WHELK
+        .byte   0                       ; 257: PRESENTER
+        .byte   0                       ; 258: MEGA_ARMOR
+        .byte   0                       ; 259: VARGAS
+        .byte   0                       ; 260: TUNNELARMR
+        .byte   0                       ; 261: PROMETHEUS
+        .byte   0                       ; 262: GHOSTTRAIN
+        .byte   0                       ; 263: DADALUMA
+        .byte   0                       ; 264: SHIVA
+        .byte   0                       ; 265: IFRIT
+        .byte   0                       ; 266: NUMBER_024
+        .byte   0                       ; 267: NUMBER_128
+        .byte   0                       ; 268: INFERNO
+        .byte   0                       ; 269: CRANE_1
+        .byte   0                       ; 270: CRANE_2
+        .byte   0                       ; 271: UMARO_1
+        .byte   0                       ; 272: UMARO_2
+        .byte   0                       ; 273: GUARDIAN_VECTOR
+        .byte   0                       ; 274: GUARDIAN_BOSS
+        .byte   0                       ; 275: AIR_FORCE
+        .byte   0                       ; 276: TRITOCH_INTRO
+        .byte   0                       ; 277: TRITOCH_MORPH
+        .byte   0                       ; 278: FLAMEEATER
+        .byte   0                       ; 279: ATMAWEAPON
+        .byte   0                       ; 280: NERAPA
+        .byte   0                       ; 281: SRBEHEMOTH
+        .byte   0                       ; 282: KEFKA_1
+        .byte   72                      ; 283: TENTACLE
+        .byte   0                       ; 284: DULLAHAN
+        .byte   0                       ; 285: DOOM_GAZE
+        .byte   0                       ; 286: CHADARNOOK_1
+        .byte   0                       ; 287: CURLEY
+        .byte   0                       ; 288: LARRY
+        .byte   0                       ; 289: MOE
+        .byte   0                       ; 290: WREXSOUL
+        .byte   0                       ; 291: HIDON
+        .byte   0                       ; 292: KATANASOUL
+        .byte   0                       ; 293: L30_MAGIC
+        .byte   0                       ; 294: HIDONITE
+        .byte   0                       ; 295: DOOM
+        .byte   0                       ; 296: GODDESS
+        .byte   0                       ; 297: POLTRGEIST
+        .byte   0                       ; 298: FINAL_KEFKA
+        .byte   0                       ; 299: L40_MAGIC
+        .byte   0                       ; 300: ULTROS_RIVER
+        .byte   0                       ; 301: ULTROS_OPERA
+        .byte   0                       ; 302: ULTROS_MOUNTAIN
+        .byte   0                       ; 303: CHUPON_AIRSHIP
+        .byte   0                       ; 304: L20_MAGIC
+        .byte   0                       ; 305: SIEGFRIED_2
+        .byte   0                       ; 306: L10_MAGIC
+        .byte   0                       ; 307: L50_MAGIC
+        .byte   8                       ; 308: HEAD
+        .byte   8                       ; 309: WHELK_HEAD
+        .byte   0                       ; 310: COLOSSUS
+        .byte   0                       ; 311: CZARDRAGON
+        .byte   0                       ; 312: MASTER_PUG
+        .byte   0                       ; 313: L60_MAGIC
+        .byte   0                       ; 314: MERCHANT
+        .byte   0                       ; 315: B_DAY_SUIT
+        .byte   72                      ; 316: TENTACLE_1
+        .byte   32                      ; 317: TENTACLE_2
+        .byte   32                      ; 318: TENTACLE_3
+        .byte   48                      ; 319: RIGHTBLADE
+        .byte   64                      ; 320: LEFT_BLADE
+        .byte   48                      ; 321: ROUGH
+        .byte   16                      ; 322: STRIKER
+        .byte   0                       ; 323: L70_MAGIC
+        .byte   0                       ; 324: TRITOCH_BOSS
+        .byte   0                       ; 325: LASER_GUN
+        .byte   0                       ; 326: SPECK
+        .byte   24                      ; 327: MISSILEBAY
+        .byte   0                       ; 328: CHADARNOOK_2
+        .byte   0                       ; 329: ICE_DRAGON
+        .byte   0                       ; 330: KEFKA_NARSHE
+        .byte   0                       ; 331: STORM_DRGN
+        .byte   0                       ; 332: DIRT_DRGN
+        .byte   0                       ; 333: IPOOH
+        .byte   0                       ; 334: LEADER
+        .byte   0                       ; 335: GRUNT
+        .byte   0                       ; 336: GOLD_DRGN
+        .byte   0                       ; 337: SKULL_DRGN
+        .byte   0                       ; 338: BLUE_DRGN
+        .byte   0                       ; 339: RED_DRAGON
+        .byte   0                       ; 340: PIRANHA
+        .byte   0                       ; 341: RIZOPAS
+        .byte   0                       ; 342: SPECTER
+        .byte   0                       ; 343: SHORT_ARM
+        .byte   0                       ; 344: LONG_ARM
+        .byte   0                       ; 345: FACE
+        .byte   0                       ; 346: TIGER
+        .byte   0                       ; 347: TOOLS
+        .byte   0                       ; 348: MAGIC
+        .byte   0                       ; 349: HIT
+        .byte   0                       ; 350: GIRL
+        .byte   0                       ; 351: SLEEP
+        .byte   1                       ; 352: HIDONITE_1
+        .byte   0                       ; 353: HIDONITE_2
+        .byte   0                       ; 354: HIDONITE_3
+        .byte   0                       ; 355: L80_MAGIC
+        .byte   0                       ; 356: L90_MAGIC
+        .byte   0                       ; 357: PROTOARMOR
+        .byte   0                       ; 358: MAGIMASTER
+        .byte   0                       ; 359: SOULSAVER
+        .byte   0                       ; 360: ULTROS_AIRSHIP
+        .byte   0                       ; 361: NAUGHTY
+        .byte   0                       ; 362: PHUNBABA_1
+        .byte   0                       ; 363: PHUNBABA_2
+        .byte   0                       ; 364: PHUNBABA_3
+        .byte   0                       ; 365: PHUNBABA_4
+        .byte   0                       ; 366: TERRA_FLASHBACK
+        .byte   0                       ; 367: KEFKA_IMP_CAMP
+        .byte   0                       ; 368: CYAN_IMP_CAMP
+        .byte   0                       ; 369: ZONE_EATER
+        .byte   0                       ; 370: GAU_VELDT
+        .byte   0                       ; 371: KEFKA_VS_LEO
+        .byte   0                       ; 372: KEFKA_ESPER_GATE
+        .byte   0                       ; 373: OFFICER
+        .byte   0                       ; 374: CADET
+        .byte   0                       ; 375: MONSTER_0177
+        .byte   0                       ; 376: MONSTER_0178
+        .byte   0                       ; 377: SOLDIER_FLASHBACK
+        .byte   0                       ; 378: KEFKA_VS_ESPER
+        .byte   0                       ; 379: EVENT
+        .byte   0                       ; 380: MONSTER_017C
+        .byte   0                       ; 381: ATMA
+        .byte   0                       ; 382: SHADOW_COLOSSEUM
+        .byte   0                       ; 383: COLOSSEUM
 
 ; ------------------------------------------------------------------------------

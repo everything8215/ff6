@@ -1,12 +1,12 @@
 ; ------------------------------------------------------------------------------
 
-.include "gfx/map_gfx.inc"
+.include "map_gfx.inc"
 
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_gfx id, name
-        array_label MapGfx, MAP_GFX::id
-        .incbin .sprintf("map_gfx/%s.4bpp", name)
+        array_label MAP_GFX, MAP_GFX::id
+        .incbin .sprintf("assets/gfx/map_gfx/%s.4bpp", name)
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -16,7 +16,7 @@
 ; df/da00
 MapGfxPtrs:
         fixed_block $0100
-        ptr_tbl_far MapGfx
+        ptr_tbl_far MAP_GFX
         end_fixed_block
 
 ; ------------------------------------------------------------------------------
@@ -31,10 +31,10 @@ MapGfx:
         inc_map_gfx TOWN_EXT_1, "town_ext_1"
         inc_map_gfx TOWN_EXT_2, "town_ext_2"
         inc_map_gfx TOWN_EXT_3, "town_ext_3"
-        inc_map_gfx TOWN_EXT_4, .concat("town_ext_4_", LANG_SUFFIX)
+        inc_map_gfx TOWN_EXT_4, "town_ext_4"
         inc_map_gfx TOWN_EXT_5, "town_ext_5"
         inc_map_gfx CASTLE_EXT_4, "castle_ext_4"
-        inc_map_gfx TOWN_EXT_6, .concat("town_ext_6_", LANG_SUFFIX)
+        inc_map_gfx TOWN_EXT_6, "town_ext_6"
         inc_map_gfx TOWN_EXT_7, "town_ext_7"
         inc_map_gfx DOCKS_1, "docks_1"
         inc_map_gfx DOCKS_2, "docks_2"
@@ -67,9 +67,9 @@ MapGfx:
         inc_map_gfx TRAIN_EXT_3, "train_ext_3"
         inc_map_gfx FOREST_1, "forest_1"
         inc_map_gfx TRAIN_INT, "train_int"
-        inc_map_gfx ZOZO_EXT_1, .concat("zozo_ext_1_", LANG_SUFFIX)
+        inc_map_gfx ZOZO_EXT_1, "zozo_ext_1"
         inc_map_gfx ZOZO_EXT_2, "zozo_ext_2"
-        inc_map_gfx VECTOR_EXT, .concat("vector_ext_", LANG_SUFFIX)
+        inc_map_gfx VECTOR_EXT, "vector_ext"
         inc_map_gfx DARILLS_TOMB_1, "darills_tomb_1"
         inc_map_gfx MOUNTAINS_PARALLAX_1, "mountains_parallax_1"
         inc_map_gfx FLOATING_ISLAND_1, "floating_island_1"
@@ -105,7 +105,7 @@ MapGfx:
         inc_map_gfx FACTORY_6, "factory_6"
         inc_map_gfx AIRSHIP_5, "airship_5"
         inc_map_gfx BEACH_PARALLAX, "beach_parallax"
-        inc_map_gfx DARILLS_TOMB_2, .concat("darills_tomb_2_", LANG_SUFFIX)
+        inc_map_gfx DARILLS_TOMB_2, "darills_tomb_2"
         end_fixed_block
 
 ; ------------------------------------------------------------------------------
@@ -114,6 +114,6 @@ MapGfx:
 
 ; e6/0000
 MapAnimGfx:
-        .incbin "map_anim.4bpp"
+        .incbin "assets/gfx/map_anim.4bpp"
 
 ; ------------------------------------------------------------------------------

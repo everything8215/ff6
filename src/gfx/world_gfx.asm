@@ -1,6 +1,6 @@
 ; ------------------------------------------------------------------------------
 
-.include "gfx/world_gfx.inc"
+.include "world_gfx.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -8,19 +8,19 @@
 
 ; d2/ec00
 World1BGPal:
-        .incbin "world_1_bg.pal"
+        .incbin "assets/gfx/world_1_bg.pal"
 
 ; d2/ed00
 World2BGPal:
-        .incbin "world_2_bg.pal"
+        .incbin "assets/gfx/world_2_bg.pal"
 
 ; d2/ee00
 World1SpritePal:
-        .incbin "world_1_sprite.pal"
+        .incbin "assets/gfx/world_1_sprite.pal"
 
 ; d2/ef00
 World2SpritePal:
-        .incbin "world_2_sprite.pal"
+        .incbin "assets/gfx/world_2_sprite.pal"
 
 ; ------------------------------------------------------------------------------
 
@@ -28,11 +28,11 @@ World2SpritePal:
 
 ; d8/dfb8
 VectorApproachGfx:
-        .incbin "vector_approach.4bpp.lz"
+        .incbin "assets/gfx/vector_approach/vector_approach.4bpp.lz"
 
 ; d8/e5bf
 VectorApproachTiles:
-        .incbin "vector_approach.scr.lz"
+        .incbin "assets/gfx/vector_approach/vector_approach.scr.lz"
 
 ; ------------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ VectorApproachTiles:
 
 ; d8/e6ba
 World3Pal:
-        .incbin "world_3.pal.lz"
+        .incbin "assets/gfx/world_3.pal.lz"
 
 ; ------------------------------------------------------------------------------
 
@@ -141,86 +141,86 @@ EndingAirshipPalPtr:
 
 ; ee/b290
 WorldBackdropGfx:
-        .incbin "world_backdrop.4bpp.lz"
+        .incbin "assets/gfx/world_backdrop/world_backdrop.4bpp.lz"
 
 ; ee/c295
 WorldBackdropTiles:
-        .incbin "world_backdrop.scr.lz"
+        .incbin "assets/gfx/world_backdrop/world_backdrop.scr.lz"
 
 ; ee/c702
 AirshipGfx1:
-        .incbin "airship1.4bpp.lz"
+        .incbin "assets/gfx/airship1.4bpp.lz"
 
 ; ee/d434
 WorldTilemap1:
-        .incbin "src/world/world_1_tilemap.dat.lz"
+        .incbin "assets/data/world/world_1_tilemap.bin.lz"
 
 ; ef/114f
 WorldGfx1:
-        .incbin "world_1_bg.4bpp.lz"
+        .incbin "assets/gfx/world_1_bg.4bpp.lz"
 
 ; ef/3250
 MagitekTrainGfx:
-        .incbin "magitek_train.cgx.lz"
+        .incbin "assets/gfx/magitek_train.cgx.lz"
 
 ; ef/4846
 MagitekTrainPal:
-        .incbin "magitek_train.pal"
+        .incbin "assets/gfx/magitek_train.pal"
 
 ; ef/4a46
 WorldGfx2:
-        .incbin "world_2_bg.4bpp.lz"
+        .incbin "assets/gfx/world_2_bg.4bpp.lz"
 
 ; ef/6a56
 WorldTilemap2:
-        .incbin "src/world/world_2_tilemap.dat.lz"
+        .incbin "assets/data/world/world_2_tilemap.bin.lz"
 
 ; ef/9d17
 WorldTilemap3:
-        .incbin "src/world/world_3_tilemap.dat.lz"
+        .incbin "assets/data/world/world_3_tilemap.bin.lz"
 
 ; ef/b631
 WorldGfx3:
-        .incbin "world_3_bg.4bpp.lz"
+        .incbin "assets/gfx/world_3_bg.4bpp.lz"
 
 ; ef/c624
 WorldChocoGfx1:
-        .incbin "world_choco_1.4bpp.lz"
+        .incbin "assets/gfx/world_choco_1.4bpp.lz"
 
 ; ef/ce77
 VectorApproachPal:
-        .incbin "vector_approach.pal"
+        .incbin "assets/gfx/vector_approach/vector_approach.pal"
 
 ; ef/ce97
 WorldEsperTerraPal:
-        .incbin "world_esper_terra.pal"
+        .incbin "assets/gfx/world_esper_terra.pal"
 
 ; ef/ceb7
 WorldAnimSpriteGfx:
-        .incbin "world_anim_sprite.4bpp.lz"
+        .incbin "assets/gfx/world_anim_sprite.4bpp.lz"
 
 ; ef/cfb9
 WorldMiscSpriteGfx:
-        .incbin "world_misc_sprite.4bpp.lz"
+        .incbin "assets/gfx/world_misc_sprite.4bpp.lz"
 
 ; ef/dc4c
 WorldChocoGfx2:
-        .incbin "world_choco_2.4bpp.lz"
+        .incbin "assets/gfx/world_choco_2.4bpp.lz"
 
 ; ef/e49b
 MinimapGfx1:
-        .incbin "minimap_1.4bpp.lz"
+        .incbin "assets/gfx/minimap_1.4bpp.lz"
 
 ; ef/e8b3
 MinimapGfx2:
-        .incbin "minimap_2.4bpp.lz"
+        .incbin "assets/gfx/minimap_2.4bpp.lz"
 
 ; ef/ed26
 AirshipGfx2:
-        .incbin "airship2.4bpp.lz"
+        .incbin "assets/gfx/airship2.4bpp.lz"
 
 ; ef/fac8
 EndingAirshipPal:
-        .incbin "ending_airship.pal"
+        .incbin "assets/gfx/ending_airship.pal"
 
 ; ------------------------------------------------------------------------------

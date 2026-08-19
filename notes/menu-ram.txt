@@ -96,7 +96,7 @@
 |             |    +$41 bg1 v-scroll speed (signed)                           |
 |             |     $43 hdma Enable Register (-> $420C)                       |
 |             |     $44 screen display register (-> $2100)                    |
-|             |     $45 ??df?hrp misc. flags                                  |
+|             |     $45 ?cdf?hrp misc. flags                                  |
 |             |           ?:                                                  |
 |             |           c: ignore saved cursor position                     |
 |             |           d: disable desc. redraw on direction keypress       |
@@ -114,8 +114,12 @@
 |             |           2: cursor 2 is active                               |
 |             |           1: cursor 1 is active                               |
 |             |           f: flashing cursor thread is active                 |
-|             |     $47 misc. thread flags                                    |
-|             |     $48                                                       |
+|             |     $47 ----s321 misc. thread flags                           |
+|             |           s: disable shop party arrows and jumping animation  |
+|             |           3: terminate group 3 sprite tasks                   |
+|             |           2: terminate group 2 sprite tasks                   |
+|             |           1: enable group 1 sprite tasks                      |
+|             |     $48 status icon task group (1 for party menu, otherwise 0)|
 |             |     $49 vertical page offset (16 lines)                       |
 |             |     $4A current page scroll position (item)                   |
 |             |     $4A current page number (config)                          |
@@ -123,7 +127,7 @@
 |             |     $4C menu state upon exit                                  |
 |             |    +$4D xy cursor position (relative to page)                 |
 |             |    +$4F xy cursor position (absolute)                         |
-|             |    +$51                                                       |
+|             |    +$51 xy cursor offset (always zero)                        |
 |             |    +$53 xy max cursor positions                               |
 |             |    +$55 x position of cursor on screen (in pixels)            |
 |             |    +$57 y position of cursor on screen (in pixels)            |
@@ -135,12 +139,13 @@
 |             |     $5C max page scroll position                              |
 |             |     $5D                                                       |
 |             |    +$5E saved xy cursor position                              |
+|             |    +$60 xy position for credits text                          |
 |             |     $60 slot 1 portrait thread data pointer                   |
 |             |     $61 slot 2 portrait thread data pointer                   |
 |             |     $62 slot 3 portrait thread data pointer                   |
 |             |     $63 slot 4 portrait thread data pointer                   |
 |             |     $64 saved equipped item                                   |
-|             |     $65                                                       |
+|             |     $65 quantity equipped                                     |
 |             |     $66 current saved game slot                               |
 |             |    +$67 pointer to current character data                     |
 |             |     $69 character in slot 1                                   |
@@ -166,16 +171,16 @@
 |             |     $7F text color for dance skill                            |
 |             | $80-$84 character select cursor data                          |
 |             | $85-$8C character select cursor positions                     |
-|             |     $8D                                                       |
-|             |    +$8E previous xy cursor position                           |
-|             |     $90                                                       |
+|             |     $8D big text current line width                           |
+|             |    +$8E saved xy cursor position                              |
+|             |     $90 saved scroll position                                 |
 |             |    +$91 sram checksum (slot 1)                                |
 |             |    +$93 sram checksum (slot 2)                                |
 |             |    +$95 sram checksum (slot 3)                                |
 |             |    +$97                                                       |
 |             |     $99 enable flashing page cursor direction (item details)  |
 |             |     $99 enable reequip message (equip menu)                   |
-|             |    +$9A                                                       |
+|             |    +$9A selected RGB value                                    |
 |             |     $9C current character slot ???                            |
 |             |    +$9C menu scroll speed                                     |
 |             |     $9E previous menu state                                   |
@@ -289,8 +294,9 @@
 |             |  +$024A char slot 3 saved magic page scroll position (x,y)    |
 |             |  +$024C char slot 4 saved magic page scroll position (x,y)    |
 | $024E-$027F | -                                                             |
-| $0280-$02DF | saved battle cursor positions (24 * 4 bytes) -> $890F-$896E   |
-| $02E0-$02FF | -                                                             |
+| $0280-$02DF | battle cursor memory positions (24 * 4 bytes) -> $890F-$896E  |
+| $02E0-$02E3 | battle cursor memory checksums                                |
+| $02E4-$02FF | -                                                             |
 +-------------+---------------------------------------------------------------+
 | $0300-$051F | sprite data                                                   |
 |             |   $00 x position                                              |
@@ -418,7 +424,8 @@
 | $4000-$5000 | bg3 data                                                      |
 | $5000-$6000 | bg1 graphics                                                  |
 | $6000-$6800 | bg3 graphics                                                  |
-|       $6800 | description text graphics (bg3, variable-width font)          |
+| $6800-$6C00 | description text graphics (bg3, variable-width font)          |
+| $6C00-$6D00 | element symbol graphics                                       |
 |       $7800 | menu window graphics                                          |
 +-------------+---------------------------------------------------------------+
 

@@ -11,7 +11,7 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "gfx/map_anim_gfx_bg3.inc"
+.include "src/gfx/map_anim_gfx_bg3.inc"
 
 .import MapAnimGfx, MapPalAnimColors
 
@@ -275,14 +275,17 @@ Loop:   lda     $7e7200,x
 ; [ init bg1/bg2 animation ]
 
 .scope MapBGAnimProp
-        ARRAY_LENGTH = 20
-        Start := MapBGAnimProp
-        AnimSpeed := Start
-        Frame1 := Start + 2
-        Frame2 := Start + 4
-        Frame3 := Start + 6
-        Frame4 := Start + 8
+        AnimSpeed := MapBGAnimProp
+        Frame1 := MapBGAnimProp + 2
+        Frame2 := MapBGAnimProp + 4
+        Frame3 := MapBGAnimProp + 6
+        Frame4 := MapBGAnimProp + 8
 .endscope
+
+.enum MAP_BG_ANIM_PROP
+        COUNT = 20
+        BASE_PTR = MapBGAnimProp
+.endenum
 
 .proc InitBG12Anim
         lda     $053b                   ; bg1/bg2 animation index
@@ -380,19 +383,22 @@ Loop2:  tyx
 ; [ init bg3 animation ]
 
 .scope MapBG3AnimProp
-        ARRAY_LENGTH = 6
-        Start := MapBG3AnimProp
-        AnimSpeed := Start
-        GfxSize := Start + 2
-        Frame1 := Start + 4
-        Frame2 := Start + 6
-        Frame3 := Start + 8
-        Frame4 := Start + 10
-        Frame5 := Start + 12
-        Frame6 := Start + 14
-        Frame7 := Start + 16
-        Frame8 := Start + 18
+        AnimSpeed := MapBG3AnimProp
+        GfxSize := MapBG3AnimProp + 2
+        Frame1 := MapBG3AnimProp + 4
+        Frame2 := MapBG3AnimProp + 6
+        Frame3 := MapBG3AnimProp + 8
+        Frame4 := MapBG3AnimProp + 10
+        Frame5 := MapBG3AnimProp + 12
+        Frame6 := MapBG3AnimProp + 14
+        Frame7 := MapBG3AnimProp + 16
+        Frame8 := MapBG3AnimProp + 18
 .endscope
+
+.enum MAP_BG3_ANIM_PROP
+        COUNT = 6
+        BASE_PTR = MapBG3AnimProp
+.endenum
 
 .proc InitBG3Anim
         lda     $053b                   ; bg3 animation index
@@ -563,22 +569,22 @@ Done:   rts
 ; ------------------------------------------------------------------------------
 
 MapBGAnimPropPtrs:
-@91d5:  ptr_tbl MapBGAnimProp
-        end_ptr MapBGAnimProp
+@91d5:  ptr_tbl MAP_BG_ANIM_PROP
+        end_ptr MAP_BG_ANIM_PROP
 
 MapBGAnimProp:
 @91ff:  .include "map_bg_anim_prop.asm"
-MapBGAnimProp::End:
+        MAP_BG_ANIM_PROP::END := *
 
 MapBG3AnimPropPtrs:
-@979f:  ptr_tbl MapBG3AnimProp
-        end_ptr MapBG3AnimProp
+@979f:  ptr_tbl MAP_BG3_ANIM_PROP
+        end_ptr MAP_BG3_ANIM_PROP
 
 MapBG3AnimProp:
 @97ad:  .include "map_bg3_anim_prop.asm"
-MapBG3AnimProp::End:
+        MAP_BG3_ANIM_PROP::END := *
 
 MapPalAnimProp:
-@9825:  .incbin "map_pal_anim_prop.dat"
+@9825:  .incbin "assets/data/field/map_pal_anim_prop.bin"
 
 ; ------------------------------------------------------------------------------

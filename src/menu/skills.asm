@@ -11,23 +11,21 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "btlgfx/blitz_code.inc"
+.include "src/text/attack_name.inc"
+.include "src/text/blitz_desc.inc"
+.include "src/text/bushido_desc.inc"
+.include "src/text/bushido_name.inc"
+.include "src/text/dance_name.inc"
+.include "src/text/genju_attack_desc.inc"
+.include "src/text/genju_bonus_desc.inc"
+.include "src/text/genju_bonus_name.inc"
+.include "src/text/genju_name.inc"
+.include "src/text/lore_desc.inc"
+.include "src/text/magic_desc.inc"
+.include "src/text/magic_name.inc"
+.include "src/text/monster_name.inc"
 
-inc_lang "text/attack_name_%s.inc"
-inc_lang "text/blitz_desc_%s.inc"
-inc_lang "text/bushido_desc_%s.inc"
-inc_lang "text/bushido_name_%s.inc"
-inc_lang "text/dance_name_%s.inc"
-inc_lang "text/genju_attack_desc_%s.inc"
-inc_lang "text/genju_bonus_desc_%s.inc"
-inc_lang "text/genju_bonus_name_%s.inc"
-inc_lang "text/genju_name_%s.inc"
-inc_lang "text/lore_desc_%s.inc"
-inc_lang "text/magic_desc_%s.inc"
-inc_lang "text/magic_name_%s.inc"
-inc_lang "text/monster_name_%s.inc"
-
-.import MagicProp
+.import MagicProp, GenjuOrder, GenjuProp, BlitzCode
 
 .segment "menu_code"
 
@@ -53,9 +51,9 @@ InitSkillsCursor:
         lda     zSelIndex         ; selected character
         asl
         tax
-        lda     $4d
+        lda     z4d
         sta     $0236,x     ; save cursor position
-        lda     $4e
+        lda     z4e
         sta     $0237,x
         rts
 
@@ -98,13 +96,13 @@ InitMagicCursor:
         lda     zSelIndex         ; character slot
         asl
         tax
-        lda     $4f
+        lda     z4f
         sta     $023e,x     ; save cursor position
-        lda     $50
+        lda     z50
         sta     $023f,x
         lda     zSelIndex
         tax
-        lda     $4a
+        lda     z4a
         sta     $0246,x
         rts
 
@@ -150,7 +148,7 @@ UpdateAbilityCursor:
 
 InitAbilityCursor:
 @4bd7:  ldy     #near AbilityCursorPos
-        sty     $e7
+        sty     ze7
         jmp     UpdateCursorPos
 
 ; ------------------------------------------------------------------------------
@@ -303,8 +301,8 @@ RageCursorPos:
 
 ; [ init bg (skills) ]
 
-_c34c80:
-@4c80:  stz     $9e                     ;
+DrawSkillsWindow:
+@4c80:  stz     zPrevMenuState
         jsr     DisableDMA2
         lda     #$01
         sta     hBG1SC
@@ -338,7 +336,7 @@ _c34c80:
 .if !LANG_EN
         jsr     _c3ae9a
 .endif
-        jsr     _c34d3d
+        jsr     UpdateSkillsTextColor
         lda     zSkillsTextColor::Genju
         sta     zTextColor
         ldy     #near SkillsGenjuText
@@ -376,7 +374,7 @@ _c34c80:
 _c34d27:
 @4d27:  jsr     ClearBG1ScreenA
         jsr     ClearBG1ScreenB
-        lda     #$24
+        lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
         ldx     #near SkillsCharLabelTextList
         ldy     #sizeof_SkillsCharLabelTextList
@@ -387,25 +385,25 @@ _c34d27:
 
 ; [ update skills text colors ]
 
-_c34d3d:
-@4d3d:  lda     #$24        ; init all skills to gray (disabled)
-        ldx     z0
+UpdateSkillsTextColor:
+@4d3d:  lda     #BG3_TEXT_COLOR::GRAY
+        ldx     zZero
 @4d41:  sta     zSkillsTextColor,x
         inx
-        cpx     #$0007
+        cpx     #zSkillsTextColor::SIZE
         bne     @4d41
-        jsr     _c34edd
+        jsr     GetCharPropPtr
         phy
-        ldx     #$0004
+        ldx     #4
 @4d50:  phx
-        ldx     z0
+        ldx     zZero
 @4d53:  lda     $0016,y     ; battle command
-        cmp     f:_c34d78,x
+        cmp     f:SkillEnabledCmdTbl,x
         bne     @4d60
-        lda     #$20
+        lda     #BG3_TEXT_COLOR::DEFAULT
         sta     zSkillsTextColor,x
 @4d60:  inx
-        cpx     #sizeof__c34d78
+        cpx     #sizeof_SkillEnabledCmdTbl
         bne     @4d53
         iny
         plx
@@ -415,14 +413,14 @@ _c34d3d:
         lda     0,y                     ; espers always disabled for gogo
         cmp     #CHAR_PROP::GOGO
         bne     @4d77
-        lda     #$24
+        lda     #BG3_TEXT_COLOR::GRAY
         sta     zSkillsTextColor::Genju
 @4d77:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; battle commands for enabling skills
-_c34d78:
+SkillEnabledCmdTbl:
         .byte   BATTLE_CMD::MAGIC  ; <- magic command enables the genju skill
         .byte   BATTLE_CMD::MAGIC
         .byte   BATTLE_CMD::BUSHIDO
@@ -430,7 +428,7 @@ _c34d78:
         .byte   BATTLE_CMD::LORE
         .byte   BATTLE_CMD::RAGE
         .byte   BATTLE_CMD::DANCE
-        calc_size _c34d78
+        calc_size SkillEnabledCmdTbl
 
 ; ------------------------------------------------------------------------------
 
@@ -440,7 +438,7 @@ DrawMagicMenu:
 @4d7f:  jsr     ClearBG1ScreenA
         jsr     CalcMagicOrder
         jsr     DrawMagicList
-        lda     #$2c
+        lda     #BG3_TEXT_COLOR::TEAL
         sta     zTextColor
 .if !LANG_EN
         ldy     #near SkillsBlankTitleText
@@ -454,39 +452,30 @@ DrawMagicMenu:
 ; ------------------------------------------------------------------------------
 
 ; window data for skills menu
-; c3/4d98: bg2_0( 1, 1) [ 7x 4] espers/magic window
-; c3/4d9c: bg2_0( 1, 7) [ 7x10] character skills list window
-; c3/4da0: bg2_0( 1, 6) [28x 5] character info window
-; c3/4da4: bg2_0( 1,13) [28x12] spell list window
-; c3/4da8: bg2_0( 1, 1) [28x 3] description window
-; c3/4dac: bg2_1( 1, 6) [28x 5] character window, top right screen
-; c3/4db0: bg2_1( 1,13) [28x12] spell list window, top right screen
-; c3/4db4: bg2_1(22, 4) [ 7x 1] mp cost window, top right screen
-; c3/4db8: bg2_1( 1, 1) [28x 3] description window, top right screen
 
 .if LANG_EN
 
-SkillsOptionsWindow1:                   make_window BG2A, {1, 1}, {7, 4}
-SkillsOptionsWindow2:                   make_window BG2A, {1, 7}, {7, 10}
-SkillsCharWindow1:                      make_window BG2A, {1, 6}, {28, 5}
-SkillsMagicWindow1:                     make_window BG2A, {1, 13}, {28, 12}
-SkillsDescWindow1:                      make_window BG2A, {1, 1}, {28, 3}
-SkillsCharWindow2:                      make_window BG2B, {1, 6}, {28, 5}
-SkillsMagicWindow2:                     make_window BG2B, {1, 13}, {28, 12}
-SkillsMPWindow:                         make_window BG2B, {22, 4}, {7, 1}
-SkillsDescWindow2:                      make_window BG2B, {1, 1}, {28, 3}
+SkillsOptionsWindow1:                   window_pos BG2A, {1, 1}, {7, 4}
+SkillsOptionsWindow2:                   window_pos BG2A, {1, 7}, {7, 10}
+SkillsCharWindow1:                      window_pos BG2A, {1, 6}, {28, 5}
+SkillsMagicWindow1:                     window_pos BG2A, {1, 13}, {28, 12}
+SkillsDescWindow1:                      window_pos BG2A, {1, 1}, {28, 3}
+SkillsCharWindow2:                      window_pos BG2B, {1, 6}, {28, 5}
+SkillsMagicWindow2:                     window_pos BG2B, {1, 13}, {28, 12}
+SkillsMPWindow:                         window_pos BG2B, {22, 4}, {7, 1}
+SkillsDescWindow2:                      window_pos BG2B, {1, 1}, {28, 3}
 
 .else
 
-SkillsOptionsWindow1:                   make_window BG2A, {1, 1}, {6, 4}
-SkillsOptionsWindow2:                   make_window BG2A, {1, 7}, {6, 10}
-SkillsCharWindow1:                      make_window BG2A, {1, 5}, {28, 5}
-SkillsMagicWindow1:                     make_window BG2A, {1, 12}, {28, 13}
-SkillsDescWindow1:                      make_window BG2A, {9, 1}, {20, 2}
-SkillsCharWindow2:                      make_window BG2B, {1, 5}, {28, 5}
-SkillsMagicWindow2:                     make_window BG2B, {1, 12}, {28, 13}
-SkillsMPWindow:                         make_window BG2B, {1, 1}, {6, 2}
-SkillsDescWindow2:                      make_window BG2B, {9, 1}, {20, 2}
+SkillsOptionsWindow1:                   window_pos BG2A, {1, 1}, {6, 4}
+SkillsOptionsWindow2:                   window_pos BG2A, {1, 7}, {6, 10}
+SkillsCharWindow1:                      window_pos BG2A, {1, 5}, {28, 5}
+SkillsMagicWindow1:                     window_pos BG2A, {1, 12}, {28, 13}
+SkillsDescWindow1:                      window_pos BG2A, {9, 1}, {20, 2}
+SkillsCharWindow2:                      window_pos BG2B, {1, 5}, {28, 5}
+SkillsMagicWindow2:                     window_pos BG2B, {1, 12}, {28, 13}
+SkillsMPWindow:                         window_pos BG2B, {1, 1}, {6, 2}
+SkillsDescWindow2:                      window_pos BG2B, {9, 1}, {20, 2}
 
 .endif
 
@@ -508,7 +497,7 @@ InitSkillsBGScrollHDMA:
         lda     #BIT_5
         tsb     zEnableHDMA
         jsr     LoadSkillsBG1VScrollHDMATbl
-        ldx     z0
+        ldx     zZero
 @4ddf:  lda     f:SkillsBG1HScrollHDMATbl,x   ; load bg1 horizontal scroll hdma table
         sta     $7e9a09,x
         inx
@@ -551,7 +540,7 @@ SkillsBG3VScrollHDMATbl:
 ; [ load bg1 vertical scroll hdma table (skills) ]
 
 LoadSkillsBG1VScrollHDMATbl:
-@4e2d:  ldx     z0
+@4e2d:  ldx     zZero
 @4e2f:  lda     f:SkillsBG1VScrollHDMATbl,x
         sta     $7e9849,x
         inx
@@ -561,7 +550,7 @@ LoadSkillsBG1VScrollHDMATbl:
         sta     $7e9849,x
         inx
         clr_a
-        lda     $49         ; vertical scroll position
+        lda     z49         ; vertical scroll position
         asl4
         and     #$ff
         longa
@@ -674,7 +663,7 @@ SkillsBG1VScrollHDMATbl:
 
 ; [  ]
 
-_c34edd:
+GetCharPropPtr:
 @4edd:  clr_a
         lda     zSelIndex
         asl
@@ -687,53 +676,52 @@ _c34edd:
 ; [  ]
 
 _c34ee5:
-@4ee5:  jsr     _c34edd
+@4ee5:  jsr     GetCharPropPtr
         sty     zSelCharPropPtr
         jmp     @4eed
 
 ; ???
 .if LANG_EN
 @4eed:  ldy_pos BG1B, {10, 10}
-        ldx     #$4f50
+        ldx     #make_word 80, 79
 .else
 @4eed:  ldy_pos BG1B, {9, 10}
-        ldx     #$4748
+        ldx     #make_word 72, 71
 .endif
         jsr     DrawStatusIcons
         ldy     #near SkillsCharHPSlashText
         jsr     DrawPosText
         ldy     #near SkillsCharMPSlashText
         jsr     DrawPosText
-        ldx     #near _c34f12
+        ldx     #near SkillsCharBlockTextPosTbl
         jsr     DrawCharBlock
 
 _c34f08:
-@4f08:  lda     #$20
+@4f08:  lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
 .if LANG_EN
         ldy_pos BG1B, {10, 7}
 .else
         ldy_pos BG1B, {9, 6}
 .endif
-        jmp     DrawEquipGenju
+        jmp     DrawCharGenjuName
 
 ; ------------------------------------------------------------------------------
 
 ; ram addresses for lv/hp/mp text (skills)
-_c34f12:
-        make_pos BG1B, {23, 7}
-        make_pos BG1B, {21, 9}
-        make_pos BG1B, {26, 9}
-        make_pos BG1B, {21, 11}
-        make_pos BG1B, {26, 11}
+SkillsCharBlockTextPosTbl:
+        bg_pos BG1B, {23, 7}
+        bg_pos BG1B, {21, 9}
+        bg_pos BG1B, {26, 9}
+        bg_pos BG1B, {21, 11}
+        bg_pos BG1B, {26, 11}
 
 ; ------------------------------------------------------------------------------
 
 ; [ determine spell list display order ]
 
 CalcMagicOrder:
-_c34f1c:
-@4f1c:  ldx     #$9d89
+        ldx     #$9d89
         stx     hWMADDL
 .if LANG_EN
         ldx     #$0036
@@ -764,35 +752,58 @@ _c34f1c:
 
 ; magic order offsets
 MagicOrderTbl:
-@4f49:  .byte   $2d,$00,$18,$ff
-        .byte   $2d,$18,$00,$ff
-        .byte   $00,$18,$2d,$ff
-        .byte   $00,$2d,$18,$ff
-        .byte   $18,$2d,$00,$ff
-        .byte   $18,$00,$2d,$ff
+        .byte   ATTACK::FIRST_WHITE_MAGIC
+        .byte   ATTACK::FIRST_BLACK_MAGIC
+        .byte   ATTACK::FIRST_EFFECT_MAGIC
+        .byte   $ff
+
+        .byte   ATTACK::FIRST_WHITE_MAGIC
+        .byte   ATTACK::FIRST_EFFECT_MAGIC
+        .byte   ATTACK::FIRST_BLACK_MAGIC
+        .byte   $ff
+
+        .byte   ATTACK::FIRST_BLACK_MAGIC
+        .byte   ATTACK::FIRST_EFFECT_MAGIC
+        .byte   ATTACK::FIRST_WHITE_MAGIC
+        .byte   $ff
+
+        .byte   ATTACK::FIRST_BLACK_MAGIC
+        .byte   ATTACK::FIRST_WHITE_MAGIC
+        .byte   ATTACK::FIRST_EFFECT_MAGIC
+        .byte   $ff
+
+        .byte   ATTACK::FIRST_EFFECT_MAGIC
+        .byte   ATTACK::FIRST_WHITE_MAGIC
+        .byte   ATTACK::FIRST_BLACK_MAGIC
+        .byte   $ff
+
+        .byte   ATTACK::FIRST_EFFECT_MAGIC
+        .byte   ATTACK::FIRST_BLACK_MAGIC
+        .byte   ATTACK::FIRST_WHITE_MAGIC
+        .byte   $ff
 
 ; ------------------------------------------------------------------------------
 
 ; [ add spell type to spell list ]
 
 _c34f61:
-@4f61:  cmp     #$00                    ; first black magic spell id
+@4f61:  cmp     #ATTACK::FIRST_BLACK_MAGIC
         beq     @4f6e
-        cmp     #$2d                    ; first white magic spell id
+        cmp     #ATTACK::FIRST_WHITE_MAGIC
         beq     @4f73
-        ldx     #$0015                  ; number of effect magic spells
+        ldx     #ATTACK::NUM_EFFECT_MAGIC
         bra     @4f78
-@4f6e:  ldx     #$0018                  ; number of black magic spells
+@4f6e:  ldx     #ATTACK::NUM_BLACK_MAGIC
         bra     @4f78
-@4f73:  ldx     #$0009                  ; number of white magic spells
+@4f73:  ldx     #ATTACK::NUM_WHITE_MAGIC
         bra     @4f78
-@4f78:  stx     $e0
+@4f78:  stx     ze0
         tax
 @4f7b:  tyx
         sta     $7e9d89,x
         inc
         iny
-        dec     $e0
+        dec     ze0
         bne     @4f7b
 .if !LANG_EN
         iny3
@@ -812,10 +823,10 @@ DrawMagicList:
 .endif
 @4f8d:  phy
         jsr     DrawMagicListRow
-        lda     $e6
+        lda     ze6
         inc2
         and     #$1f
-        sta     $e6
+        sta     ze6
         ply
         dey
         bne     @4f8d
@@ -825,25 +836,25 @@ DrawMagicList:
 
 ; [ draw one row of magic list ]
 
-make_jump_label UpdateListText, LIST_TYPE::MAGIC
 DrawMagicListRow:
+        array_label UPDATE_LIST_TEXT, LIST_TYPE::MAGIC
 @4f9e:  jsr     GetMagicNamePtr
-        ldx     #$0003
+        ldx     #3
         jsr     _c34fc4
-        inc     $e5
+        inc     ze5
         jsr     GetMagicNamePtr
 .if LANG_EN
-        ldx     #$0010
+        ldx     #16
         jsr     _c34fc4
-        inc     $e5
+        inc     ze5
 .else
-        ldx     #$000c
+        ldx     #12
         jsr     _c34fc4
-        inc     $e5
+        inc     ze5
         jsr     GetMagicNamePtr
-        ldx     #$0015
+        ldx     #21
         jsr     _c34fc4
-        inc     $e5
+        inc     ze5
 .endif
         rts
 
@@ -852,12 +863,12 @@ DrawMagicListRow:
 ; [ get pointer to magic spell name ]
 
 GetMagicNamePtr:
-@4fb5:  ldy     #MagicName::ITEM_SIZE
-        sty     $eb
+@4fb5:  ldy     #MAGIC_NAME::ITEM_SIZE
+        sty     zeb
         ldy     #near MagicName
-        sty     $ef
+        sty     zef
         lda     #^MagicName
-        sta     $f1
+        sta     zf1
         rts
 
 ; ------------------------------------------------------------------------------
@@ -865,7 +876,7 @@ GetMagicNamePtr:
 ; [  ]
 
 _c34fc4:
-@4fc4:  lda     $e6
+@4fc4:  lda     ze6
 .if LANG_EN
         inc
 .endif
@@ -874,17 +885,17 @@ _c34fc4:
         txa
         sta     $7e9e89
         shorta
-        lda     $9e
+        lda     zPrevMenuState
         beq     @503e
-        jsr     _c350ec
+        jsr     GetListMagicIndex
         jsr     _c3514d
-        jsr     _c350ec
+        jsr     GetListMagicIndex
         cmp     #$ff
         beq     @501a
-        jsr     _c350a2
+        jsr     GetMagicLearnPct
         cmp     #$ff
         bne     @501a
-        jsr     _c350ec
+        jsr     GetListMagicIndex
         jsr     LoadArrayItem
 .if LANG_EN
         ldx     #$9e92
@@ -894,12 +905,12 @@ _c34fc4:
         stx     hWMADDL
         lda     #$ff
         sta     hWMDATA
-        jsr     _c350ec
-        jsr     _c3510d
+        jsr     GetListMagicIndex
+        jsr     CalcMPCost
         jsr     HexToDec3
-        lda     $f8
+        lda     zf8
         sta     hWMDATA
-        lda     $f9
+        lda     zf9
         sta     hWMDATA
 .if LANG_EN
         lda     #$ff
@@ -908,7 +919,7 @@ _c34fc4:
         stz     hWMDATA
         jmp     DrawPosTextBuf
 @501a:  clr_a
-        lda     $e5
+        lda     ze5
         tax
         lda     #$ff
         sta     $7e9d89,x
@@ -926,13 +937,13 @@ _c34fc4:
         bne     @5032
         stz     hWMDATA
         jmp     DrawPosTextBuf
-@503e:  jsr     _c350ec
+@503e:  jsr     GetListMagicIndex
         cmp     #$ff
         beq     @501a
-        jsr     _c350a2
+        jsr     GetMagicLearnPct
         cmp     #$00
         beq     @501a
-        jsr     _c350ec
+        jsr     GetListMagicIndex
         jsr     LoadArrayItem
 .if LANG_EN
         ldx     #$9e92
@@ -940,31 +951,31 @@ _c34fc4:
         ldx     #$9e90
 .endif
         stx     hWMADDL
-        jsr     _c350ec
-        jsr     _c350a2
+        jsr     GetListMagicIndex
+        jsr     GetMagicLearnPct
         cmp     #$ff
         beq     @5088
         pha
         jsr     _c351b9
-        lda     #$2c
+        lda     #BG3_TEXT_COLOR::TEAL
         sta     zTextColor
 .if LANG_EN
-        lda     #$c7
+        lda     #ELLIPSIS_CHAR
         sta     hWMDATA
 .endif
         pla
         jsr     HexToDec3
-        lda     $f8
+        lda     zf8
         sta     hWMDATA
-        lda     $f9
+        lda     zf9
         sta     hWMDATA
         lda     #$cd
         sta     hWMDATA
 @5082:  stz     hWMDATA
         jmp     DrawPosTextBuf
-@5088:  lda     #$24
+@5088:  lda     #BG3_TEXT_COLOR::GRAY
         sta     zTextColor
-        jsr     _c350ec
+        jsr     GetListMagicIndex
         jsr     _c3514d
         lda     #$ff
         sta     hWMDATA
@@ -979,19 +990,17 @@ _c34fc4:
 
 ; [  ]
 
-_c350a2:
-@50a2:  sta     $e0
-        jsr     _c34edd
+GetMagicLearnPct:
+@50a2:  sta     ze0
+        jsr     GetCharPropPtr
         lda     0,y
         cmp     #CHAR_PROP::GOGO
-        beq     _50c5
-
-_c350ae:
+        beq     @50c5
 @50ae:  sta     hWRMPYA
         lda     #$36
         sta     hWRMPYB
         clr_a
-        lda     $e0
+        lda     ze0
         longa
         adc     hRDMPYL
         tax
@@ -999,9 +1008,10 @@ _c350ae:
         lda     $1a6e,x
         rts
 
-_50c5:  stz     $e1
+; loop through characters in party to get Gogo's learn percentage
+@50c5:  stz     ze1
 @50c7:  clr_a
-        lda     $e1
+        lda     ze1
         cmp     zSelIndex
         beq     @50e2
         asl
@@ -1011,11 +1021,11 @@ _50c5:  stz     $e1
         lda     0,y
         cmp     #CHAR_PROP::GOGO
         bcs     @50e2
-        jsr     _c350ae
+        jsr     @50ae
         cmp     #$ff
         beq     @50eb
-@50e2:  inc     $e1
-        lda     $e1
+@50e2:  inc     ze1
+        lda     ze1
         cmp     #4
         bne     @50c7
         clr_a
@@ -1023,20 +1033,20 @@ _50c5:  stz     $e1
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ get selected spell id from list ]
 
-_c350ec:
-@50ec:  clr_a
-        lda     $e5
+.proc GetListMagicIndex
+        clr_a
+        lda     ze5
         tax
         lda     $7e9d89,x
         rts
-
+.endproc  ; GetListMagicIndex
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
-_c350f5:
+GetMagicPropPtr:
 @50f5:  pha
 @50f6:  lda     hHVBJOY                 ; wait for hblank
         and     #$40
@@ -1051,40 +1061,48 @@ _c350f5:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ calculate mp cost ]
 
-_c3510d:
-@510d:  pha
-        jsr     _c350f5
+CalcMPCost:
+        pha
+        jsr     GetMagicPropPtr
         ldx     hMPYL
         lda     f:MagicProp+5,x   ; spell data
-        sta     $e0
+        sta     ze0
         pla
+
+; step mine
         cmp     #ATTACK::STEP_MINE
         bne     @512e
-        lda     wGameTimeHours
+        lda     rGameTimeHours
         asl
-        sta     $e0
-        lda     wGameTimeMinutes
+        sta     ze0
+        lda     rGameTimeMinutes
         cmp     #30
         bcc     @512e
-        inc     $e0
+        inc     ze0
+
+; economizer
 @512e:  lda     $11d7
         bit     #$40
         beq     @513a
         clr_a
-        lda     #$01
+        lda     #1                      ; set mp cost to 1 (economizer)
         bra     @514b
+
+; gold hairpin
 @513a:  lda     $11d7
         bit     #$20
         beq     @5148
         clr_a
-        lda     $e0
+        lda     ze0                     ; halve mp cost (gold hairpin)
         inc
         lsr
         bra     @514b
+
+; normal mp cost
 @5148:  clr_a
-        lda     $e0
+        lda     ze0
 @514b:  tax
         rts
 
@@ -1097,47 +1115,47 @@ _c3510d:
         beq     @517b
         cmp     #$12
         beq     @516e
-@5155:  jsr     _c350f5
+@5155:  jsr     GetMagicPropPtr
         ldx     hMPYL
         lda     f:MagicProp+3,x
         and     #$01
         beq     @516c
-        jsr     _c350ec
-        jsr     _c3510d
+        jsr     GetListMagicIndex
+        jsr     CalcMPCost
         jmp     @5188
 @516c:  bra     _c351b9
-@516e:  sta     $e3
-        lda     $0201
+@516e:  sta     ze3
+        lda     r0201
         bit     #$01
         beq     @516c
-        lda     $e3
+        lda     ze3
         bra     @5155
-@517b:  sta     $e3
-        lda     $0201
+@517b:  sta     ze3
+        lda     r0201
         bit     #$02
         beq     @516c
-        lda     $e3
+        lda     ze3
         bra     @5155
-@5188:  stx     $e2
-        jsr     _c34edd
+@5188:  stx     ze2
+        jsr     GetCharPropPtr
         lda     $0014,y
         and     #$20
         beq     @519b
-        jsr     _c350ec
-        cmp     #$23
+        jsr     GetListMagicIndex
+        cmp     #ATTACK::IMP
         bne     _c351b9
 @519b:  longa
         lda     $000d,y
-        sta     $e0
+        sta     ze0
         shorta
-        ldx     $e2
-        cpx     $e0
+        ldx     ze2
+        cpx     ze0
         beq     @51ac
         bcs     _c351b9
 @51ac:  clr_a
-        lda     $e5
+        lda     ze5
         tax
-        lda     #$20
+        lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
         sta     $7e9e09,x
         rts
@@ -1146,9 +1164,9 @@ _c3510d:
 
 ::_c351b9:
         clr_a
-        lda     $e5
+        lda     ze5
         tax
-        lda     #$28
+        lda     #BG1_TEXT_COLOR::GRAY
         sta     zTextColor
         sta     $7e9e09,x
         rts
@@ -1157,10 +1175,10 @@ _c3510d:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw mp cost for magic/lore list ]
 
-_c351c6:
-@51c6:  lda     #$20
+DrawListMPCost:
+@51c6:  lda     #BG3_TEXT_COLOR::DEFAULT
         sta     zTextColor
         longa
 .if LANG_EN
@@ -1173,14 +1191,14 @@ _c351c6:
         ldx     #$9e8b
         stx     hWMADDL
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9d89,x
-        jsr     _c3510d
+        jsr     CalcMPCost
         jsr     HexToDec3
-        lda     $f8
+        lda     zf8
         sta     hWMDATA
-        lda     $f9
+        lda     zf9
         sta     hWMDATA
         stz     hWMDATA
         jmp     DrawPosTextBuf
@@ -1189,10 +1207,10 @@ _c351c6:
 
 ; [  ]
 
-_c351f9:
+InitLoreList:
 @51f9:  jsr     ClearBG1ScreenA
         jsr     DrawLoreList
-        lda     #$2c
+        lda     #BG3_TEXT_COLOR::TEAL
         sta     zTextColor
         ldy     #near SkillsLoreTitleText
         jsr     DrawPosKana
@@ -1201,24 +1219,24 @@ _c351f9:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ make a list of known lores ]
 
-_c3520f:
+ExpandLoreList:
 @520f:  ldx     #$9d89
         stx     hWMADDL
-        ldx     z0
-        stz     $e0
+        ldx     zZero
+        stz     ze0
 @5219:  ldy     #8
         lda     $1d29,x     ; known lores
 @521f:  ror
         pha
         bcc     @522a
-        lda     $e0
+        lda     ze0
         sta     hWMDATA
         bra     @522f
 @522a:  lda     #$ff
         sta     hWMDATA
-@522f:  inc     $e0
+@522f:  inc     ze0
         pla
         dey
         bne     @521f
@@ -1232,7 +1250,7 @@ _c3520f:
 ; [ draw entire lore list ]
 
 DrawLoreList:
-@523c:  jsr     _c3520f
+@523c:  jsr     ExpandLoreList
         jsr     GetListTextPos
 .if LANG_EN
         ldy     #8
@@ -1241,10 +1259,10 @@ DrawLoreList:
 .endif
 @5245:  phy
         jsr     DrawLoreListRow
-        lda     $e6
+        lda     ze6
         inc2
         and     #$1f
-        sta     $e6
+        sta     ze6
         ply
         dey
         bne     @5245
@@ -1254,19 +1272,19 @@ DrawLoreList:
 
 ; [ draw one row of lore list ]
 
-make_jump_label UpdateListText, LIST_TYPE::LORE
 DrawLoreListRow:
-@5256:  lda     #$20
+        array_label UPDATE_LIST_TEXT, LIST_TYPE::LORE
+@5256:  lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
-        jsr     _c35266
-        ldx     #$0003
-        jsr     _c35275
-        inc     $e5
+        jsr     GetLoreNamePtr
+        ldx     #3
+        jsr     DrawLoreName
+        inc     ze5
 .if !LANG_EN
-        jsr     _c35266
-        ldx     #$0011
-        jsr     _c35275
-        inc     $e5
+        jsr     GetLoreNamePtr
+        ldx     #17
+        jsr     DrawLoreName
+        inc     ze5
 .endif
         rts
 
@@ -1274,24 +1292,24 @@ DrawLoreListRow:
 
 ; [  ]
 
-_c35266:
+GetLoreNamePtr:
 
-@LoreName := AttackName+58*AttackName::ITEM_SIZE
+@LoreName := AttackName + array_item ATTACK_NAME, 58
 
-@5266:  ldy     #AttackName::ITEM_SIZE
-        sty     $eb
+@5266:  ldy     #ATTACK_NAME::ITEM_SIZE
+        sty     zeb
         ldy     #near @LoreName
-        sty     $ef
+        sty     zef
         lda     #^@LoreName
-        sta     $f1
+        sta     zf1
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
-_c35275:
-@5275:  lda     $e6
+DrawLoreName:
+@5275:  lda     ze6
 .if LANG_EN
         inc
 .endif
@@ -1301,12 +1319,12 @@ _c35275:
         sta     $7e9e89
         shorta
         clr_a
-        lda     $e5
+        lda     ze5
         tax
         lda     $7e9d89,x
         cmp     #$ff
         beq     @52c0
-        lda     $e5
+        lda     ze5
         jsr     LoadArrayItem
 .if LANG_EN
         ldx     #$9e95
@@ -1314,18 +1332,18 @@ _c35275:
         ldx     #$9e93
 .endif
         stx     hWMADDL
-        lda     #$c7
+        lda     #ELLIPSIS_CHAR
         sta     hWMDATA
-        lda     $e5
+        lda     ze5
         clc
-        adc     #$8b
-        jsr     _c3510d
+        adc     #ATTACK::FIRST_LORE
+        jsr     CalcMPCost
         jsr     HexToDec3
-        lda     $f7
+        lda     zf7
         sta     hWMDATA
-        lda     $f8
+        lda     zf8
         sta     hWMDATA
-        lda     $f9
+        lda     zf9
         sta     hWMDATA
         stz     hWMDATA
         jmp     DrawPosTextBuf
@@ -1351,13 +1369,13 @@ _c352d7:
 @52d7:  jsr     ClearBG1ScreenA
         jsr     _c3536e
 .if LANG_EN
-        lda     #$20
+        lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
         jsr     _c352f4
 .else
         jsr     _c3ae09
 .endif
-        lda     #$2c
+        lda     #BG3_TEXT_COLOR::TEAL
         sta     zTextColor
         ldy     #near SkillsBushidoTitleText
         jsr     DrawPosKana
@@ -1372,15 +1390,15 @@ _c352d7:
 
 _c352f4:
 @52f4:  jsr     GetListTextPos
-        inc     $e6
-        stz     $e5
+        inc     ze6
+        stz     ze5
         ldy     #$0004
 @52fe:  phy
         jsr     _c35311
-        lda     $e6
+        lda     ze6
         inc4
         and     #$1f
-        sta     $e6
+        sta     ze6
         ply
         dey
         bne     @52fe
@@ -1394,11 +1412,11 @@ _c35311:
 @5311:  jsr     _c35328
         ldx     #$0003
         jsr     _c35337
-        inc     $e5
+        inc     ze5
         jsr     _c35328
         ldx     #$0011
         jsr     _c35337
-        inc     $e5
+        inc     ze5
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1406,12 +1424,12 @@ _c35311:
 ; [  ]
 
 _c35328:
-@5328:  ldy     #BushidoName::ITEM_SIZE
-        sty     $eb
+@5328:  ldy     #BUSHIDO_NAME::ITEM_SIZE
+        sty     zeb
         ldy     #near BushidoName
-        sty     $ef
+        sty     zef
         lda     #^BushidoName
-        sta     $f1
+        sta     zf1
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1419,14 +1437,14 @@ _c35328:
 ; [  ]
 
 _c35337:
-@5337:  lda     $e6
+@5337:  lda     ze6
         jsr     GetBG1TilemapPtr
         longa
         txa
         sta     $7e9e89
         shorta
         clr_a
-        lda     $e5
+        lda     ze5
         tax
         lda     $7e9d89,x
         cmp     #$ff
@@ -1454,17 +1472,17 @@ _c3536e:
 @536e:  ldx     #$9d89
         stx     hWMADDL
         ldy     #$0008
-        stz     $e0
+        stz     ze0
         clr_a
         lda     $1cf7
 @537d:  ror
         pha
         bcc     @5385
-        lda     $e0
+        lda     ze0
         bra     @5387
 @5385:  lda     #$ff
 @5387:  sta     hWMDATA
-        inc     $e0
+        inc     ze0
         pla
         dey
         bne     @537d
@@ -1477,7 +1495,7 @@ _c3536e:
 InitRageList:
 @5391:  jsr     ClearBG1ScreenA
         jsr     DrawRageList
-        lda     #$2c
+        lda     #BG3_TEXT_COLOR::TEAL
         sta     zTextColor
         ldy     #near SkillsRageTitleText
         jsr     DrawPosKana
@@ -1494,10 +1512,10 @@ InitRageList:
         ldy     #9
 :       phy
         jsr     DrawRageListRow
-        lda     $e6
+        lda     ze6
         inc2
         and     #%11111
-        sta     $e6
+        sta     ze6
         ply
         dey
         bne     :-
@@ -1511,19 +1529,19 @@ InitRageList:
 ExpandRageList:
 @53c1:  ldx     #$9d89
         stx     hWMADDL
-        ldx     z0
-        stz     $e0
-@53cb:  ldy     #$0008
+        ldx     zZero
+        stz     ze0
+@53cb:  ldy     #8
         lda     $1d2c,x                 ; known rages
 @53d1:  ror
         pha
         bcc     @53dc
-        lda     $e0
+        lda     ze0
         sta     hWMDATA
         bra     @53e1
 @53dc:  lda     #$ff
         sta     hWMDATA
-@53e1:  inc     $e0
+@53e1:  inc     ze0
         pla
         dey
         bne     @53d1
@@ -1536,18 +1554,18 @@ ExpandRageList:
 
 ; [ draw one row of rage list ]
 
-make_jump_label UpdateListText, LIST_TYPE::RAGE
 DrawRageListRow:
-@53ee:  lda     #$20
+        array_label UPDATE_LIST_TEXT, LIST_TYPE::RAGE
+@53ee:  lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
         jsr     GetMonsterNamePtr
-        ldx     #$0005
+        ldx     #5
         jsr     DrawRageName
-        inc     $e5
+        inc     ze5
         jsr     GetMonsterNamePtr
-        ldx     #$0013
+        ldx     #19
         jsr     DrawRageName
-        inc     $e5
+        inc     ze5
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1555,12 +1573,12 @@ DrawRageListRow:
 ; [ get pointer to monster name ]
 
 GetMonsterNamePtr:
-@5409:  ldy     #MonsterName::ITEM_SIZE
-        sty     $eb
+@5409:  ldy     #MONSTER_NAME::ITEM_SIZE
+        sty     zeb
         ldy     #near MonsterName
-        sty     $ef
+        sty     zef
         lda     #^MonsterName
-        sta     $f1
+        sta     zf1
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1568,7 +1586,7 @@ GetMonsterNamePtr:
 ; [ draw monster name for rage list ]
 
 DrawRageName:
-@5418:  lda     $e6
+@5418:  lda     ze6
 .if LANG_EN
         inc
 .endif
@@ -1578,15 +1596,15 @@ DrawRageName:
         sta     $7e9e89
         shorta
         clr_a
-        lda     $e5
+        lda     ze5
         tax
         lda     $7e9d89,x
         cmp     #$ff
         beq     @543b
-        lda     $e5
+        lda     ze5
         jsr     LoadArrayItem
         jmp     DrawPosTextBuf
-@543b:  ldy     #MonsterName::ITEM_SIZE
+@543b:  ldy     #MONSTER_NAME::ITEM_SIZE
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -1602,10 +1620,10 @@ DrawRageName:
 
 DrawGenjuMenu:
 @5452:  jsr     ClearBG1ScreenA
-        lda     #$20
+        lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
         jsr     DrawGenjuList
-        lda     #$2c
+        lda     #BG3_TEXT_COLOR::TEAL
         sta     zTextColor
         ldy     #near SkillsGenjuTitleText
         jsr     DrawPosKana
@@ -1626,10 +1644,10 @@ DrawGenjuList:
 .endif
 @5475:  phy
         jsr     DrawGenjuListRow
-        lda     $e6
+        lda     ze6
         inc2
         and     #$1f
-        sta     $e6
+        sta     ze6
         ply
         dey
         bne     @5475
@@ -1642,19 +1660,19 @@ DrawGenjuList:
 GetGenjuList:
 @5486:  ldx     #$9ded
         stx     hWMADDL
-        ldx     z0
-        stz     $e0
+        ldx     zZero
+        stz     ze0
 @5490:  ldy     #8
         lda     $1a69,x     ; current espers
 @5496:  ror
         pha
         bcc     @54a1
-        lda     $e0
+        lda     ze0
         sta     hWMDATA
         bra     @54a6
 @54a1:  lda     #$ff
         sta     hWMDATA
-@54a6:  inc     $e0
+@54a6:  inc     ze0
         pla
         dey
         bne     @5496
@@ -1670,7 +1688,7 @@ GetGenjuList:
         bne     @54bd
         ldx     #$9ded
         stx     hWMADDL
-        ldy     #$001b
+        ldy     #ATTACK::NUM_GENJU
         clr_a
 @54cd:  lda     hWMDATA
         bmi     @54df
@@ -1687,77 +1705,39 @@ GetGenjuList:
 
 ; ------------------------------------------------------------------------------
 
-.pushseg
-
-.segment "genju_order"
-
-; d1/f9b5
-GenjuOrder:
-        .byte   1                       ; RAMUH
-        .byte   5                       ; IFRIT
-        .byte   6                       ; SHIVA
-        .byte   3                       ; SIREN
-        .byte   19                      ; TERRATO
-        .byte   9                       ; SHOAT
-        .byte   8                       ; MADUIN
-        .byte   12                      ; BISMARK
-        .byte   4                       ; STRAY
-        .byte   16                      ; PALIDOR
-        .byte   18                      ; TRITOCH
-        .byte   23                      ; ODIN
-        .byte   27                      ; RAIDEN
-        .byte   24                      ; BAHAMUT
-        .byte   21                      ; ALEXANDR
-        .byte   26                      ; CRUSADER
-        .byte   25                      ; RAGNAROK
-        .byte   2                       ; KIRIN
-        .byte   14                      ; ZONESEEK
-        .byte   11                      ; CARBUNKL
-        .byte   10                      ; PHANTOM
-        .byte   15                      ; SRAPHIM
-        .byte   13                      ; GOLEM
-        .byte   7                       ; UNICORN
-        .byte   17                      ; FENRIR
-        .byte   20                      ; STARLET
-        .byte   22                      ; PHOENIX
-
-.popseg
-
-; ------------------------------------------------------------------------------
-
 ; [ draw one row of esper list ]
 
-make_jump_label UpdateListText, LIST_TYPE::GENJU
 DrawGenjuListRow:
-@54e3:  jsr     _c354fa
-        ldx     #$0003
-        jsr     _c35509
-        inc     $e5
-        jsr     _c354fa
-        ldx     #$0011
-        jsr     _c35509
-        inc     $e5
+        array_label UPDATE_LIST_TEXT, LIST_TYPE::GENJU
+@54e3:  jsr     GetGenjuNamePtr
+        ldx     #3
+        jsr     DrawGenjuName
+        inc     ze5
+        jsr     GetGenjuNamePtr
+        ldx     #17
+        jsr     DrawGenjuName
+        inc     ze5
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ get pointer to esper name ]
 
-_c354fa:
-@54fa:  ldy     #GenjuName::ITEM_SIZE
-        sty     $eb
+GetGenjuNamePtr:
+@54fa:  ldy     #GENJU_NAME::ITEM_SIZE
+        sty     zeb
         ldy     #near GenjuName
-        sty     $ef
+        sty     zef
         lda     #^GenjuName
-        sta     $f1
+        sta     zf1
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw esper name ]
 
-_c35509:
-@5509:  lda     $e6
+DrawGenjuName:
+@5509:  lda     ze6
 .if LANG_EN
         inc
 .endif
@@ -1767,7 +1747,7 @@ _c35509:
         sta     $7e9e89
         shorta
         clr_a
-        lda     $e5
+        lda     ze5
         tax
         lda     $7e9d89,x
         cmp     #$ff
@@ -1775,24 +1755,24 @@ _c35509:
         jsr     _c35574
         jsr     LoadArrayItem
         clr_a
-        lda     $e5
+        lda     ze5
         tax
         lda     $7e9d89,x
         clc
-        adc     #$36
-        jsr     _c3510d
+        adc     #ATTACK::FIRST_GENJU
+        jsr     CalcMPCost
         pha
         ldx     #$9e93
         stx     hWMADDL
-        lda     #$c7
+        lda     #ELLIPSIS_CHAR
         sta     hWMDATA
         pla
         jsr     HexToDec3
-        lda     $f7
+        lda     zf7
         sta     hWMDATA
-        lda     $f8
+        lda     zf8
         sta     hWMDATA
-        lda     $f9
+        lda     zf9
         sta     hWMDATA
         stz     hWMDATA
         jmp     DrawPosTextBuf
@@ -1811,11 +1791,11 @@ _c35509:
 ; [  ]
 
 _c35574:
-@5574:  sta     $e0
-        ldx     z0
+@5574:  sta     ze0
+        ldx     zZero
         ldy     #$0010
 @557b:  lda     $161e,x     ; esper
-        cmp     $e0
+        cmp     ze0
         beq     @5593
         longa
         txa
@@ -1825,11 +1805,11 @@ _c35574:
         shorta
         dey
         bne     @557b
-        lda     #$20
+        lda     #BG1_TEXT_COLOR::DEFAULT
         bra     @5595
-@5593:  lda     #$28
+@5593:  lda     #BG1_TEXT_COLOR::GRAY
 @5595:  sta     zTextColor
-        lda     $e0
+        lda     ze0
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1837,7 +1817,7 @@ _c35574:
 ; [ show error message if esper is already equipped ]
 
 _c3559a:
-@559a:  lda     #$20
+@559a:  lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
         longa
 .if LANG_EN
@@ -1857,7 +1837,7 @@ _c3559a:
         inx
         dey
         bne     @55b2
-@55c0:  ldx     z0
+@55c0:  ldx     zZero
 @55c2:  lda     f:GenjuEquipErrorMsgText,x
         beq     @55ce
         sta     hWMDATA
@@ -1873,7 +1853,7 @@ _c3559a:
 DrawBlitzMenu:
 @55d4:  jsr     ClearBG1ScreenA
         jsr     DrawBlitzList
-        lda     #$2c
+        lda     #BG3_TEXT_COLOR::TEAL
         sta     zTextColor
         ldy     #near SkillsBlitzTitleText
         jsr     DrawPosKana
@@ -1887,19 +1867,19 @@ DrawBlitzMenu:
 DrawBlitzList:
 @55ea:  jsr     GetBlitzList
         jsr     GetListTextPos
-        stz     $e5
-        inc     $e6
+        stz     ze5
+        inc     ze6
 .if !LANG_EN
-        inc     $e6
-        inc     $e6
+        inc     ze6
+        inc     ze6
 .endif
         ldy     #4
 @55f7:  phy
         jsr     DrawBlitzListRow
-        lda     $e6
+        lda     ze6
         inc4
         and     #$1f
-        sta     $e6
+        sta     ze6
         ply
         dey
         bne     @55f7
@@ -1913,17 +1893,17 @@ DrawBlitzListRow:
 .if LANG_EN
 @560a:  ldx     #4
         jsr     DrawBlitzInput
-        inc     $e5
+        inc     ze5
         ldx     #18
         jsr     DrawBlitzInput
 .else
         ldx     #5
         jsr     DrawBlitzInput
-        inc     $e5
+        inc     ze5
         ldx     #19
         jsr     DrawBlitzInput
 .endif
-        inc     $e5
+        inc     ze5
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1938,7 +1918,7 @@ GetDanceList:
 @5620:  lda     $1d4c
 _5623:  ldx     #$9d89
         stx     hWMADDL
-        ldx     z0
+        ldx     zZero
         ldy     #8
 @562e:  ror
         pha
@@ -1959,23 +1939,23 @@ _5623:  ldx     #$9d89
 ; [ draw blitz button input code ]
 
 DrawBlitzInput:
-@5643:  lda     $e6
+@5643:  lda     ze6
         jsr     GetBG1TilemapPtr
         longa
         txa
         sta     $7e9e89
         shorta
         clr_a
-        lda     $e5
+        lda     ze5
         tax
         lda     $7e9d89,x
         cmp     #$ff
         beq     @566c
         jsr     GetBlitzInputTiles
         ldy     #$9e89
-        sty     $e7
+        sty     ze7
         lda     #$7e
-        sta     $e9
+        sta     ze9
         jmp     _c356bc
 @566c:  ldy     #$0008
         ldx     #$9e8b
@@ -1994,11 +1974,11 @@ DrawBlitzInput:
 GetBlitzInputTiles:
 @5683:  pha
         asl3
-        sta     $e0
+        sta     ze0
         pla
         asl2
         clc
-        adc     $e0
+        adc     ze0
         tax
         ldy     #$9e8b
         sty     hWMADDL
@@ -2026,19 +2006,19 @@ GetBlitzInputTiles:
 ; [  ]
 
 _c356bc:
-@56bc:  ldy     z0
+@56bc:  ldy     zZero
         longa
-        lda     [$e7]
-        sta     $eb
-        inc     $e7
-        inc     $e7
+        lda     [ze7]
+        sta     zeb
+        inc     ze7
+        inc     ze7
         shorta
         lda     #$7e
-        sta     $ed
+        sta     zed
 @56ce:  longa
-        lda     [$e7],y
+        lda     [ze7],y
         beq     @56dc
-        sta     [$eb],y
+        sta     [zeb],y
         shorta
         iny2
         bra     @56ce
@@ -2050,7 +2030,7 @@ _c356bc:
 ; [ load esper attack description ]
 
 LoadGenjuAttackDesc:
-@56df:  jsr     GetLoadGenjuAttackDescPtr
+@56df:  jsr     GetGenjuAttackDescPtr
         jmp     LoadBigText
 
 ; ------------------------------------------------------------------------------
@@ -2067,13 +2047,13 @@ LoadMagicDesc:
 
 LoadLoreDesc:
 @56eb:  ldx     #near LoreDescPtrs
-        stx     $e7
+        stx     ze7
         ldx     #near LoreDesc
-        stx     $eb
+        stx     zeb
         lda     #^LoreDescPtrs
-        sta     $e9
+        sta     ze9
         lda     #^LoreDesc
-        sta     $ed
+        sta     zed
         jmp     LoadBigText
 
 ; ------------------------------------------------------------------------------
@@ -2082,13 +2062,13 @@ LoadLoreDesc:
 
 LoadBushidoDesc:
 @5700:  ldx     #near BushidoDescPtrs
-        stx     $e7
+        stx     ze7
         ldx     #near BushidoDesc
-        stx     $eb
+        stx     zeb
         lda     #^BushidoDescPtrs
-        sta     $e9
+        sta     ze9
         lda     #^BushidoDesc
-        sta     $ed
+        sta     zed
         jmp     LoadBigText
 
 ; ------------------------------------------------------------------------------
@@ -2097,13 +2077,13 @@ LoadBushidoDesc:
 
 LoadBlitzDesc:
 @5715:  ldx     #near BlitzDescPtrs
-        stx     $e7
+        stx     ze7
         ldx     #near BlitzDesc
-        stx     $eb
+        stx     zeb
         lda     #^BlitzDescPtrs
-        sta     $e9
+        sta     ze9
         lda     #^BlitzDesc
-        sta     $ed
+        sta     zed
         jmp     LoadBigText
 
 ; ------------------------------------------------------------------------------
@@ -2115,7 +2095,7 @@ LoadBlitzDesc:
 _572a:  ldx     #$9ec9
         stx     hWMADDL
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9d89,x
 
@@ -2127,16 +2107,16 @@ _5738:  cmp     #$ff
         longa
         asl
         tay
-        lda     [$e7],y
+        lda     [ze7],y
         tay
         shorta
-_5745:  lda     [$eb],y
+_5745:  lda     [zeb],y
         beq     _574f
         sta     hWMDATA
         iny
         bra     _5745
 _574f:  dey
-        lda     [$eb],y
+        lda     [zeb],y
         iny
         cmp     #$1c
         beq     _5767
@@ -2163,7 +2143,7 @@ _576d:  lda     #$ff
 DrawDanceMenu:
 @5774:  jsr     ClearBG1ScreenA
         jsr     DrawDanceList
-        lda     #$2c
+        lda     #BG3_TEXT_COLOR::TEAL
         sta     zTextColor
         ldy     #near SkillsDanceTitleText
         jsr     DrawPosKana
@@ -2177,18 +2157,18 @@ DrawDanceMenu:
 DrawDanceList:
 @578a:  jsr     GetDanceList
         jsr     GetListTextPos
-        inc     $e6
+        inc     ze6
 .if !LANG_EN
-        inc     $e6
+        inc     ze6
 .endif
-        stz     $e5
+        stz     ze5
         ldy     #4
 @5797:  phy
         jsr     DrawDanceListRow
-        lda     $e6
+        lda     ze6
         inc4
         and     #$1f
-        sta     $e6
+        sta     ze6
         ply
         dey
         bne     @5797
@@ -2203,19 +2183,19 @@ DrawDanceListRow:
 .if LANG_EN
         ldx     #3
         jsr     DrawDanceName
-        inc     $e5
+        inc     ze5
         jsr     GetDanceNamePtr
         ldx     #17
         jsr     DrawDanceName
 .else
         ldx     #5
         jsr     DrawDanceName
-        inc     $e5
+        inc     ze5
         jsr     GetDanceNamePtr
         ldx     #19
         jsr     DrawDanceName
 .endif
-        inc     $e5
+        inc     ze5
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2223,12 +2203,12 @@ DrawDanceListRow:
 ; [ get pointer to dance name ]
 
 GetDanceNamePtr:
-@57c1:  ldy     #DanceName::ITEM_SIZE
-        sty     $eb
+@57c1:  ldy     #DANCE_NAME::ITEM_SIZE
+        sty     zeb
         ldy     #near DanceName
-        sty     $ef
+        sty     zef
         lda     #^DanceName
-        sta     $f1
+        sta     zf1
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2236,21 +2216,21 @@ GetDanceNamePtr:
 ; [ draw dance name ]
 
 DrawDanceName:
-@57d0:  lda     $e6
+@57d0:  lda     ze6
         jsr     GetBG1TilemapPtr
         longa
         txa
         sta     $7e9e89
         shorta
         clr_a
-        lda     $e5
+        lda     ze5
         tax
         lda     $7e9d89,x
         cmp     #$ff
         beq     @57f0
         jsr     LoadArrayItem
         jmp     DrawPosTextBuf
-@57f0:  ldy     #DanceName::ITEM_SIZE
+@57f0:  ldy     #DANCE_NAME::ITEM_SIZE
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -2266,10 +2246,10 @@ DrawDanceName:
 
 _c35807:
 @5807:  clr_a
-        lda     $60
+        lda     z60
         tax
         lda     #$ff
-        sta     $7e35c9,x
+        sta     wTaskProp::w7e35c9,x
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2310,17 +2290,17 @@ _c35847:
 ; [  ]
 
 _c3584b:
-@584b:  lda     #$20
+@584b:  lda     #BG3_TEXT_COLOR::DEFAULT
         sta     zTextColor
-        ldy     #near _c35889
+        ldy     #near SkillsMPNeededText
         jsr     DrawPosKana
 .if LANG_EN
-        ldy     #near _c3588e
+        ldy     #near SkillsMPNeededText2
         jsr     DrawPosText
 .endif
         clr_a
-        lda     $4b
-        sta     $e5
+        lda     z4b
+        sta     ze5
         jsr     GetMagicNamePtr
         longa
 .if LANG_EN
@@ -2330,11 +2310,11 @@ _c3584b:
 .endif
         sta     $7e9e89
         shorta
-        jsr     _c350ec
+        jsr     GetListMagicIndex
         jsr     LoadArrayItem
         jsr     DrawPosTextBuf
-        jsr     _c350ec
-        jsr     _c3510d
+        jsr     GetListMagicIndex
+        jsr     CalcMPCost
         jsr     HexToDec3
 .if LANG_EN
         ldx_pos BG3A, {3, 7}
@@ -2346,28 +2326,26 @@ _c3584b:
 
 ; ------------------------------------------------------------------------------
 
-_c35889:
+SkillsMPNeededText:
+        pos_text SKILLS_MP_NEEDED
+
 .if LANG_EN
-@5889:  .byte   $15,$7a,$8c,$8f,$00
 
-_c3588e:
-@588e:  .byte   $4d,$7a,$8d,$9e,$9e,$9d,$9e,$9d,$00
-
-.else
-        .byte   $cd,$79,$77,$c3,$89,$63,$ff,$5d,$5f,$00
+SkillsMPNeededText2:
+        pos_text SKILLS_MP_NEEDED_2
 .endif
 
 ; ------------------------------------------------------------------------------
 
 ; [ init esper detail menu ]
 
-InitEsperDetailMenu:
-@5897:  ldy     $4f
-        sty     $8e
-        lda     $4a
-        sta     $90
+InitGenjuDetailMenu:
+@5897:  ldy     z4f
+        sty     z8e
+        lda     z4a
+        sta     z90
         jsr     LoadGenjuProp
-        jsr     DrawEsperDetailMenu
+        jsr     DrawGenjuDetailMenu
         jsr     InitDMA1BG1ScreenB
         jsr     WaitVblank
         jsr     InitDMA1BG1ScreenA
@@ -2375,10 +2353,10 @@ InitEsperDetailMenu:
         lda     #$0100
         sta     $7e9a10
         shorta
-        lda     $49
-        sta     $5f
+        lda     z49
+        sta     z5f
         lda     #$07
-        sta     $49
+        sta     z49
         jsr     LoadSkillsBG1VScrollHDMATbl
         lda     #$c0
         trb     z46
@@ -2389,22 +2367,22 @@ InitEsperDetailMenu:
 
 ; [ menu state $4d: esper detail ]
 
-MenuState_4d:
+        array_label MENU_STATE, MENU_STATE::SKILLS_GENJU_DETAIL
 @58ce:  jsr     UpdateGenjuDetailCursor
         jsr     _c35b93
 
 ; A button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @590a
         clr_a
-        lda     $4b
+        lda     z4b
         bne     @590a
-        lda     $99
+        lda     z99
         jsr     _c35574
-        sta     $e0
+        sta     ze0
         lda     zTextColor
-        cmp     #$28
+        cmp     #BG1_TEXT_COLOR::GRAY
         bne     @5902
         jsr     PlayInvalidSfx
         lda     #$10
@@ -2412,7 +2390,7 @@ MenuState_4d:
         jsr     _c3559a
         ldy     #$0020
         sty     zWaitCounter
-        lda     #$34
+        lda     #MENU_STATE::SKILLS_GENJU_ERROR
         sta     zMenuState
         jmp     InitDMA1BG1ScreenB
 
@@ -2422,7 +2400,7 @@ MenuState_4d:
         bra     _c35913
 
 ; B button
-@590a:  lda     z08+1
+@590a:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     _597c
         jsr     PlayCancelSfx
@@ -2430,8 +2408,8 @@ MenuState_4d:
 _c35913:
 @5913:  lda     #$10
         tsb     z45
-        lda     $5f
-        sta     $49
+        lda     z5f
+        sta     z49
         jsr     DrawGenjuList
         jsr     CreateScrollArrowTask1
         longa
@@ -2440,36 +2418,36 @@ _c35913:
 .else
         lda     #$1333
 .endif
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0060
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
         jsr     LoadGenjuCursor
-        lda     $8e
-        sta     $4d
-        ldy     $8e
-        sty     $4f
-        lda     $90
-        sta     $4a
-        lda     $4a
-        sta     $e0
-        lda     $50
+        lda     z8e
+        sta     z4d
+        ldy     z8e
+        sty     z4f
+        lda     z90
+        sta     z4a
+        lda     z4a
+        sta     ze0
+        lda     z50
         sec
-        sbc     $e0
-        sta     $4e
+        sbc     ze0
+        sta     z4e
         jsr     InitGenjuCursor
 .if LANG_EN
         lda     #$06
-        sta     $5c
+        sta     z5c
         lda     #$08
 .else
         lda     #$05
-        sta     $5c
+        sta     z5c
         lda     #$09
 .endif
-        sta     $5a
+        sta     z5a
         lda     #$02
-        sta     $5b
+        sta     z5b
         jsr     InitDMA1BG1ScreenA
         jsr     WaitVblank
         longa
@@ -2481,7 +2459,7 @@ _c35913:
         sty     zBG3HScroll
         jsr     LoadSkillsBG1VScrollHDMATbl
         jsr     InitDMA1BG1ScreenB
-        lda     #$1e
+        lda     #MENU_STATE::SKILLS_GENJU_SELECT
         sta     zMenuState
 _597c:  rts
 
@@ -2522,8 +2500,8 @@ GenjuDetailCursorPos:
 
 ; [ draw esper detail menu ]
 
-DrawEsperDetailMenu:
-@599f:  lda     #$20
+DrawGenjuDetailMenu:
+@599f:  lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
         ldy     #near GenjuLearnRateText
         jsr     DrawPosKana
@@ -2550,46 +2528,46 @@ DrawEsperDetailMenu:
         stz     hWMDATA
         jsr     DrawPosTextBuf
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9d89,x
         sta     hWRMPYA
         lda     #11
         sta     hWRMPYB
-        lda     #$20
+        lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
 .if LANG_EN
         ldy     #$0011
 .else
         ldy     #$0012
 .endif
-        sty     $f5
+        sty     zf5
         longa
         lda     hRDMPYL
         tax
 @59f4:  shorta
         lda     f:GenjuProp,x               ; magic learn rate
-        sta     $e0
+        sta     ze0
         inx
         lda     f:GenjuProp,x               ; magic spell id
-        sta     $e1
+        sta     ze1
         inx
         phx
         ldx     #$0005
-        ldy     $f5
-        lda     $e1
+        ldy     zf5
+        lda     ze1
         pha
         jsr     DrawGenjuMagicName
         ldx     #$0018
-        ldy     $f5
+        ldy     zf5
         pla
-        sta     $e1
+        sta     ze1
         jsr     _c35a84
         plx
         longa
-        inc     $f5
-        inc     $f5
-        lda     $f5
+        inc     zf5
+        inc     zf5
+        lda     zf5
 .if LANG_EN
         cmp     #$001b
 .else
@@ -2601,7 +2579,7 @@ DrawEsperDetailMenu:
         cmp     #$ff
         beq     @5a67
         sta     hWRMPYA
-        lda     #GenjuBonusName::ITEM_SIZE
+        lda     #GENJU_BONUS_NAME::ITEM_SIZE
         sta     hWRMPYB
 .if LANG_EN
         ldy_pos BG1B, {5, 27}
@@ -2609,14 +2587,14 @@ DrawEsperDetailMenu:
         ldy_pos BG1B, {5, 28}
 .endif
         jsr     InitTextBuf
-        ldx     z0
+        ldx     zZero
 @5a43:  lda     f:GenjuAtLevelUpText,x
         sta     hWMDATA
         inx
         cpx     #sizeof_GenjuAtLevelUpText
         bne     @5a43
         ldx     hRDMPYL
-        ldy     #GenjuBonusName::ITEM_SIZE
+        ldy     #GENJU_BONUS_NAME::ITEM_SIZE
 @5a56:  lda     f:GenjuBonusName,x
         sta     hWMDATA
         inx
@@ -2630,7 +2608,7 @@ DrawEsperDetailMenu:
 @5a67:  ldy_pos BG1B, {5, 28}
 .endif
         jsr     InitTextBuf
-        ldy     #sizeof_GenjuAtLevelUpText + GenjuBonusName::ITEM_SIZE
+        ldy     #sizeof_GenjuAtLevelUpText + GENJU_BONUS_NAME::ITEM_SIZE
         ldx     #$9e8b
         stx     hWMADDL
         lda     #$ff
@@ -2652,10 +2630,10 @@ _c35a84:
         shorta
         ldx     #$9e8b
         stx     hWMADDL
-        lda     $e1
+        lda     ze1
         cmp     #$ff
         beq     @5ad1
-        jsr     _c350a2
+        jsr     GetMagicLearnPct
         cmp     #$ff
         beq     @5ac2
         pha
@@ -2663,9 +2641,9 @@ _c35a84:
         sta     hWMDATA
         pla
         jsr     HexToDec3
-        lda     $f8
+        lda     zf8
         sta     hWMDATA
-        lda     $f9
+        lda     zf9
         sta     hWMDATA
 @5ab7:  lda     #$cd
         sta     hWMDATA
@@ -2697,7 +2675,7 @@ DrawGenjuMagicName:
 
 DrawItemMagicName:
 @5aed:  jsr     GetMagicNamePtr
-        lda     $e1
+        lda     ze1
         cmp     #$ff
         beq     @5b26
         jsr     LoadArrayItem
@@ -2717,11 +2695,11 @@ DrawItemMagicName:
 .endif
         lda     #$d7                    ; multiplication sign
         sta     hWMDATA
-        lda     $e0
+        lda     ze0
         jsr     HexToDec3
-        lda     $f8
+        lda     zf8
         sta     hWMDATA
-        lda     $f9
+        lda     zf9
         sta     hWMDATA
         stz     hWMDATA
         jmp     DrawPosTextBuf
@@ -2752,11 +2730,11 @@ GetBG1ScreenBPtr:
 @5b3d:  longa
         tya
         asl6
-        sta     $e7
+        sta     ze7
         txa
         asl
         clc
-        adc     $e7
+        adc     ze7
         adc     #near wBG1Tiles::ScreenB
         tax
         shorta
@@ -2768,9 +2746,9 @@ GetBG1ScreenBPtr:
 
 LoadGenjuProp:
 @5b54:  clr_a
-        lda     $99
+        lda     z99
         sta     $7eab8d
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9d89,x
         sta     hWRMPYA
@@ -2805,7 +2783,7 @@ _c35b93:
 @5b93:  ldx     #$9ec9
         stx     hWMADDL
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7eab8d,x
         cmp     #$ff
@@ -2816,16 +2794,16 @@ _c35b93:
         longa
         asl
         tay
-        lda     [$e7],y
+        lda     [ze7],y
         tay
         shorta
-@5bb3:  lda     [$eb],y
+@5bb3:  lda     [zeb],y
         beq     @5bbd
         sta     hWMDATA
         iny
         bra     @5bb3
 @5bbd:  dey
-        lda     [$eb],y
+        lda     [zeb],y
         iny
         cmp     #$1c
         beq     @5bd5
@@ -2846,42 +2824,42 @@ _c35b93:
 ; [ load esper or magic description for esper menu ]
 
 GetGenjuDescPtr:
-@5bdb:  lda     $4b
-        beq     GetLoadGenjuAttackDescPtr
+@5bdb:  lda     z4b
+        beq     GetGenjuAttackDescPtr
         cmp     #$06
         beq     GetGenjuBonusDescPtr
 
 GetMagicDescPtr:
 @5be3:  ldx     #near MagicDescPtrs
-        stx     $e7
+        stx     ze7
         ldx     #near MagicDesc
-        stx     $eb
+        stx     zeb
         lda     #^MagicDescPtrs
-        sta     $e9
+        sta     ze9
         lda     #^MagicDesc
-        sta     $ed
+        sta     zed
         rts
 
 GetGenjuBonusDescPtr:
 @5bf6:  ldx     #near GenjuBonusDescPtrs
-        stx     $e7
+        stx     ze7
         ldx     #near GenjuBonusDesc
-        stx     $eb
+        stx     zeb
         lda     #^GenjuBonusDescPtrs
-        sta     $e9
+        sta     ze9
         lda     #^GenjuBonusDesc
-        sta     $ed
+        sta     zed
         rts
 
-GetLoadGenjuAttackDescPtr:
+GetGenjuAttackDescPtr:
 @5c09:  ldx     #near GenjuAttackDescPtrs
-        stx     $e7
+        stx     ze7
         ldx     #near GenjuAttackDesc
-        stx     $eb
+        stx     zeb
         lda     #^GenjuAttackDescPtrs
-        sta     $e9
+        sta     ze9
         lda     #^GenjuAttackDesc
-        sta     $ed
+        sta     zed
         rts
 
 ; ------------------------------------------------------------------------------

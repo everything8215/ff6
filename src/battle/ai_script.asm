@@ -1,17 +1,21 @@
 ; ------------------------------------------------------------------------------
 
-.segment "ai_script"
+.mac ai_script monster_name
+        array_label AI_SCRIPT, MONSTER::monster_name
+.endmac
 
 ; ------------------------------------------------------------------------------
 
-.scope AIScript
-        ARRAY_LENGTH = 384
-        Start := AIScript
+.segment "ai_script"
+
+.scope AI_SCRIPT
+        COUNT = 384
+        BASE_PTR = AIScript
 .endscope
 
 ; cf/8400
 AIScriptPtrs:
-        ptr_tbl AIScript
+        ptr_tbl AI_SCRIPT
 
 ; ------------------------------------------------------------------------------
 
@@ -26,8 +30,7 @@ AIScript:
 
 ; ------------------------------------------------------------------------------
 
-; guard
-AIScript::_0:
+ai_script GUARD
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -35,8 +38,7 @@ AIScript::_0:
 
 ; ------------------------------------------------------------------------------
 
-; lobo
-AIScript::_25:
+ai_script LOBO
         if_level_greater RAND_CHAR, 7
                 attack BATTLE, SPECIAL, NOTHING
                 attack SPECIAL, NOTHING, NOTHING
@@ -48,11 +50,10 @@ AIScript::_25:
 
 ; ------------------------------------------------------------------------------
 
-; vomammoth
-AIScript::_27:
+ai_script VOMAMMOTH
         if_level_greater RAND_CHAR, 5
                 set_target ALL_CHARS
-                attack BLIZZARD
+                attack SNOWSTORM
                 wait
                 attack BATTLE, NOTHING, SPECIAL
                 attack BATTLE, BATTLE, SPECIAL
@@ -64,8 +65,7 @@ AIScript::_27:
 
 ; ------------------------------------------------------------------------------
 
-; were-rat
-AIScript::_19:
+ai_script WERE_RAT
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, SPECIAL, NOTHING
@@ -75,8 +75,7 @@ AIScript::_19:
 
 ; ------------------------------------------------------------------------------
 
-; vaporite
-AIScript::_70:
+ai_script VAPORITE
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -88,8 +87,7 @@ AIScript::_70:
 
 ; ------------------------------------------------------------------------------
 
-; repo man
-AIScript::_77:
+ai_script REPO_MAN
         attack BATTLE, BATTLE, SPECIAL
         wait
         end
@@ -101,8 +99,7 @@ AIScript::_77:
 
 ; ------------------------------------------------------------------------------
 
-; marshal
-AIScript::_100:
+ai_script MARSHAL
         if_num_monsters 1
                 attack BATTLE, SPECIAL, SPECIAL
                 end_if
@@ -120,8 +117,7 @@ AIScript::_100:
 
 ; ------------------------------------------------------------------------------
 
-; leafer
-AIScript::_23:
+ai_script LEAFER
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -131,8 +127,7 @@ AIScript::_23:
 
 ; ------------------------------------------------------------------------------
 
-; dark wind
-AIScript::_40:
+ai_script DARK_WIND
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -142,8 +137,7 @@ AIScript::_40:
 
 ; ------------------------------------------------------------------------------
 
-; sand ray
-AIScript::_92:
+ai_script SAND_RAY
         attack BATTLE, SPECIAL, NOTHING
         end
 
@@ -151,8 +145,7 @@ AIScript::_92:
 
 ; ------------------------------------------------------------------------------
 
-; areneid
-AIScript::_93:
+ai_script ARENEID
         if_level_greater TERRA, 7
                 attack BATTLE, SPECIAL, NOTHING
                 wait
@@ -165,8 +158,7 @@ AIScript::_93:
 
 ; ------------------------------------------------------------------------------
 
-; hornet
-AIScript::_46:
+ai_script HORNET
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -176,8 +168,7 @@ AIScript::_46:
 
 ; ------------------------------------------------------------------------------
 
-; crawly
-AIScript::_98:
+ai_script CRAWLY
         attack BATTLE, BATTLE, NOTHING
         wait
         attack SPECIAL, BATTLE, NOTHING
@@ -187,8 +178,7 @@ AIScript::_98:
 
 ; ------------------------------------------------------------------------------
 
-; bleary
-AIScript::_99:
+ai_script BLEARY
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -198,8 +188,7 @@ AIScript::_99:
 
 ; ------------------------------------------------------------------------------
 
-; rhodox
-AIScript::_18:
+ai_script RHODOX
         attack BATTLE, BATTLE, NOTHING
         end
 
@@ -207,8 +196,7 @@ AIScript::_18:
 
 ; ------------------------------------------------------------------------------
 
-; rhinotaur
-AIScript::_21:
+ai_script RHINOTAUR
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -220,8 +208,7 @@ AIScript::_21:
 
 ; ------------------------------------------------------------------------------
 
-; greasemonk
-AIScript::_168:
+ai_script GREASEMONK
         if_num_monsters 1
                 attack BATTLE, SPECIAL, SPECIAL
                 end_if
@@ -232,8 +219,7 @@ AIScript::_168:
 
 ; ------------------------------------------------------------------------------
 
-; brawler
-AIScript::_11:
+ai_script BRAWLER
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -243,8 +229,7 @@ AIScript::_11:
 
 ; ------------------------------------------------------------------------------
 
-; trilium
-AIScript::_50:
+ai_script TRILIUM
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -256,8 +241,7 @@ AIScript::_50:
 
 ; ------------------------------------------------------------------------------
 
-; tusker
-AIScript::_122:
+ai_script TUSKER
         attack BATTLE
         end
 
@@ -269,8 +253,7 @@ AIScript::_122:
 
 ; ------------------------------------------------------------------------------
 
-; cirpius
-AIScript::_134:
+ai_script CIRPIUS
         if_num_monsters 1
                 attack BATTLE
                 end_if
@@ -285,8 +268,7 @@ AIScript::_134:
 
 ; ------------------------------------------------------------------------------
 
-; pterodon
-AIScript::_34:
+ai_script PTERODON
         if_battle_var_greater 0, 3
                 set_battle_var 0, 0
                 set_target BANON
@@ -306,8 +288,7 @@ AIScript::_34:
 
 ; ------------------------------------------------------------------------------
 
-; nautiloid
-AIScript::_56:
+ai_script NAUTILOID
         if_battle_var_greater 0, 3
                 set_battle_var 0, 0
                 set_target BANON
@@ -321,8 +302,7 @@ AIScript::_56:
 
 ; ------------------------------------------------------------------------------
 
-; exocite
-AIScript::_57:
+ai_script EXOCITE
         if_battle_var_greater 0, 3
                 set_battle_var 0, 0
                 set_target BANON
@@ -338,8 +318,7 @@ AIScript::_57:
 
 ; ------------------------------------------------------------------------------
 
-; heavyarmor
-AIScript::_159:
+ai_script HEAVYARMOR
         if_battle_switch_clr 0, 0
         if_target_valid CELES
                 set_battle_switch 0, 0
@@ -360,8 +339,7 @@ AIScript::_159:
 
 ; ------------------------------------------------------------------------------
 
-; commander
-AIScript::_17:
+ai_script COMMANDER
         if_num_monsters 1
                 attack SPECIAL
                 attack BATTLE, BATTLE, NOTHING
@@ -373,8 +351,7 @@ AIScript::_17:
 
 ; ------------------------------------------------------------------------------
 
-; vector pup
-AIScript::_113:
+ai_script VECTOR_PUP
         if_num_monsters 1
                 set_target SELF
                 attack ESCAPE
@@ -390,8 +367,7 @@ AIScript::_113:
 
 ; ------------------------------------------------------------------------------
 
-; trilobiter
-AIScript::_54:
+ai_script TRILOBITER
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -403,8 +379,7 @@ AIScript::_54:
 
 ; ------------------------------------------------------------------------------
 
-; primordite
-AIScript::_148:
+ai_script PRIMORDITE
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -418,8 +393,7 @@ AIScript::_148:
 
 ; ------------------------------------------------------------------------------
 
-; gold bear
-AIScript::_245:
+ai_script GOLD_BEAR
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -431,8 +405,7 @@ AIScript::_245:
 
 ; ------------------------------------------------------------------------------
 
-; dark side
-AIScript::_96:
+ai_script DARK_SIDE
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -442,11 +415,10 @@ AIScript::_96:
 
 ; ------------------------------------------------------------------------------
 
-; spectre
-AIScript::_182:
+ai_script SPECTRE
         attack SPECIAL, SPECIAL, NOTHING
         wait
-        attack FIRE, ICE, BOLT
+        attack FIRE, BLIZZARD, THUNDER
         wait
         attack SPECIAL
         end
@@ -455,8 +427,7 @@ AIScript::_182:
 
 ; ------------------------------------------------------------------------------
 
-; rinn
-AIScript::_207:
+ai_script RINN
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -466,8 +437,7 @@ AIScript::_207:
 
 ; ------------------------------------------------------------------------------
 
-; 1st class
-AIScript::_239:
+ai_script FIRST_CLASS
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -477,8 +447,7 @@ AIScript::_239:
 
 ; ------------------------------------------------------------------------------
 
-; wild rat
-AIScript::_244:
+ai_script WILD_RAT
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -488,8 +457,7 @@ AIScript::_244:
 
 ; ------------------------------------------------------------------------------
 
-; stray cat
-AIScript::_24:
+ai_script STRAY_CAT
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -501,8 +469,7 @@ AIScript::_24:
 
 ; ------------------------------------------------------------------------------
 
-; beakor
-AIScript::_41:
+ai_script BEAKOR
         attack BATTLE
         end
 
@@ -517,8 +484,7 @@ AIScript::_41:
 
 ; ------------------------------------------------------------------------------
 
-; crasshoppr
-AIScript::_47:
+ai_script CRASSHOPPR
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -528,8 +494,7 @@ AIScript::_47:
 
 ; ------------------------------------------------------------------------------
 
-; rhobite
-AIScript::_118:
+ai_script RHOBITE
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -539,8 +504,7 @@ AIScript::_118:
 
 ; ------------------------------------------------------------------------------
 
-; soldier
-AIScript::_1:
+ai_script SOLDIER
         attack BATTLE
         end
 
@@ -550,8 +514,7 @@ AIScript::_1:
 
 ; ------------------------------------------------------------------------------
 
-; templar
-AIScript::_2:
+ai_script TEMPLAR
         attack BATTLE
         end
 
@@ -561,8 +524,7 @@ AIScript::_2:
 
 ; ------------------------------------------------------------------------------
 
-; doberman
-AIScript::_26:
+ai_script DOBERMAN
         if_num_monsters 1
                 set_target SELF
                 attack ESCAPE
@@ -578,8 +540,7 @@ AIScript::_26:
 
 ; ------------------------------------------------------------------------------
 
-; m-tekarmor
-AIScript::_66:
+ai_script M_TEKARMOR
         attack SPECIAL, SPECIAL, TEK_LASER
         end
 
@@ -592,8 +553,7 @@ AIScript::_66:
 
 ; ------------------------------------------------------------------------------
 
-; telstar
-AIScript::_68:
+ai_script TELSTAR
         if_monster_timer 200
         if_battle_switch_clr 0, 0
                 set_battle_switch 0, 0
@@ -638,8 +598,7 @@ AIScript::_68:
 
 ; ------------------------------------------------------------------------------
 
-; ghost
-AIScript::_90:
+ai_script GHOST
         attack FIRE, FIRE, NOTHING
         wait
         attack BATTLE, SPECIAL, FIRE_WALL
@@ -649,8 +608,7 @@ AIScript::_90:
 
 ; ------------------------------------------------------------------------------
 
-; poplium
-AIScript::_162:
+ai_script POPLIUM
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -660,8 +618,7 @@ AIScript::_162:
 
 ; ------------------------------------------------------------------------------
 
-; hazer
-AIScript::_8:
+ai_script HAZER
         attack DRAIN, NOTHING, NOTHING
         wait
         attack SPECIAL, DRAIN, NOTHING
@@ -671,8 +628,7 @@ AIScript::_8:
 
 ; ------------------------------------------------------------------------------
 
-; whisper
-AIScript::_14:
+ai_script WHISPER
         set_target RAND_CHAR
         attack DEMI, BATTLE, NOTHING
         wait
@@ -683,8 +639,7 @@ AIScript::_14:
 
 ; ------------------------------------------------------------------------------
 
-; over-mind
-AIScript::_15:
+ai_script OVER_MIND
         if_num_monsters 1
                 attack BATTLE, BATTLE, SPECIAL
                 end_if
@@ -697,8 +652,7 @@ AIScript::_15:
 
 ; ------------------------------------------------------------------------------
 
-; bomb
-AIScript::_79:
+ai_script BOMB
         attack BLAZE, NOTHING, NOTHING
         end
 
@@ -710,8 +664,7 @@ AIScript::_79:
 
 ; ------------------------------------------------------------------------------
 
-; stillgoing
-AIScript::_186:
+ai_script STILLGOING
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -721,8 +674,7 @@ AIScript::_186:
 
 ; ------------------------------------------------------------------------------
 
-; anguiform
-AIScript::_58:
+ai_script ANGUIFORM
         if_num_monsters 1
                 attack BATTLE, BATTLE, AQUA_RAKE
                 end_if
@@ -737,8 +689,7 @@ AIScript::_58:
 
 ; ------------------------------------------------------------------------------
 
-; aspik
-AIScript::_89:
+ai_script ASPIK
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -753,8 +704,7 @@ AIScript::_89:
 
 ; ------------------------------------------------------------------------------
 
-; actaneon
-AIScript::_94:
+ai_script ACTANEON
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -764,8 +714,7 @@ AIScript::_94:
 
 ; ------------------------------------------------------------------------------
 
-; fidor
-AIScript::_28:
+ai_script FIDOR
         if_num_monsters 1
                 attack SPECIAL
                 end_if
@@ -777,8 +726,7 @@ AIScript::_28:
 
 ; ------------------------------------------------------------------------------
 
-; rider
-AIScript::_63:
+ai_script RIDER
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -798,8 +746,7 @@ AIScript::_63:
 
 ; ------------------------------------------------------------------------------
 
-; trooper
-AIScript::_101:
+ai_script TROOPER
         attack BATTLE
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -811,8 +758,7 @@ AIScript::_101:
 
 ; ------------------------------------------------------------------------------
 
-; bounty man
-AIScript::_121:
+ai_script BOUNTY_MAN
         if_num_monsters 1
                 set_target SELF
                 attack ESCAPE
@@ -826,8 +772,7 @@ AIScript::_121:
 
 ; ------------------------------------------------------------------------------
 
-; red fang
-AIScript::_120:
+ai_script RED_FANG
         if_num_monsters 1
                 attack SPECIAL, BATTLE, BATTLE
                 end_if
@@ -838,8 +783,7 @@ AIScript::_120:
 
 ; ------------------------------------------------------------------------------
 
-; vulture
-AIScript::_42:
+ai_script VULTURE
         if_num_monsters 1
                 attack SPECIAL, SHIMSHAM, SHIMSHAM
                 end_if
@@ -852,8 +796,7 @@ AIScript::_42:
 
 ; ------------------------------------------------------------------------------
 
-; iron fist
-AIScript::_108:
+ai_script IRON_FIST
         if_num_monsters 1
                 attack BATTLE, STONE, STONE
                 end_if
@@ -866,8 +809,7 @@ AIScript::_108:
 
 ; ------------------------------------------------------------------------------
 
-; mind candy
-AIScript::_140:
+ai_script MIND_CANDY
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -880,8 +822,7 @@ AIScript::_140:
 
 ; ------------------------------------------------------------------------------
 
-; over grunk
-AIScript::_144:
+ai_script OVER_GRUNK
         if_num_monsters 1
                 attack BATTLE
                 end_if
@@ -894,8 +835,7 @@ AIScript::_144:
 
 ; ------------------------------------------------------------------------------
 
-; fossilfang
-AIScript::_35:
+ai_script FOSSILFANG
         attack BATTLE, SAND_STORM, SPECIAL
         end
 
@@ -905,8 +845,7 @@ AIScript::_35:
 
 ; ------------------------------------------------------------------------------
 
-; harvester
-AIScript::_78:
+ai_script HARVESTER
         attack BATTLE, BATTLE, SPECIAL
         wait
         use_item POTION
@@ -922,10 +861,9 @@ AIScript::_78:
 
 ; ------------------------------------------------------------------------------
 
-; slamdancer
-AIScript::_82:
+ai_script SLAMDANCER
         if_one_monster_type
-                attack FIRE_2, ICE_2, BOLT_2
+                attack FIRA, BLIZZARA, THUNDARA
                 end_if
         attack BATTLE, BATTLE, NOTHING
         wait
@@ -936,8 +874,7 @@ AIScript::_82:
 
 ; ------------------------------------------------------------------------------
 
-; hadesgigas
-AIScript::_83:
+ai_script HADESGIGAS
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -952,8 +889,7 @@ AIScript::_83:
 
 ; ------------------------------------------------------------------------------
 
-; gabbldegak
-AIScript::_223:
+ai_script GABBLDEGAK
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, VANISH
@@ -963,8 +899,7 @@ AIScript::_223:
 
 ; ------------------------------------------------------------------------------
 
-; sewer rat
-AIScript::_115:
+ai_script SEWER_RAT
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -978,8 +913,7 @@ AIScript::_115:
 
 ; ------------------------------------------------------------------------------
 
-; vermin
-AIScript::_209:
+ai_script VERMIN
         if_one_monster_type
         if_battle_id 112
         if_one_monster_type
@@ -998,8 +932,7 @@ AIScript::_209:
 
 ; ------------------------------------------------------------------------------
 
-; grenade
-AIScript::_170:
+ai_script GRENADE
         attack BLAZE, NOTHING, SPECIAL
         wait
         attack BLAZE, FIRE_BALL, NOTHING
@@ -1015,8 +948,7 @@ AIScript::_170:
 
 ; ------------------------------------------------------------------------------
 
-; wyvern
-AIScript::_129:
+ai_script WYVERN
         if_num_monsters 1
                 attack BATTLE, BATTLE, CYCLONIC
                 end_if
@@ -1031,10 +963,9 @@ AIScript::_129:
 
 ; ------------------------------------------------------------------------------
 
-; joker
-AIScript::_107:
+ai_script JOKER
         if_num_monsters 1
-                attack BATTLE, BOLT_2, BOLT_2
+                attack BATTLE, THUNDARA, THUNDARA
                 end_if
         attack BATTLE, SPECIAL, NOTHING
         wait
@@ -1047,8 +978,7 @@ AIScript::_107:
 
 ; ------------------------------------------------------------------------------
 
-; ralph
-AIScript::_123:
+ai_script RALPH
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -1058,8 +988,7 @@ AIScript::_123:
 
 ; ------------------------------------------------------------------------------
 
-; chickenlip
-AIScript::_61:
+ai_script CHICKENLIP
         if_num_monsters 1
                 attack BATTLE, BATTLE, QUAKE
                 end_if
@@ -1074,8 +1003,7 @@ AIScript::_61:
 
 ; ------------------------------------------------------------------------------
 
-; weedfeeder
-AIScript::_141:
+ai_script WEEDFEEDER
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -1087,8 +1015,7 @@ AIScript::_141:
 
 ; ------------------------------------------------------------------------------
 
-; bug
-AIScript::_232:
+ai_script BUG
         attack BATTLE
         end
 
@@ -1099,8 +1026,7 @@ AIScript::_232:
 
 ; ------------------------------------------------------------------------------
 
-; pipsqueak
-AIScript::_65:
+ai_script PIPSQUEAK
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -1114,8 +1040,7 @@ AIScript::_65:
 
 ; ------------------------------------------------------------------------------
 
-; commando
-AIScript::_199:
+ai_script COMMANDO
         if_num_monsters 1
                 attack BATTLE, BATTLE, SPECIAL
                 end_if
@@ -1126,8 +1051,7 @@ AIScript::_199:
 
 ; ------------------------------------------------------------------------------
 
-; garm
-AIScript::_203:
+ai_script GARM
         if_num_monsters 1
                 attack BATTLE, BATTLE, SPECIAL
                 end_if
@@ -1138,8 +1062,7 @@ AIScript::_203:
 
 ; ------------------------------------------------------------------------------
 
-; protoarmor
-AIScript::_357:
+ai_script PROTOARMOR
         if_num_monsters 1
                 attack LAUNCHER, SCHILLER, TEK_LASER
                 end_if
@@ -1154,8 +1077,7 @@ AIScript::_357:
 
 ; ------------------------------------------------------------------------------
 
-; flan
-AIScript::_71:
+ai_script FLAN
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, SLIMER
@@ -1187,21 +1109,19 @@ AIScript::_71:
 
 ; ------------------------------------------------------------------------------
 
-; general
-AIScript::_102:
+ai_script GENERAL
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack BATTLE, BATTLE, CURE_2
+        attack BATTLE, BATTLE, CURA
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; rhinox
-AIScript::_117:
+ai_script RHINOX
         if_one_monster_type
-                attack BATTLE, BATTLE, LIFE_3
+                attack BATTLE, BATTLE, RERAISE
                 end_if
         attack BATTLE, BATTLE, SPECIAL
         wait
@@ -1212,8 +1132,7 @@ AIScript::_117:
 
 ; ------------------------------------------------------------------------------
 
-; gobbler
-AIScript::_136:
+ai_script GOBBLER
         if_num_monsters 1
                 attack SHIMSHAM
                 end_if
@@ -1224,8 +1143,7 @@ AIScript::_136:
 
 ; ------------------------------------------------------------------------------
 
-; chaser
-AIScript::_160:
+ai_script CHASER
         if_battle_id 123
         if_num_monsters 1
                 set_battle_var 0, 0
@@ -1259,43 +1177,39 @@ AIScript::_160:
 
 ; ------------------------------------------------------------------------------
 
-; trapper
-AIScript::_45:
+ai_script TRAPPER
         attack SPECIAL, L5_DOOM, NOTHING
         wait
         attack SPECIAL, L4_FLARE, NOTHING
         wait
-        attack SPECIAL, L3_MUDDLE, NOTHING
+        attack SPECIAL, L3_CONFUSE, NOTHING
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; mag roader
-AIScript::_6:
+ai_script MAG_ROADER_1
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack FIRE, FIRE_2, FIRE_2
+        attack FIRE, FIRA, FIRA
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; mag roader
-AIScript::_175:
+ai_script MAG_ROADER_2
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack ICE, ICE_2, ICE_2
+        attack BLIZZARD, BLIZZARA, BLIZZARA
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; mega armor
-AIScript::_258:
+ai_script MEGA_ARMOR
         attack SPECIAL, SPECIAL, NOTHING
         end
 
@@ -1310,8 +1224,7 @@ AIScript::_258:
 
 ; ------------------------------------------------------------------------------
 
-; sp forces
-AIScript::_194:
+ai_script SP_FORCES
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -1323,8 +1236,7 @@ AIScript::_194:
 
 ; ------------------------------------------------------------------------------
 
-; cephaler
-AIScript::_150:
+ai_script CEPHALER
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -1336,8 +1248,7 @@ AIScript::_150:
 
 ; ------------------------------------------------------------------------------
 
-; baskervor
-AIScript::_29:
+ai_script BASKERVOR
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -1352,10 +1263,9 @@ AIScript::_29:
 
 ; ------------------------------------------------------------------------------
 
-; chimera
-AIScript::_31:
+ai_script CHIMERA
         if_num_monsters 1
-                attack BATTLE, BATTLE, BLIZZARD
+                attack BATTLE, BATTLE, SNOWSTORM
                 wait
                 attack BATTLE, BATTLE, FIRE_BALL
                 wait
@@ -1372,8 +1282,7 @@ AIScript::_31:
 
 ; ------------------------------------------------------------------------------
 
-; balloon
-AIScript::_222:
+ai_script BALLOON
         attack NOTHING, BATTLE, BATTLE
         wait
         attack NOTHING, BATTLE, BATTLE
@@ -1389,8 +1298,7 @@ AIScript::_222:
 
 ; ------------------------------------------------------------------------------
 
-; slurm
-AIScript::_184:
+ai_script SLURM
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, SPECIAL, NOTHING
@@ -1400,8 +1308,7 @@ AIScript::_184:
 
 ; ------------------------------------------------------------------------------
 
-; insecare
-AIScript::_208:
+ai_script INSECARE
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE
@@ -1411,8 +1318,7 @@ AIScript::_208:
 
 ; ------------------------------------------------------------------------------
 
-; adamanchyt
-AIScript::_214:
+ai_script ADAMANCHYT
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -1424,8 +1330,7 @@ AIScript::_214:
 
 ; ------------------------------------------------------------------------------
 
-; abolisher
-AIScript::_235:
+ai_script ABOLISHER
         if_num_monsters 1
                 attack BATTLE, BATTLE, SPECIAL
                 end_if
@@ -1433,15 +1338,14 @@ AIScript::_235:
         wait
         attack BATTLE
         wait
-        attack PEARL_WIND
+        attack WHITE_WIND
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; mandrake
-AIScript::_238:
+ai_script MANDRAKE
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -1455,8 +1359,7 @@ AIScript::_238:
 
 ; ------------------------------------------------------------------------------
 
-; coelecite
-AIScript::_179:
+ai_script COELECITE
         if_num_monsters 1
                 attack BATTLE
                 end_if
@@ -1472,8 +1375,7 @@ AIScript::_179:
 
 ; ------------------------------------------------------------------------------
 
-; ing
-AIScript::_72:
+ai_script ING
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, LIFESHAVER
@@ -1488,8 +1390,7 @@ AIScript::_72:
 
 ; ------------------------------------------------------------------------------
 
-; apparite
-AIScript::_110:
+ai_script APPARITE
         attack BATTLE
         wait
         attack BATTLE
@@ -1505,8 +1406,7 @@ AIScript::_110:
 
 ; ------------------------------------------------------------------------------
 
-; zombone
-AIScript::_130:
+ai_script ZOMBONE
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -1520,28 +1420,26 @@ AIScript::_130:
 
 ; ------------------------------------------------------------------------------
 
-; lich
-AIScript::_229:
+ai_script LICH
         if_num_monsters 1
-                attack FIRE_3, FIRE_3, NOTHING
+                attack FIRAGA, FIRAGA, NOTHING
                 end_if
         attack FIRE, FIRE, SPECIAL
         wait
-        attack FIRE, FIRE_2, FIRE_2
+        attack FIRE, FIRA, FIRA
         wait
-        attack FIRE, FIRE_2, FIRE_2
+        attack FIRE, FIRA, FIRA
         wait
         attack FIRE, FIRE, SPECIAL
         wait
-        attack FIRE, FIRE_2, FIRE_3
+        attack FIRE, FIRA, FIRAGA
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; sky armor
-AIScript::_67:
+ai_script SKY_ARMOR
         if_num_monsters 1
                 attack SPECIAL, TEK_LASER, MISSILE
                 end_if
@@ -1554,8 +1452,7 @@ AIScript::_67:
 
 ; ------------------------------------------------------------------------------
 
-; spit fire
-AIScript::_227:
+ai_script SPIT_FIRE
         if_num_monsters 1
                 attack DIFFUSER, NOTHING, NOTHING
                 end_if
@@ -1566,8 +1463,7 @@ AIScript::_227:
 
 ; ------------------------------------------------------------------------------
 
-; behemoth
-AIScript::_32:
+ai_script BEHEMOTH
         attack BATTLE, SPECIAL, NOTHING
         end
 
@@ -1581,8 +1477,7 @@ AIScript::_32:
 
 ; ------------------------------------------------------------------------------
 
-; apokryphos
-AIScript::_12:
+ai_script APOKRYPHOS
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -1590,13 +1485,12 @@ AIScript::_12:
                 end_if
         if_num_monsters 1
         if_hit
-                attack L5_DOOM, L4_FLARE, L3_MUDDLE
+                attack L5_DOOM, L4_FLARE, L3_CONFUSE
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; ninja
-AIScript::_3:
+ai_script NINJA
         attack FIRE_SKEAN, WATER_EDGE, BATTLE
         wait
         attack FIRE_SKEAN, BATTLE, BOLT_EDGE
@@ -1613,8 +1507,7 @@ AIScript::_3:
 
 ; ------------------------------------------------------------------------------
 
-; brainpan
-AIScript::_74:
+ai_script BRAINPAN
         if_num_monsters 1
                 attack BATTLE, BATTLE, BLOW_FISH
                 end_if
@@ -1625,8 +1518,7 @@ AIScript::_74:
 
 ; ------------------------------------------------------------------------------
 
-; misfit
-AIScript::_164:
+ai_script MISFIT
         attack BATTLE, BATTLE, LIFESHAVER
         wait
         attack BATTLE, LIFESHAVER, LIFESHAVER
@@ -1638,8 +1530,7 @@ AIScript::_164:
 
 ; ------------------------------------------------------------------------------
 
-; wirey drgn
-AIScript::_216:
+ai_script WIREY_DRGN
         if_num_monsters 1
                 attack BATTLE, BATTLE, CYCLONIC
                 end_if
@@ -1650,13 +1541,12 @@ AIScript::_216:
 
 ; ------------------------------------------------------------------------------
 
-; dragon
-AIScript::_131:
+ai_script DRAGON
         attack BATTLE, BATTLE, REVENGE
         wait
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack BATTLE, BATTLE, BLIZZARD
+        attack BATTLE, BATTLE, SNOWSTORM
         wait
         attack BATTLE, BATTLE, COLD_DUST
         end
@@ -1669,8 +1559,7 @@ AIScript::_131:
 
 ; ------------------------------------------------------------------------------
 
-; gigantos
-AIScript::_174:
+ai_script GIGANTOS
         attack SPECIAL
         attack SPECIAL
         attack SPECIAL
@@ -1688,17 +1577,15 @@ AIScript::_174:
 
 ; ------------------------------------------------------------------------------
 
-; peepers
-AIScript::_114:
-        attack BATTLE, PEARL_WIND, SPECIAL
+ai_script PEEPERS
+        attack BATTLE, WHITE_WIND, SPECIAL
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; earthguard
-AIScript::_178:
+ai_script EARTHGUARD
         attack SPECIAL
         end
 
@@ -1706,8 +1593,7 @@ AIScript::_178:
 
 ; ------------------------------------------------------------------------------
 
-; black drgn
-AIScript::_213:
+ai_script BLACK_DRGN
         attack BATTLE, BATTLE, SAND_STORM
         wait
         attack BATTLE, SPECIAL, SAND_STORM
@@ -1717,8 +1603,7 @@ AIScript::_213:
 
 ; ------------------------------------------------------------------------------
 
-; mesosaur
-AIScript::_33:
+ai_script MESOSAUR
         if_num_monsters 1
                 attack BATTLE, SPECIAL, SPECIAL
                 end_if
@@ -1734,8 +1619,7 @@ AIScript::_33:
 
 ; ------------------------------------------------------------------------------
 
-; gilomantis
-AIScript::_49:
+ai_script GILOMANTIS
         attack BATTLE, BATTLE, NOTHING
         end
 
@@ -1747,8 +1631,7 @@ AIScript::_49:
 
 ; ------------------------------------------------------------------------------
 
-; chitonid
-AIScript::_124:
+ai_script CHITONID
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -1759,8 +1642,7 @@ AIScript::_124:
 
 ; ------------------------------------------------------------------------------
 
-; gigan toad
-AIScript::_152:
+ai_script GIGAN_TOAD
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -1774,8 +1656,7 @@ AIScript::_152:
 
 ; ------------------------------------------------------------------------------
 
-; lunaris
-AIScript::_202:
+ai_script LUNARIS
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -1785,8 +1666,7 @@ AIScript::_202:
 
 ; ------------------------------------------------------------------------------
 
-; osprey
-AIScript::_230:
+ai_script OSPREY
         attack BATTLE
         wait
         attack BATTLE
@@ -1802,8 +1682,7 @@ AIScript::_230:
 
 ; ------------------------------------------------------------------------------
 
-; hermitcrab
-AIScript::_44:
+ai_script HERMITCRAB
         attack BATTLE
         wait
         attack BATTLE
@@ -1818,8 +1697,7 @@ AIScript::_44:
 
 ; ------------------------------------------------------------------------------
 
-; intangir
-AIScript::_163:
+ai_script INTANGIR
         if_hp SELF, 1280
                 set_target SELF
                 attack ESCAPE
@@ -1841,8 +1719,7 @@ AIScript::_163:
 
 ; ------------------------------------------------------------------------------
 
-; scorpion
-AIScript::_225:
+ai_script SCORPION
         attack SPECIAL
         attack BATTLE
         wait
@@ -1865,8 +1742,7 @@ AIScript::_225:
 
 ; ------------------------------------------------------------------------------
 
-; pm stalker
-AIScript::_192:
+ai_script PM_STALKER
         attack BATTLE, BATTLE, DRAIN
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -1880,8 +1756,7 @@ AIScript::_192:
 
 ; ------------------------------------------------------------------------------
 
-; delta bug
-AIScript::_48:
+ai_script DELTA_BUG
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -1893,8 +1768,7 @@ AIScript::_48:
 
 ; ------------------------------------------------------------------------------
 
-; lizard
-AIScript::_60:
+ai_script LIZARD
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE
@@ -1906,8 +1780,7 @@ AIScript::_60:
 
 ; ------------------------------------------------------------------------------
 
-; bloompire
-AIScript::_53:
+ai_script BLOOMPIRE
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -1919,8 +1792,7 @@ AIScript::_53:
 
 ; ------------------------------------------------------------------------------
 
-; buffalax
-AIScript::_88:
+ai_script BUFFALAX
         attack BATTLE
         wait
         attack BATTLE
@@ -1940,8 +1812,7 @@ AIScript::_88:
 
 ; ------------------------------------------------------------------------------
 
-; cactrot
-AIScript::_76:
+ai_script CACTROT
         dlg $86
 ; Bundling up something
         wait
@@ -1976,8 +1847,7 @@ AIScript::_76:
 
 ; ------------------------------------------------------------------------------
 
-; nohrabbit
-AIScript::_195:
+ai_script NOHRABBIT
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE
@@ -1985,13 +1855,12 @@ AIScript::_195:
 
         if_cmd FIGHT
                 set_target RAND_CHAR
-                attack CURE, CURE_2, REMEDY
+                attack CURE, CURA, REMEDY
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; latimeria
-AIScript::_185:
+ai_script LATIMERIA
         attack MAGNITUDE8, NOTHING, NOTHING
         wait
         attack SPECIAL, MAGNITUDE8, MAGNITUDE8
@@ -2001,8 +1870,7 @@ AIScript::_185:
 
 ; ------------------------------------------------------------------------------
 
-; maliga
-AIScript::_151:
+ai_script MALIGA
         if_num_monsters 1
                 attack SPECIAL, SPECIAL, NOTHING
                 attack SPECIAL, SPECIAL, NOTHING
@@ -2016,8 +1884,7 @@ AIScript::_151:
 
 ; ------------------------------------------------------------------------------
 
-; sand horse
-AIScript::_95:
+ai_script SAND_HORSE
         if_num_monsters 1
                 attack BATTLE, BATTLE, SPECIAL
                 end_if
@@ -2030,8 +1897,7 @@ AIScript::_95:
 
 ; ------------------------------------------------------------------------------
 
-; humpty
-AIScript::_73:
+ai_script HUMPTY
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2043,9 +1909,8 @@ AIScript::_73:
 
 ; ------------------------------------------------------------------------------
 
-; cruller
-AIScript::_75:
-        attack FIRE_2, BATTLE, NOTHING
+ai_script CRULLER
+        attack FIRA, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SLIMER
         wait
@@ -2056,8 +1921,7 @@ AIScript::_75:
 
 ; ------------------------------------------------------------------------------
 
-; dante
-AIScript::_215:
+ai_script DANTE
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE
@@ -2066,13 +1930,12 @@ AIScript::_215:
         if_self_dead
                 end_if
         if_cmd MAGIC
-                attack L3_MUDDLE, NOTHING, NOTHING
+                attack L3_CONFUSE, NOTHING, NOTHING
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; drop
-AIScript::_139:
+ai_script DROP
         attack SPECIAL, SPECIAL, NOTHING
         end
 
@@ -2084,8 +1947,7 @@ AIScript::_139:
 
 ; ------------------------------------------------------------------------------
 
-; neckhunter
-AIScript::_169:
+ai_script NECKHUNTER
         attack SPECIAL, BATTLE, NOTHING
         wait
         attack BATTLE
@@ -2099,13 +1961,12 @@ AIScript::_169:
 
 ; ------------------------------------------------------------------------------
 
-; harpiai
-AIScript::_137:
+ai_script HARPIAI
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, AERO
         wait
-        attack BATTLE, BATTLE, PEARL_WIND
+        attack BATTLE, BATTLE, WHITE_WIND
         wait
         attack BATTLE, BATTLE, SPECIAL
         end
@@ -2114,8 +1975,7 @@ AIScript::_137:
 
 ; ------------------------------------------------------------------------------
 
-; muus
-AIScript::_219:
+ai_script MUUS
         if_num_monsters 1
                 attack BATTLE, BATTLE, SPECIAL
                 end_if
@@ -2134,8 +1994,7 @@ AIScript::_219:
 
 ; ------------------------------------------------------------------------------
 
-; bogy
-AIScript::_211:
+ai_script BOGY
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2145,8 +2004,7 @@ AIScript::_211:
 
 ; ------------------------------------------------------------------------------
 
-; deep eye
-AIScript::_167:
+ai_script DEEP_EYE
         attack BATTLE, BATTLE, SPECIAL
         wait
         set_target SELF
@@ -2157,8 +2015,7 @@ AIScript::_167:
 
 ; ------------------------------------------------------------------------------
 
-; hoover
-AIScript::_62:
+ai_script HOOVER
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2175,8 +2032,7 @@ AIScript::_62:
 
 ; ------------------------------------------------------------------------------
 
-; orog
-AIScript::_5:
+ai_script OROG
         attack SPECIAL, SPECIAL, NOTHING
         attack SPECIAL, NOTHING, NOTHING
         attack SPECIAL, NOTHING, NOTHING
@@ -2193,8 +2049,7 @@ AIScript::_5:
 
 ; ------------------------------------------------------------------------------
 
-; osteosaur
-AIScript::_16:
+ai_script OSTEOSAUR
         attack BATTLE, SPECIAL, NOTHING
         wait
         attack BATTLE, BATTLE, CHOKESMOKE
@@ -2206,8 +2061,7 @@ AIScript::_16:
 
 ; ------------------------------------------------------------------------------
 
-; mad oscar
-AIScript::_97:
+ai_script MAD_OSCAR
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SOUR_MOUTH
@@ -2219,8 +2073,7 @@ AIScript::_97:
 
 ; ------------------------------------------------------------------------------
 
-; powerdemon
-AIScript::_111:
+ai_script POWERDEMON
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, SOUL_OUT
@@ -2230,8 +2083,7 @@ AIScript::_111:
 
 ; ------------------------------------------------------------------------------
 
-; exoray
-AIScript::_145:
+ai_script EXORAY
         if_num_monsters 1
                 attack BATTLE, BATTLE, VIRITE
                 end_if
@@ -2242,8 +2094,7 @@ AIScript::_145:
 
 ; ------------------------------------------------------------------------------
 
-; siegfried
-AIScript::_55:
+ai_script SIEGFRIED_1
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -2251,8 +2102,7 @@ AIScript::_55:
 
 ; ------------------------------------------------------------------------------
 
-; chupon
-AIScript::_64:
+ai_script CHUPON_COLOSSEUM
         attack SNEEZE
         end
 
@@ -2260,8 +2110,7 @@ AIScript::_64:
 
 ; ------------------------------------------------------------------------------
 
-; pug
-AIScript::_84:
+ai_script PUG
         attack STEP_MINE
         end
 
@@ -2272,8 +2121,7 @@ AIScript::_84:
 
 ; ------------------------------------------------------------------------------
 
-; kiwok
-AIScript::_205:
+ai_script KIWOK
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2283,8 +2131,7 @@ AIScript::_205:
 
 ; ------------------------------------------------------------------------------
 
-; poppers
-AIScript::_201:
+ai_script POPPERS
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, STONE
@@ -2294,8 +2141,7 @@ AIScript::_201:
 
 ; ------------------------------------------------------------------------------
 
-; tomb thumb
-AIScript::_158:
+ai_script TOMB_THUMB
         if_num_monsters 1
                 attack IMP_SONG
                 end_if
@@ -2308,8 +2154,7 @@ AIScript::_158:
 
 ; ------------------------------------------------------------------------------
 
-; ceritops
-AIScript::_198:
+ai_script CERITOPS
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -2317,8 +2162,7 @@ AIScript::_198:
 
 ; ------------------------------------------------------------------------------
 
-; anemone
-AIScript::_180:
+ai_script ANEMONE
         if_num_monsters 1
                 attack GIGA_VOLT
                 end_if
@@ -2334,8 +2178,7 @@ AIScript::_180:
 
 ; ------------------------------------------------------------------------------
 
-; punisher
-AIScript::_221:
+ai_script PUNISHER
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -2353,8 +2196,7 @@ AIScript::_221:
 
 ; ------------------------------------------------------------------------------
 
-; ursus
-AIScript::_20:
+ai_script URSUS
         cmd STEAL, STEAL, NOTHING
         wait
         set_target SELF
@@ -2369,8 +2211,7 @@ AIScript::_20:
 
 ; ------------------------------------------------------------------------------
 
-; luridan
-AIScript::_142:
+ai_script LURIDAN
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2386,8 +2227,7 @@ AIScript::_142:
 
 ; ------------------------------------------------------------------------------
 
-; borras
-AIScript::_242:
+ai_script BORRAS
         attack BATTLE, BATTLE, NOTHING
         attack BATTLE, SPECIAL, NOTHING
         wait
@@ -2402,8 +2242,7 @@ AIScript::_242:
 
 ; ------------------------------------------------------------------------------
 
-; scrapper
-AIScript::_197:
+ai_script SCRAPPER
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2417,8 +2256,7 @@ AIScript::_197:
 
 ; ------------------------------------------------------------------------------
 
-; toe cutter
-AIScript::_143:
+ai_script TOE_CUTTER
         attack BATTLE, BATTLE, NOTHING
         end
 
@@ -2430,8 +2268,7 @@ AIScript::_143:
 
 ; ------------------------------------------------------------------------------
 
-; rhyos
-AIScript::_126:
+ai_script RHYOS
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -2439,9 +2276,9 @@ AIScript::_126:
         attack BATTLE, BATTLE, NOTHING
         wait
         attack SPECIAL
-        attack BLIZZARD, FIRE_BALL, GIGA_VOLT
+        attack SNOWSTORM, FIRE_BALL, GIGA_VOLT
         attack MAGNITUDE8, AQUA_RAKE, GIGA_VOLT
-        attack MAGNITUDE8, BLIZZARD, FIRE_BALL
+        attack MAGNITUDE8, SNOWSTORM, FIRE_BALL
         end
 
         if_self_dead
@@ -2452,8 +2289,7 @@ AIScript::_126:
 
 ; ------------------------------------------------------------------------------
 
-; red wolf
-AIScript::_248:
+ai_script RED_WOLF
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2463,8 +2299,7 @@ AIScript::_248:
 
 ; ------------------------------------------------------------------------------
 
-; test rider
-AIScript::_156:
+ai_script TEST_RIDER
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -2478,13 +2313,12 @@ AIScript::_156:
 
 ; ------------------------------------------------------------------------------
 
-; wizard
-AIScript::_196:
+ai_script WIZARD
         attack MUTE, OSMOSE, NOTHING
         wait
         attack RASP, STOP, NOTHING
         wait
-        attack MUDDLE, SLEEP, NOTHING
+        attack CONFUSE, SLEEP, NOTHING
         end
 
         if_cmd MAGIC
@@ -2493,8 +2327,7 @@ AIScript::_196:
 
 ; ------------------------------------------------------------------------------
 
-; nastidon
-AIScript::_206:
+ai_script NASTIDON
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2504,8 +2337,7 @@ AIScript::_206:
 
 ; ------------------------------------------------------------------------------
 
-; psychot
-AIScript::_218:
+ai_script PSYCHOT
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2515,31 +2347,28 @@ AIScript::_218:
 
 ; ------------------------------------------------------------------------------
 
-; mag roader
-AIScript::_231:
+ai_script MAG_ROADER_3
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack ICE, ICE_2, ICE_2
+        attack BLIZZARD, BLIZZARA, BLIZZARA
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; mag roader
-AIScript::_243:
+ai_script MAG_ROADER_4
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack FIRE, FIRE_2, FIRE_2
+        attack FIRE, FIRA, FIRA
         end
 
-; *** bug ***
+; *** bug *** missing end_retal
         set_ai_script_mode NORMAL
 
 ; ------------------------------------------------------------------------------
 
-; wild cat
-AIScript::_119:
+ai_script WILD_CAT
         if_num_monsters 1
                 attack FIRE_BALL, NOTHING, NOTHING
                 end_if
@@ -2552,8 +2381,7 @@ AIScript::_119:
 
 ; ------------------------------------------------------------------------------
 
-; crusher
-AIScript::_146:
+ai_script CRUSHER
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2568,8 +2396,7 @@ AIScript::_146:
 
 ; ------------------------------------------------------------------------------
 
-; vindr
-AIScript::_204:
+ai_script VINDR
         if_num_monsters 1
                 attack BATTLE, BATTLE, SPECIAL
                 end_if
@@ -2582,11 +2409,10 @@ AIScript::_204:
 
 ; ------------------------------------------------------------------------------
 
-; souldancer
-AIScript::_173:
+ai_script SOULDANCER
         throw_item DIRK, MITHRILKNIFE
         wait
-        throw_item MITHRILKNIFE, GUARDIAN
+        throw_item MITHRILKNIFE, MAIN_GAUCHE
         wait
         throw_item AIR_LANCET, THIEFKNIFE
         wait
@@ -2599,23 +2425,21 @@ AIScript::_173:
 
 ; ------------------------------------------------------------------------------
 
-; dahling
-AIScript::_9:
+ai_script DAHLING
         attack SPECIAL, MUTE, NOTHING
         wait
-        attack ICE_2, BOLT_2, NOTHING
+        attack BLIZZARA, THUNDARA, NOTHING
         end
 
         if_self_dead
                 end_if
         if_hit
-                attack CURE_2, NOTHING, NOTHING
+                attack CURA, NOTHING, NOTHING
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; nightshade
-AIScript::_51:
+ai_script NIGHTSHADE
         attack BATTLE, BATTLE, CHARM
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2625,8 +2449,7 @@ AIScript::_51:
 
 ; ------------------------------------------------------------------------------
 
-; still life
-AIScript::_80:
+ai_script STILL_LIFE
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, LULLABY
@@ -2641,8 +2464,7 @@ AIScript::_80:
 
 ; ------------------------------------------------------------------------------
 
-; slatter
-AIScript::_116:
+ai_script SLATTER
         attack SPECIAL, SPECIAL, NOTHING
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -2654,8 +2476,7 @@ AIScript::_116:
 
 ; ------------------------------------------------------------------------------
 
-; hipocampus
-AIScript::_181:
+ai_script HIPOCAMPUS
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2672,22 +2493,20 @@ AIScript::_181:
 
 ; ------------------------------------------------------------------------------
 
-; warlock
-AIScript::_105:
+ai_script WARLOCK
         if_num_monsters 1
-                attack PEARL
+                attack HOLY
                 end_if
         attack SPECIAL, SPECIAL, NOTHING
         wait
-        attack SPECIAL, SPECIAL, PEARL
+        attack SPECIAL, SPECIAL, HOLY
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; displayer
-AIScript::_112:
+ai_script DISPLAYER
         attack BATTLE, SPECIAL, NOTHING
         wait
         attack BATTLE, BATTLE, CHOKESMOKE
@@ -2699,8 +2518,7 @@ AIScript::_112:
 
 ; ------------------------------------------------------------------------------
 
-; cluck
-AIScript::_154:
+ai_script CLUCK
         if_num_monsters 1
                 attack BATTLE, BATTLE, QUAKE
                 end_if
@@ -2713,8 +2531,7 @@ AIScript::_154:
 
 ; ------------------------------------------------------------------------------
 
-; eland
-AIScript::_165:
+ai_script ELAND
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2724,8 +2541,7 @@ AIScript::_165:
 
 ; ------------------------------------------------------------------------------
 
-; opinicus
-AIScript::_200:
+ai_script OPINICUS
         attack BATTLE
         wait
         attack BATTLE
@@ -2747,10 +2563,9 @@ AIScript::_200:
 
 ; ------------------------------------------------------------------------------
 
-; goblin
-AIScript::_109:
+ai_script GOBLIN
         if_num_monsters 1
-                attack L5_DOOM, L4_FLARE, L3_MUDDLE
+                attack L5_DOOM, L4_FLARE, L3_CONFUSE
                 wait
                 attack BLAZE, NOTHING, NOTHING
                 end_if
@@ -2761,8 +2576,7 @@ AIScript::_109:
 
 ; ------------------------------------------------------------------------------
 
-; lethal wpn
-AIScript::_69:
+ai_script LETHAL_WPN
         if_num_monsters 1
                 attack DIFFUSER, LAUNCHER, MISSILE
                 end_if
@@ -2773,8 +2587,7 @@ AIScript::_69:
 
 ; ------------------------------------------------------------------------------
 
-; boxed set
-AIScript::_81:
+ai_script BOXED_SET
         if_num_monsters 1
                 attack BATTLE, METEO, COLD_DUST
                 end_if
@@ -2785,8 +2598,7 @@ AIScript::_81:
 
 ; ------------------------------------------------------------------------------
 
-; enuo
-AIScript::_166:
+ai_script ENUO
         if_num_monsters 1
                 attack CLEANSWEEP, AQUA_RAKE, SPECIAL
                 end_if
@@ -2797,8 +2609,7 @@ AIScript::_166:
 
 ; ------------------------------------------------------------------------------
 
-; figaliz
-AIScript::_87:
+ai_script FIGALIZ
         if_num_monsters 1
                 attack DISCHORD, RAID, SPECIAL
                 end_if
@@ -2809,8 +2620,7 @@ AIScript::_87:
 
 ; ------------------------------------------------------------------------------
 
-; samurai
-AIScript::_4:
+ai_script SAMURAI
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -2820,10 +2630,9 @@ AIScript::_4:
 
 ; ------------------------------------------------------------------------------
 
-; rain man
-AIScript::_10:
+ai_script RAIN_MAN
         if_num_monsters 1
-                attack BATTLE, BOLT_3, BOLT_3
+                attack BATTLE, THUNDAGA, THUNDAGA
                 end_if
         attack BATTLE, SPECIAL, NOTHING
         wait
@@ -2834,8 +2643,7 @@ AIScript::_10:
 
 ; ------------------------------------------------------------------------------
 
-; suriander
-AIScript::_30:
+ai_script SURIANDER
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -2851,8 +2659,7 @@ AIScript::_30:
 
 ; ------------------------------------------------------------------------------
 
-; allosaurus
-AIScript::_133:
+ai_script ALLOSAURUS
         attack SPECIAL, NOTHING, VIRITE
         end
 
@@ -2860,8 +2667,7 @@ AIScript::_133:
 
 ; ------------------------------------------------------------------------------
 
-; parasite
-AIScript::_177:
+ai_script PARASITE
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -2877,8 +2683,7 @@ AIScript::_177:
 
 ; ------------------------------------------------------------------------------
 
-; pan dora
-AIScript::_172:
+ai_script PAN_DORA
         attack REVENGE, EVIL_TOOT, NOTHING
         wait
         attack REVENGE, ABSOLUTE0, NOTHING
@@ -2894,8 +2699,7 @@ AIScript::_172:
 
 ; ------------------------------------------------------------------------------
 
-; barb-e
-AIScript::_190:
+ai_script BARB_E
         set_target RAND_CHAR
         attack IMP
         wait
@@ -2910,8 +2714,7 @@ AIScript::_190:
 
 ; ------------------------------------------------------------------------------
 
-; critic
-AIScript::_171:
+ai_script CRITIC
         attack BATTLE, ROULETTE, SPECIAL
         wait
         attack BATTLE, PEARL_LORE, LULLABY
@@ -2923,8 +2726,7 @@ AIScript::_171:
 
 ; ------------------------------------------------------------------------------
 
-; sky cap
-AIScript::_149:
+ai_script SKY_CAP
         if_num_monsters 1
                 attack SPECIAL, TEK_LASER, MISSILE
                 end_if
@@ -2937,8 +2739,7 @@ AIScript::_149:
 
 ; ------------------------------------------------------------------------------
 
-; plutoarmor
-AIScript::_157:
+ai_script PLUTOARMOR
         if_num_monsters 1
                 attack LAUNCHER, SHRAPNEL, TEK_LASER
                 end_if
@@ -2953,8 +2754,7 @@ AIScript::_157:
 
 ; ------------------------------------------------------------------------------
 
-; io
-AIScript::_254:
+ai_script IO
         attack SPECIAL, NOTHING, NOTHING
         wait
         attack SPECIAL, NOTHING, NOTHING
@@ -2968,8 +2768,7 @@ AIScript::_254:
 
 ; ------------------------------------------------------------------------------
 
-; tyranosaur
-AIScript::_39:
+ai_script TYRANOSAUR
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, METEOR
@@ -2981,8 +2780,7 @@ AIScript::_39:
 
 ; ------------------------------------------------------------------------------
 
-; brachosaur
-AIScript::_38:
+ai_script BRACHOSAUR
         attack BATTLE, BATTLE, DISASTER
         wait
         attack BATTLE, BATTLE, METEOR
@@ -3001,8 +2799,7 @@ AIScript::_38:
 
 ; ------------------------------------------------------------------------------
 
-; reach frog
-AIScript::_59:
+ai_script REACH_FROG
         attack BATTLE, BATTLE, SPECIAL
         wait
         cmd JUMP
@@ -3014,8 +2811,7 @@ AIScript::_59:
 
 ; ------------------------------------------------------------------------------
 
-; crawler
-AIScript::_91:
+ai_script CRAWLER
         if_num_monsters 1
                 attack DISCHORD, RAID, SPECIAL
                 end_if
@@ -3026,8 +2822,7 @@ AIScript::_91:
 
 ; ------------------------------------------------------------------------------
 
-; tumbleweed
-AIScript::_52:
+ai_script TUMBLEWEED
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -3042,8 +2837,7 @@ AIScript::_52:
 
 ; ------------------------------------------------------------------------------
 
-; mantodea
-AIScript::_210:
+ai_script MANTODEA
         attack BATTLE, BATTLE, NOTHING
         wait
         attack SPECIAL, BATTLE, BATTLE
@@ -3053,8 +2847,7 @@ AIScript::_210:
 
 ; ------------------------------------------------------------------------------
 
-; geckorex
-AIScript::_153:
+ai_script GECKOREX
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -3066,21 +2859,19 @@ AIScript::_153:
 
 ; ------------------------------------------------------------------------------
 
-; sprinter
-AIScript::_135:
+ai_script SPRINTER
         attack BATTLE
         wait
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack BATTLE, BATTLE, PEARL_WIND
+        attack BATTLE, BATTLE, WHITE_WIND
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; spek tor
-AIScript::_176:
+ai_script SPEK_TOR
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack BATTLE, BATTLE, NOTHING
@@ -3090,8 +2881,7 @@ AIScript::_176:
 
 ; ------------------------------------------------------------------------------
 
-; harpy
-AIScript::_43:
+ai_script HARPY
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, SPECIAL, AERO
@@ -3107,8 +2897,7 @@ AIScript::_43:
 
 ; ------------------------------------------------------------------------------
 
-; prussian
-AIScript::_212:
+ai_script PRUSSIAN
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, SPECIAL, NOTHING
@@ -3118,8 +2907,7 @@ AIScript::_212:
 
 ; ------------------------------------------------------------------------------
 
-; gloomshell
-AIScript::_138:
+ai_script GLOOMSHELL
         attack BATTLE
         wait
         attack BATTLE, BATTLE, NET
@@ -3134,8 +2922,7 @@ AIScript::_138:
 
 ; ------------------------------------------------------------------------------
 
-; phase
-AIScript::_188:
+ai_script PHASE
         if_num_monsters 1
                 attack BATTLE, BATTLE, BLOW_FISH
                 end_if
@@ -3150,8 +2937,7 @@ AIScript::_188:
 
 ; ------------------------------------------------------------------------------
 
-; parasoul
-AIScript::_191:
+ai_script PARASOUL
         if_num_monsters 1
                 attack BATTLE, EL_NINO, EL_NINO
                 end_if
@@ -3164,8 +2950,7 @@ AIScript::_191:
 
 ; ------------------------------------------------------------------------------
 
-; chaos drgn
-AIScript::_226:
+ai_script CHAOS_DRGN
         wait
         attack DISASTER, NOTHING, NOTHING
         wait
@@ -3184,8 +2969,7 @@ AIScript::_226:
 
 ; ------------------------------------------------------------------------------
 
-; sea flower
-AIScript::_233:
+ai_script SEA_FLOWER
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -3197,8 +2981,7 @@ AIScript::_233:
 
 ; ------------------------------------------------------------------------------
 
-; aquila
-AIScript::_236:
+ai_script AQUILA
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, SPECIAL
@@ -3216,10 +2999,9 @@ AIScript::_236:
 
 ; ------------------------------------------------------------------------------
 
-; necromancr
-AIScript::_241:
+ai_script NECROMANCR
         if_num_monsters 1
-                attack DOOM, X_ZONE, FLARE
+                attack DOOM, DEZONE, FLARE
                 end_if
         attack BATTLE, SPECIAL, NOTHING
         wait
@@ -3234,26 +3016,24 @@ AIScript::_241:
 
 ; ------------------------------------------------------------------------------
 
-; trixter
-AIScript::_247:
+ai_script TRIXTER
         if_status_set ALL_MONSTERS, REFLECT
-                attack FIRE, FIRE_2, FIRE_3
+                attack FIRE, FIRA, FIRAGA
                 end_if
         if_status_set ALL_CHARS, REFLECT
-                attack CURE_2, RFLECT, HASTE
+                attack CURA, REFLECT, HASTE
                 end_if
-        attack FIRE_2, NOTHING, NOTHING
+        attack FIRA, NOTHING, NOTHING
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; white drgn
-AIScript::_36:
-        attack PEARL, PEARL, NOTHING
-        attack PEARL, PEARL, NOTHING
-        attack PEARL, NOTHING, NOTHING
+ai_script WHITE_DRGN
+        attack HOLY, HOLY, NOTHING
+        attack HOLY, HOLY, NOTHING
+        attack HOLY, NOTHING, NOTHING
         wait
         end
 
@@ -3267,8 +3047,7 @@ AIScript::_36:
 
 ; ------------------------------------------------------------------------------
 
-; uroburos
-AIScript::_147:
+ai_script UROBUROS
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BIO, BIO, BATTLE
@@ -3282,8 +3061,7 @@ AIScript::_147:
 
 ; ------------------------------------------------------------------------------
 
-; covert
-AIScript::_103:
+ai_script COVERT
         attack BATTLE, BATTLE, WIND_SLASH
         wait
         attack FIRE_SKEAN, WATER_EDGE, BOLT_EDGE
@@ -3299,8 +3077,7 @@ AIScript::_103:
 
 ; ------------------------------------------------------------------------------
 
-; wart puck
-AIScript::_125:
+ai_script WART_PUCK
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -3312,8 +3089,7 @@ AIScript::_125:
 
 ; ------------------------------------------------------------------------------
 
-; woolly
-AIScript::_250:
+ai_script WOOLLY
         attack SPECIAL, NOTHING, NOTHING
         end
 
@@ -3323,8 +3099,7 @@ AIScript::_250:
 
 ; ------------------------------------------------------------------------------
 
-; karkass
-AIScript::_220:
+ai_script KARKASS
         attack SPECIAL, NOTHING, NOTHING
         end
 
@@ -3334,7 +3109,7 @@ AIScript::_220:
                 attack BATTLE, NOTHING, NOTHING
                 end_if
         if_cmd MAGIC
-                attack BOLT_3, BREAK, FLARE
+                attack THUNDAGA, BREAK, FLARE
                 end_if
         if_hit
                 attack LIFESHAVER
@@ -3342,8 +3117,7 @@ AIScript::_220:
 
 ; ------------------------------------------------------------------------------
 
-; tap dancer
-AIScript::_240:
+ai_script TAP_DANCER
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -3353,8 +3127,7 @@ AIScript::_240:
 
 ; ------------------------------------------------------------------------------
 
-; ogor
-AIScript::_104:
+ai_script OGOR
         attack SPECIAL, SPECIAL, NOTHING
         attack SPECIAL, NOTHING, NOTHING
         attack SPECIAL, NOTHING, NOTHING
@@ -3369,10 +3142,9 @@ AIScript::_104:
 
 ; ------------------------------------------------------------------------------
 
-; magic urn
-AIScript::_85:
+ai_script MAGIC_URN
         if_status_set ALL_CHARS, DEAD
-                attack LIFE, LIFE, LIFE_2
+                attack RAISE, RAISE, ARISE
                 set_target SELF
                 attack ESCAPE, NOTHING, NOTHING
                 end_if
@@ -3404,9 +3176,8 @@ AIScript::_85:
 
 ; ------------------------------------------------------------------------------
 
-; l.10 magic
-AIScript::_306:
-        attack FIRE, ICE, BOLT
+ai_script L10_MAGIC
+        attack FIRE, BLIZZARD, THUNDER
         end
 
         if_self_dead
@@ -3417,36 +3188,33 @@ AIScript::_306:
 
 ; ------------------------------------------------------------------------------
 
-; l.20 magic
-AIScript::_304:
+ai_script L20_MAGIC
         attack DEMI, QUARTR, BREAK
         wait
-        attack DEMI, QUARTR, X_ZONE
+        attack DEMI, QUARTR, DEZONE
         end
 
         if_self_dead
                 end_if
         if_hit
-                attack RASP, MUDDLE, SAFE
+                attack RASP, CONFUSE, SAFE
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; l.30 magic
-AIScript::_293:
-        attack FIRE_2, ICE_2, BOLT_2
+ai_script L30_MAGIC
+        attack FIRA, BLIZZARA, THUNDARA
         end
 
         if_self_dead
                 end_if
         if_hit
-                attack IMP, OSMOSE, RFLECT
+                attack IMP, OSMOSE, REFLECT
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; l.40 magic
-AIScript::_299:
+ai_script L40_MAGIC
         attack DRAIN, BREAK, VANISH
         end
 
@@ -3458,8 +3226,7 @@ AIScript::_299:
 
 ; ------------------------------------------------------------------------------
 
-; l.50 magic
-AIScript::_307:
+ai_script L50_MAGIC
         attack POISON, BIO, DOOM
         wait
         set_target ALL_MONSTERS
@@ -3469,14 +3236,13 @@ AIScript::_307:
         if_self_dead
                 end_if
         if_hit
-                attack BSERK, SLOW, HASTE2
+                attack BERSERK, SLOW, HASTE2
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; l.60 magic
-AIScript::_313:
-        attack QUAKE, W_WIND, PEARL
+ai_script L60_MAGIC
+        attack QUAKE, TORNADO, HOLY
         end
 
         if_self_dead
@@ -3487,9 +3253,8 @@ AIScript::_313:
 
 ; ------------------------------------------------------------------------------
 
-; l.70 magic
-AIScript::_323:
-        attack FIRE_3, ICE_3, BOLT_3
+ai_script L70_MAGIC
+        attack FIRAGA, BLIZZAGA, THUNDAGA
         end
 
         if_self_dead
@@ -3500,13 +3265,12 @@ AIScript::_323:
 
 ; ------------------------------------------------------------------------------
 
-; l.80 magic
-AIScript::_355:
+ai_script L80_MAGIC
         if_status_set ALL_CHARS, REFLECT
-                attack CURE_2, REMEDY, HASTE
+                attack CURA, REMEDY, HASTE
                 end_if
         if_status_set ALL_MONSTERS, REFLECT
-                attack FIRE_3, ICE_3, BOLT_3
+                attack FIRAGA, BLIZZAGA, THUNDAGA
                 end_if
         attack BIO, BIO, POISON
         end
@@ -3515,22 +3279,21 @@ AIScript::_355:
                 end_if
         if_hit
         if_status_set ALL_CHARS, REFLECT
-                attack CURE_3, CURE, LIFE_3
+                attack CURAGA, CURE, RERAISE
                 end_if
         if_hit
         if_status_set ALL_MONSTERS, REFLECT
-                attack STOP, DISPEL, PEARL
+                attack STOP, DISPEL, HOLY
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; l.90 magic
-AIScript::_356:
-        attack METEOR, MERTON, FLARE
+ai_script L90_MAGIC
+        attack METEOR, MELTDOWN, FLARE
         wait
-        attack METEOR, MERTON, FLARE
+        attack METEOR, MELTDOWN, FLARE
         wait
-        attack METEOR, MERTON, FLARE
+        attack METEOR, MELTDOWN, FLARE
         wait
         set_target NOTHING
         attack DISPEL
@@ -3542,27 +3305,26 @@ AIScript::_356:
         if_self_dead
                 end_if
         if_hit
-                attack STOP, BOLT_3, LIFE_3
+                attack STOP, THUNDAGA, RERAISE
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; magimaster
-AIScript::_358:
+ai_script MAGIMASTER
         if_status_set ALL_MONSTERS, REFLECT
-                attack FIRE_3, ICE_3, BOLT_3
+                attack FIRAGA, BLIZZAGA, THUNDAGA
                 end_if
-        attack FIRE_2, ICE_2, BOLT_2
+        attack FIRA, BLIZZARA, THUNDARA
         wait
-        attack FIRE_3, ICE_3, BOLT_3
+        attack FIRAGA, BLIZZAGA, THUNDAGA
         wait
-        attack FIRE_3, ICE_3, BOLT_3
-        attack FIRE_3, ICE_3, BOLT_3
+        attack FIRAGA, BLIZZAGA, THUNDAGA
+        attack FIRAGA, BLIZZAGA, THUNDAGA
         wait
-        attack FIRE_3, ICE_3, BOLT_3
-        attack FIRE_3, ICE_3, BOLT_3
+        attack FIRAGA, BLIZZAGA, THUNDAGA
+        attack FIRAGA, BLIZZAGA, THUNDAGA
         wait
-        attack FIRE_3, ICE_3, BOLT_3
+        attack FIRAGA, BLIZZAGA, THUNDAGA
         wait
         attack DOOM, MUTE, BIO
         attack DOOM, MUTE, BIO
@@ -3579,8 +3341,7 @@ AIScript::_358:
 
 ; ------------------------------------------------------------------------------
 
-; ironhitman
-AIScript::_253:
+ai_script IRONHITMAN
         attack SPECIAL, DISCHORD, BATTLE
         end
 
@@ -3588,8 +3349,7 @@ AIScript::_253:
 
 ; ------------------------------------------------------------------------------
 
-; junk
-AIScript::_237:
+ai_script JUNK
         if_num_monsters 1
                 attack EXPLODER
                 end_if
@@ -3603,8 +3363,7 @@ AIScript::_237:
 
 ; ------------------------------------------------------------------------------
 
-; fortis
-AIScript::_234:
+ai_script FORTIS
         attack SNOWBALL, FIRE_BALL, MISSILE
         end
 
@@ -3616,8 +3375,7 @@ AIScript::_234:
 
 ; ------------------------------------------------------------------------------
 
-; dueller
-AIScript::_217:
+ai_script DUELLER
         attack L5_DOOM, L4_FLARE, SPECIAL
         end
 
@@ -3629,8 +3387,7 @@ AIScript::_217:
 
 ; ------------------------------------------------------------------------------
 
-; innoc
-AIScript::_246:
+ai_script INNOC
         attack SPECIAL
         wait
         attack COLD_DUST, PLASMA, NOTHING
@@ -3646,8 +3403,7 @@ AIScript::_246:
 
 ; ------------------------------------------------------------------------------
 
-; sky base
-AIScript::_252:
+ai_script SKY_BASE
         attack L5_DOOM
         wait
         attack SPECIAL, NOTHING, NOTHING
@@ -3670,8 +3426,7 @@ AIScript::_252:
 
 ; ------------------------------------------------------------------------------
 
-; guardian
-AIScript::_274:
+ai_script GUARDIAN_BOSS
         if_monster_switch_set 1
                 dlg $82
 ; Included battle program!
@@ -3789,8 +3544,7 @@ AIScript::_274:
 
 ; ------------------------------------------------------------------------------
 
-; prometheus
-AIScript::_261:
+ai_script PROMETHEUS
         attack SPECIAL, SHRAPNEL, NOTHING
         end
 
@@ -3805,8 +3559,7 @@ AIScript::_261:
 
 ; ------------------------------------------------------------------------------
 
-; scullion
-AIScript::_161:
+ai_script SCULLION
         attack SPECIAL
         wait
         attack WAVECANNON, GRAV_BOMB, LAUNCHER
@@ -3824,8 +3577,7 @@ AIScript::_161:
 
 ; ------------------------------------------------------------------------------
 
-; veteran
-AIScript::_251:
+ai_script VETERAN
         attack BATTLE, CONDEMNED, CONDEMNED
         wait
         attack BATTLE, CONDEMNED, BATTLE
@@ -3841,8 +3593,7 @@ AIScript::_251:
 
 ; ------------------------------------------------------------------------------
 
-; didalos
-AIScript::_249:
+ai_script DIDALOS
         if_monster_switch_clr 0
         if_status_set ALL_CHARS, REFLECT
                 attack REFLECT_LORE
@@ -3864,8 +3615,7 @@ AIScript::_249:
 
 ; ------------------------------------------------------------------------------
 
-; mover
-AIScript::_86:
+ai_script MOVER
         if_num_monsters 1
                 attack BIG_GUARD, BLOW_FISH, BLOW_FISH
                 end_if
@@ -3876,8 +3626,7 @@ AIScript::_86:
 
 ; ------------------------------------------------------------------------------
 
-; retainer
-AIScript::_7:
+ai_script RETAINER
         attack BATTLE, BATTLE, NOTHING
         attack BATTLE, BATTLE, NOTHING
         wait
@@ -3897,13 +3646,12 @@ AIScript::_7:
 
 ; ------------------------------------------------------------------------------
 
-; dark force
-AIScript::_13:
+ai_script DARK_FORCE
         attack CONDEMNED, ROULETTE, AQUA_RAKE
         wait
-        attack REVENGE, PEARL_WIND, L5_DOOM
+        attack REVENGE, WHITE_WIND, L5_DOOM
         wait
-        attack L4_FLARE, L3_MUDDLE, REFLECT_LORE
+        attack L4_FLARE, L3_CONFUSE, REFLECT_LORE
         wait
         attack PEARL_LORE, STEP_MINE, LAUNCHER
         wait
@@ -3918,15 +3666,14 @@ AIScript::_13:
 
 ; ------------------------------------------------------------------------------
 
-; steroidite
-AIScript::_22:
+ai_script STEROIDITE
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack GIGA_VOLT, BLIZZARD, COLD_DUST
+        attack GIGA_VOLT, SNOWSTORM, COLD_DUST
         wait
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack GIGA_VOLT, BLIZZARD, COLD_DUST
+        attack GIGA_VOLT, SNOWSTORM, COLD_DUST
         wait
         attack N_CROSS, NOTHING, NOTHING
         end
@@ -3935,8 +3682,7 @@ AIScript::_22:
 
 ; ------------------------------------------------------------------------------
 
-; outsider
-AIScript::_189:
+ai_script OUTSIDER
         throw_item IMPERIAL, ASHURA
         wait
         throw_item KODACHI, KOTETSU
@@ -3962,8 +3708,7 @@ AIScript::_189:
 
 ; ------------------------------------------------------------------------------
 
-; hemophyte
-AIScript::_193:
+ai_script HEMOPHYTE
         if_num_monsters 1
                 attack SHOCK_WAVE, SHOCK_WAVE, NOTHING
                 attack SHOCK_WAVE, SHOCK_WAVE, NOTHING
@@ -3980,38 +3725,36 @@ AIScript::_193:
 
 ; ------------------------------------------------------------------------------
 
-; madam
-AIScript::_106:
+ai_script MADAM
         if_status_set ALL_MONSTERS, REFLECT
-                attack CURE_3
+                attack CURAGA
                 end_if
-        attack PEARL, FLARE, IMP
+        attack HOLY, FLARE, IMP
         wait
-        attack CURE_2, LIFE_3, SAFE
+        attack CURA, RERAISE, SAFE
         attack SPECIAL, SPECIAL, NOTHING
         wait
-        attack CURE_2, LIFE_3, SAFE
-        attack FIRE_3, ICE_3, BOLT_3
+        attack CURA, RERAISE, SAFE
+        attack FIRAGA, BLIZZAGA, THUNDAGA
         wait
-        attack REMEDY, CURE_2, SHELL
-        attack FIRE_3, ICE_3, BOLT_3
+        attack REMEDY, CURA, SHELL
+        attack FIRAGA, BLIZZAGA, THUNDAGA
         wait
         attack REGEN, REMEDY, HASTE
-        attack FIRE_3, ICE_3, BOLT_3
+        attack FIRAGA, BLIZZAGA, THUNDAGA
         end
 
         if_self_dead
                 end_if
         if_hit
                 set_target NOTHING
-                attack CURE_2, NOTHING, NOTHING
+                attack CURA, NOTHING, NOTHING
                 attack METEOR, NOTHING, NOTHING
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; vectaur
-AIScript::_128:
+ai_script VECTAUR
         attack BATTLE
         wait
         attack BATTLE, FIRE_BALL, SPECIAL
@@ -4021,8 +3764,7 @@ AIScript::_128:
 
 ; ------------------------------------------------------------------------------
 
-; evil oscar
-AIScript::_183:
+ai_script EVIL_OSCAR
         if_num_monsters 1
                 attack SOUR_MOUTH
                 end_if
@@ -4037,8 +3779,7 @@ AIScript::_183:
 
 ; ------------------------------------------------------------------------------
 
-; land worm
-AIScript::_155:
+ai_script LAND_WORM
         attack MAGNITUDE8, MAGNITUDE8, LODE_STONE
         wait
         attack MAGNITUDE8, MAGNITUDE8, LODE_STONE
@@ -4050,13 +3791,12 @@ AIScript::_155:
 
 ; ------------------------------------------------------------------------------
 
-; vectagoyle
-AIScript::_228:
+ai_script VECTAGOYLE
         attack BATTLE, BATTLE, NOTHING
         wait
-        attack GIGA_VOLT, BLIZZARD, BLAZE
+        attack GIGA_VOLT, SNOWSTORM, BLAZE
         wait
-        attack AQUA_RAKE, BLIZZARD, BATTLE
+        attack AQUA_RAKE, SNOWSTORM, BATTLE
         wait
         attack AQUA_RAKE, GIGA_VOLT, BLAZE
         end
@@ -4069,8 +3809,7 @@ AIScript::_228:
 
 ; ------------------------------------------------------------------------------
 
-; brontaur
-AIScript::_132:
+ai_script BRONTAUR
         attack BATTLE, BATTLE, SPECIAL
         wait
         attack LIFESHAVER, LIFESHAVER, NOTHING
@@ -4087,8 +3826,7 @@ AIScript::_132:
 
 ; ------------------------------------------------------------------------------
 
-; gtbehemoth
-AIScript::_224:
+ai_script GTBEHEMOTH
         attack BATTLE, BATTLE, NOTHING
         wait
         attack BATTLE, BATTLE, METEOR
@@ -4101,8 +3839,7 @@ AIScript::_224:
 
 ; ------------------------------------------------------------------------------
 
-; doom drgn
-AIScript::_37:
+ai_script DOOM_DRGN
         attack S_CROSS, BATTLE, BATTLE
         wait
         attack S_CROSS, BATTLE, BATTLE
@@ -4125,8 +3862,7 @@ AIScript::_37:
 
 ; ------------------------------------------------------------------------------
 
-; allo ver
-AIScript::_187:
+ai_script ALLO_VER
         if_monster_timer 60
                 set_target ALL_CHARS
                 attack ATOMIC_RAY
@@ -4155,43 +3891,42 @@ AIScript::_187:
 
 ; ------------------------------------------------------------------------------
 
-; srbehemoth
-AIScript::_127:
-        if_status_set CHAR_SLOT_1, SLEEP
-        if_status_clr CHAR_SLOT_1, DEAD
+ai_script SRBEHEMOTH_UNDEAD
+        if_status_set CHAR_1, SLEEP
+        if_status_clr CHAR_1, DEAD
                 dlg $8a
 ; 4 attacks!!
-                set_target CHAR_SLOT_1
+                set_target CHAR_1
                 attack BATTLE
                 attack BATTLE
                 attack BATTLE
                 attack BATTLE
                 end_if
-        if_status_set CHAR_SLOT_2, SLEEP
-        if_status_clr CHAR_SLOT_2, DEAD
+        if_status_set CHAR_2, SLEEP
+        if_status_clr CHAR_2, DEAD
                 dlg $8a
 ; 4 attacks!!
-                set_target CHAR_SLOT_2
+                set_target CHAR_2
                 attack BATTLE
                 attack BATTLE
                 attack BATTLE
                 attack BATTLE
                 end_if
-        if_status_set CHAR_SLOT_3, SLEEP
-        if_status_clr CHAR_SLOT_3, DEAD
+        if_status_set CHAR_3, SLEEP
+        if_status_clr CHAR_3, DEAD
                 dlg $8a
 ; 4 attacks!!
-                set_target CHAR_SLOT_3
+                set_target CHAR_3
                 attack BATTLE
                 attack BATTLE
                 attack BATTLE
                 attack BATTLE
                 end_if
-        if_status_set CHAR_SLOT_4, SLEEP
-        if_status_clr CHAR_SLOT_4, DEAD
+        if_status_set CHAR_4, SLEEP
+        if_status_clr CHAR_4, DEAD
                 dlg $8a
 ; 4 attacks!!
-                set_target CHAR_SLOT_4
+                set_target CHAR_4
                 attack BATTLE
                 attack BATTLE
                 attack BATTLE
@@ -4213,8 +3948,7 @@ AIScript::_127:
 
 ; ------------------------------------------------------------------------------
 
-; pugs
-AIScript::_255:
+ai_script PUGS
         if_self_in_slot MONSTER_3
         if_battle_var_greater 36, 8
                 attack SPECIAL
@@ -4288,13 +4022,12 @@ AIScript::_255:
                         end_if
         if_cmd MAGIC
                 set_target PREV_ATTACKER
-                attack PEARL
+                attack HOLY
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; whelk
-AIScript::_256:
+ai_script WHELK
         if_battle_switch_clr 3, 0
                 toggle_battle_switch 3, 0
                 battle_event $05
@@ -4325,8 +4058,7 @@ AIScript::_256:
 
 ; ------------------------------------------------------------------------------
 
-; presenter
-AIScript::_257:
+ai_script PRESENTER
         if_battle_switch_set 0, 0
                 attack NOTHING, MAGNITUDE8, MAGNITUDE8
                 end_if
@@ -4346,8 +4078,7 @@ AIScript::_257:
 
 ; ------------------------------------------------------------------------------
 
-; vargas
-AIScript::_259:
+ai_script VARGAS
         if_battle_switch_set 0, 0
         if_battle_switch_clr 0, 4
         if_status_clr SABIN, CONDEMNED
@@ -4406,8 +4137,7 @@ AIScript::_259:
 
 ; ------------------------------------------------------------------------------
 
-; tunnelarmr
-AIScript::_260:
+ai_script TUNNELARMR
         if_battle_switch_clr 0, 0
                 battle_event $10
                 toggle_battle_switch 0, 0
@@ -4417,9 +4147,9 @@ AIScript::_260:
                 attack BATTLE, FIRE, BATTLE
                 wait
                 set_target NOTHING
-                attack TEK_LASER, SPECIAL, BOLT
+                attack TEK_LASER, SPECIAL, THUNDER
                 end_if
-        attack BATTLE, BOLT, FIRE
+        attack BATTLE, THUNDER, FIRE
         wait
         attack POISON, SPECIAL, FIRE
         end
@@ -4433,8 +4163,7 @@ AIScript::_260:
 
 ; ------------------------------------------------------------------------------
 
-; ghosttrain
-AIScript::_262:
+ai_script GHOSTTRAIN
         if_battle_switch_clr 0, 0
                 toggle_battle_switch 0, 0
                 attack BATTLE, SPECIAL, EVIL_TOOT
@@ -4462,8 +4191,7 @@ AIScript::_262:
 
 ; ------------------------------------------------------------------------------
 
-; dadaluma
-AIScript::_263:
+ai_script DADALUMA
         if_status_clr SELF, SILENCE
         if_monster_timer 30
                 reset_monster_timer
@@ -4519,8 +4247,7 @@ AIScript::_263:
 
 ; ------------------------------------------------------------------------------
 
-; shiva
-AIScript::_264:
+ai_script SHIVA
         if_battle_var_greater 3, 5
                 set_battle_var 3, 0
                 kill_monsters_wait MONSTER_2, MATERIALIZE
@@ -4532,15 +4259,15 @@ AIScript::_264:
                 kill_monsters_wait MONSTER_2, MATERIALIZE
                 show_monsters MONSTER_4, MATERIALIZE
                 set_target RAND_CHAR
-                attack RFLECT
+                attack REFLECT
                 kill_monsters_wait MONSTER_4, MATERIALIZE
                 show_monsters MONSTER_2, MATERIALIZE
                 kill_monsters MONSTER_4, INSTANT
                 end_if
         set_target NOTHING
-        attack ICE, ICE, ICE_2
+        attack BLIZZARD, BLIZZARD, BLIZZARA
         wait
-        attack ICE, ICE_2, BLIZZARD
+        attack BLIZZARD, BLIZZARA, SNOWSTORM
         end
 
         if_self_dead
@@ -4557,19 +4284,18 @@ AIScript::_264:
                 end_battle
                 end_if
         if_cmd MAGIC
-                attack NOTHING, NOTHING, ICE
+                attack NOTHING, NOTHING, BLIZZARD
                 add_monster_var 1
                 add_battle_var 3, 1
                 end_if
         if_hit
                 add_battle_var 3, 1
-                attack NOTHING, NOTHING, ICE
+                attack NOTHING, NOTHING, BLIZZARD
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; ifrit
-AIScript::_265:
+ai_script IFRIT
         if_battle_var_greater 3, 5
                 set_battle_var 3, 0
                 kill_monsters_wait MONSTER_1, MATERIALIZE
@@ -4581,14 +4307,14 @@ AIScript::_265:
                 kill_monsters_wait MONSTER_1, MATERIALIZE
                 show_monsters MONSTER_3, MATERIALIZE
                 set_target RAND_CHAR
-                attack FIRE_3
+                attack FIRAGA
                 kill_monsters_wait MONSTER_3, MATERIALIZE
                 show_monsters MONSTER_1, MATERIALIZE
                 kill_monsters MONSTER_3, INSTANT
                 end_if
         attack BATTLE, FIRE, FIRE
         wait
-        attack BATTLE, BLAZE, FIRE_2
+        attack BATTLE, BLAZE, FIRA
         add_battle_var 2, 1
         end
 
@@ -4617,8 +4343,7 @@ AIScript::_265:
 
 ; ------------------------------------------------------------------------------
 
-; number 024
-AIScript::_266:
+ai_script NUMBER_024
         if_monster_timer 30
                 reset_monster_timer
                 attack WALLCHANGE
@@ -4639,11 +4364,11 @@ AIScript::_266:
                 end_if
         if_weak_element SELF, FIRE
                 set_target NOTHING
-                attack ICE, ICE, ICE_2
+                attack BLIZZARD, BLIZZARD, BLIZZARA
                 end_if
         if_weak_element SELF, ICE
                 set_target NOTHING
-                attack FIRE, FIRE_2, FIRE_BALL
+                attack FIRE, FIRA, FIRE_BALL
                 end_if
         if_weak_element SELF, LIGHTNING
                 set_target NOTHING
@@ -4651,7 +4376,7 @@ AIScript::_266:
                 end_if
         if_weak_element SELF, POISON
                 set_target NOTHING
-                attack CURE, CURE, CURE_2
+                attack CURE, CURE, CURA
                 end_if
         if_weak_element SELF, WIND
                 set_target NOTHING
@@ -4667,7 +4392,7 @@ AIScript::_266:
                 end_if
         if_weak_element SELF, WATER
                 set_target NOTHING
-                attack BOLT, BOLT, BOLT_2
+                attack THUNDER, THUNDER, THUNDARA
                 end_if
         attack BATTLE, BATTLE, SPECIAL
         end
@@ -4721,8 +4446,7 @@ AIScript::_266:
 
 ; ------------------------------------------------------------------------------
 
-; number 128
-AIScript::_267:
+ai_script NUMBER_128
         if_monster_switch_clr 0
         if_num_monsters 1
         if_status_clr SELF, HASTE
@@ -4735,7 +4459,7 @@ AIScript::_267:
                 wait
                 attack BLASTER, ATOMIC_RAY, SHOCK_WAVE
                 end_if
-        attack BATTLE, BATTLE, ICE
+        attack BATTLE, BATTLE, BLIZZARD
         wait
         attack BATTLE, SPECIAL, NET
         end
@@ -4749,8 +4473,7 @@ AIScript::_267:
 
 ; ------------------------------------------------------------------------------
 
-; inferno
-AIScript::_268:
+ai_script INFERNO
         if_battle_timer 30
         if_monsters_alive {MONSTER_1, MONSTER_2, MONSTER_4}
                 attack DELTA_HIT
@@ -4764,15 +4487,15 @@ AIScript::_268:
                 set_monster_switch 0
                 end_if
         if_num_monsters 2
-                attack BOLT_3, BOLT_3, METEOR
+                attack THUNDAGA, THUNDAGA, METEOR
                 end_if
-        attack BOLT_2, ATOMIC_RAY, ATOMIC_RAY
+        attack THUNDARA, ATOMIC_RAY, ATOMIC_RAY
         wait
         attack GIGA_VOLT, GIGA_VOLT, ATOMIC_RAY
         wait
-        attack BOLT_2, ATOMIC_RAY, SHOCK_WAVE
+        attack THUNDARA, ATOMIC_RAY, SHOCK_WAVE
         wait
-        attack BOLT_2, ATOMIC_RAY, SHOCK_WAVE
+        attack THUNDARA, ATOMIC_RAY, SHOCK_WAVE
         end
 
         if_self_dead
@@ -4784,12 +4507,11 @@ AIScript::_268:
 
 ; ------------------------------------------------------------------------------
 
-; crane
-AIScript::_269:
+ai_script CRANE_1
         if_battle_var_greater 1, 3
                 set_battle_var 1, 0
-                set_target MONSTER_SLOT_2
-                attack FIRE_2
+                set_target MONSTER_2
+                attack FIRA
                 end_if
         if_monster_switch_clr 0
         if_num_monsters 1
@@ -4803,9 +4525,9 @@ AIScript::_269:
 ; The crane shook the deck!
                 attack MAGNITUDE8
                 end_if
-        attack BATTLE, BOLT, BOLT
+        attack BATTLE, THUNDER, THUNDER
         wait
-        attack BATTLE, BOLT_2, SPECIAL
+        attack BATTLE, THUNDARA, SPECIAL
         end
 
         if_element LIGHTNING
@@ -4837,12 +4559,11 @@ AIScript::_269:
 
 ; ------------------------------------------------------------------------------
 
-; crane
-AIScript::_270:
+ai_script CRANE_2
         if_battle_var_greater 0, 3
                 set_battle_var 0, 0
-                set_target MONSTER_SLOT_1
-                attack BOLT_2
+                set_target MONSTER_1
+                attack THUNDARA
                 end_if
         if_monster_switch_clr 0
         if_num_monsters 1
@@ -4858,7 +4579,7 @@ AIScript::_270:
                 end_if
         attack BATTLE, FIRE, FIRE
         wait
-        attack BATTLE, FIRE_2, SPECIAL
+        attack BATTLE, FIRA, SPECIAL
         end
 
         if_element FIRE
@@ -4869,7 +4590,7 @@ AIScript::_270:
 ; Unleashed thermal energy!
                 set_battle_var 2, 0
                 set_target ALL_CHARS
-                attack FIRE_3
+                attack FIRAGA
                 end_if
         if_element FIRE
         if_battle_var_greater 2, 1
@@ -4890,11 +4611,10 @@ AIScript::_270:
 
 ; ------------------------------------------------------------------------------
 
-; umaro
-AIScript::_271:
+ai_script UMARO_1
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack BATTLE, BATTLE, BLIZZARD
+        attack BATTLE, BATTLE, SNOWSTORM
         end
 
         if_self_dead
@@ -4902,7 +4622,7 @@ AIScript::_271:
                 end_if
         if_element FIRE
                 set_target NOTHING
-                attack NOTHING, SPECIAL, BLIZZARD
+                attack NOTHING, SPECIAL, SNOWSTORM
                 end_if
         if_hit
                 attack NOTHING, NOTHING, BATTLE
@@ -4910,8 +4630,7 @@ AIScript::_271:
 
 ; ------------------------------------------------------------------------------
 
-; umaro
-AIScript::_272:
+ai_script UMARO_2
         if_battle_switch_clr 0, 0
         if_battle_switch_clr 0, 1
         if_hp SELF, 10240
@@ -4924,7 +4643,7 @@ AIScript::_272:
 ; Mag Def up
 ; Speed up
 ; Recovery up
-                set_status PROTECT
+                set_status SAFE
                 set_status SHELL
                 set_status HASTE
                 set_status REGEN
@@ -4940,7 +4659,7 @@ AIScript::_272:
                 attack SNOWBALL, SURGE, LODE_STONE
                 end_if
         if_num_chars 2
-                attack BATTLE, BATTLE, BLIZZARD
+                attack BATTLE, BATTLE, SNOWSTORM
                 attack BATTLE, BATTLE, SPECIAL
                 end_if
         attack BATTLE, BATTLE, SPECIAL
@@ -4959,7 +4678,7 @@ AIScript::_272:
 ; Mag Def up
 ; Speed up
 ; Recovery up
-                set_status PROTECT
+                set_status SAFE
                 set_status SHELL
                 set_status HASTE
                 set_status REGEN
@@ -4969,7 +4688,7 @@ AIScript::_272:
                 add_monster_var 1
                 end_if
         if_element FIRE
-                attack NOTHING, SPECIAL, BLIZZARD
+                attack NOTHING, SPECIAL, SNOWSTORM
                 end_if
         if_hit
                 attack NOTHING, NOTHING, SPECIAL
@@ -4977,8 +4696,7 @@ AIScript::_272:
 
 ; ------------------------------------------------------------------------------
 
-; guardian
-AIScript::_273:
+ai_script GUARDIAN_VECTOR
         if_battle_switch_clr 0, 0
                 invincible_on SELF
                 dlg $30
@@ -5002,8 +4720,7 @@ AIScript::_273:
 
 ; ------------------------------------------------------------------------------
 
-; air force
-AIScript::_275:
+ai_script AIR_FORCE
         if_battle_switch_set 0, 0
         if_battle_var_greater 1, 6
                 kill_monsters MONSTER_4, TOP
@@ -5064,8 +4781,7 @@ AIScript::_275:
 
 ; ------------------------------------------------------------------------------
 
-; tritoch
-AIScript::_276:
+ai_script TRITOCH_INTRO
         battle_event $04
         end_battle
         end
@@ -5074,8 +4790,7 @@ AIScript::_276:
 
 ; ------------------------------------------------------------------------------
 
-; tritoch
-AIScript::_277:
+ai_script TRITOCH_MORPH
         battle_event $12
         end_battle
         end
@@ -5084,8 +4799,7 @@ AIScript::_277:
 
 ; ------------------------------------------------------------------------------
 
-; flameeater
-AIScript::_278:
+ai_script FLAMEEATER
         if_monster_switch_clr 0
                 set_monster_switch 0
                 attack BOMBLET
@@ -5101,7 +4815,7 @@ AIScript::_278:
         if_status_clr SELF, REFLECT
                 set_target SELF
                 attack SAFE
-                attack RFLECT
+                attack REFLECT
                 set_battle_var 2, 0
                 end_if
         if_monster_switch_clr 1
@@ -5140,7 +4854,7 @@ AIScript::_278:
                 set_monster_switch 1
                 end_if
         if_status_set SELF, REFLECT
-                attack FIRE_2, FIRE_3, FIRE_2
+                attack FIRA, FIRAGA, FIRA
                 add_battle_var 3, 1
                 clr_monster_switch 1
                 end_if
@@ -5161,13 +4875,12 @@ AIScript::_278:
                 end_if
         if_hit
                 add_battle_var 2, 1
-                attack NOTHING, NOTHING, FIRE_2
+                attack NOTHING, NOTHING, FIRA
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; atmaweapon
-AIScript::_279:
+ai_script ATMAWEAPON
         if_monster_switch_clr 7
                 dlg $85
 ; My name is Atma……
@@ -5180,7 +4893,7 @@ AIScript::_279:
                 dlg $65
 ; Vast energy focused
                 set_status SHELL
-                set_status PROTECT
+                set_status SAFE
                 set_status HASTE
                 short_glow MONSTER_1
                 attack NOTHING, NOTHING, NOTHING
@@ -5199,7 +4912,7 @@ AIScript::_279:
                 attack BATTLE, QUARTR, QUARTR
                 wait
                 set_target NOTHING
-                attack RASP, W_WIND, BLAZE
+                attack RASP, TORNADO, BLAZE
                 end_if
         if_hp SELF, 12800
                 set_target NOTHING
@@ -5209,7 +4922,7 @@ AIScript::_279:
                 attack BATTLE, SPECIAL, SPECIAL
                 wait
                 set_target ALL_CHARS
-                attack FIRE_2
+                attack FIRA
                 wait
                 set_target NOTHING
                 attack MIND_BLAST
@@ -5234,18 +4947,17 @@ AIScript::_279:
 
 ; ------------------------------------------------------------------------------
 
-; nerapa
-AIScript::_280:
+ai_script NERAPA
         if_monster_switch_clr 0
                 dlg $66
 ; Mwa ha ha……You can’t run!
-                set_target CHAR_SLOT_1
+                set_target CHAR_1
                 attack CONDEMNED
-                set_target CHAR_SLOT_2
+                set_target CHAR_2
                 attack CONDEMNED
-                set_target CHAR_SLOT_3
+                set_target CHAR_3
                 attack CONDEMNED
-                set_target CHAR_SLOT_4
+                set_target CHAR_4
                 attack CONDEMNED
                 set_monster_switch 0
                 end_if
@@ -5253,11 +4965,11 @@ AIScript::_280:
                 set_battle_var 0, 0
                 attack ROULETTE
                 end_if
-        attack BATTLE, BATTLE, FIRE_2
+        attack BATTLE, BATTLE, FIRA
         wait
-        attack BATTLE, FIRE_BALL, FIRE_3
+        attack BATTLE, FIRE_BALL, FIRAGA
         wait
-        attack BATTLE, BATTLE, FIRE_2
+        attack BATTLE, BATTLE, FIRA
         end
 
         if_cmd FIGHT
@@ -5267,8 +4979,7 @@ AIScript::_280:
 
 ; ------------------------------------------------------------------------------
 
-; srbehemoth
-AIScript::_281:
+ai_script SRBEHEMOTH
         if_status_set SELF, IMP
                 set_target RAND_CHAR
                 attack BATTLE
@@ -5287,32 +4998,32 @@ AIScript::_281:
                         attack IMP
                         end_if
         if_monster_switch_clr 0
-        if_status_set CHAR_SLOT_1, REFLECT
-                set_target CHAR_SLOT_1
+        if_status_set CHAR_1, REFLECT
+                set_target CHAR_1
                 attack SPECIAL
                 dlg $5a
 ; Effect of “Rflect” vanished
                 set_monster_switch 0
                 end_if
         if_monster_switch_clr 0
-        if_status_set CHAR_SLOT_2, REFLECT
-                set_target CHAR_SLOT_2
+        if_status_set CHAR_2, REFLECT
+                set_target CHAR_2
                 attack SPECIAL
                 dlg $5a
 ; Effect of “Rflect” vanished
                 set_monster_switch 0
                 end_if
         if_monster_switch_clr 0
-        if_status_set CHAR_SLOT_3, REFLECT
-                set_target CHAR_SLOT_3
+        if_status_set CHAR_3, REFLECT
+                set_target CHAR_3
                 attack SPECIAL
                 dlg $5a
 ; Effect of “Rflect” vanished
                 set_monster_switch 0
                 end_if
         if_monster_switch_clr 0
-        if_status_set CHAR_SLOT_4, REFLECT
-                set_target CHAR_SLOT_4
+        if_status_set CHAR_4, REFLECT
+                set_target CHAR_4
                 attack SPECIAL
                 dlg $5a
 ; Effect of “Rflect” vanished
@@ -5320,18 +5031,18 @@ AIScript::_281:
                 end_if
         if_hp SELF, 10240
                 set_target NOTHING
-                attack BATTLE, ICE_3, ICE_3
+                attack BATTLE, BLIZZAGA, BLIZZAGA
                 wait
                 set_target NOTHING
-                attack BATTLE, METEO, PEARL
+                attack BATTLE, METEO, HOLY
                 wait
                 set_target NOTHING
-                attack BATTLE, ICE_2, METEO
+                attack BATTLE, BLIZZARA, METEO
                 clr_monster_switch 0
                 end_if
-        attack PEARL, ICE_2, NOTHING
+        attack HOLY, BLIZZARA, NOTHING
         wait
-        attack BATTLE, ICE_3, NOTHING
+        attack BATTLE, BLIZZAGA, NOTHING
         clr_monster_switch 0
         end
 
@@ -5340,13 +5051,13 @@ AIScript::_281:
                 hide_monsters SELF, FADE_HORIZONTAL
                 dlg $7c
 ; Enemy’s coming from behind!
-                chars_right_to_left
+                chars_run_left
                 dlg $7d
 ; Another monster appeared!
                 change_battle 424, INSTANT, RESTORE_MONSTERS
                 set_battle_switch 0, 0
                 end_if
-        if_attack PEARL, FLARE
+        if_attack HOLY, FLARE
                 set_target NOTHING
                 attack METEO
                 end_if
@@ -5356,8 +5067,7 @@ AIScript::_281:
 
 ; ------------------------------------------------------------------------------
 
-; kefka
-AIScript::_282:
+ai_script KEFKA_1
         if_monster_switch_clr 0
                 target_off SELF
                 set_monster_switch 0
@@ -5380,26 +5090,25 @@ AIScript::_282:
 
 ; ------------------------------------------------------------------------------
 
-; tentacle
-AIScript::_283:
+ai_script TENTACLE
         if_monster_switch_set 7
         if_monster_timer 30
                 attack DISCARD
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_1, SLOW
+        if_status_set CHAR_1, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_2, SLOW
+        if_status_set CHAR_2, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_3, SLOW
+        if_status_set CHAR_3, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_4, SLOW
+        if_status_set CHAR_4, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
@@ -5427,8 +5136,7 @@ AIScript::_283:
 
 ; ------------------------------------------------------------------------------
 
-; dullahan
-AIScript::_284:
+ai_script DULLAHAN
         if_monster_switch_clr 0
                 attack PEARL_LORE
                 set_monster_switch 0
@@ -5436,17 +5144,17 @@ AIScript::_284:
         if_monster_switch_clr 2
         if_hp SELF, 10240
                 set_target SELF
-                attack CURE_2
+                attack CURA
                 set_monster_switch 2
                 end_if
         if_battle_var_greater 1, 8
                 attack N_CROSS, SPECIAL, NOTHING
                 wait
-                attack ICE_2, SPECIAL, NOTHING
+                attack BLIZZARA, SPECIAL, NOTHING
                 wait
                 attack PEARL_LORE, NOTHING, ABSOLUTE0
                 wait
-                attack ICE_2, ABSOLUTE0, NOTHING
+                attack BLIZZARA, ABSOLUTE0, NOTHING
                 set_battle_var 1, 0
                 end_if
         if_monster_switch_clr 1
@@ -5454,13 +5162,13 @@ AIScript::_284:
                 attack REFLECT_LORE
                 set_monster_switch 1
                 end_if
-        attack ICE_3, ICE_2, NOTHING
+        attack BLIZZAGA, BLIZZARA, NOTHING
         wait
-        attack ICE_3, NOTHING, PEARL
+        attack BLIZZAGA, NOTHING, HOLY
         wait
-        attack PEARL, ICE_2, NOTHING
+        attack HOLY, BLIZZARA, NOTHING
         wait
-        attack NOTHING, ICE_2, PEARL
+        attack NOTHING, BLIZZARA, HOLY
         clr_monster_switch 1
         clr_monster_switch 2
         end_if
@@ -5476,14 +5184,13 @@ AIScript::_284:
 
 ; ------------------------------------------------------------------------------
 
-; doom gaze
-AIScript::_285:
+ai_script DOOM_GAZE
         if_monster_switch_clr 0
                 attack L5_DOOM
                 set_monster_switch 0
                 end_if
         set_target NOTHING
-        attack BATTLE, DOOM, ICE_3
+        attack BATTLE, DOOM, BLIZZAGA
         wait
         attack DOOM, AERO, AERO
         wait
@@ -5501,8 +5208,7 @@ AIScript::_285:
 
 ; ------------------------------------------------------------------------------
 
-; chadarnook
-AIScript::_286:
+ai_script CHADARNOOK_1
         if_monster_switch_clr 0
                 dlg $5f
 ; DEMON:
@@ -5539,8 +5245,7 @@ AIScript::_286:
 
 ; ------------------------------------------------------------------------------
 
-; curley
-AIScript::_287:
+ai_script CURLEY
         if_monsters_alive {MONSTER_1, MONSTER_2, MONSTER_3}
         if_battle_timer 30
                 reset_battle_timer
@@ -5551,24 +5256,24 @@ AIScript::_287:
         if_status_clr SELF, REFLECT
                 set_battle_var 3, 0
                 set_target SELF
-                attack RFLECT
+                attack REFLECT
                 end_if
         if_status_set SELF, REFLECT
                 set_target SELF
-                attack FIRE_2, FIRE_3, FIRE_3
+                attack FIRA, FIRAGA, FIRAGA
                 end_if
         if_monsters_dead MONSTER_2
-                set_target MONSTER_SLOT_2
-                attack LIFE_2
+                set_target MONSTER_2
+                attack ARISE
                 end_if
         if_monsters_dead MONSTER_3
-                set_target MONSTER_SLOT_3
-                attack LIFE_2
+                set_target MONSTER_3
+                attack ARISE
                 end_if
         if_num_monsters 2
-                attack FIRE_2, FIRE_3, FIRE_3
+                attack FIRA, FIRAGA, FIRAGA
                 end_if
-        attack SLOW, NOTHING, PEARL_WIND
+        attack SLOW, NOTHING, WHITE_WIND
         wait
         attack MUTE, SLOW, NOTHING
         wait
@@ -5578,17 +5283,16 @@ AIScript::_287:
         if_cmd MAGIC
                 add_battle_var 3, 1
                 set_target GHOST_2
-                attack NOTHING, NOTHING, FIRE_2
+                attack NOTHING, NOTHING, FIRA
                 end_if
         if_hit
                 set_target GHOST_2
-                attack NOTHING, FIRE_2, NOTHING
+                attack NOTHING, FIRA, NOTHING
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; larry
-AIScript::_288:
+ai_script LARRY
         if_monsters_alive {MONSTER_1, MONSTER_2, MONSTER_3}
         if_battle_timer 30
                 reset_battle_timer
@@ -5599,11 +5303,11 @@ AIScript::_288:
         if_status_clr SELF, REFLECT
                 set_battle_var 3, 0
                 set_target SELF
-                attack RFLECT
+                attack REFLECT
                 end_if
         if_status_set SELF, REFLECT
                 set_target SELF
-                attack ICE_2, ICE_3, ICE_3
+                attack BLIZZARA, BLIZZAGA, BLIZZAGA
                 end_if
         if_monster_switch_set 0
         if_monster_switch_clr 1
@@ -5628,11 +5332,11 @@ AIScript::_288:
                 end_if
         if_monster_switch_clr 0
         if_num_monsters 2
-                attack ICE_2, NOTHING, ICE_3
+                attack BLIZZARA, NOTHING, BLIZZAGA
                 wait
-                attack ICE_2, NOTHING, ICE_3
+                attack BLIZZARA, NOTHING, BLIZZAGA
                 wait
-                attack NOTHING, ICE_2, ICE_2
+                attack NOTHING, BLIZZARA, BLIZZARA
                 end_if
         if_monster_switch_clr 0
                 attack BATTLE
@@ -5641,18 +5345,17 @@ AIScript::_288:
         if_num_monsters 2
         if_hit
                 set_target GHOST_2
-                attack NOTHING, ICE_2, NOTHING
+                attack NOTHING, BLIZZARA, NOTHING
                 add_battle_var 2, 1
                 end_if
         if_hit
                 set_target GHOST_2
-                attack NOTHING, ICE_2, NOTHING
+                attack NOTHING, BLIZZARA, NOTHING
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; moe
-AIScript::_289:
+ai_script MOE
         if_monsters_alive {MONSTER_1, MONSTER_2, MONSTER_3}
         if_battle_timer 30
                 reset_battle_timer
@@ -5663,38 +5366,37 @@ AIScript::_289:
         if_status_clr SELF, REFLECT
                 set_battle_var 3, 0
                 set_target SELF
-                attack RFLECT
+                attack REFLECT
                 end_if
         if_status_set SELF, REFLECT
                 set_target SELF
-                attack BOLT_2, BOLT_3, BOLT_3
+                attack THUNDARA, THUNDAGA, THUNDAGA
                 end_if
         if_num_monsters 2
-                attack BOLT_2, NOTHING, NOTHING
+                attack THUNDARA, NOTHING, NOTHING
                 wait
-                attack BOLT_2, BOLT_3, NOTHING
+                attack THUNDARA, THUNDAGA, NOTHING
                 wait
-                attack BOLT_3, BOLT_3, NOTHING
+                attack THUNDAGA, THUNDAGA, NOTHING
                 end_if
         attack SAFE, HASTE, NOTHING
         wait
-        attack SHELL, CURE_2, NOTHING
+        attack SHELL, CURA, NOTHING
         end
 
         if_cmd MAGIC
                 add_battle_var 3, 1
                 set_target GHOST_2
-                attack NOTHING, NOTHING, BOLT_2
+                attack NOTHING, NOTHING, THUNDARA
                 end_if
         if_hit
                 set_target GHOST_2
-                attack NOTHING, BOLT_2, NOTHING
+                attack NOTHING, THUNDARA, NOTHING
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; wrexsoul
-AIScript::_290:
+ai_script WREXSOUL
         if_battle_switch_clr 0, 1
                 set_battle_switch 0, 1
                 battle_event $1f
@@ -5702,10 +5404,10 @@ AIScript::_290:
                 end_if
         if_battle_switch_set 0, 0
                 set_target ALL_REFLECT_MONSTERS
-                attack NOTHING, BOLT_3, BOLT_3
+                attack NOTHING, THUNDAGA, THUNDAGA
                 wait
                 set_target ALL_REFLECT_MONSTERS
-                attack NOTHING, BOLT_3, BOLT_3
+                attack NOTHING, THUNDAGA, THUNDAGA
                 wait
                 set_target RAND_CHAR
                 attack NOTHING, ZINGER, ZINGER
@@ -5727,8 +5429,7 @@ AIScript::_290:
 
 ; ------------------------------------------------------------------------------
 
-; hidon
-AIScript::_291:
+ai_script HIDON
         if_monsters_dead {MONSTER_3, MONSTER_4, MONSTER_5, MONSTER_6}
         if_battle_timer 80
                 restore_monsters MONSTER_3, FADE_UP
@@ -5757,24 +5458,24 @@ AIScript::_291:
                 wait
                 attack VIRITE, BATTLE, RAID
                 end_if
-        if_status_set CHAR_SLOT_1, DEAD
-        if_status_clr CHAR_SLOT_1, ZOMBIE
-                set_target CHAR_SLOT_1
+        if_status_set CHAR_1, DEAD
+        if_status_clr CHAR_1, ZOMBIE
+                set_target CHAR_1
                 attack CHOKESMOKE
                 end_if
-        if_status_set CHAR_SLOT_2, DEAD
-        if_status_clr CHAR_SLOT_2, ZOMBIE
-                set_target CHAR_SLOT_2
+        if_status_set CHAR_2, DEAD
+        if_status_clr CHAR_2, ZOMBIE
+                set_target CHAR_2
                 attack CHOKESMOKE
                 end_if
-        if_status_set CHAR_SLOT_3, DEAD
-        if_status_clr CHAR_SLOT_3, ZOMBIE
-                set_target CHAR_SLOT_3
+        if_status_set CHAR_3, DEAD
+        if_status_clr CHAR_3, ZOMBIE
+                set_target CHAR_3
                 attack CHOKESMOKE
                 end_if
-        if_status_set CHAR_SLOT_4, DEAD
-        if_status_clr CHAR_SLOT_4, ZOMBIE
-                set_target CHAR_SLOT_4
+        if_status_set CHAR_4, DEAD
+        if_status_clr CHAR_4, ZOMBIE
+                set_target CHAR_4
                 attack CHOKESMOKE
                 end_if
         attack BATTLE, BATTLE, BIO
@@ -5790,8 +5491,7 @@ AIScript::_291:
 
 ; ------------------------------------------------------------------------------
 
-; katanasoul
-AIScript::_292:
+ai_script KATANASOUL
         if_monster_switch_clr 0
         if_battle_timer 40
                 short_glow MONSTER_1
@@ -5839,8 +5539,7 @@ AIScript::_292:
 
 ; ------------------------------------------------------------------------------
 
-; hidonite
-AIScript::_294:
+ai_script HIDONITE
         attack BATTLE, NOTHING, BATTLE
         wait
         attack BATTLE, NOTHING, SPECIAL
@@ -5857,8 +5556,7 @@ AIScript::_294:
 
 ; ------------------------------------------------------------------------------
 
-; doom
-AIScript::_295:
+ai_script DOOM
         if_target_valid TARGETTING_TARGET
                 attack SPECIAL
                 end_if
@@ -5883,13 +5581,13 @@ AIScript::_295:
                 wait
                 attack BATTLE, TARGETTING, TARGETTING
                 end_if
-        attack ICE_3, N_CROSS, ABSOLUTE0
+        attack BLIZZAGA, N_CROSS, ABSOLUTE0
         wait
-        attack NOTHING, ICE_3, N_CROSS
+        attack NOTHING, BLIZZAGA, N_CROSS
         wait
-        attack ICE_3, N_CROSS, ICE_3
+        attack BLIZZAGA, N_CROSS, BLIZZAGA
         wait
-        attack NOTHING, ICE_3, ABSOLUTE0
+        attack NOTHING, BLIZZAGA, ABSOLUTE0
         end
 
         if_self_dead
@@ -5914,8 +5612,7 @@ AIScript::_295:
 
 ; ------------------------------------------------------------------------------
 
-; goddess
-AIScript::_296:
+ai_script GODDESS
         if_battle_switch_clr 0, 0
         if_battle_var_greater 3, 8
                 set_battle_var 3, 0
@@ -5925,22 +5622,22 @@ AIScript::_296:
                 end_if
         if_hp SELF, 32640
                 set_target NOTHING
-                attack BOLT_3, FLASH_RAIN, NOTHING
+                attack THUNDAGA, FLASH_RAIN, NOTHING
                 wait
                 set_target NOTHING
-                attack BOLT_3, BOLT_3, FLASH_RAIN
+                attack THUNDAGA, THUNDAGA, FLASH_RAIN
                 wait
                 set_target NOTHING
-                attack BOLT_3, QUASAR, QUASAR
+                attack THUNDAGA, QUASAR, QUASAR
                 wait
                 set_target NOTHING
-                attack BOLT_3, BOLT_3, FLASH_RAIN
+                attack THUNDAGA, THUNDAGA, FLASH_RAIN
                 end_if
-        attack BOLT_2, BATTLE, LULLABY
+        attack THUNDARA, BATTLE, LULLABY
         wait
-        attack BOLT_3, CHARM, BATTLE
+        attack THUNDAGA, CHARM, BATTLE
         wait
-        attack BOLT_2, BATTLE, BOLT_3
+        attack THUNDARA, BATTLE, THUNDAGA
         end
 
         if_self_dead
@@ -5951,28 +5648,27 @@ AIScript::_296:
                 add_battle_var 3, 1
                 end_if
         if_hit
-                attack NOTHING, NOTHING, BOLT_2
+                attack NOTHING, NOTHING, THUNDARA
                 add_battle_var 3, 1
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; poltrgeist
-AIScript::_297:
+ai_script POLTRGEIST
         if_battle_var_greater 3, 8
                 set_battle_var 3, 0
                 attack WAVECANNON
                 end_if
-        if_status_set CHAR_SLOT_1, STOP
+        if_status_set CHAR_1, STOP
                 attack BLASTER
                 end_if
-        if_status_set CHAR_SLOT_2, STOP
+        if_status_set CHAR_2, STOP
                 attack BLASTER
                 end_if
-        if_status_set CHAR_SLOT_3, STOP
+        if_status_set CHAR_3, STOP
                 attack BLASTER
                 end_if
-        if_status_set CHAR_SLOT_4, STOP
+        if_status_set CHAR_4, STOP
                 attack BLASTER
                 end_if
         if_hp SELF, 32640
@@ -5995,14 +5691,13 @@ AIScript::_297:
                 end_if
         if_hit
                 add_battle_var 3, 1
-                attack NOTHING, FIRE_3, NOTHING
+                attack NOTHING, FIRAGA, NOTHING
                 end_if
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; final kefka
-AIScript::_298:
+ai_script FINAL_KEFKA
         if_monster_switch_clr 0
                 battle_event $20
                 set_monster_switch 0
@@ -6047,15 +5742,15 @@ AIScript::_298:
         set_target NOTHING
         attack BATTLE, NOTHING, SPECIAL
         wait
-        attack FIRE_3, TRAIN, SPECIAL
+        attack FIRAGA, TRAIN, SPECIAL
         wait
         attack BATTLE, NOTHING, SPECIAL
         wait
-        attack ICE_3, TRAIN, SPECIAL
+        attack BLIZZAGA, TRAIN, SPECIAL
         wait
         attack BATTLE, NOTHING, SPECIAL
         wait
-        attack BOLT_3, NOTHING, SPECIAL
+        attack THUNDAGA, NOTHING, SPECIAL
         end
 
         if_self_dead
@@ -6077,8 +5772,7 @@ AIScript::_298:
 
 ; ------------------------------------------------------------------------------
 
-; ultros (lete river)
-AIScript::_300:
+ai_script ULTROS_RIVER
         if_battle_switch_clr 0, 0
                 dlg $0c
 ; Uwee hee hee…
@@ -6135,8 +5829,7 @@ AIScript::_300:
 
 ; ------------------------------------------------------------------------------
 
-; ultros (opera house)
-AIScript::_301:
+ai_script ULTROS_OPERA
         if_battle_switch_clr 0, 0
                 dlg $13
 ; Long time no see!
@@ -6159,7 +5852,7 @@ AIScript::_301:
                 add_battle_var 3, 1
                 end_if
         if_self_in_slot MONSTER_3
-                attack BATTLE, L3_MUDDLE, L3_MUDDLE
+                attack BATTLE, L3_CONFUSE, L3_CONFUSE
                 add_battle_var 3, 1
                 end_if
         if_self_in_slot MONSTER_4
@@ -6263,8 +5956,7 @@ AIScript::_301:
 
 ; ------------------------------------------------------------------------------
 
-; ultros (esper mountain)
-AIScript::_302:
+ai_script ULTROS_MOUNTAIN
         if_battle_switch_clr 0, 6
                 dlg $4f
 ; I was just thinking about you!
@@ -6330,15 +6022,15 @@ AIScript::_302:
                 end_if
         if_battle_switch_set 0, 3
         if_element FIRE
-                attack FIRE_3
+                attack FIRAGA
                 end_if
         if_battle_switch_set 0, 3
         if_element ICE
-                attack ICE_3
+                attack BLIZZAGA
                 end_if
         if_battle_switch_set 0, 3
         if_element LIGHTNING
-                attack BOLT_3
+                attack THUNDAGA
                 end_if
         if_battle_switch_set 0, 2
         if_cmd MAGIC
@@ -6360,8 +6052,7 @@ AIScript::_302:
 
 ; ------------------------------------------------------------------------------
 
-; chupon
-AIScript::_303:
+ai_script CHUPON_AIRSHIP
         attack BATTLE
         wait
         attack BATTLE, BATTLE, FIRE_BALL
@@ -6375,20 +6066,14 @@ AIScript::_303:
 
 ; ------------------------------------------------------------------------------
 
-; siegfried
-AIScript::_305:
+ai_script SIEGFRIED_2
         if_battle_switch_clr 0, 0
                 dlg $5d
 ; Go! Guys!!
 ;
+                .repeat 8
                 attack BATTLE
-                attack BATTLE
-                attack BATTLE
-                attack BATTLE
-                attack BATTLE
-                attack BATTLE
-                attack BATTLE
-                attack BATTLE
+                .endrep
                 dlg $5e
 ; Ha, ha, ha!
 ; Give up?
@@ -6404,8 +6089,7 @@ AIScript::_305:
 
 ; ------------------------------------------------------------------------------
 
-; head
-AIScript::_308:
+ai_script HEAD
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -6415,8 +6099,7 @@ AIScript::_308:
 
 ; ------------------------------------------------------------------------------
 
-; whelk head
-AIScript::_309:
+ai_script WHELK_HEAD
         if_battle_switch_set 0, 0
         if_monster_timer 20
                 show_monsters MONSTER_2, FADE_UP
@@ -6445,8 +6128,7 @@ AIScript::_309:
 
 ; ------------------------------------------------------------------------------
 
-; colossus
-AIScript::_310:
+ai_script COLOSSUS
         if_cmd BLITZ, BUSHIDO
                 set_target NOTHING
                 attack BATTLE, SPECIAL, LODE_STONE
@@ -6475,8 +6157,7 @@ AIScript::_310:
 
 ; ------------------------------------------------------------------------------
 
-; czardragon
-AIScript::_311:
+ai_script CZARDRAGON
         attack BATTLE
         end
 
@@ -6484,8 +6165,7 @@ AIScript::_311:
 
 ; ------------------------------------------------------------------------------
 
-; master pug
-AIScript::_312:
+ai_script MASTER_PUG
         if_monster_timer 15
                 reset_monster_timer
                 attack WALLCHANGE
@@ -6501,15 +6181,15 @@ AIScript::_312:
                         end_if
         if_weak_element SELF, ICE
                 set_target NOTHING
-                attack NOTHING, FIRE_3, FIRE_3
+                attack NOTHING, FIRAGA, FIRAGA
                 end_if
         if_weak_element SELF, FIRE
                 set_target NOTHING
-                attack NOTHING, ICE_3, ICE_3
+                attack NOTHING, BLIZZAGA, BLIZZAGA
                 end_if
         if_weak_element SELF, WIND
                 set_target NOTHING
-                attack NOTHING, BOLT_3, BOLT_3
+                attack NOTHING, THUNDAGA, THUNDAGA
                 end_if
         if_weak_element SELF, HOLY
                 set_target ALL_CHARS
@@ -6517,11 +6197,11 @@ AIScript::_312:
                 end_if
         if_weak_element SELF, LIGHTNING
                 set_target NOTHING
-                attack NOTHING, W_WIND, W_WIND
+                attack NOTHING, TORNADO, TORNADO
                 end_if
         if_weak_element SELF, POISON
                 set_target NOTHING
-                attack NOTHING, PEARL, PEARL
+                attack NOTHING, HOLY, HOLY
                 end_if
         if_weak_element SELF, WATER
                 set_target NOTHING
@@ -6543,8 +6223,7 @@ AIScript::_312:
 
 ; ------------------------------------------------------------------------------
 
-; merchant
-AIScript::_314:
+ai_script MERCHANT
         attack BATTLE
         end
 
@@ -6559,8 +6238,7 @@ AIScript::_314:
 
 ; ------------------------------------------------------------------------------
 
-; b.day suit
-AIScript::_315:
+ai_script B_DAY_SUIT
         dlg $08
 ; Wh…whew!!
         set_target SELF
@@ -6571,26 +6249,25 @@ AIScript::_315:
 
 ; ------------------------------------------------------------------------------
 
-; tentacle
-AIScript::_316:
+ai_script TENTACLE_1
         if_monster_switch_set 7
         if_monster_timer 30
                 attack DISCARD
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_1, SLOW
+        if_status_set CHAR_1, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_2, SLOW
+        if_status_set CHAR_2, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_3, SLOW
+        if_status_set CHAR_3, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_4, SLOW
+        if_status_set CHAR_4, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
@@ -6618,26 +6295,25 @@ AIScript::_316:
 
 ; ------------------------------------------------------------------------------
 
-; tentacle
-AIScript::_317:
+ai_script TENTACLE_2
         if_monster_switch_set 7
         if_monster_timer 30
                 attack DISCARD
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_1, SLOW
+        if_status_set CHAR_1, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_2, SLOW
+        if_status_set CHAR_2, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_3, SLOW
+        if_status_set CHAR_3, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_4, SLOW
+        if_status_set CHAR_4, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
@@ -6665,26 +6341,25 @@ AIScript::_317:
 
 ; ------------------------------------------------------------------------------
 
-; tentacle
-AIScript::_318:
+ai_script TENTACLE_3
         if_monster_switch_set 7
         if_monster_timer 30
                 attack DISCARD
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_1, SLOW
+        if_status_set CHAR_1, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_2, SLOW
+        if_status_set CHAR_2, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_3, SLOW
+        if_status_set CHAR_3, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
-        if_status_set CHAR_SLOT_4, SLOW
+        if_status_set CHAR_4, SLOW
                 attack SEIZE
                 end_if
         if_monster_switch_clr 7
@@ -6712,8 +6387,7 @@ AIScript::_318:
 
 ; ------------------------------------------------------------------------------
 
-; rightblade
-AIScript::_319:
+ai_script RIGHTBLADE
         if_monsters_dead MONSTER_4
         if_monster_timer 15
                 restore_monsters MONSTER_4, FADE_DOWN
@@ -6731,8 +6405,7 @@ AIScript::_319:
 
 ; ------------------------------------------------------------------------------
 
-; left blade
-AIScript::_320:
+ai_script LEFT_BLADE
         if_monsters_dead MONSTER_2
         if_monster_timer 30
                 restore_monsters MONSTER_2, FADE_DOWN
@@ -6752,8 +6425,7 @@ AIScript::_320:
 
 ; ------------------------------------------------------------------------------
 
-; rough
-AIScript::_321:
+ai_script ROUGH
         if_monsters_dead MONSTER_4
         if_monster_timer 20
                 restore_monsters MONSTER_4, FADE_DOWN
@@ -6771,8 +6443,7 @@ AIScript::_321:
 
 ; ------------------------------------------------------------------------------
 
-; striker
-AIScript::_322:
+ai_script STRIKER
         if_monsters_dead MONSTER_2
         if_monster_timer 40
                 restore_monsters MONSTER_2, FADE_DOWN
@@ -6790,13 +6461,12 @@ AIScript::_322:
 
 ; ------------------------------------------------------------------------------
 
-; tritoch
-AIScript::_324:
-        attack RASP, RASP, ICE_3
+ai_script TRITOCH_BOSS
+        attack RASP, RASP, BLIZZAGA
         wait
-        attack ICE_3, ICE_3, RASP
+        attack BLIZZAGA, BLIZZAGA, RASP
         wait
-        attack RASP, COLD_DUST, ICE_3
+        attack RASP, COLD_DUST, BLIZZAGA
         end
 
         if_self_dead
@@ -6820,8 +6490,7 @@ AIScript::_324:
 
 ; ------------------------------------------------------------------------------
 
-; laser gun
-AIScript::_325:
+ai_script LASER_GUN
         if_hp SELF, 1536
                 set_target NOTHING
                 attack DIFFUSER, DIFFUSER, TEK_LASER
@@ -6840,16 +6509,14 @@ AIScript::_325:
 
 ; ------------------------------------------------------------------------------
 
-; speck
-AIScript::_326:
+ai_script SPECK
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; missilebay
-AIScript::_327:
+ai_script MISSILEBAY
         if_hp SELF, 1536
                 set_target NOTHING
                 attack MISSILE
@@ -6869,8 +6536,7 @@ AIScript::_327:
 
 ; ------------------------------------------------------------------------------
 
-; chadarnook
-AIScript::_328:
+ai_script CHADARNOOK_2
         if_monster_timer 40
                 reset_monster_timer
                 set_battle_var 3, 1
@@ -6879,24 +6545,24 @@ AIScript::_328:
                 end_if
         if_hp SELF, 15360
                 set_target NOTHING
-                attack BATTLE, FLASH_RAIN, BOLT_3
+                attack BATTLE, FLASH_RAIN, THUNDAGA
                 wait
                 set_target NOTHING
-                attack FLASH_RAIN, BOLT_3, FLASH_RAIN
+                attack FLASH_RAIN, THUNDAGA, FLASH_RAIN
                 wait
                 set_target NOTHING
-                attack FLASH_RAIN, BATTLE, BOLT_3
+                attack FLASH_RAIN, BATTLE, THUNDAGA
                 wait
                 set_target NOTHING
-                attack FLASH_RAIN, BOLT_3, BATTLE
+                attack FLASH_RAIN, THUNDAGA, BATTLE
                 end_if
-        attack BATTLE, BATTLE, BOLT_3
+        attack BATTLE, BATTLE, THUNDAGA
         wait
-        attack BATTLE, BOLT_2, NOTHING
+        attack BATTLE, THUNDARA, NOTHING
         wait
-        attack BATTLE, BOLT_2, BOLT_3
+        attack BATTLE, THUNDARA, THUNDAGA
         wait
-        attack BATTLE, BOLT_2, NOTHING
+        attack BATTLE, THUNDARA, NOTHING
         end_if
         end
 
@@ -6907,7 +6573,7 @@ AIScript::_328:
                 boss_death
                 end_if
         if_hit
-                attack NOTHING, NOTHING, BOLT_2
+                attack NOTHING, NOTHING, THUNDARA
                 add_battle_var 0, 1
                 if_battle_var_greater 0, 4
                         set_battle_var 0, 0
@@ -6918,8 +6584,7 @@ AIScript::_328:
 
 ; ------------------------------------------------------------------------------
 
-; ice dragon
-AIScript::_329:
+ai_script ICE_DRAGON
         attack BATTLE, N_CROSS, N_CROSS
         wait
         attack BATTLE, ABSOLUTE0, ABSOLUTE0
@@ -6941,15 +6606,14 @@ AIScript::_329:
 
 ; ------------------------------------------------------------------------------
 
-; kefka at narshe
-AIScript::_330:
+ai_script KEFKA_NARSHE
         attack BATTLE
         wait
         attack BATTLE, BATTLE, POISON
         wait
-        attack BATTLE, ICE_2, BOLT
+        attack BATTLE, BLIZZARA, THUNDER
         wait
-        attack MUDDLE, DRAIN, ICE
+        attack CONFUSE, DRAIN, BLIZZARD
         end
 
         if_self_dead
@@ -6962,8 +6626,7 @@ AIScript::_330:
 
 ; ------------------------------------------------------------------------------
 
-; storm drgn
-AIScript::_331:
+ai_script STORM_DRGN
         if_hp SELF, 15360
                 set_target NOTHING
                 attack BATTLE, BATTLE, AERO
@@ -6985,8 +6648,7 @@ AIScript::_331:
 
 ; ------------------------------------------------------------------------------
 
-; dirt drgn
-AIScript::_332:
+ai_script DIRT_DRGN
         if_monster_timer 20
                 reset_monster_timer
                 if_status_set RAND_CHAR, FLOAT
@@ -7012,19 +6674,17 @@ AIScript::_332:
 
 ; ------------------------------------------------------------------------------
 
-; ipooh
-AIScript::_333:
+ai_script IPOOH
         attack BATTLE, BATTLE, SPECIAL
         end
 
         if_monsters_dead {MONSTER_2, MONSTER_3}
-                target_on MONSTER_SLOT_1
+                target_on MONSTER_1
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; leader
-AIScript::_334:
+ai_script LEADER
         attack BATTLE, BATTLE, SPECIAL
         end
 
@@ -7034,8 +6694,7 @@ AIScript::_334:
 
 ; ------------------------------------------------------------------------------
 
-; grunt
-AIScript::_335:
+ai_script GRUNT
         attack BATTLE
         end
 
@@ -7043,60 +6702,59 @@ AIScript::_335:
 
 ; ------------------------------------------------------------------------------
 
-; gold drgn
-AIScript::_336:
+ai_script GOLD_DRGN
         if_battle_switch_set 0, 0
         if_battle_var_greater 3, 2
                 clr_battle_switch 0, 0
                 set_monster_var 0
                 set_battle_var 3, 0
                 set_target ALL_CHARS
-                attack BOLT_3
+                attack THUNDAGA
                 end_if
         if_battle_switch_set 0, 0
                 add_battle_var 3, 1
                 end_if
-        if_status_set CHAR_SLOT_1, REFLECT
-        if_status_clr CHAR_SLOT_1, DEAD
+        if_status_set CHAR_1, REFLECT
+        if_status_clr CHAR_1, DEAD
         if_status_clr SELF, REFLECT
-                attack RFLECT
+                attack REFLECT
                 end_if
-        if_status_set CHAR_SLOT_2, REFLECT
-        if_status_clr CHAR_SLOT_2, DEAD
+        if_status_set CHAR_2, REFLECT
+        if_status_clr CHAR_2, DEAD
         if_status_clr SELF, REFLECT
-                attack RFLECT
+                attack REFLECT
                 end_if
-        if_status_set CHAR_SLOT_3, REFLECT
-        if_status_clr CHAR_SLOT_3, DEAD
+        if_status_set CHAR_3, REFLECT
+        if_status_clr CHAR_3, DEAD
         if_status_clr SELF, REFLECT
-                attack RFLECT
+                attack REFLECT
                 end_if
-        if_status_set CHAR_SLOT_4, REFLECT
-        if_status_clr CHAR_SLOT_4, DEAD
+        if_status_set CHAR_4, REFLECT
+        if_status_clr CHAR_4, DEAD
         if_status_clr SELF, REFLECT
-                attack RFLECT
+                attack REFLECT
                 end_if
         if_status_set SELF, REFLECT
                 set_target NOTHING
                 attack BATTLE
                 wait
                 set_target SELF
-                attack BOLT_2, BOLT_2, BOLT
+                attack THUNDARA, THUNDARA, THUNDER
                 wait
                 clr_battle_switch 0, 1
                 set_target NOTHING
                 attack BATTLE
                 wait
                 set_target SELF
-                attack NOTHING, BOLT_2, BOLT
+                attack NOTHING, THUNDARA, THUNDER
                 clr_battle_switch 0, 1
                 end_if
-        attack GIGA_VOLT, BOLT, BOLT_2
+        attack GIGA_VOLT, THUNDER, THUNDARA
         wait
-        attack GIGA_VOLT, BOLT, BOLT
+        attack GIGA_VOLT, THUNDER, THUNDER
         wait
         clr_battle_switch 0, 1
-        attack BOLT_2, BOLT, BOLT
+        attack THUNDARA, THUNDER, THUNDER
         end
 
         if_self_dead
@@ -7114,13 +6772,12 @@ AIScript::_336:
                         end_if
         if_cmd MAGIC
         if_battle_switch_clr 0, 0
-                attack NOTHING, BOLT, BOLT_2
+                attack NOTHING, THUNDER, THUNDARA
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; skull drgn
-AIScript::_337:
+ai_script SKULL_DRGN
         set_target NOTHING
         attack BATTLE, CONDEMNED, ELF_FIRE
         wait
@@ -7143,8 +6800,7 @@ AIScript::_337:
 
 ; ------------------------------------------------------------------------------
 
-; blue drgn
-AIScript::_338:
+ai_script BLUE_DRGN
         if_monster_switch_clr 0
                 attack CLEANSWEEP
                 set_monster_switch 0
@@ -7154,42 +6810,42 @@ AIScript::_338:
                 attack CLEANSWEEP
                 end_if
         if_monster_switch_clr 1
-        if_status_set CHAR_SLOT_1, HASTE
+        if_status_set CHAR_1, HASTE
         if_status_clr SELF, HASTE
-        if_status_clr SELF, PROTECT
+        if_status_clr SELF, SAFE
                 set_target SELF
                 attack SLOW
-                set_target CHAR_SLOT_1
+                set_target CHAR_1
                 attack RIPPLER
                 set_monster_switch 1
                 end_if
         if_monster_switch_clr 1
-        if_status_set CHAR_SLOT_2, HASTE
+        if_status_set CHAR_2, HASTE
         if_status_clr SELF, HASTE
-        if_status_clr SELF, PROTECT
+        if_status_clr SELF, SAFE
                 set_target SELF
                 attack SLOW
-                set_target CHAR_SLOT_2
+                set_target CHAR_2
                 attack RIPPLER
                 set_monster_switch 1
                 end_if
         if_monster_switch_clr 1
-        if_status_set CHAR_SLOT_3, HASTE
+        if_status_set CHAR_3, HASTE
         if_status_clr SELF, HASTE
-        if_status_clr SELF, PROTECT
+        if_status_clr SELF, SAFE
                 set_target SELF
                 attack SLOW
-                set_target CHAR_SLOT_3
+                set_target CHAR_3
                 attack RIPPLER
                 set_monster_switch 1
                 end_if
         if_monster_switch_clr 1
-        if_status_set CHAR_SLOT_4, HASTE
+        if_status_set CHAR_4, HASTE
         if_status_clr SELF, HASTE
-        if_status_clr SELF, PROTECT
+        if_status_clr SELF, SAFE
                 set_target SELF
                 attack SLOW
-                set_target CHAR_SLOT_4
+                set_target CHAR_4
                 attack RIPPLER
                 set_monster_switch 1
                 end_if
@@ -7219,39 +6875,38 @@ AIScript::_338:
 
 ; ------------------------------------------------------------------------------
 
-; red dragon
-AIScript::_339:
+ai_script RED_DRAGON
         if_monster_timer 40
                 reset_monster_timer
                 attack S_CROSS, L4_FLARE, FLARE_STAR
                 end_if
         if_monster_switch_clr 0
-        if_status_set CHAR_SLOT_1, REFLECT
-                set_target CHAR_SLOT_1
+        if_status_set CHAR_1, REFLECT
+                set_target CHAR_1
                 attack SPECIAL
                 dlg $76
 ; Remove “Rflect”
                 set_monster_switch 0
                 end_if
         if_monster_switch_clr 0
-        if_status_set CHAR_SLOT_2, REFLECT
-                set_target CHAR_SLOT_2
+        if_status_set CHAR_2, REFLECT
+                set_target CHAR_2
                 attack SPECIAL
                 dlg $76
 ; Remove “Rflect”
                 set_monster_switch 0
                 end_if
         if_monster_switch_clr 0
-        if_status_set CHAR_SLOT_3, REFLECT
-                set_target CHAR_SLOT_3
+        if_status_set CHAR_3, REFLECT
+                set_target CHAR_3
                 attack SPECIAL
                 dlg $76
 ; Remove “Rflect”
                 set_monster_switch 0
                 end_if
         if_monster_switch_clr 0
-        if_status_set CHAR_SLOT_4, REFLECT
-                set_target CHAR_SLOT_4
+        if_status_set CHAR_4, REFLECT
+                set_target CHAR_4
                 attack SPECIAL
                 dlg $76
 ; Remove “Rflect”
@@ -7259,15 +6914,15 @@ AIScript::_339:
                 end_if
         if_hp SELF, 10240
                 set_target NOTHING
-                attack FLARE, FIRE_3, FLARE
+                attack FLARE, FIRAGA, FLARE
                 wait
                 set_target NOTHING
-                attack FLARE, FIRE_3, FLARE
+                attack FLARE, FIRAGA, FLARE
                 clr_monster_switch 0
                 end_if
-        attack FIRE_2, FIRE_BALL, FIRE_2
+        attack FIRA, FIRE_BALL, FIRA
         wait
-        attack FIRE_2, FIRE_2, FIRE_BALL
+        attack FIRA, FIRA, FIRE_BALL
         clr_monster_switch 0
         end
 
@@ -7281,8 +6936,7 @@ AIScript::_339:
 
 ; ------------------------------------------------------------------------------
 
-; piranha
-AIScript::_340:
+ai_script PIRANHA
         attack BATTLE
         end
 
@@ -7325,10 +6979,9 @@ AIScript::_340:
 
 ; ------------------------------------------------------------------------------
 
-; rizopas
-AIScript::_341:
+ai_script RIZOPAS
         attack BATTLE, SPECIAL, MEGA_VOLT
-        attack BATTLE, ICE, ICE
+        attack BATTLE, BLIZZARD, BLIZZARD
         wait
         attack EL_NINO, BATTLE, BATTLE
         end
@@ -7340,11 +6993,10 @@ AIScript::_341:
 
 ; ------------------------------------------------------------------------------
 
-; specter
-AIScript::_342:
-        attack ICE, BATTLE, NOTHING
+ai_script SPECTER
+        attack BLIZZARD, BATTLE, NOTHING
         wait
-        attack BATTLE, ICE, NOTHING
+        attack BATTLE, BLIZZARD, NOTHING
         wait
         attack NOTHING, BATTLE, RAID
         end
@@ -7356,8 +7008,7 @@ AIScript::_342:
 
 ; ------------------------------------------------------------------------------
 
-; short arm
-AIScript::_343:
+ai_script SHORT_ARM
         if_hp SELF, 10112
                 set_target NOTHING
                 attack BATTLE, BATTLE, SPECIAL
@@ -7371,8 +7022,7 @@ AIScript::_343:
 
 ; ------------------------------------------------------------------------------
 
-; long arm
-AIScript::_344:
+ai_script LONG_ARM
         if_hp SELF, 10240
                 set_target NOTHING
                 attack BATTLE, BATTLE, NOTHING
@@ -7395,8 +7045,7 @@ AIScript::_344:
 
 ; ------------------------------------------------------------------------------
 
-; face
-AIScript::_345:
+ai_script FACE
         if_hp SELF, 10240
                 set_target NOTHING
                 attack SPECIAL, SPECIAL, DREAD
@@ -7435,8 +7084,7 @@ AIScript::_345:
 
 ; ------------------------------------------------------------------------------
 
-; tiger
-AIScript::_346:
+ai_script TIGER
         if_hp SELF, 11520
                 set_target NOTHING
                 attack S_CROSS, N_CROSS, FLARE_STAR
@@ -7455,8 +7103,7 @@ AIScript::_346:
 
 ; ------------------------------------------------------------------------------
 
-; tools
-AIScript::_347:
+ai_script TOOLS
         if_hp SELF, 11520
                 set_target NOTHING
                 attack DIFFUSER, GRAV_BOMB, TEK_LASER
@@ -7478,32 +7125,31 @@ AIScript::_347:
 
 ; ------------------------------------------------------------------------------
 
-; magic
-AIScript::_348:
+ai_script MAGIC
         if_hp SELF, 20096
                 set_target NOTHING
-                attack BOLT_3, BOLT_3, MUTE
+                attack THUNDAGA, THUNDAGA, MUTE
                 wait
                 set_target NOTHING
-                attack PEARL, FLARE, RASP
+                attack HOLY, FLARE, RASP
                 wait
                 set_target NOTHING
-                attack FIRE_3, ICE_2, BOLT_3
+                attack FIRAGA, BLIZZARA, THUNDAGA
                 end_if
         if_hp SELF, 30720
                 set_target NOTHING
-                attack RFLECT, STOP, LIFE_3
+                attack REFLECT, STOP, RERAISE
                 wait
                 set_target NOTHING
-                attack ICE_3, BOLT_3, SLEEP
+                attack BLIZZAGA, THUNDAGA, SLEEP
                 wait
                 set_target NOTHING
-                attack PEARL, FLARE, SLOW_2
+                attack HOLY, FLARE, SLOW_2
                 end_if
         set_target NOTHING
         attack HASTE2, HASTE, IMP
         wait
-        attack FIRE_3, FIRE_3, MUDDLE
+        attack FIRAGA, FIRAGA, CONFUSE
         wait
         attack POISON, DRAIN, BIO
         set_target RAND_CHAR
@@ -7527,8 +7173,7 @@ AIScript::_348:
 
 ; ------------------------------------------------------------------------------
 
-; hit
-AIScript::_349:
+ai_script HIT
         attack BATTLE
         end
 
@@ -7548,34 +7193,32 @@ AIScript::_349:
 
 ; ------------------------------------------------------------------------------
 
-; girl
-AIScript::_350:
+ai_script GIRL
         if_num_monsters 1
                 set_target ALL_DEAD_MONSTERS
-                attack LIFE_2
+                attack ARISE
                 end_if
-        attack PEARL_WIND, PEARL_WIND, NOTHING
+        attack WHITE_WIND, WHITE_WIND, NOTHING
         wait
-        attack PEARL_WIND, SPECIAL, NOTHING
+        attack WHITE_WIND, SPECIAL, NOTHING
         wait
-        attack PEARL_WIND, PEARL_WIND, NOTHING
+        attack WHITE_WIND, WHITE_WIND, NOTHING
         wait
-        attack PEARL_WIND, SPECIAL, NOTHING
+        attack WHITE_WIND, SPECIAL, NOTHING
         wait
-        attack PEARL_WIND, NOTHING, NOTHING
+        attack WHITE_WIND, NOTHING, NOTHING
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; sleep
-AIScript::_351:
+ai_script SLEEP
         if_hp SELF, 10240
                 set_target NOTHING
                 attack METEO
                 end_if
-        attack W_WIND, MERTON, NOTHING
+        attack TORNADO, MELTDOWN, NOTHING
         wait
         attack BATTLE, BATTLE, CONDEMNED
         end
@@ -7593,8 +7236,7 @@ AIScript::_351:
 
 ; ------------------------------------------------------------------------------
 
-; hidonite
-AIScript::_352:
+ai_script HIDONITE_1
         attack BATTLE, NOTHING, SPECIAL
         wait
         attack NOTHING, BATTLE, BATTLE
@@ -7613,8 +7255,7 @@ AIScript::_352:
 
 ; ------------------------------------------------------------------------------
 
-; hidonite
-AIScript::_353:
+ai_script HIDONITE_2
         attack BATTLE, NOTHING, NOTHING
         wait
         attack BATTLE, NOTHING, SPECIAL
@@ -7633,8 +7274,7 @@ AIScript::_353:
 
 ; ------------------------------------------------------------------------------
 
-; hidonite
-AIScript::_354:
+ai_script HIDONITE_3
         attack NOTHING, BATTLE, BATTLE
         wait
         attack BATTLE, NOTHING, SPECIAL
@@ -7653,12 +7293,11 @@ AIScript::_354:
 
 ; ------------------------------------------------------------------------------
 
-; soulsaver
-AIScript::_359:
+ai_script SOULSAVER
         if_monsters_alive MONSTER_1
         if_status_clr SELF, REFLECT
                 set_target SELF
-                attack RFLECT
+                attack REFLECT
                 end_if
         if_monster_switch_clr 0
         if_mp SELF, 16
@@ -7667,14 +7306,14 @@ AIScript::_359:
                 set_monster_switch 0
                 end_if
         if_one_monster_type
-                attack NOTHING, ICE_3, BOLT_3
+                attack NOTHING, BLIZZAGA, THUNDAGA
                 wait
-                attack FIRE_3, NOTHING, BOLT_3
+                attack FIRAGA, NOTHING, THUNDAGA
                 wait
-                attack FIRE_3, ICE_3, NOTHING
+                attack FIRAGA, BLIZZAGA, NOTHING
                 clr_monster_switch 0
                 end_if
-        set_target MONSTER_SLOT_1
+        set_target MONSTER_1
         attack CURE, NOTHING, NOTHING
         end
 
@@ -7694,8 +7333,7 @@ AIScript::_359:
 
 ; ------------------------------------------------------------------------------
 
-; ultros (airship)
-AIScript::_360:
+ai_script ULTROS_AIRSHIP
         if_monster_switch_clr 0
                 dlg $51
 ; No, really,
@@ -7763,8 +7401,7 @@ AIScript::_360:
 
 ; ------------------------------------------------------------------------------
 
-; naughty
-AIScript::_361:
+ai_script NAUGHTY
         if_status_set SELF, IMP
                 set_target SELF
                 attack IMP
@@ -7772,9 +7409,9 @@ AIScript::_361:
                 end_if
         attack BATTLE, COLD_DUST, SPECIAL
         wait
-        attack BATTLE, BATTLE, ICE_2
+        attack BATTLE, BATTLE, BLIZZARA
         wait
-        attack BATTLE, ICE_2, BLIZZARD
+        attack BATTLE, BLIZZARA, SNOWSTORM
         end
 
         if_cmd MAGIC
@@ -7784,17 +7421,16 @@ AIScript::_361:
 
 ; ------------------------------------------------------------------------------
 
-; phunbaba
-AIScript::_362:
+ai_script PHUNBABA_1
         if_battle_switch_clr 0, 0
                 invincible_on SELF
                 set_battle_switch 0, 0
                 end_if
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack BOLT_2, BOLT_2, BOLT_3
+        attack THUNDARA, THUNDARA, THUNDAGA
         wait
-        attack BOLT_2, BLOW_FISH, SPECIAL
+        attack THUNDARA, BLOW_FISH, SPECIAL
         end
 
         if_self_dead
@@ -7804,13 +7440,12 @@ AIScript::_362:
 
 ; ------------------------------------------------------------------------------
 
-; phunbaba
-AIScript::_363:
+ai_script PHUNBABA_2
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack BOLT_2, BOLT_2, BOLT_3
+        attack THUNDARA, THUNDARA, THUNDAGA
         wait
-        attack BOLT_2, BLOW_FISH, SPECIAL
+        attack THUNDARA, BLOW_FISH, SPECIAL
         end
 
         if_self_dead
@@ -7825,13 +7460,12 @@ AIScript::_363:
 
 ; ------------------------------------------------------------------------------
 
-; phunbaba
-AIScript::_364:
+ai_script PHUNBABA_3
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack BOLT_2, BOLT_2, BOLT_3
+        attack THUNDARA, THUNDARA, THUNDAGA
         wait
-        attack BOLT_2, BLOW_FISH, SPECIAL
+        attack THUNDARA, BLOW_FISH, SPECIAL
         end
 
         if_self_dead
@@ -7851,26 +7485,24 @@ AIScript::_364:
 
 ; ------------------------------------------------------------------------------
 
-; phunbaba
-AIScript::_365:
+ai_script PHUNBABA_4
         attack BATTLE, BATTLE, SPECIAL
         wait
-        attack BOLT_2, BOLT_2, BOLT_3
+        attack THUNDARA, THUNDARA, THUNDAGA
         wait
-        attack BOLT_2, BLOW_FISH, SPECIAL
+        attack THUNDARA, BLOW_FISH, SPECIAL
         end
 
         if_self_dead
                 boss_death
                 end_if
         if_hit
-                attack BOLT_2, NOTHING, NOTHING
+                attack THUNDARA, NOTHING, NOTHING
                 end_retal
 
 ; ------------------------------------------------------------------------------
 
-; terra flashback vs. soldiers
-AIScript::_366:
+ai_script TERRA_FLASHBACK
         attack FIRE_BEAM
         battle_event $11
         end_battle
@@ -7880,8 +7512,7 @@ AIScript::_366:
 
 ; ------------------------------------------------------------------------------
 
-; sabin vs. kefka at imperial camp
-AIScript::_367:
+ai_script KEFKA_IMP_CAMP
         attack BATTLE
         end
 
@@ -7892,8 +7523,7 @@ AIScript::_367:
 
 ; ------------------------------------------------------------------------------
 
-; cyan at imperial camp
-AIScript::_368:
+ai_script CYAN_IMP_CAMP
         attack DISPATCH, BATTLE, BATTLE
         end
 
@@ -7903,8 +7533,7 @@ AIScript::_368:
 
 ; ------------------------------------------------------------------------------
 
-; zone eater
-AIScript::_369:
+ai_script ZONE_EATER
         attack DEMI, ENGULF, ENGULF
         wait
         attack DEMI, ENGULF, ENGULF
@@ -7920,8 +7549,7 @@ AIScript::_369:
 
 ; ------------------------------------------------------------------------------
 
-; gau returning from veldt
-AIScript::_370:
+ai_script GAU_VELDT
         if_battle_switch_clr 13, 1
                 dlg $23
 ; Ooh_I'm hungry!
@@ -7948,11 +7576,10 @@ AIScript::_370:
 
 ; ------------------------------------------------------------------------------
 
-; kefka vs. leo
-AIScript::_371:
+ai_script KEFKA_VS_LEO
         attack BATTLE, BATTLE, POISON
         wait
-        attack BATTLE, FIRE_3, BOLT
+        attack BATTLE, FIRAGA, THUNDER
         wait
         attack BIO, DRAIN, BIO
         end
@@ -7965,14 +7592,13 @@ AIScript::_371:
 
 ; ------------------------------------------------------------------------------
 
-; kefka at the sealed gate
-AIScript::_372:
+ai_script KEFKA_ESPER_GATE
         if_battle_var_greater 0, 3
                 set_battle_var 0, 0
                 set_target SELF
                 use_item TONIC, POTION
                 end_if
-        attack POISON, FIRE_2, DISCHORD
+        attack POISON, FIRA, DISCHORD
         wait
         attack BATTLE, BATTLE, SPECIAL
         wait
@@ -7990,8 +7616,7 @@ AIScript::_372:
 
 ; ------------------------------------------------------------------------------
 
-; officer (locke steals clothes)
-AIScript::_373:
+ai_script OFFICER
         attack BATTLE, BATTLE, BATTLE
         end
 
@@ -8006,8 +7631,7 @@ AIScript::_373:
 
 ; ------------------------------------------------------------------------------
 
-; cadet
-AIScript::_374:
+ai_script CADET
         if_battle_id $003b
                 attack BATTLE, BATTLE, SPECIAL
                 end_if
@@ -8017,8 +7641,7 @@ AIScript::_374:
 
 ; ------------------------------------------------------------------------------
 
-; unused
-AIScript::_375:
+ai_script MONSTER_0177
         attack BATTLE
         end
 
@@ -8026,8 +7649,7 @@ AIScript::_375:
 
 ; ------------------------------------------------------------------------------
 
-; unused
-AIScript::_376:
+ai_script MONSTER_0178
         attack BATTLE
         end
 
@@ -8035,20 +7657,18 @@ AIScript::_376:
 
 ; ------------------------------------------------------------------------------
 
-; flashback soldier
-AIScript::_377:
+ai_script SOLDIER_FLASHBACK
         end
 
         end_retal
 
 ; ------------------------------------------------------------------------------
 
-; esper vs. kefka
-AIScript::_378:
+ai_script KEFKA_VS_ESPER
         set_target KEFKA_3
         attack FIRE
-        attack FIRE_2
-        attack FIRE_3
+        attack FIRA
+        attack FIRAGA
         battle_event $1a
         end_battle
         end
@@ -8057,8 +7677,7 @@ AIScript::_378:
 
 ; ------------------------------------------------------------------------------
 
-; battle event
-AIScript::_379:
+ai_script EVENT
         target_off SELF
         if_battle_id $0180
                 battle_event $13
@@ -8090,8 +7709,7 @@ AIScript::_379:
 
 ; ------------------------------------------------------------------------------
 
-; unused
-AIScript::_380:
+ai_script MONSTER_017C
         attack BATTLE
         end
 
@@ -8099,10 +7717,10 @@ AIScript::_380:
 
 ; ------------------------------------------------------------------------------
 
-; atma
-AIScript::_381:
+ai_script ATMA
         if_monster_switch_set 0
                 dlg $83
+; Unknown light surrounded Atma!
                 short_glow MONSTER_1
                 attack NOTHING
                 wait
@@ -8116,29 +7734,29 @@ AIScript::_381:
                 end_if
         if_hp SELF, 32640
                 set_target NOTHING
-                attack FIRE_3, CLEANSWEEP, QUAKE
+                attack FIRAGA, CLEANSWEEP, QUAKE
                 wait
                 set_target NOTHING
-                attack FIRE_3, METEOR, FLARE_STAR
+                attack FIRAGA, METEOR, FLARE_STAR
                 wait
                 set_target NOTHING
                 attack METEOR, QUAKE, CLEANSWEEP
                 wait
                 set_target NOTHING
-                attack FIRE_3, FIRE_3, FLARE_STAR
+                attack FIRAGA, FIRAGA, FLARE_STAR
                 end_if
         if_monster_switch_clr 3
                 dlg $8b
                 long_glow MONSTER_1
                 set_monster_switch 3
                 end_if
-        attack FIRE_3, ICE_3, S_CROSS
+        attack FIRAGA, BLIZZAGA, S_CROSS
         wait
-        attack BOLT_3, ICE_3, FIRE_3
+        attack THUNDAGA, BLIZZAGA, FIRAGA
         wait
-        attack BOLT_3, BOLT_3, S_CROSS
+        attack THUNDAGA, THUNDAGA, S_CROSS
         wait
-        attack FIRE_3, N_CROSS, N_CROSS
+        attack FIRAGA, N_CROSS, N_CROSS
         end
 
         if_self_dead
@@ -8155,8 +7773,7 @@ AIScript::_381:
 
 ; ------------------------------------------------------------------------------
 
-; unused
-AIScript::_382:
+ai_script SHADOW_COLOSSEUM
         attack BATTLE
         end
 
@@ -8164,8 +7781,7 @@ AIScript::_382:
 
 ; ------------------------------------------------------------------------------
 
-; unused
-AIScript::_383:
+ai_script COLOSSEUM
         attack BATTLE
         end
 

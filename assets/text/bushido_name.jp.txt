@@ -1,0 +1,11 @@
+#item_size:6
+#char_tbl:bushido_name
+
+#text:DISPATCH
+#text:RETORT
+#text:SLASH
+#text:QUADRA_SLAM
+#text:EMPOWERER
+#text:STUNNER
+#text:QUADRA_SLICE
+#text:CLEAVE

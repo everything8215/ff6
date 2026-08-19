@@ -17,9 +17,9 @@
 
 ; [ menu state $5d: name change (init) ]
 
-MenuState_5d:
+        array_label MENU_STATE, MENU_STATE::NAME_CHANGE_INIT
 @652d:  jsr     DisableInterrupts
-        ldy     w0201                   ; pointer to selected character properties
+        ldy     r0201                   ; pointer to selected character properties
         sty     zSelCharPropPtr
         jsr     ClearBGScroll
         lda     #$02
@@ -42,7 +42,7 @@ MenuState_5d:
         lda     #2
         ldy     #near NameChangeArrowTask
         jsr     CreateTask
-        lda     #$5f                    ; go to menu state $5f after fade in
+        lda     #MENU_STATE::NAME_CHANGE_SELECT
         sta     zNextMenuState
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
@@ -52,26 +52,26 @@ MenuState_5d:
 
 ; [ menu state $5f: name change menu ]
 
-MenuState_5f:
+        array_label MENU_STATE, MENU_STATE::NAME_CHANGE_SELECT
 .if LANG_EN
 @656c:  jsr     InitDMA1BG1ScreenAB
 .else
-@6ba5:  lda     z0a+1
-        bit     #$04
+@6ba5:  lda     zRepCtrlState_H
+        bit     #>JOY_DOWN
         beq     @6bb9
         lda     z4e
         cmp     #$09
         bne     @6bb9
-        lda     #$60
+        lda     #MENU_STATE::NAME_CHANGE_SCROLL_DOWN
         sta     zMenuState
         lda     #$15
         sta     zWaitCounter
-@6bb9:  lda     z0a+1
-        bit     #$08
+@6bb9:  lda     zRepCtrlState_H
+        bit     #>JOY_UP
         beq     @6bcb
         lda     z4e
         bne     @6bcb
-        lda     #$61
+        lda     #MENU_STATE::NAME_CHANGE_SCROLL_UP
         sta     zMenuState
         lda     #$15
         sta     zWaitCounter
@@ -80,12 +80,12 @@ MenuState_5f:
 .endif
         jsr     UpdateNameChangeCursor
         jsr     DrawNameChangeName
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_START
         jne     @65c2                   ; jump if start button is pressed
 
 ; A button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @6595                   ; branch if A button is not pressed
         jsr     PlaySelectSfx
@@ -99,7 +99,7 @@ MenuState_5f:
         rts
 
 ; B button
-@6595:  lda     z08+1
+@6595:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @65c1                   ; return if B button is not pressed
         jsr     PlayEraseSfx
@@ -123,7 +123,7 @@ MenuState_5f:
 
 ; start
 @65c2:  ldy     zSelCharPropPtr
-        ldx     z0
+        ldx     zZero
 @65c6:  lda     $0002,y               ; make sure name is not blank
         cmp     #$ff
         bne     @65db
@@ -137,7 +137,7 @@ MenuState_5f:
 
 ; exit menu
 @65db:  jsr     PlaySelectSfx
-        stz     w0205
+        stz     r0205
         lda     #MENU_STATE::TERMINATE
         sta     zNextMenuState
         stz     zMenuState
@@ -147,8 +147,8 @@ MenuState_5f:
 
 .if LANG_EN
 
-MenuState_60:
-MenuState_61:
+        array_label MENU_STATE, MENU_STATE::NAME_CHANGE_SCROLL_DOWN
+        array_label MENU_STATE, MENU_STATE::NAME_CHANGE_SCROLL_UP
 
 .else
 
@@ -156,7 +156,7 @@ MenuState_61:
 
 ; [  ]
 
-MenuState_60:
+        array_label MENU_STATE, MENU_STATE::NAME_CHANGE_SCROLL_DOWN
 @6c4a:  lda     zWaitCounter
         beq     @6c66
         lda     z4a
@@ -171,7 +171,7 @@ MenuState_60:
 @6c66:  lda     #$64
         sta     z4a
         stz     z4e
-@6c6c:  lda     #$5f
+@6c6c:  lda     #MENU_STATE::NAME_CHANGE_SELECT
         sta     zMenuState
         rts
 
@@ -179,7 +179,7 @@ MenuState_60:
 
 ; [  ]
 
-MenuState_61:
+        array_label MENU_STATE, MENU_STATE::NAME_CHANGE_SCROLL_UP
 @6c71:  lda     zWaitCounter
         beq     @6c8e
         lda     z4a
@@ -195,7 +195,7 @@ MenuState_61:
 @6c8e:  stz     z4a
         lda     #$09
         sta     z4e
-@6c94:  lda     #$5f
+@6c94:  lda     #MENU_STATE::NAME_CHANGE_SELECT
         sta     zMenuState
         rts
 
@@ -204,10 +204,10 @@ MenuState_61:
 ; [  ]
 
 _c36c99:
-@6c99:  lda     z08
-        bit     #$10
+@6c99:  lda     zNewCtrlState_L
+        bit     #JOY_R
         bne     @6ca3
-        bit     #$20
+        bit     #JOY_L
         beq     @6cbd
 @6ca3:  jsr     PlayMoveSfx
         lda     z4a
@@ -287,7 +287,7 @@ _c3660f:
 
 InitNameChangeArrowPos:
 @6621:  ldy     zSelCharPropPtr
-        ldx     z0
+        ldx     zZero
 @6625:  lda     $0002,y
         cmp     #$ff
         beq     @6634
@@ -361,14 +361,14 @@ CreateNameChangePortraitTask:
         plb
         longa
         lda     #near Portrait1AnimData
-        sta     near wTaskAnimPtr,x
+        sta     near wTaskProp::AnimPtr,x
         lda     #$0010
-        sta     near wTaskPosX,x
+        sta     near wTaskProp::PosX_H,x
         lda     #$0010
-        sta     near wTaskPosY,x
+        sta     near wTaskProp::PosY_H,x
         shorta
         lda     #^Portrait1AnimData
-        sta     near wTaskAnimBank,x
+        sta     near wTaskProp::AnimBank,x
         jsr     InitAnimTask
         plb
         rts
@@ -454,14 +454,14 @@ DrawNameChangeName:
 
 ; name change menu windows
 .if LANG_EN
-NameChangeNameWindow:                   make_window BG2A, {9, 5}, {18, 2}
-NameChangeAlphabetWindow:               make_window BG2A, {7, 8}, {22, 17}
-NameChangePortraitWindow:               make_window BG2A, {1, 1}, {5, 5}
-NameChangeMsgWindow:                    make_window BG2A, {8, 1}, {20, 2}
+NameChangeNameWindow:                   window_pos BG2A, {9, 5}, {18, 2}
+NameChangeAlphabetWindow:               window_pos BG2A, {7, 8}, {22, 17}
+NameChangePortraitWindow:               window_pos BG2A, {1, 1}, {5, 5}
+NameChangeMsgWindow:                    window_pos BG2A, {8, 1}, {20, 2}
 .else
-NameChangeNameWindow:                   make_window BG2A, {9, 1}, {18, 2}
-NameChangeAlphabetWindow:               make_window BG2A, {7, 5}, {22, 20}
-NameChangePortraitWindow:               make_window BG2A, {1, 1}, {5, 5}
+NameChangeNameWindow:                   window_pos BG2A, {9, 1}, {18, 2}
+NameChangeAlphabetWindow:               window_pos BG2A, {7, 5}, {22, 20}
+NameChangePortraitWindow:               window_pos BG2A, {1, 1}, {5, 5}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -498,7 +498,7 @@ LoadNameChangePortraitPal:
         longa
         asl5
         tax
-        ldy     z0
+        ldy     zZero
 @67a5:  longa
         phx
         lda     f:PortraitPal,x
@@ -521,10 +521,10 @@ DrawNameChangeAlphabet:
 @67bf:  stx     zeb
         lda     #$7e
         sta     zed
-        ldy     z0
+        ldy     zZero
 @67c7:  lda     #10                     ; 10 columns
         sta     ze6
-        ldx     z0
+        ldx     zZero
 @67cd:  lda     [ze7],y
         sta     ze0
         phy
@@ -591,7 +591,7 @@ DrawNameChangeAlphabet:
 ; [ in bg1 scroll hdma data tables for name change menu ]
 
 InitNameChangeScrollHDMA:
-@683c:  ldx     z0
+@683c:  ldx     zZero
 
 ; init vertical scroll HDMA
 @683e:  lda     f:NameChangeVScrollHDMATbl,x
@@ -664,23 +664,23 @@ _c36fce:
         .addr   _c36fd2, _c36ff5
 
 _c36fd2:
-        ldx     $2d
+        ldx     zTaskOffset
         longa
         lda     #near _c37015
-        sta     $32c9,x
+        sta     near wTaskProp::AnimPtr,x
         lda     #$0090
-        sta     $33ca,x
+        sta     near wTaskProp::PosX_H,x
         lda     #$0028
-        sta     $344a,x
+        sta     near wTaskProp::PosY_H,x
         shorta
         lda     #^_c37015
-        sta     $35ca,x
-        inc     $3649,x
+        sta     near wTaskProp::AnimBank,x
+        inc     near wTaskProp::State,x
         jsr     InitAnimTask
 
 _c36ff5:
-        ldy     $2d
-        lda     $4a
+        ldy     zTaskOffset
+        lda     z4a
         beq     @6fff
         lda     #$02
         bra     @7000
@@ -688,7 +688,7 @@ _c36ff5:
 @7000:  tax
         longa
         lda     f:_c37011,x
-        sta     $32c9,y
+        sta     near wTaskProp::AnimPtr,y
         shorta
         jsr     UpdateAnimTask
         sec
@@ -727,19 +727,19 @@ NameChangeArrowTask_00:
 @68ab:  ldx     zTaskOffset
         longa
         lda     #near NameChangeArrowAnim
-        sta     near wTaskAnimPtr,x
+        sta     near wTaskProp::AnimPtr,x
 .if LANG_EN
         lda     #$0040
 .else
         lda     #$0020
 .endif
-        sta     near wTaskPosY,x
+        sta     near wTaskProp::PosY_H,x
         shorta
-        stz     near {wTaskPosX + 1},x
+        stz     near wTaskProp::PosX + 2,x
         lda     #^NameChangeArrowAnim
-        sta     near wTaskAnimBank,x
+        sta     near wTaskProp::AnimBank,x
         jsr     InitAnimTask
-        inc     near wTaskState,x
+        inc     near wTaskProp::State,x
 ; fallthrough
 
 ; [ update name change flashing arrow ]
@@ -750,7 +750,7 @@ NameChangeArrowTask_01:
         lda     zSelIndex
         tax
         lda     f:NameChangeArrowXTbl,x
-        sta     near wTaskPosX,y
+        sta     near wTaskProp::PosX_H,y
         jsr     UpdateAnimTask
         sec
         rts

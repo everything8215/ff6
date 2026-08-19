@@ -1,6 +1,6 @@
 ; ------------------------------------------------------------------------------
 
-.include "gfx/map_sprite_gfx.inc"
+.include "src/gfx/map_sprite_gfx.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -89,14 +89,14 @@ MapSpriteTileOffsets:
 
 ; pointers to object sprite graphics (low word)
 MapSpriteGfxPtrsLo:
-@d0f2:  .repeat MapSpriteGfx::ARRAY_LENGTH, i
+@d0f2:  .repeat MapSpriteGfx::COUNT, i
         .addr   MapSpriteGfx::.ident(.sprintf("_%d", i))
         .endrep
 
 ; pointers to object sprite graphics, tile size (bank byte)
 ; the high byte gets copied to $4305 and determines the number of bytes per tile
 MapSpriteGfxPtrsHi:
-@d23c:  .repeat MapSpriteGfx::ARRAY_LENGTH, i
+@d23c:  .repeat MapSpriteGfx::COUNT, i
         .byte   .bankbyte(MapSpriteGfx::.ident(.sprintf("_%d", i)))
         .byte   $20
         .endrep

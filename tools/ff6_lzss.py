@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import romtools as rt
 import sys
 
 
@@ -24,33 +23,30 @@ def encode_lzss(src):
     b = 0x07DE  # buffer position
 
     while s < len(src):
+
         # find the longest sequence that matches the decompression buffer
-        max_run = 0
-        max_offset = 0
-        for offset in range(1, 0x0801):
-            run = 0
+        best_run = 0
+        best_offset = 0
 
-            while src[s + run - offset] == src[s + run]:
-                run += 1
-                if run == 34 or (s + run) == len(src):
-                    break
-
-            if run > max_run:
-                # this is the longest sequence so far
-                max_run = run
-                max_offset = (b - offset) & 0x07FF
+        for run in range(34, 2, -1):
+            if s + run > len(src):
+                continue
+            offset = src[s - 0x0800:s + run - 1].rfind(src[s:s + run])
+            if offset != -1:
+                best_run = run
+                best_offset = (b + offset) & 0x07FF
+                break
 
         # check if the longest sequence is compressible
-        if max_run >= 3:
+        if best_run != 0:
             # sequence is compressible
             # add compressed data to line buffer
-            w = ((max_run - 3) << 11) | max_offset
+            w = ((best_run - 3) << 11) | best_offset
             line[l] = w & 0xFF
-            l += 1
-            line[l] = w >> 8
-            l += 1
-            s += max_run
-            b += max_run
+            line[l + 1] = w >> 8
+            l += 2
+            s += best_run
+            b += best_run
         else:
             # sequence is not compressible
             # update header byte and add byte to line buffer
@@ -115,7 +111,7 @@ def decode_lzss(src):
         header = src[s]
         s += 1
 
-        for p in range(8):
+        for _ in range(8):
             l = 0
             if (header & 1) == 1:
                 # single byte (uncompressed)
@@ -157,11 +153,26 @@ def decode_lzss(src):
 
 
 if __name__ == '__main__':
-    src_path = sys.argv[1]
-    dest_path = sys.argv[2]
 
-    with open(src_path, 'rb') as f:
-        src_bytes = bytearray(f.read())
+    # Ensure we have at least one input file and one output file
+    if len(sys.argv) < 3:
+        print("Usage: python ff6_lz.py <input_file1> [input_file2 ...] <output_file>", file=sys.stderr)
+        sys.exit(1)
 
+    # The last argument is always the destination
+    dest_path = sys.argv[-1]
+
+    # All arguments in between the script name and the destination are inputs
+    src_paths = sys.argv[1:-1]
+
+    # Initialize an empty bytearray to pool the inputs
+    combined_bytes = bytearray()
+
+    # Loop through and concatenate all input files
+    for path in src_paths:
+        with open(path, 'rb') as f:
+            combined_bytes.extend(f.read())
+
+    # Compress the unified data and write it to the output file
     with open(dest_path, 'wb') as f:
-        f.write(encode_lzss(src_bytes))
+        f.write(encode_lzss(combined_bytes))

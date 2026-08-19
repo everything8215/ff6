@@ -19,40 +19,40 @@
 
 ; bg/font palettes
 FontPal:
-        .incbin "src/gfx/menu_pal/pal_0000.pal"
-        .incbin "src/gfx/menu_pal/pal_0001.pal"
-        .incbin "src/gfx/menu_pal/pal_0002.pal"
-        .incbin "src/gfx/menu_pal/pal_0003.pal"
-        .incbin "src/gfx/menu_pal/pal_0004.pal"
-        .incbin "src/gfx/menu_pal/pal_0005.pal"
-        .incbin "src/gfx/menu_pal/pal_0006.pal"
-        .incbin "src/gfx/menu_pal/pal_0007.pal"
-        .incbin "src/gfx/menu_pal/pal_0008.pal"
-        .incbin "src/gfx/menu_pal/pal_0009.pal"
-        .incbin "src/gfx/menu_pal/pal_000a.pal"
-        .incbin "src/gfx/menu_pal/pal_000b.pal"
-        .incbin "src/gfx/menu_pal/pal_000c.pal"
-        .incbin "src/gfx/menu_pal/pal_000d.pal"
-        .incbin "src/gfx/menu_pal/pal_000e.pal"
-        .incbin "src/gfx/menu_pal/pal_000f.pal"
+        .incbin "assets/gfx/menu_pal/pal_0000.pal"
+        .incbin "assets/gfx/menu_pal/pal_0001.pal"
+        .incbin "assets/gfx/menu_pal/pal_0002.pal"
+        .incbin "assets/gfx/menu_pal/pal_0003.pal"
+        .incbin "assets/gfx/menu_pal/pal_0004.pal"
+        .incbin "assets/gfx/menu_pal/pal_0005.pal"
+        .incbin "assets/gfx/menu_pal/pal_0006.pal"
+        .incbin "assets/gfx/menu_pal/pal_0007.pal"
+        .incbin "assets/gfx/menu_pal/pal_0008.pal"
+        .incbin "assets/gfx/menu_pal/pal_0009.pal"
+        .incbin "assets/gfx/menu_pal/pal_000a.pal"
+        .incbin "assets/gfx/menu_pal/pal_000b.pal"
+        .incbin "assets/gfx/menu_pal/pal_000c.pal"
+        .incbin "assets/gfx/menu_pal/pal_000d.pal"
+        .incbin "assets/gfx/menu_pal/pal_000e.pal"
+        .incbin "assets/gfx/menu_pal/pal_000f.pal"
 
 ; config color bar palette
 ColorBarPal:
-        .incbin "src/gfx/menu_pal/pal_0010.pal"
-        .incbin "src/gfx/menu_pal/pal_0011.pal"
-        .incbin "src/gfx/menu_pal/pal_0012.pal"
-        .incbin "src/gfx/menu_pal/pal_0013.pal"
+        .incbin "assets/gfx/menu_pal/pal_0010.pal"
+        .incbin "assets/gfx/menu_pal/pal_0011.pal"
+        .incbin "assets/gfx/menu_pal/pal_0012.pal"
+        .incbin "assets/gfx/menu_pal/pal_0013.pal"
 
 ; grayscale sprite palette
 GrayscalePal:
-        .incbin "src/gfx/menu_pal/pal_0014.pal"
-        .incbin "src/gfx/menu_pal/pal_0015.pal"
-        .incbin "src/gfx/menu_pal/pal_0016.pal"
-        .incbin "src/gfx/menu_pal/pal_0017.pal"  ; cursor palette
+        .incbin "assets/gfx/menu_pal/pal_0014.pal"
+        .incbin "assets/gfx/menu_pal/pal_0015.pal"
+        .incbin "assets/gfx/menu_pal/pal_0016.pal"
+        .incbin "assets/gfx/menu_pal/pal_0017.pal"  ; cursor palette
 
 ; status icon palette
 StatusIconPal:
-        .incbin "src/gfx/menu_pal/pal_0018.pal"
+        .incbin "assets/gfx/menu_pal/pal_0018.pal"
 
 ; ------------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ NameChangeLetters:
         raw_text NAME_CHANGE_LETTERS_5
         raw_text NAME_CHANGE_LETTERS_6
         raw_text NAME_CHANGE_LETTERS_7
-.if !LANG_EN
+.if LANG_JP
         raw_text NAME_CHANGE_LETTERS_8
         raw_text NAME_CHANGE_LETTERS_9
         raw_text NAME_CHANGE_LETTERS_10

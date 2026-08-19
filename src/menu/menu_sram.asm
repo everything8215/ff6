@@ -55,10 +55,10 @@ ResetMenuCursorMemory:
         cpx     #$001f
         bne     @706b
         lda     #$01                    ; character skills cursors default to magic
-        sta     w0237
-        sta     w0239
-        sta     w023b
-        sta     w023d
+        sta     r0237
+        sta     r0239
+        sta     r023b
+        sta     r023d
         rts
 
 ; ------------------------------------------------------------------------------
@@ -125,8 +125,8 @@ ValidateSRAM:
         stz     $1868
 
 ; clear game time (WRAM)
-        sty     wGameTimeHours
-        sty     wGameTimeSeconds
+        sty     rGameTimeHours
+        sty     rGameTimeSeconds
 
 ; load default menu window palettes
         jsr     InitWindowPal

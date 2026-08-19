@@ -1,53 +1,47 @@
 #!/usr/bin/env python3
 
 import re
-import os
 import sys
 import romtools as rt
 
-SMALL_CHAR_TABLES_EN = [
-    'null_terminated_en',
-    'text_en',
-    'small_symbols_en'
-]
+codecs = {}
 
-BIG_CHAR_TABLES_EN = [
-    'null_terminated_en',
-    'text_en',
-    'big_symbols_en'
-]
+def parse_cmd(cmd_line):
 
-SMALL_CHAR_TABLES_JP = [
-    'null_terminated_jp',
-    'kana',
-    'small_symbols_jp'
-]
+    tokens = cmd_line.split()
+    command = tokens[0]
 
-BIG_CHAR_TABLES_JP = [
-    'null_terminated_jp',
-    'kana',
-    'big_symbols_jp',
-    'kanji'
-]
+    if command == '#codec':
 
-ROMAJI_CHAR_TABLES_JP = [
-    'null_terminated_jp',
-    'romaji',
-    'small_symbols_jp'
-]
+        # create a new text codec
+        new_codec = rt.TextCodec()
+
+        # save in the list of codecs, and mark as current
+        if not codecs:
+            # mark as default if this is the first codec found
+            codecs['default'] = new_codec
+        codecs[tokens[1]] = new_codec
+        codecs['current'] = new_codec
+
+    elif command == '#char_table':
+        if 'current' not in codecs:
+            raise ValueError('No active codec')
+
+        codecs['current'].load_char_table(f'tools/char_table/{tokens[1]}.json')
+
+    elif command == '#item_size':
+        if 'current' not in codecs:
+            raise ValueError('No active codec')
+
+        codecs['current'].item_size = int(tokens[1])
+
+    else:
+        raise ValueError('Invalid preprocessor command:', command)
+
 
 if __name__ == '__main__':
     src_path = sys.argv[1]
-    inc_path = src_path + '.raw'
-
-    # create the menu text codec
-    if src_path.endswith('en.inc'):
-        codec_big = rt.TextCodec({'char_tables': BIG_CHAR_TABLES_EN})
-        codec_small = rt.TextCodec({'char_tables': SMALL_CHAR_TABLES_EN})
-    else:
-        codec_big = rt.TextCodec({'char_tables': BIG_CHAR_TABLES_JP})
-        codec_small = rt.TextCodec({'char_tables': SMALL_CHAR_TABLES_JP})
-        codec_romaji = rt.TextCodec({'char_tables': ROMAJI_CHAR_TABLES_JP})
+    inc_path = sys.argv[2]
 
     # read asset file
     with open(src_path, 'r', encoding='utf8') as src_file:
@@ -56,32 +50,38 @@ if __name__ == '__main__':
     dest_text = ''
 
     for src_line in src_lines:
-        match_text = re.search(r'([zbr]*)?\"([^\"\n]+)\"', src_line)
+
+        # parse preprocessor commands
+        if src_line.startswith('#'):
+            dest_text += '; ' + src_line
+            parse_cmd(src_line)
+            continue
+
+        match_text = re.search(r'([a-z_]*)?\"([^\"\n]*)\"', src_line)
         if not match_text:
             dest_text += src_line
             continue
+
         match_start, match_end = match_text.span()
 
-        if match_text.group(1).find('b') != -1:
-            # use large font codec
-            encoded_bytes = codec_big.encode(match_text.group(2))
-        elif match_text.group(1).find('r') != -1:
-            # use romaji font codec
-            encoded_bytes = codec_romaji.encode(match_text.group(2))
-        else:
-            # use small font codec
-            encoded_bytes = codec_small.encode(match_text.group(2))
+        if match_text.group(1) in codecs:
+            codec_id = match_text.group(1)
+            encoded_bytes = codecs[codec_id].encode(match_text.group(2))
 
-        if match_text.group(1).find('z') != -1:
-            # remove the null-terminator
-            encoded_bytes = encoded_bytes[:-1]
+        elif not match_text.group(1):
+            assert 'default' in codecs, 'No text codecs'
+            encoded_bytes = codecs['default'].encode(match_text.group(2))
+
+        else:
+            raise ValueError(f'Unknown codec id: {match_text.group(1)}')
+
         encoded_values = [('$%02x' % x) for x in encoded_bytes]
         replacement = ','.join(encoded_values)
 
         dest_text += src_line[:match_start]
         dest_text += replacement
         dest_text += src_line[match_end:-1]
-        dest_text += '  ; ' + match_text.group(2) + '\n'
+        dest_text += '  ; ' + match_text.group(0) + '\n'
 
     # write the encoded assembly data to the dest path
     with open(inc_path, 'w') as f:

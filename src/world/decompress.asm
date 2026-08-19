@@ -28,7 +28,7 @@ wDecompBuf := $7ef800
         sta     f:hWMADDL
         shorta
         lda     zDecompDest+2
-        and     #BIT_0
+        and     #%1
         sta     f:hWMADDH
         lda     #1
         sta     zDecompCounter
@@ -36,12 +36,12 @@ wDecompBuf := $7ef800
         lda     #^wDecompBuf
         pha
         plb
-        ldx     #.loword(wDecompBuf)
+        ldx     #near wDecompBuf
         clr_a
 :       sta     a:0,x
         inx
         bne     :-
-        ldx     #.loword(-34)
+        ldx     #near -34
 loop:   dec     zDecompCounter
         bne     :+
         lda     #8
@@ -56,7 +56,7 @@ loop:   dec     zDecompCounter
         sta     a:0,x
         inx
         bne     inc_ptr
-        ldx     #.loword(wDecompBuf)
+        ldx     #near wDecompBuf
         bra     inc_ptr
 :       lda     [zDecompSrc],y
         xba
@@ -78,10 +78,10 @@ cpy_buf:
         sta     a:0,x
         inx
         bne     :+
-        ldx     #.loword(wDecompBuf)
+        ldx     #near wDecompBuf
 :       iny
         bne     :+
-        ldy     #.loword(wDecompBuf)
+        ldy     #near wDecompBuf
 :       dec     zDecompRun
         bne     cpy_buf
         ldy     zDecompPtr

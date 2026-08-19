@@ -63,8 +63,8 @@ C47AC0-C47F3F   Shop Specifications (128 items, 9 bytes each)
 C47F40-C47FBF   Metamorphosis Data (32 items, 4 bytes each)
 C47FC0-C48FBF   Fixed-Width Font Graphics
 C48FC0-C490BF   Variable-Width Font Character Widths
-C490C0-C4A4BF   Variable-Width Font Graphics (16x11 tiles, max width is 12)
-C4A4C0-C4B9FF   Unused Space (5440 bytes)
+C490C0-C4A3FF   Variable-Width Font Graphics (16x11 tiles, max width is 12)
+C4A400-C4B9FF   Unused Space (5632 bytes)
 C4BA00-C4C007   Ending Font (compressed)
 C4C008-C4F476   Ending BG Graphics and Tile Formation (compressed)
 C4F477-C4F6FA   Ending Sprite Graphics (compressed)

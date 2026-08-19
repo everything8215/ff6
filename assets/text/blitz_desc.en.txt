@@ -1,0 +1,13 @@
+#char_tbl:menu_escape
+#char_tbl:big_symbols_en
+#char_tbl:null_terminated_en
+#char_tbl:text_en
+
+#text:PUMMEL
+#text:AURABOLT
+#text:SUPLEX
+#text:FIRE_DANCE
+#text:MANTRA
+#text:AIR_BLADE
+#text:SPIRALER
+#text:BUM_RUSH

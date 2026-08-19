@@ -12,9 +12,9 @@
 ; +----------------------------------------------------------------------------+
 
 .if !LANG_EN
-inc_lang "text/char_title_%s.inc"
+.include "src/text/char_title.inc"
 .endif
-inc_lang "text/item_name_%s.inc"
+.include "src/text/item_name.inc"
 
 .import GenjuName, MagicProp
 
@@ -24,12 +24,12 @@ inc_lang "text/item_name_%s.inc"
 
 ; [ menu state $04: main menu (init) ]
 
-MenuState_04:
+        array_label MENU_STATE, MENU_STATE::FIELD_MENU_INIT
 @1a8a:  jsr     DisableInterrupts
         jsr     InitPortraits
         jsr     DisableDMA2
         jsr     DisableWindow2PosHDMA
-        lda     #$04        ; enable hdma channel #2 (window 1 position)
+        lda     #BIT_2                  ; enable hdma channel #2 (window 1 position)
         tsb     zEnableHDMA
         jsr     DisableDMA2
         jsr     ClearBGScroll
@@ -37,7 +37,7 @@ MenuState_04:
         sta     hBG1SC
         lda     #$43        ; set bg3 data address and screen size (4 screens)
         sta     hBG3SC
-        lda     #$c0        ; disable hdma channel #6 and #7 (bg1 horizontal & vertical scroll)
+        lda     #BIT_6 | BIT_7        ; disable hdma channel #6 and #7 (bg1 horizontal & vertical scroll)
         trb     zEnableHDMA
         lda     #$02        ; cursor 1 is active
         sta     z46
@@ -46,11 +46,11 @@ MenuState_04:
         ldy     #near MainMenuCursorTask
         jsr     CreateTask
         jsr     CreateCursorTask
-        jsr     _c3354e
-        ldy     #$0002      ; bg1 vertical scroll = 2
+        jsr     InitMainScreenLayerHDMA
+        ldy     #2                      ; bg1 vertical scroll = 2
         sty     zBG1VScroll
         jsr     InitMainMenuBG3VScrollHDMA
-        lda     #$05        ; set next menu state
+        lda     #MENU_STATE::FIELD_MENU_SELECT
         sta     zNextMenuState
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
@@ -60,37 +60,42 @@ MenuState_04:
 
 ; [ menu state $07: item (init) ]
 
-MenuState_07:
-@1ad6:  jsr     _c31ae2
+        array_label MENU_STATE, MENU_STATE::ITEM_INIT
+@1ad6:  jsr     InitItemList
         jsr     _c31afe
         jsr     _c31b0e
         jmp     _c31b2e
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init item list ]
 
-_c31ae2:
-@1ae2:  jsr     DisableInterrupts
+; used for item menu and colosseum
+
+.proc InitItemList
+
+        PAGE_HEIGHT = 10
+.if ::LANG_EN
+        PAGE_WIDTH = 1
+        MAX_SCROLL = 245
+.else
+        PAGE_WIDTH = 2
+        MAX_SCROLL = 118
+.endif
+
+        jsr     DisableInterrupts
         jsr     InitBigText
         jsr     ClearBGScroll
-        stz     $4a         ; scroll position = 0
-        stz     $49         ; cursor position = 0
-.if LANG_EN
-        lda     #$f5        ; max scroll position = 245
-        sta     $5c
-        lda     #$0a        ; page height = 10
-        sta     $5a
-        lda     #$01        ; page width = 1
-.else
-        lda     #$76        ; max scroll position = 118
-        sta     $5c
-        lda     #$0a        ; page height = 10
-        sta     $5a
-        lda     #$02        ; page width = 2
-.endif
-        sta     $5b
+        stz     z4a                     ; scroll position = 0
+        stz     z49                     ; cursor position = 0
+        lda     #MAX_SCROLL
+        sta     z5c
+        lda     #PAGE_HEIGHT
+        sta     z5a
+        lda     #PAGE_WIDTH
+        sta     z5b
         jmp     LoadItemListCursor
+.endproc
 
 ; ------------------------------------------------------------------------------
 
@@ -118,9 +123,9 @@ _c31b0e:
 .else
         lda     #$00ea
 .endif
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0058
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
@@ -131,7 +136,7 @@ _c31b0e:
 ; [  ]
 
 _c31b2e:
-@1b2e:  lda     #$08        ; set next menu state
+@1b2e:  lda     #MENU_STATE::ITEM_SELECT
         sta     zNextMenuState
         jmp     EnableInterrupts
 
@@ -139,20 +144,20 @@ _c31b2e:
 
 ; [ menu state $77: item select (init, return from character select) ]
 
-MenuState_77:
-@1b35:  jsr     _c31ae2
-        lda     $8e
-        sta     $4d
-        ldy     $8e
-        sty     $4f
-        lda     $90
-        sta     $4a
-        lda     $4a
-        sta     $e0
-        lda     $50
+        array_label MENU_STATE, MENU_STATE::ITEM_CHAR_RETURN
+@1b35:  jsr     InitItemList
+        lda     z8e
+        sta     z4d
+        ldy     z8e
+        sty     z4f
+        lda     z90
+        sta     z4a
+        lda     z4a
+        sta     ze0
+        lda     z50
         sec
-        sbc     $e0
-        sta     $4e
+        sbc     ze0
+        sta     z4e
         jsr     InitItemListCursor
         jsr     DrawItemListMenu
         jsr     _c31b0e
@@ -162,7 +167,7 @@ MenuState_77:
 
 ; [ menu state $09: skills (init) ]
 
-MenuState_09:
+        array_label MENU_STATE, MENU_STATE::SKILLS_INIT
 @1b5b:  jsr     DisableInterrupts
         clr_a
         lda     zSelIndex         ; selected character slot
@@ -171,10 +176,10 @@ MenuState_09:
         jsl     UpdateEquip_ext
         jsr     InitPortraits
         jsr     DisableWindow1PosHDMA
-        stz     $4a         ; clear scroll positions
-        stz     $49
+        stz     z4a         ; clear scroll positions
+        stz     z49
         jsr     InitSkillsBGScrollHDMA
-        jsr     _c34c80
+        jsr     DrawSkillsWindow
         jsr     LoadSkillsCursor
         lda     $1d4e       ; branch if cursor setting is not memory
         and     #$40
@@ -217,7 +222,7 @@ InitPortraits:
 
 ; [ menu state $35: equip menu (init) ]
 
-MenuState_35:
+        array_label MENU_STATE, MENU_STATE::EQUIP_INIT
 @1bb8:  jsr     _c31bbd
         bra     _c31bd7
 
@@ -230,8 +235,8 @@ _c31bbd:
         jsr     DisableWindow1PosHDMA
         lda     #$06
         tsb     z46
-        stz     $4a
-        stz     $49
+        stz     z4a
+        stz     z49
         jsr     InitEquipScrollHDMA
         jsr     LoadEquipOptionCursor
         jsr     InitEquipOptionCursor
@@ -245,7 +250,7 @@ _c31bd7:
 @1bd7:  jsr     DrawEquipMenu
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
-        lda     #$36
+        lda     #MENU_STATE::EQUIP_OPTIONS
         sta     zNextMenuState
         jmp     EnableInterrupts
 
@@ -253,22 +258,22 @@ _c31bd7:
 
 ; [ menu state $7e: switch character (equip) ]
 
-MenuState_7e:
+        array_label MENU_STATE, MENU_STATE::EQUIP_SLOT_CHAR_CHANGE
 @1be5:  jsr     _c31c01
         jsr     DrawEquipTitleEquip
         jsr     _c31c0a
-        lda     #$55
+        lda     #MENU_STATE::EQUIP_SLOT_SELECT
         jmp     _c31c15
 
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $7f: switch character (equip remove) ]
 
-MenuState_7f:
+        array_label MENU_STATE, MENU_STATE::EQUIP_REMOVE_CHAR_CHANGE
 @1bf3:  jsr     _c31c01
         jsr     DrawEquipTitleRemove
         jsr     _c31c0a
-        lda     #$56
+        lda     #MENU_STATE::EQUIP_REMOVE_SELECT
         jmp     _c31c15
 
 ; ------------------------------------------------------------------------------
@@ -303,7 +308,7 @@ _c31c15:
 
 ; [ menu state $6d: equip menu after optimize ]
 
-MenuState_6d:
+        array_label MENU_STATE, MENU_STATE::EQUIP_OPTIMUM_RETURN
 @1c1a:  jsr     _c31bbd
         jsr     EquipOptimum
         lda     #$02
@@ -314,7 +319,7 @@ MenuState_6d:
 
 ; [ menu state $6e: equip menu after remove all ]
 
-MenuState_6e:
+        array_label MENU_STATE, MENU_STATE::EQUIP_EMPTY_RETURN
 @1c26:  jsr     _c31bbd
         jsr     EquipRemoveAll
         lda     #$02
@@ -325,13 +330,13 @@ MenuState_6e:
 
 ; [ menu state $38: party equipment overview (init) ]
 
-MenuState_38:
+        array_label MENU_STATE, MENU_STATE::PARTY_EQUIP_INIT
 @1c32:  jsr     DisableInterrupts
         jsr     InitPartyEquipScrollHDMA
         jsr     DrawPartyEquipMenu
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
-        lda     #$39
+        lda     #MENU_STATE::PARTY_EQUIP
         sta     zNextMenuState
         jmp     EnableInterrupts
 
@@ -339,14 +344,14 @@ MenuState_38:
 
 ; [ menu state $0b: status (init) ]
 
-MenuState_0b:
+        array_label MENU_STATE, MENU_STATE::STATUS_INIT
 @1c46:  jsr     DisableInterrupts
         jsr     InitStatusBG3ScrollHDMA
         jsr     DrawStatusMenu
         jsr     InitStatusCursor
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
-        lda     #$0c
+        lda     #MENU_STATE::STATUS_WAIT
         sta     zNextMenuState
         jmp     EnableInterrupts
 
@@ -378,19 +383,19 @@ InitStatusCursor:
 
 ; [ menu state $0d: config (init) ]
 
-MenuState_0d:
+        array_label MENU_STATE, MENU_STATE::CONFIG_INIT
 @1c7d:  jsr     DisableInterrupts
-        stz     $4a         ; set page to 0
+        stz     z4a         ; set page to 0
         jsr     InitWindow2PosHDMA
         jsr     DrawConfigMenu
         jsr     LoadConfigPage1Cursor
-        lda     $5f         ; restore cursor position
-        sta     $4e
+        lda     z5f         ; restore cursor position
+        sta     z4e
         jsr     InitConfigPage1Cursor
         jsr     CreateCursorTask
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
-        lda     #$0e
+        lda     #MENU_STATE::CONFIG_SELECT
         sta     zNextMenuState         ; config menu state
         jmp     EnableInterrupts
 
@@ -398,32 +403,32 @@ MenuState_0d:
 
 ; [ menu state $13: save select (init) ]
 
-MenuState_13:
+        array_label MENU_STATE, MENU_STATE::SAVE_INIT
 @1ca0:  jsr     DisableInterrupts
-        ldy     #$0002
+        ldy     #2
         sty     zBG1VScroll
         jsr     InitMainMenuBG3VScrollHDMA
-        lda     #$e3
+        lda     #BIT_0 | BIT_1 | BIT_5 | BIT_6 | BIT_7
         trb     zEnableHDMA         ; disable hdma 2, 3, 4
         jsr     DrawGameSaveMenu
         jsr     LoadCharPal
         jsr     LoadMiscMenuSpritePal
         jsr     LoadGameSaveCursor
-        ldy     $91
+        ldy     z91
         bne     @1cc7
-        ldy     $93
+        ldy     z93
         bne     @1cc7
-        ldy     $95
+        ldy     z95
         beq     @1ccd
-@1cc7:  lda     wSelSaveSlot
+@1cc7:  lda     rSelSaveSlot
         dec
-        sta     $4e         ; set cursor position
+        sta     z4e         ; set cursor position
 @1ccd:  jsr     InitGameSaveCursor
         jsr     CreateCursorTask
-        lda     $4b
+        lda     z4b
         inc
         sta     zSelSaveSlot
-        lda     #$52        ; menu state $52 (fade in, save menu)
+        lda     #MENU_STATE::SAVE_FADE_IN
         sta     zMenuState
         lda     #MENU_STATE::SAVE_SELECT
         sta     zNextMenuState
@@ -433,7 +438,7 @@ MenuState_13:
 
 ; [ menu state $15: save confirm (init) ]
 
-MenuState_15:
+        array_label MENU_STATE, MENU_STATE::SAVE_CONFIRM_INIT
 @1ce3:  jsr     DisableInterrupts
         jsr     InitCharProp
         jsr     DrawGameSaveConfirmMenu
@@ -441,7 +446,7 @@ MenuState_15:
         jsr     InitSaveConfirmCursor
         jsr     CreateCursorTask
         jsr     _c318d1
-        lda     #$16        ; next menu state $16 (save confirm)
+        lda     #MENU_STATE::SAVE_CONFIRM_SELECT
         sta     zNextMenuState
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
@@ -451,14 +456,14 @@ MenuState_15:
 
 ; [ menu state $20: restore game (init) ]
 
-MenuState_20:
+        array_label MENU_STATE, MENU_STATE::LOAD_INIT
 @1d03:  jsr     DisableInterrupts
         ldy     #$0002
         sty     zBG1VScroll
         jsr     InitMainMenuBG3VScrollHDMA
-        lda     #$e3
+        lda     #BIT_0 | BIT_1 | BIT_5 | BIT_6 | BIT_7
         trb     zEnableHDMA
-        ldy     z0
+        ldy     zZero
         sty     zBG1HScroll
         sty     zBG2HScroll
         sty     zBG3HScroll
@@ -468,21 +473,21 @@ MenuState_20:
         jsr     LoadCharPal
         jsr     LoadMiscMenuSpritePal
         jsr     LoadGameLoadCursor
-        ldy     $91
+        ldy     z91
         bne     @1d36       ; branch if slot 1 is valid
-        ldy     $93
+        ldy     z93
         bne     @1d36       ; branch if slot 2 is valid
-        ldy     $95
+        ldy     z95
         beq     @1d3c       ; branch if slot 3 is not valid
 @1d36:  lda     $307ff0     ; most recently saved slot
-        sta     $4e         ; set current position
+        sta     z4e         ; set current position
 @1d3c:  jsr     InitGameLoadCursor
         jsr     CreateCursorTask
-        lda     $4b
+        lda     z4b
         sta     zSelSaveSlot
-        lda     #$21        ; next menu state $21 (restore game)
+        lda     #MENU_STATE::LOAD_SELECT
         sta     zNextMenuState
-        lda     #$52        ; current menu state $52 (fade in, save menu)
+        lda     #MENU_STATE::SAVE_FADE_IN
         sta     zMenuState
         jmp     EnableInterrupts
 
@@ -490,7 +495,7 @@ MenuState_20:
 
 ; [ menu state $22: restore confirm (init) ]
 
-MenuState_22:
+        array_label MENU_STATE, MENU_STATE::LOAD_CONFIRM_INIT
 @1d51:  jsr     DisableInterrupts
         jsr     InitCharProp
         jsr     DrawGameLoadConfirmMenu
@@ -498,7 +503,7 @@ MenuState_22:
         jsr     InitSaveConfirmCursor
         jsr     CreateCursorTask
         jsr     _c318d1
-        lda     #$23
+        lda     #MENU_STATE::LOAD_CONFIRM
         sta     zNextMenuState
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
@@ -508,7 +513,7 @@ MenuState_22:
 
 ; [ menu state $00: fade out (init) ]
 
-MenuState_00:
+        array_label MENU_STATE, MENU_STATE::FADE_OUT
 @1d71:  jsr     CreateFadeOutTask
         ldy     #8                      ; set wait counter
         sty     zWaitCounter
@@ -520,7 +525,7 @@ MenuState_00:
 
 ; [ menu state $01: fade in (init) ]
 
-MenuState_01:
+        array_label MENU_STATE, MENU_STATE::FADE_IN
 @1d7e:  jsr     CreateFadeInTask
         ldy     #8                      ; set wait counter
         sty     zWaitCounter
@@ -532,7 +537,7 @@ MenuState_01:
 
 ; [ menu state $02: wait for fade ]
 
-MenuState_02:
+        array_label MENU_STATE, MENU_STATE::WAIT_FADE
 @1d8b:  ldy     zWaitCounter         ; return if frame counter is not 0
         bne     @1d93
         lda     zNextMenuState         ; go to next menu state
@@ -543,7 +548,7 @@ MenuState_02:
 
 ; [ menu state $03: main menu re-init (from char select) ]
 
-MenuState_03:
+        array_label MENU_STATE, MENU_STATE::FIELD_MENU_RETURN
 @1d94:  lda     #0                      ; priority 0
         ldy     #near MainMenuCursorTask
         jsr     CreateTask
@@ -556,31 +561,31 @@ MenuState_03:
 
 ; [ menu state $05: main menu ]
 
-MenuState_05:
+        array_label MENU_STATE, MENU_STATE::FIELD_MENU_SELECT
 @1da4:  jsr     UpdateTimeText
 
 ; A button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         jne     SelectMainMenuOption
 
 ; left button
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_LEFT
         beq     @1dbc       ; branch if left button is not pressed
         jsr     PlayMoveSfx
         jmp     MainMenuLeftBtn
 
 ; B button
-@1dbc:  lda     z08+1
+@1dbc:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @1dd1       ; return if b button is not pressed
-        stz     w0205
+        stz     r0205
         jsr     PlayCancelSfx
         jsr     UpdateEquipAfterMenu
         lda     #MENU_STATE::TERMINATE
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
 @1dd1:  rts
 
 ; ------------------------------------------------------------------------------
@@ -589,7 +594,7 @@ MenuState_05:
 
 UpdateEquipAfterMenu:
 @1dd2:  stz     $11df       ; clear all field equipment effects
-        ldx     z0
+        ldx     zZero
 @1dd7:  lda     zCharID,x       ; character in each party slot
         bmi     @1de1
         phx
@@ -604,22 +609,22 @@ UpdateEquipAfterMenu:
 
 ; [ menu state $06: main menu (select character) ]
 
-MenuState_06:
+        array_label MENU_STATE, MENU_STATE::FIELD_MENU_CHAR
 @1de8:  jsr     UpdateTimeText
 
 ; B button
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @1dfd       ; branch if b button is not pressed
         jsr     PlayCancelSfx
         lda     #$05
         trb     z46         ; disable cursor 2 and flashing cursor
-        lda     #MENU_STATE::FIELD_MENU_REINIT
+        lda     #MENU_STATE::FIELD_MENU_RETURN
         sta     zMenuState
         rts
 
 ; left button
-@1dfd:  lda     z08+1         ; branch if left button is not pressed
+@1dfd:  lda     zNewCtrlState_H         ; branch if left button is not pressed
         bit     #>JOY_LEFT
         beq     @1e1f
         lda     z25         ; branch if not equip or relic
@@ -630,17 +635,17 @@ MenuState_06:
 @1e0d:  jsr     PlayMoveSfx
         lda     #$06
         trb     z46         ; disable cursor 1 and 2
-        lda     #$37
+        lda     #MENU_STATE::FIELD_PARTY_SELECT
         sta     zMenuState         ; set menu state to $37 (select all)
-        lda     $4e         ; save cursor position
-        sta     $5e
+        lda     z4e         ; save cursor position
+        sta     z5e
         jmp     CreateMultiCursorTask
 
 ; A button
-@1e1f:  lda     z08         ; return if a button is not pressed
+@1e1f:  lda     zNewCtrlState_L         ; return if a button is not pressed
         bit     #JOY_A
         beq     @1e2c
-        lda     $4b         ; cursor selection
+        lda     z4b         ; cursor selection
         sta     zSelIndex         ; set selected character slot
         jmp     _c31e2d
 @1e2c:  rts
@@ -657,7 +662,7 @@ _c31e2d:
         tax
         lda     f:_c31e49,x   ; init menu state
         sta     zNextMenuState
-        stz     zMenuState         ; fade out
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         jsr     PlaySelectSfx
         rts
 @1e42:  jsr     PlayInvalidSfx
@@ -668,7 +673,11 @@ _c31e2d:
 
 ; init menu states for main menu commands
 _c31e49:
-@1e49:  .byte   $ff,$09,$35,$58,$0b
+        .byte   MENU_STATE::TERMINATE
+        .byte   MENU_STATE::SKILLS_INIT
+        .byte   MENU_STATE::EQUIP_INIT
+        .byte   MENU_STATE::RELIC_INIT
+        .byte   MENU_STATE::STATUS_INIT
 
 ; ------------------------------------------------------------------------------
 
@@ -717,9 +726,9 @@ CheckSkillValid:
         bra     @1e9c
 
 ; skills
-@1e89:  jsr     _c34d3d
+@1e89:  jsr     UpdateSkillsTextColor
         lda     #$24
-        ldx     z0
+        ldx     zZero
 @1e90:  cmp     zSkillsTextColor,x       ; branch if at least one is not disabled
         bne     @1e9c
         inx
@@ -737,7 +746,7 @@ CheckSkillValid:
         shorta
         tax
         lda     a:$0014,x     ; not valid if wound, petrify, or zombie status
-        and     #$c2
+        andflg  STATUS1, {DEAD, PETRIFY, ZOMBIE}
         bne     @1eb1
         bra     @1eb3
 
@@ -753,12 +762,12 @@ CheckSkillValid:
 
 ; [ menu state $37: main menu (select all for equip/relic) ]
 
-MenuState_37:
+        array_label MENU_STATE, MENU_STATE::FIELD_PARTY_SELECT
 @1eb5:  jsr     UpdateTimeText
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         bne     @1ec4       ; branch if b button is down
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_RIGHT
         beq     @1ee5       ; branch if right button is not down
 
@@ -770,8 +779,8 @@ MenuState_37:
         ldy     #near CharSelectCursorTask
         jsr     CreateTask
         jsr     ExecTasks
-        lda     $5e         ; restore cursor position
-        sta     $4e
+        lda     z5e         ; restore cursor position
+        sta     z4e
         lda     #MENU_STATE::FIELD_MENU_CHAR
         sta     zMenuState
         lda     #$08        ; disable multi-cursor
@@ -779,12 +788,12 @@ MenuState_37:
         rts
 
 ; A button
-@1ee5:  lda     z08         ; return if a button is not down
+@1ee5:  lda     zNewCtrlState_L         ; return if a button is not down
         bit     #JOY_A
         beq     @1ef5
         jsr     PlaySelectSfx
-        stz     zMenuState
-        lda     #$38        ; menu state $38 (equip all, init)
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
+        lda     #MENU_STATE::PARTY_EQUIP_INIT
         sta     zNextMenuState
         rts
 @1ef5:  rts
@@ -797,7 +806,7 @@ MenuState_37:
 
 _1ef6:  rts
 
-::MenuState_08:
+        array_label MENU_STATE, MENU_STATE::ITEM_SELECT
 _1ef7:  lda     #$10
         trb     z45
         clr_a
@@ -809,20 +818,20 @@ _1ef7:  lda     #$10
         jsr     InitItemDesc
 
 ; B button
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     _1f3b
         jsr     PlayCancelSfx
-        ldy     $4f
-        sty     w022f
-        lda     $4a
-        sta     w0231
+        ldy     z4f
+        sty     r022f
+        lda     z4a
+        sta     r0231
         jsr     LoadItemOptionCursor
         lda     $1d4e
         and     #$40
         beq     _1f2c
-        ldy     w0234
-        sty     $4d
+        ldy     r0234
+        sty     z4d
 
 ::GotoItemOption:
 _1f2c:  jsr     InitItemOptionCursor
@@ -832,11 +841,11 @@ _1f2c:  jsr     InitItemOptionCursor
         jmp     InitDMA1BG3ScreenA
 
 ; A button
-_1f3b:  lda     z08
+_1f3b:  lda     zNewCtrlState_L
         bit     #JOY_A
         beq     _1f4f
         jsr     PlaySelectSfx
-        lda     $4b
+        lda     z4b
         sta     zSelIndex
         lda     #MENU_STATE::ITEM_MOVE
         sta     zMenuState
@@ -850,21 +859,21 @@ _1f4f:  rts
 
 ; [ scroll list text up/down one page ]
 
-.proc ScrollListPage_proc
+.scope ScrollListPage
 
 ; (branch from c3/1f9b)
-_1f50:  stz     $50
-        stz     $4e
+_1f50:  stz     z50
+        stz     z4e
         sec
         rts
 
 ; (branch from c3/1f72)
-_1f56:  lda     $54
+_1f56:  lda     z54
         dec
-        sta     $4e
+        sta     z4e
         clc
-        adc     $4a
-        sta     $50
+        adc     z4a
+        sta     z50
         sec
         rts
 
@@ -877,50 +886,50 @@ _1f64:  lda     zWaitCounter
         bne     _1f62                   ; branch if wait frame counter not zero
 
 ; R button
-        lda     z0a
-        bit     #$10
+        lda     zRepCtrlState_L
+        bit     #JOY_R
         beq     _1f93                   ; branch if R button is not pressed
-        lda     $4a
-        cmp     $5c
+        lda     z4a
+        cmp     z5c
         beq     _1f56
-        lda     $5c
+        lda     z5c
         sec
-        sbc     $4a
-        cmp     $5a
+        sbc     z4a
+        cmp     z5a
         bcs     _1f7f
         bra     _1f81
-_1f7f:  lda     $5a
-_1f81:  sta     $e0
-        lda     $4a
+_1f7f:  lda     z5a
+_1f81:  sta     ze0
+        lda     z4a
         clc
-        adc     $e0
-        sta     $4a
-        lda     $50
+        adc     ze0
+        sta     z4a
+        lda     z50
         clc
-        adc     $e0
-        sta     $50
+        adc     ze0
+        sta     z50
         bra     _1fb7
 
 ; L button
-_1f93:  lda     z0a
-        bit     #$20
+_1f93:  lda     zRepCtrlState_L
+        bit     #JOY_L
         beq     _1f62                   ; branch if L button is not pressed
-        lda     $4a
+        lda     z4a
         beq     _1f50                   ; branch if at the top of the list
-        cmp     $5a
+        cmp     z5a
         bcs     _1fa5
-        lda     $4a
+        lda     z4a
         bra     _1fa7
-_1fa5:  lda     $5a
-_1fa7:  sta     $e0
-        lda     $4a
+_1fa5:  lda     z5a
+_1fa7:  sta     ze0
+        lda     z4a
         sec
-        sbc     $e0
-        sta     $4a
-        lda     $50
+        sbc     ze0
+        sta     z4a
+        lda     z50
         sec
-        sbc     $e0
-        sta     $50
+        sbc     ze0
+        sta     z50
 _1fb7:  jsr     PlayMoveSfx
         clr_a
         lda     zListType
@@ -930,60 +939,61 @@ _1fb7:  jsr     PlayMoveSfx
         sec
         rts
 
+.endscope  ; ScrollListPage
+
 ; ------------------------------------------------------------------------------
 
 ; jump table for list type
 ScrollListPageTbl:
-        make_jump_tbl ScrollListPage, 6
+        ptr_tbl SCROLL_LIST_PAGE
+
 ; ------------------------------------------------------------------------------
 
 ; 0: item list
-make_jump_label ScrollListPage, LIST_TYPE::ITEM
+        array_label SCROLL_LIST_PAGE, LIST_TYPE::ITEM
 @1fd0:  jsr     LoadItemBG1VScrollHDMATbl
         jmp     DrawItemList
 
 ; ------------------------------------------------------------------------------
 
 ; 1: magic
-make_jump_label ScrollListPage, LIST_TYPE::MAGIC
+        array_label SCROLL_LIST_PAGE, LIST_TYPE::MAGIC
 @1fd6:  jsr     LoadSkillsBG1VScrollHDMATbl
         jmp     DrawMagicList
 
 ; ------------------------------------------------------------------------------
 
 ; 2: lore
-make_jump_label ScrollListPage, LIST_TYPE::LORE
+        array_label SCROLL_LIST_PAGE, LIST_TYPE::LORE
 @1fdc:  jsr     LoadSkillsBG1VScrollHDMATbl
         jmp     DrawLoreList
 
 ; ------------------------------------------------------------------------------
 
 ; 3: rage
-make_jump_label ScrollListPage, LIST_TYPE::RAGE
+        array_label SCROLL_LIST_PAGE, LIST_TYPE::RAGE
 @1fe2:  jsr     LoadSkillsBG1VScrollHDMATbl
         jmp     DrawRageList
 
 ; ------------------------------------------------------------------------------
 
 ; 4: esper
-make_jump_label ScrollListPage, LIST_TYPE::GENJU
+        array_label SCROLL_LIST_PAGE, LIST_TYPE::GENJU
 @1fe8:  jsr     LoadSkillsBG1VScrollHDMATbl
         jmp     DrawGenjuList
 
 ; ------------------------------------------------------------------------------
 
 ; 5: equip/relic item list
-make_jump_label ScrollListPage, LIST_TYPE::EQUIP
+        array_label SCROLL_LIST_PAGE, LIST_TYPE::EQUIP
 @1fee:  jsr     LoadEquipBG1VScrollHDMATbl
         jmp     DrawEquipItemList
-
-.endproc
 
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $0a: skills (select option) ]
 
-MenuState_0a:
+        array_label MENU_STATE, MENU_STATE::SKILLS_SELECT
 @1ff4:  lda     #$10        ;
         tsb     z45
         lda     #$c0        ; page can't scroll up or down
@@ -991,26 +1001,26 @@ MenuState_0a:
         jsr     UpdateSkillsCursor
 
 ; return to main menu (b button)
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @200f       ; branch if b button is not pressed
         jsr     PlayCancelSfx
         lda     #MENU_STATE::FIELD_MENU_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 
 ; open selected skills menu (a button)
-@200f:  lda     z08         ; branch if a button is not pressed
+@200f:  lda     zNewCtrlState_L         ; branch if a button is not pressed
         bit     #JOY_A
         beq     @201c
-        lda     $4e
-        sta     $5e
+        lda     z4e
+        sta     z5e
         jmp     SelectSkillsOption
 
 ; go to next character (top r button)
-@201c:  lda     #$09        ; next menu state (init another character's skills menu)
-        sta     $e0
+@201c:  lda     #MENU_STATE::SKILLS_INIT
+        sta     ze0
         bra     CheckShoulderBtns
 
 ; ------------------------------------------------------------------------------
@@ -1027,14 +1037,14 @@ CheckShoulderBtns:
 .endif
 
 ; go to next character (top R button)
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_R
         beq     @2059
         lda     z25
         cmp     #$03
         bne     @203f
         jsr     CheckReequip
-        lda     $99
+        lda     z99
         beq     @203f
         jsr     PlayMoveSfx
         rts
@@ -1048,20 +1058,20 @@ CheckShoulderBtns:
         bmi     @203f
         jsr     CheckSkillValid
         bcs     @203f
-        lda     $e0
+        lda     ze0
         sta     zMenuState
         jsr     PlayMoveSfx
         rts
 
 ; go to previous character (top L button)
-@2059:  lda     z08
+@2059:  lda     zNewCtrlState_L
         bit     #JOY_L
         beq     @2089
         lda     z25
         cmp     #$03
         bne     @2070
         jsr     CheckReequip
-        lda     $99
+        lda     z99
         beq     @2070
         jsr     PlayMoveSfx
         rts
@@ -1075,7 +1085,7 @@ CheckShoulderBtns:
         bmi     @2070
         jsr     CheckSkillValid
         bcs     @2070
-        lda     $e0
+        lda     ze0
         sta     zMenuState
         jsr     PlayMoveSfx
 @2089:  rts
@@ -1084,75 +1094,84 @@ CheckShoulderBtns:
 
 ; [ open selected skills menu (A button) ]
 
-SelectSkillsOption:
+.proc SelectSkillsOption
+
 @208a:  clr_a
-        lda     $4b                     ; current selection
+        lda     z4b                     ; current selection
         tax
         lda     zSkillsTextColor,x                   ; branch if not enabled
         cmp     #$20
         bne     @209e
         jsr     PlaySelectSfx
-        lda     $4b
+        lda     z4b
         asl
         tax
-        jmp     (near SkillsOptionTbl,x)
+        jmp     (near SelectSkillsOptionTbl,x)
 
 ; invalid selection
 @209e:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
         rts
 
+.endproc  ; SelectSkillsOption
+
 ; ------------------------------------------------------------------------------
 
+.enum SELECT_SKILLS_OPTION
+        GENJU
+        MAGIC
+        BUSHIDO
+        BLITZ
+        LORE
+        RAGE
+        DANCE
+
+        COUNT
+.endenum
+
 ; skills menu jump table (espers, magic, swdtech, blitz, lore, rage, dance)
-SkillsOptionTbl:
-@20a5:  .addr   SkillsOption_00
-        .addr   SkillsOption_01
-        .addr   SkillsOption_02
-        .addr   SkillsOption_03
-        .addr   SkillsOption_04
-        .addr   SkillsOption_05
-        .addr   SkillsOption_06
+SelectSkillsOptionTbl:
+        ptr_tbl SELECT_SKILLS_OPTION
 
 ; ------------------------------------------------------------------------------
 
 ; [ skills menu $00: espers (init) ]
 
-SkillsOption_00:
-@20b3:  stz     $4a
+        array_label SELECT_SKILLS_OPTION, SELECT_SKILLS_OPTION::GENJU
+@20b3:  stz     z4a
         jsr     CreateScrollArrowTask1
         longa
 .if LANG_EN
         lda     #$1000
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0068
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
         jsr     LoadGenjuCursor
         jsr     InitGenjuCursor
         lda     #$06                    ; max page scroll position = 6
-        sta     $5c
+        sta     z5c
         lda     #$08
 .else
         lda     #$1333
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0060
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
         jsr     LoadGenjuCursor
         jsr     InitGenjuCursor
         lda     #$05                    ; max page scroll position = 5
-        sta     $5c
+        sta     z5c
         lda     #$09
 .endif
-        sta     $5a
+        sta     z5a
         lda     #$02
-        sta     $5b
+        sta     z5b
         ldy     #$0100
         sty     zBG2HScroll
         sty     zBG3HScroll
         jsr     DrawGenjuMenu
-        lda     #MENU_STATE::SKILLS_GENJU
+        lda     #MENU_STATE::SKILLS_GENJU_SELECT
         sta     zMenuState
         jsr     _c32eeb
         rts
@@ -1161,15 +1180,15 @@ SkillsOption_00:
 
 ; [ skills menu $02: swdtech (init) ]
 
-SkillsOption_02:
-@20ee:  stz     $4a
+        array_label SELECT_SKILLS_OPTION, SELECT_SKILLS_OPTION::BUSHIDO
+@20ee:  stz     z4a
         jsr     LoadAbilityCursor
         jsr     InitAbilityCursor
         ldy     #$0100
         sty     zBG2HScroll
         sty     zBG3HScroll
         jsr     _c352d7
-        lda     #$3e
+        lda     #MENU_STATE::SKILLS_BUSHIDO
         sta     zMenuState
         rts
 
@@ -1177,15 +1196,15 @@ SkillsOption_02:
 
 ; [ skills menu $03: blitz (init) ]
 
-SkillsOption_03:
-@2105:  stz     $4a
+        array_label SELECT_SKILLS_OPTION, SELECT_SKILLS_OPTION::BLITZ
+@2105:  stz     z4a
         jsr     LoadAbilityCursor
         jsr     InitAbilityCursor
         ldy     #$0100
         sty     zBG2HScroll
         sty     zBG3HScroll
         jsr     DrawBlitzMenu
-        lda     #$33
+        lda     #MENU_STATE::SKILLS_BLITZ
         sta     zMenuState
         rts
 
@@ -1193,13 +1212,13 @@ SkillsOption_03:
 
 ; [ skills menu $01: magic (init) ]
 
-SkillsOption_01:
+        array_label SELECT_SKILLS_OPTION, SELECT_SKILLS_OPTION::MAGIC
 @211c:  jsr     _c32130
         jsr     _c32148
         jsr     InitMagicMenu
-        jsr     _c351c6
+        jsr     DrawListMPCost
         jsr     InitDMA1BG3ScreenB
-        lda     #$1a
+        lda     #MENU_STATE::SKILLS_MAGIC
         sta     zMenuState
         rts
 
@@ -1208,19 +1227,19 @@ SkillsOption_01:
 ; [  ]
 
 _c32130:
-@2130:  stz     $4a
+@2130:  stz     z4a
         jsr     CreateScrollArrowTask1
         longa
 .if LANG_EN
         lda     #$050d
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0068
 .else
         lda     #$08ba
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0060
 .endif
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
         rts
 
@@ -1243,18 +1262,18 @@ _c32148:
 InitMagicMenu:
 .if LANG_EN
 @2158:  lda     #$13
-        sta     $5c
+        sta     z5c
         lda     #$08
-        sta     $5a
+        sta     z5a
         lda     #$02
 .else
         lda     #$0b
-        sta     $5c
+        sta     z5c
         lda     #$09
-        sta     $5a
+        sta     z5a
         lda     #$03
 .endif
-        sta     $5b
+        sta     z5b
         ldy     #$0100
         sty     zBG2HScroll
         sty     zBG3HScroll
@@ -1264,43 +1283,43 @@ InitMagicMenu:
 
 ; [ skills menu $04: lore (init) ]
 
-SkillsOption_04:
-@216e:  stz     $4a
+        array_label SELECT_SKILLS_OPTION, SELECT_SKILLS_OPTION::LORE
+@216e:  stz     z4a
         jsr     CreateScrollArrowTask1
         longa
 .if LANG_EN
         lda     #$0600
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0068
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
         jsr     LoadLoreCursor
         jsr     InitLoreCursor
         lda     #$10
-        sta     $5c
+        sta     z5c
         lda     #$08
-        sta     $5a
+        sta     z5a
         lda     #$01
 .else
         lda     #$2000
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0060
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
         jsr     LoadLoreCursor
         jsr     InitLoreCursor
         lda     #$03
-        sta     $5c
+        sta     z5c
         lda     #$09
-        sta     $5a
+        sta     z5a
         lda     #$02
 .endif
-        sta     $5b
+        sta     z5b
         ldy     #$0100
         sty     zBG2HScroll
         sty     zBG3HScroll
-        jsr     _c351f9
-        lda     #$1b
+        jsr     InitLoreList
+        lda     #MENU_STATE::SKILLS_LORE
         sta     zMenuState
         rts
 
@@ -1308,41 +1327,41 @@ SkillsOption_04:
 
 ; [ skills menu $05: rage (init) ]
 
-SkillsOption_05:
-@21a6:  stz     $4a
+        array_label SELECT_SKILLS_OPTION, SELECT_SKILLS_OPTION::RAGE
+@21a6:  stz     z4a
         jsr     CreateScrollArrowTask1
         longa
 .if LANG_EN
         lda     #$00cc
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0068
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
         jsr     LoadRageCursor
         jsr     InitRageCursor
         lda     #$78
-        sta     $5c
+        sta     z5c
         lda     #$08
 .else
         lda     #$00ce
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0060
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
         jsr     LoadRageCursor
         jsr     InitRageCursor
         lda     #$77
-        sta     $5c
+        sta     z5c
         lda     #$09
 .endif
-        sta     $5a
+        sta     z5a
         lda     #$02
-        sta     $5b
+        sta     z5b
         ldy     #$0100
         sty     zBG2HScroll
         sty     zBG3HScroll
         jsr     InitRageList
-        lda     #$1d
+        lda     #MENU_STATE::SKILLS_RAGE
         sta     zMenuState
         rts
 
@@ -1350,15 +1369,15 @@ SkillsOption_05:
 
 ; [ skills menu $06: dance (init) ]
 
-SkillsOption_06:
-@21de:  stz     $4a
+        array_label SELECT_SKILLS_OPTION, SELECT_SKILLS_OPTION::DANCE
+@21de:  stz     z4a
         jsr     LoadAbilityCursor
         jsr     InitAbilityCursor
         ldy     #$0100
         sty     zBG2HScroll
         sty     zBG3HScroll
         jsr     DrawDanceMenu
-        lda     #$1c
+        lda     #MENU_STATE::SKILLS_DANCE
         sta     zMenuState
         rts
 
@@ -1366,36 +1385,36 @@ SkillsOption_06:
 
 ; [ menu state $0c: status ]
 
-MenuState_0c:
+        array_label MENU_STATE, MENU_STATE::STATUS_WAIT
 @21f5:  jsr     InitDMA1BG3ScreenA
 
 ; shoulder R button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_R
         beq     @221e
         lda     zSelIndex
-        sta     $79
+        sta     zSkillsTextColor
 @2202:  clr_a
         lda     zSelIndex
         inc
-        and     #$03
+        and     #%11
         sta     zSelIndex
         tax
         lda     zCharID,x
         bmi     @2202
         lda     zSelIndex
-        cmp     $79
+        cmp     zSkillsTextColor
         beq     @2218
         jsr     PlayMoveSfx
 @2218:  jsr     InitStatusCursor
         jmp     _c35d83
 
 ; shoulder L button
-@221e:  lda     z08
+@221e:  lda     zNewCtrlState_L
         bit     #JOY_L
         beq     @2244
         lda     zSelIndex
-        sta     $79
+        sta     zSkillsTextColor
 @2228:  clr_a
         lda     zSelIndex
         dec
@@ -1405,20 +1424,20 @@ MenuState_0c:
         lda     zCharID,x
         bmi     @2228
         lda     zSelIndex
-        cmp     $79
+        cmp     zSkillsTextColor
         beq     @223e
         jsr     PlayMoveSfx
 @223e:  jsr     InitStatusCursor
         jmp     _c35d83
 
 ; B button
-@2244:  lda     z08+1
+@2244:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @2254
         jsr     PlayCancelSfx
-        lda     #$04
+        lda     #MENU_STATE::FIELD_MENU_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 @2254:  clr_a
         lda     zSelIndex
@@ -1431,13 +1450,13 @@ MenuState_0c:
         jsr     UpdateGogoStatusCursor
 
 ; A button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @22b3
         jsr     PlaySelectSfx
-        lda     $4b
-        sta     $e7
-        stz     $e8
+        lda     z4b
+        sta     ze7
+        stz     ze8
         clr_a
         lda     zSelIndex
         asl
@@ -1446,28 +1465,28 @@ MenuState_0c:
         longa
         tya
         clc
-        adc     $e7
+        adc     ze7
         tay
         shorta
         lda     $0016,y
-        cmp     #$12
+        cmp     #BATTLE_CMD::MIMIC
         beq     @22b3
         jsr     _c32f06
-        lda     $4e
-        sta     $5e
-        lda     $4b
-        sta     $64
-        lda     #$06
+        lda     z4e
+        sta     z5e
+        lda     z4b
+        sta     z64
+        lda     #6
         sta     zWaitCounter
         ldy     #12
         sty     zMenuScrollRate
-        lda     #$6a
+        lda     #MENU_STATE::STATUS_GOGO
         sta     zNextMenuState
-        lda     #$65
+        lda     #MENU_STATE::H_SCROLL
         sta     zMenuState
         jsr     LoadGogoCmdListCursor
         lda     $7e9d89
-        sta     $54
+        sta     z54
         jmp     InitGogoCmdListCursor
 @22b3:  rts
 
@@ -1475,14 +1494,14 @@ MenuState_0c:
 
 ; [ menu state $6b: unused ]
 
-MenuState_6b:
-@22b4:  lda     z08+1
+        array_label MENU_STATE, MENU_STATE::MENU_STATE_6B
+@22b4:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @22c4
         jsr     PlayCancelSfx
-        lda     #$04
+        lda     #MENU_STATE::FIELD_MENU_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 @22c4:  rts
 
@@ -1490,64 +1509,64 @@ MenuState_6b:
 
 ; [ menu state $0e: config ]
 
-MenuState_0e:
+        array_label MENU_STATE, MENU_STATE::CONFIG_SELECT
 @22c5:  jsr     InitDMA1BG1ScreenAB
-        lda     z0a+1
-        bit     #$04
+        lda     zRepCtrlState_H
+        bit     #>JOY_DOWN
         beq     @22e0
-        lda     $4e
+        lda     z4e
 .if LANG_EN
         cmp     #$08
 .else
         cmp     #$09
 .endif
         bne     @22e0
-        lda     #$50
+        lda     #MENU_STATE::CONFIG_SCROLL_DOWN
         sta     zMenuState
         lda     #$11
         sta     zWaitCounter
         jsr     PlayMoveSfx
         rts
-@22e0:  lda     z0a+1
-        bit     #$08
+@22e0:  lda     zRepCtrlState_H
+        bit     #>JOY_UP
         beq     @22fa
-        lda     $4e
+        lda     z4e
         bne     @22fa
-        lda     $4a
+        lda     z4a
         beq     @22fa
-        lda     #$51
+        lda     #MENU_STATE::CONFIG_SCROLL_UP
         sta     zMenuState
         lda     #$11
         sta     zWaitCounter
         jsr     PlayMoveSfx
         rts
-@22fa:  lda     $4a
+@22fa:  lda     z4a
         beq     @2303
         jsr     UpdateConfigPage2Cursor
         bra     @2306
 @2303:  jsr     UpdateConfigPage1Cursor
 
 ; B button
-@2306:  lda     z08+1
+@2306:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @2316
         jsr     PlayCancelSfx
-        lda     #$04
+        lda     #MENU_STATE::FIELD_MENU_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 
 ; left or right button
-@2316:  lda     z0a+1
-        bit     #$01
+@2316:  lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         bne     @2322
-        lda     z0a+1
-        bit     #$02
+        lda     zRepCtrlState_H
+        bit     #>JOY_LEFT
         beq     @2325
 @2322:  jmp     ChangeConfigOption
 
 ; A button
-@2325:  lda     z08
+@2325:  lda     zNewCtrlState_L
         bit     #JOY_A
         jne     SelectConfigOption
         jmp     ScrollConfigPage
@@ -1557,14 +1576,14 @@ MenuState_0e:
 ; [ select config option ]
 
 SelectConfigOption:
-@2331:  lda     $4e
-        sta     $5f
-        lda     $4a
+@2331:  lda     z4e
+        sta     z5f
+        lda     z4a
         bne     SelectConfigOptionPage2
 
 ; page 1
         clr_a
-        lda     $4b
+        lda     z4b
         asl
         tax
         jmp     (near SelectConfigOptionTbl1,x)
@@ -1579,7 +1598,7 @@ SelectConfigOptionReturn:
 
 SelectConfigOptionPage2:
 @2342:  clr_a
-        lda     $4b
+        lda     z4b
         asl
         tax
         jmp     (near SelectConfigOptionTbl2,x)
@@ -1619,9 +1638,9 @@ SelectConfigOption_03:
         bit     #$80
         beq     SelectConfigOptionReturn
         jsr     PlaySelectSfx
-        lda     #$47
+        lda     #MENU_STATE::CMD_ARRANGE_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1635,9 +1654,9 @@ SelectConfigOption_08j:
         bit     #$40
         beq     SelectConfigOptionReturn
         jsr     PlaySelectSfx
-        lda     #$49
+        lda     #MENU_STATE::CTRL_CONFIG_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 
 .endif
@@ -1650,9 +1669,9 @@ SelectConfigOption_08:
 @2379:  lda     $1d54
         bpl     SelectConfigOptionReturn
         jsr     PlaySelectSfx
-        lda     #$4b
+        lda     #MENU_STATE::CHAR_CTRL_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 
 ; ------------------------------------------------------------------------------
@@ -1691,36 +1710,36 @@ RevertWindowPal:
 ; calculate pointers to window palette in rom and sram
         longa
         tay
-        stz     $eb
-        stz     $ed
+        stz     zeb
+        stz     zed
 @23b4:  dey
         bmi     @23c9
         lda     #14                     ; palettes are 7 colors in SRAM
         clc
-        adc     $eb
-        sta     $eb
+        adc     zeb
+        sta     zeb
         lda     #$0020                  ; palettes are 16 colors in ROM
         clc
-        adc     $ed
-        sta     $ed
+        adc     zed
+        sta     zed
         bra     @23b4
 
 ; copy default palette to SRAM and WRAM
 @23c9:  ldx     #$312b
         stx     hWMADDL
-        lda     $eb
+        lda     zeb
         tay
-        lda     $ed
+        lda     zed
         tax
         shorta
         lda     #14                     ; copy 14 bytes (7 colors)
-        sta     $e9
+        sta     ze9
 @23db:  lda     f:WindowPal+2,x
         sta     $1d57,y
         sta     hWMDATA
         inx
         iny
-        dec     $e9
+        dec     ze9
         bne     @23db
         rts
 
@@ -1729,19 +1748,19 @@ RevertWindowPal:
 ; [ config menu page scroll ]
 
 ScrollConfigPage:
-@23ec:  lda     z08                     ; check L and R buttons
+@23ec:  lda     zNewCtrlState_L                     ; check L and R buttons
         bit     #JOY_R
         bne     @23f6
         bit     #JOY_L
         beq     @240b
 @23f6:  jsr     PlayMoveSfx
-        stz     $5f
-        lda     $4a
+        stz     z5f
+        lda     z4a
         bne     @2406
         lda     #1
-        sta     $4a
+        sta     z4a
         jmp     ShowConfigPage2
-@2406:  stz     $4a
+@2406:  stz     z4a
         jsr     ShowConfigPage1
 @240b:  rts
 
@@ -1749,79 +1768,79 @@ ScrollConfigPage:
 
 ; [ menu state $0f: order (select character) ]
 
-MenuState_0f:
+        array_label MENU_STATE, MENU_STATE::ORDER_SELECT
 @240c:  jsr     UpdateTimeText
         jsr     _c36989
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         bne     @241e
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_RIGHT
         beq     @2437
 @241e:  jsr     PlayCancelSfx
-        lda     #$06
+        lda     #6
         sta     zWaitCounter
         ldy     #12
         sty     zMenuScrollRate
         lda     #$05
         trb     z46
-        lda     #$03
+        lda     #MENU_STATE::FIELD_MENU_RETURN
         sta     zNextMenuState
-        lda     #$65
+        lda     #MENU_STATE::H_SCROLL
         sta     zMenuState
         rts
-@2437:  lda     z08
+@2437:  lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @2452
         jsr     PlaySelectSfx
-        lda     $4b
+        lda     z4b
         sta     zSelIndex
-        lda     #$10
+        lda     #MENU_STATE::ORDER_MOVE
         sta     zMenuState
         jsr     _c32f21
         jsr     LoadCharSelectCursorProp
-        lda     $4e
-        sta     $5e
+        lda     z4e
+        sta     z5e
 @2452:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $10: order (move/row) ]
 
-MenuState_10:
+        array_label MENU_STATE, MENU_STATE::ORDER_MOVE
 @2453:  jsr     UpdateTimeText
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @246f       ; branch if b button is not pressed
 
 ; cancel
         jsr     PlayCancelSfx
         lda     #$01
-        trb     z46         ; disable flashing cursor task
-        lda     #$0f
-        sta     zMenuState         ; menu state $0f (order, select character)
+        trb     z46                     ; disable flashing cursor task
+        lda     #MENU_STATE::ORDER_SELECT
+        sta     zMenuState
         jsr     InitCharSelectCursor
-        lda     $5e
-        sta     $4e         ; restore cursor position
+        lda     z5e
+        sta     z4e                     ; restore cursor position
         rts
 
 ; no cancel
-@246f:  lda     z08
+@246f:  lda     zNewCtrlState_L
         bit     #JOY_A
-        beq     @24a8       ; return if a button is not pressed
+        beq     @24a8                   ; return if a button is not pressed
         jsr     PlaySelectSfx
         lda     zSelIndex
-        cmp     $4b
-        bne     @2491       ; branch if order changed
+        cmp     z4b
+        bne     @2491                   ; branch if order changed
 
 ; character row changed
         lda     #$01
-        trb     z46         ; disable flashing cursor task
-        lda     #$12        ; menu state $12 (order, wait for portrait slide)
+        trb     z46                     ; disable flashing cursor task
+        lda     #MENU_STATE::ORDER_ROW
         sta     zMenuState
         jsr     _c32e10
         ldy     #12
-        sty     zWaitCounter         ; wait 12 frames
+        sty     zWaitCounter            ; wait 12 frames
         jmp     InitCharSelectCursor
 
 ; party order changed
@@ -1834,7 +1853,7 @@ MenuState_10:
         sta     z22
         lda     #$01
         trb     z46
-        lda     #$11        ; menu state $11 (change party order)
+        lda     #MENU_STATE::ORDER_SWAP
         sta     zMenuState
 @24a8:  rts
 
@@ -1842,7 +1861,7 @@ MenuState_10:
 
 ; [ menu state $11: change party order ]
 
-MenuState_11:
+        array_label MENU_STATE, MENU_STATE::ORDER_SWAP
 @24a9:  jsr     UpdateTimeText
         lda     z22
         beq     @24e0
@@ -1864,7 +1883,7 @@ MenuState_11:
         lda     #$08
         tsb     z45
         rts
-@24e0:  lda     #$0f        ; menu state $0f (order, select character)
+@24e0:  lda     #MENU_STATE::ORDER_SELECT
         sta     zMenuState
         lda     #$10
         tsb     z46
@@ -1875,12 +1894,12 @@ MenuState_11:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ terminate portrait and status icon tasks ]
 
 _c324ee:
 @24ee:  jsr     _c32e3c
-        lda     #$01
-        trb     $47
+        lda     #$01                    ; terminate group 1 sprite tasks
+        trb     z47
         jmp     ExecTasks
 
 ; ------------------------------------------------------------------------------
@@ -1889,39 +1908,39 @@ _c324ee:
 
 UpdatePlayer2Chars:
 @24f8:  clr_ax
-        stx     $e0
-        stx     $e2
+        stx     ze0
+        stx     ze2
         lda     $1d4f
         clc
 @2502:  ror
         bcc     @2507
-        inc     $e0,x
+        inc     ze0,x
 @2507:  inx
         cpx     #$0004
         bne     @2502
         clr_a
-        lda     $4b
+        lda     z4b
         tax
-        lda     $e0,x
-        sta     $e5
+        lda     ze0,x
+        sta     ze5
         lda     zSelIndex
         tax
-        lda     $e0,x
-        sta     $e6
-        lda     $e5
-        sta     $e0,x
-        lda     $4b
+        lda     ze0,x
+        sta     ze6
+        lda     ze5
+        sta     ze0,x
+        lda     z4b
         tax
-        lda     $e6
-        sta     $e0,x
+        lda     ze6
+        sta     ze0,x
         clc
-        lda     $e3
+        lda     ze3
         asl
-        adc     $e2
+        adc     ze2
         asl
-        adc     $e1
+        adc     ze1
         asl
-        adc     $e0
+        adc     ze0
         sta     $1d4f
         rts
 
@@ -1929,10 +1948,10 @@ UpdatePlayer2Chars:
 
 ; [ menu state $12: order (wait for portrait slide) ]
 
-MenuState_12:
+        array_label MENU_STATE, MENU_STATE::ORDER_ROW
 @2537:  ldy     zWaitCounter
         bne     @253f
-        lda     #$0f        ; menu state $0f (order, select character)
+        lda     #MENU_STATE::ORDER_SELECT
         sta     zMenuState
 @253f:  rts
 
@@ -1940,58 +1959,58 @@ MenuState_12:
 
 ; [ menu state $14: save select ]
 
-MenuState_14:
-@2540:  lda     $4b
+        array_label MENU_STATE, MENU_STATE::SAVE_SELECT
+@2540:  lda     z4b
         inc
         sta     zSelSaveSlot
         jsr     DrawSaveMenuChars
         jsr     UpdateGameSaveCursor
 
 ; B button
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @255d                   ; branch if B button is not pressed
         jsr     PlayCancelSfx
-        lda     $9f
+        lda     z9f
         sta     zNextMenuState
-        lda     #$53
+        lda     #MENU_STATE::SAVE_FADE_OUT
         sta     zMenuState
         rts
 
 ; A button
-@255d:  lda     z08
+@255d:  lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @259c                   ; return if A button is not pressed
         clr_a
-        lda     $4b
+        lda     z4b
         asl
         tax
-        ldy     $91,x                   ; sram checksum
+        ldy     z91,x                   ; sram checksum
         bne     @2580                   ; branch if sram is valid
 
 ; slot is empty, save instantly
         lda     zSelSaveSlot
-        sta     wSaveSlotToLoad
+        sta     rSaveSlotToLoad
         jsr     PlaySuccessSfx
         jsr     SaveGame
-        lda     $9e                     ; previous menu state
+        lda     zPrevMenuState
         sta     zNextMenuState
-        lda     #$53                    ; menu state $53 (fade out, save menu)
+        lda     #MENU_STATE::SAVE_FADE_OUT
         sta     zMenuState
         rts
 
 ; sram valid, prompt before overwriting
 @2580:  jsr     PlaySelectSfx
         jsr     PushSRAM
-        lda     $4b
+        lda     z4b
         inc
         sta     zSelSaveSlot
         jsr     LoadSaveSlot
         jsr     InitCharProp
         jsr     _c36989
-        lda     #$15                    ; next menu state $15 (save confirm, init)
+        lda     #MENU_STATE::SAVE_CONFIRM_INIT
         sta     zNextMenuState
-        lda     #$53                    ; menu state $53 (fade out, save menu)
+        lda     #MENU_STATE::SAVE_FADE_OUT
         sta     zMenuState
 @259c:  rts
 
@@ -1999,24 +2018,24 @@ MenuState_14:
 
 ; [ menu state $16 & $1f: save confirm ]
 
-MenuState_16:
-MenuState_1f:
+        array_label MENU_STATE, MENU_STATE::SAVE_CONFIRM_SELECT
+        array_label MENU_STATE, MENU_STATE::UNUSED_1F
 @259d:  jsr     UpdateSaveConfirmCursor
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         bne     @25c2       ; branch if b button is down
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @25de       ; return if a button is not pressed
-        lda     $4b
+        lda     z4b
         bne     @25c7
         lda     zSelSaveSlot
-        sta     wSaveSlotToLoad
+        sta     rSaveSlotToLoad
         jsr     PlaySuccessSfx
         jsr     SaveGame
-        lda     $9e         ; previous menu state
+        lda     zPrevMenuState
         sta     zNextMenuState
-        stz     zMenuState         ; menu state $00 (fade out)
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 @25c2:  jsr     PlayCancelSfx
         bra     @25ca
@@ -2024,11 +2043,11 @@ MenuState_1f:
 @25ca:  jsr     PopSRAM
         jsr     InitCharProp
         jsr     _c36989
-        lda     #$13        ; menu state $13 (save select, init)
+        lda     #MENU_STATE::SAVE_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         lda     zSelSaveSlot
-        sta     wSelSaveSlot
+        sta     rSelSaveSlot
 @25de:  rts
 
 ; ------------------------------------------------------------------------------
@@ -2049,7 +2068,7 @@ SaveGame:
 
 ; [ menu state $17: item options (use, arrange, rare) ]
 
-MenuState_17:
+        array_label MENU_STATE, MENU_STATE::ITEM_OPTIONS
 @25f4:  lda     #$c0
         trb     z46
         lda     #$10
@@ -2058,16 +2077,16 @@ MenuState_17:
         jsr     UpdateItemOptionCursor
 
 ; B button
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @2611
         jsr     PlayCancelSfx
-        lda     #$04
+        lda     #MENU_STATE::FIELD_MENU_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
 
 ; A button
-@2611:  lda     z08
+@2611:  lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @261d
         jsr     PlaySelectSfx
@@ -2080,7 +2099,7 @@ MenuState_17:
 
 SelectItemOption:
 @261e:  clr_a
-        lda     $4b
+        lda     z4b
         asl
         tax
         jmp     (near SelectItemOptionTbl,x)
@@ -2103,14 +2122,14 @@ SelectItemOption_00:
         beq     @263b
         jsr     RestoreItemCursorPos
         bra     @264b
-@263b:  lda     w0231
-        sta     $4a
-        ldy     $4d
-        sty     $4f
-        lda     $4a
+@263b:  lda     r0231
+        sta     z4a
+        ldy     z4d
+        sty     z4f
+        lda     z4a
         clc
-        adc     $50
-        sta     $50
+        adc     z50
+        sta     z50
 @264b:  jsr     InitItemListCursor
         jsr     InitItemListText
         jsr     InitItemDesc
@@ -2123,11 +2142,11 @@ SelectItemOption_00:
 .else
         lda     #$00ea
 .endif
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         lda     #$0058
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         shorta
-        lda     #$08
+        lda     #MENU_STATE::ITEM_SELECT
         sta     zMenuState
         lda     #0
         ldy     #near BigTextTask
@@ -2155,8 +2174,8 @@ SelectItemOption_02:
         lda     $1d4e
         and     #$40
         beq     @269d
-        ldy     w0232
-        sty     $4d
+        ldy     r0232
+        sty     z4d
 @269d:  jsr     InitRareItemCursor
         jsr     InitRareItemList
         jsr     InitBigText
@@ -2165,7 +2184,7 @@ SelectItemOption_02:
         jsr     WaitVblank
         lda     #$c0
         trb     z46
-        lda     #$18
+        lda     #MENU_STATE::ITEM_RARE
         sta     zMenuState
         rts
 
@@ -2200,7 +2219,7 @@ SortItemsByIcon:
 @26e0:  clr_ayx
 @26e3:  lda     f:ItemIconTbl,x
         phx
-        sta     $e0
+        sta     ze0
         jsr     FindItemsWithIcon
         plx
         inx
@@ -2230,12 +2249,12 @@ FindItemsWithIcon:
         cmp     #$ff
         beq     @2739
         sta     hWRMPYA
-        lda     #ItemName::ITEM_SIZE
+        lda     #ITEM_NAME::ITEM_SIZE
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
         lda     f:ItemName,x
-        cmp     $e0
+        cmp     ze0
         bne     @2739
         plx
         lda     $7eaa8d,x
@@ -2254,26 +2273,26 @@ FindItemsWithIcon:
 
 ; [ menu state $18: item (rare item select) ]
 
-MenuState_18:
+        array_label MENU_STATE, MENU_STATE::ITEM_RARE
 @2741:  lda     #$10
         trb     z45
         jsr     InitDMA1BG1ScreenA
         jsr     UpdateRareItemCursor
         jsr     InitRareItemDesc
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @2778
         jsr     PlayCancelSfx
-        lda     #$17
+        lda     #MENU_STATE::ITEM_OPTIONS
         sta     zMenuState
-        ldy     $4d
-        sty     w0232
+        ldy     z4d
+        sty     r0232
         jsr     LoadItemOptionCursor
         lda     $1d4e
         and     #$40
         beq     @276f
-        ldy     w0234
-        sty     $4d
+        ldy     r0234
+        sty     z4d
 @276f:  jsr     InitItemOptionCursor
         jsr     ClearItemCount
         jmp     InitDMA1BG3ScreenA
@@ -2283,25 +2302,25 @@ MenuState_18:
 
 ; [ menu state $19: item (move) ]
 
-MenuState_19:
+        array_label MENU_STATE, MENU_STATE::ITEM_MOVE
 @2779:  jsr     InitDMA1BG1ScreenA
         jsr     UpdateItemListCursor
         jsr     InitItemDesc
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @2794
         jsr     PlayCancelSfx
         lda     #$01
         trb     z46
-        lda     #$08
+        lda     #MENU_STATE::ITEM_SELECT
         sta     zMenuState
         rts
-@2794:  lda     z08
+@2794:  lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @27e1       ; branch if a button is not pressed
         jsr     PlaySelectSfx
         lda     zSelIndex
-        cmp     $4b
+        cmp     z4b
         bne     @27aa
         lda     #$01
         trb     z46
@@ -2310,25 +2329,25 @@ MenuState_19:
         tsb     z45
         lda     #$01
         trb     z46
-        lda     #$08
+        lda     #MENU_STATE::ITEM_SELECT
         sta     zMenuState
         clr_a
         lda     zSelIndex
         tay
         lda     $1869,y     ; swap item slots
-        sta     $e0
+        sta     ze0
         lda     $1969,y
-        sta     $e1
+        sta     ze1
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $1869,x
         sta     $1869,y
-        lda     $e0
+        lda     ze0
         sta     $1869,x
         lda     $1969,x
         sta     $1969,y
-        lda     $e1
+        lda     ze1
         sta     $1969,x
         jmp     DrawItemList
 @27e1:  rts
@@ -2337,13 +2356,13 @@ MenuState_19:
 
 ; [ menu state $1a: magic (select) ]
 
-MenuState_1a:
+        array_label MENU_STATE, MENU_STATE::SKILLS_MAGIC
 @27e2:  lda     #$10
         trb     z45
         lda     #LIST_TYPE::MAGIC
         sta     zListType
         jsr     InitDMA1BG1ScreenA
-        lda     wGameTimeFrames
+        lda     rGameTimeFrames
         ror
         bcc     @27f8
         jsr     InitDMA2BG3ScreenB
@@ -2353,44 +2372,44 @@ MenuState_1a:
         bcs     @2861
         jsr     UpdateMagicCursor
         jsr     LoadMagicDesc
-        jsr     _c351c6
-        lda     z08+1
+        jsr     DrawListMPCost
+        lda     zNewCtrlState_H
         bit     #>JOY_Y
         beq     @2822
         jsr     PlaySelectSfx
-        lda     $9e
+        lda     zPrevMenuState
         not_a
-        sta     $9e
+        sta     zPrevMenuState
         lda     #$10
         tsb     z45
-        jsr     _c34f1c
+        jsr     CalcMagicOrder
         jmp     DrawMagicList
-@2822:  lda     z08
+@2822:  lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @2855
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9e09,x
         cmp     #$20
         bne     @2862
         jsr     PlaySelectSfx
-        ldy     $4f
-        sty     $8e
-        lda     $4a
-        sta     $90
-        lda     $4b
-        sta     $99
+        ldy     z4f
+        sty     z8e
+        lda     z4a
+        sta     z90
+        lda     z4b
+        sta     z99
         jsr     GetSelMagic
         cmp     #$12
         beq     @2869       ; branch if x-zone
         cmp     #$2a
         beq     @2874       ; branch if warp
-        lda     #$3a
+        lda     #MENU_STATE::MAGIC_TARGET_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
-@2855:  lda     z08+1
+@2855:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @2861
         jsr     InitDMA1BG1ScreenA
@@ -2401,29 +2420,29 @@ MenuState_1a:
         rts
 
 ; x-zone
-@2869:  lda     w0201
+@2869:  lda     r0201
         bit     #$01
         beq     @2862       ; branch if x-zone is disabled
         lda     #$04        ; return code $04
         bra     @287d
 
 ; warp
-@2874:  lda     w0201
+@2874:  lda     r0201
         bit     #$02
         beq     @2862       ; branch if warp is disabled
         lda     #$03        ; return code $03
-@287d:  sta     w0205
+@287d:  sta     r0205
         jsr     _c32cea
-        lda     #$ff        ; exit menu
+        lda     #MENU_STATE::TERMINATE
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $1b: lore (select) ]
 
-MenuState_1b:
+        array_label MENU_STATE, MENU_STATE::SKILLS_LORE
 @288a:  lda     #$10
         trb     z45
         lda     #LIST_TYPE::LORE
@@ -2433,7 +2452,7 @@ MenuState_1b:
         bcs     @28a9
         jsr     UpdateLoreCursor
         jsr     LoadLoreDesc
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @28a9
         jsr     ReloadSkillsMenu
@@ -2443,10 +2462,10 @@ MenuState_1b:
 
 ; [ menu state $1c: dance (select) ]
 
-MenuState_1c:
+        array_label MENU_STATE, MENU_STATE::SKILLS_DANCE
 @28aa:  jsr     InitDMA1BG1ScreenA
         jsr     UpdateAbilityCursor
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @28b9
         jsr     ReloadSkillsMenu
@@ -2456,14 +2475,14 @@ MenuState_1c:
 
 ; [ menu state $1d: rage (select) ]
 
-MenuState_1d:
+        array_label MENU_STATE, MENU_STATE::SKILLS_RAGE
 @28ba:  lda     #LIST_TYPE::RAGE
         sta     zListType
         jsr     InitDMA1BG1ScreenA
         jsr     ScrollListPage
         bcs     @28d2
         jsr     UpdateRageCursor
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @28d2
         jsr     ReloadSkillsMenu
@@ -2473,7 +2492,7 @@ MenuState_1d:
 
 ; [ menu state $1e: espers (select) ]
 
-MenuState_1e:
+        array_label MENU_STATE, MENU_STATE::SKILLS_GENJU_SELECT
 @28d3:  lda     #$10
         trb     z45
         lda     #LIST_TYPE::GENJU
@@ -2485,27 +2504,27 @@ MenuState_1e:
         jsr     LoadGenjuAttackDesc
 
 ; A button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @291b
         jsr     PlaySelectSfx
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9d89,x
         cmp     #$ff
         beq     @2908
 
 ; open esper detail menu
-        sta     $99
-        jsr     InitEsperDetailMenu
-        lda     #$4d
+        sta     z99
+        jsr     InitGenjuDetailMenu
+        lda     #MENU_STATE::SKILLS_GENJU_DETAIL
         sta     zMenuState
         rts
 
 ; unequip esper
 @2908:  lda     #$ff
-        sta     $e0
+        sta     ze0
         jsr     _c32929
         jsr     DrawGenjuList
         jsr     InitDMA1BG1ScreenB
@@ -2513,7 +2532,7 @@ MenuState_1e:
         jmp     InitDMA1BG1ScreenA
 
 ; B button
-@291b:  lda     z08+1
+@291b:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @2928
         lda     #$08
@@ -2531,16 +2550,16 @@ _c32929:
         asl
         tax
         ldy     zCharPropPtr,x
-        lda     $e0
+        lda     ze0
         sta     $001e,y
-        lda     $e0
+        lda     ze0
         jmp     _c34f08
 
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $34: wait for esper equip error message ]
 
-MenuState_34:
+        array_label MENU_STATE, MENU_STATE::SKILLS_GENJU_ERROR
 @293a:  ldy     zWaitCounter
         bne     @2947
         ldy     #near GenjuBlankMsg
@@ -2564,14 +2583,14 @@ GenjuBlankMsg:
 
 ; [ menu state $39: party equipment overview ]
 
-MenuState_39:
-@2966:  lda     z08+1                     ; wait for B button
+        array_label MENU_STATE, MENU_STATE::PARTY_EQUIP
+@2966:  lda     zNewCtrlState_H                     ; wait for B button
         bit     #>JOY_B
         beq     @2976
         jsr     PlayCancelSfx
-        lda     #$04
+        lda     #MENU_STATE::FIELD_MENU_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 @2976:  rts
 
@@ -2579,13 +2598,13 @@ MenuState_39:
 
 ; [ menu state $33: blitz menu ]
 
-MenuState_33:
+        array_label MENU_STATE, MENU_STATE::SKILLS_BLITZ
 @2977:  lda     #$10
         trb     z45
         jsr     InitDMA1BG1ScreenA
         jsr     UpdateAbilityCursor
         jsr     LoadBlitzDesc
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @298d
         jsr     ReloadSkillsMenu
@@ -2595,19 +2614,14 @@ MenuState_33:
 
 ; [ menu state $3e: swdtech menu ]
 
-MenuState_3e:
+        array_label MENU_STATE, MENU_STATE::SKILLS_BUSHIDO
 @298e:  lda     #$10
         trb     z45
         jsr     InitDMA1BG1ScreenA
         jsr     UpdateAbilityCursor
         jsr     LoadBushidoDesc
-.if LANG_EN
-        lda     z08+1
-        bit     #>JOY_B
-        beq     @29a4
-        jsr     ReloadSkillsMenu
-.else
-        lda     z08
+.if !LANG_EN
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @2a2a
         clr_a
@@ -2615,31 +2629,27 @@ MenuState_3e:
         tax
         lda     $7e9d89,x
         bmi     @2a24
-        sta     w0206
+        sta     r0206
         lda     #$ff
-        sta     w0205
-        lda     #$ff
+        sta     r0205
+        lda     #MENU_STATE::TERMINATE
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
-@2a24:
-.if LANG_EN
-        jsr     InitDMA1BG1ScreenA
-        jsr     ReloadSkillsMenu
-.else
-        jsr     PlayInvalidSfx
+@2a24:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
 .endif
-@2a2a:  lda     z08+1
+@2a2a:  lda     zNewCtrlState_H
         bit     #>JOY_B
-        beq     @29a4
+        beq     @2a3f
+.if !LANG_EN
         jsr     ClearBG3ScreenB
         jsr     _c3a662
         jsr     InitDMA1BG3ScreenB
         jsr     WaitVblank
-        jsr     ReloadSkillsMenu
 .endif
-@29a4:  rts
+        jsr     ReloadSkillsMenu
+@2a3f:  rts
 
 ; ------------------------------------------------------------------------------
 
@@ -2647,15 +2657,15 @@ MenuState_3e:
 
 ReloadSkillsMenu:
 @29a5:  jsr     PlayCancelSfx
-        ldy     z0
+        ldy     zZero
         sty     zBG2HScroll
         sty     zBG3HScroll
-        lda     #$0a
+        lda     #MENU_STATE::SKILLS_SELECT
         sta     zMenuState
         jsr     _c34d27
         jsr     LoadSkillsCursor
-        lda     $5e
-        sta     $4e
+        lda     z5e
+        sta     z4e
         jsr     InitSkillsCursor
         jmp     _c35807
 
@@ -2663,34 +2673,34 @@ ReloadSkillsMenu:
 
 ; [ menu state $21: restore saved game (init) ]
 
-MenuState_21:
-@29c2:  lda     $4b
+        array_label MENU_STATE, MENU_STATE::LOAD_SELECT
+@29c2:  lda     z4b
         sta     zSelSaveSlot
         jsr     DrawSaveMenuChars
         jsr     UpdateGameLoadCursor
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @2a06
         clr_a
-        lda     $4b
+        lda     z4b
         beq     @2a07
         sta     zSelSaveSlot
         dec
         asl
         tax
-        ldy     $91,x
+        ldy     z91,x
         beq     @2a00
         jsr     PushSRAM
         jsr     PlaySelectSfx
         lda     zSelSaveSlot
-        sta     wSelSaveSlot
+        sta     rSelSaveSlot
         jsr     LoadSaveSlot
         jsr     InitCharProp
         jsr     _c36989
         jsr     PopTimers
-        lda     #$22
+        lda     #MENU_STATE::LOAD_CONFIRM_INIT
         sta     zNextMenuState
-        lda     #$53
+        lda     #MENU_STATE::SAVE_FADE_OUT
         sta     zMenuState
         rts
 @2a00:  jsr     PlayInvalidSfx
@@ -2699,12 +2709,12 @@ MenuState_21:
 @2a07:  jsr     PlaySelectSfx
         jsr     ResetGameTime
         lda     #1
-        sta     wSelSaveSlot
-        stz     wSaveSlotToLoad
-        stz     w0205
-        lda     #$ff
+        sta     rSelSaveSlot
+        stz     rSaveSlotToLoad
+        stz     r0205
+        lda     #MENU_STATE::TERMINATE
         sta     zNextMenuState
-        lda     #$53
+        lda     #MENU_STATE::SAVE_FADE_OUT
         sta     zMenuState
         rts
 
@@ -2714,60 +2724,60 @@ MenuState_21:
 
 ResetGameTime:
 @2a21:  clr_ay
-        sty     wGameTimeHours
-        sty     wGameTimeSeconds
+        sty     rGameTimeHours
+        sty     rGameTimeSeconds
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $23: restore saved game ]
 
-MenuState_23:
+        array_label MENU_STATE, MENU_STATE::LOAD_CONFIRM
 @2a2a:  jsr     UpdateSaveConfirmCursor
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         bne     @2a58
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @2a64
         jsr     PlaySelectSfx
-        lda     $4b
+        lda     z4b
         bne     @2a5b
         ldy     $1863
-        sty     wGameTimeHours
+        sty     rGameTimeHours
         lda     $1865
-        sta     wGameTimeSeconds
+        sta     rGameTimeSeconds
         lda     zSelSaveSlot
-        sta     wSaveSlotToLoad
+        sta     rSaveSlotToLoad
         lda     #MENU_STATE::TERMINATE
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
         rts
 @2a58:  jsr     PlayCancelSfx
 @2a5b:  jsr     PopSRAM
-        lda     #$20
+        lda     #MENU_STATE::LOAD_INIT
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
 @2a64:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $3a: magic target (init) ]
 
-MenuState_3a:
+        array_label MENU_STATE, MENU_STATE::MAGIC_TARGET_INIT
 @2a65:  lda     #$40
         tsb     z45
         jsr     _c32a76
         jsr     _c35812
         jsr     CreateCursorTask
-        lda     #$3b
+        lda     #MENU_STATE::MAGIC_TARGET_SINGLE
         bra     _c32aa5
 
 _c32a76:
 @2a76:  jsr     DisableInterrupts
         lda     #$01
         tsb     z45
-        lda     #$04
+        lda     #BIT_2
         tsb     zEnableHDMA
         stz     zDMA2Dest
         stz     zDMA2Dest+1
@@ -2775,7 +2785,7 @@ _c32a76:
         jsr     InitPortraits
         lda     #$03
         sta     hBG1SC
-        lda     #$c0
+        lda     #BIT_6 | BIT_7
         trb     zEnableHDMA
         ldy     #$0002
         sty     zBG1VScroll
@@ -2787,7 +2797,7 @@ _c32a76:
 
 _c32aa5:
 @2aa5:  sta     zNextMenuState
-        lda     #$01
+        lda     #MENU_STATE::FADE_IN
         sta     zMenuState
         jmp     EnableInterrupts
 
@@ -2795,22 +2805,22 @@ _c32aa5:
 
 ; [ menu state $3b: magic target (single target) ]
 
-MenuState_3b:
-@2aae:  lda     z08
+        array_label MENU_STATE, MENU_STATE::MAGIC_TARGET_SINGLE
+@2aae:  lda     zNewCtrlState_L
         bit     #JOY_R
         bne     @2ac6
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_L
         bne     @2ac6
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_RIGHT
         bne     @2ac6
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_LEFT
         beq     @2af3
 @2ac6:  jsr     PlayMoveSfx
         jsr     GetSelMagic
-        jsr     _c350f5
+        jsr     GetMagicPropPtr
         longa_clc
         lda     hMPYL
         adc     #0
@@ -2820,26 +2830,26 @@ MenuState_3b:
         lda     f:MagicProp,x   ; spell data
         and     #$20
         beq     @2af3
-        lda     $4e
-        sta     $5f
+        lda     z4e
+        sta     z5f
         lda     #$06
         trb     z46
         jsr     CreateMultiCursorTask
-        lda     #$3d
+        lda     #MENU_STATE::MAGIC_TARGET_MULTI
         sta     zMenuState
         rts
-@2af3:  lda     z08
+@2af3:  lda     zNewCtrlState_L
         bit     #JOY_A
         jne     @2b0c
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @2b0b
         jsr     PlayCancelSfx
-        lda     #$3c
+        lda     #MENU_STATE::MAGIC_TARGET_RETURN
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
 @2b0b:  rts
-@2b0c:  stz     $9c
+@2b0c:  stz     zMenuScrollRate
         jsr     _c32ccc
         jsr     GetTargetCharPtr
         jsr     _c32c14
@@ -2848,9 +2858,9 @@ MenuState_3b:
         jsr     PlayCureSfx
         jsr     GetTargetCharPtr
         lda     $0014,y
-        sta     $f8
+        sta     zf8
         lda     $0015,y
-        sta     $fb
+        sta     zfb
         jsr     _c32b39
         jmp     _c32bde
 @2b32:  jsr     PlayInvalidSfx
@@ -2869,10 +2879,10 @@ _magic_exec_call_c:
         sta     $11b3
         phy
         jsr     GetSelMagic
-        ldx     z0          ; 0: spell effect
+        ldx     zZero          ; 0: spell effect
         jsl     CalcMagicEffect_ext
         ply
-        lda     $9c
+        lda     zMenuScrollRate
         beq     @2b5c
         longa_clc
         lda     $11b0
@@ -2884,19 +2894,19 @@ _magic_exec_call_c:
         sta     $0009,y
         shorta
         jsr     CheckMaxHP
-        lda     $fc
+        lda     zfc
         sta     $0014,y
-        lda     $ff
+        lda     zff
         sta     $0015,y
-        lda     $9c
+        lda     zMenuScrollRate
         bne     @2b99
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     zCharID,x
         jsl     UpdateEquip_ext
         clr_a
-        lda     $4b
+        lda     z4b
         asl
         tax
         ldy     zCharPropPtr,x
@@ -2913,16 +2923,16 @@ _magic_exec_call_c:
 
 CheckMaxHP:
 @2b9a:  lda     $000b,y     ; max hp
-        sta     $f3
+        sta     zf3
         lda     $000c,y
-        sta     $f4
+        sta     zf4
         jsr     CalcMaxHPMP
         jsr     ValidateMaxHP
         longa
         lda     $0009,y     ; current hp
-        cmp     $f3
+        cmp     zf3
         bcc     @2bb9       ; return if not greater than max (return clear carry)
-        lda     $f3
+        lda     zf3
         sta     $0009,y     ; set current hp (return set carry)
         sec
 @2bb9:  shorta
@@ -2934,16 +2944,16 @@ CheckMaxHP:
 
 CheckMaxMP:
 @2bbc:  lda     $000f,y
-        sta     $f3
+        sta     zf3
         lda     $0010,y
-        sta     $f4
+        sta     zf4
         jsr     CalcMaxHPMP
         jsr     ValidateMaxMP
         longa
         lda     $000d,y
-        cmp     $f3
+        cmp     zf3
         bcc     @2bdb
-        lda     $f3
+        lda     zf3
         sta     $000d,y
         sec
 @2bdb:  shorta
@@ -2958,16 +2968,16 @@ _c32bde:
         jsr     _c32cdf
         jsr     GetCasterCharPtr
         jsr     GetSelMagic
-        jsr     _c3510d
-        stx     $e7
+        jsr     CalcMPCost
+        stx     ze7
         ldx     a:$000d,y
-        cpx     $e7
+        cpx     ze7
         bcs     @2c00
         lda     #$02
         sta     z46
-        lda     #$3c
+        lda     #MENU_STATE::MAGIC_TARGET_RETURN
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
 @2c00:  rts
 
 ; ------------------------------------------------------------------------------
@@ -2975,8 +2985,8 @@ _c32bde:
 ; [  ]
 
 _c32c01:
-@2c01:  lda     $4b
-        sta     $9c
+@2c01:  lda     z4b
+        sta     zMenuScrollRate
         jsr     _c324ee
         jsr     ClearBG1ScreenA
         jsr     _c33193
@@ -2989,52 +2999,52 @@ _c32c01:
 
 _c32c14:
 @2c14:  lda     $0014,y
-        and     #$80
+        andflg  STATUS1, DEAD
         bne     @2c40
         jsr     GetSelMagic
-        cmp     #$2d
+        cmp     #ATTACK::CURE
         beq     @2c76
-        cmp     #$2e
+        cmp     #ATTACK::CURA
         beq     @2c76
-        cmp     #$2f
+        cmp     #ATTACK::CURAGA
         beq     @2c76
-        cmp     #$32
+        cmp     #ATTACK::POISONA
         beq     @2c6d
-        cmp     #$33
+        cmp     #ATTACK::REMEDY
         beq     @2c64
-        cmp     #$22
+        cmp     #ATTACK::FLOAT
         beq     @2c4d
-        cmp     #$23
+        cmp     #ATTACK::IMP
         beq     @2c84
-        cmp     #$2c
+        cmp     #ATTACK::DISPEL
         beq     @2c56
         bra     @2c82
 @2c40:  jsr     GetSelMagic
-        cmp     #$30
+        cmp     #ATTACK::RAISE
         beq     @2c84
-        cmp     #$31
+        cmp     #ATTACK::ARISE
         beq     @2c84
         bra     @2c82
 @2c4d:  lda     $0015,y
-        and     #$80
+        and     #STATUS4::FLOAT
         bne     @2c82
         bra     @2c84
 @2c56:  lda     $0014,y
-        and     #$7f
+        clrflg  STATUS1, DEAD
         ora     $0015,y
-        and     #$90
+        andflg  STATUS4, {FLOAT, CONTROL}
         beq     @2c82
         bra     @2c84
 @2c64:  lda     $0014,y
-        and     #$45
+        andflg  STATUS1, {PETRIFY, POISON, BLIND}
         beq     @2c82
         bra     @2c84
 @2c6d:  lda     $0014,y
-        and     #$04
+        andflg  STATUS1, POISON
         beq     @2c82
         bra     @2c84
 @2c76:  lda     $0014,y
-        and     #$c2
+        andflg  STATUS1, {DEAD, PETRIFY, ZOMBIE}
         bne     @2c82
         jsr     CheckMaxHP
         bcc     @2c84
@@ -3048,9 +3058,9 @@ _c32c14:
 ; [  ]
 
 _c32c86:
-@2c86:  stz     $af
+@2c86:  stz     zaf
         lda     #$01
-        sta     $9c
+        sta     zMenuScrollRate
         jsr     _c32ccc
         clr_a
 @2c90:  pha
@@ -3061,22 +3071,22 @@ _c32c86:
         jsr     _c32c14
         bcc     @2cb8
         lda     $0014,y
-        sta     $f8
+        sta     zf8
         lda     $0015,y
-        sta     $fb
+        sta     zfb
         jsr     _c32b39
         jsr     _c32ccc
-        lda     $af
+        lda     zaf
         bne     @2cb8
         jsr     PlayCureSfx
         jsr     _c32cea
-        inc     $af
+        inc     zaf
 @2cb8:  clr_a
         pla
         inc
         cmp     #$04
         bne     @2c90
-        lda     $af
+        lda     zaf
         bne     @2cc9
         jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
@@ -3113,13 +3123,13 @@ _c32cdf:
 
 _c32cea:
 @2cea:  jsr     GetSelMagic
-        jsr     _c3510d
-        stx     $e7
+        jsr     CalcMPCost
+        stx     ze7
         jsr     GetCasterCharPtr
         longa
         lda     $000d,y
         sec
-        sbc     $e7
+        sbc     ze7
         sta     $000d,y
         shorta
         rts
@@ -3142,7 +3152,7 @@ GetCasterCharPtr:
 
 GetTargetCharPtr:
 @2d0b:  clr_a
-        lda     $4b         ; cursor position
+        lda     z4b         ; cursor position
         asl
         tax
         ldy     zCharPropPtr,x       ; pointer to character data
@@ -3154,7 +3164,7 @@ GetTargetCharPtr:
 
 GetSelMagic:
 @2d13:  clr_a
-        lda     $99
+        lda     z99
         tax
         lda     $7e9d89,x
         rts
@@ -3163,44 +3173,44 @@ GetSelMagic:
 
 ; [ menu state $3c: return to magic menu after casting a spell ]
 
-MenuState_3c:
+        array_label MENU_STATE, MENU_STATE::MAGIC_TARGET_RETURN
 @2d1c:  jsr     DisableInterrupts
         jsr     DisableWindow1PosHDMA
         lda     #$42
         trb     z45
-        stz     $4a
-        stz     $49
+        stz     z4a
+        stz     z49
         jsr     InitSkillsBGScrollHDMA
-        jsr     _c34c80
+        jsr     DrawSkillsWindow
         jsr     CreateCursorTask
         jsr     _c32130
         jsr     LoadMagicCursor
-        lda     $8e
-        sta     $4d
-        ldy     $8e
-        sty     $4f
-        lda     $90
-        sta     $4a
-        lda     $4a
-        sta     $e0
-        lda     $50
+        lda     z8e
+        sta     z4d
+        ldy     z8e
+        sty     z4f
+        lda     z90
+        sta     z4a
+        lda     z4a
+        sta     ze0
+        lda     z50
         sec
-        sbc     $e0
-        sta     $4e
+        sbc     ze0
+        sta     z4e
         jsr     InitMagicCursor
         jsr     InitMagicMenu
-        jsr     _c351c6
+        jsr     DrawListMPCost
         jsr     TfrBG3ScreenAB
         jsr     WaitVblank
-        ldy     z0
+        ldy     zZero
         sty     zBG1HScroll
         jsr     InitBigText
         lda     #$10
         tsb     z45
         jsr     InitDMA1BG1ScreenA
-        lda     #$1a
+        lda     #MENU_STATE::SKILLS_MAGIC
         sta     zNextMenuState
-        lda     #$01
+        lda     #MENU_STATE::FADE_IN
         sta     zMenuState
         jmp     EnableInterrupts
 
@@ -3208,35 +3218,35 @@ MenuState_3c:
 
 ; [ menu state $3d: magic target (multi-target) ]
 
-MenuState_3d:
-@2d78:  lda     z08
+        array_label MENU_STATE, MENU_STATE::MAGIC_TARGET_MULTI
+@2d78:  lda     zNewCtrlState_L
         bit     #JOY_R
         bne     @2d90
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_L
         bne     @2d90
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_RIGHT
         bne     @2d90
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_LEFT
         beq     @2d9b
 @2d90:  jsr     PlayMoveSfx
         jsr     _c32db7
-        lda     #$3b
+        lda     #MENU_STATE::MAGIC_TARGET_SINGLE
         sta     zMenuState
         rts
-@2d9b:  lda     z08
+@2d9b:  lda     zNewCtrlState_L
         bit     #JOY_A
         jne     _c32c86
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @2db6
         jsr     PlayCancelSfx
         jsr     _c32db7
-        lda     #$3c
+        lda     #MENU_STATE::MAGIC_TARGET_RETURN
         sta     zNextMenuState
-        stz     zMenuState
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
 @2db6:  rts
 
 ; ------------------------------------------------------------------------------
@@ -3250,8 +3260,8 @@ _c32db7:
         ldy     #near CharSelectCursorTask
         jsr     CreateTask
         jsr     ExecTasks
-        lda     $5f
-        sta     $4e
+        lda     z5f
+        sta     z4e
         lda     #$08
         trb     z46
         rts
@@ -3264,33 +3274,33 @@ _c32dd1:
 @2dd1:  clr_a
         lda     zSelIndex
         tax
-        lda     $4b
+        lda     z4b
         tay
-        lda     $75,x
-        sta     $e0
+        lda     zCharRowOrder,x
+        sta     ze0
         lda     zCharRowOrder,y
-        sta     $75,x
-        lda     $e0
+        sta     zCharRowOrder,x
+        lda     ze0
         sta     zCharRowOrder,y
         lda     zCharID,x
-        sta     $e0
+        sta     ze0
         lda     zCharID,y
         sta     zCharID,x
-        lda     $e0
+        lda     ze0
         sta     zCharID,y
         clr_a
         lda     zSelIndex
         asl
         tax
-        lda     $4b
+        lda     z4b
         asl
         tay
         longa
         lda     zCharPropPtr,x
-        sta     $e7
+        sta     ze7
         lda     zCharPropPtr,y
         sta     zCharPropPtr,x
-        lda     $e7
+        lda     ze7
         sta     zCharPropPtr,y
         shorta
         rts
@@ -3303,26 +3313,26 @@ _c32e10:
 @2e10:  clr_a
         lda     zSelIndex
         tax
-        lda     $75,x
-        sta     $e0
-        lda     $60,x
+        lda     zCharRowOrder,x
+        sta     ze0
+        lda     z60,x
         tax
-        lda     $e0
+        lda     ze0
         bit     #$20
         beq     @2e29
         lda     #$20
-        trb     $e0
+        trb     ze0
         lda     #$03
         bra     @2e2f
 @2e29:  lda     #$20
-        tsb     $e0
+        tsb     ze0
         lda     #$02
-@2e2f:  sta     wTaskState,x
+@2e2f:  sta     wTaskProp::State,x
         clr_a
         lda     zSelIndex
         tax
-        lda     $e0
-        sta     $75,x
+        lda     ze0
+        sta     zCharRowOrder,x
         rts
 
 ; ------------------------------------------------------------------------------
@@ -3331,22 +3341,22 @@ _c32e10:
 
 _c32e3c:
 @2e3c:  clr_a
-        lda     $60
+        lda     z60::_0
         tax
         lda     #$ff
-        sta     $7e35c9,x
-        lda     $61
+        sta     wTaskProp::w7e35c9,x
+        lda     z60::_1
         tax
         lda     #$ff
-        sta     $7e35c9,x
-        lda     $62
+        sta     wTaskProp::w7e35c9,x
+        lda     z60::_2
         tax
         lda     #$ff
-        sta     $7e35c9,x
-        lda     $63
+        sta     wTaskProp::w7e35c9,x
+        lda     z60::_3
         tax
         lda     #$ff
-        sta     $7e35c9,x
+        sta     wTaskProp::w7e35c9,x
         rts
 
 ; ------------------------------------------------------------------------------
@@ -3355,7 +3365,7 @@ _c32e3c:
 
 SelectMainMenuOption:
 @2e62:  clr_a
-        lda     $4b
+        lda     z4b
         sta     z25         ; set main menu cursor position
         asl
         tax
@@ -3378,10 +3388,10 @@ SelectMainMenuOptionTbl:
 ; config
 SelectMainMenuOption_05:
 @2e7a:  jsr     PlaySelectSfx
-        stz     $5f
-        stz     zMenuState                     ; fade out
-        lda     #$0d
-        sta     zNextMenuState                     ; config (init)
+        stz     z5f
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
+        lda     #MENU_STATE::CONFIG_INIT
+        sta     zNextMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -3389,9 +3399,9 @@ SelectMainMenuOption_05:
 ; item
 SelectMainMenuOption_00:
 @2e86:  jsr     PlaySelectSfx
-        stz     zMenuState                     ; fade out
-        lda     #$07
-        sta     zNextMenuState                     ; item (init)
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
+        lda     #MENU_STATE::ITEM_INIT
+        sta     zNextMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -3409,23 +3419,23 @@ SelectMainMenuOption_04:
         ldy     #near CharSelectCursorTask
         jsr     CreateTask
         jsr     _c32f06
-        lda     #$06
-        sta     zMenuState                     ; character select menu state
+        lda     #MENU_STATE::FIELD_MENU_CHAR
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
 
 ; save
 SelectMainMenuOption_06:
-@2eaa:  lda     w0201                   ; branch if save is not enabled
+@2eaa:  lda     r0201                   ; branch if save is not enabled
         bpl     @2ebf
         jsr     PlaySelectSfx
-        stz     zMenuState                     ; fade out
-        lda     #$13
-        sta     zNextMenuState                     ; save select (init) menu state
-        sta     $9e                     ;
+        stz     zMenuState              ; MENU_STATE::FADE_OUT
+        lda     #MENU_STATE::SAVE_INIT
+        sta     zNextMenuState
+        sta     zPrevMenuState
         lda     #$04
-        sta     $9f                     ;
+        sta     z9f
         rts
 @2ebf:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
@@ -3442,15 +3452,15 @@ MainMenuLeftBtn:
         lda     #0
         ldy     #near CharSelectCursorTask
         jsr     CreateTask
-        lda     #$06
+        lda     #6
         sta     zWaitCounter                     ; wait 6 frames
-        ldy     #.loword(-12)
+        ldy     #near -12
         sty     zMenuScrollRate
         lda     #$05                    ; disable cursor 2 and flashing cursor
         trb     z46
-        lda     #$0f                    ; order (char select)
+        lda     #MENU_STATE::ORDER_SELECT
         sta     zNextMenuState
-        lda     #$65                    ; scroll menu
+        lda     #MENU_STATE::H_SCROLL
         sta     zMenuState
         rts
 
@@ -3464,9 +3474,9 @@ _c32eeb:
         jsr     CreateTask
         longa
         lda     #$0038
-        sta     wTaskPosX,x
+        sta     wTaskProp::PosX_H,x
         lda     #$0036
-        sta     wTaskPosY,x
+        sta     wTaskProp::PosY_H,x
         shorta
         rts
 
@@ -3479,11 +3489,11 @@ _c32f06:
         ldy     #near FlashingCursorTask
         jsr     CreateTask
         longa
-        lda     $55                     ; cursor x position
+        lda     z55                     ; cursor x position
         inc2
-        sta     wTaskPosX,x               ; set task x position
-        lda     $57                     ; cursor y position
-        sta     wTaskPosY,x               ; set task y position
+        sta     wTaskProp::PosX_H,x               ; set task x position
+        lda     z57                     ; cursor y position
+        sta     wTaskProp::PosY_H,x               ; set task y position
         shorta
         rts
 
@@ -3496,14 +3506,14 @@ _c32f21:
         ldy     #near FlashingCursorTask
         jsr     CreateTask
         longa
-        lda     $55
+        lda     z55
         clc
         adc     #4
-        sta     wTaskPosX,x
-        lda     $57
+        sta     wTaskProp::PosX_H,x
+        lda     z57
         sec
         sbc     #4
-        sta     wTaskPosY,x
+        sta     wTaskProp::PosY_H,x
         shorta
         rts
 
@@ -3529,14 +3539,14 @@ MainMenuCursorTask_00:
 @2f4a:  ldx     zTaskOffset
         lda     #$02
         tsb     z46                     ; enable cursor 1
-        inc     near wTaskState,x                 ; increment task counter
+        inc     near wTaskProp::State,x                 ; increment task counter
         ldy     #near MainMenuCursorProp
         jsr     LoadCursor
         lda     $1d4e                   ; branch if cursor is on memory
         and     #$40
         beq     @2f65
-        ldy     w022b                   ; load saved cursor position
-        sty     $4d
+        ldy     r022b                   ; load saved cursor position
+        sty     z4d
 @2f65:  ldy     #near MainMenuCursorPos
         jsr     UpdateCursorPos
 ; fallthrough
@@ -3552,8 +3562,8 @@ MainMenuCursorTask_01:
         jsr     MoveCursor
         ldy     #near MainMenuCursorPos
         jsr     UpdateCursorPos
-        ldy     $4d
-        sty     w022b                   ; save cursor position
+        ldy     z4d
+        sty     r022b                   ; save cursor position
         sec
         rts
 @2f83:  clc
@@ -3596,7 +3606,7 @@ InitCharSelectCursor:
         txa
         asl
         tax
-        stz     $85,x                   ; disable cursor position
+        stz     z85,x                   ; disable cursor position
         plx
 @2faa:  inx
         cpx     #4
@@ -3608,11 +3618,11 @@ InitCharSelectCursor:
 ; [ load character select cursor data ]
 
 LoadCharSelectCursorProp:
-@2fb1:  ldx     z0
+@2fb1:  ldx     zZero
 @2fb3:  lda     f:CharSelectCursorProp,x
-        sta     $80,x
+        sta     z80,x
         inx
-        cpx     #13
+        cpx     #sizeof_CharSelectCursorProp
         bne     @2fb3
         rts
 
@@ -3620,22 +3630,29 @@ LoadCharSelectCursorProp:
 
 ; [ character select cursor task ]
 
+.enum CHAR_SELECT_CURSOR_TASK
+        INIT
+        SUSTAIN
+
+        COUNT
+.endenum
+
 CharSelectCursorTask:
 @2fc0:  tax
         jmp     (near CharSelectCursorTaskTbl,x)
 
 CharSelectCursorTaskTbl:
-        make_jump_tbl CharSelectCursorTask, 2
+        ptr_tbl CHAR_SELECT_CURSOR_TASK
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
-make_jump_label CharSelectCursorTask, 0
+        array_label CHAR_SELECT_CURSOR_TASK, CHAR_SELECT_CURSOR_TASK::INIT
 @2fc8:  ldx     zTaskOffset
         lda     #$14
         tsb     z46
-        inc     near wTaskState,x
+        inc     near wTaskProp::State,x
         jsr     _c32ff5
         lda     z45
         bit     #$40
@@ -3643,10 +3660,10 @@ make_jump_label CharSelectCursorTask, 0
         lda     $1d4e
         and     #$40
         beq     @2fe6
-        ldy     w022d
-        sty     $4d
+        ldy     r022d
+        sty     z4d
 @2fe6:  jsr     _c33008
-        lda     $55
+        lda     z55
         bne     @2ff3
         jsr     _c32ff5
         jsr     _c33008
@@ -3662,7 +3679,7 @@ _c32ff5:
         jsr     LoadCursor
         ldy     #$0080
         lda     #$00
-        sta     $ed
+        sta     zed
         jsr     LoadCursorFar
         jmp     SelectFirstChar
 
@@ -3672,21 +3689,21 @@ _c32ff5:
 
 _c33008:
 @3008:  ldy     #$0085
-        sty     $e7
+        sty     ze7
         lda     #$00
-        sta     $e9
+        sta     ze9
         jmp     UpdateCursorPosFar
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
-make_jump_label CharSelectCursorTask, 1
+        array_label CHAR_SELECT_CURSOR_TASK, CHAR_SELECT_CURSOR_TASK::SUSTAIN
 @3014:  lda     z45
         bit     #$40
         bne     @301f
-        ldy     $4d
-        sty     w022d
+        ldy     z4d
+        sty     r022d
 @301f:  lda     z46
         bit     #$04
         beq     @3040
@@ -3695,11 +3712,11 @@ make_jump_label CharSelectCursorTask, 1
         ldx     zTaskOffset
 @302b:  jsr     MoveCursor
         ldy     #$0085      ; cursor data pointer = $000085
-        sty     $e7
+        sty     ze7
         lda     #$00
-        sta     $e9
+        sta     ze9
         jsr     UpdateCursorPosFar
-        lda     $55
+        lda     z55
         beq     @302b
 @303e:  sec
         rts
@@ -3720,6 +3737,7 @@ CharSelectCursorPos:
         cursor_pos {8, 88}
         cursor_pos {8, 136}
         cursor_pos {8, 184}
+        calc_size CharSelectCursorProp
 
 ; ------------------------------------------------------------------------------
 
@@ -3753,37 +3771,47 @@ CreateMosaicTask:
 ; [ mosaic task ]
 
 .proc MosaicTask
+
         tax
         jmp     (near MosaicTaskTbl,x)
 
+.endproc  ; MosaicTask
+
+.enum MOSAIC_TASK
+        INIT
+        SUSTAIN
+
+        COUNT
+.endenum
+
 MosaicTaskTbl:
-        make_jump_tbl MosaicTask, 2
+        ptr_tbl MOSAIC_TASK
 
 ; 0: init mosaic
-make_jump_label MosaicTask, 0
+        array_label MOSAIC_TASK, MOSAIC_TASK::INIT
         ldx     zTaskOffset
-        inc     near wTaskState,x
-        stz     near wTaskPosX,x
+        inc     near wTaskProp::State,x
+        stz     near wTaskProp::PosX_H,x
         lda     #8
-        sta     near w7e3349,x
+        sta     near wTaskProp::w7e3349,x
 
 ; 1: update mosaic
-make_jump_label MosaicTask, 1
+        array_label MOSAIC_TASK, MOSAIC_TASK::SUSTAIN
         ldx     zTaskOffset
-        lda     near w7e3349,x
-        beq     terminate
+        lda     near wTaskProp::w7e3349,x
+        beq     Terminate
         clr_a
-        lda     near wTaskPosX,x
+        lda     near wTaskProp::PosX_H,x
         tax
         lda     f:MosaicTbl,x
         sta     zMosaic
         ldx     zTaskOffset
-        inc     near wTaskPosX,x
-        dec     near w7e3349,x
+        inc     near wTaskProp::PosX_H,x
+        dec     near wTaskProp::w7e3349,x
         sec
         rts
 
-terminate:
+Terminate:
         clc
         rts
 
@@ -3791,81 +3819,97 @@ terminate:
 MosaicTbl:
         .byte   $17,$27,$37,$47,$37,$27,$17,$07
 
-.endproc  ; MosaicTask
-
 ; ------------------------------------------------------------------------------
 
 ; [ fade out task ]
 
 .proc FadeOutTask
+
         tax
         jmp     (near FadeOutTaskTbl,x)
 
+.endproc  ; FadeOutTask
+
+.enum FADE_OUT_TASK
+        INIT
+        SUSTAIN
+
+        COUNT
+.endenum
+
 FadeOutTaskTbl:
-        make_jump_tbl FadeOutTask, 2
+        ptr_tbl FADE_OUT_TASK
 
 ; 0: init fade out
-make_jump_label FadeOutTask, 0
+        array_label FADE_OUT_TASK, FADE_OUT_TASK::INIT
         ldx     zTaskOffset
-        inc     near wTaskState,x
+        inc     near wTaskProp::State,x
         lda     #$0f
-        sta     near wTaskPosX,x
+        sta     near wTaskProp::PosX_H,x
 
 ; 1: update fade out
-make_jump_label FadeOutTask, 1
+        array_label FADE_OUT_TASK, FADE_OUT_TASK::SUSTAIN
         ldy     zWaitCounter
-        beq     terminate
+        beq     @Terminate
         ldx     zTaskOffset
-        lda     near wTaskPosX,x
+        lda     near wTaskProp::PosX_H,x
         sta     zScreenBrightness
-        dec     near wTaskPosX,x
-        dec     near wTaskPosX,x
+        dec     near wTaskProp::PosX_H,x
+        dec     near wTaskProp::PosX_H,x
         sec
         rts
 
-terminate:
+@Terminate:
         lda     #$01
         sta     zScreenBrightness
         clc
         rts
-.endproc  ; FadeOutTask
 
 ; ------------------------------------------------------------------------------
 
 ; [ fade in task ]
 
 .proc FadeInTask
+
         tax
         jmp     (near FadeInTaskTbl,x)
 
+.endproc  ; FadeInTask
+
+.enum FADE_IN_TASK
+        INIT
+        SUSTAIN
+
+        COUNT
+.endenum
+
 FadeInTaskTbl:
-        make_jump_tbl FadeInTask, 2
+        ptr_tbl FADE_IN_TASK
 
 ; 0: init fade in
-make_jump_label FadeInTask, 0
+        array_label FADE_IN_TASK, FADE_IN_TASK::INIT
         ldx     zTaskOffset
-        inc     near wTaskState,x
+        inc     near wTaskProp::State,x
         lda     #1
-        sta     near wTaskPosY,x
+        sta     near wTaskProp::PosY_H,x
 
 ; 1: update fade in
-make_jump_label FadeInTask, 1
+        array_label FADE_IN_TASK, FADE_IN_TASK::SUSTAIN
         ldy     zWaitCounter
-        beq     terminate
+        beq     @Terminate
         ldx     zTaskOffset
-        lda     near wTaskPosY,x
+        lda     near wTaskProp::PosY_H,x
         sta     zScreenBrightness
-        inc     near wTaskPosY,x
-        inc     near wTaskPosY,x
+        inc     near wTaskProp::PosY_H,x
+        inc     near wTaskProp::PosY_H,x
         sec
         rts
 
-terminate:
+@Terminate:
         lda     #$0f
         sta     zScreenBrightness
         clc
         rts
-.endproc  ; FadeInTask
 
 ; ------------------------------------------------------------------------------
 
@@ -3984,17 +4028,17 @@ _c331a8:
 ; main menu window data
 
 .if LANG_EN
-MainMenuOptionsWindow:                  make_window BG2A, {23, 1}, {6, 13}
-MainMenuTimeWindow:                     make_window BG2A, {23, 16}, {6, 2}
+MainMenuOptionsWindow:                  window_pos BG2A, {23, 1}, {6, 13}
+MainMenuTimeWindow:                     window_pos BG2A, {23, 16}, {6, 2}
 .else
-MainMenuOptionsWindow:                  make_window BG2A, {24, 1}, {5, 13}
-MainMenuTimeWindow:                     make_window BG2A, {24, 16}, {5, 2}
+MainMenuOptionsWindow:                  window_pos BG2A, {24, 1}, {5, 13}
+MainMenuTimeWindow:                     window_pos BG2A, {24, 16}, {5, 2}
 .endif
-MainMenuStepsWindow:                    make_window BG2A, {22, 20}, {7, 5}
-MainMenuCharWindow:                     make_window BG2A, {1, 1}, {28, 24}
-SaveChoiceWindow:                       make_window BG2A, {22, 1}, {7, 10}
-MainMenuOrderWindow1:                   make_window BG2B, {24, 1}, {7, 2}
-MainMenuOrderWindow2:                   make_window BG2A, {30, 0}, {1, 2}
+MainMenuStepsWindow:                    window_pos BG2A, {22, 20}, {7, 5}
+MainMenuCharWindow:                     window_pos BG2A, {1, 1}, {28, 24}
+SaveChoiceWindow:                       window_pos BG2A, {22, 1}, {7, 10}
+MainMenuOrderWindow1:                   window_pos BG2B, {24, 1}, {7, 2}
+MainMenuOrderWindow2:                   window_pos BG2A, {30, 0}, {1, 2}
 
 ; ------------------------------------------------------------------------------
 
@@ -4035,7 +4079,7 @@ DrawMainMenuListText:
         ldx     #near MainMenuOptionsTextList2
         ldy     #sizeof_MainMenuOptionsTextList2
         jsr     DrawPosKanaList
-        lda     w0201
+        lda     r0201
         bpl     @3216       ; branch if save is disabled
         lda     #BG3_TEXT_COLOR::DEFAULT
         bra     @3218
@@ -4091,14 +4135,14 @@ DrawTime:
         ldy     $1189
         jsr     Div60
         jsr     Div60
-        lda     $e7
+        lda     ze7
         sta     $1863
         lda     hRDMPYL
         sta     $1864
         bra     _c33295
-@3289:  ldy     wGameTimeHours
+@3289:  ldy     rGameTimeHours
         sty     $1863
-        lda     wGameTimeSeconds
+        lda     rGameTimeSeconds
         sta     $1865
 
 _c33295:
@@ -4127,7 +4171,7 @@ Div60:
         nop8
         nop6
         ldy     hRDDIVL
-        sty     $e7
+        sty     ze7
         rts
 
 ; ------------------------------------------------------------------------------
@@ -4152,25 +4196,27 @@ ValidateMaxGil:
 
 ; [ draw hp/mp/lv number text (slot 1) ]
 
-_32eb:  jsr     CreatePortraitTask1
+.scope DrawCharBlock1
+EmptySlot:
+        jsr     CreatePortraitTask1
         jmp     HidePortrait
 
-DrawCharBlock1:
-@32f1:  lda     zCharID::Slot1
-        bmi     _32eb
-        ldx     zCharPropPtr
+::DrawCharBlock1:
+        lda     zCharID::_0
+        bmi     EmptySlot
+        ldx     zCharPropPtr::_0
         stx     zSelCharPropPtr
         lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
         ldx     #near CharBlock1LabelTextList
         ldy     #sizeof_CharBlock1LabelTextList
         jsr     DrawPosList
-.if LANG_EN
+.if ::LANG_EN
         ldy_pos BG1A, {15, 3}
 .else
         ldy_pos BG1A, {15, 2}
 .endif
-        ldx     #$1578
+        ldx     #make_word 120, 21
         stz     z48
         jsr     DrawStatusIcons
         ldx     #near CharBlock1SlashTextList
@@ -4178,54 +4224,52 @@ DrawCharBlock1:
         ldy     #sizeof_CharBlock1SlashTextList
         sty     zef
         jsr     DrawPosList
-.if LANG_EN
+.if ::LANG_EN
         ldy_pos BG1A, {8, 3}
 .else
         ldy_pos BG1A, {8, 2}
 .endif
         jsr     DrawCharName
-        ldx     #near _c3332d
+        ldx     #near CharBlock1TextPosTbl
         jsr     DrawCharBlock
         jmp     CreatePortraitTask1
 
-; ------------------------------------------------------------------------------
-
 ; ram addresses for lv/hp/mp text (slot 1)
-; c3/332d: bg1_0(15, 5) lv
-;          bg1_0(13, 6) current hp
-;          bg1_0(18, 6) max hp
-;          bg1_0(13, 7) current mp
-;          bg1_0(18, 7) max mp
-_c3332d:
-        make_pos BG1A, {15, 5}
-        make_pos BG1A, {13, 6}
-        make_pos BG1A, {18, 6}
-        make_pos BG1A, {13, 7}
-        make_pos BG1A, {18, 7}
+CharBlock1TextPosTbl:
+        bg_pos BG1A, {15, 5}
+        bg_pos BG1A, {13, 6}
+        bg_pos BG1A, {18, 6}
+        bg_pos BG1A, {13, 7}
+        bg_pos BG1A, {18, 7}
+
+.endscope  ; DrawCharBlock1
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw hp/mp/lv number text (slot 2) ]
 
-_3337:  jsr     CreatePortraitTask2
+.scope DrawCharBlock2
+
+EmptySlot:
+        jsr     CreatePortraitTask2
         jmp     HidePortrait
 
-DrawCharBlock2:
-@333d:  lda     zCharID::Slot2
-        bmi     _3337
-        ldx     $6f
+::DrawCharBlock2:
+        lda     zCharID::_1
+        bmi     EmptySlot
+        ldx     zCharPropPtr::_1
         stx     zSelCharPropPtr
         lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
         ldx     #near CharBlock2LabelTextList
         ldy     #sizeof_CharBlock2LabelTextList
         jsr     DrawPosList
-.if LANG_EN
+.if ::LANG_EN
         ldy_pos BG1A, {15, 9}
 .else
         ldy_pos BG1A, {15, 8}
 .endif
-        ldx     #$4578
+        ldx     #make_word 120, 69
         stz     z48
         jsr     DrawStatusIcons
         ldx     #near CharBlock2SlashTextList
@@ -4233,49 +4277,52 @@ DrawCharBlock2:
         ldy     #sizeof_CharBlock2SlashTextList
         sty     zef
         jsr     DrawPosList
-.if LANG_EN
+.if ::LANG_EN
         ldy_pos BG1A, {8, 9}
 .else
         ldy_pos BG1A, {8, 8}
 .endif
         jsr     DrawCharName
-        ldx     #near _c33379
+        ldx     #near CharBlock2TextPosTbl
         jsr     DrawCharBlock
         jmp     CreatePortraitTask2
 
-; ------------------------------------------------------------------------------
-
 ; ram addresses for lv/hp/mp text (slot 2)
-_c33379:
-        make_pos BG1A, {15, 11}
-        make_pos BG1A, {13, 12}
-        make_pos BG1A, {18, 12}
-        make_pos BG1A, {13, 13}
-        make_pos BG1A, {18, 13}
+CharBlock2TextPosTbl:
+        bg_pos BG1A, {15, 11}
+        bg_pos BG1A, {13, 12}
+        bg_pos BG1A, {18, 12}
+        bg_pos BG1A, {13, 13}
+        bg_pos BG1A, {18, 13}
+
+.endscope  ; DrawCharBlock2
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw hp/mp/lv number text (slot 3) ]
 
-_3383:  jsr     CreatePortraitTask3
+.scope DrawCharBlock3
+
+EmptySlot:
+        jsr     CreatePortraitTask3
         jmp     HidePortrait
 
-DrawCharBlock3:
-@3389:  lda     zCharID::Slot3
-        bmi     _3383
-        ldx     $71
+::DrawCharBlock3:
+        lda     zCharID::_2
+        bmi     EmptySlot
+        ldx     zCharPropPtr::_2
         stx     zSelCharPropPtr
         lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
         ldx     #near CharBlock3LabelTextList
         ldy     #sizeof_CharBlock3LabelTextList
         jsr     DrawPosList
-.if LANG_EN
+.if ::LANG_EN
         ldy_pos BG1A, {15, 15}
 .else
         ldy_pos BG1A, {15, 14}
 .endif
-        ldx     #$7578
+        ldx     #make_word 120, 117
         stz     z48
         jsr     DrawStatusIcons
         ldx     #near CharBlock3SlashTextList
@@ -4283,49 +4330,52 @@ DrawCharBlock3:
         ldy     #sizeof_CharBlock3SlashTextList
         sty     zef
         jsr     DrawPosList
-.if LANG_EN
+.if ::LANG_EN
         ldy_pos BG1A, {8, 15}
 .else
         ldy_pos BG1A, {8, 14}
 .endif
         jsr     DrawCharName
-        ldx     #near _c333c5
+        ldx     #near CharBlock3TextPosTbl
         jsr     DrawCharBlock
         jmp     CreatePortraitTask3
 
-; ------------------------------------------------------------------------------
-
 ; ram addresses for lv/hp/mp text (slot 3)
-_c333c5:
-        make_pos BG1A, {15, 17}
-        make_pos BG1A, {13, 18}
-        make_pos BG1A, {18, 18}
-        make_pos BG1A, {13, 19}
-        make_pos BG1A, {18, 19}
+CharBlock3TextPosTbl:
+        bg_pos BG1A, {15, 17}
+        bg_pos BG1A, {13, 18}
+        bg_pos BG1A, {18, 18}
+        bg_pos BG1A, {13, 19}
+        bg_pos BG1A, {18, 19}
+
+.endscope  ; DrawCharBlock3
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw hp/mp/lv number text (slot 4) ]
 
-_33cf:  jsr     CreatePortraitTask4
+.scope DrawCharBlock4
+
+EmptySlot:
+        jsr     CreatePortraitTask4
         jmp     HidePortrait
 
-DrawCharBlock4:
-@33d5:  lda     zCharID::Slot4
-        bmi     _33cf       ; branch if slot is empty
-        ldx     $73
+::DrawCharBlock4:
+        lda     zCharID::_3
+        bmi     EmptySlot       ; branch if slot is empty
+        ldx     zCharPropPtr::_3
         stx     zSelCharPropPtr
         lda     #BG1_TEXT_COLOR::TEAL
         sta     zTextColor
         ldx     #near CharBlock4LabelTextList
         ldy     #sizeof_CharBlock4LabelTextList
         jsr     DrawPosList
-.if LANG_EN
+.if ::LANG_EN
         ldy_pos BG1A, {15, 21}
 .else
         ldy_pos BG1A, {15, 20}
 .endif
-        ldx     #$a578
+        ldx     #make_word 120, 165
         stz     z48
         jsr     DrawStatusIcons
         ldx     #near CharBlock4SlashTextList
@@ -4333,36 +4383,39 @@ DrawCharBlock4:
         ldy     #sizeof_CharBlock4SlashTextList
         sty     zef
         jsr     DrawPosList
-.if LANG_EN
+.if ::LANG_EN
         ldy_pos BG1A, {8, 21}
 .else
         ldy_pos BG1A, {8, 20}
 .endif
         jsr     DrawCharName
-        ldx     #near _c33411
+        ldx     #near CharBlock4TextPosTbl
         jsr     DrawCharBlock
         jmp     CreatePortraitTask4
 
-; ------------------------------------------------------------------------------
-
 ; ram addresses for lv/hp/mp text (character slot 4)
-_c33411:
-        make_pos BG1A, {15, 23}
-        make_pos BG1A, {13, 24}
-        make_pos BG1A, {18, 24}
-        make_pos BG1A, {13, 25}
-        make_pos BG1A, {18, 25}
+CharBlock4TextPosTbl:
+        bg_pos BG1A, {15, 23}
+        bg_pos BG1A, {13, 24}
+        bg_pos BG1A, {18, 24}
+        bg_pos BG1A, {13, 25}
+        bg_pos BG1A, {18, 25}
+
+.endscope  ; DrawCharBlock4
 
 ; ------------------------------------------------------------------------------
 
 ; [ hide portrait ]
 
-HidePortrait:
-@341b:  longa
-        lda     #$00d8      ; set y position to 216 (off-screen)
-        sta     wTaskPosY,x
+.proc HidePortrait
+
+        longa
+        lda     #216                    ; set y position to 216 (off-screen)
+        sta     wTaskProp::PosY_H,x
         shorta
         rts
+
+.endproc  ; HidePortrait
 
 ; ------------------------------------------------------------------------------
 
@@ -4372,37 +4425,38 @@ HidePortrait:
 ; +X: xy position
 ; +Y: pointer to bg tilemap
 
-DrawStatusIcons:
-@3427:  stx     ze7
+.proc DrawStatusIcons
+
+        stx     ze7
         jsr     InitTextBuf
         lda     $0014,y                 ; status 1
-        bmi     @34b0                   ; branch if character has wound status
-        and     #$70                    ; isolate clear, imp, and petrify status
+        bmi     CharIsDead              ; branch if character is dead
+        andflg  STATUS1, {VANISH, IMP, PETRIFY}
         sta     ze1
         lda     $0014,y
-        and     #$07                    ; isolate dark, zombie, and poison status
+        andflg  STATUS1, {BLIND, ZOMBIE, POISON}
         asl
         sta     ze2
         lda     $0015,y                 ; status 4
-        and     #$80                    ; isolate float status
+        andflg  STATUS4, FLOAT
         ora     ze1
         ora     ze2
         sta     ze1                     ; feicpzd-
-        beq     @34a9                   ; branch if character has no status icons
+        beq     NoIcons                 ; branch if character has no status icons
         stz     zf1                     ; clear icon index
         stz     zf2
         ldx     #7                      ; loop through each status
-@3451:  phx
+Loop:   phx
         asl
-        bcc     @349c                   ; continue if character doesn't have this status
+        bcc     Skip                    ; continue if character doesn't have this status
         pha
         lda     #3
         ldy     #near CharIconTask
         jsr     CreateTask
-        lda     #$01
-        sta     wTaskFlags,x               ; task doesn't scroll with bg
-        lda     z48
-        sta     wTaskState,x               ; task state
+        lda     #1
+        sta     wTaskProp::Flags,x            ; task doesn't scroll with bg
+        lda     z48                     ; 1 for party menu, 0 otherwise
+        sta     wTaskProp::State,x            ; task state
         txy
         ldx     zf1                     ; icon index
         phb
@@ -4411,105 +4465,115 @@ DrawStatusIcons:
         plb
         longa
         lda     f:StatusIconAnimPtrs,x
-        sta     near wTaskAnimPtr,y
+        sta     near wTaskProp::AnimPtr,y
         shorta
         lda     ze7
-        sta     near wTaskPosX,y                 ; x position
+        sta     near wTaskProp::PosX_H,y                 ; x position
         lda     ze8
-        sta     near wTaskPosY,y                 ; y position
+        sta     near wTaskProp::PosY_H,y                 ; y position
         clr_a
-        sta     near {wTaskPosX + 1},y                 ; clear high bytes
-        sta     near {wTaskPosY + 1},y
+        sta     near wTaskProp::PosX + 2,y                 ; clear high bytes
+        sta     near wTaskProp::PosY + 2,y
         lda     #^StatusIconAnimPtrs
-        sta     near wTaskAnimBank,y
+        sta     near wTaskProp::AnimBank,y
         plb
         clc
-        lda     #$0a
-        adc     ze7                     ; increment positioned text pointer ???
+        lda     #10
+        adc     ze7                     ; next icon is 10 pixels to the right
         sta     ze7
         pla
-@349c:  inc     zf1                     ; increment icon index
+Skip:   inc     zf1                     ; increment icon index
         inc     zf1
         plx
         dex                             ; next status
-        bne     @3451
+        bne     Loop
         lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
         rts
 
 ; character has no status icons
-@34a9:  lda     #BG1_TEXT_COLOR::DEFAULT
+NoIcons:
+        lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor                     ; white text
-        jmp     _c33583
+        jmp     DrawCharTitleNoInit
 
-; character has wound status
-@34b0:  ldx     #$9e8b
+; character is dead
+CharIsDead:
+        ldx     #$9e8b
         stx     hWMADDL
-        ldx     z0
-@34b8:  lda     f:MainMenuWoundedText,X ; text: "wounded"
+        ldx     zZero
+:       lda     f:MainMenuWoundedText,X ; text: "wounded"
         sta     hWMDATA
         inx
         cpx     #sizeof_MainMenuWoundedText
-        bne     @34b8
+        bne     :-
         stz     hWMDATA
         lda     #BG1_TEXT_COLOR::GRAY
         sta     zTextColor
         jmp     DrawPosTextBuf
 
+.endproc  ; DrawStatusIcons
+
 ; ------------------------------------------------------------------------------
 
 ; [ draw character name ]
 
-DrawCharName:
-@34cf:  jsr     InitTextBuf
+.proc DrawCharName
+        jsr     InitTextBuf
 
-_c334d2:
-@34d2:  ldx     #6
-@34d5:  lda     $0002,y               ; character name
+::DrawCharNameNoInit:
+        ldx     #6
+:       lda     $0002,y               ; character name
         sta     hWMDATA
         iny
         dex
-        bne     @34d5
+        bne     :-
         stz     hWMDATA
         jmp     DrawPosTextBuf
+.endproc  ; DrawCharName
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw character title ]
 
-DrawCharTitle:
-.if LANG_EN
-_c33583:
-@34e5:  rts
-.else
-@3580:  jsr     InitTextBuf
+.proc DrawCharTitle
 
-_c33583:
+.if ::LANG_EN
+
+::DrawCharTitleNoInit:
+        rts
+
+.else
+        jsr     InitTextBuf
+
+::DrawCharTitleNoInit:
         lda     $0000,y
         sta     hWRMPYA
-        lda     #CharTitle::ITEM_SIZE
+        lda     #::CHAR_TITLE::ITEM_SIZE
         sta     hWRMPYB
         nop4
         ldx     hRDMPYL
-        ldy     #CharTitle::ITEM_SIZE
-@3598:  lda     f:CharTitle,x
+        ldy     #::CHAR_TITLE::ITEM_SIZE
+:       lda     f:CharTitle,x
         sta     hWMDATA
         inx
         dey
-        bne     @3598
+        bne     :-
         lda     #$ff
         sta     hWMDATA
         stz     hWMDATA
         jmp     DrawPosTextBuf
 .endif
 
+.endproc  ; DrawCharTitle
+
 ; ------------------------------------------------------------------------------
 
 ; [ draw equipped esper name ]
 
-DrawEquipGenju:
+DrawCharGenjuName:
 @34e6:  jsr     InitTextBuf
-        lda     $001e,y               ; equipped esper
+        lda     $001e,y                 ; equipped esper
         cmp     #$ff
         beq     @3508                   ; branch if no esper is equipped
         asl3
@@ -4553,8 +4617,9 @@ InitTextBuf:
 
 ; [ disable interrupts ]
 
-DisableInterrupts:
-@352f:  lda     #$80        ; screen off
+.proc DisableInterrupts
+
+        lda     #$80        ; screen off
         sta     hINIDISP
         jsr     ResetTasks
         stz     hNMITIMEN
@@ -4562,41 +4627,52 @@ DisableInterrupts:
         stz     hHDMAEN
         rts
 
+.endproc  ; DisableInterrupts
+
 ; ------------------------------------------------------------------------------
 
 ; [ enable interrupts ]
 
-EnableInterrupts:
-@3541:  lda     #$01        ; screen register (screen on, brightness 1)
+.proc EnableInterrupts
+
+        lda     #$01        ; screen register (screen on, brightness 1)
         sta     zScreenBrightness
         jmp     WaitVblank
+
+.endproc  ; EnableInterrupts
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw time text ]
 
-UpdateTimeText:
-@3548:  jsr     InitDMA1BG3ScreenA
+.proc UpdateTimeText
+
+        jsr     InitDMA1BG3ScreenA
         jmp     DrawTime
+
+.endproc  ; UpdateTimeText
 
 ; ------------------------------------------------------------------------------
 
 ; [ init main screen designation hdma (main menu) ]
 
-_c3354e:
-@354e:  ldx     z0
+; this is used to hide and show portraits and character stat blocks when
+; swapping the order of characters in the party
+
+InitMainScreenLayerHDMA:
+        ldx     zZero
         lda     #$17        ; main screen designation (-> $212c)
-@3552:  sta     $7e9a09,x
+:       sta     $7e9a09,x
         inx
         cpx     #$00df
-        bne     @3552
+        bne     :-
         lda     #$40        ; hdma channel #6 - indirect addressing
         sta     hDMA6::CTRL
         lda     #<hTM
         sta     hDMA6::HREG
-        ldy     #near _c3357b
+        ldy     #near MainScreenLayerHDMATbl
         sty     hDMA6::ADDR
-        lda     #^_c3357b
+        lda     #^MainScreenLayerHDMATbl
         sta     hDMA6::ADDR_B
         lda     #$7e
         sta     hDMA6::HDMA_B
@@ -4607,7 +4683,7 @@ _c3354e:
 ; ------------------------------------------------------------------------------
 
 ; main screen designation hdma table (main menu)
-_c3357b:
+MainScreenLayerHDMATbl:
         hdma_addr 112 | BIT_7, $9a09
         hdma_addr 112 | BIT_7, $9a79
         hdma_end
@@ -4618,7 +4694,7 @@ _c3357b:
 
 CreateCharSwapTask:
 @3582:  lda     zSelIndex
-        cmp     $4b
+        cmp     z4b
         bcc     @359d
         lda     #3
         ldy     #near CharSwapTopTask
@@ -4643,16 +4719,16 @@ CreateCharSwapTask:
         tax
         lda     f:_c335d0,x
         tyx
-        sta     wTaskPosX,x
+        sta     wTaskProp::PosX_H,x
         rts
 
 @35c1:  txy
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     f:_c335d0,x
         tyx
-        sta     wTaskPosX,x   ; x position
+        sta     wTaskProp::PosX_H,x   ; x position
         rts
 
 ; ------------------------------------------------------------------------------
@@ -4679,7 +4755,7 @@ CharSwapTopTaskTbl:
 
 CharSwapTopTask_00:
 @35de:  ldx     zTaskOffset
-        inc     near wTaskState,x
+        inc     near wTaskProp::State,x
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -4692,16 +4768,16 @@ CharSwapTopTask_01:
         cmp     #12
         beq     @35fa
         clr_a
-        lda     near wTaskPosX,y     ; x position
+        lda     near wTaskProp::PosX_H,y     ; x position
         tax
         lda     #$06
         jsr     UpdateCharSwapHDMA1
-        sta     near wTaskPosX,y
+        sta     near wTaskProp::PosX_H,y
         sec
         rts
 @35fa:  ldx     zTaskOffset
-        inc     near wTaskState,x
-        dec     near wTaskPosX,x
+        inc     near wTaskProp::State,x
+        dec     near wTaskProp::PosX_H,x
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -4716,11 +4792,11 @@ CharSwapTopTask_02:
         lda     z22
         beq     @361d
         clr_a
-        lda     near wTaskPosX,y     ; x position
+        lda     near wTaskProp::PosX_H,y     ; x position
         tax
         lda     #$17
         jsr     UpdateCharSwapHDMA2
-        sta     near wTaskPosX,y
+        sta     near wTaskProp::PosX_H,y
 @361b:  sec
         rts
 @361d:  clc
@@ -4745,11 +4821,11 @@ CharSwapBtmTaskTbl:
 
 CharSwapBtmTask_00:
 @3629:  ldx     zTaskOffset
-        inc     near wTaskState,x
-        lda     near wTaskPosX,x
+        inc     near wTaskProp::State,x
+        lda     near wTaskProp::PosX_H,x
         clc
         adc     #$2f
-        sta     near wTaskPosX,x
+        sta     near wTaskProp::PosX_H,x
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -4762,17 +4838,17 @@ CharSwapBtmTask_01:
         cmp     #12
         beq     @3650
         clr_a
-        lda     near wTaskPosX,y
+        lda     near wTaskProp::PosX_H,y
         tax
         lda     #$06
         jsr     UpdateCharSwapHDMA2
-        sta     near wTaskPosX,y
+        sta     near wTaskProp::PosX_H,y
         dec     z22
         sec
         rts
 @3650:  ldx     zTaskOffset
-        inc     near wTaskState,x
-        inc     near wTaskPosX,x
+        inc     near wTaskProp::State,x
+        inc     near wTaskProp::PosX_H,x
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -4787,11 +4863,11 @@ CharSwapBtmTask_02:
         lda     z22
         beq     @3675
         clr_a
-        lda     near wTaskPosX,y
+        lda     near wTaskProp::PosX_H,y
         tax
         lda     #$17
         jsr     UpdateCharSwapHDMA1
-        sta     near wTaskPosX,y
+        sta     near wTaskProp::PosX_H,y
         dec     z22
 @3673:  sec
         rts
@@ -4871,7 +4947,7 @@ MainMenuBG3VScrollHDMATbl:
 
 ; [ menu state $65: scroll menu horizontal ]
 
-MenuState_65:
+        array_label MENU_STATE, MENU_STATE::H_SCROLL
 @36e7:  lda     zWaitCounter            ; branch if wait counter is not clear
         bne     @36ef
         lda     zNextMenuState          ; go to next menu state

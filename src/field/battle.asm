@@ -11,9 +11,10 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "gfx/battle_bg.inc"
+.include "src/gfx/battle_bg.inc"
 
-.import EventScript_RandBattle
+.import RandBattleGroup, EventBattleGroup, WorldBattleGroup, SubBattleGroup
+.import WorldBattleRate, SubBattleRate
 
 .a8
 .i16
@@ -27,7 +28,7 @@
         lda     $078a                   ; branch if battle sound effect is disabled
         and     #$40
         bne     :+
-        lda     #$c1                    ; play battle sound effect
+        lda     #SFX::BATTLE_SFX
         jsr     PlaySfx
 :       lda     $078a                   ; return if battle blur is disabled
         bmi     Done
@@ -100,7 +101,7 @@ Done:   rts
         lda     $1f64                   ; map index
         asl3
         sta     $1a
-        lda     $11f9                   ; battle bg index
+        lda     $11f9                   ; battle bg index from world map
         and     #$07
         ora     $1a
         tax
@@ -111,29 +112,35 @@ Done:   rts
         txa
         and     #$07
         tax
-        lda     f:BattleBGRateTbl,x
+        lda     f:BattleBGRateTbl,x     ; +$22 = rate for this battle bg
         sta     $22
         stz     $23
-        lda     f:BattleBGGroupTbl,x
+        lda     f:BattleBGGroupTbl,x    ; +$20 = group for this battle bg (0 to 3)
         sta     $20
         stz     $21
-        lda     $1f64
+        lda     $1f64                   ; world map index
         sta     $1f
         stz     $1e
-        lda     $1f61
+
+; *** bug ***
+; The x and y positions used below do not get updated when the player moves on
+; the world map. They only update when the world map loads (when entering the
+; world map, after closing the menu, or after a battle). Thus, these are the
+; only times that the random battle group and probability rate will change.
+        lda     $1f61                   ; y sector (0 to 7)
         and     #$e0
         sta     $1e
-        lda     $1f60
+        lda     $1f60                   ; x position (0 to 7)
         lsr3
         and     #$1c
         ora     $1e
         sta     $1e
         longa
-        lda     $1e
+        lda     $1e                     ; +$1e = -------m yyyxxxbb
         ora     $20
         tax
         shorta0
-        lda     f:WorldBattleGroup,x    ; world battle groups
+        lda     f:WorldBattleGroup,x    ; world battle group for this sector and bg
         sta     $24
         cmp     #$ff
         bne     :+                      ; branch if not a veldt sector
@@ -144,7 +151,7 @@ Done:   rts
         lsr2
         tax
         shorta0
-        lda     f:WorldBattleRate,x     ; world battle rates
+        lda     f:WorldBattleRate,x     ; world battle rate for this sector
         ldy     $22
         beq     :+
 Loop:   lsr2
@@ -327,7 +334,7 @@ Loop2:  lda     $1a
         ldx     $e5
         bne     Done
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     Done
         lda     $0525
         bpl     Done
@@ -432,15 +439,15 @@ Loop:   lsr2
         sta     $7b
         sta     $7d
         shorta
-        ldx     #near EventScript_RandBattle
+        ldx     #near EventScript::RandBattle
         stx     $e5
         stx     $05f4
-        lda     #^EventScript_RandBattle
+        lda     #^EventScript::RandBattle
         sta     $e7
         sta     $05f6
-        ldx     #near EventScript_NoEvent
+        ldx     #near EventScript::NoEvent
         stx     $0594
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596
         lda     #1
         sta     $05c7
@@ -499,35 +506,5 @@ MoogleCharm:
         plx
         rts
 .endproc  ; UpdateBattleGrpRng
-
-; ------------------------------------------------------------------------------
-
-.export EventBattleGroup
-
-.segment "battle_groups"
-
-; cf/4800
-RandBattleGroup:
-        .incbin "rand_battle_group.dat"
-
-; cf/5000
-EventBattleGroup:
-        .incbin "event_battle_group.dat"
-
-; cf/5400
-WorldBattleGroup:
-        .incbin "world_battle_group.dat"
-
-; cf/5600
-SubBattleGroup:
-        .incbin "sub_battle_group.dat"
-
-; cf/5800
-WorldBattleRate:
-        .incbin "world_battle_rate.dat"
-
-; cf/5880
-SubBattleRate:
-        .incbin "sub_battle_rate.dat"
 
 ; ------------------------------------------------------------------------------

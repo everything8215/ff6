@@ -11,11 +11,11 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-inc_lang "text/char_name_%s.inc"
+.include "src/text/char_name.inc"
 
 .import MapSpritePal, EventScript, EventTriggerPtrs
-
-.export BushidoLevelTbl, NaturalMagic, LevelUpExp, LevelUpHP, LevelUpMP
+.import BushidoLevelTbl, BlitzLevelTbl, NaturalMagic
+.import LevelUpExp, LevelUpHP, LevelUpMP
 
 .a8
 .i16
@@ -29,13 +29,13 @@ inc_lang "text/char_name_%s.inc"
         ldx     $00
         stx     $e3         ; clear event pause counter
         stx     $e8         ; clear event stack
-        ldx     #near EventScript_NoEvent
+        ldx     #near EventScript::NoEvent
         stx     $e5
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $e7
-        ldx     #near EventScript_NoEvent
+        ldx     #near EventScript::NoEvent
         stx     $0594
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596
         lda     #1          ; set event loop count
         sta     f:$0005c4
@@ -927,9 +927,9 @@ Loop:   longa_clc
         lda     hRDDIVL
         bra     :++
 :       lda     #3                      ; level 3 if no characters available
-:       cmp     #99
+:       cmp     #MAX_LEVEL
         bcc     :+
-        lda     #99                     ; maximum 99
+        lda     #MAX_LEVEL
 :       rts
 .endproc  ; CalcAverageLevel
 
@@ -982,7 +982,7 @@ Loop:   phy
 
 FoundItem:
         lda     $1969,x                 ; branch if item quantity is 99
-        cmp     #99
+        cmp     #MAX_ITEM_QTY
         beq     NextSlot
         inc                             ; increment quantity
         sta     $1969,x
@@ -1013,7 +1013,7 @@ NextSlot:
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
-        .repeat CharName::ITEM_SIZE, i
+        .repeat CHAR_NAME::ITEM_SIZE, i
         lda     f:CharName+i,x          ; copy character name (6 bytes)
         sta     $1602+i,y
         .endrep
@@ -1090,10 +1090,10 @@ NextSlot:
         adc     $1608,y
         beq     :+
         bpl     :++
-:       lda     #1                      ; minimum level = 1
-:       cmp     #99                     ; maximum level = 99
+:       lda     #1
+:       cmp     #MAX_LEVEL
         bcc     :+
-        lda     #99
+        lda     #MAX_LEVEL
 :       sta     $1608,y
         jsr     InitMaxHP
         lda     $160b,y                 ; set hp to max
@@ -1222,65 +1222,19 @@ Loop4:  lda     f:BlitzLevelTbl,x
 
 ; character average level modifiers
 CharLevelModTbl:
-        .byte   0,2,5,<(-3)
+        .lobytes 0,2,5,-3
 
 ; swdtech/blitz learn flags
 LearnAbilityTbl:
-        .byte   $00,$01,$03,$07,$0f,$1f,$3f,$7f,$ff
-
-.pushseg
-.segment "bushido_blitz_level"
-
-; e6/f490
-BushidoLevelTbl:
-        .byte   1,6,12,15,24,34,44,70
-
-; e6/f498
-BlitzLevelTbl:
-        .byte   1,6,10,15,23,30,42,70
-
-.segment "natural_magic"
-
-; ec/e3c0
-NaturalMagic:
-
-; terra
-        .byte ATTACK::CURE, 1
-        .byte ATTACK::FIRE, 3
-        .byte ATTACK::ANTDOT, 6
-        .byte ATTACK::DRAIN, 12
-        .byte ATTACK::LIFE, 18
-        .byte ATTACK::FIRE_2, 22
-        .byte ATTACK::WARP, 26
-        .byte ATTACK::CURE_2, 33
-        .byte ATTACK::DISPEL, 37
-        .byte ATTACK::FIRE_3, 43
-        .byte ATTACK::LIFE_2, 49
-        .byte ATTACK::PEARL, 57
-        .byte ATTACK::BREAK, 68
-        .byte ATTACK::QUARTR, 75
-        .byte ATTACK::MERTON, 86
-        .byte ATTACK::ULTIMA, 99
-
-; celes
-        .byte ATTACK::ICE, 1
-        .byte ATTACK::CURE, 4
-        .byte ATTACK::ANTDOT, 8
-        .byte ATTACK::IMP, 13
-        .byte ATTACK::SCAN, 18
-        .byte ATTACK::SAFE, 22
-        .byte ATTACK::ICE_2, 26
-        .byte ATTACK::HASTE, 32
-        .byte ATTACK::BSERK, 40
-        .byte ATTACK::MUDDLE, 32
-        .byte ATTACK::ICE_3, 42
-        .byte ATTACK::VANISH, 48
-        .byte ATTACK::HASTE2, 52
-        .byte ATTACK::PEARL, 72
-        .byte ATTACK::FLARE, 81
-        .byte ATTACK::METEOR, 98
-
-.popseg
+        .byte   %00000000
+        .byte   %00000001
+        .byte   %00000011
+        .byte   %00000111
+        .byte   %00001111
+        .byte   %00011111
+        .byte   %00111111
+        .byte   %01111111
+        .byte   %11111111
 
 ; ------------------------------------------------------------------------------
 
@@ -1323,25 +1277,6 @@ Loop:   dec     $1b
 
 ; ------------------------------------------------------------------------------
 
-.pushseg
-.segment "level_up_exp"
-
-LevelUpExp:
-        .word   4,8,14,24,34,48,62,79  ; 2-9
-        .word   99,120,143,169,195,224,257,289,323,360  ; 10-19
-        .word   402,441,484,528,575,627,674,728,785,842  ; 20-29
-        .word   899,961,1025,1088,1157,1224,1296,1370,1443,1522  ; 30-39
-        .word   1599,1680,1763,1850,1936,2024,2117,2208,2305,2401  ; 40-49
-        .word   2500,2602,2704,2808,2916,3024,3137,3248,3365,3481  ; 50-59
-        .word   3599,3722,3843,3970,4096,4224,4357,4488,4625,4762  ; 60-69
-        .word   4899,5041,5183,5330,5477,5625,5774,5929,6083,6241  ; 70-79
-        .word   6400,6562,6724,6888,7056,7225,7397,7569,7743,7921  ; 80-89
-        .word   8100,8282,8464,8648,8836,9025,9217,9409,9603,11111  ; 90-99
-
-.popseg
-
-; ------------------------------------------------------------------------------
-
 ; [ init character max hp ]
 
 ; y = pointer to character data
@@ -1378,26 +1313,6 @@ Loop:   dec     $1b
 
 ; ------------------------------------------------------------------------------
 
-.pushseg
-.segment "level_up_hp"
-
-; e6/f4a0
-LevelUpHP:
-        .byte   11,12,14,17,20,22,24,26  ; 2-9
-        .byte   27,28,30,35,39,44,50,54,57,61  ; 10-19
-        .byte   65,67,69,72,76,79,82,86,90,95  ; 20-29
-        .byte   99,100,101,102,102,103,104,106,107,108  ; 30-39
-        .byte   110,111,113,114,116,117,119,120,122,125  ; 40-49
-        .byte   128,130,131,133,134,136,137,139,142,144  ; 50-59
-        .byte   145,147,148,150,152,153,155,156,158,160  ; 60-69
-        .byte   162,160,155,151,145,140,136,132,126,120  ; 70-79
-        .byte   117,113,110,108,105,102,100,98,95,92  ; 80-89
-        .byte   90,88,87,85,83,82,80,83,86,88  ; 90-99
-
-.popseg
-
-; ------------------------------------------------------------------------------
-
 ; [ init character max mp ]
 
 ; y = pointer to character data
@@ -1431,40 +1346,6 @@ LevelUpHP:
         shorta0
         rts
 .endproc  ; InitMaxMP
-
-; ------------------------------------------------------------------------------
-
-.pushseg
-.segment "level_up_mp"
-
-; e6/f502
-LevelUpMP:
-
-.if LANG_EN
-        .byte   4,4,5,5,6,6,7,8  ; 2-9
-        .byte   8,9,9,10,10,10,10,10,11,11  ; 10-19
-        .byte   11,11,11,12,12,12,12,12,13,13  ; 20-29
-        .byte   13,13,13,14,14,14,14,14,15,15  ; 30-39
-        .byte   15,15,15,16,16,16,16,16,17,17  ; 40-49
-        .byte   17,16,15,14,13,12,11,10,9,8  ; 50-59
-        .byte   7,6,5,5,6,6,7,7,7,8  ; 60-69
-        .byte   8,8,8,8,7,7,7,6,6,6  ; 70-79
-        .byte   6,5,5,5,5,5,5,5,6,6  ; 80-89
-        .byte   6,6,6,7,8,9,10,11,12,13  ; 90-99
-.else
-        .byte   5,6,7,8,9,10,11,12  ; 2-9
-        .byte   13,14,15,16,17,17,17,17,16,16  ; 10-19
-        .byte   16,15,15,15,14,14,14,14,13,13  ; 20-29
-        .byte   13,13,12,12,12,12,11,11,11,11  ; 30-39
-        .byte   11,11,10,10,10,10,10,10,10,10  ; 40-49
-        .byte   9,9,9,9,9,9,9,9,9,9  ; 50-59
-        .byte   10,8,8,8,8,8,8,8,8,8  ; 60-69
-        .byte   8,10,10,7,6,5,4,5,6,7  ; 70-79
-        .byte   8,9,8,7,6,5,6,7,5,6  ; 80-89
-        .byte   7,8,9,10,8,8,9,10,11,13  ; 90-99
-.endif
-
-.popseg
 
 ; ------------------------------------------------------------------------------
 
@@ -1750,11 +1631,9 @@ EventCmd_4a:
 ;        t: show text only
 ;        d: dialog message
 
-.import EventScript_WaitDlg
-
 EventCmd_4b:
 
-@WaitDlg = EventScript_WaitDlg - EventScript
+@WaitDlg = EventScript::WaitDlg - EventScript
 
 @a4bc:  longa
         lda     $eb
@@ -3139,11 +3018,11 @@ GiveItem:
         bra     @ad0d
 @ad17:  lda     $1a         ; set item number
         sta     $1869,x
-        lda     #$01        ; quantity 1
+        lda     #1        ; quantity 1
         sta     $1969,x
         rts
 @ad22:  lda     $1969,x
-        cmp     #$63        ; max quantity 99
+        cmp     #MAX_ITEM_QTY
         beq     @ad2c
         inc     $1969,x     ; add 1 to quantity
 @ad2c:  rts
@@ -3460,7 +3339,7 @@ CalcMaxHP:
         adc     $22
         sta     $1e
         shorta0
-@af33:  ldx     #9999
+@af33:  ldx     #MAX_HP
         cpx     $1e
         bcs     @af3c
         stx     $1e
@@ -3563,7 +3442,7 @@ CalcMaxMP:
         adc     $22
         sta     $1e
         shorta0
-@afed:  ldx     #999                    ; 999 max
+@afed:  ldx     #MAX_MP                    ; 999 max
         cpx     $1e
         bcs     @aff6
         stx     $1e
@@ -3605,8 +3484,8 @@ EventCmd_98:
         adc     #$1600
         sta     $0201       ; +$0201 = absolute pointer to character data
         shorta0
-        lda     #$01
-        sta     $0200       ; $0200 = #$01 (name change menu)
+        lda     #MENU_TYPE::NAME_CHANGE
+        sta     $0200
         jsr     OpenMenu
         lda     #$01
         sta     $84         ; enable map load
@@ -3633,8 +3512,8 @@ EventCmd_99:
         sta     $0201       ; $0201 = number of parties
         ldx     $ec
         stx     $0202       ; +$0202 = forced characters
-        lda     #$04
-        sta     $0200       ; $0200 = #$04 (party select)
+        lda     #MENU_TYPE::PARTY
+        sta     $0200
         jsr     OpenMenu
         jsr     _c0714a
         jsr     GetTopChar
@@ -3657,8 +3536,8 @@ EventCmd_9b:
         ldy     $0803
         lda     $0879,y
         sta     $0202       ; $0202 = showing character graphic index
-        lda     #$03
-        sta     $0200       ; $0200 = #$03 (shop)
+        lda     #MENU_TYPE::SHOP
+        sta     $0200
         jsr     OpenMenu
         lda     #$01
         sta     $84         ; enable map load
@@ -3684,8 +3563,8 @@ EventCmd_9c:
 ; [ event command $9d: final battle menu ]
 
 EventCmd_9d:
-@b09c:  lda     #$08
-        sta     $0200       ; $0200 = #$08 (final battle menu)
+@b09c:  lda     #MENU_TYPE::FINAL_ORDER
+        sta     $0200
         jsr     OpenMenu
         lda     #$01
         sta     $84         ; enable map load
@@ -3699,8 +3578,8 @@ EventCmd_9d:
 ; [ event command $9a: colosseum menu ]
 
 EventCmd_9a:
-@b0b2:  lda     #$07
-        sta     $0200       ; $0200 = #$07 (colosseum menu)
+@b0b2:  lda     #MENU_TYPE::COLOSSEUM
+        sta     $0200
         jsr     OpenMenu
         lda     $0205
         cmp     #$ff
@@ -5196,8 +5075,8 @@ EventCmd_ff:
 ; [ event command $ab: game load menu ]
 
 EventCmd_ab:
-@b91b:  lda     #$02
-        sta     $0200                   ; $0200 = #$02 (load game)
+@b91b:  lda     #MENU_TYPE::GAME_LOAD
+        sta     $0200
         jsr     OpenMenu
         lda     $307ff1                 ; add 13 to random number seed
         clc
@@ -5521,11 +5400,25 @@ EventCmd_aa:
 
 ; bit masks
 BitOrTbl:
-        .byte   BIT_0, BIT_1, BIT_2, BIT_3, BIT_4, BIT_5, BIT_6, BIT_7
+        .byte   %00000001
+        .byte   %00000010
+        .byte   %00000100
+        .byte   %00001000
+        .byte   %00010000
+        .byte   %00100000
+        .byte   %01000000
+        .byte   %10000000
 
 ; inverse bit masks
 BitAndTbl:
-        .lobytes ~BIT_0, ~BIT_1, ~BIT_2, ~BIT_3, ~BIT_4, ~BIT_5, ~BIT_6, ~BIT_7
+        .byte   <~%00000001
+        .byte   <~%00000010
+        .byte   <~%00000100
+        .byte   <~%00001000
+        .byte   <~%00010000
+        .byte   <~%00100000
+        .byte   <~%01000000
+        .byte   <~%10000000
 
 ; ------------------------------------------------------------------------------
 
@@ -5686,10 +5579,10 @@ Loop:   ldx     $1189,y
         lda     $118d,y
         beq     Skip
 :       ldx     $e5
-        cpx     #near EventScript_NoEvent
+        cpx     #near EventScript::NoEvent
         bne     Skip
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     Skip
         ldx     $0803
         lda     $086a,x
@@ -5706,9 +5599,9 @@ Loop:   ldx     $1189,y
         adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #near EventScript_NoEvent
+        ldx     #near EventScript::NoEvent
         stx     $0594
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596
         lda     #1
         sta     $05c7
@@ -5735,7 +5628,7 @@ Skip:   iny6
 
 ; [ check event triggers ]
 
-.include "event/event_trigger.inc"
+.include "src/event/event_trigger.inc"
 
 .proc CheckEventTriggers
         lda     $84
@@ -5754,10 +5647,10 @@ Skip:   iny6
         lda     $086c,y
         bne     Done
         ldx     $e5
-        cpx     #near EventScript_NoEvent
+        cpx     #near EventScript::NoEvent
         bne     Done
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     Done
         lda     $087c,y
         and     #$0f
@@ -5801,9 +5694,9 @@ DoTrigger:
         adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #near EventScript_NoEvent
+        ldx     #near EventScript::NoEvent
         stx     $0594
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596
         lda     #1
         sta     $05c7

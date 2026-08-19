@@ -11,12 +11,8 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "field/treasure_prop.inc"
-
-.import EventScript_NoEvent
-.import EventScript_TreasureItem, EventScript_TreasureMagic
-.import EventScript_TreasureGil, EventScript_TreasureEmpty
-.import EventScript_TreasureMonster
+.include "treasure_prop.inc"
+.include "src/sound/sfx.inc"
 
 .a8
 .i16
@@ -152,10 +148,10 @@ CheckNPCs:
         lda     #$29
         sta     hWRDIVB
         ldx     $e5                     ; return if an event is running
-        cpx     #.loword(EventScript_NoEvent)
+        cpx     #.loword(EventScript::NoEvent)
         bne     @472b
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     @472b
         lda     $087c,y                 ; party object movement type
         and     #$0f
@@ -292,9 +288,9 @@ CheckNPCs:
         adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #.loword(EventScript::NoEvent)
         stx     $0594
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596
         lda     #$01
         sta     $05c7
@@ -312,11 +308,11 @@ CheckNPCs:
 
 ; x-offset for through-tile
 ThruTileOffsetX:
-@4857:  .byte   $00,$01,$00,$ff
+        .lobytes 0,+1,0,-1
 
 ; y-offset for through-tile
 ThruTileOffsetY:
-@485b:  .byte   $ff,$00,$01,$00
+        .lobytes -1,0,+1,0
 
 ; ------------------------------------------------------------------------------
 
@@ -591,7 +587,7 @@ DoPoisonDmg:
 @4a8d:  sta     $1609,y
         shorta0
 @4a93:  lda     $1614,y
-        and     #$04
+        and     #STATUS1::POISON
         beq     @4acb                   ; branch if not poisoned
         lda     #$0f
         sta     $11f0
@@ -638,8 +634,8 @@ DoPoisonDmg:
 ; called whenever the player takes a step
 
 UpdatePartyFlags:
-@4aec:  lda     $1a6d       ; branch if not party 1
-        cmp     #$01
+@4aec:  lda     $1a6d                   ; branch if not party 1
+        cmp     #1
         bne     @4b15
 
 ; party 1
@@ -658,7 +654,7 @@ UpdatePartyFlags:
         bra     @4b5f
 
 ; party 2
-@4b15:  cmp     #$02        ; branch if not party 2
+@4b15:  cmp     #2                      ; branch if not party 2
         bne     @4b3b
         lda     $1ed9
         and     #$fe
@@ -675,7 +671,7 @@ UpdatePartyFlags:
         bra     @4b5f
 
 ; party 3
-@4b3b:  cmp     #$03        ; return if not party 3
+@4b3b:  cmp     #3                      ; return if not party 3
         bne     @4b5f
         lda     $1ed9
         and     #$ef
@@ -697,13 +693,13 @@ UpdatePartyFlags:
 
 IncSteps:
 @4b60:  lda     $1866                   ; 9999999 max steps
-        cmp     #.lobyte(MAX_STEPS)
+        cmp     #<MAX_STEPS
         bne     @4b75
         lda     $1867
-        cmp     #.hibyte(MAX_STEPS)
+        cmp     #>MAX_STEPS
         bne     @4b75
         lda     $1868
-        cmp     #.bankbyte(MAX_STEPS)
+        cmp     #^MAX_STEPS
         beq     @4b82
 @4b75:  inc     $1866
         bne     @4b82
@@ -724,10 +720,10 @@ CheckTreasure:
         lda     $84
         bne     @4bd3
         ldy     $e5
-        cpy     #.loword(EventScript_NoEvent)
+        cpy     #near EventScript::NoEvent
         bne     @4bd3
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     @4bd3
         lda     $b8
         and     #$04
@@ -771,12 +767,14 @@ CheckTreasure:
         lda     f:TreasureProp::PosY,x   ; y position
         cmp     $2b
         beq     @4c06
-@4bfc:  inx5
+@4bfc:  .repeat TREASURE_PROP::TRIGGER_SIZE
+        inx
+        .endrep
         cpx     $1e
         bne     @4bec
         rts
 @4c06:  longa
-        lda     f:TreasureProp::Content,x   ; treasure contents
+        lda     f:TreasureProp::Contents,x  ; treasure contents
         sta     $1a
         lda     f:TreasureProp::Switch,x   ; treasure event bit and type
         sta     $1e
@@ -807,7 +805,7 @@ CheckTreasure:
         stz     $24
         longa_clc
         tya
-        adc     $1860       ; add to gil
+        adc     $1860                   ; add to gil
         sta     $1860
         shorta0
         adc     $1862
@@ -815,14 +813,14 @@ CheckTreasure:
         cmp     #^MAX_GIL
         bcc     @4c78
         ldx     $1860
-        cpx     #.loword(MAX_GIL)
+        cpx     #near MAX_GIL
         bcc     @4c78
-        ldx     #.loword(MAX_GIL)      ; max 9,999,999 gil
+        ldx     #near MAX_GIL           ; max 9,999,999 gil
         stx     $1860
         lda     #^MAX_GIL
         sta     $1862
 @4c78:  jsr     HexToDec
-        ldx     #.loword(EventScript_TreasureGil)
+        ldx     #near EventScript::TreasureGil
         bra     @4cac
 
 ; item
@@ -832,7 +830,7 @@ CheckTreasure:
         lda     $1a
         sta     $0583
         jsr     GiveItem
-        ldx     #.loword(EventScript_TreasureItem)
+        ldx     #near EventScript::TreasureItem
         bra     @4cac
 
 ; monster
@@ -841,23 +839,23 @@ CheckTreasure:
         beq     @4ca3       ; branch if not a monster
         lda     $1a
         sta     $0789       ; set monster-in-a-box formation
-        ldx     #.loword(EventScript_TreasureMonster)
+        ldx     #near EventScript::TreasureMonster
         bra     @4cac
 
 ; empty
 @4ca3:  lda     $1f
         and     #$10
         beq     @4ca9       ; <- this has no effect
-@4ca9:  ldx     #.loword(EventScript_TreasureEmpty)
+@4ca9:  ldx     #near EventScript::TreasureEmpty
 
 @4cac:  stx     $e5         ; set event pc
         stx     $05f4
-        lda     #^EventScript_TreasureItem
+        lda     #^EventScript::TreasureItem
         sta     $e7
         sta     $05f6
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #near EventScript::NoEvent
         stx     $0594
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596
         lda     #$01
         sta     $05c7
@@ -874,19 +872,19 @@ CheckTreasure:
         cmp     #$13
         bne     @4d06       ; branch if not a closed treasure chest
         stx     $8f
-        ldx     #.loword(TreasureTiles)
+        ldx     #near TreasureTiles
         stx     $8c
-        lda     #^*
+        lda     #^TreasureTiles
         sta     $8e
         ldx     #$0000
         stx     $2a
         lda     #$04
         sta     $055a
         jsr     ModifyMap
-        lda     #$a6        ; sound effect $a6 (treasure chest)
+        lda     #SFX::TREASURE_CHEST
         jsr     PlaySfx
         rts
-@4d06:  lda     #$1b        ; sound effect $1b (pot/crate treasure)
+@4d06:  lda     #SFX::TREASURE_POT
         jsr     PlaySfx
         rts
 
@@ -894,27 +892,27 @@ CheckTreasure:
 
 ; treasure chest map data (1x1)
 TreasureTiles:
-@4d0c:  .byte   $01,$01
+@4d0c:  .byte   1,1
         .byte   $12
 
 TreasureOffsetX:
-@4d0f:  .byte   $00,$01,$00,$ff
+        .lobytes 0,+1,0,-1
 
 TreasureOffsetY:
-@4d13:  .byte   $ff,$00,$01,$00
+        .lobytes -1,0,+1,0
 
 .pushseg
 .segment "treasure_prop"
 
 ; ed/82f4
 TreasurePropPtrs:
-        ptr_tbl TreasureProp
-        end_ptr TreasureProp
+        ptr_tbl TREASURE_PROP
+        end_ptr TREASURE_PROP
 
 ; ed/8634
 TreasureProp:
-        .incbin "trigger/treasure_prop.dat"
-TreasureProp::End:
+        .incbin "assets/data/field/treasure_prop.bin"
+        TREASURE_PROP::END := * - TreasureProp
 
 .popseg
 
@@ -932,15 +930,15 @@ DrawOpenDoor:
         lda     $7f0000,x
         cmp     #$05
         bne     @4d31
-        ldx     #.loword(OpenDoorTiles1)
+        ldx     #near OpenDoorTiles1
         bra     @4d3d
 @4d31:  cmp     #$07
         bne     @4d3a
-        ldx     #.loword(OpenDoorTiles2)
+        ldx     #near OpenDoorTiles2
         bra     @4d3d
-@4d3a:  ldx     #.loword(OpenDoorTiles3)
+@4d3a:  ldx     #near OpenDoorTiles3
 @4d3d:  stx     $8c
-        lda     #^*
+        lda     #^OpenDoorTiles1
         sta     $8e
         ldx     #$0000
         stx     $2a
@@ -985,7 +983,7 @@ CheckDoor:
         beq     @4d5d       ; return if not a door tile
         lda     $af         ; door's x position is same as party
         sta     $8f         ; $8f = door's x position
-        ldx     #.loword(OpenDoorTiles1)
+        ldx     #near OpenDoorTiles1
         bra     @4dc2
 @4d91:  cmp     #$17
         bne     @4daa       ; branch if not small door 2
@@ -996,7 +994,7 @@ CheckDoor:
         beq     @4e04
         lda     $af
         sta     $8f
-        ldx     #.loword(OpenDoorTiles2)
+        ldx     #near OpenDoorTiles2
         bra     @4dc2
 @4daa:  cmp     #$1c
         bne     @4e04       ; return if not big door
@@ -1008,7 +1006,7 @@ CheckDoor:
         lda     $af
         dec
         sta     $8f
-        ldx     #.loword(OpenDoorTiles3)
+        ldx     #near OpenDoorTiles3
 @4dc2:  stx     $8c         ; ++$8c = bg data source address
         lda     $90
         inc
@@ -1028,14 +1026,14 @@ CheckDoor:
         bcs     @4de8       ; maximum of 24 open doors
         stx     $1127
 @4de8:  shorta0
-        lda     #^*
+        lda     #^OpenDoorTiles1
         sta     $8e
         ldx     #$0000      ;
         stx     $2a
         lda     #$04        ; update bg1 (immediately)
         sta     $055a
         jsr     ModifyMap
-        lda     #$2c        ; play door sound effect
+        lda     #SFX::DOOR_OPEN
         jsr     PlaySfx
         lda     #$01        ; return (door opened)
         rts
@@ -1046,19 +1044,19 @@ CheckDoor:
 
 ; small door 1 map data (1x2)
 OpenDoorTiles1:
-@4e06:  .byte   $01,$02
+@4e06:  .byte   1,2
         .byte   $04
         .byte   $14
 
 ; small door 2 map data (1x2)
 OpenDoorTiles2:
-@4e0a:  .byte   $01,$02
+@4e0a:  .byte   1,2
         .byte   $06
         .byte   $16
 
 ; big door map data (3x2)
 OpenDoorTiles3:
-@4e0e:  .byte   $03,$02
+@4e0e:  .byte   3,2
         .byte   $08,$09,$0a
         .byte   $18,$19,$1a
 

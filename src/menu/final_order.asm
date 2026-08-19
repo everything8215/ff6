@@ -17,7 +17,7 @@
 
 ; [ menu state $73: final battle order (init) ]
 
-MenuState_73:
+        array_label MENU_STATE, MENU_STATE::FINAL_ORDER_INIT
 @a9f8:  jsr     DisableInterrupts
         jsr     ClearBGScroll
         lda     #$02
@@ -29,7 +29,7 @@ MenuState_73:
         jsr     ResetFinalOrderList
         jsr     DrawFinalOrderMenu
         jsr     InitPartyEquipScrollHDMA
-        lda     #$74
+        lda     #MENU_STATE::FINAL_ORDER_SELECT
         sta     zNextMenuState
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
@@ -40,28 +40,28 @@ MenuState_73:
 
 ; [ menu state $74: final battle order ]
 
-MenuState_74:
+        array_label MENU_STATE, MENU_STATE::FINAL_ORDER_SELECT
 @aa25:  jsr     DrawFinalOrderListLeft
         jsr     DrawFinalOrderListRight
         jsr     UpdateFinalOrderCursor
         jsr     InitDMA1BG1ScreenA
 
 ; B button
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @aa63
         jsr     PlayCancelSfx
-        lda     $4a
+        lda     z4a
         beq     @aaa6
-        dec     $4a
+        dec     z4a
         clr_a
-        lda     $4a
+        lda     z4a
         tax
         lda     $0205,x
         pha
         lda     #$ff
         sta     $0205,x
-        ldx     z0
+        ldx     zZero
         pla
 @aa50:  cmp     $7e9d8a,x
         beq     @aa5c
@@ -73,17 +73,17 @@ MenuState_74:
         rts
 
 ; check start button
-@aa63:  lda     z08+1
+@aa63:  lda     zNewCtrlState_H
         bit     #>JOY_START
         bne     @aa99
 
 ; A button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @aaa6
         jsr     PlaySelectSfx
         clr_a
-        lda     $4b
+        lda     z4b
         beq     @aaa7
         cmp     #13
         beq     @aa99
@@ -91,14 +91,14 @@ MenuState_74:
         lda     $7e9d89,x
         bmi     @aaa6
         clr_a
-        lda     $4b
+        lda     z4b
         dec
         tax
         lda     $7eaa8d,x
         cmp     #BG1_TEXT_COLOR::DEFAULT
         bne     @aaa6                   ; do nothing if not white text
         jsr     SelectFinalOrderChar
-        lda     $4a
+        lda     z4a
         cmp     #12
         beq     @aaad
         rts
@@ -106,7 +106,7 @@ MenuState_74:
 ; start button, or selected "end"
 @aa99:  jsr     PlaySelectSfx
         jsr     FillFinalOrder
-        lda     #$ff
+        lda     #MENU_STATE::TERMINATE
         sta     zNextMenuState
         stz     zMenuState
         rts
@@ -114,12 +114,12 @@ MenuState_74:
 
 ; selected "reset"
 @aaa7:  jsr     ResetFinalOrderList
-        inc     $4e
+        inc     z4e
         rts
 
 ; list full, move cursor to "end"
 @aaad:  lda     #13
-        sta     $4e
+        sta     z4e
         rts
 
 ; ------------------------------------------------------------------------------
@@ -128,16 +128,16 @@ MenuState_74:
 
 SelectFinalOrderChar:
 @aab2:  clr_a
-        lda     $4a
+        lda     z4a
         tay
-        lda     $4b
+        lda     z4b
         tax
         lda     #BG1_TEXT_COLOR::GRAY
         sta     $7eaa8c,x
         lda     $7e9d89,x
         tyx
         sta     $0205,x
-        inc     $4a
+        inc     z4a
         rts
 
 ; ------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ SelectFinalOrderChar:
 ; [ automatically fill final battle order with remaining characters ]
 
 FillFinalOrder:
-@aaca:  lda     $4a
+@aaca:  lda     z4a
         cmp     #12
         beq     @aaed
         clr_ax
@@ -153,11 +153,11 @@ FillFinalOrder:
         cmp     #BG1_TEXT_COLOR::DEFAULT
         bne     @aae7
         clr_a
-        lda     $4a
+        lda     z4a
         tay
         lda     $7e9d8a,x
         sta     $0205,y
-        inc     $4a
+        inc     z4a
 @aae7:  inx
         cpx     #12
         bne     @aad2
@@ -189,7 +189,7 @@ ResetFinalOrderList:
         inx
         cpx     #12
         bne     @aaff
-        stz     $4a
+        stz     z4a
         rts
 
 ; ------------------------------------------------------------------------------
@@ -219,14 +219,14 @@ DrawFinalOrderMenu:
 
 ; ------------------------------------------------------------------------------
 
-FinalOrderWindow:                       make_window BG2A, {1, 1}, {28, 24}
+FinalOrderWindow:                       window_pos BG2A, {1, 1}, {28, 24}
 
 ; ------------------------------------------------------------------------------
 
 ; [ make list of available characters for final battle order ]
 
 MakeFinalOrderCharList:
-@ab4d:  stz     $e6
+@ab4d:  stz     ze6
         clr_ax
 @ab51:  phx
         lda     $1850,x
@@ -235,7 +235,7 @@ MakeFinalOrderCharList:
         lda     $1850,x
         and     #$07
         beq     @ab81                   ; skip characters not in a party
-        stx     $e7
+        stx     ze7
         longa
         txa
         asl
@@ -247,11 +247,11 @@ MakeFinalOrderCharList:
         cmp     #CHAR_PROP::BANON
         bcs     @ab81
         clr_a
-        lda     $e6
+        lda     ze6
         tax
-        lda     $e7
+        lda     ze7
         sta     $7e9d8a,x
-        inc     $e6
+        inc     ze6
 @ab81:  plx
         inx
         cpx     #$0010
@@ -268,7 +268,7 @@ DrawFinalOrderListLeft:
 .else
         ldy_pos BG1A, {6, 6}
 .endif
-        sty     $f5
+        sty     zf5
         clr_ax
 @ab90:  jsr     InitFinalOrderTextBuf
         phx
@@ -299,7 +299,7 @@ DrawFinalOrderListRight:
 .else
         ldy_pos BG1A, {20, 6}
 .endif
-        sty     $f5
+        sty     zf5
         clr_ax
 @abbf:  jsr     InitFinalOrderTextBuf
         phx
@@ -324,7 +324,7 @@ InitFinalOrderTextBuf:
 @abdc:  ldy     #$9e89
         sty     hWMADDL
         longa
-        lda     $f5
+        lda     zf5
         shorta
         sta     hWMDATA
         xba
@@ -342,7 +342,7 @@ DrawFinalOrderCharName:
         lda     f:CharPropPtrs,x   ; pointers to character data
         tay
         shorta
-        jmp     _c334d2
+        jmp     DrawCharNameNoInit
 
 ; ------------------------------------------------------------------------------
 
@@ -350,10 +350,10 @@ DrawFinalOrderCharName:
 
 FinalOrderNextLine:
 @abfe:  longa
-        lda     $f5
+        lda     zf5
         clc
         adc     #$0080
-        sta     $f5
+        sta     zf5
         shorta
         rts
 
@@ -375,32 +375,32 @@ DrawFinalOrderEmptyChar:
 
 DrawFinalOrderNum:
 @ac19:  lda     #1
-        sta     $e6
+        sta     ze6
         ldy_pos BG1A, {3, 7}            ; left side
-        sty     $f5
+        sty     zf5
         ldx     #12
-        stx     $f1
+        stx     zf1
         jsr     @ac3b
         lda     #1
-        sta     $e6
+        sta     ze6
         ldy_pos BG1A, {17, 7}           ; right side
-        sty     $f5
+        sty     zf5
         ldx     #12
-        stx     $f1
+        stx     zf1
         jmp     @ac3b
 
 ; draw numbers on one side
 @ac3b:  clr_ax
 @ac3d:  phx
-        lda     $e6
+        lda     ze6
         jsr     HexToDec3
-        ldx     $f5
+        ldx     zf5
         jsr     DrawNum2
-        inc     $e6
+        inc     ze6
         jsr     FinalOrderNextLine
         plx
         inx
-        cpx     $f1
+        cpx     zf1
         bne     @ac3d
         rts
 

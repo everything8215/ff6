@@ -3,31 +3,31 @@
 ; ------------------------------------------------------------------------------
 
 ; unused menu state
-MenuState_2f:
+        array_label MENU_STATE, MENU_STATE::MENU_STATE_2F
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ create portrait task for party menu ]
 
-_c37ae5:
+CreatePartyPortraitTask:
 @7ae5:  lda     #3
         ldy     #near PortraitTask
         jsr     CreateTask
         txa
-        sta     $60
+        sta     z60
         phb
         lda     #$7e
         pha
         plb
         longa
         lda     #$001a
-        sta     near wTaskPosX,x
+        sta     near wTaskProp::PosX_H,x
         shorta
         clr_a
         lda     zSelIndex
-        jsr     _c37b0e
+        jsr     LoadPartyPortraitAnimPtr
         clr_a
-        sta     near {wTaskPosY + 1},x
+        sta     near wTaskProp::PosY + 2,x
         jsr     InitAnimTask
         plb
         rts
@@ -36,7 +36,7 @@ _c37ae5:
 
 ; [  ]
 
-_c37b0e:
+LoadPartyPortraitAnimPtr:
 @7b0e:  phx
         phx
         asl
@@ -44,10 +44,10 @@ _c37b0e:
         longa
         lda     f:PortraitAnimDataTbl,x
         ply
-        sta     near wTaskAnimPtr,y
+        sta     near wTaskProp::AnimPtr,y
         shorta
         lda     #^Portrait1AnimData
-        sta     near wTaskAnimBank,y
+        sta     near wTaskProp::AnimBank,y
         plx
         rts
 
@@ -55,25 +55,25 @@ _c37b0e:
 
 ; [ menu state $30-$32: unused ]
 
-MenuState_30:
-MenuState_31:
-MenuState_32:
+        array_label MENU_STATE, MENU_STATE::MENU_STATE_30
+        array_label MENU_STATE, MENU_STATE::MENU_STATE_31
+        array_label MENU_STATE, MENU_STATE::MENU_STATE_32
 
 ; ------------------------------------------------------------------------------
 
 _c37b25:
 @7b25:  clr_a
         lda     $7e9d89,x
-        sta     $e1
+        sta     ze1
         bmi     @7b41
         phx
         tax
         lda     $1850,x
-        and     #$18
+        and     #%00011000
         lsr3
         tay
-        lda     $e1
-        sta     [$e7],y
+        lda     ze1
+        sta     [ze7],y
         plx
         inx
         bra     @7b25
@@ -97,67 +97,67 @@ CharIconTaskTbl:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init group 1 sprite task ]
 
 CharIconTask_00:
-@7b52:  lda     #$01
-        tsb     $47
+@7b52:  lda     #$01                    ; enable group 1 sprite tasks
+        tsb     z47
         ldx     zTaskOffset
         lda     #$03
-        sta     near wTaskState,x
+        sta     near wTaskProp::State,x
         jsr     InitAnimTask
         clr_a
-        jsr     _c37bae
+        jsr     CreateForcedCharTask
         bra     _7b7e
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init group 2 sprite task ]
 
 CharIconTask_01:
 @7b66:  ldx     zTaskOffset
         lda     #$04
-        sta     near wTaskState,x
+        sta     near wTaskProp::State,x
         jsr     InitAnimTask
         bra     _7b8d
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init group 3 sprite task ]
 
 CharIconTask_02:
 @7b72:  ldx     zTaskOffset
         lda     #$05
-        sta     near wTaskState,x
+        sta     near wTaskProp::State,x
         jsr     InitAnimTask
         bra     _7ba1
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ update group 1 sprite task ]
 
 CharIconTask_03:
-_7b7e:  lda     $47
+_7b7e:  lda     z47
         and     #$01
         beq     @7b8b
         ldx     zTaskOffset
         jsr     UpdateAnimTask
         sec
         rts
-@7b8b:  clc
+@7b8b:  clc                             ; terminate task
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ update group 2 sprite task ]
 
 CharIconTask_04:
-_7b8d:  lda     $47
+_7b8d:  lda     z47
         and     #$02
-        beq     _7b9a
+        beq     _7b9a                   ; task terminates after 1 frame if set
         ldx     zTaskOffset
         jsr     UpdateAnimTask
-        clc
+        clc                             ; terminate task
         rts
 _7b9a:  ldx     zTaskOffset
         jsr     UpdateAnimTask
@@ -166,65 +166,65 @@ _7b9a:  ldx     zTaskOffset
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ update group 3 sprite task ]
 
 CharIconTask_05:
-_7ba1:  lda     $47
+_7ba1:  lda     z47
         and     #$04
-        beq     _7b9a
+        beq     _7b9a                   ; task terminates after 1 frame if set
         ldx     zTaskOffset
         jsr     UpdateAnimTask
-        clc
+        clc                             ; terminate task
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ create arrow sprite task for forced party members ]
 
-_c37bae:
-@7bae:  sta     $e6
-        lda     w0200
-        cmp     #$04
-        bne     @7c0e
+CreateForcedCharTask:
+@7bae:  sta     ze6
+        lda     r0200
+        cmp     #MENU_TYPE::PARTY
+        bne     @7c0e                   ; return if not party menu
         ldx     zTaskOffset
         clr_a
-        lda     $35c9,x
+        lda     near wTaskProp::w7e35c9,x
         bmi     @7c0e
         asl
         longa
         tax
         lda     f:ForcedCharMaskTbl,x
-        sta     $e7
-        lda     w0202
-        and     $e7
+        sta     ze7
+        lda     r0202
+        and     ze7
         shorta
         beq     @7c0e
         lda     #$00
         pha
         plb
-        lda     $e6
+        lda     ze6
         bne     @7bdf
         ldy     #near CharIconTask
         bra     @7be2
-@7bdf:  ldy     #near _c37a5f
+@7bdf:  ldy     #near PartySpriteTask
 @7be2:  lda     #3
         jsr     CreateTask
         lda     #$7e
         pha
         plb
         lda     #$ff
-        sta     $35c9,x
-        ldy     $374a,x
+        sta     near wTaskProp::w7e35c9,x
+        ldy     near wTaskProp::w7e374a,x
         longa
-        lda     near wTaskPosX,y
-        sta     near wTaskPosX,x
-        lda     near wTaskPosY,y
-        sta     near wTaskPosY,x
+        lda     near wTaskProp::PosX_H,y
+        sta     near wTaskProp::PosX_H,x
+        lda     near wTaskProp::PosY_H,y
+        sta     near wTaskProp::PosY_H,x
         lda     #near PartyArrowAnim
-        sta     near wTaskAnimPtr,x
+        sta     near wTaskProp::AnimPtr,x
         shorta
         lda     #^PartyArrowAnim
-        sta     near wTaskAnimBank,x
+        sta     near wTaskProp::AnimBank,x
 @7c0e:  rts
 
 ; ------------------------------------------------------------------------------
@@ -236,18 +236,18 @@ ForcedCharMaskTbl:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw character portrait in party menu ]
 
-_c37c2f:
+LoadPartyPortraitGfx:
 @7c2f:  ldy     #$2600
         sty     zDMA2Dest
         ldy     #$0320
         sty     zDMA2Size
         clr_a
-        lda     $4b
+        lda     z4b
         clc
-        adc     $4a
-        adc     $5a
+        adc     z4a
+        adc     z5a
         tax
         lda     $7e9d89,x
         bmi     @7ca4
@@ -264,7 +264,7 @@ _c37c2f:
 @7c5f:  ldy     #$0320
         sty     zDMA2Size
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9da9,x
         bmi     @7ca4
@@ -293,37 +293,37 @@ _c37c2f:
         sta     zDMA2Src
         shorta
         lda     #^PortraitGfx
-        sta     zDMA2Src+2
+        sta     zDMA2Src_B
         rts
 @7ca4:  ldy     #$9f51
         sty     zDMA2Src
         lda     #$7e
-        sta     zDMA2Src+2
+        sta     zDMA2Src_B
         rts
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ load portrait palette in party menu ]
 
-_c37cae:
-@7cae:  ldy     z0
+LoadPartyPortraitPal:
+@7cae:  ldy     zZero
         phy
         clr_a
-        lda     $4b
+        lda     z4b
         clc
-        adc     $4a
-        adc     $5a
+        adc     z4a
+        adc     z5a
         tax
         lda     $7e9d89,x
         bpl     @7cd6
         clr_a
         bra     @7cd6
-        ldy     z0
+        ldy     zZero
         bra     @7cca
         ldy     #$0020
 @7cca:  phy
         clr_a
-        lda     $4b
+        lda     z4b
         tax
         lda     $7e9da9,x
         bpl     @7cd6
@@ -336,7 +336,7 @@ _c37cae:
         clr_a
         shorta
         lda     #$10
-        sta     $e3
+        sta     ze3
         lda     $0014,y
         and     #$20
         beq     @7cf1
@@ -358,7 +358,7 @@ _c37cae:
         plx
         inx2
         iny2
-        dec     $e3
+        dec     ze3
         bne     @7d02
         shorta
         rts
@@ -366,9 +366,9 @@ _c37cae:
 ; ------------------------------------------------------------------------------
 
 ; unused menu states
-MenuState_44:
-MenuState_45:
-MenuState_46:
+        array_label MENU_STATE, MENU_STATE::MENU_STATE_44
+        array_label MENU_STATE, MENU_STATE::MENU_STATE_45
+        array_label MENU_STATE, MENU_STATE::MENU_STATE_46
 
 ; ------------------------------------------------------------------------------
 

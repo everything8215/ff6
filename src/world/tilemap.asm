@@ -287,15 +287,15 @@ InitTilemap256:
         stz     hVMAINC
         stz     hVMADDL
         lda     #$1800
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #$2000
-        sta     $4302
+        sta     hDMA0::ADDR
         lda     #$007e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         lda     #$4000                  ; transfer $4000 bytes
-        sta     $4305
-        lda     #$0100
-        sta     hMDMAEN-1               ; also clears hVTIMEH
+        sta     hDMA0::SIZE
+        lda     #BIT_0 << 8
+        sta     hMDMAEN - 1             ; also clears hVTIMEH
         rts
 
 ; ------------------------------------------------------------------------------
@@ -555,15 +555,15 @@ InitTilemap128:
         stz     hVMAINC
         stz     hVMADDL
         lda     #$1800
-        sta     $4300
+        sta     hDMA0::CTRL
         lda     #$2000
-        sta     $4302
+        sta     hDMA0::ADDR
         lda     #$007e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         lda     #$4000                  ; transfer $4000 bytes
-        sta     $4305
-        lda     #$0100
-        sta     hMDMAEN-1               ; also clears hVTIMEH
+        sta     hDMA0::SIZE
+        lda     #BIT_0 << 8
+        sta     hMDMAEN - 1             ; also clears hVTIMEH
         rts
 
 ; ------------------------------------------------------------------------------

@@ -11,13 +11,13 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-inc_lang "text/char_name_%s.inc"
-inc_lang "text/item_name_%s.inc"
-inc_lang "text/magic_name_%s.inc"
-inc_lang "text/map_title_%s.inc"
-.include "text/mte_tbl_jp.inc"
+.include "src/text/char_name.inc"
+.include "src/text/item_name.inc"
+.include "src/text/magic_name.inc"
+.include "src/text/map_title.inc"
+.include "src/text/mte_tbl.inc"
 
-.import Dlg1, DlgBankInc, DlgPtrs, DTETbl, LargeFontGfx, FontWidth
+.import Dlg, DlgBankInc, DlgPtrs, DTETbl, LargeFontGfx, FontWidth
 
 .a8
 .i16
@@ -34,7 +34,7 @@ inc_lang "text/map_title_%s.inc"
         stz     $d3                     ; keypress state
         stz     $c9                     ; dialog pointer
         stz     $ca
-        lda     #^Dlg1
+        lda     #^Dlg
         sta     $cb
         stz     $056d                   ; multiple choice selection is not changing
         stz     $056e                   ; clear current multiple choice selection
@@ -74,7 +74,7 @@ inc_lang "text/map_title_%s.inc"
 ; [ update pointer to current dialog item ]
 
 .proc GetDlgPtr
-        lda     #^Dlg1                  ; bank byte
+        lda     #^Dlg                   ; bank byte
         sta     $cb
         longa
         lda     $d0                     ; dialog index
@@ -107,7 +107,7 @@ inc_lang "text/map_title_%s.inc"
 :       stz     $0745
         rts
 
-:       lda     #$64                    ; set counter to 100 frames
+:       lda     #100                    ; set counter to 100 frames
         sta     $0567
         lda     #^MapTitle              ; get pointer to map name
         sta     $cb
@@ -116,7 +116,7 @@ inc_lang "text/map_title_%s.inc"
         tax
         longa_clc
         lda     f:MapTitlePtrs,x
-        adc     #.loword(MapTitle)
+        adc     #near MapTitle
         sta     $c9
         shorta0
 
@@ -264,14 +264,13 @@ EscapeCode:
         bcs     Done
 
 ; character name
-        dec                 ; decrement to get character index
-        dec
+        dec2                ; decrement to get character index
         sta     hWRMPYA
         lda     #$25        ; get pointer to character data
         sta     hWRMPYB
         lda     $cf         ; return if text buffer is not empty
         bpl     Done
-        lda     #CharName::ITEM_SIZE
+        lda     #CHAR_NAME::ITEM_SIZE
         sta     $1a
         ldy     hRDMPYL
 Loop2:  lda     $1602,y     ; get letter
@@ -292,11 +291,11 @@ Loop2:  lda     $1602,y     ; get letter
 CalcItemWidth:
         lda     $0583                   ; item index
         sta     hWRMPYA
-        lda     #ItemName::ITEM_SIZE
+        lda     #ITEM_NAME::ITEM_SIZE
         sta     hWRMPYB
         lda     $cf                     ; return if text buffer is not empty
         bpl     Done
-        lda     #ItemName::ITEM_SIZE-1
+        lda     #ITEM_NAME::ITEM_SIZE-1
         sta     $1a
         ldx     hRDMPYL
 Loop3:  txy
@@ -576,7 +575,7 @@ _82e3:  lda     $1602,y
         beq     _82f8
         iny
         inx
-        cpx     #CharName::ITEM_SIZE
+        cpx     #CHAR_NAME::ITEM_SIZE
         bne     _82e3
 _82f8:  clr_a
         sta     $7e9183,x
@@ -602,14 +601,11 @@ _8235:  clr_a
 
 _823f:  sec
         sbc     #$f0
-        sta     $4202
+        sta     hWRMPYA
         lda     #$25
-        sta     $4203
-        nop
-        nop
-        nop
-        nop
-        ldy     $4216
+        sta     hWRMPYB
+        nop4
+        ldy     hRDMPYL
         ldx     $00
 _8253:  lda     $1602,y
         sta     $7e9183,x
@@ -617,7 +613,7 @@ _8253:  lda     $1602,y
         beq     _8265
         iny
         inx
-        cpx     #CharName::ITEM_SIZE
+        cpx     #CHAR_NAME::ITEM_SIZE
         bne     _8253
 _8265:  clr_a
         sta     $7e9183,x
@@ -743,7 +739,7 @@ _83d3:  cmp     #$1a
         bne     _840f
         lda     $0583
         sta     hWRMPYA
-        lda     #ItemName::ITEM_SIZE
+        lda     #ITEM_NAME::ITEM_SIZE
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
@@ -765,7 +761,7 @@ _83ee:  lda     f:ItemName+1,x          ; ignore symbol
         beq     _8403
         inx
         iny
-        cpy     #ItemName::ITEM_SIZE-1
+        cpy     #ITEM_NAME::ITEM_SIZE - 1
         bne     _83ee
 _8403:  clr_a
         sta     $9183,y
@@ -780,7 +776,11 @@ _840f:  cmp     #$1b
         bne     _844b
         lda     $0584
         sta     hWRMPYA
+.if ::LANG_EN
         lda     #4                      ; carried over from ff6j, should be 7
+.else
+        lda     #MAGIC_NAME::ITEM_SIZE - 1
+.endif
         sta     hWRMPYB
         nop3
         ldx     hRDMPYL
@@ -801,7 +801,11 @@ _842a:  lda     f:MagicName+1,x
         beq     _843f
         inx
         iny
+.if ::LANG_EN
         cpy     #4                      ; copy up to 4 bytes (should be 7)
+.else
+        cpy     #MAGIC_NAME::ITEM_SIZE - 1
+.endif
         bne     _842a
 _843f:  clr_a
         sta     $9183,y                 ; store $00 in the last byte
@@ -850,11 +854,10 @@ _83cd:  sec
         sbc     #$d8
         asl
         tax
-        rep     #$20
+        longa
         lda     f:MTETblPtrs,x
         sta     $2a
-        clr_a
-        sep     #$20
+        shorta0
         lda     #^MTETbl
         sta     $2c
         ldx     $00
@@ -1457,10 +1460,10 @@ RightShift:
 
 ; pointers to MTE strings
 MTETblPtrs:
-        ptr_tbl MTETbl
+        ptr_tbl MTE_TBL
 
 ; MTE strings carried over from ff6j (unused in English translation)
 MTETbl:
-        .incbin "src/text/mte_tbl_jp.dat"
+        .incbin "assets/text/mte_tbl.bin"
 
 ; ------------------------------------------------------------------------------

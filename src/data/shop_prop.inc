@@ -1,0 +1,49 @@
+.ifndef SHOP_PROP_INC
+SHOP_PROP_INC = 1
+
+_shop_prop_seq .set 0
+
+.mac shop_prop shop_id, type, price_mod
+        .assert _shop_prop_seq = SHOP::shop_id, error, .sprintf("shop_prop index mismatch (%s != %d)", .string(shop_id), _shop_prop_seq)
+        _shop_prop_num_items .set 0
+        _shop_prop_type .set SHOP_TYPE::type
+        .ifnblank price_mod
+                _shop_prop_price_mod .set SHOP_PRICE_MOD::price_mod
+        .else
+                _shop_prop_price_mod .set SHOP_PRICE_MOD::NONE
+        .endif
+        _shop_prop_item1 .set ITEM::EMPTY
+        _shop_prop_item2 .set ITEM::EMPTY
+        _shop_prop_item3 .set ITEM::EMPTY
+        _shop_prop_item4 .set ITEM::EMPTY
+        _shop_prop_item5 .set ITEM::EMPTY
+        _shop_prop_item6 .set ITEM::EMPTY
+        _shop_prop_item7 .set ITEM::EMPTY
+        _shop_prop_item8 .set ITEM::EMPTY
+.endmac
+
+.mac shop_item item
+        _shop_prop_num_items .set _shop_prop_num_items + 1
+        .ident(.sprintf("_shop_prop_item%d", _shop_prop_num_items)) .set ITEM::item
+.endmac
+
+.mac end_shop_prop
+        .byte _shop_prop_type | _shop_prop_price_mod << 3
+        .byte _shop_prop_item1
+        .byte _shop_prop_item2
+        .byte _shop_prop_item3
+        .byte _shop_prop_item4
+        .byte _shop_prop_item5
+        .byte _shop_prop_item6
+        .byte _shop_prop_item7
+        .byte _shop_prop_item8
+        _shop_prop_seq .set _shop_prop_seq + 1
+.endmac
+
+.else
+
+.delmac shop_prop
+.delmac shop_item
+.delmac end_shop_prop
+
+.endif

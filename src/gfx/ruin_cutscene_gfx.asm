@@ -8,6 +8,6 @@
 
 ; ec/e900
 RuinCutsceneGfx:
-        .incbin "ruin_cutscene.4bpp.lz"
+        .incbin "assets/gfx/ruin_cutscene.4bpp.lz"
 
 ; ------------------------------------------------------------------------------

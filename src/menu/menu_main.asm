@@ -13,13 +13,14 @@
 
 .p816
 
-.include "const.inc"
-.include "hardware.inc"
-.include "macros.inc"
-.include "code_ext.inc"
+.include "src/common/const.inc"
+.include "src/common/hardware.inc"
+.include "src/common/macros.inc"
+.include "src/common/code_ext.inc"
 
 .include "menu_ram.inc"
-inc_lang "menu_text_%s.inc.raw"
+.include "menu_const.inc"
+.include "assets/text/menu_text.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -28,7 +29,6 @@ inc_lang "menu_text_%s.inc.raw"
 
 .include "ending_anim.asm"
 .include "menu_anim.asm"
-.include "genju_prop.asm"
 
 .include "menu_ext.asm"
 .include "menu_common.asm"

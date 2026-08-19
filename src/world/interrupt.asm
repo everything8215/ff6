@@ -42,16 +42,16 @@ VehicleNMI:
         bmi     @a555
         stx     hVMADDL
         ldx     #$1800
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$6d50
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0100
-        stx     $4305
+        stx     hDMA0::SIZE
         lda     #$00
         sta     hVMAINC
-        lda     #$01
+        lda     #BIT_0
         sta     hMDMAEN
         bra     @a5a4
 
@@ -60,44 +60,44 @@ VehicleNMI:
         bmi     @a5a4
         stx     hVMADDL
         ldx     #$1800
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$6e50
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
+        stx     hDMA0::SIZE
         lda     #$02
         sta     hVMAINC
-        lda     #$01
+        lda     #BIT_0
         sta     hMDMAEN
         ldx     $46
         inx
         stx     hVMADDL
         ldx     #$1800
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$6ed0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
+        stx     hDMA0::SIZE
         lda     #$02
         sta     hVMAINC
-        lda     #$01
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; transfer color palettes to ppu
 @a5a4:  stz     hCGADD
         ldx     #$2200
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$e000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0200
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; set scrolling registers and mode7 registers
@@ -131,16 +131,16 @@ VehicleNMI:
         sta     hM7Y
 
 ; copy sprite data to ppu
-        stz     $4300
-        lda     #$04
-        sta     $4301
+        stz     hDMA0::CTRL
+        lda     #<hOAMDATA
+        sta     hDMA0::HREG
         ldx     #$6b30
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0220
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; copy animated water tiles to ppu
@@ -152,26 +152,26 @@ VehicleNMI:
         ldx     #$1100
         stx     hVMADDL
         ldx     #$1900
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$b750
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         ldx     #$1500
         stx     hVMADDL
         ldx     #$1900
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$b7d0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; this section has no effect
@@ -201,9 +201,9 @@ VehicleNMI:
         bit     #$02
         beq     @a6a5
         lda     $fa
-        ora     #$08                    ; enable hdma channel #3 (window)
+        ora     #%00001000              ; enable hdma channel #3 (window)
         sta     $fa
-@a6a5:  lda     #$f2                    ; enable all except #2 and #3
+@a6a5:  lda     #%11110010              ; enable all except #2 and #3
         ora     $fa
         sta     hHDMAEN
         pld
@@ -335,16 +335,16 @@ WorldNMI:
         bmi     @a784
         stx     hVMADDL
         ldx     #$1800
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$6d50
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0100
-        stx     $4305
+        stx     hDMA0::SIZE
         lda     #$00
         sta     hVMAINC
-        lda     #$01
+        lda     #BIT_0
         sta     hMDMAEN
         bra     @a7d3
 
@@ -353,44 +353,44 @@ WorldNMI:
         bmi     @a7d3
         stx     hVMADDL
         ldx     #$1800
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$6e50
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
+        stx     hDMA0::SIZE
         lda     #$02
         sta     hVMAINC
-        lda     #$01
+        lda     #BIT_0
         sta     hMDMAEN
         ldx     $46
         inx
         stx     hVMADDL
         ldx     #$1800
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$6ed0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
+        stx     hDMA0::SIZE
         lda     #$02
         sta     hVMAINC
-        lda     #$01
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; transfer color palettes to ppu
 @a7d3:  stz     hCGADD
         ldx     #$2200
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$e000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0200
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; set scrolling registers and mode7 registers
@@ -434,16 +434,16 @@ WorldNMI:
         sta     hM7Y
 
 ; copy sprite data to ppu
-        stz     $4300
-        lda     #$04
-        sta     $4301
+        stz     hDMA0::CTRL
+        lda     #<hOAMDATA
+        sta     hDMA0::HREG
         ldx     #$6b30
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0220
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; copy animated water tiles to ppu
@@ -452,30 +452,30 @@ WorldNMI:
         ldx     #$1100
         stx     hVMADDL
         ldx     #$1900
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$b750
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         ldx     #$1500
         stx     hVMADDL
         ldx     #$1900
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$b7d0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; enable hdma channels
-        lda     #$f0
+        lda     #%11110000
         sta     hHDMAEN
 
 ; set screen brightness
@@ -536,7 +536,7 @@ WorldNMI:
         sta     hM7Y
 
 ; enable hdma channels
-        lda     #$f0
+        lda     #%11110000
         sta     hHDMAEN
         jmp     @a8c7
 
@@ -609,14 +609,14 @@ TrainNMI:
         bne     @a9e0
         stz     hCGADD
         ldx     #$2200
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$e000                  ; source = $7ee000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0200                  ; size = $0200
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         shorta
         lda     #$80
@@ -633,16 +633,16 @@ TrainNMI:
         ldy     #$1318                  ; destination = $1318 (vram)
 @a9e9:  shorta
         sty     hVMADDL
-        stz     $4300
-        lda     #$18
-        sta     $4301
-        stx     $4302
+        stz     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
+        sta     hDMA0::ADDR_B
         lda     #$50                    ; size = $0050
-        sta     $4305
-        stz     $4306
-        lda     #$01
+        sta     hDMA0::SIZE_L
+        stz     hDMA0::SIZE_H
+        lda     #BIT_0
         sta     hMDMAEN
         longa_clc
         tya
@@ -704,16 +704,16 @@ TrainIRQ:
         ldy     #$0b18                  ; destination = $0b18 (vram)
 @aa72:  shorta
         sty     hVMADDL
-        stz     $4300
-        lda     #$18
-        sta     $4301
-        stx     $4302
+        stz     hDMA0::CTRL
+        lda     #<hVMDATAL
+        sta     hDMA0::HREG
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
+        sta     hDMA0::ADDR_B
         lda     #$50
-        sta     $4305                   ; size = $0050
-        stz     $4306
-        lda     #$01
+        sta     hDMA0::SIZE_L           ; size = $0050
+        stz     hDMA0::SIZE_H
+        lda     #BIT_0
         sta     hMDMAEN
         longa_clc
         tya
@@ -829,14 +829,14 @@ EndingAirshipSceneNMI:
         cmp     hRDNMI
         stz     hCGADD
         ldx     #$2200
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$e000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0200
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         longa
         lda     $34
@@ -866,16 +866,16 @@ EndingAirshipSceneNMI:
         sta     hM7Y
         lda     $39
         sta     hM7Y
-        stz     $4300
-        lda     #$04
-        sta     $4301
+        stz     hDMA0::CTRL
+        lda     #<hOAMDATA
+        sta     hDMA0::HREG
         ldx     #$6b30
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0220
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         shorta
         lda     $23
@@ -893,9 +893,9 @@ EndingAirshipSceneNMI:
         bit     #$02
         beq     @ac06
         lda     $fa
-        ora     #$08
+        ora     #%00001000
         sta     $fa
-@ac06:  lda     #$f2
+@ac06:  lda     #%11110010
         ora     $fa
         sta     hHDMAEN
         pld

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
 import numpy as np
-import romtools as rt
-import sys
+import sys, os
 
 
 def create_stencil(gfx_bytes, tile_size):
@@ -26,7 +25,7 @@ def create_stencil(gfx_bytes, tile_size):
                 stencil_offset += 1
 
     elif len(gfx_bytes) == 256 * tile_size:
-        stencil_bytes = np.zeros(16, dtype='>i2')
+        stencil_bytes = np.zeros(16, dtype='>u2')
         mask = 0x8000
         stencil_offset = 0
         for i in range(256):
@@ -42,8 +41,7 @@ def create_stencil(gfx_bytes, tile_size):
                 stencil_offset += 1
 
     else:
-        raise ValueError(
-            'Monster graphics must be either 64x64 or 128x128 pixels')
+        raise ValueError('Monster graphics must be either 64x64 or 128x128 pixels')
 
     return trimmed_gfx, stencil_bytes.tobytes()
 
@@ -60,8 +58,7 @@ def apply_stencil(trimmed_gfx, stencil_bytes, tile_size):
         stencil_bytes = np.frombuffer(stencil_bytes, dtype='>u2')
 
     else:
-        raise ValueError(
-            'Monster graphics must be either 64x64 or 128x128 pixels')
+        raise ValueError('Monster graphics must be either 64x64 or 128x128 pixels')
 
     gfx_bytes = bytearray(num_tiles * tile_size)
 
@@ -97,8 +94,9 @@ if __name__ == '__main__':
     else:
         raise ValueError(f'Invalid monster graphics file: {gfx_path}')
 
-    trimmed_path = gfx_path + '.trm'
-    stencil_path = gfx_path[:-5] + '.stn'
+    trimmed_path = sys.argv[2]
+    stencil_path, _ = os.path.splitext(trimmed_path)
+    stencil_path += '.stn'
 
     with open(gfx_path, 'rb') as gfx_file:
         gfx_bytes = bytearray(gfx_file.read())

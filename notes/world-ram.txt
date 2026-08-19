@@ -48,7 +48,7 @@ $0000-$00FF direct page
     $2C
    +$2D vertical movement speed
    +$2F altitude
-   +$31 frame counter for vector approach
+   +$31 previous buttons pressed, frame counter for vector approach
  +++$33 current X position
  +++$37 current Y position
     $3B -

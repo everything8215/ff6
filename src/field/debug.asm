@@ -36,10 +36,10 @@ DebugHexDigitTbl:
 
 .proc DebugUnusedEvent
         ldx     $e5
-        cpx     #.loword(EventScript_NoEvent)
+        cpx     #.loword(EventScript::NoEvent)
         bne     Done
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     Done                    ; return if an event is running
         lda     $1868
         cmp     #$10
@@ -50,9 +50,9 @@ DebugHexDigitTbl:
         lda     #$ca
         sta     $e7
         sta     $05f6
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #.loword(EventScript::NoEvent)
         stx     $0594                   ; event stack = $ca0000
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596
         lda     #1
         sta     $05c7                   ; event loop count = 1

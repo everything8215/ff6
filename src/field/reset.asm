@@ -112,9 +112,9 @@ NoMapLoad:
         lda     $11f1                   ; branch if not restoring a saved game
         beq     :+
         stz     $11f1                   ; disable restore saved game
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #.loword(EventScript::NoEvent)
         stx     $e5
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $e7
         jsr     RestartGame
         jsr     InitSavedGame
@@ -273,9 +273,9 @@ DoneScroll:
         sta     hDMA0::ADDR_B
         sta     hDMA0::HDMA_B
         lda     $0521                   ; wavy bg2 graphics
-        and     #$08
+        and     #%00001000
         lsr3
-        ora     #$fe
+        ora     #%11111110
         sta     hHDMAEN                 ; enable hdma channels
         jsr     UpdateScrollHDMA
         jsr     UpdateFixedColor
@@ -399,6 +399,7 @@ Fail:   jmp     Fail                    ; infinite loop
 
 ; [ convert hex to decimal ]
 
+; used to draw gil value for treasure chests
 ; ++$22: hex value to convert
 
 .proc HexToDec
@@ -534,7 +535,7 @@ Done:   rts
         ldx     $e5
         bne     :+
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     :+
         stz     $11fd
         stz     $11fe
@@ -603,9 +604,9 @@ Done:   rts
         stx     $e5
         lda     $11ff
         sta     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     :+
-        cpx     #.loword(EventScript_NoEvent)
+        cpx     #.loword(EventScript::NoEvent)
         bne     :+
         ldx     $00
         stx     $e8
@@ -640,7 +641,7 @@ wDecompBuf := $7ff800
         sta     f:hWMADDL
         shorta
         lda     zDecompDest+2
-        and     #BIT_0
+        and     #%1
         sta     f:hWMADDH
         lda     #1
         sta     zDecompCounter

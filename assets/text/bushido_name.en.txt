@@ -1,0 +1,12 @@
+#item_size:12
+#char_tbl:text_en
+#char_tbl:fixed_length_en
+
+#text:DISPATCH
+#text:RETORT
+#text:SLASH
+#text:QUADRA_SLAM
+#text:EMPOWERER
+#text:STUNNER
+#text:QUADRA_SLICE
+#text:CLEAVE

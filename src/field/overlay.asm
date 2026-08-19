@@ -11,7 +11,7 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "field/overlay_prop.inc"
+.include "overlay_prop.inc"
 
 .a8
 .i16
@@ -39,7 +39,7 @@
         lda     #^OverlayVRAMTbl
         sta     $2f
         ldy     $00
-Loop1:   phy
+Loop1:  phy
         lda     $0633,y                 ; overlay tile number (8 bytes per tile)
         longa
         asl3
@@ -107,12 +107,12 @@ OverlayVRAMTbl:
 ; c0/e2a0
 OverlayGfx:
         fixed_block $0c00
-        .incbin "src/gfx/map_overlay.1bpp"
+        .incbin "assets/gfx/map_overlay.1bpp"
         end_fixed_block
 
 ; c0/eea0
 OverlayTilemap:
-        .incbin "overlay_tilemap.dat"
+        .incbin "assets/data/field/overlay_tilemap.bin"
 
 .popseg
 
@@ -145,12 +145,12 @@ OverlayTilemap:
 ; c0/f4a0
 OverlayPropPtrs:
         fixed_block $60
-        ptr_tbl OverlayProp
+        ptr_tbl OVERLAY_PROP
         end_fixed_block
 
 .macro inc_overlay_prop id, file
-        array_label OverlayProp, OVERLAY_PROP::id
-        .incbin .sprintf("overlay_prop/%s.dat.lz", file)
+        array_label OVERLAY_PROP, OVERLAY_PROP::id
+        .incbin .sprintf("assets/data/field/overlay_prop/%s.bin.lz", file)
 .endmac
 
 ; c0/f500
@@ -384,7 +384,7 @@ NotStairs:
 ; party is not on a bridge tile
 @ca27:  lda     $aa                     ; tile number
         tay
-        lda     $0643,y                 ; overlay tile formation
+        lda     $0643,y                 ; overlay tile
         cmp     #$ff
         beq     @ca5e                   ; branch if no overlay tile
         sta     $1a

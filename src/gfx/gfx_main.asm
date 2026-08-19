@@ -2,8 +2,8 @@
 
 .p816
 
-.include "macros.inc"
-.include "const.inc"
+.include "src/common/macros.inc"
+.include "src/common/const.inc"
 
 ; ------------------------------------------------------------------------------
 

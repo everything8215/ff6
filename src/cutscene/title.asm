@@ -88,9 +88,9 @@ InitInterrupts:
 @5062:  lda     #$5c
         sta     $1500
         sta     $1504
-        ldx     #.loword(CutsceneNMI)
+        ldx     #near CutsceneNMI
         stx     $1501
-        ldx     #.loword(CutsceneIRQ)
+        ldx     #near CutsceneIRQ
         stx     $1505
         lda     #^*
         sta     $1503
@@ -136,7 +136,7 @@ TitleLoop:
         bmi     @50c5
         asl
         tax
-        jsr     (.loword(TitleStateTbl),x)
+        jsr     (near TitleStateTbl,x)
         lda     $06
         bit     #$80
         bne     @50c0
@@ -148,7 +148,7 @@ TitleLoop:
 @50c5:  ldy     #15
         sty     $15
         lda     #0
-        ldy     #.loword(_7e55a0)
+        ldy     #near _7e55a0
         jsr     CreateTask
 @50d2:  ldy     $15
         beq     @50de
@@ -184,14 +184,14 @@ SplashLoop:
         bmi     @5109
         asl
         tax
-        jsr     (.loword(SplashStateTbl),x)
+        jsr     (near SplashStateTbl,x)
         jsr     ExecTasks
         jsr     WaitVBlank
         bra     @50f7
 @5109:  ldy     #15
         sty     $15
         lda     #0
-        ldy     #.loword(_7e55a0)
+        ldy     #near _7e55a0
         jsr     CreateTask
 @5116:  ldy     $15
         beq     @5122
@@ -225,24 +225,24 @@ SplashPal:
 SplashState_00:
 @5155:  jsr     _7e5306
         ldx     #$3000
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3020
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3120
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3120
-        ldy     #.loword(_7e7b43)
+        ldy     #near _7e7b43
         lda     #$01
         jsr     CreateFadePalTask
         ldx     #$3000
-        ldy     #.loword(WhitePal)
+        ldy     #near WhitePal
         lda     #$01
         jsr     CreateFadePalTask
         ldx     #$3020
-        ldy     #.loword(SplashPal)
+        ldy     #near SplashPal
         lda     #$01
         jsr     CreateFadePalTask
         ldy     #$0100
@@ -278,54 +278,54 @@ TitleState_00:
         jsr     LoadPal
 .endif
 @51ae:  ldx     #$3120
-        ldy     #.loword(_7e7b63)
+        ldy     #near _7e7b63
         jsr     LoadPal
         ldx     #$3140
-        ldy     #.loword(_7e7b43)
+        ldy     #near _7e7b43
         jsr     LoadPal
         ldx     #$3000
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3020
-        ldy     #.loword(_7e7bc3)
+        ldy     #near _7e7bc3
         jsr     LoadPal
         ldx     #$30c0
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3040
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3060
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$30e0
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$30a0
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$30c0
-        ldy     #.loword(_7e7c03)
+        ldy     #near _7e7c03
         lda     #$04
         jsr     CreateFadePalTask
         ldx     #$3040
-        ldy     #.loword(_7e7c23)
+        ldy     #near _7e7c23
         lda     #$04
         jsr     CreateFadePalTask
         ldx     #$3060
-        ldy     #.loword(_7e7c23)
+        ldy     #near _7e7c23
         lda     #$04
         jsr     CreateFadePalTask
         ldx     #$30e0
-        ldy     #.loword(TownPal1)
+        ldy     #near TownPal1
         lda     #$04
         jsr     CreateFadePalTask
         ldx     #$30a0
-        ldy     #.loword(_7e7be3)
+        ldy     #near _7e7be3
         lda     #$04
         jsr     CreateFadePalTask
         lda     #1
-        ldy     #.loword(_7e5539)
+        ldy     #near _7e5539
         jsr     CreateTask
         ldy     #60
         sty     $15
@@ -333,21 +333,21 @@ TitleState_00:
         lda     #$0f
         sta     $32
         lda     #1
-        ldy     #.loword(_7e55c8)
+        ldy     #near _7e55c8
         jsr     CreateTask
         longa
         lda     #$3040
         sta     $3701,x
         shorta
         lda     #1
-        ldy     #.loword(_7e55c8)
+        ldy     #near _7e55c8
         jsr     CreateTask
         longa
         lda     #$3060
         sta     $3701,x
         shorta
         lda     #1
-        ldy     #.loword(_7e55c8)
+        ldy     #near _7e55c8
         jsr     CreateTask
         longa
         lda     #$30c0
@@ -381,7 +381,7 @@ TitleState_02:
         jsr     _7e7897
 .if !LANG_EN
         lda     #0
-        ldy     #.loword(_7e5323)
+        ldy     #near _7e5323
         jsr     CreateTask
 .endif
         ldy     #30
@@ -397,20 +397,20 @@ TitleState_03:
 @52a6:  ldy     $15
         bne     @52df
         lda     #0
-        ldy     #.loword(_7e53c5)
+        ldy     #near _7e53c5
         jsr     CreateTask
         lda     #0
-        ldy     #.loword(_7e5431)
+        ldy     #near _7e5431
         jsr     CreateTask
         lda     #0
-        ldy     #.loword(_7e54af)
+        ldy     #near _7e54af
         jsr     CreateTask
         ldx     #$3000
-        ldy     #.loword(FlamesPal)
+        ldy     #near FlamesPal
         lda     #$02
         jsr     CreateFadePalTask
         ldx     #$3020
-        ldy     #.loword(_7e7ba3)
+        ldy     #near _7e7ba3
         lda     #$01
         jsr     CreateFadePalTask
         ldy     #330
@@ -430,10 +430,10 @@ TitleState_04:
         sty     $15
 .if !LANG_EN
         lda     #0
-        ldy     #.loword(DefaultAnimTask)
+        ldy     #near DefaultAnimTask
         jsr     CreateTask
         longa
-        lda     #$79f6
+        lda     #near TitleTextAnim1
         sta     $3500,x
         shorta
         lda     #$38
@@ -441,7 +441,7 @@ TitleState_04:
         lda     #$1f
         sta     $3401,x
         ldx     #$3100
-        ldy     #$7ae5
+        ldy     #near _7e7ae5
         lda     #$08
         jsr     CreateFadePalTask
 .endif
@@ -461,10 +461,10 @@ TitleState_05:
         jsr     _7e5306
 .else
         lda     #0
-        ldy     #.loword(DefaultAnimTask)
+        ldy     #near DefaultAnimTask
         jsr     CreateTask
         longa
-        lda     #$79f9
+        lda     #near TitleTextAnim2
         sta     $3500,x
         shorta
         lda     #$48
@@ -473,7 +473,7 @@ TitleState_05:
         sta     $3401,x
 .endif
         ldx     #$3120
-        ldy     #.loword(_7e7b43)
+        ldy     #near _7e7b43
         lda     #$04
         jsr     CreateFadePalTask
 @5305:  rts
@@ -486,10 +486,10 @@ TitleState_05:
 
 _7e5306:
 @5306:  lda     #0
-        ldy     #.loword(DefaultAnimTask)
+        ldy     #near DefaultAnimTask
         jsr     CreateTask
         longa
-        lda     #.loword(TitleTextAnim1)
+        lda     #near TitleTextAnim1
         sta     $3500,x
         shorta
         lda     #$40
@@ -497,10 +497,10 @@ _7e5306:
         lda     #$a0
         sta     $3401,x
         lda     #0
-        ldy     #.loword(DefaultAnimTask)
+        ldy     #near DefaultAnimTask
         jsr     CreateTask
         longa
-        lda     #.loword(TitleTextAnim2)
+        lda     #near TitleTextAnim2
         sta     $3500,x
         shorta
         lda     #$90
@@ -522,19 +522,19 @@ TitleState_06:
         ldy     #256
         sty     $15
         ldx     #$3100
-        ldy     #.loword(_7e7b63)
+        ldy     #near _7e7b63
         lda     #$02
         jsr     CreateFadePalTask
         ldx     #$3120
-        ldy     #.loword(_7e7b63)
+        ldy     #near _7e7b63
         lda     #$04
         jsr     CreateFadePalTask
         ldx     #$3000
-        ldy     #.loword(_7e7b63)
+        ldy     #near _7e7b63
         lda     #$08
         jsr     CreateFadePalTask
         ldx     #$3020
-        ldy     #.loword(_7e7b63)
+        ldy     #near _7e7b63
         lda     #$08
         jsr     CreateFadePalTask
 @5376:  rts
@@ -663,7 +663,7 @@ _7e5323:
 
 _7e53c5:
 @53c5:  tax
-        jmp     (.loword(_7e53c9),x)
+        jmp     (near _7e53c9,x)
 
 _7e53c9:
 @53c9:  .addr   _7e53cd
@@ -730,7 +730,7 @@ _7e53d5:
 
 _7e5431:
 @5431:  tax
-        jmp     (.loword(_7e5435),x)
+        jmp     (near _7e5435,x)
 
 _7e5435:
 @5435:  .addr   _7e5439
@@ -816,7 +816,7 @@ CalcSine:
 
 _7e54af:
 @54af:  tax
-        jmp     (.loword(_7e54b3),x)
+        jmp     (near _7e54b3,x)
 
 _7e54b3:
 @54b3:  .addr   _7e54b7
@@ -916,7 +916,7 @@ _7e54da:
 
 _7e5539:
 @5539:  tax
-        jmp     (.loword(_7e553d),x)
+        jmp     (near _7e553d,x)
 
 _7e553d:
 @553d:  .addr   _7e5541
@@ -985,7 +985,7 @@ _7e5559:
 
 _7e55a0:
 @55a0:  tax
-        jmp     (.loword(_7e55a4),x)
+        jmp     (near _7e55a4,x)
 
 _7e55a4:
 @55a4:  .addr   _7e55a8
@@ -1026,7 +1026,7 @@ _7e55b2:
 
 _7e55c8:
 @55c8:  tax
-        jmp     (.loword(_7e55cc),x)
+        jmp     (near _7e55cc,x)
 
 _7e55cc:
 @55cc:  .addr   _7e55d2
@@ -1045,7 +1045,7 @@ _7e55d2:
 
 _7e55dc:
 @55dc:  longa
-        lda     #.loword(_7e563e)
+        lda     #near _7e563e
         sta     $3500,x
         shorta
         jsr     InitAnimTask
@@ -1067,7 +1067,7 @@ _7e55eb:
         sec
         rts
 @55fd:  lda     #2
-        ldy     #.loword(_7e56f9)
+        ldy     #near _7e56f9
         jsr     CreateTask
         inc     $36
         bra     @55f6
@@ -1159,7 +1159,7 @@ _7e56d9:
 
 _7e56f9:
 @56f9:  tax
-        jmp     (.loword(_7e56fd),x)
+        jmp     (near _7e56fd,x)
 
 _7e56fd:
 @56fd:  .addr   _7e5701,_7e5736

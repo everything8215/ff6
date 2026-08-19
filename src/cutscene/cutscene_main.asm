@@ -13,14 +13,14 @@
 
 .p816
 
-.include "const.inc"
-.include "hardware.inc"
-.include "macros.inc"
-.include "code_ext.inc"
+.include "src/common/const.inc"
+.include "src/common/hardware.inc"
+.include "src/common/macros.inc"
+.include "src/common/code_ext.inc"
 
 ; ------------------------------------------------------------------------------
 
-.include "gfx/map_gfx.inc"
+.include "src/gfx/map_gfx.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -98,7 +98,7 @@ DecompCutsceneProg:
         stx     $00
         lda     #$7e
         sta     hWMADDH
-        ldy     #.loword(CutsceneProg)
+        ldy     #near CutsceneProg
         sty     $f3
         lda     #^CutsceneProg
         sta     $f5
@@ -322,16 +322,16 @@ TfrPal:
 @72fe:  lda     $00
         sta     hCGADD
         lda     #$02
-        sta     $4300
-        lda     #$22
-        sta     $4301
+        sta     hDMA0::CTRL
+        lda     #<hCGDATA
+        sta     hDMA0::HREG
         ldy     #$3000
-        sty     $4302
+        sty     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldy     #$0200
-        sty     $4305
-        lda     #$01
+        sty     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -365,7 +365,7 @@ CreateFadePalTask:
         stx     $e7
         sty     $eb
         lda     #0
-        ldy     #.loword(FadePalTask)
+        ldy     #near FadePalTask
         jsr     CreateTask
         pla
         sta     $3901,x
@@ -383,7 +383,7 @@ CreateFadePalTask:
 
 FadePalTask:
 @735a:  tax
-        jmp     (.loword(FadePalTaskTbl),x)
+        jmp     (near FadePalTaskTbl,x)
 
 FadePalTaskTbl:
 @735e:  .addr   FadePalTask_00
@@ -785,7 +785,7 @@ UpdateAnimSprites:
         clr_a
         lda     $23
         tax
-        lda     .loword(LargeSpriteTbl),x
+        lda     near LargeSpriteTbl,x
         clc
         adc     $24
         sta     $24
@@ -922,7 +922,7 @@ HideUnusedSprites:
 
 DefaultAnimTask:
 @76db:  tax
-        jmp     (.loword(DefaultAnimTaskTbl),x)
+        jmp     (near DefaultAnimTaskTbl,x)
 
 DefaultAnimTaskTbl:
 @76df:  .addr   DefaultAnimTask_00
@@ -1181,15 +1181,15 @@ _7e7897:
         sta     $4347
         lda     #<hBG1HOFS
         sta     $4321
-        ldy     #.loword(_7e78e4)
+        ldy     #near _7e78e4
         sty     $4322
         lda     #<hBG2HOFS
         sta     $4331
-        ldy     #.loword(_7e78eb)
+        ldy     #near _7e78eb
         sty     $4332
         lda     #<hBG3HOFS
         sta     $4341
-        ldy     #.loword(_7e78f2)
+        ldy     #near _7e78f2
         sty     $4342
         lda     #$1c
         tsb     $31
@@ -1294,7 +1294,7 @@ LoadTitleGfx:
         longa
         lda     f:MapGfxPtrs+MAP_GFX::SEALED_GATE_1*3,x
         clc
-        adc     #.loword(MapGfx)
+        adc     #near MapGfx
         sta     $e7
         inx2
         shorta
@@ -1387,7 +1387,7 @@ LoadTitleGfx:
 ; [ decompress title/opening graphics ]
 
 DecodeTitleOpeningGfx:
-@7a01:  ldy     #.loword(TitleOpeningGfx)
+@7a01:  ldy     #near TitleOpeningGfx
         sty     $f3
         lda     #^TitleOpeningGfx
         sta     $f5
@@ -1609,8 +1609,9 @@ boxfull:
 
 .if !LANG_EN
 
-@7ae5:  .word   $294A,$1448,$104A,$106A,$106C,$084E,$0451,$0453
-        .word   $0056,$0078,$009A,$7C1F,$7C1F,$7C1F,$7C1F,$0821
+_7e7ae5:
+@7ae5:  .word   $294a,$1448,$104a,$106a,$106c,$084e,$0451,$0453
+        .word   $0056,$0078,$009a,$7c1f,$7c1f,$7c1f,$7c1f,$0821
 
 .endif
 
@@ -1623,8 +1624,8 @@ _7e7b43:
 
 .else
 
-@7b05:  .word   $0000,$6F5A,$5AB5,$4610,$39CD,$1CE7,$0453,$66DE
-        .word   $565B,$45B4,$352E,$0000,$0000,$0000,$0000,$0000
+@7b05:  .word   $0000,$6f5a,$5ab5,$4610,$39cd,$1ce7,$0453,$66de
+        .word   $565b,$45b4,$352e,$0000,$0000,$0000,$0000,$0000
 
 .endif
 
@@ -1633,37 +1634,45 @@ _7e7b63:
 @7b63:  .word   $1063,$1063,$1063,$1063,$1063,$1063,$1063,$1063
         .word   $1063,$1063,$1063,$1063,$1063,$1063,$1063,$1063
 
-; flames palette
+; flames palette (bg palette 0)
 FlamesPal:
 @7b83:  .word   $1063,$6f9f,$575f,$46ff,$367e,$261e,$3219,$21bb
         .word   $159b,$1d76,$1136,$10f1,$08b0,$08ad,$088b,$0050
 
+; bg palettes for intro state 3 (bg palette 1)
 _7e7ba3:
 .if LANG_EN
-@7ba3:  .word   $0000,$1063,$77bd,$0000,$0000,$261e,$159b,$10f1
-        .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
+@7ba3:  .word   $0000,$1063,$77bd,$0000
 .else
-        .word   $2108,$1063,$1063,$1063,$0000,$261e,$159b,$10f1
-        .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
+        .word   $2108,$1063,$1063,$1063
 .endif
+        .word   $0000,$261e,$159b,$10f1 ; flames palette (bg3 palette 5)
+        .word   $0000,$0000,$0000,$0000
+        .word   $0000,$0000,$0000,$0000
 
+; bg3 palettes for intro state 0 (bg palette 1)
 _7e7bc3:
-@7bc3:  .word   $2108,$1063,$1063,$1063,$0000,$261e,$159b,$10f1
-        .word   $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
+@7bc3:  .word   $2108,$1063,$1063,$1063
+        .word   $0000,$261e,$159b,$10f1
+        .word   $0000,$0000,$0000,$0000
+        .word   $0000,$0000,$0000,$0000
 
+; intro palette for upper clouds (bg palette 5)
 _7e7be3:
 @7be3:  .word   $0000,$1cc6,$1ca5,$1c85,$1884,$1464,$1063,$0000
         .word   $1063,$0000,$261e,$159b,$10f1,$565b,$45b4,$352e
 
+; intro palette for lower clouds (bg palette 6)
 _7e7c03:
 @7c03:  .word   $0000,$66de,$565b,$45b4,$352e,$3108,$2ce8,$28c7
         .word   $24a6,$1ca5,$1884,$1464,$1063,$21bb,$1136,$737f
 
+; intro palette for lower clouds (bg palette 2 and 3)
 _7e7c23:
 @7c23:  .word   $0000,$66de,$565b,$45b4,$352e,$3108,$2ce8,$28c7
         .word   $24a6,$1ca5,$1884,$1464,$1063,$737f,$737f,$737f
 
-; narshe palette (lights on)
+; narshe palette (lights on), bg palette 7
 TownPal1:
 @7c43:  .word   $0000,$367e,$1136,$0c42,$0841,$45cd,$3d6a,$3528
         .word   $2528,$2ce7,$24e6,$20c5,$18c5,$18a3,$1483,$1063

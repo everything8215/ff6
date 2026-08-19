@@ -419,9 +419,9 @@ WorldMain:
         sta     hINIDISP
         sei
         stz     hHDMAEN
-        stz     $0200
+        stz     $0200                   ; MENU_STATE::FIELD
         lda     #$80
-        sta     $0201
+        sta     $0201                   ; always allow save
         stz     hNMITIMEN
         stz     $11fd
         stz     $11fe

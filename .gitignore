@@ -1,5 +1,5 @@
 .DS_Store
-.vscode
+.vscode/
 *.sfc
 *.lz
 *.bin
@@ -17,6 +17,7 @@ pretty/*
 *.smc
 *.sfc
 
-rom/*
+build/
 vanilla/*
 !vanilla/README.md
+tools/char_table/dte_vanilla.json

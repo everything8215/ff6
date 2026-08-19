@@ -1,0 +1,326 @@
+.ifndef ITEM_PROP_INC
+ITEM_PROP_INC = 1
+
+; ------------------------------------------------------------------------------
+
+.define EQUIP_ALL {TERRA, LOCKE, CYAN, SHADOW, EDGAR, SABIN, CELES, STRAGO, RELM, SETZER, MOG, GAU, GOGO, UMARO}
+.define EQUIP_ALL_EXCEPT_UMARO {TERRA, LOCKE, CYAN, SHADOW, EDGAR, SABIN, CELES, STRAGO, RELM, SETZER, MOG, GAU, GOGO}
+.define EQUIP_FEMALE {TERRA, CELES, RELM}
+
+_item_seq .set 0
+
+.mac item_prop item_id, type
+        .assert _item_seq = ITEM::item_id, error, .sprintf("item_prop index mismatch (%s != %d)", .string(item_id), _item_seq)
+        _item_prop_type .set ITEM_TYPE::type
+        _item_prop_usage .set 0
+        _item_prop_equip_chars .set 0
+        _item_prop_equip_flags .set 0
+        _item_prop_spell_rate .set 0
+        _item_prop_spell_learned .set 0
+        _item_prop_field_effect .set 0
+        _item_prop_immune_status .set 0
+        _item_prop_equip_status .set 0
+        _item_prop_item_status12 .set 0
+        _item_prop_item_status34 .set 0
+        _item_prop_relic_effect1 .set 0
+        _item_prop_relic_effect2 .set 0
+        _item_prop_relic_effect3 .set 0
+        _item_prop_relic_effect4 .set 0
+        _item_prop_relic_effect5 .set 0
+        _item_prop_targeting .set 0
+        _item_prop_elem_attack .set 0
+        _item_prop_elem_absorb .set 0
+        _item_prop_elem_null .set 0
+        _item_prop_elem_weak .set 0
+        _item_prop_strength .set 0
+        _item_prop_speed .set 0
+        _item_prop_stamina .set 0
+        _item_prop_mag_pwr .set 0
+        _item_prop_item_flags .set 0
+        _item_prop_spell_cast .set 0
+        _item_prop_spell_cast_flags .set 0
+        _item_prop_power .set 0
+        _item_prop_hit_rate .set 0
+        _item_prop_weapon_special .set 0
+        _item_prop_block_gfx .set 0
+        _item_prop_block_type .set 0
+        _item_prop_evade .set 0
+        _item_prop_mblock .set 0
+        _item_prop_item_special .set 0
+        _item_prop_price .set 0
+.endmac
+
+.mac usage val
+        make_bitmask {_item_prop_usage .set }, 0, ITEM_USAGE, val
+.endmac
+
+.mac equip chars, flags
+        make_bitmask {_item_prop_equip_chars .set }, 0, CHAR_FLAG, chars
+        make_bitmask {_item_prop_equip_flags .set }, 0, ITEM_EQUIP_FLAGS, flags
+.endmac
+
+.mac field_effect val
+        make_bitmask {_item_prop_field_effect .set }, 0, ITEM_FIELD_EFFECT, val
+.endmac
+
+.mac immune_status val
+        make_bitmask {_item_prop_immune_status .set }, 0, STATUS12, val
+.endmac
+
+.mac equip_status val
+        make_bitmask {_item_prop_equip_status .set }, 0, STATUS23, val
+.endmac
+
+.mac item_status12 val
+        make_bitmask {_item_prop_item_status12 .set }, 0, STATUS12, val
+.endmac
+
+.mac item_status34 val
+        make_bitmask {_item_prop_item_status34 .set }, 0, STATUS34, val
+.endmac
+
+.mac elem_attack val
+        make_bitmask {_item_prop_elem_attack .set }, 0, ELEMENT, val
+.endmac
+
+.mac elem_half val
+        make_bitmask {_item_prop_elem_attack .set }, 0, ELEMENT, val
+.endmac
+
+.mac elem_absorb val
+        make_bitmask {_item_prop_elem_absorb .set }, 0, ELEMENT, val
+.endmac
+
+.mac elem_null val
+        make_bitmask {_item_prop_elem_null .set }, 0, ELEMENT, val
+.endmac
+
+.mac elem_weak val
+        make_bitmask {_item_prop_elem_weak .set }, 0, ELEMENT, val
+.endmac
+
+.mac targeting val
+        make_bitmask {_item_prop_targeting .set }, 0, TARGET, val
+.endmac
+
+.mac relic_effect1 val
+        make_bitmask {_item_prop_relic_effect1 .set }, 0, RELIC_EFFECT1, val
+.endmac
+
+.mac relic_effect2 val
+        make_bitmask {_item_prop_relic_effect2 .set }, 0, RELIC_EFFECT2, val
+.endmac
+
+.mac relic_effect3 val
+        make_bitmask {_item_prop_relic_effect3 .set }, 0, RELIC_EFFECT3, val
+.endmac
+
+.mac relic_effect4 val
+        make_bitmask {_item_prop_relic_effect4 .set }, 0, RELIC_EFFECT4, val
+.endmac
+
+.mac relic_effect5 val
+        make_bitmask {_item_prop_relic_effect5 .set }, 0, RELIC_EFFECT5, val
+.endmac
+
+.mac strength val
+        .assert (val > -8) && (val < 8), error, "Invalid item bonus"
+        .if val < 0
+                _item_prop_strength .set 8 - val
+        .else
+                _item_prop_strength .set val
+        .endif
+.endmac
+
+.mac speed val
+        .assert (val > -8) && (val < 8), error, "Invalid item bonus"
+        .if val < 0
+                _item_prop_speed .set 8 - val
+        .else
+                _item_prop_speed .set val
+        .endif
+.endmac
+
+.mac stamina val
+        .assert (val > -8) && (val < 8), error, "Invalid item bonus"
+        .if val < 0
+                _item_prop_stamina .set 8 - val
+        .else
+                _item_prop_stamina .set val
+        .endif
+.endmac
+
+.mac mag_pwr val
+        .assert (val > -8) && (val < 8), error, "Invalid item bonus"
+        .if val < 0
+                _item_prop_mag_pwr .set 8 - val
+        .else
+                _item_prop_mag_pwr .set val
+        .endif
+.endmac
+
+.mac evade val
+        .assert (val > -60) && (val < 60), error, "Invalid item bonus"
+        .if val < 0
+                _item_prop_evade .set 5 - val / 10
+        .else
+                _item_prop_evade .set val / 10
+        .endif
+.endmac
+
+.mac mblock val
+        .assert (val > -60) && (val < 60), error, "Invalid item bonus"
+        .if val < 0
+                _item_prop_mblock .set 5 - val / 10
+        .else
+                _item_prop_mblock .set val / 10
+        .endif
+.endmac
+
+.mac weapon_flags val
+        make_bitmask {_item_prop_item_flags .set }, 0, WEAPON_FLAG, val
+.endmac
+
+.mac item_flags val
+        make_bitmask {_item_prop_item_flags .set }, 0, ITEM_FLAG, val
+.endmac
+
+.mac attack_power val
+        _item_prop_power .set val
+.endmac
+
+.mac def_power val
+        _item_prop_power .set val
+.endmac
+
+.mac item_power val
+        _item_prop_power .set val
+.endmac
+
+.mac hit_rate val
+        _item_prop_hit_rate .set val
+.endmac
+
+.mac mag_def val
+        _item_prop_hit_rate .set val
+.endmac
+
+.mac weapon_special val
+        _item_prop_weapon_special .set WEAPON_SPECIAL::val
+.endmac
+
+.mac item_special val
+        _item_prop_item_special .set ITEM_SPECIAL::val
+.endmac
+
+.mac block gfx, type
+        _item_prop_block_gfx .set BLOCK_GFX::gfx
+        make_bitmask {_item_prop_block_type .set }, 0, BLOCK_TYPE, type
+.endmac
+
+.mac spell_learned spell, rate
+        _item_prop_spell_learned .set ATTACK::spell
+        _item_prop_spell_rate .set rate
+.endmac
+
+.mac spell_cast spell, flags
+        _item_prop_spell_cast .set ATTACK::spell
+        make_bitmask {_item_prop_spell_cast_flags .set }, 0, WEAPON_SPELL_FLAGS, flags
+.endmac
+
+.mac price val
+        _item_prop_price .set val
+.endmac
+
+.mac end_item_prop
+        .byte _item_prop_type | _item_prop_usage
+        .word _item_prop_equip_chars | _item_prop_equip_flags
+        .byte _item_prop_spell_rate, _item_prop_spell_learned
+        .byte _item_prop_field_effect
+        .word _item_prop_immune_status
+        .byte >_item_prop_equip_status
+        .byte _item_prop_relic_effect1
+        .byte _item_prop_relic_effect2
+        .byte _item_prop_relic_effect3
+        .byte _item_prop_relic_effect4
+        .byte _item_prop_relic_effect5
+        .byte _item_prop_targeting
+        .byte _item_prop_elem_attack
+        .byte _item_prop_strength | _item_prop_speed << 4
+        .byte _item_prop_stamina | _item_prop_mag_pwr << 4
+        .byte _item_prop_spell_cast | _item_prop_spell_cast_flags
+        .byte _item_prop_item_flags
+        .byte _item_prop_power
+        .if _item_prop_type = ITEM_TYPE::CONSUMABLE
+                .word _item_prop_item_status12
+                .word _item_prop_item_status34
+        .else
+                .byte _item_prop_hit_rate
+                .byte _item_prop_elem_absorb
+                .byte _item_prop_elem_null
+                .byte _item_prop_elem_weak
+        .endif
+        .byte <_item_prop_equip_status
+        .byte _item_prop_evade | (_item_prop_mblock << 4)
+        .if _item_prop_type = ITEM_TYPE::CONSUMABLE
+                .byte _item_prop_item_special
+        .else
+                .byte _item_prop_block_gfx | _item_prop_block_type | (_item_prop_weapon_special << 4)
+        .endif
+        .word _item_prop_price
+        _item_seq .set _item_seq + 1
+.endmac
+
+; ------------------------------------------------------------------------------
+
+.else
+
+; undefine all macros the second time this file gets included
+
+.undef EQUIP_ALL
+.undef EQUIP_ALL_EXCEPT_UMARO
+.undef EQUIP_FEMALE
+
+.delmac item_prop
+.delmac usage
+.delmac equip
+.delmac field_effect
+.delmac immune_status
+.delmac equip_status
+.delmac item_status12
+.delmac item_status34
+.delmac elem_attack
+.delmac elem_half
+.delmac elem_absorb
+.delmac elem_null
+.delmac elem_weak
+.delmac targeting
+.delmac relic_effect1
+.delmac relic_effect2
+.delmac relic_effect3
+.delmac relic_effect4
+.delmac relic_effect5
+.delmac strength
+.delmac speed
+.delmac stamina
+.delmac mag_pwr
+.delmac evade
+.delmac mblock
+.delmac weapon_flags
+.delmac item_flags
+.delmac attack_power
+.delmac def_power
+.delmac item_power
+.delmac hit_rate
+.delmac mag_def
+.delmac weapon_special
+.delmac item_special
+.delmac block
+.delmac spell_learned
+.delmac spell_cast
+.delmac price
+.delmac end_item_prop
+
+.endif
+
+; ------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 ; ------------------------------------------------------------------------------
 
-.include "gfx/portrait.inc"
+.include "src/gfx/portrait.inc"
 
 .import BattleCharPal, MenuSpriteGfx, WindowGfx, WindowPal, SmallFontGfx
 
@@ -29,7 +29,7 @@ LoadColosseumGfx:
 
 InitMenuGfx:
 @6a87:  clr_a
-        lda     w0200       ; menu type
+        lda     r0200       ; menu type
         asl
         tax
         jmp     (near InitMenuGfxTbl,x)
@@ -121,7 +121,7 @@ LoadFontGfx2bpp:
 @6b13:  longa
         ldy     #$6000
         sty     hVMADDL
-        ldx     z0
+        ldx     zZero
 @6b1d:  lda     f:SmallFontGfx,x   ; small font graphics
         sta     hVMDATAL
         inx2
@@ -151,7 +151,7 @@ LoadFontGfx4bpp:
         inx2
         cpx     #$0020
         bne     @6b41
-        ldx     z0
+        ldx     zZero
 @6b57:  ldy     #8
 @6b5a:  lda     f:SmallFontGfx+$80,x
         sta     hVMDATAL
@@ -165,7 +165,7 @@ LoadFontGfx4bpp:
         bne     @6b57
         ldy     #$7800
         sty     hVMADDL
-        ldx     z0
+        ldx     zZero
 @6b8b:  lda     f:WindowGfx,x           ; menu window graphics
         sta     hVMDATAL
         inx2
@@ -188,23 +188,23 @@ _c36b9c:
 
 InitWindowPal:
 @6bbc:  ldx     #8                      ; loop through all 8 windows
-        stx     $e7
+        stx     ze7
         ldx     #0
         txy
         longa
 @6bc7:  lda     #7                      ; copy 7 colors per window
-        sta     $e9
+        sta     ze9
 @6bcc:  lda     f:WindowPal+2,x         ; load wallpaper palettes
         sta     $1d57,y
         inx2
         iny2
-        dec     $e9
+        dec     ze9
         bne     @6bcc
         txa
         clc
         adc     #$0012                  ; skip unused colors
         tax
-        dec     $e7
+        dec     ze7
         bne     @6bc7
         shorta
         rts
@@ -214,7 +214,7 @@ InitWindowPal:
 ; [ load menu text palettes ]
 
 LoadFontPal:
-@6be8:  ldx     z0
+@6be8:  ldx     zZero
         txa
         sta     hCGADD
 @6bee:  longa
@@ -234,7 +234,7 @@ LoadFontPal:
 ; [ load character portrait color palettes ]
 
 LoadPortraitPal:
-@6c09:  ldx     z0
+@6c09:  ldx     zZero
         txy
 @6c0c:  longa
         lda     zCharPropPtr,x                   ; pointer to character data
@@ -244,7 +244,7 @@ LoadPortraitPal:
         clr_a
         shorta
         lda     #$10                    ; $e3 = counter (16 colors per palette)
-        sta     $e3
+        sta     ze3
         lda     $0014,y                 ; imp status
         and     #$20
         beq     @6c25
@@ -270,7 +270,7 @@ LoadPortraitPal:
         plx
         inx2                ; next color
         iny2
-        dec     $e3
+        dec     ze3
         bne     @6c3e
         plx
         inx2                ; next palette
@@ -286,7 +286,7 @@ LoadPortraitPal:
 LoadGrayCharPal:
 @6c60:  lda     #$90
         sta     hCGADD
-        ldx     z0
+        ldx     zZero
 @6c67:  longa
         lda     f:GrayscalePal,x
         sta     wPalBuf::SpritePal1,x
@@ -305,7 +305,7 @@ LoadGrayCharPal:
 ; [ load cursor/icon palettes ]
 
 LoadMiscMenuSpritePal:
-@6c84:  ldx     z0
+@6c84:  ldx     zZero
         lda     #$ec
         sta     hCGADD
 @6c8b:  longa
@@ -318,7 +318,7 @@ LoadMiscMenuSpritePal:
         inx2
         cpx     #8
         bne     @6c8b
-        ldx     z0
+        ldx     zZero
         lda     #$fc
         sta     hCGADD
 @6cac:  longa
@@ -338,7 +338,7 @@ LoadMiscMenuSpritePal:
 ; [ load character sprite palettes ]
 
 LoadCharPal:
-@6cc7:  ldx     z0
+@6cc7:  ldx     zZero
         lda     #$a0
         sta     hCGADD
 @6cce:  longa
@@ -364,36 +364,36 @@ LoadCharGfx:
 @6ceb:  phx
         longa
         lda     f:CharGfxVRAMAddr,x
-        sta     $f3
+        sta     zf3
         txa
         asl
         tax
         lda     f:MenuCharGfxPtrs+2,x   ; low word
-        sta     $e7
+        sta     ze7
         lda     f:MenuCharGfxPtrs,x     ; high word
-        sta     $e9
-        ldx     z0
+        sta     ze9
+        ldx     zZero
 @6d05:  lda     f:MenuCharPoseOffsets,x
-        sta     $ef
+        sta     zef
         jsr     _c36d44
-        lda     $f3
+        lda     zf3
         clc
         adc     #$0100
-        sta     $f3
+        sta     zf3
         inx2                            ; next tile
         cpx     #4
         bne     @6d05
-        lda     $f3
+        lda     zf3
         sec
         sbc     #$01e0
-        sta     $f3
+        sta     zf3
         lda     f:MenuCharPoseOffsets,x
-        sta     $ef
+        sta     zef
         jsr     _c36d44
-        lda     $f3
+        lda     zf3
         clc
         adc     #$0100
-        sta     $f3
+        sta     zf3
         jsr     _c36d67
         plx
         inx2                            ; next character (load 22 characters)
@@ -410,17 +410,17 @@ LoadCharGfx:
 
 _c36d44:
 @6d44:  clc
-        lda     $ef
-        adc     $e7
-        sta     $eb
+        lda     zef
+        adc     ze7
+        sta     zeb
         clr_a
-        adc     $e9
-        sta     $ed
-        ldy     $f3
+        adc     ze9
+        sta     zed
+        ldy     zf3
         sty     hVMADDL
         jmp     @6d58                   ; this doesn't do anything
-@6d58:  ldy     z0
-@6d5a:  lda     [$eb],y
+@6d58:  ldy     zZero
+@6d5a:  lda     [zeb],y
         sta     hVMDATAL
         iny2
         cpy     #$0040
@@ -436,12 +436,12 @@ _c36d44:
 .a16
 
 _c36d67:
-@6d67:  ldy     $f3
+@6d67:  ldy     zf3
         sty     hVMADDL
         lda     #$0020
-        sta     $e7
+        sta     ze7
 @6d71:  stz     hVMDATAL
-        dec     $e7
+        dec     ze7
         bne     @6d71
         rts
 
@@ -454,8 +454,8 @@ _c36d67:
 LoadShopCharGfx:
 @6d79:  ldy     #$3000
         sty     hVMADDL
-        stz     $e3
-@6d81:  ldy     z0
+        stz     ze3
+@6d81:  ldy     zZero
 @6d83:  shorta
         clr_a
         tyx
@@ -472,26 +472,26 @@ LoadShopCharGfx:
         sta     hM7A
         xba
         sta     hM7A
-        lda     $e3
+        lda     ze3
         sta     hM7B
         sta     hM7B
         longa
         pla
         clc
         adc     hMPYL
-        sta     $eb
+        sta     zeb
         shorta
         lda     hMPYH
         adc     #$d5
-        sta     $ed
+        sta     zed
         longa_clc
-        lda     $eb
+        lda     zeb
         adc     #$0000
-        sta     $eb
+        sta     zeb
         shorta
-        lda     $ed
+        lda     zed
         adc     #$00
-        sta     $ed
+        sta     zed
         longa
         phy
         jsr     _c36df8
@@ -500,18 +500,18 @@ LoadShopCharGfx:
         cpy     #$0020
         bne     @6d83
         shorta
-        inc     $e3
-        inc     $e3
-        lda     $e3
+        inc     ze3
+        inc     ze3
+        lda     ze3
         cmp     #$10
         bne     @6d81
         rts
 
 .a16
 @6dea:  lda     #$0010
-        sta     $e7
+        sta     ze7
 @6def:  stz     hVMDATAL
-        dec     $e7
+        dec     ze7
         bne     @6def
         bra     @6dd7
 
@@ -520,8 +520,8 @@ LoadShopCharGfx:
 ; [  ]
 
 _c36df8:
-@6df8:  ldy     z0
-@6dfa:  lda     [$eb],y
+@6df8:  ldy     zZero
+@6dfa:  lda     [zeb],y
         sta     hVMDATAL
         iny2
         cpy     #$0020
@@ -550,7 +550,7 @@ LoadMiscMenuSpriteGfx:
 @6e67:  longa
         ldy     #$2000
         sty     hVMADDL
-        ldx     z0
+        ldx     zZero
 @6e71:  lda     f:MenuSpriteGfx,x
         sta     hVMDATAL
         inx2
@@ -564,7 +564,7 @@ LoadMiscMenuSpriteGfx:
 ; [ load character portrait graphics ]
 
 LoadPortraitGfx:
-@6e82:  ldx     z0
+@6e82:  ldx     zZero
 @6e84:  longa
         lda     f:PortraitVRAMTbl,x     ; set vram pointer
         sta     hVMADDL
@@ -606,11 +606,11 @@ LoadPortraitGfx:
 
 GetPortraitGfxPtr:
 @6ebf:  lda     #^PortraitGfx
-        sta     zDMA2Src+2
+        sta     zDMA2Src_B
         ldy     #$0320
         sty     zDMA2Size
         clr_a
-        lda     $9c
+        lda     zMenuScrollRate
         asl
         tax
         longa
@@ -669,9 +669,9 @@ PortraitVRAMTbl:
 ; [ make a list of character palettes for save slot 1 ]
 
 MakeSaveSlot1PalList:
-@6f61:  ldy     $91
+@6f61:  ldy     z91
         beq     @6f80
-        ldx     z0
+        ldx     zZero
 @6f67:  lda     zCharID,x
         bmi     @6f73
         jsr     GetCharGfxID
@@ -683,7 +683,7 @@ MakeSaveSlot1PalList:
         cpx     #4
         bne     @6f67
         rts
-@6f80:  ldx     z0
+@6f80:  ldx     zZero
         bra     _6f84
 
 _6f84:  lda     #$ff
@@ -729,9 +729,9 @@ FixSoldierPal:
 ; [ make a list of character palettes for save slot 2 ]
 
 MakeSaveSlot2PalList:
-@6fb8:  ldy     $93
+@6fb8:  ldy     z93
         beq     @6fd7
-        ldx     z0
+        ldx     zZero
 @6fbe:  lda     zCharID,x
         bmi     @6fca
         jsr     GetCharGfxID
@@ -751,9 +751,9 @@ MakeSaveSlot2PalList:
 ; [ make a list of character palettes for save slot 3 ]
 
 MakeSaveSlot3PalList:
-@6fdc:  ldy     $95
+@6fdc:  ldy     z95
         beq     @6ffb
-        ldx     z0
+        ldx     zZero
 @6fe2:  lda     zCharID,x
         bmi     @6fee
         jsr     GetCharGfxID

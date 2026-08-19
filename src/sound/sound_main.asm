@@ -13,10 +13,13 @@
 
 .p816
 
-.include "const.inc"
-.include "hardware.inc"
-.include "macros.inc"
-.include "code_ext.inc"
+.include "src/common/const.inc"
+.include "src/common/hardware.inc"
+.include "src/common/macros.inc"
+.include "src/common/code_ext.inc"
+
+.include "song_script.inc"
+.include "sample_brr.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -25,8 +28,7 @@
 _spc_block_seq .set 0
 
 ; each spc block is preceded by a 2-byte header containing the block size
-.macro spc_block label
-        label := *
+.macro spc_block
         .word .ident(.sprintf("_spc_block_size_%d", _spc_block_seq))
         .ident(.sprintf("_spc_block_start_%d", _spc_block_seq)) := *
 .endmac
@@ -42,35 +44,16 @@ _spc_block_seq .set 0
 
 ; [ make adsr value ]
 
-.macro make_adsr attack, decay, sustain, release
+.macro adsr attack, decay, sustain, release
         .byte $80 | (attack & $0f) | ((decay & $07) << 4)
         .byte (release & $1f) | ((sustain & $07) << 5)
 .endmac
 
 ; ------------------------------------------------------------------------------
 
-; [ make song sample list ]
-
-.macro def_song_sample sample_id
-        ; use the sample id plus 1 (zero means no sample)
-        .word SAMPLE_BRR::sample_id + 1
-.endmac
-
-.macro begin_song_samples _song_id
-        ; save the start position for this song's samples
-        .ident(.sprintf("SongSamples_%04x", _song_id)) := *
-.endmac
-
-.macro end_song_samples _song_id
-        ; fill remaining space with zeroes (32 bytes total)
-        .res 32 + .ident(.sprintf("SongSamples_%04x", _song_id)) - *, 0
-.endmac
-
-; ------------------------------------------------------------------------------
-
-.segment "sound_code"
-.a8
-.i16
+        .segment "sound_code"
+        .a8
+        .i16
 
 ; ------------------------------------------------------------------------------
 
@@ -986,26 +969,17 @@ WaitTfrSPC:
 
 ; spc command data for command $30-$3f (quick load new song)
 QuickPlaySongTbl:
-@06b9:  .byte   $10,$00,$ff,$00
-        .byte   $10,$01,$ff,$00
-        .byte   $10,$02,$ff,$00
-        .byte   $10,$03,$ff,$00
-        .byte   $10,$04,$ff,$00
-        .byte   $10,$05,$ff,$00
-        .byte   $10,$06,$ff,$00
-        .byte   $10,$07,$ff,$00
-        .byte   $10,$08,$ff,$00
-        .byte   $10,$09,$ff,$00
-        .byte   $10,$0a,$ff,$00
-        .byte   $10,$0b,$ff,$00
-        .byte   $10,$0c,$ff,$00
-        .byte   $10,$0d,$ff,$00
-        .byte   $10,$0e,$ff,$00
-        .byte   $10,$0f,$ff,$00
+        .repeat 16, i
+        .byte   $10,i,$ff,0
+        .endrep
 
 ; songs which pause the current song
 PauseSongTbl:
-@06f9:  .byte   $24,$38,$14,$33,$ff
+        .byte   SONG::BATTLE_THEME
+        .byte   SONG::NIGHTY_NIGHT
+        .byte   SONG::DECISIVE_BATTLE
+        .byte   SONG::FIERCE_BATTLE
+        .byte   SONG::NONE
 
 ; spc command $10-$17 jump table (load new song)
 PlaySongTbl:
@@ -1020,18 +994,25 @@ PlaySongTbl:
 
 ; ------------------------------------------------------------------------------
 
-.segment "sound_data"
+        .segment "sound_data"
 
 ; ------------------------------------------------------------------------------
 
 ; c5/070e
-spc_block SPCCode
-        .incbin "src/sound/ff6-spc.dat"
-end_spc_block
+SPCCode:
+        spc_block
+        .incbin "bin/spc.bin"
+        end_spc_block
 
 ; ------------------------------------------------------------------------------
 
-.include "sfx_data.asm"
-.include "song_data.asm"
+        .include "sfx_data.asm"
+
+; c5/3c5e
+NumSongs:
+        .byte   SONG_SCRIPT::COUNT
+
+        .include "sample_brr.asm"
+        .include "song_script.asm"
 
 ; ------------------------------------------------------------------------------

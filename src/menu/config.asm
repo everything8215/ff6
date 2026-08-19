@@ -173,7 +173,7 @@ _c33950:
 ; [ load color bar palette ]
 
 LoadColorBarPal:
-@395e:  ldx     z0
+@395e:  ldx     zZero
         lda     #$40
         sta     hCGADD
 @3965:  longa
@@ -208,15 +208,15 @@ ConfigScrollArrowTask_00:
 @3988:  ldx     zTaskOffset
         longa
         lda     #near ConfigScrollArrowAnim_00
-        sta     near wTaskAnimPtr,x
+        sta     near wTaskProp::AnimPtr,x
         lda     #$0078
-        sta     near wTaskPosX,x
+        sta     near wTaskProp::PosX_H,x
         lda     #$0018
-        sta     near wTaskPosY,x
+        sta     near wTaskProp::PosY_H,x
         shorta
         lda     #^ConfigScrollArrowAnim_00
-        sta     near wTaskAnimBank,x
-        inc     near wTaskState,x
+        sta     near wTaskProp::AnimBank,x
+        inc     near wTaskProp::State,x
         jsr     InitAnimTask
 ; fallthrough
 
@@ -234,7 +234,7 @@ ConfigScrollArrowTask_01:
 @39b6:  tax
         longa
         lda     f:ConfigScrollArrowAnimTbl,x
-        sta     near wTaskAnimPtr,y
+        sta     near wTaskProp::AnimPtr,y
         shorta
         jsr     UpdateAnimTask
         sec
@@ -271,11 +271,11 @@ ConfigDownArrowSprite:
         .byte   $80,$b0,$03,$3e
 
 ; config window data
-ConfigMainWindow:                       make_window BG2A, {1, 3}, {28, 22}
+ConfigMainWindow:                       window_pos BG2A, {1, 3}, {28, 22}
 .if LANG_EN
-ConfigLabelWindow:                      make_window BG2A, {23, 1}, {6, 2}
+ConfigLabelWindow:                      window_pos BG2A, {23, 1}, {6, 2}
 .else
-ConfigLabelWindow:                      make_window BG2A, {24, 1}, {5, 2}
+ConfigLabelWindow:                      window_pos BG2A, {24, 1}, {5, 2}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -302,7 +302,7 @@ ShowConfigPage1:
 
 ; [ menu state $50: scroll to config page 2 ]
 
-MenuState_50:
+        array_label MENU_STATE, MENU_STATE::CONFIG_SCROLL_DOWN
 @3a00:  lda     zWaitCounter
         beq     @3a15
         lda     z4a
@@ -325,7 +325,7 @@ MenuState_50:
 
 ; [ menu state $51: scroll to config page 1 ]
 
-MenuState_51:
+        array_label MENU_STATE, MENU_STATE::CONFIG_SCROLL_UP
 @3a21:  lda     zWaitCounter
         beq     @3a36
         lda     z4a
@@ -376,7 +376,7 @@ InitWindow2PosHDMA:
 ; [ disable window 2 position hdma ]
 
 DisableWindow2PosHDMA:
-@3a6b:  lda     #$20        ; disable hdma channel #5
+@3a6b:  lda     #BIT_5                  ; disable hdma channel #5
         trb     zEnableHDMA
         lda     #$08
         sta     hWH2
@@ -497,7 +497,7 @@ LoadSaveSlot3WindowPal:
         lda     $307b4e
         bra     @3b28
 @3b27:  clr_a
-@3b28:  ldx     z0
+@3b28:  ldx     zZero
         jsr     LoadWindowPal
         jmp     TfrPal
 
@@ -512,7 +512,7 @@ InitTfrWindowGfx:
         ldy     #near WindowGfx
         sty     zDMA1Src
         lda     #^WindowGfx
-        sta     zDMA1Src+2
+        sta     zDMA1Src_B
         longa
         clr_a
 @3b42:  ldy     ze0
@@ -550,7 +550,7 @@ LoadWindowPal:
         bra     @3b6b
 @3b77:  sta     ze7
         shorta
-        ldy     z0
+        ldy     zZero
         plx
 @3b7e:  lda     [ze7],y
         sta     $7e30cb,x
@@ -616,12 +616,12 @@ DrawBattleSpeedText:
 ; ------------------------------------------------------------------------------
 
 BattleSpeedTextPos:
-        make_pos BG1A, {14, 7}
-        make_pos BG1A, {16, 7}
-        make_pos BG1A, {18, 7}
-        make_pos BG1A, {20, 7}
-        make_pos BG1A, {22, 7}
-        make_pos BG1A, {24, 7}
+        bg_pos BG1A, {14, 7}
+        bg_pos BG1A, {16, 7}
+        bg_pos BG1A, {18, 7}
+        bg_pos BG1A, {20, 7}
+        bg_pos BG1A, {22, 7}
+        bg_pos BG1A, {24, 7}
 
 ; ------------------------------------------------------------------------------
 
@@ -655,12 +655,12 @@ DrawMsgSpeedText:
 ; ------------------------------------------------------------------------------
 
 MsgSpeedTextPos:
-        make_pos BG1A, {14, 9}
-        make_pos BG1A, {16, 9}
-        make_pos BG1A, {18, 9}
-        make_pos BG1A, {20, 9}
-        make_pos BG1A, {22, 9}
-        make_pos BG1A, {24, 9}
+        bg_pos BG1A, {14, 9}
+        bg_pos BG1A, {16, 9}
+        bg_pos BG1A, {18, 9}
+        bg_pos BG1A, {20, 9}
+        bg_pos BG1A, {22, 9}
+        bg_pos BG1A, {24, 9}
 
 ; ------------------------------------------------------------------------------
 
@@ -887,8 +887,8 @@ ChangeConfigOptionTbl2:
 
 ChangeConfigOption_00:
 @3d61:  jsr     PlayMoveSfx
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         bne     @3d72
         lda     #$08
         trb     $1d4d
@@ -906,8 +906,8 @@ ChangeConfigOption_01:
         lda     $1d4d
         and     #$07
         sta     ze0
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @3d95
         lda     ze0
         cmp     #$05
@@ -936,8 +936,8 @@ ChangeConfigOption_02:
         and     #$70
         lsr4
         sta     ze0
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @3dca
         lda     ze0
         cmp     #$05
@@ -965,8 +965,8 @@ ChangeConfigOption_02:
 
 ChangeConfigOption_03:
 @3de8:  jsr     PlayMoveSfx
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         bne     @3df9
         lda     #$80
         trb     $1d4d
@@ -981,8 +981,8 @@ ChangeConfigOption_03:
 
 ChangeConfigOption_04:
 @3e01:  jsr     PlayMoveSfx
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         bne     @3e12
         lda     #$80
         trb     $1d4e
@@ -996,8 +996,8 @@ ChangeConfigOption_04:
 ; [ change stereo/mono setting ]
 
 ChangeConfigOption_05:
-@3e1a:  lda     z0a+1
-        bit     #$01
+@3e1a:  lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         bne     @3e2f
         clr_a
         jsr     SetStereoMono
@@ -1029,8 +1029,8 @@ SetStereoMono:
 
 ChangeConfigOption_06:
 @3e4e:  jsr     PlayMoveSfx
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         bne     @3e62
         jsr     _c348f7
         lda     #$40
@@ -1047,8 +1047,8 @@ ChangeConfigOption_06:
 
 ChangeConfigOption_07:
 @3e6d:  jsr     PlayMoveSfx
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         bne     @3e7e
         lda     #$10
         trb     $1d4e
@@ -1065,8 +1065,8 @@ ChangeConfigOption_07:
 
 ChangeConfigOption_08j:
 @3f8d:  jsr     PlayMoveSfx
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         bne     @3f9e
         lda     #$40
         trb     $1d54
@@ -1083,8 +1083,8 @@ ChangeConfigOption_08j:
 
 ChangeConfigOption_08:
 @3e86:  jsr     PlayMoveSfx
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         bne     @3e97
         lda     #$80
         trb     $1d54
@@ -1101,8 +1101,8 @@ ChangeConfigOption_09:
 @3e9f:  lda     $1d54
         and     #$07
         sta     ze0
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @3eb7
         lda     ze0
         cmp     #$05
@@ -1129,8 +1129,8 @@ ChangeConfigOption_0a:
 @3ecd:  lda     $1d4e
         and     #$0f
         sta     ze0
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @3ee5
         lda     ze0
         cmp     #$07
@@ -1160,8 +1160,8 @@ ChangeConfigOption_0b:
         and     #$38
         lsr3
         sta     ze0
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @3f1c
         lda     ze0
         cmp     #$07
@@ -1190,8 +1190,8 @@ ChangeConfigOption_0b:
 
 ChangeConfigOption_0c:
 @3f3c:  jsr     GetColorComponents
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @3f4f
         lda     ze2
         cmp     #$1f
@@ -1210,8 +1210,8 @@ ChangeConfigOption_0c:
 
 ChangeConfigOption_0d:
 @3f5b:  jsr     GetColorComponents
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @3f6e
         lda     ze1
         cmp     #$1f
@@ -1230,8 +1230,8 @@ ChangeConfigOption_0d:
 
 ChangeConfigOption_0e:
 @3f7a:  jsr     GetColorComponents
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @3f8d
         lda     ze0
         cmp     #$1f
@@ -1262,7 +1262,7 @@ InitFontColor:
 ; [ update window palette in CGRAM buffer ]
 
 UpdateWindowPal:
-@3fad:  ldx     z0
+@3fad:  ldx     zZero
         longa
 @3fb1:  lda     $1d57,y
         sta     $7e312b,x
@@ -1340,12 +1340,12 @@ DrawConfigMagicOrder:
 
 ; positions for highlighted numeral for magic order
 ConfigMagicOrderNumPos:
-        make_pos BG1B, {14, 5}
-        make_pos BG1B, {16, 5}
-        make_pos BG1B, {18, 5}
-        make_pos BG1B, {20, 5}
-        make_pos BG1B, {22, 5}
-        make_pos BG1B, {24, 5}
+        bg_pos BG1B, {14, 5}
+        bg_pos BG1B, {16, 5}
+        bg_pos BG1B, {18, 5}
+        bg_pos BG1B, {20, 5}
+        bg_pos BG1B, {22, 5}
+        bg_pos BG1B, {24, 5}
 
 ; ------------------------------------------------------------------------------
 
@@ -1435,9 +1435,9 @@ DrawConfigMagicTypeName:
 .if LANG_EN
 
 ConfigMagicTypeTextPos:
-        make_pos BG1B, {16, 11}
-        make_pos BG1B, {16, 9}
-        make_pos BG1B, {16, 7}
+        bg_pos BG1B, {16, 11}
+        bg_pos BG1B, {16, 9}
+        bg_pos BG1B, {16, 7}
 
 ConfigMagicTypeTextPtrs:
 @40d2:  .byte   $00,$0a,$14,$00
@@ -1450,9 +1450,9 @@ ConfigMagicTypeTextPtrs:
 .else
 
 ConfigMagicTypeTextPos:
-        make_pos BG1B, {16, 10}
-        make_pos BG1B, {16, 8}
-        make_pos BG1B, {16, 6}
+        bg_pos BG1B, {16, 10}
+        bg_pos BG1B, {16, 8}
+        bg_pos BG1B, {16, 6}
 
 ConfigMagicTypeTextPtrs:
         .byte   0,4,8,0
@@ -1510,14 +1510,14 @@ DrawConfigNum:
 
 ; positions for highlighted numeral for window graphics indes
 ConfigWindowNumPos:
-        make_pos BG1B, {14, 13}
-        make_pos BG1B, {16, 13}
-        make_pos BG1B, {18, 13}
-        make_pos BG1B, {20, 13}
-        make_pos BG1B, {22, 13}
-        make_pos BG1B, {24, 13}
-        make_pos BG1B, {26, 13}
-        make_pos BG1B, {28, 13}
+        bg_pos BG1B, {14, 13}
+        bg_pos BG1B, {16, 13}
+        bg_pos BG1B, {18, 13}
+        bg_pos BG1B, {20, 13}
+        bg_pos BG1B, {22, 13}
+        bg_pos BG1B, {24, 13}
+        bg_pos BG1B, {26, 13}
+        bg_pos BG1B, {28, 13}
 
 ; ------------------------------------------------------------------------------
 
@@ -1665,7 +1665,7 @@ CombineColorComponents:
         longa
         asl5
         ora     ze7
-        sta     a:$009a
+        sta     a:z9a
         shorta
         rts
 
@@ -1725,7 +1725,7 @@ DrawConfigColorBar:
         stx     hWMADDL
         pla
         xba
-        lda     z0
+        lda     zZero
         xba
         lsr2
         tax
@@ -1762,7 +1762,7 @@ ColorBarTiles:
 
 ; [ menu state $47: battle command arrange (init) ]
 
-MenuState_47:
+        array_label MENU_STATE, MENU_STATE::CMD_ARRANGE_INIT
 @42c2:  jsr     DisableInterrupts
         jsr     DrawCmdArrangeMenu
         jsr     InitCmdArrangeScrollHDMA
@@ -1771,7 +1771,7 @@ MenuState_47:
         jsr     CreateCursorTask
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
-        lda     #$48
+        lda     #MENU_STATE::CMD_ARRANGE_CHAR_SELECT
         sta     zNextMenuState
         jmp     EnableInterrupts
 
@@ -1779,9 +1779,9 @@ MenuState_47:
 
 ; [ menu state $48: battle command arrange ]
 
-MenuState_48:
+        array_label MENU_STATE, MENU_STATE::CMD_ARRANGE_CHAR_SELECT
 @42df:  jsr     UpdateCmdArrangeCharCursor
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @4310
         clr_a
@@ -1798,15 +1798,15 @@ MenuState_48:
         sta     z64
         jsr     LoadCmdArrangeCursor
         jsr     InitCmdArrangeCursor
-        lda     #$62
+        lda     #MENU_STATE::CMD_ARRANGE_SELECT_1
         sta     zMenuState
         rts
 @430a:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
-@4310:  lda     z08+1
+@4310:  lda     zNewCtrlState_H
         bit     #>JOY_START
         bne     @431c
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @4325
 @431c:  jsr     PlayCancelSfx
@@ -1823,18 +1823,18 @@ MenuState_48:
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $62: command arrange (init) ]
+; [ menu state $62: command arrange (first command selection) ]
 
-MenuState_62:
+        array_label MENU_STATE, MENU_STATE::CMD_ARRANGE_SELECT_1
 @4338:  jsr     UpdateCmdArrangeCursor
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @4359
         jsr     PlaySelectSfx
         lda     z4b
         sta     zSelIndex
         jsr     _c32f06
-        lda     #$63
+        lda     #MENU_STATE::CMD_ARRANGE_SELECT_2
         sta     zMenuState
         clr_a
         lda     z64
@@ -1843,7 +1843,7 @@ MenuState_62:
         ldy     zCharPropPtr,x
         sty     zSelCharPropPtr
         rts
-@4359:  lda     z08+1
+@4359:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @4375
         jsr     PlayCancelSfx
@@ -1853,20 +1853,20 @@ MenuState_62:
         jsr     InitCmdArrangeCharCursor
         lda     z4e
         sta     z5e
-        lda     #$48
+        lda     #MENU_STATE::CMD_ARRANGE_CHAR_SELECT
         sta     zMenuState
         rts
 @4375:  rts
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $63: command arrange ]
+; [ menu state $63: command arrange (second command selection) ]
 
-MenuState_63:
+        array_label MENU_STATE, MENU_STATE::CMD_ARRANGE_SELECT_2
 @4376:  jsr     UpdateCmdArrangeCursor
 
 ; A button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @43bd
         jsr     PlaySelectSfx
@@ -1900,13 +1900,13 @@ MenuState_63:
         bra     @43c6
 
 ; B button
-@43bd:  lda     z08+1
+@43bd:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @43cf
         jsr     PlayCancelSfx
 @43c6:  lda     #$05
         trb     z46
-        lda     #$62
+        lda     #MENU_STATE::CMD_ARRANGE_SELECT_1
         sta     zMenuState
         rts
 @43cf:  rts
@@ -1916,7 +1916,7 @@ MenuState_63:
 ; [  ]
 
 _c343d0:
-@43d0:  ldx     z0
+@43d0:  ldx     zZero
         jsr     _c343f3
         jmp     DrawCmdArrangeChar1
 
@@ -2018,25 +2018,25 @@ DrawCmdArrangeMenu:
 
 ; command arrange menu windows
 
-CmdArrangeChar1RightWindow:             make_window BG2A, {11, 3}, {18, 4}
-CmdArrangeChar2RightWindow:             make_window BG2A, {11, 9}, {18, 4}
-CmdArrangeChar3RightWindow:             make_window BG2A, {11, 15}, {18, 4}
-CmdArrangeChar4RightWindow:             make_window BG2A, {11, 21}, {18, 4}
-CmdArrangeChar1LeftWindow:              make_window BG2A, {1, 3}, {8, 4}
-CmdArrangeChar2LeftWindow:              make_window BG2A, {1, 9}, {8, 4}
-CmdArrangeChar3LeftWindow:              make_window BG2A, {1, 15}, {8, 4}
-CmdArrangeChar4LeftWindow:              make_window BG2A, {1, 21}, {8, 4}
-CmdArrangeTitleWindow:                  make_window BG2A, {1, 1}, {8, 1}
+CmdArrangeChar1RightWindow:             window_pos BG2A, {11, 3}, {18, 4}
+CmdArrangeChar2RightWindow:             window_pos BG2A, {11, 9}, {18, 4}
+CmdArrangeChar3RightWindow:             window_pos BG2A, {11, 15}, {18, 4}
+CmdArrangeChar4RightWindow:             window_pos BG2A, {11, 21}, {18, 4}
+CmdArrangeChar1LeftWindow:              window_pos BG2A, {1, 3}, {8, 4}
+CmdArrangeChar2LeftWindow:              window_pos BG2A, {1, 9}, {8, 4}
+CmdArrangeChar3LeftWindow:              window_pos BG2A, {1, 15}, {8, 4}
+CmdArrangeChar4LeftWindow:              window_pos BG2A, {1, 21}, {8, 4}
+CmdArrangeTitleWindow:                  window_pos BG2A, {1, 1}, {8, 1}
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw command arrange text for character slot 1 ]
 
 DrawCmdArrangeChar1:
-@44b4:  lda     zCharID::Slot1
+@44b4:  lda     zCharID::_0
         bmi     @44ec
         jsl     UpdateEquip_ext
-        ldx     zCharPropPtr::Slot1
+        ldx     zCharPropPtr::_0
         stx     zSelCharPropPtr
         lda     #BG3_TEXT_COLOR::TEAL_ALT
         sta     zTextColor
@@ -2078,10 +2078,10 @@ DrawCmdArrangeChar1:
 ; [ draw command arrange text for character slot 2 ]
 
 DrawCmdArrangeChar2:
-@44ed:  lda     zCharID::Slot2
+@44ed:  lda     zCharID::_1
         bmi     @4525
         jsl     UpdateEquip_ext
-        ldx     zCharPropPtr::Slot2
+        ldx     zCharPropPtr::_1
         stx     zSelCharPropPtr
         lda     #BG3_TEXT_COLOR::TEAL_ALT
         sta     zTextColor
@@ -2123,10 +2123,10 @@ DrawCmdArrangeChar2:
 ; [ draw command arrange text for character slot 3 ]
 
 DrawCmdArrangeChar3:
-@4526:  lda     zCharID::Slot3
+@4526:  lda     zCharID::_2
         bmi     @455e
         jsl     UpdateEquip_ext
-        ldx     zCharPropPtr::Slot3
+        ldx     zCharPropPtr::_2
         stx     zSelCharPropPtr
         lda     #BG3_TEXT_COLOR::TEAL_ALT
         sta     zTextColor
@@ -2168,10 +2168,10 @@ DrawCmdArrangeChar3:
 ; [ draw command arrange text for character slot 4 ]
 
 DrawCmdArrangeChar4:
-@455f:  lda     zCharID::Slot4
+@455f:  lda     zCharID::_3
         bmi     @4597
         jsl     UpdateEquip_ext
-        ldx     zCharPropPtr::Slot4
+        ldx     zCharPropPtr::_3
         stx     zSelCharPropPtr
         lda     #BG3_TEXT_COLOR::TEAL_ALT
         sta     zTextColor
@@ -2361,31 +2361,31 @@ GetCmdArrangeCursorInput:
 @4615:  stz     z4d
 
 ; up
-        lda     z0a+1
-        bit     #$08
+        lda     zRepCtrlState_H
+        bit     #>JOY_UP
         beq     @4622
         stz     z4e
         jsr     PlayMoveSfx
 
 ; down
-@4622:  lda     z0a+1
-        bit     #$04
+@4622:  lda     zRepCtrlState_H
+        bit     #>JOY_DOWN
         beq     @462f
         lda     #$03
         sta     z4e
         jsr     PlayMoveSfx
 
 ; left
-@462f:  lda     z0a+1
-        bit     #$02
+@462f:  lda     zRepCtrlState_H
+        bit     #>JOY_LEFT
         beq     @463c
         lda     #$01
         sta     z4e
         jsr     PlayMoveSfx
 
 ; right
-@463c:  lda     z0a+1
-        bit     #$01
+@463c:  lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4649
         lda     #$02
         sta     z4e
@@ -2461,7 +2461,7 @@ CmdArrangeScrollHDMATbl:
 ; ------------------------------------------------------------------------------
 
 ; controller config menu
-MenuState_49:
+        array_label MENU_STATE, MENU_STATE::CTRL_CONFIG_INIT
 .if !LANG_EN
 @478e:  jsr     DisableInterrupts
         jsr     DrawCtrlConfigMenu
@@ -2471,16 +2471,16 @@ MenuState_49:
         jsr     CreateCursorTask
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
-        lda     #$4a
+        lda     #MENU_STATE::CTRL_CONFIG_SELECT
         sta     zNextMenuState
         jmp     EnableInterrupts
 .endif
 
-MenuState_4a:
+        array_label MENU_STATE, MENU_STATE::CTRL_CONFIG_SELECT
 .if !LANG_EN
 @47ab:  jsr     InitDMA1BG3ScreenA
         jsr     UpdateCtrlConfigCursor
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_START
         beq     @47cb
         jsr     ValidateCtrlConfig
@@ -2492,10 +2492,10 @@ MenuState_4a:
         sta     zNextMenuState
         stz     zMenuState
         rts
-@47cb:  lda     z0a+1
+@47cb:  lda     zRepCtrlState_H
         bit     #>JOY_RIGHT
         bne     @47d7
-        lda     z0a+1
+        lda     zRepCtrlState_H
         bit     #>JOY_LEFT
         beq     @47da
 @47d7:  jmp     _c24bf2
@@ -2510,7 +2510,7 @@ MenuState_4a:
 
 ; [ menu state $4b: init character controller select ]
 
-MenuState_4b:
+        array_label MENU_STATE, MENU_STATE::CHAR_CTRL_INIT
 @46ad:  jsr     DisableInterrupts
         jsr     DrawCharCtrlMenu
         jsr     InitCharCtrlWindowHDMA
@@ -2519,7 +2519,7 @@ MenuState_4b:
         jsr     CreateCursorTask
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
-        lda     #$4c
+        lda     #MENU_STATE::CHAR_CTRL_SELECT
         sta     zNextMenuState
         jmp     EnableInterrupts
 
@@ -2527,29 +2527,30 @@ MenuState_4b:
 
 ; [ menu state $4c: update character controller select ]
 
+        array_label MENU_STATE, MENU_STATE::CHAR_CTRL_SELECT
 .proc MenuState_4c
         jsr     InitDMA1BG3ScreenA
         jsr     UpdateCharCtrlCursor
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_START
-        bne     cancel
-        lda     z08+1
+        bne     Cancel
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     :+
-cancel: jsr     PlayCancelSfx
+Cancel: jsr     PlayCancelSfx
         lda     #MENU_STATE::CONFIG_INIT
         sta     zNextMenuState
         stz     zMenuState
         rts
 
-:       lda     z0a+1
+:       lda     zRepCtrlState_H
         bit     #>JOY_RIGHT
         bne     :+
-        lda     z0a+1
+        lda     zRepCtrlState_H
         bit     #>JOY_LEFT
-        beq     done
+        beq     Done
 :       bra     ChangeCharCtrl
-done:   rts
+Done:   rts
 .endproc  ; MenuState_4c
 
 ; ------------------------------------------------------------------------------
@@ -2600,8 +2601,8 @@ ChangeCharCtrlTbl:
 ChangeChar1Ctrl:
 @4732:  lda     $1d4f
         and     #$01
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4747
         lda     #$01
         ora     $1d4f
@@ -2619,8 +2620,8 @@ ChangeChar1Ctrl:
 ChangeChar2Ctrl:
 @4751:  lda     $1d4f
         and     #$02
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4767
         lda     #$02
         ora     $1d4f
@@ -2638,8 +2639,8 @@ ChangeChar2Ctrl:
 ChangeChar3Ctrl:
 @4772:  lda     $1d4f
         and     #$04
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4788
         lda     #$04
         ora     $1d4f
@@ -2657,8 +2658,8 @@ ChangeChar3Ctrl:
 ChangeChar4Ctrl:
 @4793:  lda     $1d4f
         and     #$08
-        lda     z0a+1
-        bit     #$01
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @47a9
         lda     #$08
         ora     $1d4f
@@ -2674,9 +2675,9 @@ ChangeChar4Ctrl:
 ; [ draw text for character 1 controller select ]
 
 DrawChar1CtrlText:
-@47b4:  lda     zCharID::Slot1
+@47b4:  lda     zCharID::_0
         bmi     @47f0
-        ldx     zCharPropPtr::Slot1
+        ldx     zCharPropPtr::_0
         stx     zSelCharPropPtr
         lda     #BG3_TEXT_COLOR::DEFAULT
         sta     zTextColor
@@ -2709,9 +2710,9 @@ DrawChar1CtrlText:
 ; [ draw text for character 2 controller select ]
 
 DrawChar2CtrlText:
-@47f1:  lda     zCharID::Slot2
+@47f1:  lda     zCharID::_1
         bmi     @482d
-        ldx     zCharPropPtr::Slot2
+        ldx     zCharPropPtr::_1
         stx     zSelCharPropPtr
         lda     #BG3_TEXT_COLOR::DEFAULT
         sta     zTextColor
@@ -2744,9 +2745,9 @@ DrawChar2CtrlText:
 ; [ draw text for character 3 controller select ]
 
 DrawChar3CtrlText:
-@482e:  lda     zCharID::Slot3
+@482e:  lda     zCharID::_2
         bmi     @486a
-        ldx     zCharPropPtr::Slot3
+        ldx     zCharPropPtr::_2
         stx     zSelCharPropPtr
         lda     #BG3_TEXT_COLOR::DEFAULT
         sta     zTextColor
@@ -2779,9 +2780,9 @@ DrawChar3CtrlText:
 ; [ draw text for character 4 controller select ]
 
 DrawChar4CtrlText:
-@486b:  lda     zCharID::Slot4
+@486b:  lda     zCharID::_3
         bmi     @48a7
-        ldx     zCharPropPtr::Slot4
+        ldx     zCharPropPtr::_3
         stx     zSelCharPropPtr
         lda     #BG3_TEXT_COLOR::DEFAULT
         sta     zTextColor
@@ -2872,7 +2873,7 @@ CharCtrlCursorPos:
 ; ------------------------------------------------------------------------------
 
 ; window for character controller select
-CharCtrlWindow:                         make_window BG2A, {1, 11}, {28, 11}
+CharCtrlWindow:                         window_pos BG2A, {1, 11}, {28, 11}
 
 ; ------------------------------------------------------------------------------
 
@@ -2910,24 +2911,24 @@ DrawCtrlConfigMenu:
 
 ; ------------------------------------------------------------------------------
 
-CtrlConfigMainWindow:                   make_window BG2A, {1, 3}, {28, 22}
-CtrlConfigTitleWindow:                  make_window BG2A, {21, 1}, {8, 2}
+CtrlConfigMainWindow:                   window_pos BG2A, {1, 3}, {28, 22}
+CtrlConfigTitleWindow:                  window_pos BG2A, {21, 1}, {8, 2}
 
 ; ------------------------------------------------------------------------------
 
 InitCtrlConfigWindowHDMA:
 @4a84:  lda     #$02
-        sta     $4350
-        lda     #$12
-        sta     $4351
+        sta     hDMA5::CTRL
+        lda     #<hBG3VOFS
+        sta     hDMA5::HREG
         ldy     #near CtrlConfigScrollHDMATbl
-        sty     $4352
+        sty     hDMA5::ADDR
         lda     #^CtrlConfigScrollHDMATbl
-        sta     $4354
+        sta     hDMA5::ADDR_B
         lda     #^CtrlConfigScrollHDMATbl
-        sta     $4357
-        lda     #$20
-        tsb     $43
+        sta     hDMA5::HDMA_B
+        lda     #BIT_5
+        tsb     zEnableHDMA
         rts
 
 ; ------------------------------------------------------------------------------
@@ -2995,12 +2996,12 @@ _c34af6:
         tax
         longa
         lda     f:CtrlConfigActionTextList1-2,x
-        sta     $e7
+        sta     ze7
         shorta
 
 _c34b17:
 @4b17:  lda     #$c3
-        sta     $e9
+        sta     ze9
         lda     #$20
         sta     zTextColor
         jmp     DrawPosKanaFar
@@ -3020,7 +3021,7 @@ _c34b22:
         tax
         longa
         lda     f:CtrlConfigActionTextList2-2,x
-        sta     $e7
+        sta     ze7
         shorta
         jmp     _c34b17
 
@@ -3039,7 +3040,7 @@ _c34b44:
         tax
         longa
         lda     f:CtrlConfigActionTextList3-2,x
-        sta     $e7
+        sta     ze7
         shorta
         jmp     _c34b17
 
@@ -3058,7 +3059,7 @@ _c34b68:
         tax
         longa
         lda     f:CtrlConfigActionTextList4-2,x
-        sta     $e7
+        sta     ze7
         shorta
         jmp     _c34b17
 
@@ -3077,7 +3078,7 @@ _c34b8a:
         tax
         longa
         lda     f:CtrlConfigActionTextList5-2,x
-        sta     $e7
+        sta     ze7
         shorta
         jmp     _c34b17
 
@@ -3096,7 +3097,7 @@ _c34bae:
         tax
         longa
         lda     f:CtrlConfigActionTextList6-2,x
-        sta     $e7
+        sta     ze7
         shorta
         jmp     _c34b17
 
@@ -3115,7 +3116,7 @@ _c34bd0:
         tax
         longa
         lda     f:CtrlConfigActionTextList7-2,x
-        sta     $e7
+        sta     ze7
         shorta
         jmp     _c34b17
 
@@ -3123,7 +3124,7 @@ _c34bd0:
 
 _c24bf2:
 @4bf2:  clr_a
-        lda     $4b
+        lda     z4b
         asl
         tax
         jmp     (near @4bfa,x)
@@ -3135,28 +3136,28 @@ _c24bf2:
 @4c08:  lda     $1d50
         and     #$f0
         lsr4
-        sta     $e0
-        lda     $0b
-        bit     #$01
+        sta     ze0
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4c24
-        lda     $e0
+        lda     ze0
         cmp     #$06
         beq     @4c23
-        inc     $e0
+        inc     ze0
         bra     @4c2f
 @4c23:  rts
-@4c24:  lda     $e0
+@4c24:  lda     ze0
         cmp     #$01
         beq     @4c2e
-        dec     $e0
+        dec     ze0
         bra     @4c2f
 @4c2e:  rts
-@4c2f:  lda     $e0
+@4c2f:  lda     ze0
         asl4
-        sta     $e0
+        sta     ze0
         lda     $1d50
         and     #$0f
-        ora     $e0
+        ora     ze0
         sta     $1d50
         jmp     _c34af6
 
@@ -3164,25 +3165,25 @@ _c24bf2:
 
 @4c44:  lda     $1d50
         and     #$0f
-        sta     $e0
-        lda     $0b
-        bit     #$01
+        sta     ze0
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4c5c
-        lda     $e0
+        lda     ze0
         cmp     #$06
         beq     @4c5b
-        inc     $e0
+        inc     ze0
         bra     @4c67
 @4c5b:  rts
-@4c5c:  lda     $e0
+@4c5c:  lda     ze0
         cmp     #$01
         beq     @4c66
-        dec     $e0
+        dec     ze0
         bra     @4c67
 @4c66:  rts
 @4c67:  lda     $1d50
         and     #$f0
-        ora     $e0
+        ora     ze0
         sta     $1d50
         jmp     _c34b22
 
@@ -3191,28 +3192,28 @@ _c24bf2:
 @4c74:  lda     $1d51
         and     #$f0
         lsr4
-        sta     $e0
-        lda     $0b
-        bit     #$01
+        sta     ze0
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4c90
-        lda     $e0
+        lda     ze0
         cmp     #$06
         beq     @4c8f
-        inc     $e0
+        inc     ze0
         bra     @4c9b
 @4c8f:  rts
-@4c90:  lda     $e0
+@4c90:  lda     ze0
         cmp     #$01
         beq     @4c9a
-        dec     $e0
+        dec     ze0
         bra     @4c9b
 @4c9a:  rts
-@4c9b:  lda     $e0
+@4c9b:  lda     ze0
         asl4
-        sta     $e0
+        sta     ze0
         lda     $1d51
         and     #$0f
-        ora     $e0
+        ora     ze0
         sta     $1d51
         jmp     _c34b44
 
@@ -3220,25 +3221,25 @@ _c24bf2:
 
 @4cb0:  lda     $1d51
         and     #$0f
-        sta     $e0
-        lda     $0b
-        bit     #$01
+        sta     ze0
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4cc8
-        lda     $e0
+        lda     ze0
         cmp     #$06
         beq     @4cc7
-        inc     $e0
+        inc     ze0
         bra     @4cd3
 @4cc7:  rts
-@4cc8:  lda     $e0
+@4cc8:  lda     ze0
         cmp     #$01
         beq     @4cd2
-        dec     $e0
+        dec     ze0
         bra     @4cd3
 @4cd2:  rts
 @4cd3:  lda     $1d51
         and     #$f0
-        ora     $e0
+        ora     ze0
         sta     $1d51
         jmp     _c34b68
 
@@ -3247,28 +3248,28 @@ _c24bf2:
 @4ce0:  lda     $1d52
         and     #$f0
         lsr4
-        sta     $e0
-        lda     $0b
-        bit     #$01
+        sta     ze0
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4cfc
-        lda     $e0
+        lda     ze0
         cmp     #$06
         beq     @4cfb
-        inc     $e0
+        inc     ze0
         bra     @4d07
 @4cfb:  rts
-@4cfc:  lda     $e0
+@4cfc:  lda     ze0
         cmp     #$01
         beq     @4d06
-        dec     $e0
+        dec     ze0
         bra     @4d07
 @4d06:  rts
-@4d07:  lda     $e0
+@4d07:  lda     ze0
         asl4
-        sta     $e0
+        sta     ze0
         lda     $1d52
         and     #$0f
-        ora     $e0
+        ora     ze0
         sta     $1d52
         jmp     _c34b8a
 
@@ -3276,25 +3277,25 @@ _c24bf2:
 
 @4d1c:  lda     $1d52
         and     #$0f
-        sta     $e0
-        lda     $0b
-        bit     #$01
+        sta     ze0
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4d34
-        lda     $e0
+        lda     ze0
         cmp     #$06
         beq     @4d33
-        inc     $e0
+        inc     ze0
         bra     @4d3f
 @4d33:  rts
-@4d34:  lda     $e0
+@4d34:  lda     ze0
         cmp     #$01
         beq     @4d3e
-        dec     $e0
+        dec     ze0
         bra     @4d3f
 @4d3e:  rts
 @4d3f:  lda     $1d52
         and     #$f0
-        ora     $e0
+        ora     ze0
         sta     $1d52
         jmp     _c34bae
 
@@ -3302,25 +3303,25 @@ _c24bf2:
 
 @4d4c:  lda     $1d53
         and     #$0f
-        sta     $e0
-        lda     $0b
-        bit     #$01
+        sta     ze0
+        lda     zRepCtrlState_H
+        bit     #>JOY_RIGHT
         beq     @4d64
-        lda     $e0
+        lda     ze0
         cmp     #$06
         beq     @4d63
-        inc     $e0
+        inc     ze0
         bra     @4d6f
 @4d63:  rts
-@4d64:  lda     $e0
+@4d64:  lda     ze0
         cmp     #$01
         beq     @4d6e
-        dec     $e0
+        dec     ze0
         bra     @4d6f
 @4d6e:  rts
 @4d6f:  lda     $1d53
         and     #$f0
-        ora     $e0
+        ora     ze0
         sta     $1d53
         jmp     _c34bd0
 
@@ -3352,18 +3353,18 @@ ValidateCtrlConfig:
         and     #$0f
         sta     $7e9d8f
         lda     #$01
-        sta     $e0
-        ldy     z0
-@4dcd:  ldx     z0
+        sta     ze0
+        ldy     zZero
+@4dcd:  ldx     zZero
 @4dcf:  lda     $7e9d89,x
-        cmp     $e0
+        cmp     ze0
         beq     @4ddf
         inx
         cpx     #7
         bne     @4dcf
         txa
         rts
-@4ddf:  inc     $e0
+@4ddf:  inc     ze0
         iny
         cpy     #6
         bne     @4dcd
@@ -3652,7 +3653,7 @@ CtrlConfigXText:                pos_text CTRL_CONFIG_X
 CtrlConfigYText:                pos_text CTRL_CONFIG_Y
 CtrlConfigLText:                pos_text CTRL_CONFIG_L
 CtrlConfigRText:                pos_text CTRL_CONFIG_R
-CtrlConfigSelectText:           pos_text CTRL_CONFIG_SELECT
+CtrlConfigSelectText:           pos_text CTRL_CONFIG_SELECT_TEXT
 
 .endif
 

@@ -118,7 +118,7 @@ Loop:   cpx     $22                     ; branch if at target level
         sta     $1f
         inx
         bra     Loop
-Done:   ldx     #9999
+Done:   ldx     #MAX_HP
         cpx     $1e
         bcs     :+
         stx     $1e
@@ -154,7 +154,7 @@ Loop:   cpx     $22                     ; branch if at target level
         sta     $1f
         inx
         bra     Loop
-Done:   ldx     #999
+Done:   ldx     #MAX_MP
         cpx     $1e
         bcs     :+
         stx     $1e
@@ -173,7 +173,7 @@ Done:   ldx     #999
         lda     $59                     ; return if menu is already opening
         bne     Done
         lda     $06                     ; return if x button not down
-        and     #$40
+        and     #JOY_X
         beq     Done
         lda     $56                     ; return if battle enabled
         bne     Done
@@ -184,10 +184,10 @@ Done:   ldx     #999
         lda     $055e                   ; return if parties switching ???
         bne     Done
         ldx     $e5                     ; return if an event is running
-        cpx     #.loword(EventScript_NoEvent)
+        cpx     #.loword(EventScript::NoEvent)
         bne     Done
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     Done
         ldy     $0803                   ; party object
         lda     $087e,y                 ; return if moving
@@ -215,8 +215,6 @@ Done:   rts
 
 ; [ open main menu ]
 
-.import EventScript_Tent, EventScript_Warp
-
 .proc OpenMainMenu
         lda     $4a                     ; return if still fading out
         bne     Done
@@ -224,13 +222,13 @@ Done:   rts
         bne     :+
 Done:   jmp     MainMenuRet
 :       stz     $59                     ; disable menu
-        lda     #$00                    ; set menu mode to main menu
+        lda     #MENU_TYPE::FIELD
         sta     $0200
         lda     $1eb7                   ; on a save point
         and     #$80
         sta     $1a
         lda     $0521                   ; warp/x-zone enable
-        and     #$03
+        and     #%11
         ora     $1a
         sta     $0201                   ; set menu flags
         jsr     OpenMenu
@@ -241,18 +239,18 @@ Done:   jmp     MainMenuRet
         beq     Warp                    ; branch if warp/warp stone was used
         jmp     FieldMain               ; return to main code loop and fade in
 
-Tent:   ldx     #.loword(EventScript_Tent)
+Tent:   ldx     #.loword(EventScript::Tent)
         stx     $e5
         stx     $05f4
-        lda     #^EventScript_Tent
+        lda     #^EventScript::Tent
         sta     $e7
         sta     $05f6
         bra     :+
 
-Warp:   ldx     #.loword(EventScript_Warp)
+Warp:   ldx     #.loword(EventScript::Warp)
         stx     $e5
         stx     $05f4
-        lda     #^EventScript_Warp
+        lda     #^EventScript::Warp
         sta     $e7
         sta     $05f6
 :       ldy     $0803                   ; party object
@@ -260,9 +258,9 @@ Warp:   ldx     #.loword(EventScript_Warp)
         and     #$f0
         ora     #$04
         sta     $087c,y
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #.loword(EventScript::NoEvent)
         stx     $0594
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596
         lda     #1
         sta     $05c7
@@ -328,9 +326,9 @@ Warp:   ldx     #.loword(EventScript_Warp)
         jsr     PopCharFlags
         jsr     PopPartyMap
         lda     $1d4e                   ; update wallpaper index
-        and     #$07
+        and     #%111
         sta     $0565
-        lda     #$01                    ; reload the same map
+        lda     #1                      ; reload the same map
         sta     $58
         lda     #$80                    ; enable map startup event
         sta     $11fa

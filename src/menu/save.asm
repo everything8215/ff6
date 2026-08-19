@@ -16,7 +16,7 @@
 ; ------------------------------------------------------------------------------
 
 LoadSavedGame:
-@14fe:  lda     wSaveSlotToLoad
+@14fe:  lda     rSaveSlotToLoad
         beq     @1514                   ; branch if not loading a saved game
         jsr     LoadSaveSlot
         jsr     CalcSaveSlotChecksum
@@ -27,7 +27,7 @@ LoadSavedGame:
         bra     @1518
 @1514:  shorta
         lda     #$ff                    ; return $ff
-@1518:  sta     w0205
+@1518:  sta     r0205
         clr_a
         rtl
 
@@ -43,15 +43,15 @@ CopyGameDataToSRAM:
         and     #%11
 .endif
         sta     $307ff0                 ; set game slot
-        sta     wSelSaveSlot
+        sta     rSelSaveSlot
         pha
-        ldy     wGameTimeHours
+        ldy     rGameTimeHours
         sty     $1863
-        lda     wGameTimeSeconds
+        lda     rGameTimeSeconds
         sta     $1865
         jsr     PushTimers
         jsr     CalcSaveSlotChecksum
-        ldy     $e7
+        ldy     ze7
         sty     $1ffe       ; save checksum
         clr_a
         pla
@@ -61,7 +61,7 @@ CopyGameDataToSRAM:
         lda     f:SRAMSlotPtrs,x
         tax
         shorta
-        ldy     z0
+        ldy     zZero
 @154d:  lda     $1600,y     ; copy saved game data to sram
         sta     $306000,x
         inx
@@ -80,7 +80,7 @@ SRAMSlotPtrs:
 
 LoadSaveSlot:
 @1566:  xba
-        lda     z0
+        lda     zZero
         xba
         asl
         tax
@@ -88,7 +88,7 @@ LoadSaveSlot:
         lda     f:SRAMSlotPtrs,x   ; pointer to saved game data
         tax
         shorta
-        ldy     z0
+        ldy     zZero
 @1577:  lda     $306000,x
         sta     $1600,y
         inx
@@ -253,11 +253,11 @@ DrawSaveSlotWindows:
         ldy     #$0002
         sty     zBG1VScroll
         ldy     $1d55                   ; save font color
-        sty     $e7
+        sty     ze7
         ldy     #$7fff                  ; set font color to white
         sty     $1d55
         jsr     InitFontColor
-        ldy     $e7
+        ldy     ze7
         sty     $1d55                   ; restore font color
         lda     #1
         jsl     InitGradientHDMA
@@ -273,7 +273,7 @@ DrawSaveSlotWindows:
         jsr     InitCharProp
         jsr     CalcSaveSlotChecksum
         jsr     CheckSaveSlotChecksum
-        sty     $91
+        sty     z91
         beq     @1682                   ; branch if checksum invalid
         jsr     MakeSaveSlot1PalList
         jsr     DrawSave1GameText
@@ -294,7 +294,7 @@ DrawSaveSlotWindows:
         jsr     InitCharProp
         jsr     CalcSaveSlotChecksum
         jsr     CheckSaveSlotChecksum
-        sty     $93
+        sty     z93
         beq     @16b4
         jsr     MakeSaveSlot2PalList
         jsr     DrawSave2GameText
@@ -315,7 +315,7 @@ DrawSaveSlotWindows:
         jsr     InitCharProp
         jsr     CalcSaveSlotChecksum
         jsr     CheckSaveSlotChecksum
-        sty     $95
+        sty     z95
         beq     @16e6
         jsr     MakeSaveSlot3PalList
         jsr     DrawSave3GameText
@@ -412,17 +412,17 @@ DrawSaveSlotCharText:
         ldy     zSelCharPropPtr
         jsr     CheckMaxHP
         lda     $0009,y     ; current hp
-        sta     $f3
+        sta     zf3
         lda     $000a,y
-        sta     $f4
+        sta     zf4
         jsr     HexToDec5
         plx
         jsr     DrawNum4
         ldx     zSelCharPropPtr
         lda     a:$000b,x     ; max hp
-        sta     $f3
+        sta     zf3
         lda     a:$000c,x
-        sta     $f4
+        sta     zf4
         jsr     CalcMaxHPMP
         jsr     ValidateMaxHP
         jsr     HexToDec5
@@ -571,10 +571,10 @@ TfrSaveSlotWindows:
 
 ; ------------------------------------------------------------------------------
 
-SaveTitleWindow:                        make_window BG2A, {1, 2}, {28, 2}
-SaveSlot1Window:                        make_window BG2A, {1, 6}, {28, 5}
-SaveSlot2Window:                        make_window BG2A, {1, 13}, {28, 5}
-SaveSlot3Window:                        make_window BG2A, {1, 20}, {28, 5}
+SaveTitleWindow:                        window_pos BG2A, {1, 2}, {28, 2}
+SaveSlot1Window:                        window_pos BG2A, {1, 6}, {28, 5}
+SaveSlot2Window:                        window_pos BG2A, {1, 13}, {28, 5}
+SaveSlot3Window:                        window_pos BG2A, {1, 20}, {28, 5}
 
 ; ------------------------------------------------------------------------------
 
@@ -583,7 +583,7 @@ SaveSlot3Window:                        make_window BG2A, {1, 20}, {28, 5}
 PushSRAM:
 @18ac:  ldy     #$ac8d
         sty     hWMADDL
-        ldx     z0
+        ldx     zZero
 @18b4:  lda     $1600,x
         sta     hWMDATA
         inx
@@ -596,7 +596,7 @@ PushSRAM:
 ; [ restore sram from 7e/ac8d ]
 
 PopSRAM:
-@18c1:  ldx     z0
+@18c1:  ldx     zZero
 @18c3:  lda     $7eac8d,x
         sta     $1600,x
         inx
@@ -638,7 +638,7 @@ _c318f0:
 ; [ update character sprites (save menu) ]
 
 DrawSaveMenuChars:
-@1903:  ldx     z0
+@1903:  ldx     zZero
 @1905:  lda     $7eaa71,x               ; branch if no character in this slot
         bmi     @1977
         phx
@@ -661,37 +661,37 @@ DrawSaveMenuChars:
 
 ; slot 3
         lda     f:SaveMenuCharPalTbl+36,x
-        sta     near wTaskPal,y                 ; palette
+        sta     near wTaskProp::Pal,y                 ; palette
         bra     @194a
 
 ; new game
 @1931:  lda     f:SaveMenuCharPalTbl,x
-        sta     near wTaskPal,y
+        sta     near wTaskProp::Pal,y
         bra     @194a
 
 ; slot 2
 @193a:  lda     f:SaveMenuCharPalTbl+24,x
-        sta     near wTaskPal,y
+        sta     near wTaskProp::Pal,y
         bra     @194a
 
 ; slot 1
 @1943:  lda     f:SaveMenuCharPalTbl+12,x
-        sta     near wTaskPal,y
+        sta     near wTaskProp::Pal,y
 @194a:  lda     #^PartyCharAnimTbl
-        sta     near wTaskAnimBank,y
+        sta     near wTaskProp::AnimBank,y
         clr_a
-        sta     near {wTaskPosX + 1},y
-        sta     near {wTaskPosY + 1},y
+        sta     near wTaskProp::PosX + 2,y
+        sta     near wTaskProp::PosY + 2,y
         lda     f:SaveMenuCharXTbl,x
-        sta     near wTaskPosX,y
+        sta     near wTaskProp::PosX_H,y
         lda     f:SaveMenuCharYTbl,x
-        sta     near wTaskPosY,y
+        sta     near wTaskProp::PosY_H,y
         lda     $7eaa71,x
         longa
         asl
         tax
         lda     f:PartyCharAnimTbl,x
-        sta     near wTaskAnimPtr,y                 ; pointer to animation data
+        sta     near wTaskProp::AnimPtr,y                 ; pointer to animation data
         shorta
         plb
         plx
@@ -739,16 +739,16 @@ SaveMenuCharTask:
 ; [ calculate saved game data checksum ]
 
 CalcSaveSlotChecksum:
-@19d1:  stz     $e7                     ; +$e7 = sram checksum
-        stz     $e8
-        ldx     z0
+@19d1:  stz     ze7                     ; +$e7 = sram checksum
+        stz     ze8
+        ldx     zZero
         clc
 @19d8:  lda     $1600,x                 ; sum all bytes of saved game data
-        adc     $e7
-        sta     $e7
+        adc     ze7
+        sta     ze7
         clr_a
-        adc     $e8
-        sta     $e8
+        adc     ze8
+        sta     ze8
         inx
         cpx     #$09fe
         bne     @19d8
@@ -762,7 +762,7 @@ CalcSaveSlotChecksum:
 
 CheckSaveSlotChecksum:
 @19eb:  longa
-        lda     $e7
+        lda     ze7
         cmp     $1ffe
         bne     @19f6                   ; return 0 if invalid
         bra     @19f7                   ; return checksum value if valid
@@ -775,11 +775,11 @@ CheckSaveSlotChecksum:
 
 ; [ menu state $53: fade out (save menu) ]
 
-MenuState_53:
+        array_label MENU_STATE, MENU_STATE::SAVE_FADE_OUT
 @19fb:  jsr     CreateFadeOutTask
         ldy     #$0008
         sty     zWaitCounter
-        lda     #$54
+        lda     #MENU_STATE::SAVE_WAIT_FADE
         sta     zMenuState
         jmp     DrawSaveMenuChars
 
@@ -787,11 +787,11 @@ MenuState_53:
 
 ; [ menu state $52: fade in (save menu) ]
 
-MenuState_52:
+        array_label MENU_STATE, MENU_STATE::SAVE_FADE_IN
 @1a0a:  jsr     CreateFadeInTask
         ldy     #$0008
         sty     zWaitCounter
-        lda     #$54
+        lda     #MENU_STATE::SAVE_WAIT_FADE
         sta     zMenuState
         jmp     DrawSaveMenuChars
 
@@ -799,7 +799,7 @@ MenuState_52:
 
 ; [ menu state $54: wait for fade (save menu) ]
 
-MenuState_54:
+        array_label MENU_STATE, MENU_STATE::SAVE_WAIT_FADE
 @1a19:  ldy     zWaitCounter
         bne     @1a21
         lda     zNextMenuState                     ; go to next menu state

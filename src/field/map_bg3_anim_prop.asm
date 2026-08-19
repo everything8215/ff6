@@ -1,26 +1,26 @@
 .list off
 
-MapBG3AnimProp::_0:
+        array_label MAP_BG3_ANIM_PROP, 0
         .byte   $00,$01,$80,$03,$00,$00,$80,$03,$00,$07,$80,$0a,$00,$00,$80,$03
         .byte   $00,$07,$80,$0a
 
-MapBG3AnimProp::_1:
+        array_label MAP_BG3_ANIM_PROP, 1
         .byte   $00,$01,$80,$01,$00,$00,$80,$01,$00,$03,$80,$04,$00,$00,$80,$01
         .byte   $00,$03,$80,$04
 
-MapBG3AnimProp::_2:
+        array_label MAP_BG3_ANIM_PROP, 2
         .byte   $00,$01,$c0,$00,$00,$00,$c0,$00,$80,$01,$40,$02,$00,$03,$c0,$03
         .byte   $80,$04,$40,$05
 
-MapBG3AnimProp::_3:
+        array_label MAP_BG3_ANIM_PROP, 3
         .byte   $00,$02,$80,$02,$00,$00,$80,$02,$00,$00,$80,$02,$00,$00,$80,$02
         .byte   $00,$00,$80,$02
 
-MapBG3AnimProp::_4:
+        array_label MAP_BG3_ANIM_PROP, 4
         .byte   $40,$00,$80,$01,$00,$00,$80,$01,$00,$03,$80,$04,$00,$06,$80,$07
         .byte   $00,$09,$80,$0a
 
-MapBG3AnimProp::_5:
+        array_label MAP_BG3_ANIM_PROP, 5
         .byte   $80,$00,$c0,$03,$00,$00,$c0,$03,$80,$07,$40,$0b,$00,$00,$c0,$03
         .byte   $80,$07,$40,$0b
 

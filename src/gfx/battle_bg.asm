@@ -1,23 +1,18 @@
 ; ------------------------------------------------------------------------------
 
-.include "gfx/battle_bg.inc"
-.include "gfx/map_gfx.inc"
+.include "battle_bg.inc"
+.include "map_gfx.inc"
 
 ; ------------------------------------------------------------------------------
 
 .macro inc_battle_bg_tiles id, name
-        array_label BattleBGTiles, BATTLE_BG_TILES::id
-        .incbin .sprintf("battle_bg_tiles/%s.scr.lz", name)
+        array_label BATTLE_BG_TILES, BATTLE_BG_TILES::id
+        .incbin .sprintf("assets/gfx/battle_bg_tiles/%s.scr.lz", name)
 .endmac
 
 .macro inc_battle_bg_gfx id, name
-        array_label BattleBGGfx, BATTLE_BG_GFX::id
-        .incbin .sprintf("battle_bg_gfx/%s.4bpp.lz", name)
-.endmac
-
-.macro inc_battle_bg_gfx_lang id, name
-        array_label BattleBGGfx, BATTLE_BG_GFX::id
-        .incbin .sprintf("battle_bg_gfx/%s_%s.4bpp.lz", name, LANG_SUFFIX)
+        array_label BATTLE_BG_GFX, BATTLE_BG_GFX::id
+        .incbin .sprintf("assets/gfx/battle_bg_gfx/%s.4bpp.lz", name)
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -614,75 +609,75 @@ BattleBGProp:
 
 ; e7/0150
 BattleBGPal:
-        .incbin "battle_bg_pal/field_wob.pal"
-        .incbin "battle_bg_pal/narshe_ext.pal"
-        .incbin "battle_bg_pal/narshe_caves.pal"
-        .incbin "battle_bg_pal/caves.pal"
-        .incbin "battle_bg_pal/mountains_ext.pal"
-        .incbin "battle_bg_pal/mountains_int.pal"
-        .incbin "battle_bg_pal/river.pal"
-        .incbin "battle_bg_pal/imp_camp.pal"
-        .incbin "battle_bg_pal/train_ext.pal"
-        .incbin "battle_bg_pal/train_int.pal"
-        .incbin "battle_bg_pal/fanatics_tower.pal"
-        .incbin "battle_bg_pal/desert_wob.pal"
-        .incbin "battle_bg_pal/forest_wob.pal"
-        .incbin "battle_bg_pal/field_wor.pal"
-        .incbin "battle_bg_pal/veldt.pal"
-        .incbin "battle_bg_pal/snowfields.pal"
-        .incbin "battle_bg_pal/town_ext.pal"
-        .incbin "battle_bg_pal/imp_castle.pal"
-        .incbin "battle_bg_pal/floating_island.pal"
-        .incbin "battle_bg_pal/kefkas_tower_ext.pal"
-        .incbin "battle_bg_pal/opera_stage.pal"
-        .incbin "battle_bg_pal/opera_catwalk.pal"
-        .incbin "battle_bg_pal/burning_building.pal"
-        .incbin "battle_bg_pal/castle_int.pal"
-        .incbin "battle_bg_pal/magitek.pal"
-        .incbin "battle_bg_pal/colosseum.pal"
-        .incbin "battle_bg_pal/sealed_gate.pal"
-        .incbin "battle_bg_pal/village_ext.pal"
-        .incbin "battle_bg_pal/waterfall.pal"
-        .incbin "battle_bg_pal/unused_1d.pal"
-        .incbin "battle_bg_pal/train_tracks.pal"
-        .incbin "battle_bg_pal/unused_1f.pal"
-        .incbin "battle_bg_pal/tentacles.pal"
-        .incbin "battle_bg_pal/fire_caves.pal"
-        .incbin "battle_bg_pal/town_int.pal"
-        .incbin "battle_bg_pal/zozo_int.pal"
-        .incbin "battle_bg_pal/underwater.pal"
-        .incbin "battle_bg_pal/zozo_ext.pal"
-        .incbin "battle_bg_pal/airship_wob.pal"
-        .incbin "battle_bg_pal/darills_tomb.pal"
-        .incbin "battle_bg_pal/castle_ext.pal"
-        .incbin "battle_bg_pal/kefkas_tower_int.pal"
-        .incbin "battle_bg_pal/unused_2a.pal"
-        .incbin "battle_bg_pal/owzers_house.pal"
-        .incbin "battle_bg_pal/final_battle_1.pal"
-        .incbin "battle_bg_pal/final_battle_2.pal"
-        .incbin "battle_bg_pal/final_battle_3.pal"
-        .incbin "battle_bg_pal/magitek_train.pal"
-        .incbin "battle_bg_pal/final_battle_4.pal"
-        .incbin "battle_bg_pal/forest_wor.pal"
-        .incbin "battle_bg_pal/cyans_dream.pal"
-        .incbin "battle_bg_pal/airship_wor.pal"
-        .incbin "battle_bg_pal/desert_wor.pal"
+        .incbin "assets/gfx/battle_bg_pal/field_wob.pal"
+        .incbin "assets/gfx/battle_bg_pal/narshe_ext.pal"
+        .incbin "assets/gfx/battle_bg_pal/narshe_caves.pal"
+        .incbin "assets/gfx/battle_bg_pal/caves.pal"
+        .incbin "assets/gfx/battle_bg_pal/mountains_ext.pal"
+        .incbin "assets/gfx/battle_bg_pal/mountains_int.pal"
+        .incbin "assets/gfx/battle_bg_pal/river.pal"
+        .incbin "assets/gfx/battle_bg_pal/imp_camp.pal"
+        .incbin "assets/gfx/battle_bg_pal/train_ext.pal"
+        .incbin "assets/gfx/battle_bg_pal/train_int.pal"
+        .incbin "assets/gfx/battle_bg_pal/fanatics_tower.pal"
+        .incbin "assets/gfx/battle_bg_pal/desert_wob.pal"
+        .incbin "assets/gfx/battle_bg_pal/forest_wob.pal"
+        .incbin "assets/gfx/battle_bg_pal/field_wor.pal"
+        .incbin "assets/gfx/battle_bg_pal/veldt.pal"
+        .incbin "assets/gfx/battle_bg_pal/snowfields.pal"
+        .incbin "assets/gfx/battle_bg_pal/town_ext.pal"
+        .incbin "assets/gfx/battle_bg_pal/imp_castle.pal"
+        .incbin "assets/gfx/battle_bg_pal/floating_island.pal"
+        .incbin "assets/gfx/battle_bg_pal/kefkas_tower_ext.pal"
+        .incbin "assets/gfx/battle_bg_pal/opera_stage.pal"
+        .incbin "assets/gfx/battle_bg_pal/opera_catwalk.pal"
+        .incbin "assets/gfx/battle_bg_pal/burning_building.pal"
+        .incbin "assets/gfx/battle_bg_pal/castle_int.pal"
+        .incbin "assets/gfx/battle_bg_pal/magitek.pal"
+        .incbin "assets/gfx/battle_bg_pal/colosseum.pal"
+        .incbin "assets/gfx/battle_bg_pal/sealed_gate.pal"
+        .incbin "assets/gfx/battle_bg_pal/village_ext.pal"
+        .incbin "assets/gfx/battle_bg_pal/waterfall.pal"
+        .incbin "assets/gfx/battle_bg_pal/unused_1d.pal"
+        .incbin "assets/gfx/battle_bg_pal/train_tracks.pal"
+        .incbin "assets/gfx/battle_bg_pal/unused_1f.pal"
+        .incbin "assets/gfx/battle_bg_pal/tentacles.pal"
+        .incbin "assets/gfx/battle_bg_pal/fire_caves.pal"
+        .incbin "assets/gfx/battle_bg_pal/town_int.pal"
+        .incbin "assets/gfx/battle_bg_pal/zozo_int.pal"
+        .incbin "assets/gfx/battle_bg_pal/underwater.pal"
+        .incbin "assets/gfx/battle_bg_pal/zozo_ext.pal"
+        .incbin "assets/gfx/battle_bg_pal/airship_wob.pal"
+        .incbin "assets/gfx/battle_bg_pal/darills_tomb.pal"
+        .incbin "assets/gfx/battle_bg_pal/castle_ext.pal"
+        .incbin "assets/gfx/battle_bg_pal/kefkas_tower_int.pal"
+        .incbin "assets/gfx/battle_bg_pal/unused_2a.pal"
+        .incbin "assets/gfx/battle_bg_pal/owzers_house.pal"
+        .incbin "assets/gfx/battle_bg_pal/final_battle_1.pal"
+        .incbin "assets/gfx/battle_bg_pal/final_battle_2.pal"
+        .incbin "assets/gfx/battle_bg_pal/final_battle_3.pal"
+        .incbin "assets/gfx/battle_bg_pal/magitek_train.pal"
+        .incbin "assets/gfx/battle_bg_pal/final_battle_4.pal"
+        .incbin "assets/gfx/battle_bg_pal/forest_wor.pal"
+        .incbin "assets/gfx/battle_bg_pal/cyans_dream.pal"
+        .incbin "assets/gfx/battle_bg_pal/airship_wor.pal"
+        .incbin "assets/gfx/battle_bg_pal/desert_wor.pal"
         .res 96*3, 0
 
 ; ------------------------------------------------------------------------------
 
 ; e7/1650
 BattleBGGfxPtrs:
-        ptr_tbl_far BattleBGGfx
+        ptr_tbl_far BATTLE_BG_GFX
         .res 93*3, 0
 
 ; ------------------------------------------------------------------------------
 
 ; e7/1848
 BattleBGTilesPtrs:
-        ptr_tbl BattleBGTiles
+        ptr_tbl BATTLE_BG_TILES
 
-.repeat $70 - BattleBGTiles::ARRAY_LENGTH
+.repeat $70 - BATTLE_BG_TILES::COUNT
         .addr BattleBGTiles
 .endrep
 
@@ -754,23 +749,23 @@ BattleBGGfx:
         inc_battle_bg_gfx TRAIN_EXT_1, "train_ext_1"
         inc_battle_bg_gfx TRAIN_INT_1, "train_int_1"
         inc_battle_bg_gfx CAVES_1, "caves_1"
-        BattleBGGfx::_10 := array_item MapGfx, MAP_GFX::TRAIN_PARALLAX
-        BattleBGGfx::_11 := array_item MapGfx, MAP_GFX::MOUNTAIN_EXT_1
-        BattleBGGfx::_12 := array_item MapGfx, MAP_GFX::MOUNTAIN_INT_1
-        BattleBGGfx::_13 := array_item MapGfx, MAP_GFX::RIVER
-        BattleBGGfx::_14 := array_item MapGfx, MAP_GFX::IMP_CAMP_1
-        BattleBGGfx::_15 := array_item MapGfx, MAP_GFX::TRAIN_EXT_1
-        BattleBGGfx::_16 := array_item MapGfx, MAP_GFX::TRAIN_INT
-        BattleBGGfx::_17 := array_item MapGfx, MAP_GFX::CAVES
+        BATTLE_BG_GFX::_10 := array_item MAP_GFX, MAP_GFX::TRAIN_PARALLAX
+        BATTLE_BG_GFX::_11 := array_item MAP_GFX, MAP_GFX::MOUNTAIN_EXT_1
+        BATTLE_BG_GFX::_12 := array_item MAP_GFX, MAP_GFX::MOUNTAIN_INT_1
+        BATTLE_BG_GFX::_13 := array_item MAP_GFX, MAP_GFX::RIVER
+        BATTLE_BG_GFX::_14 := array_item MAP_GFX, MAP_GFX::IMP_CAMP_1
+        BATTLE_BG_GFX::_15 := array_item MAP_GFX, MAP_GFX::TRAIN_EXT_1
+        BATTLE_BG_GFX::_16 := array_item MAP_GFX, MAP_GFX::TRAIN_INT
+        BATTLE_BG_GFX::_17 := array_item MAP_GFX, MAP_GFX::CAVES
         inc_battle_bg_gfx FIELD_1, "field_1"
         inc_battle_bg_gfx FIELD_2, "field_2"
         inc_battle_bg_gfx FIELD_3, "field_3"
-        BattleBGGfx::_21 := array_item MapGfx, MAP_GFX::TRAIN_EXT_3
+        BATTLE_BG_GFX::_21 := array_item MAP_GFX, MAP_GFX::TRAIN_EXT_3
         inc_battle_bg_gfx COLOSSEUM, "colosseum"
         inc_battle_bg_gfx BATTLE_BG_GFX_23, "unused_23"
         inc_battle_bg_gfx DESERT_1, "desert_1"
         inc_battle_bg_gfx FOREST_1, "forest_1"
-        BattleBGGfx::_26 := array_item MapGfx, MAP_GFX::FOREST_2
+        BATTLE_BG_GFX::_26 := array_item MAP_GFX, MAP_GFX::FOREST_2
         inc_battle_bg_gfx FIELD_WOR, "field_wor"
         inc_battle_bg_gfx VELDT, "veldt"
         inc_battle_bg_gfx DESERT_2, "desert_2"
@@ -783,41 +778,47 @@ BattleBGGfx:
         inc_battle_bg_gfx CASTLE_INT, "castle_int"
         inc_battle_bg_gfx MAGITEK_1, "magitek_1"
         inc_battle_bg_gfx CASTLE_EXT_1, "castle_ext_1"
-        BattleBGGfx::_39 := array_item MapGfx, MAP_GFX::FACTORY_1
-        BattleBGGfx::_40 := array_item MapGfx, MAP_GFX::IMP_CASTLE_INT
-        BattleBGGfx::_41 := array_item MapGfx, MAP_GFX::FLOATING_ISLAND_1
-        BattleBGGfx::_42 := array_item MapGfx, MAP_GFX::KEFKAS_TOWER_1
-        BattleBGGfx::_43 := array_item MapGfx, MAP_GFX::OPERA_2
-        BattleBGGfx::_44 := array_item MapGfx, MAP_GFX::BURNING_BUILDING
+        BATTLE_BG_GFX::_39 := array_item MAP_GFX, MAP_GFX::FACTORY_1
+        BATTLE_BG_GFX::_40 := array_item MAP_GFX, MAP_GFX::IMP_CASTLE_INT
+        BATTLE_BG_GFX::_41 := array_item MAP_GFX, MAP_GFX::FLOATING_ISLAND_1
+        BATTLE_BG_GFX::_42 := array_item MAP_GFX, MAP_GFX::KEFKAS_TOWER_1
+        BATTLE_BG_GFX::_43 := array_item MAP_GFX, MAP_GFX::OPERA_2
+        BATTLE_BG_GFX::_44 := array_item MAP_GFX, MAP_GFX::BURNING_BUILDING
         inc_battle_bg_gfx TENTACLES, "tentacles"
-        BattleBGGfx::_46 := array_item MapGfx, MAP_GFX::CASTLE_EXT_1
+        BATTLE_BG_GFX::_46 := array_item MAP_GFX, MAP_GFX::CASTLE_EXT_1
         inc_battle_bg_gfx TOWN_INT_1, "town_int_1"
-        BattleBGGfx::_48 := array_item MapGfx, MAP_GFX::TOWN_INT_1
-        BattleBGGfx::_49 := array_item MapGfx, MAP_GFX::TRAIN_EXT_2
+        BATTLE_BG_GFX::_48 := array_item MAP_GFX, MAP_GFX::TOWN_INT_1
+        BATTLE_BG_GFX::_49 := array_item MAP_GFX, MAP_GFX::TRAIN_EXT_2
         inc_battle_bg_gfx UNDERWATER, "underwater"
-        BattleBGGfx::_51 := array_item MapGfx, MAP_GFX::SEALED_GATE_1
+        BATTLE_BG_GFX::_51 := array_item MAP_GFX, MAP_GFX::SEALED_GATE_1
         inc_battle_bg_gfx SEALED_GATE_2, "sealed_gate_2"
-        BattleBGGfx::_53 := array_item MapGfx, MAP_GFX::ZOZO_EXT_1
+        BATTLE_BG_GFX::_53 := array_item MAP_GFX, MAP_GFX::ZOZO_EXT_1
         inc_battle_bg_gfx ZOZO_2, "zozo_2"
-        BattleBGGfx::_55 := array_item MapGfx, MAP_GFX::AIRSHIP_4
-        BattleBGGfx::_56 := array_item MapGfx, MAP_GFX::AIRSHIP_5
+        BATTLE_BG_GFX::_55 := array_item MAP_GFX, MAP_GFX::AIRSHIP_4
+        BATTLE_BG_GFX::_56 := array_item MAP_GFX, MAP_GFX::AIRSHIP_5
         inc_battle_bg_gfx AIRSHIP, "airship"
-        BattleBGGfx::_58 := array_item MapGfx, MAP_GFX::DARILLS_TOMB_1
+        BATTLE_BG_GFX::_58 := array_item MAP_GFX, MAP_GFX::DARILLS_TOMB_1
         inc_battle_bg_gfx DARILLS_TOMB_2, "darills_tomb_2"
         inc_battle_bg_gfx WATERFALL, "waterfall"
         inc_battle_bg_gfx FINAL_BATTLE_1, "final_battle_1"
         inc_battle_bg_gfx FINAL_BATTLE_2, "final_battle_2"
-        inc_battle_bg_gfx_lang FINAL_BATTLE_3, "final_battle_3"
-        inc_battle_bg_gfx_lang FINAL_BATTLE_4, "final_battle_4"
+        inc_battle_bg_gfx FINAL_BATTLE_3, "final_battle_3"
+        inc_battle_bg_gfx FINAL_BATTLE_4, "final_battle_4"
         inc_battle_bg_gfx FINAL_BATTLE_5, "final_battle_5"
-        inc_battle_bg_gfx_lang FINAL_BATTLE_6, "final_battle_6"
+        inc_battle_bg_gfx FINAL_BATTLE_6, "final_battle_6"
         inc_battle_bg_gfx FINAL_BATTLE_7, "final_battle_7"
         inc_battle_bg_gfx FINAL_BATTLE_8, "final_battle_8"
         inc_battle_bg_gfx FANATICS_TOWER, "fanatics_tower"
         inc_battle_bg_gfx MAGITEK_TRAIN_1, "magitek_train_1"
-        BattleBGGfx::_71 := array_item MapGfx, MAP_GFX::FACTORY_4
-        BattleBGGfx::_72 := array_item MapGfx, MAP_GFX::DARILLS_TOMB_2
-        BattleBGGfx::_73 := array_item MapGfx, MAP_GFX::FLOATING_ISLAND_2
-        inc_battle_bg_gfx_lang CYANS_DREAM_2, "cyans_dream_2"
+        BATTLE_BG_GFX::_71 := array_item MAP_GFX, MAP_GFX::FACTORY_4
+        BATTLE_BG_GFX::_72 := array_item MAP_GFX, MAP_GFX::DARILLS_TOMB_2
+        BATTLE_BG_GFX::_73 := array_item MAP_GFX, MAP_GFX::FLOATING_ISLAND_2
+        inc_battle_bg_gfx CYANS_DREAM_2, "cyans_dream_2"
+
+; stale data (last 21 bytes of cyans_dream_2)
+.if LANG_JP
+        .byte   $dd,$00,$92,$f3,$bf,$be,$00,$1f,$00,$13,$20,$db,$07,$80,$3f,$c1
+        .byte   $00,$e3,$00,$f3,$0c
+.endif
 
 ; ------------------------------------------------------------------------------

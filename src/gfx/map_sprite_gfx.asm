@@ -1,12 +1,12 @@
 ; ------------------------------------------------------------------------------
 
-.include "gfx/map_sprite_gfx.inc"
+.include "map_sprite_gfx.inc"
 
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_sprite_gfx id, name
         array_label MapSpriteGfx, MAP_SPRITE_GFX::id
-        .incbin .sprintf("map_sprite_gfx/%s.4bpp", name)
+        .incbin .sprintf("assets/gfx/map_sprite_gfx/%s.4bpp", name)
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ inc_map_sprite_gfx PHANTOM, "phantom"
 inc_map_sprite_gfx SHIVA, "shiva"
 inc_map_sprite_gfx UNICORN, "unicorn"
 inc_map_sprite_gfx BISMARK, "bismark"
-inc_map_sprite_gfx CARBUNCL, "carbuncl"
+inc_map_sprite_gfx CARBUNKL, "carbunkl"
 inc_map_sprite_gfx SHOAT, "shoat"
 inc_map_sprite_gfx OWZER_1, "owzer_1"
 inc_map_sprite_gfx OWZER_2, "owzer_2"
@@ -185,6 +185,6 @@ inc_map_sprite_gfx SMALL_BIRD_LEFT, "small_bird_left"
 
 ; d8/3000
 VehicleGfx:
-.incbin "vehicle.4bpp"
+        .incbin "assets/gfx/vehicle.4bpp"
 
 ; ------------------------------------------------------------------------------

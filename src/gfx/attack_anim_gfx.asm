@@ -1,6 +1,6 @@
 ; ------------------------------------------------------------------------------
 
-.include "btlgfx/attack_pal.inc"
+.include "attack_pal.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@
 
 ; d2/0000
 AttackTiles3bpp:
-        incbin_lang "attack_3bpp_%s.scr"
+        .incbin "assets/gfx/attack_3bpp.scr"
 
 ; ------------------------------------------------------------------------------
 
@@ -22,8 +22,8 @@ AttackTiles3bpp:
 
 ; d2/6000
 AttackPal:
-.repeat AttackPal::ARRAY_LENGTH, i
-        .incbin .sprintf("attack_pal/pal_%04x.pal", i)
+.repeat AttackPal::COUNT, i
+        .incbin .sprintf("assets/gfx/attack_pal/pal_%04x.pal", i)
 .endrep
 
 ; ------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ AttackPal:
 
 ; d2/c000
 AttackTiles2bpp:
-        .incbin "attack_2bpp.scr"
+        .incbin "assets/gfx/attack_2bpp.scr"
 
 ; ------------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ AttackTiles2bpp:
 ; d3/0000
 AttackGfx3bpp:
         fixed_block $01ca00
-        incbin_lang "attack_gfx_%s.3bpp"
+        .incbin "assets/gfx/attack_gfx.3bpp"
         end_fixed_block
 
 ; ------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ AttackGfx3bpp:
 
 ; d8/7000
 AttackGfx2bpp:
-        .incbin "attack_gfx.2bpp"
+        .incbin "assets/gfx/attack_gfx.2bpp"
 
 ; ------------------------------------------------------------------------------
 
@@ -58,10 +58,10 @@ AttackGfx2bpp:
 
 ; d8/d000
 AttackGfxMode7:
-        .incbin "attack_mode7.4bpp.lz"
+        .incbin "assets/gfx/attack_mode7.4bpp.lz"
 
 ; d8/daf2
 AttackTilesMode7:
-        .incbin "attack_mode7.scr.lz"
+        .incbin "assets/gfx/attack_mode7.scr.lz"
 
 ; ------------------------------------------------------------------------------

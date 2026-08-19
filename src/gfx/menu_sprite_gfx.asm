@@ -8,6 +8,6 @@
 
 ; ed/5ac0
 MenuSpriteGfx:
-        .incbin "menu_sprite.4bpp"
+        .incbin "assets/gfx/menu_sprite.4bpp"
 
 ; ------------------------------------------------------------------------------

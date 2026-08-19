@@ -85,14 +85,14 @@ WorldOfRuinLoop:
         bmi     @6d59
         asl
         tax
-        jsr     (.loword(WorldOfRuinStateTbl),x)
+        jsr     (near WorldOfRuinStateTbl,x)
         jsr     ExecTasks
         jsr     WaitVBlank
         bra     @6d47
 @6d59:  ldy     #15
         sty     $15
         lda     #0
-        ldy     #.loword(_7e55a0)
+        ldy     #near _7e55a0
         jsr     CreateTask
 @6d66:  ldy     $15
         beq     @6d72
@@ -117,31 +117,31 @@ WorldOfRuinState_00:
         lda     #$80
         sta     $35
         ldx     #$3000
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3180
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$31a0
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         jsr     LoadPal
         ldx     #$3000
-        ldy     #.loword(_7e717d)
+        ldy     #near _7e717d
         lda     #$04
         jsr     CreateFadePalTask
         ldx     #$3180
-        ldy     #.loword(_7e71bd)
+        ldy     #near _7e71bd
         lda     #$04
         jsr     CreateFadePalTask
         ldx     #$31a0
-        ldy     #.loword(_7e71dd)
+        ldy     #near _7e71dd
         lda     #$04
         jsr     CreateFadePalTask
         lda     #2
-        ldy     #.loword(_7e6efd)
+        ldy     #near _7e6efd
         jsr     CreateTask
         longa
-        lda     #.loword(WorldOfRuinLandAnim1)
+        lda     #near WorldOfRuinLandAnim1
         sta     $3500,x
         lda     #$fffc
         sta     $3800,x
@@ -155,10 +155,10 @@ WorldOfRuinState_00:
         lda     #$80
         sta     $3401,x
         lda     #2
-        ldy     #.loword(_7e6efd)
+        ldy     #near _7e6efd
         jsr     CreateTask
         longa
-        lda     #.loword(WorldOfRuinLandAnim2)
+        lda     #near WorldOfRuinLandAnim2
         sta     $3500,x
         lda     #$0004
         sta     $3800,x
@@ -189,7 +189,7 @@ WorldOfRuinState_01:
         ldy     #1080
         sty     $15
         lda     #0
-        ldy     #.loword(_7e6e8a)
+        ldy     #near _7e6e8a
         jsr     CreateTask
 @6e3a:  jsr     _7e6f97
         jsr     _7e6f4c
@@ -206,15 +206,15 @@ WorldOfRuinState_02:
         ldy     #180
         sty     $15
         ldx     #$3000
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         lda     #$08
         jsr     CreateFadePalTask
         ldx     #$3180
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         lda     #$08
         jsr     CreateFadePalTask
         ldx     #$31a0
-        ldy     #.loword(BlackPal)
+        ldy     #near BlackPal
         lda     #$08
         jsr     CreateFadePalTask
 @6e6d:  jsr     _7e6f97
@@ -250,7 +250,7 @@ WorldOfRuinState_04:
 
 _7e6e8a:
 @6e8a:  tax
-        jmp     (.loword(_7e6e8e),x)
+        jmp     (near _7e6e8e,x)
 
 _7e6e8e:
 @6e8e:  .addr   _7e6e92
@@ -271,11 +271,11 @@ _7e6e97:
         ldy     $3900,x
         phy
         lda     #0
-        ldy     #.loword(DefaultAnimTask)
+        ldy     #near DefaultAnimTask
         jsr     CreateTask
         ply
         longa
-        lda     #.loword(_7e7119)
+        lda     #near _7e7119
         sta     $3500,x
         shorta
         lda     _7e6ee9,y
@@ -298,7 +298,7 @@ _7e6e97:
         sec
         rts
 @6ede:  ldx     #$3180
-        ldy     #.loword(_7e719d)
+        ldy     #near _7e719d
         jsr     LoadPal
         clc
         rts
@@ -313,7 +313,7 @@ _7e6ee9:
 
 _7e6efd:
 @6efd:  tax
-        jmp     (.loword(_7e6f01),x)
+        jmp     (near _7e6f01,x)
 
 _7e6f01:
 @6f01:  .addr   _7e6f05
@@ -370,10 +370,10 @@ _7e6f4c:
         and     #$1f
         bne     @6f7a
         lda     #0
-        ldy     #.loword(_7e705a)
+        ldy     #near _7e705a
         jsr     CreateTask
         longa
-        lda     #.loword(_7e70f6)
+        lda     #near _7e70f6
         sta     $3500,x
         shorta
         phx
@@ -416,10 +416,10 @@ _7e6f97:
         and     #$07
         bne     @6fc8
         lda     #0
-        ldy     #.loword(_7e705a)
+        ldy     #near _7e705a
         jsr     CreateTask
         longa
-        lda     #.loword(_7e70da)
+        lda     #near _7e70da
         sta     $3500,x
         shorta
         phx
@@ -444,10 +444,10 @@ _7e6f97:
         and     #$0f
         bne     @6ffa
         lda     #0
-        ldy     #.loword(_7e705a)
+        ldy     #near _7e705a
         jsr     CreateTask
         longa
-        lda     #.loword(_7e7142)
+        lda     #near _7e7142
         sta     $3500,x
         shorta
         phx
@@ -469,7 +469,7 @@ _7e6f97:
 ; [ load graphics for world of ruin cutscene ]
 
 LoadWorldOfRuinGfx:
-@6ffb:  ldy     #.loword(RuinCutsceneGfx)
+@6ffb:  ldy     #near RuinCutsceneGfx
         sty     $f3
         lda     #^RuinCutsceneGfx
         sta     $f5
@@ -516,7 +516,7 @@ LoadWorldOfRuinGfx:
 
 _7e705a:
 @705a:  tax
-        jmp     (.loword(_7e705e),x)
+        jmp     (near _7e705e,x)
 
 _7e705e:
 @705e:  .addr   _7e7062

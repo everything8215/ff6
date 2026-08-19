@@ -11,7 +11,7 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-inc_lang "text/battle_cmd_name_%s.inc"
+.include "src/text/battle_cmd_name.inc"
 
 .import BattleCmdProp, LevelUpExp
 
@@ -94,7 +94,7 @@ TfrStatusMenu:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ redraw status menu after changing characters ]
 
 _c35d83:
 @5d83:  jsr     DrawStatusTopLabelText
@@ -114,7 +114,7 @@ _c35d83:
         sty     zDMA2Size
         jsr     ExecTasks
         jsr     WaitVblank
-        ldy     z0
+        ldy     zZero
         sty     zDMA2Dest
         ldy     #$4800
         sty     zDMA1Dest
@@ -188,15 +188,15 @@ DrawStatusGogoWindow:
         phx
         lda     $7e9e09,x
         bmi     @5e60
-        cmp     #$12
+        cmp     #BATTLE_CMD::MIMIC
         beq     @5e60
-        sta     $e0
+        sta     ze0
         asl
         tax
         lda     f:BattleCmdProp,x
         and     #BATTLE_CMD_FLAG::GOGO
         beq     @5e60                   ; branch if can't be used by gogo
-        lda     $e0
+        lda     ze0
         sta     hWMDATA
         iny
 @5e60:  plx
@@ -215,27 +215,27 @@ DrawStatusGogoWindow:
         cpx     #8
         bne     @5e75
         tya
-        sta     $e2
+        sta     ze2                     ; number of available commands
         clc
-        adc     $e2
-        adc     $e2
+        adc     ze2
+        adc     ze2
         and     #$fe
         beq     @5e90
         inc2
 @5e90:  lsr
-        sta     $7eaa90
+        sta     $7eaa90                 ; set window height
         sta     $7eaa94
         ldy     #$aa8d
         lda     #$7e
-        sta     $e9
+        sta     ze9
         jsr     DrawWindowFar
         ldy     #$aa91
         lda     #$7e
-        sta     $e9
+        sta     ze9
         jsr     DrawWindowFar
         lda     $7e9d89
-        sta     $e5
-        stz     $e6
+        sta     ze5
+        stz     ze6
         clr_ax
 .if LANG_EN
         ldy_pos BG3B, {0, 2}
@@ -255,7 +255,7 @@ DrawStatusGogoWindow:
         shorta
         plx
         inx
-        cpx     $e5
+        cpx     ze5
         bne     @5eba
         jmp     _c35f50
 
@@ -279,20 +279,20 @@ DrawCmdName:
         bmi     _5f0c
 _5ee6:  jsr     CheckCmdEnabled
 .if LANG_EN
-        sta     $e2
+        sta     ze2
 .endif
         pha
         asl2
-        sta     $e0
+        sta     ze0
         pla
         asl
         clc
-        adc     $e0
+        adc     ze0
 .if LANG_EN
-        adc     $e2
+        adc     ze2
 .endif
         tax
-        ldy     #BattleCmdName::ITEM_SIZE
+        ldy     #BATTLE_CMD_NAME::ITEM_SIZE
 @5efb:  lda     f:BattleCmdName,x
         sta     hWMDATA
         inx
@@ -352,22 +352,22 @@ CheckCmdEnabled:
 ; [  ]
 
 _c35f50:
-@5f50:  ldx     #$61ca
-        stx     $e7
+@5f50:  op_pos  ldx #1+, BG2B, {0, 6}
+        stx     ze7
         lda     #$7e
-        sta     $e9
-        ldx     #$0006
+        sta     ze9
+        ldx     #6                      ; *** bug *** should be 7 for english version
 @5f5c:  clr_ay
-        lda     #$3d
-@5f60:  sta     [$e7],y
+        lda     #$3d                    ; high priority tile flags
+@5f60:  sta     [ze7],y
         iny2
-        cpy     #$0012
+        cpy     #9*2
         bne     @5f60
         longa
-        lda     $e7
+        lda     ze7
         clc
         adc     #$0040
-        sta     $e7
+        sta     ze7
         shorta
         dex
         bne     @5f5c
@@ -377,73 +377,80 @@ _c35f50:
 
 ; status menu windows
 .if LANG_EN
-StatusTitleWindow:                      make_window BG2A, {1, 1}, {6, 1}
+StatusTitleWindow:                      window_pos BG2A, {1, 1}, {6, 1}
 .else
-StatusTitleWindow:                      make_window BG2A, {1, 1}, {5, 1}
+StatusTitleWindow:                      window_pos BG2A, {1, 1}, {5, 1}
 .endif
-StatusCmdWindow:                        make_window BG2A, {17, 10}, {9, 6}
-StatusMainWindow:                       make_window BG2A, {1, 1}, {28, 24}
+StatusCmdWindow:                        window_pos BG2A, {17, 10}, {9, 6}
+StatusMainWindow:                       window_pos BG2A, {1, 1}, {28, 24}
 
-; gogo window is in 2 parts
-StatusGogoWindow:                       make_window BG2A, {31, 1}, {0, 18}
-                                        make_window BG2B, {31, 0}, {7, 18}
+; gogo window is in 2 parts, height gets changed dynamically
+StatusGogoWindow:                       window_pos BG2A, {31, 1}, {0, 18}
+                                        window_pos BG2B, {31, 0}, {7, 18}
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw character info on status menu (white text) ]
 
-DrawStatusCharInfo:
+.proc DrawStatusCharInfo
+
 @5f8d:  clr_a
         lda     zSelIndex
         asl
         tax
         jmp     (near DrawStatusCharInfoTbl,x)
 
+.endproc  ; DrawStatusCharInfo
+
+.enum DRAW_STATUS_CHAR_INFO
+        COUNT = 4
+.endenum
+
 DrawStatusCharInfoTbl:
-        make_jump_tbl DrawStatusCharInfo, 4
+        ptr_tbl DRAW_STATUS_CHAR_INFO
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw status info for character slot 1 ]
 
-make_jump_label DrawStatusCharInfo, 0
-@5f9d:  ldx     zCharPropPtr::Slot1
+        array_label DRAW_STATUS_CHAR_INFO, 0
+@5f9d:  ldx     zCharPropPtr::_0
         stx     zSelCharPropPtr
         clr_a
-        lda     zCharID::Slot1
+        lda     zCharID::_0
         jmp     DrawStatusCharInfoAll
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw status info for character slot 2 ]
 
-make_jump_label DrawStatusCharInfo, 1
-@5fa7:  ldx     zCharPropPtr::Slot2
+        array_label DRAW_STATUS_CHAR_INFO, 1
+@5fa7:  ldx     zCharPropPtr::_1
         stx     zSelCharPropPtr
         clr_a
-        lda     zCharID::Slot2
+        lda     zCharID::_1
         jmp     DrawStatusCharInfoAll
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw status info for character slot 3 ]
 
-make_jump_label DrawStatusCharInfo, 2
-@5fb1:  ldx     zCharPropPtr::Slot3
+        array_label DRAW_STATUS_CHAR_INFO, 2
+@5fb1:  ldx     zCharPropPtr::_2
         stx     zSelCharPropPtr
         clr_a
-        lda     zCharID::Slot3
+        lda     zCharID::_2
         jmp     DrawStatusCharInfoAll
 
 ; ------------------------------------------------------------------------------
 
 ; [ draw status info for character slot 4 ]
 
-make_jump_label DrawStatusCharInfo, 3
-@5fbb:  ldx     zCharPropPtr::Slot4
+        array_label DRAW_STATUS_CHAR_INFO, 3
+@5fbb:  ldx     zCharPropPtr::_3
         stx     zSelCharPropPtr
         clr_a
-        lda     zCharID::Slot4
+        lda     zCharID::_3
 ; fallthrough
 
 DrawStatusCharInfoAll:
@@ -468,7 +475,7 @@ DrawStatusCharInfoAll:
         jsr     HexToDec3
         ldx_pos BG3C, {12, 0}
         jsr     DrawNum3
-        jsr     CalcNewBattlePower
+        jsr     CalcNewAttackPower
         lda     $11ac
         clc
         adc     $11ad
@@ -495,7 +502,7 @@ DrawStatusCharInfoAll:
         jsr     HexToDec3
         ldx_pos BG3C, {26, 0}
         jsr     DrawNum3
-.if LANG_EN
+.if ::LANG_EN
         ldy_pos BG1A, {3, 5}
         jsr     DrawCharName
         ldy_pos BG1A, {10, 5}
@@ -508,11 +515,11 @@ DrawStatusCharInfoAll:
         jsr     DrawCharTitle
         ldy_pos BG1A, {20, 4}
 .endif
-        jsr     DrawEquipGenju
+        jsr     DrawCharGenjuName
         jsr     _c36102
         lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
-        ldx     #near _c36096
+        ldx     #near StatusCharBlockTextPosTbl
         jsr     DrawCharBlock
         ldx     zSelCharPropPtr
         lda     a:$0011,x
@@ -528,19 +535,19 @@ DrawStatusCharInfoAll:
         jsr     HexToDec8
         ldx_pos BG3A, {7, 22}
         jsr     DrawNum8
-        stz     z47
+        stz     z47                     ; terminate group 1 sprite tasks
         jsr     ExecTasks
         jmp     _c3625b
 
 ; ------------------------------------------------------------------------------
 
 ; ram addresses for lv/hp/mp text (status)
-_c36096:
-        make_pos BG1A, {15, 7}
-        make_pos BG1A, {13, 8}
-        make_pos BG1A, {18, 8}
-        make_pos BG1A, {13, 9}
-        make_pos BG1A, {18, 9}
+StatusCharBlockTextPosTbl:
+        bg_pos BG1A, {15, 7}
+        bg_pos BG1A, {13, 8}
+        bg_pos BG1A, {18, 8}
+        bg_pos BG1A, {13, 9}
+        bg_pos BG1A, {18, 9}
 
 ; ------------------------------------------------------------------------------
 
@@ -550,25 +557,25 @@ _c36096:
         ldx     zSelCharPropPtr
         clr_a
         lda     a:$0008,x
-        cmp     #99
+        cmp     #MAX_LEVEL
         beq     max_level
         jsr     CalcLevelExpTotal
         ldx     zSelCharPropPtr
         sec
-        lda     $f1
+        lda     zf1
         sbc     a:$0011,x
-        sta     $f1
+        sta     zf1
         longa
-        lda     $f2
+        lda     zf2
         sbc     a:$0012,x
-        sta     $f2
+        sta     zf2
         shorta
         rts
 
 max_level:
         clr_ax
-        stx     $f1
-        stz     $f3
+        stx     zf1
+        stz     zf3
         rts
 .endproc  ; CalcNextLevelExp
 
@@ -580,29 +587,29 @@ max_level:
 
 .proc CalcLevelExpTotal
         asl
-        sta     $eb
+        sta     zeb
         clr_ax
-        stx     $f1
-        stx     $f3
-        stz     $ec
+        stx     zf1
+        stx     zf3
+        stz     zec
 loop:   clc
         lda     f:LevelUpExp,x   ; experience progression data
-        adc     $f1
-        sta     $f1
+        adc     zf1
+        sta     zf1
         inx
         lda     f:LevelUpExp,x
-        adc     $f2
-        sta     $f2
+        adc     zf2
+        sta     zf2
         clr_a
-        adc     $f3
-        sta     $f3
+        adc     zf3
+        sta     zf3
         inx
-        cpx     $eb
+        cpx     zeb
         bne     loop
         longa
         .repeat 3
-        asl     $f1
-        rol     $f3
+        asl     zf1
+        rol     zf3
         .endrep
         shorta
         rts
@@ -640,7 +647,7 @@ _c36102:
 
 CheckRelicCmd:
 @612c:  lda     $0016,y     ; battle command
-        cmp     #$02        ; command $02 (magic)
+        cmp     #BATTLE_CMD::MAGIC
         bne     @613e
         phy
         jsr     CheckMPVisible
@@ -650,7 +657,7 @@ CheckRelicCmd:
         rts
 @613d:  ply
 @613e:  lda     $0016,y
-        cmp     #$03        ; command $03 (morph)
+        cmp     #BATTLE_CMD::MORPH
         bne     @614f
         lda     $1dd1
         bit     #$04
@@ -658,7 +665,7 @@ CheckRelicCmd:
         lda     #$ff
         rts
 @614f:  lda     $0016,y
-        cmp     #$11        ; command $11 (leap)
+        cmp     #BATTLE_CMD::LEAP
         bne     @6160
         lda     $11e4
         bit     #$04
@@ -666,14 +673,14 @@ CheckRelicCmd:
         lda     #$ff
         rts
 @6160:  lda     $0016,y
-        cmp     #$13        ; command $13 (dance)
+        cmp     #BATTLE_CMD::DANCE
         bne     @616f
         lda     $1d4c
         bne     @616f
         lda     #$ff
         rts
 @616f:  lda     $0016,y
-        sta     $e0
+        sta     ze0
         clr_ax
         lda     $11d6       ; relic effects 2 (modified commands)
         and     #$7c
@@ -682,13 +689,13 @@ CheckRelicCmd:
         bcc     @6189
         pha
         lda     f:RelicCmdTbl1,x
-        cmp     $e0
+        cmp     ze0
         beq     @6192
         pla
 @6189:  inx
         cpx     #5
         bne     @617c
-        lda     $e0
+        lda     ze0
         rts
 @6192:  pla
         lda     f:RelicCmdTbl2,x
@@ -696,13 +703,21 @@ CheckRelicCmd:
 
 ; ------------------------------------------------------------------------------
 
-; base commands (steal, slot, sketch, magic, fight)
+; base commands
 RelicCmdTbl1:
-@6198:  .byte   $05,$0f,$0d,$02,$00
+        .byte   BATTLE_CMD::STEAL
+        .byte   BATTLE_CMD::SLOT
+        .byte   BATTLE_CMD::SKETCH
+        .byte   BATTLE_CMD::MAGIC
+        .byte   BATTLE_CMD::FIGHT
 
-; relic-modified commands (capture, gp rain, control, x-magic, jump)
+; relic-modified commands
 RelicCmdTbl2:
-@619d:  .byte   $06,$18,$0e,$17,$16
+        .byte   BATTLE_CMD::CAPTURE
+        .byte   BATTLE_CMD::GP_RAIN
+        .byte   BATTLE_CMD::CONTROL
+        .byte   BATTLE_CMD::X_MAGIC
+        .byte   BATTLE_CMD::JUMP
 
 ; ------------------------------------------------------------------------------
 
@@ -710,10 +725,10 @@ RelicCmdTbl2:
 
 ChangeStatusPortraitTask:
 @61a2:  clr_a
-        lda     $60
+        lda     z60
         tax
         lda     #$ff
-        sta     $7e35c9,x
+        sta     wTaskProp::w7e35c9,x
 
 CreateSubPortraitTask:
 @61ac:  jsr     CreateOnePortraitTask
@@ -731,7 +746,7 @@ CreateEquipPortraitTask:
         plb
         longa
         lda     #$00c8                  ; x position
-        sta     near wTaskPosX,x
+        sta     near wTaskProp::PosX_H,x
         shorta
         clr_a
         lda     zSelIndex
@@ -740,7 +755,7 @@ CreateEquipPortraitTask:
         jsr     GetPortraitAnimDataPtr
         longa
         lda     #$0030                  ; y position
-        sta     near wTaskPosY,x
+        sta     near wTaskProp::PosY_H,x
         shorta
         jsr     InitAnimTask
 .else
@@ -758,7 +773,7 @@ CreateOnePortraitTask:
         ldy     #near PortraitTask
         jsr     CreateTask
         txa
-        sta     $60
+        sta     z60
         rts
 
 ; ------------------------------------------------------------------------------
@@ -793,7 +808,7 @@ SetSubPortraitPos:
 .else
         lda     #$0030                  ; y position
 .endif
-        sta     near wTaskPosY,x
+        sta     near wTaskProp::PosY_H,x
         shorta
         jmp     InitAnimTask
 
@@ -806,11 +821,11 @@ InitStatusBG3ScrollHDMA:
         sta     hDMA5::CTRL
         lda     #<hBG3VOFS
         sta     hDMA5::HREG
-        ldy     #near StatusBG3ScrollHDMA
+        ldy     #near StatusBG3ScrollHDMATbl
         sty     hDMA5::ADDR
-        lda     #^StatusBG3ScrollHDMA
+        lda     #^StatusBG3ScrollHDMATbl
         sta     hDMA5::ADDR_B
-        lda     #^StatusBG3ScrollHDMA
+        lda     #^StatusBG3ScrollHDMATbl
         sta     hDMA5::HDMA_B
         lda     #BIT_5
         tsb     zEnableHDMA
@@ -819,24 +834,24 @@ InitStatusBG3ScrollHDMA:
 ; ------------------------------------------------------------------------------
 
 ; hdma data for status menu
-StatusBG3ScrollHDMA:
-@622a:  .byte   $27,$00,$00
-        .byte   $0c,$04,$00
-        .byte   $0c,$08,$00
-        .byte   $0c,$0c,$00
-        .byte   $0c,$10,$00
-        .byte   $0c,$14,$00
-        .byte   $0c,$18,$00
-        .byte   $0c,$1c,$00
-        .byte   $0c,$20,$00
-        .byte   $0c,$24,$00
-        .byte   $0c,$28,$00
-        .byte   $0c,$2c,$00
-        .byte   $0c,$30,$00
-        .byte   $0c,$34,$00
-        .byte   $0c,$38,$00
-        .byte   $0c,$3c,$00
-        .byte   $00
+StatusBG3ScrollHDMATbl:
+        hdma_word 39, 0
+        hdma_word 12, 4
+        hdma_word 12, 8
+        hdma_word 12, 12
+        hdma_word 12, 16
+        hdma_word 12, 20
+        hdma_word 12, 24
+        hdma_word 12, 28
+        hdma_word 12, 32
+        hdma_word 12, 36
+        hdma_word 12, 40
+        hdma_word 12, 44
+        hdma_word 12, 48
+        hdma_word 12, 52
+        hdma_word 12, 56
+        hdma_word 12, 60
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
@@ -850,25 +865,25 @@ _c3625b:
         ldy_pos BG1A, {10, 2}
         ldx     #$1050
 .endif
-        stx     $e7
+        stx     ze7
         jsr     InitTextBuf
         lda     $0014,y
         bmi     @62e7
-        and     #$70
-        sta     $e1
+        andflg  STATUS1, {PETRIFY, IMP, VANISH}
+        sta     ze1
         lda     $0014,y
-        and     #$07
+        andflg  STATUS1, {POISON, ZOMBIE, BLIND}
         asl
-        sta     $e2
+        sta     ze2
         lda     $0015,y
-        and     #$80
-        ora     $e1
-        ora     $e2
-        sta     $e1
+        and     #STATUS4::FLOAT
+        ora     ze1
+        ora     ze2
+        sta     ze1
         beq     @62e1
-        stz     $f1
-        stz     $f2
-        ldx     #$0007
+        stz     zf1
+        stz     zf2
+        ldx     #7
 @628b:  phx
         asl
         bcc     @62d5
@@ -877,36 +892,36 @@ _c3625b:
         ldy     #near CharIconTask
         jsr     CreateTask
         lda     #$01
-        sta     wTaskFlags,x
+        sta     wTaskProp::Flags,x
         clr_a
-        sta     wTaskState,x
+        sta     wTaskProp::State,x
         txy
-        ldx     $f1
+        ldx     zf1
         phb
         lda     #$7e
         pha
         plb
         longa
         lda     f:StatusIconAnimPtrs,x   ; pointers to status icon sprite data
-        sta     near wTaskAnimPtr,y
+        sta     near wTaskProp::AnimPtr,y
         shorta
-        lda     $e7
-        sta     near wTaskPosX,y
-        lda     $e8
-        sta     near wTaskPosY,y
+        lda     ze7
+        sta     near wTaskProp::PosX_H,y
+        lda     ze8
+        sta     near wTaskProp::PosY_H,y
         clr_a
-        sta     near {wTaskPosX + 1},y
-        sta     near {wTaskPosY + 1},y
+        sta     near wTaskProp::PosX + 2,y
+        sta     near wTaskProp::PosY + 2,y
         lda     #^StatusIconAnimPtrs
-        sta     near wTaskAnimBank,y
+        sta     near wTaskProp::AnimBank,y
         plb
         clc
-        lda     #$0a
-        adc     $e7
-        sta     $e7
+        lda     #10
+        adc     ze7
+        sta     ze7
         pla
-@62d5:  inc     $f1
-        inc     $f1
+@62d5:  inc     zf1
+        inc     zf1
         plx
         dex
         bne     @628b
@@ -916,7 +931,7 @@ _c3625b:
         jmp     DrawPosTextBuf
 @62e7:  ldx     #$9e8b
         stx     hWMADDL
-        ldx     z0
+        ldx     zZero
 @62ef:  lda     f:MainMenuWoundedText,x
         sta     hWMDATA
         inx
@@ -934,7 +949,7 @@ _c3625b:
 _c36306:
 @6306:  ldx     #$9e8b
         stx     hWMADDL
-        ldx     z0
+        ldx     zZero
         lda     #$ff
 @6310:  sta     hWMDATA
         inx
@@ -947,11 +962,11 @@ _c36306:
 
 ; [ menu state $42: party select status menu (init) ]
 
-MenuState_42:
+        array_label MENU_STATE, MENU_STATE::PARTY_STATUS_INIT
 @631d:  jsr     DisableInterrupts
-        lda     w0200
+        lda     r0200
         sta     z22
-        stz     w0200
+        stz     r0200
         stz     z25
         lda     #BIT_6
         trb     zEnableHDMA
@@ -959,7 +974,7 @@ MenuState_42:
         jsr     _c36354
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
-        lda     #$43
+        lda     #MENU_STATE::PARTY_STATUS_WAIT
         sta     zNextMenuState
         jmp     EnableInterrupts
 
@@ -967,8 +982,8 @@ MenuState_42:
 
 ; [ menu state $43: party select status menu ]
 
-MenuState_43:
-@633f:  lda     z08+1
+        array_label MENU_STATE, MENU_STATE::PARTY_STATUS_WAIT
+@633f:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @6353
         jsr     PlayCancelSfx
@@ -976,7 +991,7 @@ MenuState_43:
         sta     zNextMenuState
         stz     zMenuState
         lda     z22
-        sta     w0200
+        sta     r0200
 @6353:  rts
 
 ; ------------------------------------------------------------------------------
@@ -1034,7 +1049,7 @@ _c3638e:
         bra     @63a1
 @639c:  longa
         lda     #$000e
-@63a1:  sta     near wTaskPosX,x
+@63a1:  sta     near wTaskProp::PosX_H,x
         shorta
         rts
 
@@ -1042,9 +1057,9 @@ _c3638e:
 
 ; [ menu state $6a: gogo command list ]
 
-MenuState_6a:
+        array_label MENU_STATE, MENU_STATE::STATUS_GOGO
 @63a7:  jsr     UpdateGogoCmdListCursor
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @63da
         jsr     PlaySelectSfx
@@ -1069,7 +1084,7 @@ MenuState_6a:
         sta     $0016,y
         jsr     _c36102
         bra     @63e3
-@63da:  lda     z08+1
+@63da:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @6402
         jsr     PlayCancelSfx
@@ -1077,11 +1092,11 @@ MenuState_6a:
         trb     z46
         lda     #6
         sta     zWaitCounter
-        ldy     #.loword(-12)
+        ldy     #near -12
         sty     zMenuScrollRate
-        lda     #MENU_STATE::STATUS_SELECT
+        lda     #MENU_STATE::STATUS_WAIT
         sta     zNextMenuState
-        lda     #$65
+        lda     #MENU_STATE::H_SCROLL
         sta     zMenuState
         jsr     LoadGogoStatusCursor
         lda     z5e

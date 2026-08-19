@@ -1,12 +1,12 @@
 ; ------------------------------------------------------------------------------
 
-.include "field/sub_tilemap.inc"
+.include "sub_tilemap.inc"
 
 ; ------------------------------------------------------------------------------
 
 .macro inc_sub_tilemap id, file
-        array_label SubTilemap, SUB_TILEMAP::id
-        .incbin .sprintf("sub_tilemap/%s.dat.lz", file)
+        array_label SUB_TILEMAP, SUB_TILEMAP::id
+        .incbin .sprintf("assets/data/field/sub_tilemap/%s.bin.lz", file)
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -16,8 +16,8 @@
 ; d9/cd90
 SubTilemapPtrs:
         fixed_block $420
-        ptr_tbl_far SubTilemap
-        end_ptr_far SubTilemap
+        ptr_tbl_far SUB_TILEMAP
+        end_ptr_far SUB_TILEMAP
         end_fixed_block
 
 ; ------------------------------------------------------------------------------
@@ -374,7 +374,6 @@ SubTilemap:
         inc_sub_tilemap CAVE_IN_THE_VELDT_BG3, "cave_in_the_veldt_bg3"
         inc_sub_tilemap UMAROS_CAVE_BG3, "umaros_cave_bg3"
         inc_sub_tilemap SKY_PARALLAX_BG2, "sky_parallax_bg2"
-
-SubTilemap::End:
+        SUB_TILEMAP::END := *
 
 ; ------------------------------------------------------------------------------

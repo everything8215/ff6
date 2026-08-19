@@ -425,9 +425,7 @@ AirshipCrash:
 @0ba4:  longa
         lda     #$0380
         sta     $26
-        .a16
-        .i16
-        rep     #PSW_A|PSW_I|PSW_C
+        longai_clc
         lda     $7eb660
         sbc     #$0041
         cmp     #$0300
@@ -447,13 +445,13 @@ AirshipCrash:
         lda     $7eb664
         bra     @0c11
 @0be2:  stz     $58
-        lda     f:$e00000,x
+        lda     f:$e00000,x             ; i think this is just for "random" data
         and     #$0003
         cmp     #$0003
         bne     @0bf3
-        lda     #$0002
+        lda     #2
 @0bf3:  sec
-        sbc     #$0001
+        sbc     #1
         clc
         adc     $7eb664
         bmi     @0c09
@@ -727,9 +725,10 @@ FalconEndingMain:
 
 ; ------------------------------------------------------------------------------
 
-; [ unused world of ruin cutscene ??? ]
+; [ unfinished world of ruin cutscene (unused) ]
 
 ; 崩壊 (houkai): collapse
+; a zap followed by 9 explosions, no fade out
 
 _ee0eab:
 houkai2:
@@ -872,26 +871,32 @@ houkai2:
         sta     $7eb666
 @100b:  jmp     @0f4b
 
-; ------------------------------------------------------------------------------
+; data for 9 explosions
+;   +$00: x position
+;   +$02: y position
+;   +$04: initial size
+;   +$06: grow rate
+;   +$08: final size
+;   +$0a: delay
 
 _ee100e:
-@100e:  .word   $00fe,$00c0,$0100,$0200,$2000,$0001,$00d8,$00a0
-        .word   $0100,$0200,$1d00,$0006,$00b0,$0090,$0100,$0200
-        .word   $1e00,$000a,$0090,$0078,$0100,$0200,$1800,$000e
-        .word   $0078,$0060,$0100,$0200,$1600,$0012,$0058,$0048
-        .word   $0100,$0200,$1500,$0016,$0042,$003c,$0100,$0200
-        .word   $1000,$001a,$002e,$0028,$0100,$0200,$0e00,$001a
+@100e:  .word   $00fe,$00c0,$0100,$0200,$2000,$0001
+        .word   $00d8,$00a0,$0100,$0200,$1d00,$0006
+        .word   $00b0,$0090,$0100,$0200,$1e00,$000a
+        .word   $0090,$0078,$0100,$0200,$1800,$000e
+        .word   $0078,$0060,$0100,$0200,$1600,$0012
+        .word   $0058,$0048,$0100,$0200,$1500,$0016
+        .word   $0042,$003c,$0100,$0200,$1000,$001a
+        .word   $002e,$0028,$0100,$0200,$0e00,$001a
         .word   $0020,$0020,$0100,$0200,$0d00,$001e
+        calc_size _ee100e
 
-; ------------------------------------------------------------------------------
-
-_107a:
-@107a:  longa
+_107a:  longa
         ldx     #$0000
 @107f:  lda     f:_ee100e,x
         sta     $7eb660,x
         inx2
-        cpx     #$006c
+        cpx     #sizeof__ee100e
         bne     @107f
         clr_a
         sta     $7eb650
@@ -945,7 +950,7 @@ _107a:
         clr_a
         sta     $b652
         ldx     #$0000
-@1116:  lda     $b66a,x
+@1116:  lda     $b66a,x                 ; delay counter
         beq     @1121
         dec
         sta     $b66a,x
@@ -968,9 +973,9 @@ _107a:
         lda     $b652
         bit     #$0001
         bne     @1151
-        lda     #$0000
+        lda     #0
         bra     @1154
-@1151:  lda     #$0002
+@1151:  lda     #2
 @1154:  clc
         adc     $64
         sta     $5c
@@ -987,7 +992,7 @@ _107a:
         clc
         adc     #$000c
         tax
-        cpx     #$006c
+        cpx     #sizeof__ee100e
         bne     @1116
         plb
         shorta
@@ -1000,6 +1005,8 @@ _107a:
 ; ------------------------------------------------------------------------------
 
 ; [ world of ruin cutscene ]
+
+; two red explosions
 
 RuinScene:
 @1186:  shorta

@@ -11,11 +11,10 @@
 ; | created: 5/12/2023                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "sound/song_script.inc"
+.include "src/sound/song_script.inc"
 
 .import RNGTbl
 .import World1BGPal, World2BGPal, World1SpritePal, World2SpritePal, World3Pal
-.import EventScript_NoEvent, EventScript_PartyDefeated
 
 ; ------------------------------------------------------------------------------
 
@@ -1016,25 +1015,25 @@ MagitekTrain:
         sta     $d7
         jsr     Decompress
         jsr     InitTrainGfx
-        ldx     #.loword(MagitekTrainTiles)
+        ldx     #near MagitekTrainTiles
         stx     $6a
         lda     #^MagitekTrainTiles
         sta     $6c
         jsr     LoadTrainTilePtrs
         jsr     TfrTrainTiles
         ldx     #$1808
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$0058      ; source = $000058
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$00
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$4000      ; size = $4000
-        stx     $4305
+        stx     hDMA0::SIZE
         stz     $58
         stz     hVMAINC
         stz     hVMADDL
         stz     hVMADDH
-        lda     #$01
+        lda     #BIT_0
         sta     hMDMAEN
         longai
         lda     $36
@@ -1046,7 +1045,7 @@ MagitekTrain:
         jsr     _ee25f5       ; update magitek train ride script data
         lda     $34
         clc
-        adc     #$0005
+        adc     #5
         sta     $34
         pla
         sta     $58
@@ -1059,7 +1058,7 @@ MagitekTrain:
         jsr     _ee25f5       ; update magitek train ride script data
         lda     $34
         clc
-        adc     #$0005
+        adc     #5
         sta     $34
         jmp     InitInterruptsTrain
 
@@ -1127,30 +1126,30 @@ InitSnakeRoad:
         ldx     #$5000
         stx     hVMADDL
         ldx     #$1809
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$2000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$4000
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         lda     #$80
         sta     hVMAINC
         ldx     #$4400
         stx     hVMADDL
         ldx     #$1809
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$2000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$1000
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
-        ldx     #.loword(World3Pal)
+        ldx     #near World3Pal
         stx     $d2
         lda     #^World3Pal
         sta     $d4
@@ -1307,7 +1306,7 @@ EndingAirshipScene2:
         jsr     TfrSpriteGfx
         lda     #$5c
         sta     $1500
-        ldx     #.loword(EndingAirshipSceneNMI)
+        ldx     #near EndingAirshipSceneNMI
         stx     $1501
         lda     #^EndingAirshipSceneNMI
         sta     $1503
@@ -1524,7 +1523,7 @@ InitInterruptsVehicle:
         longi
         lda     #$5c
         sta     $1500
-        ldx     #.loword(VehicleNMI)
+        ldx     #near VehicleNMI
         stx     $1501
         lda     #^VehicleNMI
         sta     $1503
@@ -1533,12 +1532,12 @@ InitInterruptsVehicle:
         lda     a:$0020
         cmp     #$02
         beq     @9173
-        ldx     #.loword(AirshipIRQ)
+        ldx     #near AirshipIRQ
         stx     $1505
         lda     #^AirshipIRQ
         sta     $1507
         bra     @917e
-@9173:  ldx     #.loword(ChocoIRQ)
+@9173:  ldx     #near ChocoIRQ
         stx     $1505
         lda     #^ChocoIRQ
         sta     $1507
@@ -1553,13 +1552,13 @@ InitInterruptsWorld:
         longi
         lda     #$5c
         sta     $1500
-        ldx     #.loword(WorldNMI)
+        ldx     #near WorldNMI
         stx     $1501
         lda     #^WorldNMI
         sta     $1503
         lda     #$5c
         sta     $1504
-        ldx     #.loword(WorldIRQ)
+        ldx     #near WorldIRQ
         stx     $1505
         lda     #^WorldIRQ
         sta     $1507
@@ -1577,13 +1576,13 @@ InitInterruptsTrain:
         plb
         lda     #$5c
         sta     $1500
-        ldx     #.loword(TrainNMI)
+        ldx     #near TrainNMI
         stx     $1501
         lda     #^TrainNMI
         sta     $1503
         lda     #$5c
         sta     $1504
-        ldx     #.loword(TrainIRQ)
+        ldx     #near TrainIRQ
         stx     $1505
         lda     #^TrainIRQ
         sta     $1507
@@ -1653,7 +1652,7 @@ ExitVehicle:
 @9246:  lda     #0
         pha
         pha
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         pha
 @924d:  lda     $f1
         pha
@@ -1734,7 +1733,7 @@ ExitWorld:
 @92d5:  lda     #0
         pha
         pha
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         pha
 @92dc:  lda     $f1
         pha
@@ -1805,11 +1804,12 @@ PartyDefeated:
         sta     f:$001f64
         clr_a
         sta     f:$001f65
-        lda     #^EventScript_PartyDefeated
+        lda     #^EventScript::PartyDefeated
         sta     f:$0011ff
-        clr_a
+        .assert >EventScript::PartyDefeated = 0, error, "EventScript::PartyDefeated invalid"
+        clr_a   ; >EventScript::PartyDefeated
         sta     f:$0011fe
-        lda     #<EventScript_PartyDefeated
+        lda     #<EventScript::PartyDefeated
         sta     f:$0011fd
         lda     $11f6       ; disable battle
         and     #$fd
@@ -1995,29 +1995,7 @@ ModifyMap:
 
 ; d8/dd00
 MagitekTrainTiles:
-        .incbin "magitek_train_tiles.dat"
-
-.popseg
-
-; ------------------------------------------------------------------------------
-
-.pushseg
-.segment "world_mod"
-
-        fixed_block $0500
-
-; ce/f600
-World1ModData:
-        .incbin "world_1_mod.dat"
-World2ModData:
-        .incbin "world_2_mod.dat"
-WorldModDataEnd:
-
-; ce/f648
-WorldModTiles:
-        .incbin "world_mod_tiles.dat"
-
-        end_fixed_block
+        .incbin "assets/data/world/magitek_train_tiles.bin"
 
 .popseg
 

@@ -1,0 +1,3 @@
+[submodule "tools/romtools"]
+	path = tools/romtools
+	url = https://github.com/everything8215/romtools.git

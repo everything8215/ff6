@@ -4,22 +4,22 @@
 
 .if LANG_EN
 
-MenuState_3f:
-MenuState_40:
-MenuState_41:
-MenuState_4e:
-MenuState_4f:
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_INIT
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_2
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_3
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_SCROLL_1
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_SCROLL_2
 
 .else
 
 ; ------------------------------------------------------------------------------
 
-_c3bd99:
-@bd99:  ldx     z0
-@bd9b:  lda     f:_c3bdf3,x
+InitBushidoNameHDMA:
+@bd99:  ldx     zZero
+@bd9b:  lda     f:BushidoNameBG3VScrollHDMATbl,x
         sta     $7e9bc9,x
         inx
-        cpx     #sizeof__c3bdf3
+        cpx     #sizeof_BushidoNameBG3VScrollHDMATbl
         bne     @bd9b
         lda     #$02
         sta     hDMA5::CTRL
@@ -37,43 +37,43 @@ _c3bd99:
         sta     hDMA6::CTRL
         lda     #<hBG3HOFS
         sta     hDMA6::HREG
-        ldy     #near _c3bde6
+        ldy     #near BushidoNameBG3HScrollHDMATbl
         sty     hDMA6::ADDR
-        lda     #^_c3bde6
+        lda     #^BushidoNameBG3HScrollHDMATbl
         sta     hDMA6::ADDR_B
-        lda     #^_c3bde6
+        lda     #^BushidoNameBG3HScrollHDMATbl
         sta     hDMA6::HDMA_B
         lda     #BIT_6
         tsb     zEnableHDMA
         rts
 
-_c3bde6:
+BushidoNameBG3HScrollHDMATbl:
         hdma_word 79, 256
         hdma_word 80, 0
         hdma_word 48, 0
         hdma_word 16, 256
         hdma_end
 
-_c3bdf3:
+BushidoNameBG3VScrollHDMATbl:
         hdma_word 79, 2
         hdma_word 80, -80
         hdma_word 48, -80
         hdma_word 16, 0
         hdma_end
-        calc_size _c3bdf3
+        calc_size BushidoNameBG3VScrollHDMATbl
 
 ; ------------------------------------------------------------------------------
 
-MenuState_3f:
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_INIT
 @be00:  jsr     DisableInterrupts
         jsr     ClearBGScroll
         lda     #$41
-        sta     $2109
+        sta     hBG3SC
         lda     #$02
-        sta     $46
-        stz     $4a
-        stz     $5d
-        stz     $5f
+        sta     z46
+        stz     z4a
+        stz     z5d
+        stz     z5f
         jsr     _c3c07f
         jsr     _c3c088
         jsr     CreateCursorTask
@@ -81,111 +81,111 @@ MenuState_3f:
         lda     #1
         ldy     #near _c3c357
         jsr     CreateTask
-        jsr     _c3bd99
-        lda     #$40
-        sta     $27
-        lda     #$01
-        sta     $26
+        jsr     InitBushidoNameHDMA
+        lda     #MENU_STATE::BUSHIDO_NAME_2
+        sta     zNextMenuState
+        lda     #MENU_STATE::FADE_IN
+        sta     zMenuState
         jmp     EnableInterrupts
 
-MenuState_40:
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_2
 @be37:  jsr     _c3c033
         jsr     _c3c085
         jsr     _c3bf53
-        lda     $08
-        bit     #$80
+        lda     zNewCtrlState_L
+        bit     #JOY_A
         beq     @be67
         jsr     PlaySelectSfx
         jsr     _c3c2f9
-        lda     $4d
-        sta     $5e
-        lda     $4b
-        sta     $28
+        lda     z4d
+        sta     z5e
+        lda     z4b
+        sta     zSelIndex
         jsr     _c3c09f
-        lda     $5d
-        sta     $4d
-        lda     $5f
-        sta     $4e
+        lda     z5d
+        sta     z4d
+        lda     z5f
+        sta     z4e
         jsr     _c3c0a8
-        lda     #$41
-        sta     $26
+        lda     #MENU_STATE::BUSHIDO_NAME_3
+        sta     zMenuState
         rts
-@be67:  lda     $09
-        bit     #$10
+@be67:  lda     zNewCtrlState_H
+        bit     #>JOY_START
         beq     _be79
 _be6d:  jsr     PlaySelectSfx
-        stz     $0205
-        lda     #$ff
-        sta     $27
-        stz     $26
+        stz     r0205
+        lda     #MENU_STATE::TERMINATE
+        sta     zNextMenuState
+        stz     zMenuState
 _be79:  rts
 
 ; ------------------------------------------------------------------------------
 
-MenuState_41:
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_3
 @be7a:  jsr     _c3c033
-        lda     $0b
-        bit     #$04
+        lda     zRepCtrlState_H
+        bit     #>JOY_DOWN
         beq     @be91
-        lda     $4e
+        lda     z4e
         cmp     #$07
         bne     @be91
-        lda     #$4e
-        sta     $26
+        lda     #MENU_STATE::BUSHIDO_NAME_SCROLL_1
+        sta     zMenuState
         lda     #$11
-        sta     $20
-@be91:  lda     $0b
-        bit     #$08
+        sta     zWaitCounter_L
+@be91:  lda     zRepCtrlState_H
+        bit     #>JOY_UP
         beq     @bea3
-        lda     $4e
+        lda     z4e
         bne     @bea3
-        lda     #$4f
-        sta     $26
+        lda     #MENU_STATE::BUSHIDO_NAME_SCROLL_2
+        sta     zMenuState
         lda     #$11
-        sta     $20
+        sta     zWaitCounter_L
 @bea3:  jsr     _c3bf53
         jsr     _c3c0a5
-        lda     $09
-        bit     #$10
+        lda     zNewCtrlState_H
+        bit     #>JOY_START
         beq     @beb1
         bra     _be6d
-@beb1:  lda     $08
-        bit     #$80
+@beb1:  lda     zNewCtrlState_L
+        bit     #JOY_A
         beq     @becb
         jsr     PlaySelectSfx
         jsr     _c3bf3f
-        lda     $5e
+        lda     z5e
         cmp     #$05
         beq     @bec6
         inc
         bra     @bec7
 @bec6:  tdc
-@bec7:  sta     $5e
+@bec7:  sta     z5e
         bra     @bed4
-@becb:  lda     $09
-        bit     #$80
+@becb:  lda     zNewCtrlState_H
+        bit     #>JOY_B
         beq     @beee
         jsr     PlayCancelSfx
-@bed4:  lda     $4d
-        sta     $5d
-        lda     $4e
-        sta     $5f
+@bed4:  lda     z4d
+        sta     z5d
+        lda     z4e
+        sta     z5f
         jsr     _c3c07f
-        lda     $5e
-        sta     $4d
+        lda     z5e
+        sta     z4d
         jsr     _c3c088
         lda     #$01
-        trb     $46
-        lda     #$40
-        sta     $26
+        trb     z46
+        lda     #MENU_STATE::BUSHIDO_NAME_2
+        sta     zMenuState
 @beee:  rts
 
 ; ------------------------------------------------------------------------------
 
-MenuState_4e:
-@beef:  lda     $20
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_SCROLL_1
+@beef:  lda     zWaitCounter_L
         beq     @bf0c
-        lda     $4a
+        lda     z4a
         bne     @bf12
         longa
         lda     $7e9bcd
@@ -196,18 +196,18 @@ MenuState_4e:
         shorta
         rts
 @bf0c:  lda     #$38
-        sta     $4a
-        stz     $4e
-@bf12:  lda     #$41
-        sta     $26
+        sta     z4a
+        stz     z4e
+@bf12:  lda     #MENU_STATE::BUSHIDO_NAME_3
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
 
-MenuState_4f:
-@bf17:  lda     $20
+        array_label MENU_STATE, MENU_STATE::BUSHIDO_NAME_SCROLL_2
+@bf17:  lda     zWaitCounter_L
         beq     @bf34
-        lda     $4a
+        lda     z4a
         beq     @bf3a
         longa
         lda     $7e9bcd
@@ -217,11 +217,11 @@ MenuState_4f:
         sta     $7e9bd0
         shorta
         rts
-@bf34:  stz     $4a
+@bf34:  stz     z4a
         lda     #$07
-        sta     $4e
-@bf3a:  lda     #$41
-        sta     $26
+        sta     z4e
+@bf3a:  lda     #MENU_STATE::BUSHIDO_NAME_3
+        sta     zMenuState
         rts
 
 ; ------------------------------------------------------------------------------
@@ -230,36 +230,36 @@ _c3bf3f:
 @bf3f:  jsr     _c3c06e
         txa
         clc
-        adc     $28
+        adc     zSelIndex
         tax
-        lda     $4b
+        lda     z4b
         clc
         adc     #$80
         clc
-        adc     $4a
+        adc     z4a
         sta     $1cf8,x
         rts
 
 ; ------------------------------------------------------------------------------
 
 _c3bf53:
-@bf53:  lda     $08
-        bit     #$10
+@bf53:  lda     zNewCtrlState_L
+        bit     #JOY_R
         bne     @bf5d
-        bit     #$20
+        bit     #JOY_L
         beq     @bf77
 @bf5d:  jsr     PlayMoveSfx
-        lda     $4a
+        lda     z4a
         bne     @bf78
         lda     #$38
-        sta     $4a
+        sta     z4a
         longa
         lda     #$0030
         sta     $7e9bcd
         sta     $7e9bd0
         shorta
 @bf77:  rts
-@bf78:  stz     $4a
+@bf78:  stz     z4a
         longa
         lda     #$ffb0
         sta     $7e9bcd
@@ -271,45 +271,45 @@ _c3bf53:
 
 _c3bf8a:
 @bf8a:  ldx     #$8049
-        stx     $eb
+        stx     zeb
         lda     #$7e
-        sta     $ed
+        sta     zed
         ldy     #$01b0
-        sty     $e7
+        sty     ze7
         ldy     #$0186
         ldx     #$3680
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$01f0
-        sty     $e7
+        sty     ze7
         ldy     #$01c6
         ldx     #$3681
-        stx     $e0
+        stx     ze0
         jmp     _c3a783
 
 ; ------------------------------------------------------------------------------
 
 _c3bfb3:
 @bfb3:  ldy     #$0280
-        sty     $f3
+        sty     zf3
         jsr     _c3b437
         ldx     #near BushidoDescPtrs
-        stx     $e7
+        stx     ze7
         ldx     #near BushidoDesc
-        stx     $eb
+        stx     zeb
         lda     #^BushidoDescPtrs
-        sta     $e9
+        sta     ze9
         lda     #^BushidoDesc
-        sta     $ed
+        sta     zed
         ldx     #$9ec9
-        stx     $2181
+        stx     hWMADDL
         tdc
-        lda     $0201
+        lda     r0201
         jsr     _c35d99
-        stz     $8d
-        stz     $ed
-        stz     $ee
-        ldx     $00
+        stz     z8d
+        stz     zed
+        stz     zee
+        ldx     zZero
 @bfe2:  lda     $7e9ec9,x
         beq     @bff3
         jsr     GetLetter
@@ -319,79 +319,79 @@ _c3bfb3:
         inx
         bra     @bfe2
 @bff3:  ldy     #$7400
-        sty     $1b
+        sty     zDMA2Dest
         ldy     #$a271
-        sty     $1d
+        sty     zDMA2Src
         ldy     #$0700
-        sty     $19
+        sty     zDMA2Size
         jsr     TfrVRAM2
-        stz     $1b
-        stz     $1c
+        stz     zDMA2Dest_L
+        stz     zDMA2Dest_H
         rts
 
 ; ------------------------------------------------------------------------------
 
 _c3c00a:
 @c00a:  ldx     #$8049
-        stx     $eb
+        stx     zeb
         lda     #$7e
-        sta     $ed
+        sta     zed
         ldy     #$00b0
-        sty     $e7
+        sty     ze7
         ldy     #$009e
         ldx     #$3600
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$00f0
-        sty     $e7
+        sty     ze7
         ldy     #$00de
         ldx     #$3601
-        stx     $e0
+        stx     ze0
         jmp     _c3a783
 
 ; ------------------------------------------------------------------------------
 
 _c3c033:
 @c033:  ldy     #$0120
-        sty     $f3
+        sty     zf3
         jsr     _c3b437
-        stz     $8d
-        stz     $ed
-        stz     $ee
+        stz     z8d
+        stz     zed
+        stz     zee
         lda     #$06
-        sta     $f1
+        sta     zf1
         jsr     _c3c06e
 @c048:  lda     $1cf8,x
         ldy     #$3f40
-        sty     $eb
+        sty     zeb
         phx
         jsr     CopyBigLetterGfx
         plx
         inx
-        dec     $f1
+        dec     zf1
         bne     @c048
         ldy     #$7000
-        sty     $1b
+        sty     zDMA2Dest
         ldy     #$a271
-        sty     $1d
+        sty     zDMA2Src
         ldy     #$0120
-        sty     $19
+        sty     zDMA2Size
         lda     #$01
-        trb     $45
+        trb     z45
         rts
 
 ; ------------------------------------------------------------------------------
 
 _c3c06e:
 @c06e:  tdc
-        lda     $0201
+        lda     r0201
         asl
         asl
-        sta     $e0
-        lda     $0201
+        sta     ze0
+        lda     r0201
         asl
         clc
-        adc     $e0
+        adc     ze0
         tax
         rts
 
@@ -463,12 +463,12 @@ _c3c123:
         jsr     ClearBG3ScreenA
         jsr     ClearBG3ScreenB
         lda     #$20
-        sta     $29
+        sta     zTextColor
         ldx     #$7849
-        stx     $eb
+        stx     zeb
         lda     #$7e
-        sta     $ed
-        ldx     $00
+        sta     zed
+        ldx     zZero
 @c15c:  longa
         lda     f:_c3c18a,x
         tay
@@ -517,18 +517,18 @@ _c3c1c9:
         ldy     #near BushidoTitleText
         jsr     DrawPosKana
         tdc
-        lda     $0201
+        lda     r0201
         inc
         clc
         adc     #ZERO_CHAR
-        sta     $f9
-        stz     $fa
+        sta     zf9
+        stz     zfa
         ldx     #$38dd
         stx     zf7
         ldy     #near zf7
-        sty     $e7
+        sty     ze7
         lda     #^zf7
-        sta     $e9
+        sta     ze9
         jsr     DrawPosTextFar
         rts
 
@@ -536,11 +536,11 @@ _c3c1c9:
 
 _c3c1f2:
 @c1f2:  lda     #$30
-        sta     $29
+        sta     zTextColor
         ldy     #near BushidoGaugeText
         jsr     DrawPosText
         tdc
-        lda     $0201
+        lda     r0201
         beq     @c230
         tay
         longa
@@ -548,18 +548,18 @@ _c3c1f2:
         sta     $7e9e89
         shorta
         ldx     #$9e8b
-        stx     $2181
-        ldx     z0
+        stx     hWMADDL
+        ldx     zZero
 @c216:  lda     f:BushidoFullGaugeText,x
-        sta     $2180
+        sta     hWMDATA
         inx
         dey
         bne     @c216
-        stz     $2180
+        stz     hWMDATA
         ldy     #$9e89
-        sty     $e7
+        sty     ze7
         lda     #$7e
-        sta     $e9
+        sta     ze9
         jsr     DrawPosTextFar
 @c230:  rts
 
@@ -574,11 +574,11 @@ BushidoFullGaugeText:
 ; ------------------------------------------------------------------------------
 
 _c3c238:
-        make_window BG2A, {1, 1}, {28, 2}
+        window_pos BG2A, {1, 1}, {28, 2}
 _c3c23c:
-        make_window BG2A, {1, 5}, {28, 2}
+        window_pos BG2A, {1, 5}, {28, 2}
 _c3c240:
-        make_window BG2A, {1, 9}, {28, 16}
+        window_pos BG2A, {1, 9}, {28, 16}
 
 ; ------------------------------------------------------------------------------
 
@@ -596,7 +596,7 @@ BushidoTitleText:
 _c3c25a:
 @c25a:  shorta
         lda     #7
-        sta     $e2
+        sta     ze2
 @c260:  longa
         phy
         phx
@@ -612,7 +612,7 @@ _c3c25a:
         adc     #$0008
         tay
         shorta
-        dec     $e2
+        dec     ze2
         bne     @c260
         rts
 
@@ -620,51 +620,51 @@ _c3c25a:
 
 _c3c27c:
         .a16
-@c27c:  stx     $e0
-        lda     $e0
-        sta     [$eb],y
-        inc     $e0
-        inc     $e0
+@c27c:  stx     ze0
+        lda     ze0
+        sta     [zeb],y
+        inc     ze0
+        inc     ze0
         iny2
-        lda     $e0
-        sta     [$eb],y
-        dec     $e0
+        lda     ze0
+        sta     [zeb],y
+        dec     ze0
         dey2
         tya
         clc
         adc     #$0040
         tay
-        lda     $e0
-        sta     [$eb],y
+        lda     ze0
+        sta     [zeb],y
         iny2
-        inc     $e0
-        inc     $e0
-        lda     $e0
-        sta     [$eb],y
+        inc     ze0
+        inc     ze0
+        lda     ze0
+        sta     [zeb],y
         rts
         .a8
 
 ; ------------------------------------------------------------------------------
 
 _c3c2a5:
-@c2a5:  stz     $e4
+@c2a5:  stz     ze4
         ldy     #$6000
-        sty     $f1
+        sty     zf1
 @c2ac:  jsr     _c3c2de
-        ldy     $f1
+        ldy     zf1
         jsr     TfrBigLetterGfx
         longa
-        lda     $f1
+        lda     zf1
         clc
         adc     #$0020
-        sta     $f1
+        sta     zf1
         shorta
-        inc     $e4
-        lda     $e4
+        inc     ze4
+        lda     ze4
         cmp     #$70
         bne     @c2ac
-        stz     $1b
-        stz     $1c
+        stz     zDMA2Dest_L
+        stz     zDMA2Dest_H
         rts
 
 .endif
@@ -687,29 +687,29 @@ _c3b437:
 
 _c3c2de:
 @c2de:  ldy     #$0040
-        sty     $f3
+        sty     zf3
         jsr     _c3b437
-        stz     $8d
-        stz     $ed
-        stz     $ee
-        lda     $e4
+        stz     z8d
+        stz     zed
+        stz     zee
+        lda     ze4
         clc
         adc     #$80
         ldy     #$3f40
-        sty     $eb
+        sty     zeb
         jmp     CopyBigLetterGfx
 
 ; ------------------------------------------------------------------------------
 
 _c3c2f9:
-@c2f9:  lda     #$02
+@c2f9:  lda     #2
         ldy     #near _c3c312
         jsr     CreateTask
         longa
-        lda     $55
-        sta     $7e33ca,x
-        lda     $57
-        sta     $7e344a,x
+        lda     z55
+        sta     wTaskProp::PosX_H,x
+        lda     z57
+        sta     wTaskProp::PosY_H,x
         shorta
         rts
 
@@ -721,23 +721,23 @@ _c3c316:
 @c316:  .addr   _c3c31a,_c3c335
 
 _c3c31a:
-@c31a:  ldx     $2d
+@c31a:  ldx     zTaskOffset
         lda     #$01
-        tsb     $46
+        tsb     z46
         longa
         lda     #near NameChangeArrowAnim
-        sta     $32c9,x
+        sta     near wTaskProp::AnimPtr,x
         shorta
         lda     #^NameChangeArrowAnim
-        sta     $35ca,x
+        sta     near wTaskProp::AnimBank,x
         jsr     InitAnimTask
-        inc     $3649,x
+        inc     near wTaskProp::State,x
 
 _c3c335:
-@c335:  lda     $46
+@c335:  lda     z46
         bit     #$01
         beq     @c342
-        ldx     $2d
+        ldx     zTaskOffset
         jsr     UpdateAnimTask
         sec
         rts
@@ -779,23 +779,23 @@ _c3c35b:
 @c35b:  .addr   _c3c35f,_c3c382
 
 _c3c35f:
-@c35f:  ldx     $2d
+@c35f:  ldx     zTaskOffset
         longa
         lda     #near _c3c3a3
-        sta     $32c9,x
+        sta     near wTaskProp::AnimPtr,x
         lda     #$0078
-        sta     $33ca,x
+        sta     near wTaskProp::PosX_H,x
         lda     #$0048
-        sta     $344a,x
+        sta     near wTaskProp::PosY_H,x
         shorta
         lda     #^_c3c3a3
-        sta     $35ca,x
-        inc     $3649,x
+        sta     near wTaskProp::AnimBank,x
+        inc     near wTaskProp::State,x
         jsr     InitAnimTask
 
 _c3c382:
-@c382:  ldx     $2d
-        lda     $4a
+@c382:  ldx     zTaskOffset
+        lda     z4a
         beq     @c38c
         lda     #$02
         bra     @c38d
@@ -804,7 +804,7 @@ _c3c382:
         tax
         longa
         lda     f:_c3c39f,x
-        sta     $32c9,y
+        sta     near wTaskProp::AnimPtr,y
         shorta
         jsr     UpdateAnimTask
         sec

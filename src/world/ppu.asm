@@ -13,7 +13,7 @@
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ update one explosion circle (for world of ruin scene) ]
 
 UpdateMode7Circle:
 @ac18:  php
@@ -190,27 +190,27 @@ bomb:
 TfrPal:
 @ad42:  stz     hCGADD
         ldx     #$2200
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     $6a
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     $6c
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0200      ; size = $0200
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
 
 ; copy palettes from ppu to wram
         stz     hCGADD
         ldx     #$3b80
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$e000      ; destination = $7ee000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0200      ; size = $0200
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -224,14 +224,14 @@ TfrBackdropGfx:
         ldx     #$5000      ; destination = $5000 (vram)
         stx     hVMADDL
         ldx     #$1801
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$2000      ; source = $7e2000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$2000      ; size = $2000
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN       ; enable dma
         rts
 
@@ -245,14 +245,14 @@ TfrBackdropTiles:
         ldx     #$4400      ; destination = $4400 (vram)
         stx     hVMADDL
         ldx     #$1801
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$2000      ; source = $7e2000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$1000      ; size = $1000
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN       ; enable dma
         rts
 
@@ -266,14 +266,14 @@ TfrSpriteGfx:
         ldx     #$6000     ; destination = $6000 (vram)
         stx     hVMADDL
         ldx     #$1801
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$2000     ; source = $7e2000
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$4000     ; size = $4000
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -289,13 +289,13 @@ TfrTrainTiles:
         ldy     #$0000
 @ae06:  sty     $58         ; tile index
         ldx     #$1908
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$0058      ; source = $000058
-        stx     $4302
-        stz     $4304
+        stx     hDMA0::ADDR
+        stz     hDMA0::ADDR_B
         ldx     #$0040      ; size = $0040
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         iny                 ; next tile
         cpy     #$0100
@@ -316,27 +316,27 @@ LoadTrainTilePtrs:
         ldx     #$0000      ; destination = $0000 (vram)
         stx     hVMADDL
         ldx     #$1900
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     $6a
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     $6c
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$02b8      ; size = $02b8
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         ldx     #$0000      ; source = $0000 (vram)
         stx     hVMADDL
         cmp     hRVMDATAH
         ldx     #$3a80
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$0800      ; destination = $7f0800
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7f
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$02b8      ; size = $02b8
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         rts
 
@@ -351,27 +351,27 @@ InitWaterGfx:
         stx     hVMADDL
         cmp     hRVMDATAH
         ldx     #$3a80
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$b750
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         ldx     #$1500
         stx     hVMADDL
         cmp     hRVMDATAH
         ldx     #$3a80
-        stx     $4300
+        stx     hDMA0::CTRL
         ldx     #$b7d0
-        stx     $4302
+        stx     hDMA0::ADDR
         lda     #$7e
-        sta     $4304
+        sta     hDMA0::ADDR_B
         ldx     #$0080
-        stx     $4305
-        lda     #$01
+        stx     hDMA0::SIZE
+        lda     #BIT_0
         sta     hMDMAEN
         longa
         lda     #$0080

@@ -1,12 +1,12 @@
 ; ------------------------------------------------------------------------------
 
-.include "field/map_tileset.inc"
+.include "map_tileset.inc"
 
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_tileset id, file
-        array_label MapTileset, MAP_TILESET::id
-        .incbin .sprintf("map_tileset/%s.dat.lz", file)
+        array_label MAP_TILESET, MAP_TILESET::id
+        .incbin .sprintf("assets/data/field/map_tileset/%s.bin.lz", file)
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -26,8 +26,8 @@ MapTileset:
         inc_map_tileset VILLAGE_EXT_1_BG2, "village_ext_1_bg2"
         inc_map_tileset DOMA_CASTLE_BG1, "doma_castle_bg1"
         inc_map_tileset DOMA_CASTLE_BG2, "doma_castle_bg2"
-        inc_map_tileset TOWN_EXT_BG1, .concat("town_ext_bg1_", LANG_SUFFIX)
-        inc_map_tileset TOWN_EXT_BG2, .concat("town_ext_bg2_", LANG_SUFFIX)
+        inc_map_tileset TOWN_EXT_BG1, "town_ext_bg1"
+        inc_map_tileset TOWN_EXT_BG2, "town_ext_bg2"
         inc_map_tileset DOCKS_BG1, "docks_bg1"
         inc_map_tileset DOCKS_BG2, "docks_bg2"
         inc_map_tileset CAVES_BG1, "caves_bg1"
@@ -40,10 +40,10 @@ MapTileset:
         inc_map_tileset TOWN_INT_BG1, "town_int_bg1"
         inc_map_tileset TOWN_INT_BG2, "town_int_bg2"
         inc_map_tileset MOUNTAINS_EXT_BG1, "mountains_ext_bg1"
-        inc_map_tileset NARSHE_EXT_BG1, .concat("narshe_ext_bg1_", LANG_SUFFIX)
-        inc_map_tileset NARSHE_EXT_BG2, .concat("narshe_ext_bg2_", LANG_SUFFIX)
-        inc_map_tileset DESTROYED_TOWN_BG1, .concat("destroyed_town_bg1_", LANG_SUFFIX)
-        inc_map_tileset DESTROYED_TOWN_BG2, .concat("destroyed_town_bg2_", LANG_SUFFIX)
+        inc_map_tileset NARSHE_EXT_BG1, "narshe_ext_bg1"
+        inc_map_tileset NARSHE_EXT_BG2, "narshe_ext_bg2"
+        inc_map_tileset DESTROYED_TOWN_BG1, "destroyed_town_bg1"
+        inc_map_tileset DESTROYED_TOWN_BG2, "destroyed_town_bg2"
         inc_map_tileset SNOWFIELDS, "snowfields"
         inc_map_tileset TRAIN_EXT_BG1, "train_ext_bg1"
         inc_map_tileset TRAIN_INT_BG1, "train_int_bg1"
@@ -74,7 +74,7 @@ MapTileset:
         inc_map_tileset AIRSHIP_EXT_BG1, "airship_ext_bg1"
         inc_map_tileset AIRSHIP_EXT_BG2, "airship_ext_bg2"
         inc_map_tileset AIRSHIP_INT, "airship_int"
-        inc_map_tileset NARSHE_INTRO_BG1, .concat("narshe_intro_bg1_", LANG_SUFFIX)
+        inc_map_tileset NARSHE_INTRO_BG1, "narshe_intro_bg1"
         inc_map_tileset CYANS_DREAM, "cyans_dream"
         inc_map_tileset FOREST_BG1, "forest_bg1"
         inc_map_tileset FOREST_BG2, "forest_bg2"
@@ -95,9 +95,8 @@ MapTileset:
         inc_map_tileset OPERA_HOUSE_BG1, "opera_house_bg1"
         inc_map_tileset OPERA_HOUSE_BG2, "opera_house_bg2"
         inc_map_tileset DARILLS_TOMB_BG1, "darills_tomb_bg1"
-        inc_map_tileset DARILLS_TOMB_BG2, .concat("darills_tomb_bg2_", LANG_SUFFIX)
-
-MapTileset::End:
+        inc_map_tileset DARILLS_TOMB_BG2, "darills_tomb_bg2"
+        MAP_TILESET::END := *
         end_fixed_block
 
 ; ------------------------------------------------------------------------------
@@ -107,8 +106,8 @@ MapTileset::End:
 ; df/ba00
 MapTilesetPtrs:
         fixed_block $0100
-        ptr_tbl_far MapTileset
-        end_ptr_far MapTileset
+        ptr_tbl_far MAP_TILESET
+        end_ptr_far MAP_TILESET
         end_fixed_block
 
 ; ------------------------------------------------------------------------------

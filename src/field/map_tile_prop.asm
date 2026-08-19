@@ -1,12 +1,12 @@
 ; ------------------------------------------------------------------------------
 
-.include "field/map_tile_prop.inc"
+.include "map_tile_prop.inc"
 
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_tile_prop id, file
-        array_label MapTileProp, MAP_TILE_PROP::id
-        .incbin .sprintf("map_tile_prop/%s.dat.lz", file)
+        array_label MAP_TILE_PROP, MAP_TILE_PROP::id
+        .incbin .sprintf("assets/data/field/map_tile_prop/%s.bin.lz", file)
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -58,8 +58,7 @@ MapTileProp:
         inc_map_tile_prop CYANS_DREAM, "cyans_dream"
         inc_map_tile_prop KEFKAS_TOWER_1, "kefkas_tower_1"
         inc_map_tile_prop KEFKAS_TOWER_2, "kefkas_tower_2"
-
-MapTileProp::End:
+        MAP_TILE_PROP::END := *
         end_fixed_block
 
 ; ------------------------------------------------------------------------------
@@ -68,8 +67,8 @@ MapTileProp::End:
 
 MapTilePropPtrs:
         fixed_block $80
-        ptr_tbl MapTileProp
-        end_ptr MapTileProp
+        ptr_tbl MAP_TILE_PROP
+        end_ptr MAP_TILE_PROP
         end_fixed_block
 
 ; ------------------------------------------------------------------------------

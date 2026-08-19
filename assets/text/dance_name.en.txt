@@ -1,0 +1,12 @@
+#item_size:12
+#char_tbl:text_en
+#char_tbl:fixed_length_en
+
+#text:WIND_SONG
+#text:FOREST_SUITE
+#text:DESERT_ARIA
+#text:LOVE_SONATA
+#text:EARTH_BLUES
+#text:WATER_RONDO
+#text:DUSK_REQUIEM
+#text:SNOWMAN_JAZZ

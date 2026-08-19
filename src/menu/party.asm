@@ -17,7 +17,7 @@
 
 ; [ menu state $2c: party select init ]
 
-MenuState_2c:
+        array_label MENU_STATE, MENU_STATE::PARTY_INIT
 @70e7:  jsr     _c370fc
         stz     z4a
         stz     z5a
@@ -40,7 +40,7 @@ _c370fc:
         trb     zEnableHDMA
         lda     #$02
         sta     z46
-        lda     #$06
+        lda     #$06                    ; terminate group 2, 3 sprite tasks
         tsb     z47
         rts
 
@@ -53,19 +53,19 @@ _c37114:
         jsr     _c375c5
         jsr     DrawPartyMenu
         jsr     _c3793f
-        jsr     _c37953
+        jsr     DrawPartyCharBlock
         jsr     InitDMA1BG1ScreenA
-        lda     #$2d
+        lda     #MENU_STATE::PARTY_SELECT_1
         sta     zNextMenuState
-        lda     #$66
+        lda     #MENU_STATE::PARTY_FADE_IN
         sta     zMenuState
         jmp     EnableInterrupts
 
 ; ------------------------------------------------------------------------------
 
-; [ menu state $7d: return to party select (from status) ]
+; [ menu state $7d: return to party select (from character status) ]
 
-MenuState_7d:
+        array_label MENU_STATE, MENU_STATE::PARTY_STATUS_RETURN
 @7131:  jsr     _c370fc
         lda     z5d
         sta     z99
@@ -85,7 +85,7 @@ MenuState_7d:
         ldy     z8e
         sty     z4d
         lda     $79
-        sta     z59
+        sta     zCursorWrap
         ldy     $7a
         sty     z53
         jsr     UpdatePartyCursor
@@ -95,41 +95,41 @@ MenuState_7d:
 
 ; [ menu state $2d: party select (select 1st slot) ]
 
-MenuState_2d:
+        array_label MENU_STATE, MENU_STATE::PARTY_SELECT_1
 @7168:  jsr     _c371b9
         bcc     @71b8
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @71a9
-        lda     $4b
+        lda     z4b
         clc
-        adc     $4a
-        adc     $5a
+        adc     z4a
+        adc     z5a
         tax
         lda     $7eac8d,x
         bmi     @71a2
         jsr     PlaySelectSfx
-        lda     $4b
+        lda     z4b
         sta     zSelIndex
-        lda     $4a
-        sta     $49
-        lda     $5a
-        sta     $5b
-        lda     #$2e
+        lda     z4a
+        sta     z49
+        lda     z5a
+        sta     z5b
+        lda     #MENU_STATE::PARTY_SELECT_2
         sta     zMenuState
         jsr     _c32f21
-        lda     $4a
+        lda     z4a
         beq     @71a1
         lda     #2
-        sta     wTaskState,x
+        sta     wTaskProp::State,x
 @71a1:  rts
 @71a2:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
         rts
-@71a9:  lda     z08+1
+@71a9:  lda     zNewCtrlState_H
         bit     #>JOY_START
         bne     @71b5
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @71b8
 @71b5:  jsr     _c37296
@@ -141,37 +141,37 @@ MenuState_2d:
 
 _c371b9:
 @71b9:  jsr     _c375b8
-        lda     z0a+1
-        bit     #$04
+        lda     zRepCtrlState_H
+        bit     #>JOY_DOWN
         beq     @71de
-        lda     $4e
+        lda     z4e
         cmp     #$01
         bne     @71de
-        lda     $4a
+        lda     z4a
         bne     @71de
         lda     #$10
-        sta     $4a
-        lda     $99
+        sta     z4a
+        lda     z99
         asl2
-        sta     $5a
+        sta     z5a
         jsr     _c373db
         jsr     PlayMoveSfx
         clc
         rts
-@71de:  lda     z0a+1
-        bit     #$08
+@71de:  lda     zRepCtrlState_H
+        bit     #>JOY_UP
         beq     @7206
-        lda     $4e
+        lda     z4e
         bne     @7206
-        lda     $4a
+        lda     z4a
         beq     @7206
-        lda     $4d
-        sta     $5e
-        stz     $4a
-        stz     $5a
+        lda     z4d
+        sta     z5e
+        stz     z4a
+        stz     z5a
         jsr     LoadPartyCharCursor
         lda     #$01
-        sta     $4e
+        sta     z4e
         jsr     _c3744c
         jsr     InitPartyCharCursor
         jsr     PlayMoveSfx
@@ -187,34 +187,38 @@ _c371b9:
 
 _720b:  rts
 
-MenuState_2e:
+        array_label MENU_STATE, MENU_STATE::PARTY_SELECT_2
 @720c:  jsr     _c371b9
         bcc     _720b
-        lda     z08
+
+; check A button
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @727d
         clr_a
-        lda     $4b
+        lda     z4b
         clc
-        adc     $4a
-        adc     $5a
-        sta     $e0
+        adc     z4a
+        adc     z5a
+        sta     ze0
         tax
         lda     $7eac8d,x
-        bmi     @728f
+        bmi     @728f                   ; branch if no char in this slot
         clr_a
         lda     zSelIndex
         clc
-        adc     $49
-        adc     $5b
-        cmp     $e0
+        adc     z49
+        adc     z5b
+        cmp     ze0
         bne     @7265
-        lda     $e0
+
+; show character status
+        lda     ze0
         tax
         lda     $7e9d89,x
         bmi     @7277
         jsr     PlaySelectSfx
-        lda     z59
+        lda     zCursorWrap
         sta     $79
         ldy     z53
         sty     $7a
@@ -226,27 +230,31 @@ MenuState_2e:
         sta     z8d
         lda     z99
         sta     z5d
-        lda     #$42
+        lda     #MENU_STATE::PARTY_STATUS_INIT
         sta     zNextMenuState
-        lda     #$67
+        lda     #MENU_STATE::PARTY_FADE_OUT
         sta     zMenuState
-        lda     #$7d
-        sta     $4c
+        lda     #MENU_STATE::PARTY_STATUS_RETURN
+        sta     z4c
         rts
+
+; swap two slots
 @7265:  jsr     PlaySelectSfx
-        lda     #$07
-        trb     $47
+        lda     #$07                    ; terminate group 2, 3 sprite tasks
+        trb     z47
         jsr     _c372f8
         jsr     ExecTasks
         jsr     _c37613
         bra     @7286
 @7277:  jsr     PlayInvalidSfx
         jsr     CreateMosaicTask
-@727d:  lda     z08+1
+
+; check B button
+@727d:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @728e
         jsr     PlayCancelSfx
-@7286:  lda     #$2d
+@7286:  lda     #MENU_STATE::PARTY_SELECT_1
         sta     zMenuState
         lda     #$05
         trb     z46
@@ -261,34 +269,34 @@ MenuState_2e:
 
 _c37296:
 @7296:  clr_ax
-        lda     w0201       ; number of parties
-        and     #$7f
+        lda     r0201       ; number of parties
+        and     #%01111111
         asl2
-        sta     $f3
-        stz     $f4
-@72a3:  stz     $e0
+        sta     zf3
+        stz     zf4
+@72a3:  stz     ze0
         ldy     #$0004
 @72a8:  lda     $7e9d99,x
         bmi     @72b0
-        inc     $e0
+        inc     ze0
 @72b0:  inx
         dey
         bne     @72a8
-        lda     $e0
+        lda     ze0
         beq     @72cb
-        cpx     $f3
+        cpx     zf3
         bne     @72a3
         jsr     PlayCancelSfx
-        stz     w0205
-        lda     #$ff
+        stz     r0205
+        lda     #MENU_STATE::TERMINATE
         sta     zNextMenuState
-        lda     #$67
+        lda     #MENU_STATE::PARTY_FADE_OUT
         sta     zMenuState
         rts
 @72cb:  jsr     PlayInvalidSfx
         lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
-        lda     w0201
+        lda     r0201
         and     #%111
         cmp     #1
         beq     @72e9                   ; branch if one party
@@ -305,7 +313,7 @@ _c37296:
         jsr     DrawPosKana
 @72ef:  lda     #$20
         sta     zWaitCounter
-        lda     #$69
+        lda     #MENU_STATE::PARTY_ERROR
         sta     zMenuState
         rts
 
@@ -317,90 +325,90 @@ _c372f8:
 @72f8:  clr_a
         lda     zSelIndex
         clc
-        adc     $49
-        adc     $5b
+        adc     z49
+        adc     z5b
         tax
         lda     $7e9d89,x
-        sta     $e5
+        sta     ze5
         bpl     @7317
         lda     $7e9e51,x
         ora     f:_c373af,x
-        sta     $e0
-        stz     $e1
+        sta     ze0
+        stz     ze1
         bra     @7326
 @7317:  tay
         lda     $1850,y
         and     #$df
-        sta     $e0
+        sta     ze0
         lda     $1850,y
         and     #$20
-        sta     $e1
-@7326:  lda     $4b
+        sta     ze1
+@7326:  lda     z4b
         clc
-        adc     $4a
-        adc     $5a
+        adc     z4a
+        adc     z5a
         tax
         lda     $7e9d89,x
-        sta     $e6
+        sta     ze6
         bpl     @7344
         lda     $7e9e51,x
         ora     f:_c373af,x
-        sta     $e2
-        stz     $e3
+        sta     ze2
+        stz     ze3
         bra     @7353
 @7344:  tay
         lda     $1850,y
         and     #$df
-        sta     $e2
+        sta     ze2
         lda     $1850,y
         and     #$20
-        sta     $e3
-@7353:  lda     $e0
+        sta     ze3
+@7353:  lda     ze0
         and     #$40
         bne     @7361
-@7359:  lda     $e2
+@7359:  lda     ze2
         and     #$40
         bne     @737a
         bra     @7391
 @7361:  clr_a
         lda     zSelIndex
         clc
-        adc     $49
-        adc     $5b
+        adc     z49
+        adc     z5b
         tax
         lda     $7e9d89,x
         bmi     @7359
         tax
-        lda     $e2
-        ora     $e1
+        lda     ze2
+        ora     ze1
         sta     $1850,x
         bra     @7359
 @737a:  clr_a
-        lda     $4b
+        lda     z4b
         clc
-        adc     $4a
-        adc     $5a
+        adc     z4a
+        adc     z5a
         tax
         lda     $7e9d89,x
         bmi     @7391
         tax
-        lda     $e0
-        ora     $e3
+        lda     ze0
+        ora     ze3
         sta     $1850,x
 @7391:  clr_a
-        lda     $4b
+        lda     z4b
         clc
-        adc     $4a
-        adc     $5a
+        adc     z4a
+        adc     z5a
         tax
-        lda     $e5
+        lda     ze5
         sta     $7e9d89,x
         lda     zSelIndex
         clc
-        adc     $49
-        adc     $5b
+        adc     z49
+        adc     z5b
         tax
-        lda     $e6
+        lda     ze6
         sta     $7e9d89,x
         rts
 
@@ -416,10 +424,10 @@ _c373af:
 ; [  ]
 
 _c373db:
-@73db:  lda     $4d
-        sta     $5e
-        lda     w0201       ; number of parties
-        and     #$7f
+@73db:  lda     z4d
+        sta     z5e
+        lda     r0201       ; number of parties
+        and     #%01111111
         cmp     #1
         beq     @73f5
         cmp     #2
@@ -432,20 +440,20 @@ _c373db:
 
 ; one party
 @73f5:  jsr     LoadOnePartyCursor
-        lda     $5e
+        lda     z5e
         cmp     #$01
         bcc     @7400
         lda     #$01
-@7400:  sta     $4d
+@7400:  sta     z4d
         jmp     InitOnePartyCursor
 
 ; two parties
 @7405:  jsr     LoadTwoPartyCursor
-        lda     $5e
+        lda     z5e
         cmp     #$03
         bcc     @7410
         lda     #$03
-@7410:  sta     $4d
+@7410:  sta     z4d
         jmp     InitTwoPartyCursor
 
 ; ------------------------------------------------------------------------------
@@ -453,13 +461,13 @@ _c373db:
 ; [ update party menu cursor ]
 
 UpdatePartyCursor:
-@7415:  lda     $4a
+@7415:  lda     z4a
         beq     @742f
-        lda     w0201       ; number of parties
-        and     #$7f
-        cmp     #$01
+        lda     r0201       ; number of parties
+        and     #%01111111
+        cmp     #1
         beq     @742c       ; branch if one
-        cmp     #$02
+        cmp     #2
         jne     UpdateThreePartyCursor
         jmp     UpdateTwoPartyCursor
 @742c:  jmp     UpdateOnePartyCursor
@@ -470,8 +478,8 @@ UpdatePartyCursor:
 ; [  ]
 
 _c37432:
-@7432:  lda     $5e
-        ldx     z0
+@7432:  lda     z5e
+        ldx     zZero
 @7436:  cmp     f:_c37466,x
         beq     @7444
         inx2
@@ -480,7 +488,7 @@ _c37432:
         rts
 @7444:  inx
         lda     f:_c37466,x
-        sta     $4d
+        sta     z4d
         rts
 
 ; ------------------------------------------------------------------------------
@@ -488,8 +496,8 @@ _c37432:
 ; [  ]
 
 _c3744c:
-@744c:  lda     $5e
-        ldx     z0
+@744c:  lda     z5e
+        ldx     zZero
 @7450:  cmp     f:_c37476,x
         beq     @745e
         inx2
@@ -498,7 +506,7 @@ _c3744c:
         rts
 @745e:  inx
         lda     f:_c37476,x
-        sta     $4d
+        sta     z4d
         rts
 
 ; ------------------------------------------------------------------------------
@@ -695,8 +703,8 @@ DrawPartyMsg:
 
 DrawPartyWindows:
 @7572:  clr_a
-        lda     w0201                   ; number of parties
-        and     #$7f
+        lda     r0201                   ; number of parties
+        and     #%01111111
         asl
         tax
         jmp     (near DrawPartyWindowsTbl,x)
@@ -727,29 +735,29 @@ DrawOnePartyWindows:
 ; ------------------------------------------------------------------------------
 
 ; window data for party select menu
-PartyTitleWindow:                       make_window BG2A, {1, 1}, {6, 2}
-PartyBtmWindow:                         make_window BG2A, {1, 18}, {28, 7}
-PartyTopWindow:                         make_window BG2A, {1, 5}, {28, 5}
-PartyMidWindow:                         make_window BG2A, {1, 11}, {28, 6}
-PartyMsgWindow:                         make_window BG2A, {9, 1}, {20, 2}
-Party1Window:                           make_window BG2A, {1, 19}, {8, 6}
-Party2Window:                           make_window BG2A, {11, 19}, {8, 6}
-Party3Window:                           make_window BG2A, {21, 19}, {8, 6}
+PartyTitleWindow:                       window_pos BG2A, {1, 1}, {6, 2}
+PartyBtmWindow:                         window_pos BG2A, {1, 18}, {28, 7}
+PartyTopWindow:                         window_pos BG2A, {1, 5}, {28, 5}
+PartyMidWindow:                         window_pos BG2A, {1, 11}, {28, 6}
+PartyMsgWindow:                         window_pos BG2A, {9, 1}, {20, 2}
+Party1Window:                           window_pos BG2A, {1, 19}, {8, 6}
+Party2Window:                           window_pos BG2A, {11, 19}, {8, 6}
+Party3Window:                           window_pos BG2A, {21, 19}, {8, 6}
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ redraw char block in party menu ]
 
 _c375b8:
-@75b8:  lda     #$06
-        tsb     $47
-        jsr     _c37c2f
-        jsr     _c37cae
-        jmp     _c37953
+@75b8:  lda     #%110                   ; terminate group 2, 3 sprite tasks
+        tsb     z47
+        jsr     LoadPartyPortraitGfx
+        jsr     LoadPartyPortraitPal
+        jmp     DrawPartyCharBlock
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init bg1 v-scroll hdma (party menu) ]
 
 _c375c5:
 @75c5:  lda     #$02
@@ -767,13 +775,13 @@ _c375c5:
         rts
 
 _c375e4:
-@75e4:  .byte   $20,$02,$00
-        .byte   $08,$00,$00
-        .byte   $0b,$04,$00
-        .byte   $0c,$08,$00
-        .byte   $0c,$0c,$00
-        .byte   $0c,$10,$00
-        .byte   $00
+        hdma_word 32, 2
+        hdma_word 8, 0
+        hdma_word 11, 4
+        hdma_word 12, 8
+        hdma_word 12, 12
+        hdma_word 12, 16
+        hdma_end
 
 ; ------------------------------------------------------------------------------
 
@@ -781,17 +789,17 @@ _c375e4:
 
 DrawNumParties:
 @75f7:  clr_a
-        lda     w0201                   ; number of parties
-        and     #$07
+        lda     r0201                   ; number of parties
+        and     #%111
         clc
         adc     #ZERO_CHAR
-        sta     $f9
-        stz     $fa
-        stx     $f7
+        sta     zf9
+        stz     zfa
+        stx     zf7
         ldy     #$00f7
-        sty     $e7
+        sty     ze7
         lda     #$00
-        sta     $e9
+        sta     ze9
         jsr     DrawPosTextFar
         rts
 
@@ -801,7 +809,7 @@ DrawNumParties:
 
 _c37613:
 @7613:  lda     #$ff
-        ldx     z0
+        ldx     zZero
 @7617:  sta     $7e9d99,x
         inx
         cpx     #$0090
@@ -816,16 +824,16 @@ _c37613:
 
 _c3762a:
 @762a:  lda     #$ff
-        ldx     z0
+        ldx     zZero
 @762e:  sta     $7e9d89,x
         inx
         cpx     #$00a0
         bne     @762e
         ldx     #$9d89
         stx     hWMADDL
-        lda     w0201       ; number of parties
+        lda     r0201       ; number of parties
         bmi     @7665       ; branch if clearing parties
-@7643:  ldx     z0
+@7643:  ldx     zZero
 @7645:  lda     $1850,x
         and     #$40
         beq     @7657
@@ -840,7 +848,7 @@ _c3762a:
         lda     #$ff
         sta     hWMDATA
         jmp     _c37677
-@7665:  ldx     z0
+@7665:  ldx     zZero
 @7667:  lda     $1850,x
         and     #$f8
         sta     $1850,x
@@ -864,7 +872,7 @@ _c37677:
 ; [  ]
 
 _c37683:
-@7683:  ldx     z0
+@7683:  ldx     zZero
 @7685:  clr_a
         lda     $7e9d89,x
         bmi     @76bf
@@ -874,23 +882,23 @@ _c37683:
         pha
         plb
         lda     #2
-        ldy     #near _c37a5f
+        ldy     #near PartySpriteTask
         jsr     CreateTask
         txy
         clr_a
         pla
-        sta     $7e35c9,x
+        sta     wTaskProp::w7e35c9,x
         jsr     _c378eb
         plx
-        lda     f:_c376ca,x
-        sta     near wTaskPosX,y
-        lda     f:_c376da,x
-        sta     near wTaskPosY,y
+        lda     f:PartyCharSpritePosX,x
+        sta     near wTaskProp::PosX_H,y
+        lda     f:PartyCharSpritePosY,x
+        sta     near wTaskProp::PosY_H,y
         clr_a
-        sta     near {wTaskPosX + 1},y
-        sta     near {wTaskPosY + 1},y
+        sta     near wTaskProp::PosX + 2,y
+        sta     near wTaskProp::PosY + 2,y
         lda     #^PartyCharAnimTbl
-        sta     near wTaskAnimBank,y
+        sta     near wTaskProp::AnimBank,y
 @76bf:  inx
         cpx     #$0010
         bne     @7685
@@ -901,10 +909,10 @@ _c37683:
 
 ; ------------------------------------------------------------------------------
 
-_c376ca:
+PartyCharSpritePosX:
 @76ca:  .byte   $18,$34,$50,$6c,$88,$a4,$c0,$dc,$18,$34,$50,$6c,$88,$a4,$c0,$dc
 
-_c376da:
+PartyCharSpritePosY:
 @76da:  .byte   $5c,$5c,$5c,$5c,$5c,$5c,$5c,$5c,$78,$78,$78,$78,$78,$78,$78,$78
 
 ; ------------------------------------------------------------------------------
@@ -913,21 +921,21 @@ _c376da:
 
 _c376ea:
 @76ea:  ldx     #$9db9
-        stx     $e7
-        lda     w0201
-        and     #$07
-        sta     $e6
+        stx     ze7
+        lda     r0201
+        and     #%111
+        sta     ze6
         lda     #$01
-        sta     $e0
-@76fa:  ldx     $e7
+        sta     ze0
+@76fa:  ldx     ze7
         stx     hWMADDL
-        ldx     z0
+        ldx     zZero
 @7701:  lda     $1850,x
         and     #$40
         beq     @7715
         lda     $1850,x
         and     #$07
-        cmp     $e0
+        cmp     ze0
         bne     @7715
         txa
         sta     hWMDATA
@@ -937,13 +945,13 @@ _c376ea:
         lda     #$ff
         sta     hWMDATA
         longa
-        lda     $e7
+        lda     ze7
         clc
         adc     #$0010
-        sta     $e7
+        sta     ze7
         shorta
-        inc     $e0
-        dec     $e6
+        inc     ze0
+        dec     ze6
         bne     @76fa
         jsr     _c37738
         jmp     _c37802
@@ -953,15 +961,15 @@ _c376ea:
 ; [  ]
 
 _c37738:
-@7738:  lda     w0201
-        and     #$07
-        sta     $e6
-        ldx     z0
+@7738:  lda     r0201
+        and     #%111
+        sta     ze6
+        ldx     zZero
 @7741:  lda     #$7e
-        sta     $e9
+        sta     ze9
         longa
         lda     f:_c377e6,x
-        sta     $e7
+        sta     ze7
         lda     f:_c377e6+2,x
         phx
         tax
@@ -969,42 +977,42 @@ _c37738:
         jsr     _c37b25
         plx
         inx4
-        dec     $e6
+        dec     ze6
         bne     @7741
         ldx     #$9d99
         stx     hWMADDL
-        lda     w0201
-        and     #$7f
-        cmp     #$01
+        lda     r0201
+        and     #%01111111
+        cmp     #1
         beq     @77d6
-        cmp     #$02
+        cmp     #2
         beq     @77c3
         jsr     @77c3
-        ldx     z0
+        ldx     zZero
 @7779:  lda     $7e9de1,x
         sta     hWMDATA
         inx
         cpx     #4
         bne     @7779
-        ldx     z0
+        ldx     zZero
 @7788:  lda     $7e9df1,x
         sta     hWMDATA
         inx
         cpx     #4
         bne     @7788
-        ldx     z0
+        ldx     zZero
 @7797:  lda     $7e9e01,x
         sta     hWMDATA
         inx
         cpx     #4
         bne     @7797
-        ldx     z0
+        ldx     zZero
 @77a6:  lda     $7e9e11,x
         sta     hWMDATA
         inx
         cpx     #4
         bne     @77a6
-        ldx     z0
+        ldx     zZero
 @77b5:  lda     $7e9e21,x
         sta     hWMDATA
         inx
@@ -1012,8 +1020,9 @@ _c37738:
         bne     @77b5
         rts
 
+; 2 parties
 @77c3:  jsr     @77d6
-        ldx     z0
+        ldx     zZero
 @77c8:  lda     $7e9dd1,x
         sta     hWMDATA
         inx
@@ -1021,7 +1030,8 @@ _c37738:
         bne     @77c8
         rts
 
-@77d6:  ldx     z0
+; 1 party
+@77d6:  ldx     zZero
 @77d8:  lda     $7e9dc1,x
         sta     hWMDATA
         inx
@@ -1051,11 +1061,11 @@ _c37802:
 @780a:  stz     hWMDATA
         dec
         bne     @780a
-        lda     w0201
-        and     #$07
-        cmp     #$01
+        lda     r0201
+        and     #%111
+        cmp     #1
         beq     @7839
-        cmp     #$02
+        cmp     #2
         beq     @783e
         jsr     @783e
         lda     #$03
@@ -1084,32 +1094,32 @@ _c37802:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ create char tasks in party menu ]
 
 _c37853:
-@7853:  lda     w0201
-        and     #$07
-        sta     $e6
+@7853:  lda     r0201
+        and     #%111
+        sta     ze6
         ldx     #$9dc1
-        stx     $f3
+        stx     zf3
         lda     #$7e
-        sta     $f5
+        sta     zf5
 @7863:  lda     hHVBJOY                 ; wait for hblank
         and     #$40
         beq     @7863
-        lda     $99
+        lda     z99
         sta     hM7A
         stz     hM7A
         lda     #$b0
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        stx     $e4
-@787f:  ldx     z0
+        stx     ze4
+@787f:  ldx     zZero
 @7881:  clr_a
         txy
-        lda     [$f3],y
-        sta     $f6
+        lda     [zf3],y
+        sta     zf6
         bmi     @78c0
         phx
         pha
@@ -1122,35 +1132,35 @@ _c37853:
         txy
         clr_a
         pla
-        sta     $7e35c9,x
+        sta     wTaskProp::w7e35c9,x
         jsr     _c378eb
         plx
         clr_a
         lda     f:_c378e3,x
         longa_clc
-        adc     $e4
-        sta     near wTaskPosX,y
+        adc     ze4
+        sta     near wTaskProp::PosX_H,y
         shorta
         lda     f:_c378e7,x
-        sta     near wTaskPosY,y
+        sta     near wTaskProp::PosY_H,y
         clr_a
-        sta     near {wTaskPosY + 1},y
+        sta     near wTaskProp::PosY + 2,y
         lda     #^PartyCharAnimTbl
-        sta     near wTaskAnimBank,y
+        sta     near wTaskProp::AnimBank,y
 @78c0:  inx
         cpx     #4
         bne     @7881
         longa
-        lda     $f3
+        lda     zf3
         clc
         adc     #$0010
-        sta     $f3
-        lda     $e4
+        sta     zf3
+        lda     ze4
         clc
         adc     #$0050
-        sta     $e4
+        sta     ze4
         shorta
-        dec     $e6
+        dec     ze6
         bne     @787f
         lda     #$00
         pha
@@ -1182,11 +1192,11 @@ _c378eb:
 
 ; ------------------------------------------------------------------------------
 
-; [ draw character sprite ]
+; [ load colosseum character sprite animation pointer ]
 
 ; A: character index
 
-_c378fa:
+LoadColosseumCharAnimPtr:
 @78fa:  asl
         tax
         lda     #$7e
@@ -1194,7 +1204,7 @@ _c378fa:
         plb
         longa
         lda     f:PartyCharAnimTbl,x
-        sta     near wTaskAnimPtr,y
+        sta     near wTaskProp::AnimPtr,y
         shorta
         rts
 
@@ -1214,9 +1224,9 @@ _c3790c:
         asl
         tax
         lda     f:ForcedCharMaskTbl,x
-        sta     $e7
-        lda     w0202
-        and     $e7
+        sta     ze7
+        lda     r0202
+        and     ze7
         shorta
         beq     @7933
         lda     #$ff
@@ -1231,22 +1241,22 @@ _c3790c:
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ init portrait (party menu) ]
 
 _c3793f:
 @793f:  stz     zSelIndex
-        jsr     _c37ae5
+        jsr     CreatePartyPortraitTask
         lda     #$2f
-        sta     wTaskPosY,x
+        sta     wTaskProp::PosY_H,x
         jsr     TfrVRAM2
-        jsr     _c37c2f
-        jmp     _c37cae
+        jsr     LoadPartyPortraitGfx
+        jmp     LoadPartyPortraitPal
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ draw party menu character block ]
 
-_c37953:
+DrawPartyCharBlock:
 @7953:  jsr     _c379ac
         clr_a
         lda     z4b
@@ -1273,8 +1283,8 @@ _c37953:
 .else
         ldy_pos BG1A, {9, 7}
 .endif
-        ldx     #$3048
-        lda     #$01
+        ldx     #make_word 72, 48
+        lda     #1
         sta     z48
         jsr     DrawStatusIcons
 .if LANG_EN
@@ -1286,12 +1296,12 @@ _c37953:
         jsr     DrawCharName
         ldy_pos BG1A, {9, 11}
 .endif
-        jsr     DrawEquipGenju
+        jsr     DrawCharGenjuName
         ldy     #near PartyHPSlashText
         jsr     DrawPosText
         ldy     #near PartyMPSlashText
         jsr     DrawPosText
-        ldx     #near _c379e6
+        ldx     #near PartyCharBlockTextPosTbl
         jsr     DrawCharBlock
 @79ab:  rts
 
@@ -1303,7 +1313,7 @@ _c379ac:
 @79ac:  ldx     #$01c0
         longa
         clr_a
-        lda     z0
+        lda     zZero
         ldy     #$0060
 @79b7:  sta     wBG1Tiles::ScreenA,x
         inx2
@@ -1329,22 +1339,22 @@ PartyHPSlashText:                       pos_text PARTY_HP_SLASH
 PartyMPSlashText:                       pos_text PARTY_MP_SLASH
 
 ; ram addresses for lv/hp/mp text (party select)
-_c379e6:
-        make_pos BG1A, {23, 8}
-        make_pos BG1A, {21, 10}
-        make_pos BG1A, {26, 10}
-        make_pos BG1A, {21, 12}
-        make_pos BG1A, {26, 12}
+PartyCharBlockTextPosTbl:
+        bg_pos BG1A, {23, 8}
+        bg_pos BG1A, {21, 10}
+        bg_pos BG1A, {26, 10}
+        bg_pos BG1A, {21, 12}
+        bg_pos BG1A, {26, 12}
 
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $67: fade out (party select) ]
 
-MenuState_67:
+        array_label MENU_STATE, MENU_STATE::PARTY_FADE_OUT
 @79f0:  jsr     CreateFadeOutTask
         ldy     #8
         sty     zWaitCounter
-        lda     #$68
+        lda     #MENU_STATE::PARTY_WAIT_FADE
         sta     zMenuState
         jmp     _c375b8
 
@@ -1352,11 +1362,11 @@ MenuState_67:
 
 ; [ menu state $66: fade in (party select) ]
 
-MenuState_66:
+        array_label MENU_STATE, MENU_STATE::PARTY_FADE_IN
 @79ff:  jsr     CreateFadeInTask
         ldy     #8
         sty     zWaitCounter
-        lda     #$68
+        lda     #MENU_STATE::PARTY_WAIT_FADE
         sta     zMenuState
         jmp     _c375b8
 
@@ -1364,7 +1374,7 @@ MenuState_66:
 
 ; [ menu state $68: wait for fade in/out (party select) ]
 
-MenuState_68:
+        array_label MENU_STATE, MENU_STATE::PARTY_WAIT_FADE
 @7a0e:  ldy     zWaitCounter
         bne     @7a16
         lda     zNextMenuState
@@ -1373,31 +1383,37 @@ MenuState_68:
 
 ; ------------------------------------------------------------------------------
 
-; [ flashing left cursor thread (item details) ]
+; [ flashing left cursor task (item details) ]
+
+.enum ITEM_DETAILS_ARROW_TASK
+        INIT
+        SUSTAIN
+
+        COUNT
+.endenum
 
 ItemDetailsArrowTask:
 @7a19:  tax
         jmp     (near ItemDetailsArrowTaskTbl,x)
 
 ItemDetailsArrowTaskTbl:
-@7a1d:  .addr   ItemDetailsArrowTask_00
-        .addr   ItemDetailsArrowTask_01
+        ptr_tbl ITEM_DETAILS_ARROW_TASK
 
 ; ------------------------------------------------------------------------------
 
 ; state 0: init
 
-ItemDetailsArrowTask_00:
+        array_label ITEM_DETAILS_ARROW_TASK, ITEM_DETAILS_ARROW_TASK::INIT
 @7a21:  ldx     zTaskOffset
         longa
         lda     #near ItemDetailArrowAnimShown
-        sta     near wTaskAnimPtr,x
+        sta     near wTaskProp::AnimPtr,x
         lda     #8
-        sta     near wTaskPosX,x
+        sta     near wTaskProp::PosX_H,x
         shorta
         lda     #^ItemDetailArrowAnimShown
-        sta     near wTaskAnimBank,x
-        inc     near wTaskState,x
+        sta     near wTaskProp::AnimBank,x
+        inc     near wTaskProp::State,x
         jsr     InitAnimTask
 ; fall through
 
@@ -1405,7 +1421,7 @@ ItemDetailsArrowTask_00:
 
 ; state 1: normal
 
-ItemDetailsArrowTask_01:
+        array_label ITEM_DETAILS_ARROW_TASK, ITEM_DETAILS_ARROW_TASK::SUSTAIN
 @7a3e:  ldy     zTaskOffset
         lda     z99
         beq     @7a4b
@@ -1417,7 +1433,7 @@ ItemDetailsArrowTask_01:
 @7a4c:  tax
         longa
         lda     f:ItemDetailArrowAnimPtrs,x
-        sta     near wTaskAnimPtr,y
+        sta     near wTaskProp::AnimPtr,y
         shorta
         jsr     UpdateAnimTask
         sec
@@ -1429,28 +1445,39 @@ ItemDetailsArrowTask_01:
 
 ; [ party/colosseum character sprite task ]
 
-_c37a5f:
-@7a5f:  tax
-        jmp     (near _c37a63,x)
+; this is effectively identical to CharIconTask state 0 and 3
 
-_c37a63:
-@7a63:  .addr   _c37a67
-        .addr   _c37a78
+.proc PartySpriteTask
+
+@7a5f:  tax
+        jmp     (near PartySpriteTaskTbl,x)
+
+.endproc  ; PartySpriteTask
+
+.enum PARTY_SPRITE_TASK
+        INIT
+        SUSTAIN
+
+        COUNT
+.endenum
+
+PartySpriteTaskTbl:
+        ptr_tbl PARTY_SPRITE_TASK
 
 ; ------------------------------------------------------------------------------
 
 ; [  ]
 
-_c37a67:
-@7a67:  lda     #$01
+        array_label PARTY_SPRITE_TASK, PARTY_SPRITE_TASK::INIT
+@7a67:  lda     #$01                    ; enable group 1 sprite tasks
         tsb     z47
         ldx     zTaskOffset
-        inc     near wTaskState,x
+        inc     near wTaskProp::State,x
         lda     #1
         jsr     InitAnimTask
-        jsr     _c37bae
+        jsr     CreateForcedCharTask
 
-_c37a78:
+        array_label PARTY_SPRITE_TASK, PARTY_SPRITE_TASK::SUSTAIN
 @7a78:  lda     z47
         and     #$01
         beq     @7a85
@@ -1465,10 +1492,10 @@ _c37a78:
 
 ; [ menu state $69: clear party select message ]
 
-MenuState_69:
+        array_label MENU_STATE, MENU_STATE::PARTY_ERROR
 @7a87:  lda     zWaitCounter
         bne     @7a92
-        lda     #$2d
+        lda     #MENU_STATE::PARTY_SELECT_1
         sta     zMenuState
         jsr     DrawPartyMsg
 @7a92:  jmp     _c375b8

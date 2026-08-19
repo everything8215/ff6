@@ -767,7 +767,7 @@ DrawTheEndStars:
         sta     $04
         stz     $05
         ldx     $04
-        jsr     (.loword(DrawTheEndStarsTbl),x)
+        jsr     (near DrawTheEndStarsTbl,x)
         inc     $3e
         rts
 

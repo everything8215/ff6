@@ -1,0 +1,61 @@
+.list off
+.ifndef BLITZ_CODE_INC
+BLITZ_CODE_INC = 1
+
+
+; [ blitz code data format (12 bytes each) ]
+
+;   0-10: button inputs (including A button at the end)
+;   11: number of buttons * 2
+
+; ------------------------------------------------------------------------------
+
+_blitz_code_seq .set 0
+
+.mac blitz_code blitz_id
+        .assert _blitz_code_seq = ATTACK::blitz_id - ATTACK::FIRST_BLITZ, error, .sprintf("blitz_code index mismatch (%s != %d)", .string(blitz_id), _blitz_code_seq)
+        .assert _blitz_code_seq = BLITZ_DESC::blitz_id, error, .sprintf("blitz_desc index mismatch (%s != %d)", .string(blitz_id), _blitz_code_seq)
+        _blitz_code_btn1 .set BLITZ_CODE::NONE
+        _blitz_code_btn2 .set BLITZ_CODE::NONE
+        _blitz_code_btn3 .set BLITZ_CODE::NONE
+        _blitz_code_btn4 .set BLITZ_CODE::NONE
+        _blitz_code_btn5 .set BLITZ_CODE::NONE
+        _blitz_code_btn6 .set BLITZ_CODE::NONE
+        _blitz_code_btn7 .set BLITZ_CODE::NONE
+        _blitz_code_btn8 .set BLITZ_CODE::NONE
+        _blitz_code_btn9 .set BLITZ_CODE::NONE
+        _blitz_code_btn10 .set BLITZ_CODE::NONE
+        _blitz_code_btn11 .set BLITZ_CODE::NONE
+        _blitz_code_size .set 0
+.endmac
+
+.mac end_blitz_code
+        blitz_btn A_BUTTON
+        .byte _blitz_code_btn1
+        .byte _blitz_code_btn2
+        .byte _blitz_code_btn3
+        .byte _blitz_code_btn4
+        .byte _blitz_code_btn5
+        .byte _blitz_code_btn6
+        .byte _blitz_code_btn7
+        .byte _blitz_code_btn8
+        .byte _blitz_code_btn9
+        .byte _blitz_code_btn10
+        .byte _blitz_code_btn11
+        .byte _blitz_code_size * 2
+        _blitz_code_seq .set _blitz_code_seq + 1
+.endmac
+
+.mac blitz_btn btn
+        .ident(.sprintf("_blitz_code_btn%d", _blitz_code_size + 1)) .set BLITZ_CODE::btn
+        _blitz_code_size .set _blitz_code_size + 1
+.endmac
+
+.else
+
+.delmac blitz_code
+.delmac end_blitz_code
+.delmac blitz_btn
+
+.endif
+.list on

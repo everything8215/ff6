@@ -24,7 +24,7 @@ _c3ae09:
         stx     zeb
         lda     #$7e
         sta     zed
-        ldx     z0
+        ldx     zZero
 @ae14:  longa
         lda     f:_c3ae3a,x
         inx2
@@ -63,8 +63,10 @@ _c3ae3a:
 
 ; ------------------------------------------------------------------------------
 
+; [ draw bushido names ]
+
 _c3ae9a:
-@ae9a:  ldx     z0
+@ae9a:  ldx     zZero
         lda     #$01
         jsr     _c3af24
         ldy     #$6c00
@@ -126,32 +128,34 @@ _c3a5de:
 
 ; ------------------------------------------------------------------------------
 
+; [ load bushido name ]
+
 .if !LANG_EN
 
 _c3af24:
-@af24:  sta     $e0
+@af24:  sta     ze0
         phx
         jsr     _c3a5de
         plx
         lda     $1cf7
-        and     $e0
+        and     ze0
         beq     @af4e
-        stz     $8d
-        stz     $ed
-        stz     $ee
+        stz     z8d
+        stz     zed
+        stz     zee
         lda     #$06
-        sta     $f1
+        sta     zf1
 @af3c:  lda     $1cf8,x
         ldy     #$3f40
-        sty     $eb
+        sty     zeb
         phx
         jsr     CopyBigLetterGfx
         plx
         inx
-        dec     $f1
+        dec     zf1
         bne     @af3c
 @af4e:  lda     #$01
-        tsb     $45
+        tsb     z45
         rts
 
 .endif
@@ -177,7 +181,7 @@ _c3a600:
         ldy     #$0120
         sty     zDMA2Size
         lda     #$7e
-        sta     zDMA2Src+2
+        sta     zDMA2Src_B
         rts
 
 ; ------------------------------------------------------------------------------
@@ -195,20 +199,20 @@ _c3a611:
 .endif
 
 @a611:  ldx     #near wBG3Tiles::ScreenA
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles::ScreenA
-        sta     $ed
+        sta     zed
         ldy     #(@X_END+22*32)*2
-        sty     $e7
+        sty     ze7
         ldy     #(@X_START+22*32)*2
         ldx     #$2410
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #(@X_END+23*32)*2
-        sty     $e7
+        sty     ze7
         ldy     #(@X_START+23*32)*2
         ldx     #$2411
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         rts
 
@@ -222,24 +226,24 @@ _c3a63b:
         lda     #8
         sta     zb6
 .endif
-        stz     $8d
-        stz     $ed
-        stz     $ee
+        stz     z8d
+        stz     zed
+        stz     zee
         lda     #$06
-        sta     $f1
-        ldx     z0
+        sta     zf1
+        ldx     zZero
 @a64a:  lda     $7e9e89,x
 .if LANG_EN
         jsr     GetLetter
 .else
         ldy     #$5540
-        sty     $eb
+        sty     zeb
 .endif
         phx
         jsr     CopyBigLetterGfx
         plx
         inx
-        dec     $f1
+        dec     zf1
         bne     @a64a
         ldy     #$2080
         jsr     _c3a600
@@ -251,52 +255,52 @@ _c3a63b:
 
 _c3a662:
 @a662:  ldx     #near wBG3Tiles::ScreenB
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles::ScreenB
-        sta     $ed
+        sta     zed
         ldy     #$00bc
-        sty     $e7
+        sty     ze7
         ldy     #$0084
         ldx     #$3500
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$00fc
-        sty     $e7
+        sty     ze7
         ldy     #$00c4
         ldx     #$3501
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$013c
-        sty     $e7
+        sty     ze7
         ldy     #$0104
         ldx     #$3538
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$017c
-        sty     $e7
+        sty     ze7
         ldy     #$0144
         ldx     #$3539
-        stx     $e0
+        stx     ze0
         jmp     _c3a783
 
 .else
 
 _c3a662:
 @afc5:  ldx     #near wBG3Tiles::ScreenB
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles::ScreenB
-        sta     $ed
+        sta     zed
         ldy     #$00bc
-        sty     $e7
+        sty     ze7
         ldy     #$0094
         ldx     #$3500
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$00fc
-        sty     $e7
+        sty     ze7
         ldy     #$00d4
         ldx     #$3501
-        stx     $e0
+        stx     ze0
         jmp     _c3a783
 
 .endif
@@ -307,32 +311,32 @@ _c3a662:
 
 _c3a6ab:
 @a6ab:  ldx     #near wBG3Tiles::ScreenA
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles::ScreenA
-        sta     $ed
+        sta     zed
         ldy     #$01bc
-        sty     $e7
+        sty     ze7
         ldy     #$0184
         ldx     #$3500
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$01fc
-        sty     $e7
+        sty     ze7
         ldy     #$01c4
         ldx     #$3501
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$023c
-        sty     $e7
+        sty     ze7
         ldy     #$0204
         ldx     #$3538
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$027c
-        sty     $e7
+        sty     ze7
         ldy     #$0244
         ldx     #$3539
-        stx     $e0
+        stx     ze0
         jmp     _c3a783
 
 ; ------------------------------------------------------------------------------
@@ -341,32 +345,32 @@ _c3a6ab:
 
 _c3a6f4:
 @a6f4:  ldx     #near wBG3Tiles::ScreenA
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles::ScreenA
-        sta     $ed
+        sta     zed
         ldy     #$04bc
-        sty     $e7
+        sty     ze7
         ldy     #$0484
         ldx     #$3500
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$04fc
-        sty     $e7
+        sty     ze7
         ldy     #$04c4
         ldx     #$3501
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$053c
-        sty     $e7
+        sty     ze7
         ldy     #$0504
         ldx     #$3538
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$057c
-        sty     $e7
+        sty     ze7
         ldy     #$0544
         ldx     #$3539
-        stx     $e0
+        stx     ze0
         jmp     _c3a783
 
 ; ------------------------------------------------------------------------------
@@ -375,32 +379,32 @@ _c3a6f4:
 
 _c3a73d:
 @a73d:  ldx     #near wBG3Tiles::ScreenA
-        stx     $eb
+        stx     zeb
         lda     #^wBG3Tiles::ScreenA
-        sta     $ed
+        sta     zed
         ldy     #$01bc
-        sty     $e7
+        sty     ze7
         ldy     #$0184
         ldx     #$3500
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$01fc
-        sty     $e7
+        sty     ze7
         ldy     #$01c4
         ldx     #$3501
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$023c
-        sty     $e7
+        sty     ze7
         ldy     #$0204
         ldx     #$3538
-        stx     $e0
+        stx     ze0
         jsr     _c3a783
         ldy     #$027c
-        sty     $e7
+        sty     ze7
         ldy     #$0244
         ldx     #$3539
-        stx     $e0
+        stx     ze0
 ; fall through
 
 ; ------------------------------------------------------------------------------
@@ -409,12 +413,12 @@ _c3a73d:
 
 _c3a783:
 @a783:  longa
-@a785:  lda     $e0
-        sta     [$eb],y
-        inc     $e0
-        inc     $e0
+@a785:  lda     ze0
+        sta     [zeb],y
+        inc     ze0
+        inc     ze0
         iny2
-        cpy     $e7
+        cpy     ze7
         bne     @a785
         shorta
         rts
@@ -450,22 +454,32 @@ Loop:   .repeat 32, i
 
 ; [ description text task ]
 
-; +$33ca = current text string position (+$7e9ec9) wTaskPosX
-; +$344a = pointer to text graphics buffer (+$7ea271) wTaskPosY
+; +$33ca = current text string position (+$7e9ec9) wTaskProp::PosX_H
+; +$344a = pointer to text graphics buffer (+$7ea271) wTaskProp::PosY_H
 
-BigTextTask:
+.proc BigTextTask
+
 @a80e:  tax
         jmp     (near BigTextTaskTbl,x)
 
+.endproc ; BigTextTask
+
+.enum BIG_TEXT_TASK
+        INIT
+        WRITE_TEXT
+        WAIT
+        COUNT
+.endenum
+
 ; task jump table
 BigTextTaskTbl:
-        make_jump_tbl BigTextTask, 3
+        ptr_tbl BIG_TEXT_TASK
 
 ; ------------------------------------------------------------------------------
 
 ; [ task state $00: init/reset ]
 
-make_jump_label BigTextTask, 0
+        array_label BIG_TEXT_TASK, 0
 @a818:  jsr     ClearBigTextBuf
 ; fall through
 
@@ -473,15 +487,15 @@ make_jump_label BigTextTask, 0
 
 ; [ task state $02: wait ]
 
-make_jump_label BigTextTask, 2
-@a81b:  stz     $8d                     ;
+        array_label BIG_TEXT_TASK, 2
+@a81b:  stz     z8d                     ;
         ldx     zTaskOffset                     ; task data pointer
-        lda     #1
-        sta     near wTaskState,x                 ; set task state to 1
+        lda     #BIG_TEXT_TASK::WRITE_TEXT
+        sta     near wTaskProp::State,x                 ; set task state to 1
         clr_a
         longa
-        sta     near wTaskPosX,x
-        sta     near wTaskPosY,x
+        sta     near wTaskProp::PosX_H,x
+        sta     near wTaskProp::PosY_H,x
         shorta
 ; fall through
 
@@ -489,37 +503,37 @@ make_jump_label BigTextTask, 2
 
 ; [ task state $01: write letters (one per frame) ]
 
-make_jump_label BigTextTask, 1
+        array_label BIG_TEXT_TASK, 1
 @a82f:  lda     zMenuState
         cmp     #MENU_STATE::ITEM_OPTIONS
         beq     @a88d                   ; branch if (item, sort, rare)
         lda     z46
         and     #$c0                    ; branch if page can't scroll up or down
         beq     @a841
-        lda     z06                     ; branch if top l or r buttons is down
-        and     #$30
+        lda     zCurrCtrlState_L                     ; branch if top l or r buttons is down
+        and     #(JOY_L | JOY_R)
         bne     @a895
 @a841:  lda     z45                     ;
         bit     #$20
         bne     @a84d
-        lda     z06+1                     ; branch if a direction button is down
-        and     #$0f
+        lda     zCurrCtrlState_H                     ; branch if a direction button is down
+        and     #>JOY_DIR_MASK
         bne     @a895
 @a84d:  lda     z45                     ;
         bit     #$10
         bne     @a895
         ldy     zTaskOffset
-        ldx     near wTaskPosY,y                 ; +$ed = pointer to text graphics buffer
-        stx     $ed
-        ldx     near wTaskPosX,y                 ; pointer to text buffer
+        ldx     near wTaskProp::PosY_H,y                 ; +$ed = pointer to text graphics buffer
+        stx     zed
+        ldx     near wTaskProp::PosX_H,y                 ; pointer to text buffer
         lda     $7e9ec9,x               ; get next letter
         beq     @a89c                   ; branch if end of string
         cmp     #$01
         bne     @a875                   ; branch if not new line
-        stz     $8d
+        stz     z8d
         longa
         lda     #$0380                  ; set graphics buffer pointer to beginning of second line
-        sta     near wTaskPosY,y
+        sta     near wTaskProp::PosY_H,y
         shorta
         bra     @a87d
 
@@ -532,7 +546,7 @@ make_jump_label BigTextTask, 1
         ldy     zTaskOffset
         longa
         txa
-        sta     near wTaskPosX,y
+        sta     near wTaskProp::PosX_H,y
         shorta
         jsr     TfrBigTextGfx
         sec
@@ -546,7 +560,7 @@ make_jump_label BigTextTask, 1
 
 ; direction button or l or r button pressed (reset text)
 @a895:  ldx     zTaskOffset
-        stz     near wTaskState,x     ; set task state to 0
+        stz     near wTaskProp::State,x     ; set task state to 0
         sec
         rts
 
@@ -554,8 +568,8 @@ make_jump_label BigTextTask, 1
 @a89c:  lda     #$01        ; enable color palette dma at vblank
         tsb     z45
         ldx     zTaskOffset
-        lda     #2
-        sta     near wTaskState,x
+        lda     #BIG_TEXT_TASK::WAIT
+        sta     near wTaskProp::State,x
         sec
         rts
 
@@ -569,8 +583,8 @@ GetLetter:
 
 @a8a9:  sec
         sbc     #$80
-        stz     $eb
-        stz     $ec
+        stz     zeb
+        stz     zec
         rts
 
 .else
@@ -585,20 +599,20 @@ GetLetter:
         beq     @b21a
         sec
         sbc     #$20
-        stz     $eb
-        stz     $ec
+        stz     zeb
+        stz     zec
         bra     @b226
 @b205:  ldy     #$1340
-        sty     $eb
+        sty     zeb
         bra     @b221
 @b20c:  ldy     #$2940
-        sty     $eb
+        sty     zeb
         bra     @b221
 @b213:  ldy     #$3f40
-        sty     $eb
+        sty     zeb
         bra     @b221
 @b21a:  ldy     #$5540
-        sty     $eb
+        sty     zeb
         bra     @b221
 @b221:  inx
         lda     $7e9ec9,x
@@ -616,31 +630,31 @@ CopyBigLetterGfx:
         lda     #$16
         sta     f:hWRMPYB
         lda     #11
-        sta     $e5
+        sta     ze5
         longa
         lda     f:hRDMPYL
         clc
-        adc     $eb
+        adc     zeb
         tay
         shorta
         clr_a
-        lda     $8d
+        lda     z8d
         and     #$f8
         longa
         asl2
         clc
-        adc     $ed
+        adc     zed
         tax
 @a8d9:  phx
         longa
         tyx
         lda     f:LargeFontGfx,x   ; variable width font graphics
-        stz     $e7
-        stz     $e9
-        sta     $e8
+        stz     ze7
+        stz     ze9
+        sta     ze8
         jsr     ShiftBigTextGfx
         plx
-        lda     $e7
+        lda     ze7
         shorta
         ora     $7ea2b9,x
         sta     $7ea2b9,x
@@ -650,7 +664,7 @@ CopyBigLetterGfx:
         ora     $7ea2bc,x
         sta     $7ea2bc,x
         longa
-        lda     $e8
+        lda     ze8
         shorta
         ora     $7ea299,x
         sta     $7ea299,x
@@ -660,7 +674,7 @@ CopyBigLetterGfx:
         ora     $7ea29c,x
         sta     $7ea29c,x
         longa
-        lda     $e8
+        lda     ze8
         shorta
         xba
         ora     $7ea279,x
@@ -670,7 +684,7 @@ CopyBigLetterGfx:
         sta     $7ea27c,x
         inx2
         iny2
-        dec     $e5
+        dec     ze5
         bne     @a8d9
         clr_a
         pla
@@ -678,15 +692,15 @@ CopyBigLetterGfx:
         clc
         adc     #$20
         tax
-        lda     $8d
+        lda     z8d
         clc
         adc     f:FontWidth,x
 .else
-        lda     $8d
+        lda     z8d
         clc
-        adc     $b6
+        adc     zb6
 .endif
-        sta     $8d
+        sta     z8d
         rts
 
 ; ------------------------------------------------------------------------------
@@ -694,35 +708,41 @@ CopyBigLetterGfx:
 ; [ shift big text graphics ]
 
 .proc ShiftBigTextGfx
+
 @a94f:  shorta
         clr_a
-        lda     $8d
+        lda     z8d
         and     #%111
         asl
         tax
         longa
         jmp     (near ShiftBigTextGfxTbl,x)
+
 .endproc  ; ShiftBigTextGfx
 
+.enum SHIFT_BIG_TEXT_GFX
+        COUNT = 9
+.endenum
+
 ShiftBigTextGfxTbl:
-        make_jump_tbl ShiftBigTextGfx, 9
+        ptr_tbl SHIFT_BIG_TEXT_GFX
 
 ; shift text left
         .repeat 4, i
-make_jump_label ShiftBigTextGfx, i
-        asl     $e7
-        rol     $e9
+        array_label SHIFT_BIG_TEXT_GFX, i
+        asl     ze7
+        rol     ze9
         .endrep
 
 ; no shift
-make_jump_label ShiftBigTextGfx, 4
+        array_label SHIFT_BIG_TEXT_GFX, 4
         rts
 
 ; shift text right
         .repeat 4, i
-make_jump_label ShiftBigTextGfx, 8 - i
-        lsr     $e9
-        ror     $e7
+        array_label SHIFT_BIG_TEXT_GFX, 8 - i
+        lsr     ze9
+        ror     ze7
         .endrep
         rts
         .a8
@@ -739,7 +759,7 @@ TfrBigTextGfx:
         ldy     #$0700
         sty     zDMA2Size
         lda     #$7e
-        sta     zDMA2Src+2
+        sta     zDMA2Src_B
         lda     #$01
         trb     z45
         rts
@@ -749,14 +769,14 @@ TfrBigTextGfx:
 ; [ init element symbol graphics ]
 
 .proc InitElementSymbolGfx
-        ldx     z0
+        ldx     zZero
 :       lda     f:ElementSymbols,x
         sta     $7e9ec9,x
         inx
         cpx     #sizeof_ElementSymbols
         bne     :-
         ldy     #$6c00
-        sty     $f1
+        sty     zf1
         clr_ax
 Loop:   lda     $7e9ec9,x
         beq     Done
@@ -765,13 +785,13 @@ Loop:   lda     $7e9ec9,x
         jsr     LoadElementSymbolGfx
         plx
         inx
-        ldy     $f1
+        ldy     zf1
         jsr     TfrBigLetterGfx
         longa
-        lda     $f1
+        lda     zf1
         clc
         adc     #$0020
-        sta     $f1
+        sta     zf1
         shorta
         bra     Loop
 
@@ -785,11 +805,11 @@ Done:   jmp     DisableDMA2
 .proc LoadElementSymbolGfx
         pha
         ldy     #$0040
-        sty     $f3
+        sty     zf3
         jsr     _c3b437
-        stz     $8d
-        stz     $ed
-        stz     $ee
+        stz     z8d
+        stz     zed
+        stz     zee
         pla
         jmp     CopyBigLetterGfx
 .endproc

@@ -11,9 +11,9 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "gfx/portrait.inc"
-.include "gfx/map_sprite_gfx.inc"
-.include "event/npc_prop.inc"
+.include "src/gfx/portrait.inc"
+.include "src/gfx/map_sprite_gfx.inc"
+.include "src/event/npc_prop.inc"
 
 .import MapSpritePal, SmallFontGfx
 
@@ -182,16 +182,6 @@ PortraitVRAMTbl:
         bne     :-
         rts
 .endproc  ; InitNPCSwitches
-
-.pushseg
-.segment "init_npc_switch"
-
-; c0/e0a0
-InitNPCSwitch:
-        .incbin "init_npc_switch.dat"
-        calc_size InitNPCSwitch
-
-.popseg
 
 ; ------------------------------------------------------------------------------
 
@@ -394,7 +384,7 @@ Loop:   lda     f:NPCProp::EventPtr,x
         tay
         txa
         clc
-        adc     #NPCProp::ITEM_SIZE
+        adc     #NPC_PROP::ITEM_SIZE
         tax
         shorta0
         cpx     $1e
@@ -557,7 +547,7 @@ Is32x32:
         sta     hDMA0::ADDR_B
         ldx     #$0080                  ; $80 bytes each
         stx     hDMA0::SIZE
-        lda     #$01
+        lda     #BIT_0
         sta     hMDMAEN
         longa_clc
         lda     $2d
@@ -1094,11 +1084,10 @@ SpecialAnim:
         lsr5
         tax
         lda     $45                     ; frame counter
-        lsr                             ; 0: update every 4 frames
-        lsr                             ; 1: update every 8 frames
-@58f3:  cpx     #$0000                  ; 2: update every 16 frames
-        beq     @58fc                   ; 3: update every 32 frames
-        lsr
+        lsr2                            ; 0: update every 4 frames
+@58f3:  cpx     #$0000                  ; 1: update every 8 frames
+        beq     @58fc                   ; 2: update every 16 frames
+        lsr                             ; 3: update every 32 frames
         dex
         bra     @58f3
 @58fc:  tax
@@ -2767,7 +2756,9 @@ Loop:   stz     hMDMAEN
         adc     $12
         tax
         ldy     #BIT_0
-        lda     f:MapSpriteTileOffsets,x
+
+        .mac    dma_obj_tile offset
+        lda     f:MapSpriteTileOffsets + offset,x
         clc
         adc     $0e
         sta     hDMA0::ADDR
@@ -2775,48 +2766,19 @@ Loop:   stz     hMDMAEN
         adc     $10
         sta     hDMA0::ADDR_B
         sty     hMDMAEN
-        lda     f:MapSpriteTileOffsets+2,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
-        lda     f:MapSpriteTileOffsets+8,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
-        lda     f:MapSpriteTileOffsets+10,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
+        .endmac
+
+        dma_obj_tile 0
+        dma_obj_tile 2
+        dma_obj_tile 8
+        dma_obj_tile 10
         lda     $16
         sta     hVMADDL
-        lda     f:MapSpriteTileOffsets+4,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
-        lda     f:MapSpriteTileOffsets+6,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
+        dma_obj_tile 4
+        dma_obj_tile 6
+
+        .delmac dma_obj_tile
+
 Skip:   inc     $14
         inc     $14
         inc     $48
@@ -2861,7 +2823,8 @@ Skip:   inc     $14
         longa
         ldx     $12
         ldy     #BIT_0
-        lda     f:MapSpriteTileOffsets,x
+        .repeat 6, i
+        lda     f:MapSpriteTileOffsets + i * 2,x
         clc
         adc     $0e
         sta     hDMA0::ADDR
@@ -2869,46 +2832,7 @@ Skip:   inc     $14
         adc     $10
         sta     hDMA0::ADDR_B
         sty     hMDMAEN
-        lda     f:MapSpriteTileOffsets+2,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
-        lda     f:MapSpriteTileOffsets+4,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
-        lda     f:MapSpriteTileOffsets+6,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
-        lda     f:MapSpriteTileOffsets+8,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
-        lda     f:MapSpriteTileOffsets+10,x
-        clc
-        adc     $0e
-        sta     hDMA0::ADDR
-        clr_a
-        adc     $10
-        sta     hDMA0::ADDR_B
-        sty     hMDMAEN
+        .endrep
         shorta0
         rts
 .endproc  ; TfrObjGfxWorld
@@ -3212,10 +3136,10 @@ Loop:   lda     $0867,y                 ; check if character is enabled
         lda     $055e                   ; return if there was a party collision
         bne     Done
         ldx     $e5                     ; return if running an event
-        cpx     #.loword(EventScript_NoEvent)
+        cpx     #.loword(EventScript::NoEvent)
         bne     Done
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     Done
         ldy     $0803                   ; party object
         lda     $0869,y                 ; return if between tiles
@@ -3988,10 +3912,10 @@ FirstObjTbl2:
         and     #$40
         beq     Done
         ldx     $e5                     ; return if an event is running
-        cpx     #.loword(EventScript_NoEvent)
+        cpx     #.loword(EventScript::NoEvent)
         bne     Done
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     Done
         lda     $84                     ; return if a map is loading
         bne     Done
@@ -4244,9 +4168,9 @@ UpdateCollisionScroll:
         adc     #^EventScript
         sta     $e7
         sta     $05f6
-        ldx     #.loword(EventScript_NoEvent)
+        ldx     #.loword(EventScript::NoEvent)
         stx     $0594
-        lda     #^EventScript_NoEvent
+        lda     #^EventScript::NoEvent
         sta     $0596                   ; set loop count
         lda     #1
         sta     $05c7                   ; set stack pointer
@@ -4392,13 +4316,13 @@ UpdateActiveObjAction:
         sta     $0873,y
         shorta
         lda     $e5                     ; return if an event is running
-        cmp     #<EventScript_NoEvent
+        cmp     #<EventScript::NoEvent
         bne     @76db
         lda     $e6
-        cmp     #>EventScript_NoEvent
+        cmp     #>EventScript::NoEvent
         bne     @76db
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     @76db
         lda     $087d,y
         cpy     $0803
@@ -5020,10 +4944,10 @@ ObjCmd_f9:
 @7acf:  lda     $055e
         bne     @7b09                   ; branch if a collision is already in progress
         ldx     $e5
-        cpx     #.loword(EventScript_NoEvent)
+        cpx     #.loword(EventScript::NoEvent)
         bne     @7b09                   ; branch if an event is running
         lda     $e7
-        cmp     #^EventScript_NoEvent
+        cmp     #^EventScript::NoEvent
         bne     @7b09
         phy
         ldy     #1                      ; copy event address

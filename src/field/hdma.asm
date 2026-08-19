@@ -571,31 +571,9 @@ InitColorMathHDMAData:
         clr_a
         sta     $8c74,x
         lda     #$20
-        sta     $8ad3,x
-        sta     $8ae3,x
-        sta     $8af3,x
-        sta     $8b03,x
-        sta     $8b13,x
-        sta     $8b23,x
-        sta     $8b33,x
-        sta     $8b43,x
-        sta     $8b53,x
-        sta     $8b63,x
-        sta     $8b73,x
-        sta     $8b83,x
-        sta     $8b93,x
-        sta     $8ba3,x
-        sta     $8bb3,x
-        sta     $8bc3,x
-        sta     $8bd3,x
-        sta     $8be3,x
-        sta     $8bf3,x
-        sta     $8c03,x
-        sta     $8c13,x
-        sta     $8c23,x
-        sta     $8c33,x
-        sta     $8c43,x
-        sta     $8c53,x
+        .repeat 25, i
+        sta     $8ad3 + i * 16,x
+        .endrep
         sta     $8c83,x
         sta     $8c93,x
         inx2
@@ -603,59 +581,35 @@ InitColorMathHDMAData:
         bne     @3dc2
         ldx     $00
 @3e2f:  lda     #$01
-        sta     $8ad4,x
-        sta     $8adc,x
-        sta     $8ae4,x
-        sta     $8aec,x
-        sta     $8af4,x
-        sta     $8afc,x
-        sta     $8b04,x
-        sta     $8b0c,x
-        sta     $8b14,x
-        sta     $8b64,x
-        sta     $8b6c,x
-        sta     $8b74,x
-        sta     $8b7c,x
-        sta     $8b84,x
-        sta     $8b8c,x
-        sta     $8b94,x
-        sta     $8bd4,x
-        sta     $8bdc,x
-        sta     $8be4,x
-        sta     $8bec,x
-        sta     $8bf4,x
-        sta     $8c24,x
-        sta     $8c2c,x
-        sta     $8c34,x
+        .repeat 9, i
+        sta     $8ad4 + i * 8,x
+        .endrep
+        .repeat 7, i
+        sta     $8b64 + i * 8,x
+        .endrep
+        .repeat 5, i
+        sta     $8bd4 + i * 8,x
+        .endrep
+        .repeat 3, i
+        sta     $8c24 + i * 8,x
+        .endrep
         sta     $8c54,x
         lda     #$1f
         sta     $8c84,x
         sta     $8c8c,x
         lda     #$81
-        sta     $8b1c,x
-        sta     $8b24,x
-        sta     $8b2c,x
-        sta     $8b34,x
-        sta     $8b3c,x
-        sta     $8b44,x
-        sta     $8b4c,x
-        sta     $8b54,x
-        sta     $8b5c,x
-        sta     $8b9c,x
-        sta     $8ba4,x
-        sta     $8bac,x
-        sta     $8bb4,x
-        sta     $8bbc,x
-        sta     $8bc4,x
-        sta     $8bcc,x
-        sta     $8bfc,x
-        sta     $8c04,x
-        sta     $8c0c,x
-        sta     $8c14,x
-        sta     $8c1c,x
-        sta     $8c3c,x
-        sta     $8c44,x
-        sta     $8c4c,x
+        .repeat 9, i
+        sta     $8b1c + i * 8,x
+        .endrep
+        .repeat 7, i
+        sta     $8b9c + i * 8,x
+        .endrep
+        .repeat 5, i
+        sta     $8bfc + i * 8,x
+        .endrep
+        .repeat 3, i
+        sta     $8c3c + i * 8,x
+        .endrep
         sta     $8c5c,x
         lda     #$9f
         sta     $8c94,x

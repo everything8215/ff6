@@ -1,6 +1,6 @@
 ; ------------------------------------------------------------------------------
 
-.include "gfx/monster_gfx.inc"
+.include "monster_gfx.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -9,7 +9,7 @@
 
 .macro inc_monster_gfx name, file
         MonsterGfx::name = * - MonsterGfx
-        .incbin .sprintf("monster_gfx/%s.trm", file)
+        .incbin .sprintf("assets/gfx/monster_gfx/%s.stc", file)
 .endmac
 
 .scope MonsterPal
@@ -17,10 +17,10 @@
 
 .macro inc_monster_pal name, file
         MonsterPal::name = * - MonsterPal
-        .incbin .sprintf("monster_gfx/%s.pal", file)
+        .incbin .sprintf("assets/gfx/monster_gfx/%s.pal", file)
 .endmac
 
-.macro make_monster_gfx_prop gfx, bpp, size, pal
+.macro monster_gfx_prop gfx, bpp, size, pal
 
         .local gfx_id
         .local pal_id
@@ -45,7 +45,8 @@
         .endif
 
         .word gfx_id
-        .byte >pal_id, <pal_id, stencil_id
+        .dbyt pal_id
+        .byte stencil_id
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -53,6 +54,13 @@
 .segment "monster_gfx"
 
 MonsterGfx:
+
+.if LANG_EN
+        fixed_block $037200
+.else
+        fixed_block $037300
+.endif
+
         inc_monster_gfx GUARD, "guard.4bpp"
         inc_monster_gfx SOLDIER, "soldier.4bpp"
         inc_monster_gfx TEMPLAR, "templar.4bpp"
@@ -61,7 +69,7 @@ MonsterGfx:
         inc_monster_gfx OROG, "orog.4bpp"
         inc_monster_gfx MAG_ROADER_1, "mag_roader_1.4bpp"
         inc_monster_gfx HAZER, "hazer.4bpp"
-        inc_monster_gfx DAHLING, .sprintf("dahling_%s.4bpp", LANG_SUFFIX)
+        inc_monster_gfx DAHLING, "dahling.4bpp"
         inc_monster_gfx RAIN_MAN, "rain_man.4bpp"
         inc_monster_gfx BRAWLER, "brawler.4bpp"
         inc_monster_gfx APOKRYPHOS, "apokryphos.4bpp"
@@ -148,7 +156,7 @@ MonsterGfx:
         inc_monster_gfx MAD_OSCAR, "mad_oscar.4bpp"
         inc_monster_gfx CRAWLY, "crawly.4bpp"
         inc_monster_gfx BLEARY, "bleary.4bpp"
-        inc_monster_gfx CRITIC, .sprintf("critic_%s.4bpp", LANG_SUFFIX)
+        inc_monster_gfx CRITIC, "critic.4bpp"
         inc_monster_gfx MAG_ROADER_2, "mag_roader_2.4bpp"
         inc_monster_gfx FORTIS, "fortis.4bpp"
         inc_monster_gfx TRIXTER, "trixter.4bpp"
@@ -173,14 +181,14 @@ MonsterGfx:
         inc_monster_gfx ATMAWEAPON, "atmaweapon.4bpp"
         inc_monster_gfx TENTACLE_1, "tentacle_1.3bpp"
         inc_monster_gfx DOOM_GAZE, "doom_gaze.4bpp"
-        inc_monster_gfx CHADARNOOK_LADY, .sprintf("chadarnook_lady_%s.4bpp", LANG_SUFFIX)
+        inc_monster_gfx CHADARNOOK_LADY, "chadarnook_lady.4bpp"
         inc_monster_gfx CURLEY, "curley.4bpp"
         inc_monster_gfx LARRY, "larry.4bpp"
         inc_monster_gfx MOE, "moe.4bpp"
         inc_monster_gfx HIDON, "hidon.4bpp"
         inc_monster_gfx HIDONITE, "hidonite.4bpp"
         inc_monster_gfx DOOM, "doom.4bpp"
-        inc_monster_gfx GODDESS, .sprintf("goddess_%s.4bpp", LANG_SUFFIX)
+        inc_monster_gfx GODDESS, "goddess.4bpp"
         inc_monster_gfx POLTRGEIST, "poltrgeist.4bpp"
         inc_monster_gfx FINAL_KEFKA, "final_kefka.4bpp"
         inc_monster_gfx ULTROS_1, "ultros_1.4bpp"
@@ -203,7 +211,7 @@ MonsterGfx:
         inc_monster_gfx SOULSAVER, "soulsaver.4bpp"
         inc_monster_gfx RAMUH, "ramuh.4bpp"
         inc_monster_gfx IFRIT, "ifrit.4bpp"
-        inc_monster_gfx SIREN, .sprintf("siren_%s.4bpp", LANG_SUFFIX)
+        inc_monster_gfx SIREN, "siren.4bpp"
         inc_monster_gfx TERRATO, "terrato.4bpp"
         inc_monster_gfx SHOAT, "shoat.4bpp"
         inc_monster_gfx MADUIN, "maduin.4bpp"
@@ -224,17 +232,17 @@ MonsterGfx:
         inc_monster_gfx GOLEM, "golem.4bpp"
         inc_monster_gfx UNICORN, "unicorn.4bpp"
         inc_monster_gfx FENRIR, "fenrir.4bpp"
-        inc_monster_gfx STARLET, .sprintf("starlet_%s.4bpp", LANG_SUFFIX)
+        inc_monster_gfx STARLET, "starlet.4bpp"
         inc_monster_gfx PHOENIX, "phoenix.4bpp"
         inc_monster_gfx TIGERBREAK, "tigerbreak.4bpp"
         inc_monster_gfx CRUSADER_2, "crusader_2.4bpp"
         inc_monster_gfx IMP, "imp.3bpp"
 
+        end_fixed_block 0
+
 .if LANG_EN
-        .res $78, 0
+; this is where the battle command names are in the japanese version
         .res $01c0
-.else
-        .res $138, 0
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -243,6 +251,7 @@ MonsterGfx:
 
 ; d2/7820
 MonsterPal:
+        fixed_block $3000
         inc_monster_pal GUARD, "guard"
         inc_monster_pal SOLDIER, "soldier"
         inc_monster_pal TEMPLAR, "templar"
@@ -591,6 +600,7 @@ MonsterPal:
         inc_monster_pal TIGERBREAK, "tigerbreak"
         inc_monster_pal CRUSADER_2, "crusader_2"
         inc_monster_pal CRUSADER_3, "crusader_3"
+        end_fixed_block 0
 
 ; ------------------------------------------------------------------------------
 
@@ -605,187 +615,187 @@ MonsterStencil:
 
 ; d2/a824
 MonsterStencilSmall:
-        .incbin "monster_gfx/guard.stn"
-        .incbin "monster_gfx/soldier.stn"
-        .incbin "monster_gfx/templar.stn"
-        .incbin "monster_gfx/ninja.stn"
-        .incbin "monster_gfx/samurai.stn"
-        .incbin "monster_gfx/orog.stn"
-        .incbin "monster_gfx/mag_roader_1.stn"
-        .incbin "monster_gfx/hazer.stn"
-        incbin_lang "monster_gfx/dahling_%s.stn"
-        .incbin "monster_gfx/rain_man.stn"
-        .incbin "monster_gfx/brawler.stn"
-        .incbin "monster_gfx/apokryphos.stn"
-        .incbin "monster_gfx/dark_force.stn"
-        .incbin "monster_gfx/whisper.stn"
-        .incbin "monster_gfx/over_mind.stn"
-        .incbin "monster_gfx/rhodox.stn"
-        .incbin "monster_gfx/were_rat.stn"
-        .incbin "monster_gfx/ursus.stn"
-        .incbin "monster_gfx/rhinotaur.stn"
-        .incbin "monster_gfx/leafer.stn"
-        .incbin "monster_gfx/stray_cat.stn"
-        .incbin "monster_gfx/lobo.stn"
-        .incbin "monster_gfx/doberman.stn"
-        .incbin "monster_gfx/vomammoth.stn"
-        .incbin "monster_gfx/fidor.stn"
-        .incbin "monster_gfx/baskervor.stn"
-        .incbin "monster_gfx/suriander.stn"
-        .incbin "monster_gfx/mesosaur.stn"
-        .incbin "monster_gfx/pterodon.stn"
-        .incbin "monster_gfx/fossilfang.stn"
-        .incbin "monster_gfx/tyranosaur.stn"
-        .incbin "monster_gfx/dark_wind.stn"
-        .incbin "monster_gfx/beakor.stn"
-        .incbin "monster_gfx/vulture.stn"
-        .incbin "monster_gfx/hermitcrab.stn"
-        .incbin "monster_gfx/trapper.stn"
-        .incbin "monster_gfx/hornet.stn"
-        .incbin "monster_gfx/crasshoppr.stn"
-        .incbin "monster_gfx/delta_bug.stn"
-        .incbin "monster_gfx/gilomantis.stn"
-        .incbin "monster_gfx/trilium.stn"
-        .incbin "monster_gfx/nightshade.stn"
-        .incbin "monster_gfx/tumbleweed.stn"
-        .incbin "monster_gfx/bloompire.stn"
-        .incbin "monster_gfx/trilobiter.stn"
-        .incbin "monster_gfx/siegfried.stn"
-        .incbin "monster_gfx/nautiloid.stn"
-        .incbin "monster_gfx/exocite.stn"
-        .incbin "monster_gfx/anguiform.stn"
-        .incbin "monster_gfx/reach_frog.stn"
-        .incbin "monster_gfx/lizard.stn"
-        .incbin "monster_gfx/chickenlip.stn"
-        .incbin "monster_gfx/pipsqueak.stn"
-        .incbin "monster_gfx/mtekarmor.stn"
-        .incbin "monster_gfx/sky_armor.stn"
-        .incbin "monster_gfx/telstar.stn"
-        .incbin "monster_gfx/vaporite.stn"
-        .incbin "monster_gfx/flan.stn"
-        .incbin "monster_gfx/ing.stn"
-        .incbin "monster_gfx/humpty.stn"
-        .incbin "monster_gfx/brainpan.stn"
-        .incbin "monster_gfx/cruller.stn"
-        .incbin "monster_gfx/cactrot.stn"
-        .incbin "monster_gfx/repo_man.stn"
-        .incbin "monster_gfx/harvester.stn"
-        .incbin "monster_gfx/bomb.stn"
-        .incbin "monster_gfx/still_life.stn"
-        .incbin "monster_gfx/boxed_set.stn"
-        .incbin "monster_gfx/slamdancer.stn"
-        .incbin "monster_gfx/pug.stn"
-        .incbin "monster_gfx/magic_urn.stn"
-        .incbin "monster_gfx/mover.stn"
-        .incbin "monster_gfx/figaliz.stn"
-        .incbin "monster_gfx/aspik.stn"
-        .incbin "monster_gfx/ghost.stn"
-        .incbin "monster_gfx/areneid.stn"
-        .incbin "monster_gfx/actaneon.stn"
-        .incbin "monster_gfx/sand_horse.stn"
-        .incbin "monster_gfx/mad_oscar.stn"
-        .incbin "monster_gfx/crawly.stn"
-        .incbin "monster_gfx/bleary.stn"
-        .incbin "monster_gfx/mag_roader_2.stn"
-        .incbin "monster_gfx/fortis.stn"
-        .incbin "monster_gfx/trixter.stn"
-        .incbin "monster_gfx/woolly.stn"
-        .incbin "monster_gfx/veteran.stn"
-        .incbin "monster_gfx/whelk_shell.stn"
-        .incbin "monster_gfx/ghosttrain.stn"
-        .incbin "monster_gfx/shiva.stn"
-        .incbin "monster_gfx/ifrit_boss.stn"
-        .incbin "monster_gfx/umaro.stn"
-        .incbin "monster_gfx/flameeater.stn"
-        .incbin "monster_gfx/tentacle_1.stn"
-        .incbin "monster_gfx/curley.stn"
-        .incbin "monster_gfx/larry.stn"
-        .incbin "monster_gfx/moe.stn"
-        .incbin "monster_gfx/hidonite.stn"
-        .incbin "monster_gfx/ultros_1.stn"
-        .incbin "monster_gfx/ultros_2.stn"
-        .incbin "monster_gfx/whelk_head_1.stn"
-        .incbin "monster_gfx/whelk_head_2.stn"
-        .incbin "monster_gfx/merchant.stn"
-        .incbin "monster_gfx/b_day_suit.stn"
-        .incbin "monster_gfx/tentacle_2.stn"
-        .incbin "monster_gfx/right_blade.stn"
-        .incbin "monster_gfx/left_blade.stn"
-        .incbin "monster_gfx/rough.stn"
-        .incbin "monster_gfx/striker.stn"
-        .incbin "monster_gfx/laser_gun.stn"
-        .incbin "monster_gfx/speck.stn"
-        .incbin "monster_gfx/missilebay.stn"
-        .incbin "monster_gfx/kefka.stn"
-        .incbin "monster_gfx/piranha.stn"
-        .incbin "monster_gfx/soulsaver.stn"
-        .incbin "monster_gfx/ramuh.stn"
-        incbin_lang "monster_gfx/siren_%s.stn"
-        .incbin "monster_gfx/shoat.stn"
-        .incbin "monster_gfx/maduin.stn"
-        .incbin "monster_gfx/stray.stn"
-        .incbin "monster_gfx/kirin.stn"
-        .incbin "monster_gfx/zoneseek.stn"
-        .incbin "monster_gfx/carbunkl.stn"
-        .incbin "monster_gfx/phantom.stn"
-        .incbin "monster_gfx/sraphim.stn"
-        .incbin "monster_gfx/golem.stn"
-        .incbin "monster_gfx/unicorn.stn"
-        .incbin "monster_gfx/tigerbreak.stn"
-        .incbin "monster_gfx/imp.stn"
+        .incbin "assets/gfx/monster_gfx/guard.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/soldier.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/templar.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ninja.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/samurai.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/orog.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/mag_roader_1.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/hazer.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/dahling.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/rain_man.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/brawler.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/apokryphos.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/dark_force.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/whisper.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/over_mind.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/rhodox.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/were_rat.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ursus.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/rhinotaur.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/leafer.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/stray_cat.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/lobo.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/doberman.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/vomammoth.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/fidor.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/baskervor.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/suriander.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/mesosaur.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/pterodon.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/fossilfang.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/tyranosaur.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/dark_wind.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/beakor.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/vulture.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/hermitcrab.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/trapper.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/hornet.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/crasshoppr.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/delta_bug.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/gilomantis.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/trilium.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/nightshade.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/tumbleweed.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/bloompire.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/trilobiter.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/siegfried.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/nautiloid.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/exocite.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/anguiform.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/reach_frog.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/lizard.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/chickenlip.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/pipsqueak.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/mtekarmor.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/sky_armor.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/telstar.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/vaporite.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/flan.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ing.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/humpty.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/brainpan.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/cruller.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/cactrot.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/repo_man.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/harvester.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/bomb.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/still_life.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/boxed_set.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/slamdancer.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/pug.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/magic_urn.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/mover.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/figaliz.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/aspik.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ghost.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/areneid.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/actaneon.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/sand_horse.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/mad_oscar.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/crawly.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/bleary.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/mag_roader_2.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/fortis.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/trixter.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/woolly.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/veteran.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/whelk_shell.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ghosttrain.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/shiva.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ifrit_boss.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/umaro.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/flameeater.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/tentacle_1.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/curley.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/larry.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/moe.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/hidonite.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ultros_1.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ultros_2.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/whelk_head_1.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/whelk_head_2.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/merchant.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/b_day_suit.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/tentacle_2.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/right_blade.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/left_blade.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/rough.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/striker.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/laser_gun.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/speck.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/missilebay.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/kefka.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/piranha.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/soulsaver.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ramuh.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/siren.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/shoat.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/maduin.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/stray.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/kirin.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/zoneseek.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/carbunkl.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/phantom.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/sraphim.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/golem.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/unicorn.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/tigerbreak.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/imp.3bpp.stn"
 
 ; ------------------------------------------------------------------------------
 
 ; d2/ac24
 MonsterStencilLarge:
-        .incbin "monster_gfx/osteosaur.stn"
-        .incbin "monster_gfx/phunbaba.stn"
-        .incbin "monster_gfx/chimera.stn"
-        .incbin "monster_gfx/behemoth.stn"
-        .incbin "monster_gfx/dragon.stn"
-        .incbin "monster_gfx/czardragon.stn"
-        .incbin "monster_gfx/brachosaur.stn"
-        .incbin "monster_gfx/harpy.stn"
-        .incbin "monster_gfx/hoover.stn"
-        .incbin "monster_gfx/rider.stn"
-        .incbin "monster_gfx/chupon.stn"
-        .incbin "monster_gfx/lethal_wpn.stn"
-        .incbin "monster_gfx/hadesgigas.stn"
-        .incbin "monster_gfx/buffalax.stn"
-        incbin_lang "monster_gfx/critic_%s.stn"
-        .incbin "monster_gfx/didalos.stn"
-        .incbin "monster_gfx/vargas.stn"
-        .incbin "monster_gfx/tunnelarmr.stn"
-        .incbin "monster_gfx/dadaluma.stn"
-        .incbin "monster_gfx/number_024.stn"
-        .incbin "monster_gfx/number_128.stn"
-        .incbin "monster_gfx/crane.stn"
-        .incbin "monster_gfx/guardian.stn"
-        .incbin "monster_gfx/air_force.stn"
-        .incbin "monster_gfx/tritoch_boss.stn"
-        .incbin "monster_gfx/atmaweapon.stn"
-        .incbin "monster_gfx/doom_gaze.stn"
-        incbin_lang "monster_gfx/chadarnook_lady_%s.stn"
-        .incbin "monster_gfx/hidon.stn"
-        .incbin "monster_gfx/doom.stn"
-        incbin_lang "monster_gfx/goddess_%s.stn"
-        .incbin "monster_gfx/poltrgeist.stn"
-        .incbin "monster_gfx/final_kefka.stn"
-        .incbin "monster_gfx/chadarnook_demon.stn"
-        .incbin "monster_gfx/ifrit.stn"
-        .incbin "monster_gfx/terrato.stn"
-        .incbin "monster_gfx/bismark.stn"
-        .incbin "monster_gfx/palidor.stn"
-        .incbin "monster_gfx/tritoch.stn"
-        .incbin "monster_gfx/odin.stn"
-        .incbin "monster_gfx/raiden.stn"
-        .incbin "monster_gfx/bahamut.stn"
-        .incbin "monster_gfx/alexandr.stn"
-        .incbin "monster_gfx/crusader_1.stn"
-        .incbin "monster_gfx/fenrir.stn"
-        incbin_lang "monster_gfx/starlet_%s.stn"
-        .incbin "monster_gfx/phoenix.stn"
-        .incbin "monster_gfx/crusader_2.stn"
+        .incbin "assets/gfx/monster_gfx/osteosaur.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/phunbaba.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/chimera.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/behemoth.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/dragon.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/czardragon.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/brachosaur.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/harpy.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/hoover.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/rider.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/chupon.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/lethal_wpn.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/hadesgigas.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/buffalax.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/critic.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/didalos.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/vargas.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/tunnelarmr.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/dadaluma.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/number_024.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/number_128.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/crane.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/guardian.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/air_force.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/tritoch_boss.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/atmaweapon.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/doom_gaze.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/chadarnook_lady.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/hidon.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/doom.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/goddess.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/poltrgeist.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/final_kefka.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/chadarnook_demon.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/ifrit.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/terrato.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/bismark.3bpp.stn"
+        .incbin "assets/gfx/monster_gfx/palidor.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/tritoch.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/odin.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/raiden.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/bahamut.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/alexandr.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/crusader_1.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/fenrir.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/starlet.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/phoenix.4bpp.stn"
+        .incbin "assets/gfx/monster_gfx/crusader_2.4bpp.stn"
 
 ; ------------------------------------------------------------------------------
 
@@ -793,421 +803,427 @@ MonsterStencilLarge:
 
 ; d2/7000
 MonsterGfxProp:
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop SOLDIER, 4, 8
-        make_monster_gfx_prop TEMPLAR, 4, 8
-        make_monster_gfx_prop NINJA, 4, 8
-        make_monster_gfx_prop SAMURAI, 4, 8
-        make_monster_gfx_prop OROG, 4, 8
-        make_monster_gfx_prop MAG_ROADER_1, 4, 8
-        make_monster_gfx_prop SAMURAI, 4, 8
-        make_monster_gfx_prop HAZER, 4, 8
-        make_monster_gfx_prop DAHLING, 4, 8
-        make_monster_gfx_prop RAIN_MAN, 4, 8
-        make_monster_gfx_prop BRAWLER, 4, 8
-        make_monster_gfx_prop APOKRYPHOS, 4, 8
-        make_monster_gfx_prop DARK_FORCE, 4, 8
-        make_monster_gfx_prop WHISPER, 3, 8
-        make_monster_gfx_prop OVER_MIND, 4, 8
-        make_monster_gfx_prop OSTEOSAUR, 4, 16
-        make_monster_gfx_prop SOLDIER, 4, 8
-        make_monster_gfx_prop RHODOX, 3, 8
-        make_monster_gfx_prop WERE_RAT, 4, 8
-        make_monster_gfx_prop URSUS, 3, 8
-        make_monster_gfx_prop RHINOTAUR, 4, 8
-        make_monster_gfx_prop PHUNBABA, 4, 16, STEROIDITE
-        make_monster_gfx_prop LEAFER, 4, 8
-        make_monster_gfx_prop STRAY_CAT, 3, 8
-        make_monster_gfx_prop LOBO, 3, 8
-        make_monster_gfx_prop DOBERMAN, 4, 8
-        make_monster_gfx_prop VOMAMMOTH, 4, 8
-        make_monster_gfx_prop FIDOR, 4, 8
-        make_monster_gfx_prop BASKERVOR, 4, 8
-        make_monster_gfx_prop SURIANDER, 3, 8
-        make_monster_gfx_prop CHIMERA, 4, 16
-        make_monster_gfx_prop BEHEMOTH, 4, 16
-        make_monster_gfx_prop MESOSAUR, 4, 8
-        make_monster_gfx_prop PTERODON, 4, 8
-        make_monster_gfx_prop FOSSILFANG, 4, 8
-        make_monster_gfx_prop DRAGON, 4, 16, WHITE_DRGN
-        make_monster_gfx_prop CZARDRAGON, 4, 16, DOOM_DRGN
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop TYRANOSAUR, 4, 8
-        make_monster_gfx_prop DARK_WIND, 4, 8
-        make_monster_gfx_prop BEAKOR, 4, 8
-        make_monster_gfx_prop VULTURE, 4, 8
-        make_monster_gfx_prop HARPY, 4, 16
-        make_monster_gfx_prop HERMITCRAB, 4, 8
-        make_monster_gfx_prop TRAPPER, 4, 8
-        make_monster_gfx_prop HORNET, 4, 8
-        make_monster_gfx_prop CRASSHOPPR, 4, 8
-        make_monster_gfx_prop DELTA_BUG, 4, 8
-        make_monster_gfx_prop GILOMANTIS, 4, 8
-        make_monster_gfx_prop TRILIUM, 4, 8
-        make_monster_gfx_prop NIGHTSHADE, 4, 8
-        make_monster_gfx_prop TUMBLEWEED, 4, 8
-        make_monster_gfx_prop BLOOMPIRE, 4, 8
-        make_monster_gfx_prop TRILOBITER, 3, 8
-        make_monster_gfx_prop SIEGFRIED, 4, 8
-        make_monster_gfx_prop NAUTILOID, 4, 8
-        make_monster_gfx_prop EXOCITE, 4, 8
-        make_monster_gfx_prop ANGUIFORM, 4, 8
-        make_monster_gfx_prop REACH_FROG, 4, 8
-        make_monster_gfx_prop LIZARD, 4, 8
-        make_monster_gfx_prop CHICKENLIP, 4, 8
-        make_monster_gfx_prop HOOVER, 4, 16
-        make_monster_gfx_prop RIDER, 4, 16
-        make_monster_gfx_prop CHUPON, 4, 16
-        make_monster_gfx_prop PIPSQUEAK, 4, 8
-        make_monster_gfx_prop MTEKARMOR, 4, 8
-        make_monster_gfx_prop SKY_ARMOR, 4, 8
-        make_monster_gfx_prop TELSTAR, 4, 8
-        make_monster_gfx_prop LETHAL_WPN, 4, 16
-        make_monster_gfx_prop VAPORITE, 3, 8
-        make_monster_gfx_prop FLAN, 4, 8
-        make_monster_gfx_prop ING, 4, 8
-        make_monster_gfx_prop HUMPTY, 3, 8
-        make_monster_gfx_prop BRAINPAN, 4, 8
-        make_monster_gfx_prop CRULLER, 4, 8
-        make_monster_gfx_prop CACTROT, 3, 8
-        make_monster_gfx_prop REPO_MAN, 4, 8
-        make_monster_gfx_prop HARVESTER, 4, 8
-        make_monster_gfx_prop BOMB, 4, 8
-        make_monster_gfx_prop STILL_LIFE, 4, 8
-        make_monster_gfx_prop BOXED_SET, 4, 8
-        make_monster_gfx_prop SLAMDANCER, 4, 8
-        make_monster_gfx_prop HADESGIGAS, 4, 16
-        make_monster_gfx_prop PUG, 4, 8
-        make_monster_gfx_prop MAGIC_URN, 4, 8
-        make_monster_gfx_prop MOVER, 3, 8
-        make_monster_gfx_prop FIGALIZ, 4, 8
-        make_monster_gfx_prop BUFFALAX, 4, 16
-        make_monster_gfx_prop ASPIK, 3, 8
-        make_monster_gfx_prop GHOST, 4, 8
-        make_monster_gfx_prop FIGALIZ, 4, 8
-        make_monster_gfx_prop TRILOBITER, 3, 8, SAND_RAY
-        make_monster_gfx_prop ARENEID, 3, 8
-        make_monster_gfx_prop ACTANEON, 4, 8
-        make_monster_gfx_prop SAND_HORSE, 4, 8
-        make_monster_gfx_prop WHISPER, 3, 8
-        make_monster_gfx_prop MAD_OSCAR, 4, 8
-        make_monster_gfx_prop CRAWLY, 4, 8
-        make_monster_gfx_prop BLEARY, 4, 8
-        make_monster_gfx_prop GUARD, 4, 8, MARSHAL
-        make_monster_gfx_prop SOLDIER, 4, 8, TROOPER
-        make_monster_gfx_prop TEMPLAR, 4, 8, GENERAL
-        make_monster_gfx_prop NINJA, 4, 8, COVERT
-        make_monster_gfx_prop OROG, 4, 8, OGOR
-        make_monster_gfx_prop HAZER, 4, 8, WARLOCK
-        make_monster_gfx_prop DAHLING, 4, 8, MADAM
-        make_monster_gfx_prop RAIN_MAN, 4, 8, JOKER
-        make_monster_gfx_prop BRAWLER, 4, 8, IRON_FIST
-        make_monster_gfx_prop APOKRYPHOS, 4, 8, GOBLIN
-        make_monster_gfx_prop WHISPER, 3, 8, APPARITE
-        make_monster_gfx_prop OVER_MIND, 4, 8, POWERDEMON
-        make_monster_gfx_prop OSTEOSAUR, 4, 16, DISPLAYER
-        make_monster_gfx_prop DOBERMAN, 4, 8
-        make_monster_gfx_prop RHODOX, 3, 8, PEEPERS
-        make_monster_gfx_prop WERE_RAT, 4, 8, SEWER_RAT
-        make_monster_gfx_prop URSUS, 3, 8, SLATTER
-        make_monster_gfx_prop RHINOTAUR, 4, 8, RHINOX
-        make_monster_gfx_prop LEAFER, 4, 8, RHOBITE
-        make_monster_gfx_prop STRAY_CAT, 3, 8, WILD_CAT
-        make_monster_gfx_prop LOBO, 3, 8, RED_FANG
-        make_monster_gfx_prop DOBERMAN, 4, 8, BOUNTY_MAN
-        make_monster_gfx_prop VOMAMMOTH, 4, 8, TUSKER
-        make_monster_gfx_prop FIDOR, 4, 8, RALPH
-        make_monster_gfx_prop BASKERVOR, 4, 8, CHITONID
-        make_monster_gfx_prop SURIANDER, 3, 8, WART_PUCK
-        make_monster_gfx_prop CHIMERA, 4, 16, RHYOS
-        make_monster_gfx_prop BEHEMOTH, 4, 16, SRBEHEMOTH_UNDEAD
-        make_monster_gfx_prop MESOSAUR, 4, 8, VECTAUR
-        make_monster_gfx_prop PTERODON, 4, 8, WYVERN
-        make_monster_gfx_prop FOSSILFANG, 4, 8, ZOMBONE
-        make_monster_gfx_prop DRAGON, 4, 16
-        make_monster_gfx_prop BRACHOSAUR, 4, 16, BRONTAUR
-        make_monster_gfx_prop TYRANOSAUR, 4, 8, ALLOSAURUS
-        make_monster_gfx_prop DARK_WIND, 4, 8, CIRPIUS
-        make_monster_gfx_prop BEAKOR, 4, 8, SPRINTER
-        make_monster_gfx_prop VULTURE, 4, 8, GOBBLER
-        make_monster_gfx_prop HARPY, 4, 16, HARPIAI
-        make_monster_gfx_prop HERMITCRAB, 4, 8, GLOOMSHELL
-        make_monster_gfx_prop TRAPPER, 4, 8, DROP
-        make_monster_gfx_prop HORNET, 4, 8, MIND_CANDY
-        make_monster_gfx_prop CRASSHOPPR, 4, 8, WEEDFEEDER
-        make_monster_gfx_prop DELTA_BUG, 4, 8, LURIDAN
-        make_monster_gfx_prop GILOMANTIS, 4, 8, TOE_CUTTER
-        make_monster_gfx_prop TRILIUM, 4, 8, OVER_GRUNK
-        make_monster_gfx_prop NIGHTSHADE, 4, 8, EXORAY
-        make_monster_gfx_prop TUMBLEWEED, 4, 8, CRUSHER
-        make_monster_gfx_prop BLOOMPIRE, 4, 8, UROBUROS
-        make_monster_gfx_prop EXOCITE, 4, 8, PRIMORDITE
-        make_monster_gfx_prop SKY_ARMOR, 4, 8
-        make_monster_gfx_prop NAUTILOID, 4, 8, CEPHALER
-        make_monster_gfx_prop EXOCITE, 4, 8, MALIGA
-        make_monster_gfx_prop REACH_FROG, 4, 8, GIGAN_TOAD
-        make_monster_gfx_prop LIZARD, 4, 8, GECKOREX
-        make_monster_gfx_prop CHICKENLIP, 4, 8, CLUCK
-        make_monster_gfx_prop HOOVER, 4, 16, LAND_WORM
-        make_monster_gfx_prop RIDER, 4, 16, TEST_RIDER
-        make_monster_gfx_prop MTEKARMOR, 4, 8, PLUTOARMOR
-        make_monster_gfx_prop PIPSQUEAK, 4, 8, TOMB_THUMB
-        make_monster_gfx_prop MTEKARMOR, 4, 8, HEAVYARMOR
-        make_monster_gfx_prop TELSTAR, 4, 8, CHASER
-        make_monster_gfx_prop LETHAL_WPN, 4, 16, SCULLION
-        make_monster_gfx_prop VAPORITE, 3, 8, POPLIUM
-        make_monster_gfx_prop BEHEMOTH, 4, 16, INTANGIR
-        make_monster_gfx_prop ING, 4, 8, MISFIT
-        make_monster_gfx_prop HUMPTY, 3, 8, ELAND
-        make_monster_gfx_prop CRULLER, 4, 8, ENUO
-        make_monster_gfx_prop BLEARY, 4, 8, DEEP_EYE
-        make_monster_gfx_prop REPO_MAN, 4, 8, GREASEMONK
-        make_monster_gfx_prop HARVESTER, 4, 8, NECKHUNTER
-        make_monster_gfx_prop BOMB, 4, 8, GRENADE
-        make_monster_gfx_prop CRITIC, 4, 16
-        make_monster_gfx_prop BOXED_SET, 4, 8, PAN_DORA
-        make_monster_gfx_prop SLAMDANCER, 4, 8, SOULDANCER
-        make_monster_gfx_prop HADESGIGAS, 4, 16, GIGANTOS
-        make_monster_gfx_prop MAG_ROADER_2, 4, 8
-        make_monster_gfx_prop STRAY_CAT, 3, 8, WILD_CAT
-        make_monster_gfx_prop ASPIK, 3, 8, PARASITE
-        make_monster_gfx_prop TRILOBITER, 3, 8, EARTHGUARD
-        make_monster_gfx_prop ARENEID, 3, 8, COELECITE
-        make_monster_gfx_prop ACTANEON, 4, 8, ANEMONE
-        make_monster_gfx_prop SAND_HORSE, 4, 8, HIPOCAMPUS
-        make_monster_gfx_prop GHOST, 4, 8
-        make_monster_gfx_prop MAD_OSCAR, 4, 8, EVIL_OSCAR
-        make_monster_gfx_prop CRAWLY, 4, 8, SLURM
-        make_monster_gfx_prop ANGUIFORM, 4, 8, LATIMERIA
-        make_monster_gfx_prop GUARD, 4, 8, STILLGOING
-        make_monster_gfx_prop OSTEOSAUR, 4, 16
-        make_monster_gfx_prop BRAINPAN, 4, 8, PHASE
-        make_monster_gfx_prop NINJA, 4, 8, OUTSIDER
-        make_monster_gfx_prop DAHLING, 4, 8, BARB_E
-        make_monster_gfx_prop RAIN_MAN, 4, 8, PARASOUL
-        make_monster_gfx_prop WHISPER, 3, 8, PM_STALKER
-        make_monster_gfx_prop OROG, 4, 8, HEMOPHYTE
-        make_monster_gfx_prop TEMPLAR, 4, 8, SP_FORCES
-        make_monster_gfx_prop LEAFER, 4, 8, NOHRABBIT
-        make_monster_gfx_prop HAZER, 4, 8, WIZARD
-        make_monster_gfx_prop BRAWLER, 4, 8, SCRAPPER
-        make_monster_gfx_prop RHINOTAUR, 4, 8, CERITOPS
-        make_monster_gfx_prop SOLDIER, 4, 8, COMMANDO
-        make_monster_gfx_prop BUFFALAX, 4, 16, OPINICUS
-        make_monster_gfx_prop RHODOX, 3, 8, POPPERS
-        make_monster_gfx_prop LOBO, 3, 8, LUNARIS
-        make_monster_gfx_prop DOBERMAN, 4, 8, GARM
-        make_monster_gfx_prop DARK_WIND, 4, 8, VINDR
-        make_monster_gfx_prop BEAKOR, 4, 8, KIWOK
-        make_monster_gfx_prop VOMAMMOTH, 4, 8, NASTIDON
-        make_monster_gfx_prop VAPORITE, 3, 8
-        make_monster_gfx_prop CRASSHOPPR, 4, 8, INSECARE
-        make_monster_gfx_prop WERE_RAT, 4, 8, VERMIN
-        make_monster_gfx_prop GILOMANTIS, 4, 8, MANTODEA
-        make_monster_gfx_prop FIDOR, 4, 8, BOGY
-        make_monster_gfx_prop URSUS, 3, 8, PRUSSIAN
-        make_monster_gfx_prop FOSSILFANG, 4, 8, BLACK_DRGN
-        make_monster_gfx_prop BASKERVOR, 4, 8, ADAMANCHYT
-        make_monster_gfx_prop RIDER, 4, 16, DANTE
-        make_monster_gfx_prop PTERODON, 4, 8, WIREY_DRGN
-        make_monster_gfx_prop MTEKARMOR, 4, 8, DUELLER
-        make_monster_gfx_prop VAPORITE, 3, 8, PSYCHOT
-        make_monster_gfx_prop FLAN, 4, 8, MUUS
-        make_monster_gfx_prop ING, 4, 8, KARKASS
-        make_monster_gfx_prop HARVESTER, 4, 8, PUNISHER
-        make_monster_gfx_prop BOMB, 4, 8
-        make_monster_gfx_prop REPO_MAN, 4, 8, GABBLDEGAK
-        make_monster_gfx_prop BEHEMOTH, 4, 16, GTBEHEMOTH
-        make_monster_gfx_prop ARENEID, 3, 8, SCORPION
-        make_monster_gfx_prop TYRANOSAUR, 4, 8, CHAOS_DRGN
-        make_monster_gfx_prop SKY_ARMOR, 4, 8, SPIT_FIRE
-        make_monster_gfx_prop CHIMERA, 4, 16, VECTAGOYLE
-        make_monster_gfx_prop GHOST, 4, 8, LICH
-        make_monster_gfx_prop VULTURE, 4, 8, OSPREY
-        make_monster_gfx_prop MAG_ROADER_1, 4, 8, MAG_ROADER_3
-        make_monster_gfx_prop HORNET, 4, 8, BUG
-        make_monster_gfx_prop ACTANEON, 4, 8, SEA_FLOWER
-        make_monster_gfx_prop FORTIS, 4, 8
-        make_monster_gfx_prop BEAKOR, 4, 8, ABOLISHER
-        make_monster_gfx_prop HARPY, 4, 16, AQUILA
-        make_monster_gfx_prop TRAPPER, 4, 8, JUNK
-        make_monster_gfx_prop TRILIUM, 4, 8, MANDRAKE
-        make_monster_gfx_prop REPO_MAN, 4, 8, FIRST_CLASS
-        make_monster_gfx_prop SLAMDANCER, 4, 8, TAP_DANCER
-        make_monster_gfx_prop GHOST, 4, 8, NECROMANCR
-        make_monster_gfx_prop HADESGIGAS, 4, 16, BORRAS
-        make_monster_gfx_prop MAG_ROADER_2, 4, 8, MAG_ROADER_4
-        make_monster_gfx_prop WERE_RAT, 4, 8
-        make_monster_gfx_prop URSUS, 3, 8, GOLD_BEAR
-        make_monster_gfx_prop TELSTAR, 4, 8, INNOC
-        make_monster_gfx_prop TRIXTER, 4, 8
-        make_monster_gfx_prop LOBO, 3, 8, RED_WOLF
-        make_monster_gfx_prop DIDALOS, 4, 16
-        make_monster_gfx_prop WOOLLY, 4, 8
-        make_monster_gfx_prop VETERAN, 4, 8
-        make_monster_gfx_prop SKY_ARMOR, 4, 8, SKY_BASE
-        make_monster_gfx_prop PIPSQUEAK, 4, 8, IRONHITMAN
-        make_monster_gfx_prop LETHAL_WPN, 4, 16, IO
-        make_monster_gfx_prop PUG, 4, 8
-        make_monster_gfx_prop WHELK_SHELL, 3, 8, WHELK
-        make_monster_gfx_prop WHELK_SHELL, 3, 8, PRESENTER
-        make_monster_gfx_prop MTEKARMOR, 4, 8, MEGA_ARMOR
-        make_monster_gfx_prop VARGAS, 4, 16
-        make_monster_gfx_prop TUNNELARMR, 4, 16
-        make_monster_gfx_prop TUNNELARMR, 4, 16, PROMETHEUS
-        make_monster_gfx_prop GHOSTTRAIN, 4, 8
-        make_monster_gfx_prop DADALUMA, 4, 16
-        make_monster_gfx_prop SHIVA, 4, 8
-        make_monster_gfx_prop IFRIT_BOSS, 4, 8
-        make_monster_gfx_prop NUMBER_024, 4, 16
-        make_monster_gfx_prop NUMBER_128, 4, 16
-        make_monster_gfx_prop NUMBER_128, 4, 16, INFERNO
-        make_monster_gfx_prop CRANE, 4, 16
-        make_monster_gfx_prop CRANE, 4, 16
-        make_monster_gfx_prop UMARO, 4, 8
-        make_monster_gfx_prop UMARO, 4, 8
-        make_monster_gfx_prop GUARDIAN, 4, 16
-        make_monster_gfx_prop GUARDIAN, 4, 16
-        make_monster_gfx_prop AIR_FORCE, 4, 16
-        make_monster_gfx_prop TRITOCH_BOSS, 4, 16
-        make_monster_gfx_prop TRITOCH_BOSS, 4, 16
-        make_monster_gfx_prop FLAMEEATER, 4, 8
-        make_monster_gfx_prop ATMAWEAPON, 4, 16
-        make_monster_gfx_prop WOOLLY, 4, 8, NERAPA
-        make_monster_gfx_prop BEHEMOTH, 4, 16, SRBEHEMOTH
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop TENTACLE_1, 3, 8, TENTACLE
-        make_monster_gfx_prop DIDALOS, 4, 16, DULLAHAN
-        make_monster_gfx_prop DOOM_GAZE, 4, 16
-        make_monster_gfx_prop CHADARNOOK_LADY, 4, 16
-        make_monster_gfx_prop CURLEY, 4, 8
-        make_monster_gfx_prop LARRY, 4, 8
-        make_monster_gfx_prop MOE, 4, 8
-        make_monster_gfx_prop DARK_FORCE, 4, 8, WREXSOUL
-        make_monster_gfx_prop HIDON, 4, 16
-        make_monster_gfx_prop SAMURAI, 4, 8, KATANASOUL
-        make_monster_gfx_prop SLAMDANCER, 4, 8, L30_MAGIC
-        make_monster_gfx_prop HIDONITE, 4, 8
-        make_monster_gfx_prop DOOM, 4, 16
-        make_monster_gfx_prop GODDESS, 4, 16
-        make_monster_gfx_prop POLTRGEIST, 4, 16
-        make_monster_gfx_prop FINAL_KEFKA, 4, 16
-        make_monster_gfx_prop RAIN_MAN, 4, 8, L40_MAGIC
-        make_monster_gfx_prop ULTROS_1, 4, 8
-        make_monster_gfx_prop ULTROS_2, 4, 8
-        make_monster_gfx_prop ULTROS_2, 4, 8
-        make_monster_gfx_prop CHUPON, 4, 16
-        make_monster_gfx_prop HAZER, 4, 8, L20_MAGIC
-        make_monster_gfx_prop SIEGFRIED, 4, 8
-        make_monster_gfx_prop GHOST, 4, 8, L10_MAGIC
-        make_monster_gfx_prop OVER_MIND, 4, 8, L50_MAGIC
-        make_monster_gfx_prop WHELK_HEAD_1, 4, 8
-        make_monster_gfx_prop WHELK_HEAD_2, 4, 8
-        make_monster_gfx_prop HADESGIGAS, 4, 16
-        make_monster_gfx_prop CZARDRAGON, 4, 16
-        make_monster_gfx_prop PUG, 4, 8, MASTER_PUG
-        make_monster_gfx_prop WOOLLY, 4, 8, L60_MAGIC
-        make_monster_gfx_prop MERCHANT, 4, 8
-        make_monster_gfx_prop B_DAY_SUIT, 4, 8
-        make_monster_gfx_prop TENTACLE_1, 3, 8, TENTACLE
-        make_monster_gfx_prop TENTACLE_2, 3, 8, TENTACLE
-        make_monster_gfx_prop TENTACLE_2, 3, 8, TENTACLE
-        make_monster_gfx_prop RIGHT_BLADE, 4, 8, RIGHT_LEFT_BLADE
-        make_monster_gfx_prop LEFT_BLADE, 4, 8, RIGHT_LEFT_BLADE
-        make_monster_gfx_prop ROUGH, 4, 8, ROUGH_STRIKER
-        make_monster_gfx_prop STRIKER, 4, 8, ROUGH_STRIKER
-        make_monster_gfx_prop DARK_FORCE, 4, 8, L70_MAGIC
-        make_monster_gfx_prop TRITOCH_BOSS, 4, 16
-        make_monster_gfx_prop LASER_GUN, 4, 8
-        make_monster_gfx_prop SPECK, 3, 8
-        make_monster_gfx_prop MISSILEBAY, 4, 8, LASER_GUN
-        make_monster_gfx_prop CHADARNOOK_DEMON, 4, 16
-        make_monster_gfx_prop MESOSAUR, 4, 8, ICE_DRAGON
-        make_monster_gfx_prop KEFKA, 4, 8
-        make_monster_gfx_prop PTERODON, 4, 8, STORM_DRGN
-        make_monster_gfx_prop TYRANOSAUR, 4, 8, DIRT_DRGN
-        make_monster_gfx_prop URSUS, 3, 8
-        make_monster_gfx_prop TEMPLAR, 4, 8, SP_FORCES
-        make_monster_gfx_prop SOLDIER, 4, 8
-        make_monster_gfx_prop BRACHOSAUR, 4, 16, GOLD_DRGN
-        make_monster_gfx_prop FOSSILFANG, 4, 8, SKULL_DRGN
-        make_monster_gfx_prop CZARDRAGON, 4, 16, BLUE_DRGN
-        make_monster_gfx_prop DRAGON, 4, 16, RED_DRAGON
-        make_monster_gfx_prop PIRANHA, 4, 8
-        make_monster_gfx_prop PIRANHA, 4, 8, RIZOPAS
-        make_monster_gfx_prop WHISPER, 3, 8, PM_STALKER
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop BRACHOSAUR, 4, 16
-        make_monster_gfx_prop HIDONITE, 4, 8
-        make_monster_gfx_prop HIDONITE, 4, 8
-        make_monster_gfx_prop HIDONITE, 4, 8
-        make_monster_gfx_prop DAHLING, 4, 8
-        make_monster_gfx_prop TRIXTER, 4, 8, L90_MAGIC
-        make_monster_gfx_prop FORTIS, 4, 8, PROTOARMOR
-        make_monster_gfx_prop NUMBER_024, 4, 16, MAGIMASTER
-        make_monster_gfx_prop SOULSAVER, 4, 8
-        make_monster_gfx_prop ULTROS_2, 4, 8
-        make_monster_gfx_prop TRIXTER, 4, 8, NAUGHTY
-        make_monster_gfx_prop PHUNBABA, 4, 16
-        make_monster_gfx_prop PHUNBABA, 4, 16
-        make_monster_gfx_prop PHUNBABA, 4, 16
-        make_monster_gfx_prop PHUNBABA, 4, 16
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop HOOVER, 4, 16, ZONE_EATER
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop KEFKA, 4, 8
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop SOLDIER, 4, 8, OFFICER
-        make_monster_gfx_prop TEMPLAR, 4, 8
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop SOLDIER, 4, 8
-        make_monster_gfx_prop IFRIT_BOSS, 4, 8, ESPER
-        make_monster_gfx_prop GHOSTTRAIN, 4, 8
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop ATMAWEAPON, 4, 16, ATMA
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop RAMUH, 4, 8
-        make_monster_gfx_prop IFRIT, 4, 16
-        make_monster_gfx_prop SHIVA, 4, 8
-        make_monster_gfx_prop SIREN, 4, 8
-        make_monster_gfx_prop TERRATO, 4, 16
-        make_monster_gfx_prop SHOAT, 4, 8
-        make_monster_gfx_prop MADUIN, 4, 8
-        make_monster_gfx_prop BISMARK, 3, 16
-        make_monster_gfx_prop STRAY, 4, 8
-        make_monster_gfx_prop PALIDOR, 4, 16
-        make_monster_gfx_prop TRITOCH, 4, 16
-        make_monster_gfx_prop ODIN, 4, 16
-        make_monster_gfx_prop RAIDEN, 4, 16
-        make_monster_gfx_prop BAHAMUT, 4, 16
-        make_monster_gfx_prop ALEXANDR, 4, 16
-        make_monster_gfx_prop CRUSADER_1, 4, 16
-        make_monster_gfx_prop GUARD, 4, 8
-        make_monster_gfx_prop KIRIN, 4, 8
-        make_monster_gfx_prop ZONESEEK, 4, 8
-        make_monster_gfx_prop CARBUNKL, 4, 8
-        make_monster_gfx_prop PHANTOM, 3, 8
-        make_monster_gfx_prop SRAPHIM, 4, 8
-        make_monster_gfx_prop GOLEM, 4, 8
-        make_monster_gfx_prop UNICORN, 4, 8
-        make_monster_gfx_prop FENRIR, 4, 16
-        make_monster_gfx_prop STARLET, 4, 16
-        make_monster_gfx_prop PHOENIX, 4, 16
-        make_monster_gfx_prop TIGERBREAK, 4, 8
-        make_monster_gfx_prop CRUSADER_2, 4, 16
-        make_monster_gfx_prop CRUSADER_2, 4, 16, CRUSADER_3
-        make_monster_gfx_prop IMP, 3, 8, TRILIUM
-        make_monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop SOLDIER, 4, 8
+        monster_gfx_prop TEMPLAR, 4, 8
+        monster_gfx_prop NINJA, 4, 8
+        monster_gfx_prop SAMURAI, 4, 8
+        monster_gfx_prop OROG, 4, 8
+        monster_gfx_prop MAG_ROADER_1, 4, 8
+        monster_gfx_prop SAMURAI, 4, 8
+        monster_gfx_prop HAZER, 4, 8
+        monster_gfx_prop DAHLING, 4, 8
+        monster_gfx_prop RAIN_MAN, 4, 8
+        monster_gfx_prop BRAWLER, 4, 8
+        monster_gfx_prop APOKRYPHOS, 4, 8
+        monster_gfx_prop DARK_FORCE, 4, 8
+        monster_gfx_prop WHISPER, 3, 8
+        monster_gfx_prop OVER_MIND, 4, 8
+        monster_gfx_prop OSTEOSAUR, 4, 16
+        monster_gfx_prop SOLDIER, 4, 8
+        monster_gfx_prop RHODOX, 3, 8
+        monster_gfx_prop WERE_RAT, 4, 8
+        monster_gfx_prop URSUS, 3, 8
+        monster_gfx_prop RHINOTAUR, 4, 8
+        monster_gfx_prop PHUNBABA, 4, 16, STEROIDITE
+        monster_gfx_prop LEAFER, 4, 8
+        monster_gfx_prop STRAY_CAT, 3, 8
+        monster_gfx_prop LOBO, 3, 8
+        monster_gfx_prop DOBERMAN, 4, 8
+        monster_gfx_prop VOMAMMOTH, 4, 8
+        monster_gfx_prop FIDOR, 4, 8
+        monster_gfx_prop BASKERVOR, 4, 8
+        monster_gfx_prop SURIANDER, 3, 8
+        monster_gfx_prop CHIMERA, 4, 16
+        monster_gfx_prop BEHEMOTH, 4, 16
+        monster_gfx_prop MESOSAUR, 4, 8
+        monster_gfx_prop PTERODON, 4, 8
+        monster_gfx_prop FOSSILFANG, 4, 8
+        monster_gfx_prop DRAGON, 4, 16, WHITE_DRGN
+        monster_gfx_prop CZARDRAGON, 4, 16, DOOM_DRGN
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop TYRANOSAUR, 4, 8
+        monster_gfx_prop DARK_WIND, 4, 8
+        monster_gfx_prop BEAKOR, 4, 8
+        monster_gfx_prop VULTURE, 4, 8
+        monster_gfx_prop HARPY, 4, 16
+        monster_gfx_prop HERMITCRAB, 4, 8
+        monster_gfx_prop TRAPPER, 4, 8
+        monster_gfx_prop HORNET, 4, 8
+        monster_gfx_prop CRASSHOPPR, 4, 8
+        monster_gfx_prop DELTA_BUG, 4, 8
+        monster_gfx_prop GILOMANTIS, 4, 8
+        monster_gfx_prop TRILIUM, 4, 8
+        monster_gfx_prop NIGHTSHADE, 4, 8
+        monster_gfx_prop TUMBLEWEED, 4, 8
+        monster_gfx_prop BLOOMPIRE, 4, 8
+        monster_gfx_prop TRILOBITER, 3, 8
+        monster_gfx_prop SIEGFRIED, 4, 8
+        monster_gfx_prop NAUTILOID, 4, 8
+        monster_gfx_prop EXOCITE, 4, 8
+        monster_gfx_prop ANGUIFORM, 4, 8
+        monster_gfx_prop REACH_FROG, 4, 8
+        monster_gfx_prop LIZARD, 4, 8
+        monster_gfx_prop CHICKENLIP, 4, 8
+        monster_gfx_prop HOOVER, 4, 16
+        monster_gfx_prop RIDER, 4, 16
+        monster_gfx_prop CHUPON, 4, 16
+        monster_gfx_prop PIPSQUEAK, 4, 8
+        monster_gfx_prop MTEKARMOR, 4, 8
+        monster_gfx_prop SKY_ARMOR, 4, 8
+        monster_gfx_prop TELSTAR, 4, 8
+        monster_gfx_prop LETHAL_WPN, 4, 16
+        monster_gfx_prop VAPORITE, 3, 8
+        monster_gfx_prop FLAN, 4, 8
+        monster_gfx_prop ING, 4, 8
+        monster_gfx_prop HUMPTY, 3, 8
+        monster_gfx_prop BRAINPAN, 4, 8
+        monster_gfx_prop CRULLER, 4, 8
+        monster_gfx_prop CACTROT, 3, 8
+        monster_gfx_prop REPO_MAN, 4, 8
+        monster_gfx_prop HARVESTER, 4, 8
+        monster_gfx_prop BOMB, 4, 8
+        monster_gfx_prop STILL_LIFE, 4, 8
+        monster_gfx_prop BOXED_SET, 4, 8
+        monster_gfx_prop SLAMDANCER, 4, 8
+        monster_gfx_prop HADESGIGAS, 4, 16
+        monster_gfx_prop PUG, 4, 8
+        monster_gfx_prop MAGIC_URN, 4, 8
+        monster_gfx_prop MOVER, 3, 8
+        monster_gfx_prop FIGALIZ, 4, 8
+        monster_gfx_prop BUFFALAX, 4, 16
+        monster_gfx_prop ASPIK, 3, 8
+        monster_gfx_prop GHOST, 4, 8
+        monster_gfx_prop FIGALIZ, 4, 8
+        monster_gfx_prop TRILOBITER, 3, 8, SAND_RAY
+        monster_gfx_prop ARENEID, 3, 8
+        monster_gfx_prop ACTANEON, 4, 8
+        monster_gfx_prop SAND_HORSE, 4, 8
+        monster_gfx_prop WHISPER, 3, 8
+        monster_gfx_prop MAD_OSCAR, 4, 8
+        monster_gfx_prop CRAWLY, 4, 8
+        monster_gfx_prop BLEARY, 4, 8
+        monster_gfx_prop GUARD, 4, 8, MARSHAL
+        monster_gfx_prop SOLDIER, 4, 8, TROOPER
+        monster_gfx_prop TEMPLAR, 4, 8, GENERAL
+        monster_gfx_prop NINJA, 4, 8, COVERT
+        monster_gfx_prop OROG, 4, 8, OGOR
+        monster_gfx_prop HAZER, 4, 8, WARLOCK
+        monster_gfx_prop DAHLING, 4, 8, MADAM
+        monster_gfx_prop RAIN_MAN, 4, 8, JOKER
+        monster_gfx_prop BRAWLER, 4, 8, IRON_FIST
+        monster_gfx_prop APOKRYPHOS, 4, 8, GOBLIN
+        monster_gfx_prop WHISPER, 3, 8, APPARITE
+        monster_gfx_prop OVER_MIND, 4, 8, POWERDEMON
+        monster_gfx_prop OSTEOSAUR, 4, 16, DISPLAYER
+        monster_gfx_prop DOBERMAN, 4, 8
+        monster_gfx_prop RHODOX, 3, 8, PEEPERS
+        monster_gfx_prop WERE_RAT, 4, 8, SEWER_RAT
+        monster_gfx_prop URSUS, 3, 8, SLATTER
+        monster_gfx_prop RHINOTAUR, 4, 8, RHINOX
+        monster_gfx_prop LEAFER, 4, 8, RHOBITE
+        monster_gfx_prop STRAY_CAT, 3, 8, WILD_CAT
+        monster_gfx_prop LOBO, 3, 8, RED_FANG
+        monster_gfx_prop DOBERMAN, 4, 8, BOUNTY_MAN
+        monster_gfx_prop VOMAMMOTH, 4, 8, TUSKER
+        monster_gfx_prop FIDOR, 4, 8, RALPH
+        monster_gfx_prop BASKERVOR, 4, 8, CHITONID
+        monster_gfx_prop SURIANDER, 3, 8, WART_PUCK
+        monster_gfx_prop CHIMERA, 4, 16, RHYOS
+        monster_gfx_prop BEHEMOTH, 4, 16, SRBEHEMOTH_UNDEAD
+        monster_gfx_prop MESOSAUR, 4, 8, VECTAUR
+        monster_gfx_prop PTERODON, 4, 8, WYVERN
+        monster_gfx_prop FOSSILFANG, 4, 8, ZOMBONE
+        monster_gfx_prop DRAGON, 4, 16
+        monster_gfx_prop BRACHOSAUR, 4, 16, BRONTAUR
+        monster_gfx_prop TYRANOSAUR, 4, 8, ALLOSAURUS
+        monster_gfx_prop DARK_WIND, 4, 8, CIRPIUS
+        monster_gfx_prop BEAKOR, 4, 8, SPRINTER
+        monster_gfx_prop VULTURE, 4, 8, GOBBLER
+        monster_gfx_prop HARPY, 4, 16, HARPIAI
+        monster_gfx_prop HERMITCRAB, 4, 8, GLOOMSHELL
+        monster_gfx_prop TRAPPER, 4, 8, DROP
+        monster_gfx_prop HORNET, 4, 8, MIND_CANDY
+        monster_gfx_prop CRASSHOPPR, 4, 8, WEEDFEEDER
+        monster_gfx_prop DELTA_BUG, 4, 8, LURIDAN
+        monster_gfx_prop GILOMANTIS, 4, 8, TOE_CUTTER
+        monster_gfx_prop TRILIUM, 4, 8, OVER_GRUNK
+        monster_gfx_prop NIGHTSHADE, 4, 8, EXORAY
+        monster_gfx_prop TUMBLEWEED, 4, 8, CRUSHER
+        monster_gfx_prop BLOOMPIRE, 4, 8, UROBUROS
+        monster_gfx_prop EXOCITE, 4, 8, PRIMORDITE
+        monster_gfx_prop SKY_ARMOR, 4, 8
+        monster_gfx_prop NAUTILOID, 4, 8, CEPHALER
+        monster_gfx_prop EXOCITE, 4, 8, MALIGA
+        monster_gfx_prop REACH_FROG, 4, 8, GIGAN_TOAD
+        monster_gfx_prop LIZARD, 4, 8, GECKOREX
+        monster_gfx_prop CHICKENLIP, 4, 8, CLUCK
+        monster_gfx_prop HOOVER, 4, 16, LAND_WORM
+        monster_gfx_prop RIDER, 4, 16, TEST_RIDER
+        monster_gfx_prop MTEKARMOR, 4, 8, PLUTOARMOR
+        monster_gfx_prop PIPSQUEAK, 4, 8, TOMB_THUMB
+        monster_gfx_prop MTEKARMOR, 4, 8, HEAVYARMOR
+        monster_gfx_prop TELSTAR, 4, 8, CHASER
+        monster_gfx_prop LETHAL_WPN, 4, 16, SCULLION
+        monster_gfx_prop VAPORITE, 3, 8, POPLIUM
+        monster_gfx_prop BEHEMOTH, 4, 16, INTANGIR
+        monster_gfx_prop ING, 4, 8, MISFIT
+        monster_gfx_prop HUMPTY, 3, 8, ELAND
+        monster_gfx_prop CRULLER, 4, 8, ENUO
+        monster_gfx_prop BLEARY, 4, 8, DEEP_EYE
+        monster_gfx_prop REPO_MAN, 4, 8, GREASEMONK
+        monster_gfx_prop HARVESTER, 4, 8, NECKHUNTER
+        monster_gfx_prop BOMB, 4, 8, GRENADE
+        monster_gfx_prop CRITIC, 4, 16
+        monster_gfx_prop BOXED_SET, 4, 8, PAN_DORA
+        monster_gfx_prop SLAMDANCER, 4, 8, SOULDANCER
+        monster_gfx_prop HADESGIGAS, 4, 16, GIGANTOS
+        monster_gfx_prop MAG_ROADER_2, 4, 8
+        monster_gfx_prop STRAY_CAT, 3, 8, WILD_CAT
+        monster_gfx_prop ASPIK, 3, 8, PARASITE
+        monster_gfx_prop TRILOBITER, 3, 8, EARTHGUARD
+        monster_gfx_prop ARENEID, 3, 8, COELECITE
+        monster_gfx_prop ACTANEON, 4, 8, ANEMONE
+        monster_gfx_prop SAND_HORSE, 4, 8, HIPOCAMPUS
+        monster_gfx_prop GHOST, 4, 8
+        monster_gfx_prop MAD_OSCAR, 4, 8, EVIL_OSCAR
+        monster_gfx_prop CRAWLY, 4, 8, SLURM
+        monster_gfx_prop ANGUIFORM, 4, 8, LATIMERIA
+        monster_gfx_prop GUARD, 4, 8, STILLGOING
+        monster_gfx_prop OSTEOSAUR, 4, 16
+        monster_gfx_prop BRAINPAN, 4, 8, PHASE
+        monster_gfx_prop NINJA, 4, 8, OUTSIDER
+        monster_gfx_prop DAHLING, 4, 8, BARB_E
+        monster_gfx_prop RAIN_MAN, 4, 8, PARASOUL
+        monster_gfx_prop WHISPER, 3, 8, PM_STALKER
+        monster_gfx_prop OROG, 4, 8, HEMOPHYTE
+        monster_gfx_prop TEMPLAR, 4, 8, SP_FORCES
+        monster_gfx_prop LEAFER, 4, 8, NOHRABBIT
+        monster_gfx_prop HAZER, 4, 8, WIZARD
+        monster_gfx_prop BRAWLER, 4, 8, SCRAPPER
+        monster_gfx_prop RHINOTAUR, 4, 8, CERITOPS
+        monster_gfx_prop SOLDIER, 4, 8, COMMANDO
+        monster_gfx_prop BUFFALAX, 4, 16, OPINICUS
+        monster_gfx_prop RHODOX, 3, 8, POPPERS
+        monster_gfx_prop LOBO, 3, 8, LUNARIS
+        monster_gfx_prop DOBERMAN, 4, 8, GARM
+        monster_gfx_prop DARK_WIND, 4, 8, VINDR
+        monster_gfx_prop BEAKOR, 4, 8, KIWOK
+        monster_gfx_prop VOMAMMOTH, 4, 8, NASTIDON
+        monster_gfx_prop VAPORITE, 3, 8
+        monster_gfx_prop CRASSHOPPR, 4, 8, INSECARE
+        monster_gfx_prop WERE_RAT, 4, 8, VERMIN
+        monster_gfx_prop GILOMANTIS, 4, 8, MANTODEA
+        monster_gfx_prop FIDOR, 4, 8, BOGY
+        monster_gfx_prop URSUS, 3, 8, PRUSSIAN
+        monster_gfx_prop FOSSILFANG, 4, 8, BLACK_DRGN
+        monster_gfx_prop BASKERVOR, 4, 8, ADAMANCHYT
+        monster_gfx_prop RIDER, 4, 16, DANTE
+        monster_gfx_prop PTERODON, 4, 8, WIREY_DRGN
+        monster_gfx_prop MTEKARMOR, 4, 8, DUELLER
+        monster_gfx_prop VAPORITE, 3, 8, PSYCHOT
+        monster_gfx_prop FLAN, 4, 8, MUUS
+        monster_gfx_prop ING, 4, 8, KARKASS
+        monster_gfx_prop HARVESTER, 4, 8, PUNISHER
+        monster_gfx_prop BOMB, 4, 8
+        monster_gfx_prop REPO_MAN, 4, 8, GABBLDEGAK
+        monster_gfx_prop BEHEMOTH, 4, 16, GTBEHEMOTH
+        monster_gfx_prop ARENEID, 3, 8, SCORPION
+        monster_gfx_prop TYRANOSAUR, 4, 8, CHAOS_DRGN
+        monster_gfx_prop SKY_ARMOR, 4, 8, SPIT_FIRE
+        monster_gfx_prop CHIMERA, 4, 16, VECTAGOYLE
+        monster_gfx_prop GHOST, 4, 8, LICH
+        monster_gfx_prop VULTURE, 4, 8, OSPREY
+        monster_gfx_prop MAG_ROADER_1, 4, 8, MAG_ROADER_3
+        monster_gfx_prop HORNET, 4, 8, BUG
+        monster_gfx_prop ACTANEON, 4, 8, SEA_FLOWER
+        monster_gfx_prop FORTIS, 4, 8
+        monster_gfx_prop BEAKOR, 4, 8, ABOLISHER
+        monster_gfx_prop HARPY, 4, 16, AQUILA
+        monster_gfx_prop TRAPPER, 4, 8, JUNK
+        monster_gfx_prop TRILIUM, 4, 8, MANDRAKE
+        monster_gfx_prop REPO_MAN, 4, 8, FIRST_CLASS
+        monster_gfx_prop SLAMDANCER, 4, 8, TAP_DANCER
+        monster_gfx_prop GHOST, 4, 8, NECROMANCR
+        monster_gfx_prop HADESGIGAS, 4, 16, BORRAS
+        monster_gfx_prop MAG_ROADER_2, 4, 8, MAG_ROADER_4
+        monster_gfx_prop WERE_RAT, 4, 8
+        monster_gfx_prop URSUS, 3, 8, GOLD_BEAR
+        monster_gfx_prop TELSTAR, 4, 8, INNOC
+        monster_gfx_prop TRIXTER, 4, 8
+        monster_gfx_prop LOBO, 3, 8, RED_WOLF
+        monster_gfx_prop DIDALOS, 4, 16
+        monster_gfx_prop WOOLLY, 4, 8
+        monster_gfx_prop VETERAN, 4, 8
+        monster_gfx_prop SKY_ARMOR, 4, 8, SKY_BASE
+        monster_gfx_prop PIPSQUEAK, 4, 8, IRONHITMAN
+        monster_gfx_prop LETHAL_WPN, 4, 16, IO
+        monster_gfx_prop PUG, 4, 8
+        monster_gfx_prop WHELK_SHELL, 3, 8, WHELK
+        monster_gfx_prop WHELK_SHELL, 3, 8, PRESENTER
+        monster_gfx_prop MTEKARMOR, 4, 8, MEGA_ARMOR
+        monster_gfx_prop VARGAS, 4, 16
+        monster_gfx_prop TUNNELARMR, 4, 16
+        monster_gfx_prop TUNNELARMR, 4, 16, PROMETHEUS
+        monster_gfx_prop GHOSTTRAIN, 4, 8
+        monster_gfx_prop DADALUMA, 4, 16
+        monster_gfx_prop SHIVA, 4, 8
+        monster_gfx_prop IFRIT_BOSS, 4, 8
+        monster_gfx_prop NUMBER_024, 4, 16
+        monster_gfx_prop NUMBER_128, 4, 16
+        monster_gfx_prop NUMBER_128, 4, 16, INFERNO
+        monster_gfx_prop CRANE, 4, 16
+        monster_gfx_prop CRANE, 4, 16
+        monster_gfx_prop UMARO, 4, 8
+        monster_gfx_prop UMARO, 4, 8
+        monster_gfx_prop GUARDIAN, 4, 16
+        monster_gfx_prop GUARDIAN, 4, 16
+        monster_gfx_prop AIR_FORCE, 4, 16
+        monster_gfx_prop TRITOCH_BOSS, 4, 16
+        monster_gfx_prop TRITOCH_BOSS, 4, 16
+        monster_gfx_prop FLAMEEATER, 4, 8
+        monster_gfx_prop ATMAWEAPON, 4, 16
+        monster_gfx_prop WOOLLY, 4, 8, NERAPA
+        monster_gfx_prop BEHEMOTH, 4, 16, SRBEHEMOTH
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop TENTACLE_1, 3, 8, TENTACLE
+        monster_gfx_prop DIDALOS, 4, 16, DULLAHAN
+        monster_gfx_prop DOOM_GAZE, 4, 16
+        monster_gfx_prop CHADARNOOK_LADY, 4, 16
+        monster_gfx_prop CURLEY, 4, 8
+        monster_gfx_prop LARRY, 4, 8
+        monster_gfx_prop MOE, 4, 8
+        monster_gfx_prop DARK_FORCE, 4, 8, WREXSOUL
+        monster_gfx_prop HIDON, 4, 16
+        monster_gfx_prop SAMURAI, 4, 8, KATANASOUL
+        monster_gfx_prop SLAMDANCER, 4, 8, L30_MAGIC
+        monster_gfx_prop HIDONITE, 4, 8
+        monster_gfx_prop DOOM, 4, 16
+        monster_gfx_prop GODDESS, 4, 16
+        monster_gfx_prop POLTRGEIST, 4, 16
+        monster_gfx_prop FINAL_KEFKA, 4, 16
+        monster_gfx_prop RAIN_MAN, 4, 8, L40_MAGIC
+        monster_gfx_prop ULTROS_1, 4, 8
+        monster_gfx_prop ULTROS_2, 4, 8
+        monster_gfx_prop ULTROS_2, 4, 8
+        monster_gfx_prop CHUPON, 4, 16
+        monster_gfx_prop HAZER, 4, 8, L20_MAGIC
+        monster_gfx_prop SIEGFRIED, 4, 8
+        monster_gfx_prop GHOST, 4, 8, L10_MAGIC
+        monster_gfx_prop OVER_MIND, 4, 8, L50_MAGIC
+        monster_gfx_prop WHELK_HEAD_1, 4, 8
+        monster_gfx_prop WHELK_HEAD_2, 4, 8
+        monster_gfx_prop HADESGIGAS, 4, 16
+        monster_gfx_prop CZARDRAGON, 4, 16
+        monster_gfx_prop PUG, 4, 8, MASTER_PUG
+        monster_gfx_prop WOOLLY, 4, 8, L60_MAGIC
+        monster_gfx_prop MERCHANT, 4, 8
+        monster_gfx_prop B_DAY_SUIT, 4, 8
+        monster_gfx_prop TENTACLE_1, 3, 8, TENTACLE
+        monster_gfx_prop TENTACLE_2, 3, 8, TENTACLE
+        monster_gfx_prop TENTACLE_2, 3, 8, TENTACLE
+        monster_gfx_prop RIGHT_BLADE, 4, 8, RIGHT_LEFT_BLADE
+        monster_gfx_prop LEFT_BLADE, 4, 8, RIGHT_LEFT_BLADE
+        monster_gfx_prop ROUGH, 4, 8, ROUGH_STRIKER
+        monster_gfx_prop STRIKER, 4, 8, ROUGH_STRIKER
+        monster_gfx_prop DARK_FORCE, 4, 8, L70_MAGIC
+        monster_gfx_prop TRITOCH_BOSS, 4, 16
+        monster_gfx_prop LASER_GUN, 4, 8
+        monster_gfx_prop SPECK, 3, 8
+        monster_gfx_prop MISSILEBAY, 4, 8, LASER_GUN
+        monster_gfx_prop CHADARNOOK_DEMON, 4, 16
+        monster_gfx_prop MESOSAUR, 4, 8, ICE_DRAGON
+        monster_gfx_prop KEFKA, 4, 8
+        monster_gfx_prop PTERODON, 4, 8, STORM_DRGN
+        monster_gfx_prop TYRANOSAUR, 4, 8, DIRT_DRGN
+        monster_gfx_prop URSUS, 3, 8
+        monster_gfx_prop TEMPLAR, 4, 8, SP_FORCES
+        monster_gfx_prop SOLDIER, 4, 8
+        monster_gfx_prop BRACHOSAUR, 4, 16, GOLD_DRGN
+        monster_gfx_prop FOSSILFANG, 4, 8, SKULL_DRGN
+        monster_gfx_prop CZARDRAGON, 4, 16, BLUE_DRGN
+        monster_gfx_prop DRAGON, 4, 16, RED_DRAGON
+        monster_gfx_prop PIRANHA, 4, 8
+        monster_gfx_prop PIRANHA, 4, 8, RIZOPAS
+        monster_gfx_prop WHISPER, 3, 8, PM_STALKER
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop BRACHOSAUR, 4, 16
+        monster_gfx_prop HIDONITE, 4, 8
+        monster_gfx_prop HIDONITE, 4, 8
+        monster_gfx_prop HIDONITE, 4, 8
+        monster_gfx_prop DAHLING, 4, 8
+        monster_gfx_prop TRIXTER, 4, 8, L90_MAGIC
+        monster_gfx_prop FORTIS, 4, 8, PROTOARMOR
+        monster_gfx_prop NUMBER_024, 4, 16, MAGIMASTER
+        monster_gfx_prop SOULSAVER, 4, 8
+        monster_gfx_prop ULTROS_2, 4, 8
+        monster_gfx_prop TRIXTER, 4, 8, NAUGHTY
+        monster_gfx_prop PHUNBABA, 4, 16
+        monster_gfx_prop PHUNBABA, 4, 16
+        monster_gfx_prop PHUNBABA, 4, 16
+        monster_gfx_prop PHUNBABA, 4, 16
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop HOOVER, 4, 16, ZONE_EATER
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop KEFKA, 4, 8
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop SOLDIER, 4, 8, OFFICER
+        monster_gfx_prop TEMPLAR, 4, 8
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop SOLDIER, 4, 8
+        monster_gfx_prop IFRIT_BOSS, 4, 8, ESPER
+        monster_gfx_prop GHOSTTRAIN, 4, 8
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop ATMAWEAPON, 4, 16, ATMA
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop GUARD, 4, 8
+
+; genju graphics
+        monster_gfx_prop RAMUH, 4, 8
+        monster_gfx_prop IFRIT, 4, 16
+        monster_gfx_prop SHIVA, 4, 8
+        monster_gfx_prop SIREN, 4, 8
+        monster_gfx_prop TERRATO, 4, 16
+        monster_gfx_prop SHOAT, 4, 8
+        monster_gfx_prop MADUIN, 4, 8
+        monster_gfx_prop BISMARK, 3, 16
+        monster_gfx_prop STRAY, 4, 8
+        monster_gfx_prop PALIDOR, 4, 16
+        monster_gfx_prop TRITOCH, 4, 16
+        monster_gfx_prop ODIN, 4, 16
+        monster_gfx_prop RAIDEN, 4, 16
+        monster_gfx_prop BAHAMUT, 4, 16
+        monster_gfx_prop ALEXANDR, 4, 16
+        monster_gfx_prop CRUSADER_1, 4, 16
+        monster_gfx_prop GUARD, 4, 8
+        monster_gfx_prop KIRIN, 4, 8
+        monster_gfx_prop ZONESEEK, 4, 8
+        monster_gfx_prop CARBUNKL, 4, 8
+        monster_gfx_prop PHANTOM, 3, 8
+        monster_gfx_prop SRAPHIM, 4, 8
+        monster_gfx_prop GOLEM, 4, 8
+        monster_gfx_prop UNICORN, 4, 8
+        monster_gfx_prop FENRIR, 4, 16
+        monster_gfx_prop STARLET, 4, 16
+        monster_gfx_prop PHOENIX, 4, 16
+        monster_gfx_prop TIGERBREAK, 4, 8
+        monster_gfx_prop CRUSADER_2, 4, 16
+        monster_gfx_prop CRUSADER_2, 4, 16, CRUSADER_3
+        monster_gfx_prop IMP, 3, 8, TRILIUM
+        monster_gfx_prop GUARD, 4, 8
 
 ; ------------------------------------------------------------------------------
+
+.delmac inc_monster_gfx
+.delmac inc_monster_pal
+.delmac monster_gfx_prop

@@ -1,18 +1,18 @@
 ; ------------------------------------------------------------------------------
 
-.include "gfx/map_gfx_bg3.inc"
-.include "gfx/map_anim_gfx_bg3.inc"
+.include "map_gfx_bg3.inc"
+.include "map_anim_gfx_bg3.inc"
 
 ; ------------------------------------------------------------------------------
 
 .macro inc_map_gfx_bg3 id, name
-        array_label MapGfxBG3, MAP_GFX_BG3::id
-        .incbin .sprintf("map_gfx_bg3/%s.2bpp.lz", name)
+        array_label MAP_GFX_BG3, MAP_GFX_BG3::id
+        .incbin .sprintf("assets/gfx/map_gfx_bg3/%s.2bpp.lz", name)
 .endmac
 
 .macro inc_map_anim_gfx_bg3 id, name
-        array_label MapAnimGfxBG3, MAP_ANIM_GFX_BG3::id
-        .incbin .sprintf("map_anim_gfx_bg3/%s.2bpp.lz", name)
+        array_label MAP_ANIM_GFX_BG3, MAP_ANIM_GFX_BG3::id
+        .incbin .sprintf("assets/gfx/map_anim_gfx_bg3/%s.2bpp.lz", name)
 .endmac
 
 ; ------------------------------------------------------------------------------
@@ -40,15 +40,14 @@ MapGfxBG3:
         inc_map_gfx_bg3 WATERFALL, "waterfall"
         inc_map_gfx_bg3 TOWN_WATER, "town_water"
         inc_map_gfx_bg3 MAGITEK_FACTORY, "magitek_factory"
-
-MapGfxBG3::End:
+        MAP_GFX_BG3::END := *
         end_fixed_block
 
 ; e6/cd60
 MapGfxBG3Ptrs:
         fixed_block $40
-        ptr_tbl_far MapGfxBG3
-        end_ptr_far MapGfxBG3
+        ptr_tbl_far MAP_GFX_BG3
+        end_ptr_far MAP_GFX_BG3
         end_fixed_block
 
 ; ------------------------------------------------------------------------------
@@ -56,8 +55,8 @@ MapGfxBG3Ptrs:
 ; e6/cda0
 MapAnimGfxBG3Ptrs:
         fixed_block $20
-        ptr_tbl_far MapAnimGfxBG3
-        end_ptr_far MapAnimGfxBG3
+        ptr_tbl_far MAP_ANIM_GFX_BG3
+        end_ptr_far MAP_ANIM_GFX_BG3
         end_fixed_block
 
 ; ------------------------------------------------------------------------------
@@ -71,8 +70,7 @@ MapAnimGfxBG3:
         inc_map_anim_gfx_bg3 CAVES, "caves"
         inc_map_anim_gfx_bg3 BEACH, "beach"
         inc_map_anim_gfx_bg3 NARSHE, "narshe"
-
-MapAnimGfxBG3::End:
+        MAP_ANIM_GFX_BG3::END := *
         end_fixed_block
 
 ; ------------------------------------------------------------------------------

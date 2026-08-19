@@ -11,7 +11,9 @@
 ; | created: 9/23/2022                                                         |
 ; +----------------------------------------------------------------------------+
 
-inc_lang "text/item_name_%s.inc"
+.include "src/text/item_name.inc"
+
+.import ImpItem, IMP_ITEM_COUNT: zp
 
 .segment "menu_code"
 
@@ -236,7 +238,7 @@ DrawPartyEquipMenu:
 ; [ draw text for character slot 1 in party equip menu ]
 
 DrawPartyEquipSlot1:
-@8f1c:  lda     zCharID::Slot1
+@8f1c:  lda     zCharID::_0
         bmi     @8f35
 .if !LANG_EN
         lda     #BG1_TEXT_COLOR::TEAL
@@ -245,7 +247,7 @@ DrawPartyEquipSlot1:
         ldy     #sizeof_PartyEquipSlot1TextList
         jsr     DrawPosKanaList
 .endif
-        ldx     zCharPropPtr::Slot1
+        ldx     zCharPropPtr::_0
         stx     zSelCharPropPtr
         lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
@@ -265,7 +267,7 @@ DrawPartyEquipSlot1:
 ; [ draw text for character slot 2 in party equip menu ]
 
 DrawPartyEquipSlot2:
-@8f36:  lda     zCharID::Slot2
+@8f36:  lda     zCharID::_1
         bmi     @8f51
 .if !LANG_EN
         lda     #BG1_TEXT_COLOR::TEAL
@@ -274,7 +276,7 @@ DrawPartyEquipSlot2:
         ldy     #sizeof_PartyEquipSlot2TextList
         jsr     DrawPosKanaList
 .endif
-        ldx     zCharPropPtr::Slot2
+        ldx     zCharPropPtr::_1
         stx     zSelCharPropPtr
         lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
@@ -295,7 +297,7 @@ DrawPartyEquipSlot2:
 ; [ draw text for character slot 3 in party equip menu ]
 
 DrawPartyEquipSlot3:
-@8f52:  lda     zCharID::Slot3
+@8f52:  lda     zCharID::_2
         bmi     @8f6d
 .if !LANG_EN
         lda     #BG1_TEXT_COLOR::TEAL
@@ -304,7 +306,7 @@ DrawPartyEquipSlot3:
         ldy     #sizeof_PartyEquipSlot3TextList
         jsr     DrawPosKanaList
 .endif
-        ldx     zCharPropPtr::Slot3
+        ldx     zCharPropPtr::_2
         stx     zSelCharPropPtr
         lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
@@ -325,7 +327,7 @@ DrawPartyEquipSlot3:
 ; [ draw text for character slot 4 in party equip menu ]
 
 DrawPartyEquipSlot4:
-@8f6e:  lda     zCharID::Slot4
+@8f6e:  lda     zCharID::_3
         bmi     @8f89
 .if !LANG_EN
         lda     #BG1_TEXT_COLOR::TEAL
@@ -334,7 +336,7 @@ DrawPartyEquipSlot4:
         ldy     #sizeof_PartyEquipSlot4TextList
         jsr     DrawPosKanaList
 .endif
-        ldx     zCharPropPtr::Slot4
+        ldx     zCharPropPtr::_3
         stx     zSelCharPropPtr
         lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
@@ -431,11 +433,11 @@ _c38fe1:
         beq     @901f
 @8ffc:  sta     hM7A
         stz     hM7A
-        lda     #ItemName::ITEM_SIZE
+        lda     #ITEM_NAME::ITEM_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #ItemName::ITEM_SIZE
+        ldy     #ITEM_NAME::ITEM_SIZE
 @9010:  lda     f:ItemName,x
         sta     hWMDATA
         inx
@@ -443,7 +445,7 @@ _c38fe1:
         bne     @9010
         stz     hWMDATA
         rts
-@901f:  ldy     #ItemName::ITEM_SIZE
+@901f:  ldy     #ITEM_NAME::ITEM_SIZE
         lda     #$ff
 @9024:  sta     hWMDATA
         dey
@@ -453,7 +455,7 @@ _c38fe1:
 
 ; ------------------------------------------------------------------------------
 
-PartyEquipWindow:                       make_window BG2A, {1, 1}, {28, 24}
+PartyEquipWindow:                       window_pos BG2A, {1, 1}, {28, 24}
 
 ; ------------------------------------------------------------------------------
 
@@ -633,7 +635,7 @@ _c3913e:
         jsr     HexToDec3
         ldx_pos BG3A, {23, 23}
         jsr     DrawNum3
-        jsr     CalcOldBattlePower
+        jsr     CalcOldAttackPower
         ldx     zf1
         stx     zf3
         jsr     HexToDec5
@@ -711,7 +713,7 @@ _c391fb:
 ; [  ]
 
 _c39207:
-@9207:  ldx     z0
+@9207:  ldx     zZero
         longa
 loop:   .repeat 2
         lda     $11a0,x
@@ -827,7 +829,7 @@ _c39233:
         lda     wStatTextColor::MagPwr
         sta     zTextColor
         jsr     DrawNum3
-        jsr     CalcNewBattlePower
+        jsr     CalcNewAttackPower
         jsr     HexToDec5
         ldx_pos BG3A, {27, 25}
         lda     wStatTextColor::BatPwr
@@ -889,8 +891,8 @@ UpdateEquipStatColors:
         inx                             ; next stat
         cpx     #8
         bne     @9327
-        jsr     CalcNewBattlePower
-        jsr     CalcOldBattlePower
+        jsr     CalcNewAttackPower
+        jsr     CalcOldAttackPower
         ldy     zf3
         cpy     zf1
         beq     @935e
@@ -916,7 +918,7 @@ EquipStatOffsets:
 
 ; +$f3 = battle power (out)
 
-CalcNewBattlePower:
+CalcNewAttackPower:
 @9371:  lda     za1         ; branch if no gauntlet bonus
         beq     @938b
         lda     f:$0011ac     ; right hand battle power
@@ -947,7 +949,7 @@ CalcNewBattlePower:
 
 ; +$f1 = battle power (out)
 
-CalcOldBattlePower:
+CalcOldAttackPower:
 @93ab:  lda     za0
         beq     @93c5
         lda     $7e300c
@@ -1133,15 +1135,15 @@ _c39479:
 ; current equipped items window
 ; equip title window
 
-EquipBtmWindow1:                        make_window BG2A, {1, 12}, {28, 13}
-EquipTopWindow1:                        make_window BG2A, {1, 3}, {28, 7}
-EquipOptionsWindow:                     make_window BG2A, {1, 1}, {28, 2}
-EquipBtmWindow2:                        make_window BG2B, {1, 12}, {28, 13}
-EquipTopWindow2:                        make_window BG2B, {1, 3}, {28, 7}
+EquipBtmWindow1:                        window_pos BG2A, {1, 12}, {28, 13}
+EquipTopWindow1:                        window_pos BG2A, {1, 3}, {28, 7}
+EquipOptionsWindow:                     window_pos BG2A, {1, 1}, {28, 2}
+EquipBtmWindow2:                        window_pos BG2B, {1, 12}, {28, 13}
+EquipTopWindow2:                        window_pos BG2B, {1, 3}, {28, 7}
 .if LANG_EN
-EquipTitleWindow:                       make_window BG2B, {23, 1}, {6, 2}
+EquipTitleWindow:                       window_pos BG2B, {23, 1}, {6, 2}
 .else
-EquipTitleWindow:                       make_window BG2B, {24, 1}, {5, 2}
+EquipTitleWindow:                       window_pos BG2B, {24, 1}, {5, 2}
 .endif
 
 ; ------------------------------------------------------------------------------
@@ -1152,16 +1154,16 @@ EquipTitleWindow:                       make_window BG2B, {24, 1}, {5, 2}
 
 InitPartyEquipScrollHDMA:
 @9497:  lda     #$02
-        sta     $4350
-        lda     #$0e
-        sta     $4351
+        sta     hDMA5::CTRL
+        lda     #<hBG1VOFS
+        sta     hDMA5::HREG
         ldy     #near _c395d8
-        sty     $4352
+        sty     hDMA5::ADDR
         lda     #^_c395d8
-        sta     $4354
+        sta     hDMA5::ADDR_B
         lda     #^_c395d8
-        sta     $4357
-        lda     #$20
+        sta     hDMA5::HDMA_B
+        lda     #BIT_5
         tsb     zEnableHDMA
         rts
 
@@ -1171,45 +1173,45 @@ InitPartyEquipScrollHDMA:
 
 InitEquipScrollHDMA:
 @94b6:  lda     #$02
-        sta     $4350
+        sta     hDMA5::CTRL
         lda     #<hBG3VOFS
-        sta     $4351
+        sta     hDMA5::HREG
         ldy     #near _c395d8
-        sty     $4352
+        sty     hDMA5::ADDR
         lda     #^_c395d8
-        sta     $4354
+        sta     hDMA5::ADDR_B
         lda     #^_c395d8
-        sta     $4357
-        lda     #$20
+        sta     hDMA5::HDMA_B
+        lda     #BIT_5
         tsb     zEnableHDMA
         jsr     LoadEquipBG1VScrollHDMATbl
-        ldx     z0
+        ldx     zZero
 @94d9:  lda     f:_c39564,x
         sta     $7e9bc9,x
         inx
         cpx     #sizeof__c39564
         bne     @94d9
         lda     #$02
-        sta     $4360
+        sta     hDMA6::CTRL
         lda     #<hBG1HOFS
-        sta     $4361
+        sta     hDMA6::HREG
         ldy     #$9bc9
-        sty     $4362
+        sty     hDMA6::ADDR
         lda     #$7e
-        sta     $4364
+        sta     hDMA6::ADDR_B
         lda     #$7e
-        sta     $4367
+        sta     hDMA6::HDMA_B
         lda     #$02
-        sta     $4370
+        sta     hDMA7::CTRL
         lda     #<hBG1VOFS
-        sta     $4371
+        sta     hDMA7::HREG
         ldy     #$9849
-        sty     $4372
+        sty     hDMA7::ADDR
         lda     #$7e
-        sta     $4374
+        sta     hDMA7::ADDR_B
         lda     #$7e
-        sta     $4377
-        lda     #$c0
+        sta     hDMA7::HDMA_B
+        lda     #BIT_6 | BIT_7
         tsb     zEnableHDMA
         rts
 
@@ -1218,7 +1220,7 @@ InitEquipScrollHDMA:
 ; [ load bg1 vertical scroll HDMA table for equip/relic item list ]
 
 LoadEquipBG1VScrollHDMATbl:
-@9520:  ldx     z0
+@9520:  ldx     zZero
 @9522:  lda     f:_c39571,x
         sta     $7e9849,x
         inx
@@ -1322,7 +1324,7 @@ _c395d8:
 
 _c3960c:
 @960c:  jsr     ClearEquipOptionText
-        ldy     z0
+        ldy     zZero
         sty     zBG2HScroll
         rts
 
@@ -1342,16 +1344,16 @@ _c39614:
 
 ; [ menu state $36: equip menu options (equip, optimum, remove, empty) ]
 
-MenuState_36:
+        array_label MENU_STATE, MENU_STATE::EQUIP_OPTIONS
 @9621:  jsr     _c3960c
         jsr     DrawEquipOptions
         jsr     UpdateEquipOptionCursor
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @9635
         jsr     PlaySelectSfx
         bra     SelectEquipOption
-@9635:  lda     z08+1
+@9635:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @9648
         jsr     PlayCancelSfx
@@ -1360,7 +1362,7 @@ MenuState_36:
         sta     zNextMenuState
         stz     zMenuState
         rts
-@9648:  lda     #$35
+@9648:  lda     #MENU_STATE::EQUIP_INIT
         sta     ze0
         jmp     CheckShoulderBtns
 
@@ -1417,7 +1419,7 @@ SelectEquipOption_00:
         jsr     DrawEquipTitleEquip
         jsr     LoadEquipSlotCursor
         jsr     InitEquipSlotCursor
-        lda     #$55
+        lda     #MENU_STATE::EQUIP_SLOT_SELECT
         sta     zMenuState
         rts
 
@@ -1440,7 +1442,7 @@ SelectEquipOption_02:
         jsr     DrawEquipTitleRemove
         jsr     LoadEquipSlotCursor
         jsr     InitEquipSlotCursor
-        lda     #$56
+        lda     #MENU_STATE::EQUIP_REMOVE_SELECT
         sta     zMenuState
         rts
 
@@ -1484,7 +1486,7 @@ EquipRemoveAll:
 OptimizeCharEquip:
 @96d2:  jsr     InitCharProp
         clr_ax
-        lda     w0201                   ; character number
+        lda     r0201                   ; character number
 @96da:  cmp     zCharID,x                   ; look for character in party
         beq     @96e6
         inx
@@ -1583,7 +1585,7 @@ EquipOptimum:
 GetValidWeapons:
 @9795:  jsr     ClearValidItemList
         jsr     GetCharEquipMask
-        ldx     z0
+        ldx     zZero
         txy
 @979e:  clr_a
         lda     $1869,y     ; item in inventory
@@ -1618,7 +1620,7 @@ GetValidWeapons:
 GetValidShields:
 @97d7:  jsr     ClearValidItemList
         jsr     GetCharEquipMask
-        ldx     z0
+        ldx     zZero
         txy
 @97e0:  clr_a
         lda     $1869,y
@@ -1667,7 +1669,7 @@ GetBestEquip:
         cmp     f:ImpItem,x
         beq     @983c       ; branch if this is an imp item
         inx
-        cpx     #$000a
+        cpx     #IMP_ITEM_COUNT
         bne     @9823
         plb
         ply
@@ -1676,30 +1678,6 @@ GetBestEquip:
 ; imp item
 @983c:  iny
         bra     @9821
-
-.pushseg
-.segment "imp_item"
-
-; ed/82e4
-ImpItem:
-        .byte ITEM::CURSED_SHLD
-        .byte ITEM::THORNLET
-        .byte ITEM::IMP_HALBERD
-        .byte ITEM::TORTOISESHLD
-        .byte ITEM::TITANIUM
-        .byte ITEM::IMPS_ARMOR
-        .byte ITEM::ATMA_WEAPON
-        .byte ITEM::DRAINER
-        .byte ITEM::SOUL_SABRE
-        .byte ITEM::HEAL_ROD
-        .byte ITEM::EMPTY
-        .byte ITEM::EMPTY
-        .byte ITEM::EMPTY
-        .byte ITEM::EMPTY
-        .byte ITEM::EMPTY
-        .byte ITEM::EMPTY
-
-.popseg
 
 ; ------------------------------------------------------------------------------
 
@@ -1722,7 +1700,7 @@ GetBest2Hand:
         cmp     f:ImpItem,x
         beq     @9878       ; branch if this is an imp item
         inx
-        cpx     #$000a      ; number of imp items
+        cpx     #IMP_ITEM_COUNT
         bne     @984d
         sta     zc9         ; $c9 = item number
         jsr     GetItemPropPtr
@@ -1748,23 +1726,23 @@ GetBest2Hand:
 
 ; [ menu state $55: equip (slot select, equip) ]
 
-MenuState_55:
+        array_label MENU_STATE, MENU_STATE::EQUIP_SLOT_SELECT
 @9884:  jsr     UpdateEquipSlotCursor
         jsr     _c39975
 
 ; A button
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @98b4
         jsr     PlaySelectSfx
         lda     z4e                     ; save cursor position
         sta     z5f
-        lda     #$57                    ; go to menu state $57
+        lda     #MENU_STATE::EQUIP_ITEM_SELECT
         sta     zMenuState
         jsr     GetValidEquip
         jsr     SortValidEquip
         jsr     InitEquipListCursor
-        lda     #$55                    ; return to menu state $55 afterwards
+        lda     #MENU_STATE::EQUIP_SLOT_SELECT
         sta     zNextMenuState
         jsr     _c39233
         jsr     ClearBG1ScreenA
@@ -1772,16 +1750,16 @@ MenuState_55:
         jmp     DrawEquipItemList
 
 ; B button
-@98b4:  lda     z08+1
+@98b4:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @98c8
         jsr     PlayCancelSfx
         jsr     LoadEquipOptionCursor
         jsr     InitEquipOptionCursor
-        lda     #$36                    ; go to menu state $36
+        lda     #MENU_STATE::EQUIP_OPTIONS
         sta     zMenuState
         rts
-@98c8:  lda     #$7e                    ; go to menu state $7e if user presses top r or l button
+@98c8:  lda     #MENU_STATE::EQUIP_SLOT_CHAR_CHANGE
         sta     ze0
         jmp     CheckShoulderBtns
 
@@ -1789,9 +1767,9 @@ MenuState_55:
 
 ; [ menu state $56: equip (slot select, remove) ]
 
-MenuState_56:
+        array_label MENU_STATE, MENU_STATE::EQUIP_REMOVE_SELECT
 @98cf:  jsr     UpdateEquipSlotCursor
-        lda     z08
+        lda     zNewCtrlState
         bit     #JOY_A
         beq     @98f4
         jsr     PlaySelectSfx
@@ -1806,16 +1784,16 @@ MenuState_56:
         lda     #$ff
         sta     $001f,y
         jsr     _c3911b
-@98f4:  lda     z08+1
+@98f4:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @9908
         jsr     PlayCancelSfx
         jsr     LoadEquipOptionCursor
         jsr     InitEquipOptionCursor
-        lda     #$36
+        lda     #MENU_STATE::EQUIP_OPTIONS
         sta     zMenuState
         rts
-@9908:  lda     #$7f
+@9908:  lda     #MENU_STATE::EQUIP_REMOVE_CHAR_CHANGE
         sta     ze0
         jmp     CheckShoulderBtns
 
@@ -1823,10 +1801,10 @@ MenuState_56:
 
 ; [ menu state $57: equip (item select) ]
 
-MenuState_57:
+        array_label MENU_STATE, MENU_STATE::EQUIP_ITEM_SELECT
 @990f:  jsr     _c39ad3
         jsr     _c39233
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @9944
         jsr     CheckCanEquipSelItem
@@ -1846,7 +1824,7 @@ MenuState_57:
         jsr     DecItemQty
         jsr     _c3911b
         bra     @994d
-@9944:  lda     z08+1
+@9944:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @996d
         jsr     PlayCancelSfx
@@ -1861,7 +1839,7 @@ MenuState_57:
         lda     z5f
         sta     z4e
         jsr     InitEquipSlotCursor
-        lda     #$55
+        lda     #MENU_STATE::EQUIP_SLOT_SELECT
         sta     zMenuState
 @996d:  rts
 @996e:  jsr     PlayInvalidSfx
@@ -2127,7 +2105,7 @@ _c39b0d:
         jsr     CreateScrollArrowTask2
         longa
         lda     #$0060
-        sta     wTaskSpeedX,x
+        sta     wTaskProp::SpeedX_H,x
         lda     #$6000
         sta     hWRDIVL
         shorta
@@ -2138,9 +2116,9 @@ _c39b0d:
         nop5
         longa
         lda     hRDDIVL
-        sta     wTaskSpeedY,x
+        sta     wTaskProp::SpeedY_H,x
         shorta
-        ldy     z0
+        ldy     zZero
         sty     z4f
         jsr     LoadEquipLongListCursor
         jsr     InitEquipLongListCursor
@@ -2174,7 +2152,7 @@ GetValidEquip:
 @9b6f:  jmp     @9bee
 
 ; weapon or shield
-@9b72:  ldx     z0
+@9b72:  ldx     zZero
         txy
 @9b75:  clr_a
         lda     $1869,y     ; item number
@@ -2205,7 +2183,7 @@ GetValidEquip:
         rts
 
 ; helmet
-@9bb2:  ldx     z0
+@9bb2:  ldx     zZero
         txy
 @9bb5:  clr_a
         lda     $1869,y
@@ -2234,7 +2212,7 @@ GetValidEquip:
         rts
 
 ; armor
-@9bee:  ldx     z0
+@9bee:  ldx     zZero
         txy
 @9bf1:  clr_a
         lda     $1869,y
@@ -2267,7 +2245,7 @@ GetValidEquip:
 ; [ clear list of optimum items ]
 
 ClearValidItemList:
-@9c2a:  ldx     z0
+@9c2a:  ldx     zZero
         lda     #$ff
 @9c2e:  sta     $7e9d8a,x
         inx
@@ -2376,8 +2354,8 @@ DrawEquipItemList:
 
 ; [ draw one row of equip item list ]
 
-make_jump_label UpdateListText, LIST_TYPE::EQUIP
 DrawEquipItemListRow:
+        array_label UPDATE_LIST_TEXT, LIST_TYPE::EQUIP
 @9ce2:  jsr     GetEquipSlotPtr
         clr_a
         lda     ze5
@@ -2436,11 +2414,11 @@ LoadEquipListItemName:
         beq     @9d4f
         sta     hM7A
         stz     hM7A
-        lda     #ItemName::ITEM_SIZE
+        lda     #ITEM_NAME::ITEM_SIZE
         sta     hM7B
         sta     hM7B
         ldx     hMPYL
-        ldy     #ItemName::ITEM_SIZE
+        ldy     #ITEM_NAME::ITEM_SIZE
 @9d40:  lda     f:ItemName,x
         sta     hWMDATA
         inx
@@ -2449,13 +2427,13 @@ LoadEquipListItemName:
 .if LANG_EN
         stz     hWMDATA
         rts
-@9d4f:  ldy     #ItemName::ITEM_SIZE
+@9d4f:  ldy     #ITEM_NAME::ITEM_SIZE
 .else
         lda     #COLON_CHAR
         sta     hWMDATA
         stz     hWMDATA
         rts
-@9d4f:  ldy     #ItemName::ITEM_SIZE+3
+@9d4f:  ldy     #ITEM_NAME::ITEM_SIZE+3
 .endif
         lda     #$ff
 @9d54:  sta     hWMDATA
@@ -2473,7 +2451,7 @@ LoadEquipListItemName:
 IncItemQty:
 @9d5e:  phy
         sta     ze0
-        ldy     z0
+        ldy     zZero
 @9d63:  cmp     $1869,y
         beq     @9d8a
         cmp     #$ff
@@ -2481,7 +2459,7 @@ IncItemQty:
         iny
         cpy     #$0100
         bne     @9d63
-        ldy     z0
+        ldy     zZero
 @9d74:  lda     $1869,y
         cmp     #$ff
         beq     @9d7e
@@ -2493,7 +2471,7 @@ IncItemQty:
         sta     $1869,y
         bra     @9d95
 @9d8a:  lda     $1969,y
-        cmp     #99
+        cmp     #MAX_ITEM_QTY
         beq     @9d95
         inc
         sta     $1969,y
@@ -2509,7 +2487,7 @@ IncItemQty:
 DecItemQty:
 @9d97:  phy
         sta     ze0
-        ldy     z0
+        ldy     zZero
 @9d9c:  cmp     $1869,y
         beq     @9da9
         iny
@@ -2541,9 +2519,9 @@ CreateEquipSlotCursorTask:
         jsr     CreateTask
         longa
         lda     z55
-        sta     wTaskPosX,x
+        sta     wTaskProp::PosX_H,x
         lda     z57
-        sta     wTaskPosY,x
+        sta     wTaskProp::PosY_H,x
         shorta
         rts
 
@@ -2569,12 +2547,12 @@ EquipSlotCursorTask_00:
         tsb     z46
         longa
         lda     #near CursorAnimData
-        sta     near wTaskAnimPtr,x
+        sta     near wTaskProp::AnimPtr,x
         shorta
         lda     #^CursorAnimData
-        sta     near wTaskAnimBank,x
+        sta     near wTaskProp::AnimBank,x
         jsr     InitAnimTask
-        inc     near wTaskState,x
+        inc     near wTaskProp::State,x
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -2606,7 +2584,7 @@ _c39e0f:
 
 _c39e14:
 @9e14:  jsr     _c39e37
-        lda     wGameTimeFrames
+        lda     rGameTimeFrames
         and     #1
         beq     @9e20
         bra     _c39e23
@@ -2622,7 +2600,7 @@ _c39e23:
         ldy     #near wBG3Tiles::ScreenA
         sty     zDMA2Src
         lda     #^wBG3Tiles::ScreenA
-        sta     zDMA2Src+2
+        sta     zDMA2Src_B
         ldy     #$0880
         sty     zDMA2Size
         rts
@@ -2637,7 +2615,7 @@ _c39e37:
         ldy     #near wBG1Tiles::ScreenA
         sty     zDMA1Src
         lda     #$7e
-        sta     zDMA1Src+2
+        sta     zDMA1Src_B
         ldy     #$0800
         sty     zDMA1Size
         rts
@@ -2646,7 +2624,7 @@ _c39e37:
 
 ; [ menu state $58: relic (init) ]
 
-MenuState_58:
+        array_label MENU_STATE, MENU_STATE::RELIC_INIT
 @9e4b:  jsr     _c39e50
         bra     _c39e6f
 
@@ -2676,7 +2654,7 @@ _c39e6f:
 @9e6f:  jsr     DrawRelicMenu
         lda     #MENU_STATE::FADE_IN
         sta     zMenuState
-        lda     #$59
+        lda     #MENU_STATE::RELIC_OPTIONS
         sta     zNextMenuState
         jmp     EnableInterrupts
 
@@ -2684,22 +2662,22 @@ _c39e6f:
 
 ; [ menu state $79: switch character (relic equip) ]
 
-MenuState_79:
+        array_label MENU_STATE, MENU_STATE::RELIC_SLOT_CHAR_CHANGE
 @9e7d:  jsr     _c39e99
         jsr     DrawEquipTitleEquip
         jsr     _c39ea8
-        lda     #$5a
+        lda     #MENU_STATE::RELIC_SLOT_SELECT
         jmp     _c39eb3
 
 ; ------------------------------------------------------------------------------
 
 ; [ menu state $7a: switch character (relic remove) ]
 
-MenuState_7a:
+        array_label MENU_STATE, MENU_STATE::RELIC_REMOVE_CHAR_CHANGE
 @9e8b:  jsr     _c39e99
         jsr     DrawEquipTitleRemove
         jsr     _c39ea8
-        lda     #$5c
+        lda     #MENU_STATE::RELIC_REMOVE_SELECT
         jmp     _c39eb3
 
 ; ------------------------------------------------------------------------------
@@ -2736,23 +2714,23 @@ _c39eb3:
 
 ; [ menu state $59: relic options (equip/remove) ]
 
-MenuState_59:
+        array_label MENU_STATE, MENU_STATE::RELIC_OPTIONS
 @9eb8:  jsr     _c39e23
         jsr     _c3960c
         jsr     DrawRelicOptions
         jsr     UpdateRelicOptionCursor
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @9ed0
         jsr     PlaySelectSfx
         jmp     SelectRelicOption
-@9ed0:  lda     z08+1
+@9ed0:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @9edc
         jsr     PlayCancelSfx
         jsr     CheckReequip
 @9edc:  jsr     _c39ee6
-        lda     #$58
+        lda     #MENU_STATE::RELIC_INIT
         sta     ze0
         jmp     CheckShoulderBtns
 
@@ -2789,7 +2767,7 @@ CheckReequip:
         jsr     DrawReequipMsg
         lda     #4*60                   ; wait 4 seconds
         sta     z22
-        lda     #$6c
+        lda     #MENU_STATE::EQUIP_WAIT_MSG
         sta     zMenuState
         rts
 
@@ -2804,7 +2782,7 @@ DrawReequipMsg:
         lda     $1d4e
         and     #$10
         beq     @9f44
-        lda     #$6e
+        lda     #MENU_STATE::EQUIP_EMPTY_RETURN
         sta     zNextMenuState
         lda     zd1
         cmp     #$59
@@ -2815,7 +2793,7 @@ DrawReequipMsg:
 @9f3d:  ldy     #near EquipEmptyMsgText
         jsr     DrawPosKana
         rts
-@9f44:  lda     #$6d
+@9f44:  lda     #MENU_STATE::EQUIP_OPTIMUM_RETURN
         sta     zNextMenuState
         lda     zd1
         cmp     #$59
@@ -2878,19 +2856,19 @@ CheckReequipRelics:
 
 ; [ menu state $6c: pause for reequip message ]
 
-MenuState_6c:
+        array_label MENU_STATE, MENU_STATE::EQUIP_WAIT_MSG
 @9fb1:  lda     z22
         bne     @9fb8
         stz     zMenuState
         rts
 @9fb8:  dec     z22
-        lda     z08                     ; B button or either shoulder button
+        lda     zNewCtrlState_L                     ; B button or either shoulder button
         bit     #JOY_R
         bne     @9fcc
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_L
         bne     @9fcc
-        lda     z08+1
+        lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @9fce
 @9fcc:  stz     zMenuState
@@ -2920,7 +2898,7 @@ SelectRelicOption_00:
         jsr     DrawEquipTitleEquip
         jsr     LoadRelicSlotCursor
         jsr     InitRelicSlotCursor
-        lda     #$5a
+        lda     #MENU_STATE::RELIC_SLOT_SELECT
         sta     zMenuState
         rts
 
@@ -2933,7 +2911,7 @@ SelectRelicOption_01:
         jsr     DrawEquipTitleRemove
         jsr     LoadRelicSlotCursor
         jsr     InitRelicSlotCursor
-        lda     #$5c
+        lda     #MENU_STATE::RELIC_REMOVE_SELECT
         sta     zMenuState
         rts
 
@@ -2941,21 +2919,21 @@ SelectRelicOption_01:
 
 ; [ menu state $5a: relic slot select ]
 
-MenuState_5a:
+        array_label MENU_STATE, MENU_STATE::RELIC_SLOT_SELECT
 @9ffd:  jsr     _c39e14
         jsr     UpdateRelicSlotCursor
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @a033
         jsr     PlaySelectSfx
         lda     z4e
         sta     z5f
-        lda     #$5b
+        lda     #MENU_STATE::RELIC_ITEM_SELECT
         sta     zMenuState
         jsr     _c3a051
         jsr     SortValidEquip
         jsr     InitEquipListCursor
-        lda     #$5a
+        lda     #MENU_STATE::RELIC_SLOT_SELECT
         sta     zNextMenuState
         jsr     ClearBG1ScreenA
         jsr     WaitVblank
@@ -2963,17 +2941,17 @@ MenuState_5a:
         jsr     _c39233
         jsr     _c39e23
         jmp     WaitVblank
-@a033:  lda     z08+1
+@a033:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @a047
         jsr     PlayCancelSfx
         jsr     LoadRelicOptionCursor
         jsr     InitRelicOptionCursor
-        lda     #$59
+        lda     #MENU_STATE::RELIC_OPTIONS
         sta     zMenuState
         rts
 @a047:  jsr     _c39ee6
-        lda     #$79
+        lda     #MENU_STATE::RELIC_SLOT_CHAR_CHANGE
         sta     ze0
         jmp     CheckShoulderBtns
 
@@ -2986,7 +2964,7 @@ _c3a051:
         jsr     GetCharEquipMask
         lda     #BG1_TEXT_COLOR::DEFAULT
         sta     zTextColor
-        ldx     z0
+        ldx     zZero
         txy
 @a05e:  clr_a
         lda     $1869,y
@@ -3022,14 +3000,14 @@ _c3a051:
 
 ; [ menu state $5b: relic item select ]
 
-MenuState_5b:
+        array_label MENU_STATE, MENU_STATE::RELIC_ITEM_SELECT
 @a097:  lda     #$10
         trb     z45
         jsr     _c39e14
         jsr     _c39ad3
         jsr     _c39233
         jsr     _c3a1d8
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @a0dc
         jsr     PlaySelectSfx
@@ -3053,7 +3031,7 @@ MenuState_5b:
         jsr     DecItemQty
         jsr     _c39131
         bra     @a0e5
-@a0dc:  lda     z08+1
+@a0dc:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @a109
         jsr     PlayCancelSfx
@@ -3070,7 +3048,7 @@ MenuState_5b:
         lda     z5f
         sta     z4e
         jsr     InitRelicSlotCursor
-        lda     #$5a
+        lda     #MENU_STATE::RELIC_SLOT_SELECT
         sta     zMenuState
 @a109:  rts
 
@@ -3078,10 +3056,10 @@ MenuState_5b:
 
 ; [ menu state $5c: remove relic ]
 
-MenuState_5c:
+        array_label MENU_STATE, MENU_STATE::RELIC_REMOVE_SELECT
 @a10a:  jsr     _c39e23
         jsr     UpdateRelicSlotCursor
-        lda     z08
+        lda     zNewCtrlState_L
         bit     #JOY_A
         beq     @a132
         jsr     PlaySelectSfx
@@ -3096,17 +3074,17 @@ MenuState_5c:
         lda     #$ff
         sta     $0023,y
         jsr     _c39131
-@a132:  lda     z08+1
+@a132:  lda     zNewCtrlState_H
         bit     #>JOY_B
         beq     @a146
         jsr     PlayCancelSfx
         jsr     LoadRelicOptionCursor
         jsr     InitRelicOptionCursor
-        lda     #$59
+        lda     #MENU_STATE::RELIC_OPTIONS
         sta     zMenuState
         rts
 @a146:  jsr     _c39ee6
-        lda     #$7a
+        lda     #MENU_STATE::RELIC_REMOVE_CHAR_CHANGE
         sta     ze0
         jmp     CheckShoulderBtns
 

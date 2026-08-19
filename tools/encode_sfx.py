@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-import os, traceback, sys
+import os, sys
 import romtools as rt
 from mfvitools.mml2mfvi import mml_to_akao
 
 def akao_sfx_to_asm(data, channels):
 
     # file header
-    asm_string = '.list off\n\n'
-    asm_string += '; this file is generated automatically,' \
-        + ' do not modify manually\n'
+    asm_string = '        .list off\n\n'
+    asm_string += '; this file is generated automatically,'
+    asm_string += ' do not modify manually\n'
 
     label_list = []
 
@@ -25,15 +25,16 @@ def akao_sfx_to_asm(data, channels):
 
     # convert bytes to asm text
     asm_string += rt.bytes_to_asm(data[0x26:], labels=label_list)
-    asm_string += '\n\n.list on\n'
+    asm_string += '\n\n        .list on\n'
 
     return asm_string
 
 if __name__ == '__main__':
 
     mml_path = sys.argv[1]
-    mml_root, mml_ext = os.path.splitext(mml_path)
-    asm_path = mml_root + '.asm'
+    asm_path = sys.argv[2]
+    # mml_root, mml_ext = os.path.splitext(mml_path)
+    # asm_path = mml_root + '.asm'
 
     mml = []
     # read mml file
@@ -48,8 +49,8 @@ if __name__ == '__main__':
     try:
         def_variant = mml_to_akao(mml)['_default_']
         asm_string = akao_sfx_to_asm(def_variant[0], def_variant[1])
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        print(e)
 
     # write asm file
     try:

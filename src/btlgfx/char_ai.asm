@@ -4,7 +4,7 @@
 ; |                            FINAL FANTASY VI                                |
 ; |                                                                            |
 ; +----------------------------------------------------------------------------+
-; | file: src/assets/char_ai.asm                                               |
+; | file: src/btlgfx/char_ai.asm                                               |
 ; |                                                                            |
 ; | description: character a.i. properties                                     |
 ; |                                                                            |
@@ -32,11 +32,251 @@
 
 ; ------------------------------------------------------------------------------
 
-.include "btlgfx/char_ai.inc"
-.include "sound/song_script.inc"
+.include "char_ai.inc"
+.include "src/sound/song_script.inc"
 
 ; ------------------------------------------------------------------------------
 
+; [ init character ai data ]
+
+_c2bd43:
+scene_init:
+@bd43:  lda     #$ff
+        sta     near w7e629d
+        stz     near w7e2f47
+        stz     near w7e6192                   ; characters not in the party (gets inverted later)
+        longa
+        clr_ax
+        lda     #$ffff
+@bd55:  sta     near w7e6246,x
+        inx2
+        cpx     #$0010
+        bne     @bd55
+        shorta0
+        lda     near w7e2f49
+        bpl     @bd95                   ; branch if character ai is disabled
+        lda     near w7e2f4a                   ; character ai index
+        sta     $22
+        lda     #$18
+        sta     $24
+        jsl     Mult8_far
+        ldx     $26
+        lda     f:CharAI+1,x            ; special battle background
+        cmp     #$ff
+        beq     @bd84                   ; branch if no special background
+        sta     near w7eecb8                   ; set battle background
+        stz     near w7eecb8+1
+@bd84:  lda     f:CharAI+2,x
+        sta     near w7e2f46                   ; characters that can be targetted
+        lda     f:CharAI+3,x
+        sta     near w7e629d                   ; special song index
+        jsr     _c2be6e
+@bd95:  lda     near w7e2f4b
+        bmi     @bdd0
+        inc     near wSfxDisabled                   ; disable sound effects
+        lda     #$10                    ; spc command $10 (load song)
+        sta     $1300
+        lda     #$ff                    ; full volume
+        sta     $1302
+        lda     near w7e629d
+        cmp     #$ff
+        bne     @bdbf                   ; branch if a special song from character ai data
+        lda     near w7e2f4b
+        and     #$38
+        lsr3
+        tax
+        lda     f:BattleSongTbl,x
+        cmp     #$ff
+        beq     @bdcd                   ; branch if continuing same song
+@bdbf:  sta     $1301                   ; song number
+        lda     $11e4
+        and     #$08
+        bne     @bdcd                   ; branch if continuing current music
+        jsl     ExecSound_ext
+@bdcd:  stz     near wSfxDisabled                   ; enable sound effects
+@bdd0:  clr_axy
+        longa
+@bdd5:  stz     near wCharGfxDataBuf::IsCharAI,x
+        lda     near w7e6246,y
+        cmp     #$ffff
+        beq     @bde3
+        inc     near wCharGfxDataBuf::IsCharAI,x
+@bde3:  tya
+        clc
+        adc     #$0004
+        tay
+        txa
+        clc
+        adc     #$0020
+        tax
+        cpx     #$0080
+        bne     @bdd5
+        shorta0
+        lda     #1
+        sta     $10
+        clr_ax
+@bdfd:  lda     near wCharGfxDataBuf::CharID,x
+        cmp     #CHAR_PROP::KEFKA_7
+        bne     @be0c
+        lda     near w7e6192                   ; exclude Kefka 7 from the party
+        ora     $10
+        sta     near w7e6192
+@be0c:  asl     $10
+        txa
+        clc
+        adc     #$20
+        tax
+        cmp     #$80
+        bne     @bdfd
+        lda     near w7e6192                   ; invert characters in the party
+        not_a
+        sta     near w7e6192
+        inc     near wSfxDisabled                   ; disable sound effects
+        lda     #$82
+        sta     $1300
+        clr_a
+        sta     $1301
+        dec
+        sta     $1302
+        lda     $11e4
+        and     #$08
+        bne     @be3a
+        jsl     ExecSound_ext
+@be3a:  stz     near wSfxDisabled                   ; enable sound effects
+        lda     f:$001d4f
+        and     #$40
+        sta     near w7e629c
+        lda     f:$001d54
+        bpl     @be65
+        lda     f:$001d4f
+        sta     $10
+        clr_ax
+@be54:  lda     $10
+        and     #$01
+        sta     near w7e6198,x
+        lsr     $10
+        inx
+        cpx     #4
+        bne     @be54
+        bra     @be6d
+@be65:  clr_ax
+        stx     near w7e6198
+        stx     near w7e619a
+@be6d:  rtl
+
+; ------------------------------------------------------------------------------
+
+; [  ]
+
+_c2be6e:
+set_play_xy:
+@be6e:  phx
+        lda     f:CharAI,x
+        bmi     @bee9                   ; branch if non-ai characters not shown
+        lda     #4
+        sta     $10
+@be79:  lda     f:CharAI+4,x
+        cmp     #$ff
+        beq     @bee7
+        and     #$3f
+        sta     $12
+        stz     $14
+        clr_ay
+        lda     #$01                    ; character bit mask
+        sta     $18
+@be8d:  lda     near wCharGfxDataBuf::CharID,y
+        cmp     $12
+        bne     @bed1
+        lda     f:CharAI+4,x
+        and     #CHAR_AI_FLAG_ENEMY_CHAR
+        beq     @bea1
+        lda     $18
+        sta     near w7e2f47                   ; characters acting as enemies
+@bea1:  lda     f:CharAI+4,x
+        bpl     @beaf
+        lda     $18
+        ora     near w7e6192                   ; exclude from the party
+        sta     near w7e6192
+@beaf:  lda     $14
+        asl2
+        tay
+        lda     f:CharAI+7,x            ; x position
+        cmp     #$ff
+        beq     @bede
+        longa
+        asl
+        sta     near w7e6246,y
+        lda     f:CharAI+8,x            ; y position
+        and     #$00ff
+        asl
+        sta     near w7e6248,y
+        shorta
+        bra     @bede
+@bed1:  asl     $18
+        inc     $14
+        tya
+        clc
+        adc     #$20
+        tay
+        cmp     #$80
+        bne     @be8d
+@bede:  inx5
+        dec     $10
+        bne     @be79
+@bee7:  plx
+        rts
+
+; non-ai characters are not shown (hide party)
+@bee9:  clr_ay
+        lda     #$01                    ; character bit mask
+        sta     $10
+@beef:  lda     f:CharAI+4,x
+        cmp     #$ff
+        beq     @bf0e                   ; branch if ai character slot is disabled
+        and     #$40
+        beq     @bf00                   ; branch if not acting as enemy
+        lda     $10
+        sta     near w7e2f47                   ; set character acting as enemy
+@bf00:  lda     f:CharAI+4,x
+        bpl     @bf0e                   ; branch if character is not shown
+        lda     $10
+        ora     near w7e6192                   ; exclude from the party
+        sta     near w7e6192
+@bf0e:  lda     f:CharAI+7,x            ; x position
+        cmp     #$ff
+        beq     @bf29
+        longa
+        asl
+        sta     near w7e6246,y
+        lda     f:CharAI+8,x            ; y position
+        and     #$00ff
+        asl
+        sta     near w7e6248,y
+        shorta
+@bf29:  asl     $10                     ; next character
+        iny4
+        inx5
+        cpy     #$0010
+        bne     @beef
+        plx
+        rts
+
+; ------------------------------------------------------------------------------
+
+; battle songs
+BattleSongTbl:
+        .byte   SONG::BATTLE_THEME
+        .byte   SONG::DECISIVE_BATTLE
+        .byte   SONG::FIERCE_BATTLE
+        .byte   SONG::RETURNERS
+        .byte   SONG::SAVE_THEM
+        .byte   SONG::DANCING_MAD_1_2_3
+        .byte   SONG::NONE
+        .byte   SONG::NONE
+
+; ------------------------------------------------------------------------------
+
+.pushseg
 .segment "char_ai"
 
 ; d0/fd00
@@ -739,3 +979,5 @@ CharAI:
 .byte 255,255
 
 ; ------------------------------------------------------------------------------
+
+.popseg

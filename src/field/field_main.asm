@@ -13,10 +13,25 @@
 
 .p816
 
-.include "const.inc"
-.include "hardware.inc"
-.include "macros.inc"
-.include "code_ext.inc"
+.include "src/common/const.inc"
+.include "src/common/hardware.inc"
+.include "src/common/macros.inc"
+.include "src/common/code_ext.inc"
+.include "src/menu/menu_const.inc"
+
+.scope EventScript
+        .import RandBattle, GameStart
+        .import WaitDlg
+        .import Tent, Warp
+        .import NoEvent
+        .import TreasureItem, TreasureMagic
+        .import TreasureGil, TreasureEmpty
+        .import TreasureMonster
+
+        .if ::DEBUG
+        .import DebugEvent
+        .endif
+.endscope
 
 ; ------------------------------------------------------------------------------
 
@@ -45,6 +60,7 @@
 .include "header.asm"
 
 .include "char_prop.asm"
+.include "init_npc_switch.asm"
 .include "map_tile_prop.asm"
 .include "map_tileset.asm"
 .include "sub_tilemap.asm"

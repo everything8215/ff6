@@ -11,7 +11,7 @@
 ; | created: 5/12/2023                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "gfx/battle_bg.inc"
+.include "src/gfx/battle_bg.inc"
 
 .import RNGTbl
 
@@ -833,7 +833,7 @@ TrainCmd_e0:
         tax
         lda     f:RNGTbl,x   ; random number table
         sta     $64
-        lda     #$0029      ; event battle #$29
+        lda     #$0029      ; event battle group 41
         asl2
         tax
         shorta
@@ -868,7 +868,7 @@ TrainCmd_e1:
         tax
         lda     f:RNGTbl,x
         sta     $64
-        lda     #$0090      ; event battle #$90
+        lda     #$0090      ; event battle group 144
         asl2
         tax
         shorta

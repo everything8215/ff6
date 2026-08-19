@@ -3,9 +3,11 @@
 
 ; ------------------------------------------------------------------------------
 
-.include "gfx/map_gfx.inc"
-.include "gfx/map_gfx_bg3.inc"
-.include "gfx/map_pal.inc"
+.include "map_tileset.inc"
+
+.include "src/gfx/map_gfx.inc"
+.include "src/gfx/map_gfx_bg3.inc"
+.include "src/gfx/map_pal.inc"
 
 .a8
 .i16
@@ -165,7 +167,7 @@ LoadMapProp:
 ; ed/8f00
 MapProp:
         fixed_block $3580
-        .incbin "map_prop.dat"
+        .incbin "assets/data/field/map_prop.bin"
         end_fixed_block
 
 .popseg
@@ -1688,11 +1690,11 @@ LoadTileset:
         tax
         longa_clc
         lda     f:MapTilesetPtrs,x   ; pointers to tilesets
-        adc     #.loword(MapTileset)
+        adc     #near MAP_TILESET::BASE_PTR
         sta     $f3
         shorta0
         lda     f:MapTilesetPtrs+2,x   ; bank byte
-        adc     #^MapTileset
+        adc     #^MAP_TILESET::BASE_PTR
         sta     $f5
         ldx     #$d040
         stx     $f6
@@ -1721,11 +1723,11 @@ LoadTileset:
         tax
         longa_clc
         lda     f:MapTilesetPtrs,x
-        adc     #.loword(MapTileset)
+        adc     #near MAP_TILESET::BASE_PTR
         sta     $f3
         shorta0
         lda     f:MapTilesetPtrs+2,x
-        adc     #^MapTileset
+        adc     #^MAP_TILESET::BASE_PTR
         sta     $f5
         ldx     #$d040
         stx     $f6

@@ -11,7 +11,7 @@
 ; | created: 5/12/2023                                                         |
 ; +----------------------------------------------------------------------------+
 
-.include "gfx/battle_bg.inc"
+.include "src/gfx/battle_bg.inc"
 
 ; ------------------------------------------------------------------------------
 
@@ -28,14 +28,14 @@ GetVehicleInput:
         shorta
         longi
         lda     $05
-        bit     #$40
+        bit     #>JOY_Y
         jne     _6d45
 
 ; turn right
         shorta
         longi
         lda     $05
-        bit     #$01
+        bit     #>JOY_RIGHT
         beq     @6c2e
         longa
         lda     $29
@@ -55,7 +55,7 @@ GetVehicleInput:
 ; turn left
 @6c2e:  shorta
         lda     $05
-        bit     #$02
+        bit     #>JOY_LEFT
         beq     @6c56
         longa
         longa_clc
@@ -94,7 +94,7 @@ GetVehicleInput:
 ; A button
 @6c7a:  longa
         lda     $04
-        bit     #$0080
+        bit     #JOY_A
         beq     @6c92
         lda     $26
         clc
@@ -116,7 +116,7 @@ GetVehicleInput:
 ; move up
 @6ca2:  shorta
         lda     $05
-        bit     #$08
+        bit     #>JOY_UP
         beq     @6cbb
         longa
         lda     $2d
@@ -130,7 +130,7 @@ GetVehicleInput:
 ; move down
 @6cbb:  shorta
         lda     $05
-        bit     #$04
+        bit     #>JOY_DOWN
         beq     @6cd4
         longa
         lda     $2d
@@ -157,8 +157,8 @@ GetVehicleInput:
 ; sharp left turn
 @6cea:  longa
         lda     $04
-        and     #$0220
-        cmp     #$0220
+        and     #JOY_L | JOY_LEFT
+        cmp     #JOY_L | JOY_LEFT
         bne     @6d07
         lda     a:$0073
         inc2
@@ -170,8 +170,8 @@ GetVehicleInput:
 
 ; sharp right turn
 @6d07:  lda     $04
-        and     #$0110
-        cmp     #$0110
+        and     #JOY_R | JOY_RIGHT
+        cmp     #JOY_R | JOY_RIGHT
         bne     @6d22
         lda     a:$0073
         dec2
@@ -183,7 +183,7 @@ GetVehicleInput:
 
 ; B button
 @6d22:  lda     $05
-        bit     #$0080
+        bit     #>JOY_B
         beq     @6d2c       ; branch if b button is not pressed
         jsr     LandAirship
 @6d2c:  jmp     _6e7e
@@ -199,7 +199,7 @@ StrafeAngleTbl:
 ; strafe with Y button
 _6d45:  longa
         lda     $05
-        and     #$000f
+        and     #>JOY_DIR_MASK
         jeq     @6e38
         asl
         tax
@@ -346,10 +346,10 @@ _6d45:  longa
 ; hide/show minimap
 _6e7e:  longa
         lda     $32
-        bit     #$0010
+        bit     #>JOY_START
         bne     @6ead
         lda     $05
-        bit     #$0010
+        bit     #>JOY_START
         beq     @6ead
         lda     $11f6
         bit     #$0001
@@ -369,7 +369,7 @@ _6e7e:  longa
         lda     $19
         bne     @6ee8
         lda     $08                     ; check X button
-        bit     #$0040
+        bit     #JOY_X
         beq     @6ee8
         stz     $ed
         lda     $2f
@@ -396,7 +396,7 @@ _6e7e:  longa
         cmp     #$01
         bne     @6f6b
         lda     $04
-        bit     #$80
+        bit     #JOY_A
         beq     @6f6b
         lda     $1dd2
         bit     #$01
@@ -428,7 +428,7 @@ _6e7e:  longa
         stz     $2c
         stz     $2d
         longi
-        ldx     #$0174
+        ldx     #$0174                  ; event battle group 93 (doom gaze)
         lda     f:EventBattleGroup,x
         sta     $11e0
         lda     #BATTLE_BG::AIRSHIP_WOR
@@ -453,7 +453,7 @@ GetChocoInput:
 @6f6d:  shorta
         longi
         lda     $05
-        bit     #$01
+        bit     #>JOY_RIGHT
         beq     @6f96
         longa
         lda     $29
@@ -473,7 +473,7 @@ GetChocoInput:
 ; left button
 @6f96:  shorta
         lda     $05
-        bit     #$02
+        bit     #>JOY_LEFT
         beq     @6fbc
         longa_clc
         lda     $29
@@ -510,7 +510,7 @@ GetChocoInput:
 
 @6fe0:  longa
         lda     $04
-        bit     #$0800
+        bit     #JOY_UP
         bne     @6fee
         bit     #$0080
         beq     @6ffd
@@ -532,8 +532,8 @@ GetChocoInput:
 ; sharp left turn
 @700d:  longa
         lda     $04
-        and     #$0220
-        cmp     #$0220
+        and     #JOY_L | JOY_LEFT
+        cmp     #JOY_L | JOY_LEFT
         bne     @702a
         lda     a:$0073
         inc2
@@ -545,8 +545,8 @@ GetChocoInput:
 
 ; sharp right turn
 @702a:  lda     $04
-        and     #$0110
-        cmp     #$0110
+        and     #JOY_R | JOY_RIGHT
+        cmp     #JOY_R | JOY_RIGHT
         bne     @7045
         lda     a:$0073
         dec2
@@ -558,15 +558,15 @@ GetChocoInput:
 
 ; B button
 @7045:  lda     $05
-        bit     #$0080
+        bit     #>JOY_B
         beq     @704f       ; branch if b button is not pressed
         jsr     LandAirship
 @704f:  longa
         lda     $32
-        bit     #$0010
+        bit     #>JOY_START
         bne     @707e
         lda     $05
-        bit     #$0010
+        bit     #>JOY_START
         beq     @707e
         lda     $11f6
         bit     #$0001
