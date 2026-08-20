@@ -60,18 +60,17 @@ existing files.
 
 ### Assemble and Link ROM File
 
-Run `make <version>` to make the version of the ROM that you want, where
-`<version>` is one of the following values:
+Run `make` to build the the ROM file. The default version is v1.0 of the
+English version. Use `make LANG=jp` to make the Japanese version, or
+`make ROM_VERSION=1` to make the v1.1 English version. You can also
+combine these as `make LANG=jp ROM_VERSION=1` to make a Japanese ROM with
+the bugfixes that were added in the v1.1 English version.
 
-- `ff6-jp`: Final Fantasy VI 1.0 (J)
-- `ff6-en`: Final Fantasy III 1.0 (U)
-- `ff6-en1`: Final Fantasy III 1.1 (U)
-
-The ROM will be created in the `rom` directory.
+The ROM will be created in the `build/<LANG>/bin` directory.
 
 After building the vanilla ROMs, you are free to modify the code and data as
 you like, then run `make` again to rebuild the ROM. Some switchable config
-options can be found in the file `include/const.inc`. This includes a "debug"
+options can be found in the file `src/common/const.inc`. This includes a "debug"
 mode that allows you to skip the intro.
 
 ## Distributing ROM Hacks
@@ -120,8 +119,8 @@ subroutines and data locations.
 
 ### File Formats, Names, and Extensions
 
-Assembly files have the extension `.asm`. In addition to assembly code this
-includes files which contain scripts, and memory labels but contain no actual
+Assembly files have the extension `.asm`. In addition to assembly code, this
+includes files which contain scripts and memory labels but contain no actual
 code. In most cases, assembly files should only be assembled once. The only
 exception is when the ROM contains multiple identical copies of the same
 subroutine or data.
@@ -145,10 +144,20 @@ Compressed data files should have the same filename and extension as their
 uncompressed counterpart with an appropriate extension added at the end, e.g.
 `image.cgx.lz` is the compressed version of `image.cgx` in the same directory.
 
+Localized text files (i.e. files that are language-specific) should include
+the appropriate language suffix as an additional file extension BEFORE the
+main file extension. For example, `item_name.en.txt` and `item_name.jp.txt`
+are the English and Japanese versions of the item names. The build script
+encodes the text from the relevant text file and save it in the `build`
+directory prior to assembling the ROM. Similarly, localized data files
+with a language suffix will be copied into the `build` directory with the
+language extension removed. The `build` directory is included in the
+assembler search path so that the assembler can find the appropriate version
+without having to specify the language extension in the assembly code.
+
 ### File Organization
 
-The `src` directory contains all of the assembly code and game data. The
-`include` directory contains all of the include files.
+The `src` directory contains all of the assembly code and game data.
 
 Each of the modules described above is in a separate subdirectory within the
 `src` directory. This mimics my best guess as to how the original source code
@@ -158,8 +167,7 @@ etc.). Each module directory contains all of the source code and data for that
 module. The root directory of the repo contains a Makefile to assemble each
 module and link all of the object files together to create the ROM.
 
-Each module also has a subdirectory in the `include` directory which can
-contain include files related to that module.
+The `src/common` directory includes source files common to multiple modules.
 
 The `tools` directory contains a set of python scripts which are used to
 extract and modify game data.
@@ -224,7 +232,8 @@ descriptive name in PascalCase case, e.g. `wSpriteData`.
 
 Hardware registers are a slight exception to the rule. I chose to use the
 official register names from the SNES development manual in all caps,
-prepended with a lowercase 'h' (i.e. `$2100` is `hINIDISP`). These are defined in `include/hardware.inc`.
+prepended with a lowercase 'h' (i.e. `$2100` is `hINIDISP`). These are defined
+in `src/common/hardware.inc`.
 
 Instruction mnemonics and macro names are in all lowercase. Macro names can
 include underscores to improve readability. Constant expressions are in all
