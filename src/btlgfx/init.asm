@@ -857,8 +857,16 @@ CharEntryFirstTbl:
 
 ; battle script commands (monster entrance and character entrance)
 EntryGfxScript:
-@1431:  .byte   GFX_CMD::MONSTER_ENTRY_EXIT,$00,$00,$00
-        .byte   GFX_CMD::BATTLE_EVENT,$00,$00,$00
+@1431:  .byte   GFX_CMD::MONSTER_ENTRY_EXIT
+        .byte   0
+        .byte   0
+        .byte   0
+
+        .byte   GFX_CMD::BATTLE_EVENT
+        .byte   BATTLE_EVENT_SCRIPT::CHAR_ENTRY
+        .byte   0
+        .byte   0
+
         .byte   GFX_CMD::TERMINATE
 
 .enum CALC_MONSTER_POS

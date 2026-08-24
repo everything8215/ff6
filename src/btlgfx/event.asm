@@ -1,5 +1,3 @@
-.include "battle_event_script.inc"
-
 ; ------------------------------------------------------------------------------
 
 ; [ battle script command $0f: execute battle event ]
@@ -9,9 +7,9 @@
         array_label GFX_CMD, GFX_CMD::BATTLE_EVENT
         ldy     #1
         lda     (z76),y     ; battle event number
-        cmp     #$1b
+        cmp     #BATTLE_EVENT_SCRIPT::GAU_APPEARS
         beq     @fd77
-        cmp     #$1f
+        cmp     #BATTLE_EVENT_SCRIPT::WREXSOUL_INTRO
         beq     @fd77
         inc     near w7ee9ef       ; stop battle time except for event $1b (gau) and $1f (wrexsoul)
 @fd77:  lda     near w7e628c       ; branch if seamless scripts is enabled
@@ -54,7 +52,7 @@ BattleEventCmdTbl:
 
 ; [ battle event command $13: add/remove character as a target ]
 
-        array_label BATTLE_EVENT_CMD, BATTLE_EVENT_CMD::CHAR_TARGET
+        array_label BATTLE_EVENT_CMD, BATTLE_EVENT_CMD::ADD_CHAR_TARGET
         jsl     AddCharTarget
         rts
 
@@ -62,7 +60,7 @@ BattleEventCmdTbl:
 
 ; [ battle event command $14: add/remove character from top menu ]
 
-        array_label BATTLE_EVENT_CMD, BATTLE_EVENT_CMD::CHAR_MENU
+        array_label BATTLE_EVENT_CMD, BATTLE_EVENT_CMD::SHOW_CHAR_MENU
         jsl     AddCharToTopMenu
         jsr     DrawCharNames
         jsl     RedrawTopMenu
@@ -434,7 +432,6 @@ BattleEventScriptPtrs:
 ; d0/9842
 BattleEventScript:
         .include "battle_event_script.asm"
-        .incbin "assets/data/btlgfx/battle_event_script.bin", 1589
 
 .popseg
 

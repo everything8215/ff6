@@ -392,7 +392,7 @@ MonsterSpecialAnim:
         special_anim MULTI_PUNCH                ; 375: MONSTER_0177
         special_anim MULTI_PUNCH                ; 376: MONSTER_0178
         special_anim MULTI_PUNCH                ; 377: SOLDIER_FLASHBACK
-        special_anim MULTI_PUNCH                ; 378: KEFKA_VS_ESPER
+        special_anim MULTI_PUNCH                ; 378: KEFKA_GENJU_MAGICITE
         special_anim MULTI_PUNCH                ; 379: EVENT
         special_anim MULTI_PUNCH                ; 380: MONSTER_017C
         special_anim MULTI_PUNCH                ; 381: ATMA

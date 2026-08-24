@@ -24,6 +24,7 @@
 ; ------------------------------------------------------------------------------
 
 .include "ai_script.inc"
+.include "src/btlgfx/battle_event_script.inc"
 .include "src/sound/song_script.inc"
 .include "src/gfx/battle_bg.inc"
 .include "src/btlgfx/char_ai.inc"

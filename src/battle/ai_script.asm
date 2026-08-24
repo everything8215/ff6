@@ -548,7 +548,7 @@ ai_script M_TEKARMOR
         if_cmd MAGIC
         if_battle_switch_clr 9, 1
                 toggle_battle_switch 9, 1
-                battle_event $06
+                battle_event TERRA_MAGIC
                 end_retal
 
 ; ------------------------------------------------------------------------------
@@ -4030,7 +4030,7 @@ ai_script PUGS
 ai_script WHELK
         if_battle_switch_clr 3, 0
                 toggle_battle_switch 3, 0
-                battle_event $05
+                battle_event WHELK_INTRO
                 end_if
         if_monster_timer 10
         if_monsters_dead MONSTER_2
@@ -4114,7 +4114,7 @@ ai_script VARGAS
                 boss_death
                 end_if
         if_attack PUMMEL
-                battle_event $09
+                battle_event VARGAS_DEFEATED
                 kill_monsters ALL, FADE_HORIZONTAL
                 end_if
         if_hit
@@ -4124,13 +4124,13 @@ ai_script VARGAS
                 dlg $42
 ; Enough!!
 ; Off with ya now!
-                battle_event $07
+                battle_event SABIN_INTRO
                 end_if
         if_hit
         if_battle_switch_set 0, 0
         if_battle_switch_clr 0, 1
         if_hp SELF, 10368
-                battle_event $08
+                battle_event BLITZ_TUTORIAL
                 set_battle_switch 0, 1
                 end_if
         end_retal
@@ -4139,7 +4139,7 @@ ai_script VARGAS
 
 ai_script TUNNELARMR
         if_battle_switch_clr 0, 0
-                battle_event $10
+                battle_event TUNNELARMR_INTRO
                 toggle_battle_switch 0, 0
                 end_if
         if_hp SELF, 384
@@ -4782,7 +4782,7 @@ ai_script AIR_FORCE
 ; ------------------------------------------------------------------------------
 
 ai_script TRITOCH_INTRO
-        battle_event $04
+        battle_event TRITOCH_INTRO
         end_battle
         end
 
@@ -4791,7 +4791,7 @@ ai_script TRITOCH_INTRO
 ; ------------------------------------------------------------------------------
 
 ai_script TRITOCH_MORPH
-        battle_event $12
+        battle_event TRITOCH_TERRA_TRANSFORMS
         end_battle
         end
 
@@ -5399,7 +5399,7 @@ ai_script MOE
 ai_script WREXSOUL
         if_battle_switch_clr 0, 1
                 set_battle_switch 0, 1
-                battle_event $1f
+                battle_event WREXSOUL_INTRO
                 attack ZINGER
                 end_if
         if_battle_switch_set 0, 0
@@ -5699,7 +5699,7 @@ ai_script POLTRGEIST
 
 ai_script FINAL_KEFKA
         if_monster_switch_clr 0
-                battle_event $20
+                battle_event FINAL_BATTLE_INTRO
                 set_monster_switch 0
                 end_if
         if_hp SELF, 7680
@@ -5818,7 +5818,7 @@ ai_script ULTROS_RIVER
                 hide_monsters SELF, WATER
                 dlg $09
 ; Th…that’s all, friends!
-                battle_event $0a
+                battle_event ULTROS_RIVER_DEFEATED
                 end_if
         if_element FIRE
                 dlg $0b
@@ -5999,7 +5999,7 @@ ai_script ULTROS_MOUNTAIN
         if_hit
         if_battle_switch_clr 0, 4
         if_hp SELF, 10240
-                battle_event $16
+                battle_event RELM_ULTROS_INTRO
                 set_battle_switch 0, 4
                 if_self_dead
                         kill_monsters ALL, SAND
@@ -6232,7 +6232,7 @@ ai_script MERCHANT
                 clr_battle_switch 13, 5
                 hide_monsters MONSTER_1, INSTANT
                 restore_monsters MONSTER_2, INSTANT
-                battle_event $0f
+                battle_event STEAL_MERCHANT
                 kill_monsters MONSTER_1, INSTANT
                 end_retal
 
@@ -7504,7 +7504,7 @@ ai_script PHUNBABA_4
 
 ai_script TERRA_FLASHBACK
         attack FIRE_BEAM
-        battle_event $11
+        battle_event KEFKA_TERRA_INTRO
         end_battle
         end
 
@@ -7517,7 +7517,7 @@ ai_script KEFKA_IMP_CAMP
         end
 
         if_hit
-                battle_event $1d
+                battle_event SABIN_KEFKA_IMPERIAL_CAMP
                 end_battle
                 end_retal
 
@@ -7566,11 +7566,11 @@ ai_script GAU_VELDT
         if_battle_switch_clr 13, 1
                 recruit_gau
                 set_battle_switch 13, 1
-                battle_event $0d
+                battle_event GAU_INTRO
                 end_battle
                 end_if
         if_hit
-                battle_event $1c
+                battle_event GAU_RUNS_AWAY
                 end_battle
                 end_retal
 
@@ -7586,7 +7586,7 @@ ai_script KEFKA_VS_LEO
 
         if_self_dead
                 hide_monsters MONSTER_2, FADE_HORIZONTAL
-                battle_event $17
+                battle_event KEFKA_KILLS_LEO
                 end_battle
                 end_retal
 
@@ -7625,7 +7625,7 @@ ai_script OFFICER
                 clr_battle_switch 13, 4
                 hide_monsters MONSTER_3, INSTANT
                 restore_monsters MONSTER_4, INSTANT
-                battle_event $0e
+                battle_event STEAL_GREEN_SOLDIER
                 kill_monsters MONSTER_3, INSTANT
                 end_retal
 
@@ -7664,12 +7664,12 @@ ai_script SOLDIER_FLASHBACK
 
 ; ------------------------------------------------------------------------------
 
-ai_script KEFKA_VS_ESPER
+ai_script KEFKA_GENJU_MAGICITE
         set_target KEFKA_3
         attack FIRE
         attack FIRA
         attack FIRAGA
-        battle_event $1a
+        battle_event KEFKA_GENJU_MAGICITE
         end_battle
         end
 
@@ -7680,27 +7680,27 @@ ai_script KEFKA_VS_ESPER
 ai_script EVENT
         target_off SELF
         if_battle_id $0180
-                battle_event $13
+                battle_event KEFKA_SEALED_GATE_1
                 kill_monsters MONSTER_1, INSTANT
                 end_if
         if_battle_id $0181
-                battle_event $14
+                battle_event KEFKA_SEALED_GATE_2
                 end_battle
                 end_if
         if_battle_id $0182
-                battle_event $15
+                battle_event AIRSHIP_GENJU
                 end_battle
                 end_if
         if_battle_id $0185
-                battle_event $18
+                battle_event THAMASA_SEALED_GATE
                 end_battle
                 end_if
         if_battle_id $0186
-                battle_event $19
+                battle_event UNUSED_BLITZ_TUTORIAL
                 end_battle
                 end_if
         if_battle_id $0189
-                battle_event $1e
+                battle_event KEFKA_KILLS_GESTAHL
                 end_battle
                 end_if
         end

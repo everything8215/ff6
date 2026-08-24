@@ -549,7 +549,7 @@ MAX_EXPERIENCE                          = 15000000
         GAU                             ;= $0b
         GOGO                            ;= $0c
         UMARO                           ;= $0d
-        SOLDIER                         ;= $0e
+        BROWN_SOLDIER                   ;= $0e
         IMP                             ;= $0f
         LEO                             ;= $10
         BANON                           ;= $11
@@ -558,6 +558,7 @@ MAX_EXPERIENCE                          = 15000000
         GHOST                           ;= $14
         KEFKA                           ;= $15
         GESTAHL                         ;= $16
+        GREEN_SOLDIER                   ;= $17
 .endenum
 
 ; ------------------------------------------------------------------------------
@@ -1433,7 +1434,7 @@ MAX_EXPERIENCE                          = 15000000
         MONSTER_0177                    ;= $0177  ; 375
         MONSTER_0178                    ;= $0178  ; 376
         SOLDIER_FLASHBACK               ;= $0179  ; 377
-        KEFKA_VS_ESPER                  ;= $017a  ; 378
+        KEFKA_GENJU_MAGICITE            ;= $017a  ; 378
         EVENT                           ;= $017b  ; 379
         MONSTER_017C                    ;= $017c  ; 380
         ATMA                            ;= $017d  ; 381
@@ -2432,8 +2433,8 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         CLOSE_DLG                       ; = 16
         OPEN_DLG                        ; = 17
         ALL_CHARS_ANIM                  ; = 18
-        CHAR_TARGET                     ; = 19
-        CHAR_MENU                       ; = 20
+        ADD_CHAR_TARGET                 ; = 19
+        SHOW_CHAR_MENU                  ; = 20
 
         COUNT
 
@@ -2449,18 +2450,41 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         EVENT_ANIM_CMD_5                ; 5
         CHAR_POS                        ; 6
         UPDATE_CHAR_VEC_DIR_WALK        ; 7
-        EVENT_ANIM_CMD_8                ; 8
+        CALC_VEC_REL                    ; 8
         UPDATE_CHAR_VEC_DIR_JUMP        ; 9
         EVENT_ANIM_CMD_10               ; 10
         SOUND_CMD                       ; 11
-        EVENT_ANIM_CMD_12               ; 12
+        CHANGE_CHAR_GFX                 ; 12
         TRITOCH_SPARKLE                 ; 13
-        EVENT_ANIM_CMD_14               ; 14
+        SHAKE_BG                        ; 14
         EVENT_ANIM_CMD_15               ; 15
-        EVENT_ANIM_CMD_16               ; 16
-        EVENT_ANIM_CMD_17               ; 17
+        SHOW_CHAR                       ; 16
+        DISABLE_RUN                     ; 17
 
         COUNT
+.endenum
+
+.enum ATTACK_EVENT_ANIM
+        TERRA_TRITOCH
+        BLIZZARD_FIST
+        TERRA_TRITOCH_ALT
+        WATER_SPLASH_BG1
+        WATER_SPLASH_SPRITE
+        EVENT_BAHAMUT
+        EVENT_ZONESEEK
+        EVENT_FENRIR
+        EVENT_TERRATO
+        EVENT_SHIVA
+        EVENT_KIRIN
+        EVENT_BISMARK
+        EVENT_CARBUNKL
+        EVENT_PHANTOM
+        TRANSFORM_MAGICITE
+        SHOCK
+        GESTAHL_LIGHTNING
+        GESTAHL_BLACK_MAGIC
+        MOVE_BACK_SLOW
+        MOVE_BACK_SLOW_ALT
 .endenum
 
 .enum ANIM_CMD

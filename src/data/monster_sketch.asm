@@ -392,7 +392,7 @@ MonsterSketch:
         monster_sketch SPECIAL, BATTLE             ; 0177
         monster_sketch SPECIAL, BATTLE             ; 0178
         monster_sketch SPECIAL, BATTLE             ; SOLDIER_FLASHBACK
-        monster_sketch SPECIAL, BATTLE             ; KEFKA_VS_ESPER
+        monster_sketch SPECIAL, BATTLE             ; KEFKA_GENJU_MAGICITE
         monster_sketch SPECIAL, BATTLE             ; EVENT
         monster_sketch SPECIAL, BATTLE             ; 017C
         monster_sketch SPECIAL, BATTLE             ; ATMA

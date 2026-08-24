@@ -196,6 +196,12 @@ hdma_line_data_set:
 
 ; ------------------------------------------------------------------------------
 
+; pointers to buffers for command window
+;   0: none
+;   1: short
+;   2: normal
+;   3: control
+
 _c10461:
 @0461:  .addr   w7e9213,w7e9013,w7e9213,w7e9413
 

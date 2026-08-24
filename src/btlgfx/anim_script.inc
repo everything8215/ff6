@@ -78,12 +78,18 @@ ANIM_SCRIPT_INC = 1
         set_script_mode BATTLE_EVENT
 .endmac
 
-.mac battle_msg val
-        _b_cmd_byte BATTLE_EVENT_CMD::BATTLE_MSG, val
-.endmac
+; display message in bottom window (dialogue window) or top window (message window)
+.enum BATTLE_DLG_WINDOW_POS
+        BOTTOM = BATTLE_EVENT_CMD::BATTLE_DLG  ; default
+        TOP = BATTLE_EVENT_CMD::BATTLE_MSG
+.endenum
 
-.mac battle_dlg val
-        _b_cmd_byte BATTLE_EVENT_CMD::BATTLE_DLG, val
+.mac battle_dlg val, window_pos
+        .ifblank window_pos
+                _b_cmd_byte BATTLE_DLG_WINDOW_POS::BOTTOM, BATTLE_DLG::val
+        .else
+                _b_cmd_byte BATTLE_DLG_WINDOW_POS::window_pos, BATTLE_DLG::val
+        .endif
 .endmac
 
 .enum EVENT_ANIM_SLOT
@@ -105,12 +111,12 @@ ANIM_SCRIPT_INC = 1
         .addr addr
 .endmac
 
-.mac monster_event_anim slot, addr, monster_id
+.mac monster_event_anim slot, addr, char_id
         _b_cmd_impl BATTLE_EVENT_CMD::MONSTER_1_ANIM + EVENT_ANIM_SLOT::slot
-        .ifblank monster_id
+        .ifblank char_id
                 .byte 0
         .else
-                .byte monster_id
+                .byte CHAR_PROP::char_id
         .endif
         .addr addr
 .endmac
@@ -130,7 +136,7 @@ ANIM_SCRIPT_INC = 1
 .endenum
 
 .mac attack_event_anim anim_id, attacker_id, anim_targets
-        _b_cmd_byte BATTLE_EVENT_CMD::ATTACK_ANIM, anim_id
+        _b_cmd_byte BATTLE_EVENT_CMD::ATTACK_ANIM, ATTACK_EVENT_ANIM::anim_id
         .ifnblank attacker_id
                 .byte CHAR_PROP::attacker_id
         .else
@@ -161,6 +167,22 @@ ANIM_SCRIPT_INC = 1
 
 .mac all_chars_event_anim
         _b_cmd_impl BATTLE_EVENT_CMD::ALL_CHARS_ANIM
+.endmac
+
+.mac add_char_target val
+        _b_cmd_byte BATTLE_EVENT_CMD::ADD_CHAR_TARGET, CHAR_PROP::val
+.endmac
+
+.mac remove_char_target val
+        _b_cmd_byte BATTLE_EVENT_CMD::ADD_CHAR_TARGET, CHAR_PROP::val | $80
+.endmac
+
+.mac show_char_menu val
+        _b_cmd_byte BATTLE_EVENT_CMD::SHOW_CHAR_MENU, CHAR_PROP::val
+.endmac
+
+.mac hide_char_menu val
+        _b_cmd_byte BATTLE_EVENT_CMD::SHOW_CHAR_MENU, CHAR_PROP::val | $80
 .endmac
 
 .mac end_battle_event
@@ -1349,6 +1371,11 @@ ANIM_SCRIPT_INC = 1
         _a_cmd_byte $c7, EVENT_ANIM_CMD::UPDATE_CHAR_VEC_DIR_WALK
 .endmac
 
+.mac calc_vec_rel xy_pos
+        _a_cmd_byte $c7, EVENT_ANIM_CMD::CALC_VEC_REL
+        _2_bytes_signed xy_pos
+.endmac
+
 .mac update_char_vec_dir_jump
         _a_cmd_byte $c7, EVENT_ANIM_CMD::UPDATE_CHAR_VEC_DIR_JUMP
 .endmac
@@ -1383,8 +1410,33 @@ ANIM_SCRIPT_INC = 1
         .byte $82, val, 0
 .endmac
 
+.mac change_char_gfx char_id, gfx_id
+        _a_cmd_byte $c7, EVENT_ANIM_CMD::CHANGE_CHAR_GFX
+        .byte CHAR_PROP::char_id
+        .byte CHAR_GFX::gfx_id
+.endmac
+
 .mac tritoch_sparkle val
         _a_cmd_2byte $c7, EVENT_ANIM_CMD::TRITOCH_SPARKLE, val
+.endmac
+
+.enum BATTLE_EVENT_SHAKE_BG
+        ENABLE = 1
+        DISABLE = 0
+        HORZ = $80
+.endenum
+
+.mac shake_bg val
+        _a_cmd_byte $c7, EVENT_ANIM_CMD::SHAKE_BG
+        make_bitmask .byte, 0, BATTLE_EVENT_SHAKE_BG, val
+.endmac
+
+.mac show_char val
+        _a_cmd_2byte $c7, EVENT_ANIM_CMD::SHOW_CHAR, CHAR_PROP::val
+.endmac
+
+.mac disable_run
+        _a_cmd_byte $c7, EVENT_ANIM_CMD::DISABLE_RUN
 .endmac
 
 ; set attacking character's fixed animation frame (use animated action if zero)

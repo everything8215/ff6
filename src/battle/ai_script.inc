@@ -233,7 +233,7 @@ AI_SCRIPT_INC = 1
 ; execute battle event
 .mac battle_event event_id
         ai_cmd_op BATTLE_EVENT
-        .byte event_id
+        .byte BATTLE_EVENT_SCRIPT::event_id
 .endmac
 
 .mac _op_battle_var op, var_id, var_value

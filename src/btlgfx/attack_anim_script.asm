@@ -3271,8 +3271,7 @@ _d011cb:
         change_anim_layer BG1
         sprite_priority 2
         bg_screen_pos BG1, TOP_RIGHT
-        frame 0
-        frame 0
+        frame 0, 2
         loop 51
                 zoom_circle +4
                 move_circle {-4, 0}
@@ -5309,8 +5308,7 @@ _d01ddf:
         loop 10
                 blank_frame
                 end_loop
-:       frame 0
-        frame 0
+:       frame 0, 2
         move_vec :-, 16
         end_anim_script
 
@@ -5326,8 +5324,7 @@ _d01ddf:
                 end_loop
         sfx
         anim_loop 11
-                frame 0
-                frame 0
+                frame 0, 2
                 end_anim_loop
         end_anim_script
 
@@ -7520,12 +7517,7 @@ _d02aca:
         frame 3
         frame 2
         frame 1
-        frame 0
-        frame 0
-        frame 0
-        frame 0
-        frame 0
-        frame 0
+        frame 0, 6
         frame 1
         frame 2
         frame 3
@@ -11548,9 +11540,7 @@ _d04244:
         frame 1
         restore_target_pal
         anim_loop 5
-                frame 2
-                frame 2
-                frame 2
+                frame 2, 3
                 end_anim_loop
         return
 
@@ -13793,18 +13783,15 @@ _d04f2b:
         anim_speed 2
         loop 5
                 .repeat 3
-                frame 6
-                frame 6
+                frame 6, 2
                 mod_pal BG3, SUB, WHITE, +1
                 .endrep
                 .repeat 3
-                frame 7
-                frame 7
+                frame 7, 2
                 mod_pal BG3, SUB, WHITE, +1
                 .endrep
                 .repeat 3
-                frame 8
-                frame 8
+                frame 8, 2
                 mod_pal BG3, SUB, WHITE, +1
                 .endrep
                 end_loop

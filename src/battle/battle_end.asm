@@ -131,7 +131,7 @@ ShadowLeaves:
         jsr     ClearFlag0       ; clear $3aa0.0 (make target not present)
         lda     #$02
         tsb     near w7e2f49       ; disable fanfare
-        ldx     #$0b        ; battle event $0b (shadow leaves party)
+        ldx     #BATTLE_EVENT_SCRIPT::SHADOW_LEAVES_PARTY
 _48c4:  pla
         pla
         lda     #ACTION_BATTLE_CMD::BATTLE_EVENT
@@ -145,7 +145,7 @@ GauAppears:
         tsb     near w7e3a40       ; gau acts like an enemy
         lda     #$04
         tsb     near w7e3a46       ; clear all pending actions ($3a46.2)
-        ldx     #$1b        ; battle event $1b (gau appears on veldt)
+        ldx     #BATTLE_EVENT_SCRIPT::GAU_APPEARS
         bra     _48c4
 
 ; ------------------------------------------------------------------------------

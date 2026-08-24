@@ -579,7 +579,7 @@ _1720:  sta     zb6
         lda     #$02
         trb     near w7e3eb0 + 12
         beq     _175f
-        ldx     #$06        ; battle event $06 (locke/edgar/terra magic)
+        ldx     #BATTLE_EVENT_SCRIPT::TERRA_MAGIC
         lda     #ACTION_BATTLE_CMD::BATTLE_EVENT
         jsr     CreateImmediateAction
         lda     #$20

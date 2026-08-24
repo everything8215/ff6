@@ -74,7 +74,7 @@ EventAnimCmdTbl:
 
 ; [ battle animation command $c7/$11: disable running with l+r ]
 
-        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::EVENT_ANIM_CMD_17
+        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::DISABLE_RUN
 @c0b0:  lda     near w7e2f4b       ; disable running with l+r
         ora     #$01
         sta     near w7e2f4b
@@ -86,7 +86,7 @@ EventAnimCmdTbl:
 
 ; b1: actor index
 
-        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::EVENT_ANIM_CMD_16
+        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::SHOW_CHAR
 @c0b9:  ldy     #1
         lda     [zAnimScriptPtr],y
         jsr     _c2c0d2
@@ -143,7 +143,7 @@ get_cas_chg:
 ;     h = horizontal shaking only
 ;     s = enable screen shaking (battle bg)
 
-        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::EVENT_ANIM_CMD_14
+        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::SHAKE_BG
 @c0f8:  ldy     #1
         lda     [zAnimScriptPtr],y
         beq     @c104
@@ -188,7 +188,7 @@ get_cas_chg:
 ; b1: actor index
 ; b2: new graphics index
 
-        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::EVENT_ANIM_CMD_12
+        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::CHANGE_CHAR_GFX
 @c136:  ldy     #1
         lda     [zAnimScriptPtr],y
         sta     $12
@@ -244,6 +244,8 @@ get_cas_chg:
 
 ; [ battle animation command $c7/$0a: change battle bg ]
 
+; unused
+
         array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::EVENT_ANIM_CMD_10
 @c194:  ldy     #1
         lda     [zAnimScriptPtr],y                 ; battle bg index
@@ -283,9 +285,9 @@ _c2c1a3:
 
 ; ------------------------------------------------------------------------------
 
-; [ battle animation command $c7/$08: set vector target w.r.t attacker ]
+; [ battle animation command $c7/$08: set vector target relative to attacker ]
 
-        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::EVENT_ANIM_CMD_8
+        array_label EVENT_ANIM_CMD, EVENT_ANIM_CMD::CALC_VEC_REL
 @c1d6:  stz     $11
         stz     $13
         ldy     #1

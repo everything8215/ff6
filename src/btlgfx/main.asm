@@ -193,8 +193,12 @@ win_all_close_wait:
 
 ; battle script command $0f/01: execute battle event 1 (victory)
 _c1016b:
-@016b:  .byte   $0f,$01,$00,$00         ; battle event 1
-        .byte   $ff                     ; script terminator
+@016b:  .byte   GFX_CMD::BATTLE_EVENT
+        .byte   BATTLE_EVENT_SCRIPT::VICTORY_FANFARE
+        .byte   0
+        .byte   0
+
+        .byte   GFX_CMD::TERMINATE
 
 ; ------------------------------------------------------------------------------
 

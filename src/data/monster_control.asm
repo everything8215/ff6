@@ -405,7 +405,7 @@ MonsterControl:
         monster_control SPECIAL                           ; 0177
         monster_control SPECIAL                           ; 0178
         monster_control SPECIAL                           ; SOLDIER_FLASHBACK
-        monster_control SPECIAL                           ; KEFKA_VS_ESPER
+        monster_control SPECIAL                           ; KEFKA_GENJU_MAGICITE
         monster_control SPECIAL                           ; EVENT
         monster_control SPECIAL                           ; 017C
         monster_control SPECIAL                           ; ATMA

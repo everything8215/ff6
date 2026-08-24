@@ -1036,9 +1036,9 @@
         ram_res 224 * 4, w7e8993
 
         ram_res $0300, w7e8d13          ; 32x12 tilemap buffer for menus
-        ram_res $0200, w7e9013
-        ram_res $0200, w7e9213
-        ram_res $0200, w7e9413
+        ram_res $0200, w7e9013          ; 32x8 tilemap buffer for "short" command menu
+        ram_res $0200, w7e9213          ; 32x8 tilemap buffer for "window" command menu
+        ram_res $0200, w7e9413          ; 32x8 tilemap buffer for Relm's control menu
 
         ram_byte w7e9613
         ram_byte w7e9614

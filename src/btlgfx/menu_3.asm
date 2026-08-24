@@ -3,7 +3,6 @@
 ; [ transfer character menu text tiles to ppu ]
 
 TfrCharText:
-_c2ab8a:
 @ab8a:  phb
         clr_a
         pha
@@ -75,7 +74,7 @@ _c2ab8a:
         and     #%11
 @ac75:  asl
         tax
-        lda     #$80
+        lda     #BIT_7
         jmp     (near TfrCharGaugeTbl,x)
 
 .enum TFR_CHAR_GAUGE
@@ -92,19 +91,19 @@ TfrCharGaugeTbl:
         array_label TFR_CHAR_GAUGE, 0
 @ac84:  ldx     #$7839                  ; char 1 gauge (menu closed)
         stx     hVMADDL
-        ldx     #$5c51
+        ldx     #near w7e5c45 + 12; $5c51
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
         ldx     #$7939                  ; char 1 gauge (menu open)
         stx     hVMADDL
-        ldx     #$5c51
+        ldx     #near w7e5c45 + 12 ;$5c51
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
         ldx     #$7a39                  ; char 1 gauge (char select)
         stx     hVMADDL
-        ldx     #$5c51
+        ldx     #near w7e5c45 + 12 ;$5c51
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
@@ -117,19 +116,19 @@ TfrCharGaugeTbl:
         array_label TFR_CHAR_GAUGE, 1
 @acbd:  ldx     #$7879
         stx     hVMADDL
-        ldx     #$5c69
+        ldx     #near w7e5c45 + 36 ;$5c69
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
         ldx     #$7979
         stx     hVMADDL
-        ldx     #$5c69
+        ldx     #near w7e5c45 + 36 ;$5c69
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
         ldx     #$7a79
         stx     hVMADDL
-        ldx     #$5c69
+        ldx     #near w7e5c45 + 36 ;$5c69
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
@@ -142,19 +141,19 @@ TfrCharGaugeTbl:
         array_label TFR_CHAR_GAUGE, 2
 @acf6:  ldx     #$78b9
         stx     hVMADDL
-        ldx     #$5c81
+        ldx     #near w7e5c45 + 60 ;$5c81
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
         ldx     #$79b9
         stx     hVMADDL
-        ldx     #$5c81
+        ldx     #near w7e5c45 + 60 ;$5c81
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
         ldx     #$7ab9
         stx     hVMADDL
-        ldx     #$5c81
+        ldx     #near w7e5c45 + 60 ;$5c81
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
@@ -167,19 +166,19 @@ TfrCharGaugeTbl:
         array_label TFR_CHAR_GAUGE, 3
 @ad2f:  ldx     #$78f9
         stx     hVMADDL
-        ldx     #$5c99
+        ldx     #near w7e5c45 + 84 ;$5c99
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
         ldx     #$79f9
         stx     hVMADDL
-        ldx     #$5c99
+        ldx     #near w7e5c45 + 84 ;$5c99
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
         ldx     #$7af9
         stx     hVMADDL
-        ldx     #$5c99
+        ldx     #near w7e5c45 + 84 ;$5c99
         stx     hDMA7::ADDR
         sty     hDMA7::SIZE
         sta     hMDMAEN
@@ -211,7 +210,7 @@ TfrCharHPText:
 @ad89:  lda     f:CharHPTextVRAMTbl,x
         sta     f:hVMADDL
         .repeat 4, i
-        lda     near w7e5c05+ 2 * i + 8,y
+        lda     near w7e5c05 + 2 * i + 8,y
         sta     f:hVMDATAL
         .endrep
         inx2

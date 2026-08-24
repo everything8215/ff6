@@ -791,17 +791,17 @@ CharAI:
 
 ; slot 1
 .byte CHAR_PROP::LOCKE
-.byte CHAR_GFX::SOLDIER,$ff
+.byte CHAR_GFX::BROWN_SOLDIER,$ff
 .byte 92,80
 
 ; slot 2
 .byte CHAR_PROP::CYAN
-.byte CHAR_GFX::SOLDIER,$ff
+.byte CHAR_GFX::BROWN_SOLDIER,$ff
 .byte 40,84
 
 ; slot 3
 .byte CHAR_PROP::SHADOW
-.byte CHAR_GFX::SOLDIER,$ff
+.byte CHAR_GFX::BROWN_SOLDIER,$ff
 .byte 100,100
 
 ; ------------------------------------------------------------------------------

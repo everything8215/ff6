@@ -8860,8 +8860,8 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: KEFKA_VS_ESPER
-        monster_prop KEFKA_VS_ESPER
+; 8: KEFKA_GENJU_MAGICITE
+        monster_prop KEFKA_GENJU_MAGICITE
         speed 30
         attack_power 1
         defense 102

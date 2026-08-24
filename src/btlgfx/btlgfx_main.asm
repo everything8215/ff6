@@ -20,6 +20,7 @@
 
 .include "src/battle/battle_common.inc"
 .include "btlgfx_ram.inc"
+.include "battle_event_script.inc"
 
 ; ------------------------------------------------------------------------------
 

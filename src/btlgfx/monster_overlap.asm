@@ -382,7 +382,7 @@ MonsterOverlap:
         .byte   0                       ; 375: MONSTER_0177
         .byte   0                       ; 376: MONSTER_0178
         .byte   0                       ; 377: SOLDIER_FLASHBACK
-        .byte   0                       ; 378: KEFKA_VS_ESPER
+        .byte   0                       ; 378: KEFKA_GENJU_MAGICITE
         .byte   0                       ; 379: EVENT
         .byte   0                       ; 380: MONSTER_017C
         .byte   0                       ; 381: ATMA

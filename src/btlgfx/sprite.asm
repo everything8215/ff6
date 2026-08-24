@@ -3152,7 +3152,7 @@ LoadCharGfx:
         phx
         tax
         lda     near wCharGfxDataBuf::GfxID,x
-        cmp     #CHAR_GFX::SOLDIER
+        cmp     #CHAR_GFX::BROWN_SOLDIER
         bne     @3e1f       ; branch if not brown soldier
         lda     near wCharGfxDataBuf::CharID,x
         cmp     #CHAR::LOCKE

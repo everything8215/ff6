@@ -3253,12 +3253,6 @@
       "ptr_offset": "0xD10000"
     },
     {
-      "asset_path": "assets/data/btlgfx/battle_event_script.bin",
-      "asset_range": "0xD09842-0xD0CF49",
-      "ptr_range": "0xD09800-0xD09841",
-      "ptr_offset": "0xD00000"
-    },
-    {
       "asset_path": "assets/data/field/long_entrance.bin",
       "asset_range": "0xEDF882-0xEDFCA9",
       "ptr_range": "0xEDF480-0xEDF87F",

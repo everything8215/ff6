@@ -714,7 +714,7 @@ GetCharGfxID:
 ; [ fix palette id for brown or green soldier ]
 
 FixSoldierPal:
-@6fa6:  cmp     #CHAR_GFX::SOLDIER
+@6fa6:  cmp     #CHAR_GFX::BROWN_SOLDIER
         bne     @6fb7
         lda     $1ea0
         bit     #$08
