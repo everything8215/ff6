@@ -60,6 +60,7 @@ StatusSpriteData:
 
 ; ------------------------------------------------------------------------------
 
+; pointers to character graphics frame buffers (+$7f0000)
 _c2e412:
 super_offset:
 @e412:  .word   $8000,$6000,$4000,$2000
@@ -124,8 +125,46 @@ DanceNoChangeBGTbl:
 ; graphical actions when waiting to attack (for each command)
 command_act_tbl:
 _c2e49a:
-@e49a:  .byte   11,11,9,11,11,11,11,11,11,11,11,11,11,11,11,11
-        .byte   11,11,11,11,11,11,11,11,11,9,9,11,11,0,11,11
-        .byte   11,11,11,11,11,11,11,11,11
+        .byte   CHAR_ACTION::READY      ; FIGHT
+        .byte   CHAR_ACTION::READY      ; ITEM
+        .byte   CHAR_ACTION::CASTING    ; MAGIC
+        .byte   CHAR_ACTION::READY      ; MORPH
+        .byte   CHAR_ACTION::READY      ; REVERT
+        .byte   CHAR_ACTION::READY      ; STEAL
+        .byte   CHAR_ACTION::READY      ; CAPTURE
+        .byte   CHAR_ACTION::READY      ; BUSHIDO
+        .byte   CHAR_ACTION::READY      ; THROW
+        .byte   CHAR_ACTION::READY      ; TOOLS
+        .byte   CHAR_ACTION::READY      ; BLITZ
+        .byte   CHAR_ACTION::READY      ; RUNIC
+        .byte   CHAR_ACTION::READY      ; LORE
+        .byte   CHAR_ACTION::READY      ; SKETCH
+        .byte   CHAR_ACTION::READY      ; CONTROL
+        .byte   CHAR_ACTION::READY      ; SLOT
+        .byte   CHAR_ACTION::READY      ; RAGE
+        .byte   CHAR_ACTION::READY      ; LEAP
+        .byte   CHAR_ACTION::READY      ; MIMIC
+        .byte   CHAR_ACTION::READY      ; DANCE
+        .byte   CHAR_ACTION::READY      ; ROW
+        .byte   CHAR_ACTION::READY      ; DEF
+        .byte   CHAR_ACTION::READY      ; JUMP
+        .byte   CHAR_ACTION::READY      ; X_MAGIC
+        .byte   CHAR_ACTION::READY      ; GP_RAIN
+        .byte   CHAR_ACTION::CASTING    ; SUMMON
+        .byte   CHAR_ACTION::CASTING    ; HEALTH
+        .byte   CHAR_ACTION::READY      ; SHOCK
+        .byte   CHAR_ACTION::READY      ; POSSESS
+        .byte   CHAR_ACTION::NONE       ; MAGITEK
+        .byte   CHAR_ACTION::READY      ; BATTLE_CMD_30
+        .byte   CHAR_ACTION::READY      ; BATTLE_CMD_31
+        .byte   CHAR_ACTION::READY      ; GFX_BATTLE_CMD_30
+        .byte   CHAR_ACTION::READY      ; GFX_BATTLE_CMD_31
+        .byte   CHAR_ACTION::READY      ; CHANGE_BATTLE
+        .byte   CHAR_ACTION::READY      ; ROULETTE
+        .byte   CHAR_ACTION::READY      ; RUN_AWAY
+        .byte   CHAR_ACTION::READY      ; UMARO_TACKLE
+        .byte   CHAR_ACTION::READY      ; UMARO_THROW
+        .byte   CHAR_ACTION::READY      ; RUNIC_ABSORB
+        .byte   CHAR_ACTION::READY      ; DICE_ROLL
 
 ; ------------------------------------------------------------------------------

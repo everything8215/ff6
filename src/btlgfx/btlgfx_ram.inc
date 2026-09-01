@@ -403,24 +403,24 @@
                 ram_byte
                 ram_word PosX
                 ram_word PosY
-                ram_byte w7e61bb
+                ram_byte ReadyAction
                 ram_byte Pal
                 ram_byte LayerPriority
                 ram_byte Flip
-                ram_byte w7e61bf
-                ram_byte w7e61c0
-                ram_byte w7e61c1
-                ram_byte w7e61c2
-                ram_byte w7e61c3
-                ram_byte w7e61c4
+                ram_byte StatusAction
+                ram_byte AnimAction
+                ram_byte AnimFrame
+                ram_byte AnimCounter
+                ram_byte CurrFrame
+                ram_byte PrevFrame
                 ram_word OffsetX
                 ram_word OffsetY
                 ram_word w7e61c9
                 ram_word w7e61cb
-                ram_byte VanishAnimCounter
-                ram_byte w7e61ce
+                ram_byte VanishCounter
+                ram_byte w7e61ce  ; disable char gfx update
                 ram_byte StatusSpriteIndex
-                ram_byte w7e61d0
+                ram_byte w7e61d0  ; double action speed
                 ram_byte DisableFloatOffset
                 ram_word JumpOffset
                 ram_word AnimOffsetX

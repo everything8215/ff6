@@ -1566,10 +1566,10 @@ MAX_EXPERIENCE                          = 15000000
         UNUSED_26                       ; = $26 // 38
         UNUSED_27                       ; = $27 // 39
         UNUSED_28                       ; = $28 // 40
-        KEFKA_1                         ; = $29 // 41
-        KEFKA_2                         ; = $2a // 42
-        KEFKA_3                         ; = $2b // 43
-        KEFKA_4                         ; = $2c // 44
+        KEFKA_1                         ; = $29 // 41 (vs sabin at imperial camp)
+        KEFKA_2                         ; = $2a // 42 (at sealed gate)
+        KEFKA_3                         ; = $2b // 43 (vs esper at thamasa)
+        KEFKA_4                         ; = $2c // 44 (vs leo at thamasa)
         KEFKA_5                         ; = $2d // 45
         KEFKA_6                         ; = $2e // 46
         KEFKA_7                         ; = $2f // 47
@@ -2499,7 +2499,7 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         COUNT = 127
 .endenum
 
-.enum CMD_ANIM
+.enum BATTLE_CMD_ANIM
         MORPH                           ; $00
         REVERT                          ; $01
         STEAL                           ; $02
@@ -2508,7 +2508,7 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         RUNIC                           ; $05
         RAGE                            ; $06 (also used for dance)
         SHOCK                           ; $07
-        CMD_ANIM_8                      ; $08 (unused copy of gp rain)
+        BATTLE_CMD_ANIM_8               ; $08 (unused copy of gp rain)
         JUMP_MONSTER                    ; $09
         JUMP_CHAR_MISS                  ; $0a
         JUMP_MONSTER_MISS               ; $0b
@@ -2592,6 +2592,86 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
 
         COUNT
         TERMINATE = $ff
+.endenum
+
+.enum CHAR_ACTION
+        NONE                            ; $00 // 0
+        DEAD_HORZ                       ; $01 // 1
+        WALKING_DOWN                    ; $02 // 2
+        WALKING_BACK                    ; $03 // 3
+        WALKING_FORWARD                 ; $04 // 4
+        WALKING_UP                      ; $05 // 5
+        DEFAULT                         ; $06 // 6
+        FIGHTING_BACK_HAND              ; $07 // 7
+        FIGHTING_FRONT_HAND             ; $08 // 8
+        CASTING                         ; $09 // 9
+        NEAR_FATAL                      ; $0a // 10
+        READY                           ; $0b // 11
+        HIT                             ; $0c // 12
+        DEAD_VERT                       ; $0d // 13
+        BLINKING_DOWN                   ; $0e // 14
+        BLINKING_BACK                   ; $0f // 15
+        BLINKING_FORWARD                ; $10 // 16
+        WINKING_DOWN_ALT                ; $11 // 17
+        WINKING_DOWN                    ; $12 // 18
+        JUMPING_DOWN                    ; $13 // 19
+        JUMPING_BACK                    ; $14 // 20
+        JUMPING_FORWARD                 ; $15 // 21
+        JUMPING_UP                      ; $16 // 22
+        CHAR_ACTION_23                  ; $17 // 23
+        ARMS_RAISED_DOWN                ; $18 // 24
+        ARMS_RAISED_BACK                ; $19 // 25
+        ARMS_RAISED_FORWARD             ; $1a // 26
+        ARMS_RAISED_UP                  ; $1b // 27
+        CHAR_ACTION_28                  ; $1c // 28
+        CHAR_ACTION_29                  ; $1d // 29
+        CHAR_ACTION_30                  ; $1e // 30
+        CHAR_ACTION_31                  ; $1f // 31
+        WAGGING_FINGER                  ; $20 // 32
+        WAGGING_FINGER_ALT              ; $21 // 33
+        SHAKING_HEAD                    ; $22 // 34
+        LAUGHING                        ; $23 // 35
+        CHAR_ACTION_36                  ; $24 // 36
+        SPINNING                        ; $25 // 37
+        LAUGHING_ALT                    ; $26 // 38
+.endenum
+
+.enum CHAR_FRAME
+        DEAD_HORZ                       ; $00 // 0
+        WALKING_DOWN_1                  ; $01 // 1
+        WALKING_DOWN_2                  ; $02 // 2
+        WALKING_DOWN_3                  ; $03 // 3
+        WALKING_FORWARD_1               ; $04 // 4
+        WALKING_FORWARD_2               ; $05 // 5
+        WALKING_FORWARD_3               ; $06 // 6
+        JUMPING_FORWARD                 ; $07 // 7
+        CASTING_1                       ; $08 // 8
+        CASTING_2                       ; $09 // 9
+        DEAD_VERT                       ; $0a // 10
+        EYES_CLOSED_DOWN                ; $0b // 11
+        WINKING_DOWN                    ; $0c // 12
+        EYES_CLOSED_FORWARD             ; $0d // 13
+        WALKING_UP_1                    ; $0e // 14
+        WALKING_UP_2                    ; $0f // 15
+        WALKING_UP_3                    ; $10 // 16
+        FIGHTING_1                      ; $11 // 17
+        FIGHTING_2                      ; $12 // 18
+        FIGHTING_3                      ; $13 // 19
+        NEAR_FATAL                      ; $14 // 20
+        READY                           ; $15 // 21
+        HIT                             ; $16 // 22
+        JUMPING_DOWN                    ; $17 // 23
+        JUMPING_UP                      ; $18 // 24
+        DEAD_GESTAHL                    ; $19 // 25
+        LAUGHING_1                      ; $1a // 26
+        LAUGHING_2                      ; $1b // 27
+        SURPRISED                       ; $1c // 28
+        HEAD_TURNED                     ; $1d // 29
+        WAGGING_FINGER_1                ; $1e // 30
+        WAGGING_FINGER_2                ; $1f // 31
+
+        NONE = 0
+        BLANK = $ff
 .endenum
 
 ; ------------------------------------------------------------------------------

@@ -285,6 +285,7 @@ ANIM_SCRIPT_INC = 1
         _a_cmd_byte $80, $03
 .endmac
 
+; used for fire dance
 .mac rand_vec
         _a_cmd_byte $80, $04
 .endmac
@@ -293,6 +294,7 @@ ANIM_SCRIPT_INC = 1
         _a_cmd_byte $80, $05
 .endmac
 
+; tornado, spiraler
 .mac reset_tornado_pos
         _a_cmd_byte $80, $06
 .endmac
@@ -897,8 +899,8 @@ ANIM_SCRIPT_INC = 1
         _a_cmd_byte $80, $8b
 .endmac
 
-; set attacking character's animated action (use status animation if zero)
-.mac attacker_action left, right
+; set attacking character's fixed animation frame (use status animation if zero)
+.mac attacker_frame left, right
         .ifblank right
                 _a_cmd_2byte $81, left, left
         .else
@@ -906,7 +908,7 @@ ANIM_SCRIPT_INC = 1
         .endif
 .endmac
 
-.mac target_action left, right
+.mac target_frame left, right
         .ifblank right
                 _a_cmd_2byte $82, left, left
         .else
@@ -1052,10 +1054,12 @@ ANIM_SCRIPT_INC = 1
         _move $9c, direction, distance
 .endmac
 
+; used for cape block
 .mac flip_target_dir left, right
         _a_cmd_2byte $9e, left, right
 .endmac
 
+; used for autocrossbow
 .mac anim_loop_per_thread
         _a_cmd_byte $9f, 0
 .endmac
@@ -1439,8 +1443,8 @@ ANIM_SCRIPT_INC = 1
         _a_cmd_byte $c7, EVENT_ANIM_CMD::DISABLE_RUN
 .endmac
 
-; set attacking character's fixed animation frame (use animated action if zero)
-.mac attacker_frame val
+; set attacking character's animated action (use fixed frame if zero)
+.mac attacker_action val
         _a_cmd_byte $c8, val
 .endmac
 

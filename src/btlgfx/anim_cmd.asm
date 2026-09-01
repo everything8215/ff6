@@ -62,7 +62,7 @@ CmdAnimTbl:
         bcc     @b7d7
 
 ; other magitek attacks
-        lda     #CMD_ANIM::MAGITEK
+        lda     #BATTLE_CMD_ANIM::MAGITEK
         jsr     _c1b8a4
         jsr     MagicCmdAnim
         jmp     _c1b86b
@@ -73,7 +73,7 @@ CmdAnimTbl:
         iny
         ora     (z78),y
         bne     @b7e6
-        lda     #CMD_ANIM::MAGITEK
+        lda     #BATTLE_CMD_ANIM::MAGITEK
         jmp     _c1b8a4
 @b7e6:  jmp     MagicCmdAnim
 
@@ -83,7 +83,7 @@ CmdAnimTbl:
 
         array_label GFX_BATTLE_CMD, GFX_BATTLE_CMD::RUN_AWAY
         inc     near w7e62a4                 ; doing run away animation
-        lda     #CMD_ANIM::RUN_AWAY
+        lda     #BATTLE_CMD_ANIM::RUN_AWAY
         jmp     _c1b8a4
 
 ; ------------------------------------------------------------------------------
@@ -139,8 +139,8 @@ ExecSimpleAnim:
 @b838:  sta     $10
         bpl     @b83e
         dec     $11         ; make $10 16-bit (+$10)
-@b83e:  lda     #$04
-        sta     near wCharGfxData::w7e61c0,y     ; secondary graphical action = 4 (walking forward)
+@b83e:  lda     #CHAR_ACTION::WALKING_FORWARD
+        sta     near wCharGfxData::AnimAction,y     ; secondary graphical action = 4 (walking forward)
         lda     #6        ; 6 frames
 @b845:  pha
         phy
@@ -160,7 +160,7 @@ ExecSimpleAnim:
         dec                 ; decrement frame counter
         bne     @b845
         clr_a
-        sta     near wCharGfxData::w7e61c0,y     ; clear secondary graphical action
+        sta     near wCharGfxData::AnimAction,y
 @b867:  jsr     WaitFrame
         rts
 
@@ -279,7 +279,7 @@ ExecCmdAnimMain:
         bne     @b8f7
         lda     (z78)
         bmi     @b8f7
-        lda     #CMD_ANIM::LORE
+        lda     #BATTLE_CMD_ANIM::LORE
         jsr     _c1bbe1
 @b8f7:  jsr     CheckNullTarget
         bcc     @b8ff
@@ -308,7 +308,7 @@ ExecCmdAnimMain:
 
         array_label GFX_BATTLE_CMD, BATTLE_CMD::BLITZ
         jsr     InitCmdAnim
-        lda     #CMD_ANIM::BLITZ
+        lda     #BATTLE_CMD_ANIM::BLITZ
         jsr     _c1b8a4
         jsr     CheckNullTarget
         bcc     @b93a
@@ -368,9 +368,9 @@ CheckNullTarget:
         lda     near w7eebfb
         cmp     #$0f
         bne     @b988       ; branch if die 1 is enabled (3 dice)
-        lda     #CMD_ANIM::TWO_DICE
+        lda     #BATTLE_CMD_ANIM::TWO_DICE
         bra     @b98a
-@b988:  lda     #CMD_ANIM::THREE_DICE
+@b988:  lda     #BATTLE_CMD_ANIM::THREE_DICE
 @b98a:  jmp     _c1b8a4
 
 ; ------------------------------------------------------------------------------
@@ -382,7 +382,7 @@ CheckNullTarget:
         lda     near w7e60ae
         bne     @b9a4       ; branch if not first swdtech hit (graphics are already loaded)
         jsr     _c1ab8b       ; reset attacker graphical action
-        lda     #CMD_ANIM::BUSHIDO
+        lda     #BATTLE_CMD_ANIM::BUSHIDO
         jsr     _c1bbe1
         jsr     CheckNullTarget
         bcc     @b9c4
@@ -452,7 +452,7 @@ CheckNullTarget:
         jmp     FightCmdAnim
 @b9df:  and     #$0f
         clc
-        adc     #CMD_ANIM::THROW_THICK_KNIFE
+        adc     #BATTLE_CMD_ANIM::THROW_THICK_KNIFE
         jsr     _c1bbe1
         rts
 
@@ -463,7 +463,7 @@ CheckNullTarget:
         array_label GFX_BATTLE_CMD, BATTLE_CMD::SKETCH
         inc     near w7eecbb
         jsr     InitCmdAnim
-        lda     #CMD_ANIM::SKETCH
+        lda     #BATTLE_CMD_ANIM::SKETCH
         jsr     _c1b890
         jsr     _c1b86b
         rts
@@ -486,9 +486,9 @@ CheckNullTarget:
         iny
         ora     (z78),y
         bne     @ba13       ; branch if something was hit
-        lda     #CMD_ANIM::JUMP_MONSTER_MISS
+        lda     #BATTLE_CMD_ANIM::JUMP_MONSTER_MISS
         bra     @ba15
-@ba13:  lda     #CMD_ANIM::JUMP_MONSTER
+@ba13:  lda     #BATTLE_CMD_ANIM::JUMP_MONSTER
 @ba15:  jmp     _c1bbe1
 
 ; character attacker
@@ -497,7 +497,7 @@ CheckNullTarget:
         iny
         ora     (z78),y
         bne     @ba27       ; branch if there are targets
-        lda     #CMD_ANIM::JUMP_CHAR_MISS
+        lda     #BATTLE_CMD_ANIM::JUMP_CHAR_MISS
         jmp     _c1bbe1
 @ba27:  ldy     #1
         lda     (z78),y     ; attacker
@@ -522,7 +522,7 @@ CheckNullTarget:
         and     #$7f
         lsr4
         clc
-        adc     #CMD_ANIM::JUMP_UNARMED
+        adc     #BATTLE_CMD_ANIM::JUMP_UNARMED
         jmp     _c1bbe1
 
 ; ------------------------------------------------------------------------------
@@ -552,7 +552,7 @@ CheckNullTarget:
         sta     (z78),y
 @ba83:  jsr     NullTargetAnim
         bcc     @ba8d
-        lda     #CMD_ANIM::UMARO_THROW
+        lda     #BATTLE_CMD_ANIM::UMARO_THROW
         jmp     _c1b8a4
 @ba8d:  rts
 
@@ -564,7 +564,7 @@ CheckNullTarget:
         jsr     InitCmdAnim
         jsr     NullTargetAnim
         bcc     @ba9b
-        lda     #CMD_ANIM::UMARO_TACKLE
+        lda     #BATTLE_CMD_ANIM::UMARO_TACKLE
         jsr     _c1bbe1
 @ba9b:  rts
 
@@ -575,7 +575,7 @@ CheckNullTarget:
         array_label GFX_BATTLE_CMD, BATTLE_CMD::POSSESS
         jsr     NullTargetAnim
         bcc     @baa9
-        lda     #CMD_ANIM::POSSESS
+        lda     #BATTLE_CMD_ANIM::POSSESS
         jsr     _c1b890
         jsr     _c1b86b
 @baa9:  rts
@@ -588,7 +588,7 @@ CheckNullTarget:
         jsr     InitCmdAnim
         lda     (z78)
         bmi     @bab6
-        lda     #CMD_ANIM::RUNIC
+        lda     #BATTLE_CMD_ANIM::RUNIC
         jsr     _c1bbe1
 @bab6:  rts
 
@@ -601,7 +601,7 @@ CheckNullTarget:
         lda     (z78)
         and     #$40
         bne     @bac5
-        lda     #CMD_ANIM::RUNIC_ABSORB
+        lda     #BATTLE_CMD_ANIM::RUNIC_ABSORB
         jsr     _c1bbe1
 @bac5:  rts
 
@@ -665,7 +665,7 @@ ChangeDanceBattleBG:
 
         array_label GFX_BATTLE_CMD, GFX_BATTLE_CMD::CHANGE_BATTLE
         jsr     InitCmdAnim
-        lda     #CMD_ANIM::CHANGE_BATTLE
+        lda     #BATTLE_CMD_ANIM::CHANGE_BATTLE
         jmp     _c1bbe1
 
 ; ------------------------------------------------------------------------------
@@ -697,7 +697,7 @@ _bb2b:  inc     near w7eecbb
         bne     @bb40
         lda     (z78)
         bmi     @bb40
-        lda     #CMD_ANIM::RAGE
+        lda     #BATTLE_CMD_ANIM::RAGE
         jsr     _c1bbe1
 @bb40:  jsr     CheckNullTarget
         bcc     @bb48
@@ -711,7 +711,7 @@ _bb2b:  inc     near w7eecbb
         array_label GFX_BATTLE_CMD, BATTLE_CMD::SHOCK
         jsr     NullTargetAnim
         bcc     @bb53
-        lda     #CMD_ANIM::SHOCK
+        lda     #BATTLE_CMD_ANIM::SHOCK
         jsr     _c1bbe1
 @bb53:  rts
 
@@ -722,7 +722,7 @@ _bb2b:  inc     near w7eecbb
         array_label GFX_BATTLE_CMD, BATTLE_CMD::CONTROL
         jsr     NullTargetAnim
         bcc     @bb61
-        lda     #CMD_ANIM::CONTROL
+        lda     #BATTLE_CMD_ANIM::CONTROL
         jsr     _c1b890
         jsr     _c1b86b
 @bb61:  rts
@@ -737,7 +737,7 @@ _bb2b:  inc     near w7eecbb
         jsr     InitCmdAnim
         ldx     #282 * 14      ; pointer to animation data $011a (walk forward with arms up)
         jsr     ExecSimpleAnim
-        lda     #CMD_ANIM::HEALTH
+        lda     #BATTLE_CMD_ANIM::HEALTH
         jsr     _c1bbe1
 @bb75:  rts
 
@@ -749,7 +749,7 @@ _bb2b:  inc     near w7eecbb
         jsr     InitCmdAnim
         jsr     NullTargetAnim
         bcc     @bb86
-        lda     #CMD_ANIM::LEAP
+        lda     #BATTLE_CMD_ANIM::LEAP
         jsr     _c1b890
         jsr     _c1b86b
 @bb86:  rts
@@ -764,7 +764,7 @@ _bb2b:  inc     near w7eecbb
         bmi     @bb9b
         jsr     NullTargetAnim
         bcc     @bb9b
-        lda     #CMD_ANIM::STEAL
+        lda     #BATTLE_CMD_ANIM::STEAL
         jsr     _c1b8a4
         jmp     InitCmdAnim
 @bb9b:  jsr     InitCmdAnim
@@ -790,10 +790,10 @@ _bb2b:  inc     near w7eecbb
         lda     near w7e62a4                 ; branch if doing run away animation
         bne     @bbc2
         inc     near w7e61ae,x               ; need to step forward and back
-@bbc2:  lda     #CMD_ANIM::CAPTURE_TO
+@bbc2:  lda     #BATTLE_CMD_ANIM::CAPTURE_TO
         jsr     _c1b8a4
         jsr     FightCmdAnim
-        lda     #CMD_ANIM::CAPTURE_FROM
+        lda     #BATTLE_CMD_ANIM::CAPTURE_FROM
         jsr     _c1b8a4
         plx
         lda     near w7e62a4                 ; branch if doing run away animation
@@ -808,7 +808,7 @@ _bb2b:  inc     near w7eecbb
 
         array_label GFX_BATTLE_CMD, BATTLE_CMD::REVERT
         jsr     InitCmdAnim
-        lda     #CMD_ANIM::REVERT
+        lda     #BATTLE_CMD_ANIM::REVERT
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -825,7 +825,7 @@ _c1bbe1:
 
         array_label GFX_BATTLE_CMD, BATTLE_CMD::MORPH
         jsr     InitCmdAnim
-        clr_a   ; #CMD_ANIM::MORPH
+        clr_a   ; #BATTLE_CMD_ANIM::MORPH
         bra     _c1bbe1
 
 ; ------------------------------------------------------------------------------
@@ -835,7 +835,7 @@ _c1bbe1:
         array_label GFX_BATTLE_CMD, BATTLE_CMD::GP_RAIN
         jsr     NullTargetAnim
         bcc     @bbf6
-        lda     #CMD_ANIM::GP_RAIN
+        lda     #BATTLE_CMD_ANIM::GP_RAIN
         bra     _c1bbe1
 @bbf6:  rts
 
@@ -3703,7 +3703,7 @@ magic_init_84:
         eor     #1
         sta     near wCharGfxDataBuf::Row,y
         clr_a
-        sta     near wCharGfxData::w7e61c0,y
+        sta     near wCharGfxData::AnimAction,y
 @cdde:  rts
 
 ; ------------------------------------------------------------------------------
@@ -3738,8 +3738,8 @@ magic_init_83:
 @ce0f:  sta     $10
         bpl     @ce15
         dec     $11
-@ce15:  lda     #$04
-        sta     near wCharGfxData::w7e61c0,y
+@ce15:  lda     #CHAR_ACTION::WALKING_FORWARD
+        sta     near wCharGfxData::AnimAction,y
         longa
         lda     near wCharGfxData::w7e61c9,y
         clc
@@ -7733,7 +7733,7 @@ GetAttackerThreadPtr:
 magic_code48:
 @e7b1:  jsr     GetAttackerThreadPtr
         lda     [zAnimScriptPtr]
-        sta     near wCharGfxData::w7e61c0,y     ; character secondary graphic
+        sta     near wCharGfxData::AnimAction,y
         rts
 
 ; ------------------------------------------------------------------------------
@@ -9690,7 +9690,7 @@ _f34d:  bmi     @f371       ; return if a monster
         asl5
         tay
         lda     $12
-        sta     near wCharGfxData::w7e61c1,y     ; set graphical action number
+        sta     near wCharGfxData::AnimFrame,y     ; set graphical action number
 @f371:  ldy     zAnimScriptPtr
         iny
         sty     zAnimScriptPtr

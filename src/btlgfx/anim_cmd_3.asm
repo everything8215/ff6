@@ -36,7 +36,7 @@ AnimCmd_00_7c_far:
 
 AnimCmd_00_7b_far:
         clr_axy
-@b2b7:  stz     near wCharGfxData::w7e61c0,x     ; clear secondary graphical action
+@b2b7:  stz     near wCharGfxData::AnimAction,x
         lda     near wCharGfxData::Flip,x     ; flip character horizontal
         eor     #$40
         sta     near wCharGfxData::Flip,x
@@ -69,8 +69,8 @@ AnimCmd_00_79_far:
         lda     near wCharGfxDataBuf::ActiveStatus1,x     ; branch if wound or petrify status
         andflg  STATUS1, {DEAD, PETRIFY}
         bne     @b2f2
-        lda     #$04
-        sta     near wCharGfxData::w7e61c0,x     ; set secondary graphical action to 4 (running forward)
+        lda     #CHAR_ACTION::WALKING_FORWARD
+        sta     near wCharGfxData::AnimAction,x     ; set secondary graphical action to 4 (running forward)
 @b2f2:  longa
         txa                 ; next character
         clc
@@ -90,14 +90,14 @@ AnimCmd_00_7a_far:
         longa
 @b307:  lda     near wCharGfxData::w7e61c9,x
         clc
-        adc     #$0004
+        adc     #4
         sta     near wCharGfxData::w7e61c9,x
         shorta0
         lda     near wCharGfxDataBuf::ActiveStatus1,x
         andflg  STATUS1, {DEAD, PETRIFY}
         bne     @b320
-        lda     #$03
-        sta     near wCharGfxData::w7e61c0,x
+        lda     #CHAR_ACTION::WALKING_BACK
+        sta     near wCharGfxData::AnimAction,x
 @b320:  longa
         txa
         clc
@@ -359,7 +359,7 @@ CmdAnimPropPtrs:
         .word   292 * 14        ; RUNIC
         .word   293 * 14        ; RAGE
         .word   130 * 14        ; SHOCK
-        .word   296 * 14        ; CMD_ANIM_8
+        .word   296 * 14        ; BATTLE_CMD_ANIM_8
         .word   297 * 14        ; JUMP_MONSTER
         .word   298 * 14        ; JUMP_CHAR_MISS
         .word   299 * 14        ; JUMP_MONSTER_MISS

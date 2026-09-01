@@ -257,10 +257,24 @@ get_cas_chg:
 
 ; ------------------------------------------------------------------------------
 
-; character actions for vector directions (arms up)
+; character actions for vector directions (arms up) CHAR_ACTION enum
 _c2c1a3:
-@c1a3:  .byte   $19,$18,$18,$1a,$1a,$1b,$1b,$19
-        .byte   $1a,$18,$18,$19,$19,$1b,$1b,$1a
+        .byte   CHAR_ACTION::ARMS_RAISED_BACK
+        .byte   CHAR_ACTION::ARMS_RAISED_DOWN
+        .byte   CHAR_ACTION::ARMS_RAISED_DOWN
+        .byte   CHAR_ACTION::ARMS_RAISED_FORWARD
+        .byte   CHAR_ACTION::ARMS_RAISED_FORWARD
+        .byte   CHAR_ACTION::ARMS_RAISED_UP
+        .byte   CHAR_ACTION::ARMS_RAISED_UP
+        .byte   CHAR_ACTION::ARMS_RAISED_BACK
+        .byte   CHAR_ACTION::ARMS_RAISED_FORWARD
+        .byte   CHAR_ACTION::ARMS_RAISED_DOWN
+        .byte   CHAR_ACTION::ARMS_RAISED_DOWN
+        .byte   CHAR_ACTION::ARMS_RAISED_BACK
+        .byte   CHAR_ACTION::ARMS_RAISED_BACK
+        .byte   CHAR_ACTION::ARMS_RAISED_UP
+        .byte   CHAR_ACTION::ARMS_RAISED_UP
+        .byte   CHAR_ACTION::ARMS_RAISED_FORWARD
 
 ; ------------------------------------------------------------------------------
 
@@ -280,7 +294,7 @@ _c2c1a3:
         adc     $10
         tax
         lda     f:_c2c1a3,x
-        sta     near wCharGfxData::w7e61c0,y
+        sta     near wCharGfxData::AnimAction,y
         rts
 
 ; ------------------------------------------------------------------------------
@@ -334,10 +348,24 @@ _c2c1a3:
 
 ; ------------------------------------------------------------------------------
 
-; character actions for vector directions (walking)
+; character actions for vector directions (walking) CHAR_ACTION enum
 _c2c237:
-@c237:  .byte   $03,$02,$02,$04,$04,$05,$05,$03
-        .byte   $04,$02,$02,$03,$03,$05,$05,$04
+        .byte   CHAR_ACTION::WALKING_BACK
+        .byte   CHAR_ACTION::WALKING_DOWN
+        .byte   CHAR_ACTION::WALKING_DOWN
+        .byte   CHAR_ACTION::WALKING_FORWARD
+        .byte   CHAR_ACTION::WALKING_FORWARD
+        .byte   CHAR_ACTION::WALKING_UP
+        .byte   CHAR_ACTION::WALKING_UP
+        .byte   CHAR_ACTION::WALKING_BACK
+        .byte   CHAR_ACTION::WALKING_FORWARD
+        .byte   CHAR_ACTION::WALKING_DOWN
+        .byte   CHAR_ACTION::WALKING_DOWN
+        .byte   CHAR_ACTION::WALKING_BACK
+        .byte   CHAR_ACTION::WALKING_BACK
+        .byte   CHAR_ACTION::WALKING_UP
+        .byte   CHAR_ACTION::WALKING_UP
+        .byte   CHAR_ACTION::WALKING_FORWARD
 
 ; ------------------------------------------------------------------------------
 
@@ -357,7 +385,7 @@ _c2c237:
         adc     $10
         tax
         lda     f:_c2c237,x
-        sta     near wCharGfxData::w7e61c0,y     ; character tertiary graphic action
+        sta     near wCharGfxData::AnimAction,y
         rts
 
 ; ------------------------------------------------------------------------------

@@ -241,84 +241,181 @@ _c2c689:
 
 ; ------------------------------------------------------------------------------
 
+.mac char_action f1, f2, f3, f4
+        .ifblank f2
+                .byte CHAR_FRAME::f1
+                .byte CHAR_FRAME::f1
+                .byte CHAR_FRAME::f1
+                .byte CHAR_FRAME::f1
+        .elseif .blank(f3)
+                .byte CHAR_FRAME::f1
+                .byte CHAR_FRAME::f2
+                .byte CHAR_FRAME::f1
+                .byte CHAR_FRAME::f2
+        .else
+                .byte CHAR_FRAME::f1
+                .byte CHAR_FRAME::f2
+                .byte CHAR_FRAME::f3
+                .byte CHAR_FRAME::f4
+        .endif
+.endmac
+
 ; graphic frames for each character graphical action (4 frames each)
 _c2c6a9:
-@c6a9:  .byte   $ff,$ff,$ff,$ff
-        .byte   $00,$00,$00,$00
-        .byte   $01,$02,$03,$02
-        .byte   $34,$35,$36,$35
-        .byte   $04,$05,$06,$05
-        .byte   $0e,$0f,$10,$0f
-        .byte   $11,$11,$11,$11
-        .byte   $12,$04,$12,$04
-        .byte   $13,$06,$13,$06
-        .byte   $08,$09,$08,$09
-        .byte   $14,$14,$14,$14
-        .byte   $15,$15,$15,$15
-        .byte   $16,$16,$16,$16
-        .byte   $0a,$0a,$0a,$0a
-        .byte   $02,$0b,$02,$0b
-        .byte   $35,$3d,$35,$3d
-        .byte   $05,$0d,$05,$0d
-        .byte   $32,$3c,$32,$3c
-        .byte   $02,$0c,$02,$0c
-        .byte   $02,$02,$17,$17
-        .byte   $35,$35,$37,$37
-        .byte   $05,$05,$07,$07
-        .byte   $0f,$0f,$18,$18
-        .byte   $19,$19,$19,$19
-        .byte   $17,$17,$17,$17
-        .byte   $37,$37,$37,$37
-        .byte   $07,$07,$07,$07
-        .byte   $18,$18,$18,$18
-        .byte   $00,$00,$00,$00
-        .byte   $00,$00,$00,$00
-        .byte   $00,$00,$00,$00
-        .byte   $00,$00,$00,$00
-        .byte   $1e,$1f,$1e,$1f
-        .byte   $4e,$4f,$4e,$4f
-        .byte   $1d,$02,$4d,$02
-        .byte   $1a,$1b,$1a,$1b
-        .byte   $00,$00,$00,$00
-        .byte   $17,$37,$18,$07
-        .byte   $4a,$4a,$07,$4b
+
+; 0: NONE
+        char_action BLANK
+
+; 1: DEAD_HORZ
+        char_action DEAD_HORZ
+
+; 2: WALKING_DOWN
+        char_action WALKING_DOWN_1, WALKING_DOWN_2, WALKING_DOWN_3, WALKING_DOWN_2
+
+; 3: WALKING_BACK
+        char_action WALKING_FORWARD_1 + $30, WALKING_FORWARD_2 + $30, WALKING_FORWARD_3 + $30, WALKING_FORWARD_2 + $30
+
+; 4: WALKING_FORWARD
+        char_action WALKING_FORWARD_1, WALKING_FORWARD_2, WALKING_FORWARD_3, WALKING_FORWARD_2
+
+; 5: WALKING_UP
+        char_action WALKING_UP_1, WALKING_UP_2, WALKING_UP_3, WALKING_UP_2
+
+; 6: DEFAULT
+        char_action FIGHTING_1
+
+; 7: FIGHTING_BACK_HAND
+        char_action FIGHTING_2, WALKING_FORWARD_1
+
+; 8: FIGHTING_FRONT_HAND
+        char_action FIGHTING_3, WALKING_FORWARD_3
+
+; 9: CASTING
+        char_action CASTING_1, CASTING_2
+
+; 10: NEAR_FATAL
+        char_action NEAR_FATAL
+
+; 11: READY
+        char_action READY
+
+; 12: HIT
+        char_action HIT
+
+; 13: DEAD_VERT
+        char_action DEAD_VERT
+
+; 14: BLINKING_DOWN
+        char_action WALKING_DOWN_2, EYES_CLOSED_DOWN
+
+; 15: BLINKING_BACK
+        char_action WALKING_FORWARD_2 + $30, EYES_CLOSED_FORWARD + $30
+
+; 16: BLINKING_FORWARD
+        char_action WALKING_FORWARD_2, EYES_CLOSED_FORWARD
+
+; 17: WINKING_DOWN_ALT
+        char_action WALKING_DOWN_2 + $30, WINKING_DOWN + $30
+
+; 18: WINKING_DOWN
+        char_action WALKING_DOWN_2, WINKING_DOWN
+
+; 19: JUMPING_DOWN
+        char_action WALKING_DOWN_2, WALKING_DOWN_2, JUMPING_DOWN, JUMPING_DOWN
+
+; 20: JUMPING_BACK
+        char_action WALKING_FORWARD_2 + $30, WALKING_FORWARD_2 + $30, JUMPING_FORWARD + $30, JUMPING_FORWARD + $30
+
+; 21: JUMPING_FORWARD
+        char_action WALKING_FORWARD_2, WALKING_FORWARD_2, JUMPING_FORWARD, JUMPING_FORWARD
+
+; 22: JUMPING_UP
+        char_action WALKING_UP_2, WALKING_UP_2, JUMPING_UP, JUMPING_UP
+
+; 23: CHAR_ACTION_23
+        char_action DEAD_GESTAHL
+
+; 24: ARMS_RAISED_DOWN
+        char_action JUMPING_DOWN
+
+; 25: ARMS_RAISED_BACK
+        char_action JUMPING_FORWARD + $30
+
+; 26: ARMS_RAISED_FORWARD
+        char_action JUMPING_FORWARD
+
+; 27: ARMS_RAISED_UP
+        char_action JUMPING_UP
+
+; 28
+        char_action DEAD_HORZ
+
+; 29
+        char_action DEAD_HORZ
+
+; 30
+        char_action DEAD_HORZ
+
+; 31
+        char_action DEAD_HORZ
+
+; 32: WAGGING_FINGER
+        char_action WAGGING_FINGER_1, WAGGING_FINGER_2
+
+; 33: WAGGING_FINGER_ALT
+        char_action WAGGING_FINGER_1 + $30, WAGGING_FINGER_2 + $30
+
+; 34: SHAKING_HEAD
+        char_action HEAD_TURNED, WALKING_DOWN_2, HEAD_TURNED + $30, WALKING_DOWN_2
+
+; 35: LAUGHING
+        char_action LAUGHING_1, LAUGHING_2
+
+; 36: CHAR_ACTION_36
+        char_action DEAD_HORZ
+
+; 37: SPINNING
+        char_action JUMPING_DOWN, JUMPING_FORWARD + $30, JUMPING_UP, JUMPING_FORWARD
+
+; 38: LAUGHING_ALT
+        char_action LAUGHING_1 + $30, LAUGHING_1 + $30, JUMPING_FORWARD, LAUGHING_2 + $30
 
 ; ------------------------------------------------------------------------------
 
-; graphic action tile offsets (32 items, 6 values per action)
+; character graphic frame tile offsets (32 items, 6 values per action)
 _c2c745:
-@c745:  .word   $0ae0,$0b00,$0b40,$0b60,$0b20,$ffff,$0b80,$ffff
-        .word   $ffff,$ffff,$0000,$0020,$0040,$0060,$0080,$00a0
-        .word   $ffff,$ffff,$0000,$0020,$00c0,$00e0,$0100,$0120
-        .word   $ffff,$ffff,$0000,$0020,$0140,$0160,$00a0,$0080
-        .word   $ffff,$ffff,$0300,$0320,$0340,$0360,$0380,$03a0
-        .word   $ffff,$ffff,$03c0,$03e0,$0400,$0420,$0440,$0460
-        .word   $ffff,$ffff,$0300,$0320,$0480,$04a0,$04c0,$04e0
-        .word   $ffff,$ffff,$03c0,$0660,$0680,$06a0,$06c0,$06e0
-        .word   $ffff,$ffff,$0940,$0960,$0980,$09a0,$09c0,$09e0
-        .word   $ffff,$ffff,$0940,$0960,$0a00,$09a0,$09c0,$09e0
-        .word   $ffff,$ffff,$0a20,$0a40,$0a60,$0a80,$0aa0,$0ac0
-        .word   $ffff,$ffff,$0000,$0020,$0ba0,$0bc0,$0100,$0120
-        .word   $ffff,$ffff,$0000,$0020,$00c0,$0be0,$0100,$0120
-        .word   $ffff,$ffff,$12c0,$03e0,$12e0,$0420,$0440,$0460
-        .word   $ffff,$ffff,$0180,$01a0,$01c0,$01e0,$0200,$0220
-        .word   $ffff,$ffff,$0180,$01a0,$0240,$0260,$0280,$02a0
-        .word   $ffff,$ffff,$0180,$01a0,$02c0,$02e0,$0220,$0200
-        .word   $ffff,$ffff,$03c0,$03e0,$0500,$0520,$0540,$0560
-        .word   $ffff,$ffff,$0300,$0320,$0580,$0360,$05a0,$03a0
-        .word   $ffff,$ffff,$0300,$05c0,$05e0,$0600,$0620,$0640
-        .word   $ffff,$ffff,$0700,$0720,$0740,$0760,$0780,$07a0
-        .word   $ffff,$ffff,$07c0,$07e0,$0800,$0820,$0840,$0860
-        .word   $ffff,$ffff,$0880,$08a0,$08c0,$08e0,$0900,$0920
-        .word   $ffff,$ffff,$0d40,$0d60,$0d80,$0da0,$0dc0,$0de0
-        .word   $ffff,$ffff,$0e00,$0e20,$0e40,$0e60,$0e80,$0ea0
-        .word   $ffff,$ffff,$0620,$0640,$0660,$0680,$06a0,$06c0
-        .word   $ffff,$ffff,$0c00,$0c20,$0c40,$0c60,$0c80,$0ca0
-        .word   $ffff,$ffff,$0cc0,$0ce0,$0d00,$0d20,$0c80,$0ca0
-        .word   $ffff,$ffff,$0f80,$0fa0,$0fc0,$0fe0,$1000,$1020
-        .word   $ffff,$ffff,$1240,$1260,$1280,$12a0,$0100,$0120
-        .word   $ffff,$ffff,$1460,$1480,$1300,$1320,$1340,$1360
-        .word   $ffff,$ffff,$1460,$1480,$1380,$1320,$1340,$1360
+@c745:  .word   $0ae0,$0b00,$0b40,$0b60,$0b20,$ffff,$0b80,$ffff  ;  0: DEAD_HORZ
+        .word   $ffff,$ffff,$0000,$0020,$0040,$0060,$0080,$00a0  ;  1: WALKING_DOWN_1
+        .word   $ffff,$ffff,$0000,$0020,$00c0,$00e0,$0100,$0120  ;  2: WALKING_DOWN_2
+        .word   $ffff,$ffff,$0000,$0020,$0140,$0160,$00a0,$0080  ;  3: WALKING_DOWN_3
+        .word   $ffff,$ffff,$0300,$0320,$0340,$0360,$0380,$03a0  ;  4: WALKING_FORWARD_1
+        .word   $ffff,$ffff,$03c0,$03e0,$0400,$0420,$0440,$0460  ;  5: WALKING_FORWARD_2
+        .word   $ffff,$ffff,$0300,$0320,$0480,$04a0,$04c0,$04e0  ;  6: WALKING_FORWARD_3
+        .word   $ffff,$ffff,$03c0,$0660,$0680,$06a0,$06c0,$06e0  ;  7: JUMPING_FORWARD
+        .word   $ffff,$ffff,$0940,$0960,$0980,$09a0,$09c0,$09e0  ;  8: CASTING_1
+        .word   $ffff,$ffff,$0940,$0960,$0a00,$09a0,$09c0,$09e0  ;  9: CASTING_2
+        .word   $ffff,$ffff,$0a20,$0a40,$0a60,$0a80,$0aa0,$0ac0  ; 10: DEAD_VERT
+        .word   $ffff,$ffff,$0000,$0020,$0ba0,$0bc0,$0100,$0120  ; 11: EYES_CLOSED_DOWN
+        .word   $ffff,$ffff,$0000,$0020,$00c0,$0be0,$0100,$0120  ; 12: WINKING_DOWN
+        .word   $ffff,$ffff,$12c0,$03e0,$12e0,$0420,$0440,$0460  ; 13: EYES_CLOSED_FORWARD
+        .word   $ffff,$ffff,$0180,$01a0,$01c0,$01e0,$0200,$0220  ; 14: WALKING_UP_1
+        .word   $ffff,$ffff,$0180,$01a0,$0240,$0260,$0280,$02a0  ; 15: WALKING_UP_2
+        .word   $ffff,$ffff,$0180,$01a0,$02c0,$02e0,$0220,$0200  ; 16: WALKING_UP_3
+        .word   $ffff,$ffff,$03c0,$03e0,$0500,$0520,$0540,$0560  ; 17: FIGHTING_1
+        .word   $ffff,$ffff,$0300,$0320,$0580,$0360,$05a0,$03a0  ; 18: FIGHTING_2
+        .word   $ffff,$ffff,$0300,$05c0,$05e0,$0600,$0620,$0640  ; 19: FIGHTING_3
+        .word   $ffff,$ffff,$0700,$0720,$0740,$0760,$0780,$07a0  ; 20: NEAR_FATAL
+        .word   $ffff,$ffff,$07c0,$07e0,$0800,$0820,$0840,$0860  ; 21: READY
+        .word   $ffff,$ffff,$0880,$08a0,$08c0,$08e0,$0900,$0920  ; 22: HIT
+        .word   $ffff,$ffff,$0d40,$0d60,$0d80,$0da0,$0dc0,$0de0  ; 23: JUMPING_DOWN
+        .word   $ffff,$ffff,$0e00,$0e20,$0e40,$0e60,$0e80,$0ea0  ; 24: JUMPING_UP
+        .word   $ffff,$ffff,$0620,$0640,$0660,$0680,$06a0,$06c0  ; 25: DEAD_GESTAHL
+        .word   $ffff,$ffff,$0c00,$0c20,$0c40,$0c60,$0c80,$0ca0  ; 26: LAUGHING_1
+        .word   $ffff,$ffff,$0cc0,$0ce0,$0d00,$0d20,$0c80,$0ca0  ; 27: LAUGHING_2
+        .word   $ffff,$ffff,$0f80,$0fa0,$0fc0,$0fe0,$1000,$1020  ; 28: SURPRISED
+        .word   $ffff,$ffff,$1240,$1260,$1280,$12a0,$0100,$0120  ; 29: HEAD_TURNED
+        .word   $ffff,$ffff,$1460,$1480,$1300,$1320,$1340,$1360  ; 30: WAGGING_FINGER_1
+        .word   $ffff,$ffff,$1460,$1480,$1380,$1320,$1340,$1360  ; 31: WAGGING_FINGER_2
 
 ; ------------------------------------------------------------------------------
 

@@ -1068,10 +1068,10 @@ UpdateCharPal:
         dex
         bne     @2de3
         ply
-        lda     near wCharGfxData::VanishAnimCounter,y     ; branch if not vanishing
+        lda     near wCharGfxData::VanishCounter,y     ; branch if not vanishing
         beq     @2e05
         dec2                ; decrement vanish counter
-        sta     near wCharGfxData::VanishAnimCounter,y
+        sta     near wCharGfxData::VanishCounter,y
         bne     @2dfd
         stz     near w7e7b6a       ; vanish animation complete
 @2dfd:  lda     #STATUS_OUTLINE_COLOR::VANISH
@@ -1185,7 +1185,7 @@ UpdateCharPal:
 
 UpdateVanishOutlineColor:
 @2eb5:  pha
-        lda     near wCharGfxData::VanishAnimCounter,y
+        lda     near wCharGfxData::VanishCounter,y
         asl2
         clc
         adc     #$40
@@ -1363,7 +1363,7 @@ UpdateStatusChangeAnim:
         tay
         asl5
         tax
-        lda     near wCharGfxData::VanishAnimCounter,x     ; counter for vanish palette
+        lda     near wCharGfxData::VanishCounter,x     ; counter for vanish palette
         jne     @304c
         lda     #1
         sta     near wCharGfxData::w7e61ce,x
@@ -1418,7 +1418,7 @@ UpdateStatusChangeAnim:
         lda     #$01
         sta     near w7e7b70,y
         lda     #$1e
-        sta     near wCharGfxData::VanishAnimCounter,x
+        sta     near wCharGfxData::VanishCounter,x
         bra     @3032
 @3013:  lda     near w7e7b70,y
         beq     @3032
@@ -1431,9 +1431,9 @@ UpdateStatusChangeAnim:
         clr_a
         sta     near w7e7b70,y
         lda     #$1e
-        sta     near wCharGfxData::VanishAnimCounter,x
+        sta     near wCharGfxData::VanishCounter,x
 @3032:  stz     near wCharGfxData::w7e61ce,x     ;
-        jsr     _c13071
+        jsr     UpdateCharStatusAction
         jsr     UpdateStatusSpriteIndex
         longa
         lda     near wCharGfxDataBuf::ActiveStatus12,x     ; copy status to second graphics buffer
@@ -1473,9 +1473,8 @@ tfr_chr_tmp:
 
 ; [ set character gfx action based on status ]
 
-_c13071:
-one_status_chr_set:
-@3071:  phx
+UpdateCharStatusAction:
+        phx
         longa
         lda     near wCharGfxDataBuf::ActiveStatus12,x
         sta     $10
@@ -1484,35 +1483,35 @@ one_status_chr_set:
         shorta0
         lda     $10
         bpl     @3089                   ; dead
-        lda     #$01
+        lda     #CHAR_ACTION::DEAD_HORZ
         bra     @30be
 @3089:  lda     $11
         bpl     @3091                   ; sleep
-        lda     #$0a
+        lda     #CHAR_ACTION::NEAR_FATAL
         bra     @30be
-@3091:  andflg  STATUS2, CONFUSE
+@3091:  and     #STATUS2::CONFUSE
         beq     @3099
-        lda     #$25
+        lda     #CHAR_ACTION::SPINNING
         bra     @30be
 @3099:  lda     $13
-        andflg  STATUS4, CONTROL
+        and     #STATUS4::CONTROL
         beq     @30a3
-        lda     #$09
+        lda     #CHAR_ACTION::CASTING
         bra     @30be
 @30a3:  lda     $10
-        andflg  STATUS1, POISON
+        and     #STATUS1::POISON
         beq     @30ad
-        lda     #$0a
+        lda     #CHAR_ACTION::NEAR_FATAL
         bra     @30be
 @30ad:  lda     $11
-        andflg  STATUS2, NEAR_FATAL
+        and     #STATUS2::NEAR_FATAL
         beq     @30b7
-        lda     #$0a
+        lda     #CHAR_ACTION::NEAR_FATAL
         bra     @30be
-@30b7:  lda     near wCharGfxData::w7e61bb,x
+@30b7:  lda     near wCharGfxData::ReadyAction,x
         bne     @30be
-        lda     #$06
-@30be:  sta     near wCharGfxData::w7e61bf,x
+        lda     #CHAR_ACTION::DEFAULT
+@30be:  sta     near wCharGfxData::StatusAction,x
         plx
         rts
 
@@ -1797,7 +1796,7 @@ DrawBlockSprites:
         lda     f:CharGfxDataBufPtrs,x
         tax
         stz     $3a
-        lda     near wCharGfxData::w7e61c3,x     ; current graphic action
+        lda     near wCharGfxData::CurrFrame,x
         cmp     #$30
         bcc     @32bf       ; branch if not mirrored
         lda     #$40
@@ -1922,15 +1921,15 @@ DrawStatusSprites:
         pla
         rts
 @33b5:  stz     $3a
-        lda     near wCharGfxData::w7e61c3,x
+        lda     near wCharGfxData::CurrFrame,x
         cmp     #$30
         bcc     @33c2
         lda     #$40
         sta     $3a
-@33c2:  lda     near wCharGfxData::w7e61c3,x     ; current graphic action
-        cmp     #$14
+@33c2:  lda     near wCharGfxData::CurrFrame,x
+        cmp     #CHAR_FRAME::NEAR_FATAL
         beq     @33d2       ; branch if kneeling
-        cmp     #$44
+        cmp     #CHAR_FRAME::NEAR_FATAL + $30
         beq     @33d2       ; branch if kneeling
         stz     $3c
         jmp     @33d6
@@ -2052,10 +2051,10 @@ get_yoffset:
         bpl     @34da
         lda     near wCharGfxData::DisableFloatOffset,x
         bne     @34da
-        lda     near wCharGfxData::w7e61c1,x
+        lda     near wCharGfxData::AnimFrame,x
         bne     @34da
         phx
-        lda     near wCharGfxData::w7e61c2,x
+        lda     near wCharGfxData::AnimCounter,x
         and     #$38
         lsr3
         tax
@@ -2083,7 +2082,7 @@ DrawCharSprite:
         tax
         lda     near w7e7b69
         beq     @34f9
-        dec     near wCharGfxData::w7e61c2,x
+        dec     near wCharGfxData::AnimCounter,x
 @34f9:  stz     $44
         stz     $45
         lda     near wCharGfxData::Pal,x
@@ -2118,18 +2117,18 @@ DrawCharSprite:
         lda     #$0c
         sta     $36
         bra     @355f
-@3549:  lda     near wCharGfxData::w7e61c1,x
+@3549:  lda     near wCharGfxData::AnimFrame,x  ; animation frame
         bne     @3595
-        lda     near wCharGfxData::w7e61c0,x
+        lda     near wCharGfxData::AnimAction,x
         bne     @3556
-        lda     near wCharGfxData::w7e61bf,x
+        lda     near wCharGfxData::StatusAction,x  ; status action
 @3556:  asl2
         sta     $36
         lda     near wCharGfxData::w7e61d0,x
         beq     @3564
-@355f:  lda     near wCharGfxData::w7e61c2,x
+@355f:  lda     near wCharGfxData::AnimCounter,x
         bra     @3568
-@3564:  lda     near wCharGfxData::w7e61c2,x
+@3564:  lda     near wCharGfxData::AnimCounter,x
         lsr
 @3568:  lsr2
         sta     $38
@@ -2147,18 +2146,18 @@ DrawCharSprite:
         lda     f:_c2c6a9,x   ; frames for animated graphic actions
         sta     $36
         and     #$1f
-        cmp     #$07
+        cmp     #CHAR_FRAME::JUMPING_FORWARD
         bne     @3592
-        ldx     $44
+        ldx     $44                     ; move up 1 pixel if jumping
         dex
         stx     $44
 @3592:  tyx
         lda     $36
-@3595:  sta     near wCharGfxData::w7e61c3,x     ; set current graphic action
+@3595:  sta     near wCharGfxData::CurrFrame,x     ; set current graphic frame
         sta     $36
         stz     $38
         cmp     #$30
-        bcc     @35a9
+        bcc     @35a9                   ; branch if not flipped horizontally
         sec
         sbc     #$30
         sta     $36
@@ -2191,7 +2190,7 @@ DrawCharSprite:
 @35dd:  ldy     #$0008
 @35e0:  sty     $36
 @35e2:  jsr     _c134a5
-        inc     near wCharGfxData::w7e61c2,x
+        inc     near wCharGfxData::AnimCounter,x
         lda     z71
         longa
         asl2
@@ -2290,23 +2289,31 @@ UpdateCharGfx:
         stz     $2c
 @36a5:  tax
         pha
+
+; skip if frame is static (during morph/invisible animation)
         lda     near wCharGfxData::w7e61ce,x
         bne     @36d7
-        lda     near wCharGfxData::w7e61c2,x
+
+; force an update every 8 frames, even if the frame hasn't changed
+        lda     near wCharGfxData::AnimCounter,x
         dec
-        and     #$07
+        and     #%111
         beq     @36bc
-        lda     near wCharGfxData::w7e61c3,x
-        cmp     near wCharGfxData::w7e61c4,x
-        beq     @36d7       ; branch if character graphic action has not changed
-@36bc:  lda     near wCharGfxData::w7e61c3,x
-        sta     near wCharGfxData::w7e61c4,x
-        cmp     #$30
+
+; skip unless character frame has changed
+        lda     near wCharGfxData::CurrFrame,x
+        cmp     near wCharGfxData::PrevFrame,x
+        beq     @36d7
+
+; validate the character frame
+@36bc:  lda     near wCharGfxData::CurrFrame,x
+        sta     near wCharGfxData::PrevFrame,x
+        cmp     #$30                    ; ignore frame h-flip
         bcc     @36c9
         sec
         sbc     #$30
 @36c9:  sta     $37
-        lda     near wCharGfxData::VanishAnimCounter,x
+        lda     near wCharGfxData::VanishCounter,x
         sta     $3a
         stz     $3b
         lda     $2c
@@ -2324,7 +2331,7 @@ UpdateCharGfx:
 ; [  ]
 
 ;   A: character slot
-; $37: graphic action
+; $37: graphic action frame
 ; $3a: counter for vanish palette
 
 _c136e2:
@@ -2333,13 +2340,19 @@ player_pat_chr_set:
         sta     $3c
         lda     $3a
         bne     @36ee       ; branch if vanish palette counter is active
+
+; graphics buffer update
         jsr     UpdateCharGfxBuf
         bra     @36f8
+
+; vanish animation update
 @36ee:  lsr3
         and     #%11
         asl
         tax
-        jsr     (near _c1373f,x)
+        jsr     (near UpdateVanishGfxTbl,x)
+
+; condemn numerals update
 @36f8:  pla
         and     #%11
         tax
@@ -2377,14 +2390,22 @@ player_pat_chr_set:
 
 ; ------------------------------------------------------------------------------
 
-; jump table for vanishing character ??? (one per character)
-super_jmp:
-_c1373f:
-@373f:  .addr   _c1379a,_c137e7,_c13834,_c13881
+.enum UPDATE_VANISH_GFX
+        FRAME_1
+        FRAME_2
+        FRAME_3
+        FRAME_4
+
+        COUNT
+.endenum
+
+; jump table for vanish graphics update
+UpdateVanishGfxTbl:
+        ptr_tbl UPDATE_VANISH_GFX
 
 ; ------------------------------------------------------------------------------
 
-; [  ]
+; [ update character graphics buffer (normal) ]
 
 UpdateCharGfxBuf:
 @3747:  lda     $3c         ; character slot
@@ -2431,7 +2452,7 @@ UpdateCharGfxBuf:
 
 ; [  ]
 
-_c1379a:
+        array_label UPDATE_VANISH_GFX, UPDATE_VANISH_GFX::FRAME_1
 @379a:  lda     $3c
         asl
         tax
@@ -2474,7 +2495,7 @@ _c1379a:
 
 ; [  ]
 
-_c137e7:
+        array_label UPDATE_VANISH_GFX, UPDATE_VANISH_GFX::FRAME_2
 @37e7:  lda     $3c
         asl
         tax
@@ -2517,7 +2538,7 @@ _c137e7:
 
 ; [  ]
 
-_c13834:
+        array_label UPDATE_VANISH_GFX, UPDATE_VANISH_GFX::FRAME_3
 @3834:  lda     $3c
         asl
         tax
@@ -2560,7 +2581,7 @@ _c13834:
 
 ; [  ]
 
-_c13881:
+        array_label UPDATE_VANISH_GFX, UPDATE_VANISH_GFX::FRAME_4
 @3881:  lda     $3c
         asl
         tax
@@ -2965,25 +2986,25 @@ InitCharGfxMain:
         sta     near wCharGfxData::_1::LayerPriority
         sta     near wCharGfxData::_2::LayerPriority
         sta     near wCharGfxData::_3::LayerPriority
-        lda     #$06        ; tertiary graphics index = 6
-        sta     near wCharGfxData::_0::w7e61bf
-        sta     near wCharGfxData::_1::w7e61bf
-        sta     near wCharGfxData::_2::w7e61bf
-        sta     near wCharGfxData::_3::w7e61bf
+        lda     #CHAR_ACTION::DEFAULT
+        sta     near wCharGfxData::_0::StatusAction
+        sta     near wCharGfxData::_1::StatusAction
+        sta     near wCharGfxData::_2::StatusAction
+        sta     near wCharGfxData::_3::StatusAction
         ldx     zZero         ; primary & secondary graphics index = 0
-        stx     near wCharGfxData::_0::w7e61c0
-        stx     near wCharGfxData::_1::w7e61c0
-        stx     near wCharGfxData::_2::w7e61c0
-        stx     near wCharGfxData::_3::w7e61c0
+        stx     near wCharGfxData::_0::AnimAction
+        stx     near wCharGfxData::_1::AnimAction
+        stx     near wCharGfxData::_2::AnimAction
+        stx     near wCharGfxData::_3::AnimAction
         clr_a
         sta     a:z98       ; clear frame counter
-        sta     near wCharGfxData::_0::w7e61c2       ; character 1 graphic action counter = 0
+        sta     near wCharGfxData::_0::AnimCounter
         inc2
-        sta     near wCharGfxData::_1::w7e61c2       ; character 2 graphic action counter = 2
+        sta     near wCharGfxData::_1::AnimCounter
         inc2
-        sta     near wCharGfxData::_2::w7e61c2       ; character 3 graphic action counter = 4
+        sta     near wCharGfxData::_2::AnimCounter
         inc2
-        sta     near wCharGfxData::_3::w7e61c2       ; character 4 graphic action counter = 6
+        sta     near wCharGfxData::_3::AnimCounter
         clr_axy
 @3cbd:  lda     near wCharGfxDataBuf::GfxID,x     ; character graphics index
         cmp     #$ff
@@ -3066,7 +3087,7 @@ InitCharGfx:
 ; [ load character graphics/palette ]
 
 ;  A: character graphics index
-; +X: pointer to graphics buffer(+$7f0000)
+; +X: pointer to graphics buffer (+$7f0000)
 
 LoadCharGfx:
 @3d43:  cmp     #$ff
@@ -3182,7 +3203,7 @@ LoadCharGfx:
         dec     $10
         bne     @3e3b
         plx
-        inc     near wCharGfxData::w7e61c4,x     ; invalidate previous graphic action (forces buffer update)
+        inc     near wCharGfxData::PrevFrame,x     ; invalidate previous graphic action (forces buffer update)
         rts
 
 ; ------------------------------------------------------------------------------

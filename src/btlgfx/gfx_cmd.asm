@@ -79,7 +79,7 @@ DeinitAnimVars:
         cpx     #$00ff                  ; return if command = $ff
         beq     @918d
         lda     f:_c2e49a,x             ; set graphical action for waiting to attack
-        sta     near wCharGfxData::w7e61bb,y
+        sta     near wCharGfxData::ReadyAction,y
 @918d:  rts
 
 ; ------------------------------------------------------------------------------
@@ -1384,9 +1384,9 @@ _c199c1:
         bra     @9a32
 @9a2f:  ldy     #$0001
 @9a32:  sty     $10
-        stz     near wCharGfxData::w7e61c1,x
-        lda     #$04
-        sta     near wCharGfxData::w7e61c0,x
+        stz     near wCharGfxData::AnimFrame,x
+        lda     #CHAR_ACTION::WALKING_FORWARD
+        sta     near wCharGfxData::AnimAction,x
         longa
         lda     near wCharGfxData::AnimOffsetX,x
         clc
@@ -1411,7 +1411,7 @@ _c199c1:
         sta     near wCharGfxData::Flip,y
 @9a71:  stz     near w7e61ae,x               ; disable stepping forward/back
         clr_a
-        sta     near wCharGfxData::w7e61c0,y
+        sta     near wCharGfxData::AnimAction,y
         dec
         sta     near w7e61b2,x
 @9a7c:  clr_a
@@ -3625,7 +3625,7 @@ _a8b3:  ldy     near w7e6275
         asl5
         tay
         clr_a
-        sta     near wCharGfxData::w7e61bb,y
+        sta     near wCharGfxData::ReadyAction,y
 @aa9e:  jmp     _a8b3
 
 ; ------------------------------------------------------------------------------
@@ -3791,7 +3791,7 @@ SetAnimTargets:
         and     #%11
         asl5
         tax
-        stz     near wCharGfxData::w7e61bb,x     ; clear graphical action
+        stz     near wCharGfxData::ReadyAction,x
 @ab8a:  rts
 
 ; ------------------------------------------------------------------------------
@@ -3802,12 +3802,12 @@ _c1ab8b:
 clr_player_pat:
 @ab8b:  ldy     #1
         lda     (z78),y     ; character/monster number
-        cmp     #$04
+        cmp     #4
         bcs     @ab9e       ; branch if not a character
         asl5
         tay
         clr_a
-        sta     near wCharGfxData::w7e61bb,y     ; set graphical action
+        sta     near wCharGfxData::ReadyAction,y
 @ab9e:  rts
 
 ; ------------------------------------------------------------------------------

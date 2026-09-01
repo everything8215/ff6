@@ -1467,7 +1467,7 @@ $4305-$43F4 generic hdma data for bg3 text
 				30-4F: Same as 00-1F, mirrored horizontally
           $61C2 Character Graphic Action Counter (increments every frame)
           $61C3 Character Current Graphic Action
-          $61C4 Previous Graphic Action ???
+          $61C4 Previous Graphic Action
          +$61C5 Character X Offset (signed)
          +$61C7 Character Y Offset (for animation threads, signed)
          +$61C9 Target value - Character X/Y Angle from battle type + back row ($0100 = vertical, $0180 = 45 degrees to the right)
