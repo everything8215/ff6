@@ -204,7 +204,7 @@ CmdTargetTbl:
         opflg .byte, CMD_TARGET, {RAISE_TARGET, NO_RETARGET}            ; DEF
         opflg .byte, CMD_TARGET, {ALLOW_DEAD_TARGET, NO_TARGET_ATTACKER}; JUMP
         opflg .byte, CMD_TARGET, {TYPE_MAGIC}                           ; X_MAGIC
-        opflg .byte, CMD_TARGET, {NO_TARGET_ATTACKER}                   ; GP_RAIN
+        opflg .byte, CMD_TARGET, {NO_TARGET_ATTACKER}                   ; GIL_TOSS
         opflg .byte, CMD_TARGET, {TYPE_MAGIC}                           ; SUMMON
         opflg .byte, CMD_TARGET, {TYPE_MAGIC}                           ; HEALTH
         opflg .byte, CMD_TARGET, {TYPE_MAGIC}                           ; SHOCK

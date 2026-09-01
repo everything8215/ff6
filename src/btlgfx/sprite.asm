@@ -1929,7 +1929,7 @@ DrawStatusSprites:
 @33c2:  lda     near wCharGfxData::CurrFrame,x
         cmp     #CHAR_FRAME::NEAR_FATAL
         beq     @33d2       ; branch if kneeling
-        cmp     #CHAR_FRAME::NEAR_FATAL + $30
+        cmp     #CHAR_FRAME::NEAR_FATAL_FLIP
         beq     @33d2       ; branch if kneeling
         stz     $3c
         jmp     @33d6

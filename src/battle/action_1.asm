@@ -611,7 +611,7 @@ ConfusedCmdTbl:
         bitlist_set BATTLE_CMD::ROW
         bitlist_set BATTLE_CMD::JUMP
         bitlist_set BATTLE_CMD::X_MAGIC
-        bitlist_set BATTLE_CMD::GP_RAIN
+        bitlist_set BATTLE_CMD::GIL_TOSS
         bitlist_set BATTLE_CMD::HEALTH
         bitlist_set BATTLE_CMD::SHOCK
         bitlist_set BATTLE_CMD::MAGITEK

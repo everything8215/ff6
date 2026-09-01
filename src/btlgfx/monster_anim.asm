@@ -27,12 +27,12 @@ MonsterEntryScriptPtrs:
 ; monster entry/exit animation scripts
         array_label MONSTER_ENTRY_SCRIPT, 14
 @e533:  .byte   $00,$04
-        .word   395 * 14
+        .word   attack_anim_prop_offset CHARDARNOOK_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 14
 @e539:  .byte   $00,$03
-        .word   394 * 14
+        .word   attack_anim_prop_offset CHARDARNOOK_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 0
@@ -49,107 +49,107 @@ MonsterEntryScriptPtrs:
 
         array_label MONSTER_ENTRY_SCRIPT, 1
 @e540:  .byte   $00,$04
-        .word   360 * 14
+        .word   attack_anim_prop_offset SMOKE_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 1
 @e546:  .byte   $00,$03
-        .word   390 * 14
+        .word   attack_anim_prop_offset SMOKE_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 2
 @e54c:  .byte   $00,$04
-        .word   362 * 14
+        .word   attack_anim_prop_offset CEILING_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 2
 @e552:  .byte   $00,$03
-        .word   361 * 14
+        .word   attack_anim_prop_offset CEILING_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 3
 @e558:  .byte   $00,$04
-        .word   364 * 14
+        .word   attack_anim_prop_offset SIDE_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 3
 @e55e:  .byte   $00,$03
-        .word   363 * 14
+        .word   attack_anim_prop_offset SIDE_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 4
 @e564:  .byte   $00,$04
-        .word   366 * 14
+        .word   attack_anim_prop_offset WATER_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 4
 @e56a:  .byte   $00,$03
-        .word   365 * 14
+        .word   attack_anim_prop_offset WATER_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 5
 @e570:  .byte   $00,$04
-        .word   368 * 14
+        .word   attack_anim_prop_offset FLOAT_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 5
 @e576:  .byte   $00,$03
-        .word   367 * 14
+        .word   attack_anim_prop_offset FLOAT_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 6
 @e57c:  .byte   $00,$04
-        .word   370 * 14
+        .word   attack_anim_prop_offset SAND_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 6
 @e582:  .byte   $00,$03
-        .word   369 * 14
+        .word   attack_anim_prop_offset SAND_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 8
 @e588:  .byte   $00,$04
-        .word   372 * 14
+        .word   attack_anim_prop_offset FADE_DOWN_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 8
 @e58e:  .byte   $00,$03
-        .word   371 * 14
+        .word   attack_anim_prop_offset FADE_DOWN_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 9
 @e594:  .byte   $00,$04
-        .word   374 * 14
+        .word   attack_anim_prop_offset FADE_UP_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 9
 @e59a:  .byte   $00,$03
-        .word   373 * 14
+        .word   attack_anim_prop_offset FADE_UP_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 10
 @e5a0:  .byte   $00,$04
-        .word   376 * 14
+        .word   attack_anim_prop_offset MATERIALIZE_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 10
 @e5a6:  .byte   $00,$03
-        .word   375 * 14
+        .word   attack_anim_prop_offset MATERIALIZE_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 11
 @e5ac:  .byte   $00,$04
-        .word   378 * 14
+        .word   attack_anim_prop_offset HORZ_FADE_ENTRY
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 11
 @e5b2:  .byte   $00,$03
-        .word   377 * 14
+        .word   attack_anim_prop_offset HORZ_FADE_EXIT
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 12
 @e5b8:  .byte   $00,$03
-        .word   391 * 14
+        .word   attack_anim_prop_offset BOSS_DEATH
         .byte   $01,$ff
 
 ; unused
@@ -157,17 +157,17 @@ MonsterEntryScriptPtrs:
 
         array_label MONSTER_ENTRY_SCRIPT, 7
 @e5c1:  .byte   $00,$04
-        .word   397 * 14
+        .word   attack_anim_prop_offset SIDE_ENTRY_INSTANT
         .byte   $01,$ff
 
         array_label MONSTER_EXIT_SCRIPT, 7
 @e5c7:  .byte   $00,$03
-        .word   396 * 14
+        .word   attack_anim_prop_offset SIDE_EXIT_INSTANT
         .byte   $01,$ff
 
         array_label MONSTER_ENTRY_SCRIPT, 15
 @e5cd:  .byte   $00,$04
-        .word   398 * 14
+        .word   attack_anim_prop_offset KEFKA_ENTRY
         .byte   $01,$ff
 
 ; ------------------------------------------------------------------------------
@@ -185,37 +185,37 @@ MonsterAnimScript:
 ; final kefka death animation
         array_label MONSTER_ANIM_SCRIPT, 13
 @e5ef:  .byte   $00,$04
-        .word   403 * 14
+        .word   attack_anim_prop_offset KEFKA_DEATH
         .byte   $01,$ff
 
 ; short atma glow
         array_label MONSTER_ANIM_SCRIPT, 12
 @e5f5:  .byte   $00,$04
-        .word   401 * 14
+        .word   attack_anim_prop_offset MONSTER_GLOW_SHORT
         .byte   $01,$ff
 
 ; long atma glow
         array_label MONSTER_ANIM_SCRIPT, 11
 @e5fb:  .byte   $00,$04
-        .word   400 * 14
+        .word   attack_anim_prop_offset MONSTER_GLOW_LONG
         .byte   $01,$ff
 
 ; final kefka disembodied head
         array_label MONSTER_ANIM_SCRIPT, 10
 @e601:  .byte   $00,$04
-        .word   399 * 14
+        .word   attack_anim_prop_offset KEFKA_HEAD
         .byte   $01,$ff
 
 ; all characters run from left to right side of screen (unused)
         array_label MONSTER_ANIM_SCRIPT, 5
 @e607:  .byte   $00,$05
-        .word   389 * 14
+        .word   attack_anim_prop_offset CHARS_RUN_RIGHT
         .byte   $01,$fe
 
 ; all characters run from right to left side of screen (SrBehemoth)
         array_label MONSTER_ANIM_SCRIPT, 6
 @e60d:  .byte   $00,$05
-        .word   388 * 14
+        .word   attack_anim_prop_offset CHARS_RUN_LEFT
         .byte   $01,$fe
 
 ; play sound effect (Telstar/Chaser/Dadaluma)
@@ -225,43 +225,43 @@ MonsterAnimScript:
 ; flash monster red (Ultros/Umaro)
         array_label MONSTER_ANIM_SCRIPT, 0
 @e613:  .byte   $00,$04
-        .word   274 * 14
+        .word   attack_anim_prop_offset FLASH_RED
         .byte   $01,$ff
 
 ; move monster back 8 pixels (slowly, Ultros)
         array_label MONSTER_ANIM_SCRIPT, 1
 @e619:  .byte   $00,$04
-        .word   273 * 14
+        .word   attack_anim_prop_offset MOVE_BACK_SLOW
         .byte   $01,$ff
 
 ; move monster forward 8 pixels (slowly, Ultros)
         array_label MONSTER_ANIM_SCRIPT, 2
 @e61f:  .byte   $00,$04
-        .word   272 * 14
+        .word   attack_anim_prop_offset MOVE_FORWARD_SLOW
         .byte   $01,$ff
 
 ; move monster back 8 pixels (instantly, Pugs)
         array_label MONSTER_ANIM_SCRIPT, 3
 @e625:  .byte   $00,$04
-        .word   383 * 14
+        .word   attack_anim_prop_offset MOVE_BACK_8
         .byte   $01,$ff
 
 ; move monster forward 8 pixels (instantly, Pugs/Master Pug)
         array_label MONSTER_ANIM_SCRIPT, 4
 @e62b:  .byte   $00,$04
-        .word   382 * 14
+        .word   attack_anim_prop_offset MOVE_FORWARD_8
         .byte   $01,$ff
 
 ; move monster back 64 pixels (instantly, Ultros/Pugs/Master Pug)
         array_label MONSTER_ANIM_SCRIPT, 7
 @e631:  .byte   $00,$04
-        .word   393 * 14
+        .word   attack_anim_prop_offset MOVE_BACK_64
         .byte   $01,$ff
 
 ; move monster forward 64 pixels (instantly, unused)
         array_label MONSTER_ANIM_SCRIPT, 8
 @e637:  .byte   $00,$04
-        .word   392 * 14
+        .word   attack_anim_prop_offset MOVE_FORWARD_64
         .byte   $01,$ff
 
 ; ------------------------------------------------------------------------------

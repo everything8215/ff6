@@ -149,7 +149,7 @@ _c2e49a:
         .byte   CHAR_ACTION::READY      ; DEF
         .byte   CHAR_ACTION::READY      ; JUMP
         .byte   CHAR_ACTION::READY      ; X_MAGIC
-        .byte   CHAR_ACTION::READY      ; GP_RAIN
+        .byte   CHAR_ACTION::READY      ; GIL_TOSS
         .byte   CHAR_ACTION::CASTING    ; SUMMON
         .byte   CHAR_ACTION::CASTING    ; HEALTH
         .byte   CHAR_ACTION::READY      ; SHOCK

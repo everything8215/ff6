@@ -2692,7 +2692,7 @@ ItemProp:
 ; 214: COIN_TOSS
         item_prop COIN_TOSS, RELIC
         equip {SETZER, GOGO}
-        relic_effect2 GP_RAIN
+        relic_effect2 GIL_TOSS
         price 2
         end_item_prop
 

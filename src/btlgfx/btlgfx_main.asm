@@ -24,6 +24,7 @@
 
 ; ------------------------------------------------------------------------------
 
+.include "src/data/attack_anim_prop.inc"
 .include "src/gfx/battle_bg.inc"
 .include "src/sound/song_script.inc"
 

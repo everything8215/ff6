@@ -307,12 +307,12 @@
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::CONTROL_BG1
         anim_script BG1
         call _d07067
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         jump_hit :+
         loop 32
                 blank_frame
                 end_loop
-                attacker_frame CHAR_FRAME::NONE
+                attacker_frame NONE
                 end_anim_script
 :       sfx CONTROL
         anim_speed 5
@@ -322,7 +322,7 @@
                 flip_monster HORZ
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -333,11 +333,11 @@
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::SUPER_BALL_EXTRA
         anim_script SPRITE
         call _d07019
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         loop 65
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         call _d07040
         end_anim_script
 
@@ -886,14 +886,14 @@ _d003d0:
                 move DOWN, 8
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         loop 16
                 move BACK, 3
                 frame 0
                 move FORWARD, 3
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -961,7 +961,7 @@ _d003d0:
         fixed_draw_order
         sfx
         move UP_FORWARD, 16
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         move_rand {31, 31}
         anim_loop 10
                 frame 0
@@ -970,7 +970,7 @@ _d003d0:
         anim_loop 10
                 frame 0
                 end_anim_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -988,7 +988,7 @@ _d003d0:
                 auto_frame 1, {0, 3}
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         move FORWARD, 4
         move UP, 5
         auto_frame 1, {0, 3}
@@ -1029,7 +1029,7 @@ _d003d0:
         move DOWN, 5
         auto_frame 1, {0, 3}
         frame 0
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         loop 27
                 move FORWARD, 4
                 auto_frame 1, {0, 3}
@@ -1101,7 +1101,7 @@ _d003d0:
                 frame 2
                 frame 3
                 frame 4
-                target_frame CHAR_FRAME::HIT
+                target_frame HIT
                 end_loop
         call _d0072f
         sfx NONE
@@ -1115,7 +1115,7 @@ _d003d0:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::BIT_HIT_BG1
         anim_script BG1, 3
         sfx
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         move FORWARD, 5
         anim_loop 12
                 frame 0
@@ -1131,7 +1131,7 @@ _d003d0:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::VERTICAL_HIT_BG1
         anim_script BG1, 3
         sfx
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         move FORWARD, 5
         frame 0
         frame 1
@@ -1149,7 +1149,7 @@ _d003d0:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::STAR_HIT_BG1
         anim_script BG1, 4
         sfx
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         frame 0
         frame 1
         frame 2
@@ -1204,7 +1204,7 @@ _d003d0:
         calc_vec
 :       frame 0
         move_vec_arc :-, 8
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         move_target FORWARD, 8
 :       frame 0
         move_vec_arc :-, 8
@@ -1217,7 +1217,7 @@ _d003d0:
                 blank_frame
                 end_loop
         move_target BACK, 8
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1227,7 +1227,7 @@ _d003d0:
 ; d0/06e8
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::BEAM_HIT_BG1
         anim_script BG1, 1, BOTTOM
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         move DOWN, 5
         mod_pal BG1, SUB, WHITE, 31
         sfx
@@ -1240,7 +1240,7 @@ _d003d0:
                 cycle_pal BG1_ANIM, 2, {1, 7}
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         loop 16
                 cycle_pal BG1_ANIM, 2, {1, 7}
                 frame 0
@@ -1288,14 +1288,14 @@ _d003d0:
 _d0072f:
         set_blank_frame 15
         anim_speed 2
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         loop 4
                 move_target FORWARD, 1
                 blank_frame
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         return
 
 ; ------------------------------------------------------------------------------
@@ -1308,13 +1308,13 @@ _d0072f:
         move UP, 12
         move BACK, 12
         sfx
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         frame 0
         move FORWARD, 8
         loop 4
                 frame 1
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1326,12 +1326,12 @@ _d0072f:
         anim_script BG1, 3
         rand_sprite_pal
         move BACK, 16
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         sfx
         anim_loop 6
                 frame 0
                 end_anim_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1347,7 +1347,7 @@ _d0072f:
                 move FORWARD, 8
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         move UP, 8
         move BACK, 64
         loop 4
@@ -1368,7 +1368,7 @@ _d0072f:
                 move_target BACK, 1
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1606,34 +1606,34 @@ _d00801:
         anim_script SPRITE, 1, BOTTOM
         save_attacker_char_pos
         sfx
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         move_to_attacker
         calc_vec_char
 :       blank_frame
         move_vec_char :-, 12, 16
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         move DOWN, 5
         unpause_layer BG1
         loop 6
                 sfx SWORD
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_1
+                attacker_frame WALKING_FORWARD_1
                 frame 0, 2
                 move BACK, 11
-                attacker_frame CHAR_FRAME::WALKING_DOWN_3
+                attacker_frame WALKING_DOWN_3
                 frame 1, 2
                 move BACK, 19
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_3 + $30
+                attacker_frame WALKING_FORWARD_3_FLIP
                 frame 2, 2
                 move FORWARD, 30
-                attacker_frame CHAR_FRAME::WALKING_UP_3
+                attacker_frame WALKING_UP_3
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -12, 16
         restore_attacker_char_pos
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_action NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1645,24 +1645,24 @@ _d00801:
         anim_script SPRITE
         save_attacker_char_pos
         sfx
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         move_to_attacker
         calc_vec_char
 :       blank_frame
         move_vec_char :-, 4, 16
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame 4
         unpause_layer BG1
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_3
         loop 17
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -4, 16
         restore_attacker_char_pos
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_action NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1676,7 +1676,7 @@ _d00801:
         sfx
         move_to_attacker
         calc_vec_char
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
 :       blank_frame
         move_vec_char :-, 12, 0
         sfx SFX_219
@@ -1686,13 +1686,13 @@ _d00801:
                 move_target BACK, 2
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -12, 32
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         restore_attacker_char_pos
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_action NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1709,7 +1709,7 @@ _d00801:
 :       blank_frame
         move_vec_char :-, 12, 32
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1720,15 +1720,15 @@ _d00801:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::CAPTURE_FROM_SPRITE
         anim_script SPRITE, 1, CHAR
         vec_to_attacker_char_pos
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_action NONE
+        attacker_frame NONE
         calc_vec_char
         update_char_vec_dir_jump
 :       blank_frame
         move_vec_char :-, 12, 32
         restore_attacker_char_pos
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_action NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1740,7 +1740,7 @@ _d00801:
         anim_script SPRITE
         jump_step :+
         call _d07019                    ; step forward
-:       attacker_frame CHAR_FRAME::JUMPING_FORWARD
+:       attacker_frame JUMPING_FORWARD
         sfx
         move_to_attacker
         calc_vec_char
@@ -1753,10 +1753,10 @@ _d00801:
                 move_target BACK, 2
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -8, 32
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1820,14 +1820,14 @@ _d00801:
 _d009f9:
         fixed_draw_order
         call _d07019
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         blank_frame 4
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         sfx
 :       frame 0
         move_vec :-, 6
         sfx SFX_243
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         frame 0
         move BACK, 2
         move UP, 4
@@ -2352,12 +2352,12 @@ _d00b31:
         sfx
         move UP, 13
         move BACK, 7
-        target_frame CHAR_FRAME::JUMPING_FORWARD
+        target_frame JUMPING_FORWARD
         blank_frame 3
         loop 32
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2383,28 +2383,28 @@ _d00b31:
                 hide_bg1_thread
                 end_loop
         loop 9
-                target_frame CHAR_FRAME::JUMPING_FORWARD, CHAR_FRAME::JUMPING_DOWN
+                target_frame JUMPING_FORWARD, JUMPING_DOWN
                 cycle_pal BG1_ANIM, 2, {1, 6}
                 frame 0
                 cycle_pal BG1_ANIM, 2, {1, 6}
                 frame 0
-                target_frame CHAR_FRAME::JUMPING_UP, CHAR_FRAME::JUMPING_FORWARD + $30
+                target_frame JUMPING_UP, JUMPING_FORWARD_FLIP
                 cycle_pal BG1_ANIM, 2, {1, 6}
                 frame 0
                 cycle_pal BG1_ANIM, 2, {1, 6}
                 frame 0
-                target_frame CHAR_FRAME::JUMPING_FORWARD + $30 , CHAR_FRAME::JUMPING_UP
+                target_frame JUMPING_FORWARD_FLIP, JUMPING_UP
                 cycle_pal BG1_ANIM, 2, {1, 6}
                 frame 0
                 cycle_pal BG1_ANIM, 2, {1, 6}
                 frame 0
-                target_frame CHAR_FRAME::JUMPING_DOWN, CHAR_FRAME::JUMPING_FORWARD
+                target_frame JUMPING_DOWN, JUMPING_FORWARD
                 cycle_pal BG1_ANIM, 2, {1, 6}
                 frame 0
                 cycle_pal BG1_ANIM, 2, {1, 6}
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         loop 32
                 mod_pal BG1, SUB, WHITE, +1
                 cycle_pal BG1_ANIM, 2, {1, 6}
@@ -2670,14 +2670,14 @@ _d00f70:
 
 ; orbit and fly toward target
         sfx
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       update_orbit_32
         frame 0
         move_vec :-, 1
 
 ; move particle effect on target
         move_to_target
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         move UP_FORWARD, 16
         sfx
         loop 65
@@ -2743,13 +2743,13 @@ _d00f70:
         move_vec_char :-, 1
 
 ; kefka picks it up
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_3
+        attacker_action NONE
+        attacker_frame WALKING_FORWARD_3
         loop 16
                 move BACK, 1
                 frame 8, 3
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; additional threads for particle effect
@@ -2782,7 +2782,7 @@ _d00fed:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::EVENT_BISMARK_BG1
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::EVENT_CARBUNKL_BG1
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::EVENT_PHANTOM_BG1
-        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::SHOCK_BG1
+        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::KEFKA_LEO_SMOKE_BG1
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::GESTAHL_LIGHTNING_BG1
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::GESTAHL_BLACK_MAGIC_BG1
         anim_script BG1
@@ -3532,14 +3532,14 @@ _d0142a:
                 frame 0
                 end_anim_loop
         unpause_layer {BG3, SPRITE}
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         frame 7
         frame 8
         frame 9
         loop 16
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -3875,13 +3875,13 @@ _d01555:
                 blank_frame
                 end_loop
         anim_speed 3
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         loop 7
                 frame 0
                 frame 1
                 frame 2
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5262,7 +5262,7 @@ _d01d85:
         frame 4
         frame 5
         frame 6
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         wait_scanline
         color_math {ADD, SUBSCREEN}, BG1, {BG2, SPRITE}
         bg_target_draw_order
@@ -5270,7 +5270,7 @@ _d01d85:
         anim_loop 8
                 frame 0
                 end_anim_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 _d01db7:
         loop 2
@@ -5445,7 +5445,7 @@ _d01e96:
         move_to_attacker
         loop 5
                 fixed_draw_order
-                attacker_frame CHAR_FRAME::JUMPING_FORWARD
+                attacker_frame JUMPING_FORWARD
                 frame 3
                 move FORWARD, 8
                 end_loop
@@ -5454,7 +5454,7 @@ _d01e96:
         move_vec_grav_bomb :-, 8
         sfx DRAIN
         unpause_layer BG1
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 _d01eb2:
         anim_speed 4
@@ -6349,10 +6349,10 @@ _d0231f:
 :       frame 0
         move_vec_char :-, 8
         attacker_priority 3
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -8, 32
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6909,14 +6909,14 @@ _d026be:
         sfx CLAW
         bg_target_draw_order
         change_anim_layer BG1
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 13
                 move_target FORWARD, 3
                 frame 0
                 move_target BACK, 3
                 frame 0
                 end_anim_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6949,13 +6949,13 @@ _d026be:
         attacker_priority 3
         move_to_attacker
         calc_vec_char
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_char :-, 8, 32
         reset_char_vec_offset
         fixed_draw_order
         sfx
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 3
                 move_attacker FORWARD, 8
                 blank_frame
@@ -6968,12 +6968,12 @@ _d026be:
                 end_loop
         sfx NONE
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         vec_to_attacker_char_pos
         calc_vec_char
 :       blank_frame
         move_vec_char :-, 8, 32
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         restore_attacker_char_pos
         disable_echo_sprites 1
         end_anim_script
@@ -6992,7 +6992,7 @@ _d026be:
         sfx STEAL
         move_to_attacker
         calc_vec_char
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_char :-, 8, 32
         sfx
@@ -7002,7 +7002,7 @@ _d026be:
         mainscreen_layers {BG1, BG2, SPRITE}
         target_priority 2
         mod_pal BG2, ADD, WHITE, 31
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 16
                 mod_pal BG2, ADD, WHITE, -2
                 blank_frame
@@ -7018,13 +7018,13 @@ _d026be:
                 blank_frame
                 end_loop
         normal_draw_order
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -8, 32
         wait_scanline
         move_bg1_here
         mainscreen_layers {BG2, SPRITE}
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7037,12 +7037,12 @@ _d026be:
         move_bg1_here
         hide_bg1_thread
         fixed_draw_order
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 8
                 move_attacker FORWARD, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         wait_scanline
         color_math FIXED_CLR, BG1
         loop 65
@@ -7070,12 +7070,12 @@ _d026be:
                 update_rainbow_gradient 14
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
         loop 8
                 move_attacker BACK, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         reset_gradient
         end_anim_script
 
@@ -7148,7 +7148,7 @@ _d028bd:
         sfx STEAL
         move_to_attacker
         calc_vec_char
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_char :-, 8, 32
         fixed_draw_order
@@ -7170,10 +7170,10 @@ _d028bd:
                 end_loop
         enable_char_pal_update
         normal_draw_order
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -8, 32
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7186,12 +7186,12 @@ _d028f9:
         sfx STEAL
         move_to_attacker
         calc_vec_char
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_char :-, 6, 32
         fixed_draw_order
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame FIGHTING_2, WALKING_FORWARD_3
         move FORWARD, 10
         move_if_flipped FORWARD, 2
         sfx
@@ -7200,10 +7200,10 @@ _d028f9:
         .endrep
         sfx NONE
         normal_draw_order
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -6, 32
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7246,11 +7246,11 @@ _d02956:
         anim_script BG1, 1, BOTTOM
         call _d07067
         sfx
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 8
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         mod_pal BG2, ADD, WHITE, 31
         anim_loop 10
                 mod_pal BG2, ADD, WHITE, -2
@@ -7263,7 +7263,7 @@ _d02956:
                 blank_frame
                 end_loop
         call _d0708e
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7278,13 +7278,13 @@ _d0297e:
         move_to_attacker
         move FORWARD, 24
         calc_vec
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         sfx
         vec_offset 0
 :       auto_frame 2, {0, 5}
         frame 0
         move_vec_arc :-, 8
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         move_target FORWARD, 8
 :       auto_frame 2, {0, 5}
         frame 0
@@ -7328,16 +7328,16 @@ _d029bd:
         calc_vec
         vec_offset 0
         move_if_flipped FORWARD, 2
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_jump :-, 8
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         sfx
         loop 16
                 blank_frame
                 end_loop
         fixed_draw_order
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         anim_loop 15
                 move_attacker UP_FORWARD, 8
                 frame 0
@@ -7363,13 +7363,13 @@ _d029bd:
                 move_attacker DOWN, 8
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 9
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move_to_attacker_char
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7409,11 +7409,11 @@ _d02a43:
                 move DOWN_FORWARD, 8
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         anim_loop 5
                 frame 1, 3
                 end_anim_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         return
 
 ; ------------------------------------------------------------------------------
@@ -7424,7 +7424,7 @@ _d02a5e:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::TENTACLE_SPRITE
         anim_script SPRITE, 1, BOTTOM
         move BACK, 32
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         sfx
         loop 4
                 move FORWARD, 8
@@ -7440,7 +7440,7 @@ _d02a5e:
                 move BACK, 1
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7858,7 +7858,7 @@ _d02cb4:
 :       update_vec_wave
         frame 0
         move_vec :-, 2
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         update_vec_wave
         anim_speed 4
         loop 8
@@ -7867,7 +7867,7 @@ _d02cb4:
                 move BACK, 2
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -8419,7 +8419,7 @@ _d030ae:
 ; [ Animation Script $01A9: Step Forward to Attack (sprite) ]
 
 _d030ba:
-        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::STEP_FORWARD_SPRITE
+        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::STEP_FORWARD_MAGITEK_SPRITE
         anim_script SPRITE
         jump_step :+
         call _d07019
@@ -8859,14 +8859,14 @@ _d03333:
         anim_script SPRITE, 2, CENTER
         fixed_draw_order
         sfx
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         anim_loop 19
                 move_target FORWARD, 2
                 frame 0
                 move_target BACK, 2
                 frame 0
                 end_anim_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -8878,20 +8878,20 @@ _d03349:
         anim_script SPRITE
         fixed_draw_order
         sfx
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 8
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::FIGHTING_2
+        attacker_frame FIGHTING_2
         blank_frame 4
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1
+        attacker_frame WALKING_FORWARD_1
         move_to_attacker
         calc_vec
 :       update_orbit_16
         frame 0
         move_vec :-, 4
-        attacker_frame CHAR_FRAME::NONE
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        attacker_frame NONE
+        target_frame HIT, HIT_FLIP
         sfx THROW
         bg_target_draw_order
         change_anim_layer BG1
@@ -8899,7 +8899,7 @@ _d03349:
         anim_loop 4
                 frame 0
                 end_anim_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -9032,14 +9032,14 @@ _d03436:
         move_vec :-, 8
         reset_frame_offset
         sfx L4_FLARE
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         loop 8
                 move_target FORWARD, 3
                 blank_frame
                 move_target BACK, 3
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -9117,14 +9117,14 @@ _d034cd:
                 end_loop
         sfx PEARL_LORE
         mod_pal BG2, ADD, WHITE, 31
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         loop 8
                 mod_pal BG2, ADD, WHITE, -4
                 move DOWN, 8
                 move FORWARD, 4
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         loop 12
                 move DOWN, 8
                 move FORWARD, 4
@@ -9197,7 +9197,7 @@ _d03545:
                 move FORWARD, 8
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         loop 2
                 move_target BACK, 2
                 anim_target_pal
@@ -9206,11 +9206,11 @@ _d03545:
                 restore_target_pal
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 _d03564:
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         move_rand {0, 31}
         loop 16
                 move FORWARD, 8
@@ -9224,7 +9224,7 @@ _d03564:
                 restore_target_pal
                 frame 1
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -9283,7 +9283,7 @@ _d035b9:
 
 _d035c4:
         anim_speed 2
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         loop 16
                 anim_target_pal
                 frame 1
@@ -9292,7 +9292,7 @@ _d035c4:
                 frame 1
                 move_target BACK, 2
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -9386,10 +9386,10 @@ _d0363c:
         sfx
 :       frame 3
         move_vec_arc :-, 8
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
 :       frame 3
         move_vec_arc :-, 8
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 _d0364d:
@@ -9536,31 +9536,31 @@ _d036f0:
 ; [ Animation Script $017C: Run (sprite) ]
 
 _d03724:
-        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::RUN_SPRITE
+        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::RUN_AWAY_SPRITE
         anim_script SPRITE
         sfx
         jump_magitek _d0372d, _d03742
 
 _d0372d:
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
         loop 139
                 move BACK, 1
                 move_attacker BACK, 1
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 0
         end_anim_script
 
 _d03742:
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
         loop 43
                 move BACK, 3
                 move_attacker BACK, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -10227,7 +10227,7 @@ _d03b19:
         sfx
         call _d03b53
         call _d03b53
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         call _d03b53
         move DOWN, 64
         sfx L4_FLARE
@@ -10240,7 +10240,7 @@ _d03b19:
                 restore_target_pal
                 frame 0, 2
                 end_anim_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 _d03b41:
@@ -10299,7 +10299,7 @@ _d03b86:
                 move DOWN_FORWARD, 8
                 frame 0
                 end_loop
-        target_frame CHAR_FRAME::HIT, CHAR_FRAME::HIT + $30
+        target_frame HIT, HIT_FLIP
         anim_target_pal
         frame 1
         restore_target_pal
@@ -10310,7 +10310,7 @@ _d03b86:
         anim_loop 6
                 frame 2, 3
                 end_anim_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         return
 
 ; ------------------------------------------------------------------------------
@@ -10713,13 +10713,13 @@ _d03d7e:
         anim_script BG1, 1, FRONT_FAR
         move_to_attacker
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         calc_vec_char
 :       blank_frame
         move_vec_char :-, 2
         fixed_draw_order
         sfx
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 2
         loop 4
                 move FORWARD, 32
@@ -10741,10 +10741,10 @@ _d03d7e:
         normal_draw_order
         anim_speed 2
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
 :       blank_frame
         move_vec_char :-, -2
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 0
         end_anim_script
 
@@ -10828,13 +10828,13 @@ _d03e68:
 _d03e8d:
         move_to_attacker
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         calc_vec_char
 :       blank_frame
         move_vec_char :-, 2
         fixed_draw_order
         sfx
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 2
         loop 4
                 move FORWARD, 32
@@ -10854,10 +10854,10 @@ _d03e8d:
         normal_draw_order
         anim_speed 2
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
 :       blank_frame
         move_vec_char :-, -2
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 0
         end_anim_script
 
@@ -17108,7 +17108,7 @@ _d062b1:
 :       frame 4
         move_vec :-, 8
         unpause_layer BG1
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 _d062bc:
@@ -17207,7 +17207,7 @@ _d0633c:
         move_to_attacker
         loop 5
                 fixed_draw_order
-                attacker_frame CHAR_FRAME::JUMPING_FORWARD
+                attacker_frame JUMPING_FORWARD
                 frame 4
                 move FORWARD, 8
                 end_loop
@@ -17215,7 +17215,7 @@ _d0633c:
 :       frame 4
         move_vec_grav_bomb :-, 8
         unpause_layer BG1
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 _d06356:
@@ -17613,7 +17613,7 @@ _d065c0:
 ; [ Animation Script $0039: GP Rain (sprite) ]
 
 _d065d4:
-        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::GP_RAIN_SPRITE
+        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::GIL_TOSS_SPRITE
         anim_script SPRITE
         move_to_attacker
         jump_step :+
@@ -17641,17 +17641,17 @@ _d065d4:
 ; [ Animation Script $003A: GP Rain (extra) ]
 
 _d065f6:
-        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::GP_RAIN_EXTRA
+        array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::GIL_TOSS_EXTRA
         anim_script SPRITE
         jump_step :+
         call _d07019
-:       attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+:       attacker_frame FIGHTING_2, FIGHTING_3
         blank_frame 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         loop 32
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -17669,12 +17669,12 @@ _d0660d:
         jump_step :+
         call _d07019
 :       sfx
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move DOWN, 8
         calc_vec
         vec_offset 8
 :       frame 1
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move_vec :-, 8
         sfx THROW
         loop 8
@@ -17683,7 +17683,7 @@ _d0660d:
                 move_target FORWARD, 2
                 frame 1
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -17697,12 +17697,12 @@ _d06635:
         jump_step :+
         call _d07019
 :       sfx
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         calc_vec
         vec_offset 8
 :       auto_frame 2, {0, 6}
         frame 0
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move_vec :-, 8
         sfx THROW
         loop 8
@@ -17713,7 +17713,7 @@ _d06635:
                 auto_frame 2, {0, 6}
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -17729,12 +17729,12 @@ _d06664:
         jump_step :+
         call _d07019
 :       sfx
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         calc_vec
         vec_offset 8
 :       auto_frame 2, {0, 3}
         frame 1
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move_vec :-, 8
         sfx THROW
         loop 8
@@ -17745,7 +17745,7 @@ _d06664:
                 auto_frame 2, {0, 3}
                 frame 1
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -17761,7 +17761,7 @@ _d06693:
         anim_script SPRITE, 1, BOTTOM
         move_to_attacker
         call _d06725
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         move BACK, 11
         move DOWN, 29
         sfx
@@ -17784,7 +17784,7 @@ _d066b2:
         call _d06725
         sfx
         call _d06704
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         move BACK, 11
         move DOWN, 29
         call _d066ec
@@ -17793,7 +17793,7 @@ _d066b2:
         end_anim_script
 
 _d066ce:
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         loop 21
                 move_attacker UP, 8
                 blank_frame
@@ -17802,7 +17802,7 @@ _d066ce:
         loop 9
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         disable_echo_sprites 1
         loop 21
                 move_attacker DOWN, 8
@@ -17869,7 +17869,7 @@ _d06725:
 :       blank_frame
         calc_vec_jump
 :       move_vec_char :-, 8, 32
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame 2
         fixed_draw_order
         move_attacker UP, 160
@@ -17881,14 +17881,14 @@ _d06725:
 ; ------------------------------------------------------------------------------
 
 _d06753:
-        attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+        attacker_frame NEAR_FATAL_FLIP
         loop 7
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -8, 32
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 9
                 blank_frame
                 end_loop
@@ -17909,7 +17909,7 @@ _d0676e:
                 move_attacker DOWN, 8
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 8
                 move_target BACK, 2
                 blank_frame
@@ -17931,7 +17931,7 @@ _d06791:
         hide_attacker_char
         jump_step :+
         move_attacker FORWARD, 24
-:       attacker_frame CHAR_FRAME::JUMPING_FORWARD
+:       attacker_frame JUMPING_FORWARD
         move_attacker UP, 160
         enable_echo_sprites 1
         show_attacker_char
@@ -17942,10 +17942,10 @@ _d06791:
                 blank_frame
                 end_loop
         loop 7
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_1
+                attacker_frame WALKING_FORWARD_1
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 9
                 blank_frame
                 end_loop
@@ -17965,11 +17965,11 @@ _d067c7:
         jump_step :+
         call _d07019
 :       sfx DEFAULT, X_POS
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 9
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         loop 21
                 move_attacker UP, 8
                 move_attacker FORWARD, 2
@@ -18070,7 +18070,7 @@ _d06856:
         move_if_flipped FORWARD, 2
         jump_step :+
         call _d07019
-:       attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+:       attacker_frame FIGHTING_2, FIGHTING_3
         sfx SHOCK_A
         move UP_BACK, 9
         move FORWARD, 3
@@ -18083,7 +18083,7 @@ _d06856:
         move BACK, 15
         move UP, 4
         frame 3, 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move BACK, 8
         move DOWN, 38
         frame 4, 2
@@ -18093,7 +18093,7 @@ _d06856:
         move DOWN, 8
         move FORWARD, 3
         frame 6, 2
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP, 8
         move FORWARD, 10
         frame 7, 2
@@ -18163,12 +18163,12 @@ _d068e3:
                 end_loop
         call _d0715d
         sfx UMARO_TACKLE
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::DEAD_HORZ
+        attacker_frame NONE
+        attacker_action DEAD_HORZ
         loop 32
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18191,7 +18191,7 @@ _d0690e:
                 end_loop
         sfx PRE_DANCE_B
         call _d0715d
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 _d06931:
@@ -18238,7 +18238,7 @@ _d06964:
         jump_step :+
         call _d07019
 :       sfx DEFAULT, X_POS
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         anim_speed 5
         frame 0
         frame 1
@@ -18246,7 +18246,7 @@ _d06964:
         frame 3
         frame 4
         frame 5
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18260,7 +18260,7 @@ _d0697e:
         jump_step :+
         call _d07067
 :       sfx DEFAULT, X_POS
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         mod_pal BG1, SUB, WHITE, 31
         anim_speed 3
         loop 17
@@ -18276,7 +18276,7 @@ _d0697e:
         frame 5
         frame 6
         frame 7
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18290,7 +18290,7 @@ _d069a4:
         jump_step :+
         call _d07067
 :       sfx DEFAULT, X_POS
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         move_to_attacker
         init_circle {0, 0}, 24, {255, 255}, 24, 0
         move_circle_to_attacker
@@ -18308,7 +18308,7 @@ _d069a4:
                 update_circle
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18323,7 +18323,7 @@ _d069da:
         call _d0715d
         toggle_attacker_status MORPH
         call _d0715d
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         normal_draw_order
         end_anim_script
 
@@ -18338,17 +18338,17 @@ _d069f3:
         move_to_attacker
         calc_vec
         vec_offset 0
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_jump :-, 10
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 9
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_jump :-, -10
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18365,7 +18365,7 @@ _d06a14:
         move_to_attacker
         calc_vec
         vec_offset 0
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_jump :-, 6
         end_anim_script
@@ -18379,7 +18379,7 @@ _d06a2b:
         anim_script BG1
         fixed_draw_order
         call _d07067
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         sfx DEFAULT, X_POS
         move_to_attacker
         mod_pal BG1, SUB, WHITE, 31
@@ -18401,7 +18401,7 @@ _d06a2b:
                 cycle_pal BG1_ANIM, 2, {1, 6}
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18417,7 +18417,7 @@ _d06a64:
         sfx DEFAULT, X_POS
         init_triangle {0, 0}, 0, 0
         move_triangle_to_attacker
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         mod_pal BG1, SUB, WHITE, 31
         zoom_triangle 0, +8
         update_triangle_2d
@@ -18451,7 +18451,7 @@ _d06a64:
                 frame 0
                 end_loop
         normal_draw_order
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18464,7 +18464,7 @@ _d06ac3:
         mod_pal SPRITE, SUB, WHITE, 31
         jump_step :+
         call _d07067
-:       attacker_frame CHAR_FRAME::JUMPING_FORWARD
+:       attacker_frame JUMPING_FORWARD
         sfx DEFAULT, X_POS
         loop 8
                 mod_pal SPRITE, SUB, WHITE, -4
@@ -18477,7 +18477,7 @@ _d06ac3:
                 mod_pal SPRITE, SUB, WHITE, +4
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18533,7 +18533,7 @@ _d06b0e:
         call _d07067
 :       sfx DEFAULT, X_POS
         move_to_attacker
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         mod_pal BG1, SUB, WHITE, 31
         frame 0
         hide_bg1_thread
@@ -18551,7 +18551,7 @@ _d06b0e:
                 cycle_pal BG1_ANIM, 4, {1, 7}
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18563,7 +18563,7 @@ _d06b40:
         anim_script SPRITE
         jump_step :+
         call _d07019
-:       attacker_frame CHAR_FRAME::JUMPING_FORWARD
+:       attacker_frame JUMPING_FORWARD
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18578,7 +18578,7 @@ _d06b4b:
         jump_step :+
         call _d07019
 :       sfx
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         anim_speed 4
         move DOWN, 20
         move FORWARD, 18
@@ -18604,7 +18604,7 @@ _d06b4b:
         frame 1
         frame 0
         anim_speed 2
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -18633,7 +18633,7 @@ _d06b80:
         frame 0
         hide_bg1_thread
         call _d07172
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         move_to_attacker
         move UP, 64
         set_vec_target {128, 96}
@@ -18673,7 +18673,7 @@ _d06b80:
                 end_loop
         set_scroll_hdma BG1, 3
         reset_tornado_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 8
                 mod_pal BG2, ADD, BLUE, -2
                 frame 0
@@ -18691,7 +18691,7 @@ _d06bfb:
         move_to_attacker
         calc_vec_char
         enable_echo_sprites 1
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_char :-, 6, 32
         sfx
@@ -18703,8 +18703,8 @@ _d06bfb:
                 update_bum_rush :+, +8, 0
                 blank_frame
                 end_loop
-:       attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::SPINNING
+:       attacker_frame NONE
+        attacker_action SPINNING
         call _d06c76
         call _d06c76
         call _d06c76
@@ -18732,17 +18732,17 @@ _d06bfb:
                 blank_frame
                 end_loop
         reset_scroll_hdma BG1
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         set_scroll_hdma BG1, 3
         normal_draw_order
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -6, 32
-        attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+        attacker_frame NEAR_FATAL_FLIP
         loop 32
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         disable_echo_sprites 1
         end_anim_script
 
@@ -18782,7 +18782,7 @@ _d06ca5:
         move_bg1_here
         sfx
         init_scroll_wave BG1, 4, 2, HORZ
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         set_scroll_hdma BG1, 6
         mod_pal BG1, SUB, WHITE, 0
         init_circle {0, 0}, 2, {222, 255}, 127, 0
@@ -18805,7 +18805,7 @@ _d06ca5:
                 frame 0
                 end_loop
         reset_scroll_hdma BG1
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_scroll_hdma BG1, 3
         normal_draw_order
         end_anim_script
@@ -18822,19 +18822,19 @@ _d06ced:
         calc_vec
         vec_offset 16
         move BACK, 16
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD, CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_FORWARD, JUMPING_DOWN
         frame 0, 2
         frame 1, 2
-        attacker_frame CHAR_FRAME::JUMPING_UP, CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_UP, JUMPING_FORWARD_FLIP
         frame 2, 2
         frame 3, 2
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30, CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_FORWARD_FLIP, JUMPING_UP
         frame 4, 2
         frame 5, 2
-        attacker_frame CHAR_FRAME::JUMPING_DOWN, CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_DOWN, JUMPING_FORWARD
         frame 6, 2
         unpause_layer BG1
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         sfx
 :       frame 7
         move_vec :-, 8
@@ -18870,7 +18870,7 @@ _d06ced:
         frame 21
         frame 22
         frame 23
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         normal_draw_order
         end_anim_script
 
@@ -18916,7 +18916,7 @@ _d06d7b:
         hide_bg1_thread
         sfx
         mod_pal BG2, SUB, CYAN, 0
-        attacker_action CHAR_ACTION::CASTING
+        attacker_action CASTING
         loop 8
                 mod_pal BG2, SUB, CYAN, +2
                 blank_frame
@@ -18993,21 +18993,21 @@ _d06de3:
         move_to_attacker
         calc_vec
         vec_offset 0
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         sfx STEAL
 :       blank_frame
         move_vec_jump :-, 8
         fixed_draw_order
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 9
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         jump_hit _d06e0c
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_jump :-, -8
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 _d06e0c:
@@ -19022,7 +19022,7 @@ _d06e0c:
                 end_loop
         flip_monster VERT
         vflip_target_char
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 22
                 move_attacker DOWN, 8
                 move_target DOWN, 8
@@ -19038,10 +19038,10 @@ _d06e0c:
         scroll_bg {0, 0}
         flip_monster VERT
         vflip_target_char
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_jump :-, -8
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -19108,7 +19108,7 @@ _d06e87:
                 frame 0
                 end_loop
         frame 0
-        attacker_frame CHAR_FRAME::CASTING_1
+        attacker_frame CASTING_1
         unpause_layer BG1
         end_anim_script
 
@@ -19121,7 +19121,7 @@ _d06ebc:
         anim_script SPRITE, 1, FRONT_FAR
         move_to_attacker
         calc_vec_char
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_char :-, 8, 32
         fixed_draw_order
@@ -19130,10 +19130,10 @@ _d06ebc:
         loop 101
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -8, 32
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         normal_draw_order
         end_anim_script
 
@@ -19146,22 +19146,22 @@ _d06ee0:
         anim_script SPRITE, 1, FRONT_NEAR
         move_to_attacker
         calc_vec_char
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_char :-, 8, 32
         fixed_draw_order
         unpause_layer BG1
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame FIGHTING_2, WALKING_FORWARD_3
         move FORWARD, 10
         move_if_flipped FORWARD, 2
         call _d07f31
         normal_draw_order
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -8, 32
         sfx NONE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -19179,19 +19179,19 @@ _d06f0c:
         calc_vec
         vec_offset 0
         move_if_flipped FORWARD, 2
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move DOWN, 19
         move BACK, 22
         sfx STEAL
 :       frame 0
         move_vec_jump :-, 12
         fixed_draw_order
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 17
                 blank_frame
                 end_loop
         sfx RETORT
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         loop 20
                 move_attacker UP, 8
                 blank_frame
@@ -19206,12 +19206,12 @@ _d06f0c:
                 move_attacker DOWN, 9
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 9
                 blank_frame
                 end_loop
         sfx CLEAVE
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move_to_attacker_char
         move BACK, 22
         move DOWN, 26
@@ -19237,7 +19237,7 @@ _d06f0c:
                 frame 6
                 end_loop
         disable_echo_sprites 3
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -19292,7 +19292,7 @@ _d06fd3:
         anim_script SPRITE
         move_to_attacker
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP_BACK, 22
         move_if_flipped FORWARD, 2
         unpause_layer BG1
@@ -19303,7 +19303,7 @@ _d06fd3:
         frame 0
         move UP, 17
         move FORWARD, 18
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 2
         frame 2, 2
         move DOWN_FORWARD, 29
@@ -19313,7 +19313,7 @@ _d06fd3:
         loop 33
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -19343,23 +19343,23 @@ _d07019:
         jump_magitek _d0701e, _d07033
 _d0701e:
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 24
                 move FORWARD, 1
                 move_attacker FORWARD, 1
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 0
         return
 _d07033:
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 8
                 move FORWARD, 3
                 move_attacker FORWARD, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         return
 
 ; ------------------------------------------------------------------------------
@@ -19371,23 +19371,23 @@ _d07040:
         jump_magitek _d07045, _d0705a
 _d07045:
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
         loop 24
                 move BACK, 1
                 move_attacker BACK, 1
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 0
         return
 _d0705a:
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
         loop 8
                 move BACK, 3
                 move_attacker BACK, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         return
 
 ; ------------------------------------------------------------------------------
@@ -19399,24 +19399,24 @@ _d07067:
         jump_magitek _d0706c, _d07081
 _d0706c:
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 24
                 move FORWARD, 1
                 move_attacker FORWARD, 1
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 0
         return
 
 _d07081:
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 8
                 move FORWARD, 3
                 move_attacker FORWARD, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         return
 
 ; ------------------------------------------------------------------------------
@@ -19428,24 +19428,24 @@ _d0708e:
         jump_magitek _d07093, _d070a8
 _d07093:
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
         loop 24
                 move BACK, 1
                 move_attacker BACK, 1
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 0
         return
 
 _d070a8:
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
         loop 8
                 move BACK, 3
                 move_attacker BACK, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         return
 
 ; ------------------------------------------------------------------------------
@@ -19457,24 +19457,24 @@ _d070b5:
         jump_magitek _d070ba, _d070cf
 _d070ba:
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 24
                 move FORWARD, 1
                 move_attacker FORWARD, 1
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 0
         return
 
 _d070cf:
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 8
                 move FORWARD, 3
                 move_attacker FORWARD, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         return
 
 ; ------------------------------------------------------------------------------
@@ -19486,24 +19486,24 @@ _d070dc:
         jump_magitek _d070e1, _d070f6
 _d070e1:
         magitek_action 1
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
         loop 24
                 move BACK, 1
                 move_attacker BACK, 1
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         magitek_action 0
         return
 
 _d070f6:
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
         loop 8
                 move BACK, 3
                 move_attacker BACK, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         return
 
 ; ------------------------------------------------------------------------------
@@ -19582,13 +19582,13 @@ _d07144:
 
 _d0715d:
         set_blank_frame 31
-        attacker_frame CHAR_FRAME::JUMPING_DOWN, CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_DOWN, JUMPING_FORWARD
         blank_frame 2
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30, CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_FORWARD_FLIP, JUMPING_UP
         blank_frame 2
-        attacker_frame CHAR_FRAME::JUMPING_UP, CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_UP, JUMPING_FORWARD_FLIP
         blank_frame 2
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD, CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_FORWARD, JUMPING_DOWN
         blank_frame 2
         return
 
@@ -19598,13 +19598,13 @@ _d0715d:
 
 _d07172:
         set_blank_frame 15
-        attacker_frame CHAR_FRAME::JUMPING_DOWN, CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_DOWN, JUMPING_FORWARD
         blank_frame 2
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30, CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_FORWARD_FLIP, JUMPING_UP
         blank_frame 2
-        attacker_frame CHAR_FRAME::JUMPING_UP, CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_UP, JUMPING_FORWARD_FLIP
         blank_frame 2
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD, CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_FORWARD, JUMPING_DOWN
         blank_frame 2
         return
 
@@ -19614,22 +19614,22 @@ _d07172:
 
 _d07187:
         set_blank_frame 31
-        attacker_frame CHAR_FRAME::JUMPING_DOWN, CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_DOWN, JUMPING_FORWARD
         update_scroll_wave BG2, HORZ
         blank_frame
         update_scroll_wave BG2, HORZ
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30, CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_FORWARD_FLIP, JUMPING_UP
         update_scroll_wave BG2, HORZ
         blank_frame
         update_scroll_wave BG2, HORZ
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP, CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_UP, JUMPING_FORWARD_FLIP
         update_scroll_wave BG2, HORZ
         blank_frame
         update_scroll_wave BG2, HORZ
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD, CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_FORWARD, JUMPING_DOWN
         update_scroll_wave BG2, HORZ
         blank_frame
         update_scroll_wave BG2, HORZ
@@ -19648,7 +19648,7 @@ _d07187:
         move_to_attacker
         anim_draw_order RIGHT_HAND
         move_if_flipped FORWARD, 2
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         mod_pal BG2, ADD, BLUE, 0
         init_scroll_wave BG2, 8, 2, HORZ
         move UP_BACK, 29
@@ -19706,7 +19706,7 @@ _d07187:
         move BACK, 10
         move DOWN, 6
         call _d07187
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         loop 21
                 update_scroll_wave BG2, HORZ
                 blank_frame
@@ -19717,7 +19717,7 @@ _d07187:
         frame 0
         update_scroll_wave BG2, HORZ
         frame 0
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move UP, 6
         move FORWARD, 25
         update_scroll_wave BG2, HORZ
@@ -19757,7 +19757,7 @@ _d07187:
                 end_loop
         init_scroll_wave BG2, 0, 0, HORZ
         update_scroll_wave BG2, HORZ
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         normal_draw_order
         end_anim_script
 
@@ -19776,20 +19776,20 @@ _d07187:
         calc_vec
         vec_offset 0
         move UP, 8
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
 :       blank_frame
         move_vec_jump :-, 8
         normal_draw_order
         blank_frame
         fixed_draw_order
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 26
         move DOWN, 20
         move_if_flipped FORWARD, 2
         frame 0, 4
         move FORWARD, 18
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 4
         anim_draw_order LEFT_HAND
         move UP, 6
@@ -19812,7 +19812,7 @@ _d07187:
         move UP, 38
         move BACK, 15
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move_if_flipped FORWARD, 2
         move_attacker UP, 3
         move_attacker FORWARD, 4
@@ -19856,20 +19856,20 @@ _d07187:
         move FORWARD, 21
         frame 5, 2
         frame 6, 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move DOWN, 25
         move FORWARD, 27
         loop 9
                 frame 7
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 9
                 move_target DOWN, 3
                 blank_frame
                 move_target UP, 3
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         loop 20
                 move_attacker UP, 9
                 blank_frame
@@ -19885,12 +19885,12 @@ _d07187:
                 move_attacker DOWN, 9
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 33
                 blank_frame
                 end_loop
         disable_echo_sprites 3
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -19941,7 +19941,7 @@ _d073ad:
         double_action_speed
         vec_offset 0
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP, 8
         sfx STEAL
 :       blank_frame
@@ -19949,12 +19949,12 @@ _d073ad:
         unpause_layer BG1
         sfx
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame FIGHTING_2, FIGHTING_3
+        attacker_action NONE
         move_if_flipped FORWARD, 2
         move UP_BACK, 23
         frame 4, 4
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move UP, 11
         move FORWARD, 21
         mod_pal BG2, ADD, WHITE, 31
@@ -19970,7 +19970,7 @@ _d073ad:
                 mod_pal BG2, ADD, WHITE, -2
                 frame 7
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; second hit
@@ -19979,14 +19979,14 @@ _d073fb:
         move UP, 8
         call _d07465
         mod_pal BG2, ADD, GREEN, 31
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         move_to_attacker_char
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 26
         move DOWN, 28
         frame 0, 2
         move FORWARD, 18
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 2
         anim_draw_order LEFT_HAND
         move UP, 6
@@ -20000,7 +20000,7 @@ _d073fb:
                 mod_pal BG2, ADD, GREEN, -4
                 frame 3
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; third hit
@@ -20008,14 +20008,14 @@ _d07431:
         move UP, 8
         call _d07465
         mod_pal BG2, ADD, BLUE, 31
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         move_to_attacker_char
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 26
         move DOWN, 28
         frame 0, 2
         move FORWARD, 18
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 2
         anim_draw_order LEFT_HAND
         move UP, 6
@@ -20029,13 +20029,13 @@ _d07431:
                 mod_pal BG2, ADD, BLUE, -4
                 frame 3
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 _d07465:
         anim_draw_order RIGHT_HAND
         calc_vec_spiral
-        attacker_action CHAR_ACTION::LAUGHING_ALT
+        attacker_action LAUGHING_ALT
         sfx STEAL
 :       blank_frame
         move_vec_spiral :-, 6
@@ -20051,7 +20051,7 @@ _d0747a:
         anim_draw_order RIGHT_HAND
         calc_vec_spiral
         move UP, 8
-        attacker_action CHAR_ACTION::LAUGHING_ALT
+        attacker_action LAUGHING_ALT
 :       blank_frame
         move_vec_spiral :-, 6
         unpause_layer BG1
@@ -20061,14 +20061,14 @@ _d0747a:
         sfx
         disable_echo_sprites 1
         mod_pal BG2, ADD, RED, 31
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         move_to_attacker_char
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 26
         move DOWN, 28
         frame 0, 2
         move FORWARD, 18
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 2
         anim_draw_order LEFT_HAND
         move UP, 6
@@ -20082,18 +20082,18 @@ _d0747a:
                 mod_pal BG2, ADD, RED, -4
                 frame 3
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         restore_attacker_dir
         set_target_char_return
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_action WALKING_BACK
 :       blank_frame
         move_vec_spiral :-, 6
         clear_pos_offset
-        attacker_action CHAR_ACTION::LAUGHING_ALT
+        attacker_action LAUGHING_ALT
         loop 9
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         normal_action_speed
         end_anim_script
 
@@ -20108,7 +20108,7 @@ _d074d5:
         calc_vec_char
         set_scroll_hdma BG1, 6
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 27
         move DOWN, 12
         sfx STEAL
@@ -20119,7 +20119,7 @@ _d074d5:
         init_scroll_wave BG1, 6, 4, HORZ
         move FORWARD, 17
         mod_pal BG2, ADD, WHITE, 31
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         loop 8
                 update_scroll_wave BG1, HORZ
                 mod_pal BG2, ADD, WHITE, -2
@@ -20145,12 +20145,12 @@ _d074d5:
         update_scroll_wave BG1, HORZ
         blank_frame 2
         reset_scroll_hdma BG1
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         wait_scanline
         set_scroll_hdma BG1, 3
 :       blank_frame
         move_vec_char :-, -8, 24
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -20184,7 +20184,7 @@ _d07557:
         move_to_attacker
         calc_vec_char
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP_BACK, 22
         move UP, 8
         sfx STEAL
@@ -20194,7 +20194,7 @@ _d07557:
         unpause_layer BG1
         move UP, 17
         move FORWARD, 18
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 2
         frame 2, 2
         move DOWN_FORWARD, 29
@@ -20202,10 +20202,10 @@ _d07557:
         loop 17
                 frame 3
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -8, 24
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -20218,7 +20218,7 @@ _d0758e:
         move_to_attacker
         calc_vec_char
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move_if_flipped FORWARD, 2
         move UP, 18
         move FORWARD, 26
@@ -20246,10 +20246,10 @@ _d0758e:
         reset_scroll_hdma BG1
         set_scroll_hdma BG1, 3
         normal_draw_order
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
 :       blank_frame
         move_vec_char :-, -8, 24
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
                 blank_frame
                 end_loop
@@ -20302,13 +20302,13 @@ _d07612:
         jump_step :+
         call _d07019
 :       move_to_attacker
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         move FORWARD, 13
         move DOWN, 5
         loop 65
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -20436,7 +20436,7 @@ _d076cf:
         anim_script SPRITE, 1, FRONT_NEAR
         jump_step :+
         call _d07019
-:       attacker_frame CHAR_FRAME::READY
+:       attacker_frame READY
         move_to_attacker
         calc_vec_char
         move FORWARD, 12
@@ -20448,7 +20448,7 @@ _d076cf:
         loop 3
                 move BACK, 20
                 move DOWN, 3
-                attacker_frame CHAR_FRAME::WALKING_DOWN_3
+                attacker_frame WALKING_DOWN_3
                 move_attacker FORWARD, 1
                 move FORWARD, 1
                 call _d077d5
@@ -20459,7 +20459,7 @@ _d076cf:
                 frame 1
                 move BACK, 4
                 move UP, 3
-                attacker_frame CHAR_FRAME::READY + $30
+                attacker_frame READY_FLIP
                 move_attacker FORWARD, 1
                 move FORWARD, 1
                 call _d077db
@@ -20471,7 +20471,7 @@ _d076cf:
                 move FORWARD, 4
                 move UP, 21
                 anim_draw_order BACK
-                attacker_frame CHAR_FRAME::WALKING_UP_3
+                attacker_frame WALKING_UP_3
                 move_attacker FORWARD, 1
                 move FORWARD, 1
                 call _d077d5
@@ -20483,7 +20483,7 @@ _d076cf:
                 anim_draw_order FRONT
                 move FORWARD, 20
                 move DOWN, 21
-                attacker_frame CHAR_FRAME::READY
+                attacker_frame READY
                 move_attacker FORWARD, 1
                 move FORWARD, 1
                 call _d077db
@@ -20496,7 +20496,7 @@ _d076cf:
         loop 3
                 move BACK, 20
                 move DOWN, 3
-                attacker_frame CHAR_FRAME::WALKING_DOWN_3
+                attacker_frame WALKING_DOWN_3
                 move_attacker BACK, 1
                 move BACK, 1
                 call _d077e1
@@ -20507,7 +20507,7 @@ _d076cf:
                 frame 1
                 move BACK, 4
                 move UP, 3
-                attacker_frame CHAR_FRAME::READY + $30
+                attacker_frame READY_FLIP
                 move_attacker BACK, 1
                 move BACK, 1
                 call _d077e7
@@ -20519,7 +20519,7 @@ _d076cf:
                 move FORWARD, 4
                 move UP, 21
                 anim_draw_order BACK
-                attacker_frame CHAR_FRAME::WALKING_UP_3
+                attacker_frame WALKING_UP_3
                 move_attacker BACK, 1
                 move BACK, 1
                 call _d077e1
@@ -20531,7 +20531,7 @@ _d076cf:
                 anim_draw_order FRONT
                 move FORWARD, 20
                 move DOWN, 21
-                attacker_frame CHAR_FRAME::READY
+                attacker_frame READY
                 move_attacker BACK, 1
                 move BACK, 1
                 call _d077e7
@@ -20543,7 +20543,7 @@ _d076cf:
                 end_loop
         move BACK, 20
         move DOWN, 3
-        attacker_frame CHAR_FRAME::WALKING_DOWN_3
+        attacker_frame WALKING_DOWN_3
         cycle_pal SPRITE_ANIM, 8, {2, 4}
         frame 1
         cycle_pal SPRITE_ANIM, 8, {2, 4}
@@ -20552,11 +20552,11 @@ _d076cf:
         frame 1
         move BACK, 4
         move UP, 3
-        attacker_frame CHAR_FRAME::READY + $30
+        attacker_frame READY_FLIP
 :       cycle_pal SPRITE_ANIM, 8, {2, 4}
         frame 2
         move_vec_char :-, -4, 32
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 _d077d5:
@@ -20593,7 +20593,7 @@ _d077ed:
         call _d07067
 :       sfx
         move_to_attacker
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         move FORWARD, 11
         move DOWN, 4
         anim_loop_per_thread
@@ -20604,7 +20604,7 @@ _d077ed:
         loop 17
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         normal_draw_order
         end_anim_script
 
@@ -20648,7 +20648,7 @@ _d0783b:
         call _d07019
 :       sfx
         move_to_attacker
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         move UP_FORWARD, 16
         loop 17
                 frame 0
@@ -20664,7 +20664,7 @@ _d0783b:
                 mod_pal MONSTER, ADD, YELLOW, -2
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         normal_draw_order
         end_anim_script
 
@@ -20693,7 +20693,7 @@ _d07874:
         fixed_draw_order
         jump_step :+
         call _d07019
-:       attacker_frame CHAR_FRAME::READY
+:       attacker_frame READY
         move_to_attacker
         move FORWARD, 21
         move UP, 13
@@ -20724,7 +20724,7 @@ _d07874:
         init_scroll_wave BG2, 0, 0, VERT
         update_scroll_wave BG2, {HORZ, VERT}
         frame 0
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         normal_draw_order
         end_anim_script
 
@@ -20778,13 +20778,13 @@ _d0790f:
         jump_step :+
         call _d07019
 :       move_to_attacker
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         move FORWARD, 12
         move UP, 12
         loop 65
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -20797,7 +20797,7 @@ _d07926:
         jump_step :+
         call _d07019
 :       calc_vec_char
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         move_to_attacker
         move DOWN, 8
         move BACK, 2
@@ -20813,7 +20813,7 @@ _d07939:
         jump_step :+
         call _d07019
 :       calc_vec_char
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         move_to_attacker
 
 _d07945:
@@ -20844,19 +20844,19 @@ _d07945:
                 frame 0
                 end_loop
         hflip_anim
-        attacker_frame CHAR_FRAME::READY + $30
+        attacker_frame READY_FLIP
         move FORWARD, 26
 :       cycle_pal SPRITE_ANIM, 8, {2, 4}
         frame 0
         move_vec_char :-, -4, 32
         move BACK, 26
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         hflip_anim
         loop 17
                 cycle_pal SPRITE_ANIM, 8, {2, 4}
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -20918,7 +20918,7 @@ _d079b5:
                 end_loop
         sfx PARRY
         match_target_dir
-        target_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        target_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move_if_block_flipped FORWARD, 2
         loop 17
                 move_block
@@ -20926,7 +20926,7 @@ _d079b5:
                 move DOWN, 24
                 frame 26
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         unpause_layer {BG3, BG1}
         end_anim_script
 
@@ -20942,7 +20942,7 @@ _d079ee:
                 end_loop
         sfx PARRY
         match_target_dir
-        target_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        target_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move_if_block_flipped FORWARD, 2
         loop 17
                 move_block
@@ -20950,7 +20950,7 @@ _d079ee:
                 move DOWN, 24
                 frame 27
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         unpause_layer {BG3, BG1}
         end_anim_script
 
@@ -20965,11 +20965,11 @@ _d07a0c:
                 blank_frame
                 end_loop
         sfx
-        target_frame CHAR_FRAME::JUMPING_FORWARD
+        target_frame JUMPING_FORWARD
         loop 17
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         unpause_layer {BG3, BG1}
         end_anim_script
 
@@ -20989,7 +20989,7 @@ _d07a21:
         move_block
         move DOWN, 14
         move FORWARD, 2
-        target_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        target_frame FIGHTING_2, FIGHTING_3
         move_if_block_flipped BACK, 3
         flip_target_dir $40, 0
         loop 17
@@ -20998,11 +20998,11 @@ _d07a21:
         block_draw_order FRONT
         move DOWN, 3
         move BACK, 2
-        target_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        target_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         loop 17
                 frame 29
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         unpause_layer {BG3, BG1}
         end_anim_script
 
@@ -21018,14 +21018,14 @@ _d07a51:
                 blank_frame
                 end_loop
         unknown_sfx
-        target_frame CHAR_FRAME::WALKING_FORWARD_3, CHAR_FRAME::WALKING_FORWARD_1
+        target_frame WALKING_FORWARD_3, WALKING_FORWARD_1
         loop 33
                 move_block
                 move FORWARD, 8
                 move DOWN, 16
                 frame 30
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         unpause_layer {BG3, BG1}
         end_anim_script
 
@@ -21040,7 +21040,7 @@ _d07a6d:
         loop 8
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::WALKING_FORWARD_3, CHAR_FRAME::WALKING_FORWARD_1
+        target_frame WALKING_FORWARD_3, WALKING_FORWARD_1
         sfx SHIELD_BLOCK
         loop 33
                 move_block
@@ -21048,7 +21048,7 @@ _d07a6d:
                 move DOWN, 16
                 frame 30
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         unpause_layer {BG3, BG1}
         end_anim_script
 
@@ -21115,7 +21115,7 @@ _d07abc:
                 blank_frame
                 end_loop
         sfx DEFAULT, Y_POS
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 6
                 frame 0
                 end_anim_loop
@@ -21125,7 +21125,7 @@ _d07abc:
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21149,7 +21149,7 @@ _d07ae2:
                 blank_frame
                 end_loop
         sfx DEFAULT, Y_POS
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 7
                 frame 0
                 end_anim_loop
@@ -21159,7 +21159,7 @@ _d07ae2:
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21181,7 +21181,7 @@ _d07b08:
                 blank_frame
                 end_loop
         sfx DEFAULT, Y_POS
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 5
                 frame 0, 4
                 end_anim_loop
@@ -21191,7 +21191,7 @@ _d07b08:
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21213,7 +21213,7 @@ _d07b31:
                 blank_frame
                 end_loop
         sfx DEFAULT, Y_POS
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 12
                 frame 0
                 end_anim_loop
@@ -21223,7 +21223,7 @@ _d07b31:
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21245,7 +21245,7 @@ _d07b57:
                 blank_frame
                 end_loop
         sfx DEFAULT, Y_POS
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 10
                 frame 0
                 end_anim_loop
@@ -21255,7 +21255,7 @@ _d07b57:
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21277,7 +21277,7 @@ _d07b7d:
                 blank_frame
                 end_loop
         sfx
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 14
                 frame 0, 2
                 end_anim_loop
@@ -21287,7 +21287,7 @@ _d07b7d:
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21309,7 +21309,7 @@ _d07ba3:
                 blank_frame
                 end_loop
         sfx DEFAULT, Y_POS
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 12
                 frame 0, 2
                 end_anim_loop
@@ -21319,7 +21319,7 @@ _d07ba3:
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21341,7 +21341,7 @@ _d07bca:
                 blank_frame
                 end_loop
         sfx DEFAULT, Y_POS
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 9
                 frame 0
                 end_anim_loop
@@ -21351,7 +21351,7 @@ _d07bca:
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21374,7 +21374,7 @@ _d07bf0:
                 blank_frame
                 end_loop
         sfx DEFAULT, Y_POS
-        target_frame CHAR_FRAME::HIT
+        target_frame HIT
         anim_loop 14
                 frame 0
                 end_anim_loop
@@ -21384,7 +21384,7 @@ _d07bf0:
                 move_target BACK, 1
                 blank_frame
                 end_loop
-        target_frame CHAR_FRAME::NONE
+        target_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21543,11 +21543,11 @@ _d07caa:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::BOOMERANG_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP_BACK, 7
         call _d07103
         sfx
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         blank_frame
         end_anim_script
 
@@ -21560,24 +21560,24 @@ _d07cbd:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::DOOM_DARTS_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 2
         move UP_BACK, 23
         call _d07130
         loop 2
-                attacker_frame CHAR_FRAME::JUMPING_DOWN, CHAR_FRAME::JUMPING_UP
+                attacker_frame JUMPING_DOWN, JUMPING_UP
                 blank_frame 2
-                attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30, CHAR_FRAME::JUMPING_FORWARD
+                attacker_frame JUMPING_FORWARD_FLIP, JUMPING_FORWARD
                 blank_frame 2
-                attacker_frame CHAR_FRAME::JUMPING_UP, CHAR_FRAME::JUMPING_DOWN
+                attacker_frame JUMPING_UP, JUMPING_DOWN
                 blank_frame 2
-                attacker_frame CHAR_FRAME::JUMPING_FORWARD, CHAR_FRAME::JUMPING_FORWARD + $30
+                attacker_frame JUMPING_FORWARD, JUMPING_FORWARD_FLIP
                 blank_frame 2
                 end_loop
         sfx
         move FORWARD, 17
         move DOWN_FORWARD, 23
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 4
         frame 2, 4
         anim_draw_order LEFT_HAND
@@ -21593,14 +21593,14 @@ _d07cfa:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::NINJA_STAR_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 2
         move UP_BACK, 23
         call _d07103
         sfx
         move FORWARD, 17
         move DOWN_FORWARD, 23
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 4
         frame 2, 4
         anim_draw_order LEFT_HAND
@@ -21618,14 +21618,14 @@ _d07d20:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::CLAW_ALT_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 2
         move UP_BACK, 23
         call _d07103
         sfx
         move FORWARD, 17
         move DOWN_FORWARD, 23
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 4
         frame 2, 4
         anim_draw_order LEFT_HAND
@@ -21640,12 +21640,12 @@ _d07d46:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::NINJA_SWORD_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move DOWN, 15
         move FORWARD, 7
         call _d07103
         sfx
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move UP, 15
         frame 1, 4
         frame 2, 4
@@ -21662,12 +21662,12 @@ _d07d6c:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::NINJA_SWORD_ALT_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP, 9
         move FORWARD, 7
         call _d07103
         sfx
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 4
         frame 2, 4
         move DOWN, 8
@@ -21697,14 +21697,14 @@ _d07d90:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::FALCHION_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 2
         move UP_BACK, 23
         call _d07103
         sfx
         move FORWARD, 31
         move DOWN, 23
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 4
         move UP, 8
         anim_draw_order LEFT_HAND
@@ -21720,12 +21720,12 @@ _d07db8:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::DAVINCI_BRUSH_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 2
         move UP_BACK, 25
         call _d07103
         sfx
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move FORWARD, 32
         frame 1, 2
         frame 2, 2
@@ -21746,14 +21746,14 @@ _d07dde:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::FLAIL_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 2
         move UP_BACK, 23
         call _d07103
         sfx
         move FORWARD, 32
         frame 1, 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 2, 2
         move FORWARD, 19
         move DOWN, 10
@@ -21772,14 +21772,14 @@ _d07e04:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::ATMA_WEAPON_3_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP_BACK, 22
         move BACK, 2
         move_if_flipped FORWARD, 2
         anim_priority 0
         call _d07103
         sfx
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move FORWARD, 2
         move DOWN, 1
         frame 1
@@ -21809,7 +21809,7 @@ _d07e3b:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::ATMA_WEAPON_2_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP_BACK, 22
         move BACK, 2
         anim_priority 0
@@ -21817,7 +21817,7 @@ _d07e3b:
         sfx
         move UP, 17
         move FORWARD, 19
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 2
         frame 2, 2
         move UP, 5
@@ -21836,7 +21836,7 @@ _d07e63:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::ATMA_WEAPON_1_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 2
         move UP_BACK, 23
         anim_priority 0
@@ -21844,7 +21844,7 @@ _d07e63:
         sfx
         move FORWARD, 31
         move DOWN, 23
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 4
         move UP, 8
         anim_draw_order LEFT_HAND
@@ -21860,7 +21860,7 @@ _d07e8d:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::ILLUMINA_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP_BACK, 22
         move DOWN, 8
         move BACK, 4
@@ -21868,7 +21868,7 @@ _d07e8d:
         sfx
         move UP, 17
         move FORWARD, 22
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 2
         frame 2, 2
         move DOWN_FORWARD, 29
@@ -21887,13 +21887,13 @@ _d07eb3:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::SCIMITAR_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move UP_BACK, 22
         call _d07103
         sfx
         move UP, 17
         move FORWARD, 18
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 2
         frame 2, 2
         move DOWN_FORWARD, 29
@@ -21912,13 +21912,13 @@ _d07ed5:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::SOUL_SABRE_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 5
         move UP_BACK, 19
         call _d07103
         sfx
         move UP_FORWARD, 19
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         frame 1, 2
         frame 2, 2
         move DOWN, 27
@@ -21938,7 +21938,7 @@ _d07ef9:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::CLAW_PUNCH_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame FIGHTING_2, WALKING_FORWARD_3
         move FORWARD, 9
         move DOWN, 12
         move_if_flipped FORWARD, 2
@@ -21950,7 +21950,7 @@ _d07ef9:
                 move FORWARD, 2
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -21961,14 +21961,14 @@ _d07f18:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::ATTACK_ANIM_SCRIPT_37
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame FIGHTING_2, WALKING_FORWARD_3
         move FORWARD, 10
         move DOWN, 13
         move_if_flipped FORWARD, 2
         call _d07103
         sfx
         call _d07f31
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -22011,7 +22011,7 @@ _d07f57:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::IMP_HALBERD_SPRITE
         anim_script SPRITE
         anim_draw_order BACK
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move FORWARD, 27
         move UP, 7
         call _d07130
@@ -22031,12 +22031,12 @@ _d07f6e:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::CLAW_RIGHT_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::FIGHTING_2, CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_2, FIGHTING_3
         move BACK, 2
         move UP_BACK, 21
         call _d07103
         sfx
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move_if_flipped DOWN_FORWARD, 2
         move DOWN_FORWARD, 17
         move FORWARD, 22
@@ -22058,7 +22058,7 @@ _d07f98:
         array_label ATTACK_ANIM_SCRIPT, ATTACK_ANIM_SCRIPT::PUNISHER_SPRITE
         anim_script SPRITE
         anim_draw_order RIGHT_HAND
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1, CHAR_FRAME::WALKING_FORWARD_3
+        attacker_frame WALKING_FORWARD_1, WALKING_FORWARD_3
         move FORWARD, 19
         move UP, 11
         call _d07130

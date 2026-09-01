@@ -2,6 +2,7 @@
 
 .export AttackAnimProp
 
+.include "attack_anim_prop.inc"
 .include "attack_anim_prop.mac"
 .include "src/btlgfx/attack_anim_script.inc"
 .include "src/sound/sfx.inc"
@@ -3058,11 +3059,11 @@ AttackAnimProp:
 
 ; ------------------------------------------------------------------------------
 
-; 256: STEP_FORWARD
-        attack_anim_prop STEP_FORWARD
-        sprite_gfx STEP_FORWARD_SPRITE
+; 256: STEP_FORWARD_MAGITEK
+        attack_anim_prop STEP_FORWARD_MAGITEK
+        sprite_gfx STEP_FORWARD_MAGITEK_SPRITE
         bg3_pal 136
-        extra_gfx STEP_FORWARD_SPRITE
+        extra_gfx STEP_FORWARD_MAGITEK_SPRITE
         init_fn 16
         end_attack_anim_prop
 
@@ -3309,8 +3310,8 @@ AttackAnimProp:
 
 ; ------------------------------------------------------------------------------
 
-; 282: STEP_FORWARD_ALT
-        attack_anim_prop STEP_FORWARD_ALT
+; 282: STEP_FORWARD
+        attack_anim_prop STEP_FORWARD
         sprite_gfx MONSTER_ATTACK_SPRITE
         extra_script MONSTER_ATTACK_SPRITE
         init_fn 16
@@ -3433,9 +3434,9 @@ AttackAnimProp:
 
 ; ------------------------------------------------------------------------------
 
-; 294: SHOCK
-        attack_anim_prop SHOCK
-        bg1_script SHOCK_BG1
+; 294: KEFKA_LEO_SMOKE
+        attack_anim_prop KEFKA_LEO_SMOKE
+        bg1_script KEFKA_LEO_SMOKE_BG1
         bg1_pal 82
         init_fn 16
         end_attack_anim_prop
@@ -3451,11 +3452,11 @@ AttackAnimProp:
 
 ; ------------------------------------------------------------------------------
 
-; 296: GP_RAIN
-        attack_anim_prop GP_RAIN
-        sprite_script GP_RAIN_SPRITE
+; 296: GIL_TOSS
+        attack_anim_prop GIL_TOSS
+        sprite_script GIL_TOSS_SPRITE
         sprite_pal 24
-        extra_script GP_RAIN_EXTRA
+        extra_script GIL_TOSS_EXTRA
         sfx EVENT_JUMP
         init_fn 94
         delay 8
@@ -3525,9 +3526,9 @@ AttackAnimProp:
 
 ; ------------------------------------------------------------------------------
 
-; 303: RUN
-        attack_anim_prop RUN
-        sprite_script RUN_SPRITE
+; 303: RUN_AWAY
+        attack_anim_prop RUN_AWAY
+        sprite_script RUN_AWAY_SPRITE
         sfx ESCAPE
         init_fn 89
         end_attack_anim_prop
@@ -4036,7 +4037,7 @@ AttackAnimProp:
 ; ------------------------------------------------------------------------------
 
 ; 350: REMEDY
-        attack_anim_prop REMEDY
+        attack_anim_prop REMEDY_ITEM
         sprite_script REMEDY_ITEM_SPRITE
         sprite_pal 192
         sfx ESUNA
@@ -4074,7 +4075,7 @@ AttackAnimProp:
 ; ------------------------------------------------------------------------------
 
 ; 355: SUPER_BALL
-        attack_anim_prop SUPER_BALL
+        attack_anim_prop SUPER_BALL_ITEM
         sprite_script SUPER_BALL_SPRITE
         sprite_pal 209
         extra_script SUPER_BALL_EXTRA

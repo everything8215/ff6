@@ -644,7 +644,7 @@ _1765:  sta     near w7e3412
         tyx
         lda     #ATTACK_MSG::DANCE_FAIL
         sta     near w7e3401
-        lda     #GFX_BATTLE_CMD::CHANGE_BATTLE
+        lda     #GFX_BATTLE_CMD::DANCE_FAIL
         sta     zb5
         jsr     _c2298d
         jmp     ExecSelfAttack
@@ -835,7 +835,7 @@ _189e:  tyx
 
 ; [ command $18: gp rain ]
 
-        array_label ACTION_BATTLE_CMD, BATTLE_CMD::GP_RAIN
+        array_label ACTION_BATTLE_CMD, BATTLE_CMD::GIL_TOSS
 @1907:  tyx
         jsr     _c2298a
         inc     $11a6

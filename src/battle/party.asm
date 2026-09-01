@@ -378,7 +378,7 @@ RelicCmdTbl1:
 ; relic updated commands (capture, gp rain, control, x-magic, jump)
 RelicCmdTbl2:
         .byte   BATTLE_CMD::CAPTURE
-        .byte   BATTLE_CMD::GP_RAIN
+        .byte   BATTLE_CMD::GIL_TOSS
         .byte   BATTLE_CMD::CONTROL
         .byte   BATTLE_CMD::X_MAGIC
         .byte   BATTLE_CMD::JUMP

@@ -2262,7 +2262,7 @@ InitCmdSelectTbl:
         .addr   InitDefSelect           ; DEF
         .addr   InitTargetSelect        ; JUMP
         .addr   InitXMagicInput         ; X_MAGIC
-        .addr   InitTargetSelect        ; GP_RAIN
+        .addr   InitTargetSelect        ; GIL_TOSS
         .addr   InitTargetSelect        ; SUMMON
         .addr   InitTargetSelect        ; HEALTH
         .addr   InitTargetSelect        ; SHOCK

@@ -5507,7 +5507,7 @@ ai_script KATANASOUL
                 throw_item ASHURA, IMPERIAL
                 wait
                 set_target ALL_CHARS
-                cmd GP_RAIN
+                cmd GIL_TOSS
                 set_battle_var 3, 0
                 end_if
         if_battle_var_greater 1, 6

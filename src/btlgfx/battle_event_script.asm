@@ -58,12 +58,12 @@ CharEntry_16:
         fixed_draw_order
         move_attacker BACK, 48
         show_target_chars
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 16
                 move_attacker FORWARD, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -83,7 +83,7 @@ CharEntry_17:
         move_attacker UP, 4
         move_attacker FORWARD, 96
         show_target_chars
-        attacker_action CHAR_ACTION::ARMS_RAISED_BACK
+        attacker_action ARMS_RAISED_BACK
         loop 13
                 move_attacker UP, 12
                 blank_frame
@@ -95,7 +95,7 @@ CharEntry_17:
 :       blank_frame
         move_vec_char :-, 8, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -115,7 +115,7 @@ CharEntry_18:
         move_attacker DOWN, 4
         move_attacker FORWARD, 96
         show_target_chars
-        attacker_action CHAR_ACTION::ARMS_RAISED_BACK
+        attacker_action ARMS_RAISED_BACK
         loop 13
                 move_attacker DOWN, 12
                 blank_frame
@@ -127,7 +127,7 @@ CharEntry_18:
 :       blank_frame
         move_vec_char :-, 8, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -144,7 +144,7 @@ CharEntry_19:
         fixed_draw_order
         move_attacker BACK, 48
         show_target_chars
-        attacker_action CHAR_ACTION::ARMS_RAISED_BACK
+        attacker_action ARMS_RAISED_BACK
         loop 6
                 move_attacker FORWARD, 32
                 blank_frame
@@ -156,7 +156,7 @@ CharEntry_19:
 :       blank_frame
         move_vec_char :-, 8, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -174,16 +174,16 @@ CharEntry_20:
                 move_attacker UP, 32
                 end_loop
         show_target_chars
-        attacker_action CHAR_ACTION::ARMS_RAISED_FORWARD
+        attacker_action ARMS_RAISED_FORWARD
         loop 10
                 move_attacker DOWN, 16
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NEAR_FATAL
+        attacker_action NEAR_FATAL
         loop 16
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -201,7 +201,7 @@ CharEntry_21:
                 move_attacker UP_FORWARD, 32
                 end_loop
         show_target_chars
-        attacker_action CHAR_ACTION::ARMS_RAISED_BACK
+        attacker_action ARMS_RAISED_BACK
         loop 20
                 move_attacker DOWN_BACK, 8
                 blank_frame
@@ -213,7 +213,7 @@ CharEntry_21:
 :       blank_frame
         move_vec_char :-, 8, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -227,16 +227,16 @@ CharEntry_06:
         save_attacker_char_pos
         move_attacker BACK, 48
         show_target_chars
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 16
                 move_attacker FORWARD, 3
                 blank_frame
                 end_loop
         fixed_draw_order
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         call _d0c0de
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -251,23 +251,23 @@ CharEntry_07:
         fixed_draw_order
         move_attacker BACK, 48
         show_target_chars
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 16
                 move_attacker FORWARD, 3
                 blank_frame
                 end_loop
         anim_speed 7
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -282,31 +282,31 @@ CharEntry_08:
         fixed_draw_order
         move_attacker BACK, 48
         show_target_chars
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 16
                 move_attacker FORWARD, 3
                 blank_frame
                 end_loop
         anim_speed 9
-        attacker_frame CHAR_FRAME::WAGGING_FINGER_1
+        attacker_frame WAGGING_FINGER_1
         blank_frame
-        attacker_frame CHAR_FRAME::WAGGING_FINGER_2
+        attacker_frame WAGGING_FINGER_2
         blank_frame
-        attacker_frame CHAR_FRAME::WAGGING_FINGER_1
+        attacker_frame WAGGING_FINGER_1
         blank_frame
-        attacker_frame CHAR_FRAME::WAGGING_FINGER_2
+        attacker_frame WAGGING_FINGER_2
         blank_frame
-        attacker_frame CHAR_FRAME::WAGGING_FINGER_1
+        attacker_frame WAGGING_FINGER_1
         blank_frame
-        attacker_frame CHAR_FRAME::WAGGING_FINGER_2
+        attacker_frame WAGGING_FINGER_2
         blank_frame
-        attacker_frame CHAR_FRAME::WAGGING_FINGER_1
+        attacker_frame WAGGING_FINGER_1
         blank_frame
-        attacker_frame CHAR_FRAME::WAGGING_FINGER_2
+        attacker_frame WAGGING_FINGER_2
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -321,16 +321,16 @@ CharEntry_09:
         fixed_draw_order
         move_attacker BACK, 48
         show_target_chars
-        attacker_action CHAR_ACTION::HIT
+        attacker_action HIT
         loop 12
                 move_attacker FORWARD, 9
                 blank_frame
                 end_loop
         loop 11
-                attacker_frame CHAR_FRAME::HIT
+                attacker_frame HIT
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         reset_char_vec_offset
         vec_to_attacker_char_pos
         calc_vec_char
@@ -338,7 +338,7 @@ CharEntry_09:
 :       blank_frame
         move_vec_char :-, 4, 40
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -354,20 +354,20 @@ CharEntry_10:
         move_attacker FORWARD, 32
         show_target_chars
         anim_speed 9
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         blank_frame
         loop 3
-                attacker_frame CHAR_FRAME::LAUGHING_1
+                attacker_frame LAUGHING_1
                 blank_frame
-                attacker_frame CHAR_FRAME::LAUGHING_2
+                attacker_frame LAUGHING_2
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         reset_char_vec_offset
         vec_to_attacker_char_pos
         calc_vec_char
@@ -375,7 +375,7 @@ CharEntry_10:
 :       blank_frame
         move_vec_char :-, 5, 40
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -396,7 +396,7 @@ CharEntry_11:
                 move_attacker FORWARD, 32
                 end_loop
         show_target_chars
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         reset_char_vec_offset
         vec_to_attacker_char_pos
         calc_vec_char
@@ -404,7 +404,7 @@ CharEntry_11:
 :       blank_frame
         move_vec_char :-, 8, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -453,7 +453,7 @@ CharEntry_12:
 :       blank_frame
         move_vec_char :-, 8, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -498,7 +498,7 @@ CharEntry_13:
 :       blank_frame
         move_vec_char :-, 8, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
         end_anim_script
@@ -514,7 +514,7 @@ CharEntry_13:
         move_attacker BACK, 48
         show_target_chars
         move_attacker FORWARD, 9
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         move_attacker FORWARD, 4
         blank_frame
         move_attacker FORWARD, 3
@@ -529,7 +529,7 @@ CharEntry_13:
 :       blank_frame
         move_vec_char :-, 8, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
         end_anim_script
@@ -628,11 +628,11 @@ CharEntry_22:
                 move_attacker FORWARD, 3
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         magitek_action 0
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -671,7 +671,7 @@ _d09bc9:
         reset_char_vec_offset
         magitek_action 0
         loop 16
-                attacker_action CHAR_ACTION::JUMPING_UP
+                attacker_action JUMPING_UP
                 blank_frame
                 end_loop
         end_anim_script
@@ -680,9 +680,9 @@ _d09bc9:
 
 _d09bef:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::LAUGHING
+        attacker_frame WALKING_UP_2
+        attacker_frame NONE
+        attacker_action LAUGHING
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -701,7 +701,7 @@ _d09bfa:
                 blank_frame 2
                 end_loop
         loop 32
-                attacker_action CHAR_ACTION::NONE
+                attacker_action NONE
                 blank_frame 5
                 end_loop
         disable_menu
@@ -784,7 +784,7 @@ _d09c86:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
         disable_char_pal_update
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -800,7 +800,7 @@ _d09c91:
         move_vec_char :-, 1
         reset_char_vec_offset
         magitek_action 0
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -837,22 +837,22 @@ _d09d02:
         anim_script SPRITE
         save_attacker_char_pos
         anim_speed 13
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         blank_frame
         end_anim_script
 
@@ -899,7 +899,7 @@ _d09d68:
         move_vec_char :-, 1
         reset_char_vec_offset
         magitek_action 0
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -918,7 +918,7 @@ _d09d68:
         reset_char_vec_offset
         anim_speed 2
         magitek_action 0
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -981,7 +981,7 @@ _d09da4:
         reset_char_vec_offset
         anim_speed 2
         magitek_action 0
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1105,12 +1105,12 @@ _d09e77:
 _d09eaa:
         anim_script SPRITE
         fixed_draw_order
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         loop 2
                 call _d0c0de
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         normal_draw_order
         end_anim_script
 
@@ -1119,13 +1119,13 @@ _d09eaa:
 _d09ebf:
         anim_script SPRITE
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::FIGHTING_FRONT_HAND
+                attacker_action FIGHTING_FRONT_HAND
                 blank_frame 2
                 end_loop
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_action NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1133,10 +1133,10 @@ _d09ebf:
 _d09ed3:
         anim_script SPRITE
         fixed_draw_order
-        attacker_frame CHAR_FRAME::FIGHTING_3
+        attacker_frame FIGHTING_3
         call _d0c0de
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         normal_draw_order
         end_anim_script
 
@@ -1283,12 +1283,12 @@ _d09ee5:
 _d09f92:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_frame CHAR_FRAME::SURPRISED
+                attacker_frame SURPRISED
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         set_vec_target {136, 104}
         calc_vec_char
         update_char_vec_dir_walk
@@ -1297,7 +1297,7 @@ _d09f92:
         reset_char_vec_offset
         call _d0c0de
         call _d0c0de
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1305,16 +1305,16 @@ _d09f92:
 _d09fba:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         call _d0c0de
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d09fc8:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {160, 104}
         calc_vec_char
         update_char_vec_dir_walk
@@ -1322,7 +1322,7 @@ _d09fc8:
         move_vec_char :-, 4, 32
         reset_char_vec_offset
         call _d0c0de
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1330,41 +1330,41 @@ _d09fc8:
 _d09fe1:
         anim_script SPRITE, 1, CHAR
         anim_speed 5
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d09fff:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+                attacker_frame WALKING_FORWARD_2_FLIP
                 blank_frame 2
                 end_loop
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a017:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         call _d0c0de
         call _d0c0de
         call _d0c0de
@@ -1375,42 +1375,42 @@ _d0a017:
 
 _d0a029:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {152, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a03f:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {144, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a055:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {176, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 24
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1418,21 +1418,21 @@ _d0a055:
 _d0a06b:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {176, 120}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::EYES_CLOSED_DOWN
+        attacker_frame EYES_CLOSED_DOWN
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a083:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {168, 88}
         calc_vec_char
         update_char_vec_dir_walk
@@ -1445,7 +1445,7 @@ _d0a083:
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1453,7 +1453,7 @@ _d0a083:
 _d0a0a6:
         anim_script SPRITE, 1, CHAR
         loop 10
-                attacker_frame CHAR_FRAME::NONE
+                attacker_frame NONE
                 blank_frame
                 end_loop
         set_vec_target {200, 88}
@@ -1463,62 +1463,62 @@ _d0a0a6:
         move_vec_char :-, 4, 24
         reset_char_vec_offset
         loop 21
-                attacker_frame CHAR_FRAME::DEAD_VERT
+                attacker_frame DEAD_VERT
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a0c7:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {200, 128}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a0dd:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {152, 128}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a0f3:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 16
-                attacker_action CHAR_ACTION::BLINKING_FORWARD
+                attacker_action BLINKING_FORWARD
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a102:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 16
-                attacker_action CHAR_ACTION::BLINKING_BACK
+                attacker_action BLINKING_BACK
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1526,14 +1526,14 @@ _d0a102:
 _d0a111:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_DOWN_2
+                attacker_frame WALKING_DOWN_2
                 blank_frame 3
                 end_loop
         loop 32
-                attacker_frame CHAR_FRAME::LAUGHING_1
+                attacker_frame LAUGHING_1
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::LAUGHING_1
+        attacker_frame LAUGHING_1
         loop 32
                 move_attacker DOWN, 1
                 blank_frame 4
@@ -1544,14 +1544,14 @@ _d0a111:
 
 _d0a131:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         vec_to_attacker_char_pos
         calc_vec_char
         update_char_vec_dir_jump
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -1560,15 +1560,15 @@ _d0a131:
 ; unused
 
 _d0a147:
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a14d:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {192, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -1576,25 +1576,25 @@ _d0a14d:
         move_vec_char :-, 1, 0
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_DOWN_2
+                attacker_frame WALKING_DOWN_2
                 blank_frame 2
                 end_loop
         anim_speed 5
-        attacker_frame CHAR_FRAME::WINKING_DOWN
+        attacker_frame WINKING_DOWN
         blank_frame 2
         anim_speed 2
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_DOWN_2
+                attacker_frame WALKING_DOWN_2
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         vec_to_attacker_char_pos
         calc_vec_char
         update_char_vec_dir_jump
 :       blank_frame
         move_vec_char :-, 3, 16
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -1603,22 +1603,22 @@ _d0a14d:
 ; unused
 
 _d0a18c:
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a192:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a198:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1627,14 +1627,14 @@ _d0a198:
 
 _d0a19e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a1a4:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1779,56 +1779,56 @@ _d0a1aa:
 
 _d0a278:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {176, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a28e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {184, 128}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a2a4:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {168, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a2ba:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {216, 72}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -1842,13 +1842,13 @@ _d0a2d0:
 :       blank_frame
         move_vec_char :-, 6, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         anim_speed 9
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         blank_frame
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         blank_frame
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         blank_frame
         anim_speed 2
         end_anim_script
@@ -1857,78 +1857,78 @@ _d0a2d0:
 
 _d0a2f5:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {208, 136}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a30b:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {208, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 32
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame WALKING_UP_2
+        attacker_frame NONE
         set_vec_target {192, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a334:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {208, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 32
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a34a:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {224, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a360:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {200, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         loop 2
                 move_attacker UP, 10
                 blank_frame
@@ -1953,28 +1953,28 @@ _d0a360:
 
 _d0a39b:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {184, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a3b1:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {192, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         set_vec_target {96, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -1989,35 +1989,35 @@ _d0a3b1:
 
 _d0a3d8:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {184, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a3ee:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {184, 112}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a404:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         disable_menu
         set_vec_target {192, 104}
         calc_vec_char
@@ -2025,21 +2025,21 @@ _d0a404:
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a41c:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {176, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2047,7 +2047,7 @@ _d0a41c:
 _d0a432:
         anim_script SPRITE, 1, CHAR
         show_target_chars
-        attacker_action CHAR_ACTION::DEAD_VERT
+        attacker_action DEAD_VERT
         sfx SPLASH
         loop 32
                 move_attacker UP, 6
@@ -2059,35 +2059,35 @@ _d0a432:
 
 _d0a441:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a447:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a44d:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a453:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a459:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         loop 2
                 move_attacker UP, 10
                 blank_frame
@@ -2106,7 +2106,7 @@ _d0a459:
                 move_attacker DOWN, 10
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2267,14 +2267,14 @@ _d0a49d:
 
 _d0a578:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {144, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2282,14 +2282,14 @@ _d0a578:
 _d0a58e:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {120, 72}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 16, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2297,14 +2297,14 @@ _d0a58e:
 _d0a5a6:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 64}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 16, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2312,60 +2312,60 @@ _d0a5a6:
 _d0a5be:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {152, 72}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 16, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a5d6:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::EYES_CLOSED_DOWN
+        attacker_frame EYES_CLOSED_DOWN
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a5dc:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a5e2:
         anim_script SPRITE, 1, CHAR
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::READY
+        attacker_action NONE
+        attacker_frame READY
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a5ea:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::HIT
+        attacker_frame HIT
         loop 64
                 move_attacker BACK, 1
                 blank_frame 5
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a5fd:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::HIT
+        attacker_frame HIT
         loop 41
                 move_attacker BACK, 1
                 blank_frame 5
                 end_loop
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         loop 16
                 move_attacker BACK, 17
                 blank_frame
@@ -2377,12 +2377,12 @@ _d0a5fd:
 
 _d0a618:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::HIT
+        attacker_frame HIT
         loop 34
                 move_attacker BACK, 1
                 blank_frame 5
                 end_loop
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         loop 16
                 move_attacker BACK, 17
                 blank_frame
@@ -2394,12 +2394,12 @@ _d0a618:
 
 _d0a633:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::HIT
+        attacker_frame HIT
         loop 24
                 move_attacker BACK, 1
                 blank_frame 3
                 end_loop
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         loop 16
                 move_attacker BACK, 17
                 blank_frame
@@ -2411,7 +2411,7 @@ _d0a633:
 
 _d0a64c:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2420,14 +2420,14 @@ _d0a64c:
 
 _d0a652:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a658:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2442,7 +2442,7 @@ _d0a65e:
 :       blank_frame
         move_vec_char :-, 8, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2464,8 +2464,8 @@ _d0a675:
 :       blank_frame
         move_vec_char :-, 8, 64
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_action NONE
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2473,8 +2473,8 @@ _d0a675:
 _d0a69d:
         anim_script SPRITE, 1, CENTER
         restore_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2552,28 +2552,28 @@ _d0a6b4:
 
 _d0a6e3:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::EYES_CLOSED_DOWN
+        attacker_frame EYES_CLOSED_DOWN
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a6e9:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a6ef:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a6f5:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2602,7 +2602,7 @@ _d0a6fb:
 
 _d0a708:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::EYES_CLOSED_DOWN
+        attacker_frame EYES_CLOSED_DOWN
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2657,7 +2657,7 @@ _d0a71a:
 _d0a739:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2665,15 +2665,15 @@ _d0a739:
 _d0a741:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a749:
         anim_script SPRITE, 1, CHAR
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_action NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2709,55 +2709,55 @@ _d0a751:
 _d0a76c:
         anim_script SPRITE
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 64
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a784:
         anim_script SPRITE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         anim_speed 11
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         blank_frame
         change_char_gfx LOCKE, GREEN_SOLDIER
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a7b5:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         vec_to_attacker_char_pos
         calc_vec_char
         update_char_vec_dir_jump
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -2765,8 +2765,8 @@ _d0a7b5:
 
 ; unused
 _d0a7cb:
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2802,55 +2802,55 @@ _d0a7d1:
 _d0a7ec:
         anim_script SPRITE
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 64
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a804:
         anim_script SPRITE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         anim_speed 11
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         blank_frame
         change_char_gfx LOCKE, MERCHANT
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a835:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         vec_to_attacker_char_pos
         calc_vec_char
         update_char_vec_dir_jump
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -2858,8 +2858,8 @@ _d0a835:
 
 ; unused
 _d0a84b:
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -2894,26 +2894,26 @@ _d0a851:
 _d0a86a:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 31
                 move_attacker FORWARD, 1
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a87e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 41
                 move_attacker FORWARD, 1
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         reset_char_vec_offset
         end_anim_script
 
@@ -2921,23 +2921,23 @@ _d0a87e:
 
 _d0a892:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         calc_vec_rel {-40, 0}
         calc_vec_char
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         calc_vec_rel {-48, 0}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 24
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::JUMPING_FORWARD
+        attacker_action NONE
+        attacker_frame NONE
+        attacker_action JUMPING_FORWARD
         loop 20
                 move_attacker UP_FORWARD, 8
                 blank_frame
@@ -3080,29 +3080,29 @@ _d0a925:
 
 _d0a960:
         anim_script SPRITE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {184, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0a976:
         anim_script SPRITE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         anim_speed 9
-        attacker_frame CHAR_FRAME::EYES_CLOSED_FORWARD
+        attacker_frame EYES_CLOSED_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         blank_frame
-        attacker_frame CHAR_FRAME::EYES_CLOSED_FORWARD
+        attacker_frame EYES_CLOSED_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         blank_frame
         anim_speed 2
         end_anim_script
@@ -3111,14 +3111,14 @@ _d0a976:
 
 _d0a990:
         anim_script SPRITE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {168, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -3135,17 +3135,17 @@ _d0a9a6:
                 change_char_gfx TERRA, ESPER_TERRA
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 5
                 end_loop
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_DOWN_2
+                attacker_frame WALKING_DOWN_2
                 blank_frame 2
                 end_loop
         loop 32
-                attacker_frame CHAR_FRAME::LAUGHING_1
+                attacker_frame LAUGHING_1
                 blank_frame
                 end_loop
         end_anim_script
@@ -3191,16 +3191,16 @@ _d0a9fe:
         save_attacker_char_pos
         show_attacker_char
         anim_speed 13
-        attacker_frame CHAR_FRAME::JUMPING_DOWN, CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_DOWN, JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30, CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_FORWARD_FLIP, JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP, CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_UP, JUMPING_FORWARD_FLIP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD, CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_FORWARD, JUMPING_DOWN
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -3629,7 +3629,7 @@ _d0ac60:
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         show_attacker_char
         end_anim_script
 
@@ -3639,8 +3639,8 @@ _d0ac60:
 _d0ac7e:
         anim_script SPRITE, 1, CHAR
         restore_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -3648,9 +3648,9 @@ _d0ac7e:
 _d0ac88:
         anim_script SPRITE, 1, CHAR
         attacker_char_dir LEFT
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::FIGHTING_BACK_HAND
+                attacker_action FIGHTING_BACK_HAND
                 blank_frame
                 end_loop
         set_vec_target {96, 64}
@@ -3689,17 +3689,17 @@ _d0ac88:
 :       blank_frame
         move_vec_char :-, 1, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_BACK
+                attacker_action BLINKING_BACK
                 blank_frame 2
                 end_loop
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_DOWN
+                attacker_action BLINKING_DOWN
                 blank_frame 2
                 end_loop
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_FORWARD
+                attacker_action BLINKING_FORWARD
                 blank_frame 2
                 end_loop
         set_vec_target {120, 88}
@@ -3709,7 +3709,7 @@ _d0ac88:
         move_vec_char :-, 2, 0
         reset_char_vec_offset
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_FORWARD
+                attacker_action BLINKING_FORWARD
                 blank_frame 2
                 end_loop
         set_vec_target {168, 88}
@@ -3718,7 +3718,7 @@ _d0ac88:
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -3727,7 +3727,7 @@ _d0ad21:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
         loop 32
-                attacker_action CHAR_ACTION::READY
+                attacker_action READY
                 blank_frame 2
                 end_loop
         end_anim_script
@@ -3738,13 +3738,13 @@ _d0ad2d:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
         anim_speed 9
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         blank_frame
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         blank_frame
         anim_speed 2
         end_anim_script
@@ -3753,7 +3753,7 @@ _d0ad2d:
 
 _d0ad46:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         set_vec_target {96, 88}
         calc_vec_char
         update_char_vec_dir_walk
@@ -3772,7 +3772,7 @@ _d0ad59:
 :       blank_frame
         move_vec_char :-, 4, 80
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -3867,8 +3867,8 @@ _d0adce:
 
 _d0addc:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         loop 3
                 set_vec_target {160, 136}
                 calc_vec_char
@@ -3924,15 +3924,15 @@ _d0addc:
 :       blank_frame
         move_vec_char :-, 5, 64
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ae5d:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         loop 3
                 set_vec_target {168, 136}
                 calc_vec_char
@@ -3988,15 +3988,15 @@ _d0ae5d:
 :       blank_frame
         move_vec_char :-, 5, 64
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0aede:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         loop 2
                 set_vec_target {160, 136}
                 calc_vec_char
@@ -4054,21 +4054,21 @@ _d0aede:
         reset_char_vec_offset
         loop 9
                 anim_speed 9
-                attacker_frame CHAR_FRAME::LAUGHING_1
+                attacker_frame LAUGHING_1
                 blank_frame
-                attacker_frame CHAR_FRAME::LAUGHING_2
+                attacker_frame LAUGHING_2
                 blank_frame
                 anim_speed 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0af6e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         loop 3
                 set_vec_target {168, 136}
                 calc_vec_char
@@ -4124,26 +4124,26 @@ _d0af6e:
 :       blank_frame
         move_vec_char :-, 5, 64
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0afef:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::JUMPING_FORWARD
+                attacker_action JUMPING_FORWARD
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0affd:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 72}
         calc_vec_char
         update_char_vec_dir_jump
@@ -4151,10 +4151,10 @@ _d0affd:
         move_vec_char :-, 6, 80
         reset_char_vec_offset
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_DOWN
+                attacker_action BLINKING_DOWN
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4171,10 +4171,10 @@ _d0b01a:
         move_vec_char :-, 6, 160
         reset_char_vec_offset
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_BACK
+                attacker_action BLINKING_BACK
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4191,10 +4191,10 @@ _d0b038:
         move_vec_char :-, 6, 160
         reset_char_vec_offset
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_FORWARD
+                attacker_action BLINKING_FORWARD
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4212,63 +4212,63 @@ _d0b056:
 :       blank_frame
         move_vec_char :-, 5, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b074:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 120}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b08a:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {48, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b0a0:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {208, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 4, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b0b6:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4281,7 +4281,7 @@ _d0b0cc:
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4294,7 +4294,7 @@ _d0b0df:
 :       blank_frame
         move_vec_char :-, 1, 24
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4307,7 +4307,7 @@ _d0b0f2:
 :       blank_frame
         move_vec_char :-, 6, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+        attacker_frame NEAR_FATAL_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4320,22 +4320,22 @@ _d0b105:
 :       blank_frame
         move_vec_char :-, 6, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b118:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         set_vec_target {232, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4348,7 +4348,7 @@ _d0b130:
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+        attacker_frame NEAR_FATAL_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4361,7 +4361,7 @@ _d0b143:
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4374,16 +4374,16 @@ _d0b156:
 :       blank_frame
         move_vec_char :-, 2, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b169:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::WAGGING_FINGER
+                attacker_action WAGGING_FINGER
                 blank_frame 2
                 end_loop
         end_anim_script
@@ -4392,9 +4392,9 @@ _d0b169:
 
 _d0b176:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::JUMPING_UP
+                attacker_action JUMPING_UP
                 blank_frame 2
                 end_loop
         end_anim_script
@@ -4409,133 +4409,133 @@ _d0b183:
 :       blank_frame
         move_vec_char :-, 3, 32
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::HEAD_TURNED
+        attacker_frame HEAD_TURNED
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b196:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_frame CHAR_FRAME::EYES_CLOSED_DOWN
+        attacker_frame NONE
+        attacker_frame EYES_CLOSED_DOWN
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b19f:
         anim_script SPRITE, 1, CHAR
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         set_vec_target {184, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b1b4:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::SPINNING
+        attacker_frame NONE
+        attacker_action SPINNING
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b1bc:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::ARMS_RAISED_FORWARD
+                attacker_action ARMS_RAISED_FORWARD
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b1cb:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_DOWN
+                attacker_action BLINKING_DOWN
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b1da:
         anim_script SPRITE, 1, CHAR
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         set_vec_target {136, 128}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 4, 0
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::NONE
+        attacker_action NONE
+        attacker_frame NONE
         anim_speed 9
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1
+        attacker_frame WALKING_FORWARD_1
         blank_frame 2
-        attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+        attacker_frame NEAR_FATAL_FLIP
         blank_frame 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1
+        attacker_frame WALKING_FORWARD_1
         blank_frame 2
-        attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+        attacker_frame NEAR_FATAL_FLIP
         blank_frame 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1
+        attacker_frame WALKING_FORWARD_1
         blank_frame 2
-        attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+        attacker_frame NEAR_FATAL_FLIP
         blank_frame 3
         anim_speed 2
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b217:
         anim_script SPRITE, 1, CHAR
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         set_vec_target {136, 112}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b22c:
         anim_script SPRITE, 1, CHAR
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         set_vec_target {136, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b241:
         anim_script SPRITE, 1, CHAR
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         set_vec_target {152, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 24
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4543,8 +4543,8 @@ _d0b241:
 _d0b256:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 161
                 move_attacker FORWARD, 1
                 blank_frame 3
@@ -4556,8 +4556,8 @@ _d0b256:
 _d0b268:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 161
                 move_attacker FORWARD, 1
                 blank_frame 3
@@ -4569,14 +4569,14 @@ _d0b268:
 _d0b27a:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 41
                 move_attacker FORWARD, 1
                 blank_frame 3
                 end_loop
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_action NONE
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4584,13 +4584,13 @@ _d0b27a:
 _d0b291:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 61
                 move_attacker BACK, 1
                 blank_frame 3
                 end_loop
-        attacker_frame CHAR_FRAME::FIGHTING_3 + $30
+        attacker_frame FIGHTING_3_FLIP
         move_attacker UP, 4
         blank_frame
         move_attacker UP, 3
@@ -4627,8 +4627,8 @@ _d0b291:
         blank_frame
         move_attacker DOWN, 4
         blank_frame
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4636,14 +4636,14 @@ _d0b291:
 _d0b2e1:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 36
                 move_attacker FORWARD, 4
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_action NONE
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4651,32 +4651,32 @@ _d0b2e1:
 _d0b2f6:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         change_char_gfx SABIN, IMP
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_frame NONE
+        attacker_action WALKING_BACK
         loop 161
                 move_attacker BACK, 1
                 blank_frame 2
                 end_loop
         loop 32
-                attacker_action CHAR_ACTION::WAGGING_FINGER_ALT
+                attacker_action WAGGING_FINGER_ALT
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WAGGING_FINGER
+        attacker_frame NONE
+        attacker_action WAGGING_FINGER
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b31a:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 16
-                attacker_action CHAR_ACTION::BLINKING_DOWN
+                attacker_action BLINKING_DOWN
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         set_vec_target {96, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -4691,7 +4691,7 @@ _d0b31a:
 
 _d0b33a:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {128, 104}
         calc_vec_char
         update_char_vec_dir_walk
@@ -4700,87 +4700,87 @@ _d0b33a:
         reset_char_vec_offset
         change_char_gfx SABIN, GAU
         show_target_chars
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::SPINNING
+                attacker_action SPINNING
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b35f:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::SPINNING
+                attacker_action SPINNING
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b36e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::SPINNING
+                attacker_action SPINNING
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+        attacker_frame NEAR_FATAL_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b37d:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         loop 32
-                attacker_action CHAR_ACTION::SPINNING
+                attacker_action SPINNING
                 blank_frame
                 end_loop
         change_char_gfx SABIN, IMP
         loop 32
-                attacker_action CHAR_ACTION::SPINNING
+                attacker_action SPINNING
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b398:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_frame NONE
+        attacker_action WALKING_BACK
         loop 56
                 move_attacker BACK, 1
                 blank_frame 2
                 end_loop
         loop 32
-                attacker_frame CHAR_FRAME::DEAD_HORZ + $30
+                attacker_frame DEAD_HORZ_FLIP
                 blank_frame 4
                 end_loop
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 3
                 end_loop
         loop 4
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 4
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_1
+                attacker_frame WALKING_FORWARD_1
                 blank_frame 4
                 end_loop
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::WAGGING_FINGER
+                attacker_action WAGGING_FINGER
                 blank_frame 2
                 end_loop
         end_anim_script
@@ -4789,8 +4789,8 @@ _d0b398:
 
 _d0b3dd:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_frame NONE
+        attacker_action WALKING_BACK
         loop 82
                 move_attacker BACK, 1
                 blank_frame 2
@@ -4824,28 +4824,28 @@ _d0b3fd:
 
 _d0b409:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b40f:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b415:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b41b:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -4878,23 +4878,23 @@ _d0b436:
         save_attacker_char_pos
         attacker_char_dir LEFT
         anim_speed 11
-        attacker_frame CHAR_FRAME::JUMPING_DOWN, CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_DOWN, JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30, CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_FORWARD_FLIP, JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP, CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_UP, JUMPING_FORWARD_FLIP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD, CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_FORWARD, JUMPING_DOWN
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b455:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {128, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -5054,35 +5054,35 @@ _d0b569:
         anim_script SPRITE, 1, CHAR
         loop 9
                 anim_speed 9
-                attacker_frame CHAR_FRAME::LAUGHING_1
+                attacker_frame LAUGHING_1
                 blank_frame
-                attacker_frame CHAR_FRAME::LAUGHING_2
+                attacker_frame LAUGHING_2
                 blank_frame
                 anim_speed 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b57e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WAGGING_FINGER
+        attacker_frame NONE
+        attacker_action WAGGING_FINGER
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b586:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         vec_to_attacker_char_pos
         calc_vec_char
         update_char_vec_dir_jump
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -5090,8 +5090,8 @@ _d0b586:
 
 ; unused
 _d0b59c:
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5101,13 +5101,13 @@ _d0b5a2:
         save_attacker_char_pos
         blank_frame
         fixed_draw_order
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_action WALKING_FORWARD
         loop 13
                 move_attacker FORWARD, 4
                 blank_frame
                 end_loop
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_action NONE
+        attacker_frame JUMPING_FORWARD
         move_attacker UP, 4
         blank_frame
         move_attacker UP, 3
@@ -5144,7 +5144,7 @@ _d0b5a2:
         blank_frame
         move_attacker DOWN, 4
         blank_frame
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         normal_draw_order
         end_anim_script
 
@@ -5152,7 +5152,7 @@ _d0b5a2:
 
 _d0b5f2:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5160,28 +5160,28 @@ _d0b5f2:
 ; unused
 _d0b5f8:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b5fe:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b604:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b60a:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5368,7 +5368,7 @@ _d0b610:
 
 _d0b7c8:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5376,10 +5376,10 @@ _d0b7c8:
 _d0b7ce:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::SURPRISED
+                attacker_frame SURPRISED
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::DEAD_VERT
+        attacker_frame DEAD_VERT
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5387,24 +5387,24 @@ _d0b7ce:
 _d0b7db:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::SURPRISED
+                attacker_frame SURPRISED
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::DEAD_VERT + $30
+        attacker_frame DEAD_VERT_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b7e8:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b7ee:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         calc_vec_rel {-8, 0}
         calc_vec_char
 :       blank_frame
@@ -5416,14 +5416,14 @@ _d0b7ee:
 
 _d0b800:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {128, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         attacker_char_dir RIGHT
         end_anim_script
 
@@ -5433,10 +5433,10 @@ _d0b800:
 _d0b819:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 3
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {96, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -5444,7 +5444,7 @@ _d0b819:
         move_vec_char :-, 1, 0
         reset_char_vec_offset
         loop 26
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 2
                 end_loop
         end_anim_script
@@ -5453,12 +5453,12 @@ _d0b819:
 
 _d0b83d:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_DOWN
+                attacker_action BLINKING_DOWN
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5466,22 +5466,22 @@ _d0b83d:
 _d0b84d:
         anim_script SPRITE, 1, CHAR
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL
+                attacker_frame NEAR_FATAL
                 blank_frame 5
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+                attacker_frame NEAR_FATAL_FLIP
                 blank_frame 5
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL
+                attacker_frame NEAR_FATAL
                 blank_frame 5
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+                attacker_frame NEAR_FATAL_FLIP
                 blank_frame 5
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         blank_frame 2
         end_anim_script
 
@@ -5688,7 +5688,7 @@ _d0b9a1:
                 blank_frame
                 end_loop
         show_attacker_char
-        attacker_frame CHAR_FRAME::DEAD_HORZ + $30
+        attacker_frame DEAD_HORZ_FLIP
         loop 22
                 move_attacker FORWARD, 6
                 move_attacker DOWN, 2
@@ -5704,19 +5704,19 @@ _d0b9a1:
                 move_attacker DOWN, 2
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::DEAD_VERT
+        attacker_frame DEAD_VERT
         loop 6
                 move_attacker FORWARD, 4
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0b9d4:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::DEAD_VERT
+        attacker_frame DEAD_VERT
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5742,13 +5742,13 @@ _d0b9e2:
 _d0b9f0:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 13
                 move_attacker FORWARD, 4
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5764,7 +5764,7 @@ _d0ba03:
 ; unused
 _d0ba0c:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5772,7 +5772,7 @@ _d0ba0c:
 ; unused
 _d0ba12:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5780,7 +5780,7 @@ _d0ba12:
 ; unused
 _d0ba18:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5788,7 +5788,7 @@ _d0ba18:
 ; unused
 _d0ba1e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5935,56 +5935,56 @@ _d0ba24:
 
 _d0bafd:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {120, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bb13:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {120, 120}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bb29:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {120, 72}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bb3f:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -5992,52 +5992,52 @@ _d0bb3f:
 _d0bb55:
         anim_script SPRITE, 1, CHAR
         loop 16
-                attacker_frame CHAR_FRAME::WALKING_UP_2
+                attacker_frame WALKING_UP_2
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::DEAD_HORZ + $30
+        attacker_frame DEAD_HORZ_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bb62:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {120, 72}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 8
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::DEAD_HORZ + $30
+        attacker_frame DEAD_HORZ_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bb78:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {120, 123}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bb8e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {120, 120}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 4, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::DEAD_HORZ + $30
+        attacker_frame DEAD_HORZ_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6045,40 +6045,40 @@ _d0bb8e:
 ; unused
 _d0bb4:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 9
                 anim_speed 9
-                attacker_frame CHAR_FRAME::WALKING_DOWN_2
+                attacker_frame WALKING_DOWN_2
                 blank_frame
-                attacker_frame CHAR_FRAME::SURPRISED
+                attacker_frame SURPRISED
                 blank_frame
                 anim_speed 2
                 end_loop
         end_anim_script
 
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bbbd:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {120, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bbd3:
         anim_script SPRITE, 1, CHAR
-        attacker_action CHAR_ACTION::NONE
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_action NONE
+        attacker_frame SURPRISED
         move_attacker UP, 4
         blank_frame
         move_attacker UP, 3
@@ -6115,14 +6115,14 @@ _d0bbd3:
         blank_frame
         move_attacker DOWN, 4
         blank_frame
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         set_vec_target {120, 176}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6268,7 +6268,7 @@ _d0bcf0:
 
 _d0bcfd:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6280,18 +6280,18 @@ _d0bd03:
                 blank_frame
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+                attacker_frame NEAR_FATAL_FLIP
                 blank_frame 5
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL
+                attacker_frame NEAR_FATAL
                 blank_frame 5
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+                attacker_frame NEAR_FATAL_FLIP
                 blank_frame 5
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6303,39 +6303,39 @@ _d0bd30:
                 blank_frame
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL
+                attacker_frame NEAR_FATAL
                 blank_frame 5
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL + $30
+                attacker_frame NEAR_FATAL_FLIP
                 blank_frame 5
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::NEAR_FATAL
+                attacker_frame NEAR_FATAL
                 blank_frame 5
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bd5d:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::EYES_CLOSED_DOWN
+        attacker_frame EYES_CLOSED_DOWN
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bd63:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bd69:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6343,14 +6343,14 @@ _d0bd69:
 ; unused
 _d0bd6f:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bd75:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6534,20 +6534,20 @@ _d0be2c:
 
 _d0be46:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         loop 32
                 move_attacker UP, 7
                 end_loop
         show_attacker_char
-        attacker_action CHAR_ACTION::SPINNING
+        attacker_action SPINNING
         blank_frame
         loop 40
                 move_attacker DOWN, 4
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         call _d0c0de
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6555,25 +6555,25 @@ _d0be46:
 _d0be65:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         call _d0c0de
         anim_speed 5
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6581,36 +6581,36 @@ _d0be65:
 _d0be93:
         anim_script SPRITE, 1, CHAR
         anim_speed 5
-        attacker_frame CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_DOWN
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0beb9:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {120, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 32
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6618,49 +6618,49 @@ _d0beb9:
 _d0becf:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {152, 152}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 40
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         loop 16
                 move_attacker UP, 1
                 blank_frame 4
                 end_loop
         loop 16
-                attacker_action CHAR_ACTION::BLINKING_DOWN
+                attacker_action BLINKING_DOWN
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0befa:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::FIGHTING_FRONT_HAND
+                attacker_action FIGHTING_FRONT_HAND
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bf09:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {128, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::DEAD_VERT
+        attacker_frame DEAD_VERT
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6668,7 +6668,7 @@ _d0bf09:
 _d0bf1f:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {160, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -6687,18 +6687,18 @@ _d0bf1f:
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bf51:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         loop 2
                 call _d0c0de
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6706,21 +6706,21 @@ _d0bf51:
 _d0bf60:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_UP_2
+                attacker_frame WALKING_UP_2
                 blank_frame 2
                 end_loop
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         set_vec_target {120, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6728,10 +6728,10 @@ _d0bf60:
 _d0bf86:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+                attacker_frame WALKING_FORWARD_2_FLIP
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {112, 104}
         calc_vec_char
         update_char_vec_dir_walk
@@ -6739,7 +6739,7 @@ _d0bf86:
         move_vec_char :-, 1, 0
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 2
                 end_loop
         set_vec_target {112, 104}
@@ -6748,19 +6748,19 @@ _d0bf86:
 :       blank_frame
         move_vec_char :-, 1, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::FIGHTING_FRONT_HAND
+                attacker_action FIGHTING_FRONT_HAND
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bfc2:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 104}
         calc_vec_char
         update_char_vec_dir_walk
@@ -6773,14 +6773,14 @@ _d0bfc2:
 :       blank_frame
         move_vec_char :-, 2, 24
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::HEAD_TURNED
+        attacker_frame HEAD_TURNED
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0bfe5:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {112, 160}
         calc_vec_char
         update_char_vec_dir_walk
@@ -6793,7 +6793,7 @@ _d0bfe5:
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6801,20 +6801,20 @@ _d0bfe5:
 _d0c008:
         anim_script SPRITE, 1, CHAR
         anim_speed 5
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         blank_frame
-        attacker_frame CHAR_FRAME::HEAD_TURNED
+        attacker_frame HEAD_TURNED
         blank_frame
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         blank_frame
-        attacker_frame CHAR_FRAME::HEAD_TURNED
+        attacker_frame HEAD_TURNED
         blank_frame
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         blank_frame
-        attacker_frame CHAR_FRAME::HEAD_TURNED
+        attacker_frame HEAD_TURNED
         blank_frame
         anim_speed 2
-        attacker_frame CHAR_FRAME::HEAD_TURNED
+        attacker_frame HEAD_TURNED
         blank_frame
         end_anim_script
 
@@ -6822,40 +6822,40 @@ _d0c008:
 
 _d0c02b:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {128, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         call _d0c0de
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         loop 32
-                attacker_action CHAR_ACTION::WINKING_DOWN
+                attacker_action WINKING_DOWN
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c050:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::BLINKING_FORWARD
+                attacker_action BLINKING_FORWARD
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c05f:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         reset_char_vec_offset
         vec_to_attacker_char_pos
         calc_vec_char
@@ -6863,7 +6863,7 @@ _d0c05f:
 :       blank_frame
         move_vec_char :-, 3, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -6871,7 +6871,7 @@ _d0c05f:
 
 _d0c077:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {144, 112}
         calc_vec_char
         update_char_vec_dir_walk
@@ -6891,7 +6891,7 @@ _d0c077:
 :       blank_frame
         move_vec_char :-, 3, 32
         reset_char_vec_offset
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -6899,7 +6899,7 @@ _d0c077:
 
 _d0c0a9:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {144, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -6919,8 +6919,8 @@ _d0c0a9:
 :       blank_frame
         move_vec_char :-, 3, 32
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::NONE
+        attacker_frame NONE
+        attacker_action NONE
         restore_attacker_char_pos
         end_anim_script
 
@@ -6969,7 +6969,7 @@ _d0c0de:
 
 _d0c115:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6977,7 +6977,7 @@ _d0c115:
 ; unused
 _d0c11b:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6985,7 +6985,7 @@ _d0c11b:
 ; unused
 _d0c121:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -6993,14 +6993,14 @@ _d0c121:
 ; unused
 _d0c127:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c12d:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7142,26 +7142,26 @@ _d0c1b6:
         move_vec_char :-, 1, 0
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 3
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+                attacker_frame WALKING_FORWARD_2_FLIP
                 blank_frame 2
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 2
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+                attacker_frame WALKING_FORWARD_2_FLIP
                 blank_frame 2
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         blank_frame 2
         end_anim_script
 
@@ -7169,42 +7169,42 @@ _d0c1b6:
 
 _d0c1fb:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {168, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NEAR_FATAL
+        attacker_frame NEAR_FATAL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c211:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 80}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c227:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 56}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 4, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         change_char_gfx TERRA, GESTAHL
         bg_target_draw_order
         change_anim_layer BG1
@@ -7217,7 +7217,7 @@ _d0c227:
         frame 2
         frame 3
         anim_speed 2
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7244,9 +7244,9 @@ _d0c255:
         frame 2
         frame 3
         anim_speed 2
-        attacker_action CHAR_ACTION::NONE
+        attacker_action NONE
         loop 32
-                attacker_action CHAR_ACTION::LAUGHING
+                attacker_action LAUGHING
                 frame 15, 2
                 end_loop
         end_anim_script
@@ -7255,28 +7255,28 @@ _d0c255:
 
 _d0c281:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c297:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {136, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 32
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7284,7 +7284,7 @@ _d0c297:
 _d0c2ad:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::NONE
+                attacker_frame NONE
                 blank_frame
                 end_loop
         set_vec_target {136, 96}
@@ -7299,14 +7299,14 @@ _d0c2ad:
 :       blank_frame
         move_vec_char :-, 3, 32
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::DEAD_VERT
+        attacker_frame DEAD_VERT
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c2d4:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         set_vec_target {136, 112}
         calc_vec_char
         update_char_vec_dir_walk
@@ -7315,9 +7315,9 @@ _d0c2d4:
         reset_char_vec_offset
         mod_pal BG2, SUB, CYAN, 31
         sfx SWORD
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::LAUGHING
+                attacker_action LAUGHING
                 blank_frame 2
                 end_loop
         end_anim_script
@@ -7326,7 +7326,7 @@ _d0c2d4:
 
 _d0c2f5:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         set_vec_target {136, 120}
         calc_vec_char
         update_char_vec_dir_walk
@@ -7334,7 +7334,7 @@ _d0c2f5:
         move_vec_char :-, 1, 0
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::DEAD_VERT
+                attacker_frame DEAD_VERT
                 blank_frame 3
                 end_loop
         anim_speed 2
@@ -7380,7 +7380,7 @@ _d0c33e:
 :       blank_frame
         move_vec_char :-, 5, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         show_attacker_char
         end_anim_script
 
@@ -7400,7 +7400,7 @@ _d0c35c:
 ; unused
 _d0c36a:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7408,7 +7408,7 @@ _d0c36a:
 ; unused
 _d0c370:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7416,14 +7416,14 @@ _d0c370:
 ; unused
 _d0c376:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c37c:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7789,70 +7789,70 @@ _d0c51d:
 
 _d0c604:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {144, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c61a:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {104, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c630:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {88, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 5, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c646:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {80, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 5, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c65c:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {128, 104}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7860,22 +7860,22 @@ _d0c65c:
 _d0c672:
         anim_script SPRITE, 1, CHAR
         loop 16
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+                attacker_frame WALKING_FORWARD_2_FLIP
                 blank_frame 2
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 2
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+                attacker_frame WALKING_FORWARD_2_FLIP
                 blank_frame 2
                 end_loop
         loop 16
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         blank_frame 2
         end_anim_script
 
@@ -7883,12 +7883,12 @@ _d0c672:
 
 _d0c69a:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::LAUGHING
+                attacker_action LAUGHING
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7896,10 +7896,10 @@ _d0c69a:
 _d0c6a9:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::SURPRISED
+                attacker_frame SURPRISED
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::DEAD_VERT
+        attacker_frame DEAD_VERT
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7918,7 +7918,7 @@ _d0c6b6:
 ; unused
 _d0c6c4:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7926,7 +7926,7 @@ _d0c6c4:
 ; unused
 _d0c6ca:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7934,7 +7934,7 @@ _d0c6ca:
 ; unused
 _d0c6d0:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -7942,7 +7942,7 @@ _d0c6d0:
 ; unused
 _d0c6d6:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -8160,22 +8160,22 @@ _d0c803:
         anim_script SPRITE, 1, CHAR
         loop 9
                 anim_speed 9
-                attacker_frame CHAR_FRAME::LAUGHING_1
+                attacker_frame LAUGHING_1
                 blank_frame
-                attacker_frame CHAR_FRAME::LAUGHING_2
+                attacker_frame LAUGHING_2
                 blank_frame
                 anim_speed 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c818:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 6
-                attacker_action CHAR_ACTION::CASTING
+                attacker_action CASTING
                 blank_frame
                 end_loop
         end_anim_script
@@ -8184,7 +8184,7 @@ _d0c818:
 
 _d0c824:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -8458,47 +8458,47 @@ _d0c838:
 
 _d0c9df:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {80, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0c9f5:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         call _d0c0de
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ca01:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         call _d0c0de
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ca0d:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame SURPRISED
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ca13:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::LAUGHING
+        attacker_frame NONE
+        attacker_action LAUGHING
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -8507,31 +8507,31 @@ _d0ca13:
 _d0ca1b:
         anim_script SPRITE, 1, CHAR
         call _d0c0de
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::LAUGHING
+        attacker_frame NONE
+        attacker_action LAUGHING
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ca26:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WAGGING_FINGER
+        attacker_frame NONE
+        attacker_action WAGGING_FINGER
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ca2e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WAGGING_FINGER_ALT
+        attacker_frame NONE
+        attacker_action WAGGING_FINGER_ALT
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ca36:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1 + $30
+        attacker_frame WALKING_FORWARD_1_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -8539,7 +8539,7 @@ _d0ca36:
 _d0ca3c:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+                attacker_frame WALKING_FORWARD_2_FLIP
                 blank_frame 4
                 end_loop
         end_anim_script
@@ -8549,7 +8549,7 @@ _d0ca3c:
 _d0ca49:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 4
                 end_loop
         end_anim_script
@@ -8559,7 +8559,7 @@ _d0ca49:
 _d0ca56:
         anim_script SPRITE, 1, CHAR
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_DOWN_2
+                attacker_frame WALKING_DOWN_2
                 blank_frame 7
                 end_loop
         end_anim_script
@@ -8568,96 +8568,96 @@ _d0ca56:
 
 _d0ca66:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         call _d0c0de
         call _d0c0de
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ca75:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {128, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         call _d0c0de
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ca91:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {144, 88}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0caa7:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_1
+        attacker_frame WALKING_FORWARD_1
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0caad:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         set_vec_target {80, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 2, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cac3:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_FORWARD_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cac9:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {112, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 3, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_3 + $30
+        attacker_frame WALKING_FORWARD_3_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cadf:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cae5:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {160, 112}
         calc_vec_char
         update_char_vec_dir_walk
@@ -8665,17 +8665,17 @@ _d0cae5:
         move_vec_char :-, 3, 8
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::DEAD_VERT
+                attacker_frame DEAD_VERT
                 blank_frame 7
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cb08:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {144, 120}
         calc_vec_char
         update_char_vec_dir_walk
@@ -8683,18 +8683,18 @@ _d0cb08:
         move_vec_char :-, 3, 8
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::DEAD_GESTAHL
+                attacker_frame DEAD_GESTAHL
                 blank_frame 7
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cb2b:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_frame CHAR_FRAME::SURPRISED
+        attacker_frame NONE
+        attacker_frame SURPRISED
         set_vec_target {144, 80}
         calc_vec_char
         update_char_vec_dir_walk
@@ -8708,17 +8708,17 @@ _d0cb2b:
         move_vec_char :-, 2, 16
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::DEAD_VERT
+                attacker_frame DEAD_VERT
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cb59:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         set_vec_target {80, 120}
         calc_vec_char
         update_char_vec_dir_walk
@@ -8726,55 +8726,55 @@ _d0cb59:
         move_vec_char :-, 3, 8
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::DEAD_GESTAHL
+                attacker_frame DEAD_GESTAHL
                 blank_frame 5
                 end_loop
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cb7a:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame NONE
+        attacker_frame WALKING_FORWARD_2_FLIP
         call _d0c0de
         call _d0c0de
         call _d0c0de
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::JUMPING_BACK
+        attacker_frame NONE
+        attacker_action JUMPING_BACK
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cb91:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_frame CHAR_FRAME::SURPRISED
+                attacker_frame SURPRISED
                 blank_frame
                 end_loop
         call _d0c0de
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_action CHAR_ACTION::JUMPING_BACK
+                attacker_action JUMPING_BACK
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cbad:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {40, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         set_vec_target {64, 104}
         calc_vec_char
         update_char_vec_dir_walk
@@ -8782,36 +8782,36 @@ _d0cbad:
         move_vec_char :-, 3, 8
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::DEAD_GESTAHL
+                attacker_frame DEAD_GESTAHL
                 blank_frame 5
                 end_loop
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cbde:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {128, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_DOWN_2
+                attacker_frame WALKING_DOWN_2
                 blank_frame 3
                 end_loop
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cc00:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {144, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -8819,31 +8819,31 @@ _d0cc00:
         move_vec_char :-, 1, 0
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cc1e:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         set_vec_target {112, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 8
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cc34:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {128, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -8851,39 +8851,39 @@ _d0cc34:
         move_vec_char :-, 1, 0
         reset_char_vec_offset
         loop 32
-                attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+                attacker_frame WALKING_FORWARD_2
                 blank_frame
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cc51:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         set_vec_target {96, 96}
         calc_vec_char
         update_char_vec_dir_walk
 :       blank_frame
         move_vec_char :-, 1, 8
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::DEAD_GESTAHL
+        attacker_frame DEAD_GESTAHL
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cc67:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::LAUGHING
+        attacker_frame NONE
+        attacker_action LAUGHING
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cc6f:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {152, 104}
         calc_vec_char
         update_char_vec_dir_walk
@@ -8896,15 +8896,15 @@ _d0cc6f:
 :       blank_frame
         move_vec_char :-, 2, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::LAUGHING
+        attacker_frame NONE
+        attacker_action LAUGHING
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cc94:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {184, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -8917,8 +8917,8 @@ _d0cc94:
 :       blank_frame
         move_vec_char :-, 2, 16
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::LAUGHING
+        attacker_frame NONE
+        attacker_action LAUGHING
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -8931,7 +8931,7 @@ _d0ccb9:
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -8944,28 +8944,28 @@ _d0cccc:
 :       blank_frame
         move_vec_char :-, 1, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ccdf:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_DOWN_2
+        attacker_frame WALKING_DOWN_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cce5:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2 + $30
+        attacker_frame WALKING_FORWARD_2_FLIP
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0cceb:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -8973,7 +8973,7 @@ _d0cceb:
 ; unused
 _d0ccf1:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::WALKING_UP_2
+        attacker_frame WALKING_UP_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -9075,7 +9075,7 @@ _d0cd72:
         sfx PRE_BLACK
         bg_target_draw_order
         change_anim_layer BG1
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD
+        attacker_frame JUMPING_FORWARD
         mod_pal BG1, SUB, WHITE, 31
         loop 8
                 mod_pal BG1, SUB, WHITE, -4
@@ -9091,7 +9091,7 @@ _d0cd72:
                 cycle_pal BG1_ANIM, 4, {1, 7}
                 frame 0
                 end_loop
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -9135,7 +9135,7 @@ _d0cdca:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
         loop 3
-                attacker_frame CHAR_FRAME::SURPRISED
+                attacker_frame SURPRISED
                 move_attacker UP, 4
                 blank_frame
                 move_attacker UP, 3
@@ -9172,14 +9172,14 @@ _d0cdca:
                 blank_frame
                 move_attacker DOWN, 4
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 _d0ce0d:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         set_vec_target {144, 96}
         calc_vec_char
         update_char_vec_dir_walk
@@ -9192,7 +9192,7 @@ _d0ce0d:
 :       blank_frame
         move_vec_char :-, 2, 0
         reset_char_vec_offset
-        attacker_frame CHAR_FRAME::READY
+        attacker_frame READY
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -9200,8 +9200,8 @@ _d0ce0d:
 _d0ce30:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 81
                 move_attacker FORWARD, 2
                 blank_frame
@@ -9212,16 +9212,16 @@ _d0ce30:
 
 _d0ce40:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         loop 7
                 anim_speed 9
-                attacker_frame CHAR_FRAME::LAUGHING_1
+                attacker_frame LAUGHING_1
                 blank_frame
-                attacker_frame CHAR_FRAME::LAUGHING_2
+                attacker_frame LAUGHING_2
                 blank_frame
                 anim_speed 2
                 end_loop
-        attacker_frame CHAR_FRAME::WALKING_FORWARD_2
+        attacker_frame WALKING_FORWARD_2
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -9229,8 +9229,8 @@ _d0ce40:
 _d0ce58:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_BACK
+        attacker_frame NONE
+        attacker_action WALKING_BACK
         loop 81
                 move_attacker BACK, 2
                 blank_frame
@@ -9242,8 +9242,8 @@ _d0ce58:
 _d0ce68:
         anim_script SPRITE, 1, CHAR
         save_attacker_char_pos
-        attacker_frame CHAR_FRAME::NONE
-        attacker_action CHAR_ACTION::WALKING_FORWARD
+        attacker_frame NONE
+        attacker_action WALKING_FORWARD
         loop 100
                 move_attacker FORWARD, 3
                 blank_frame
@@ -9327,11 +9327,11 @@ _d0ce84:
 
 _d0cee1:
         anim_script SPRITE, 1, CHAR
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         sfx KEFKA_LAUGH
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         blank_frame
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         end_anim_script
 
 ; ------------------------------------------------------------------------------
@@ -9347,30 +9347,30 @@ _d0cef0:
         battle_event
         reset_event_anim
         all_chars_event_anim
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf24
-        .addr _d0cf42
+        .addr CharVictoryAnim  ; terra
+        .addr CharVictoryAnim  ; locke
+        .addr CharVictoryAnim  ; cyan
+        .addr CharVictoryAnim  ; shadow
+        .addr CharVictoryAnim  ; edgar
+        .addr CharVictoryAnim  ; sabin
+        .addr CharVictoryAnim  ; celes
+        .addr CharVictoryAnim  ; strago
+        .addr CharVictoryAnim  ; relm
+        .addr CharVictoryAnim  ; setzer
+        .addr CharVictoryAnim  ; mog
+        .addr CharVictoryAnim  ; gau
+        .addr CharVictoryAnim  ; gogo
+        .addr CharVictoryAnim  ; umaro
+        .addr CharVictoryAnim  ; soldier
+        .addr CharVictoryAnim  ; imp
+        .addr CharVictoryAnim  ; leo
+        .addr CharVictoryAnim  ; banon
+        .addr CharVictoryAnim  ; esper terra
+        .addr CharVictoryAnim  ; merchant
+        .addr CharVictoryAnim  ; ghost
+        .addr CharVictoryAnim  ; kefka
+        .addr CharVictoryAnim  ; magitek characters
+        .addr DeadCharVictoryAnim  ; dead/petrified characters
         exec_event_anim
         end_battle_event
 
@@ -9378,26 +9378,26 @@ _d0cef0:
 
 ; [ victory animation for all characters ]
 
-_d0cf24:
+CharVictoryAnim:
         anim_script SPRITE, 4, CENTER
-        call _d0cf2c
-        attacker_action CHAR_ACTION::JUMPING_FORWARD
+        call VictorySpin
+        attacker_action JUMPING_FORWARD
         end_anim_script
 
 ; ------------------------------------------------------------------------------
 
 ; [ spin character (victory animation) ]
 
-_d0cf2c:
-        attacker_frame CHAR_FRAME::JUMPING_DOWN, CHAR_FRAME::JUMPING_FORWARD
+VictorySpin:
+        attacker_frame JUMPING_DOWN, JUMPING_FORWARD
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD + $30, CHAR_FRAME::JUMPING_UP
+        attacker_frame JUMPING_FORWARD_FLIP, JUMPING_UP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_UP, CHAR_FRAME::JUMPING_FORWARD + $30
+        attacker_frame JUMPING_UP, JUMPING_FORWARD_FLIP
         blank_frame
-        attacker_frame CHAR_FRAME::JUMPING_FORWARD, CHAR_FRAME::JUMPING_DOWN
+        attacker_frame JUMPING_FORWARD, JUMPING_DOWN
         blank_frame
-        attacker_frame CHAR_FRAME::NONE
+        attacker_frame NONE
         anim_speed 2
         return
 
@@ -9405,7 +9405,7 @@ _d0cf2c:
 
 ; [ victory animation for dead/petrified characters ]
 
-_d0cf42:
+DeadCharVictoryAnim:
         anim_script SPRITE
         end_anim_script
 

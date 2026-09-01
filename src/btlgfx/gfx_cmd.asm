@@ -62,9 +62,9 @@ DeinitAnimVars:
         lda     (z78),y                 ; attacker
         cmp     #4
         bcc     @9168
-        ldx     #295 * 14               ; monster jump
+        ldx     #attack_anim_prop_offset JUMP_MONSTER_UP               ; monster jump
         bra     @916b
-@9168:  ldx     #280 * 14               ; character jump
+@9168:  ldx     #attack_anim_prop_offset JUMP_CMD               ; character jump
 @916b:  stx     $1e
         clr_a
         jsr     LoadAnimProp
@@ -86,10 +86,10 @@ DeinitAnimVars:
 
 ; pointers to pre-attack animation properties (+$d07fb2)
 PreMagicAnimPropPtrs:
-        .word   284 * 14                ; black magic
-        .word   285 * 14                ; white/effect magic
-        .word   286 * 14                ; genju
-        .word   287 * 14                ; lore
+        .word   attack_anim_prop_offset BLACK_MAGIC      ; black magic
+        .word   attack_anim_prop_offset WHITE_MAGIC      ; white/effect magic
+        .word   attack_anim_prop_offset SUMMON           ; genju
+        .word   attack_anim_prop_offset LORE             ; lore
 
 ; ------------------------------------------------------------------------------
 

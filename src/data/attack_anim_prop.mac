@@ -4,7 +4,10 @@ ATTACK_ANIM_PROP_MAC = 1
 
 ; ------------------------------------------------------------------------------
 
+_attack_anim_prop_seq .set 0
+
 .mac attack_anim_prop anim_id
+        .assert ATTACK_ANIM_PROP::anim_id = _attack_anim_prop_seq, error, .sprintf("Attack animation properties mismatch: %s", .string(anim_id))
         _attack_anim_prop_sprite_script .set $ffff
         _attack_anim_prop_bg1_script .set $ffff
         _attack_anim_prop_bg3_script .set $ffff
@@ -84,6 +87,7 @@ ATTACK_ANIM_PROP_MAC = 1
         .byte _attack_anim_prop_init_fn
         .word _attack_anim_prop_extra_script
         .byte _attack_anim_prop_delay
+        _attack_anim_prop_seq .set _attack_anim_prop_seq + 1
 .endmac
 
 ; ------------------------------------------------------------------------------

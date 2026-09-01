@@ -292,7 +292,7 @@ ExecCmdAnimMain:
 
         array_label GFX_BATTLE_CMD, BATTLE_CMD::SLOT
         jsr     InitCmdAnim
-        ldx     #282 * 14               ; walk forward with arms up
+        ldx     #attack_anim_prop_offset STEP_FORWARD               ; walk forward with arms up
         jsr     ExecSimpleAnim
         lda     (z78)
         bmi     @b919                   ; return if attacker is a monster
@@ -312,7 +312,7 @@ ExecCmdAnimMain:
         jsr     _c1b8a4
         jsr     CheckNullTarget
         bcc     @b93a
-        ldx     #93 * 14
+        ldx     #attack_anim_prop_offset PUMMEL
         stx     $1e
         ldy     #2
         lda     (z76),y
@@ -391,7 +391,7 @@ CheckNullTarget:
         bcc     @b9c4
         jsr     SetAnimTargets
 @b9ac:  jsr     _c19aa2
-        ldx     #ATTACK::FIRST_BUSHIDO * 14
+        ldx     #attack_anim_prop_offset DISPATCH
         stx     $1e
         ldy     #2
         lda     (z76),y
@@ -661,11 +661,11 @@ ChangeDanceBattleBG:
 
 ; ------------------------------------------------------------------------------
 
-; [ attack command $20: change battle ]
+; [ attack command $20: dance fail ]
 
-        array_label GFX_BATTLE_CMD, GFX_BATTLE_CMD::CHANGE_BATTLE
+        array_label GFX_BATTLE_CMD, GFX_BATTLE_CMD::DANCE_FAIL
         jsr     InitCmdAnim
-        lda     #BATTLE_CMD_ANIM::CHANGE_BATTLE
+        lda     #BATTLE_CMD_ANIM::DANCE_FAIL
         jmp     _c1bbe1
 
 ; ------------------------------------------------------------------------------
@@ -735,7 +735,7 @@ _bb2b:  inc     near w7eecbb
         jsr     NullTargetAnim
         bcc     @bb75
         jsr     InitCmdAnim
-        ldx     #282 * 14      ; pointer to animation data $011a (walk forward with arms up)
+        ldx     #attack_anim_prop_offset STEP_FORWARD      ; pointer to animation data $011a (walk forward with arms up)
         jsr     ExecSimpleAnim
         lda     #BATTLE_CMD_ANIM::HEALTH
         jsr     _c1bbe1
@@ -768,7 +768,7 @@ _bb2b:  inc     near w7eecbb
         jsr     _c1b8a4
         jmp     InitCmdAnim
 @bb9b:  jsr     InitCmdAnim
-        ldx     #405 * 14
+        ldx     #attack_anim_prop_offset MONSTER_STEAL
         jsr     ExecSimpleAnim
         rts
 
@@ -832,10 +832,10 @@ _c1bbe1:
 
 ; [ attack command $18: gp rain ]
 
-        array_label GFX_BATTLE_CMD, BATTLE_CMD::GP_RAIN
+        array_label GFX_BATTLE_CMD, BATTLE_CMD::GIL_TOSS
         jsr     NullTargetAnim
         bcc     @bbf6
-        lda     #BATTLE_CMD_ANIM::GP_RAIN
+        lda     #BATTLE_CMD_ANIM::GIL_TOSS
         bra     _c1bbe1
 @bbf6:  rts
 
@@ -851,7 +851,7 @@ NullTargetAnim:
         jsr     InitCmdAnim
         lda     (z78)
         bmi     @bc11
-        ldx     #282 * 14      ; pointer to animation data $011a (walk forward with arms up)
+        ldx     #attack_anim_prop_offset STEP_FORWARD      ; pointer to animation data $011a (walk forward with arms up)
         jsr     ExecSimpleAnim
         jsr     _c1b86b
         jsr     PopMonsterPalID
@@ -869,7 +869,7 @@ NullTargetAnim:
         jsr     NullTargetAnim
         bcc     @bc34
         jsr     InitCmdAnim
-        ldx     #328 * 14
+        ldx     #attack_anim_prop_offset NOISEBLASTER
         stx     $1e
         ldy     #2
         lda     (z76),y
@@ -897,7 +897,7 @@ InitCmdAnim:
         jsr     InitCmdAnim
         lda     (z78)
         bmi     @bc51
-        ldx     #282 * 14      ; pointer to animation data $011a (walk forward with arms up)
+        ldx     #attack_anim_prop_offset STEP_FORWARD      ; pointer to animation data $011a (walk forward with arms up)
         jsr     ExecSimpleAnim
         jsr     _c1b86b
 @bc51:  jsr     CheckNullTarget
@@ -932,38 +932,38 @@ InitCmdAnim:
 
 ; d1/0000
 ItemAnimPtrs:
-        .word   $ffff                   ; MARVEL_SHOES
-        .word   $ffff                   ; BACK_GUARD
-        .word   $ffff                   ; GALE_HAIRPIN
-        .word   $ffff                   ; SNIPER_SIGHT
-        .word   $ffff                   ; EXP_EGG
-        .word   $ffff                   ; TINTINABAR
-        .word   $ffff                   ; SPRINT_SHOES
-        .word   402 * 14                ; RENAME_CARD
-        .word   337 * 14                ; TONIC
-        .word   338 * 14                ; POTION
-        .word   339 * 14                ; X_POTION
-        .word   340 * 14                ; TINCTURE
-        .word   341 * 14                ; ETHER
-        .word   342 * 14                ; X_ETHER
-        .word   343 * 14                ; ELIXIR
-        .word   344 * 14                ; MEGALIXIR
-        .word   345 * 14                ; FENIX_DOWN
-        .word   346 * 14                ; REVIVIFY
-        .word   347 * 14                ; ANTIDOTE
-        .word   348 * 14                ; EYEDROP
-        .word   349 * 14                ; SOFT
-        .word   350 * 14                ; REMEDY
-        .word   351 * 14                ; SLEEPING_BAG
-        .word   352 * 14                ; TENT
-        .word   353 * 14                ; GREEN_CHERRY
-        .word   354 * 14                ; MAGICITE
-        .word   355 * 14                ; SUPER_BALL
-        .word   356 * 14                ; ECHO_SCREEN
-        .word   357 * 14                ; SMOKE_BOMB
-        .word   358 * 14                ; WARP_STONE
-        .word   359 * 14                ; DRIED_MEAT
-        .word   $ffff                   ; EMPTY
+        .word   $ffff                                           ; MARVEL_SHOES
+        .word   $ffff                                           ; BACK_GUARD
+        .word   $ffff                                           ; GALE_HAIRPIN
+        .word   $ffff                                           ; SNIPER_SIGHT
+        .word   $ffff                                           ; EXP_EGG
+        .word   $ffff                                           ; TINTINABAR
+        .word   $ffff                                           ; SPRINT_SHOES
+        .word   attack_anim_prop_offset RENAME_CARD             ; RENAME_CARD
+        .word   attack_anim_prop_offset TONIC                   ; TONIC
+        .word   attack_anim_prop_offset POTION                  ; POTION
+        .word   attack_anim_prop_offset X_POTION                ; X_POTION
+        .word   attack_anim_prop_offset TINCTURE                ; TINCTURE
+        .word   attack_anim_prop_offset ETHER                   ; ETHER
+        .word   attack_anim_prop_offset X_ETHER                 ; X_ETHER
+        .word   attack_anim_prop_offset ELIXIR                  ; ELIXIR
+        .word   attack_anim_prop_offset MEGALIXIR               ; MEGALIXIR
+        .word   attack_anim_prop_offset FENIX_DOWN              ; FENIX_DOWN
+        .word   attack_anim_prop_offset REVIVIFY                ; REVIVIFY
+        .word   attack_anim_prop_offset ANTIDOTE                ; ANTIDOTE
+        .word   attack_anim_prop_offset EYEDROP                 ; EYEDROP
+        .word   attack_anim_prop_offset SOFT                    ; SOFT
+        .word   attack_anim_prop_offset REMEDY_ITEM             ; REMEDY
+        .word   attack_anim_prop_offset SLEEPING_BAG            ; SLEEPING_BAG
+        .word   attack_anim_prop_offset TENT                    ; TENT
+        .word   attack_anim_prop_offset GREEN_CHERRY            ; GREEN_CHERRY
+        .word   attack_anim_prop_offset MAGICITE                ; MAGICITE
+        .word   attack_anim_prop_offset SUPER_BALL_ITEM         ; SUPER_BALL
+        .word   attack_anim_prop_offset ECHO_SCREEN             ; ECHO_SCREEN
+        .word   attack_anim_prop_offset SMOKE_BOMB              ; SMOKE_BOMB
+        .word   attack_anim_prop_offset WARP_STONE              ; WARP_STONE
+        .word   attack_anim_prop_offset DRIED_MEAT              ; DRIED_MEAT
+        .word   $ffff                                           ; EMPTY
 
 .enum THROW_ANIM
         THICK_KNIFE

@@ -589,7 +589,7 @@ MAX_EXPERIENCE                          = 15000000
         DEF                             ;= $15  ; 21
         JUMP                            ;= $16  ; 22
         X_MAGIC                         ;= $17  ; 23
-        GP_RAIN                         ;= $18  ; 24
+        GIL_TOSS                        ;= $18  ; 24
         SUMMON                          ;= $19  ; 25
         HEALTH                          ;= $1a  ; 26
         SHOCK                           ;= $1b  ; 27
@@ -603,7 +603,7 @@ MAX_EXPERIENCE                          = 15000000
 .enum GFX_BATTLE_CMD
         GFX_BATTLE_CMD_30               = BATTLE_CMD::BATTLE_CMD_30  ; 30
         GFX_BATTLE_CMD_31               ;= $1f  ; 31
-        CHANGE_BATTLE                   ;= $20  ; 32
+        DANCE_FAIL                      ;= $20  ; 32
         ROULETTE                        ;= $21  ; 33
         RUN_AWAY                        ;= $22  ; 34
         UMARO_TACKLE                    ;= $23  ; 35
@@ -1920,7 +1920,7 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         JUMP                            = %00000100  ; DRAGOONBOOTS
         X_MAGIC                         = %00001000  ; GEM_BOX
         CONTROL                         = %00010000  ; FAKEMUSTACHE
-        GP_RAIN                         = %00100000  ; COIN_TOSS
+        GIL_TOSS                        = %00100000  ; COIN_TOSS
         CAPTURE                         = %01000000  ; THIEF_GLOVE
         DRAGON_HORN                     = %10000000
 .endenum
@@ -1967,7 +1967,7 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         WARP_STONE
         DRIED_MEAT
         POSSESS                                 ; unused
-        GP_RAIN                                 ; unused
+        GIL_TOSS                                ; unused
         STEAL                                   ; unused
         CONTROL                                 ; unused
         LEAP                                    ; unused
@@ -2536,7 +2536,7 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         THROW_FULL_MOON                 ; $21
         THROW_BOOMERANG                 ; $22
         THROW_UNUSED                    ; $23
-        GP_RAIN                         ; $24
+        GIL_TOSS                        ; $24
         SKETCH                          ; $25
         LEAP                            ; $26
         HEALTH                          ; $27
@@ -2556,7 +2556,7 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         UMARO_TACKLE                    ; $35
         UMARO_THROW                     ; $36
         RUNIC_ABSORB                    ; $37
-        CHANGE_BATTLE                   ; $38
+        DANCE_FAIL                      ; $38
         CONTROL                         ; $39
 .endenum
 
@@ -2669,6 +2669,39 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         HEAD_TURNED                     ; $1d // 29
         WAGGING_FINGER_1                ; $1e // 30
         WAGGING_FINGER_2                ; $1f // 31
+
+        DEAD_HORZ_FLIP = DEAD_HORZ + $30
+        WALKING_DOWN_1_FLIP = WALKING_DOWN_1 + $30
+        WALKING_DOWN_2_FLIP = WALKING_DOWN_2 + $30
+        WALKING_DOWN_3_FLIP = WALKING_DOWN_3 + $30
+        WALKING_FORWARD_1_FLIP = WALKING_FORWARD_1 + $30
+        WALKING_FORWARD_2_FLIP = WALKING_FORWARD_2 + $30
+        WALKING_FORWARD_3_FLIP = WALKING_FORWARD_3 + $30
+        JUMPING_FORWARD_FLIP = JUMPING_FORWARD + $30
+        CASTING_1_FLIP = CASTING_1 + $30
+        CASTING_2_FLIP = CASTING_2 + $30
+        DEAD_VERT_FLIP = DEAD_VERT + $30
+        EYES_CLOSED_DOWN_FLIP = EYES_CLOSED_DOWN + $30
+        WINKING_DOWN_FLIP = WINKING_DOWN + $30
+        EYES_CLOSED_FORWARD_FLIP = EYES_CLOSED_FORWARD + $30
+        WALKING_UP_1_FLIP = WALKING_UP_1 + $30
+        WALKING_UP_2_FLIP = WALKING_UP_2 + $30
+        WALKING_UP_3_FLIP = WALKING_UP_3 + $30
+        FIGHTING_1_FLIP = FIGHTING_1 + $30
+        FIGHTING_2_FLIP = FIGHTING_2 + $30
+        FIGHTING_3_FLIP = FIGHTING_3 + $30
+        NEAR_FATAL_FLIP = NEAR_FATAL + $30
+        READY_FLIP = READY + $30
+        HIT_FLIP = HIT + $30
+        JUMPING_DOWN_FLIP = JUMPING_DOWN + $30
+        JUMPING_UP_FLIP = JUMPING_UP + $30
+        DEAD_GESTAHL_FLIP = DEAD_GESTAHL + $30
+        LAUGHING_1_FLIP = LAUGHING_1 + $30
+        LAUGHING_2_FLIP = LAUGHING_2 + $30
+        SURPRISED_FLIP = SURPRISED + $30
+        HEAD_TURNED_FLIP = HEAD_TURNED + $30
+        WAGGING_FINGER_1_FLIP = WAGGING_FINGER_1 + $30
+        WAGGING_FINGER_2_FLIP = WAGGING_FINGER_2 + $30
 
         NONE = 0
         BLANK = $ff

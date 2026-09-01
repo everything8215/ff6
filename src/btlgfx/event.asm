@@ -71,26 +71,26 @@ BattleEventCmdTbl:
 ; pointers to event animation properties
 
 EventAnimPropPtrs:
-        .word   257 * 14  ; 00: terra/tritoch lightning
-        .word   258 * 14  ; 01: blizzard fist (vargas)
-        .word   259 * 14  ; 02: terra/tritoch lightning (w/o explosions)
-        .word   260 * 14  ; 03: water splash (bg1)
-        .word   261 * 14  ; 04: water splash (sprite)
-        .word   262 * 14  ; 05: bahamut
-        .word   263 * 14  ; 06: zoneseek
-        .word   264 * 14  ; 07: fenrir
-        .word   265 * 14  ; 08: shiva
-        .word   266 * 14  ; 09: kirin
-        .word   267 * 14  ; 0a: bismark
-        .word   268 * 14  ; 0b: carbunkl
-        .word   269 * 14  ; 0c: terrato
-        .word   270 * 14  ; 0d: phantom
-        .word   271 * 14  ; 0e: transform into magicite
-        .word   294 * 14  ; 0f: puff of smoke (kefka/leo)
-        .word   384 * 14  ; 10: statues lightning bolt (kefka/gestahl)
-        .word   385 * 14  ; 11: black magic swirly (kefka/gestahl)
-        .word   273 * 14  ; 12: move monster back (ultros, unused)
-        .word   273 * 14  ; 13: move monster back (ultros, unused)
+        .word   attack_anim_prop_offset TERRA_TRITOCH  ; 00: terra/tritoch lightning
+        .word   attack_anim_prop_offset BLIZZARD_FIST  ; 01: blizzard fist (vargas)
+        .word   attack_anim_prop_offset TERRA_TRITOCH_ALT  ; 02: terra/tritoch lightning (w/o explosions)
+        .word   attack_anim_prop_offset WATER_SPLASH_BG1  ; 03: water splash (bg1)
+        .word   attack_anim_prop_offset WATER_SPLASH_SPRITE  ; 04: water splash (sprite)
+        .word   attack_anim_prop_offset EVENT_BAHAMUT  ; 05: bahamut
+        .word   attack_anim_prop_offset EVENT_ZONESEEK  ; 06: zoneseek
+        .word   attack_anim_prop_offset EVENT_FENRIR  ; 07: fenrir
+        .word   attack_anim_prop_offset EVENT_TERRATO  ; 08: shiva
+        .word   attack_anim_prop_offset EVENT_SHIVA  ; 09: kirin
+        .word   attack_anim_prop_offset EVENT_KIRIN  ; 0a: bismark
+        .word   attack_anim_prop_offset EVENT_BISMARK  ; 0b: carbunkl
+        .word   attack_anim_prop_offset EVENT_CARBUNKL  ; 0c: terrato
+        .word   attack_anim_prop_offset EVENT_PHANTOM  ; 0d: phantom
+        .word   attack_anim_prop_offset TRANSFORM_MAGICITE  ; 0e: transform into magicite
+        .word   attack_anim_prop_offset KEFKA_LEO_SMOKE  ; 0f: puff of smoke (kefka/leo)
+        .word   attack_anim_prop_offset GESTAHL_LIGHTNING  ; 10: statues lightning bolt (kefka/gestahl)
+        .word   attack_anim_prop_offset GESTAHL_BLACK_MAGIC  ; 11: black magic swirly (kefka/gestahl)
+        .word   attack_anim_prop_offset MOVE_BACK_SLOW  ; 12: move monster back (ultros, unused)
+        .word   attack_anim_prop_offset MOVE_BACK_SLOW  ; 13: move monster back (ultros, unused)
 
 ; ------------------------------------------------------------------------------
 

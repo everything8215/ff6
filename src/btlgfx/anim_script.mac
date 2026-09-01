@@ -902,17 +902,17 @@ ANIM_SCRIPT_MAC = 1
 ; set attacking character's fixed animation frame (use status animation if zero)
 .mac attacker_frame left, right
         .ifblank right
-                _a_cmd_2byte $81, left, left
+                _a_cmd_2byte $81, CHAR_FRAME::left, CHAR_FRAME::left
         .else
-                _a_cmd_2byte $81, left, right
+                _a_cmd_2byte $81, CHAR_FRAME::left, CHAR_FRAME::right
         .endif
 .endmac
 
 .mac target_frame left, right
         .ifblank right
-                _a_cmd_2byte $82, left, left
+                _a_cmd_2byte $82, CHAR_FRAME::left, CHAR_FRAME::left
         .else
-                _a_cmd_2byte $82, left, right
+                _a_cmd_2byte $82, CHAR_FRAME::left, CHAR_FRAME::right
         .endif
 .endmac
 
@@ -1445,7 +1445,7 @@ ANIM_SCRIPT_MAC = 1
 
 ; set attacking character's animated action (use fixed frame if zero)
 .mac attacker_action val
-        _a_cmd_byte $c8, val
+        _a_cmd_byte $c8, CHAR_ACTION::val
 .endmac
 
 .enum SFX_PAN

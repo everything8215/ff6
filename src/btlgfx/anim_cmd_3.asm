@@ -351,63 +351,63 @@ GetSlotAttack:
 ; pointers to attack animation properties for attack commands (+$d07fb2)
 
 CmdAnimPropPtrs:
-        .word   283 * 14        ; MORPH
-        .word   288 * 14        ; REVERT
-        .word   289 * 14        ; STEAL
-        .word   290 * 14        ; BUSHIDO
-        .word   291 * 14        ; BLITZ
-        .word   292 * 14        ; RUNIC
-        .word   293 * 14        ; RAGE
-        .word   130 * 14        ; SHOCK
-        .word   296 * 14        ; BATTLE_CMD_ANIM_8
-        .word   297 * 14        ; JUMP_MONSTER
-        .word   298 * 14        ; JUMP_CHAR_MISS
-        .word   299 * 14        ; JUMP_MONSTER_MISS
-        .word   380 * 14        ; THREE_DICE
-        .word   381 * 14        ; TWO_DICE
-        .word   386 * 14        ; CAPTURE_TO
-        .word   387 * 14        ; CAPTURE_FROM
-        .word   388 * 14        ; CHARS_RUN_LEFT
-        .word   127 * 14        ; CHOCOBOP
-        .word   129 * 14        ; SEVEN_FLUSH
-        .word   254 * 14        ; LAGOMORPH
-        .word   312 * 14        ; THROW_THICK_KNIFE
-        .word   313 * 14        ; THROW_THIN_KNIFE
-        .word   314 * 14        ; THROW_SWORD
-        .word   315 * 14        ; THROW_KATANA
-        .word   316 * 14        ; THROW_ROD
-        .word   317 * 14        ; THROW_SPEAR
-        .word   318 * 14        ; THROW_HAWK_EYE
-        .word   319 * 14        ; ARISE
-        .word   320 * 14        ; FIRE_SKEAN
-        .word   321 * 14        ; WATER_EDGE
-        .word   322 * 14        ; BOLT_EDGE
-        .word   323 * 14        ; INVIZ_EDGE
-        .word   324 * 14        ; SHADOW_EDGE
-        .word   325 * 14        ; THROW_FULL_MOON
-        .word   326 * 14        ; THROW_BOOMERANG
-        .word   327 * 14        ; THROW_UNUSED
-        .word   296 * 14        ; GP_RAIN
-        .word   300 * 14        ; SKETCH
-        .word   301 * 14        ; LEAP
-        .word   302 * 14        ; HEALTH
-        .word   287 * 14        ; LORE
-        .word   303 * 14        ; RUN_AWAY
-        .word   256 * 14        ; MAGITEK
-        .word   279 * 14        ; JUMP_UNARMED
-        .word   304 * 14        ; JUMP_THICK_KNIFE
-        .word   305 * 14        ; JUMP_THIN_KNIFE
-        .word   306 * 14        ; JUMP_SWORD
-        .word   307 * 14        ; JUMP_KATANA
-        .word   308 * 14        ; JUMP_ROD
-        .word   309 * 14        ; JUMP_SPEAR
-        .word   310 * 14        ; JUMP_HAWK_EYE
-        .word   311 * 14        ; JUMP_UNUSED
-        .word   278 * 14        ; POSSESS
-        .word   277 * 14        ; UMARO_TACKLE
-        .word   276 * 14        ; UMARO_THROW
-        .word   275 * 14        ; RUNIC_ABSORB
-        .word   379 * 14        ; CHANGE_BATTLE
-        .word   404 * 14        ; CONTROL
+        .word   attack_anim_prop_offset MORPH                   ; MORPH
+        .word   attack_anim_prop_offset REVERT                  ; REVERT
+        .word   attack_anim_prop_offset STEAL                   ; STEAL
+        .word   attack_anim_prop_offset BUSHIDO                 ; BUSHIDO
+        .word   attack_anim_prop_offset BLITZ                   ; BLITZ
+        .word   attack_anim_prop_offset RUNIC                   ; RUNIC
+        .word   attack_anim_prop_offset DANCE                   ; RAGE, DANCE
+        .word   attack_anim_prop_offset SHOCK                   ; SHOCK
+        .word   attack_anim_prop_offset GIL_TOSS                ; BATTLE_CMD_ANIM_8
+        .word   attack_anim_prop_offset JUMP_MONSTER_DOWN       ; JUMP_MONSTER
+        .word   attack_anim_prop_offset JUMP_CHAR_MISS          ; JUMP_CHAR_MISS
+        .word   attack_anim_prop_offset JUMP_MONSTER_MISS       ; JUMP_MONSTER_MISS
+        .word   attack_anim_prop_offset THREE_DICE              ; THREE_DICE
+        .word   attack_anim_prop_offset TWO_DICE                ; TWO_DICE
+        .word   attack_anim_prop_offset CAPTURE_TO              ; CAPTURE_TO
+        .word   attack_anim_prop_offset CAPTURE_FROM            ; CAPTURE_FROM
+        .word   attack_anim_prop_offset CHARS_RUN_LEFT          ; CHARS_RUN_LEFT
+        .word   attack_anim_prop_offset CHOCOBOP                ; CHOCOBOP
+        .word   attack_anim_prop_offset SEVEN_FLUSH             ; SEVEN_FLUSH
+        .word   attack_anim_prop_offset LAGOMORPH               ; LAGOMORPH
+        .word   attack_anim_prop_offset THROW_THICK_KNIFE       ; THROW_THICK_KNIFE
+        .word   attack_anim_prop_offset THROW_THIN_KNIFE        ; THROW_THIN_KNIFE
+        .word   attack_anim_prop_offset THROW_SWORD             ; THROW_SWORD
+        .word   attack_anim_prop_offset THROW_KATANA            ; THROW_KATANA
+        .word   attack_anim_prop_offset THROW_ROD               ; THROW_ROD
+        .word   attack_anim_prop_offset THROW_SPEAR             ; THROW_SPEAR
+        .word   attack_anim_prop_offset THROW_HAWK_EYE          ; THROW_HAWK_EYE
+        .word   attack_anim_prop_offset THROW_ARISE             ; ARISE
+        .word   attack_anim_prop_offset THROW_FIRE_SKEAN        ; FIRE_SKEAN
+        .word   attack_anim_prop_offset THROW_WATER_EDGE        ; WATER_EDGE
+        .word   attack_anim_prop_offset THROW_BOLT_EDGE         ; BOLT_EDGE
+        .word   attack_anim_prop_offset THROW_INVIZ_EDGE        ; INVIZ_EDGE
+        .word   attack_anim_prop_offset THROW_SHADOW_EDGE       ; SHADOW_EDGE
+        .word   attack_anim_prop_offset THROW_FULL_MOON         ; THROW_FULL_MOON
+        .word   attack_anim_prop_offset THROW_BOOMERANG         ; THROW_BOOMERANG
+        .word   attack_anim_prop_offset THROW_UNUSED            ; THROW_UNUSED
+        .word   attack_anim_prop_offset GIL_TOSS                ; GIL_TOSS
+        .word   attack_anim_prop_offset SKETCH                  ; SKETCH
+        .word   attack_anim_prop_offset LEAP                    ; LEAP
+        .word   attack_anim_prop_offset HEALTH                  ; HEALTH
+        .word   attack_anim_prop_offset LORE                    ; LORE
+        .word   attack_anim_prop_offset RUN_AWAY                ; RUN_AWAY
+        .word   attack_anim_prop_offset STEP_FORWARD_MAGITEK    ; MAGITEK
+        .word   attack_anim_prop_offset JUMP_UNARMED            ; JUMP_UNARMED
+        .word   attack_anim_prop_offset JUMP_THICK_KNIFE        ; JUMP_THICK_KNIFE
+        .word   attack_anim_prop_offset JUMP_THIN_KNIFE         ; JUMP_THIN_KNIFE
+        .word   attack_anim_prop_offset JUMP_SWORD              ; JUMP_SWORD
+        .word   attack_anim_prop_offset JUMP_KATANA             ; JUMP_KATANA
+        .word   attack_anim_prop_offset JUMP_ROD                ; JUMP_ROD
+        .word   attack_anim_prop_offset JUMP_SPEAR              ; JUMP_SPEAR
+        .word   attack_anim_prop_offset JUMP_HAWK_EYE           ; JUMP_HAWK_EYE
+        .word   attack_anim_prop_offset JUMP_UNUSED             ; JUMP_UNUSED
+        .word   attack_anim_prop_offset POSSESS                 ; POSSESS
+        .word   attack_anim_prop_offset UMARO_TACKLE            ; UMARO_TACKLE
+        .word   attack_anim_prop_offset UMARO_THROW             ; UMARO_THROW
+        .word   attack_anim_prop_offset RUNIC_ABSORB            ; RUNIC_ABSORB
+        .word   attack_anim_prop_offset DANCE_FAIL              ; DANCE_FAIL
+        .word   attack_anim_prop_offset CONTROL                 ; CONTROL
 
 ; ------------------------------------------------------------------------------

@@ -40,94 +40,94 @@ BattleCmdProp:
 
 ; ------------------------------------------------------------------------------
 
-; $00: fight
+; $00: FIGHT
 battle_cmd_prop FIGHT, {GOGO, MIMIC, IMP, UNKNOWN}, {MANUAL, INIT_SINGLE, ENEMY}
 
-; $01: item
+; $01: ITEM
 battle_cmd_prop ITEM, {GOGO, MIMIC, IMP}, MENU
 
-; $02: magic
+; $02: MAGIC
 battle_cmd_prop MAGIC, {GOGO, MIMIC, IMP}, MENU
 
-; $03: morph
+; $03: MORPH
 battle_cmd_prop MORPH, NONE, SELF
 
-; $04: revert
+; $04: REVERT
 battle_cmd_prop REVERT, IMP, SELF
 
-; $05: steal
+; $05: STEAL
 battle_cmd_prop STEAL, {GOGO, MIMIC, UNKNOWN}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
-; $06: capture
+; $06: CAPTURE
 battle_cmd_prop CAPTURE, {GOGO, MIMIC, UNKNOWN}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
-; $07: swdtech
+; $07: SWDTECH
 battle_cmd_prop BUSHIDO, {GOGO, MIMIC}, MENU
 
-; $08: throw
+; $08: THROW
 battle_cmd_prop THROW, {GOGO, MIMIC}, MENU
 
-; $09: tools
+; $09: TOOLS
 battle_cmd_prop TOOLS, {GOGO, MIMIC}, MENU
 
-; $0a: blitz
+; $0a: BLITZ
 battle_cmd_prop BLITZ, {GOGO, MIMIC}, MENU
 
-; $0b: runic
+; $0b: RUNIC
 battle_cmd_prop RUNIC, {GOGO, MIMIC}, SELF
 
-; $0c: lore
+; $0c: LORE
 battle_cmd_prop LORE, {GOGO, MIMIC}, MENU
 
-; $0d: sketch
+; $0d: SKETCH
 battle_cmd_prop SKETCH, {GOGO, MIMIC}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
-; $0e: control
+; $0e: CONTROL
 battle_cmd_prop CONTROL, GOGO, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
-; $0f: slot
+; $0f: SLOT
 battle_cmd_prop SLOT, {GOGO, MIMIC}, MENU
 
-; $10: rage
+; $10: RAGE
 battle_cmd_prop RAGE, {GOGO, MIMIC, UNKNOWN}, MENU
 
-; $11: leap
+; $11: LEAP
 battle_cmd_prop LEAP, NONE, SELF
 
-; $12: mimic
+; $12: MIMIC
 battle_cmd_prop MIMIC, {GOGO, IMP}, SELF
 
-; $13: dance
+; $13: DANCE
 battle_cmd_prop DANCE, {GOGO, MIMIC}, MENU
 
-; $14: row
+; $14: ROW
 battle_cmd_prop ROW, IMP, MENU
 
-; $15: def
+; $15: DEF
 battle_cmd_prop DEF, IMP, MENU
 
-; $16: jump
+; $16: JUMP
 battle_cmd_prop JUMP, {GOGO, IMP}, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
-; $17: x_magic
+; $17: X_MAGIC
 battle_cmd_prop X_MAGIC, {GOGO, MIMIC, IMP}, MENU
 
-; $18: gp_rain
-battle_cmd_prop GP_RAIN, {GOGO, MIMIC}, {ONE_SIDE, INIT_GROUP, MULTI_TARGET, ENEMY}
+; $18: GIL_TOSS
+battle_cmd_prop GIL_TOSS, {GOGO, MIMIC}, {ONE_SIDE, INIT_GROUP, MULTI_TARGET, ENEMY}
 
-; $19: summon
+; $19: SUMMON
 battle_cmd_prop SUMMON, {GOGO, MIMIC}, MENU
 
-; $1a: health
+; $1a: HEALTH
 battle_cmd_prop HEALTH, {MIMIC, IMP}, {ONE_SIDE, INIT_HALF, MULTI_TARGET}
 
-; $1b: shock
+; $1b: SHOCK
 battle_cmd_prop SHOCK, {MIMIC, IMP}, {ONE_SIDE, INIT_HALF, MULTI_TARGET, ENEMY}
 
-; $1c: possess
+; $1c: POSSESS
 battle_cmd_prop POSSESS, GOGO, {MANUAL, ONE_SIDE, INIT_SINGLE, ENEMY}
 
-; $1d: magitek
+; $1d: MAGITEK
 battle_cmd_prop MAGITEK, {MIMIC, UNKNOWN}, MENU
 
 ; $1e:
