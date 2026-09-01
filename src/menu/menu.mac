@@ -1,0 +1,63 @@
+.ifndef MENU_MAC
+MENU_MAC = 1
+
+; ------------------------------------------------------------------------------
+
+.mac _op_pos op, screen, xx, yy
+        op near (BG_SCREEN::screen + (xx) * 2 + (yy) * 64)
+.endmac
+
+.mac op_pos op, screen, xy_pos
+        _op_pos op, screen, xy_pos
+.endmac
+
+.define lda_pos op_pos lda #,
+.define ldx_pos op_pos ldx #,
+.define ldy_pos op_pos ldy #,
+.define adc_pos op_pos adc #,
+.define bg_pos op_pos .addr,
+
+.mac _window_pos screen, xy_pos, ww, hh
+        _op_pos .addr, screen, xy_pos
+        .byte ww, hh
+.endmac
+
+.mac window_pos screen, xy_pos, wh
+        _window_pos screen, {xy_pos}, wh
+.endmac
+
+.mac raw_text text
+        .byte text
+.endmac
+
+.mac pos_text screen, xy_pos, text
+        _op_pos .addr, screen, xy_pos
+        .byte text
+.endmac
+
+.enum CURSOR_PROP_FLAGS
+        NO_Y_WRAP                       = %00000001
+        NO_X_WRAP                       = %10000000
+        NO_XY_WRAP                      = %10000001
+.endenum
+
+.mac cursor_prop init_xy, max_xy, flags
+        .ifnblank flags
+                opflg .byte, CURSOR_PROP_FLAGS, {flags}
+        .else
+                .byte 0
+        .endif
+        .byte init_xy, max_xy
+.endmac
+
+.mac _cursor_pos xx, yy
+        .byte xx, yy
+.endmac
+
+.mac cursor_pos xy_pos
+        _cursor_pos xy_pos
+.endmac
+
+; ------------------------------------------------------------------------------
+
+.endif

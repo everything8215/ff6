@@ -4,7 +4,7 @@
 .include "src/common/hardware.inc"
 .include "src/common/macros.inc"
 
-.include "event_cmd.inc"
+.include "event_cmd.mac"
 .include "src/sound/song_script.inc"
 .include "src/sound/sfx.inc"
 .include "src/gfx/map_sprite_gfx.inc"

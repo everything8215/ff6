@@ -86,10 +86,5 @@ MAP_TILESET_INC = 1
         BASE_PTR = MapTileset
 .endenum
 
-; .scope MapTileset
-;         COUNT = MAP_TILESET::DARILLS_TOMB_BG2 + 1
-;         BASE_PTR = MapTileset
-; .endscope
-
 .endif
 .list on

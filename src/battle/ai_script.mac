@@ -1,6 +1,6 @@
 .list off
-.ifndef AI_SCRIPT_INC
-AI_SCRIPT_INC = 1
+.ifndef AI_SCRIPT_MAC
+AI_SCRIPT_MAC = 1
 
 ; ------------------------------------------------------------------------------
 

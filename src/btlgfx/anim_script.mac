@@ -1,5 +1,5 @@
-.ifndef ANIM_SCRIPT_INC
-ANIM_SCRIPT_INC = 1
+.ifndef ANIM_SCRIPT_MAC
+ANIM_SCRIPT_MAC = 1
 
 .include "src/common/script_mode.inc"
 

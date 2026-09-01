@@ -2,7 +2,7 @@
 
 .export AttackAnimProp
 
-.include "attack_anim_prop.inc"
+.include "attack_anim_prop.mac"
 .include "src/btlgfx/attack_anim_script.inc"
 .include "src/sound/sfx.inc"
 
@@ -4569,6 +4569,6 @@ AttackAnimProp:
 
 ; ------------------------------------------------------------------------------
 
-.include "attack_anim_prop.inc"
+.include "attack_anim_prop.mac"
 
 ; ------------------------------------------------------------------------------

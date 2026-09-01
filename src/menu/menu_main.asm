@@ -20,6 +20,7 @@
 
 .include "menu_ram.inc"
 .include "menu_const.inc"
+.include "menu.mac"
 .include "assets/text/menu_text.inc"
 
 ; ------------------------------------------------------------------------------

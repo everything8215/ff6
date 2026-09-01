@@ -1,5 +1,5 @@
-.ifndef SHOP_PROP_INC
-SHOP_PROP_INC = 1
+.ifndef SHOP_PROP_MAC
+SHOP_PROP_MAC = 1
 
 _shop_prop_seq .set 0
 

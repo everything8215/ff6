@@ -1,5 +1,5 @@
-.ifndef ITEM_PROP_INC
-ITEM_PROP_INC = 1
+.ifndef ITEM_PROP_MAC
+ITEM_PROP_MAC = 1
 
 ; ------------------------------------------------------------------------------
 

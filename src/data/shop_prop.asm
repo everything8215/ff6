@@ -1,6 +1,6 @@
 .export ShopProp
 
-.include "shop_prop.inc"
+.include "shop_prop.mac"
 
 .segment "shop_prop"
 
@@ -1326,4 +1326,4 @@ ShopProp:
 
 ; ------------------------------------------------------------------------------
 
-.include "shop_prop.inc"
+.include "shop_prop.mac"

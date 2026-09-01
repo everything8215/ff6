@@ -1,5 +1,5 @@
-.ifndef GENJU_PROP_INC
-GENJU_PROP_INC = 1
+.ifndef GENJU_PROP_MAC
+GENJU_PROP_MAC = 1
 
 _genju_prop_seq .set ATTACK::FIRST_GENJU
 

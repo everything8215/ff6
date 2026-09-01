@@ -1,5 +1,5 @@
 .include "src/text/blitz_desc.inc"
-.include "blitz_code.inc"
+.include "blitz_code.mac"
 
 .export BlitzCode
 
@@ -103,5 +103,5 @@ BlitzCode:
 
 ; ------------------------------------------------------------------------------
 
-.include "blitz_code.inc"
+.include "blitz_code.mac"
 

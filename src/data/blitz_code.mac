@@ -1,6 +1,6 @@
 .list off
-.ifndef BLITZ_CODE_INC
-BLITZ_CODE_INC = 1
+.ifndef BLITZ_CODE_MAC
+BLITZ_CODE_MAC = 1
 
 
 ; [ blitz code data format (12 bytes each) ]

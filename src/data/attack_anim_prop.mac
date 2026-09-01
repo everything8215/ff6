@@ -1,6 +1,6 @@
 .list off
-.ifndef ATTACK_ANIM_PROP_INC
-ATTACK_ANIM_PROP_INC = 1
+.ifndef ATTACK_ANIM_PROP_MAC
+ATTACK_ANIM_PROP_MAC = 1
 
 ; ------------------------------------------------------------------------------
 

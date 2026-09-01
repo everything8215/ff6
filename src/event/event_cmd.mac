@@ -1,5 +1,5 @@
-.ifndef EVENT_INC
-EVENT_INC = 1
+.ifndef EVENT_CMD_MAC
+EVENT_CMD_MAC = 1
 
 .include "src/common/script_mode.inc"
 
