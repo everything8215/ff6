@@ -11,6 +11,7 @@
 .include "src/gfx/map_sprite_pal.inc"
 .include "src/gfx/battle_bg.inc"
 .include "src/menu/menu_const.inc"
+.include "src/text/dlg.inc"
 
 .include "event_trigger.asm"
 .include "npc_prop.asm"
@@ -80,7 +81,8 @@ EventScript:
 
 ; ca/0008
 .proc TreasureItem
-        dlg $0b85                       ; Received ``{item}''!
+        dlg DLG_2949
+                ; Received ``{item}''!
         return
 .endproc
 
@@ -88,7 +90,8 @@ EventScript:
 
 ; ca/000c
 .proc TreasureMagic
-        dlg $0b86                       ; Learned ``{spell}''!
+        dlg DLG_2950
+                ; Learned ``{spell}''!
         return
 .endproc
 
@@ -96,7 +99,8 @@ EventScript:
 
 ; ca/0010
 .proc TreasureGil
-        dlg $0b87                       ; Found {gp} GP!
+        dlg DLG_2951
+                ; Found {gp} GP!
         return
 .endproc
 
@@ -104,7 +108,8 @@ EventScript:
 
 ; ca/0014
 .proc TreasureEmpty
-        dlg $0b88                       ; Empty!
+        dlg DLG_2952
+                ; Empty!
         return
 .endproc
 
@@ -153,7 +158,8 @@ EventScript:
 
 ; ca/0040
 .proc TreasureMonster
-        dlg $0b90                       ; Monster-in-a-box!
+        dlg DLG_2960
+                ; Monster-in-a-box!
         call _cb0e1c
         treasure_battle
         call _ca5ea9
@@ -276,8 +282,9 @@ EventScript:
         wait_1s
         call _cac810, 3
         wait_45f
-        dlg $0b9e                       ; A piece of Magicite popped out of
-                                        ; Doom Gaze's mouth!
+        dlg DLG_2974
+                ; A piece of Magicite popped out of
+                ; Doom Gaze's mouth!
         obj_script SLOT_1
                 move RIGHT, 2
                 dir DOWN
@@ -295,8 +302,9 @@ EventScript:
                 action $10
                 end
         pass_on SLOT_1
-        dlg $0b9f                       ; Received the Magicite
-                                        ; ``Bahamut.''
+        dlg DLG_2975
+                ; Received the Magicite
+                ; ``Bahamut.''
         give_genju BAHAMUT
         load_map $01ff, {0, 0}, DOWN, {Z_UPPER, AIRSHIP}
         set_script_mode VEHICLE
@@ -438,28 +446,28 @@ StragoDlg:
         obj_script EDGAR
                 dir RIGHT
                 end
-        dlg $0ba6, BOTTOM
-; {strago}: The Espers_and magic, too, will most definitely disappear from this world.
+        dlg DLG_2982, BOTTOM
+                ; {strago}: The Espers_and magic, too, will most definitely disappear from this world.
         return
 
 CelesDlg:
         obj_script CELES
                 dir DOWN
                 end
-        dlg $0ba5, BOTTOM
-; {celes}: The Espers, and magic, too, will cease to exist.
+        dlg DLG_2981, BOTTOM
+                ; {celes}: The Espers, and magic, too, will cease to exist.
         return
 
 SkipDlg:
-        dlg $0b8d
-; Right. We're going in!
+        dlg DLG_2957
+                ; Right. We're going in!
         if_switch $0127=0, _ca02d5
         return
 
 ::EnterKefkasTower:
         if_switch $0029=1, SkipDlg
-        dlg $0b8d
-; Right. We're going in!
+        dlg DLG_2957
+                ; Right. We're going in!
         load_map 1, {137, 198}, DOWN, {Z_UPPER, AIRSHIP}
         set_script_mode VEHICLE
         altitude $7e00
@@ -535,7 +543,8 @@ SkipDlg:
                 wait 8
                 action 25
                 end
-        dlg $0ba0
+        dlg DLG_2976
+                ; {edgar}: It's time to break into Kefka's domain!{0}
         wait_30f
         obj_script CELES
                 action 32
@@ -550,17 +559,22 @@ SkipDlg:
         obj_script EDGAR
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0ba1, BOTTOM
+        dlg DLG_2977, BOTTOM
+                ; {setzer}: What's wrong?{n}
+                ; {celes}__{0}
         wait_90f
         obj_script CELES
                 dir LEFT
                 end
         wait_1s
-        dlg $0ba2, BOTTOM
+        dlg DLG_2978, BOTTOM
+                ; {celes}: The Statues give the Espers the magical energy they need to live.{n}
+                ; If we destroy the Statues_{0}
         obj_script EDGAR
                 move UP, 2
                 end
-        dlg $0ba3, BOTTOM
+        dlg DLG_2979, BOTTOM
+                ; {edgar}: What'll happen?{0}
         wait_30f
         loop 3
                 obj_script CELES
@@ -574,7 +588,9 @@ SkipDlg:
         obj_script CELES
                 action 34
                 end
-        dlg $0ba4, BOTTOM
+        dlg DLG_2980, BOTTOM
+                ; {celes}: I'm really not sure,{n}
+                ; but_{0}
         set_case AVAIL_CHARS
         if_case
                 case CHAR::STRAGO, StragoDlg
@@ -593,12 +609,15 @@ SkipDlg:
                         end
                 end_loop
         wait_30f
-        dlg $0ba7, BOTTOM
+        dlg DLG_2983, BOTTOM
+                ; {edgar}: And then_{0}
         wait_45f
         obj_script CELES
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0ba8, BOTTOM
+        dlg DLG_2984, BOTTOM
+                ; {celes}: What will happen to _{n}
+                ; {terra}_?{0}
         if_switch $01a0=0, _ca02d5
         obj_script CAMERA
                 speed NORMAL
@@ -728,8 +747,12 @@ _ca02d5:
         load_map $014e, {9, 16}, LEFT, {Z_UPPER, STARTUP_EVENT}
         unlock_camera
         if_switch $0029=1, :+
-        dlg $0b92
-:       dlg $0b93, {BOTTOM, TEXT_ONLY}
+        dlg DLG_2962
+                ; The Statues are up ahead_{0}
+:       dlg DLG_2963, {BOTTOM, TEXT_ONLY}
+                ;    Divide into 3 groups.{n}
+                ;    Use the Y Button to switch{n}
+                ;    between them.{0}
         switch $01ce=1
         switch $02be=1
         switch $0029=1
@@ -796,7 +819,9 @@ _ca03e7:
         obj_script SLOT_1
                 move DOWN, 2
                 end
-        dlg $0b8d
+        dlg DLG_2957
+                ; Right.{n}
+                ; We're going in!{0}
         call _cacbaf
         party_menu 2
         call _ca0429
@@ -1019,7 +1044,11 @@ _ca055d:
         wait_1s
         spc_cmd $82,$00,$ff
         sfx SFX::KEFKA_LAUGH
-        dlg $0ba9, TEXT_ONLY
+        dlg DLG_2985, TEXT_ONLY
+                ; {n}
+                ; {n}
+                ; {n}
+                ; {tab:5}Welcome, friends!{0}
         obj_script CAMERA
                 move DOWN, 3
                 end
@@ -1050,11 +1079,16 @@ _ca055d:
         sfx SFX::SCREAMS
         spc_cmd $82, $20, $60
         wait_30f
-        dlg $0baa, TEXT_ONLY
+        dlg DLG_2986, TEXT_ONLY
+                ; I knew you'd make it here, so{n}
+                ; I've prepared some suitable{n}
+                ; entertainment for you!{0}
         obj_script CAMERA
                 move DOWN, 7
                 end
-        dlg $0bab, {BOTTOM, TEXT_ONLY}
+        dlg DLG_2987, {BOTTOM, TEXT_ONLY}
+                ; How long are you going to let the destruction continue?{page}
+                ; KEFKA: I've tapped into the ultimate power. Observe_!{0}
         call _cac819
         call _cac853
         pass_off NPC_2
@@ -1085,7 +1119,9 @@ Loop:           move UP, 1
         obj_script NPC_1
                 action 22
                 end
-        dlg $0bac, {BOTTOM, TEXT_ONLY}
+        dlg DLG_2988, {BOTTOM, TEXT_ONLY}
+                ; KEFKA: Such magnificent power!{n}
+                ; You are like insects to me!{0}
 
 ; levitate party 2 top char
         activate_party 2
@@ -1112,7 +1148,8 @@ Loop2:          move UP, 1
         obj_script NPC_1
                 action 22
                 end
-        dlg $0bad, {BOTTOM, TEXT_ONLY}
+        dlg DLG_2989, {BOTTOM, TEXT_ONLY}
+                ; KEFKA: I will exterminate everyone, and everything!{0}
 
 ; throw levitating chars down
         obj_script NPC_1
@@ -1162,7 +1199,8 @@ Loop2:          move UP, 1
         obj_script SLOT_1
                 move UP, 2
                 end
-        dlg $0bae, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2990, {TEXT_ONLY, BOTTOM}
+                ; People will keep rebuilding the things you take from them!{0}
         obj_script CAMERA, ASYNC
                 move UP, 8
                 end
@@ -1178,7 +1216,10 @@ Loop2:          move UP, 1
                 wait 4
                 action 23
                 end
-        dlg $0baf, {TEXT_ONLY, ASYNC}
+        dlg DLG_2991, {TEXT_ONLY, ASYNC}
+                ; KEFKA: Then I'll destroy those too. Why do people rebuild things they know are going to be destroyed?{page}
+                ; Why do people cling to life when they know they can't live forever?{page}
+                ; Think how meaningless each of your lives is!{0}
         wait_45f
         wait_obj CAMERA
 
@@ -1298,7 +1339,8 @@ Loop2:          move UP, 1
                         dir LEFT
                         end
                 end_loop
-        dlg $0bb2, TEXT_ONLY
+        dlg DLG_2994, TEXT_ONLY
+                ; KEFKA: And have you found your ``joy'', in this nearly dead world of ours?{0}
         wait_1s
 
 ; pyramid turns green
@@ -1386,7 +1428,10 @@ Loop2:          move UP, 1
                 wait 1
                 action 24
                 end
-        dlg $0bc0, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3008, {TEXT_ONLY, BOTTOM}
+                ; KEFKA: This is sickening_{n}
+                ; You sound like chapters from a self-help booklet!{n}
+                ; Prepare yourselves!{0}
 
 ; red pyramid
         loop 31
@@ -1402,8 +1447,10 @@ Loop2:          move UP, 1
         fixed_clr RED, 1, 3
         scroll_bg BG3, {0, 48}, ALT
         wait_45f
-        dlg $0bc1, {TEXT_ONLY, BOTTOM}
-        dlg $0bc2, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3009, {TEXT_ONLY, BOTTOM}
+                ; KEFKA: Now, for my next trick, I will make you all_disappear!{0}
+        dlg DLG_3010, {TEXT_ONLY, BOTTOM}
+                ; Kefka, you don't know what you're doing! Stop!{0}
         spc_cmd $82, $00, $ff
         sfx 196
         obj_script CAMERA, ASYNC
@@ -1500,7 +1547,10 @@ Loop2:          move UP, 1
         shake ALL, 1, 2
         wait_15f 4
         shake ALL, 0, 2
-        dlg $0bc3, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3011, {TEXT_ONLY, BOTTOM}
+                ; KEFKA: I command the greatest{n}
+                ; power in the universe!{n}
+                ; You are all helpless before me!{0}
         obj_script CAMERA
                 speed FAST
                 move UP, 7
@@ -1668,7 +1718,7 @@ Loop2:          move UP, 1
                 wait 1
                 branch @loop7
                 end
-        dlg $0BC4, TEXT_ONLY
+        dlg DLG_3012, TEXT_ONLY
                 ; KEFKA: I will destroy everything_
                 ; I will create a monument to non-existence!
         call _ca3e3a
@@ -1717,7 +1767,7 @@ Loop2:          move UP, 1
                 .byte $2E,$B3,$97,$2F
         wait_bg
         call _ca3e3a
-        dlg $0BC5, TEXT_ONLY
+        dlg DLG_3013, TEXT_ONLY
                 ; Life will go on!
                 ; There will always be people,
                 ; and dreams!
@@ -1729,7 +1779,7 @@ Loop2:          move UP, 1
                 wait 2
                 branch @loop8
                 end
-        dlg $0BC6, TEXT_ONLY
+        dlg DLG_3014, TEXT_ONLY
                 ; KEFKA: No!
                 ; I will hunt them down.
                 ; I will destroy it all!
@@ -1766,7 +1816,7 @@ Loop2:          move UP, 1
         scroll_bg BG2, {0, -2}, ALT
         wait_30f
         scroll_bg BG2, {0, 0}, ALT
-        dlg $0BC7, TEXT_ONLY
+        dlg DLG_3015, TEXT_ONLY
                 ; We will not allow you to harm another living thing.
         wait_45f
         obj_script NPC_1
@@ -1774,7 +1824,7 @@ Loop2:          move UP, 1
                 wait 3
                 action 16
                 end
-        dlg $0BC8, TEXT_ONLY
+        dlg DLG_3016, TEXT_ONLY
                 ; KEFKA: Hee, hee, hee!!
                 ; But what fun is destruction if no ``precious'' lives are lost!
         obj_script NPC_1
@@ -1826,7 +1876,7 @@ Loop2:          move UP, 1
                 wait 2
                 end_loop
         wait_obj CAMERA
-        dlg $0BC9, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3017, {TEXT_ONLY, BOTTOM}
                 ; It's over, Kefka!
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0, {5, 7}
         if_switch $02F0=1, skip_terra_scene
@@ -1876,7 +1926,7 @@ Loop2:          move UP, 1
                 end
         wait_obj NPC_1
         wait_obj CAMERA
-        dlg $0BD3
+        dlg DLG_3027
                 ; TERRA!!!!
         load_map 184, {11, 18}, UP, Z_UPPER
         mod_bg_tiles BG1, {16, 15}, {1, 2}
@@ -1894,7 +1944,7 @@ Loop2:          move UP, 1
                 move LEFT, 3
                 move DOWN, 2
                 end
-        dlg $0BD4
+        dlg DLG_3028
                 ; TERRA: Everyone's calling me.
         wait_obj CAMERA
         wait_30f
@@ -1936,7 +1986,7 @@ Loop2:          move UP, 1
         fixed_clr {GREEN, BLUE}, 0, 3
         fade_in
         wait_2s
-        dlg $0BCA, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3018, {TEXT_ONLY, BOTTOM}
                 ; KEFKA: Oh!
                 ; But it hasn't yet begun!
                 ; And I'm giving you a front-row seat!
@@ -2080,7 +2130,7 @@ skip_terra_scene:
                 speed NORMAL
                 move DOWN, 9
                 end
-        dlg $0BCB
+        dlg DLG_3019
                 ; It's breaking up!
         call _cac819
         if_any
@@ -2281,7 +2331,7 @@ skip_terra_scene:
         switch $01F0=1
 :       wait_90f
         if_switch $01F0=0, :+
-        dlg $0BCC
+        dlg DLG_3020
                 ; There's no time to lose!
                 ; Airship's just ahead.
 :       create_obj NPC_2
@@ -2308,7 +2358,7 @@ skip_terra_scene:
         spc_cmd $82, $00, $00
         spc_cmd $82, $60, $90
         wait_30f
-        dlg $0BD5
+        dlg DLG_3029
                 ; CELES: TERRA!
                 ; You're back!
         if_switch $0127=0, _ca1230
@@ -2331,7 +2381,7 @@ skip_terra_scene:
         delete_obj TERRA
 _ca1230:
         wait_30f
-        dlg $0BD0
+        dlg DLG_3024
                 ; CELES: Come on, everybody!
                 ; We have to work together!
         obj_script NPC_2
@@ -2344,7 +2394,7 @@ _ca1230:
                 move LEFT, 1
                 action 9
                 end
-        dlg $0BCD
+        dlg DLG_3021
                 ; CELES: TERRA!
                 ; What's wrong?
         obj_script EDGAR
@@ -2476,10 +2526,10 @@ _ca12f3:
                 mod_bg_pal UNDEC, {RED, GREEN, BLUE}, 3, {5, 7}
                 end_loop
         wait_obj CAMERA
-        dlg $0BD1
+        dlg DLG_3025
                 ; The Magicite_
                 ; Magic is disappearing from this world_
-        dlg $0BCE
+        dlg DLG_3022
                 ; EDGAR: The Espers_
                 ; They no longer exist_
         wait_30f
@@ -2489,7 +2539,7 @@ _ca12f3:
         obj_script EDGAR
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0BD2
+        dlg DLG_3026
                 ; CELES: You mean TERRA too?
         wait_1s
         obj_script NPC_2
@@ -2499,7 +2549,7 @@ _ca12f3:
                 wait 8
                 dir DOWN
                 end
-        dlg $0BCF
+        dlg DLG_3023
                 ; TERRA: Come with me.
                 ; I can lead you out with my last ounce of strength.
         obj_script CELES, ASYNC
@@ -2616,7 +2666,7 @@ _ca12f3:
         obj_script CYAN
                 dir RIGHT
                 end
-        dlg $0BE4, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3044, {TEXT_ONLY, BOTTOM}
                 ;
                 ; EDGAR: CYAN!
                 ; Think you can handle that switch?!
@@ -2701,7 +2751,7 @@ _ca12f3:
                 move DOWN_RIGHT
                 action 35
                 end
-        dlg $0BE5, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3045, {TEXT_ONLY, BOTTOM}
                 ; CYAN: You just have to show technology who's boss!!
         obj_script CYAN, ASYNC
 _ca1487:
@@ -2879,7 +2929,7 @@ _ca14d6:
         obj_script SETZER
                 action 24
                 end
-        dlg $0BE6, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3046, {TEXT_ONLY, BOTTOM}
                 ; SETZER: Wait!
         delete_obj NPC_1
         obj_script EDGAR, ASYNC
@@ -2979,7 +3029,7 @@ _ca164a:        action 36
                 wait 1
                 branch _ca164a
                 end
-        dlg $0BE7, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3047, {TEXT_ONLY, BOTTOM}
                 ; SETZER: Let's go that way!!
                 ;
                 ; Sometimes in life you just have to FEEL your way through a situation!
@@ -2998,7 +3048,7 @@ _ca164a:        action 36
                 move DOWN, 1
                 action 24
                 end
-        dlg $0BE8, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3048, {TEXT_ONLY, BOTTOM}
                 ;
                 ; SETZER: Daryl_I'm starting to sound just like you!
         wait_90f
@@ -3101,7 +3151,7 @@ _ca1711:
                 branch _ca1711
                 end
         wait_30f
-        dlg $0BEE, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3054, {TEXT_ONLY, BOTTOM}
                 ; SABIN: I didn't turn my back on the kingdom, big brother_
                 ; I knew you'd be a better king.
                 ; I trained hard knowing I might have to help you one day_
@@ -3193,7 +3243,7 @@ _ca178f:
                 branch _ca178c
                 end
         wait_15f
-        dlg $0BED, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_3053, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; EDGAR: Where's SABIN when you need him_?
         loop 3
                 scroll_bg BG2, {4, 0}, ALT
@@ -3276,7 +3326,7 @@ _ca180e:
                 branch _ca180e
                 end
         wait_30f
-        dlg $0BEF, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3055, {TEXT_ONLY, BOTTOM}
                 ;
                 ; EDGAR: Ladies first!
         obj_script EDGAR
@@ -3373,7 +3423,7 @@ _ca1834:
                 dir DOWN
                 end
         wait_1s
-        dlg $0BE9, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3049, {TEXT_ONLY, BOTTOM}
                 ;
                 ; MOG: Heeeeelp! Save me!
         obj_script EDGAR, ASYNC
@@ -3438,7 +3488,7 @@ _ca190f:
                 branch _ca190f
                 end
         wait_15f
-        dlg $0BEA, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3050, {TEXT_ONLY, BOTTOM}
                 ;
                 ; MOG: The hair!!
                 ; Watch the hair!!!
@@ -3581,7 +3631,7 @@ _ca19c2:
                 end
         wait_15f
         wait_obj CAMERA
-        dlg $0BEB, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3051, {TEXT_ONLY, BOTTOM}
                 ;
                 ; CELES: It won't open!
         wait_30f
@@ -3596,7 +3646,7 @@ _ca1a09:
                 wait 2
                 branch _ca1a09
                 end
-        dlg $0BEC, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3052, {TEXT_ONLY, BOTTOM}
                 ;
                 ; UMARO: U'ghaaaa!
         wait_30f
@@ -3666,7 +3716,7 @@ _ca1a91:
                 wait 1
                 branch _ca1a91
                 end
-        dlg $0BEC, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3052, {TEXT_ONLY, BOTTOM}
                 ;
                 ; UMARO: U'ghaaaa!
         wait_1s
@@ -3869,7 +3919,7 @@ _ca1b54:
         obj_script CELES
                 move DOWN, 2
                 end
-        dlg $0BF1, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3057, {TEXT_ONLY, BOTTOM}
                 ; CELES: Both buttons have to be pressed simultaneously_
         wait_obj CAMERA
         obj_script SETZER, ASYNC
@@ -3883,7 +3933,7 @@ _ca1beb:
         obj_script EDGAR, ASYNC
                 move UP, 1
                 end
-        dlg $0BF2, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3058, {TEXT_ONLY, BOTTOM}
                 ;
                 ; SETZER: GOGO!
                 ; Watch CELES and do exactly what she does!
@@ -4168,7 +4218,7 @@ _ca1d4e:
                 wait 4
                 dir UP
                 end
-        dlg $0BF0, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3056, {TEXT_ONLY, BOTTOM}
                 ; GAU: GAU find short cut!
         obj_script GAU
                 speed NORMAL
@@ -4298,7 +4348,7 @@ _ca1e53:
                 action 23
                 wait 8
                 end
-        dlg $0BF0, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3056, {TEXT_ONLY, BOTTOM}
                 ; GAU: GAU find short cut!
         wait_1s
         obj_script GAU
@@ -4506,7 +4556,7 @@ _ca1f61:
                 action 10
                 end
         wait_30f
-        dlg $0BF3, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3059, {TEXT_ONLY, BOTTOM}
                 ;
                 ; Come on!
                 ; This floor's about to break apart!
@@ -4612,11 +4662,11 @@ _ca1f61:
                 end
         wait_90f
         scroll_bg BG2, {0, 0}, ALT
-        dlg $0BF4, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3060, {TEXT_ONLY, BOTTOM}
                 ;
                 ; CELES: LOCKE!!
         wait_15f
-        dlg $0BF5, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3061, {TEXT_ONLY, BOTTOM}
                 ;
                 ; LOCKE: I will not let go_
                 ; _I promise!
@@ -4647,7 +4697,7 @@ _ca2079:
                 end
         wait_90f
         scroll_bg BG2, {0, 0}, ALT
-        dlg $0BF6, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3062, {TEXT_ONLY, BOTTOM}
                 ; SETZER: Don't fall!
                 ; Remember, you promised me you'd do your ``Maria'' act again!
         wait_1s
@@ -4677,7 +4727,7 @@ _ca20a9 := * - 1
                 wait 2
                 action 34
                 end
-        dlg $0BF7, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3063, {TEXT_ONLY, BOTTOM}
                 ;
                 ; You almost ate it trying to pick up that silly trinket!
         if_switch $0127=0, _ca20c3
@@ -4685,7 +4735,7 @@ _ca20bb:
         obj_script SETZER
                 branch _ca20a9          ; *** bug ***
                 end
-        dlg $0BF8, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3064, {TEXT_ONLY, BOTTOM}
                 ;
                 ; SETZER: What a woman!
                 ; Your life is hanging by a bandana!
@@ -4782,13 +4832,13 @@ _ca2127:
                 anim_on
                 speed NORMAL
                 end
-        dlg $0BF9, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3065, {TEXT_ONLY, BOTTOM}
                 ; CELES: This is my good luck charm_ When I found this, my life took a turn for the better_
         obj_script CELES
                 move RIGHT, 3
                 action 35
                 end
-        dlg $0BFA, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3066, {TEXT_ONLY, BOTTOM}
                 ; CELES: LOCKE_
                 ; Promise me someday you'll look after me again?!
         wait_30f
@@ -4917,13 +4967,13 @@ _ca21ed:
                 dir UP
                 end
         wait_1s
-        dlg $0BFB, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3067, {TEXT_ONLY, BOTTOM}
                 ;
                 ; TERRA: Father__?
-        dlg $0BFC, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3068, {TEXT_ONLY, BOTTOM}
                 ; MADUIN: TERRA_we must part now. We Espers will disappear from this world_
                 ; forever.
-        dlg $0BFD, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3069, {TEXT_ONLY, BOTTOM}
                 ; MADUIN: But if the human part of you is very strongly attached to something or someone_
                 ;
                 ; You will probably be able to remain in this world as a human being_
@@ -5050,7 +5100,7 @@ _ca22b6:
         obj_script STRAGO
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BFE, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3070, {TEXT_ONLY, BOTTOM}
                 ;
                 ; RELM: Grandpa!
                 ; Stop goofing around!!
@@ -5071,7 +5121,7 @@ _ca22b6:
         obj_script RELM
                 action 32
                 end
-        dlg $0BFF, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3071, {TEXT_ONLY, BOTTOM}
                 ; STRAGO: Sorry, dear_
                 ; RELM: If I hear even a peep out of you, I'm gonna draw your portrait!
         obj_script STRAGO, ASYNC
@@ -5085,7 +5135,7 @@ _ca22f7:
                 wait 1
                 branch _ca22f7
                 end
-        dlg $0C00, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3072, {TEXT_ONLY, BOTTOM}
                 ;
                 ; STRAGO: No!
                 ; Anything but that!
@@ -5111,11 +5161,11 @@ _ca2315:
         obj_script STRAGO, ASYNC
                 branch _ca2312
                 end
-        dlg $0C01, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3073, {TEXT_ONLY, BOTTOM}
                 ; RELM: _  _but you know_
                 ; Just once I'd really like to do a portrait of you_on canvas, of course!
         wait_15f
-        dlg $0C02, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3074, {TEXT_ONLY, BOTTOM}
                 ;
                 ; STRAGO: RELM!
                 ; How can you be thinking about pictures at a time like this?!
@@ -5165,7 +5215,7 @@ _ca235d:
                 hide_obj
                 end
         call _ca23ec
-        dlg $0C08, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3080, {TEXT_ONLY, BOTTOM}
                 ;
                 ; RELM: I won't be done in by an older woman!
         wait_30f
@@ -5174,7 +5224,7 @@ _ca2377:
                 branch _ca235d
                 end
         call _ca23ec
-        dlg $0C09, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3081, {TEXT_ONLY, BOTTOM}
                 ;
                 ; RELM: Wait a minute,
                 ; lover boy!
@@ -5183,7 +5233,7 @@ _ca2377:
                 branch _ca2377
                 end
         call _ca23ec
-        dlg $0C0A, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3082, {TEXT_ONLY, BOTTOM}
                 ;
                 ; RELM: You can't just throw me aside!
         wait_30f
@@ -5198,7 +5248,7 @@ _ca2395:
                 wait 8
                 branch _ca2395
                 end
-        dlg $0C0B, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3083, {TEXT_ONLY, BOTTOM}
                 ;
                 ; RELM: How about a nice portrait for you, hmm?!
         show_obj CELES
@@ -5465,7 +5515,7 @@ _ca24d7:
                 wait 4
                 action 25
                 end
-        dlg $0C03, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3075, {TEXT_ONLY, BOTTOM}
                 ;
                 ; SHADOW: Interceptor!
                 ; Get going!
@@ -5492,7 +5542,7 @@ _ca24d7:
                 move UP, 1
                 end
         wait_30f
-        dlg $0C05, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3077, {TEXT_ONLY, BOTTOM}
                 ;
                 ; SHADOW: Stay well_
         wait_1s
@@ -5520,7 +5570,7 @@ _ca24d7:
                 move UP, 1
                 end
         wait_obj SHADOW
-        dlg $0C04, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3076, {TEXT_ONLY, BOTTOM}
                 ; SHADOW: Baram!
                 ; I'm going to stop running.
                 ; I'm going to begin all over again_
@@ -5642,7 +5692,7 @@ _ca25e2:
                 action 24
                 end
         wait_obj CAMERA
-        dlg $0C06, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3078, {TEXT_ONLY, BOTTOM}
                 ;
                 ; STRAGO: No_NO!!!!
                 ; A ``kid'' like me doesn't know the meaning of defeat!
@@ -5694,7 +5744,7 @@ _ca25e2:
                 move UP, 3
                 action 25
                 end
-        dlg $0C07, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3079, {TEXT_ONLY, BOTTOM}
                 ;
                 ; STRAGO: Gotcha!!
         obj_script STRAGO, ASYNC
@@ -5841,7 +5891,7 @@ _ca2746:
         create_obj NPC_2
         show_obj NPC_2
         sort_obj
-        dlg $0BD6
+        dlg DLG_3030
                 ; TERRA: Come with me!
         obj_script CAMERA, ASYNC
                 move LEFT, 8
@@ -5901,7 +5951,7 @@ _ca2746:
         obj_script CELES
                 dir UP
                 end
-        dlg $0BD7, BOTTOM
+        dlg DLG_3031, BOTTOM
                 ; EDGAR: The last piece of Magicite!
         create_obj NPC_13
         show_obj NPC_13
@@ -5918,7 +5968,7 @@ _ca2746:
                 wait 6
                 move LEFT, 4
                 end
-        dlg $0BD8, BOTTOM
+        dlg DLG_3032, BOTTOM
                 ; CELES: TERRA!
                 ; It's okay!
                 ; Your power! It's fading_
@@ -6066,7 +6116,7 @@ _ca2851:
                 move RIGHT_RIGHT_DOWN
                 move DOWN_RIGHT
                 end
-        dlg $0BD9
+        dlg DLG_3033
                 ; CELES: TERRA,
                 ; your strength is going!
         obj_script EDGAR
@@ -6334,7 +6384,7 @@ _ca2a06:
                 end
         wait_obj CAMERA
         wait_3s
-        dlg $0BDC, TEXT_ONLY
+        dlg DLG_3036, TEXT_ONLY
                 ;
                 ;
                 ; Do it right, Katarin_!
@@ -6380,7 +6430,7 @@ _ca2a06:
                 dir RIGHT
                 end
         wait_30f
-        dlg $0BDD, TEXT_ONLY
+        dlg DLG_3037, TEXT_ONLY
                 ;
                 ;
                 ; Gotta hang in there_
@@ -6532,7 +6582,7 @@ _ca2b8f:
                 wait_15f
                 end_loop
         wait_2s
-        dlg $0BDE, TEXT_ONLY
+        dlg DLG_3038, TEXT_ONLY
                 ;
                 ; _for a while longer_
         wait_2s
@@ -6544,7 +6594,7 @@ _ca2b8f:
                 action 9
                 end
         wait_1s
-        dlg $0BDF
+        dlg DLG_3039
                 ; Just a little longer_
         obj_script EDGAR
                 action 35
@@ -6567,7 +6617,7 @@ _ca2b8f:
         obj_script SETZER, ASYNC
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BE0
+        dlg DLG_3040
                 ; Where's TERRA!?
         obj_script CELES, ASYNC
                 speed FAST
@@ -6607,7 +6657,7 @@ _ca2b8f:
                 speed NORMAL
                 move LEFT, 3
                 end
-        dlg $0BE1
+        dlg DLG_3041
                 ; CELES: TERRA!
         obj_script SETZER, ASYNC
                 dir UP
@@ -6652,7 +6702,7 @@ _ca2b8f:
                 wait 8
                 action 35
                 end
-        dlg $0BE2
+        dlg DLG_3042
                 ; TERRA: Thank you,
                 ; SETZER!
         wait_15f
@@ -6669,7 +6719,7 @@ _ca2b8f:
                 wait 6
                 action 10 | ACTION_H_FLIP
                 end
-        dlg $0BE3
+        dlg DLG_3043
                 ; SETZER: Didn't I say it before?! This is the world's fastest ship!
         obj_script SETZER
                 dir RIGHT
@@ -8954,7 +9004,7 @@ _ca3a0a:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -8966,7 +9016,7 @@ _ca3a18:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -8978,7 +9028,7 @@ _ca3a26:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -8990,7 +9040,7 @@ _ca3a34:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9002,7 +9052,7 @@ _ca3a42:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9014,7 +9064,7 @@ _ca3a50:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9026,7 +9076,7 @@ _ca3a5e:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9038,7 +9088,7 @@ _ca3a6c:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9050,7 +9100,7 @@ _ca3a7a:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9062,7 +9112,7 @@ _ca3a88:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9074,7 +9124,7 @@ _ca3a96:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9086,7 +9136,7 @@ _ca3aa4:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9098,7 +9148,7 @@ _ca3ab2:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9110,7 +9160,7 @@ _ca3ac0:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $0BB0, TEXT_ONLY
+        dlg DLG_2992, TEXT_ONLY
                 ; It's not the net result of one's life that's important!
                 ; It's the day-to-day concerns, the personal victories, and the celebration of life_and love!
         return
@@ -9133,7 +9183,7 @@ _ca3ace:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3ae8:
@@ -9155,7 +9205,7 @@ _ca3ae8:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3b02:
@@ -9177,7 +9227,7 @@ _ca3b02:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3b1c:
@@ -9199,7 +9249,7 @@ _ca3b1c:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3b36:
@@ -9221,7 +9271,7 @@ _ca3b36:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3b50:
@@ -9243,7 +9293,7 @@ _ca3b50:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3b6a:
@@ -9265,7 +9315,7 @@ _ca3b6a:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3b84:
@@ -9287,7 +9337,7 @@ _ca3b84:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3b9e:
@@ -9309,7 +9359,7 @@ _ca3b9e:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3bb8:
@@ -9331,7 +9381,7 @@ _ca3bb8:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3bd2:
@@ -9353,7 +9403,7 @@ _ca3bd2:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3bec:
@@ -9375,7 +9425,7 @@ _ca3bec:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3c06:
@@ -9397,7 +9447,7 @@ _ca3c06:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3c20:
@@ -9419,7 +9469,7 @@ _ca3c20:
                 wait 12
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0BB1, TEXT_ONLY
+        dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
         return
 _ca3c3a:
@@ -9428,7 +9478,7 @@ _ca3c3a:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script TERRA
                 speed NORMAL
@@ -9446,7 +9496,7 @@ _ca3c4e:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script LOCKE
                 speed NORMAL
@@ -9464,7 +9514,7 @@ _ca3c62:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script EDGAR
                 speed NORMAL
@@ -9482,7 +9532,7 @@ _ca3c76:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script CELES
                 speed NORMAL
@@ -9500,7 +9550,7 @@ _ca3c8a:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script SABIN
                 speed NORMAL
@@ -9518,7 +9568,7 @@ _ca3c9e:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script CYAN
                 speed NORMAL
@@ -9536,7 +9586,7 @@ _ca3cb2:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script SHADOW
                 speed NORMAL
@@ -9554,7 +9604,7 @@ _ca3cc6:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script STRAGO
                 speed NORMAL
@@ -9572,7 +9622,7 @@ _ca3cda:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script RELM
                 speed NORMAL
@@ -9590,7 +9640,7 @@ _ca3cee:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script SETZER
                 speed NORMAL
@@ -9608,7 +9658,7 @@ _ca3d02:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script MOG
                 speed NORMAL
@@ -9626,7 +9676,7 @@ _ca3d16:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script GAU
                 speed NORMAL
@@ -9644,7 +9694,7 @@ _ca3d2a:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script GOGO
                 speed NORMAL
@@ -9662,7 +9712,7 @@ _ca3d3e:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0BB3, TEXT_ONLY
+        dlg DLG_2995, TEXT_ONLY
                 ; Yes!
         obj_script UMARO
                 speed NORMAL
@@ -9675,52 +9725,52 @@ _ca3d3e:
                 end
         return
 _ca3d52:
-        dlg $0BB4, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2996, {TEXT_ONLY, BOTTOM}
                 ; TERRA: I know what love is_!
         return
 _ca3d56:
-        dlg $0BB5, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2997, {TEXT_ONLY, BOTTOM}
                 ; LOCKE: And I have learned to celebrate life_and the living.
         return
 _ca3d5a:
-        dlg $0BB6, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2998, {TEXT_ONLY, BOTTOM}
                 ; CYAN: My family lives on inside of me.
         return
 _ca3d5e:
-        dlg $0BB7, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2999, {TEXT_ONLY, BOTTOM}
                 ; SHADOW: I know what friendship is_ and family_
         return
 _ca3d62:
-        dlg $0BB8, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3000, {TEXT_ONLY, BOTTOM}
                 ; EDGAR: It is my dream to build a kingdom in which I can guarantee freedom, and dignity.
         return
 _ca3d66:
-        dlg $0BB9, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3001, {TEXT_ONLY, BOTTOM}
                 ; SABIN: I have come to experience anew the love of my brother!
         return
 _ca3d6a:
-        dlg $0BBA, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3002, {TEXT_ONLY, BOTTOM}
                 ; CELES: I've met someone who can accept me for what I am.
         return
 _ca3d6e:
-        dlg $0BBB, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3003, {TEXT_ONLY, BOTTOM}
                 ; STRAGO: I have a special little Granddaughter!
         return
 _ca3d72:
-        dlg $0BBC, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3004, {TEXT_ONLY, BOTTOM}
                 ; RELM: And I have a brave Grandpa who'll stand by me through it all.
         return
 _ca3d76:
-        dlg $0BBD, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3005, {TEXT_ONLY, BOTTOM}
                 ; SETZER: My friend's airship_
                 ; and her love!
         return
 _ca3d7a:
-        dlg $0BBE, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3006, {TEXT_ONLY, BOTTOM}
                 ; MOG: I have my friends here!
         return
 _ca3d7e:
-        dlg $0BBF, {TEXT_ONLY, BOTTOM}
+        dlg DLG_3007, {TEXT_ONLY, BOTTOM}
                 ; GAU: You my friends!
                 ; Me uwaooo all of you!
         return
@@ -9829,75 +9879,75 @@ _ca3e3a:
         wait_bg
         return
 _ca3f13:
-        dlg $0B94
+        dlg DLG_2964
                 ; TERRA: General Leo_
                 ; I believe I understand what you're trying to say.
         call _caf59d
         return
 _ca3f1b:
-        dlg $0B95
+        dlg DLG_2965
                 ; LOCKE: As long as there're people who need to be protected, I'll fight!
         call _caf59d
         return
 _ca3f23:
-        dlg $0B96
+        dlg DLG_2966
                 ; CYAN: What an amazing device!
         call _caf59d
         return
 _ca3f2b:
-        dlg $0B97
+        dlg DLG_2967
                 ; SHADOW: __
         call _caf59d
         return
 _ca3f33:
-        dlg $0B98
+        dlg DLG_2968
                 ; EDGAR: If something happens to me, all the world's women will grieve!
         call _caf59d
         return
 _ca3f3b:
-        dlg $0B99
+        dlg DLG_2969
                 ; SABIN: Riiiiiight!
         call _caf59d
         return
 _ca3f43:
-        dlg $0B9A
+        dlg DLG_2970
                 ; CELES: I'm glad I made it this far_I feel I have a lot to live for_
         call _caf59d
         return
 _ca3f4b:
-        dlg $0B9B
+        dlg DLG_2971
                 ; STRAGO: Hey everyone!
                 ; Let me see the light in your eyes! The old man, here, hasn't given up yet!
         call _caf59d
         return
 _ca3f53:
-        dlg $0B9C
+        dlg DLG_2972
                 ; RELM: Let's do it!
                 ; Let's go get that madman!
         call _caf59d
         return
 _ca3f5b:
-        dlg $0B9D
+        dlg DLG_2973
                 ; SETZER: Something good will come of it all!
         call _caf59d
         return
 _ca3f63:
-        dlg $068B
+        dlg DLG_1675
                 ; MOG: Kupoppo!!
         call _caf59d
         return
 _ca3f6b:
-        dlg $068D
+        dlg DLG_1677
                 ; GAU: GAU become stronger on the Veldt.
         call _caf59d
         return
 _ca3f73:
-        dlg $068F
+        dlg DLG_1679
                 ; GOGO: __
         call _caf59d
         return
 _ca3f7b:
-        dlg $0690
+        dlg DLG_1680
                 ; UMARO: Uhhhh_
         call _caf59d
         return
@@ -9932,7 +9982,7 @@ _ca3f83:
                 dir UP
                 end
         wait_30f
-        dlg $099B
+        dlg DLG_2459
                 ; CELES: This person_
                 ; She was your friend?
                 ; SETZER: Yeah.
@@ -9956,7 +10006,7 @@ _ca3f83:
                 wait 4
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $099C
+        dlg DLG_2460
                 ; SETZER: Could be anything lurking down here, so keep your eyes peeled!
         call _cb2e34
         obj_script SLOT_2, ASYNC
@@ -9976,9 +10026,9 @@ _ca3ff3:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $09DE
+        dlg DLG_2526
                 ; Letters have been carved here_
-        dlg $09DF
+        dlg DLG_2527
                 ;
                 ; DLRO
         switch $00C2=1
@@ -9988,9 +10038,9 @@ _ca4004:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $09DE
+        dlg DLG_2526
                 ; Letters have been carved here_
-        dlg $09E0
+        dlg DLG_2528
                 ;
                 ; ERAU
         switch $00C3=1
@@ -10000,9 +10050,9 @@ _ca4015:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $09DE
+        dlg DLG_2526
                 ; Letters have been carved here_
-        dlg $09E1
+        dlg DLG_2529
                 ;
                 ; QSSI
         switch $00C4=1
@@ -10012,9 +10062,9 @@ _ca4026:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $09DE
+        dlg DLG_2526
                 ; Letters have been carved here_
-        dlg $09E2
+        dlg DLG_2530
                 ;
                 ; WEHT
         switch $00C5=1
@@ -10025,7 +10075,7 @@ _ca4037:
                 switch $01B4=0
                 goto EventReturn
         if_switch $0112=1, _ca4050
-        dlg $09DC
+        dlg DLG_2524
                 ; The tombstone is blank.
                 ; Carve something?
                 ; 0:   Yes
@@ -10033,7 +10083,7 @@ _ca4037:
         choice _ca4054, EventReturn
         return
 _ca4050:
-        dlg $09C4
+        dlg DLG_2500
                 ;
                 ; ERAUQS SI DLROW EHT
         return
@@ -10044,7 +10094,7 @@ _ca4054:
                 switch $00C4=0
                 switch $00C5=0
                 goto _ca4071
-        dlg $09B3
+        dlg DLG_2483
                 ; 0:  DLRO
                 ; 1:  ERAU
                 ; 2:  QSSI
@@ -10052,123 +10102,123 @@ _ca4054:
         choice _ca4075, _ca4083, _ca4091, _ca409f
         return
 _ca4071:
-        dlg $09DD
+        dlg DLG_2525
                 ; Nothing appropriate comes to mind_
         return
 _ca4075:
-        dlg $09B4
+        dlg DLG_2484
                 ; 0:  ERAU
                 ; 1:  QSSI
                 ; 2:  WEHT
         choice _ca40ad, _ca40b8, _ca40c3
         return
 _ca4083:
-        dlg $09B5
+        dlg DLG_2485
                 ; 0:  DLRO
                 ; 1:  QSSI
                 ; 2:  WEHT
         choice _ca40ce, _ca40d9, _ca40e4
         return
 _ca4091:
-        dlg $09B6
+        dlg DLG_2486
                 ; 0:  DLRO
                 ; 1:  ERAU
                 ; 2:  WEHT
         choice _ca40ef, _ca40fa, _ca4105
         return
 _ca409f:
-        dlg $09B7
+        dlg DLG_2487
                 ; 0:  DLRO
                 ; 1:  ERAU
                 ; 2:  QSSI
         choice _ca4110, _ca411b, _ca4126
         return
 _ca40ad:
-        dlg $09B8
+        dlg DLG_2488
                 ;
                 ; 0:  QSSI
                 ; 1:  WEHT
         choice _ca4167, _ca4163
         return
 _ca40b8:
-        dlg $09B9
+        dlg DLG_2489
                 ;
                 ; 0:  ERAU
                 ; 1:  WEHT
         choice _ca416b, _ca416f
         return
 _ca40c3:
-        dlg $09BA
+        dlg DLG_2490
                 ;
                 ; 0:  ERAU
                 ; 1:  QSSI
         choice _ca415b, _ca415f
         return
 _ca40ce:
-        dlg $09BB
+        dlg DLG_2491
                 ;
                 ; 0:  QSSI
                 ; 1:  WEHT
         choice _ca419b, _ca419f
         return
 _ca40d9:
-        dlg $09BC
+        dlg DLG_2492
                 ;
                 ; 0:  DLRO
                 ; 1:  WEHT
         choice _ca4197, _ca4193
         return
 _ca40e4:
-        dlg $09BD
+        dlg DLG_2493
                 ;
                 ; 0:  DLRO
                 ; 1:  QSSI
         choice _ca418b, _ca418f
         return
 _ca40ef:
-        dlg $09BE
+        dlg DLG_2494
                 ;
                 ; 0:  ERAU
                 ; 1:  WEHT
         choice _ca4183, _ca4187
         return
 _ca40fa:
-        dlg $09BF
+        dlg DLG_2495
                 ;
                 ; 0:  DLRO
                 ; 1:  WEHT
         choice _ca417f, _ca417b
         return
 _ca4105:
-        dlg $09C0
+        dlg DLG_2496
                 ;
                 ; 0:  DLRO
                 ; 1:  ERAU
         choice _ca4173, _ca4177
         return
 _ca4110:
-        dlg $09C1
+        dlg DLG_2497
                 ;
                 ; 0:  ERAU
                 ; 1:  QSSI
         choice _ca4147, _ca4131
         return
 _ca411b:
-        dlg $09C2
+        dlg DLG_2498
                 ;
                 ; 0:  DLRO
                 ; 1:  QSSI
         choice _ca414b, _ca414f
         return
 _ca4126:
-        dlg $09C3
+        dlg DLG_2499
                 ;
                 ; 0:  DLRO
                 ; 1:  ERAU
         choice _ca4157, _ca4153
         return
 _ca4131:
-        dlg $09C4
+        dlg DLG_2500
                 ;
                 ; ERAUQS SI DLROW EHT
         switch $0112=1
@@ -10177,129 +10227,129 @@ _ca4131:
                 end
         fade_out_song $10
         wait_song
-        dlg $09C4, {ASYNC, TEXT_ONLY}
+        dlg DLG_2500, {ASYNC, TEXT_ONLY}
                 ;
                 ; ERAUQS SI DLROW EHT
         play_song REST_IN_PEACE
         wait_dlg
-        dlg $09E3, TEXT_ONLY
+        dlg DLG_2531, TEXT_ONLY
                 ;
                 ;   Find the ``Exp. Egg'' hidden
                 ; in a back room
                 ; in the 3rd basement_
         return
 _ca4147:
-        dlg $09C5
+        dlg DLG_2501
                 ;
                 ; QSSI ERAUDL ROWEHT
         return
 _ca414b:
-        dlg $09C6
+        dlg DLG_2502
                 ;
                 ; QSSIRO DLERAUWEHT
         return
 _ca414f:
-        dlg $09C7
+        dlg DLG_2503
                 ;
                 ; DLROQSSIAU ERWEHT
         return
 _ca4153:
-        dlg $09C8
+        dlg DLG_2504
                 ;
                 ; DLROERAU QSSIWEHT
         return
 _ca4157:
-        dlg $09C9
+        dlg DLG_2505
                 ;
                 ; AUERDLRO QSSIWEHT
         return
 _ca415b:
-        dlg $09CA
+        dlg DLG_2506
                 ;
                 ; QSSIAU ERWEHTDLRO
         return
 _ca415f:
-        dlg $09CB
+        dlg DLG_2507
                 ;
                 ; ERAUQSSIWEHTDLRO
         return
 _ca4163:
-        dlg $09CC
+        dlg DLG_2508
                 ;
                 ; QSSIWEHT ERAUDLRO
         return
 _ca4167:
-        dlg $09CD
+        dlg DLG_2509
                 ;
                 ; WEHTQSSI ERAUDLRO
         return
 _ca416b:
-        dlg $09CE
+        dlg DLG_2510
                 ;
                 ; WEHT ERAUQSSIRO DL
         return
 _ca416f:
-        dlg $09CF
+        dlg DLG_2511
                 ;
                 ; ERAUWEHT QSSIRO DL
         return
 _ca4173:
-        dlg $09D0
+        dlg DLG_2512
                 ;
                 ; ERAUDLROHT WEQSSI
         return
 _ca4177:
-        dlg $09D1
+        dlg DLG_2513
                 ;
                 ; DLRO ERAUHT WEQSSI
         return
 _ca417b:
-        dlg $09D2
+        dlg DLG_2514
                 ;
                 ; DLROWEHT ERAUQSSI
         return
 _ca417f:
-        dlg $09D3
+        dlg DLG_2515
                 ;
                 ; WEHTDLRO ERAUQSSI
         return
 _ca4183:
-        dlg $09D4
+        dlg DLG_2516
                 ;
                 ; WEHTERAUDLROQSSI
         return
 _ca4187:
-        dlg $09D5
+        dlg DLG_2517
                 ;
                 ; ERAUWEHTDLROQSSI
         return
 _ca418b:
-        dlg $09D6
+        dlg DLG_2518
                 ;
                 ; QSSIDLROWEHTERAU
         return
 _ca418f:
-        dlg $09D7
+        dlg DLG_2519
                 ;
                 ; DLROQSSIWEHTERAU
         return
 _ca4193:
-        dlg $09D8
+        dlg DLG_2520
                 ;
                 ; DLROWEHTQSSIERAU
         return
 _ca4197:
-        dlg $09D9
+        dlg DLG_2521
                 ;
                 ; WEHTDLROQSSIERAU
         return
 _ca419b:
-        dlg $09DA
+        dlg DLG_2522
                 ;
                 ; WEHTQSSIDLROERAU
         return
 _ca419f:
-        dlg $09DB
+        dlg DLG_2523
                 ;
                 ; QSSIWEHTDLROERAU
         return
@@ -10518,7 +10568,7 @@ _ca42f1:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $09A0, TEXT_ONLY
+        dlg DLG_2464, TEXT_ONLY
                 ;
                 ; DARYL SLEEPS HERE
         if_switch $02B2=1, EventReturn
@@ -10596,7 +10646,7 @@ _ca435d:
                 move DOWN_LEFT, 2
                 dir RIGHT
                 end
-        dlg $099E
+        dlg DLG_2462
                 ; SETZER: This brings back a lot of memories.
         obj_script NPC_5, ASYNC
                 move DOWN_LEFT, 4
@@ -10612,7 +10662,7 @@ _ca435d:
         create_obj NPC_2
         show_obj NPC_2
         call _ca433f, 24
-        dlg $099D, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2461, {TEXT_ONLY, BOTTOM}
                 ; DARYL: This experimental airship is probably a bit unstable_
         wait_45f
         obj_script NPC_1, ASYNC
@@ -10628,7 +10678,7 @@ _ca435d:
                 action 24
                 end
         wait_15f
-        dlg $09A1, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2465, {TEXT_ONLY, BOTTOM}
                 ; SETZER: You can't be serious!
                 ; What are you trying to prove?!
         call _ca434e, 8
@@ -10644,7 +10694,7 @@ _ca43d9:
                 switch $01F0=1
                 goto EventReturn
         switch $01F0=1
-        dlg $099F
+        dlg DLG_2463
                 ; SETZER: Watch your step.
         mod_bg_tiles BG1, {9, 12}, {3, 4}, ASYNC
                 .byte $01,$01,$01
@@ -10698,7 +10748,7 @@ _ca44ba:
         show_obj NPC_3
         show_obj NPC_4
         call _ca433f, 24
-        dlg $09A2, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2466, {TEXT_ONLY, BOTTOM}
                 ; DARYL: If something should happen to me, the Falcon's yours!
         wait_30f
         obj_script NPC_3, ASYNC
@@ -10713,7 +10763,7 @@ _ca44e0:
                 wait 1
                 branch _ca44e0
                 end
-        dlg $09A3, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2467, {TEXT_ONLY, BOTTOM}
                 ; SETZER: Nonsense!
                 ; I'll win the Falcon from you when I whip you in a race!
                 ; SETZER: You'd better clear outta my way!
@@ -10808,7 +10858,7 @@ _ca4576:
                 wait 4
                 action 10
                 end
-        dlg $09A4, BOTTOM
+        dlg DLG_2468, BOTTOM
                 ; SETZER: There's nothing like flying!
         wait_obj NPC_14
         load_map 11, {15, 8}, LEFT, {Z_UPPER, NO_FADE_IN}
@@ -10816,7 +10866,7 @@ _ca4576:
         hide_obj SETZER
         fade_in
         wait_2s
-        dlg $09A6
+        dlg DLG_2470
                 ; DARYL: Come on!
                 ; Stop lagging back there!
         load_map 10, {14, 6}, LEFT, {Z_UPPER, NO_FADE_IN}
@@ -10833,7 +10883,7 @@ _ca4576:
                 end
         fade_in
         wait_fade
-        dlg $09A7, TEXT_ONLY
+        dlg DLG_2471, TEXT_ONLY
                 ; DARYL: Or do you like chewing on my wake!
         loop 3
                 obj_script SETZER
@@ -10913,10 +10963,10 @@ _ca4576:
                 speed SLOW
                 move RIGHT, 4
                 end
-        dlg $09A8
+        dlg DLG_2472
                 ; SETZER: Listen to you!
         wait_15f
-        dlg $09A9, TEXT_ONLY
+        dlg DLG_2473, TEXT_ONLY
                 ; DARYL: This time's for real.
                 ; I'm going to break every record!
                 ; I'll be known as the woman who flew closest to the stars!
@@ -10925,7 +10975,7 @@ _ca4576:
                 wait 5
                 action 10
                 end
-        dlg $09AA
+        dlg DLG_2474
                 ; SETZER: Be back before sunset! I'll be waiting for you on our hill.
         obj_script NPC_14, ASYNC
 _ca465d:
@@ -11003,7 +11053,7 @@ _ca4685:
                 wait 3
                 end_loop
         wait_2s
-        dlg $09AB, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2475, {TEXT_ONLY, BOTTOM}
                 ;
                 ;   The wreck of the Falcon was
                 ;     found a full year later,
@@ -11067,7 +11117,7 @@ _ca46ff:
                 dir LEFT
                 end
         wait_obj CAMERA
-        dlg $09AC
+        dlg DLG_2476
                 ; SETZER: I restored the craft, and then put it to rest down here.
         wait_45f
         obj_script EDGAR
@@ -11076,7 +11126,7 @@ _ca46ff:
                 action 35
                 end
         wait_45f
-        dlg $09AD
+        dlg DLG_2477
                 ; EDGAR: This is THE Falcon?
         fade_out_song $40
         wait_1s
@@ -11092,7 +11142,7 @@ _ca46ff:
                 dir DOWN
                 end
         play_song SEARCHING_FOR_FRIENDS
-        dlg $09A5
+        dlg DLG_2469
                 ; SETZER: I put it in storage.
                 ; I couldn't bear to look at it.
                 ; But now it just may save us_
@@ -11137,7 +11187,7 @@ _ca46ff:
                 end
         fade_in
         wait_1s
-        dlg $09AE
+        dlg DLG_2478
                 ; EDGAR: I finally think we're gonna pull this off!
                 ; CELES: We can attack Kefka's tower from the air!
                 ; EDGAR: The Falcon's going to give us one last chance at that guy_
@@ -11145,7 +11195,7 @@ _ca46ff:
         obj_script SETZER
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $09AF
+        dlg DLG_2479
                 ; SETZER: But first we need to find our friends!
         obj_script EDGAR
                 move LEFT, 1
@@ -11154,7 +11204,7 @@ _ca46ff:
                 wait 3
                 dir LEFT
                 end
-        dlg $09B0
+        dlg DLG_2480
                 ; EDGAR: Right.
                 ; First things first.
                 ; For once I feel hopeful!
@@ -11193,7 +11243,7 @@ _ca46ff:
                 dir DOWN
                 end
         wait_30f
-        dlg $09B1
+        dlg DLG_2481
                 ; CELES: Hey!
                 ; A bird!
         load_map 1, {25, 160}, UP, {Z_UPPER, AIRSHIP}
@@ -11244,7 +11294,7 @@ _ca46ff:
                 wait 4
                 action 27
                 end
-        dlg $09B2
+        dlg DLG_2482
                 ; CELES: SETZER!
                 ; Follow that bird!
                 ; SETZER: But why?
@@ -11374,7 +11424,7 @@ _ca48d6:
                 end_loop
         wait_obj SLOT_1
         wait_15f
-        dlg $0875
+        dlg DLG_2165
                 ; Can't you diffuse the statues?!
         fade_out
         wait_fade
@@ -12026,7 +12076,7 @@ _ca4f10:
         delete_obj UMARO
         fade_in
         unlock_camera
-        dlg $0876, BOTTOM
+        dlg DLG_2166, BOTTOM
                 ; SETZER: Hang on!
         flash BLUE
         create_obj NPC_3
@@ -12217,7 +12267,7 @@ _ca5189:
         fade_out_song $F0
         cutscene RUIN
         load_map 3, {8, 16}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN}
-        dlg $0877, {ASYNC, TEXT_ONLY}
+        dlg DLG_2167, {ASYNC, TEXT_ONLY}
                 ;
                 ; On that day, the world
                 ; was changed forever_
@@ -12310,7 +12360,7 @@ _ca5189:
                 dir LEFT
                 end
         wait_4s
-        dlg $0878
+        dlg DLG_2168
                 ; CID: CELES_at last_!
         wait_30f
         obj_script NPC_1
@@ -12319,11 +12369,11 @@ _ca5189:
                 layer 0
                 move RIGHT, 2
                 end
-        dlg $0878
+        dlg DLG_2168
                 ; CID: CELES_at last_!
         wait_1s
         call _cac807, 2
-        dlg $0879
+        dlg DLG_2169
                 ; CID: You're finally awake!
                 ; CELES: I_feel like I've been sleeping for ever_
                 ; CID: For one year, actually_
@@ -12340,7 +12390,7 @@ _ca5189:
                 move RIGHT, 1
                 move DOWN, 2
                 end
-        dlg $087A
+        dlg DLG_2170
                 ; CID: Yes, and I'm about out of energy.
         obj_script SLOT_1
                 dir LEFT
@@ -12352,7 +12402,7 @@ _ca5189:
                 dir RIGHT
                 end
         wait_1s
-        dlg $087B
+        dlg DLG_2171
                 ; CID: We're on a tiny, deserted island. After the world crumbled, I awoke to find us here together with_
                 ; _a few strangers.
                 ; CELES: The world_!
@@ -12361,7 +12411,7 @@ _ca5189:
                 dir DOWN
                 end
         wait_30f
-        dlg $087C
+        dlg DLG_2172
                 ; CELES: Where are my friends? Where's LOCKE_?
                 ; CID: I don't know.
                 ; I only know we're here_
@@ -12373,13 +12423,13 @@ _ca5189:
                 action 32
                 end
         wait_1s
-        dlg $087D
+        dlg DLG_2173
                 ; CELES: My friends_
                 ; they're probably all gone_
         obj_script NPC_1
                 move UP, 2
                 end
-        dlg $087E
+        dlg DLG_2174
                 ; CID: CELES_you're the closest thing to family that I have_we could just live out our lives here peacefully_
                 ; CELES: I suppose so, Cid_
                 ; Or should I say, Granddad?!
@@ -12393,7 +12443,7 @@ _ca5189:
                 dir DOWN
                 end
         wait_30f
-        dlg $087F
+        dlg DLG_2175
                 ; CID: Ha, ha_hack_cough!
                 ; CELES: Hey, are you hungry?
                 ; CID: I_haven't eaten in 3 or so days, ever since I became ill.
@@ -12517,7 +12567,7 @@ _ca53b6:
         switch $01D5=0
         sub_var 7, 16
 _ca53c2:
-        dlg $088A
+        dlg DLG_2186
                 ; CELES: Granddad, here's a fish! Eat up!
                 ; CID: Oh! Yum_
                 ; Chomp, munch, chew_
@@ -12540,18 +12590,18 @@ _ca53c5:
         if_switch $01A1=1, _ca575e
 
 ; 0-30
-        dlg $0888
+        dlg DLG_2184
                 ; CID: Good-bye_
         return
 
 _ca5419:
-        dlg $0889
+        dlg DLG_2185
                 ; __
         if_switch $00B2=1, EventReturn
         switch $00B2=1
         stop_timer 0
         call _caca8d
-        dlg $088C
+        dlg DLG_2188
                 ; CELES: Granddad.
                 ; You have to eat, or else_
                 ; W_what's the matter?
@@ -12564,7 +12614,7 @@ _ca5419:
         wait_2s
         call _cac810, 2
         wait_30f
-        dlg $088D
+        dlg DLG_2189
                 ; CELES: Cid_
         play_song CELES
         obj_script SLOT_1
@@ -12576,7 +12626,7 @@ _ca5419:
                 action 9 | ACTION_H_FLIP
                 end
         wait_15f 10
-        dlg $088E
+        dlg DLG_2190
                 ; CELES: No_NO!!
                 ; You promised you'd stay here with me!!
         wait_90f
@@ -12599,7 +12649,7 @@ _ca5461:
                 wait 1
                 branch _ca5461
                 end
-        dlg $088F
+        dlg DLG_2191
                 ; CELES: Granddad, ANSWER ME!
                 ; Tell me you're just joking!
         obj_script SLOT_1
@@ -12653,7 +12703,7 @@ _ca5461:
         set_script_mode EVENT
         return
 _ca54ba:
-        dlg $0893, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2195, {TEXT_ONLY, BOTTOM}
                 ; CID: Those others who were here_
                 ; when they were feeling down they'd take a leap of faith from the cliffs up north_perked 'em right up!
         obj_script SLOT_1
@@ -12670,7 +12720,7 @@ _ca54ba:
                 anim_on
                 end
         wait_2s
-        dlg $0894
+        dlg DLG_2196
                 ; CELES: Everyone's gone_
                 ; Even LOCKE, who promised to watch over me_
                 ; The world's slowly ebbing away_
@@ -12792,7 +12842,7 @@ _ca54ba:
                 action 9
                 end
         wait_2s
-        dlg $0895
+        dlg DLG_2197
                 ; CELES: Phew_
                 ; Why did you nurse me back to health? Did I ever ask you to help me?!
         wait_1s
@@ -12817,7 +12867,7 @@ _ca54ba:
         obj_script SLOT_1
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0896
+        dlg DLG_2198
                 ; CELES: A bandana???
                 ; No_it can't be_
                 ; CELES: Hey, you!
@@ -12838,7 +12888,7 @@ _ca54ba:
                 action 34 | ACTION_H_FLIP
                 end
         wait_90f
-        dlg $0897
+        dlg DLG_2199
                 ; CELES: He's alive_
                 ; LOCKE's still alive!!!
         switch $01CC=1
@@ -12849,7 +12899,7 @@ _ca54ba:
         set_parent_map 1, {76, 240}, DOWN
         return
 _ca55e5:
-        dlg $0898, TEXT_ONLY
+        dlg DLG_2200, TEXT_ONLY
                 ; You need to leave! The others are surely waiting for you!
                 ; Find the stairs next to the stove. Down them lies your road to freedom.
                 ; Love, Granddad
@@ -12861,7 +12911,7 @@ _ca55e9:
         sfx SFX::MAGICITE_PICKUP
         give_genju PALIDOR
         delete_obj NPC_6
-        dlg $091A
+        dlg DLG_2330
                 ;
                 ; Received the Magicite
                 ; ``Palidor''!
@@ -12889,7 +12939,7 @@ _ca55fe:
         obj_script SLOT_1
                 move UP, 1
                 end
-        dlg $0891, BOTTOM
+        dlg DLG_2193, BOTTOM
                 ; CELES: Granddad.
                 ; CID: CELES_
                 ; You must leave this place.
@@ -12953,7 +13003,7 @@ _ca5679:
                 action 33
                 end
         wait_3s
-        dlg $0892, TEXT_ONLY
+        dlg DLG_2194, TEXT_ONLY
                 ; CELES: I'll make you proud of me_Granddad_
 _ca5686:
         wait_15f 10
@@ -13041,7 +13091,7 @@ _ca5686:
 ; cid is saved!
 _ca5713:
         stop_timer 0
-        dlg $0880
+        dlg DLG_2176
                 ; CID: I feel much better!
                 ; Thanks, CELES!
         if_switch $00B3=1, EventReturn
@@ -13060,7 +13110,7 @@ _ca5713:
                 dir DOWN
                 wait 6
                 end
-        dlg $088B
+        dlg DLG_2187
                 ; CELES: What's up?
                 ; CID: CELES_the project that kept me going over the past year is down below. Go have a look at it!
         sfx SFX::DOOR_OPEN
@@ -13076,46 +13126,46 @@ _ca5713:
 
 ; 231-254
 _ca5746:
-        dlg $0881
+        dlg DLG_2177
                 ; CID: My dear,
                 ; I_feel I'm not going to be around much longer_
         return
 
 ; 201-230
 _ca574a:
-        dlg $0882
+        dlg DLG_2178
                 ; CID: CELES, thanks for all you've done for me!
         return
 
 ; 161-200
 _ca574e:
-        dlg $0883
+        dlg DLG_2179
                 ; CID: Hackack!!
                 ; I feel a little better!
         return
 
 ; 121-160
 _ca5752:
-        dlg $0884
+        dlg DLG_2180
                 ; CID: Cough_wheeze_
                 ; I can't bear this any longer_
         return
 
 ; 91-120
 _ca5756:
-        dlg $0885
+        dlg DLG_2181
                 ; CID: I_I'm not long for this cruel new world_
         return
 
 ; 61-90
 _ca575a:
-        dlg $0886
+        dlg DLG_2182
                 ; CID: My worst nightmare is to think of you alone here on this wretched island_hack_wheeze!!
         return
 
 ; 31-60
 _ca575e:
-        dlg $0887
+        dlg DLG_2183
                 ; CID: Cough_hack_ACK!!
                 ; While I can still talk, I_wheeze_pant_want to thank you_cough!
         return
@@ -13156,14 +13206,14 @@ _ca5798:
                 move DOWN, 1
                 branch _ca5798
                 end
-        dlg $0872
+        dlg DLG_2162
                 ; The airship's below.
                 ; 0:  (Jump!!)
                 ; 1:  (Wait!!)
         choice _ca48c1, EventReturn
         return
 _ca57a8:
-        dlg $0873
+        dlg DLG_2163
                 ; 0:  (Jump!!)
                 ; 1:  (Gotta wait for SHADOW_)
         choice _ca48c1, EventReturn
@@ -13200,7 +13250,7 @@ _ca57b3:
                 dir LEFT
                 end
         sfx 24
-        dlg $0874, BOTTOM
+        dlg DLG_2164, BOTTOM
                 ; ``SHADOW!!''
                 ; SHADOW: I'll be blown to bits before I can even collect my pay_
         switch $037D=1
@@ -13241,7 +13291,7 @@ _ca5806:
         wait_1s
         return
 _ca5817:
-        dlg $084D, BOTTOM
+        dlg DLG_2125, BOTTOM
                 ; SETZER: Quick!
                 ; Let's jump onto that thing!
                 ;
@@ -13254,7 +13304,7 @@ _ca5817:
         if_switch $01A2=1, _ca583a
         fade_in
         wait_fade
-        dlg $084E, BOTTOM
+        dlg DLG_2126, BOTTOM
                 ; Only 3 allowed in your party.
                 ; The others must stay on board.
         return
@@ -13432,7 +13482,7 @@ _ca5915:
                 end
         player_ctrl_on
         wait_15f 32
-        dlg $084F
+        dlg DLG_2127
                 ; Uh, oh!!!
                 ; The Imperial Airforce (IAF)!
                 ; We're surrounded!
@@ -13509,7 +13559,7 @@ _ca59b1:
         call _ca5ea9
         fade_in
         wait_45f
-        dlg $0850
+        dlg DLG_2128
                 ; Something_
                 ; curious_approaches!!
         obj_script NPC_8, ASYNC
@@ -13616,7 +13666,7 @@ _ca5a42:
                 action 10 | ACTION_H_FLIP
                 anim_on
                 end
-        dlg $0851
+        dlg DLG_2129
                 ; Kefka, Gestahl_and the Statues are just ahead.
         return
 _ca5a6c:
@@ -13627,7 +13677,7 @@ _ca5a6c:
                 speed SLOW
                 move DOWN, 3
                 end
-        dlg $0857
+        dlg DLG_2135
                 ; The airship's below!
                 ; Do you wish to return?
                 ; 0:  (No)
@@ -13702,7 +13752,7 @@ _ca5ade:
         obj_script SETZER
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0849, BOTTOM
+        dlg DLG_2121, BOTTOM
                 ; SETZER: The Empire's after the sealed gate! They're looking for some statues or something.
                 ; STRAGO: No!!!
         obj_script STRAGO
@@ -13741,7 +13791,7 @@ _ca5ade:
                 dir LEFT
                 end
         wait_45f
-        dlg $084B
+        dlg DLG_2123
                 ; GESTAHL: Oh, those silly Espers! To think they opened the gate themselves! The Statues should be just ahead.
                 ; If we can just get our hands on them, we'll have everything we ever dreamed of!
         wait_obj CAMERA
@@ -13762,7 +13812,7 @@ _ca5b43:
                 wait 12
                 move DOWN, 1
                 end
-        dlg $084C
+        dlg DLG_2124
                 ; GESTAHL: Come quickly!
         obj_script NPC_7
                 action 31
@@ -13809,7 +13859,7 @@ _ca5b43:
                 end
         wait_45f
         fade_out_song $80
-        dlg $084A, BOTTOM
+        dlg DLG_2122, BOTTOM
                 ; CELES: What's wrong, TERRA?
                 ; TERRA: The island_
                 ; The world is groaning in pain_
@@ -14025,7 +14075,7 @@ _ca5d0e:
                 branch _ca5d0e
                 end
         wait_1s
-        dlg $0846
+        dlg DLG_2118
                 ; GESTAHL: Fuwa, ha, ha!
                 ; Now THIS is power!
                 ; This, and my Magicite_
@@ -14055,7 +14105,7 @@ _ca5d0e:
                 wait 10
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0847, BOTTOM
+        dlg DLG_2119, BOTTOM
                 ; STRAGO: The beginning of all magic_
                 ; TERRA: Those?
                 ; STRAGO: It is said that they somehow neutralized each other's power, then sealed themselves away_
@@ -14315,18 +14365,18 @@ _ca5f8a:
         call _cba3ec
         return
 _ca5f9b:
-        dlg $0B6A
+        dlg DLG_2922
                 ; You've seen it, haven't you?
         return
 _ca5f9f:
         if_switch $01F8=1, _ca5fba
         set_case PARTY_CHARS
         if_switch $01A4=1, _ca71ba
-        dlg $0B68
+        dlg DLG_2920
                 ; It doesn't look like it, but this castle incorporates some of the most high-tech devices in existence. For example, _
         wait_15f
         if_switch $0048=1, _ca5f9b
-        dlg $0B69
+        dlg DLG_2921
                 ; Oops_they're all top-secret!
         return
 _ca5fba:
@@ -14334,7 +14384,7 @@ _ca5fba:
         obj_script NPC_4, ASYNC
                 dir DOWN
                 end
-        dlg $0093
+        dlg DLG_147
                 ; EDGAR: Get ready_!
                 ; SOLDIER: Yes, Sir!
         obj_script NPC_4
@@ -14352,14 +14402,14 @@ _ca5fba:
         obj_script NPC_5
                 move UP, 8
                 end
-        dlg $0094
+        dlg DLG_148
                 ; KEFKA: Changed your mind_?
         obj_script EDGAR
                 dir DOWN
                 wait 16
                 action 35
                 end
-        dlg $0095
+        dlg DLG_149
                 ; EDGAR: I guess I have no choice_
         create_obj NPC_12
         create_obj NPC_14
@@ -14446,7 +14496,7 @@ _ca5fba:
         obj_script TERRA
                 move UP, 3
                 end
-        dlg $0096
+        dlg DLG_150
                 ; EDGAR: Or maybe I do!
         lock_camera
         obj_script CAMERA, ASYNC
@@ -14489,7 +14539,7 @@ _ca5fba:
                 dir UP
                 end
         wait_obj CAMERA
-        dlg $0097, BOTTOM
+        dlg DLG_151, BOTTOM
                 ; KEFKA: Ackk!
                 ; Shameful that a king should flee, leaving his people behind!
                 ; How utterly delightful!
@@ -14614,7 +14664,7 @@ _ca5fba:
                 anim_on
                 end
         wait_1s
-        dlg $0098, BOTTOM
+        dlg DLG_152, BOTTOM
                 ; EDGAR: Jump!
         wait_obj TERRA
         obj_script LOCKE, ASYNC
@@ -14624,13 +14674,13 @@ _ca5fba:
                 dir UP
                 end
         wait_obj CAMERA
-        dlg $009A
+        dlg DLG_154
                 ; EDGAR: OK! Dive now!!!
         obj_script LOCKE
                 move LEFT, 4
                 dir DOWN
                 end
-        dlg $0099
+        dlg DLG_153
                 ; LOCKE: Yahoooo!
         obj_script EDGAR, ASYNC
                 move DOWN_LEFT, 6
@@ -14713,7 +14763,7 @@ _ca5fba:
                 move RIGHT, 8
                 end
         wait_45f
-        dlg $009B, ASYNC
+        dlg DLG_155, ASYNC
                 ; SOLDIER: Figaro Submerge Mode engaged!
         wait_obj CAMERA
         obj_script NPC_1, ASYNC
@@ -14743,7 +14793,7 @@ _ca5fba:
                 move LEFT_LEFT_UP, 3
                 end
         call _ca652b
-        dlg $009C, BOTTOM
+        dlg DLG_156, BOTTOM
                 ; CHANCELLOR: No one can touch the people of Figaro!
         spc_cmd $82, $20, $FF
         shake ALL, 3, 1
@@ -14817,7 +14867,7 @@ _ca5fba:
                 action 24
                 end
         wait_30f
-        dlg $009E, BOTTOM
+        dlg DLG_158, BOTTOM
                 ; KEFKA: Go!! GET THEM!
         obj_script NPC_5, ASYNC
                 wait 3
@@ -14992,11 +15042,11 @@ _ca63bf:
                 move RIGHT, 6
                 end
         wait_45f
-        dlg $009D, BOTTOM
+        dlg DLG_157, BOTTOM
                 ; EDGAR: Bravo, Figaro!!!
         wait_obj TERRA
         fade_out_song $40
-        dlg $009F, BOTTOM
+        dlg DLG_159, BOTTOM
                 ; KEFKA: Son of a submariner!
                 ; They'll pay for this_
         wait_1s
@@ -15043,10 +15093,10 @@ _ca6458:
                 branch _ca6458
                 end
         wait_45f
-        dlg $00A0
+        dlg DLG_160
                 ; LOCKE: This is great!
         wait_2s
-        dlg $00A1, ASYNC
+        dlg DLG_161, ASYNC
                 ; TERRA: Was that a bad person?
                 ; I_ I'm scared_
         loop 255
@@ -15064,7 +15114,7 @@ _ca6474:
                 branch _ca6474
                 end
         wait_90f
-        dlg $00A2, ASYNC
+        dlg DLG_162, ASYNC
                 ; EDGAR: TERRA,
                 ; there's someone I'd like you to meet_!
         loop 255
@@ -15081,19 +15131,19 @@ _ca648b:
                 branch _ca648b
                 end
         wait_30f
-        dlg $00A3
+        dlg DLG_163
                 ; LOCKE: We're members of the Returners.
                 ; EDGAR: Our mentor, Banon, would certainly like to meet you.
                 ; ``Magic'' is going to be the key to winning this war.
         wait_30f
-        dlg $00A4
+        dlg DLG_164
                 ; TERRA: ``Magic''_
         wait_30f
-        dlg $00A5
+        dlg DLG_165
                 ; EDGAR: TERRA has magical powers. That Esper seemed to_react to her. Can there be some connection?
                 ; TERRA: I haven't the foggiest! It just seems natural to me that I have the use of this power_
         wait_15f
-        dlg $00A6, ASYNC
+        dlg DLG_166, ASYNC
                 ; EDGAR: But no HUMAN is born with the powers you seem to have, and_
         loop 255
                 wait 1
@@ -15158,7 +15208,7 @@ _ca648b:
                 end
         play_song AWAKENING
         wait_90f
-        dlg $00A7
+        dlg DLG_167
                 ; EDGAR: I apologize.
                 ; TERRA: What should I do_?
                 ; EDGAR: I'm sure the Empire is going to come after you_
@@ -15170,12 +15220,12 @@ _ca648b:
                 move DOWN, 2
                 dir LEFT
                 end
-        dlg $00A8
+        dlg DLG_168
                 ; EDGAR: Then I think we need to consult with Banon.
                 ; TERRA: __
         wait_obj LOCKE
         wait_obj CAMERA
-        dlg $00A9
+        dlg DLG_169
                 ; LOCKE: Please_
         obj_script TERRA
                 dir DOWN
@@ -15185,7 +15235,7 @@ _ca648b:
                 move DOWN, 1
                 dir LEFT
                 end
-        dlg $00AA
+        dlg DLG_170
                 ; EDGAR: OK!
                 ; To the south there's a cave that leads to South Figaro.
         wait_30f
@@ -15225,19 +15275,19 @@ _ca6601:
         if_switch $00A4=1, _ca661b
         if_switch $0048=1, _ca6617
         if_switch $0004=0, _ca661f
-        dlg $0050
+        dlg DLG_80
                 ; Feel free to wander about.
         return
 _ca6617:
-        dlg $03AE
+        dlg DLG_942
                 ; The Empire is no longer our ally!
         return
 _ca661b:
-        dlg $0963
+        dlg DLG_2403
                 ; No more Returners_no more Empire. Now who am I gonna side with?
         return
 _ca661f:
-        dlg $0051
+        dlg DLG_81
                 ; Go see the King!
         return
 _ca6623:
@@ -15269,7 +15319,7 @@ _ca6623:
         obj_script NPC_1
                 move DOWN, 1
                 end
-        dlg $0040, BOTTOM
+        dlg DLG_64, BOTTOM
                 ; MAN: You mean, THIS young woman_?!
         obj_script NPC_1
                 move DOWN, 1
@@ -15301,13 +15351,13 @@ _ca6623:
         obj_script TERRA
                 dir UP
                 end
-        dlg $0041
+        dlg DLG_65
                 ; TERRA: Who do you think you are?
         wait_30f
         obj_script NPC_1
                 action 33
                 end
-        dlg $0042
+        dlg DLG_66
                 ; MAN: Oh_sorry!
         wait_45f
         obj_script NPC_1
@@ -15329,7 +15379,7 @@ _ca6623:
         obj_script NPC_1
                 action 36
                 end
-        dlg $0043
+        dlg DLG_67
                 ; MAN: How rude of me to turn my back to a lady!
         hide_obj TERRA
         hide_obj LOCKE
@@ -15337,7 +15387,7 @@ _ca6623:
         hide_obj NPC_3
         call _cad00f
         wait_1s
-        dlg $0044, {TEXT_ONLY, BOTTOM}
+        dlg DLG_68, {TEXT_ONLY, BOTTOM}
                 ; The young king of Figaro Castle, ally to the Empire, and a master designer of machinery_
         wait_30f
         give_item AUTOCROSSBOW
@@ -15366,13 +15416,13 @@ _ca6623:
                 speed NORMAL
                 move DOWN, 2
                 end
-        dlg $0045, BOTTOM
+        dlg DLG_69, BOTTOM
                 ; EDGAR: I am EDGAR, King of Figaro.
         obj_script LOCKE
                 speed FAST
                 move DOWN, 1
                 end
-        dlg $0046, BOTTOM
+        dlg DLG_70, BOTTOM
                 ; LOCKE: Surprised someone like me knows a king?
         unlock_camera
         obj_script NPC_1, ASYNC
@@ -15396,7 +15446,7 @@ _ca6623:
         obj_script LOCKE
                 dir DOWN
                 end
-        dlg $0047, BOTTOM
+        dlg DLG_71, BOTTOM
                 ; LOCKE: Talk to you later!
         obj_script LOCKE
                 move DOWN, 8
@@ -15417,7 +15467,7 @@ _ca6623:
         sort_obj
         and_status TERRA, {MAGITEK, INTERCEPTOR}
         max_hp TERRA
-        dlg $0048
+        dlg DLG_72
                 ; EDGAR: So_you're an Imperial soldier! No problem. Figaro and the Empire are allies!
                 ; Please, relax while you're here.
                 ; It's not in my blood to harm a lady.
@@ -15425,7 +15475,7 @@ _ca6623:
         obj_script TERRA
                 move DOWN, 1
                 end
-        dlg $0049
+        dlg DLG_73
                 ; TERRA: Look, why are you helping me?
                 ; Is it because of my_abilities?
         loop 4
@@ -15436,14 +15486,14 @@ _ca6623:
                         wait 1
                         end
                 end_loop
-        dlg $004A
+        dlg DLG_74
                 ; EDGAR: I'll give you 3 reasons:
                 ; First of all, your beauty has captivated me!
                 ; Second_I'm dying to know if I'm your type_
         obj_script NPC_1
                 move DOWN, 3
                 end
-        dlg $004B
+        dlg DLG_75
                 ; I guess your_abilities_would be a distant 3rd.
         obj_script TERRA
                 move DOWN, 2
@@ -15454,7 +15504,7 @@ _ca6623:
                 end
         call _cac7fe, 2
         wait_30f
-        dlg $004C
+        dlg DLG_76
                 ; TERRA: __?
                 ; What's with you, anyway?
         obj_script NPC_1
@@ -15462,7 +15512,7 @@ _ca6623:
                 wait 16
                 action 32
                 end
-        dlg $004D
+        dlg DLG_77
                 ; EDGAR: Guess my technique's getting a bit rusty_
         obj_script NPC_1
                 move DOWN, 4
@@ -15474,7 +15524,7 @@ _ca6623:
                 wait 8
                 action 32
                 end
-        dlg $004F
+        dlg DLG_79
                 ; TERRA: Hmm_I suppose a normal girl would have found him dashing.
                 ; But I'm hardly_normal_
         switch $0004=1
@@ -15485,21 +15535,21 @@ _ca6623:
         return
 _ca6786:
         if_switch $0048=1, _ca6790
-        dlg $0056
+        dlg DLG_86
                 ; I heard the Empire is using something called ``magic''_
         return
 _ca6790:
-        dlg $03AC
+        dlg DLG_940
                 ; Submerged, this castle could even travel under a mountain range!
         return
 _ca6794:
         if_switch $0048=1, _ca6790
-        dlg $0058
+        dlg DLG_88
                 ; Gestahl has harnessed the power of magic.
                 ; Who can stop him now?!
         return
 _ca679e:
-        dlg $03AF
+        dlg DLG_943
                 ; You must be tired!
                 ; How about a rest?
         return
@@ -15536,20 +15586,20 @@ _ca67db:
         shop_menu FIGARO_CASTLE_TOOLS_3
         return
 _ca67de:
-        dlg $006F
+        dlg DLG_111
                 ; MERCHANT: I can't take money from the King!
                 ; EDGAR: Look, don't you have a family?
                 ; Just shut up and take it.
         return
 _ca67e2:
-        dlg $0070
+        dlg DLG_112
                 ; MERCHANT: Sir SABIN, I can't take your money!
                 ; SABIN: Take it!
                 ; Haven't you heard? My brother says I'm a notorious spendthrift!
         return
 _ca67e6:
         if_switch $0048=1, _ca67f0
-        dlg $006E
+        dlg DLG_110
                 ; CHANCELLOR: The whole business of the succession was so repugnant to SABIN, the King's brother, that__
                 ; __he fled the castle forever. The succession was settled with a coin toss_
         return
@@ -15557,15 +15607,15 @@ _ca67f0:
         set_case PARTY_CHARS
         if_case CHAR::EDGAR, _ca67ff
         if_case CHAR::SABIN, _ca6803
-        dlg $03B6
+        dlg DLG_950
                 ; CHANCELLOR: Make yourselves at home here.
         return
 _ca67ff:
-        dlg $03B4
+        dlg DLG_948
                 ; CHANCELLOR: Welcome back, King EDGAR!
         return
 _ca6803:
-        dlg $03B5
+        dlg DLG_949
                 ; CHANCELLOR: Huh!?
                 ; SABIN_
                 ; What a splendid young man you've become!
@@ -15573,51 +15623,51 @@ _ca6803:
 _ca6807:
         if_switch $02DF=1, _ca681b
         if_switch $00A4=1, _ca6817
-        dlg $0061
+        dlg DLG_97
                 ; These thieves have been
                 ; terrorizing the vicinity.
                 ; Stay away from 'em!
         return
 _ca6817:
-        dlg $0961
+        dlg DLG_2401
                 ; I know someone who deserves to be locked up in here!
         return
 _ca681b:
-        dlg $0962
+        dlg DLG_2402
                 ; You found an ancient text at the library, right?
         return
 _ca681f:
-        dlg $0062
+        dlg DLG_98
                 ; I demand to see EDGAR!
                 ; How dare they keep us in this stinking pit!
         return
 _ca6823:
-        dlg $0063
+        dlg DLG_99
                 ; Hey! Let us outta here!
         return
 _ca6827:
-        dlg $0064
+        dlg DLG_100
                 ; Relax, they're just blowing off steam. But I'm telling you, there's no sense keeping us here!
                 ; We're just small potatos compared to the real threat lurking out there! And King EDGAR knows it!
         return
 _ca682b:
-        dlg $0065
+        dlg DLG_101
                 ; I'm Lone Wolf, the pickpocket!
         return
 _ca682f:
         if_switch $00A4=1, _ca68dc
         if_switch $0048=0, _ca68d8
-        dlg $03D2
+        dlg DLG_978
                 ; Lots of requests this month!
                 ; If it's your wish, I'll take you beyond the mountains.
         if_switch $010B=0, _ca684f
-        dlg $03D4
+        dlg DLG_980
                 ; 0:  (Go to Kohlingen?)
                 ; 1:  (Stop?)
         choice _ca685a, EventReturn
         return
 _ca684f:
-        dlg $03D3
+        dlg DLG_979
                 ; 0:  (Go to Figaro?)
                 ; 1:  (Stop?)
         choice _ca6899, EventReturn
@@ -15626,7 +15676,7 @@ _ca685a:
         obj_script NPC_6
                 move UP, 3
                 end
-        dlg $03D7, BOTTOM
+        dlg DLG_983, BOTTOM
                 ; Urgggh!
         switch $010B=0
         switch $01CC=1
@@ -15641,7 +15691,7 @@ _ca685a:
         load_map 61, {6, 34}, UP, {Z_UPPER, SET_PARENT}
         set_script_mode EVENT
         switch $01CC=0
-        dlg $03D8
+        dlg DLG_984
                 ; Next stop, Kohlingen!
                 ; Watch your step!
         switch $010C=1
@@ -15650,7 +15700,7 @@ _ca6899:
         obj_script NPC_6
                 move UP, 3
                 end
-        dlg $03D7, BOTTOM
+        dlg DLG_983, BOTTOM
                 ; Urgggh!
         switch $010C=0
         switch $01CC=1
@@ -15665,31 +15715,31 @@ _ca6899:
         load_map 61, {6, 34}, UP, {Z_UPPER, SET_PARENT}
         set_script_mode EVENT
         switch $01CC=0
-        dlg $03D9
+        dlg DLG_985
                 ; Next stop, South Figaro.
                 ; Watch your step!
         switch $010B=1
         return
 _ca68d8:
-        dlg $03D5
+        dlg DLG_981
                 ; Beyond is the Figaro Castle Engine Room.
                 ; We're ready to leave at a moment's notice!
         return
 _ca68dc:
         if_switch $00C6=1, _ca68e6
-        dlg $094E
+        dlg DLG_2382
                 ; I_it was awful_
         return
 _ca68e6:
         if_switch $026F=1, _ca695e
         if_switch $0106=0, _ca68fd
-        dlg $03D4
+        dlg DLG_980
                 ; 0:  (Go to Kohlingen?)
                 ; 1:  (Stop?)
         choice _ca6908, EventReturn
         return
 _ca68fd:
-        dlg $03D3
+        dlg DLG_979
                 ; 0:  (Go to Figaro?)
                 ; 1:  (Stop?)
         choice _ca6986, EventReturn
@@ -15698,7 +15748,7 @@ _ca6908:
         obj_script NPC_6
                 move UP, 3
                 end
-        dlg $03D7, BOTTOM
+        dlg DLG_983, BOTTOM
                 ; Urgggh!
         switch $0106=0
         switch $01CC=1
@@ -15716,7 +15766,7 @@ _ca6931:
         load_map 61, {6, 34}, UP, {Z_UPPER, SET_PARENT}
         set_script_mode EVENT
         switch $01CC=0
-        dlg $03D8
+        dlg DLG_984
                 ; Next stop, Kohlingen!
                 ; Watch your step!
         switch $00DC=1
@@ -15732,7 +15782,7 @@ _ca694f:
         switch $0397=1
         wait_30f
 _ca695e:
-        dlg $01DF
+        dlg DLG_479
                 ; There's something odd about this stratum_
                 ; It's as if we've bumped into something_
                 ; 0:  (Continue journey)
@@ -15757,7 +15807,7 @@ _ca6986:
         obj_script NPC_6
                 move UP, 3
                 end
-        dlg $03D7, BOTTOM
+        dlg DLG_983, BOTTOM
                 ; Urgggh!
         switch $00DC=0
         switch $01CC=1
@@ -15775,7 +15825,7 @@ _ca69ad:
         load_map 61, {6, 34}, UP, {Z_UPPER, SET_PARENT}
         set_script_mode EVENT
         switch $01CC=0
-        dlg $03D9
+        dlg DLG_985
                 ; Next stop, South Figaro.
                 ; Watch your step!
         switch $0106=1
@@ -15802,7 +15852,7 @@ _ca69cd:
                 move RIGHT, 1
                 anim_on
                 end
-        dlg $03D6
+        dlg DLG_982
                 ; That's dangerous!
         obj_script NPC_6
                 move UP, 1
@@ -15817,7 +15867,7 @@ _ca69fd:
                 move DOWN, 2
                 dir LEFT
                 end
-        dlg $095B
+        dlg DLG_2395
                 ; Nonsense!
                 ; It's been fixed!
                 ; Next stop, the surface!
@@ -15839,7 +15889,7 @@ _ca69fd:
         switch $01CC=0
         return
 _ca6a28:
-        dlg $094E
+        dlg DLG_2382
                 ; I_it was awful_
         return
 _ca6a2c:
@@ -15848,7 +15898,7 @@ _ca6a2c:
                 action 9
                 end
         wait_1s
-        dlg $094D
+        dlg DLG_2381
                 ; GERAD: You all right?
                 ; You were almost a goner.
         obj_script NPC_8, ASYNC
@@ -15881,7 +15931,7 @@ _ca6a48:
         obj_script CAMERA
                 move UP, 6
                 end
-        dlg $094F, BOTTOM
+        dlg DLG_2383, BOTTOM
                 ; GERAD: Here's the problem_
                 ; What a mess_
                 ; Boss! What're we gonna do? Our treasure's stored in the room back there!
@@ -15902,7 +15952,7 @@ _ca6a48:
                 move UP, 3
                 action 10
                 end
-        dlg $0950
+        dlg DLG_2384
                 ; GERAD: You guys get in there while I keep this thing busy!
                 ; ``But boss! That's dangerous!''
                 ; GERAD: Get going!
@@ -15932,7 +15982,7 @@ _ca6a48:
                 speed FAST
                 move UP, 2
                 end
-        dlg $0951
+        dlg DLG_2385
                 ; CELES: EDGAR!
         wait_15f 10
         obj_script NPC_11
@@ -15940,7 +15990,7 @@ _ca6a48:
                 wait 2
                 action 36
                 end
-        dlg $0952
+        dlg DLG_2386
                 ; EDGAR: What're ya waiting for, CELES?
                 ; Give me a hand!!
                 ; CELES: EDGAR!
@@ -15978,7 +16028,7 @@ _ca6a48:
         obj_script SLOT_1
                 move UP, 2
                 end
-        dlg $0953
+        dlg DLG_2387
                 ; CELES: Why the stupid farce?
                 ; EDGAR: Well, I heard that Figaro had had an accident.
                 ; I wanted to help, but didn't know where to look.
@@ -16004,7 +16054,7 @@ _ca6a48:
                 wait 4
                 action 35
                 end
-        dlg $0955, BOTTOM
+        dlg DLG_2389, BOTTOM
                 ; EDGAR: Uh, oh_!
                 ; Let's hide!
         obj_script NPC_11, ASYNC
@@ -16060,14 +16110,14 @@ _ca6a48:
                 move DOWN, 4
                 dir UP
                 end
-        dlg $0956, BOTTOM
+        dlg DLG_2390, BOTTOM
                 ; Boss! __?
                 ; Boss?
         obj_script NPC_12
                 speed NORMAL
                 move DOWN, 1
                 end
-        dlg $0957, BOTTOM
+        dlg DLG_2391, BOTTOM
                 ; Must have been eaten by that thing_
         obj_script NPC_13
                 speed SLOW
@@ -16077,7 +16127,7 @@ _ca6a48:
                 dir UP
                 end
         wait_45f
-        dlg $0958
+        dlg DLG_2392
                 ; It wasn't even much of a monster_
                 ; Well, let's go_
         obj_script NPC_12, ASYNC
@@ -16118,7 +16168,7 @@ _ca6b93:
                 move LEFT, 1
                 end
         wait_90f
-        dlg $0959
+        dlg DLG_2393
                 ; ``You don't want that treasure back_?''
                 ; EDGAR: It's completely worthless.
                 ; Besides, Kefka's the one we need to worry about.
@@ -16156,7 +16206,7 @@ _ca6b93:
         call _cacb95
         return
 _ca6bf3:
-        dlg $0954
+        dlg DLG_2388
                 ; SABIN: Don't treat us like strangers anymore!
         return
 _ca6bf7:
@@ -16172,74 +16222,74 @@ _ca6bf7:
                 action 10 | ACTION_H_FLIP
                 end
         wait_30f
-        dlg $095A
+        dlg DLG_2394
                 ; SABIN: There's only one little problem, eh, brother!
         return
 _ca6c0c:
         party_chars CELES, SABIN
         return
 _ca6c12:
-        dlg $0059
+        dlg DLG_89
                 ; Though EDGAR showers his attentions on women, most are too smart to pay any attention to him.
         set_case PARTY_CHARS
         if_switch $01A4=0, EventReturn
-        dlg $005E
+        dlg DLG_94
                 ; Ah! King EDGAR!
         return
 _ca6c20:
         if_switch $00A4=1, _ca6c42
         if_switch $0048=1, _ca6c3a
-        dlg $005C
+        dlg DLG_92
                 ; He recently tried to hit on the high priestess_
                 ; Surely, he's_talked to you?
         set_case PARTY_CHARS
         if_switch $01A4=0, _ca6c3e
-        dlg $005E
+        dlg DLG_94
                 ; Ah! King EDGAR!
         return
 _ca6c3a:
-        dlg $03AB
+        dlg DLG_939
                 ; Who'd have thought a person could fly over a mountain range?
         return
 _ca6c3e:
-        dlg $005D
+        dlg DLG_93
                 ; TERRA: __
         return
 _ca6c42:
-        dlg $095D
+        dlg DLG_2397
                 ; Several of the castle's citizens left to join the Cult of Kefka.
                 ; If a loved one should call out a cult member's name, however_
         return
 _ca6c46:
         if_switch $00A4=1, _ca6c5a
         if_switch $0048=1, _ca6c56
-        dlg $0053
+        dlg DLG_83
                 ; Long ago, a force called ``magic'' existed.
                 ; People who used magic were called ``Mage Knights.''
         return
 _ca6c56:
-        dlg $03AD
+        dlg DLG_941
                 ; Wanna get past the mountains?
                 ; This castle can't fly, but it can submerge! Find the person in charge of the Engine Room!
         return
 _ca6c5a:
-        dlg $095E
+        dlg DLG_2398
                 ; Magicite gives humans magical powers?
                 ; Amazing!
         return
 _ca6c5e:
         if_switch $02DF=1, _ca6c72
         if_switch $00A4=1, _ca6c6e
-        dlg $0054
+        dlg DLG_84
                 ; Scholars the world over are doing research on magic.
                 ; Silly people, scholars_
         return
 _ca6c6e:
-        dlg $095F
+        dlg DLG_2399
                 ; Has magic really made a comeback_
         return
 _ca6c72:
-        dlg $0055
+        dlg DLG_85
                 ; Ancient texts I'm studying speak of a ``1000 year-old city beneath the sand.''
                 ; I wonder what this means,
                 ; ``_when the queen stands and takes 5 steps_''
@@ -16247,11 +16297,11 @@ _ca6c72:
 _ca6c76:
         set_case PARTY_CHARS
         if_switch $01A4=1, _ca6c81
-        dlg $005A
+        dlg DLG_90
                 ; His highness said he'd marry me when I get older!
         return
 _ca6c81:
-        dlg $005B
+        dlg DLG_91
                 ; I wanna marry the king!
         return
 _ca6c85:
@@ -16262,7 +16312,7 @@ _ca6c85:
         switch $01CC=1
         switch $0005=1
         fade_out_song $70
-        dlg $0067
+        dlg DLG_103
                 ; MATRON: EDGAR has a twin brother. He was such a nice boy_
         wait_15f 10
         switch $03FE=1
@@ -16289,7 +16339,7 @@ _ca6c85:
                 move UP, 3
                 move LEFT, 1
                 end
-        dlg $0068
+        dlg DLG_104
                 ; YOUTH: Brother,
                 ; What's wrong with father?
                 ; What's all this talk of his successor?
@@ -16308,7 +16358,7 @@ _ca6c85:
                         end
                 end_loop
         wait_1s
-        dlg $0069
+        dlg DLG_105
                 ; YOUTH: ?__What is it?
         obj_script NPC_4, ASYNC
                 wait 2
@@ -16319,7 +16369,7 @@ _ca6c85:
                 move DOWN, 1
                 end
         lock_camera
-        dlg $006A, BOTTOM
+        dlg DLG_106, BOTTOM
                 ; YOUTH: Brother!
         wait_45f
         obj_script SLOT_1
@@ -16350,12 +16400,12 @@ _ca6c85:
                 dir DOWN
                 end
         wait_45f
-        dlg $006B
+        dlg DLG_107
                 ; YOUTH: Tears__?!
         wait_1s
         call _cad00f
         wait_1s
-        dlg $006C, {TEXT_ONLY, BOTTOM}
+        dlg DLG_108, {TEXT_ONLY, BOTTOM}
                 ; EDGAR's twin brother, who traded the throne for his own freedom_
         wait_30f
         char_name SABIN, SABIN
@@ -16379,7 +16429,7 @@ _ca6c85:
         show_obj SLOT_1
         fade_in
         wait_1s
-        dlg $006D
+        dlg DLG_109
                 ; MATRON: Yes_
                 ; His name is SABIN. Oh, he looked so like his father!
                 ; When he ran away, he was a sweet little child.
@@ -16388,18 +16438,18 @@ _ca6c85:
         switch $01CC=0
         return
 _ca6d5b:
-        dlg $0066
+        dlg DLG_102
                 ; MATRON: EDGAR's at it again!? He hits on anything that moves!
         return
 _ca6d5f:
-        dlg $03B3
+        dlg DLG_947
                 ; MATRON: SABIN_
                 ; Every bit an adult, now_
                 ; I remember that time so vividly. I was so angry_
                 ; I learned something important on that day_
         return
 _ca6d63:
-        dlg $0073
+        dlg DLG_115
                 ; EDGAR: Well?
                 ; How do you like my castle?
         fade_out_song $08
@@ -16413,7 +16463,7 @@ _ca6d63:
         obj_script NPC_4
                 move UP, 6
                 end
-        dlg $0074
+        dlg DLG_116
                 ; King EDGAR!
                 ; Someone from the Empire to see you!
         play_song KEFKA
@@ -16421,7 +16471,7 @@ _ca6d63:
         obj_script NPC_1
                 action 24 | ACTION_H_FLIP
                 end
-        dlg $0075
+        dlg DLG_117
                 ; EDGAR: Probably Kefka!
         switch $0311=1
         switch $03FE=1
@@ -16469,7 +16519,7 @@ _ca6d63:
                 action 9
                 end
         wait_2s
-        dlg $0076, BOTTOM
+        dlg DLG_118, BOTTOM
                 ; KEFKA: Phooey!
                 ; Emperor Gestahl's stupid orders!
         wait_30f
@@ -16484,7 +16534,7 @@ _ca6d63:
                 wait 1
                 action 24
                 end
-        dlg $0077, BOTTOM
+        dlg DLG_119, BOTTOM
                 ; KEFKA: EDGAR, you pinhead!
                 ; Why do you have to live in the middle of nowhere?
                 ; These recon jobs are the pits!
@@ -16495,7 +16545,7 @@ _ca6d63:
                 wait 1
                 action 26
                 end
-        dlg $0078, BOTTOM
+        dlg DLG_120, BOTTOM
                 ; KEFKA: Ahem_there's SAND on my boots!
         obj_script NPC_5
                 action 10
@@ -16562,7 +16612,7 @@ _ca6d63:
         obj_script NPC_5
                 dir DOWN
                 end
-        dlg $0079, BOTTOM
+        dlg DLG_121, BOTTOM
                 ; SOLDIERS: Yes, Sir!
                 ; All set, Sir!
         obj_script NPC_5
@@ -16584,7 +16634,7 @@ _ca6d63:
         obj_script NPC_5
                 action 24
                 end
-        dlg $007A, BOTTOM
+        dlg DLG_122, BOTTOM
                 ; KEFKA: Idiots!
         obj_script CAMERA, ASYNC
                 speed NORMAL
@@ -16611,7 +16661,7 @@ _ca6d63:
                 move UP, 8
                 move UP, 2
                 end
-        dlg $0072
+        dlg DLG_114
                 ; Sir Kefka!?
                 ; What on earth do_
                 ; KEFKA: Outta my way!
@@ -16674,7 +16724,7 @@ _ca6d63:
         return
 _ca6ee6:
         if_switch $01F8=1, _ca6efe
-        dlg $0071
+        dlg DLG_113
                 ; EDGAR: You've been busy down south!
                 ; Looking for more cities to destroy?
                 ; TROOPER: That's for us to know!
@@ -16682,12 +16732,12 @@ _ca6ee6:
         return
 _ca6ef2:
         if_switch $01F8=1, _ca6efe
-        dlg $007B
+        dlg DLG_123
                 ; EDGAR: I thought we were allies! What are you doing in my domain?
         switch $01F1=1
         return
 _ca6efe:
-        dlg $0092
+        dlg DLG_146
                 ; Fire! Fire! Heh, heh heh_
         return
 _ca6f02:
@@ -16696,7 +16746,7 @@ _ca6f02:
                 switch $01F0=0
                 switch $01F1=0
                 goto EventReturn
-        dlg $007C
+        dlg DLG_124
                 ; EDGAR: What brings Kefka, humble servant of Emperor Gestahl, into our lowly presence?
                 ; KEFKA: A girl of no importance recently escaped from us. We heard she found refuge here_
         obj_script EDGAR
@@ -16705,7 +16755,7 @@ _ca6f02:
                 wait 2
                 dir RIGHT
                 end
-        dlg $007D
+        dlg DLG_125
                 ; EDGAR: Hmm_this wouldn't have anything to do with this ``witch'' everyone's been whispering about, would it?
                 ; KEFKA: Lies!
                 ; She_merely stole something of minor value.
@@ -16713,14 +16763,14 @@ _ca6f02:
         obj_script EDGAR
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $007E
+        dlg DLG_126
                 ; EDGAR: That's a tough one!
         wait_1s
         obj_script EDGAR
                 speed NORMAL
                 move DOWN, 1
                 end
-        dlg $007F
+        dlg DLG_127
                 ; EDGAR: You see, there're more girls here than grains of sand out there. I can't keep track of 'em all!
                 ; KEFKA: I'd hate to be you if we find out you're lying_
                 ; Mwa, ha!
@@ -16729,7 +16779,7 @@ _ca6f02:
                 wait 2
                 dir RIGHT
                 end
-        dlg $0080
+        dlg DLG_128
                 ; KEFKA: I truly hope nothing happens to your precious Figaro_!
         fade_out_song $80
         obj_script NPC_5, ASYNC
@@ -16759,7 +16809,7 @@ _ca6f02:
         switch $01CC=0
         return
 _ca6f5c:
-        dlg $0090
+        dlg DLG_144
                 ; KEFKA: Bring me the girl. Now!
                 ; EDGAR: I don't know what you're talking about!
                 ; KEFKA: Then_
@@ -16774,7 +16824,7 @@ _ca6f60:
                 dir DOWN
                 end
         play_song FIGARO
-        dlg $0081, BOTTOM
+        dlg DLG_129, BOTTOM
                 ; LOCKE: I'd say that guy's missing a few buttons_
                 ; EDGAR: _
                 ; Where's TERRA?
@@ -16818,12 +16868,12 @@ _ca6f60:
                 action 35
                 end
         wait_45f
-        dlg $0082, BOTTOM
+        dlg DLG_130, BOTTOM
                 ; EDGAR: Take her to her room_
         obj_script EDGAR
                 move UP, 3
                 end
-        dlg $0083, BOTTOM
+        dlg DLG_131, BOTTOM
                 ; EDGAR: I'd love to chat with you, but the Chancellor and I must plan our strategy.
                 ; Sometimes I hate being a king!
                 ; If you'll excuse me.
@@ -16858,7 +16908,7 @@ _ca6f60:
                 dir LEFT
                 end
         wait_obj CAMERA
-        dlg $0084
+        dlg DLG_132
                 ; LOCKE: Follow me.
         call _cad04f
         wait_15f
@@ -16885,7 +16935,7 @@ _ca700e:
         obj_script NPC_4, ASYNC
                 dir DOWN
                 end
-        dlg $0085, BOTTOM
+        dlg DLG_133, BOTTOM
                 ; LOCKE: Don't you worry 'bout a thing! I'll_
                 ; TERRA: You're LOCKE, right? EDGAR told me about you.
                 ; Is it true you're a thief?
@@ -16897,13 +16947,13 @@ _ca700e:
                 move DOWN, 1
                 dir RIGHT
                 end
-        dlg $0086
+        dlg DLG_134
                 ; LOCKE: That's TREASURE HUNTER!
         obj_script NPC_4
                 move LEFT, 1
                 move DOWN, 1
                 end
-        dlg $0087
+        dlg DLG_135
                 ; LOCKE: On the surface, EDGAR pretends to support the Empire.
                 ; The truth is, he's collaborating with the Returners, an organization opposed to the Empire.
                 ; I am his contact with that group_
@@ -16911,7 +16961,7 @@ _ca700e:
         obj_script NPC_4
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0088
+        dlg DLG_136
                 ; LOCKE: The old man you met in Narshe is one of us.
                 ; TERRA: Empire_but I'm a soldier of the Empire_!
         wait_30f
@@ -16923,7 +16973,7 @@ _ca700e:
                 dir RIGHT
                 end
         wait_15f
-        dlg $0089
+        dlg DLG_137
                 ; LOCKE: That's not true!
                 ; They were using you!
                 ; Things are different now.
@@ -16935,7 +16985,7 @@ _ca700e:
                         wait 1
                         end
                 end_loop
-        dlg $008A
+        dlg DLG_138
                 ; TERRA: I don't understand_
                 ; What should I do?
         wait_15f
@@ -16946,7 +16996,7 @@ _ca700e:
         obj_script TERRA
                 action 35
                 end
-        dlg $008B
+        dlg DLG_139
                 ; LOCKE: I can't tell you what to do.
                 ; You don't have to decide right now.
                 ; You'll soon find your way_
@@ -16968,7 +17018,7 @@ _ca700e:
                 end
         sort_obj
         wait_2s
-        dlg $008C
+        dlg DLG_140
                 ; TERRA: But how will I know which way is right_
         wait_2s
         switch $0313=0
@@ -16999,7 +17049,7 @@ _ca700e:
                 wait 8
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $008D
+        dlg DLG_141
                 ; EDGAR: _?
                 ; What the_?!
         obj_script EDGAR
@@ -17067,7 +17117,7 @@ _ca70e1:
                 move DOWN, 3
                 move RIGHT, 5
                 end
-        dlg $008E, BOTTOM
+        dlg DLG_142, BOTTOM
                 ; EDGAR: What's happening?
                 ; SOLDIER: It's the Empire!
                 ; It's Kefka!
@@ -17099,7 +17149,7 @@ _ca711f:
                 wait 1
                 dir DOWN
                 end
-        dlg $008F
+        dlg DLG_143
                 ; EDGAR: What are you doing?
         switch $01F8=1
         player_ctrl_on
@@ -17118,10 +17168,10 @@ _ca715b:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $0B64
+        dlg DLG_2916
                 ; Wait!
         wait_30f
-        dlg $0B65
+        dlg DLG_2917
                 ; Hey! Oh, it's you.
                 ; Proceed.
         obj_script NPC_1, ASYNC
@@ -17149,7 +17199,7 @@ _ca7171:
         obj_script SABIN
                 move DOWN, 1
                 end
-        dlg $03B2, BOTTOM
+        dlg DLG_946, BOTTOM
                 ; SABIN: Hey!
                 ; Wait. I'm going too!
         pass_off SABIN
@@ -17167,11 +17217,11 @@ _ca7171:
 _ca71af:
         set_case PARTY_CHARS
         if_switch $01A4=1, _ca71ba
-        dlg $0B63, BOTTOM
+        dlg DLG_2915, BOTTOM
                 ; This is Figaro, the desert castle.
         return
 _ca71ba:
-        dlg $03A8
+        dlg DLG_936
                 ; King EDGAR!
                 ; Welcome back!
         wait_15f
@@ -17182,7 +17232,7 @@ _ca71bf:
                 switch $01B0=0
                 goto EventReturn
         switch $01B5=1
-        dlg $0B80
+        dlg DLG_2944
                 ; Need a rest?
                 ; 0: (Yes)
                 ; 1: (No)
@@ -17235,7 +17285,7 @@ _ca71d9:
                 action 34
                 wait 16
                 end
-        dlg $03B7
+        dlg DLG_951
                 ; SABIN: Hmm_
                 ; Castle hasn't changed much_
         wait_1s
@@ -17255,7 +17305,7 @@ _ca71d9:
                 wait 24
                 end
         wait_obj CAMERA
-        dlg $03B8
+        dlg DLG_952
                 ; SABIN: And yet it's all different_ Mom and Dad are gone_ Everyone's gone_
                 ; Since that day_
         play_song COIN_SONG
@@ -17288,7 +17338,7 @@ _ca71d9:
                 dir LEFT
                 end
         wait_4s
-        dlg $03B9, TEXT_ONLY
+        dlg DLG_953, TEXT_ONLY
                 ; _tonight_
                 ; _took a turn for the worse_
                 ; _there's a chance he might_
@@ -17324,7 +17374,7 @@ _ca71d9:
                 move LEFT, 3
                 end
         wait_30f
-        dlg $03BA, TEXT_ONLY
+        dlg DLG_954, TEXT_ONLY
                 ; Nooo_!
                 ; Y_you're wrong_!
                 ; This can't be_
@@ -17332,7 +17382,7 @@ _ca71d9:
         obj_script NPC_2
                 dir RIGHT
                 end
-        dlg $03BB, TEXT_ONLY
+        dlg DLG_955, TEXT_ONLY
                 ; Matron_
                 ; _The King_he's_
         obj_script NPC_2, ASYNC
@@ -17382,7 +17432,7 @@ _ca71d9:
                 move UP_LEFT, 2
                 hide_obj
                 end
-        dlg $03BC, TEXT_ONLY
+        dlg DLG_956, TEXT_ONLY
                 ; _SABIN_
                 ; _SABIN!!!!!
         wait_1s
@@ -17412,7 +17462,7 @@ _ca71d9:
                 move UP, 2
                 end
         wait_30f
-        dlg $03BD, TEXT_ONLY
+        dlg DLG_957, TEXT_ONLY
                 ; _My father_
                 ; _I don't believe this_
         wait_obj CAMERA
@@ -17438,7 +17488,7 @@ _ca71d9:
                 action 32
                 end
         wait_30f
-        dlg $03BE, BOTTOM
+        dlg DLG_958, BOTTOM
                 ; SABIN: B_brother_
                 ; Waa, ahhh, ahhh_
                 ; EDGAR: So_
@@ -17460,19 +17510,19 @@ _ca71d9:
         obj_script NPC_22
                 move DOWN, 3
                 end
-        dlg $03BF, BOTTOM
+        dlg DLG_959, BOTTOM
                 ; MATRON: EDGAR!
                 ; Here you are_
         obj_script NPC_22
                 move DOWN, 2
                 end
-        dlg $03C0, BOTTOM
+        dlg DLG_960, BOTTOM
                 ; MATRON: Your father_
                 ; He just uttered his last wish that Figaro be divided between you_
         obj_script SABIN
                 action 24
                 end
-        dlg $03C1, BOTTOM
+        dlg DLG_961, BOTTOM
                 ; SABIN: This is NONSENSE!!
                 ; Everyone's saying that the Empire poisoned Dad_
                 ; And the only thing on your minds is ``Who's going to be the next king?!''
@@ -17483,7 +17533,7 @@ _ca71d9:
                 action 9
                 end
         wait_1s
-        dlg $03C2, BOTTOM
+        dlg DLG_962, BOTTOM
                 ; SABIN: No one cared when Mom passed away, either_
                 ; MATRON: That's not_
         obj_script SABIN
@@ -17509,7 +17559,7 @@ _ca71d9:
                 move UP, 1
                 anim_on
                 end
-        dlg $03C3, BOTTOM
+        dlg DLG_963, BOTTOM
                 ; SABIN: You were as bad as any of 'em!
                 ; EDGAR: SABIN_
                 ; SABIN: Empire of murderers_
@@ -17563,7 +17613,7 @@ _ca71d9:
                 dir LEFT
                 end
         wait_obj CAMERA
-        dlg $03C5
+        dlg DLG_965
                 ; EDGAR: Matron_
                 ; Please leave us_
         obj_script EDGAR, ASYNC
@@ -17596,7 +17646,7 @@ _ca71d9:
         fade_in
         wait_2s
         pass_on SABIN
-        dlg $03C4
+        dlg DLG_964
                 ; SABIN: I'm outta here!
                 ; I'm forsaking this war-sick realm for my dignity and freedom.
                 ; SABIN: You said you were sick of it too, right?!
@@ -17606,7 +17656,7 @@ _ca71d9:
                 action 33
                 end
         wait_1s
-        dlg $03C6
+        dlg DLG_966
                 ; EDGAR: What'll happen to this realm if we both leave?
                 ; And what would Dad say_?
         obj_script EDGAR
@@ -17619,7 +17669,7 @@ _ca71d9:
                 dir LEFT
                 end
         wait_1s
-        dlg $03C7
+        dlg DLG_967
                 ; EDGAR: SABIN, let's settle this with a toss of a coin.
         wait_15f
         loop 3
@@ -17631,7 +17681,7 @@ _ca71d9:
                         end
                 end_loop
         wait_45f
-        dlg $03C8
+        dlg DLG_968
                 ; EDGAR: If it's heads, you win.
                 ; We'll choose whichever path we want, without any regrets. Okay?
         wait_90f
@@ -17643,7 +17693,7 @@ _ca71d9:
                 action 10
                 end
         wait_30f
-        dlg $03C9
+        dlg DLG_969
                 ; EDGAR: This is for Dad!
         obj_script EDGAR
                 dir RIGHT
@@ -17698,7 +17748,7 @@ _ca71d9:
                 end
         fade_in 2
         wait_4s
-        dlg $03CA
+        dlg DLG_970
                 ; EDGAR: And then, you opted for your freedom.
         obj_script SABIN
                 action 31
@@ -17714,7 +17764,7 @@ _ca71d9:
                 dir UP
                 end
         wait_1s
-        dlg $03CB
+        dlg DLG_971
                 ; EDGAR: It's been_10 years.
                 ; The little shrimp's grown into a whopping lobster!
                 ; SABIN: And you're a king crab!
@@ -17732,7 +17782,7 @@ _ca71d9:
                 end
         wait_15f 10
         wait_obj CAMERA
-        dlg $03CC
+        dlg DLG_972
                 ; EDGAR: SABIN_
                 ; I often wonder if he'd be proud of me_
         wait_1s
@@ -17740,14 +17790,14 @@ _ca71d9:
                 action 35 | ACTION_H_FLIP
                 end
         wait_30f
-        dlg $03CD
+        dlg DLG_973
                 ; SABIN: Don't you ever doubt that!
         wait_1s
         obj_script EDGAR
                 action 35
                 end
         wait_30f
-        dlg $03CE
+        dlg DLG_974
                 ; EDGAR: 10 years_
                 ; SABIN: Where has the time gone_?
         wait_30f
@@ -17768,7 +17818,7 @@ _ca71d9:
         obj_script SABIN
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $03CF
+        dlg DLG_975
                 ; EDGAR: Here's to a couple of confused grownups!
         obj_script SABIN, ASYNC
                 dir DOWN
@@ -17785,14 +17835,14 @@ _ca71d9:
                 action 25
                 end
         wait_obj CAMERA
-        dlg $03D0
+        dlg DLG_976
                 ; EDGAR: Here's to Dad_
         obj_script SABIN
                 move DOWN, 3
                 wait 1
                 action 25
                 end
-        dlg $03D1
+        dlg DLG_977
                 ; SABIN: _to Mom_
                 ; _and to Figaro.
         wait_15f
@@ -17835,53 +17885,53 @@ _ca71d9:
 _ca7590:
         if_switch $0048=1, _ca75a0
         if_switch $01F8=1, _ca75c4
-        dlg $0B66
+        dlg DLG_2918
                 ; Figaro and the Empire are allies!
         return
 _ca75a0:
         set_case PARTY_CHARS
         if_case CHAR::EDGAR, _ca71ba
         if_switch $00A4=1, _ca75b0
-        dlg $03A9
+        dlg DLG_937
                 ; We sighted Kefka in the area.
         return
 _ca75b0:
-        dlg $095C
+        dlg DLG_2396
                 ; Who'd have thought air could be so precious!
         return
 _ca75b4:
         if_switch $0048=1, _ca75c8
         if_switch $01F8=1, _ca75c4
-        dlg $0B67
+        dlg DLG_2919
                 ; Figaro Castle is the most modern structure in the world!
         return
 _ca75c4:
-        dlg $0091
+        dlg DLG_145
                 ; FIRE!!!
         return
 _ca75c8:
         set_case PARTY_CHARS
         if_case CHAR::EDGAR, _ca71ba
         if_switch $00A4=1, _ca75b0
-        dlg $03AA
+        dlg DLG_938
                 ; That girl_
                 ; wrapped in a fireball_
                 ; Headed off to the west_
         return
 _ca75d8:
-        dlg $0052
+        dlg DLG_82
                 ; Weapons and items manufactured here are sent to South Figaro.
         return
 _ca75dc:
         if_switch $00A4=1, _ca75e6
-        dlg $0057
+        dlg DLG_87
                 ; The Empire has smashed the 3 cities on the southern continent. Just a matter of time 'til they come up here_
         return
 _ca75e6:
-        dlg $0960
+        dlg DLG_2400
                 ; Kefka's ``one shy of a six pack!''
         return
-        dlg $005F
+        dlg DLG_95
                 ; ``__''
         return
 _ca75ee:
@@ -17910,7 +17960,7 @@ _ca75ee:
                 wait 3
                 dir UP
                 end
-        dlg $00AC
+        dlg DLG_172
                 ; SOLDIER: King EDGAR!
                 ; Where are you headed?
                 ; EDGAR: Through the cave, and eastward to South Figaro.
@@ -17969,7 +18019,7 @@ _ca75ee:
         switch $01CC=0
         return
 _ca7668:
-        dlg $00AB
+        dlg DLG_171
                 ; This cave leads to South Figaro. It's closed now due to construction.
         return
 _ca766c:
@@ -17997,7 +18047,7 @@ _ca769c:
         switch $00B0=1
         spc_cmd $82, $00, $C0
         sfx 6
-        dlg $0196
+        dlg DLG_406
                 ; LOCKE: What IS that noise?
         wait_sfx
         spc_cmd $82, $00, $FF
@@ -18055,7 +18105,7 @@ _ca76e1:
                 wait 8
                 move UP, 3
                 end
-        dlg $0948, BOTTOM
+        dlg DLG_2376, BOTTOM
                 ; GERAD: Now, where were we_?
         obj_script CAMERA, ASYNC
                 move UP, 4
@@ -18064,7 +18114,7 @@ _ca76e1:
                 move UP, 3
                 end
         wait_30f
-        dlg $0949, BOTTOM
+        dlg DLG_2377, BOTTOM
                 ; Here, boy_
                 ; Here's some nice food for you!
         wait_obj CAMERA
@@ -18078,7 +18128,7 @@ _ca76e1:
         create_obj NPC_7
         show_obj NPC_7
         sort_obj
-        dlg $094A
+        dlg DLG_2378
                 ; Presto!
                 ; GERAD: Good Job!
                 ; I used to have a turtle_!
@@ -18140,7 +18190,7 @@ _ca7749:
         call _caed53
         return
 _ca7775:
-        dlg $094B
+        dlg DLG_2379
                 ; SIGFRIED: Pretty dangerous from here on. I'll go in first and clear out all the monsters. Wait here.
         obj_script NPC_1
                 move UP, 3
@@ -18173,7 +18223,7 @@ _ca7782:
                 hide_obj
                 end
         wait_15f 8
-        dlg $094C, {ASYNC, TEXT_ONLY}
+        dlg DLG_2380, {ASYNC, TEXT_ONLY}
                 ;
                 ;     On the hum, let's go!!!!
         obj_script SLOT_1
@@ -18182,52 +18232,52 @@ _ca7782:
         switch $0399=0
         return
 _ca77ad:
-        dlg $00B3
+        dlg DLG_179
                 ; Welcome to South Figaro!
         return
 _ca77b1:
-        dlg $00B4
+        dlg DLG_180
                 ; You'll find lots of excellent weapons, armor and relics in our shops.
         return
 _ca77b5:
-        dlg $00B5
+        dlg DLG_181
                 ; Did you hear?
                 ; Figaro Castle sank into the sand!
                 ; You couldn't find it even if you knew where to look!
         return
 _ca77b9:
-        dlg $00B6
+        dlg DLG_182
                 ; Mt. Kolts is to the east.
         return
 _ca77bd:
-        dlg $00B7
+        dlg DLG_183
                 ; Beyond Mt. Kolts you'll find the Sabil mountain range.
         return
 _ca77c1:
-        dlg $00CE
+        dlg DLG_206
                 ; This town'll go down fighting! Even with their Magitek Armor, we'll make it tough on 'em!
         return
 _ca77c5:
         if_switch $0276=1, _ca77cf
-        dlg $00CD
+        dlg DLG_205
                 ; I can't believe it!
                 ; The Empire'll smash us!
         return
 _ca77cf:
-        dlg $0B7E
+        dlg DLG_2942
                 ; There's nothing like being free!
         return
 _ca77d3:
-        dlg $00CA
+        dlg DLG_202
                 ; The house in the northern part of town belongs to our wealthiest citizen.
         return
 _ca77d7:
         if_switch $00A4=1, _ca77e1
-        dlg $00EA
+        dlg DLG_234
                 ; The ship isn't going anywhere.
         return
 _ca77e1:
-        dlg $032C
+        dlg DLG_812
                 ; Nikeah-bound ferry.
                 ; 0:  (Still need to shop.)
                 ; 1:  (Hop aboard?)
@@ -18248,7 +18298,7 @@ _ca77ec:
                 dir DOWN
                 end
         play_song HUH
-        dlg $00EB
+        dlg DLG_235
                 ; Imperial troops are milling about.
                 ; Gotta jam without being seen!
         obj_script NPC_1
@@ -18306,7 +18356,7 @@ _ca77ec:
                 wait 8
                 dir LEFT
                 end
-        dlg $00EC
+        dlg DLG_236
                 ; Use caution.
         obj_script SLOT_1
                 move RIGHT, 4
@@ -18345,12 +18395,12 @@ _ca788d:
         shop_menu SOUTH_FIGARO_ITEMS_2
         return
 _ca7890:
-        dlg $00CC
+        dlg DLG_204
                 ; The Empire attacked Figaro Castle?!
                 ; Now we'll all be drawn into the battle!
         return
 _ca7894:
-        dlg $0B89
+        dlg DLG_2953
                 ; 80 GP per night!
                 ; Well?
                 ; 0:  Yes
@@ -18392,7 +18442,7 @@ _ca78dc:
         obj_script NPC_5
                 dir DOWN
                 end
-        dlg $00B8
+        dlg DLG_184
                 ; Equip relics to gain a variety of abilities!
                 ; These double my walking speed!
         obj_script NPC_5
@@ -18433,12 +18483,12 @@ _ca7913:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $00B0
+        dlg DLG_176
                 ; An old clock_
                 ; It's not ticking_
         if_switch $010D=1, EventReturn
         if_switch $01D1=0, EventReturn
-        dlg $00AF
+        dlg DLG_175
                 ; 0: (Wind the clock?)
                 ; 1: (Leave it.)
         choice _ca7935, EventReturn
@@ -18453,7 +18503,7 @@ _ca793e:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $00B1
+        dlg DLG_177
                 ; An old clock_
                 ; It's ticking_
         return
@@ -18508,26 +18558,26 @@ _ca79d7:
         if_switch $00A4=1, _ca79f4
         if_switch $0276=1, _ca7d75
         if_switch $0105=1, _ca79f0
-        dlg $00CF
+        dlg DLG_207
                 ; Attack from the east.
                 ; That way, __?!
                 ; Hey! Whaddaya think you're doin'? Barging in here while I'm trying to write a letter! Harumph!
-        dlg $00D0
+        dlg DLG_208
                 ; Oh, uh, sorry_
                 ; Even a millionaire can be_
                 ; startled.
         return
 _ca79f0:
-        dlg $00D1
+        dlg DLG_209
                 ; Oh, what have I done?!
                 ; I betrayed the town, and I didn't even need the money!
         return
 _ca79f4:
-        dlg $0934
+        dlg DLG_2356
                 ; Just when we thought the Empire was gone_heeeeeres Kefka!
         return
 _ca79f8:
-        dlg $00D2
+        dlg DLG_210
                 ; Chung chung_
                 ; Chung chung_
                 ; Magitek Armor!!!!
@@ -18535,44 +18585,44 @@ _ca79f8:
 _ca79fc:
         if_switch $00A4=1, _ca7a10
         if_switch $0105=1, _ca7a0c
-        dlg $00D3
+        dlg DLG_211
                 ; My Dad's VERY important! Why, not so long ago he even dined with General Leo_ _
                 ; Uh, I, uh, just made that up!
         return
 _ca7a0c:
-        dlg $00D4
+        dlg DLG_212
                 ; Wind the clock!
                 ; Wind the clock!
                 ; Uh, that was just a jump-rope rhyme!
         return
 _ca7a10:
-        dlg $0933
+        dlg DLG_2355
                 ; Jump on the turtle.
                 ; Oh, jump on the turtle_
                 ; Oops_never mind.
         return
 _ca7a14:
-        dlg $00D7
+        dlg DLG_215
                 ; There's always a nasty draft in this room. Where's it coming from?
         return
 _ca7a18:
         if_switch $00A4=1, _ca7a32
         if_switch $0276=1, _ca7d75
         if_switch $0105=1, _ca7a2e
-        dlg $00D5
+        dlg DLG_213
                 ; Has war really begun?
                 ; I'd better return home_
         return
 _ca7a2e:
-        dlg $00D6
+        dlg DLG_214
                 ; The Imperial Troops have turned this house into their headquarters.
         return
 _ca7a32:
-        dlg $0932
+        dlg DLG_2354
                 ; There's nothing left of my home town.
         return
 _ca7a36:
-        dlg $0B8E
+        dlg DLG_2958
                 ; Chocobo ride for 80 GP.
                 ; Hop aboard?
                 ; 0:  Yes
@@ -18654,27 +18704,27 @@ _ca7a90:
                 dir RIGHT
                 end
         wait_1s
-        dlg $00BA
+        dlg DLG_186
                 ; SABIN, where's Vargas?
                 ; Where's my husband?
         obj_script SABIN
                 action 34 | ACTION_H_FLIP
                 end
         wait_30f
-        dlg $00BB
+        dlg DLG_187
                 ; SABIN: Master was_
                 ; Vargas_
         obj_script NPC_1
                 dir DOWN
                 wait 4
                 end
-        dlg $00BC
+        dlg DLG_188
                 ; DUNCAN'S WIFE: I'll never understand Vargas_
                 ; Fortunately, my husband taught his most secret techniques to you.
         obj_script SABIN
                 dir RIGHT
                 end
-        dlg $00BD
+        dlg DLG_189
                 ; SABIN: For 10 years you've treated me like a son. I am eternally grateful!
         obj_script SABIN
                 wait 2
@@ -18703,26 +18753,26 @@ _ca7a90:
         switch $004C=1
         return
 _ca7b20:
-        dlg $00B9
+        dlg DLG_185
                 ; My husband, Duncan, is a
                 ; world-famous martial artist!
                 ; He's taking his disciples to
                 ; Mt. Kolts for meditation and training.
         return
 _ca7b24:
-        dlg $00BD
+        dlg DLG_189
                 ; SABIN: For 10 years you've treated me like a son. I am eternally grateful!
         return
 _ca7b28:
-        dlg $0B77
+        dlg DLG_2935
                 ; DUNCAN'S WIFE: I'm sure there's a hidden passage under the rich man's house. Find the room that's drafty.
         return
 _ca7b2c:
-        dlg $0936
+        dlg DLG_2358
                 ; DUNCAN'S WIFE: No, dear! Duncan's still alive and well! He's meditating just north of Narshe.
         return
 _ca7b30:
-        dlg $0B7C
+        dlg DLG_2940
                 ; Peace has been restored, but my husband never returned.
         return
 _ca7b34:
@@ -18777,58 +18827,58 @@ _ca7b88:
         if_switch $01D0=1, _ca7bae
         if_switch $0104=1, _ca7baa
         if_switch $0103=1, _ca7bbd
-        dlg $00D8
+        dlg DLG_216
                 ; I don't like strangers.
                 ; Bring me some cider, and maybe I'll talk to you.
         return
 _ca7baa:
-        dlg $00D9
+        dlg DLG_217
                 ; What?!
                 ; No cider?!
         return
 _ca7bae:
         if_switch $0107=1, _ca7bb7
-        dlg $00DB
+        dlg DLG_219
                 ; Ah! Cider!
                 ; Glug, glug, _
                 ; Huh? Secret passage?
                 ; Well, there is one that leads to the rich man's house.
 _ca7bb7:
-        dlg $00DC
+        dlg DLG_220
                 ; Go downstairs and give my grandson the password. It's_uh, umm_
                 ; I forget!
         switch $0107=1
         return
 _ca7bbd:
-        dlg $00DA
+        dlg DLG_218
                 ; Hurumph_DOG!
         return
 _ca7bc1:
-        dlg $0935
+        dlg DLG_2357
                 ; I'm so relieved to know my grandchild's alive!
         return
 _ca7bc5:
-        dlg $0B7F
+        dlg DLG_2943
                 ; Now I can relax and drink my cider.
         return
 _ca7bc9:
-        dlg $00DD
+        dlg DLG_221
                 ; My grandfather was a servant for the richest man in town.
         return
 _ca7bcd:
         if_switch $00A4=1, _ca79f4
         if_switch $01F1=1, _ca7c36
         if_switch $0107=1, _ca7c03
-        dlg $00DD
+        dlg DLG_221
                 ; My grandfather was a servant for the richest man in town.
         if_switch $01F0=1, EventReturn
         if_switch $0105=0, EventReturn
         if_switch $0104=1, _ca7bf8
-        dlg $00DE
+        dlg DLG_222
                 ; Only people dressed as merchants may pass through.
         return
 _ca7bf8:
-        dlg $00DF
+        dlg DLG_223
                 ; Merchant, right?
                 ; You may proceed.
         switch $01F0=1
@@ -18838,7 +18888,7 @@ _ca7bf8:
                 end
         return
 _ca7c03:
-        dlg $00E0
+        dlg DLG_224
                 ; The password is_
                 ; 0: ``Rose bud''
                 ; 1: ``Courage''
@@ -18846,7 +18896,7 @@ _ca7c03:
         choice _ca7c28, _ca7c11, _ca7c28
         return
 _ca7c11:
-        dlg $00E2
+        dlg DLG_226
                 ; Secret entrance.
         obj_script NPC_5
                 move LEFT_DOWN_DOWN
@@ -18862,7 +18912,7 @@ _ca7c11:
         switch $01F1=1
         return
 _ca7c28:
-        dlg $00E1
+        dlg DLG_225
                 ; You're an Imperial spy!
                 ; Can't fool me!
         fade_out
@@ -18872,11 +18922,11 @@ _ca7c28:
         call _ca85ba
         return
 _ca7c36:
-        dlg $00E3
+        dlg DLG_227
                 ; Good luck!
         return
 _ca7c3a:
-        dlg $00BE
+        dlg DLG_190
                 ; _.
         if_switch $000B=1, EventReturn
         call _cac6ac
@@ -18898,7 +18948,7 @@ _ca7c3a:
                 move DOWN, 1
                 dir RIGHT
                 end
-        dlg $00BF
+        dlg DLG_191
                 ; LOCKE: At the very least you could give me a response_
         obj_script LOCKE, ASYNC
                 speed NORMAL
@@ -18916,7 +18966,7 @@ _ca7c3a:
         obj_script EDGAR
                 move LEFT, 2
                 end
-        dlg $00C0
+        dlg DLG_192
                 ; EDGAR: Stand back!
                 ; He seems vaguely familiar_
                 ; Wait a minute_!
@@ -18940,7 +18990,7 @@ _ca7c3a:
                 mod_sprite_pal DEC, {RED, GREEN, BLUE}, 3, {0, 63}
                 end_loop
         wait_30f
-        dlg $00C1, {TEXT_ONLY, BOTTOM}
+        dlg DLG_193, {TEXT_ONLY, BOTTOM}
                 ; He owes allegiance to no one,
                 ; and will do anything for money.
                 ; He comes and goes like the wind_
@@ -18967,7 +19017,7 @@ _ca7c3a:
         obj_script EDGAR
                 dir LEFT
                 end
-        dlg $00C2
+        dlg DLG_194
                 ; EDGAR: That's SHADOW_!
                 ; He'd slit his mama's throat for a nickel!
         obj_script LOCKE
@@ -18975,7 +19025,7 @@ _ca7c3a:
                 wait 1
                 dir RIGHT
                 end
-        dlg $00C3
+        dlg DLG_195
                 ; LOCKE: Better steer clear of him, I guess.
         obj_script CAMERA, ASYNC
                 move LEFT, 1
@@ -19008,7 +19058,7 @@ _ca7d01:
         obj_script NPC_1
                 dir DOWN
                 end
-        dlg $00C4, BOTTOM
+        dlg DLG_196, BOTTOM
                 ; SHADOW: Leave us.
                 ; The dog eats strangers_
         obj_script NPC_1
@@ -19017,74 +19067,74 @@ _ca7d01:
         return
 _ca7d13:
         if_switch $00A4=0, EventReturn
-        dlg $092F
+        dlg DLG_2351
                 ; That sweet little girl stopped coming around right after the world ended_
         return
 _ca7d1d:
         if_switch $0305=0, _ca7d27
-        dlg $00C5
+        dlg DLG_197
                 ; The guy at the counter_
                 ; He's kinda creepy_
         return
 _ca7d27:
-        dlg $00C6
+        dlg DLG_198
                 ; That guy at the counter_HEY! Where'd he go?
         return
 _ca7d2b:
         if_switch $00A4=1, _ca7d45
         if_switch $0276=1, _ca7d49
         if_switch $0010=1, _ca7d41
-        dlg $00C7
+        dlg DLG_199
                 ; Duncan's students have no peers!
         return
 _ca7d41:
-        dlg $00C8
+        dlg DLG_200
                 ; I'm so sorry to hear about Duncan.
         return
 _ca7d45:
-        dlg $092D
+        dlg DLG_2349
                 ; Figaro Castle disappeared the day the world became_
                 ; unzipped_
         return
 _ca7d49:
-        dlg $0B7E
+        dlg DLG_2942
                 ; There's nothing like being free!
         return
 _ca7d4d:
         if_switch $00A4=1, _ca7d5d
         if_switch $0276=1, _ca7d61
-        dlg $00C9
+        dlg DLG_201
                 ; Duncan made his son, Vargas, practice a strict martial arts lifestyle. Vargas resented it.
         return
 _ca7d5d:
-        dlg $092E
+        dlg DLG_2350
                 ; Figaro Castle had an accident under the desert.
                 ; Don't know what happened to its people_
         return
 _ca7d61:
-        dlg $0B7D
+        dlg DLG_2941
                 ; You say peace is really here to stay?
         return
 _ca7d65:
         if_switch $00A4=1, _ca7d79
         if_switch $0276=1, _ca7d75
-        dlg $00CB
+        dlg DLG_203
                 ; The Empire's been invading one town after the next.
                 ; We're not safe here!
         return
 _ca7d75:
-        dlg $0930
+        dlg DLG_2352
                 ; I'm so relieved the Empire's finally outta here!
         return
 _ca7d79:
-        dlg $0931
+        dlg DLG_2353
                 ; Now all these thieves are demanding all our time.
                 ; Phew_I'm exhausted.
         return
 _ca7d7d:
         if_switch $0105=1, _ca7db8
         if_switch $01F0=1, EventReturn
-        dlg $00E4
+        dlg DLG_228
                 ; Outta the way!
                 ; I gotta get this cider over to the old man!
                 ; That's my job!
@@ -19118,10 +19168,10 @@ _ca7d97:
         return
 _ca7db8:
         call _cacad9
-        dlg $00E7
+        dlg DLG_231
                 ; Hey you!
                 ; Come to steal my cider?
-        dlg $00E8
+        dlg DLG_232
                 ; You thief!
         battle 10, TOWN_INT
         if_b_switch $40, _ca7dcf
@@ -19155,14 +19205,14 @@ _ca7dde:
         obj_script SLOT_1
                 dir DOWN
                 end
-        dlg $00E9
+        dlg DLG_233
                 ; Took the old man's cider!
         switch $0307=0
         switch $01D0=1
         return
 _ca7e06:
         if_switch $01F0=1, EventReturn
-        dlg $00E5
+        dlg DLG_229
                 ; I'm off work.
                 ; Get lost!
         switch $01F0=1
@@ -19185,7 +19235,7 @@ _ca7e06:
                 end
         return
 _ca7e28:
-        dlg $00E6
+        dlg DLG_230
                 ; Are kids allowed in here?
                 ; __What do you think?
                 ; Oh, all right_
@@ -19193,33 +19243,33 @@ _ca7e28:
 _ca7e2c:
         if_switch $0048=1, _ca85e2
         if_switch $0103=0, _ca7e50
-        dlg $0B71
+        dlg DLG_2929
                 ; Back to your post.
         return
 _ca7e3c:
         if_switch $0103=0, _ca7e50
-        dlg $0B75
+        dlg DLG_2933
                 ; A detached force is making its way toward Narshe.
                 ; We'll link up with them soon.
         return
 _ca7e46:
         if_switch $0103=0, _ca7e50
-        dlg $0B76
+        dlg DLG_2934
                 ; That clown, Kefka, is on the verge of invading Narshe.
         return
 _ca7e50:
         if_switch $0104=0, _ca7e5a
-        dlg $0B73
+        dlg DLG_2931
                 ; I'm not buying anything!
         return
 _ca7e5a:
-        dlg $0B70
+        dlg DLG_2928
                 ; Scram, you blockhead.
         return
 _ca7e5e:
         if_switch $01F1=1, EventReturn
         if_switch $0103=0, _ca7e50
-        dlg $0B72
+        dlg DLG_2930
                 ; Time's up?
                 ; Good! I'll take a break!
         switch $01F1=1
@@ -19235,7 +19285,7 @@ _ca7e5e:
         return
 _ca7e7b:
         if_switch $0103=0, _ca7e85
-        dlg $0B71
+        dlg DLG_2929
                 ; Back to your post.
         return
 _ca7e85:
@@ -19249,7 +19299,7 @@ _ca7e93:
         return
 _ca7e9a:
         if_switch $0103=0, _ca7ea4
-        dlg $0B71
+        dlg DLG_2929
                 ; Back to your post.
         return
 _ca7ea4:
@@ -19262,7 +19312,7 @@ _ca7eb2:
         call _ca7ec0
         return
 _ca7eb9:
-        dlg $0B70
+        dlg DLG_2928
                 ; Scram, you blockhead.
         battle 9, TOWN_EXT
         return
@@ -19277,13 +19327,13 @@ _ca7ecf:
         return
 _ca7ed1:
         if_switch $0103=0, _ca7e50
-        dlg $0197
+        dlg DLG_407
                 ; I heard they grabbed a famous general who turned traitor!
                 ; She's locked up somewhere in this town.
         return
 _ca7edb:
         if_switch $0103=0, _ca7e50
-        dlg $0198
+        dlg DLG_408
                 ; Never a dull moment_
                 ; Time to guard the passage under the big mansion_
                 ; Oh, well.
@@ -19291,49 +19341,49 @@ _ca7edb:
         return
 _ca7ee5:
         if_switch $0103=0, _ca7e50
-        dlg $0199
+        dlg DLG_409
                 ; I heard there are 2 secret tunnels under the rich man's house.
                 ; One leads out of town, the other to one of these houses_
         return
 _ca7eef:
         if_switch $0103=1, _ca7f0d
-        dlg $0178
+        dlg DLG_376
                 ; Imperial soldiers are pigs!
                 ; Green Suits live to brawl_
         return
 _ca7ef9:
         if_switch $0103=1, _ca7f0d
-        dlg $019D
+        dlg DLG_413
                 ; Lower ranking soldiers like to brawl. Try humiliating them by stealing their clothes!
         return
 _ca7f03:
         if_switch $0103=1, _ca7f0d
-        dlg $019F
+        dlg DLG_415
                 ; Avoid the armored soldiers! They have no sense of humor!
         return
 _ca7f0d:
-        dlg $019E
+        dlg DLG_414
                 ; Uh huh!
         return
 _ca7f11:
-        dlg $019A
+        dlg DLG_410
                 ; Thanks to our informer, this town fell instantly!
         return
 _ca7f15:
-        dlg $019B
+        dlg DLG_411
                 ; Rascals!
                 ; Knock it off!
         return
 _ca7f19:
         if_switch $01F0=1, _ca7f74
-        dlg $00AD
+        dlg DLG_173
                 ; Zzz_zzz_
         if_any
                 switch $001D=0
                 switch $01D1=1
                 goto EventReturn
         call _cacad9
-        dlg $00AE
+        dlg DLG_174
                 ; There's a clock key in his pocket_
                 ; 0: (Take it.)
                 ; 1: (Stealing is wrong.)
@@ -19343,7 +19393,7 @@ _ca7f39:
         obj_script SLOT_1
                 action 26 | ACTION_H_FLIP
                 end
-        dlg $00B2
+        dlg DLG_178
                 ; Took the Clock Key!
         pass_off SLOT_1
         pass_off NPC_2
@@ -19364,7 +19414,7 @@ _ca7f39:
                 dir RIGHT
                 end
         wait_1s
-        dlg $018E
+        dlg DLG_398
                 ; SOLDIER: _'n some bread, too_
                 ; Mumble  Mumble_
         obj_script NPC_2
@@ -19383,7 +19433,7 @@ _ca7f39:
         switch $01F0=1
         return
 _ca7f74:
-        dlg $018D
+        dlg DLG_397
                 ; SOLDIER: _more soup_'n_
         return
 _ca7f78:
@@ -19443,23 +19493,23 @@ _ca8021:
         load_map 74, {9, 33}, DOWN, {Z_UPPER, STARTUP_EVENT}
         return
 _ca802e:
-        dlg $0938
+        dlg DLG_2360
                 ; Souvenir of the Empire, anyone?!
         return
 _ca8032:
-        dlg $093A
+        dlg DLG_2362
                 ; We're storming Figaro Castle! That treasure's rightfully ours!
         return
-        dlg $093B
+        dlg DLG_2363
                 ; We won't stop 'till we get our treasure back!
         return
 _ca803a:
-        dlg $093C
+        dlg DLG_2364
                 ; We mustn't rest now!
                 ; We have to start rebuilding!
         return
 _ca803e:
-        dlg $093D
+        dlg DLG_2365
                 ; We may be thieves, but at least we have goals in life!
         return
 _ca8042:
@@ -19468,7 +19518,7 @@ _ca8042:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $093E
+        dlg DLG_2366
                 ; For each life lost, a new one arrives to fill the void!
                 ; Okay!
                 ; Nothing's gonna stop us!
@@ -19485,7 +19535,7 @@ _ca8053:
                 move LEFT, 2
                 dir DOWN
                 end
-        dlg $093F
+        dlg DLG_2367
                 ; Oh_!
                 ; That person!
         obj_script NPC_8
@@ -19496,39 +19546,39 @@ _ca8053:
         switch $037C=0
         return
 _ca806b:
-        dlg $0940
+        dlg DLG_2368
                 ; Whoa!
                 ; Am I dizzy!
         return
 _ca806f:
-        dlg $0941
+        dlg DLG_2369
                 ; If the ``Light of Judgment'' should burn our town down 100 times, we'll rebuild it 100 times!
         return
 _ca8073:
-        dlg $0942
+        dlg DLG_2370
                 ; Did you hear that Duncan's alive? His wife said so!
         return
 _ca8077:
         if_switch $037E=0, _ca8081
-        dlg $0944
+        dlg DLG_2372
                 ; The boss of these thieves is on the second floor.
         return
 _ca8081:
-        dlg $0945
+        dlg DLG_2373
                 ; The thieves have all left town!
         return
 _ca8085:
-        dlg $0943
+        dlg DLG_2371
                 ; Some guy came through here a little while ago looking for some secret treasure.
         return
 _ca8089:
-        dlg $093A
+        dlg DLG_2362
                 ; We're storming Figaro Castle! That treasure's rightfully ours!
         return
 _ca808d:
         if_switch $01F0=1, EventReturn
         switch $01F0=1
-        dlg $0946
+        dlg DLG_2374
                 ; GERAD: Let's go help 'em_
                 ; Hang on a sec_  __?
                 ; Are you people STILL here?
@@ -19543,7 +19593,7 @@ _ca808d:
         obj_script NPC_7
                 move UP, 8
                 end
-        dlg $0947
+        dlg DLG_2375
                 ; Boss, everything's ready.
                 ; Let's go!
                 ; GERAD: Case of mistaken identity, my dear.
@@ -19570,7 +19620,7 @@ _ca80bf:
                 switch $0010=1
                 switch $01B1=0
                 goto EventReturn
-        dlg $00EE, BOTTOM
+        dlg DLG_238, BOTTOM
                 ; EDGAR: Flowers_
                 ; His favorite_
         switch $01F0=1
@@ -19581,7 +19631,7 @@ _ca80cf:
                 switch $0010=1
                 switch $01B0=0
                 goto EventReturn
-        dlg $00EF, BOTTOM
+        dlg DLG_239, BOTTOM
                 ; EDGAR: And this_
                 ; His favorite tea_
         switch $01F0=1
@@ -19592,7 +19642,7 @@ _ca80df:
                 switch $0010=1
                 switch $01B0=0
                 goto EventReturn
-        dlg $00F0, BOTTOM
+        dlg DLG_240, BOTTOM
                 ; EDGAR: These dishes!
                 ; They were his favorite!
         switch $01F0=1
@@ -19630,7 +19680,7 @@ _ca80ef:
                 wait 6
                 action 35
                 end
-        dlg $00ED, BOTTOM
+        dlg DLG_237, BOTTOM
                 ; EDGAR: Hm_
                 ; What's that smell_?
         pass_off LOCKE
@@ -19676,7 +19726,7 @@ _ca814e:
                 wait 16
                 action 35
                 end
-        dlg $00F1, BOTTOM
+        dlg DLG_241, BOTTOM
                 ; EDGAR: SABIN_he was_here?!
         obj_script EDGAR
                 move DOWN, 3
@@ -19715,7 +19765,7 @@ _ca8198:
                 dir UP
                 end
         wait_30f
-        dlg $00F2
+        dlg DLG_242
                 ; EDGAR: What the_
         obj_script EDGAR
                 action 32
@@ -19724,7 +19774,7 @@ _ca8198:
                 wait 10
                 dir UP
                 end
-        dlg $00F3
+        dlg DLG_243
                 ; EDGAR: You know this guy?
         obj_script NPC_1
                 wait 1
@@ -19736,7 +19786,7 @@ _ca8198:
                 wait 2
                 dir DOWN
                 end
-        dlg $00F4
+        dlg DLG_244
                 ; MAN: Of course. He left a couple of days ago after he heard Master Duncan was slain.
                 ; He headed into the mountains.
                 ; I heard Duncan's son, Vargas, is missing as well.
@@ -19854,7 +19904,7 @@ _ca828f:
         obj_script NPC_1
                 dir LEFT
                 end
-        dlg $00F8
+        dlg DLG_248
                 ; VARGAS: SABIN sent you, right?
         obj_script NPC_1, ASYNC
                 jump_low
@@ -19900,14 +19950,14 @@ _ca828f:
                 wait 8
                 dir UP
                 end
-        dlg $00F9
+        dlg DLG_249
                 ; LOCKE: Who're YOU?
         obj_script EDGAR
                 dir DOWN
                 wait 4
                 dir RIGHT
                 end
-        dlg $00FD
+        dlg DLG_253
                 ; EDGAR: SABIN?
                 ; Is he here?
         wait_30f
@@ -19923,7 +19973,7 @@ _ca828f:
         obj_script TERRA
                 action 9
                 end
-        dlg $00FA
+        dlg DLG_250
                 ; LOCKE: You were shadowing us earlier, right?
                 ; VARGAS: Brilliant!
         obj_script TERRA
@@ -19931,7 +19981,7 @@ _ca828f:
                 wait 5
                 dir UP
                 end
-        dlg $00FC
+        dlg DLG_252
                 ; VARGAS: And how unlucky it is that you have run into me_!
         char_prop SABIN, SABIN
         and_status SABIN, {MAGITEK, INTERCEPTOR}
@@ -19956,7 +20006,7 @@ _ca828f:
                 move UP, 1
                 dir RIGHT
                 end
-        dlg $00FE
+        dlg DLG_254
                 ; EDGAR: SABIN!!!
         obj_script SABIN
                 action 31
@@ -19981,7 +20031,7 @@ _ca828f:
                 action 35
                 end
         wait_2s
-        dlg $00FF
+        dlg DLG_255
                 ; SABIN: Big brother?
         obj_script LOCKE, ASYNC
                 move UP_RIGHT
@@ -20007,7 +20057,7 @@ _ca828f:
                 end
         wait_obj LOCKE
         wait_30f
-        dlg $0100
+        dlg DLG_256
                 ; LOCKE: The brothers are reunited!
         obj_script TERRA
                 move UP_RIGHT
@@ -20023,7 +20073,7 @@ _ca828f:
                 dir LEFT
                 end
         wait_1s
-        dlg $0101
+        dlg DLG_257
                 ; TERRA: Younger_
                 ; ``brother''?
                 ; At first glance I thought he was some bodybuilder who had strayed from his gym_
@@ -20038,7 +20088,7 @@ _ca828f:
                 action 24
                 end
         wait_30f
-        dlg $0102
+        dlg DLG_258
                 ; SABIN: Bodybuilder?!
         wait_30f
         loop 6
@@ -20051,7 +20101,7 @@ _ca828f:
                         end
                 wait 2
                 end_loop
-        dlg $0103
+        dlg DLG_259
                 ; SABIN: I'll_take that as a compliment_
         obj_script EDGAR
                 dir DOWN
@@ -20061,7 +20111,7 @@ _ca828f:
                 dir LEFT
                 end
         wait_30f
-        dlg $0104
+        dlg DLG_260
                 ; SABIN: Anyway, brother, what are you doing here?
                 ; EDGAR: We're on the way to the Sabil mountains.
                 ; SABIN: To the Returner hideout, no doubt?
@@ -20080,7 +20130,7 @@ _ca828f:
         obj_script EDGAR
                 dir LEFT
                 end
-        dlg $0105
+        dlg DLG_261
                 ; SABIN: I've been watching from afar, hoping that the world might regain some sanity_
                 ; At this rate, Figaro will be reduced to a puppet state.
         loop 3
@@ -20100,7 +20150,7 @@ _ca828f:
         obj_script EDGAR
                 move DOWN, 3
                 end
-        dlg $0106, BOTTOM
+        dlg DLG_262, BOTTOM
                 ; EDGAR: Our time to strike back has arrived.
                 ; The Empire's going to pay for what it has done_
         wait_30f
@@ -20112,14 +20162,14 @@ _ca828f:
                 action 24
                 end
         wait_30f
-        dlg $0107, BOTTOM
+        dlg DLG_263, BOTTOM
                 ; SABIN: Think a ``bear'' like me could help you in your fight?
         wait_30f
         obj_script EDGAR
                 action 35
                 end
         wait_1s
-        dlg $0108, BOTTOM
+        dlg DLG_264, BOTTOM
                 ; EDGAR: You'd_join us?
                 ; SABIN_!!
         wait_30f
@@ -20144,7 +20194,7 @@ _ca828f:
                 dir LEFT
                 end
         wait_1s
-        dlg $0109, BOTTOM
+        dlg DLG_265, BOTTOM
                 ; SABIN: I think Duncan would rest easier if he knew his disciple played a part in bringing peace to the world.
         obj_script EDGAR, ASYNC
                 dir UP
@@ -20158,7 +20208,7 @@ _ca828f:
                 move DOWN_LEFT
                 end
         wait_30f
-        dlg $010A, BOTTOM
+        dlg DLG_266, BOTTOM
                 ; LOCKE: Let's get going!
         pass_off LOCKE
         pass_off EDGAR
@@ -20198,11 +20248,11 @@ _ca8473:
         set_script_mode EVENT
 
 _ca847e:
-        dlg $0B74
+        dlg DLG_2932
                 ; The Empire has taken possession here.
         return
 _ca8482:
-        dlg $00F6
+        dlg DLG_246
                 ; Scum!
                 ; You're Returners!
         obj_script SLOT_1
@@ -20257,7 +20307,7 @@ _ca84ab:
                 speed SLOW
                 move LEFT, 3
                 end
-        dlg $0173, TEXT_ONLY
+        dlg DLG_371, TEXT_ONLY
                 ; LOCKE has worked hard to stymie the efforts of the Imperial troops. But now he desperately needs to escape_
         wait_2s
         fade_out
@@ -20318,7 +20368,7 @@ _ca84ab:
                 layer 0
                 end
         call _caebc1
-        dlg $0172, BOTTOM
+        dlg DLG_370, BOTTOM
                 ; LOCKE: Nuts!
                 ; Gotta get to Narshe on the fly_
         player_ctrl_on
@@ -20369,11 +20419,11 @@ _ca85aa:
         fade_in
         return
 _ca85af:
-        dlg $0174
+        dlg DLG_372
                 ; Halt!
         return
 _ca85b3:
-        dlg $0174
+        dlg DLG_372
                 ; Halt!
         battle 11, TOWN_EXT
         return
@@ -20387,7 +20437,7 @@ _ca85ba:
                 end
         fade_in 2
         wait_4s
-        dlg $0175
+        dlg DLG_373
                 ; LOCKE: Ouch!!
                 ; I gotta steal me some new clothes, fast!!
         switch $0104=0
@@ -20398,14 +20448,14 @@ _ca85ba:
         max_hp LOCKE
         return
 _ca85e2:
-        dlg $0B74
+        dlg DLG_2932
                 ; The Empire has taken possession here.
         return
 _ca85e6:
         if_switch $01F8=1, _ca861d
         if_switch $0103=1, _ca8623
         if_switch $0104=1, _ca862e
-        dlg $0B78
+        dlg DLG_2936
                 ; MERCHANT: You're that thief,
                 ; LOCKE, aren't you?
                 ; LOCKE: Hey!
@@ -20429,12 +20479,12 @@ _ca8617:
         fade_in
         wait_fade
 _ca861d:
-        dlg $0B79
+        dlg DLG_2937
                 ; MERCHANT: Sorry!
         switch $01F8=1
         return
 _ca8623:
-        dlg $0B7A
+        dlg DLG_2938
                 ; MERCHANT: Look!
                 ; As luck would have it, I'm fresh out of merchandise!
                 ; 0: (I'm gonna pound your face!)
@@ -20442,7 +20492,7 @@ _ca8623:
         choice _ca85fb, EventReturn
         return
 _ca862e:
-        dlg $0B7B
+        dlg DLG_2939
                 ; MERCHANT: Thanks to the Empire, my business is up!
         return
 _ca8632:
@@ -20460,7 +20510,7 @@ _ca8632:
                 move DOWN, 2
                 dir UP
                 end
-        dlg $0193
+        dlg DLG_403
                 ; CELES: This passage leads out.
         pass_off LOCKE
         pass_off CELES
@@ -20480,7 +20530,7 @@ _ca8661:
                 switch $0104=0
                 switch $0103=0
                 goto EventReturn
-        dlg $019C
+        dlg DLG_412
                 ; 0: (Change clothes?)
                 ; 1: (These are fine.)
         switch $01B5=1
@@ -20521,7 +20571,7 @@ _ca86a4:
                 action 35
                 end
         wait_1s
-        dlg $0179
+        dlg DLG_377
                 ; LOCKE: I've seen her before_
                 ; Of course! She's one of the Empire's generals!
         obj_script SLOT_1
@@ -20550,7 +20600,7 @@ _ca86a4:
                 move LEFT, 1
                 dir UP
                 end
-        dlg $017B, BOTTOM
+        dlg DLG_379, BOTTOM
                 ; GUARD: This's what happens to traitors!
         wait_obj CAMERA
         obj_script CAMERA
@@ -20561,7 +20611,7 @@ _ca86a4:
         hide_obj NPC_2
         hide_obj NPC_3
         wait_90f
-        dlg $017A, {TEXT_ONLY, BOTTOM}
+        dlg DLG_378, {TEXT_ONLY, BOTTOM}
                 ; Product of genetic engineering,
                 ; battle-hardened Magitek Knight, with a spirit as pure as snow_
         wait_30f
@@ -20585,7 +20635,7 @@ _ca86a4:
                 dir DOWN
                 end
         wait_45f
-        dlg $017C, BOTTOM
+        dlg DLG_380, BOTTOM
                 ; GUARD: So, the mighty CELES has fallen!
         loop 7
                 obj_script NPC_3
@@ -20599,7 +20649,7 @@ _ca86a4:
                 action 32
                 end
         wait_15f
-        dlg $017D, BOTTOM
+        dlg DLG_381, BOTTOM
                 ; CELES: How can you serve those cowards_
                 ; GUARD: Hold your tongue!
         obj_script NPC_3
@@ -20611,7 +20661,7 @@ _ca86a4:
         obj_script NPC_1
                 action 35
                 end
-        dlg $017E, BOTTOM
+        dlg DLG_382, BOTTOM
                 ; CELES: Isn't it true Kefka's going to poison the people of Doma, to the east?
                 ; GUARD: Shuddap!
         obj_script NPC_1
@@ -20631,14 +20681,14 @@ _ca86a4:
                 end
         sfx 199
         wait_45f
-        dlg $017F, BOTTOM
+        dlg DLG_383, BOTTOM
                 ; GUARD: I'd hate to be in your shoes tomorrow!
         obj_script NPC_3
                 move DOWN, 2
                 action 35 | ACTION_H_FLIP
                 end
         wait_45f
-        dlg $0180
+        dlg DLG_384
                 ; Keep a close eye on her!
         obj_script NPC_2
                 dir DOWN
@@ -20647,7 +20697,7 @@ _ca86a4:
                 wait 1
                 action 26
                 end
-        dlg $0181
+        dlg DLG_385
                 ; Yes, Sir!
                 ; I can go for days without sleep!
         wait_30f
@@ -20775,7 +20825,7 @@ _ca880f:
                 end
         return
 _ca8837:
-        dlg $0182
+        dlg DLG_386
                 ; 0:  (Remove her chains?)
                 ; 1:  (Wait a few minutes.)
         choice _ca8842, EventReturn
@@ -20815,20 +20865,20 @@ _ca8842:
                 end
         wait_90f
         if_switch $0103=0, _ca888a
-        dlg $0183
+        dlg DLG_387
                 ; CELES: You're awfully short for a soldier.
                 ; LOCKE: Oh, I forgot I was wearing a uniform!
         if_switch $0127=0, _ca889d
         return
 _ca888a:
         if_switch $0104=0, _ca889a
-        dlg $0184
+        dlg DLG_388
                 ; CELES: What do you hope to peddle down here?
                 ; LOCKE: Oops! Forgot I was wearing these clothes.
         if_switch $0127=0, _ca889d
         return
 _ca889a:
-        dlg $0185
+        dlg DLG_389
                 ; CELES: And you are_
 _ca889d:
         obj_script LOCKE
@@ -20852,7 +20902,7 @@ _ca88b6:
                 wait 2
                 action 35
                 end
-        dlg $0186, BOTTOM
+        dlg DLG_390, BOTTOM
                 ; LOCKE: I'm with the Returners. Name's LOCKE.
                 ; CELES: Returners!!! I used to be General CELES_
                 ; Now I'm just a common traitor_
@@ -20867,7 +20917,7 @@ _ca88b6:
                 wait 8
                 dir RIGHT
                 end
-        dlg $0187
+        dlg DLG_391
                 ; LOCKE: Let's go!
                 ; CELES: !? You'd take me along?
         obj_script NPC_1
@@ -20882,7 +20932,7 @@ _ca88b6:
                 action 35 | ACTION_H_FLIP
                 wait 1
                 end
-        dlg $0188
+        dlg DLG_392
                 ; CELES: Thanks, but no thanks. I can barely walk_
         obj_script LOCKE
                 dir DOWN
@@ -20896,14 +20946,14 @@ _ca88b6:
                 wait 12
                 action 32
                 end
-        dlg $0189
+        dlg DLG_393
                 ; CELES: I'm grateful, but_
                 ; Even if you got me out, you'd never be able to protect me. No, I think I'm better off here.
         obj_script LOCKE
                 move DOWN, 1
                 end
         wait_45f
-        dlg $018A
+        dlg DLG_394
                 ; LOCKE: I'll protect you!
         obj_script NPC_1
                 dir DOWN
@@ -20927,7 +20977,7 @@ _ca88b6:
                 wait 2
                 dir DOWN
                 end
-        dlg $018B
+        dlg DLG_395
                 ; LOCKE: Trust me! You'll be fine!
         wait_30f
         obj_script NPC_1, ASYNC
@@ -20949,19 +20999,19 @@ _ca88b6:
                 wait 1
                 action 27
                 end
-        dlg $018C
+        dlg DLG_396
                 ; LOCKE: Let's go!
         obj_script LOCKE
                 move DOWN, 1
                 end
-        dlg $018F, BOTTOM
+        dlg DLG_399, BOTTOM
                 ; CELES: Wait.
         wait_30f
         obj_script LOCKE
                 action 35 | ACTION_H_FLIP
                 end
         wait_45f
-        dlg $0190, BOTTOM
+        dlg DLG_400, BOTTOM
                 ; CELES: This soldier has something important on him_
         create_obj CELES
         char_party CELES, 1
@@ -20995,7 +21045,7 @@ _ca8973:
                 move RIGHT, 1
                 dir LEFT
                 end
-        dlg $0191
+        dlg DLG_401
                 ; CELES: Why are you helping me?
                 ; LOCKE: You remind me of someone_
         wait_45f
@@ -21005,7 +21055,7 @@ _ca8973:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0192
+        dlg DLG_402
                 ; LOCKE: But what's it matter, anyway?
                 ; I just want to, okay?!
         pass_off LOCKE
@@ -21029,7 +21079,7 @@ _ca89af:
         shake ALL, 3, 1
         sfx 165
         wait_15f 10
-        dlg $0194
+        dlg DLG_404
                 ; LOCKE: Huh?
                 ; CELES: Something's coming outta the wall!!
         spc_cmd $82, $08, $00
@@ -21040,7 +21090,7 @@ _ca89af:
         call _ca5ea9
         fade_in
         wait_1s
-        dlg $0195
+        dlg DLG_405
                 ; LOCKE: Whew!!!
                 ; Looks like we're in the clear!
         obj_script SLOT_1
@@ -21101,7 +21151,7 @@ _ca89fd:
         switch $0049=1
         switch $0302=1
         if_switch $0007=1, _ca8a4f
-        dlg $03B1, BOTTOM
+        dlg DLG_945, BOTTOM
                 ; SABIN: This's like old times!
                 ; I have to wander around for a while!
         switch $0007=1
@@ -21158,7 +21208,7 @@ _ca8a6f:
         obj_script EDGAR
                 action 33
                 end
-        dlg $03B0
+        dlg DLG_944
                 ; EDGAR: If only SABIN were here_
         pass_off SLOT_2
         pass_off SLOT_3
@@ -21423,7 +21473,7 @@ _ca8cae:
         return
 _ca8cbb:
         if_switch $00A4=1, _ca8cda
-        dlg $032A
+        dlg DLG_810
                 ; South Figaro-bound ferry.
                 ; 0:  (Still need to shop.)
                 ; 1:  (Hop aboard?)
@@ -21435,11 +21485,11 @@ _ca8cd2:
         return
 _ca8cda:
         if_switch $00AC=1, _ca8ce4
-        dlg $0915
+        dlg DLG_2325
                 ; This ship belongs to the Crimson Robbers.
         return
 _ca8ce4:
-        dlg $032A
+        dlg DLG_810
                 ; South Figaro-bound ferry.
                 ; 0:  (Still need to shop.)
                 ; 1:  (Hop aboard?)
@@ -21551,7 +21601,7 @@ _ca8d22:
                 .byte $07,$07,$07,$84,$84,$84,$84,$84,$84,$84,$84,$84,$84,$84,$84
         fade_in
         wait_fade
-        dlg $033B
+        dlg DLG_827
                 ; CYAN: Narshe is just a stone's throw away!
         obj_script SABIN
                 speed NORMAL
@@ -21561,14 +21611,14 @@ _ca8d22:
                 move LEFT_LEFT_UP
                 move LEFT, 2
                 end
-        dlg $033C
+        dlg DLG_828
                 ; SABIN: I hope the others arrived safely!
         wait_30f
         obj_script CYAN
                 action 35 | ACTION_H_FLIP
                 end
         wait_45f
-        dlg $033D
+        dlg DLG_829
                 ; CYAN: I'm sure they did.
         wait_15f
         set_case PARTY_CHARS
@@ -21589,11 +21639,11 @@ _ca8ed7:
                 move RIGHT, 1
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $033E
+        dlg DLG_830
                 ; GAU: Me hope so, too_
         return
 _ca8ee5:
-        dlg $0B8A
+        dlg DLG_2954
                 ; Good mattress for 150 GP!
                 ; Stay a while?
                 ; 0:  Yes
@@ -21632,7 +21682,7 @@ _ca8f2c:
         shop_menu NIKEAH_WEAPONS_2
         return
 _ca8f2f:
-        dlg $0338
+        dlg DLG_824
                 ; You took one look at me and thought I was a loser, right?
                 ; You're obligated to buy from me, now!
         if_switch $00A4=1, _ca8f3b
@@ -21657,68 +21707,68 @@ _ca8f53:
         return
 _ca8f56:
         if_switch $00A4=1, _ca8f60
-        dlg $0339
+        dlg DLG_825
                 ; Looks like junk, but_
         return
 _ca8f60:
-        dlg $0918
+        dlg DLG_2328
                 ; After the end of the world,
                 ; I awoke all alone in Doma Castle.
                 ; When I would try to sleep there, demons would come for me_ Oh! I don't want to remember that!
         return
 _ca8f64:
         if_switch $00A4=1, _ca8f6e
-        dlg $033A
+        dlg DLG_826
                 ; Have any imported goods?
         return
 _ca8f6e:
-        dlg $0914
+        dlg DLG_2324
                 ; The ship to South Figaro's about to leave.
         return
 _ca8f72:
         if_switch $00A4=1, _ca8f7c
-        dlg $0325
+        dlg DLG_805
                 ; The land to the east, Doma, fell to the Empire.
         return
 _ca8f7c:
-        dlg $0919
+        dlg DLG_2329
                 ; While traveling under the desert, Figaro Castle hit an obstacle and came to a halt.
         return
 _ca8f80:
         if_switch $00A4=1, _ca8f8a
-        dlg $0326
+        dlg DLG_806
                 ; Move along, now.
                 ; You're in the way!
         return
 _ca8f8a:
-        dlg $0916
+        dlg DLG_2326
                 ; The thieves are hanging out at the coffee shop. They all escaped from Figaro Castle.
         return
 _ca8f8e:
         if_switch $00A4=1, _ca8f98
-        dlg $0327
+        dlg DLG_807
                 ; No one can reach Nikeah unless they have a ship!
         return
 _ca8f98:
-        dlg $0917
+        dlg DLG_2327
                 ; The road you followed here used to be under water.
         return
 _ca8f9c:
         if_switch $00A4=1, _ca8fb0
         if_switch $0044=1, _ca8fac
-        dlg $0328
+        dlg DLG_808
                 ; A rock slide has blocked the path leading north.
         return
 _ca8fac:
-        dlg $0329
+        dlg DLG_809
                 ; The path leading north is now clear.
         return
 _ca8fb0:
-        dlg $0913
+        dlg DLG_2323
                 ; I'm hiding away from Kefka.
         return
 _ca8fb4:
-        dlg $0B8E
+        dlg DLG_2958
                 ; Chocobo ride for 80 GP.
                 ; Hop aboard?
                 ; 0:  Yes
@@ -21756,24 +21806,24 @@ _ca8fc9:
 
 _ca8ff7:
         if_switch $00A4=1, _ca9001
-        dlg $032D
+        dlg DLG_813
                 ; There used to be ships sailing to the southern continent.
                 ; Tzen, Albrook, Maranda_
                 ; They've all been smashed.
         return
 _ca9001:
-        dlg $091F
+        dlg DLG_2335
                 ; I understand they escaped from Figaro Castle's prison.
         return
 _ca9005:
-        dlg $032E
+        dlg DLG_814
                 ; Ya met that odd man, lives near the Lete River? His wife bore 'im a son 13 years ago.
                 ; It was a problem birth, and the woman passed away. The man totally lost it.
                 ; He thought the newborn was a monster. Wonder what happened to the poor little baby?
         return
 _ca9009:
         if_switch $00A4=1, _ca9185
-        dlg $032F
+        dlg DLG_815
                 ; DANCER: Yoo hoo!
                 ; You handsome thing.
                 ; How 'bout joining me?
@@ -21832,14 +21882,14 @@ _ca9009:
                 action 24
                 end
         wait_1s
-        dlg $0330, BOTTOM
+        dlg DLG_816, BOTTOM
                 ; CYAN: H_how dare you_
                 ; you licentious howler!
         obj_script NPC_3
                 move DOWN, 1
                 dir LEFT
                 end
-        dlg $0331, BOTTOM
+        dlg DLG_817, BOTTOM
                 ; DANCER: Geez,
                 ; don't blow an artery, baby!
         obj_script NPC_3
@@ -21912,7 +21962,7 @@ _ca9009:
         obj_script CYAN
                 action 31
                 end
-        dlg $0332, BOTTOM
+        dlg DLG_818, BOTTOM
                 ; CYAN: B_baby?!
         if_case CHAR::SABIN, _ca915a
         obj_script CYAN
@@ -21923,7 +21973,7 @@ _ca9009:
                 move LEFT, 1
                 speed NORMAL
                 end
-        dlg $0335, BOTTOM
+        dlg DLG_821, BOTTOM
                 ; DANCER: Stop whispering!
                 ; My ears are burnin', baby!
         obj_script SLOT_2, ASYNC
@@ -21948,7 +21998,7 @@ _ca90f5:
                 branch _ca90f5
                 end
         wait_15f
-        dlg $0336, BOTTOM
+        dlg DLG_822, BOTTOM
                 ; CYAN: Enough!
                 ; Have you no shame?
                 ; I'll have you know_etc_etc.
@@ -21975,7 +22025,7 @@ _ca911a:
                 wait 1
                 branch _ca911a
                 end
-        dlg $0337, BOTTOM
+        dlg DLG_823, BOTTOM
                 ; Goodness!
         obj_script CYAN
                 dir UP
@@ -22025,7 +22075,7 @@ _ca915a:
         obj_script CYAN
                 dir UP
                 end
-        dlg $0333, BOTTOM
+        dlg DLG_819, BOTTOM
                 ; SABIN: CYAN_
                 ; Don't let it get to you.
                 ; CYAN: I'm not like that!
@@ -22034,7 +22084,7 @@ _ca915a:
                 action 37
                 end
         wait_30f
-        dlg $0334, BOTTOM
+        dlg DLG_820, BOTTOM
                 ; SABIN: No one thinks you are. Just let it go.
         obj_script SABIN, ASYNC
 _ca917a:
@@ -22047,32 +22097,32 @@ _ca917a:
         wait_2s
         return
 _ca9185:
-        dlg $0924
+        dlg DLG_2340
                 ; I've been chatting with the boss of this gang, Gerad.
                 ; He's kinda handsome!
         return
 _ca9189:
         switch $00A7=1
-        dlg $0920
+        dlg DLG_2336
                 ; From out of nowhere a bunch of huge sandworms burrowed into the prison!
                 ; We followed their tunnels back to the surface and escaped.
         call _ca91b1
         return
 _ca9193:
         switch $00A8=1
-        dlg $0921
+        dlg DLG_2337
                 ; Our last boss perished that day. We met up with Gerad in this town.
         call _ca91b1
         return
 _ca919d:
         switch $00A9=1
-        dlg $0922
+        dlg DLG_2338
                 ; The boss wants to sneak into Figaro Castle. He wants to get our booty back from the storage room there.
         call _ca91b1
         return
 _ca91a7:
         switch $00AA=1
-        dlg $0923
+        dlg DLG_2339
                 ; We'll enter da castle through a secret cave dat only we knows about!
         call _ca91b1
         return
@@ -22089,7 +22139,7 @@ _ca91b1:
                 layer 0
                 move UP_RIGHT
                 end
-        dlg $0925
+        dlg DLG_2341
                 ; All right, let's go!
         obj_script NPC_7, ASYNC
                 move RIGHT, 1
@@ -22105,7 +22155,7 @@ _ca91b1:
 _ca91da:
         if_switch $01F3=1, _ca921a
         if_switch $01F1=1, _ca9204
-        dlg $0926
+        dlg DLG_2342
                 ; GERAD: What's your problem?
                 ; CELES: Y_
                 ; you're EDGAR, aren't you?!
@@ -22128,7 +22178,7 @@ _ca91fa:
         return
 _ca9204:
         if_switch $01F2=1, EventReturn
-        dlg $0927
+        dlg DLG_2343
                 ; CELES: EDGAR?
                 ; GERAD: Enough of this nonsense! I have things to do.
         switch $01F2=1
@@ -22156,7 +22206,7 @@ _ca921a:
         obj_script NPC_11
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0928
+        dlg DLG_2344
                 ; GERAD: I'll be busy getting ready for our departure to Figaro.
                 ; CELES: Don't play possum with me! EDGAR?
                 ; Or have you somehow lost your memory?
@@ -22165,13 +22215,13 @@ _ca921a:
                 dir UP
                 end
         wait_45f
-        dlg $0929
+        dlg DLG_2345
                 ; GERAD: Listen, my lady,
                 ; I've been ``Gerad'' all my life!
         obj_script NPC_11
                 move DOWN, 2
                 end
-        dlg $092B
+        dlg DLG_2347
                 ; CELES: Only EDGAR would say, ``my lady.''
         obj_script NPC_11
                 action 31
@@ -22190,7 +22240,7 @@ _ca9256:
                 branch _ca9256
                 end
         wait_1s
-        dlg $092C
+        dlg DLG_2348
                 ; GERAD: What's all the bloomin' fuss about?
                 ; The words, ``my lady'' are used the world over!
         obj_script NPC_11, ASYNC
@@ -22208,7 +22258,7 @@ _ca9256:
         switch $0378=1
         return
 _ca927e:
-        dlg $091C
+        dlg DLG_2332
                 ; What're ya doin'?
                 ; Get away!
         return
@@ -22241,7 +22291,7 @@ _ca9282:
                 move DOWN, 1
                 dir LEFT
                 end
-        dlg $091D
+        dlg DLG_2333
                 ; GERAD: Oh, yeah, you know how to get into Figaro Castle, don't you?!
                 ; HENCHMAN: G'ho ho, do we ever!
         obj_script NPC_6
@@ -22251,7 +22301,7 @@ _ca9282:
                 wait 2
                 action 24
                 end
-        dlg $091E
+        dlg DLG_2334
                 ; GERAD: Yeah, You lead the way since it's buried.
         obj_script CAMERA
                 move UP, 8
@@ -22338,7 +22388,7 @@ _ca931c:
         set_parent_map 1, {147, 76}, UP
         return
 _ca9337:
-        dlg $0485
+        dlg DLG_1157
                 ; IMPRESARIO: Maria!?
         obj_script SLOT_1
                 action 31
@@ -22376,12 +22426,12 @@ _ca9337:
                 end
         wait_45f
         call _cac7fe, 2
-        dlg $0486
+        dlg DLG_1158
                 ; CELES: Are you talking to me?
         obj_script NPC_1
                 move DOWN, 1
                 end
-        dlg $0487
+        dlg DLG_1159
                 ; IMPRESARIO: Sorry_my mistake.
                 ; Wow, you could pass for Maria in a heartbeat! Hoo boy, now I really am in trouble_
         obj_script NPC_1
@@ -22402,7 +22452,7 @@ _ca9337:
                 dir UP
                 end
         wait_90f
-        dlg $0488
+        dlg DLG_1160
                 ; CELES looks just like Maria_?
         wait_30f
         obj_script SLOT_1
@@ -22462,7 +22512,7 @@ _ca93ea:
 _ca93ef:
         set_case PARTY_CHARS
         if_switch $01A6=0, _cb45c5
-        dlg $0484
+        dlg DLG_1156
                 ; You're the spittin' image of Maria! Huh? Haven't heard of her? She's a famous opera singer!
         return
 _ca93fa:
@@ -22470,7 +22520,7 @@ _ca93fa:
                 speed NORMAL
                 end
         call _caca8d
-        dlg $0489
+        dlg DLG_1161
                 ; That PERSON dropped it off.
         obj_script NPC_2
                 move DOWN, 4
@@ -22479,7 +22529,7 @@ _ca93fa:
                 move LEFT, 2
                 move DOWN, 2
                 end
-        dlg $048A, BOTTOM
+        dlg DLG_1162, BOTTOM
                 ; MASTER: He's the director of the operas here. Everyone just calls him ``Impresario.''
                 ; He's been in a tizzy ever since that letter arrived.
         wait_1s
@@ -22519,7 +22569,7 @@ _ca943d:
                 branch _ca943d
                 end
         fade_out_song $80
-        dlg $048E
+        dlg DLG_1166
                 ; My Dear Maria,
                 ; I want you for my wife.
                 ; I'm coming for you_
@@ -22528,7 +22578,7 @@ _ca943d:
                 speed NORMAL
                 move UP, 1
                 end
-        dlg $048B, BOTTOM
+        dlg DLG_1163, BOTTOM
                 ; LOCKE: Who's this ``Wandering_''? what's-his-name?
                 ; MASTER: You born on a farm, son?
         play_song SETZER
@@ -22558,7 +22608,7 @@ _ca943d:
                 end
         call _cad00f
         wait_1s
-        dlg $048D, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1165, {TEXT_ONLY, BOTTOM}
                 ; A blackjack-playing, world-traveling, casino-dwelling free spirit_
         wait_30f
         name_menu SETZER
@@ -22594,13 +22644,13 @@ _ca943d:
                 end
         fade_in
         wait_fade
-        dlg $048C, BOTTOM
+        dlg DLG_1164, BOTTOM
                 ; That's SETZER, owner of the world's only airship.
         wait_2s
         obj_script SLOT_1
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $048F
+        dlg DLG_1167
                 ; CELES: If we could get that airship, we'd make the Empire in no time.
                 ; LOCKE: Let's set up a meeting_with SETZER_
         obj_script SLOT_1
@@ -22629,29 +22679,29 @@ _ca94ff:
                 switch $01B4=0
                 switch $01B0=0
                 goto EventReturn
-        dlg $042A
+        dlg DLG_1066
                 ; Hand's pointin' at the two.
         return
 _ca950b:
-        dlg $0413
+        dlg DLG_1043
                 ; Zozo!?
                 ; Never heard of it.
         return
 _ca950f:
-        dlg $0414
+        dlg DLG_1044
                 ; Great people, here!
         return
 _ca9513:
         if_switch $0298=1, _ca951d
-        dlg $0429
+        dlg DLG_1065
                 ; This place is dangerous!
                 ; And don't you dare think about jumping between buildings!
         return
 _ca951d:
-        dlg $0426
+        dlg DLG_1062
                 ; Climb the stairs of the building with the CAFE sign on it, and you can find a path leading to Mt. Zozo.
         if_switch $01DB=1, EventReturn
-        dlg $0427
+        dlg DLG_1063
                 ; With this Rust-Rid you can open that door.
                 ; Yours for 1000 GP!
                 ; 0:  Yes
@@ -22662,7 +22712,7 @@ _ca9531:
         take_gil 1000
         if_switch $01BE=1, _cb69ff
         sfx SFX::MAGICITE_PICKUP
-        dlg $0428
+        dlg DLG_1064
                 ; Purchased Rust-Rid!
         switch $01DB=1
         return
@@ -22691,74 +22741,74 @@ _ca9542:
         switch $0384=0
         return
 _ca9576:
-        dlg $0422
+        dlg DLG_1058
                 ; That clock has no minute hand. It's never pointing to the right time anyway!
         return
 _ca957a:
-        dlg $0421
+        dlg DLG_1057
                 ; Clock's second hand's pointin' at 30.
         return
 _ca957e:
-        dlg $0423
+        dlg DLG_1059
                 ; The seconds? They're divisible by 20!
         return
 _ca9582:
-        dlg $0425
+        dlg DLG_1061
                 ; The second hand of my watch is pointing at four.
         return
 _ca9586:
         if_switch $00A4=1, _ca9590
-        dlg $041B
+        dlg DLG_1051
                 ; Girl?
                 ; Haven't seen any girls here. Might wanna check the top of this building.
         return
 _ca9590:
-        dlg $041C
+        dlg DLG_1052
                 ; It's safe here!
         return
 _ca9594:
-        dlg $041E
+        dlg DLG_1054
                 ; Phew_!
                 ; How long we gonna have ta do this!?
         return
 _ca9598:
-        dlg $0417
+        dlg DLG_1047
                 ; Time?
                 ; It's 4:00.
         return
 _ca959c:
-        dlg $0418
+        dlg DLG_1048
                 ; You can trust me!
                 ; It's 8:00.
         return
 _ca95a0:
-        dlg $0419
+        dlg DLG_1049
                 ; 10:00!
                 ; Time to go home!
         return
 _ca95a4:
-        dlg $041A
+        dlg DLG_1050
                 ; It's already 12:00.
         return
 _ca95a8:
-        dlg $0416
+        dlg DLG_1046
                 ; It's now 2:00.
         return
 _ca95ac:
-        dlg $0414
+        dlg DLG_1044
                 ; Great people, here!
         return
 _ca95b0:
-        dlg $042C
+        dlg DLG_1068
                 ; Get in line!
         return
 _ca95b4:
         if_switch $01DB=1, _ca95be
-        dlg $042E
+        dlg DLG_1070
                 ; Rusted shut.
         return
 _ca95be:
-        dlg $042F
+        dlg DLG_1071
                 ; Rust dissolved.
         delete_obj NPC_15
         switch $0356=0
@@ -22839,7 +22889,7 @@ _ca963d:
                 goto EventReturn
         switch $01B5=1
         clr_overlay
-        dlg $0B91
+        dlg DLG_2961
                 ; Use the crane to go down?
                 ; 0:  Yes
                 ; 1:  No
@@ -22914,7 +22964,7 @@ _ca9653:
                 end
         return
 _ca96a9:
-        dlg $042D
+        dlg DLG_1069
                 ; Good day, gentle folks.
                 ; Can I be of service?
                 ; I hate fighting, so I'd better let you pass!
@@ -22934,7 +22984,7 @@ _ca96bd:
                 switch $01B0=0
                 switch $01F0=1
                 goto EventReturn
-        dlg $041D
+        dlg DLG_1053
                 ; Clock's hands have stopped.
                 ; Please reset the hour.
                 ; 0:  (2:00)   1:  (4:00)
@@ -22945,7 +22995,7 @@ _ca96bd:
 _ca96e2:
         switch $01F1=1
 _ca96e4:
-        dlg $041F
+        dlg DLG_1055
                 ; Clock's hands have stopped.
                 ; Please reset the minute.
                 ; 0:  (0:10)   1:  (0:20)
@@ -22956,7 +23006,7 @@ _ca96e4:
 _ca96f8:
         switch $01F2=1
 _ca96fa:
-        dlg $0420
+        dlg DLG_1056
                 ; Clock's hands have stopped.
                 ; Please reset the second.
                 ; 0:  (0:00:10)   1:  (0:00:20)
@@ -22970,7 +23020,7 @@ _ca970e:
                 switch $01F2=1
                 goto _ca9725
 _ca9716:
-        dlg $042B
+        dlg DLG_1067
                 ;
                 ;     Didn't reset clock_
         return
@@ -23032,7 +23082,7 @@ _ca9749:
                         end
                 end_loop
         wait_15f
-        dlg $0430
+        dlg DLG_1072
                 ; Oooooh_gurururu_
         obj_script SLOT_2, ASYNC
                 move UP_LEFT
@@ -23048,7 +23098,7 @@ _ca9749:
                 end
         wait_30f
         play_song AWAKENING
-        dlg $0431
+        dlg DLG_1073
                 ; TERRA?
         obj_script SLOT_3, ASYNC
                 move LEFT, 1
@@ -23062,7 +23112,7 @@ _ca9749:
                 end
         call _cac807, 2
         wait_45f
-        dlg $0431
+        dlg DLG_1073
                 ; TERRA?
         wait_30f
         obj_script SLOT_1, ASYNC
@@ -23073,7 +23123,7 @@ _ca9749:
                 action 33
                 end
         wait_15f 5
-        dlg $0432, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1074, {TEXT_ONLY, BOTTOM}
                 ; RAMUH: She's scared, you know.
         obj_script SLOT_1, ASYNC
                 action 31
@@ -23126,11 +23176,11 @@ _ca9749:
                 end
         wait_1s
         wait_obj CAMERA
-        dlg $0433, BOTTOM
+        dlg DLG_1075, BOTTOM
                 ; Who're you?
         call _caacbe
         wait_15f
-        dlg $0434, BOTTOM
+        dlg DLG_1076, BOTTOM
                 ; RAMUH: This girl is your friend?
         wait_30f
         obj_script SLOT_1
@@ -23154,7 +23204,7 @@ _ca9749:
                 case CHAR::GAU, _caacd3
                 end_case
         call _caacbe
-        dlg $0439, BOTTOM
+        dlg DLG_1081, BOTTOM
                 ; RAMUH: You call her TERRA_
                 ; _TERRA?? How odd_
         call _caacbe, 2
@@ -23288,7 +23338,7 @@ _ca9749:
                 anim_on
                 end
         wait_15f
-        dlg $043A, BOTTOM
+        dlg DLG_1082, BOTTOM
                 ; RAMUH: She is undamaged. But I fear she can't understand you. As for me, I am Ramuh. The Esper, Ramuh.
         play_song ESPER_WORLD
         obj_script CAMERA, ASYNC
@@ -23310,7 +23360,7 @@ _ca9749:
                 end
         wait_1s
         wait_obj CAMERA
-        dlg $043B, BOTTOM
+        dlg DLG_1083, BOTTOM
                 ; ESPER!?
         obj_script SLOT_1
                 move DOWN_RIGHT
@@ -23333,7 +23383,7 @@ _ca9749:
         wait_15f
         call _caacbe, 2
         wait_30f
-        dlg $043F, BOTTOM
+        dlg DLG_1087, BOTTOM
                 ; RAMUH: That doesn't mean we don't live here, too.
                 ; Espers take a variety of forms.
                 ; Sometimes we live here, taking the shape of humans.
@@ -23367,7 +23417,7 @@ _ca9749:
         wait_30f
         call _caacbe
         wait_30f
-        dlg $0442, BOTTOM
+        dlg DLG_1090, BOTTOM
                 ; RAMUH: Humans and Espers can't survive together.
         wait_45f
         obj_script SLOT_1
@@ -23386,7 +23436,7 @@ _ca9749:
         wait_30f
         call _caacbe, 3
         wait_30f
-        dlg $0447, BOTTOM
+        dlg DLG_1095, BOTTOM
                 ; RAMUH: No, that was no fairy tale. That was true.
                 ; We started out as friends.
                 ; Then along came the War of the Magi_
@@ -23405,7 +23455,7 @@ _ca9749:
         obj_script SLOT_2, ASYNC
                 dir DOWN
                 end
-        dlg $0448, BOTTOM
+        dlg DLG_1096, BOTTOM
                 ; War of the Magi_
         obj_script SLOT_3, ASYNC
                 action 21 | ACTION_H_FLIP
@@ -23429,14 +23479,14 @@ _ca9749:
                 action 0
                 end
         wait_1s
-        dlg $0449, BOTTOM
+        dlg DLG_1097, BOTTOM
                 ; RAMUH: It took place_long ago. Espers fought humans who were infused with magical power extracted from Espers_
         loop 31
                 mod_sprite_pal DEC, {RED, GREEN, BLUE}, 3
                 mod_bg_pal DEC, {RED, GREEN, BLUE}, 3
                 wait 6
                 end_loop
-        dlg $044A, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1098, {TEXT_ONLY, BOTTOM}
                 ; Fearing our magical powers would once again become a target, we fashioned a new realm, and moved there.
         hide_obj SLOT_1
         hide_obj SLOT_2
@@ -23450,10 +23500,10 @@ _ca9749:
                 move UP, 8
                 move UP, 8
                 end
-        dlg $044B, TEXT_ONLY
+        dlg DLG_1099, TEXT_ONLY
                 ; About 20 years ago, humans stumbled upon it_humans who knew about Espers, and the secret to Magitek power.
         wait_1s
-        dlg $044C, TEXT_ONLY
+        dlg DLG_1100, TEXT_ONLY
                 ; Thus began a hunt for Espers. Only in this way could Emperor Gestahl create his invincible army.
         wait_30f
         wait_obj CAMERA
@@ -23464,7 +23514,7 @@ _ca9749:
                 end_loop
         fade_in
         wait_2s
-        dlg $044D, TEXT_ONLY
+        dlg DLG_1101, TEXT_ONLY
                 ; In response to this, we erected a doorway, and threw the humans out.
         wait_30f
         flash WHITE
@@ -23502,7 +23552,7 @@ _ca9749:
         fade_in 2
         wait_fade
         wait_2s
-        dlg $044E, BOTTOM
+        dlg DLG_1102, BOTTOM
                 ; RAMUH: Even as we speak, many of my kind are trapped in the Empire's Magitek Research Facility, being_
                 ; _drained of their powers_
                 ; I fled here to avoid a similar fate.
@@ -23558,7 +23608,7 @@ _ca9749:
         obj_script NPC_2
                 action 0
                 end
-        dlg $044F, BOTTOM
+        dlg DLG_1103, BOTTOM
                 ; RAMUH: That's right, relax.
         wait_45f
         obj_script SLOT_2, ASYNC
@@ -23569,7 +23619,7 @@ _ca9749:
                 dir RIGHT
                 end
         wait_15f 5
-        dlg $0450, BOTTOM
+        dlg DLG_1104, BOTTOM
                 ; RAMUH: I sensed that TERRA was in trouble.
                 ; My magic_summoned her here.
         obj_script SLOT_1
@@ -23578,7 +23628,7 @@ _ca9749:
                 dir UP
                 end
         wait_30f
-        dlg $0451, BOTTOM
+        dlg DLG_1105, BOTTOM
                 ; ``TERRA's_an Esper?''
         wait_2s
         obj_script NPC_2
@@ -23594,14 +23644,14 @@ _ca9749:
                 move DOWN_RIGHT
                 end
         wait_1s
-        dlg $0452, BOTTOM
+        dlg DLG_1106, BOTTOM
                 ; RAMUH: No, she's actually quite different.
         wait_30f
         obj_script SLOT_1
                 dir LEFT
                 end
         wait_45f
-        dlg $0453, BOTTOM
+        dlg DLG_1107, BOTTOM
                 ; ``TERRA looks like she's in pain.''
                 ; RAMUH: Her very existence strikes fear into her own heart.
         obj_script SLOT_1
@@ -23613,7 +23663,7 @@ _ca9749:
                 wait 10
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0454, BOTTOM
+        dlg DLG_1108, BOTTOM
                 ; ``How can we help her?''
         wait_2s
         obj_script NPC_2
@@ -23623,7 +23673,7 @@ _ca9749:
                 wait 1
                 action 0
                 end
-        dlg $0455, BOTTOM
+        dlg DLG_1109, BOTTOM
                 ; RAMUH: When she accepts this aspect of herself, I think she'll be all right.
         wait_30f
         obj_script SLOT_1
@@ -23636,7 +23686,7 @@ _ca9749:
                 action 35 | ACTION_H_FLIP
                 end
         wait_30f
-        dlg $0456, BOTTOM
+        dlg DLG_1110, BOTTOM
                 ; ``We have to do something!''
                 ; RAMUH: Then free those of my kind imprisoned in Gestahl's Magitek Research Facility. One of them can surely help her.
         obj_script SLOT_1
@@ -23656,12 +23706,12 @@ _ca9749:
                 action 49
                 end
         wait_1s
-        dlg $045B, BOTTOM
+        dlg DLG_1115, BOTTOM
                 ; RAMUH: Like a coward, I escaped leaving the others there.
                 ; It'll be the end of them_
         call _cac810, 3
         wait_30f
-        dlg $045C, BOTTOM
+        dlg DLG_1116, BOTTOM
                 ; ``What do you mean?''
         wait_30f
         obj_script NPC_2
@@ -23670,7 +23720,7 @@ _ca9749:
                 action 0
                 end
         wait_30f
-        dlg $045D, BOTTOM
+        dlg DLG_1117, BOTTOM
                 ; RAMUH: Gestahl's methods are incorrect. You can't drain a live Esper of all its power.
                 ; It is only when we are reduced to Magicite that our abilities can be transferred in total_
         fade_out_song $80
@@ -23678,7 +23728,7 @@ _ca9749:
                 speed FAST
                 move RIGHT, 2
                 end
-        dlg $045E, BOTTOM
+        dlg DLG_1118, BOTTOM
                 ; ``Pardon?!''
                 ; RAMUH: When we transform into Magicite, our power can be relocated.
                 ; ``Magicite_?!''
@@ -23751,7 +23801,7 @@ _ca9749:
         wait_obj NPC_6
         wait_1s
         wait_obj CAMERA
-        dlg $045F, BOTTOM
+        dlg DLG_1119, BOTTOM
                 ; RAMUH: These are my comrades who fell while escaping the Empire. And I will give you my power, as well_
         obj_script SLOT_1
                 dir RIGHT
@@ -23903,7 +23953,7 @@ _ca9749:
                 dir RIGHT
                 end
         wait_30f
-        dlg $0467, BOTTOM
+        dlg DLG_1127, BOTTOM
                 ; Magicite_?
         wait_45f
         obj_script SLOT_3, ASYNC
@@ -23961,7 +24011,7 @@ _ca9749:
         pass_on SLOT_4
         return
 _ca9d10:
-        dlg $046C
+        dlg DLG_1132
                 ; TERRA_wait for us.
                 ; We'll be back!
         return
@@ -23988,17 +24038,17 @@ _ca9d14:
 _ca9d36:
         if_switch $006E=1, _ca9d4a
         if_switch $006C=1, _ca9d46
-        dlg $05A0
+        dlg DLG_1440
                 ; Emergency!
                 ; Something's coming through the gate!
         return
 _ca9d46:
-        dlg $059F
+        dlg DLG_1439
                 ; Elder's orders_
                 ; No one passes through the gate.
         return
 _ca9d4a:
-        dlg $05AF
+        dlg DLG_1455
                 ; YOUTH: What's wrong, Maduin?
         if_any
                 switch $01F0=1
@@ -24023,12 +24073,12 @@ _ca9d68:
         if_switch $0116=1, _ca9d88
         if_switch $006F=1, _ca9d84
         if_switch $006E=1, _ca9eaa
-        dlg $0592
+        dlg DLG_1426
                 ; She's pretty weak.
                 ; Better let her rest for a moment.
         return
 _ca9d84:
-        dlg $05BD
+        dlg DLG_1469
                 ; It's dangerous out there!
         return
 _ca9d88:
@@ -24041,7 +24091,7 @@ _ca9d88:
                 speed NORMAL
                 dir UP
                 end
-        dlg $05C4, BOTTOM
+        dlg DLG_1476, BOTTOM
                 ; ESPER: This is all because of that human girl!
                 ; MADUIN: Nonsense!
                 ; ESPER: I'm sure she helped the others find us!
@@ -24053,7 +24103,7 @@ _ca9d88:
                 move UP, 3
                 dir LEFT
                 end
-        dlg $05C5, BOTTOM
+        dlg DLG_1477, BOTTOM
                 ; MADUIN: Get a grip on yourself!
                 ; ESPER: No! She's one of them!
                 ; Soon she'll be wearing our hide!
@@ -24068,7 +24118,7 @@ _ca9d88:
         obj_script SLOT_1
                 dir DOWN
                 end
-        dlg $05C6
+        dlg DLG_1478
                 ; MADUIN: Urghhh!
         switch $035A=0
         switch $035B=0
@@ -24079,17 +24129,17 @@ _ca9d88:
         switch $035D=1
         return
 _ca9dcb:
-        dlg $05C7
+        dlg DLG_1479
                 ; Madonna took TERRA to the gate!
         return
 _ca9dcf:
         if_switch $006F=1, _ca9de3
         if_switch $006C=1, _ca9ddf
-        dlg $0594
+        dlg DLG_1428
                 ; ELDER: This evening is an ill omen_
         return
 _ca9ddf:
-        dlg $0593
+        dlg DLG_1427
                 ; ELDER: Did I hear there was a human here?
                 ; MADUIN: Probably_
                 ; _wandered in here by mistake.
@@ -24099,7 +24149,7 @@ _ca9de3:
         obj_script NPC_4
                 dir DOWN
                 end
-        dlg $05BC
+        dlg DLG_1468
                 ; ELDER: We've no choice_
                 ; We must do what we've been avoiding_
                 ; MADUIN: You mean_
@@ -24110,7 +24160,7 @@ _ca9de3:
         obj_script NPC_4
                 move DOWN, 3
                 end
-        dlg $05C0
+        dlg DLG_1472
                 ; ELDER: Here's the plan. We'll cause a tempest that'll sweep all the nasty creatures out of our realm.
                 ; Then we'll seal the gate_
                 ; I am the last of our kind able to cast this magical seal.
@@ -24121,7 +24171,7 @@ _ca9de3:
                 move LEFT, 3
                 end
         wait_45f
-        dlg $05C1
+        dlg DLG_1473
                 ; MADUIN: But in your state, you might just_
                 ; ELDER: Pass away_
                 ; but at least we will finally be safe.
@@ -24138,14 +24188,14 @@ _ca9de3:
                 end
         wait_45f
         fade_out_song $40
-        dlg $05C2
+        dlg DLG_1474
                 ; MADONNA: I, for one, will not miss the other side_
         wait_2s
         obj_script NPC_4
                 dir DOWN
                 end
         wait_1s
-        dlg $05C3
+        dlg DLG_1475
                 ; ELDER: Let's do it.
                 ; We have no other choice.
         play_song TROOPS_MARCH_ON
@@ -24171,12 +24221,12 @@ _ca9de3:
         switch $033B=0
         return
 _ca9e3e:
-        dlg $05AB
+        dlg DLG_1451
                 ; ELDER: Everything all right?
                 ; WHAT? The human's gone?
         return
 _ca9e42:
-        dlg $05C8
+        dlg DLG_1480
                 ; ELDER: Where are you going?! D' goh!
                 ; MADUIN: Madonna's getting drawn into the next world_!
                 ; ELDER: Impossible!
@@ -24187,75 +24237,75 @@ _ca9e46:
         if_switch $0117=1, _ca9e64
         if_switch $006F=1, _ca9e60
         if_switch $006C=1, _ca9e5c
-        dlg $0595
+        dlg DLG_1429
                 ; You okay, Maduin?
         return
 _ca9e5c:
-        dlg $0596
+        dlg DLG_1430
                 ; You'd better do away with it. Humans and Espers are incompatible_
         return
 _ca9e60:
-        dlg $05BE
+        dlg DLG_1470
                 ; Soon the humans will arrive!
         return
 _ca9e64:
-        dlg $05C7
+        dlg DLG_1479
                 ; Madonna took TERRA to the gate!
         return
 _ca9e68:
         if_switch $006C=1, _ca9e72
-        dlg $0597
+        dlg DLG_1431
                 ; You're the Gate Keeper, Maduin?
         return
 _ca9e72:
-        dlg $0598
+        dlg DLG_1432
                 ; Everyone here's feeling uneasy.
         return
 _ca9e76:
         if_switch $006C=1, _ca9e80
-        dlg $059B
+        dlg DLG_1435
                 ; Strong winds_
                 ; Be careful, Maduin.
         return
 _ca9e80:
-        dlg $059C
+        dlg DLG_1436
                 ; The link between worlds has surely weakened over the past 1000 years.
         return
 _ca9e84:
         if_switch $006C=1, _ca9e8e
-        dlg $059D
+        dlg DLG_1437
                 ; You okay Maduin?
         return
 _ca9e8e:
-        dlg $059E
+        dlg DLG_1438
                 ; Do you even know what you've done?
         return
 _ca9e92:
         if_switch $006E=1, _ca9e9c
-        dlg $05A1
+        dlg DLG_1441
                 ; They say a human girl's here_
         return
 _ca9e9c:
-        dlg $05AC
+        dlg DLG_1452
                 ; If this generation of humans knew about our abilities_
                 ; And decided they wanted to utilize our powers_
                 ; It would be a total disaster!
         return
 _ca9ea0:
         if_switch $006E=1, _ca9eaa
-        dlg $05A2
+        dlg DLG_1442
                 ; __
         return
 _ca9eaa:
-        dlg $05AD
+        dlg DLG_1453
                 ; A human girl made it all the way to the gate!
         return
 _ca9eae:
-        dlg $05AE
+        dlg DLG_1454
                 ; Why has this happened now after all these years?
         return
 _ca9eb2:
-        dlg $0591
+        dlg DLG_1425
                 ; MADUIN: Listen well, and think clearly!
                 ; What will you do?
                 ; 0: (Return together?)
@@ -24318,7 +24368,7 @@ _ca9ebd:
                 move LEFT_DOWN_DOWN
                 move DOWN, 3
                 end
-        dlg $0592
+        dlg DLG_1426
                 ; She's pretty weak.
                 ; Better let her rest for a moment.
         obj_script NPC_3, ASYNC
@@ -24340,7 +24390,7 @@ _ca9f26:
                 wait 1
                 end
         call _caca8d
-        dlg $05A4
+        dlg DLG_1444
                 ; MADUIN: Did I awaken you?
         lock_camera
         obj_script CAMERA, ASYNC
@@ -24361,7 +24411,7 @@ _ca9f26:
                 end
         wait_obj CAMERA
         wait_90f
-        dlg $05A5
+        dlg DLG_1445
                 ; GIRL: You're_an Esper?
                 ; What's that pendant for?
         obj_script SLOT_1
@@ -24371,7 +24421,7 @@ _ca9f26:
         obj_script NPC_1
                 move RIGHT, 1
                 end
-        dlg $05A6
+        dlg DLG_1446
                 ; MADUIN: It's_yours now!
                 ; It helps protect the Esper World.
                 ; GIRL: Esper World_
@@ -24382,23 +24432,23 @@ _ca9f26:
                 move DOWN, 1
                 move LEFT, 1
                 end
-        dlg $05A7
+        dlg DLG_1447
                 ; ESPER: I am Maduin.
                 ; I tired living in the human world_
                 ; That world is filled with desire, greed and loathing. It's highly infectious_
         obj_script SLOT_1
                 dir DOWN
                 end
-        dlg $05A8
+        dlg DLG_1448
                 ; MADUIN: Are humans and Espers
                 ; truly_so different?
-        dlg $05A9
+        dlg DLG_1449
                 ; MADONNA: So_I'm an example of the evil in this world, huh?
                 ; MADUIN: No, I mean_
         obj_script SLOT_1
                 dir RIGHT
                 end
-        dlg $05AA
+        dlg DLG_1450
                 ; MADONNA: I'll return to my world tomorrow!
                 ; MADUIN: You'll need a guide.
         obj_script NPC_4
@@ -24426,7 +24476,7 @@ _ca9f26:
         wait_fade
         return
 _ca9fa2:
-        dlg $05BF
+        dlg DLG_1471
                 ; MADONNA: TERRA's all right.
         return
 _ca9fa6:
@@ -24448,7 +24498,7 @@ _ca9fbf:
         obj_script NPC_13
                 dir DOWN
                 end
-        dlg $05B0
+        dlg DLG_1456
                 ; MADUIN: If you don't want to return to your world, you may stay here.
                 ; MADONNA: But humans and Espers can never coexist_!
         obj_script NPC_13, ASYNC
@@ -24464,7 +24514,7 @@ _ca9fbf:
                 .byte $00,$00,$00
                 .byte $00,$00,$00
                 .byte $00,$00,$00
-        dlg $05B1
+        dlg DLG_1457
                 ; MADUIN: How do we know for sure unless we observe for ourselves?
         loop 32
                 mod_bg_pal DEC, {RED, GREEN, BLUE}, 3, {16, 112}
@@ -24688,7 +24738,7 @@ _caa16d:
                 branch _caa16d
                 end
         wait_obj CAMERA
-        dlg $05B2, BOTTOM
+        dlg DLG_1458, BOTTOM
                 ;
                 ;     How do we know_
         obj_script NPC_1, ASYNC
@@ -24727,7 +24777,7 @@ _caa16d:
                 move RIGHT_RIGHT_UP
                 end
         wait_obj CAMERA
-        dlg $05B3
+        dlg DLG_1459
                 ;
                 ; unless we_
         obj_script CAMERA, ASYNC
@@ -24875,7 +24925,7 @@ _caa276:
                 branch _caa276
                 end
         wait_obj CAMERA
-        dlg $05B4
+        dlg DLG_1460
                 ;
                 ;    observe for ourselves_?
         obj_script NPC_1, ASYNC
@@ -25049,7 +25099,7 @@ _caa2a2:
                 wait 4
                 end_loop
         wait_obj CAMERA
-        dlg $05B5, TEXT_ONLY
+        dlg DLG_1461, TEXT_ONLY
                 ; MADUIN: We've given her a name_
                 ; MADONNA: What?
                 ; MADUIN: It's TERRA.
@@ -25072,7 +25122,7 @@ _caa2a2:
                 speed NORMAL
                 end
         fade_in
-        dlg $05B6, {ASYNC, TEXT_ONLY}
+        dlg DLG_1462, {ASYNC, TEXT_ONLY}
                 ;
                 ; 2 years later_
         obj_script NPC_1
@@ -25097,7 +25147,7 @@ _caa2a2:
         obj_script NPC_4
                 move UP, 2
                 end
-        dlg $05B7
+        dlg DLG_1463
                 ; Humans!!!!!
                 ; The nexus between our worlds has opened again!! The wind_
                 ; so odd_just like 2 years ago_
@@ -25118,7 +25168,7 @@ _caa2a2:
                 end
         pass_off NPC_8
         pass_off NPC_1
-        dlg $05B8
+        dlg DLG_1464
                 ; But something's different now_
                 ; Troops have come seeking our magical power.
         obj_script NPC_8, ASYNC
@@ -25186,7 +25236,7 @@ _caa460:
                 branch _caa460
                 end
         wait_45f
-        dlg $05B9
+        dlg DLG_1465
                 ; Blast it!
                 ; They've made it as far as the Elder's house!
         obj_script NPC_3, ASYNC
@@ -25217,7 +25267,7 @@ _caa460:
                 move DOWN, 4
                 end
         wait_obj CAMERA
-        dlg $05BA
+        dlg DLG_1466
                 ; GESTAHL: Aha!
                 ; We've finally found it!
                 ; Those ancient writings told us of this world, and described the awesome magical properties of these beasts!
@@ -25231,7 +25281,7 @@ _caa460:
                 wait 10
                 dir DOWN
                 end
-        dlg $05BB
+        dlg DLG_1467
                 ; GESTAHL: Grab them!
                 ; Riches to any man who captures an Esper!
                 ; GO!
@@ -25273,7 +25323,7 @@ _caa460:
         fade_in
         return
 _caa4e0:
-        dlg $05CB, BOTTOM
+        dlg DLG_1483, BOTTOM
                 ; MADONNA: Maduin_
                 ; I'm not their friend_
                 ; MADUIN: I understand that!
@@ -25306,7 +25356,7 @@ _caa4e0:
                 hide_obj
                 end
         wait_30f
-        dlg $05CA, BOTTOM
+        dlg DLG_1482, BOTTOM
                 ; TERRA!!!
         obj_script NPC_13, ASYNC
                 move UP, 1
@@ -25320,7 +25370,7 @@ _caa4e0:
                 speed NORMAL
                 move UP, 3
                 end
-        dlg $05C9
+        dlg DLG_1481
                 ; MADUIN: Madonna!!
         obj_script SLOT_1, ASYNC
                 speed FASTER
@@ -25360,7 +25410,7 @@ _caa4e0:
                 wait 8
                 move RIGHT, 2
                 end
-        dlg $05CE
+        dlg DLG_1486
                 ; GESTAHL: A_human girl?
                 ; Wh_ Who is she?
         create_obj NPC_3
@@ -25375,7 +25425,7 @@ _caa4e0:
         obj_script NPC_2
                 dir DOWN
                 end
-        dlg $05CF
+        dlg DLG_1487
                 ; MADONNA: Please_
                 ; take care_of my baby_
                 ; GESTAHL: YOUR girl!?
@@ -25391,7 +25441,7 @@ _caa4e0:
                 dir LEFT
                 end
         wait_30f
-        dlg $05D0
+        dlg DLG_1488
                 ; MADONNA: N_noooo!!!
                 ; GESTAHL: Quiet, my dear!!
         obj_script NPC_1
@@ -25415,7 +25465,7 @@ _caa4e0:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $05D1
+        dlg DLG_1489
                 ; GESTAHL: We will own this world!
                 ; Ha, ha, ha_
         shake ALL, 3, 0
@@ -25497,13 +25547,13 @@ _caa5fb:
                 dir DOWN
                 end
         call _ca9d14
-        dlg $05D3
+        dlg DLG_1491
                 ; TERRA: That was my father_?
         wait_1s
         obj_script TERRA
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $05D4
+        dlg DLG_1492
                 ; TERRA: I'm the product of an Esper and a human_
                 ; That's where I got my powers_
                 ; Now I understand_
@@ -25513,12 +25563,12 @@ _caa5fb:
         obj_script SLOT_1
                 move RIGHT, 2
                 end
-        dlg $05D5
+        dlg DLG_1493
                 ; EDGAR: So Gestahl must've known the secret of the Espers' power back then.
                 ; LOCKE: And those Espers at the facility were grabbed during that expedition!
                 ; That means CELES's power came__
                 ; at the expense of an Esper_
-        dlg $05D6
+        dlg DLG_1494
                 ; SABIN: They can't get away with this! We have to strike back!
         wait_1s
         obj_script TERRA
@@ -25528,7 +25578,7 @@ _caa5fb:
                 dir LEFT
                 end
         wait_15f
-        dlg $05D7
+        dlg DLG_1495
                 ; TERRA: What's happening in Narshe?
                 ; LOCKE: Hmm_
                 ; Maybe we should head back that way.
@@ -25550,7 +25600,7 @@ _caa5fb:
                 wait 4
                 action 36
                 end
-        dlg $05D8
+        dlg DLG_1496
                 ; SETZER: The airship's ready!
         wait_1s
         obj_script TERRA
@@ -25559,7 +25609,7 @@ _caa5fb:
                 end
         wait_45f
         fade_out_song $80
-        dlg $05D9
+        dlg DLG_1497
                 ; TERRA: Come on!
         wait_song
         play_song BLACKJACK
@@ -25633,13 +25683,13 @@ _caa714:
                 wait 3
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0521, BOTTOM
+        dlg DLG_1313, BOTTOM
                 ; SETZER: By all means!
                 ; Take a turn at the wheel!
         obj_script SETZER
                 action 35
                 end
-        dlg $0522, BOTTOM
+        dlg DLG_1314, BOTTOM
                 ; Operating instructions:
         obj_script SETZER, ASYNC
                 action 34 | ACTION_H_FLIP
@@ -25647,7 +25697,7 @@ _caa714:
                 dir RIGHT
                 end
 _caa72d:
-        dlg $0523, BOTTOM
+        dlg DLG_1315, BOTTOM
                 ; Control Pad:
                 ; L/R = direction
                 ; Up/down = Altitude
@@ -25655,19 +25705,19 @@ _caa72d:
                 ; or purchase items.
                 ; Press the B Button to land.
                 ; Press the A Button to lift off.
-        dlg $0524, BOTTOM
+        dlg DLG_1316, BOTTOM
                 ; All right?
                 ; 0:  Yes
                 ; 1:  No
         choice _caa73a, _caa72d
 _caa73a:
-        dlg $0525, BOTTOM
+        dlg DLG_1317, BOTTOM
                 ; Shall I teach you a technique, too?
                 ; 0:  Yes
                 ; 1:  No
         choice _caa744, _caa747
 _caa744:
-        dlg $0526, BOTTOM
+        dlg DLG_1318, BOTTOM
                 ; Press the Start Button to view the world map.
                 ; Hold the Y Button down and use the Control Pad to move in all directions.
                 ; Use the L and R Buttons with the Control Pad for high speed turns.
@@ -25715,7 +25765,7 @@ _caa78f:
                 switch $0118=1
                 goto EventReturn
         fade_out_song $40
-        dlg $05CD, BOTTOM
+        dlg DLG_1485, BOTTOM
                 ; SOLDIER: Look what popped out!
         obj_script SLOT_1
                 move UP_LEFT
@@ -25759,7 +25809,7 @@ _caa78f:
                 dir DOWN
                 end
         wait_obj CAMERA
-        dlg $05CC
+        dlg DLG_1484
                 ; GESTAHL: Shriek!!!
                 ; Just when we were in reach of a veritable bonanza_!
         obj_script NPC_15
@@ -25793,10 +25843,10 @@ _caa7f5:
         obj_script SLOT_1
                 dir RIGHT
                 end
-        dlg $0460
+        dlg DLG_1120
                 ; ``Why are you doing this_?''
         wait_1s
-        dlg $0461, TEXT_ONLY
+        dlg DLG_1121, TEXT_ONLY
                 ; RAMUH: We few can help save many. The War of the Magi must not be repeated_
         obj_script SLOT_1
                 dir RIGHT
@@ -25816,7 +25866,7 @@ _caa7f5:
                 action 16 | ACTION_H_FLIP
                 end
         wait_30f
-        dlg $046D
+        dlg DLG_1133
                 ;
                 ; Received the Magicite
                 ; ``Ramuh.''
@@ -25873,7 +25923,7 @@ _caa88d:
         return
 _caa890:
         fade_out_song $40
-        dlg $0471
+        dlg DLG_1137
                 ; Everyone here?
                 ; I was thinking, _
                 ; EDGAR: Let's talk on the way!
@@ -25995,7 +26045,7 @@ _caa8e3:
                 layer 2
                 dir LEFT
                 end
-        dlg $0472, {ASYNC, BOTTOM}
+        dlg DLG_1138, {ASYNC, BOTTOM}
                 ; EDGAR: The Empire's trying to drain magic from Espers_
         wait_15f 5
         obj_script EDGAR, ASYNC
@@ -26054,7 +26104,7 @@ _caa9c1:
                 action 34
                 end
         wait_1s
-        dlg $0473, {ASYNC, BOTTOM}
+        dlg DLG_1139, {ASYNC, BOTTOM}
                 ; SABIN: This can't be true_
                 ; CELES_?
         wait_1s
@@ -26095,7 +26145,7 @@ _caa9c1:
                 speed SLOW
                 move DOWN_LEFT, 2
                 end
-        dlg $0474, BOTTOM
+        dlg DLG_1140, BOTTOM
                 ; CELES: I don't remember because I was asleep when they_augmented me.
                 ; But I've heard rumors to that effect.
         obj_script CELES
@@ -26141,7 +26191,7 @@ _caa9c1:
                 move DOWN, 2
                 move RIGHT, 1
                 end
-        dlg $0475
+        dlg DLG_1141
                 ; CYAN: Then we're going in_
                 ; EDGAR: We'd best split into 2 groups.
                 ; We still need to beef up our defenses in Narshe.
@@ -26154,7 +26204,7 @@ _caa9c1:
                 wait 2
                 dir RIGHT
                 end
-        dlg $0476
+        dlg DLG_1142
                 ; CYAN: Indeed.
         obj_script CAMERA, ASYNC
                 speed NORMAL
@@ -26199,7 +26249,7 @@ _caa9c1:
                 layer 0
                 end
         wait_4s
-        dlg $0477, BOTTOM
+        dlg DLG_1143, BOTTOM
                 ; CELES: I'll go to the Empire. I know it well_
                 ; SABIN: But alone_?
         wait_obj CELES
@@ -26211,7 +26261,7 @@ _caa9c1:
                 wait 6
                 action 35
                 end
-        dlg $0478, BOTTOM
+        dlg DLG_1144, BOTTOM
                 ; LOCKE: Don't worry, I'll go with her.
         loop 3
                 obj_script CELES
@@ -26221,7 +26271,7 @@ _caa9c1:
                         dir RIGHT
                         end
                 end_loop
-        dlg $0479, BOTTOM
+        dlg DLG_1145, BOTTOM
                 ; CELES: LOCKE!
         set_case AVAIL_CHARS
         if_switch $01AB=0, _caaae5
@@ -26263,7 +26313,7 @@ _caaae5:
                 move UP_RIGHT, 2
                 move RIGHT, 6
                 end
-        dlg $047A, BOTTOM
+        dlg DLG_1146, BOTTOM
                 ; CYAN: You need a hand?
         wait_30f
         set_case PARTY_CHARS
@@ -26272,7 +26322,7 @@ _caaae5:
                 action 35
                 end
         wait_30f
-        dlg $047C, BOTTOM
+        dlg DLG_1148, BOTTOM
                 ; SHADOW: There's no need for me to remain with you.
         wait_30f
         obj_script LOCKE
@@ -26392,7 +26442,7 @@ _caabef:
         obj_script LOCKE
                 dir RIGHT
                 end
-        dlg $047B, BOTTOM
+        dlg DLG_1147, BOTTOM
                 ; LOCKE: Please wait for us in Narshe. We'll find our way back safely.
                 ; ``If you wish to change group members, head for Narshe.''
         wait_30f
@@ -26436,7 +26486,7 @@ _caac3d:
         obj_script LOCKE
                 action 35
                 end
-        dlg $047D, BOTTOM
+        dlg DLG_1149, BOTTOM
                 ; CELES: So_how we gonna get there? The Empire's on the continent to the south. No boats go there_
                 ; LOCKE: The people of Jidoor, a town to the south, can probably help us.
         loop 2
@@ -26447,14 +26497,14 @@ _caac3d:
                         dir RIGHT
                         end
                 end_loop
-        dlg $047E, BOTTOM
+        dlg DLG_1150, BOTTOM
                 ; CELES: LOCKE.
                 ; LOCKE: Yes?
                 ; CELES: Why are you coming with me?
         obj_script LOCKE
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $047F, BOTTOM
+        dlg DLG_1151, BOTTOM
                 ; LOCKE: Well_
                 ; There're bound to be treasures there.
                 ; And besides, I've always wanted an inside look at the Empire!
@@ -26489,7 +26539,7 @@ _caac91:
         sfx SFX::MAGICITE_PICKUP
         hide_obj NPC_4
         sort_obj
-        dlg $046E
+        dlg DLG_1134
                 ;
                 ; Received the Magicite
                 ; ``Siren.''
@@ -26501,7 +26551,7 @@ _caaca0:
         sfx SFX::MAGICITE_PICKUP
         hide_obj NPC_5
         sort_obj
-        dlg $046F
+        dlg DLG_1135
                 ;
                 ; Received the Magicite
                 ; ``Kirin.''
@@ -26513,7 +26563,7 @@ _caacaf:
         sfx SFX::MAGICITE_PICKUP
         hide_obj NPC_6
         sort_obj
-        dlg $0470
+        dlg DLG_1136
                 ;
                 ; Received the Magicite
                 ; ``Stray.''
@@ -26530,72 +26580,72 @@ _caacbe:
                 end
         return
 _caacc7:
-        dlg $0435, BOTTOM
+        dlg DLG_1077, BOTTOM
                 ; Is TERRA all right?
         return
 _caaccb:
-        dlg $0436, BOTTOM
+        dlg DLG_1078, BOTTOM
                 ; CYAN: Is Miss TERRA okay?
         return
 _caaccf:
-        dlg $0437, BOTTOM
+        dlg DLG_1079, BOTTOM
                 ; CELES: Is TERRA okay?
         return
 _caacd3:
-        dlg $0438, BOTTOM
+        dlg DLG_1080, BOTTOM
                 ; GAU: TERRA_she ok?
         return
 _caacd7:
-        dlg $043C, BOTTOM
+        dlg DLG_1084, BOTTOM
                 ; ``But don't Espers live in another world?''
         return
 _caacdb:
-        dlg $043D, BOTTOM
+        dlg DLG_1085, BOTTOM
                 ; CELES: But don't Espers live in another world?
         return
 _caacdf:
-        dlg $043E, BOTTOM
+        dlg DLG_1086, BOTTOM
                 ; GAU: Espers_from other world?
         return
 _caace3:
-        dlg $0440, BOTTOM
+        dlg DLG_1088, BOTTOM
                 ; ``Why do you hide the fact that you're Espers?''
         return
 _caace7:
-        dlg $0441, BOTTOM
+        dlg DLG_1089, BOTTOM
                 ; GAU: Why hide fact you Esper?
         return
 _caaceb:
-        dlg $0443, BOTTOM
+        dlg DLG_1091, BOTTOM
                 ; LOCKE: But my grandma told me that Espers and people once lived side by side!
                 ; Was that just a fairy tale?
         return
 _caacef:
-        dlg $0444, BOTTOM
+        dlg DLG_1092, BOTTOM
                 ; ``But grandmother once told me that Espers and people once lived side by side.
                 ; Was that just a fairy tale?''
         return
 _caacf3:
-        dlg $0445, BOTTOM
+        dlg DLG_1093, BOTTOM
                 ; I heard that Espers and people once lived side by side.
                 ; Was that just a fairy tale_?
         return
 _caacf7:
-        dlg $0446, BOTTOM
+        dlg DLG_1094, BOTTOM
                 ; GAU: GAU hear fairy tale. People_Esper once live together peacefully_
         return
 _caacfb:
-        dlg $0457, BOTTOM
+        dlg DLG_1111, BOTTOM
                 ; ``If we find the Magitek Research Facility, you're sure we'll find your people?''
         call _caad0f
         return
 _caad03:
-        dlg $0458, BOTTOM
+        dlg DLG_1112, BOTTOM
                 ; CELES: The Magitek Research Facility_?
                 ; Your people are still there?!
         return
 _caad07:
-        dlg $0459, BOTTOM
+        dlg DLG_1113, BOTTOM
                 ; GAU: Magitek Research Facility_?
                 ; There_your people?
         call _caad0f
@@ -26608,7 +26658,7 @@ _caad0f:
                 action 32
                 end
         wait_1s
-        dlg $045A, BOTTOM
+        dlg DLG_1114, BOTTOM
                 ; CELES: Magitek Research Facility_
                 ; Your people are_
         obj_script CELES
@@ -26618,43 +26668,43 @@ _caad0f:
                 end
         return
 _caad28:
-        dlg $0462, BOTTOM
+        dlg DLG_1122, BOTTOM
                 ; ``Old man_''
                 ; Are you really gone_?
         return
 _caad2c:
-        dlg $0463, BOTTOM
+        dlg DLG_1123, BOTTOM
                 ; SHADOW: You old fool_
                 ; Why throw it all away?
         return
 _caad30:
-        dlg $0464, BOTTOM
+        dlg DLG_1124, BOTTOM
                 ; CYAN: He's_gone_
         return
 _caad34:
-        dlg $0465, BOTTOM
+        dlg DLG_1125, BOTTOM
                 ; CELES: Ramuh_
                 ; Why_?
         return
 _caad38:
-        dlg $0466, BOTTOM
+        dlg DLG_1126, BOTTOM
                 ; GAU: R.a.m.u.h_
                 ; You leave_?
         return
 _caad3c:
-        dlg $0468, BOTTOM
+        dlg DLG_1128, BOTTOM
                 ; He traded his power, so that others might live_
         return
 _caad40:
-        dlg $0469, BOTTOM
+        dlg DLG_1129, BOTTOM
                 ; CYAN: He traded his power, so that others might live_
         return
 _caad44:
-        dlg $046A, BOTTOM
+        dlg DLG_1130, BOTTOM
                 ; CELES: He traded his power, so that others might live_
         return
 _caad48:
-        dlg $046B, BOTTOM
+        dlg DLG_1131, BOTTOM
                 ; GAU: Awoooo_!
         return
 _caad4c:
@@ -26702,7 +26752,7 @@ _caad4c:
                 switch $001E=1
                 switch $0044=1
                 goto _caadb4
-        dlg $016F
+        dlg DLG_367
                 ; EDGAR and TERRA race toward Narshe while protecting Banon_
                 ; _but what about SABIN, who was swallowed by the raging waters_?
                 ; And_
@@ -26710,7 +26760,7 @@ _caad4c:
                 ; Is all going according to plan_?
 _caadb4:
         wait_30f
-        dlg $0B8C
+        dlg DLG_2956
                 ;
                 ;    Choose a scenario_kupo!
         return
@@ -26719,7 +26769,7 @@ _caadb9:
         hide_obj NPC_6
         fade_in
         wait_4s
-        dlg $0B84, TEXT_ONLY
+        dlg DLG_2948, TEXT_ONLY
                 ;
                 ; The three have reached Narshe,
                 ; and a decisive battle is about to
@@ -26749,30 +26799,30 @@ _caade5:
         return
 _caadf1:
         if_switch $0055=1, _caadfb
-        dlg $0490
+        dlg DLG_1168
                 ; The Opera House's closed.
         return
 _caadfb:
-        dlg $0491
+        dlg DLG_1169
                 ; Performance underway.
         return
 _caadff:
         if_switch $0387=0, _caae09
-        dlg $01DA
+        dlg DLG_474
                 ; Shriek!!!
                 ; Help_HELP!!!
                 ; Talk to the Impresario!
         return
 _caae09:
-        dlg $01DB
+        dlg DLG_475
                 ; Thank goodness!
         return
 _caae0d:
-        dlg $01DE
+        dlg DLG_478
                 ; Looks like we're gonna have to save the day once again!
         return
 _caae11:
-        dlg $01DC
+        dlg DLG_476
                 ; A dragon is sitting smack in the middle of the stage!
         return
 _caae15:
@@ -26780,10 +26830,10 @@ _caae15:
         if_switch $0115=1, _cab3b3
         if_switch $0114=1, _cab3ab
         if_switch $0113=1, _cab3a3
-        dlg $0492
+        dlg DLG_1170
                 ; IMPRESARIO: Ah! You again!
         call _cab316
-        dlg $0493, BOTTOM
+        dlg DLG_1171, BOTTOM
                 ; LOCKE: I read that letter.
                 ; SETZER's coming to steal her_
                 ; IMPRESARIO: He'll probably appear right at the climax of Scene 1. He loves an entrance_
@@ -26800,7 +26850,7 @@ _caae15:
                 dir RIGHT
                 end
         wait_30f
-        dlg $0494
+        dlg DLG_1172
                 ; LOCKE: Right!
                 ; If we could only grab him then_!
         obj_script NPC_3
@@ -26814,7 +26864,7 @@ _caae15:
                 wait 4
                 action 45
                 end
-        dlg $0495
+        dlg DLG_1173
                 ; IMPRESARIO: Dear me, NO!
                 ; You'll ruin the performance!
                 ; I'll lose my job!
@@ -26838,7 +26888,7 @@ _caae15:
                 dir DOWN
                 end
         wait_30f
-        dlg $0496, BOTTOM
+        dlg DLG_1174, BOTTOM
                 ; CELES: Then you're history!
                 ; IMPRESARIO: This is simply horrid! I want the performance to be a success!
                 ; But I don't want Maria to be abducted_!
@@ -26893,7 +26943,7 @@ _caae15:
                 move RIGHT_RIGHT_UP
                 end
         wait_obj CELES
-        dlg $0497, BOTTOM
+        dlg DLG_1175, BOTTOM
                 ; LOCKE: We'll let him grab her_
         obj_script NPC_3, ASYNC
                 dir DOWN
@@ -26919,7 +26969,7 @@ _caae15:
                 wait 8
                 action 37
                 end
-        dlg $0498
+        dlg DLG_1176
                 ; LOCKE: We'll use CELES as a decoy. After she's abducted, I'll follow 'em right to his airship!
         wait_2s
         obj_script LOCKE
@@ -26951,7 +27001,7 @@ _caaf05:
                 wait 3
                 branch _caaf05
                 end
-        dlg $0499, BOTTOM
+        dlg DLG_1177, BOTTOM
                 ; IMPRESARIO: Are you mad?!!
                 ; If something should happen to Maria_
         pass_off CELES
@@ -27013,7 +27063,7 @@ _caaf05:
                 dir UP
                 end
         shake ALL, 3, 0
-        dlg $049A
+        dlg DLG_1178
                 ; LOCKE: That's why the decoy! We'll hide Maria somewhere safe!
                 ; IMPRESARIO: Come again?
         obj_script NPC_3
@@ -27031,7 +27081,7 @@ _caaf05:
                 wait_15f
                 end_loop
         wait_1s
-        dlg $049B
+        dlg DLG_1179
                 ; LOCKE: You said SHE looks like Maria, right?
         obj_script LOCKE, ASYNC
                 action 35
@@ -27047,7 +27097,7 @@ _caaf05:
                 action 35 | ACTION_H_FLIP
                 end
         wait_45f
-        dlg $049C
+        dlg DLG_1180
                 ; CELES: Now just a minute_
         wait_15f 5
         obj_script SLOT_1
@@ -27056,7 +27106,7 @@ _caaf05:
                 dir DOWN
                 end
         wait_30f
-        dlg $049D
+        dlg DLG_1181
                 ; LOCKE: CELES will be our Maria! She'll lead us to the airship!
         obj_script NPC_3, ASYNC
 _caaf9c:
@@ -27065,7 +27115,7 @@ _caaf9c:
                 wait 3
                 branch _caaf9c
                 end
-        dlg $049E
+        dlg DLG_1182
                 ; IMPRESARIO: Brilliant!
         obj_script NPC_3, ASYNC
                 dir DOWN
@@ -27099,7 +27149,7 @@ _caaf9c:
                 action 24
                 end
         wait_45f
-        dlg $049F
+        dlg DLG_1183
                 ; CELES: W_wait!
                 ; I'm a GENERAL, not some opera floozy!
         obj_script CELES, ASYNC
@@ -27185,7 +27235,7 @@ _caaf9c:
                 dir UP
                 end
         wait_15f 8
-        dlg $04A0, TEXT_ONLY
+        dlg DLG_1184, TEXT_ONLY
                 ; Mii_ Mii_
                 ; Do, re, mi_
                 ; Faa_hack, cough_
@@ -27210,7 +27260,7 @@ _caaf9c:
                 action 36
                 end
         wait_45f
-        dlg $04A1
+        dlg DLG_1185
                 ; LOCKE: Not bad, CELES!
         lock_camera
         obj_script CAMERA
@@ -27220,7 +27270,7 @@ _caaf9c:
         obj_script NPC_7
                 move RIGHT, 1
                 end
-        dlg $04A2, BOTTOM
+        dlg DLG_1186, BOTTOM
                 ; ULTROS: Mwa, ha, ha!
                 ; I'll pretend to be SETZER and foil their little plan!
         obj_script NPC_7
@@ -27267,7 +27317,7 @@ _caaf9c:
                 wait 2
                 action 26
                 end
-        dlg $04A3, BOTTOM
+        dlg DLG_1187, BOTTOM
                 ; LOCKE: Let's get ready!
                 ; CELES, it's show time!
         mod_bg_tiles BG1, {82, 32}, {1, 2}
@@ -27298,7 +27348,7 @@ _caaf9c:
                 move DOWN, 2
                 end
         wait_1s
-        dlg $04A4, BOTTOM
+        dlg DLG_1188, BOTTOM
                 ; ULTROS: D'haaaaa!
                 ; Come on! Read it_!
         fade_out 4
@@ -27444,7 +27494,7 @@ _caaf9c:
                 mod_sprite_pal UNDEC, {RED, GREEN, BLUE}, 3
                 end_loop
         wait_15f 5
-        dlg $04A5, TEXT_ONLY
+        dlg DLG_1189, TEXT_ONLY
                 ; The West and East
                 ; were waging war_
                 ;
@@ -27517,7 +27567,7 @@ _caaf9c:
                 end_loop
         wait_song
         play_song OVERTURE_2
-        dlg $04A6, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_1190, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; ♬ Oh Maria
                 ;    Oh Maria
                 ;    Please, hear my voice!
@@ -27731,18 +27781,18 @@ _cab392:
         call _cacfbd
         return
 _cab3a3:
-        dlg $04E7
+        dlg DLG_1255
                 ; IMPRESARIO: Sorry,
                 ; but yesterday's performance was awful! I'll give you just 3 more chances!
         call _cab3bb
         return
 _cab3ab:
-        dlg $04E8
+        dlg DLG_1256
                 ; IMPRESARIO: You have 2 more chances.
         call _cab3bb
         return
 _cab3b3:
-        dlg $04E9
+        dlg DLG_1257
                 ; IMPRESARIO: You have 1 more chance.
         call _cab3bb
         return
@@ -27752,7 +27802,7 @@ _cab3bb:
         obj_script NPC_3
                 dir DOWN
                 end
-        dlg $04EA
+        dlg DLG_1258
                 ; IMPRESARIO: We're all in this together!
         if_switch $0111=0, _cab3e0
         play_song WEDDING_WALTZ_1
@@ -27836,7 +27886,7 @@ _cab44c:
         return
 _cab455:
         if_switch $0110=1, _cab45f
-        dlg $04EC
+        dlg DLG_1260
                 ; STAGE MASTER: Off limits!
                 ; Please turn around.
         return
@@ -27849,16 +27899,16 @@ _cab45f:
                 end
 _cab46c:
         if_switch $0355=0, _cab476
-        dlg $04ED
+        dlg DLG_1261
                 ; STAGE MASTER: The Impresario asked me to have you press the far right switch.
         return
 _cab476:
         if_switch $00A4=1, _cab480
-        dlg $04EF
+        dlg DLG_1263
                 ; STAGE MASTER: Enter the room to the far left of the stage, then make for the framework above the stage.
         return
 _cab480:
-        dlg $04EE
+        dlg DLG_1262
                 ; STAGE MASTER: Don't press the wrong switch, or_
         return
 _cab484:
@@ -28002,7 +28052,7 @@ _cab497:
                 .byte $0B,$0C,$0D
                 .byte $1B,$1C,$1D
         wait_obj SLOT_1
-        dlg $01DD
+        dlg DLG_477
                 ;
                 ; Surprise!
         obj_script SLOT_1
@@ -28246,7 +28296,7 @@ _cab6d6:
         load_map 237, {60, 44}, LEFT, {ASYNC, Z_UPPER, STARTUP_EVENT}
         wait_30f
         call _cc1f9f
-        dlg $01DE
+        dlg DLG_478
                 ; Looks like we're gonna have to save the day once again!
         return
 _cab6fb:
@@ -28262,21 +28312,21 @@ _cab6fb:
                 .byte $86
         return
 _cab714:
-        dlg $04A8
+        dlg DLG_1192
                 ; EDGAR: Go right ahead.
         return
 _cab718:
-        dlg $04A9
+        dlg DLG_1193
                 ; SABIN: Uh?
                 ; Why's everyone singing?
         return
 _cab71c:
-        dlg $04AA
+        dlg DLG_1194
                 ; CYAN: Going somewhere?
                 ; I'm going to relax!
         return
 _cab720:
-        dlg $04AB
+        dlg DLG_1195
                 ; GAU: Pretty song!
         return
 _cab724:
@@ -28285,21 +28335,21 @@ _cab724:
                 switch $0110=0
                 goto _cab744
         if_switch $0056=1, _cab735
-        dlg $04A7
+        dlg DLG_1191
                 ; LOCKE: I'm going to the dressing room.
 _cab735:
         if_switch $0119=0, _cab740
-        dlg $04AD
+        dlg DLG_1197
                 ; IMPRESARIO: Your friend left.
                 ; Said he'd have fallen asleep in another 5 minutes_
         switch $0119=0
 _cab740:
-        dlg $04AC
+        dlg DLG_1196
                 ; IMPRESARIO: Is everything okay?
         return
 _cab744:
         fade_out_song $30
-        dlg $04CB
+        dlg DLG_1227
                 ; IMPRESARIO: What!!!?
         lock_camera
         if_switch $02BA=1, _cab95f
@@ -28341,7 +28391,7 @@ _cab744:
                 move LEFT, 2
                 dir DOWN
                 end
-        dlg $04CC, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1228, {TEXT_ONLY, BOTTOM}
                 ; ``The survivors of the West attack!''
                 ; RALSE: Impossible!
         obj_script NPC_12, ASYNC
@@ -28379,7 +28429,7 @@ _cab744:
                 move DOWN, 4
                 dir LEFT
                 end
-        dlg $04CD, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_1229, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; Attack!!
         wait_obj NPC_4
         call _caf0fa
@@ -28423,7 +28473,7 @@ _cab744:
                 wait 8
                 dir UP
                 end
-        dlg $04CE, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1230, {TEXT_ONLY, BOTTOM}
                 ; Wait!!
         create_obj NPC_19
         create_obj NPC_3
@@ -28498,7 +28548,7 @@ _cab744:
                 end
         wait_song
         play_song WEDDING_WALTZ_3
-        dlg $04CF, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_1231, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; ♬ Maria
         loop 3
                 obj_script NPC_3
@@ -28514,7 +28564,7 @@ _cab744:
                 dir UP
                 end
         wait_song 2
-        dlg $04D0, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_1232, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; ♬ Draco,
                 ;    I've waited so long.
                 ;    I knew you'd come. ♬
@@ -28556,7 +28606,7 @@ _cab744:
         obj_script NPC_1, ASYNC
                 dir DOWN
                 end
-        dlg $04D1, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_1233, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; ♬ Maria will finally
                 ;    have to become my queen! ♬
         loop 4
@@ -28610,7 +28660,7 @@ _cab744:
                 wait_15f
                 end_loop
         wait_song 4
-        dlg $04D2, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_1234, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; ♬ For the rest of my life
                 ;    I'll keep you near_ ♬
         obj_script NPC_3
@@ -28643,7 +28693,7 @@ _cab744:
                 wait_15f
                 end_loop
         wait_song 5
-        dlg $04D3, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_1235, {ASYNC, TEXT_ONLY, BOTTOM}
                 ;   It's a duel! ♬
         loop 4
                 obj_script NPC_2
@@ -28665,7 +28715,7 @@ _cab744:
                 move DOWN, 8
                 move DOWN, 8
                 end
-        dlg $04D5
+        dlg DLG_1237
                 ; IMPRESARIO: But how might he disrupt the opera?
                 ; _With that?!
         if_switch $0127=0, _cab961
@@ -28689,7 +28739,7 @@ _cab961:
         fade_in
         wait_obj CAMERA
         if_switch $02BA=1, _cab994
-        dlg $04D7, BOTTOM
+        dlg DLG_1239, BOTTOM
                 ; ULTROS: Mwa ha ha!
                 ; Let's see if Maria can shrug THIS off!
         obj_script NPC_8
@@ -28697,7 +28747,7 @@ _cab961:
                 wait 10
                 action 45
                 end
-        dlg $04D9, BOTTOM
+        dlg DLG_1241, BOTTOM
                 ; ULTROS: N'ghaaa!
                 ; This is heavier than I thought! It'll take me 5 minutes to drop it!
         if_switch $0127=0, _cab99b
@@ -28705,7 +28755,7 @@ _cab994:
         obj_script NPC_8
                 action 45
                 end
-        dlg $04DA, BOTTOM
+        dlg DLG_1242, BOTTOM
                 ; ULTROS: N'ghooo!
                 ; And it only weighs 4 tons_!
 _cab99b:
@@ -28747,7 +28797,7 @@ _cab99b:
                 layer 0
                 end
         unlock_camera
-        dlg $04D8
+        dlg DLG_1240
                 ; LOCKE: We haven't a second to lose!
                 ; IMPRESARIO: Talk to the man in the room to the far right!
                 ; He'll help you get up there!
@@ -28786,7 +28836,7 @@ _caba19:
                 wait 1
                 branch _caba19
                 end
-        dlg $04F0, BOTTOM
+        dlg DLG_1264, BOTTOM
                 ; ULTROS: N'ghaa, ha, ha!
                 ; Whooooopie!!
         pass_off NPC_8
@@ -28834,7 +28884,7 @@ _caba44:
         obj_script SLOT_1
                 dir LEFT
                 end
-        dlg $04AE
+        dlg DLG_1198
                 ; LOCKE: Aye yai yai!
                 ; Izzat_you!?
         obj_script CELES
@@ -28842,7 +28892,7 @@ _caba44:
                 move DOWN, 1
                 end
         wait_45f
-        dlg $04AF
+        dlg DLG_1199
                 ; CELES: LOCKE.
                 ; Why did you help me escape back there?
                 ; LOCKE: I_once abandoned someone when she needed me_
@@ -28859,21 +28909,21 @@ _caba44:
                 speed NORMAL
                 end
         if_switch $004F=0, _caba96
-        dlg $04B0
+        dlg DLG_1200
                 ; CELES: Somewhere inside you were saving_her, weren't you_?
 _caba96:
         wait_3s
         obj_script SLOT_1
                 action 35
                 end
-        dlg $04B1
+        dlg DLG_1201
                 ; LOCKE: That ribbon suits you.
         wait_1s
         obj_script CELES
                 dir RIGHT
                 end
         wait_45f
-        dlg $04B2, BOTTOM
+        dlg DLG_1202, BOTTOM
                 ; CELES: On with the show!
                 ; This is a big scene in which Maria senses that something's happened to Draco!
 _cabaa8:
@@ -28896,12 +28946,12 @@ _cabaa8:
         switch $01C1=1
         switch $01C2=1
 _cabaca:
-        dlg $04B4
+        dlg DLG_1204
                 ; LOCKE: You'd better check the score one last time.
         player_ctrl_on
         return
 _cabacf:
-        dlg $04B3
+        dlg DLG_1203
                 ; LOCKE: Don't make any more mistakes!
         obj_script LOCKE, ASYNC
                 move DOWN, 3
@@ -28921,14 +28971,14 @@ _cabae6:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $04B5
+        dlg DLG_1205
                 ; Read the score?
                 ; 0:  (Yes)
                 ; 1:  (No)
         choice _cabaf9, EventReturn
         return
 _cabaf9:
-        dlg $04B6
+        dlg DLG_1206
                 ; Scene 1
                 ; Oh my hero, so far away now. Will I ever see your smile?
                 ; Love goes away, like night into day. It's just a fading dream_
@@ -28958,7 +29008,7 @@ _cabafd:
                 end_loop
         fade_in 8
         wait_4s
-        dlg $04B8, TEXT_ONLY
+        dlg DLG_1208, TEXT_ONLY
                 ; The forces of the West fell,
                 ; and Maria's castle was taken.
                 ; Prince Ralse, of the East, took her hand by force.
@@ -28970,7 +29020,7 @@ _cabafd:
                 wait 48
                 move DOWN, 1
                 end
-        dlg $04B9, TEXT_ONLY
+        dlg DLG_1209, TEXT_ONLY
                 ; The next line is_?
                 ;    0: (Oh my hero_)
                 ;    1: (Alas, Draco_)
@@ -28978,13 +29028,13 @@ _cabafd:
         choice _cabb3d, _cabb35
         return
 _cabb35:
-        dlg $04BB, {ASYNC, TEXT_ONLY}
+        dlg DLG_1211, {ASYNC, TEXT_ONLY}
                 ; ♬ Alas, Draco!
                 ;    You're outta here!
         call _cabdaf
         return
 _cabb3d:
-        dlg $04BA, {ASYNC, TEXT_ONLY}
+        dlg DLG_1210, {ASYNC, TEXT_ONLY}
                 ; ♬ Oh my hero,
                 ;    so far away now.
                 ;    Will I ever see your smile?
@@ -29139,12 +29189,12 @@ _cabb3d:
         choice _cabc1d, _cabc25
         return
 _cabc1d:
-        dlg $04BE, {ASYNC, TEXT_ONLY}
+        dlg DLG_1214, {ASYNC, TEXT_ONLY}
                 ; ♬ I wish I_uh?
         call _cabdaf
         return
 _cabc25:
-        dlg $04BD, {ASYNC, TEXT_ONLY}
+        dlg DLG_1213, {ASYNC, TEXT_ONLY}
                 ; ♬ I'm the darkness,
                 ;    you're the stars.
                 ;    Our love is brighter than
@@ -29196,13 +29246,13 @@ _cabc25:
         choice _cabc71, _cabc69
         return
 _cabc69:
-        dlg $04C0, {ASYNC, TEXT_ONLY}
+        dlg DLG_1216, {ASYNC, TEXT_ONLY}
                 ; ♬ Prince Ralse_yeah, so?
                 ;    I hate him! Everyone does.
         call _cabdaf
         return
 _cabc71:
-        dlg $04BF, {ASYNC, TEXT_ONLY}
+        dlg DLG_1215, {ASYNC, TEXT_ONLY}
                 ; ♬ Must I forget you?
                 ;    Our solemn promise?
                 ;    Will autumn take the place
@@ -29323,7 +29373,7 @@ _cabd21:
                 dir DOWN
                 end
         call _cabd97
-        dlg $04C1
+        dlg DLG_1217
                 ; Uhnn_not in time_
                 ; We messed up.
         fade_out
@@ -29334,7 +29384,7 @@ _cabd35:
         if_switch $01F2=1, _cabd7a
         if_switch $01F1=1, _cabd6a
         if_switch $01F0=1, _cabd5c
-        dlg $04C4, TEXT_ONLY
+        dlg DLG_1220, TEXT_ONLY
                 ; DRACO: Come, Maria!
                 ; Follow my lead_
         obj_script NPC_4, ASYNC
@@ -29379,7 +29429,7 @@ _cabd6a:
         switch $01F2=1
         return
 _cabd7a:
-        dlg $04C5, TEXT_ONLY
+        dlg DLG_1221, TEXT_ONLY
                 ; DRACO: Ha, ha, ha_
         loop 31
                 mod_sprite_pal INC, {RED, GREEN, BLUE}, 3, {48, 79}
@@ -29409,7 +29459,7 @@ _cabd97:
 _cabdaf:
         wait_15f 10
         call _cabd97
-        dlg $04BC
+        dlg DLG_1212
                 ; Something's wrong_eh?
                 ; Oops_sorry!
         fade_out
@@ -29447,7 +29497,7 @@ _cabdba:
         load_map 3, {8, 16}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN}
         hide_obj SLOT_1
         fade_in
-        dlg $04EB, TEXT_ONLY
+        dlg DLG_1259, TEXT_ONLY
                 ; You don't have enough acting ability to convince your own mama!
         call GameOver
         return
@@ -29520,7 +29570,7 @@ _cabe6d:
                 speed FAST
                 move LEFT_DOWN_DOWN, 3
                 end
-        dlg $04C2, TEXT_ONLY
+        dlg DLG_1218, TEXT_ONLY
                 ; ♬ We must part now.
                 ;    My life goes on.
                 ;    But my heart won't give
@@ -29529,7 +29579,7 @@ _cabe6d:
                 ;    let me hear you say.
                 ;    I meant as much to you_ ♬
         wait_song 5
-        dlg $04C3, TEXT_ONLY
+        dlg DLG_1219, TEXT_ONLY
                 ; ♬ So gently,
                 ;    you touched my heart.
                 ;    I will be forever yours.
@@ -29554,7 +29604,7 @@ _cabe6d:
                 move UP, 5
                 move LEFT, 2
                 end
-        dlg $04C6
+        dlg DLG_1222
                 ; CHANCELLOR: Prince Ralse is looking for a dance partner.
                 ; Leave the past behind!
                 ; Our kingdom is adopting the spirit of the East_!
@@ -29606,7 +29656,7 @@ _cabe6d:
         fade_in
         unlock_camera
         wait_90f
-        dlg $04C7
+        dlg DLG_1223
                 ; LOCKE: Well done, CELES.
         player_ctrl_on
         switch $0346=0
@@ -29614,7 +29664,7 @@ _cabe6d:
         switch $01C1=0
         switch $01C2=0
         return
-        dlg $04C1, ASYNC
+        dlg DLG_1217, ASYNC
                 ; Uhnn_not in time_
                 ; We messed up.
         call _cabdaf
@@ -29627,22 +29677,22 @@ _cabf27:
         switch $0057=1
         return
 _cabf31:
-        dlg $04C8
+        dlg DLG_1224
                 ; I owe you one, so I'm gonna jam up your opera!
                 ; Ultros
         hide_obj NPC_1
-        dlg $04C9
+        dlg DLG_1225
                 ; LOCKE: Uh oh_
                 ; Better tell the Impresario!
         switch $0345=0
         switch $0058=1
         return
 _cabf3e:
-        dlg $04C8
+        dlg DLG_1224
                 ; I owe you one, so I'm gonna jam up your opera!
                 ; Ultros
         hide_obj NPC_8
-        dlg $04CA
+        dlg DLG_1226
                 ; LOCKE: Again!
         switch $0366=0
         switch $0058=1
@@ -29650,7 +29700,7 @@ _cabf3e:
 _cabf4b:
         stop_timer 0
         switch $02BC=0
-        dlg $04DB
+        dlg DLG_1243
                 ; ULTROS: Phew! Rats!
         pass_off SLOT_1
         pass_off NPC_8
@@ -29846,7 +29896,7 @@ _cabf4b:
                 action 45
                 end
         wait_30f
-        dlg $04DC
+        dlg DLG_1244
                 ; IMPRESARIO: Disaster!
                 ; If the two heroes are flattened, the opera's over! Then who'll win the girl?!
         wait_15f 8
@@ -29902,7 +29952,7 @@ _cabf4b:
                 wait 1
                 action 16 | ACTION_H_FLIP
                 end
-        dlg $04DD
+        dlg DLG_1245
                 ; LOCKE: Neither Draco nor Ralse will save CELES!
         wait_30f
         obj_script SLOT_1
@@ -29924,7 +29974,7 @@ _cabf4b:
                 action 24
                 anim_on
                 end
-        dlg $04DE
+        dlg DLG_1246
                 ; LOCKE: I, LOCKE, the world's premier adventurer, will save her!
         sfx 208
         wait_30f
@@ -29932,7 +29982,7 @@ _cabf4b:
                 action 45
                 end
         wait_30f
-        dlg $04DF
+        dlg DLG_1247
                 ; IMPRESARIO: Aya_
                 ; What awful acting!
         obj_script NPC_18, ASYNC
@@ -29952,7 +30002,7 @@ _cabf4b:
         obj_script SLOT_3, ASYNC
                 dir RIGHT
                 end
-        dlg $04E0
+        dlg DLG_1248
                 ; ULTROS: Silence! You are in the presence of octopus royalty! A lowborn thug like you could never defeat me!
         sfx 208
         wait_45f
@@ -29961,7 +30011,7 @@ _cabf4b:
                 move LEFT, 1
                 move DOWN, 1
                 end
-        dlg $04E1
+        dlg DLG_1249
                 ; IMPRESARIO: Hmm_
                 ; Might as well make the most of this. MUSIC!!
         play_song GRAND_FINALE_2
@@ -30014,7 +30064,7 @@ _cac128:
                         end
                 end_loop
         fade_out_song $40
-        dlg $04E2, TEXT_ONLY
+        dlg DLG_1250, TEXT_ONLY
                 ; Just a darn minute!
         obj_script SLOT_1
                 action 31
@@ -30063,7 +30113,7 @@ _cac128:
                 mod_bg_pal UNDEC, {RED, GREEN, BLUE}, 3, {80, 111}
                 wait 2
                 end_loop
-        dlg $04E3, TEXT_ONLY
+        dlg DLG_1251, TEXT_ONLY
                 ; What a performance!!
         sfx SFX::FALLING
         obj_gfx CELES, CELES
@@ -30150,14 +30200,14 @@ _cac2e2:
                 wait 1
                 branch _cac2e2
                 end
-        dlg $04E4, BOTTOM
+        dlg DLG_1252, BOTTOM
                 ; IMPRESARIO: SETZER!
                 ; SETZER: I'm a man of my word, music man!
         obj_script NPC_22
                 action 9
                 end
         wait 6
-        dlg $04E5, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_1253, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; CELES: That's HIM_?!
         obj_script NPC_22, ASYNC
                 speed FAST
@@ -30200,7 +30250,7 @@ _cac326:
                 branch _cac326
                 end
         wait_1s
-        dlg $04E6, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1254, {TEXT_ONLY, BOTTOM}
                 ; IMPRESARIO: What a reversal!
                 ; Thinking she's LOCKE's new queen, Maria is instead nabbed by SETZER!
                 ; What fate lies in store for her? Stay tuned for Part 2!
@@ -30322,14 +30372,14 @@ _cac3c7:
                 wait 8
                 action 34
                 end
-        dlg $0588
+        dlg DLG_1416
                 ; LOCKE: I'm worried about TERRA. Let's return to Zozo.
         wait_1s
         obj_script SETZER
                 action 35 | ACTION_H_FLIP
                 end
         wait_30f
-        dlg $0589
+        dlg DLG_1417
                 ; SETZER: TERRA?
                 ; Who's that?
                 ; LOCKE: I'll explain on the way_
@@ -30405,7 +30455,7 @@ _cac4b0:
                 move UP, 8
                 move UP, 1
                 end
-        dlg $058B
+        dlg DLG_1419
                 ; We're all here_
         fade_out_song $80
         call _cac6ac
@@ -30431,7 +30481,7 @@ _cac4b0:
                 dir LEFT
                 end
         wait_2s
-        dlg $058C
+        dlg DLG_1420
                 ; LOCKE: TERRA_
         obj_script LOCKE
                 dir LEFT
@@ -30448,7 +30498,7 @@ _cac4b0:
                 action 31
                 end
         call _ca9d14
-        dlg $058D
+        dlg DLG_1421
                 ; LOCKE: Magicite!!
         obj_script LOCKE
                 action 35
@@ -30478,7 +30528,7 @@ _cac4b0:
                 dir LEFT
                 end
         wait_30f
-        dlg $058A
+        dlg DLG_1418
                 ; TERRA: Father_?
         loop 4
                 obj_script NPC_1
@@ -30488,7 +30538,7 @@ _cac4b0:
                         dir DOWN
                         end
                 end_loop
-        dlg $058F
+        dlg DLG_1423
                 ; TERRA: I remember it all_
                 ; I was raised in the Esper's world.
         play_song ESPER_WORLD
@@ -30529,7 +30579,7 @@ _cac4b0:
                 move DOWN, 3
                 end
         wait_1s
-        dlg $0590, {ASYNC, TEXT_ONLY}
+        dlg DLG_1424, {ASYNC, TEXT_ONLY}
                 ;
                 ;
                 ; The Esper World_
@@ -31518,7 +31568,7 @@ _cacd5b:
                 move DOWN, 3
                 end
         call _cacdd4
-        dlg $01CB, {ASYNC, TEXT_ONLY}
+        dlg DLG_459, {ASYNC, TEXT_ONLY}
                 ; BARAM: Clyde_I'm_
                 ; done for_
                 ; F_find me here_
@@ -31600,7 +31650,7 @@ _cacdd9:
                 dir DOWN
                 end
         wait_obj CAMERA
-        dlg $01CC, TEXT_ONLY
+        dlg DLG_460, TEXT_ONLY
                 ; BARAM: Yahoooo!
                 ; We did it, Clyde!
                 ; CLYDE: A million GP!
@@ -31614,7 +31664,7 @@ _cacdd9:
         obj_script NPC_1, ASYNC
                 dir LEFT
                 end
-        dlg $01CD, TEXT_ONLY
+        dlg DLG_461, TEXT_ONLY
                 ; BARAM: Guess it's time to change our name.
                 ; CLYDE: Our name?
                 ; BARAM: We need something more_appropriate.
@@ -31635,7 +31685,7 @@ _cacdd9:
                 end_loop
         wait_obj NPC_1
         sfx 39
-        dlg $01CE, TEXT_ONLY
+        dlg DLG_462, TEXT_ONLY
                 ; CLYDE: Great train robbers of the century_
                 ; SHADOW_?
         fade_out 8
@@ -31663,7 +31713,7 @@ _cace51:
                 end_loop
         wait_obj NPC_1
         sfx 39
-        dlg $01CF, TEXT_ONLY
+        dlg DLG_463, TEXT_ONLY
                 ; CLYDE: Open your eyes!
                 ; BARAM: I'm scared_hack, cough_
                 ; Is_is this MY blood_?
@@ -31681,7 +31731,7 @@ _cace51:
                 mod_sprite_pal UNDEC, {RED, GREEN, BLUE}, 0, {18, 127}
                 mod_sprite_pal UNINC, {RED, GREEN, BLUE}, 0, 17
                 end_loop
-        dlg $01D0, TEXT_ONLY
+        dlg DLG_464, TEXT_ONLY
                 ; BARAM: I've let you down_
                 ; I'm sorry_
                 ; CLYDE: Save your strength.
@@ -31694,7 +31744,7 @@ _cace51:
                 anim_on
                 speed NORMAL
                 end
-        dlg $01D1, TEXT_ONLY
+        dlg DLG_465, TEXT_ONLY
                 ; BARAM: Get going!
                 ; I'm gonna slow you down.
                 ; CLYDE: But_!
@@ -31711,7 +31761,7 @@ _cace51:
                 move DOWN, 2
                 end
         sfx 39
-        dlg $01D2, TEXT_ONLY
+        dlg DLG_466, TEXT_ONLY
                 ; BARAM: Before you go_
                 ; You have to use your knife_
         wait_15f 10
@@ -31719,7 +31769,7 @@ _cace51:
                 dir RIGHT
                 end
         wait_1s
-        dlg $01D3, TEXT_ONLY
+        dlg DLG_467, TEXT_ONLY
                 ; CLYDE: WHAT!!!!
                 ; BARAM: Think what they'll do to me if I get caught.
                 ; I don't want to go through that. Do me this favor.
@@ -31728,7 +31778,7 @@ _cace51:
                 move UP, 2
                 dir RIGHT
                 end
-        dlg $01D4, TEXT_ONLY
+        dlg DLG_468, TEXT_ONLY
                 ; BARAM: Are you_shaking?
                 ; I can't believe it!
                 ; You're acting like a coward!
@@ -31740,14 +31790,14 @@ _cace51:
                 move DOWN, 4
                 end
         sfx 39
-        dlg $01D5, TEXT_ONLY
+        dlg DLG_469, TEXT_ONLY
                 ; BARAM: Clyde!!!
         wait_15f 8
         obj_script NPC_1
                 action 45
                 end
         wait_2s
-        dlg $01D6, TEXT_ONLY
+        dlg DLG_470, TEXT_ONLY
                 ; CLYDE: I'm sorry_
         obj_script NPC_1
                 move DOWN, 5
@@ -31756,7 +31806,7 @@ _cace51:
                 mod_bg_pal DEC, {RED, GREEN, BLUE}, 0
                 end_loop
         sfx 174
-        dlg $01D7, TEXT_ONLY
+        dlg DLG_471, TEXT_ONLY
                 ; BARAM: Clyde!
                 ; How dare you!?
         fade_out 8
@@ -31803,7 +31853,7 @@ _cacefe:
                 move RIGHT, 4
                 end
         wait_1s
-        dlg $01D8, TEXT_ONLY
+        dlg DLG_472, TEXT_ONLY
                 ; Hey_HEY!
                 ; Stay with me now!
         wait_30f
@@ -31819,7 +31869,7 @@ _cacefe:
                 dir LEFT
                 end
         wait_2s
-        dlg $01D9, TEXT_ONLY
+        dlg DLG_473, TEXT_ONLY
                 ; CLYDE: Where_am_?
                 ; A small village called Thama_
                 ; Hang in there!
@@ -32622,7 +32672,7 @@ _cad9a7:
         obj_script NPC_12
                 action 9
                 end
-        dlg $0852
+        dlg DLG_2130
                 ; SHADOW: Down with the Empire! Once I outlived my usefulness, they tried to off me!
                 ; ``We thought you were a goner!''
         wait_30f
@@ -32631,11 +32681,11 @@ _cad9a7:
                 wait 2
                 action 35
                 end
-        dlg $0853
+        dlg DLG_2131
                 ; SHADOW: Is Interceptor all right?
                 ; ``He's fine.
                 ; Come on, let's go!''
-        dlg $0854
+        dlg DLG_2132
                 ; SHADOW: Forget about me.
                 ; ``We can't just leave you!''
         obj_script NPC_12
@@ -32668,7 +32718,7 @@ _cad9d3:
         update_party
         return
 _cad9f4:
-        dlg $0856
+        dlg DLG_2134
                 ; SHADOW: We meet again.
         call _cad9d3
         return
@@ -32689,7 +32739,7 @@ _cad9fc:
         obj_script SLOT_1
                 dir RIGHT
                 end
-        dlg $0855
+        dlg DLG_2133
                 ; SHADOW: I sold my skills to the Empire_
                 ; I have no right to fight together with you.
         obj_script SHADOW
@@ -33047,7 +33097,7 @@ _cadd50:
                 end
         wait_obj CAMERA
         wait_30f
-        dlg $0858, BOTTOM
+        dlg DLG_2136, BOTTOM
                 ; GESTAHL: Well, well_
         if_switch $0266=1, _cadda2
         obj_script CELES
@@ -33057,7 +33107,7 @@ _cadd50:
                 dir DOWN
                 end
         wait_30f
-        dlg $0859
+        dlg DLG_2137
                 ; CELES!!
                 ; Welcome back!
                 ; CELES: I came to stop you!
@@ -33071,7 +33121,7 @@ _cadd50:
                 move UP, 1
                 end
 _cadda2:
-        dlg $085A
+        dlg DLG_2138
                 ; GESTAHL: Fwa, ha, ha_
                 ; Then you're just in time to perish. Behold! The Statues!!
         obj_script NPC_13
@@ -33139,7 +33189,7 @@ _cadddd:
                         end
                 end_loop
         wait_obj CAMERA
-        dlg $085B, BOTTOM
+        dlg DLG_2139, BOTTOM
                 ; GESTAHL: Ooh! I've got goose bumps! What power_
                 ; CELES: Emperor Gestahl!
                 ; Please, stop this madness!
@@ -33275,7 +33325,7 @@ _cadecb:
                 dir DOWN
                 branch _cadecb
                 end
-        dlg $085C, BOTTOM
+        dlg DLG_2140, BOTTOM
                 ; GESTAHL: CELES_
                 ; Come to me, my pretty!
                 ; You and Kefka were given life to serve me!!
@@ -33287,7 +33337,7 @@ _cadecb:
                 move RIGHT, 2
                 dir DOWN
                 end
-        dlg $085D, BOTTOM
+        dlg DLG_2141, BOTTOM
                 ; KEFKA: Kill the others and we'll overlook your treachery!
         sfx SFX::KEFKA_LAUGH
         loop 15
@@ -33321,7 +33371,7 @@ _cadecb:
                 wait 2
                 action 25
                 end
-        dlg $085E, BOTTOM
+        dlg DLG_2142, BOTTOM
                 ; KEFKA: Take this sword!
                 ; Take care of them. Immediately!!
         wait_15f 5
@@ -33367,7 +33417,7 @@ _cadecb:
                 dir LEFT
                 end
         wait_1s
-        dlg $085F, BOTTOM
+        dlg DLG_2143, BOTTOM
                 ; GESTAHL: CELES_together we can rule an entire world!
                 ; Think of it_!
         loop 3
@@ -33400,7 +33450,7 @@ _cadecb:
                 speed FAST
                 end
         wait_1s
-        dlg $0860, BOTTOM
+        dlg DLG_2144, BOTTOM
                 ; CELES: Power only breeds war_
                 ; I wish I'd never been_born.
         wait_15f 10
@@ -33446,7 +33496,7 @@ _cadecb:
                 anim_on
                 end
         wait_1s
-        dlg $0861, BOTTOM
+        dlg DLG_2145, BOTTOM
                 ; KEFKA: Ouch!!
         obj_script NPC_2
                 move RIGHT, 1
@@ -33468,25 +33518,25 @@ _cadecb:
                         action 24
                         end
                 end_loop
-        dlg $0862, BOTTOM
+        dlg DLG_2146, BOTTOM
                 ; KEFKA: B_blood!?
         wait_1s
         obj_script NPC_2
                 action 32
                 end
-        dlg $0863, BOTTOM
+        dlg DLG_2147, BOTTOM
                 ; KEFKA: You_vicious brat!
         wait_1s
         obj_script NPC_2
                 action 9
                 end
-        dlg $0864, BOTTOM
+        dlg DLG_2148, BOTTOM
                 ; Grrr_ Aargh_
         wait_1s
         obj_script NPC_2
                 action 40
                 end
-        dlg $0865, BOTTOM
+        dlg DLG_2149, BOTTOM
                 ; I
                 ; hate hate hate
                 ; hate hate hate_
@@ -33514,7 +33564,7 @@ _cadecb:
                 action 23
                 end
         wait_obj CAMERA
-        dlg $0866
+        dlg DLG_2150
                 ; KEFKA: Goddesses_you were born only to fight.
                 ; I implore you_show me your power!!
         wait_90f
@@ -33559,7 +33609,7 @@ _cadecb:
                 action 22
                 end
         wait_45f
-        dlg $0867
+        dlg DLG_2151
                 ; KEFKA: I command you!
                 ; Give me your power!
                 ; Arrrgh! Curses!
@@ -33580,7 +33630,7 @@ _cadecb:
                 wait 2
                 action 24
                 end
-        dlg $0868, BOTTOM
+        dlg DLG_2152, BOTTOM
                 ; KEFKA: Listen to me,
                 ; or you'll regret it!
                 ; Give me_POWER!
@@ -33589,7 +33639,7 @@ _cadecb:
                 move RIGHT, 2
                 dir UP
                 end
-        dlg $0869, BOTTOM
+        dlg DLG_2153, BOTTOM
                 ; GESTAHL: Kefka, stop it!
                 ; Revive those statues, and you'll destroy the very world we're trying to possess!
                 ; KEFKA: Shuddap!
@@ -33603,7 +33653,7 @@ _cadecb:
         obj_script CAMERA, ASYNC
                 move LEFT_LEFT_DOWN, 2
                 end
-        dlg $086A, BOTTOM
+        dlg DLG_2154, BOTTOM
                 ; GESTAHL: There'll be no one to worship us_
         wait_obj CAMERA
         pass_off NPC_2
@@ -33661,7 +33711,7 @@ _cadecb:
         obj_script NPC_2
                 dir DOWN
                 end
-        dlg $086B
+        dlg DLG_2155
                 ; CELES: Snap out of it, Kefka!
         wait_30f
         obj_script NPC_2
@@ -33741,7 +33791,7 @@ _cae13a:
                 end
         wait_45f
         wait_obj CAMERA
-        dlg $086C
+        dlg DLG_2156
                 ; CELES: Oh, that's really smart, Kefka!
                 ; Disturb their delicate balance, and they'll go haywire_!
         obj_script NPC_2
@@ -33849,7 +33899,7 @@ _cae1cd:
         obj_script NPC_2
                 dir RIGHT
                 end
-        dlg $086D, BOTTOM
+        dlg DLG_2157, BOTTOM
                 ; KEFKA: Who're you?!
         obj_script CAMERA, ASYNC
                 speed FASTER
@@ -33967,7 +34017,7 @@ _cae1cd:
                 end
         sfx 25
         call _cad033, 2
-        dlg $086E, BOTTOM
+        dlg DLG_2158, BOTTOM
                 ; KEFKA: Noooo!
         wait_1s
         sfx 88
@@ -34012,7 +34062,7 @@ _cae1cd:
                 dir UP
                 end
         wait_45f
-        dlg $086F
+        dlg DLG_2159
                 ; SHADOW: Go!
                 ; There are people counting on you!
         wait_45f
@@ -34119,7 +34169,7 @@ _cae37f:
                 anim_on
                 end
         wait_30f
-        dlg $0871, BOTTOM
+        dlg DLG_2161, BOTTOM
                 ; SHADOW: Don't worry about me! Run!!
                 ; I can't stop this chain reaction!
                 ; I'll see you again.
@@ -34168,7 +34218,7 @@ _cae37f:
                 end
         fade_in
         wait_obj SLOT_1
-        dlg $0870, BOTTOM
+        dlg DLG_2160, BOTTOM
                 ; SHADOW__
                 ; Get outta here on the double!
         remove_equip SHADOW
@@ -36123,7 +36173,7 @@ _caf4e3:
 
 _caf4fa:
         if_switch $01B5=1, EventReturn
-        dlg $0519, BOTTOM
+        dlg DLG_1305, BOTTOM
                 ;
                 ; Can't open or shut during flight
         switch $01B5=1
@@ -36176,14 +36226,14 @@ _caf548:
         set_script_mode EVENT
 
 _caf56e:
-        dlg $052A, BOTTOM
+        dlg DLG_1322, BOTTOM
                 ; 0: (Lift-off)
                 ; 1: (Not just yet)
         choice _caf58d, EventReturn
         return
 _caf579:
         if_switch $009F=1, _caf56e
-        dlg $0527, BOTTOM
+        dlg DLG_1319, BOTTOM
                 ; 0:  (Find the Floating Continent)
                 ; 1:  (Lift-off)
                 ; 2:  (Not just yet)
@@ -36202,7 +36252,7 @@ _caf58d:
         set_script_mode EVENT
 
 _caf59d:
-        dlg $0528
+        dlg DLG_1320
                 ; Change party members?
                 ; 0:  No
                 ; 1:  Yes
@@ -36273,7 +36323,7 @@ _caf64b:
         shop_menu RETURNERS_HIDEOUT_ITEMS
         return
 _caf64e:
-        dlg $0111
+        dlg DLG_273
                 ; Take a nap?
                 ; 0:  Yes
                 ; 1:  No
@@ -36310,7 +36360,7 @@ _caf68a:
         if_switch $01F0=1, _caf764
         if_switch $01B0=0, _caf6bc
         switch $01F0=1
-        dlg $010B
+        dlg DLG_267
                 ; King EDGAR!
                 ; This way, please!
         obj_script NPC_1, ASYNC
@@ -36334,7 +36384,7 @@ _caf68a:
         return
 _caf6bc:
         switch $01F0=1
-        dlg $010B
+        dlg DLG_267
                 ; King EDGAR!
                 ; This way, please!
         if_switch $01B3=0, _caf6cc
@@ -36428,17 +36478,17 @@ _caf745:
                 end
         return
 _caf764:
-        dlg $010B
+        dlg DLG_267
                 ; King EDGAR!
                 ; This way, please!
         switch $01F0=1
         return
-        dlg $010B
+        dlg DLG_267
                 ; King EDGAR!
                 ; This way, please!
         return
 _caf76e:
-        dlg $010C
+        dlg DLG_268
                 ; Did you speak with Banon?
         obj_script SLOT_1, ASYNC
                 wait 6
@@ -36455,17 +36505,17 @@ _caf76e:
         return
 _caf784:
         if_switch $0011=1, _caf98f
-        dlg $010D
+        dlg DLG_269
                 ; Not even the Empire'd think of looking here for us!
         return
 _caf78e:
         if_switch $001A=1, _caf798
-        dlg $014E
+        dlg DLG_334
                 ; We'll handle things here_
                 ; Please leave for Narshe!
         return
 _caf798:
-        dlg $0125
+        dlg DLG_293
                 ; Welcome back!
                 ; Glad you're okay.
         return
@@ -36533,7 +36583,7 @@ _caf7dc:
                 dir DOWN
                 wait 2
                 end
-        dlg $0119
+        dlg DLG_281
                 ; EDGAR: Banon!
                 ; We brought the girl with us.
         obj_script NPC_1
@@ -36545,7 +36595,7 @@ _caf7dc:
                 dir UP
                 wait 5
                 end
-        dlg $0114
+        dlg DLG_276
                 ; BANON: Is she the girl who can talk to Espers_?!
                 ; TERRA: Espers_?
                 ; EDGAR: Seemed the Empire had complete control over her.
@@ -36568,7 +36618,7 @@ _caf7dc:
         obj_script TERRA
                 action 32
                 end
-        dlg $0115
+        dlg DLG_277
                 ; BANON: Carrier pigeons brought word that she wiped out 50 of the Empire's best soldiers in a few minutes.
         obj_script TERRA, ASYNC
                 dir DOWN
@@ -36577,7 +36627,7 @@ _caf7dc:
                 move LEFT, 1
                 action 34
                 end
-        dlg $0116
+        dlg DLG_278
                 ; TERRA: That's a lie!!!
         obj_script LOCKE, ASYNC
                 speed FAST
@@ -36592,7 +36642,7 @@ _caf7dc:
                 wait 8
                 dir DOWN
                 end
-        dlg $0117
+        dlg DLG_279
                 ; LOCKE: TERRA!
                 ; EDGAR: Banon! She doesn't remember ANYTHING!
         obj_script NPC_1
@@ -36600,7 +36650,7 @@ _caf7dc:
                 wait 1
                 dir UP
                 end
-        dlg $0118
+        dlg DLG_280
                 ; BANON: Stay where you are!
         obj_script LOCKE
                 dir RIGHT
@@ -36608,7 +36658,7 @@ _caf7dc:
                 dir DOWN
                 wait 16
                 end
-        dlg $011A, ASYNC
+        dlg DLG_282, ASYNC
                 ; BANON: Perhaps you've heard this story? Once, when people were pure and innocent,
                 ; there was a box they were told never to open. But one man went and opened it anyway.
                 ; He unleashed all the evils of the world: envy_ greed_ pride_ violence_ control_
@@ -36648,7 +36698,7 @@ _caf7dc:
                 dir RIGHT
                 end
         wait_dlg
-        dlg $011B
+        dlg DLG_283
                 ; TERRA: __
                 ; BANON: We now confront those evils_
                 ; And you are that last ray of light, our only hope_
@@ -36660,7 +36710,7 @@ _caf7dc:
                 move LEFT, 1
                 dir UP
                 end
-        dlg $011C
+        dlg DLG_284
                 ; EDGAR: Banon!
         obj_script NPC_1
                 dir DOWN
@@ -36670,7 +36720,7 @@ _caf7dc:
                 dir UP
                 wait 16
                 end
-        dlg $011D
+        dlg DLG_285
                 ; BANON: I'm so tired_
                 ; Let me rest a while.
         fade_out_song $C0
@@ -36768,13 +36818,13 @@ _caf95f:
         play_song RETURNERS
         return
 _caf962:
-        dlg $0122
+        dlg DLG_290
                 ; We're a small organization now, but our membership is starting to soar.
         return
 _caf966:
         if_switch $0013=1, _caf97d
         if_switch $0017=1, _caf97d
-        dlg $0137
+        dlg DLG_311
                 ; I understand your unease.
                 ; But even as we speak, innocent lives are being lost_
                 ; Please. We need your abilities.
@@ -36782,37 +36832,37 @@ _caf966:
                 ;
                 ; Received ``Genji Glove''!
         give_item GENJI_GLOVE
-        dlg $0138
+        dlg DLG_312
                 ; We truly need your help!
         switch $0017=1
         return
 _caf97d:
-        dlg $0139
+        dlg DLG_313
                 ; Please join us in our battle!
         return
 _caf981:
         if_switch $001A=1, _caf98b
-        dlg $0150
+        dlg DLG_336
                 ; The Lete River runs through some underground caverns.
         return
 _caf98b:
-        dlg $0126
+        dlg DLG_294
                 ; Welcome back!
         return
 _caf98f:
         if_switch $0018=1, _caf78e
-        dlg $0129
+        dlg DLG_297
                 ; The Empire is arresting Returners everywhere.
                 ; We have to discover some means of fighting back, or_
         return
 _caf999:
         if_switch $0018=1, _caf981
         if_switch $0014=1, _caf966
-        dlg $0139
+        dlg DLG_313
                 ; Please join us in our battle!
         return
 _caf9a9:
-        dlg $012E
+        dlg DLG_302
                 ; EDGAR: It's gonna be tough to talk you into helping us_
                 ; If we push you too hard, we're no different than the Empire_
                 ; So we want you to make up your own mind.
@@ -36820,10 +36870,10 @@ _caf9a9:
         return
 _caf9af:
         switch $015B=1
-        dlg $012F
+        dlg DLG_303
                 ; SABIN: The only thing I can add is that you can trust my brother implicitly.
                 ; He's always been fair with me. You can trust him, TERRA_
-        dlg $0130
+        dlg DLG_304
                 ; But don't you DARE tell him I said that!
         player_ctrl_on
         obj_script NPC_4, ASYNC
@@ -36845,7 +36895,7 @@ _caf9af:
 _caf9cf:
         if_switch $01B1=0, _cafa01
         if_switch $015E=1, _cafa5f
-        dlg $012A
+        dlg DLG_298
                 ; LOCKE: Someone important to me was jailed by the Empire. I've hated the Empire ever since_
                 ; I joined the Returners when I realized the Empire was rotten to the core. I wanted to make a difference.
         switch $015A=1
@@ -36855,7 +36905,7 @@ _caf9cf:
                 wait 15
                 action 32
                 end
-        dlg $012D
+        dlg DLG_301
                 ; TERRA: But_I have no significant ``other'' in my life_
                 ; LOCKE: That's not entirely true.
                 ; Besides, I'm sure there are people who feel YOU'RE important to them! They are counting on you_
@@ -36876,7 +36926,7 @@ _caf9cf:
 _cafa01:
         if_switch $01B2=0, _cafa33
         if_switch $015E=1, _cafa5f
-        dlg $012A
+        dlg DLG_298
                 ; LOCKE: Someone important to me was jailed by the Empire. I've hated the Empire ever since_
                 ; I joined the Returners when I realized the Empire was rotten to the core. I wanted to make a difference.
         switch $015A=1
@@ -36886,7 +36936,7 @@ _cafa01:
                 wait 15
                 action 32
                 end
-        dlg $012D
+        dlg DLG_301
                 ; TERRA: But_I have no significant ``other'' in my life_
                 ; LOCKE: That's not entirely true.
                 ; Besides, I'm sure there are people who feel YOU'RE important to them! They are counting on you_
@@ -36906,7 +36956,7 @@ _cafa01:
         return
 _cafa33:
         if_switch $015E=1, _cafa5f
-        dlg $012A
+        dlg DLG_298
                 ; LOCKE: Someone important to me was jailed by the Empire. I've hated the Empire ever since_
                 ; I joined the Returners when I realized the Empire was rotten to the core. I wanted to make a difference.
         switch $015A=1
@@ -36916,7 +36966,7 @@ _cafa33:
                 wait 15
                 action 33
                 end
-        dlg $012D
+        dlg DLG_301
                 ; TERRA: But_I have no significant ``other'' in my life_
                 ; LOCKE: That's not entirely true.
                 ; Besides, I'm sure there are people who feel YOU'RE important to them! They are counting on you_
@@ -36935,7 +36985,7 @@ _cafa33:
         switch $015E=1
         return
 _cafa5f:
-        dlg $012A
+        dlg DLG_298
                 ; LOCKE: Someone important to me was jailed by the Empire. I've hated the Empire ever since_
                 ; I joined the Returners when I realized the Empire was rotten to the core. I wanted to make a difference.
         obj_script TERRA
@@ -36951,7 +37001,7 @@ _cafa67:
                 goto _caf962
         if_switch $01B0=1, _cafaa9
         if_switch $01B3=1, _cafa93
-        dlg $0124
+        dlg DLG_292
                 ; Banon?
                 ; He went outside a moment ago.
         obj_script NPC_1, ASYNC
@@ -36964,7 +37014,7 @@ _cafa67:
         switch $0421=1
         return
 _cafa93:
-        dlg $0124
+        dlg DLG_292
                 ; Banon?
                 ; He went outside a moment ago.
         obj_script TERRA
@@ -36991,12 +37041,12 @@ _cafaa9:
         switch $01F3=1
         return
 _cafab4:
-        dlg $0124
+        dlg DLG_292
                 ; Banon?
                 ; He went outside a moment ago.
         return
 _cafab8:
-        dlg $0131
+        dlg DLG_305
                 ; BANON: Have you made a decision?
                 ; Will you become our last ray of hope?
                 ; 0:  Yes
@@ -37015,7 +37065,7 @@ _cafac3:
                 wait 2
                 dir DOWN
                 end
-        dlg $0132
+        dlg DLG_306
                 ; BANON: You will? Really!!
         obj_script TERRA
                 wait 8
@@ -37023,13 +37073,13 @@ _cafac3:
                 wait 5
                 action 34
                 end
-        dlg $0133
+        dlg DLG_307
                 ; TERRA: But_
                 ; I'm scared_
         obj_script NPC_1, ASYNC
                 dir DOWN
                 end
-        dlg $013A
+        dlg DLG_314
                 ; BANON: The person who possesses this relic need not fear harm.
         obj_script NPC_1
                 dir UP
@@ -37040,17 +37090,17 @@ _cafac3:
                 wait 4
                 dir DOWN
                 end
-        dlg $013B
+        dlg DLG_315
                 ; BANON: Please, TERRA_
                 ; I'd like you to take it with you.
         obj_script TERRA
                 dir UP
                 wait 2
                 end
-        dlg $013C
+        dlg DLG_316
                 ; TERRA: What is this???
         give_item GAUNTLET
-        dlg $013E
+        dlg DLG_318
                 ; BANON: A lucky charm. Take it!
                 ;
                 ; Received ``Gauntlet''!
@@ -37068,7 +37118,7 @@ _cafac3:
                 wait 1
                 dir DOWN
                 end
-        dlg $013F
+        dlg DLG_319
                 ; BANON: I have a plan!
                 ; Please get everyone together!
         obj_script TERRA
@@ -37088,7 +37138,7 @@ _cafb31:
                 wait 2
                 dir LEFT
                 end
-        dlg $0132
+        dlg DLG_306
                 ; BANON: You will? Really!!
         obj_script TERRA
                 wait 8
@@ -37096,13 +37146,13 @@ _cafb31:
                 wait 5
                 action 32
                 end
-        dlg $0133
+        dlg DLG_307
                 ; TERRA: But_
                 ; I'm scared_
         obj_script NPC_1, ASYNC
                 dir DOWN
                 end
-        dlg $013A
+        dlg DLG_314
                 ; BANON: The person who possesses this relic need not fear harm.
         obj_script NPC_1
                 dir UP
@@ -37113,17 +37163,17 @@ _cafb31:
                 wait 4
                 dir LEFT
                 end
-        dlg $013B
+        dlg DLG_315
                 ; BANON: Please, TERRA_
                 ; I'd like you to take it with you.
         obj_script TERRA
                 dir RIGHT
                 wait 2
                 end
-        dlg $013C
+        dlg DLG_316
                 ; TERRA: What is this???
         give_item GAUNTLET
-        dlg $013E
+        dlg DLG_318
                 ; BANON: A lucky charm. Take it!
                 ;
                 ; Received ``Gauntlet''!
@@ -37141,7 +37191,7 @@ _cafb31:
                 wait 1
                 dir DOWN
                 end
-        dlg $013F
+        dlg DLG_319
                 ; BANON: I have a plan!
                 ; Please get everyone together!
         obj_script TERRA
@@ -37187,7 +37237,7 @@ _cafbc9:
                 wait 1
                 dir LEFT
                 end
-        dlg $0132
+        dlg DLG_306
                 ; BANON: You will? Really!!
         obj_script TERRA
                 wait 6
@@ -37197,7 +37247,7 @@ _cafbc9:
                 wait 4
                 action 34
                 end
-        dlg $0133
+        dlg DLG_307
                 ; TERRA: But_
                 ; I'm scared_
         obj_script NPC_1, ASYNC
@@ -37213,7 +37263,7 @@ _cafbc9:
                 wait 1
                 dir LEFT
                 end
-        dlg $013D
+        dlg DLG_317
                 ; BANON: If everyone works together we'll be successful.
                 ; Never give up hope!
         obj_script TERRA
@@ -37234,7 +37284,7 @@ _cafbc9:
                 wait 1
                 dir DOWN
                 end
-        dlg $013F
+        dlg DLG_319
                 ; BANON: I have a plan!
                 ; Please get everyone together!
         obj_script TERRA
@@ -37254,7 +37304,7 @@ _cafc2b:
                 wait 1
                 dir DOWN
                 end
-        dlg $0132
+        dlg DLG_306
                 ; BANON: You will? Really!!
         obj_script TERRA
                 wait 6
@@ -37264,7 +37314,7 @@ _cafc2b:
                 wait 4
                 action 32
                 end
-        dlg $0133
+        dlg DLG_307
                 ; TERRA: But_
                 ; I'm scared_
         obj_script NPC_1, ASYNC
@@ -37280,7 +37330,7 @@ _cafc2b:
                 wait 1
                 dir DOWN
                 end
-        dlg $013D
+        dlg DLG_317
                 ; BANON: If everyone works together we'll be successful.
                 ; Never give up hope!
         obj_script TERRA
@@ -37301,7 +37351,7 @@ _cafc2b:
                 wait 1
                 dir DOWN
                 end
-        dlg $013F
+        dlg DLG_319
                 ; BANON: I have a plan!
                 ; Please get everyone together!
         obj_script TERRA
@@ -37353,7 +37403,7 @@ _cafcbb:
                 action 32
                 end
 _cafcd8:
-        dlg $0134
+        dlg DLG_308
                 ; BANON: I see_
         switch $0014=1
         switch $0413=0
@@ -37404,7 +37454,7 @@ _cafd10:
                 action 34 | ACTION_H_FLIP
                 end
 _cafd30:
-        dlg $0135
+        dlg DLG_309
                 ; BANON: I thought as much_
         switch $0015=1
         load_map 109, {9, 29}, UP, Z_UPPER
@@ -37457,7 +37507,7 @@ _cafd63:
                 action 33
                 end
 _cafd86:
-        dlg $0136
+        dlg DLG_310
                 ; BANON: You're sure about this?
         switch $0016=1
         load_map 109, {9, 29}, UP, Z_UPPER
@@ -37500,7 +37550,7 @@ _cafdcb:
                 wait 16
                 action 33
                 end
-        dlg $0140
+        dlg DLG_320
                 ; TERRA: Hope_
                 ; How can anyone put their hope in me?
         obj_script TERRA
@@ -37555,7 +37605,7 @@ _cafdcb:
                 dir LEFT
                 move RIGHT, 1
                 end
-        dlg $0143
+        dlg DLG_323
                 ; BANON: What's going on?
                 ; What happened?
         play_song GESTAHL
@@ -37704,13 +37754,13 @@ _cafdcb:
         obj_script TERRA
                 move UP, 1
                 end
-        dlg $0145
+        dlg DLG_325
                 ; BANON: Someone did a number on him_
-        dlg $0141
+        dlg DLG_321
                 ; S_South Figaro_
-        dlg $0142, ASYNC
+        dlg DLG_322, ASYNC
                 ; What? WHAT IS IT?
-        dlg $0146
+        dlg DLG_326
                 ; E_Empire_took Figaro_
                 ; Coming_this way_unnnh_
         obj_script NPC_5, ASYNC
@@ -37718,7 +37768,7 @@ _cafdcb:
                 wait 2
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0147
+        dlg DLG_327
                 ; BANON: They've found us_
                 ; We haven't a moment to lose!
         obj_script EDGAR, ASYNC
@@ -37734,7 +37784,7 @@ _cafdcb:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0148
+        dlg DLG_328
                 ; EDGAR: LOCKE!
                 ; LOCKE: I know_
                 ; ``Someone'' has to sneak into South Figaro and slow the Empire down, right?
@@ -37748,7 +37798,7 @@ _cafdcb:
                 wait 8
                 dir UP
                 end
-        dlg $0149
+        dlg DLG_329
                 ; LOCKE: TERRA_
                 ; Please wait for me_
                 ; And_please_
@@ -37792,7 +37842,7 @@ _cafdcb:
                 wait 1
                 dir UP
                 end
-        dlg $014A
+        dlg DLG_330
                 ; SABIN: Big brother_
                 ; Aren't you EVER going to grow up?
         wait 16
@@ -37807,7 +37857,7 @@ _cafdcb:
                 wait 8
                 dir LEFT
                 end
-        dlg $014B
+        dlg DLG_331
                 ; BANON: What're we going to do?
                 ; EDGAR: We'll escape down the Lete River, and make our way to Narshe. I want to see that Esper for myself_
                 ; BANON: Right. There's a raft by the back entrance.
@@ -37824,7 +37874,7 @@ _cafdcb:
                 wait 1
                 dir RIGHT
                 end
-        dlg $014C
+        dlg DLG_332
                 ; EDGAR: You're in danger here. Come with us to Narshe.
                 ; You'll probably even gain some understanding of your own abilities_
         obj_script TERRA
@@ -37844,7 +37894,7 @@ _cafdcb:
                 action 34 | ACTION_H_FLIP
                 dir RIGHT
                 end
-        dlg $014D
+        dlg DLG_333
                 ; BANON: We've no time to dilly-dally. Let's make for Narshe!
         remove_equip LOCKE
         if_switch $0017=1, _caffe8
@@ -37857,7 +37907,7 @@ _cafdcb:
         obj_script TERRA, ASYNC
                 dir UP
                 end
-        dlg $0137
+        dlg DLG_311
                 ; I understand your unease.
                 ; But even as we speak, innocent lives are being lost_
                 ; Please. We need your abilities.
@@ -37924,7 +37974,7 @@ _cb002b:
         obj_script SLOT_1, ASYNC
                 action 9
                 end
-        dlg $012B
+        dlg DLG_299
                 ; Someone dropped a scrap of paper_
                 ; 0:  Toss it in the trash.
                 ; 1:  Leave it there.
@@ -38026,7 +38076,7 @@ _cb0080:
                 wait 1
                 action 32
                 end
-        dlg $012C
+        dlg DLG_300
                 ; BANON: Who did this?
                 ; Who left this piece of paper here?
         obj_script TERRA, ASYNC
@@ -38054,13 +38104,13 @@ _cb0106:
         obj_script NPC_5, ASYNC
                 action 32
                 end
-        dlg $0154
+        dlg DLG_340
                 ; BANON: Right_
         obj_script NPC_5, ASYNC
                 wait 4
                 dir DOWN
                 end
-        dlg $0151
+        dlg DLG_337
                 ; BANON: We all know that the Empire is using Magitek power in battle. The point is, how has the Emperor created it?
         obj_script NPC_5, ASYNC
                 action 35
@@ -38076,7 +38126,7 @@ _cb0106:
                 action 33
                 dir UP
                 end
-        dlg $0152
+        dlg DLG_338
                 ; EDGAR: I had LOCKE look into the rumor that the Empire is forcing the world's finest scholars to study Espers.
         obj_script LOCKE, ASYNC
                 action 33
@@ -38089,13 +38139,13 @@ _cb0106:
                 action 33
                 dir UP
                 end
-        dlg $0153
+        dlg DLG_339
                 ; LOCKE: All the trouble in Narshe is over an Esper, too_
         obj_script NPC_5, ASYNC
                 move RIGHT, 2
                 dir UP
                 end
-        dlg $0155
+        dlg DLG_341
                 ; TERRA: You mean there's some connection between Espers and Magitek?
                 ; BANON: I can only recall one thing linking Espers with Magitek power_
         obj_script EDGAR, ASYNC
@@ -38110,11 +38160,11 @@ _cb0106:
                 wait 16
                 dir UP
                 end
-        dlg $0156
+        dlg DLG_342
                 ; EDGAR: You don't mean_
                 ; BANON: Indeed!
                 ; The ancient War of the Magi_
-        dlg $0157, ASYNC
+        dlg DLG_343, ASYNC
                 ; ``No!''
                 ; ``It can't be!''
         loop 2
@@ -38138,7 +38188,7 @@ _cb0106:
         obj_script LOCKE, ASYNC
                 action 33
                 end
-        dlg $0158
+        dlg DLG_344
                 ; LOCKE: My Grandma used to tell me stories about magical machines_
                 ; Could they have been true?
         obj_script LOCKE, ASYNC
@@ -38149,7 +38199,7 @@ _cb0106:
                 wait 4
                 dir UP
                 end
-        dlg $0159
+        dlg DLG_345
                 ; EDGAR: Could that ancient tragedy be playing out once again_
                 ; BANON: It's just speculation_
                 ; But historical studies have provided a number of conflicting and frightening theories_
@@ -38157,7 +38207,7 @@ _cb0106:
         obj_script TERRA, ASYNC
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $015A
+        dlg DLG_346
                 ; TERRA: That could explain Magitek power_
         obj_script NPC_5, ASYNC
                 move LEFT, 2
@@ -38170,12 +38220,12 @@ _cb0106:
                 wait 1
                 dir DOWN
                 end
-        dlg $015B
+        dlg DLG_347
                 ; EDGAR: We can only fight Magitek enemies with Magitek weapons_
         obj_script NPC_5, ASYNC
                 action 35
                 end
-        dlg $015C
+        dlg DLG_348
                 ; BANON: It's risky, but if we have TERRA_speak with that Esper, it might just wake up_
                 ; EDGAR: I wonder if that's wise_?
         obj_script NPC_6, ASYNC
@@ -38197,7 +38247,7 @@ _cb0106:
         obj_script NPC_5, ASYNC
                 action 32
                 end
-        dlg $015D
+        dlg DLG_349
                 ; BANON: Who can say?
                 ; Regardless,
                 ; we need TERRA's help.
@@ -38207,7 +38257,7 @@ _cb0106:
                 move LEFT, 2
                 move UP, 1
                 end
-        dlg $015E
+        dlg DLG_350
                 ; LOCKE: TERRA_
         obj_script TERRA
                 wait 24
@@ -38217,7 +38267,7 @@ _cb0106:
                 wait 8
                 dir LEFT
                 end
-        dlg $015F
+        dlg DLG_351
                 ; TERRA: I'll do it!
                 ; SABIN: What nonsense!
                 ; You sound as if you're enjoying this!
@@ -38266,7 +38316,7 @@ _cb0106:
         switch $041C=1
         create_obj NPC_10
         show_obj NPC_10
-        dlg $0161
+        dlg DLG_353
                 ; BANON: What?
                 ; What's that noise?
         play_song GESTAHL
@@ -38313,7 +38363,7 @@ _cb0106:
                 wait 1
                 end
         sort_obj
-        dlg $0160
+        dlg DLG_352
                 ; Emergency!
                 ; Sir Banon_
         obj_script NPC_10
@@ -38387,7 +38437,7 @@ _cb0106:
                 move UP_LEFT
                 dir LEFT
                 end
-        dlg $0141
+        dlg DLG_321
                 ; S_South Figaro_
         obj_script TERRA, ASYNC
                 speed FAST
@@ -38417,10 +38467,10 @@ _cb0106:
                 wait 1
                 dir LEFT
                 end
-        dlg $0143
+        dlg DLG_323
                 ; BANON: What's going on?
                 ; What happened?
-        dlg $0146
+        dlg DLG_326
                 ; E_Empire_took Figaro_
                 ; Coming_this way_unnnh_
         obj_script NPC_7, ASYNC
@@ -38434,7 +38484,7 @@ _cb0106:
                 wait 1
                 dir DOWN
                 end
-        dlg $0147
+        dlg DLG_327
                 ; BANON: They've found us_
                 ; We haven't a moment to lose!
         obj_script EDGAR, ASYNC
@@ -38444,7 +38494,7 @@ _cb0106:
                 wait 8
                 dir RIGHT
                 end
-        dlg $0148
+        dlg DLG_328
                 ; EDGAR: LOCKE!
                 ; LOCKE: I know_
                 ; ``Someone'' has to sneak into South Figaro and slow the Empire down, right?
@@ -38461,7 +38511,7 @@ _cb0106:
                 wait 2
                 dir UP
                 end
-        dlg $0149
+        dlg DLG_329
                 ; LOCKE: TERRA_
                 ; Please wait for me_
                 ; And_please_
@@ -38511,7 +38561,7 @@ _cb0106:
         obj_script TERRA, ASYNC
                 dir UP
                 end
-        dlg $014A
+        dlg DLG_330
                 ; SABIN: Big brother_
                 ; Aren't you EVER going to grow up?
         obj_script NPC_5
@@ -38532,7 +38582,7 @@ _cb0106:
                 wait 1
                 dir RIGHT
                 end
-        dlg $014B
+        dlg DLG_331
                 ; BANON: What're we going to do?
                 ; EDGAR: We'll escape down the Lete River, and make our way to Narshe. I want to see that Esper for myself_
                 ; BANON: Right. There's a raft by the back entrance.
@@ -38557,7 +38607,7 @@ _cb0106:
                 wait 1
                 dir RIGHT
                 end
-        dlg $014C
+        dlg DLG_332
                 ; EDGAR: You're in danger here. Come with us to Narshe.
                 ; You'll probably even gain some understanding of your own abilities_
         obj_script TERRA
@@ -38571,7 +38621,7 @@ _cb0106:
                 wait 8
                 dir UP
                 end
-        dlg $014D
+        dlg DLG_333
                 ; BANON: We've no time to dilly-dally. Let's make for Narshe!
         obj_script NPC_6, ASYNC
                 dir DOWN
@@ -38601,21 +38651,21 @@ _cb0106:
         player_ctrl_on
         return
 _cb03f6:
-        dlg $0127
+        dlg DLG_295
                 ; Is Banon well?
         return
 _cb03fa:
         if_switch $001A=1, _cb03f6
-        dlg $014F
+        dlg DLG_335
                 ; Give our regards to Banon.
         return
 _cb0404:
         if_switch $001A=1, _cb040e
-        dlg $0163
+        dlg DLG_355
                 ; Urgh_uhnn_
         return
 _cb040e:
-        dlg $0128
+        dlg DLG_296
                 ; My wounds are healing.
         return
 _cb0412:
@@ -38624,7 +38674,7 @@ _cb0412:
         if_switch $01F5=1, EventReturn
         switch $01F5=1
         fade_out_song $FF
-        dlg $0162
+        dlg DLG_354
                 ; Uwaaaa!
                 ; The Empire's invading!
         play_song TROOPS_MARCH_ON
@@ -38632,7 +38682,7 @@ _cb0412:
                 action 31
                 wait 8
                 end
-        dlg $0164
+        dlg DLG_356
                 ; !
         obj_script SLOT_1
                 speed FAST
@@ -38661,7 +38711,7 @@ _cb0412:
                 dir LEFT
                 wait 4
                 end
-        dlg $0165
+        dlg DLG_357
                 ; What the_?
                 ; Sleep talking?
         return
@@ -38856,7 +38906,7 @@ _cb059f:
         max_mp SABIN
         max_hp WEDGE
         max_mp WEDGE
-        dlg $0166
+        dlg DLG_358
                 ; Here we go!
                 ; This raft'll take us to Narshe!
 _cb05dc:
@@ -38864,7 +38914,7 @@ _cb05dc:
         switch $0257=1
 _cb05e4:
         switch $01B5=1
-        dlg $0167
+        dlg DLG_359
                 ; Hop aboard the raft?
                 ; 0:  Yes
                 ; 1:  No
@@ -38899,7 +38949,7 @@ _cb0603:
                 end
         fade_in
         wait_fade
-        dlg $0169
+        dlg DLG_361
                 ; Head toward Narshe, but protect Banon at all costs.
                 ; If Banon is put out of commission, your journey's over.
         load_map 113, {31, 56}, RIGHT, {NO_FADE_IN, STARTUP_EVENT}
@@ -38945,7 +38995,7 @@ _cb0657:
                 move UP, 7
                 end
         wait_obj SLOT_1
-        dlg $016A
+        dlg DLG_362
                 ; Which way?
                 ;     0:  (Straight)
                 ;
@@ -39183,7 +39233,7 @@ _cb07cc:
         if_switch $0176=0, _cb07f2
         return
 _cb07f2:
-        dlg $016E
+        dlg DLG_366
                 ; Hey, which way?
                 ; 0:   (Up)
                 ;
@@ -39332,7 +39382,7 @@ _cb08db:
                 move DOWN_LEFT, 2
                 move DOWN, 4
                 end
-        dlg $0142
+        dlg DLG_322
                 ; What? WHAT IS IT?
         battle 103, RIVER
         call _ca5ea9
@@ -39356,7 +39406,7 @@ _cb08db:
                 end
         fade_in 8
         switch $001A=1
-        dlg $0171
+        dlg DLG_369
                 ; SABIN!!!
         call _cacb95
         player_ctrl_off
@@ -39405,7 +39455,7 @@ _cb094e:
                 move DOWN, 2
                 end
         unlock_camera
-        dlg $0168, TEXT_ONLY
+        dlg DLG_360, TEXT_ONLY
                 ; Fleeing the Empire's troops,
                 ; Banon, EDGAR and TERRA ride the rapids toward Narshe.
                 ; But the going won't be easy_
@@ -39507,7 +39557,7 @@ _cb0a1c:
                 move RIGHT, 3
                 end
         unlock_camera
-        dlg $01B1, TEXT_ONLY
+        dlg DLG_433, TEXT_ONLY
                 ; What dire fate has befallen SABIN, who fell from the raft after the fight with Ultros?_
         fade_out_song $80
         wait_2s
@@ -39529,10 +39579,10 @@ _cb0a1c:
 _cb0a5f:
         set_case PARTY_CHARS
         if_switch $000B=1, _cb0ab9
-        dlg $01C4
+        dlg DLG_452
                 ; SABIN: You_on a journey?
                 ; I got separated from my friends. Say, can you tell me how to get to Narshe?
-        dlg $01C5
+        dlg DLG_453
                 ; MAN: The Empire has set up a base somewhere beyond the forest, and to the east.
                 ; SABIN: _Empire!?
                 ; MAN: They seem to have their sights set on Doma Castle.
@@ -39550,7 +39600,7 @@ _cb0a5f:
                 move UP_RIGHT, 4
                 end
         wait_90f
-        dlg $00C1, {TEXT_ONLY, BOTTOM}
+        dlg DLG_193, {TEXT_ONLY, BOTTOM}
                 ; He owes allegiance to no one,
                 ; and will do anything for money.
                 ; He comes and goes like the wind_
@@ -39575,17 +39625,17 @@ _cb0a5f:
         call _cad015
         wait_90f
         switch $000B=1
-        dlg $01CA
+        dlg DLG_458
                 ; Welcome a partner?
                 ; 0:  Yes
                 ; 1:  No
         choice _cb0aca, _cb0b07
         return
 _cb0ab9:
-        dlg $01C4
+        dlg DLG_452
                 ; SABIN: You_on a journey?
                 ; I got separated from my friends. Say, can you tell me how to get to Narshe?
-        dlg $01C6
+        dlg DLG_454
                 ; SHADOW: Imperial soldiers have built a base somewhere beyond the forest.
                 ; SABIN: _Already!?
                 ; SHADOW: They seem to have their sights set on Doma Castle.
@@ -39594,14 +39644,14 @@ _cb0ab9:
                 ; SHADOW: Your only hope is through Doma.
                 ; I'll show you the way.
                 ; Just know that I may take off at any time, if I feel like it.
-        dlg $01CA
+        dlg DLG_458
                 ; Welcome a partner?
                 ; 0:  Yes
                 ; 1:  No
         choice _cb0aca, _cb0b07
         return
 _cb0aca:
-        dlg $01C9
+        dlg DLG_457
                 ; SHADOW: The Reaper is always just a step behind me_
         set_b_switch $4B
         switch $02E3=1
@@ -39648,7 +39698,7 @@ _cb0b10:
                 move UP, 1
                 action 9
                 end
-        dlg $01C7
+        dlg DLG_455
                 ; Whoa_
                 ; The dog just can't stand strangers.
         obj_script SLOT_1
@@ -39666,7 +39716,7 @@ _cb0b2a:
                 move UP, 1
                 action 9
                 end
-        dlg $01C7
+        dlg DLG_455
                 ; Whoa_
                 ; The dog just can't stand strangers.
         obj_script SLOT_1
@@ -39714,21 +39764,21 @@ _cb0b7e:
         switch $0169=1
         set_case TOP_CHAR
         if_switch $01A3=1, _cb0b90
-        dlg $01BF
+        dlg DLG_447
                 ; Who're you?
 _cb0b90:
-        dlg $01C0
+        dlg DLG_448
                 ; MERCHANT: Howdy. I own the dry goods business out here!
-        dlg $01C1
+        dlg DLG_449
                 ; MERCHANT: You're_not from these parts, huh?
-        dlg $01C2
+        dlg DLG_450
                 ; MERCHANT: We'll, no matter!
                 ; 0:  See the goods
                 ; 1:  Not interested
         choice _cb0bac, _cb0bb4
         return
 _cb0ba1:
-        dlg $01BD
+        dlg DLG_445
                 ; MERCHANT: Welcome!
                 ; Need anything?
                 ; 0:  What have you?
@@ -39738,7 +39788,7 @@ _cb0ba1:
 _cb0bac:
         shop_menu CRAZY_OLD_MANS_HOUSE
         pass_off NPC_3
-        dlg $01BE
+        dlg DLG_446
                 ; MERCHANT: See you around.
         return
 _cb0bb4:
@@ -39848,12 +39898,12 @@ _cb0c5e:
         return
 _cb0c75:
         if_switch $000B=0, _cb0c7e
-        dlg $01E6, BOTTOM
+        dlg DLG_486, BOTTOM
                 ; This's an Imperial base.
                 ; Too many soldiers_
 _cb0c7e:
         if_switch $000B=1, _cb0c87
-        dlg $01E2, BOTTOM
+        dlg DLG_482, BOTTOM
                 ; SABIN: What the_?
                 ; Where'd these soldiers come from?
 _cb0c87:
@@ -39883,7 +39933,7 @@ _cb0c87:
         obj_script NPC_2, ASYNC
                 dir DOWN
                 end
-        dlg $01E7
+        dlg DLG_487
                 ; SOLDIER A: Hey, have you heard?
                 ; SOLDIER B: Oh, you mean_
                 ; SOLDIER A: Shhh! Quiet down.
@@ -39897,7 +39947,7 @@ _cb0c87:
                 wait 12
                 dir UP
                 end
-        dlg $01E8
+        dlg DLG_488
                 ; SOLDIER A: If he drives General Leo out of our battalion,
                 ; he'll probably become the next general!
                 ; SOLDIER B: Don't make me laugh!
@@ -39914,7 +39964,7 @@ _cb0c87:
                 wait 3
                 dir UP
                 end
-        dlg $01E9
+        dlg DLG_489
                 ; SOLDIER A: Shhhhh!
                 ; What if he hears you?
                 ; You'll be jailed!
@@ -39936,7 +39986,7 @@ _cb0c87:
         obj_script NPC_2, ASYNC
                 dir RIGHT
                 end
-        dlg $01EA
+        dlg DLG_490
                 ; SOLDIER B: Uh, oh_
                 ; Here he comes_
                 ; Back to the waiting zone!
@@ -39967,7 +40017,7 @@ _cb0c87:
                 wait 2
                 dir LEFT
                 end
-        dlg $01EB
+        dlg DLG_491
                 ; KEFKA: Hey, you!
                 ; You keeping a sharp lookout?
                 ; SOLDIER A: Yes, Sir.
@@ -39986,7 +40036,7 @@ _cb0c87:
         obj_script NPC_2
                 move DOWN, 2
                 end
-        dlg $01EC
+        dlg DLG_492
                 ; SOLDIER B: Phew_!
                 ; Someone's gotta put that guy away!
                 ; SOLDIER B: I'd like to tell him to his face he's no General Leo!
@@ -40002,7 +40052,7 @@ _cb0c87:
         obj_script NPC_2, ASYNC
                 dir LEFT
                 end
-        dlg $01E1
+        dlg DLG_481
                 ; SOLDIER A: Shhhh!
                 ; Do I always have to tell you to keep it down?!
                 ; You're hopeless_!
@@ -40020,7 +40070,7 @@ _cb0c87:
         obj_script NPC_2, ASYNC
                 dir DOWN
                 end
-        dlg $01E3
+        dlg DLG_483
                 ; COMMANDER: You two! We're about to storm Doma Castle_
                 ; You will join the assault team!
         obj_script NPC_13
@@ -40089,7 +40139,7 @@ _cb0db3:
         switch $01B5=1
         return
 _cb0dbe:
-        dlg $01FE
+        dlg DLG_510
                 ; Urrgh! The top won't open.
                 ; Right_
                 ; 0:  (Kick it)
@@ -40116,7 +40166,7 @@ _cb0dcc:
                 dir DOWN
                 action 11
                 end
-        dlg $01FF
+        dlg DLG_511
                 ; Yeeeouch!
         obj_script NPC_11
                 speed FAST
@@ -40124,7 +40174,7 @@ _cb0dcc:
                 move UP, 2
                 end
         sfx SFX::DOG_BARK
-        dlg $0200
+        dlg DLG_512
                 ; No! A sentry!
         obj_script NPC_11
                 move UP_RIGHT
@@ -40182,10 +40232,10 @@ _cb0e2d:
                 jump_low
                 move DOWN, 1
                 end
-        dlg $01FF
+        dlg DLG_511
                 ; Yeeeouch!
         wait_obj SLOT_1
-        dlg $0201
+        dlg DLG_513
                 ; SOLDIER: Who goes there?
         obj_script SLOT_1
                 action 31
@@ -40193,7 +40243,7 @@ _cb0e2d:
                 move UP, 1
                 anim_on
                 end
-        dlg $0200
+        dlg DLG_512
                 ; No! A sentry!
         call _cb2e34
         obj_script SLOT_1
@@ -40235,7 +40285,7 @@ _cb0e2d:
                 layer 0
                 move UP, 2
                 end
-        dlg $0202
+        dlg DLG_514
                 ; SOLDIER: _???
                 ; I knew I heard something_
                 ; Meoooow
@@ -40267,7 +40317,7 @@ _cb0e2d:
                 wait 6
                 dir DOWN
                 end
-        dlg $01FD, BOTTOM
+        dlg DLG_509, BOTTOM
                 ; That was too close_!
         update_party
         call _cb2e2b
@@ -40354,11 +40404,11 @@ _cb0f2e:
         obj_script NPC_10, ASYNC
                 dir RIGHT
                 end
-        dlg $01ED
+        dlg DLG_493
                 ; SOLDIER: General Leo.
                 ; The citizens of Doma seem to be playing a waiting game_
                 ; LEO: So, that's their strategy.
-        dlg $01EE
+        dlg DLG_494
                 ; SOLDIER: General.
                 ; We're ready to take the castle. Just give the order_
                 ; LEO: Patience!
@@ -40367,7 +40417,7 @@ _cb0f2e:
                 speed NORMAL
                 move RIGHT, 1
                 end
-        dlg $01EF
+        dlg DLG_495
                 ; SOLDIER: But, General!
                 ; I'm ready to lay my life down at any time for the Empire!
         obj_script NPC_4
@@ -40377,20 +40427,20 @@ _cb0f2e:
                 action 24
                 action 35
                 end
-        dlg $01F0
+        dlg DLG_496
                 ; LEO: You're from Maranda, right?
                 ; SOLDIER: Y_yes Sir. Why?
         obj_script NPC_4, ASYNC
                 action 32
                 end
-        dlg $01F1
+        dlg DLG_497
                 ; LEO: And your family lives there? Fall in battle, and I'll have to deliver the bad news_
                 ; What shall I say to them?
                 ; You have a life to go back to someday. Don't throw it all away for nothing. Emperor Gestahl wouldn't want that.
         obj_script NPC_4, ASYNC
                 dir LEFT
                 end
-        dlg $01F2
+        dlg DLG_498
                 ; SOLDIER: Yes, Sir!
         obj_script NPC_10
                 dir UP
@@ -40435,9 +40485,9 @@ _cb0f2e:
         obj_script NPC_4, ASYNC
                 dir LEFT
                 end
-        dlg $01F3
+        dlg DLG_499
                 ; SOLDIER: General Leo!
-        dlg $01F5
+        dlg DLG_501
                 ; SOLDIER: A carrier pigeon from Emperor Gestahl.
         obj_script NPC_9
                 speed NORMAL
@@ -40461,30 +40511,30 @@ _cb0f2e:
         obj_script NPC_4
                 dir UP
                 end
-        dlg $01F6
+        dlg DLG_502
                 ; LEO: What_?
         obj_script NPC_4
                 wait 8
                 dir LEFT
                 end
-        dlg $01F7
+        dlg DLG_503
                 ; LEO: The Emperor summons me.
                 ; I must return immediately.
-        dlg $01F8
+        dlg DLG_504
                 ; SOLDIER: I understand, Sir.
         obj_script NPC_4, ASYNC
                 action 34
                 wait 1
                 dir LEFT
                 end
-        dlg $01F9
+        dlg DLG_505
                 ; LEO: Right.
                 ; I'll leave Doma in your hands.
                 ; SOLDIER: Yes, Sir.
                 ; LEO: Okay_
                 ; Just don't jump the gun.
                 ; Please_
-        dlg $01FA
+        dlg DLG_506
                 ; SOLDIER: Sir!
                 ; Leave it to us, Sir!
         obj_script NPC_4, ASYNC
@@ -40492,7 +40542,7 @@ _cb0f2e:
                 wait 2
                 dir LEFT
                 end
-        dlg $01FB
+        dlg DLG_507
                 ; LEO: Right.
         obj_script NPC_4, ASYNC
                 move LEFT, 1
@@ -40522,7 +40572,7 @@ _cb0f2e:
         create_obj NPC_6
         show_obj NPC_6
         switch $002B=1
-        dlg $01FC
+        dlg DLG_508
                 ; So that's General Leo_
                 ; He could be my friend, if he weren't my enemy_
         obj_script SLOT_1
@@ -40559,7 +40609,7 @@ _cb1032:
                 pos {43, 25}
                 end
         show_obj NPC_4
-        dlg $0203
+        dlg DLG_515
                 ; KEFKA: Now that Leo's gone, I'll turn this water into a flowing river of poison!
         obj_script NPC_4
                 speed NORMAL
@@ -40574,7 +40624,7 @@ _cb1032:
         obj_script NPC_6, ASYNC
                 dir LEFT
                 end
-        dlg $0204
+        dlg DLG_516
                 ; LEO: The Emperor has ordered  me to return home. I don't want any trouble here!
                 ; KEFKA: You loser!
                 ; I'll take care of this situation in no time!
@@ -40583,7 +40633,7 @@ _cb1032:
                 wait 4
                 dir DOWN
                 end
-        dlg $0205
+        dlg DLG_517
                 ; LEO: Don't be pompous!
                 ; And DON'T forget that they are PEOPLE, just like you and me.
                 ; KEFKA: We need not spare those lands that gave rise to the Returners!
@@ -40601,7 +40651,7 @@ _cb1032:
         obj_script NPC_6, ASYNC
                 dir UP
                 end
-        dlg $0206
+        dlg DLG_518
                 ; KEFKA: You just go and be a good little boy_!
         switch $0406=1
         create_obj NPC_7
@@ -40630,7 +40680,7 @@ _cb1032:
                 move LEFT, 4
                 wait 4
                 end
-        dlg $0207
+        dlg DLG_519
                 ; KEFKA: Is the poison ready?
                 ; SOLDIER: But, General Leo said_
                 ; KEFKA: He's no longer here!
@@ -40665,7 +40715,7 @@ _cb1032:
                 dir DOWN
                 end
         unlock_camera
-        dlg $0208
+        dlg DLG_520
                 ; That's inhuman!
         switch $0406=0
         delete_obj NPC_7
@@ -40674,7 +40724,7 @@ _cb1032:
         call _cb1126
         return
         if_switch $002C=0, EventReturn
-        dlg $020F
+        dlg DLG_527
                 ; NO!!
                 ; Unless we act now, Kefka'll use the poison to_
         obj_script SLOT_1
@@ -40683,7 +40733,7 @@ _cb1032:
         return
 _cb1104:
         if_switch $002C=0, EventReturn
-        dlg $020F
+        dlg DLG_527
                 ; NO!!
                 ; Unless we act now, Kefka'll use the poison to_
         obj_script SLOT_1
@@ -40693,7 +40743,7 @@ _cb1104:
 _cb1112:
         if_switch $002C=0, EventReturn
         if_switch $002F=1, EventReturn
-        dlg $020F
+        dlg DLG_527
                 ; NO!!
                 ; Unless we act now, Kefka'll use the poison to_
         obj_script SLOT_1
@@ -40702,7 +40752,7 @@ _cb1112:
         return
 _cb1126:
         if_switch $002D=1, _cb1170
-        dlg $0209
+        dlg DLG_521
                 ; KEFKA: Unh? Silence!
                 ; You're history, bub_
         char_prop VICKS, KEFKA_1
@@ -40724,7 +40774,7 @@ _cb1126:
                 move DOWN_RIGHT
                 move DOWN, 2
                 end
-        dlg $020D
+        dlg DLG_525
                 ; Wait!!!
         player_ctrl_on
         obj_script NPC_6
@@ -40747,7 +40797,7 @@ _cb1170:
                 move DOWN_LEFT
                 move LEFT, 3
                 end
-        dlg $020D
+        dlg DLG_525
                 ; Wait!!!
         player_ctrl_on
         obj_script NPC_6
@@ -40766,7 +40816,7 @@ _cb1170:
         return
 _cb1193:
         if_switch $002F=1, _cb11e9
-        dlg $020B
+        dlg DLG_523
                 ; KEFKA: Ha, ha, ha!
                 ; _What a toad!
         clr_status VICKS, DEAD
@@ -40780,7 +40830,7 @@ _cb1193:
         player_ctrl_off
         update_party
         fade_in
-        dlg $020C
+        dlg DLG_524
                 ; KEFKA: Huh!?
                 ; How long do you expect me to put up with you? Next time, you're a goner.
         obj_script NPC_6
@@ -40828,7 +40878,7 @@ _cb1209:
         obj_script NPC_8, ASYNC
                 dir LEFT
                 end
-        dlg $020E
+        dlg DLG_526
                 ; KEFKA: Oh, gripe!
                 ; Hey! If you know what's good for you_
         obj_script NPC_6
@@ -40857,7 +40907,7 @@ _cb1209:
                 speed SLOW
                 move LEFT, 1
                 end
-        dlg $0210
+        dlg DLG_528
                 ; KEFKA: Hee, hee!
                 ; Nothing can beat the music of hundreds of voices screaming in unison!
                 ; Uwa, ha, ha!
@@ -40911,7 +40961,7 @@ _cb1283:
                 dir RIGHT
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $0222, BOTTOM
+        dlg DLG_546, BOTTOM
                 ; CYAN: Elayne!
                 ; Elayne! Wake up!
         wait_2s
@@ -40919,14 +40969,14 @@ _cb1283:
         obj_script CYAN, ASYNC
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $0223, BOTTOM
+        dlg DLG_547, BOTTOM
                 ; CYAN: This_
                 ; This_can't be happening!
         wait_15f 10
         obj_script CYAN, ASYNC
                 dir RIGHT
                 end
-        dlg $0224
+        dlg DLG_548
                 ; CYAN: ! Owain_
                 ; NOT YOU TOO!
                 ; Son_you can't BOTH leave me!
@@ -40951,7 +41001,7 @@ _cb1283:
                 anim_on
                 end
         wait_15f 5
-        dlg $022A, ASYNC
+        dlg DLG_554, ASYNC
                 ; CYAN: D_ Dear me_
         obj_script CYAN
                 speed SLOW
@@ -40978,7 +41028,7 @@ _cb1283:
                 wait 10
                 action 24
                 end
-        dlg $0231
+        dlg DLG_561
                 ; CYAN: I_impossible!
                 ; Idiotic!!!
         wait_obj CYAN
@@ -40992,7 +41042,7 @@ _cb1283:
         obj_script CYAN
                 action 32
                 end
-        dlg $0232
+        dlg DLG_562
                 ; We can't forgive this!
                 ; The Empire must pay!
         fade_out 2
@@ -41048,7 +41098,7 @@ _cb1337:
                 wait 1
                 action 10 | ACTION_H_FLIP
                 end
-        dlg $0234, BOTTOM
+        dlg DLG_564, BOTTOM
                 ; WARRIOR: I am CYAN,
                 ; retainer to King Doma!
         wait_obj NPC_3
@@ -41062,7 +41112,7 @@ _cb1337:
                 move DOWN, 2
                 dir LEFT
                 end
-        dlg $0237, BOTTOM
+        dlg DLG_567, BOTTOM
                 ; SOLDIER: The enemy!
                 ; Get ready, everyone!
         call _cb13ff
@@ -41079,7 +41129,7 @@ _cb1337:
                 speed NORMAL
                 move UP, 4
                 end
-        dlg $0244
+        dlg DLG_580
                 ; SABIN: !
         obj_script NPC_5, ASYNC
                 speed FASTER
@@ -41235,7 +41285,7 @@ _cb1483:
         if_switch $01B3=1, _cb18b3
         if_switch $0034=1, _cb152c
         switch $02BC=1
-        dlg $023A
+        dlg DLG_570
                 ; SABIN: May I give you a hand?!
         call _cb1473
         obj_script NPC_4, ASYNC
@@ -41247,7 +41297,7 @@ _cb1483:
                 move RIGHT, 1
                 anim_on
                 end
-        dlg $023B
+        dlg DLG_571
                 ; CYAN: Thank you_
                 ; whomever you are.
         call _cb0e1c
@@ -41271,7 +41321,7 @@ _cb1483:
         create_obj NPC_7
         sort_obj
         show_obj NPC_7
-        dlg $0235, ASYNC
+        dlg DLG_565, ASYNC
                 ; CYAN: Ohhh!
                 ; This is too much!
         obj_script SLOT_1, ASYNC
@@ -41345,7 +41395,7 @@ _cb1483:
         return
 _cb152c:
         if_switch $0035=1, _cb15d9
-        dlg $023C
+        dlg DLG_572
                 ; SABIN: Let me have at it!
         call _cb1473
         obj_script NPC_6, ASYNC
@@ -41357,7 +41407,7 @@ _cb152c:
                 move RIGHT, 1
                 anim_on
                 end
-        dlg $023D
+        dlg DLG_573
                 ; CYAN: What a mess!!
                 ; Be careful, Sir!!
         call _cb0e1c
@@ -41381,7 +41431,7 @@ _cb152c:
         create_obj NPC_9
         sort_obj
         show_obj NPC_9
-        dlg $0236, {ASYNC, BOTTOM}
+        dlg DLG_566, {ASYNC, BOTTOM}
                 ; CYAN: Urgh!!!
                 ; Who released this poison?
                 ;
@@ -41467,7 +41517,7 @@ _cb152c:
         return
 _cb15d9:
         if_switch $0036=1, _cb1646
-        dlg $023E
+        dlg DLG_574
                 ; Look_we're gonna have to do this together!
         call _cb1473
         obj_script NPC_8, ASYNC
@@ -41479,7 +41529,7 @@ _cb15d9:
                 move RIGHT, 1
                 anim_on
                 end
-        dlg $023F
+        dlg DLG_575
                 ; CYAN: The thought had occurred to me as well!
         call _cb0e1c
         battle 14, IMP_CAMP
@@ -41530,7 +41580,7 @@ _cb1646:
                 wait 6
                 dir LEFT
                 end
-        dlg $0241
+        dlg DLG_577
                 ; CYAN: Thank you, kind sir!
         obj_script SABIN, ASYNC
                 dir DOWN
@@ -41541,13 +41591,13 @@ _cb1646:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0245
+        dlg DLG_581
                 ; SABIN: Allow me to thank you! I am SABIN, from Figaro.
                 ; Now, let's scram!
         obj_script CYAN, ASYNC
                 action 34
                 end
-        dlg $0246
+        dlg DLG_582
                 ; CYAN: But what of my home, my family_my friends?
                 ; SABIN: Look_
                 ; If we stick around any longer we'll have a regiment of troops down our throats.
@@ -41558,7 +41608,7 @@ _cb1646:
                 wait 1
                 dir DOWN
                 end
-        dlg $0251
+        dlg DLG_593
                 ; SOLDIER: Got 'em!
                 ; Over here!
         obj_script SABIN, ASYNC
@@ -41571,7 +41621,7 @@ _cb1646:
                 wait 6
                 dir LEFT
                 end
-        dlg $0252
+        dlg DLG_594
                 ; SABIN: Hoo, boy_
                 ; SABIN: I have a great idea_
                 ; Come over here.
@@ -41661,7 +41711,7 @@ _cb1713:
                 move UP, 2
                 dir RIGHT
                 end
-        dlg $0253
+        dlg DLG_595
                 ; CYAN: Sir SABIN!
                 ; What on earth are these?
         obj_script CYAN
@@ -41674,7 +41724,7 @@ _cb1713:
                 wait 1
                 dir UP
                 end
-        dlg $0254
+        dlg DLG_596
                 ; SABIN: I'll explain later!
                 ; Relax. Just climb in!
         obj_script SABIN
@@ -41729,7 +41779,7 @@ _cb1743:
         obj_script CYAN, ASYNC
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $0255
+        dlg DLG_597
                 ; CYAN: Sir SABIN!
                 ; How might these abominations be manipulated?
         obj_script SABIN
@@ -41750,7 +41800,7 @@ _cb1743:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0256
+        dlg DLG_598
                 ; SABIN: I'm getting sick of this! Thou art such a pain in the_! Confound it all! I'm starting to talk like you!
                 ; SABIN: Now listen!
                 ; Just use those levers located by your hands.
@@ -41766,7 +41816,7 @@ _cb1743:
         hide_obj NPC_2
         pass_on SABIN
         vehicle SABIN, {MAGITEK, SHOW_RIDER}
-        dlg $0247, ASYNC
+        dlg DLG_583, ASYNC
                 ; CYAN: Sir SABIN!!
                 ; It is I who is in your debt!
         lock_camera
@@ -41793,7 +41843,7 @@ _cb1743:
                 wait 4
                 dir UP
                 end
-        dlg $0248
+        dlg DLG_584
                 ; SABIN: Forget it.
                 ; Now, come on!
         switch $0435=1
@@ -41805,7 +41855,7 @@ _cb1743:
                 move DOWN_LEFT
                 dir UP
                 end
-        dlg $01F4
+        dlg DLG_500
                 ; SOLDIER: Hey!
                 ; What are you doing?
         obj_script SABIN
@@ -41813,7 +41863,7 @@ _cb1743:
                 wait 6
                 dir DOWN
                 end
-        dlg $0249, ASYNC
+        dlg DLG_585, ASYNC
                 ; CYAN: Aaahhh!
                 ; We can't stop now!
                 ;
@@ -41927,7 +41977,7 @@ _cb1886:
         switch $0433=0
         delete_obj NPC_11
         hide_obj NPC_11
-        dlg $024A
+        dlg DLG_586
                 ; SABIN: Then let's just bust through!
         if_switch $01A3=0, _cb18a1
         obj_script SHADOW
@@ -41955,7 +42005,7 @@ _cb18b3:
                 move DOWN, 2
                 end
         sfx 45
-        dlg $0242
+        dlg DLG_578
                 ; CYAN: Eeoooa!
                 ; Be you friend or enemy?!
         obj_script NPC_3, ASYNC
@@ -41972,7 +42022,7 @@ _cb18b3:
                 action 35 | ACTION_H_FLIP
                 dir DOWN
                 end
-        dlg $0243
+        dlg DLG_579
                 ; SABIN: Ouuuch!
                 ; _didn't MEAN to step in there_
         wait_obj SLOT_1
@@ -41990,7 +42040,7 @@ _cb18d9:
                 action 9
                 anim_on
                 end
-        dlg $0239
+        dlg DLG_569
                 ; SABIN: Uwaaa!
                 ; It's that poison!
                 ; This isn't gonna be easy_
@@ -42003,7 +42053,7 @@ _cb18f9:
                 speed FAST
                 move RIGHT, 1
                 end
-        dlg $0250
+        dlg DLG_592
                 ; SABIN: Nothing but poison this way!
         switch $01B5=1
         return
@@ -42012,7 +42062,7 @@ _cb190a:
                 speed FAST
                 move UP, 1
                 end
-        dlg $0250
+        dlg DLG_592
                 ; SABIN: Nothing but poison this way!
         switch $01B5=1
         return
@@ -42026,7 +42076,7 @@ _cb1915:
                 wait 1
                 move LEFT, 1
                 end
-        dlg $0238
+        dlg DLG_568
                 ; SABIN: That guy's a sitting duck! Gotta help him, fast!
         switch $01B5=1
         return
@@ -42040,7 +42090,7 @@ _cb1935:
                 wait 1
                 move DOWN, 1
                 end
-        dlg $0238
+        dlg DLG_568
                 ; SABIN: That guy's a sitting duck! Gotta help him, fast!
         switch $01B5=1
         return
@@ -42052,7 +42102,7 @@ _cb1955:
         obj_script SLOT_1
                 dir DOWN
                 end
-        dlg $024B
+        dlg DLG_587
                 ; End of the line!
         call _cb0e1c
         battle 15, IMP_CAMP
@@ -42070,7 +42120,7 @@ _cb1955:
         return
 _cb1985:
         if_switch $0171=1, EventReturn
-        dlg $024B
+        dlg DLG_587
                 ; End of the line!
         call _cb0e1c
         battle 17, IMP_CAMP
@@ -42089,7 +42139,7 @@ _cb1985:
         return
 _cb19af:
         if_switch $01F5=1, EventReturn
-        dlg $024C
+        dlg DLG_588
                 ; There's nowhere to run!
         obj_script SLOT_1, ASYNC
                 speed NORMAL
@@ -42121,7 +42171,7 @@ _cb19e6:
         obj_script NPC_15
                 move DOWN, 5
                 end
-        dlg $024D
+        dlg DLG_589
                 ; Who said anything about running?!
         call _cb0e1c
         battle 17, IMP_CAMP
@@ -42205,7 +42255,7 @@ _cb1a5b:
                 move UP, 1
                 action 22
                 end
-        dlg $024E, BOTTOM
+        dlg DLG_590, BOTTOM
                 ; SABIN: Can't believe we've made it this far_
                 ; Say, how do we get to Narshe from here?
                 ; CYAN: Narshe, eh?
@@ -42218,7 +42268,7 @@ _cb1a5b:
                 wait 4
                 dir UP
                 end
-        dlg $024F, BOTTOM
+        dlg DLG_591, BOTTOM
                 ; SABIN: All right!
                 ; It's decided.
                 ; Let's get going!
@@ -42339,7 +42389,7 @@ _cb1b46:
         obj_script NPC_1
                 move DOWN, 1
                 end
-        dlg $04F1, BOTTOM
+        dlg DLG_1265, BOTTOM
                 ; SETZER: I'll deal with you in a minute!
         obj_script NPC_1
                 move UP, 1
@@ -42614,7 +42664,7 @@ _cb1cd5:
                 wait 1
                 dir DOWN
                 end
-        dlg $04F2
+        dlg DLG_1266
                 ; LOCKE: What a performance!
                 ; CELES: Enough already!
         obj_script CELES, ASYNC
@@ -42634,13 +42684,13 @@ _cb1cd5:
         obj_script LOCKE
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $04F3
+        dlg DLG_1267
                 ; LOCKE: But this is the tough one! Part 2 begins now!
         obj_script LOCKE
                 move DOWN, 1
                 dir RIGHT
                 end
-        dlg $04F4
+        dlg DLG_1268
                 ; LOCKE: _
                 ; Where's SETZER?
         obj_script SLOT_3, ASYNC
@@ -42654,7 +42704,7 @@ _cb1cd5:
         obj_script CELES, ASYNC
                 dir LEFT
                 end
-        dlg $04F5
+        dlg DLG_1269
                 ; CELES: He's coming.
         wait_90f
         spc_cmd $83, $00, $C8
@@ -42670,7 +42720,7 @@ _cb1cd5:
                 move DOWN, 6
                 dir LEFT
                 end
-        dlg $04F6
+        dlg DLG_1270
                 ; SETZER: W_who're YOU?
                 ; You're not Maria!
         obj_script CELES
@@ -42683,14 +42733,14 @@ _cb1cd5:
                 wait 1
                 dir RIGHT
                 end
-        dlg $04F7
+        dlg DLG_1271
                 ; CELES: SETZER, we need your help. We have to go to Vector. We need this ship to get there.
         obj_script NPC_1, ASYNC
                 dir DOWN
                 wait 1
                 dir RIGHT
                 end
-        dlg $04F8
+        dlg DLG_1272
                 ; SETZER: Look, if you're not Maria, I don't want you aboard.
         wait_30f
         obj_script CAMERA, ASYNC
@@ -42709,7 +42759,7 @@ _cb1cd5:
         obj_script NPC_1, ASYNC
                 move UP, 2
                 end
-        dlg $04F9
+        dlg DLG_1273
                 ; CELES: Wait!
                 ; We were told your ship is the finest vessel in the world.
         obj_script CELES, ASYNC
@@ -42720,7 +42770,7 @@ _cb1cd5:
                 move RIGHT, 3
                 move UP, 2
                 end
-        dlg $04FA
+        dlg DLG_1274
                 ; LOCKE: And that you were the world's most notorious gambler_
         obj_script SLOT_4, ASYNC
                 speed FAST
@@ -42747,7 +42797,7 @@ _cb1cd5:
                 wait 2
                 dir UP
                 end
-        dlg $04FD
+        dlg DLG_1277
                 ; CYAN: I'm one of Doma's Knights. Please, help us.
 _cb1deb:
         wait_15f
@@ -42760,7 +42810,7 @@ _cb1deb:
                 wait 2
                 dir DOWN
                 end
-        dlg $04FE
+        dlg DLG_1278
                 ; SETZER: Come here.
         obj_script CELES, ASYNC
                 dir UP
@@ -42773,7 +42823,7 @@ _cb1deb:
                 wait 1
                 dir UP
                 end
-        dlg $04FF
+        dlg DLG_1279
                 ; CELES: Yeah_
                 ; SETZER: Don't misunderstand me. I'm still not sure if I'm going to help you.
         wait_15f 5
@@ -42798,7 +42848,7 @@ _cb1e33:
                 wait 2
                 dir UP
                 end
-        dlg $04FB
+        dlg DLG_1275
                 ; EDGAR: I'm the King of Figaro. If you cooperate, you'll be well rewarded_
         wait_obj EDGAR
         return
@@ -42808,7 +42858,7 @@ _cb1e40:
                 wait 2
                 dir UP
                 end
-        dlg $04FC
+        dlg DLG_1276
                 ; SABIN: My brother's the King of Figaro. Cooperate, and you'll be well rewarded!
         wait_obj SABIN
         return
@@ -43055,7 +43105,7 @@ _cb1f9f:
                 wait 2
                 dir UP
                 end
-        dlg $0501
+        dlg DLG_1281
                 ; CELES: Stop thinking of yourself. Many towns and villages have been smashed by the Empire.
         wait_30f
         obj_script LOCKE, ASYNC
@@ -43063,7 +43113,7 @@ _cb1f9f:
                 wait 2
                 dir UP
                 end
-        dlg $0502
+        dlg DLG_1282
                 ; LOCKE: The Empire's also totally rotten! It's using magic to enslave the world.
         wait_45f
         set_case PARTY_CHARS
@@ -43073,7 +43123,7 @@ _cb1f9f:
                 wait 2
                 dir LEFT
                 end
-        dlg $0503
+        dlg DLG_1283
                 ; EDGAR: The Empire and my realm were allies_
                 ; until recently.
         wait_15f
@@ -43084,7 +43134,7 @@ _cb1fc7:
                 wait 2
                 dir LEFT
                 end
-        dlg $0504
+        dlg DLG_1284
                 ; SABIN: The Empire'll end up owning you!
         wait_15f
 _cb1fd8:
@@ -43092,7 +43142,7 @@ _cb1fd8:
         obj_script CYAN
                 action 34
                 end
-        dlg $0505
+        dlg DLG_1285
                 ; CYAN: _I lost my friends_
                 ; and my family.
 _cb1fe5:
@@ -43100,22 +43150,22 @@ _cb1fe5:
         obj_script NPC_1
                 action 33
                 end
-        dlg $0506
+        dlg DLG_1286
                 ; SETZER: The Empire _evil_?
         wait_1s
         return
 _cb1fef:
-        dlg $0520
+        dlg DLG_1312
                 ; SETZER: Repairs aren't finished yet. You'd better take the boat from Albrook.
         return
 _cb1ff3:
         if_switch $007D=1, _cb1fef
-        dlg $051F
+        dlg DLG_1311
                 ; SETZER: I'll have to repair the air ship. Go scout around and let me know what's happening.
         return
 _cb1ffd:
         if_switch $007A=1, _cb1ff3
-        dlg $051E
+        dlg DLG_1310
                 ; SETZER: What's going on?
                 ; The Empire's becoming paranoid!
         return
@@ -43130,7 +43180,7 @@ _cb2007:
                 wait 4
                 dir UP
                 end
-        dlg $0500
+        dlg DLG_1280
                 ; SETZER: Phew_
                 ; The Empire's made me a rich man.
         switch $01F0=1
@@ -43164,7 +43214,7 @@ _cb2041:
                 wait 2
                 dir UP
                 end
-        dlg $0507
+        dlg DLG_1287
                 ; CELES: We all hate the Empire for the same reasons. That's why_
                 ; SETZER: You know_you're even more stunning than Maria.
                 ; CELES: ????
@@ -43190,7 +43240,7 @@ _cb2076:
                 wait 12
                 dir LEFT
                 end
-        dlg $0508
+        dlg DLG_1288
                 ; SETZER: Enough!
                 ; If you_
                 ; If CELES becomes my wife, I'll help. Otherwise_
@@ -43205,7 +43255,7 @@ _cb2096:
                 move LEFT, 2
                 action 35
                 end
-        dlg $0509
+        dlg DLG_1289
                 ; LOCKE: WHAT!
                 ; Are you stupid!?
         wait_90f
@@ -43214,7 +43264,7 @@ _cb2096:
                 wait 1
                 dir LEFT
                 end
-        dlg $050A
+        dlg DLG_1290
                 ; CELES: We haven't any choice.
         obj_script LOCKE
                 action 31
@@ -43228,7 +43278,7 @@ _cb2096:
                 wait 1
                 dir RIGHT
                 end
-        dlg $050B
+        dlg DLG_1291
                 ; SETZER: Yes! It's settled!
         wait_1s
         obj_script CELES, ASYNC
@@ -43236,11 +43286,11 @@ _cb2096:
                 wait 1
                 dir LEFT
                 end
-        dlg $050C
+        dlg DLG_1292
                 ; CELES: But I have conditions_
         call _cb1edb
         wait_30f
-        dlg $050D
+        dlg DLG_1293
                 ; We'll decide with a coin toss.
                 ; If it's heads, you'll help us. If it's tails, I'll go with you.
                 ; Well, Mr. Gambler_?
@@ -43254,10 +43304,10 @@ _cb2096:
                 action 30 | ACTION_H_FLIP
                 dir RIGHT
                 end
-        dlg $050E
+        dlg DLG_1294
                 ; SETZER: Oho! Fine!
                 ; I accept!
-        dlg $050F
+        dlg DLG_1295
                 ; LOCKE: Listen to yourself!
                 ; CELES_you can't become his wife! You just can't!
         obj_script CELES
@@ -43276,7 +43326,7 @@ _cb2096:
                 wait 6
                 dir RIGHT
                 end
-        dlg $0510
+        dlg DLG_1296
                 ; CYAN: That man uses people_
 _cb2103:
         obj_script CELES
@@ -43298,7 +43348,7 @@ _cb2103:
                 wait 1
                 dir LEFT
                 end
-        dlg $0511
+        dlg DLG_1297
                 ; CELES: Ready?
         obj_script LOCKE
                 dir DOWN
@@ -43358,7 +43408,7 @@ _cb2103:
                 wait 12
                 dir LEFT
                 end
-        dlg $0512
+        dlg DLG_1298
                 ; CELES: I win!
                 ; Now, honor your part of the bargain!
         pass_off NPC_1
@@ -43380,7 +43430,7 @@ _cb2103:
                 wait 12
                 dir DOWN
                 end
-        dlg $0513
+        dlg DLG_1299
                 ; SETZER: How_unusual!
                 ; A coin with identical sides_!
         if_any
@@ -43394,7 +43444,7 @@ _cb2103:
                 wait 12
                 action 34
                 end
-        dlg $051A
+        dlg DLG_1306
                 ; SABIN: That coin_!?
                 ; BIG BROTHER!!! Don't tell me_!
 _cb21b1:
@@ -43402,7 +43452,7 @@ _cb21b1:
         obj_script CELES, ASYNC
                 dir DOWN
                 end
-        dlg $0514
+        dlg DLG_1300
                 ; CELES: I think you've been hustled, Mr. Gambler.
         if_any
                 switch $01A5=0
@@ -43431,7 +43481,7 @@ _cb21ca:
                 speed SLOW
                 move LEFT, 2
                 end
-        dlg $0515
+        dlg DLG_1301
                 ; SETZER: Ha!
                 ; How low can you get?!
                 ; I love it!
@@ -43476,7 +43526,7 @@ _cb21ca:
                 wait 2
                 dir RIGHT
                 end
-        dlg $0516
+        dlg DLG_1302
                 ; My life is a chip in your pile! Ante up!
         switch $005D=1
         switch $01CC=1
@@ -43496,7 +43546,7 @@ _cb223d:
         shop_menu BLACKJACK_ITEMS
         return
 _cb2240:
-        dlg $0517
+        dlg DLG_1303
                 ; G'ho! Customers!
                 ; Need any refreshment?
                 ; 0:  Yes
@@ -43596,7 +43646,7 @@ _cb22bb:
                 speed SLOW
                 move LEFT, 2
                 end
-        dlg $051B, BOTTOM
+        dlg DLG_1307, BOTTOM
                 ; LOCKE: This unwieldy-looking ship really moves! Could it crash?
         obj_script CELES
                 pos {17, 8}
@@ -43620,7 +43670,7 @@ _cb22bb:
                 wait 16
                 dir LEFT
                 end
-        dlg $051C, BOTTOM
+        dlg DLG_1308, BOTTOM
                 ; SETZER: When things fall, they fall! It's all a matter of fate_
         obj_script CELES, ASYNC
                 move LEFT, 3
@@ -43630,7 +43680,7 @@ _cb22bb:
                 wait 2
                 dir LEFT
                 end
-        dlg $051D, BOTTOM
+        dlg DLG_1309, BOTTOM
                 ; LOCKE: This ship's going to stick out like a sore thumb. Better land some distance away.
                 ; SETZER: Right.
                 ; I'll wait on board in case of an emergency.
@@ -43772,7 +43822,7 @@ _cb23d8:
                 dir DOWN
                 end
         sfx 74
-        dlg $0753, BOTTOM
+        dlg DLG_1875, BOTTOM
                 ; CID: Wow, what a ship!
                 ; SETZER: That landing really messed up the engine. It'll take a while to fix_
         wait_obj NPC_1
@@ -43794,13 +43844,13 @@ _cb23d8:
         show_obj NPC_1
         wait_30f
         sfx 71
-        dlg $0755, BOTTOM
+        dlg DLG_1877, BOTTOM
                 ; CID: I'll help.
                 ; No machine can stump me!
         sfx 71
         wait_30f
         sfx 74
-        dlg $0757, BOTTOM
+        dlg DLG_1879, BOTTOM
                 ; SETZER: Don't touch anything!
         loop 2
                 obj_script NPC_1
@@ -43835,7 +43885,7 @@ _cb23d8:
                 sfx 150
                 wait_15f
                 end_loop
-        dlg $0758, BOTTOM
+        dlg DLG_1880, BOTTOM
                 ; CID: Go kill time in the casino! I can speed this crate up!
         wait_obj NPC_1
         wait_30f
@@ -43848,7 +43898,7 @@ _cb23d8:
                 wait 1
                 action 24
                 end
-        dlg $0759, BOTTOM
+        dlg DLG_1881, BOTTOM
                 ; SETZER: __
                 ; You little_!!
                 ; Get outta my sight!
@@ -43869,7 +43919,7 @@ _cb23d8:
                 hide_obj
                 end
         switch $0472=0
-        dlg $075A, BOTTOM
+        dlg DLG_1882, BOTTOM
                 ; CID: But I could really make this thing hum_!
         wait_obj NPC_5
         delete_obj NPC_5
@@ -43923,19 +43973,19 @@ _cb23d8:
                 wait 1
                 action 9
                 end
-        dlg $075B
+        dlg DLG_1883
                 ; TERRA: You love this ship, more than anything, huh?
                 ; SETZER: Actually, when I was young there was something I was mad about_
         loop 2
                 wait_30f
                 sfx 71
                 end_loop
-        dlg $075C
+        dlg DLG_1884
                 ; TERRA: _huh?
         obj_script NPC_1
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $075D
+        dlg DLG_1885
                 ; SETZER: In my youth I dreamed of having the world's fastest airship.
         obj_script TERRA
                 dir LEFT
@@ -43944,7 +43994,7 @@ _cb23d8:
         obj_script NPC_1
                 dir RIGHT
                 end
-        dlg $075E
+        dlg DLG_1886
                 ; TERRA: You mean__
                 ; SETZER: At that time there was a young girl who piloted the Falcon, the fastest vessel ever made.
                 ; Sometimes we were the worst of rivals_but other times we were the best of friends.
@@ -43954,7 +44004,7 @@ _cb23d8:
         obj_script NPC_1, ASYNC
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $075F
+        dlg DLG_1887
                 ; SETZER: _
                 ; Poor Daryl_
         fade_out 8
@@ -43969,7 +44019,7 @@ _cb23d8:
         load_map 7, {43, 57}, RIGHT, ASYNC
         return
 _cb2562:
-        dlg $0518
+        dlg DLG_1304
                 ;
                 ;     Locked_
         return
@@ -43985,7 +44035,7 @@ _cb2569:
         obj_script SLOT_1, ASYNC
                 action 40
                 end
-        dlg $0662
+        dlg DLG_1634
                 ;
                 ; Chucked out_!
         return
@@ -44012,7 +44062,7 @@ _cb2599:
         obj_script SLOT_1, ASYNC
                 action 40
                 end
-        dlg $0662
+        dlg DLG_1634
                 ;
                 ; Chucked out_!
         load_map 0, {164, 194}, LEFT
@@ -44042,7 +44092,7 @@ _cb25d6:
         if_switch $01A0=1, _cb2606
         set_case PARTY_CHARS
         if_switch $01A0=1, _cb2a5b
-        dlg $065F
+        dlg DLG_1631
                 ; The Espers wouldn't give us the time of day without_
                 ; TERRA_
         wait_30f
@@ -44055,7 +44105,7 @@ _cb25d6:
 _cb2606:
         set_case PARTY_CHARS
         if_switch $01A0=0, _cb261a
-        dlg $0660
+        dlg DLG_1632
                 ; TERRA: I can do it_
                 ; But why do I feel so wretched?
         wait_30f
@@ -44067,7 +44117,7 @@ _cb2606:
         set_script_mode EVENT
 
 _cb261a:
-        dlg $065F
+        dlg DLG_1631
                 ; The Espers wouldn't give us the time of day without_
                 ; TERRA_
         wait_30f
@@ -44092,7 +44142,7 @@ _cb2627:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0692
+        dlg DLG_1682
                 ; What happened?
         switch $01F0=1
 _cb2645:
@@ -44109,7 +44159,7 @@ _cb2645:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0692
+        dlg DLG_1682
                 ; What happened?
         switch $01F0=1
 _cb2668:
@@ -44126,7 +44176,7 @@ _cb2668:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0692
+        dlg DLG_1682
                 ; What happened?
         switch $01F0=1
 _cb268b:
@@ -44143,7 +44193,7 @@ _cb268b:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0692
+        dlg DLG_1682
                 ; What happened?
         switch $01F0=1
 _cb26ae:
@@ -44160,12 +44210,12 @@ _cb26ae:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0692
+        dlg DLG_1682
                 ; What happened?
 _cb26cf:
         return
 _cb26d0:
-        dlg $0693
+        dlg DLG_1683
                 ; The Espers flew off together_
         return
 _cb26d4:
@@ -44176,7 +44226,7 @@ _cb26d4:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0694
+        dlg DLG_1684
                 ; Then, the Empire's citizens ran off, as though they were terrified.
         switch $01F2=1
 _cb26e7:
@@ -44187,7 +44237,7 @@ _cb26e7:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0694
+        dlg DLG_1684
                 ; Then, the Empire's citizens ran off, as though they were terrified.
         switch $01F2=1
 _cb26ff:
@@ -44198,7 +44248,7 @@ _cb26ff:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0694
+        dlg DLG_1684
                 ; Then, the Empire's citizens ran off, as though they were terrified.
         switch $01F2=1
 _cb2717:
@@ -44209,7 +44259,7 @@ _cb2717:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0694
+        dlg DLG_1684
                 ; Then, the Empire's citizens ran off, as though they were terrified.
         switch $01F2=1
 _cb272f:
@@ -44220,12 +44270,12 @@ _cb272f:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0694
+        dlg DLG_1684
                 ; Then, the Empire's citizens ran off, as though they were terrified.
 _cb2745:
         return
 _cb2746:
-        dlg $0695
+        dlg DLG_1685
                 ; Which way did the Espers go?
         return
 _cb274a:
@@ -44236,7 +44286,7 @@ _cb274a:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0696
+        dlg DLG_1686
                 ; Toward the capital_
         switch $01F4=1
 _cb275d:
@@ -44247,7 +44297,7 @@ _cb275d:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0696
+        dlg DLG_1686
                 ; Toward the capital_
         switch $01F4=1
 _cb2775:
@@ -44258,7 +44308,7 @@ _cb2775:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0696
+        dlg DLG_1686
                 ; Toward the capital_
         switch $01F4=1
 _cb278d:
@@ -44269,7 +44319,7 @@ _cb278d:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0696
+        dlg DLG_1686
                 ; Toward the capital_
         switch $01F4=1
 _cb27a5:
@@ -44280,12 +44330,12 @@ _cb27a5:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0696
+        dlg DLG_1686
                 ; Toward the capital_
 _cb27bb:
         return
 _cb27bc:
-        dlg $0698
+        dlg DLG_1688
                 ; Vector_
         return
 _cb27c0:
@@ -44410,13 +44460,13 @@ _cb280f:
         wait_90f
         fade_in 8
         wait_fade
-        dlg $0699, BOTTOM
+        dlg DLG_1689, BOTTOM
                 ; SETZER: We're almost at Vector.
         wait_90f
         obj_script SLOT_3, ASYNC
                 dir DOWN
                 end
-        dlg $069A, BOTTOM
+        dlg DLG_1690, BOTTOM
                 ; There! What's that?
         wait_30f
         battle 123, AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
@@ -44463,13 +44513,13 @@ _cb28ea:
         wait_1s
         fade_in 8
         wait_fade
-        dlg $0699, BOTTOM
+        dlg DLG_1689, BOTTOM
                 ; SETZER: We're almost at Vector.
         wait_90f
         obj_script SLOT_1
                 dir DOWN
                 end
-        dlg $069A, BOTTOM
+        dlg DLG_1690, BOTTOM
                 ; There! What's that?
         wait_30f
         battle 123, AIRSHIP_CENTER, {NO_SFX, NO_BLUR}
@@ -44628,10 +44678,10 @@ _cb2a5b:
                 dir LEFT
                 end
         wait_1s
-        dlg $0661, BOTTOM
+        dlg DLG_1633, BOTTOM
                 ; That's odd_
                 ; No Imperial soldiers_
-        dlg $0663, BOTTOM
+        dlg DLG_1635, BOTTOM
                 ; TERRA: Let's get this over with.
         obj_script SLOT_2, ASYNC
                 move DOWN_LEFT
@@ -45145,7 +45195,7 @@ _cb2fe7:
                 .byte $CB,$8F,$CE
         wait_bg
         sfx SFX::FLOOR_SWITCH
-        dlg $069C
+        dlg DLG_1692
                 ;
                 ;     Heard a distant sound_
         switch $01F9=1
@@ -45211,7 +45261,7 @@ _cb307e:
         call _ca5ea9
         fade_in 4
         wait_fade
-        dlg $069D
+        dlg DLG_1693
                 ; N_nuts!!! I thought I had the monopoly on the stuff buried in the plaza beneath the grand stairway_
         wait_1s
         obj_script NPC_4
@@ -45227,12 +45277,12 @@ _cb30cf:
         if_switch $01B4=0, EventReturn
         if_switch $024D=1, EventReturn
         if_rand EventReturn
-        dlg $0697
+        dlg DLG_1687
                 ;
                 ; There's something under the ground_
         wait_45f
         sfx 27
-        dlg $069E
+        dlg DLG_1694
                 ;
                 ; Got ``Inviz Edge.''
         give_item INVIZ_EDGE
@@ -45242,12 +45292,12 @@ _cb30ed:
         if_switch $01B4=0, EventReturn
         if_switch $024E=1, EventReturn
         if_rand EventReturn
-        dlg $0697
+        dlg DLG_1687
                 ;
                 ; There's something under the ground_
         wait_45f
         sfx 27
-        dlg $06A4
+        dlg DLG_1700
                 ;
                 ; Got ``Water Skean.''
         give_item WATER_EDGE
@@ -45257,12 +45307,12 @@ _cb310b:
         if_switch $01B4=0, EventReturn
         if_switch $024F=1, EventReturn
         if_rand EventReturn
-        dlg $0697
+        dlg DLG_1687
                 ;
                 ; There's something under the ground_
         wait_45f
         sfx 27
-        dlg $0121
+        dlg DLG_289
                 ;
                 ; Found Remedy!
         give_item SOFT
@@ -45272,12 +45322,12 @@ _cb3129:
         if_switch $01B4=0, EventReturn
         if_switch $0250=1, EventReturn
         if_rand EventReturn
-        dlg $0697
+        dlg DLG_1687
                 ;
                 ; There's something under the ground_
         wait_45f
         sfx 27
-        dlg $011E
+        dlg DLG_286
                 ;
                 ; 2000 GP inside!
         give_gil 293
@@ -45763,7 +45813,7 @@ _cb3804:
                 .byte $12
         switch $01F8=1
 _cb381a:
-        dlg $069B
+        dlg DLG_1691
                 ; There's a switch inside.
                 ; What will you do?
                 ; 0:  (Flick the switch.)
@@ -45780,7 +45830,7 @@ _cb3825:
                 .byte $12
         switch $01F8=1
 _cb383b:
-        dlg $069B
+        dlg DLG_1691
                 ; There's a switch inside.
                 ; What will you do?
                 ; 0:  (Flick the switch.)
@@ -45797,7 +45847,7 @@ _cb3846:
                 .byte $12
         switch $01F8=1
 _cb385c:
-        dlg $069B
+        dlg DLG_1691
                 ; There's a switch inside.
                 ; What will you do?
                 ; 0:  (Flick the switch.)
@@ -46030,7 +46080,7 @@ _cb39ca:
         wait_90f
         spc_cmd $81, $64, $96
         call _cb38ac
-        dlg $0665, BOTTOM
+        dlg DLG_1637, BOTTOM
                 ; This is the sealed gate_
         wait_2s
         obj_script CAMERA
@@ -46059,7 +46109,7 @@ _cb39ca:
                 wait 8
                 move UP, 1
                 end
-        dlg $0664
+        dlg DLG_1636
                 ; TERRA: __
         wait_obj TERRA
         wait_30f
@@ -46109,7 +46159,7 @@ _cb39ca:
                 dir DOWN
                 end
         wait_45f
-        dlg $066E
+        dlg DLG_1646
                 ; TERRA!
                 ; _the gate_quickly!
         obj_script SLOT_2, ASYNC
@@ -46169,7 +46219,7 @@ _cb39ca:
                 dir UP
                 end
         call _cb38c8
-        dlg $066B
+        dlg DLG_1643
                 ; TERRA: Espers_
                 ; Please heed my call_
         wait_30f
@@ -46289,7 +46339,7 @@ _cb39ca:
         obj_script SLOT_4, ASYNC
                 action 9
                 end
-        dlg $0672
+        dlg DLG_1650
                 ; What about those Espers_?
         obj_script TERRA, ASYNC
                 action 9
@@ -46301,7 +46351,7 @@ _cb39ca:
                 move UP, 1
                 end
         spc_cmd $10, $39, $AA
-        dlg $0673
+        dlg DLG_1651
                 ; TERRA: Look,
                 ; let's return to the airship.
         obj_script SLOT_2, ASYNC
@@ -46384,7 +46434,7 @@ _cb3c58:
                 speed SLOWER
                 move UP, 5
                 end
-        dlg $0671, BOTTOM
+        dlg DLG_1649, BOTTOM
                 ; Hey! The gate!!!
         spc_cmd $81, $00, $FF
         shake ALL, 2, 1
@@ -46615,7 +46665,7 @@ _cb3c58:
         shake ALL, 0, 1
         return
 _cb3dcb:
-        dlg $0676
+        dlg DLG_1654
                 ; Anyway,
                 ; let's return to the airship.
         return
@@ -46892,7 +46942,7 @@ _cb3f9a:
                 wait 2
                 dir UP
                 end
-        dlg $0666
+        dlg DLG_1638
                 ; LOCKE: Beyond is the Esper World_
         wait_30f
 _cb3fac:
@@ -46902,7 +46952,7 @@ _cb3fac:
                 wait 2
                 dir UP
                 end
-        dlg $0667
+        dlg DLG_1639
                 ; CYAN: What an eerie place_
         wait_30f
 _cb3fbd:
@@ -46912,7 +46962,7 @@ _cb3fbd:
                 wait 2
                 dir UP
                 end
-        dlg $0668
+        dlg DLG_1640
                 ; EDGAR: From here on, it's all up to TERRA_
         wait_30f
 _cb3fce:
@@ -46922,7 +46972,7 @@ _cb3fce:
                 wait 2
                 dir UP
                 end
-        dlg $0669
+        dlg DLG_1641
                 ; SABIN: We're counting on you, TERRA_
         wait_30f
 _cb3fdf:
@@ -46932,7 +46982,7 @@ _cb3fdf:
                 wait 2
                 dir UP
                 end
-        dlg $066A
+        dlg DLG_1642
                 ; SETZER: Why'd you bring me to such an awful place!?
         wait_30f
 _cb3ff0:
@@ -46989,7 +47039,7 @@ _cb3ff1:
                 wait 3
                 action 35
                 end
-        dlg $052B, BOTTOM
+        dlg DLG_1323, BOTTOM
                 ; LOCKE: Let's not overstay our visit. We're outta here on the double!
         wait_obj LOCKE
         obj_script SLOT_3, ASYNC
@@ -47021,7 +47071,7 @@ _cb3ff1:
                 wait 15
                 dir DOWN
                 end
-        dlg $052C, BOTTOM
+        dlg DLG_1324, BOTTOM
                 ; SETZER: Right.
                 ; Speaking of which_
                 ; Maybe we should be leaving.
@@ -47109,27 +47159,27 @@ _cb3ff1:
 _cb40f2:
         set_case PARTY_CHARS
         if_switch $01A2=0, _cb40fe
-        dlg $052D, BOTTOM
+        dlg DLG_1325, BOTTOM
                 ; CYAN: Whoa!
                 ; What IS that?!
         switch $01F0=1
 _cb40fe:
         if_switch $01F0=1, _cb4131
         if_switch $01A4=0, _cb410f
-        dlg $052E, BOTTOM
+        dlg DLG_1326, BOTTOM
                 ; EDGAR: Something horrible's coming!!
         switch $01F1=1
 _cb410f:
         if_switch $01F1=1, _cb4131
         if_switch $01A5=0, _cb4120
-        dlg $052F, BOTTOM
+        dlg DLG_1327, BOTTOM
                 ; SABIN: Uwaaoo!
                 ; What in the_?
         switch $01F2=1
 _cb4120:
         if_switch $01F2=1, _cb4131
         if_switch $01AB=0, _cb4131
-        dlg $0530, BOTTOM
+        dlg DLG_1328, BOTTOM
                 ; GAU: Gau!
                 ; GAU go!!
         switch $01F3=1
@@ -47139,7 +47189,7 @@ _cb4132:
         set_case PARTY_CHARS
         if_switch $01A2=0, _cb4144
         if_switch $01F0=1, _cb4144
-        dlg $052D, BOTTOM
+        dlg DLG_1325, BOTTOM
                 ; CYAN: Whoa!
                 ; What IS that?!
         switch $01F4=1
@@ -47147,14 +47197,14 @@ _cb4144:
         if_switch $01A4=0, _cb415b
         if_switch $01F4=1, _cb415b
         if_switch $01F1=1, _cb415b
-        dlg $052E, BOTTOM
+        dlg DLG_1326, BOTTOM
                 ; EDGAR: Something horrible's coming!!
         switch $01F5=1
 _cb415b:
         if_switch $01A5=0, _cb4172
         if_switch $01F5=1, _cb4172
         if_switch $01F2=1, _cb4172
-        dlg $052F, BOTTOM
+        dlg DLG_1327, BOTTOM
                 ; SABIN: Uwaaoo!
                 ; What in the_?
         switch $01F6=1
@@ -47162,7 +47212,7 @@ _cb4172:
         if_switch $01AB=0, _cb4187
         if_switch $01F6=1, _cb4187
         if_switch $01F3=1, _cb4187
-        dlg $0530, BOTTOM
+        dlg DLG_1328, BOTTOM
                 ; GAU: Gau!
                 ; GAU go!!
 _cb4187:
@@ -47296,13 +47346,13 @@ _cb42b4:
                 switch $007A=0
                 switch $007D=1
                 goto _cb42c4
-        dlg $0691
+        dlg DLG_1681
                 ; TERRA: _the Espers_
                 ; Something happened_
         call _caf59d
         return
 _cb42c4:
-        dlg $0678
+        dlg DLG_1656
                 ; TERRA: I'm all right.
                 ; I'm sure peace is within our grasp!
         call _caf59d
@@ -47312,12 +47362,12 @@ _cb42cc:
                 switch $007A=0
                 switch $007D=1
                 goto _cb42dc
-        dlg $067A
+        dlg DLG_1658
                 ; LOCKE: I'm sure the Espers were headed for Vector_
         call _caf59d
         return
 _cb42dc:
-        dlg $0679
+        dlg DLG_1657
                 ; LOCKE: I can't believe we played a major role in it all!
         call _caf59d
         return
@@ -47326,12 +47376,12 @@ _cb42e4:
                 switch $007A=0
                 switch $007D=1
                 goto _cb42f4
-        dlg $067C
+        dlg DLG_1660
                 ; CYAN: I could feel the warrior spirits of those Espers!
         call _caf59d
         return
 _cb42f4:
-        dlg $067B
+        dlg DLG_1659
                 ; CYAN: The Empire deserves the worst!
         call _caf59d
         return
@@ -47340,12 +47390,12 @@ _cb42fc:
                 switch $007A=0
                 switch $007D=1
                 goto _cb430c
-        dlg $067E
+        dlg DLG_1662
                 ; SHADOW: I think Kefka's out for General Leo's hide!
         call _caf59d
         return
 _cb430c:
-        dlg $067D
+        dlg DLG_1661
                 ; SHADOW: __
                 ; Why am I here_?
                 ; For the money, I guess.
@@ -47356,12 +47406,12 @@ _cb4314:
                 switch $007A=0
                 switch $007D=1
                 goto _cb4324
-        dlg $0680
+        dlg DLG_1664
                 ; EDGAR: Somehow we need to tap in to the power of those Espers_
         call _caf59d
         return
 _cb4324:
-        dlg $067F
+        dlg DLG_1663
                 ; EDGAR: We can't be smug. We must be thinking of our strategy.
         call _caf59d
         return
@@ -47370,12 +47420,12 @@ _cb432c:
                 switch $007A=0
                 switch $007D=1
                 goto _cb433c
-        dlg $0682
+        dlg DLG_1666
                 ; SABIN: Let's see what's become of the Empire! Hurry!
         call _caf59d
         return
 _cb433c:
-        dlg $0681
+        dlg DLG_1665
                 ; SABIN: Let me at the Empire!
         call _caf59d
         return
@@ -47384,12 +47434,12 @@ _cb4344:
                 switch $007A=0
                 switch $007D=1
                 goto _cb4354
-        dlg $0684
+        dlg DLG_1668
                 ; CELES: Kefka's sure to come up with another demented plan. We need to do something FAST!
         call _caf59d
         return
 _cb4354:
-        dlg $0683
+        dlg DLG_1667
                 ; CELES: I was one of the Empire's generals, but I still know evil when I see it.
         call _caf59d
         return
@@ -47398,12 +47448,12 @@ _cb435c:
                 switch $007A=0
                 switch $007D=1
                 goto _cb436c
-        dlg $0686
+        dlg DLG_1670
                 ; STRAGO: _I've never seen anyone so sleazy as Kefka.
         call _caf59d
         return
 _cb436c:
-        dlg $0685
+        dlg DLG_1669
                 ; STRAGO: In all my travels, and in all my years_
         call _caf59d
         return
@@ -47412,12 +47462,12 @@ _cb4374:
                 switch $007A=0
                 switch $007D=1
                 goto _cb4384
-        dlg $0688
+        dlg DLG_1672
                 ; RELM: I'm sure those Espers are all very kind!
         call _caf59d
         return
 _cb4384:
-        dlg $0687
+        dlg DLG_1671
                 ; RELM: I know.
                 ; Let me draw their portraits!
         call _caf59d
@@ -47427,13 +47477,13 @@ _cb438c:
                 switch $007A=0
                 switch $007D=1
                 goto _cb439c
-        dlg $068A
+        dlg DLG_1674
                 ; SETZER: Urghh!
                 ; For the time being, I don't own the skies_
         call _caf59d
         return
 _cb439c:
-        dlg $0689
+        dlg DLG_1673
                 ; SETZER: What's the most important thing in life?
                 ; Being free of obligations!
                 ; Otherwise, you lose the ability to gamble_
@@ -47444,12 +47494,12 @@ _cb43a4:
                 switch $007A=0
                 switch $007D=1
                 goto _cb43b4
-        dlg $068C
+        dlg DLG_1676
                 ; MOG: _puuh_
         call _caf59d
         return
 _cb43b4:
-        dlg $068B
+        dlg DLG_1675
                 ; MOG: Kupoppo!!
         call _caf59d
         return
@@ -47458,24 +47508,24 @@ _cb43bc:
                 switch $007A=0
                 switch $007D=1
                 goto _cb43cc
-        dlg $068E
+        dlg DLG_1678
                 ; GAU: _ooh_
                 ; GAU_high place_
                 ; Not good_don't like_
         call _caf59d
         return
 _cb43cc:
-        dlg $068D
+        dlg DLG_1677
                 ; GAU: GAU become stronger on the Veldt.
         call _caf59d
         return
 _cb43d4:
-        dlg $068F
+        dlg DLG_1679
                 ; GOGO: __
         call _caf59d
         return
 _cb43dc:
-        dlg $0690
+        dlg DLG_1680
                 ; UMARO: Uhhhh_
         call _caf59d
         return
@@ -47562,7 +47612,7 @@ _cb448d:
         shop_menu JIDOOR_RELICS_2
         return
 _cb4490:
-        dlg $0112
+        dlg DLG_274
                 ; 250 GP per night.
                 ; Lights out?
                 ; 0:  Yes
@@ -47594,7 +47644,7 @@ _cb449b:
         call _cacf96
         return
 _cb44cd:
-        dlg $0113
+        dlg DLG_275
                 ; 250 GP for a Chocobo ride!
                 ; Well?
                 ; 0:  Yes
@@ -47628,67 +47678,67 @@ _cb44e2:
         set_script_mode EVENT
 
 _cb450c:
-        dlg $0405
+        dlg DLG_1029
                 ; This is Jidoor, the western most town on the world map!
         if_switch $00A4=0, _cb4518
-        dlg $0A8B
+        dlg DLG_2699
                 ; The world's so different now_
 _cb4518:
         return
 _cb4519:
         if_switch $00A4=1, _cb452d
         if_switch $0054=1, _cb4529
-        dlg $0406
+        dlg DLG_1030
                 ; This region is very class-conscious.
                 ; In the south part of town live the middle classes. The rich folks live to the north.
         return
 _cb4529:
-        dlg $0481
+        dlg DLG_1153
                 ; Only way to reach the Empire's by air. Of course you realize you'd need an airship!
         return
 _cb452d:
-        dlg $0A7A
+        dlg DLG_2682
                 ; The house to the north belongs to Owzer. He's a collector of fine paintings.
         return
 _cb4531:
         if_switch $00A4=1, _cb453b
-        dlg $0407
+        dlg DLG_1031
                 ; The poor people have all left here for the mountains to the north. There they've built a town.
         return
 _cb453b:
-        dlg $0A76
+        dlg DLG_2678
                 ; In a world like this you have to keep an open mind.
         return
 _cb453f:
         if_switch $00A4=1, _cb4554
         set_case PARTY_CHARS
         if_switch $01A6=0, _cb4550
-        dlg $0408
+        dlg DLG_1032
                 ; Maria, the opera singer, is gorgeous!
         return
 _cb4550:
-        dlg $0A77
+        dlg DLG_2679
                 ; This is the Auction House.
                 ; Bunch of rich yokels inside_
         return
 _cb4554:
-        dlg $0A3F
+        dlg DLG_2623
                 ; Art that evokes the end of the world is popular now.
         return
 _cb4558:
         if_switch $0253=1, _cb456c
         if_switch $025F=1, _cb4568
-        dlg $0409
+        dlg DLG_1033
                 ; I wanna be an opera singer when I grow up!
                 ; Opera house?
                 ; It's far to the south.
         return
 _cb4568:
-        dlg $0A88
+        dlg DLG_2696
                 ; A while ago a little girl entered the art-collector's house_
         return
 _cb456c:
-        dlg $0A78
+        dlg DLG_2680
                 ; Yes!
                 ; Now I'll be able to go play at the art-lover's house again!
         return
@@ -47696,99 +47746,99 @@ _cb4570:
         if_switch $0253=1, _cb458e
         if_switch $025F=1, _cb458a
         if_switch $0054=1, _cb4586
-        dlg $040A
+        dlg DLG_1034
                 ; A girl wrapped in fire sped off to the north, into the mountains.
         return
 _cb4586:
-        dlg $0480
+        dlg DLG_1152
                 ; Ain't no easy way to make the Imperial lands_!
         return
 _cb458a:
-        dlg $0A87
+        dlg DLG_2695
                 ; The other day I read Owzer's diary. It was just laying there!
         return
 _cb458e:
-        dlg $0A89
+        dlg DLG_2697
                 ; T_that was a spirit!
         return
 _cb4592:
         if_switch $00A4=1, _cb459c
-        dlg $040B
+        dlg DLG_1035
                 ; To the north is the town of Zozo. Watch out for the people there.
         return
 _cb459c:
-        dlg $0A85
+        dlg DLG_2693
                 ; The people here love the opera!
         return
 _cb45a0:
-        dlg $0A86
+        dlg DLG_2694
                 ; Lately I've seen a lot of carrier pigeons flying towards Maranda. Who can be sending all the letters?
         return
 _cb45a4:
-        dlg $0A84
+        dlg DLG_2692
                 ; I saw the Emperor recently!
                 ; A painting of him, that is_
                 ; It's in Owzer's house.
         return
 _cb45a8:
         if_switch $0054=1, _cb45b2
-        dlg $040C
+        dlg DLG_1036
                 ; Bunch o' liars up in Zozo!
                 ; Never can trust 'em.
         return
 _cb45b2:
         if_switch $00A4=1, _cb45bb
-        dlg $0483
+        dlg DLG_1155
                 ; The gambler likes flashy shows. He's always at the opera. I think he likes the beautiful divas_
 _cb45bb:
         if_switch $00A4=0, _cb45c4
-        dlg $0AA5
+        dlg DLG_2725
                 ; You're gonna love this!
                 ; Doom Gaze can't restore his HP after battle!
                 ; Just keep fighting him, and in time you'll defeat him!
 _cb45c4:
         return
 _cb45c5:
-        dlg $040F
+        dlg DLG_1039
                 ; Hey_you're not from around here!
                 ; You look_ah_dorky!
         return
 _cb45c9:
         if_switch $00A4=1, _cb45d3
-        dlg $0412
+        dlg DLG_1042
                 ; I need something that will bring back wayward spirits.
                 ; I heard only in the Imperial capital of Vector does such a thing exist.
         return
 _cb45d3:
-        dlg $0A79
+        dlg DLG_2681
                 ; Every once in a while something very rare is sold here_
         return
 _cb45d7:
         if_switch $00A4=1, _cb45e1
-        dlg $0410
+        dlg DLG_1040
                 ; You like art?
                 ; No?! Philistines!
         return
 _cb45e1:
         if_switch $01F0=1, _cb45eb
-        dlg $0A42
+        dlg DLG_2626
                 ; If you want to participate in the bidding, talk to the man near the entrance.
         return
 _cb45eb:
-        dlg $0A43
+        dlg DLG_2627
                 ; Didn't get anything today, eh?!
         return
 _cb45ef:
-        dlg $0411
+        dlg DLG_1041
                 ; You can get some priceless things at this auction. Whether you can appreciate them or not, who knows!
         return
 _cb45f3:
         if_switch $00A4=1, _cb45fd
-        dlg $040E
+        dlg DLG_1038
                 ; Once in a while one of the idiots from Zozo'll wander down here, lookin' for an easy mark. Watch your wallet!
         return
 _cb45fd:
-        dlg $0A83
+        dlg DLG_2691
                 ; Owzer sought out a highly skilled artist to come and paint for him.
         return
 _cb4601:
@@ -47976,7 +48026,7 @@ _cb4776:
         if_switch $025F=1, _cb479a
         if_switch $0176=0, EventReturn
 _cb479a:
-        dlg $0A8F, {ASYNC, TEXT_ONLY}
+        dlg DLG_2703, {ASYNC, TEXT_ONLY}
                 ;
                 ;
                 ; Stay_away_
@@ -48001,7 +48051,7 @@ _cb47ae:
         if_switch $025F=1, _cb47ce
         if_switch $0176=0, _cb482c
 _cb47ce:
-        dlg $0A82, BOTTOM
+        dlg DLG_2690, BOTTOM
                 ;
                 ;    Picture of a lovely lady.
         sfx 61
@@ -48033,7 +48083,7 @@ _cb47f4:
         if_switch $025F=1, _cb481a
         if_switch $0176=0, _cb4838
 _cb481a:
-        dlg $0A7B, BOTTOM
+        dlg DLG_2683, BOTTOM
                 ;
                 ;     A still-life of flowers.
                 ;
@@ -48050,7 +48100,7 @@ _cb482c:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $0A82, BOTTOM
+        dlg DLG_2690, BOTTOM
                 ;
                 ;    Picture of a lovely lady.
         return
@@ -48059,7 +48109,7 @@ _cb4838:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $0A7B, BOTTOM
+        dlg DLG_2683, BOTTOM
                 ;
                 ;     A still-life of flowers.
                 ;
@@ -48070,7 +48120,7 @@ _cb4844:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $0A7F, BOTTOM
+        dlg DLG_2687, BOTTOM
                 ;
                 ; This looks ancient_
         return
@@ -48079,7 +48129,7 @@ _cb4850:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $0A80, BOTTOM
+        dlg DLG_2688, BOTTOM
                 ;
                 ; Ah! Some armor.
         return
@@ -48088,7 +48138,7 @@ _cb485c:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $0A7E, BOTTOM
+        dlg DLG_2686, BOTTOM
                 ;
                 ; A lamp, maybe?
         return
@@ -48097,7 +48147,7 @@ _cb4868:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $0A7D, BOTTOM
+        dlg DLG_2685, BOTTOM
                 ;
                 ;   Looks like a treasure chest.
         return
@@ -48106,7 +48156,7 @@ _cb4874:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $0A7C, BOTTOM
+        dlg DLG_2684, BOTTOM
                 ;
                 ;     Picture of an old urn.
         return
@@ -48114,7 +48164,7 @@ _cb4874:
                 switch $01B0=0
                 switch $01B4=0
                 goto EventReturn
-        dlg $0A81, BOTTOM
+        dlg DLG_2689, BOTTOM
                 ;
                 ;   Emperor Gestahl's portrait.
         return
@@ -48130,7 +48180,7 @@ _cb4893:
         if_switch $024A=0, EventReturn
         if_switch $01F5=1, _cb48b3
         stop_timer 0
-        dlg $0A91
+        dlg DLG_2705
                 ; It's Owzer's diary_
                 ; Read it?
                 ; 0:  Yes
@@ -48138,50 +48188,50 @@ _cb4893:
         choice _cb48b3, EventReturn
 _cb48b3:
         if_switch $01F5=1, _cb48c8
-        dlg $0A93
+        dlg DLG_2707
                 ; Just spent an absolute fortune. It's my largest painting yet,
                 ; so I won't be able to put it with the others.
                 ; I'll decide later where to display it.
         switch $01F5=1
-        dlg $0A92
+        dlg DLG_2706
                 ; 0:  (Read the next page.)
                 ; 1:  (Read it later.)
         choice _cb48c8, EventReturn
 _cb48c8:
         if_switch $01F6=1, _cb48dd
-        dlg $0A94
+        dlg DLG_2708
                 ; An artist came from Zozo today. He wanted me to see his work. What a waste of time.
         switch $01F6=1
-        dlg $0A92
+        dlg DLG_2706
                 ; 0:  (Read the next page.)
                 ; 1:  (Read it later.)
         choice _cb48dd, EventReturn
 _cb48dd:
         if_switch $01F7=1, _cb48f2
-        dlg $0A95
+        dlg DLG_2709
                 ; Bought a new stairway lamp at the Item Shop. Expensive, but one flip of the switch and everything's bright and cheery.
         switch $01F7=1
-        dlg $0A92
+        dlg DLG_2706
                 ; 0:  (Read the next page.)
                 ; 1:  (Read it later.)
         choice _cb48f2, EventReturn
 _cb48f2:
         if_switch $01F8=1, _cb4907
-        dlg $0A96
+        dlg DLG_2710
                 ; I invited over an artist from Kohlingen. About as talented as a bucket_
         switch $01F8=1
-        dlg $0A92
+        dlg DLG_2706
                 ; 0:  (Read the next page.)
                 ; 1:  (Read it later.)
         choice _cb4907, EventReturn
 _cb4907:
         if_switch $01F9=1, _cb48b3
-        dlg $0A97
+        dlg DLG_2711
                 ; Something's happening to me.
                 ; It started when I had that picture painted_
                 ; And I've started hearing odd noises coming from downstairs.
         switch $01F9=1
-        dlg $0A98
+        dlg DLG_2712
                 ;
                 ;     The diary ends here_
         switch $01F5=0
@@ -48374,7 +48424,7 @@ _cb4a4e:
         mod_bg_tiles BG1, {73, 54}, {1, 1}
                 .byte $12
         give_gil 293
-        dlg $011E
+        dlg DLG_286
                 ;
                 ; 2000 GP inside!
         switch $0259=1
@@ -48410,7 +48460,7 @@ _cb4a8e:
         mod_bg_tiles BG1, {75, 55}, {1, 1}
                 .byte $12
         give_item TONIC
-        dlg $011F
+        dlg DLG_287
                 ;
                 ; Found Potion!
         switch $025A=1
@@ -48446,7 +48496,7 @@ _cb4acd:
         mod_bg_tiles BG1, {77, 54}, {1, 1}
                 .byte $12
         give_item TINCTURE
-        dlg $0120
+        dlg DLG_288
                 ;
                 ; Found Ether!
         switch $025B=1
@@ -48482,7 +48532,7 @@ _cb4b0c:
         mod_bg_tiles BG1, {79, 55}, {1, 1}
                 .byte $12
         give_item SOFT
-        dlg $0121
+        dlg DLG_289
                 ;
                 ; Found Remedy!
         switch $025C=1
@@ -48498,14 +48548,14 @@ _cb4b50:
                 switch $01B4=0
                 goto EventReturn
         if_switch $00A4=1, _cb4b62
-        dlg $0A8E, BOTTOM
+        dlg DLG_2702, BOTTOM
                 ;
                 ;    Looks awfully familiar_
         return
 _cb4b62:
         if_switch $01DA=1, _cb4b82
         if_switch $01FA=1, _cb4b74
-        dlg $0A90, BOTTOM
+        dlg DLG_2704, BOTTOM
                 ;
                 ;   Emperor Gestahl's portrait.
         switch $01FA=1
@@ -48513,7 +48563,7 @@ _cb4b62:
 _cb4b74:
         if_switch $00A4=0, _cb4b82
         sfx 27
-        dlg $0A8C, BOTTOM
+        dlg DLG_2700, BOTTOM
                 ;
                 ; Received the
                 ; ``Emperor's Letter.''
@@ -48524,7 +48574,7 @@ _cb4b74:
         switch $01DA=1
         return
 _cb4b82:
-        dlg $0A90, BOTTOM
+        dlg DLG_2704, BOTTOM
                 ;
                 ;   Emperor Gestahl's portrait.
         return
@@ -48696,14 +48746,14 @@ _cb4cca:
         call _cb2dfa
         return
 _cb4cd3:
-        dlg $0AA1, BOTTOM
+        dlg DLG_2721, BOTTOM
                 ; Where is the stone_?
                 ; OWZER: The stone?
                 ; Over on that bookshelf.
         return
 _cb4cd7:
         if_switch $0240=0, _cb4cd3
-        dlg $0A99
+        dlg DLG_2713
                 ; OWZER: RELM_
                 ; Please, come back soon_
                 ; cough_wheeze.
@@ -48713,7 +48763,7 @@ _cb4ce1:
                 switch $0253=0
                 switch $0240=1
                 goto EventReturn
-        dlg $0A8D, BOTTOM
+        dlg DLG_2701, BOTTOM
                 ; RELM: The stone_!
                 ; Won't you take the stone?!
         obj_script SLOT_1
@@ -48723,7 +48773,7 @@ _cb4ce1:
         return
         fade_in
         wait_fade
-        dlg $0A9C, BOTTOM
+        dlg DLG_2716, BOTTOM
                 ; OWZER: No! Noooo!
                 ; You can't ruin this painting of my revered goddess!
                 ; Aim only for the monster!!
@@ -48738,7 +48788,7 @@ _cb4cfa:
                 move UP, 2
                 end
         wait_1s
-        dlg $0A9A, BOTTOM
+        dlg DLG_2714, BOTTOM
                 ; OWZER: P_please_
                 ; Help that painting!!
                 ; ``The painting!?''
@@ -48747,11 +48797,11 @@ _cb4cfa:
                 ; OWZER: Yes_
                 ; And now it's nearly impossible to get it to show itself_
         flash WHITE
-        dlg $0A9D, BOTTOM
+        dlg DLG_2717, BOTTOM
                 ; RELM: Ahhhhh!!
                 ; OWZER: RELM!
                 ; We can't attack this masterpiece! It would be inexcusable!
-        dlg $0A9B, BOTTOM
+        dlg DLG_2715, BOTTOM
                 ; CHADARNOOK: G'fu, fu, fu_
                 ; Who're these numbskulls?
                 ; No one_NO ONE_is going to remove me from this fine new painting!!
@@ -48802,7 +48852,7 @@ _cb4cfa:
                 wait 4
                 dir DOWN
                 end
-        dlg $0A9E, BOTTOM
+        dlg DLG_2718, BOTTOM
                 ; RELM: Hey!
                 ; Relax! The monster croaked!
         obj_script NPC_4
@@ -48827,7 +48877,7 @@ _cb4cfa:
                 wait 8
                 dir UP
                 end
-        dlg $0A9F, BOTTOM
+        dlg DLG_2719, BOTTOM
                 ; OWZER: Thanks for saving the day! This picture's more precious to me than my own life!
                 ; RELM: Huh?!
                 ; What are you talking about?
@@ -48840,7 +48890,7 @@ _cb4cfa:
         obj_script SLOT_1
                 wait 10
                 end
-        dlg $0AA0, BOTTOM
+        dlg DLG_2720, BOTTOM
                 ; ``Now_what was a monster doing in that picture?!''
                 ; OWZER: It all started when I bought a stone at the Auction House.
                 ; I took one look at it and suddenly felt I needed a portrait of Starlet.
@@ -48856,7 +48906,7 @@ _cb4cfa:
                 wait 4
                 dir UP
                 end
-        dlg $0AA1, BOTTOM
+        dlg DLG_2721, BOTTOM
                 ; Where is the stone_?
                 ; OWZER: The stone?
                 ; Over on that bookshelf.
@@ -48893,12 +48943,12 @@ _cb4dc6:
         obj_script SLOT_1
                 action 33
                 end
-        dlg $0AA3
+        dlg DLG_2723
                 ; ``This is Magicite_''
                 ; OWZER: Phew. I don't need any more bad luck. Just take it and go!
         sfx SFX::MAGICITE_PICKUP
         give_genju STARLET
-        dlg $0AAD
+        dlg DLG_2733
                 ;
                 ; Received the Magicite
                 ; ``Starlet.''
@@ -48911,7 +48961,7 @@ _cb4dc6:
                 wait 2
                 action 32
                 end
-        dlg $0AC2, BOTTOM
+        dlg DLG_2754, BOTTOM
                 ; RELM: I have to go!
                 ; But fear not, I'll be back to finish this painting!
                 ; OWZER: I'll be waiting for you!
@@ -48941,24 +48991,24 @@ _cb4e2a:
         return
 _cb4e35:
         if_switch $01F0=1, _cb4e3f
-        dlg $0A50
+        dlg DLG_2640
                 ; Ho, ho, ho_
                 ; There's nothing I can't buy!
         return
 _cb4e3f:
-        dlg $0A5A
+        dlg DLG_2650
                 ; Arrrgh!
                 ; I HATE it when that happens!
         return
 _cb4e43:
-        dlg $0AA6
+        dlg DLG_2726
                 ; First time I've been here_
                 ; This ain't the kinda place a poor person usually comes!
         return
 _cb4e47:
         if_switch $01F0=1, _cb5ec5
         if_switch $006B=0, _cb5ec5
-        dlg $0A41
+        dlg DLG_2625
                 ; See anything you want?
                 ; The auction's about to start!
                 ; 0:  (Bid on items!)
@@ -49034,7 +49084,7 @@ _cb4ecc:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         obj_script NPC_13
@@ -49045,11 +49095,11 @@ _cb4ecc:
         wait_30f
         call _cb4eb1
         wait_90f
-        dlg $0A44
+        dlg DLG_2628
                 ; Here's a splendid chest.
                 ; Inside is_
         call _cb4eba
-        dlg $0A45
+        dlg DLG_2629
                 ;
                 ;     Some ``Cherub Down''!
                 ;
@@ -49060,7 +49110,7 @@ _cb4ecc:
                 wait 3
                 dir UP
                 end
-        dlg $0A6F
+        dlg DLG_2671
                 ;
                 ; 1000 GP!
         wait_1s
@@ -49069,7 +49119,7 @@ _cb4ecc:
                 wait 3
                 dir UP
                 end
-        dlg $0A70
+        dlg DLG_2672
                 ;
                 ; 1500 GP!
         wait_1s
@@ -49078,7 +49128,7 @@ _cb4ecc:
                 wait 3
                 dir UP
                 end
-        dlg $0A72
+        dlg DLG_2674
                 ;
                 ; 3000 GP!
         wait_30f
@@ -49093,9 +49143,9 @@ _cb4ecc:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A51
+        dlg DLG_2641
                 ; 0:  Buy it for 5000 GP.
                 ; 1:  I'll pass_
         choice _cb4f33, _cb4f3f
@@ -49104,7 +49154,7 @@ _cb4f33:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A74
+        dlg DLG_2676
                 ;
                 ; 5000 GP!
         obj_script SLOT_1
@@ -49123,10 +49173,10 @@ _cb4f3f:
                 wait 3
                 dir UP
                 end
-        dlg $0A50
+        dlg DLG_2640
                 ; Ho, ho, ho_
                 ; There's nothing I can't buy!
-        dlg $0A75
+        dlg DLG_2677
                 ;
                 ; 7000 GP!
         wait_30f
@@ -49141,9 +49191,9 @@ _cb4f3f:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5B
+        dlg DLG_2651
                 ; 0:  Buy it for 10000 GP.
                 ; 1:  I'll pass_
         choice _cb4fc7, _cb4f73
@@ -49154,7 +49204,7 @@ _cb4f73:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 184
@@ -49195,7 +49245,7 @@ _cb4f73:
                 hide_obj
                 end
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1, ASYNC
@@ -49212,7 +49262,7 @@ _cb4fc7:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         obj_script SLOT_1
@@ -49225,7 +49275,7 @@ _cb4fc7:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -49260,11 +49310,11 @@ _cb4fc7:
         sfx SFX::MAGICITE_PICKUP
         call _cb4ec3
         give_item CHERUB_DOWN
-        dlg $0A46
+        dlg DLG_2630
                 ;
                 ;  Bought some ``Cherub Down''!
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         return
@@ -49273,7 +49323,7 @@ _cb501d:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         sfx 29
@@ -49282,7 +49332,7 @@ _cb501d:
         show_obj NPC_8
         wait_90f
         sfx 217
-        dlg $0AAA
+        dlg DLG_2730
                 ; This is astounding!
                 ; A real, talking Chocobo!!
                 ;
@@ -49296,7 +49346,7 @@ _cb501d:
                 wait 3
                 dir UP
                 end
-        dlg $0A74
+        dlg DLG_2676
                 ;
                 ; 5000 GP!
         wait_30f
@@ -49305,7 +49355,7 @@ _cb501d:
                 wait 3
                 dir UP
                 end
-        dlg $0A75
+        dlg DLG_2677
                 ;
                 ; 7000 GP!
         wait_30f
@@ -49317,14 +49367,14 @@ _cb501d:
                 dir RIGHT
                 wait 2
                 end
-        dlg $0AAE
+        dlg DLG_2734
                 ; CHILD: Papa!!
                 ; I want that! Please!
         wait_obj NPC_11
         obj_script NPC_10
                 dir LEFT
                 end
-        dlg $0AAF
+        dlg DLG_2735
                 ; PAPA: No, you don't!
                 ; Now, pipe down!
         obj_script NPC_11, ASYNC
@@ -49339,7 +49389,7 @@ _cb501d:
                 wait 4
                 jump_low
                 end
-        dlg $0AB0
+        dlg DLG_2736
                 ; CHILD: I want it_I want it!
                 ; Buy it! Pretty please!!
         wait_obj NPC_11
@@ -49354,9 +49404,9 @@ _cb501d:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5B
+        dlg DLG_2651
                 ; 0:  Buy it for 10000 GP.
                 ; 1:  I'll pass_
         choice _cb509c, _cb50b2
@@ -49370,7 +49420,7 @@ _cb509c:
                 wait 2
                 action 27
                 end
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         wait_obj SLOT_1
@@ -49386,13 +49436,13 @@ _cb50b2:
                 wait 3
                 dir DOWN
                 end
-        dlg $0A5D
+        dlg DLG_2653
                 ; Are there any more bids?
         wait_obj NPC_5
         obj_script NPC_10
                 dir UP
                 end
-        dlg $0AB3
+        dlg DLG_2739
                 ; PAPA: 500000 GP!
         sfx 225
         obj_script NPC_1, ASYNC
@@ -49445,7 +49495,7 @@ _cb50b2:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0AB4
+        dlg DLG_2740
                 ; G'huh?! 500000 GP?!
         wait_1s
         obj_script NPC_5, ASYNC
@@ -49453,7 +49503,7 @@ _cb50b2:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         wait_obj NPC_5
@@ -49468,7 +49518,7 @@ _cb50b2:
                 wait 4
                 jump_low
                 end
-        dlg $0AB2
+        dlg DLG_2738
                 ; CHILD: Yahoo!!!
                 ; Thanks, Papa! Yahoo!
         wait_obj NPC_11
@@ -49489,7 +49539,7 @@ _cb50b2:
         obj_script NPC_10
                 dir LEFT
                 end
-        dlg $0AB8
+        dlg DLG_2744
                 ; PAPA: Well, we have our treat for the day. Let's go home!
                 ; CHILD: Yahoo! Yippy!!!!
         obj_script NPC_10, ASYNC
@@ -49540,7 +49590,7 @@ _cb50b2:
                 move DOWN, 2
                 hide_obj
                 end
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1, ASYNC
@@ -49561,7 +49611,7 @@ _cb5197:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         obj_script NPC_13
@@ -49578,7 +49628,7 @@ _cb5197:
         obj_script NPC_5, ASYNC
                 dir DOWN
                 end
-        dlg $0AA9
+        dlg DLG_2729
                 ;
                 ;     The Magicite, ``Golem''!
                 ;
@@ -49589,7 +49639,7 @@ _cb5197:
                 wait 3
                 dir UP
                 end
-        dlg $0A74
+        dlg DLG_2676
                 ;
                 ; 5000 GP!
         wait_1s
@@ -49598,7 +49648,7 @@ _cb5197:
                 wait 3
                 dir UP
                 end
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         wait_1s
@@ -49613,9 +49663,9 @@ _cb5197:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A58
+        dlg DLG_2648
                 ; 0:  Buy it for 15000 GP.
                 ; 1:  I'll pass_
         choice _cb51f5, _cb5201
@@ -49624,7 +49674,7 @@ _cb51f5:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A61
+        dlg DLG_2657
                 ;
                 ; 15000 GP!
         obj_script SLOT_1
@@ -49637,7 +49687,7 @@ _cb5201:
                 wait 3
                 dir UP
                 end
-        dlg $0A62
+        dlg DLG_2658
                 ;
                 ; 18000 GP!
         wait_30f
@@ -49652,9 +49702,9 @@ _cb5201:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5E
+        dlg DLG_2654
                 ; 0:  Buy it for 20000 GP.
                 ; 1:  I'll pass_
         choice _cb527c, _cb522a
@@ -49665,7 +49715,7 @@ _cb522a:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -49706,7 +49756,7 @@ _cb522a:
                 hide_obj
                 end
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1, ASYNC
@@ -49724,7 +49774,7 @@ _cb527c:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A67
+        dlg DLG_2663
                 ;
                 ; 20000 GP!
         obj_script SLOT_1
@@ -49737,7 +49787,7 @@ _cb527c:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -49774,48 +49824,48 @@ _cb527c:
         hide_obj NPC_15
         sfx SFX::MAGICITE_PICKUP
         give_genju GOLEM
-        dlg $0AC4
+        dlg DLG_2756
                 ;
                 ; Received the Magicite
                 ; ``Golem.''
         switch $016D=1
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         return
 _cb52d6:
-        dlg $0ABC
+        dlg DLG_2748
                 ;
                 ;     Not enough money_
         if_switch $0176=0, _cb4f73
         return
 _cb52e0:
-        dlg $0ABC
+        dlg DLG_2748
                 ;
                 ;     Not enough money_
         if_switch $0176=0, _cb566a
         return
 _cb52ea:
-        dlg $0ABC
+        dlg DLG_2748
                 ;
                 ;     Not enough money_
         if_switch $0176=0, _cb522a
         return
 _cb52f4:
-        dlg $0ABC
+        dlg DLG_2748
                 ;
                 ;     Not enough money_
         if_switch $0176=0, _cb5508
         return
 _cb52fe:
-        dlg $0ABC
+        dlg DLG_2748
                 ;
                 ;     Not enough money_
         if_switch $0176=0, _cb5af1
         return
 _cb5308:
-        dlg $0ABC
+        dlg DLG_2748
                 ;
                 ;     Not enough money_
         if_switch $0176=0, _cb5c1d
@@ -49829,7 +49879,7 @@ _cb5312:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         obj_script NPC_13
@@ -49846,7 +49896,7 @@ _cb5312:
         obj_script NPC_5, ASYNC
                 dir DOWN
                 end
-        dlg $0AA8
+        dlg DLG_2728
                 ;
                 ;    The Magicite, ``ZoneSeek''!
                 ;
@@ -49857,7 +49907,7 @@ _cb5312:
                 wait 3
                 dir UP
                 end
-        dlg $0A6F
+        dlg DLG_2671
                 ;
                 ; 1000 GP!
         wait_1s
@@ -49866,10 +49916,10 @@ _cb5312:
                 wait 3
                 dir UP
                 end
-        dlg $0A50
+        dlg DLG_2640
                 ; Ho, ho, ho_
                 ; There's nothing I can't buy!
-        dlg $0A71
+        dlg DLG_2673
                 ;
                 ; 2000 GP!
         wait_1s
@@ -49878,7 +49928,7 @@ _cb5312:
                 wait 3
                 dir UP
                 end
-        dlg $0A72
+        dlg DLG_2674
                 ;
                 ; 3000 GP!
         wait_1s
@@ -49887,7 +49937,7 @@ _cb5312:
                 wait 3
                 dir UP
                 end
-        dlg $0A73
+        dlg DLG_2675
                 ;
                 ; 4000 GP!
         wait_1s
@@ -49896,7 +49946,7 @@ _cb5312:
                 wait 3
                 dir UP
                 end
-        dlg $0A74
+        dlg DLG_2676
                 ;
                 ; 5000 GP!
         wait_1s
@@ -49911,9 +49961,9 @@ _cb5312:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A55
+        dlg DLG_2645
                 ; 0:  Buy it for 7000 GP.
                 ; 1:  I'll pass_
         choice _cb5394, _cb53a0
@@ -49922,7 +49972,7 @@ _cb5394:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A75
+        dlg DLG_2677
                 ;
                 ; 7000 GP!
         obj_script SLOT_1
@@ -49935,10 +49985,10 @@ _cb53a0:
                 wait 3
                 dir UP
                 end
-        dlg $0A50
+        dlg DLG_2640
                 ; Ho, ho, ho_
                 ; There's nothing I can't buy!
-        dlg $0A5F
+        dlg DLG_2655
                 ;
                 ; 8000 GP!
         wait_2s
@@ -49953,9 +50003,9 @@ _cb53a0:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5B
+        dlg DLG_2651
                 ; 0:  Buy it for 10000 GP.
                 ; 1:  I'll pass_
         choice _cb5407, _cb53cc
@@ -49966,7 +50016,7 @@ _cb53cc:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -49996,7 +50046,7 @@ _cb53cc:
                 hide_obj
                 end
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1
@@ -50009,7 +50059,7 @@ _cb5407:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         obj_script SLOT_1
@@ -50022,7 +50072,7 @@ _cb5407:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -50058,14 +50108,14 @@ _cb5407:
         hide_obj NPC_15
         sfx SFX::MAGICITE_PICKUP
         give_genju ZONESEEK
-        dlg $0AC3
+        dlg DLG_2755
                 ;
                 ; Received the Magicite
                 ; ``ZoneSeek.''
         switch $016C=1
         wait_1s
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         return
@@ -50073,7 +50123,7 @@ _cb5460:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         obj_script NPC_13
@@ -50084,11 +50134,11 @@ _cb5460:
         wait_30f
         call _cb4eb1
         wait_90f
-        dlg $0A44
+        dlg DLG_2628
                 ; Here's a splendid chest.
                 ; Inside is_
         call _cb4eba
-        dlg $0A47
+        dlg DLG_2631
                 ;
                 ; A ``Cure Ring''!
                 ;
@@ -50099,7 +50149,7 @@ _cb5460:
                 wait 3
                 dir UP
                 end
-        dlg $0A71
+        dlg DLG_2673
                 ;
                 ; 2000 GP!
         wait_1s
@@ -50108,7 +50158,7 @@ _cb5460:
                 wait 3
                 dir UP
                 end
-        dlg $0A72
+        dlg DLG_2674
                 ;
                 ; 3000 GP!
         wait_30f
@@ -50117,7 +50167,7 @@ _cb5460:
                 wait 3
                 dir UP
                 end
-        dlg $0A73
+        dlg DLG_2675
                 ;
                 ; 4000 GP!
         wait_1s
@@ -50132,9 +50182,9 @@ _cb5460:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A51
+        dlg DLG_2641
                 ; 0:  Buy it for 5000 GP.
                 ; 1:  I'll pass_
         choice _cb54bd, _cb54c9
@@ -50143,7 +50193,7 @@ _cb54bd:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A74
+        dlg DLG_2676
                 ;
                 ; 5000 GP!
         obj_script SLOT_1
@@ -50162,7 +50212,7 @@ _cb54c9:
                 wait 3
                 dir UP
                 end
-        dlg $0A75
+        dlg DLG_2677
                 ;
                 ; 7000 GP!
         wait_30f
@@ -50171,10 +50221,10 @@ _cb54c9:
                 wait 3
                 dir UP
                 end
-        dlg $0A50
+        dlg DLG_2640
                 ; Ho, ho, ho_
                 ; There's nothing I can't buy!
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         wait_30f
@@ -50189,9 +50239,9 @@ _cb54c9:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5E
+        dlg DLG_2654
                 ; 0:  Buy it for 20000 GP.
                 ; 1:  I'll pass_
         choice _cb5559, _cb5508
@@ -50202,7 +50252,7 @@ _cb5508:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -50241,7 +50291,7 @@ _cb5508:
                 hide_obj
                 end
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1, ASYNC
@@ -50258,7 +50308,7 @@ _cb5559:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A67
+        dlg DLG_2663
                 ;
                 ; 20000 GP!
         obj_script SLOT_1
@@ -50271,7 +50321,7 @@ _cb5559:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -50306,11 +50356,11 @@ _cb5559:
         sfx SFX::MAGICITE_PICKUP
         call _cb4ec3
         give_item CURE_RING
-        dlg $0A48
+        dlg DLG_2632
                 ;
                 ;     Bought a ``Cure Ring''!
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         return
@@ -50321,7 +50371,7 @@ _cb55b0:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         obj_script NPC_13
@@ -50332,11 +50382,11 @@ _cb55b0:
         wait_30f
         call _cb4eb1
         wait_90f
-        dlg $0A44
+        dlg DLG_2628
                 ; Here's a splendid chest.
                 ; Inside is_
         call _cb4eba
-        dlg $0A49
+        dlg DLG_2633
                 ;
                 ; A ``Hero Ring''!
                 ;
@@ -50347,7 +50397,7 @@ _cb55b0:
                 wait 3
                 dir UP
                 end
-        dlg $0A73
+        dlg DLG_2675
                 ;
                 ; 4000 GP!
         wait_1s
@@ -50356,7 +50406,7 @@ _cb55b0:
                 wait 3
                 dir UP
                 end
-        dlg $0A74
+        dlg DLG_2676
                 ;
                 ; 5000 GP!
         wait_1s
@@ -50365,7 +50415,7 @@ _cb55b0:
                 wait 3
                 dir UP
                 end
-        dlg $0A75
+        dlg DLG_2677
                 ;
                 ; 7000 GP!
         wait_30f
@@ -50380,9 +50430,9 @@ _cb55b0:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5B
+        dlg DLG_2651
                 ; 0:  Buy it for 10000 GP.
                 ; 1:  I'll pass_
         choice _cb5617, _cb5623
@@ -50391,7 +50441,7 @@ _cb5617:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         obj_script SLOT_1
@@ -50410,7 +50460,7 @@ _cb5623:
                 wait 3
                 dir UP
                 end
-        dlg $0A67
+        dlg DLG_2663
                 ;
                 ; 20000 GP!
         wait_30f
@@ -50419,7 +50469,7 @@ _cb5623:
                 wait 3
                 dir UP
                 end
-        dlg $0A64
+        dlg DLG_2660
                 ;
                 ; 30000 GP!
         wait_30f
@@ -50428,7 +50478,7 @@ _cb5623:
                 wait 3
                 dir UP
                 end
-        dlg $0A65
+        dlg DLG_2661
                 ;
                 ; 40000 GP!
         wait_1s
@@ -50443,9 +50493,9 @@ _cb5623:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5C
+        dlg DLG_2652
                 ; 0:  Buy it for 50000 GP.
                 ; 1:  I'll pass_
         choice _cb56b4, _cb566a
@@ -50456,7 +50506,7 @@ _cb566a:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -50493,7 +50543,7 @@ _cb566a:
                 hide_obj
                 end
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1
@@ -50506,7 +50556,7 @@ _cb56b4:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A68
+        dlg DLG_2664
                 ;
                 ; 50000 GP!
         obj_script SLOT_1
@@ -50519,7 +50569,7 @@ _cb56b4:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -50554,11 +50604,11 @@ _cb56b4:
         sfx SFX::MAGICITE_PICKUP
         call _cb4ec3
         give_item HERO_RING
-        dlg $0A4A
+        dlg DLG_2634
                 ;
                 ;     Bought a ``Hero Ring''!
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         switch $0255=1
@@ -50568,7 +50618,7 @@ _cb570c:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         sfx 29
@@ -50576,7 +50626,7 @@ _cb570c:
         sort_obj
         show_obj NPC_9
         wait_90f
-        dlg $0AAB
+        dlg DLG_2731
                 ;
                 ;     1/1200 of an airship!
                 ;
@@ -50590,7 +50640,7 @@ _cb570c:
                 wait 3
                 dir UP
                 end
-        dlg $0A75
+        dlg DLG_2677
                 ;
                 ; 7000 GP!
         wait_30f
@@ -50605,9 +50655,9 @@ _cb570c:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5B
+        dlg DLG_2651
                 ; 0:  Buy it for 10000 GP.
                 ; 1:  I'll pass_
         choice _cb5750, _cb5766
@@ -50621,7 +50671,7 @@ _cb5750:
                 wait 2
                 action 27
                 end
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         wait_obj SLOT_1
@@ -50635,7 +50685,7 @@ _cb5766:
                 wait 3
                 dir UP
                 end
-        dlg $0A67
+        dlg DLG_2663
                 ;
                 ; 20000 GP!
         wait_30f
@@ -50644,7 +50694,7 @@ _cb5766:
                 wait 2
                 dir UP
                 end
-        dlg $0A64
+        dlg DLG_2660
                 ;
                 ; 30000 GP!
         wait_30f
@@ -50659,9 +50709,9 @@ _cb5766:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A53
+        dlg DLG_2643
                 ; 0:  Buy it for 40000 GP.
                 ; 1:  I'll pass_
         choice _cb579a, _cb57a5
@@ -50669,7 +50719,7 @@ _cb579a:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A65
+        dlg DLG_2661
                 ;
                 ; 40000 GP!
         obj_script SLOT_1
@@ -50694,14 +50744,14 @@ _cb57a5:
                 dir RIGHT
                 wait 2
                 end
-        dlg $0AAE
+        dlg DLG_2734
                 ; CHILD: Papa!!
                 ; I want that! Please!
         wait_obj NPC_11
         obj_script NPC_10
                 dir LEFT
                 end
-        dlg $0AAF
+        dlg DLG_2735
                 ; PAPA: No, you don't!
                 ; Now, pipe down!
         obj_script NPC_11, ASYNC
@@ -50716,7 +50766,7 @@ _cb57a5:
                 wait 4
                 jump_low
                 end
-        dlg $0AB0
+        dlg DLG_2736
                 ; CHILD: I want it_I want it!
                 ; Buy it! Pretty please!!
         wait_obj NPC_11
@@ -50733,7 +50783,7 @@ _cb57a5:
                 wait 2
                 dir UP
                 end
-        dlg $0A68
+        dlg DLG_2664
                 ;
                 ; 50000 GP!
         wait_45f
@@ -50744,9 +50794,9 @@ _cb57a5:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A54
+        dlg DLG_2644
                 ; 0:  Buy it for 60000 GP.
                 ; 1:  I'll pass_
         choice _cb580f, _cb581a
@@ -50754,7 +50804,7 @@ _cb580f:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A66
+        dlg DLG_2662
                 ;
                 ; 60000 GP!
         obj_script SLOT_1
@@ -50774,7 +50824,7 @@ _cb581a:
                 wait 2
                 dir UP
                 end
-        dlg $0AB5
+        dlg DLG_2741
                 ; PAPA: 1000000 GP!
         sfx 225
         obj_script NPC_1, ASYNC
@@ -50833,7 +50883,7 @@ _cb581a:
                 wait 1
                 dir RIGHT
                 end
-        dlg $0AB6
+        dlg DLG_2742
                 ; WHAT?! 1000000 GP?!
         wait_1s
         obj_script NPC_5, ASYNC
@@ -50841,7 +50891,7 @@ _cb581a:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         wait_obj NPC_5
@@ -50853,11 +50903,11 @@ _cb581a:
                 jump_low
                 wait 4
                 end
-        dlg $0AB2
+        dlg DLG_2738
                 ; CHILD: Yahoo!!!
                 ; Thanks, Papa! Yahoo!
         wait_obj NPC_11
-        dlg $0AB1
+        dlg DLG_2737
                 ; PAPA: Ho, ho, ho_All right!
                 ; But just this once! And_ _
                 ; Keep it a secret from Mama!
@@ -50879,7 +50929,7 @@ _cb581a:
         obj_script NPC_10
                 dir LEFT
                 end
-        dlg $0AB8
+        dlg DLG_2744
                 ; PAPA: Well, we have our treat for the day. Let's go home!
                 ; CHILD: Yahoo! Yippy!!!!
         obj_script NPC_10, ASYNC
@@ -50928,7 +50978,7 @@ _cb581a:
                 move DOWN, 2
                 hide_obj
                 end
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1
@@ -50944,7 +50994,7 @@ _cb58fa:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         obj_script NPC_13
@@ -50961,7 +51011,7 @@ _cb58fa:
         obj_script NPC_5, ASYNC
                 dir DOWN
                 end
-        dlg $0AA9
+        dlg DLG_2729
                 ;
                 ;     The Magicite, ``Golem''!
                 ;
@@ -50972,7 +51022,7 @@ _cb58fa:
                 wait 3
                 dir UP
                 end
-        dlg $0A73
+        dlg DLG_2675
                 ;
                 ; 4000 GP!
         wait_1s
@@ -50981,7 +51031,7 @@ _cb58fa:
                 wait 3
                 dir UP
                 end
-        dlg $0A5F
+        dlg DLG_2655
                 ;
                 ; 8000 GP!
         wait_1s
@@ -50996,9 +51046,9 @@ _cb58fa:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A57
+        dlg DLG_2647
                 ; 0:  Buy it for 12000 GP.
                 ; 1:  I'll pass_
         choice _cb5958, _cb5964
@@ -51007,7 +51057,7 @@ _cb5958:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A60
+        dlg DLG_2656
                 ;
                 ; 12000 GP!
         obj_script SLOT_1
@@ -51020,7 +51070,7 @@ _cb5964:
                 wait 3
                 dir UP
                 end
-        dlg $0A61
+        dlg DLG_2657
                 ;
                 ; 15000 GP!
         wait_30f
@@ -51035,9 +51085,9 @@ _cb5964:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5E
+        dlg DLG_2654
                 ; 0:  Buy it for 20000 GP.
                 ; 1:  I'll pass_
         choice _cb59df, _cb598d
@@ -51048,7 +51098,7 @@ _cb598d:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -51089,7 +51139,7 @@ _cb598d:
                 hide_obj
                 end
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1, ASYNC
@@ -51107,7 +51157,7 @@ _cb59df:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A67
+        dlg DLG_2663
                 ;
                 ; 20000 GP!
         obj_script SLOT_1
@@ -51120,7 +51170,7 @@ _cb59df:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -51157,13 +51207,13 @@ _cb59df:
         hide_obj NPC_15
         sfx SFX::MAGICITE_PICKUP
         give_genju GOLEM
-        dlg $0AC4
+        dlg DLG_2756
                 ;
                 ; Received the Magicite
                 ; ``Golem.''
         switch $016D=1
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         return
@@ -51173,7 +51223,7 @@ _cb5a39:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         obj_script NPC_13
@@ -51190,7 +51240,7 @@ _cb5a39:
         obj_script NPC_5, ASYNC
                 dir DOWN
                 end
-        dlg $0AA8
+        dlg DLG_2728
                 ;
                 ;    The Magicite, ``ZoneSeek''!
                 ;
@@ -51201,7 +51251,7 @@ _cb5a39:
                 wait 3
                 dir UP
                 end
-        dlg $0A6F
+        dlg DLG_2671
                 ;
                 ; 1000 GP!
         wait_1s
@@ -51210,10 +51260,10 @@ _cb5a39:
                 wait 3
                 dir UP
                 end
-        dlg $0A50
+        dlg DLG_2640
                 ; Ho, ho, ho_
                 ; There's nothing I can't buy!
-        dlg $0A70
+        dlg DLG_2672
                 ;
                 ; 1500 GP!
         wait_1s
@@ -51222,7 +51272,7 @@ _cb5a39:
                 wait 3
                 dir UP
                 end
-        dlg $0A71
+        dlg DLG_2673
                 ;
                 ; 2000 GP!
         wait_1s
@@ -51231,7 +51281,7 @@ _cb5a39:
                 wait 3
                 dir UP
                 end
-        dlg $0A72
+        dlg DLG_2674
                 ;
                 ; 3000 GP!
         wait_1s
@@ -51240,7 +51290,7 @@ _cb5a39:
                 wait 3
                 dir UP
                 end
-        dlg $0A74
+        dlg DLG_2676
                 ;
                 ; 5000 GP!
         wait_1s
@@ -51255,9 +51305,9 @@ _cb5a39:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A55
+        dlg DLG_2645
                 ; 0:  Buy it for 7000 GP.
                 ; 1:  I'll pass_
         choice _cb5ab9, _cb5ac5
@@ -51266,7 +51316,7 @@ _cb5ab9:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A75
+        dlg DLG_2677
                 ;
                 ; 7000 GP!
         obj_script SLOT_1
@@ -51279,10 +51329,10 @@ _cb5ac5:
                 wait 3
                 dir UP
                 end
-        dlg $0A50
+        dlg DLG_2640
                 ; Ho, ho, ho_
                 ; There's nothing I can't buy!
-        dlg $0A5F
+        dlg DLG_2655
                 ;
                 ; 8000 GP!
         wait_2s
@@ -51297,9 +51347,9 @@ _cb5ac5:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5B
+        dlg DLG_2651
                 ; 0:  Buy it for 10000 GP.
                 ; 1:  I'll pass_
         choice _cb5b2c, _cb5af1
@@ -51310,7 +51360,7 @@ _cb5af1:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -51340,7 +51390,7 @@ _cb5af1:
                 hide_obj
                 end
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1
@@ -51353,7 +51403,7 @@ _cb5b2c:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         obj_script SLOT_1
@@ -51366,7 +51416,7 @@ _cb5b2c:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -51402,14 +51452,14 @@ _cb5b2c:
         hide_obj NPC_15
         sfx SFX::MAGICITE_PICKUP
         give_genju ZONESEEK
-        dlg $0AC3
+        dlg DLG_2755
                 ;
                 ; Received the Magicite
                 ; ``ZoneSeek.''
         switch $016C=1
         wait_1s
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         return
@@ -51419,7 +51469,7 @@ _cb5b85:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         obj_script NPC_13
@@ -51435,7 +51485,7 @@ _cb5b85:
         obj_script NPC_5, ASYNC
                 dir DOWN
                 end
-        dlg $0A4B
+        dlg DLG_2635
                 ;
                 ; A ``Zephyr Cape''!
                 ;
@@ -51446,7 +51496,7 @@ _cb5b85:
                 wait 3
                 dir UP
                 end
-        dlg $0A73
+        dlg DLG_2675
                 ;
                 ; 4000 GP!
         wait_1s
@@ -51461,9 +51511,9 @@ _cb5b85:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A51
+        dlg DLG_2641
                 ; 0:  Buy it for 5000 GP.
                 ; 1:  I'll pass_
         choice _cb5bd9, _cb5be5
@@ -51472,7 +51522,7 @@ _cb5bd9:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A74
+        dlg DLG_2676
                 ;
                 ; 5000 GP!
         obj_script SLOT_1
@@ -51485,10 +51535,10 @@ _cb5be5:
                 wait 3
                 dir UP
                 end
-        dlg $0A50
+        dlg DLG_2640
                 ; Ho, ho, ho_
                 ; There's nothing I can't buy!
-        dlg $0A75
+        dlg DLG_2677
                 ;
                 ; 7000 GP!
         wait_90f
@@ -51497,7 +51547,7 @@ _cb5be5:
                 wait 3
                 dir UP
                 end
-        dlg $0A5F
+        dlg DLG_2655
                 ;
                 ; 8000 GP!
         wait_1s
@@ -51512,9 +51562,9 @@ _cb5be5:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A5B
+        dlg DLG_2651
                 ; 0:  Buy it for 10000 GP.
                 ; 1:  I'll pass_
         choice _cb5c57, _cb5c1d
@@ -51525,7 +51575,7 @@ _cb5c1d:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -51553,7 +51603,7 @@ _cb5c1d:
                 hide_obj
                 end
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1
@@ -51566,7 +51616,7 @@ _cb5c57:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         obj_script SLOT_1
@@ -51579,7 +51629,7 @@ _cb5c57:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         sfx 225
@@ -51612,11 +51662,11 @@ _cb5c57:
                 end
         call _cb4ec3
         give_item ZEPHYR_CAPE
-        dlg $0A4C
+        dlg DLG_2636
                 ; Bought a ``Zephyr Cape''!
         wait_1s
         sfx 255
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         switch $025D=1
@@ -51625,7 +51675,7 @@ _cb5cad:
         obj_script NPC_5
                 dir RIGHT
                 end
-        dlg $0AA7
+        dlg DLG_2727
                 ; Okay!
                 ; Here's our next item!
         sfx 29
@@ -51646,7 +51696,7 @@ _cb5cad:
                 wait 2
                 dir DOWN
                 end
-        dlg $0AAC
+        dlg DLG_2732
                 ; You're not gonna believe this! Quality, high-tech merchandise!
                 ; An ``Imp Robot''!!
                 ;
@@ -51661,7 +51711,7 @@ _cb5cad:
                 wait 3
                 dir UP
                 end
-        dlg $0A6B
+        dlg DLG_2667
                 ;
                 ; 10 GP!
         wait_30f
@@ -51671,7 +51721,7 @@ _cb5cad:
                 jump_low
                 wait 4
                 end
-        dlg $0A6C
+        dlg DLG_2668
                 ;
                 ; 50 GP!
         obj_script NPC_16
@@ -51688,7 +51738,7 @@ _cb5cad:
                 wait 3
                 dir UP
                 end
-        dlg $0A6E
+        dlg DLG_2670
                 ;
                 ; 500 GP!
         wait_30f
@@ -51697,7 +51747,7 @@ _cb5cad:
                 wait 3
                 dir UP
                 end
-        dlg $0A71
+        dlg DLG_2673
                 ;
                 ; 2000 GP!
         obj_script NPC_16
@@ -51707,9 +51757,9 @@ _cb5cad:
                 dir DOWN
                 end
         wait_30f
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A51
+        dlg DLG_2641
                 ; 0:  Buy it for 5000 GP.
                 ; 1:  I'll pass_
         choice _cb5d28, _cb5d49
@@ -51723,7 +51773,7 @@ _cb5d28:
                 wait 2
                 action 27
                 end
-        dlg $0A74
+        dlg DLG_2676
                 ;
                 ; 5000 GP!
         wait_obj SLOT_1
@@ -51750,14 +51800,14 @@ _cb5d49:
                 wait 4
                 jump_low
                 end
-        dlg $0AAE
+        dlg DLG_2734
                 ; CHILD: Papa!!
                 ; I want that! Please!
         wait_obj NPC_11
         obj_script NPC_10
                 dir LEFT
                 end
-        dlg $0AAF
+        dlg DLG_2735
                 ; PAPA: No, you don't!
                 ; Now, pipe down!
         wait_1s
@@ -51766,7 +51816,7 @@ _cb5d49:
                 wait 3
                 dir UP
                 end
-        dlg $0A63
+        dlg DLG_2659
                 ;
                 ; 10000 GP!
         wait_30f
@@ -51794,7 +51844,7 @@ _cb5d49:
                 wait 4
                 jump_low
                 end
-        dlg $0AB0
+        dlg DLG_2736
                 ; CHILD: I want it_I want it!
                 ; Buy it! Pretty please!!
         wait_obj NPC_11
@@ -51803,7 +51853,7 @@ _cb5d49:
                 wait 3
                 dir UP
                 end
-        dlg $0A67
+        dlg DLG_2663
                 ;
                 ; 20000 GP!
         wait_30f
@@ -51818,9 +51868,9 @@ _cb5d49:
                 wait 2
                 dir DOWN
                 end
-        dlg $0A4E
+        dlg DLG_2638
                 ; Well, how 'bout it?
-        dlg $0A52
+        dlg DLG_2642
                 ; 0:  Buy it for 30000 GP.
                 ; 1:  I'll pass_
         choice _cb5dc0, _cb5dcb
@@ -51828,7 +51878,7 @@ _cb5dc0:
         obj_script SLOT_1
                 action 27
                 end
-        dlg $0A64
+        dlg DLG_2660
                 ;
                 ; 30000 GP!
         obj_script SLOT_1
@@ -51843,13 +51893,13 @@ _cb5dcb:
                 wait 3
                 dir DOWN
                 end
-        dlg $0A5D
+        dlg DLG_2653
                 ; Are there any more bids?
         wait_obj NPC_5
         obj_script NPC_10
                 dir UP
                 end
-        dlg $0AB5
+        dlg DLG_2741
                 ; PAPA: 1000000 GP!
         sfx 225
         obj_script NPC_16, ASYNC
@@ -51914,7 +51964,7 @@ _cb5dcb:
         obj_script NPC_16, ASYNC
                 dir DOWN
                 end
-        dlg $0AB6
+        dlg DLG_2742
                 ; WHAT?! 1000000 GP?!
         wait_1s
         obj_script NPC_5, ASYNC
@@ -51922,7 +51972,7 @@ _cb5dcb:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $0AB7
+        dlg DLG_2743
                 ; Sold, to this lucky person.
                 ; Take it away, please!
         wait_obj NPC_5
@@ -51937,11 +51987,11 @@ _cb5dcb:
                 wait 4
                 jump_low
                 end
-        dlg $0AB2
+        dlg DLG_2738
                 ; CHILD: Yahoo!!!
                 ; Thanks, Papa! Yahoo!
         wait_obj NPC_11
-        dlg $0AB1
+        dlg DLG_2737
                 ; PAPA: Ho, ho, ho_All right!
                 ; But just this once! And_ _
                 ; Keep it a secret from Mama!
@@ -51962,7 +52012,7 @@ _cb5dcb:
         obj_script NPC_10
                 dir LEFT
                 end
-        dlg $0AB8
+        dlg DLG_2744
                 ; PAPA: Well, we have our treat for the day. Let's go home!
                 ; CHILD: Yahoo! Yippy!!!!
         obj_script NPC_10, ASYNC
@@ -52020,7 +52070,7 @@ _cb5dcb:
                 move DOWN, 2
                 hide_obj
                 end
-        dlg $0AB9
+        dlg DLG_2745
                 ; Well, that's all for today!
                 ; Come back again real soon!
         obj_script SLOT_1
@@ -52028,7 +52078,7 @@ _cb5dcb:
                 end
         return
 _cb5ec5:
-        dlg $0A4D
+        dlg DLG_2637
                 ; Today's auction is over.
         return
 _cb5ec9:
@@ -52037,7 +52087,7 @@ _cb5ec9:
                 wait 2
                 dir UP
                 end
-        dlg $0ABB
+        dlg DLG_2747
                 ; Oh, how could I refuse those cute little eyes?! Ho, ho, ho_
         return
 _cb5ed4:
@@ -52048,7 +52098,7 @@ _cb5ed4:
                 wait 4
                 dir LEFT
                 end
-        dlg $0ABA
+        dlg DLG_2746
                 ; Papa!
                 ; Let's buy lot's of stuff today, too!
         obj_script NPC_11, ASYNC
@@ -52215,7 +52265,7 @@ _cb5faf:
                 wait 1
                 action 27
                 end
-        dlg $0AF6
+        dlg DLG_2806
                 ; SABIN: No, GAU!
                 ; Don't eat with your fingers!
         obj_script SLOT_2, ASYNC
@@ -52231,7 +52281,7 @@ _cb5faf:
                 wait 6
                 dir DOWN
                 end
-        dlg $0AF7
+        dlg DLG_2807
                 ; GAU: Yaoooo_
         obj_script SLOT_2, ASYNC
                 action 23
@@ -52242,19 +52292,19 @@ _cb5faf:
                 wait 1
                 dir UP
                 end
-        dlg $0AF8
+        dlg DLG_2808
                 ; SABIN: Don't say ``Yaoooo'' when you mean ``Yes!''
         obj_script GAU, ASYNC
                 action 32
                 wait 3
                 action 25
                 end
-        dlg $0AF9
+        dlg DLG_2809
                 ; GAU: Ho!
         obj_script SLOT_2, ASYNC
                 action 33
                 end
-        dlg $0AFA
+        dlg DLG_2810
                 ; SABIN: __
         fade_out
         wait_fade
@@ -52338,7 +52388,7 @@ _cb60b2:
                 wait 4
                 dir LEFT
                 end
-        dlg $0AFB
+        dlg DLG_2811
                 ; TERRA: How do you like these?
                 ; Wait! What about those?
                 ; Hm_oh well_
@@ -52357,7 +52407,7 @@ _cb60b2:
                 action 9
                 end
         sfx 195
-        dlg $0AFC
+        dlg DLG_2812
                 ; TERRA: Did you say something?
                 ; ``N_no! Nothing_
                 ; _Uh huh_''
@@ -52382,7 +52432,7 @@ _cb6119:
         obj_script GAU, ASYNC
                 dir RIGHT
                 end
-        dlg $0AFD
+        dlg DLG_2813
                 ; CELES: Which is it gonna be? Oh! This is nice_but_
                 ; Do you think it becomes GAU?
                 ; Well_
@@ -52407,7 +52457,7 @@ _cb6119:
                 action 9
                 wait 2
                 end
-        dlg $0AFE
+        dlg DLG_2814
                 ; CELES: What?!
                 ; ``_Nothing_''
         wait_obj SABIN
@@ -52431,7 +52481,7 @@ _cb615d:
         obj_script GAU, ASYNC
                 dir UP
                 end
-        dlg $0AFF
+        dlg DLG_2815
                 ; CYAN: What a jaunty hat!
                 ; ``Not at_''
         obj_script SLOT_2, ASYNC
@@ -52448,7 +52498,7 @@ _cb615d:
                 wait 1
                 action 24
                 end
-        dlg $0B00
+        dlg DLG_2816
                 ; CYAN: Wait a minute!
                 ; Where's the hat?
                 ; ``__''
@@ -52471,7 +52521,7 @@ _cb619b:
                 wait 2
                 dir DOWN
                 end
-        dlg $0B01
+        dlg DLG_2817
                 ; SABIN: This is it!
                 ; Me go to funeral?
                 ; SABIN: Perfect!
@@ -52487,7 +52537,7 @@ _cb619b:
                 wait 3
                 dir RIGHT
                 end
-        dlg $0B02
+        dlg DLG_2818
                 ; SETZER: Phew!
                 ; Completely lacking in fashion_
                 ; SETZER: Excuse me, sir.
@@ -52530,7 +52580,7 @@ _cb61c8:
                 wait 3
                 dir LEFT
                 end
-        dlg $0B03
+        dlg DLG_2819
                 ; EDGAR: I got it!
                 ; A tuxedo, silk hat_and_
                 ; _a rose in his teeth!
@@ -52546,7 +52596,7 @@ _cb61c8:
                 wait 2
                 action 37
                 end
-        dlg $0B04
+        dlg DLG_2820
                 ; LOCKE: I think that's overdoing it just a bit_
                 ; He should have a bandana on his head!
         wait_obj LOCKE
@@ -52562,7 +52612,7 @@ _cb61c8:
                 wait 4
                 dir LEFT
                 end
-        dlg $0B05
+        dlg DLG_2821
                 ; EDGAR: What's so great about a bandana? Most of the time I see 'em tied around dogs at the beach!
         obj_script LOCKE
                 action 31
@@ -52574,7 +52624,7 @@ _cb61c8:
                 action 24
                 end
         sfx 195
-        dlg $0B06
+        dlg DLG_2822
                 ; LOCKE: HEY!
                 ; What do you mean by that?
         wait_30f
@@ -52859,10 +52909,10 @@ _cb645b:
                 switch $01A5=1
                 switch $01AB=1
                 goto _cb6478
-        dlg $033F
+        dlg DLG_831
                 ; AGED MAN: Go, unless you're a repair person!
         wait_1s
-        dlg $0341
+        dlg DLG_833
                 ; AGED MAN: Haven't seen any skilled repair people in ages_
         return
 _cb6478:
@@ -52870,11 +52920,11 @@ _cb6478:
                 switch $01AB=0
                 switch $01A5=1
                 goto _cb648a
-        dlg $033F
+        dlg DLG_831
                 ; AGED MAN: Go, unless you're a repair person!
-        dlg $0340
+        dlg DLG_832
                 ; GAU: W_what_?
-        dlg $0341
+        dlg DLG_833
                 ; AGED MAN: Haven't seen any skilled repair people in ages_
         return
 _cb648a:
@@ -52909,7 +52959,7 @@ _cb648a:
                 wait 6
                 dir UP
                 end
-        dlg $0342
+        dlg DLG_834
                 ; AGED MAN: Oh, hello again!
                 ; Yep, you were tops!
                 ; SABIN: That's why we_
@@ -52959,7 +53009,7 @@ _cb648a:
                 dir DOWN
                 wait 6
                 end
-        dlg $0343
+        dlg DLG_835
                 ; SABIN: You don't suppose_
                 ; Can this be GAU's father?
         wait_1s
@@ -53007,7 +53057,7 @@ _cb6527:
                 wait 6
                 dir UP
                 end
-        dlg $0342
+        dlg DLG_834
                 ; AGED MAN: Oh, hello again!
                 ; Yep, you were tops!
                 ; SABIN: That's why we_
@@ -53053,12 +53103,12 @@ _cb6527:
                 dir DOWN
                 wait 6
                 end
-        dlg $0AF2
+        dlg DLG_2802
                 ; SABIN: You don't suppose_
                 ; GAU, could this be your father?
                 ; GAU: Uooo_
         wait_45f
-        dlg $0AF3
+        dlg DLG_2803
                 ; SABIN: Come on,
                 ; GAU.
                 ; It's true, right?
@@ -53069,7 +53119,7 @@ _cb6527:
                 ; _GAU's_father?!
                 ; Oooogauooooo!
         wait_30f
-        dlg $0AF4
+        dlg DLG_2804
                 ; SABIN: Right!!
                 ; Let's go tell your father the news!
                 ; He needs to know you're his son!
@@ -53108,7 +53158,7 @@ _cb65cc:
                 wait 3
                 dir UP
                 end
-        dlg $0AF5
+        dlg DLG_2805
                 ; SABIN: Just a minute_
                 ; We can't just go there with you looking like this.
                 ; SABIN: I know!
@@ -53147,7 +53197,7 @@ _cb65cc:
         fade_in
         wait_fade
         wait_30f
-        dlg $0B07
+        dlg DLG_2823
                 ; SABIN: Okay, GAU?
                 ; Now, any father'd be glad to have a son like you!
                 ; GAU: Hooo_
@@ -53213,7 +53263,7 @@ _cb65cc:
         if_switch $0256=1, _cb66a1
         if_switch $01DA=0, _cb669b
         switch $0256=1
-        dlg $0B14, BOTTOM
+        dlg DLG_2836, BOTTOM
                 ; AGED MAN: The repairman,
                 ; at last!
                 ; ``Uh, no.
@@ -53224,11 +53274,11 @@ _cb65cc:
                 ; AGED MAN: Little while ago, some guy wearin' a bandana asked for the map.
                 ; So I told him!
                 ; W_where is it?
-        dlg $0B15, BOTTOM
+        dlg DLG_2837, BOTTOM
                 ; AGED MAN: It's where the mountains form a star-shape!
                 ; You should have just come out and asked me.
                 ; No need to be shy!
-        dlg $0B09, BOTTOM
+        dlg DLG_2825, BOTTOM
                 ; SABIN: Now, Sir_
                 ; AGED MAN: Oh! Yes!
                 ; I'd like you to make those repairs on the double!
@@ -53238,7 +53288,7 @@ _cb65cc:
 _cb669b:
         if_switch $01DA=1, _cb66a4
 _cb66a1:
-        dlg $0B08, BOTTOM
+        dlg DLG_2824, BOTTOM
                 ; SABIN: Excuse me, Sir.
                 ; AGED MAN: Who'n blazes 'r you?
                 ; Oh! The repairman!
@@ -53246,7 +53296,7 @@ _cb66a1:
                 ; You_had a son, right?
                 ; You with me!?
 _cb66a4:
-        dlg $0B0A, BOTTOM
+        dlg DLG_2826, BOTTOM
                 ; AGED MAN: _son?
                 ; SABIN: Right.
                 ; The truth is, he's alive!
@@ -53261,7 +53311,7 @@ _cb66a4:
                 wait 12
                 dir UP
                 end
-        dlg $0B0B, BOTTOM
+        dlg DLG_2827, BOTTOM
                 ; GAU: Fffatherrr_
         obj_script NPC_1
                 dir LEFT
@@ -53272,7 +53322,7 @@ _cb66a4:
                 wait 2
                 dir DOWN
                 end
-        dlg $0B0C, BOTTOM
+        dlg DLG_2828, BOTTOM
                 ; AGED MAN: What is this?!
                 ; What's with this ``son'' business? I never had a son!
         obj_script NPC_1
@@ -53283,7 +53333,7 @@ _cb66a4:
                 end
         wait_90f
         call _cb5f92
-        dlg $0B0D, BOTTOM
+        dlg DLG_2829, BOTTOM
                 ; AGED MAN: But now that you mention it, I once had a terrible dream.  In it, a demon-child was born!
                 ; I grabbed the creature, and rushed off to the Veldt with it_
                 ; It was crying like crazy when I arrived on the Veldt.
@@ -53297,7 +53347,7 @@ _cb66a4:
         obj_script NPC_1
                 dir RIGHT
                 end
-        dlg $0B0E, BOTTOM
+        dlg DLG_2830, BOTTOM
                 ; AGED MAN: I left the child there_
                 ; And without looking back,
                 ; I turned and started to run.
@@ -53316,7 +53366,7 @@ _cb66a4:
                 wait 12
                 action 32
                 end
-        dlg $0B0F, BOTTOM
+        dlg DLG_2831, BOTTOM
                 ; AGED MAN: Suddenly the crying stopped. I turned around and saw a frightful monster_
                 ; Hideous! Still gives me the shakes.
                 ; SABIN: I give up_
@@ -53324,7 +53374,7 @@ _cb66a4:
         obj_script NPC_1, ASYNC
                 dir RIGHT
                 end
-        dlg $0B10, BOTTOM
+        dlg DLG_2832, BOTTOM
                 ; AGED MAN: But you, young man, your parents must be proud of you! I still have dreams of that demon child_
                 ; Frightening_
         obj_script NPC_1, ASYNC
@@ -53338,7 +53388,7 @@ _cb66a4:
                 wait 2
                 dir UP
                 end
-        dlg $0B11, BOTTOM
+        dlg DLG_2833, BOTTOM
                 ; SABIN: Why! You old_
                 ; He's completely lost his mind!
                 ; GAU, I'm gonna clobber him!!
@@ -53354,7 +53404,7 @@ _cb66a4:
                 dir DOWN
                 end
         wait_90f
-        dlg $0B12, BOTTOM
+        dlg DLG_2834, BOTTOM
                 ; GAU: Uwaooo_ooooo_
         wait_obj GAU
         wait_45f
@@ -53446,7 +53496,7 @@ _cb66a4:
         obj_script SABIN, ASYNC
                 action 32
                 end
-        dlg $0B17
+        dlg DLG_2839
                 ; SABIN: I_I'm sorry_
         wait_1s
         call _cac5c1
@@ -53467,7 +53517,7 @@ _cb67d3:
                 dir DOWN
                 end
         wait_30f
-        dlg $0B18
+        dlg DLG_2840
                 ; GAU: Fffatherrr_alive_
                 ; H_ a_ p_ p_ y_
         wait_2s
@@ -53493,7 +53543,7 @@ _cb67fe:
         if_switch $01A1=1, _cb6824
         if_switch $0256=1, _cb681d
         if_switch $01DA=0, _cb6819
-        dlg $0B14, BOTTOM
+        dlg DLG_2836, BOTTOM
                 ; AGED MAN: The repairman,
                 ; at last!
                 ; ``Uh, no.
@@ -53504,26 +53554,26 @@ _cb67fe:
                 ; AGED MAN: Little while ago, some guy wearin' a bandana asked for the map.
                 ; So I told him!
                 ; W_where is it?
-        dlg $0B15, BOTTOM
+        dlg DLG_2837, BOTTOM
                 ; AGED MAN: It's where the mountains form a star-shape!
                 ; You should have just come out and asked me.
                 ; No need to be shy!
         switch $0256=1
 _cb6819:
-        dlg $0B13, BOTTOM
+        dlg DLG_2835, BOTTOM
                 ; AGED MAN: Eh?
                 ; Say, is everything fixed yet?
         return
 _cb681d:
-        dlg $0B16, BOTTOM
+        dlg DLG_2838, BOTTOM
                 ; AGED MAN: Got it?!
                 ; Where the mountains form the shape of a star!
-        dlg $0B13, BOTTOM
+        dlg DLG_2835, BOTTOM
                 ; AGED MAN: Eh?
                 ; Say, is everything fixed yet?
         return
 _cb6824:
-        dlg $0B13, BOTTOM
+        dlg DLG_2835, BOTTOM
                 ; AGED MAN: Eh?
                 ; Say, is everything fixed yet?
         return
@@ -53547,7 +53597,7 @@ _cb6828:
         if_switch $01A7=1, _cb689c
         if_switch $01F0=1, _cb68d2
         if_switch $01B0=1, _cb68a0
-        dlg $01B0
+        dlg DLG_432
                 ; AGED MAN: Hey!!?
         obj_script NPC_1
                 speed FAST
@@ -53557,12 +53607,12 @@ _cb6828:
                 wait 1
                 dir UP
                 end
-        dlg $01AD
+        dlg DLG_429
                 ; AGED MAN: You the clock maker? I been waitin' for ages!
         obj_script SLOT_1, ASYNC
                 dir DOWN
                 end
-        dlg $01AE
+        dlg DLG_430
                 ; Uh_no.
                 ; I'm not the clock maker.
         obj_script NPC_1, ASYNC
@@ -53572,17 +53622,17 @@ _cb6828:
                 wait 1
                 dir DOWN
                 end
-        dlg $01AF
+        dlg DLG_431
                 ; AGED MAN: There it is, on the wall. Ain't been tickin' for 1, 5, shucks, maybe even 10 years!
         switch $01F0=1
         switch $01F1=0
         return
 _cb689c:
-        dlg $01B8, BOTTOM
+        dlg DLG_440, BOTTOM
                 ; AGED MAN: You've come to fix the door!?
         return
 _cb68a0:
-        dlg $01B0
+        dlg DLG_432
                 ; AGED MAN: Hey!!?
         obj_script SLOT_1
                 speed NORMAL
@@ -53599,12 +53649,12 @@ _cb68a0:
                 wait 1
                 dir UP
                 end
-        dlg $01AD
+        dlg DLG_429
                 ; AGED MAN: You the clock maker? I been waitin' for ages!
         obj_script SLOT_1, ASYNC
                 dir DOWN
                 end
-        dlg $01AE
+        dlg DLG_430
                 ; Uh_no.
                 ; I'm not the clock maker.
         obj_script NPC_1, ASYNC
@@ -53614,33 +53664,33 @@ _cb68a0:
                 wait 1
                 dir DOWN
                 end
-        dlg $01AF
+        dlg DLG_431
                 ; AGED MAN: There it is, on the wall. Ain't been tickin' for 1, 5, shucks, maybe even 10 years!
         switch $01F0=1
         switch $01F1=0
         return
 _cb68d2:
         if_switch $01F1=1, _cb68e3
-        dlg $01B4
+        dlg DLG_436
                 ; AGED MAN: Got it!
-        dlg $01B3
+        dlg DLG_435
                 ; AGED MAN: Lawnmower repairman, eh? Couldn't provide worse service! Grass's 25 feet high out back!
         switch $01F1=1
         switch $01F2=0
         return
 _cb68e3:
         if_switch $01F2=1, _cb68f1
-        dlg $01B6
+        dlg DLG_438
                 ; AGED MAN: No more lip, repairman! Fix that stove, on the double!!!
         switch $01F2=1
         switch $01F3=0
         return
 _cb68f1:
         if_switch $01F3=1, _cb6828
-        dlg $01B7
+        dlg DLG_439
                 ; AGED MAN: Goodness!
                 ; Then you must be_
-        dlg $01B5
+        dlg DLG_437
                 ; AGED MAN: You're here to fix my bed! It's squeakin' like all git-out!
         switch $01F3=1
         switch $01F0=0
@@ -53655,7 +53705,7 @@ _cb6902:
                 move DOWN, 1
                 anim_on
                 end
-        dlg $01BA
+        dlg DLG_442
                 ; Yaaaouch!!!!
         return
 _cb6912:
@@ -53681,13 +53731,13 @@ _cb6912:
                 wait 2
                 dir LEFT
                 end
-        dlg $01B9
+        dlg DLG_441
                 ; Phew!
                 ; No child could be this mischievious!
         obj_script NPC_1
                 dir UP
                 end
-        dlg $01BC
+        dlg DLG_444
                 ; AGED MAN: Child_?
                 ; Ain't no child 'round here!
                 ; Bolderdash!
@@ -53700,7 +53750,7 @@ _cb6912:
         return
 _cb6954:
         if_switch $01B5=1, EventReturn
-        dlg $01BB
+        dlg DLG_443
                 ; Take a nap?
                 ; 0:  (Snooze)
                 ; 1:  (No thanks)
@@ -53800,7 +53850,7 @@ _cb69ec:
                 end
         return
 _cb69ff:
-        dlg $0B19, BOTTOM
+        dlg DLG_2841, BOTTOM
                 ; __Not enough money.
         return
 _cb6a03:
@@ -54429,7 +54479,7 @@ _cb70c7:
         call _cb70a4
         if_switch $019B=1, _cb70e0
         switch $019B=1
-        dlg $0B3B, BOTTOM
+        dlg DLG_2875, BOTTOM
                 ; TREASURE: I'm hungry!
                 ; Hungry hungry hungry
                 ; hungry hungry hungry
@@ -54438,7 +54488,7 @@ _cb70c7:
                 ; Feed me!
                 ; Otherwise, I won't let you by!
 _cb70e0:
-        dlg $0B41, BOTTOM
+        dlg DLG_2881, BOTTOM
                 ; I like to eat ``Coral''!
                 ; Have any?
                 ; Hand over some ``Coral''?
@@ -54447,7 +54497,7 @@ _cb70e0:
         choice _cb70f7, _cb70eb
         return
 _cb70eb:
-        dlg $0B3C, BOTTOM
+        dlg DLG_2876, BOTTOM
                 ; Skinflint!
                 ; Git outta here!
         obj_script SLOT_1
@@ -54476,7 +54526,7 @@ _cb7107:
         set_var 7, 0
         return
 _cb711b:
-        dlg $0B3D, BOTTOM
+        dlg DLG_2877, BOTTOM
                 ; You must have more than one of those!
         obj_script SLOT_1
                 action 11
@@ -54487,7 +54537,7 @@ _cb711b:
                 end
         return
 _cb7127:
-        dlg $0B3F, BOTTOM
+        dlg DLG_2879, BOTTOM
                 ; Munch munch munch
                 ; Muurp_that was great.
                 ; Bring me some more!!
@@ -54502,7 +54552,7 @@ _cb7127:
         return
 _cb7137:
         if_switch $019B=0, EventReturn
-        dlg $0B3E, BOTTOM
+        dlg DLG_2878, BOTTOM
                 ; I'm not happy unless I have plenty to eat!
         return
 _cb7141:
@@ -54515,7 +54565,7 @@ _cb7141:
         return
 _cb714f:
         call _cb70a4
-        dlg $0B40, BOTTOM
+        dlg DLG_2880, BOTTOM
                 ; Munch munch munch
                 ; G'nnnaa! What a feast!
                 ; I'm stuffed. Completely full!
@@ -54525,7 +54575,7 @@ _cb714f:
         wait_15f 15
         mod_bg_tiles BG1, {23, 17}, {1, 1}
                 .byte $12
-        dlg $0B46, BOTTOM
+        dlg DLG_2886, BOTTOM
                 ; TREASURE: Bluuurp! Whew!
         wait_1s
         loop 3
@@ -54539,7 +54589,7 @@ _cb714f:
         wait_1s
         mod_bg_tiles BG1, {23, 17}, {1, 1}
                 .byte $13
-        dlg $0B47, BOTTOM
+        dlg DLG_2887, BOTTOM
                 ; TREASURE: Oh, yeah,
                 ; you wanna pass through here, right?
         switch $05F7=1
@@ -54560,7 +54610,7 @@ _cb714f:
                 jump_low
                 move UP, 1
                 end
-        dlg $0B48, BOTTOM
+        dlg DLG_2888, BOTTOM
                 ; TREASURE: Eh!!
                 ; What the_!
         loop 3
@@ -54587,7 +54637,7 @@ _cb71bc:
         obj_script SLOT_1
                 action 31
                 end
-        dlg $0B49, BOTTOM
+        dlg DLG_2889, BOTTOM
                 ; STRAGO: That's Hidon!
         obj_script SLOT_1
                 dir UP
@@ -54617,7 +54667,7 @@ _cb71f7:
                 wait 2
                 branch _cb71f7
                 end
-        dlg $0B4A, BOTTOM
+        dlg DLG_2890, BOTTOM
                 ; STRAGO: I did it!
                 ; I_I_
                 ; I actually beat Hidon!
@@ -54633,7 +54683,7 @@ _cb71f7:
                         action 30
                         end
                 end_loop
-        dlg $0B4B, BOTTOM
+        dlg DLG_2891, BOTTOM
                 ; STRAGO: I have to tell Gungho he is avenged!
         lock_camera
         pass_off SLOT_1
@@ -54682,7 +54732,7 @@ _cb725c:
                 wait 1
                 branch _cb725c
                 end
-        dlg $0B4C
+        dlg DLG_2892
                 ; STRAGO: Gungho_!
         obj_script NPC_17
                 speed FAST
@@ -54691,7 +54741,7 @@ _cb725c:
                 move UP, 2
                 dir LEFT
                 end
-        dlg $0B4C, ASYNC
+        dlg DLG_2892, ASYNC
                 ; STRAGO: Gungho_!
         loop 4
                 obj_script NPC_17
@@ -54723,7 +54773,7 @@ _cb7292:
                 wait 1
                 branch _cb7292
                 end
-        dlg $0B4D
+        dlg DLG_2893
                 ; GUNGHO: What's all the hullabaloo?!
                 ; STRAGO: Listen to me!
                 ; I DEFEATED Hidon!
@@ -54743,7 +54793,7 @@ _cb72ae:
                 wait 2
                 branch _cb72ae
                 end
-        dlg $0B4E
+        dlg DLG_2894
                 ; GUNGHO: You WHAT?!
                 ; You b_beat Hidon?!
                 ; You're lying! LYING!
@@ -54754,7 +54804,7 @@ _cb72ae:
                 move RIGHT, 2
                 move UP, 2
                 end
-        dlg $0B4F
+        dlg DLG_2895
                 ; RELM: No, he's not!
                 ; He really defeated Hidon.
         obj_script NPC_18
@@ -54765,7 +54815,7 @@ _cb72ae:
                 dir RIGHT
                 end
         wait_15f 5
-        dlg $0B50, ASYNC
+        dlg DLG_2896, ASYNC
                 ; STRAGO: Ho, ho, ho!
                 ; If I didn't know better, I'd say that Hidon wasn't my only enemy!
         loop 8
@@ -54786,7 +54836,7 @@ _cb72ae:
         obj_script NPC_18, ASYNC
                 dir UP
                 end
-        dlg $0B51
+        dlg DLG_2897
                 ; GUNGHO: I don't believe this.
                 ; This has to be a joke!
                 ; STRAGO: Ho, ho, ho!!
@@ -54799,7 +54849,7 @@ _cb72ae:
                 anim_on
                 end
         wait_2s
-        dlg $0B52
+        dlg DLG_2898
                 ; GUNGHO: Eh?
                 ; Oh, they're fine_
         wait_45f
@@ -54810,7 +54860,7 @@ _cb72ae:
         fade_in 4
         wait_fade
         wait_45f
-        dlg $0B53, TEXT_ONLY
+        dlg DLG_2899, TEXT_ONLY
                 ;
                 ;
                 ; That evening__
@@ -54829,7 +54879,7 @@ _cb7318:
         fade_in 4
         wait_fade
         wait_1s
-        dlg $0B54, BOTTOM
+        dlg DLG_2900, BOTTOM
                 ; STRAGO: There I was, in a cave that seemed endless. Then, before I knew it, Hidon appeared!
         obj_script NPC_20
                 speed FAST
@@ -54846,7 +54896,7 @@ _cb7335:
                 wait 3
                 branch _cb7335
                 end
-        dlg $0B55, BOTTOM
+        dlg DLG_2901, BOTTOM
                 ; STRAGO: I stared Hidon straight in the eye, lifted my staff, and let him have it!
                 ;
                 ;    G'Pow!!
@@ -54862,12 +54912,12 @@ _cb7341:
                 move RIGHT, 2
                 branch _cb7341
                 end
-        dlg $0B56, BOTTOM
+        dlg DLG_2902, BOTTOM
                 ; STRAGO: I wanted to show my enemy the true meaning of the word, ``hero''!
         obj_script NPC_20
                 dir DOWN
                 end
-        dlg $0B57, {ASYNC, BOTTOM}
+        dlg DLG_2903, {ASYNC, BOTTOM}
                 ; STRAGO: And then__
         wait_45f
         fade_out 4
@@ -54895,11 +54945,11 @@ _cb7341:
                 move UP, 2
                 dir RIGHT
                 end
-        dlg $0B58
+        dlg DLG_2904
                 ; RELM: What happened to Grandpa?
                 ; GUNGHO: Huh?
                 ; Finally! He nodded off.
-        dlg $0B59, ASYNC
+        dlg DLG_2905, ASYNC
                 ; GUNGHO: However_
                 ; Let's let him be!
                 ; He's nice and_quiet_
@@ -54918,7 +54968,7 @@ _cb7341:
                 dir DOWN
                 wait 3
                 end
-        dlg $0B5A
+        dlg DLG_2906
                 ; RELM: Wait!
                 ; First let me thank you.
                 ; You gave Grandpa a reason to go and defeat something that had tormented him for decades!
@@ -54931,7 +54981,7 @@ _cb7341:
                 dir DOWN
                 end
         wait_45f
-        dlg $0B5B
+        dlg DLG_2907
                 ; GUNGHO: What a granddaughter he's raised! Amazing!
                 ; RELM: And what a terrible actor you are!
         wait_45f
@@ -54947,7 +54997,7 @@ _cb73ae:
                 wait 1
                 branch _cb73ae
                 end
-        dlg $0B5C
+        dlg DLG_2908
                 ; RELM: Only STRAGO could have been taken in by that performance!
         wait_45f
         obj_script NPC_17
@@ -54974,7 +55024,7 @@ _cb73d4:
                 branch _cb73d4
                 end
         wait_1s
-        dlg $0B62
+        dlg DLG_2914
                 ; GUNGHO: What the_!
         fade_out 4
         wait_fade
@@ -54991,14 +55041,14 @@ _cb73d4:
         player_ctrl_on
         return
 _cb73fa:
-        dlg $0B5D
+        dlg DLG_2909
                 ; GUNGHO: Everything okay?
         return
 _cb73fe:
         if_rand _cb73fa
         if_rand _cb73fa
         if_rand _cb73fa
-        dlg $0B5E
+        dlg DLG_2910
                 ; GUNGHO: Hidon's appeared at Ebot's Rock again!
         switch $055E=1
         return
@@ -55007,33 +55057,33 @@ _cb7410:
         wait_fade
         return
 _cb7414:
-        dlg $0B2F, BOTTOM
+        dlg DLG_2863, BOTTOM
                 ; GUNGHO: Oooh_cough, cough_
         return
 _cb7418:
         switch $01D8=1
         if_rand _cb742a
         if_rand _cb743e
-        dlg $0B45
+        dlg DLG_2885
                 ;
                 ;   Received 5 pieces of ``Coral.''
         add_var 7, 5
         return
 _cb742a:
         if_rand _cb7436
-        dlg $0B42
+        dlg DLG_2882
                 ;
                 ;   Received a piece of ``Coral.''
         add_var 7, 1
         return
 _cb7436:
-        dlg $0B43
+        dlg DLG_2883
                 ;
                 ;   Received 2 pieces of ``Coral.''
         add_var 7, 2
         return
 _cb743e:
-        dlg $0B44
+        dlg DLG_2884
                 ;
                 ;   Received 3 pieces of ``Coral.''
         add_var 7, 3
@@ -55149,21 +55199,21 @@ _cb755b:
         shop_menu THAMASA_RELICS_2
         return
 _cb755e:
-        dlg $0518
+        dlg DLG_1304
                 ;
                 ;     Locked_
         return
 _cb7562:
-        dlg $0B21
+        dlg DLG_2849
                 ; All the fun places are gone now.
         return
 _cb7566:
-        dlg $0B22
+        dlg DLG_2850
                 ; For the first time in 50 years, Ebot's Rock is above water!
                 ; Head north of town if you want to see it.
         return
 _cb756a:
-        dlg $0B29
+        dlg DLG_2857
                 ; MAYOR: It's only been a year
                 ; since the world changed_
                 ; But it feels like forever.
@@ -55174,7 +55224,7 @@ _cb756e:
                 dir DOWN
                 end
         if_switch $00DA=0, _cb75bb
-        dlg $0B5F, BOTTOM
+        dlg DLG_2911, BOTTOM
                 ; During the past year I've traveled the world over.
                 ; Wanna hear some of my stories?
                 ; 0:  Yes
@@ -55182,7 +55232,7 @@ _cb756e:
         choice _cb7587, EventReturn
         return
 _cb7587:
-        dlg $0B60, BOTTOM
+        dlg DLG_2912, BOTTOM
                 ; North of the Veldt is a small, triangular island.
         switch $01CC=1
         fade_out 4
@@ -55206,12 +55256,12 @@ _cb7587:
         wait_fade
         switch $01CC=0
         wait_30f
-        dlg $0B61, BOTTOM
+        dlg DLG_2913, BOTTOM
                 ; The island is home to a monster that could suck up an entire ocean.
                 ; What do you suppose might happen if it sucked you inside? That much I don't know!
         return
 _cb75bb:
-        dlg $0918, BOTTOM
+        dlg DLG_2328, BOTTOM
                 ; After the end of the world,
                 ; I awoke all alone in Doma Castle.
                 ; When I would try to sleep there, demons would come for me_ Oh! I don't want to remember that!
@@ -55258,7 +55308,7 @@ _cb75fb:
                 wait 2
                 branch _cb75fb
                 end
-        dlg $0B2A, BOTTOM
+        dlg DLG_2858, BOTTOM
                 ; RELM: Yea!! We're back!
                 ; It's like old times!
         obj_script NPC_9
@@ -55273,11 +55323,11 @@ _cb75fb:
                 wait 3
                 action 32
                 end
-        dlg $0B2B, BOTTOM
+        dlg DLG_2859, BOTTOM
                 ; STRAGO: Time to relax!
                 ; Home sweet home!
         wait_2s
-        dlg $07A9
+        dlg DLG_1961
                 ; Grandpa!
         obj_script NPC_8
                 dir UP
@@ -55295,7 +55345,7 @@ _cb762c:
                 wait 1
                 branch _cb762c
                 end
-        dlg $0B2C, BOTTOM
+        dlg DLG_2860, BOTTOM
                 ; RELM: This is terrible!
                 ; Gungho's hurt!
         obj_script NPC_9
@@ -55304,7 +55354,7 @@ _cb762c:
         obj_script NPC_8
                 action 31
                 end
-        dlg $0B1D, BOTTOM
+        dlg DLG_2845, BOTTOM
                 ; STRAGO: G_Gungho?!
         obj_script NPC_9, ASYNC
                 speed NORMAL
@@ -55322,27 +55372,27 @@ _cb762c:
         wait_1s
         load_map 349, {63, 12}, UP, ASYNC
         wait_90f
-        dlg $0B2D
+        dlg DLG_2861
                 ; STRAGO: Gungho, wake up!
         obj_script NPC_12
                 wait 10
                 dir LEFT
                 wait 5
                 end
-        dlg $0B2E
+        dlg DLG_2862
                 ; STRAGO: Who did this to you?
                 ; GUNGHO: It was_Hidon, the beast you and I used to hunt.
                 ; I almost had it_
         obj_script NPC_14, ASYNC
                 action 31
                 end
-        dlg $0B31
+        dlg DLG_2865
                 ; STRAGO: You took on Hidon_?
         obj_script NPC_12
                 wait 5
                 dir RIGHT
                 end
-        dlg $0B2F
+        dlg DLG_2863
                 ; GUNGHO: Oooh_cough, cough_
         obj_script NPC_14, ASYNC
 _cb767e:
@@ -55352,13 +55402,13 @@ _cb767e:
                 wait 2
                 branch _cb767e
                 end
-        dlg $0B1D
+        dlg DLG_2845
                 ; STRAGO: G_Gungho?!
         wait_1s
         obj_script NPC_12
                 dir LEFT
                 end
-        dlg $0B30
+        dlg DLG_2864
                 ; GUNGHO: STRAGO_
                 ; Please_you must avenge me_
         obj_script NPC_14
@@ -55368,7 +55418,7 @@ _cb767e:
                 wait 6
                 dir RIGHT
                 end
-        dlg $0B2F
+        dlg DLG_2863
                 ; GUNGHO: Oooh_cough, cough_
         obj_script NPC_14
                 speed SLOWER
@@ -55398,7 +55448,7 @@ _cb767e:
         obj_script NPC_13
                 action 24 | ACTION_H_FLIP
                 end
-        dlg $0B32
+        dlg DLG_2866
                 ; RELM: Gramps!
                 ; Why are you hesitating!
         wait_15f 10
@@ -55409,7 +55459,7 @@ _cb767e:
                 wait 15
                 dir RIGHT
                 end
-        dlg $0B33
+        dlg DLG_2867
                 ; STRAGO: Well_ I spent my
                 ; youth chasing that creature.
                 ; To do it again at this age is more than I bargained for.
@@ -55417,7 +55467,7 @@ _cb767e:
                 wait 6
                 dir RIGHT
                 end
-        dlg $0B34
+        dlg DLG_2868
                 ; STRAGO: Gungho_
                 ; rest easy, I'll do it for you!
         obj_script NPC_13, ASYNC
@@ -55466,7 +55516,7 @@ _cb767e:
                 speed NORMAL
                 move DOWN, 5
                 end
-        dlg $07A9, BOTTOM
+        dlg DLG_1961, BOTTOM
                 ; Grandpa!
         show_obj NPC_16
         obj_script NPC_16
@@ -55480,7 +55530,7 @@ _cb767e:
                 dir UP
                 wait 6
                 end
-        dlg $0B35, BOTTOM
+        dlg DLG_2869, BOTTOM
                 ; RELM: Just a minute!
                 ; You don't think you're going alone, do you?
         wait_2s
@@ -55488,7 +55538,7 @@ _cb767e:
                 dir DOWN
                 wait 10
                 end
-        dlg $0B36, BOTTOM
+        dlg DLG_2870, BOTTOM
                 ; STRAGO: I spent too many years of my life hunting that thing. It is my obsession, not yours.
         obj_script NPC_16
                 wait 6
@@ -55504,7 +55554,7 @@ _cb767e:
                 wait 15
                 dir LEFT
                 end
-        dlg $0B37, BOTTOM
+        dlg DLG_2871, BOTTOM
                 ; RELM: But Grandpa!
                 ; This ``obsession'' of yours could easily slay you!
                 ; You're my Grandfather.
@@ -55519,7 +55569,7 @@ _cb767e:
                 wait 16
                 dir RIGHT
                 end
-        dlg $0B38, BOTTOM
+        dlg DLG_2872, BOTTOM
                 ; STRAGO: Sorry, RELM.
                 ; I'm so grateful that you care!
                 ; But as its name implies, the Hidon is extremely difficult to find.
@@ -55539,7 +55589,7 @@ _cb7770:
         obj_script NPC_15
                 dir DOWN
                 end
-        dlg $0B39, BOTTOM
+        dlg DLG_2873, BOTTOM
                 ; STRAGO: Next stop,
                 ; Ebot's Rock.
         obj_script NPC_16, ASYNC
@@ -55559,7 +55609,7 @@ _cb7770:
                 wait 6
                 action 32
                 end
-        dlg $0B3A, BOTTOM
+        dlg DLG_2874, BOTTOM
                 ; RELM: Phew_
         wait_1s
         obj_script NPC_16, ASYNC
@@ -55585,19 +55635,19 @@ _cb7770:
         return
 _cb77c8:
         if_switch $0178=1, _cb7850
-        dlg $0B1C, BOTTOM
+        dlg DLG_2844, BOTTOM
                 ; I am Gungho.
                 ; Warrior extraordinaire from the town of Thamasa.
         if_switch $00A4=1, _cb77da
-        dlg $0B1B, BOTTOM
+        dlg DLG_2843, BOTTOM
                 ; First time I've been back in a while, and the village looks trashed.
                 ; What on earth happened?
 _cb77da:
         set_case PARTY_CHARS
         if_switch $01A7=1, _cb77e8
-        dlg $0B24, BOTTOM
+        dlg DLG_2852, BOTTOM
                 ; I've got STRAGO on my side now, but what a monumental bag of hot air!
-        dlg $0B26, BOTTOM
+        dlg DLG_2854, BOTTOM
                 ; When you were younger you hunted Hidon, the legendary monster. But you quit before you found it_
         return
 _cb77e8:
@@ -55613,12 +55663,12 @@ _cb77e8:
                 move UP, 1
                 dir RIGHT
                 end
-        dlg $0B1D, BOTTOM
+        dlg DLG_2845, BOTTOM
                 ; STRAGO: G_Gungho?!
         obj_script NPC_13
                 dir LEFT
                 end
-        dlg $0B23, BOTTOM
+        dlg DLG_2851, BOTTOM
                 ; GUNGHO: Is that you,
                 ; STRAGO?
                 ; Have you come back to hunt Hidon?
@@ -55634,17 +55684,17 @@ _cb77e8:
                 move LEFT, 1
                 wait 8
                 end
-        dlg $0B25, BOTTOM
+        dlg DLG_2853, BOTTOM
                 ; GUNGHO: He'll never change.
                 ; That's who he is!
-        dlg $0B26, BOTTOM
+        dlg DLG_2854, BOTTOM
                 ; When you were younger you hunted Hidon, the legendary monster. But you quit before you found it_
         obj_script STRAGO
                 dir RIGHT
                 wait 8
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $0B27, BOTTOM
+        dlg DLG_2855, BOTTOM
                 ; STRAGO: I didn't really quit!
                 ; It's just that, well, the monster lives only on Ebot's Rock, which has been submerged for some time.
                 ; GUNGHO: You never could give me an honest answer.
@@ -55655,7 +55705,7 @@ _cb77e8:
                 action 32
                 wait 16
                 end
-        dlg $0B28, BOTTOM
+        dlg DLG_2856, BOTTOM
                 ; GUNGHO: What a buffoon!!
         obj_script NPC_13
                 speed SLOW
@@ -55673,11 +55723,11 @@ _cb77e8:
         call _cacb95
         return
 _cb7850:
-        dlg $0B28, BOTTOM
+        dlg DLG_2856, BOTTOM
                 ; GUNGHO: What a buffoon!!
         return
 _cb7854:
-        dlg $0978
+        dlg DLG_2424
                 ; We can't let the world become too peaceful!
                 ; People are at their best when they're at war_
                 ; My colosseum will be a monument to war!
@@ -55685,19 +55735,19 @@ _cb7854:
         return
 _cb7858:
         if_rand _cb7860
-        dlg $097A
+        dlg DLG_2426
                 ; Ultros is your receptionist?
                 ; He couldn't pay his debt, so I put him to work!
                 ; I figure he'll be here about another 100 years.
         return
 _cb7860:
-        dlg $0979
+        dlg DLG_2425
                 ; This is my colosseum.
                 ; Finally, the whole world is at war! I'm so happy!
                 ; And I owe it all to Kefka!
         return
 _cb7864:
-        dlg $0973, BOTTOM
+        dlg DLG_2419, BOTTOM
                 ; 400 GP per night.
                 ; Wanna rest?
                 ; 0:  Yes
@@ -55732,29 +55782,29 @@ _cb786f:
         call _cacf96
         return
 _cb78a5:
-        dlg $0975, BOTTOM
+        dlg DLG_2421, BOTTOM
                 ; Creatures from all over the world come here to compete.
         return
 _cb78a9:
-        dlg $0976
+        dlg DLG_2422
                 ; Get a load of the crowds!
         return
 _cb78ad:
         if_switch $01EF=0, _cb78a9
-        dlg $0977
+        dlg DLG_2423
                 ; There's some guy here who's dressed all in black!
                 ; He's looking for a blade known as the Striker_
         return
 _cb78b7:
-        dlg $097D
+        dlg DLG_2429
                 ; The more precious the item wagered, the better your prize will be!
         return
 _cb78bb:
-        dlg $097E
+        dlg DLG_2430
                 ; Battles at the colosseum are one-on-one.
         return
 _cb78bf:
-        dlg $0980
+        dlg DLG_2432
                 ; This is Dragon's Neck Colosseum. Champions from all over the world come here to fight for prizes.
         return
 _cb78c3:
@@ -55762,7 +55812,7 @@ _cb78c3:
         obj_script NPC_10
                 dir DOWN
                 end
-        dlg $0974
+        dlg DLG_2420
                 ; Care to fight in the colosseum?
                 ; 0: (With pleasure.)
                 ; 1: (No thanks.)
@@ -55796,7 +55846,7 @@ _cb78d9:
         switch $0556=0
         switch $055B=0
         wait_15f 5
-        dlg $0981, ASYNC
+        dlg DLG_2433, ASYNC
                 ; ``What're you doing here?''
                 ; SHADOW: The only thing I know how to do is fight_
         wait_45f
@@ -55815,14 +55865,14 @@ _cb78d9:
                 wait 4
                 dir RIGHT
                 end
-        dlg $0982
+        dlg DLG_2434
                 ; ``Why not come with us?''
                 ; SHADOW: Well_
         wait_obj NPC_12
         wait_45f
         pass_off NPC_12
         pass_off SLOT_1
-        dlg $0983
+        dlg DLG_2435
                 ; SHADOW: First I need to see how far I can get here_
         obj_script NPC_12, ASYNC
                 speed NORMAL
@@ -55864,21 +55914,21 @@ _cb7972:
         wait_fade
         return
 _cb7976:
-        dlg $097C
+        dlg DLG_2428
                 ; We fight for items, etc. here. First choose the thing you want to wager.
                 ; Next, your opponent will appear. Choose someone from your party to fight this opponent.
                 ; A one-on-one auto-battle will then take place. The item you wagered covers your participation fee.
                 ; If you win, you'll be rewarded with an even better item! That's all there is to it!
         return
 _cb797a:
-        dlg $097B, BOTTOM
+        dlg DLG_2427, BOTTOM
                 ; ULTROS: Look at me!
                 ; I'm a receptionist!
                 ; G'fa, ha, ha!
                 ; Now, you'd better watch what ya bet, or master Chupon'll just come and take it from ya!
         return
 _cb797e:
-        dlg $097F
+        dlg DLG_2431
                 ; SIGFRIED: Someone's been pretending to be me!
                 ; Don't be fooled!
         return
@@ -55925,7 +55975,7 @@ _cb799f:
         switch $054C=0
         wait_45f
         call _cac7fe, 2
-        dlg $0A11, BOTTOM
+        dlg DLG_2577, BOTTOM
                 ; You're_coming with us?
         obj_script SLOT_1
                 dir RIGHT
@@ -55991,7 +56041,7 @@ _cb7a18:
                 move LEFT, 1
                 action 9
                 end
-        dlg $0A12, ASYNC
+        dlg DLG_2578, ASYNC
                 ; Look at those wounds_
         obj_script NPC_6
                 move LEFT, 1
@@ -56042,7 +56092,7 @@ _cb7a18:
                 wait 7
                 action 9
                 end
-        dlg $0A13
+        dlg DLG_2579
                 ; We can't do anything for her here.
                 ; Let's take her back to Thamasa using the airship.
         fade_out 2
@@ -56107,7 +56157,7 @@ _cb7a18:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0A14
+        dlg DLG_2580
                 ; You were having a nightmare_
         wait_45f
         obj_script CAMERA
@@ -56171,7 +56221,7 @@ _cb7a18:
                 dir UP
                 end
         call _cb6abf
-        dlg $0A1B, {ASYNC, TEXT_ONLY}
+        dlg DLG_2587, {ASYNC, TEXT_ONLY}
                 ; You came to fetch me_
                 ; But I won't be coming back_
                 ; I want you, and the girl,
@@ -56353,7 +56403,7 @@ _cb7c6a:
                 action 9
                 wait 4
                 end
-        dlg $0A1C, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2588, {TEXT_ONLY, BOTTOM}
                 ; Papa_?
                 ; Where'd he go?
                 ; Is he ever coming back?
@@ -56410,37 +56460,37 @@ _cb7ccf:
         wait_1s
         call _cac7fe, 2
         wait_30f
-        dlg $0A15
+        dlg DLG_2581
                 ; Let's rest here for a moment.
         unlock_camera
         switch $0199=1
         switch $01F0=1
         return
 _cb7cf8:
-        dlg $0A1D
+        dlg DLG_2589
                 ; For some reason he never came near when all 4 of us were together.
         return
 _cb7cfc:
-        dlg $0A1A
+        dlg DLG_2586
                 ; We 3 recently went hunting on the Veldt. We saw some weird kid there dressed all in hides_
         return
 _cb7d00:
-        dlg $0A1F
+        dlg DLG_2591
                 ; In a forest north of the Veldt dwells a frightful dragon.
                 ; I suppose no human could ever defeat it_but oh, how free we would be if someone could_
         return
 _cb7d04:
-        dlg $0A1E
+        dlg DLG_2590
                 ; Reduce the number of people in your party if you want him to approach you.
         return
 _cb7d08:
-        dlg $0A17
+        dlg DLG_2583
                 ; Are you okay?
         obj_script NPC_21
                 dir RIGHT
                 end
         wait_1s
-        dlg $0A19
+        dlg DLG_2585
                 ; SHADOW: No need to worry. It's just a scratch.
                 ; Also, he's gonna stand guard,
                 ; so you just relax.
@@ -56454,10 +56504,10 @@ _cb7d1c:
                 switch $01F0=1
                 switch $0199=0
                 goto _cb7d58
-        dlg $0A17
+        dlg DLG_2583
                 ; Are you okay?
         wait_1s
-        dlg $0A18
+        dlg DLG_2584
                 ; RELM: I'm still a bit groggy_
                 ; But I'm okay. Interceptor always makes me happy!
         obj_script NPC_22
@@ -56491,7 +56541,7 @@ _cb7d43:
                 end
         return
 _cb7d58:
-        dlg $0A16
+        dlg DLG_2582
                 ; __
         return
 _cb7d5c:
@@ -56516,16 +56566,16 @@ _cb7d7a:
         return
 _cb7d83:
         if_switch $019F=1, _cb7d8d
-        dlg $0B20
+        dlg DLG_2848
                 ; I saw a monster floating in the sky! It looked just like a fish.
         return
 _cb7d8d:
         if_switch $00A3=1, _cb7d97
-        dlg $0B1E
+        dlg DLG_2846
                 ; If you're looking for the man dressed all in black, he left for the colosseum.
         return
 _cb7d97:
-        dlg $0B1F
+        dlg DLG_2847
                 ; One day, a man working for an aristocrat in Jidoor came and took that young woman back with him!
         switch $0570=1
         return
@@ -57110,7 +57160,7 @@ _cb81c6:
         hide_obj SLOT_1
         call _cad00f
         wait_1s
-        dlg $0A0D, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2573, {TEXT_ONLY, BOTTOM}
                 ; Shrouded in odd clothing,
                 ; _is this a man_?
                 ; _a woman_?
@@ -57131,7 +57181,7 @@ _cb81c6:
         call _cad015
         show_obj SLOT_1
         wait_45f
-        dlg $0A0E, BOTTOM
+        dlg DLG_2574, BOTTOM
                 ; CREATURE: I am GOGO, master of the simulacrum_
                 ; My miming skills will astonish you.
         wait_45f
@@ -57140,7 +57190,7 @@ _cb81c6:
                 wait 4
                 dir DOWN
                 end
-        dlg $0A0F, {ASYNC, BOTTOM}
+        dlg DLG_2575, {ASYNC, BOTTOM}
                 ; GOGO: Yes_I have been idle for too long. If I deem you worthy, I'll mime your actions in battle.
                 ; But first you must tell me what you're doing here.
         obj_script NPC_1, ASYNC
@@ -57162,7 +57212,7 @@ _cb8212:
                 wait 4
                 dir DOWN
                 end
-        dlg $0A10, {ASYNC, BOTTOM}
+        dlg DLG_2576, {ASYNC, BOTTOM}
                 ; GOGO: What an unusual tale_
                 ; But I sense that you're trying to help make things right again. This should be fun.
                 ; When do we leave?
@@ -57218,7 +57268,7 @@ _cb827d:
                 switch $0032=0
                 goto EventReturn
         switch $01F0=1
-        dlg $0B80
+        dlg DLG_2944
                 ; Need a rest?
                 ; 0: (Yes)
                 ; 1: (No)
@@ -57434,21 +57484,21 @@ _cb83b9:
                 jump_low
                 move RIGHT, 1
                 end
-        dlg $0AC6
+        dlg DLG_2758
                 ; I'm Curley!
         obj_script NPC_6
                 speed NORMAL
                 jump_low
                 move RIGHT, 1
                 end
-        dlg $0AC7
+        dlg DLG_2759
                 ; I'm Larry.
         obj_script NPC_7
                 speed NORMAL
                 jump_low
                 move RIGHT, 1
                 end
-        dlg $0AC8
+        dlg DLG_2760
                 ; I'm Moe!
         wait_15f 5
         obj_script NPC_5, ASYNC
@@ -57466,13 +57516,13 @@ _cb83b9:
                 jump_high
                 move LEFT, 1
                 end
-        dlg $0AC9
+        dlg DLG_2761
                 ; We're the 3 Dream Stooges!
         obj_script NPC_5
                 jump_low
                 move RIGHT, 1
                 end
-        dlg $0ACA
+        dlg DLG_2762
                 ; This man's soul is ours!
         obj_script NPC_5, ASYNC
                 jump_low
@@ -57482,7 +57532,7 @@ _cb83b9:
                 jump_low
                 move RIGHT, 1
                 end
-        dlg $0ACA
+        dlg DLG_2762
                 ; This man's soul is ours!
         obj_script NPC_6, ASYNC
                 jump_low
@@ -57492,7 +57542,7 @@ _cb83b9:
                 jump_low
                 move RIGHT, 1
                 end
-        dlg $0ACA
+        dlg DLG_2762
                 ; This man's soul is ours!
         obj_script NPC_7, ASYNC
                 jump_low
@@ -57508,7 +57558,7 @@ _cb83b9:
                 anim_on
                 hide_obj
                 end
-        dlg $0ACB
+        dlg DLG_2763
                 ; Today we dine well!!!
         wait_obj NPC_5
         obj_script NPC_6, ASYNC
@@ -57522,7 +57572,7 @@ _cb83b9:
                 anim_on
                 hide_obj
                 end
-        dlg $0ACB
+        dlg DLG_2763
                 ; Today we dine well!!!
         wait_obj NPC_6
         obj_script NPC_7, ASYNC
@@ -57536,11 +57586,11 @@ _cb83b9:
                 anim_on
                 hide_obj
                 end
-        dlg $0ACB
+        dlg DLG_2763
                 ; Today we dine well!!!
         wait_obj NPC_7
         wait_30f
-        dlg $0ACC
+        dlg DLG_2764
                 ; ``WAIT!!!''
         pass_off SLOT_1
         mosaic 1
@@ -58671,7 +58721,7 @@ _cb8b8c:
         switch $0189=1
         return
 _cb8b9d:
-        dlg $0ACD
+        dlg DLG_2765
                 ; Back off!
                 ; I'm not gonna mess with ya unless my brothers are here!
                 ; See ya!
@@ -58743,7 +58793,7 @@ _cb8bd1:
                 dir DOWN
                 end
         wait_45f
-        dlg $0AC9, BOTTOM
+        dlg DLG_2761, BOTTOM
                 ; We're the 3 Dream Stooges!
         sfx 85
         obj_script NPC_27, ASYNC
@@ -58764,7 +58814,7 @@ _cb8bd1:
                 jump_low
                 move DOWN, 1
                 end
-        dlg $0ACE, BOTTOM
+        dlg DLG_2766, BOTTOM
                 ; Good, everyone's here!
                 ; Let's rumble!
         battle 90
@@ -59348,7 +59398,7 @@ _cb91aa:
                 switch $01B4=0
                 switch $01B0=0
                 goto EventReturn
-        dlg $0AF0, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2800, {TEXT_ONLY, BOTTOM}
                 ; Memorize the positions.
                 ; This knowledge might save you.
         return
@@ -59360,7 +59410,7 @@ _cb91b6:
                 goto EventReturn
         sfx 166
         call _cb91cc
-        dlg $0AF1, BOTTOM
+        dlg DLG_2801, BOTTOM
                 ;
                 ;     Received ``Lump of Metal.''
         switch $01D6=1
@@ -59873,7 +59923,7 @@ _cb94e7:
         flash RED
         wait_1s
         fade_in_song NARSHE, 48
-        dlg $0ACF, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2767, {TEXT_ONLY, BOTTOM}
                 ;
                 ; Please_
                 ; Save my husband_
@@ -59881,10 +59931,10 @@ _cb94e7:
         obj_script SLOT_1
                 dir UP
                 end
-        dlg $0AD0, BOTTOM
+        dlg DLG_2768, BOTTOM
                 ; Where are we?!
         wait_45f
-        dlg $0AD1, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2769, {TEXT_ONLY, BOTTOM}
                 ;
                 ; We're inside_
                 ; CYAN's soul_
@@ -59897,7 +59947,7 @@ _cb94e7:
         sort_obj
         switch $05F7=0
         wait_1s
-        dlg $0AD2, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2770, {TEXT_ONLY, BOTTOM}
                 ;
                 ; My husband_ CYAN continues to torture himself_
                 ;
@@ -59910,7 +59960,7 @@ _cb94e7:
                 jump_low
                 move DOWN, 1
                 end
-        dlg $0AD3, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2771, {TEXT_ONLY, BOTTOM}
                 ;
                 ; A beast known as Wrexsoul is taking advantage of him.
         obj_script SLOT_1
@@ -59923,7 +59973,7 @@ _cb94e7:
                 dir UP
                 end
         wait_45f
-        dlg $0AD4, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2772, {TEXT_ONLY, BOTTOM}
                 ; Wrexsoul is a composite monster, made up of wretched spirits who were dispatched in meaningless wars.
         wait_45f
         obj_script NPC_3, ASYNC
@@ -59933,7 +59983,7 @@ _cb95b8:
                 wait 4
                 branch _cb95b8
                 end
-        dlg $0AD5, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2773, {TEXT_ONLY, BOTTOM}
                 ;
                 ; They're wreaking havoc on Papa!
                 ; Please help him!!
@@ -59964,7 +60014,7 @@ _cb95b8:
         sfx 209
         show_obj NPC_4
         wait_45f
-        dlg $0AD6, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2774, {TEXT_ONLY, BOTTOM}
                 ;
                 ; Please_ help CYAN_
                 ;
@@ -59995,10 +60045,10 @@ _cb9619:
                 wait 4
                 branch _cb9619
                 end
-        dlg $0AD7, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2775, {TEXT_ONLY, BOTTOM}
                 ; Papa_fishing is boring!
         wait_15f 5
-        dlg $0AD8, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2776, {TEXT_ONLY, BOTTOM}
                 ; This is part of your training. We must all learn patience.
         obj_script NPC_1
                 dir DOWN
@@ -60008,7 +60058,7 @@ _cb9619:
                 wait 2
                 dir RIGHT
                 end
-        dlg $0AD9, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2777, {TEXT_ONLY, BOTTOM}
                 ; I love fishing!
         wait_1s
         hide_obj NPC_2
@@ -60071,7 +60121,7 @@ _cb968e:
                 wait 8
                 branch _cb968e
                 end
-        dlg $0ADA, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2778, {TEXT_ONLY, BOTTOM}
                 ; Excellent concentration!
                 ; With a little more practice,
                 ; you'll be Doma's best fencer!
@@ -60089,7 +60139,7 @@ _cb96a6:
                 wait 3
                 branch _cb96a6
                 end
-        dlg $0ADB, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2779, {TEXT_ONLY, BOTTOM}
                 ; Yippee! Papa praised me!
                 ; I'm gonna go tell Mama!
         obj_script NPC_3
@@ -60125,7 +60175,7 @@ _cb96c3:
                 move DOWN, 1
                 dir LEFT
                 end
-        dlg $0ADC, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2780, {TEXT_ONLY, BOTTOM}
                 ; Sweetheart__
                 ; Do you love me?
         obj_script NPC_5
@@ -60138,7 +60188,7 @@ _cb96c3:
                 speed NORMAL
                 move UP, 1
                 end
-        dlg $0ADD, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2781, {TEXT_ONLY, BOTTOM}
                 ; What do you want from me?
                 ; A soldier doesn't say things like that!
         show_obj NPC_7
@@ -60166,7 +60216,7 @@ _cb96c3:
                 wait 5
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0ADE, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2782, {TEXT_ONLY, BOTTOM}
                 ; I__I_loveth you.
                 ; _More than anything_
         wait_15f 5
@@ -60210,7 +60260,7 @@ _cb9755:
                 wait 2
                 branch _cb9755
                 end
-        dlg $0ADF, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2783, {TEXT_ONLY, BOTTOM}
                 ; I heard that! Yipee!
                 ; ``I loveth you_I loveth you_''
                 ; Papa loves Mama!
@@ -60225,10 +60275,10 @@ _cb9755:
                 wait 5
                 move DOWN, 1
                 end
-        dlg $0AE0, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2784, {TEXT_ONLY, BOTTOM}
                 ; Owain!! Hush!!
         wait_1s
-        dlg $0AE2, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_2786, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; I heard that!
         obj_script NPC_7
                 speed NORMAL
@@ -60315,7 +60365,7 @@ _cb97d6:
                 speed NORMAL
                 move UP, 1
                 end
-        dlg $0AE1, BOTTOM
+        dlg DLG_2785, BOTTOM
                 ; You must be Wrexsoul!
                 ; We want CYAN back!!
         lock_camera
@@ -60323,7 +60373,7 @@ _cb97d6:
                 speed NORMAL
                 move UP, 2
                 end
-        dlg $0AE3, BOTTOM
+        dlg DLG_2787, BOTTOM
                 ; You're too late!
                 ; His pain has reached critical mass! Nothing can stop his feelings of rage and despair!
                 ; I grow stronger now, with his anger, hatred and guilt!
@@ -60366,13 +60416,13 @@ _cb97d6:
                 end
         fade_in 4
         wait_fade
-        dlg $0AE4
+        dlg DLG_2788
                 ; CYAN: Thanks be to you.
         wait_2s
         obj_script CYAN, ASYNC
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $0AE5
+        dlg DLG_2789
                 ; CYAN: I heard my wife and children calling out to me!
                 ; Their voices finally gave me the strength and courage to come to grips with my own suffering.
         wait_15f 10
@@ -60442,9 +60492,9 @@ _cb97d6:
                 move RIGHT, 1
                 move UP, 1
                 end
-        dlg $02D5, BOTTOM
+        dlg DLG_725, BOTTOM
                 ; CYAN: Elayne!
-        dlg $02DB, {ASYNC, BOTTOM}
+        dlg DLG_731, {ASYNC, BOTTOM}
                 ; CYAN: Owain_
         obj_script SLOT_2, ASYNC
                 dir UP
@@ -60457,7 +60507,7 @@ _cb97d6:
                 end
         wait_dlg
         wait_15f 5
-        dlg $0AE6, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2790, {TEXT_ONLY, BOTTOM}
                 ;
                 ; Thank you, my love_
         wait_45f
@@ -60468,7 +60518,7 @@ _cb98bb:
                 wait 4
                 branch _cb98bb
                 end
-        dlg $0AE7, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2791, {TEXT_ONLY, BOTTOM}
                 ;
                 ; Papa's strong!!!
         obj_script NPC_11
@@ -60479,13 +60529,13 @@ _cb98bb:
                 action 33
                 wait 6
                 end
-        dlg $0AE8, BOTTOM
+        dlg DLG_2792, BOTTOM
                 ; CYAN: No_
                 ; I didn't do anything_
                 ; then_ and I can't now_
                 ; I'm a man with no honor_
         wait_1s
-        dlg $0AE9, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_2793, {ASYNC, TEXT_ONLY, BOTTOM}
                 ;
                 ; No!
                 ; You have entirely too much_
@@ -60554,7 +60604,7 @@ _cb98bb:
                 move UP, 1
                 end
         wait_45f
-        dlg $0AC5, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2757, {TEXT_ONLY, BOTTOM}
                 ;
                 ; My beloved_
                 ; We'll always be together_
@@ -60562,7 +60612,7 @@ _cb98bb:
                 dir UP
                 end
         wait_1s
-        dlg $0AEA, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2794, {TEXT_ONLY, BOTTOM}
                 ;
                 ; Papa_
                 ; We love you!
@@ -60570,7 +60620,7 @@ _cb98bb:
         mosaic 14
         flash WHITE
         sfx 2
-        dlg $02D9, {ASYNC, BOTTOM}
+        dlg DLG_729, {ASYNC, BOTTOM}
                 ; CYAN: Please, wait!
         wait_15f 5
         mosaic 14
@@ -60652,7 +60702,7 @@ _cb98bb:
                 dir UP
                 end
         wait_2s
-        dlg $0AEB, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2795, {TEXT_ONLY, BOTTOM}
                 ;
                 ; We'll always be at your side_
         wait_2s
@@ -60725,7 +60775,7 @@ _cb98bb:
                 wait 8
                 dir DOWN
                 end
-        dlg $0AEC, BOTTOM
+        dlg DLG_2796, BOTTOM
                 ; CYAN: Elayne and Owain live on in my heart.
                 ; I must leave the past behind.
                 ; I have much to live for_
@@ -60737,7 +60787,7 @@ _cb98bb:
                 wait 8
                 action 25
                 end
-        dlg $0AED
+        dlg DLG_2797
                 ;
                 ; CYAN's soul cleared itself of all doubt and confusion.
         wait_45f
@@ -60747,7 +60797,7 @@ _cb98bb:
         sfx 109
         flash WHITE
         wait_30f
-        dlg $0AEE
+        dlg DLG_2798
                 ;
                 ; CYAN's swordsmanship attained its peak level of skill.
         fade_in_song CYAN, 160
@@ -60787,7 +60837,7 @@ _cb9a7a:
         delete_obj NPC_9
         switch $0549=0
         sort_obj
-        dlg $0AEF, BOTTOM
+        dlg DLG_2799, BOTTOM
                 ;
                 ; Received the Magicite
                 ; ``Alexandr.''
@@ -60920,7 +60970,7 @@ _cb9aae:
         pass_off NPC_10
         pass_off NPC_11
         pass_off NPC_12
-        dlg $0211
+        dlg DLG_529
                 ; COMMANDER: Attack!
         obj_script NPC_2, ASYNC
                 speed FAST
@@ -61159,20 +61209,20 @@ _cb9c58:
                 move UP, 6
                 end
         wait_30f
-        dlg $0212, BOTTOM
+        dlg DLG_530, BOTTOM
                 ; DOMA SENTRY: It's hopeless.
                 ; We can't keep them out.
         wait_45f
         obj_script NPC_10
                 action 32
                 end
-        dlg $0213, BOTTOM
+        dlg DLG_531, BOTTOM
                 ; DOMA SENTRY: So, it's finally happening_
         wait_2s
         fade_out_song $10
         wait_song
         wait_45f
-        dlg $0214
+        dlg DLG_532
                 ; A moment, Sir!
         obj_script CAMERA
                 speed FAST
@@ -61223,14 +61273,14 @@ _cb9c58:
         wait_obj NPC_10
         wait_obj CAMERA
         wait_obj CYAN
-        dlg $0215
+        dlg DLG_533
                 ; Allow me the honor!
         wait_30f
         hide_obj NPC_11
         hide_obj NPC_10
         call _cad00f
         wait_1s
-        dlg $0225, {TEXT_ONLY, BOTTOM}
+        dlg DLG_549, {TEXT_ONLY, BOTTOM}
                 ; Faithful retainer to his family's liege, with the courage and strength of a hundred men_
         wait_30f
         char_name CYAN, CYAN
@@ -61247,13 +61297,13 @@ _cb9c58:
                 speed SLOW
                 move DOWN, 1
                 end
-        dlg $0216
+        dlg DLG_534
                 ; CYAN: If we can fell their commander, they'll surely give up.
         wait_45f
         obj_script CYAN
                 action 25 | ACTION_H_FLIP
                 end
-        dlg $0217
+        dlg DLG_535
                 ; CYAN: Let us give it a try.
         obj_script CYAN, ASYNC
                 speed NORMAL
@@ -61499,7 +61549,7 @@ _cb9e37:
                 move DOWN, 1
                 dir RIGHT
                 end
-        dlg $0219
+        dlg DLG_537
                 ; DOMA SENTRY: Sir CYAN!
                 ; Let their commander have it!
         obj_script NPC_14, ASYNC
@@ -61515,14 +61565,14 @@ _cb9e37:
         player_ctrl_on
         return
 _cb9e90:
-        dlg $0218
+        dlg DLG_536
                 ; CYAN: Thou musn't give up the fight!
         obj_script SLOT_1
                 move DOWN, 1
                 end
         return
 _cb9e98:
-        dlg $0219
+        dlg DLG_537
                 ; DOMA SENTRY: Sir CYAN!
                 ; Let their commander have it!
         return
@@ -61537,7 +61587,7 @@ _cb9e9c:
         obj_script NPC_13
                 dir UP
                 end
-        dlg $0219
+        dlg DLG_537
                 ; DOMA SENTRY: Sir CYAN!
                 ; Let their commander have it!
         obj_script NPC_14, ASYNC
@@ -61548,7 +61598,7 @@ _cb9e9c:
                 end
         return
 _cb9eb5:
-        dlg $021B
+        dlg DLG_539
                 ; CYAN: I am CYAN,
                 ; retainer to the King of Doma.
                 ; I am your worst nightmare_
@@ -61625,7 +61675,7 @@ _cb9eb5:
         obj_script NPC_12, ASYNC
                 action 31
                 end
-        dlg $021D
+        dlg DLG_541
                 ; TROOPER: The general's been defeated! Run!!!
         pass_off NPC_2
         pass_off NPC_3
@@ -61729,7 +61779,7 @@ _cb9eb5:
                 wait 37
                 dir DOWN
                 end
-        dlg $0229
+        dlg DLG_553
                 ; CYAN: Walled up in there, we can wait out our enemy!
         loop 2
                 obj_script NPC_13, ASYNC
@@ -61911,7 +61961,7 @@ _cba0ec:
                 end
         fade_in
         wait_3s
-        dlg $021A
+        dlg DLG_538
                 ; DOMA SENTRY: Sir CYAN!
         lock_camera
         obj_script CYAN, ASYNC
@@ -61925,7 +61975,7 @@ _cba0ec:
         obj_script NPC_1, ASYNC
                 dir LEFT
                 end
-        dlg $0226, BOTTOM
+        dlg DLG_550, BOTTOM
                 ; The Empire's base is bustling with activity. Something must be up!
         obj_script CYAN
                 speed NORMAL
@@ -61954,7 +62004,7 @@ _cba0ec:
         obj_script CYAN
                 action 26
                 end
-        dlg $021C
+        dlg DLG_540
                 ; CYAN: Huh?
                 ; The water looks odd_
         wait_30f
@@ -62068,7 +62118,7 @@ _cba0ec:
         wait_15f 5
         wait_obj CAMERA
         wait_15f
-        dlg $021A
+        dlg DLG_538
                 ; DOMA SENTRY: Sir CYAN!
         obj_script NPC_1, ASYNC
                 dir LEFT
@@ -62082,7 +62132,7 @@ _cba0ec:
         obj_script CYAN, ASYNC
                 dir DOWN
                 end
-        dlg $021E
+        dlg DLG_542
                 ; CYAN: This is_ POISON!
         wait_45f
         obj_script NPC_1
@@ -62090,7 +62140,7 @@ _cba0ec:
                 wait 4
                 dir DOWN
                 end
-        dlg $0227
+        dlg DLG_551
                 ; DOMA SENTRY: What lowdown, contemptible_!
         wait_45f
         switch $01CC=1
@@ -62106,7 +62156,7 @@ _cba0ec:
                 wait 2
                 dir LEFT
                 end
-        dlg $0228
+        dlg DLG_552
                 ; CYAN: Guard our liege!
         switch $0030=1
         play_song THE_UNFORGIVEN
@@ -62169,9 +62219,9 @@ _cba29f:
                 move DOWN_RIGHT
                 move DOWN, 6
                 end
-        dlg $022C, BOTTOM
+        dlg DLG_556, BOTTOM
                 ; DOMA SENTRY: To the King, on the double!
-        dlg $022D, BOTTOM
+        dlg DLG_557, BOTTOM
                 ; CYAN: Right!
                 ; The King's room is near!
         obj_script CYAN
@@ -62206,7 +62256,7 @@ _cba29f:
                 move UP, 6
                 end
         wait_obj CYAN
-        dlg $021F
+        dlg DLG_543
                 ; CYAN: Your Highness!
                 ; Fear not!
                 ; KING DOMA: Who's there?
@@ -62217,7 +62267,7 @@ _cba29f:
                 wait 6
                 action 9
                 end
-        dlg $0220
+        dlg DLG_544
                 ; CYAN: CYAN, Excellency.
                 ; KING DOMA: Indeed!
                 ; My sight is going fast_
@@ -62245,7 +62295,7 @@ _cba29f:
                 wait 1
                 action 9
                 end
-        dlg $0221
+        dlg DLG_545
                 ; CYAN: Not yet, Highness!
                 ; KING DOMA: I fear for your family. Uhh_chest is on f_fire_
                 ; CYAN: Save your strength!
@@ -62271,7 +62321,7 @@ _cba29f:
                 dir UP
                 end
         wait_2s
-        dlg $021A
+        dlg DLG_538
                 ; DOMA SENTRY: Sir CYAN!
         wait_1s
         obj_script CYAN
@@ -62297,7 +62347,7 @@ _cba29f:
                 dir UP
                 end
         wait_1s
-        dlg $022F
+        dlg DLG_559
                 ; CYAN: There have to be some survivors in the castle!
                 ; DOMA SENTRY: Let's split up_
         fade_out_song $08
@@ -62319,21 +62369,21 @@ _cba29f:
         player_ctrl_on
         return
 _cba37e:
-        dlg $022E
+        dlg DLG_558
                 ; CYAN: Highness_
         return
 _cba382:
-        dlg $022C
+        dlg DLG_556
                 ; DOMA SENTRY: To the King, on the double!
         return
 _cba386:
-        dlg $021A, BOTTOM
+        dlg DLG_538, BOTTOM
                 ; DOMA SENTRY: Sir CYAN!
         obj_script NPC_1, ASYNC
                 wait 10
                 action 34
                 end
-        dlg $022B, BOTTOM
+        dlg DLG_555, BOTTOM
                 ; DOMA SENTRY: We're through.
         wait_obj NPC_1
         return
@@ -62353,7 +62403,7 @@ _cba395:
                 action 32
                 wait 10
                 end
-        dlg $0230
+        dlg DLG_560
                 ; CYAN: Here, too_
         wait_45f
         obj_script CYAN
@@ -62367,7 +62417,7 @@ _cba3b9:
         sort_obj
         return
 _cba3c0:
-        dlg $0233
+        dlg DLG_563
                 ; TROOPER: This is off limits.
         return
 _cba3c4:
@@ -62394,7 +62444,7 @@ _cba3ec:
         flash WHITE
         wait_30f
         call _cacfbd
-        dlg $0B83
+        dlg DLG_2947
                 ; Recovery spring
         return
 _cba3f9:
@@ -62616,7 +62666,7 @@ _cba6a5:
         load_map 146, {8, 12}, UP, STARTUP_EVENT
         if_switch $0179=1, EventReturn
         switch $0179=1
-        dlg $02C1
+        dlg DLG_705
                 ; This is the engineer's room.
                 ; Gotta stop this thing_!
         return
@@ -62692,7 +62742,7 @@ _cba709:
         return
 _cba75c:
         if_switch $0180=1, _cba7e2
-        dlg $02C5
+        dlg DLG_709
                 ; SABIN: Won't open!
         obj_script SLOT_1
                 speed NORMAL
@@ -62712,7 +62762,7 @@ _cba77f:
         return
 _cba792:
         if_switch $0183=1, _cba7a1
-        dlg $02C0
+        dlg DLG_704
                 ; We have to detach the rear train cars!
         obj_script SLOT_1
                 speed NORMAL
@@ -62829,7 +62879,7 @@ _cba864:
                 wait 2
                 dir RIGHT
                 end
-        dlg $02A4
+        dlg DLG_676
                 ; CYAN: A train's there!?
                 ; But I thought Doma's railway had been destroyed_?
                 ; SABIN: May be survivors inside. Let's take a look.
@@ -62892,7 +62942,7 @@ _cba8e7:
 _cba8f1:
         call _cac6ac
         switch $01CC=1
-        dlg $02AB, ASYNC
+        dlg DLG_683, ASYNC
                 ; SABIN: Hey!
                 ; We can get in right here!
         switch $017C=0
@@ -62922,7 +62972,7 @@ _cba8f1:
                 wait 9
                 dir UP
                 end
-        dlg $02A5
+        dlg DLG_677
                 ; CYAN: Sir SABIN!
         obj_script SABIN
                 dir DOWN
@@ -62935,7 +62985,7 @@ _cba8f1:
                 action 37
                 wait 3
                 end
-        dlg $02A6
+        dlg DLG_678
                 ; SABIN: We can't just wander around out here!
                 ; We have to go on board!
         obj_script SABIN
@@ -62947,7 +62997,7 @@ _cba8f1:
                 move UP, 1
                 action 27
                 end
-        dlg $02A5
+        dlg DLG_677
                 ; CYAN: Sir SABIN!
         obj_script CYAN, ASYNC
                 wait 2
@@ -62958,7 +63008,7 @@ _cba8f1:
                 dir DOWN
                 action 20
                 end
-        dlg $02D2
+        dlg DLG_722
                 ; SABIN: Don't worry!
         sfx SFX::DOOR_OPEN
         mod_bg_tiles BG1, {72, 7}, {1, 2}
@@ -62970,7 +63020,7 @@ _cba8f1:
                 move UP, 1
                 end
         hide_obj SABIN
-        dlg $02A5
+        dlg DLG_677
                 ; CYAN: Sir SABIN!
         fade_out 8
         obj_script SHADOW, ASYNC
@@ -63033,7 +63083,7 @@ _cba8f1:
         obj_script SABIN, ASYNC
                 dir DOWN
                 end
-        dlg $02A7
+        dlg DLG_679
                 ; SABIN: What on earth_?
         show_obj CYAN
         show_obj SHADOW
@@ -63051,7 +63101,7 @@ _cba8f1:
                 move UP, 1
                 dir RIGHT
                 end
-        dlg $02A8
+        dlg DLG_680
                 ; CYAN: Let me off!
                 ; This train's haunted!
         wait_45f
@@ -63081,7 +63131,7 @@ _cba8f1:
         obj_script SABIN
                 dir DOWN
                 end
-        dlg $02D1
+        dlg DLG_721
                 ; SABIN: I_it's moving!
                 ; CYAN: If we don't get off now_
         call _cb2e34
@@ -63116,12 +63166,12 @@ _cbaa26:
                 move UP_RIGHT
                 anim_on
                 end
-        dlg $02C5
+        dlg DLG_709
                 ; SABIN: Won't open!
         obj_script CYAN, ASYNC
                 action 32
                 end
-        dlg $02C6
+        dlg DLG_710
                 ; CYAN: We're too late.
         obj_script SABIN
                 speed NORMAL
@@ -63131,13 +63181,13 @@ _cbaa26:
         obj_script SHADOW, ASYNC
                 dir RIGHT
                 end
-        dlg $02C7
+        dlg DLG_711
                 ; SABIN: What's with this train?
         obj_script CYAN, ASYNC
                 wait 4
                 dir LEFT
                 end
-        dlg $02C8
+        dlg DLG_712
                 ; CYAN: This is the Phantom Train_
                 ; It carries the departed to_the other side.
         obj_script SABIN
@@ -63145,14 +63195,14 @@ _cbaa26:
                 wait 9
                 dir RIGHT
                 end
-        dlg $02C9
+        dlg DLG_713
                 ; SABIN: Wait a sec_
                 ; I don't want to go THERE!
                 ; CYAN: We all have to go sometime_
         obj_script SABIN, ASYNC
                 action 24
                 end
-        dlg $02CA
+        dlg DLG_714
                 ; SABIN: I have things to do HERE.
                 ; We have to stop this thing. Let's make for the engine.
         call _cb2e34
@@ -63191,7 +63241,7 @@ _cbaa26:
 _cbaaaf:
         if_switch $01B1=0, EventReturn
         if_switch $0039=1, _cba76c
-        dlg $028B
+        dlg DLG_651
                 ; Can't leave the train now!
         obj_script SLOT_1
                 speed NORMAL
@@ -63201,7 +63251,7 @@ _cbaaaf:
 _cbaac4:
         if_switch $01B3=0, EventReturn
         if_switch $0039=1, _cba77f
-        dlg $028B
+        dlg DLG_651
                 ; Can't leave the train now!
         obj_script SLOT_1
                 speed NORMAL
@@ -63209,14 +63259,14 @@ _cbaac4:
                 end
         return
 _cbaad9:
-        dlg $02CD
+        dlg DLG_717
                 ; SABIN: But_
                 ; The greater our number,
                 ; the slower we can move.
                 ; Forget it!
         return
 _cbaadd:
-        dlg $02CC
+        dlg DLG_716
                 ; SABIN: What is it?
                 ; CYAN: Seems to want to come with us.
                 ; Bring it along?
@@ -63225,7 +63275,7 @@ _cbaadd:
         choice _cbac06, EventReturn
         return
 _cbaae8:
-        dlg $02CC
+        dlg DLG_716
                 ; SABIN: What is it?
                 ; CYAN: Seems to want to come with us.
                 ; Bring it along?
@@ -63234,7 +63284,7 @@ _cbaae8:
         choice _cbabb9, EventReturn
         return
 _cbaaf3:
-        dlg $02CC
+        dlg DLG_716
                 ; SABIN: What is it?
                 ; CYAN: Seems to want to come with us.
                 ; Bring it along?
@@ -63243,7 +63293,7 @@ _cbaaf3:
         choice _cbab6c, EventReturn
         return
 _cbaafe:
-        dlg $02CC
+        dlg DLG_716
                 ; SABIN: What is it?
                 ; CYAN: Seems to want to come with us.
                 ; Bring it along?
@@ -63252,7 +63302,7 @@ _cbaafe:
         choice _cbaca0, EventReturn
         return
 _cbab09:
-        dlg $02CC
+        dlg DLG_716
                 ; SABIN: What is it?
                 ; CYAN: Seems to want to come with us.
                 ; Bring it along?
@@ -63261,7 +63311,7 @@ _cbab09:
         choice _cbab1f, EventReturn
         return
 _cbab14:
-        dlg $02CC
+        dlg DLG_716
                 ; SABIN: What is it?
                 ; CYAN: Seems to want to come with us.
                 ; Bring it along?
@@ -63438,7 +63488,7 @@ _cbaccf:
         hide_obj NPC_1
         return
 _cbaced:
-        dlg $02CB
+        dlg DLG_715
                 ; Look out!
         call _cb69d8
         battle 47
@@ -63487,7 +63537,7 @@ _cbad3d:
         hide_obj NPC_3
         return
 _cbad44:
-        dlg $02D0
+        dlg DLG_720
                 ; Howdy, folks. I have some
                 ; great, value-priced items!
                 ; 0: (Shop)
@@ -63534,7 +63584,7 @@ _cbad70:
                 dir RIGHT
                 end
         wait_30f
-        dlg $02CE
+        dlg DLG_718
                 ; Shall we be off?
         wait_90f
         obj_script SLOT_4, ASYNC
@@ -63561,7 +63611,7 @@ _cbad70:
                 dir LEFT
                 end
         wait_30f
-        dlg $02CF
+        dlg DLG_719
                 ; Guess we're on our own now_
         obj_script SLOT_2
                 move RIGHT, 1
@@ -63594,7 +63644,7 @@ _cbadd4:
                 dir RIGHT
                 end
         wait_30f
-        dlg $02CE
+        dlg DLG_718
                 ; Shall we be off?
         wait_90f
         obj_script SLOT_3
@@ -63612,7 +63662,7 @@ _cbadd4:
                 dir LEFT
                 end
         wait_30f
-        dlg $02CF
+        dlg DLG_719
                 ; Guess we're on our own now_
         obj_script SLOT_2
                 move RIGHT, 1
@@ -63642,7 +63692,7 @@ _cbae29:
                 dir RIGHT
                 end
         wait_30f
-        dlg $02CE
+        dlg DLG_718
                 ; Shall we be off?
         wait_90f
         obj_script SLOT_3
@@ -63661,7 +63711,7 @@ _cbae29:
                 dir LEFT
                 end
         wait_30f
-        dlg $02CF
+        dlg DLG_719
                 ; Guess we're on our own now_
         obj_script SLOT_2
                 move RIGHT, 1
@@ -63703,7 +63753,7 @@ _cbae88:
                 dir RIGHT
                 end
         wait_30f
-        dlg $02CE
+        dlg DLG_718
                 ; Shall we be off?
         wait_90f
         obj_script SLOT_4
@@ -63722,7 +63772,7 @@ _cbae88:
                 dir LEFT
                 end
         wait_30f
-        dlg $02CF
+        dlg DLG_719
                 ; Guess we're on our own now_
         obj_script SLOT_2, ASYNC
                 move RIGHT, 1
@@ -63734,7 +63784,7 @@ _cbae88:
         call _cacb95
         return
 _cbaee3:
-        dlg $0296
+        dlg DLG_662
                 ; IMPRESARIO: I manage this train! What business have you here?
                 ; Hmmm_
                 ; 0: (Tell us about the train.)
@@ -63743,7 +63793,7 @@ _cbaee3:
         choice _cbaef1, _cbb90a, EventReturn
         return
 _cbaef1:
-        dlg $0297
+        dlg DLG_663
                 ; IMPRESARIO: This train ferries
                 ; the dear departed to the
                 ; ``other side.'' There they can take their eternal rest.
@@ -63752,14 +63802,14 @@ _cbaef5:
         if_switch $01B0=0, EventReturn
         if_switch $01B5=1, EventReturn
         switch $01B5=1
-        dlg $0299
+        dlg DLG_665
                 ; CYAN: Be these time schedules?
                 ; SABIN: Hmmm_
                 ; They're all blank!
         obj_script NPC_1, ASYNC
                 dir RIGHT
                 end
-        dlg $029A
+        dlg DLG_666
                 ; IMPRESARIO: The Phantom Train
                 ; guides ``the departed ones'' to
                 ; the spirit world. They have no need of schedules!
@@ -63798,7 +63848,7 @@ _cbaf12:
                 move DOWN_LEFT
                 anim_on
                 end
-        dlg $029B
+        dlg DLG_667
                 ; SABIN: What's this?
                 ; Let me just give it a_
         obj_script CYAN
@@ -63808,7 +63858,7 @@ _cbaf12:
                 wait 2
                 action 27
                 end
-        dlg $029C
+        dlg DLG_668
                 ; CYAN: Sir SABIN!
                 ; Maybe we shouldn't fumble with that!
         obj_script SABIN, ASYNC
@@ -63835,7 +63885,7 @@ _cbaf12:
                 dir LEFT
                 end
         wait_30f
-        dlg $029E
+        dlg DLG_670
                 ; SABIN: Gave it my best shot.
         obj_script CYAN
                 dir DOWN
@@ -63844,9 +63894,9 @@ _cbaf12:
                 jump_low
                 anim_on
                 end
-        dlg $02A0
+        dlg DLG_672
                 ; CYAN: How can you_!?
-        dlg $029F, ASYNC
+        dlg DLG_671, ASYNC
                 ; CYAN: How could you_
         obj_script SABIN, ASYNC
                 dir UP
@@ -63877,7 +63927,7 @@ _cbafaa:
                 wait 3
                 branch _cbafaa
                 end
-        dlg $029D
+        dlg DLG_669
                 ; SABIN: CYAN_
                 ; You're not_scared, are you!?
         obj_script SABIN, ASYNC
@@ -63901,18 +63951,18 @@ _cbafaa:
                 wait 1
                 dir DOWN
                 end
-        dlg $02A1
+        dlg DLG_673
                 ; CYAN: How dare you?!
                 ; Just because I respect other beings' property doesn't mean I'm not mechanically minded!
         wait_obj CYAN
         wait_45f
-        dlg $02A2
+        dlg DLG_674
                 ; SABIN: CYAN_
                 ; You're a total klutz when it comes to machines.
         obj_script CYAN, ASYNC
                 action 31
                 end
-        dlg $02A3
+        dlg DLG_675
                 ; CYAN: SILENCE_!
                 ; H_how could you tell?
         obj_script SABIN
@@ -63944,7 +63994,7 @@ _cbafaa:
         call _cacb95
         return
 _cbb010:
-        dlg $0289
+        dlg DLG_649
                 ; WAITER: Please order at the table_
         return
 _cbb014:
@@ -63964,7 +64014,7 @@ _cbb014:
         obj_script SLOT_1
                 dir LEFT
                 end
-        dlg $028C, BOTTOM
+        dlg DLG_652, BOTTOM
                 ; WAITER: Care for something?
                 ; 0: (Yes, please!)
                 ; 1: (No, thanks)
@@ -63987,7 +64037,7 @@ _cbb03d:
         return
 _cbb04d:
         wait_45f
-        dlg $0291, {ASYNC, BOTTOM}
+        dlg DLG_657, {ASYNC, BOTTOM}
                 ; WAITER: One moment, please.
         obj_script NPC_1
                 speed NORMAL
@@ -64045,7 +64095,7 @@ _cbb09d:
                 wait 2
                 branch _cbb09d
                 end
-        dlg $06D5, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1749, {TEXT_ONLY, BOTTOM}
                 ;
         if_switch $0127=0, _cbb140
         return
@@ -64058,7 +64108,7 @@ _cbb0b8:
                 wait 2
                 branch _cbb0b8
                 end
-        dlg $028A, BOTTOM
+        dlg DLG_650, BOTTOM
                 ; SABIN: Food! Chop!
                 ; Let's go slop the hogs!
         if_switch $0127=0, _cbb140
@@ -64072,7 +64122,7 @@ _cbb0cd:
                 wait 2
                 branch _cbb0cd
                 end
-        dlg $0292, BOTTOM
+        dlg DLG_658, BOTTOM
                 ; CYAN: A_are you going to be okay if you eat THIS?
         if_switch $0127=0, _cbb140
         return
@@ -64090,7 +64140,7 @@ _cbb0e0:
         obj_script SLOT_1
                 dir RIGHT
                 end
-        dlg $0293, BOTTOM
+        dlg DLG_659, BOTTOM
                 ; SHADOW: __
                 ; Interceptor_are you hungry?
         obj_script NPC_3
@@ -64149,7 +64199,7 @@ _cbb140:
                 action 32
                 end
         wait_1s
-        dlg $0294, BOTTOM
+        dlg DLG_660, BOTTOM
                 ; Gobble_ snarf_ snap_
         wait_1s
         sfx SFX::RECOVERY_SPRING
@@ -64158,7 +64208,7 @@ _cbb140:
                 action 10
                 end
         call _cacfbd
-        dlg $0B1A, BOTTOM
+        dlg DLG_2842, BOTTOM
                 ; HP and MP recovered,
                 ; and status ailments, like Poison,
                 ; cured!
@@ -64217,7 +64267,7 @@ _cbb19e:
                 wait 2
                 branch _cbb19e
                 end
-        dlg $028D, BOTTOM
+        dlg DLG_653, BOTTOM
                 ; SABIN: Food! Food!
                 ; Bring me everything ya got!
         obj_script SABIN, ASYNC
@@ -64280,7 +64330,7 @@ _cbb1ac:
                 wait 5
                 action 15
                 end
-        dlg $0292, BOTTOM
+        dlg DLG_658, BOTTOM
                 ; CYAN: A_are you going to be okay if you eat THIS?
         obj_script SABIN, ASYNC
                 dir RIGHT
@@ -64308,7 +64358,7 @@ _cbb1ac:
         obj_script SABIN, ASYNC
                 dir DOWN
                 end
-        dlg $028E, BOTTOM
+        dlg DLG_654, BOTTOM
                 ; SABIN: Worried?
                 ; Can't wage war on an empty stomach!
         obj_script CYAN
@@ -64319,7 +64369,7 @@ _cbb1ac:
                 wait 10
                 action 35
                 end
-        dlg $028F, BOTTOM
+        dlg DLG_655, BOTTOM
                 ; CYAN: Hummm_
                 ; Sir! I won't hear any more of this kind of talk!
         obj_script SABIN
@@ -64333,7 +64383,7 @@ _cbb1ac:
                 end
         call _cbb140
         switch $019D=1
-        dlg $0290, BOTTOM
+        dlg DLG_656, BOTTOM
                 ; SABIN: Well!
                 ; I've stuffed down all I can_
                 ; Let's go!
@@ -64351,7 +64401,7 @@ _cbb1ac:
         return
 _cbb265:
         switch $017C=1
-        dlg $02AE, {TEXT_ONLY, BOTTOM}
+        dlg DLG_686, {TEXT_ONLY, BOTTOM}
                 ;
                 ; N.o_e.s.c.a.p.e_!
         call _cb69d8
@@ -64359,7 +64409,7 @@ _cbb265:
         call _ca5ea9
         update_party
         load_map 142, {41, 9}, DOWN, ASYNC
-        dlg $02AC
+        dlg DLG_684
                 ; Ha, ha ha_
                 ; What ever did you think you were doing?
         switch $003D=0
@@ -64370,7 +64420,7 @@ _cbb265:
                 end
         show_obj NPC_1
         sort_obj
-        dlg $02AE, TEXT_ONLY
+        dlg DLG_686, TEXT_ONLY
                 ;
                 ; N.o_e.s.c.a.p.e_!
         obj_script SLOT_1, ASYNC
@@ -64381,7 +64431,7 @@ _cbb292:
                 wait 5
                 branch _cbb292
                 end
-        dlg $02AD
+        dlg DLG_685
                 ; Huh!?
         obj_script SLOT_1
                 dir DOWN
@@ -64392,7 +64442,7 @@ _cbb292:
                 end
         show_obj NPC_2
         sort_obj
-        dlg $02AE, {ASYNC, TEXT_ONLY}
+        dlg DLG_686, {ASYNC, TEXT_ONLY}
                 ;
                 ; N.o_e.s.c.a.p.e_!
         obj_script NPC_1
@@ -64400,9 +64450,9 @@ _cbb292:
                 move DOWN, 1
                 end
         wait_dlg
-        dlg $02AF
+        dlg DLG_687
                 ; Who's there!?
-        dlg $02B0, ASYNC
+        dlg DLG_688, ASYNC
                 ; It came from this direction.
         obj_script SLOT_1, ASYNC
                 speed NORMAL
@@ -64430,7 +64480,7 @@ _cbb292:
         show_obj NPC_6
         show_obj NPC_7
         sort_obj
-        dlg $02AE, {ASYNC, TEXT_ONLY}
+        dlg DLG_686, {ASYNC, TEXT_ONLY}
                 ;
                 ; N.o_e.s.c.a.p.e_!
         obj_script SLOT_1, ASYNC
@@ -64455,7 +64505,7 @@ _cbb292:
                 move DOWN, 1
                 end
         wait_dlg
-        dlg $02B1
+        dlg DLG_689
                 ; Whoa! They're coming_!
         obj_script NPC_5
                 pos {34, 8}
@@ -64473,7 +64523,7 @@ _cbb292:
         show_obj NPC_9
         show_obj NPC_10
         sort_obj
-        dlg $02AE, {ASYNC, TEXT_ONLY}
+        dlg DLG_686, {ASYNC, TEXT_ONLY}
                 ;
                 ; N.o_e.s.c.a.p.e_!
         obj_script SLOT_1, ASYNC
@@ -64507,7 +64557,7 @@ _cbb292:
                 move DOWN, 1
                 end
         wait_dlg
-        dlg $02B2
+        dlg DLG_690
                 ; This way too!
         obj_script NPC_12
                 pos {43, 8}
@@ -64520,7 +64570,7 @@ _cbb292:
         show_obj NPC_8
         show_obj NPC_12
         sort_obj
-        dlg $02B3, {ASYNC, TEXT_ONLY}
+        dlg DLG_691, {ASYNC, TEXT_ONLY}
                 ;    You can't escape_
                 ; Nowhere to run_
                 ; Nowhere to hide_
@@ -64606,7 +64656,7 @@ _cbb3d5:
         switch $017C=1
         return
 _cbb3e2:
-        dlg $02AE, TEXT_ONLY
+        dlg DLG_686, TEXT_ONLY
                 ;
                 ; N.o_e.s.c.a.p.e_!
         return
@@ -64625,7 +64675,7 @@ _cbb3e6:
         show_obj NPC_11
         show_obj NPC_13
         sort_obj
-        dlg $02B3, {ASYNC, TEXT_ONLY}
+        dlg DLG_691, {ASYNC, TEXT_ONLY}
                 ;    You can't escape_
                 ; Nowhere to run_
                 ; Nowhere to hide_
@@ -64678,7 +64728,7 @@ _cbb3e6:
         show_obj NPC_14
         show_obj NPC_15
         sort_obj
-        dlg $02B3, {ASYNC, TEXT_ONLY}
+        dlg DLG_691, {ASYNC, TEXT_ONLY}
                 ;    You can't escape_
                 ; Nowhere to run_
                 ; Nowhere to hide_
@@ -64733,7 +64783,7 @@ _cbb3e6:
                 move UP, 1
                 dir DOWN
                 end
-        dlg $02B4, BOTTOM
+        dlg DLG_692, BOTTOM
                 ; Bloody persistent_!
         obj_script NPC_1, ASYNC
                 dir UP
@@ -64810,7 +64860,7 @@ _cbb4d5:
         obj_script CYAN, ASYNC
                 action 10
                 end
-        dlg $02B5, BOTTOM
+        dlg DLG_693, BOTTOM
                 ; CYAN: I believe we're stuck!
         wait_45f
         obj_script CYAN, ASYNC
@@ -64836,10 +64886,10 @@ _cbb4d5:
         obj_script SABIN, ASYNC
                 dir LEFT
                 end
-        dlg $02B6, BOTTOM
+        dlg DLG_694, BOTTOM
                 ; SABIN: I know!
                 ; CYAN: You have an idea?
-        dlg $02B7, BOTTOM
+        dlg DLG_695, BOTTOM
                 ; SABIN: Okay_
                 ; The time has come to see if all my training has paid off. Come, CYAN!
         pass_off CYAN
@@ -64861,7 +64911,7 @@ _cbb4d5:
         obj_script SABIN, ASYNC
                 action 10
                 end
-        dlg $02B8, BOTTOM
+        dlg DLG_696, BOTTOM
                 ; SABIN: Yahoooo!!
         obj_script SABIN
                 speed FAST
@@ -64965,7 +65015,7 @@ _cbb5b6:
                 dir LEFT
                 end
         wait 15
-        dlg $02AE, TEXT_ONLY
+        dlg DLG_686, TEXT_ONLY
                 ;
                 ; N.o_e.s.c.a.p.e_!
         obj_script SLOT_3, ASYNC
@@ -64975,7 +65025,7 @@ _cbb5b6:
                 wait 2
                 dir RIGHT
                 end
-        dlg $02B9
+        dlg DLG_697
                 ; Hey_
                 ; Uh, oh_?
         obj_script NPC_1
@@ -65013,10 +65063,10 @@ _cbb5b6:
                 wait 2
                 dir LEFT
                 end
-        dlg $02B4
+        dlg DLG_692
                 ; Bloody persistent_!
         call _cb2e34
-        dlg $02C0
+        dlg DLG_704
                 ; We have to detach the rear train cars!
         obj_script SLOT_4, ASYNC
                 move LEFT, 2
@@ -65121,7 +65171,7 @@ _cbb645:
         wait_45f
         switch $0183=1
         switch $0180=0
-        dlg $0298
+        dlg DLG_664
                 ; Can't follow us now.
         return
 _cbb7c7:
@@ -65160,7 +65210,7 @@ _cbb7f8:
         create_obj NPC_1
         sort_obj
         show_obj NPC_1
-        dlg $02BA, ASYNC
+        dlg DLG_698, ASYNC
                 ; VOICE: Stop where you are!
         call _cac6ac
         party_chars SABIN, CYAN
@@ -65244,7 +65294,7 @@ _cbb7f8:
                 dir RIGHT
                 end
         wait 18
-        dlg $02BB
+        dlg DLG_699
                 ; MAN: I am Ziegfried, the world's greatest swordsman! That treasure chest is mine.
                 ; If I were you, Ox, I'd grab grandpa, here, and run!
         wait 10
@@ -65267,7 +65317,7 @@ _cbb7f8:
         obj_script SABIN, ASYNC
                 dir RIGHT
                 end
-        dlg $02BC
+        dlg DLG_700
                 ; SABIN: You look more like a manicurist. Now SCRAM!!!
                 ; ZIEGFRIED: Aha!
                 ; The ox bellows!
@@ -65292,12 +65342,12 @@ _cbb7f8:
         pass_on NPC_1
         fade_in 4
         wait_1s
-        dlg $02BD
+        dlg DLG_701
                 ; ``What a bag of wind_''
         obj_script NPC_1, ASYNC
                 dir DOWN
                 end
-        dlg $02BE
+        dlg DLG_702
                 ; SIGFRIED: Impossible!
                 ; I_I'm the greatest_
                 ; But I'll still laugh last!
@@ -65327,7 +65377,7 @@ _cbb7f8:
                 end
         switch $0187=1
         switch $0502=0
-        dlg $02BF
+        dlg DLG_703
                 ; SIGFRIED: Uwa, ha, ha!
                 ; This treasure is mine!
                 ; Ta ta, cretins!
@@ -65338,7 +65388,7 @@ _cbb7f8:
                 end
         return
 _cbb90a:
-        dlg $0295
+        dlg DLG_661
                 ; IMPRESARIO: Wanna stop the train? Just use the controls in the engineer's compartment!
         return
 _cbb90e:
@@ -65434,13 +65484,13 @@ _cbb9c2:
                 switch $01B4=0
                 switch $01B3=0
                 goto EventReturn
-        dlg $02C2
+        dlg DLG_706
                 ; Something's written here!
                 ; What? What?
                 ; To stop the train, shut the first and third pressure valves, and operate the switch outside, near the smoke stack.
         return
 _cbb9d0:
-        dlg $02C4
+        dlg DLG_708
                 ; Just throw this switch, and_
                 ; Huh? Nothing's happening!
         return
@@ -65454,7 +65504,7 @@ _cbb9d4:
                 switch $0186=0
                 switch $0184=0
                 goto _cbb9d0
-        dlg $02C3
+        dlg DLG_707
                 ; Press this switch and the train'll stop.
         sfx 150
         wait_45f
@@ -65463,7 +65513,7 @@ _cbb9d4:
         wait_1s
         shake {BG1, BG3, SPRITES}, 0, 2
         wait_2s
-        dlg $02D3
+        dlg DLG_723
                 ; PHANTOM TRAIN: So! You've been slowing my progress!
         switch $003A=1
         switch $0179=0
@@ -65475,7 +65525,7 @@ _cbb9d4:
         fade_in
         switch $003B=1
         switch $0517=0
-        dlg $02D4
+        dlg DLG_724
                 ; PHANTOM TRAIN: I will let you go_
                 ; _but first there is something I must do_
         fade_out 4
@@ -65569,7 +65619,7 @@ _cbb9d4:
         obj_script SABIN
                 dir LEFT
                 end
-        dlg $02A9, BOTTOM
+        dlg DLG_681, BOTTOM
                 ; CYAN: Gulp_where are we?
         obj_script CYAN, ASYNC
                 speed NORMAL
@@ -65666,7 +65716,7 @@ _cbb9d4:
                 layer 2
                 end
         wait_30f
-        dlg $02AA, ASYNC
+        dlg DLG_682, ASYNC
                 ; SABIN: Hoo, boy!
                 ; Finally got off_
         obj_script NPC_17
@@ -65719,7 +65769,7 @@ _cbb9d4:
         obj_script NPC_17
                 action 24
                 end
-        dlg $02DA
+        dlg DLG_730
                 ; SABIN: We shouldn't be here. Let's go NOW!
         obj_script NPC_19, ASYNC
                 action 32
@@ -65906,7 +65956,7 @@ _cbb9d4:
         obj_script NPC_18
                 action 10 | ACTION_H_FLIP
                 end
-        dlg $02D8
+        dlg DLG_728
                 ; CYAN: No!!!
                 ; Elayne! Owain!!
         obj_script NPC_17, ASYNC
@@ -65944,7 +65994,7 @@ _cbbce0:
                 wait 1
                 branch _cbbce0
                 end
-        dlg $02D7
+        dlg DLG_727
                 ; SABIN: CYAN!
                 ; Is that your wife and child?
         obj_script NPC_17
@@ -65971,7 +66021,7 @@ _cbbce0:
         obj_script NPC_18
                 dir RIGHT
                 end
-        dlg $02D6
+        dlg DLG_726
                 ; Departing?!
         spc_cmd $10, $20, $80
         scroll_bg BG1, {1, 0}, ALT
@@ -66029,7 +66079,7 @@ _cbbd4e:
         wait_1s
         hide_obj NPC_17
         hide_obj NPC_19
-        dlg $02D9, ASYNC
+        dlg DLG_729, ASYNC
                 ; CYAN: Please, wait!
         scroll_bg BG1, {4, 0}, ALT
         obj_script NPC_18
@@ -66058,7 +66108,7 @@ _cbbd4e:
                 speed SLOW
                 move DOWN, 1
                 end
-        dlg $02D5, ASYNC
+        dlg DLG_725, ASYNC
                 ; CYAN: Elayne!
         wait_30f
         obj_script NPC_3
@@ -66069,7 +66119,7 @@ _cbbd4e:
         show_obj NPC_3
         scroll_bg BG1, {8, 0}, ALT
         wait_15f
-        dlg $02DB, ASYNC
+        dlg DLG_731, ASYNC
                 ; CYAN: Owain_
         obj_script CAMERA, ASYNC
                 speed NORMAL
@@ -66143,12 +66193,12 @@ _cbbd4e:
         wait_15f
         scroll_bg BG1, {28, 0}, ALT
         wait_45f
-        dlg $02DC, TEXT_ONLY
+        dlg DLG_732, TEXT_ONLY
                 ; My love_
                 ; You made me so happy.
                 ; Don't forget me_
         wait_15f
-        dlg $02DD, TEXT_ONLY
+        dlg DLG_733, TEXT_ONLY
                 ; Dad!
                 ; I'll make sure Mom's all right!
         scroll_bg BG1, {29, 0}, ALT
@@ -66209,11 +66259,11 @@ _cbbd4e:
         return
 _cbbe99:
         wait_15f 5
-        dlg $02DF
+        dlg DLG_735
                 ; CYAN: __
         return
 _cbbe9f:
-        dlg $02DE
+        dlg DLG_734
                 ; SHADOW: Leave 'em alone.
         return
 _cbbea3:
@@ -66364,9 +66414,9 @@ _cbbfa5:
         obj_script SABIN, ASYNC
                 action 28
                 end
-        dlg $02E0, BOTTOM
+        dlg DLG_736, BOTTOM
                 ; SABIN: This must be Baren Falls.
-        dlg $02E1, {ASYNC, BOTTOM}
+        dlg DLG_737, {ASYNC, BOTTOM}
                 ; CYAN: To the south is the Veldt. Dangerous creatures there.
                 ; SABIN: And the Empire's right on our tails.
                 ; CYAN: If we can slip through the Veldt, we can reach the town of Mobliz, to the east_
@@ -66397,13 +66447,13 @@ _cbbfa5:
         return
 _cbbfe9:
         wait_15f 10
-        dlg $02E4, BOTTOM
+        dlg DLG_740, BOTTOM
                 ; SHADOW: I have served my purpose_
         obj_script SHADOW
                 speed NORMAL
                 move DOWN, 3
                 end
-        dlg $02E2, ASYNC
+        dlg DLG_738, ASYNC
                 ; SABIN: SHADOW!
         obj_script SABIN
                 speed NORMAL
@@ -66418,7 +66468,7 @@ _cbbfe9:
                 dir UP
                 wait 5
                 end
-        dlg $02E3
+        dlg DLG_739
                 ; SABIN: Thanks for your help!
                 ; Let's join ranks again some time!
         wait_90f
@@ -66456,7 +66506,7 @@ _cbc03f:
         if_switch $01B0=0, EventReturn
         if_switch $01B5=1, EventReturn
         switch $01B5=1
-        dlg $02E5, BOTTOM
+        dlg DLG_741, BOTTOM
                 ; Jump?
                 ; 0: (Why not?)
                 ; 1: (You crazy?)
@@ -66638,7 +66688,7 @@ _cbc058:
                 dir DOWN
                 end
         wait_1s
-        dlg $02E6, {TEXT_ONLY, BOTTOM}
+        dlg DLG_742, {TEXT_ONLY, BOTTOM}
                 ; Draped in monster hides, eyes shining with intelligence. A youth surviving against all odds_
         wait_30f
         char_prop GAU, GAU
@@ -66698,7 +66748,7 @@ _cbc058:
                 dir RIGHT
                 end
         wait_45f
-        dlg $02E7
+        dlg DLG_743
                 ; And you are?
         wait_45f
         obj_script NPC_1
@@ -66869,7 +66919,7 @@ _cbc228:
         obj_script SABIN
                 dir RIGHT
                 end
-        dlg $0312, BOTTOM
+        dlg DLG_786, BOTTOM
                 ; SABIN: CYAN!
                 ; The shiny thing GAU spoke of is in here.
         obj_script CYAN
@@ -66892,14 +66942,14 @@ _cbc228:
         obj_script SABIN
                 dir UP
                 end
-        dlg $0313, BOTTOM
+        dlg DLG_787, BOTTOM
                 ; CYAN: Uh, Sir GAU,
                 ; where exactly is it?
         wait_15f 5
         obj_script GAU, ASYNC
                 action 22
                 end
-        dlg $0314, BOTTOM
+        dlg DLG_788, BOTTOM
                 ; GAU: GAU_forget!!
         obj_script GAU, ASYNC
 _cbc317:
@@ -66922,7 +66972,7 @@ _cbc317:
         obj_script SABIN
                 dir RIGHT
                 end
-        dlg $0315, BOTTOM
+        dlg DLG_789, BOTTOM
                 ; SABIN: Shall we look around?
                 ; CYAN: Indeed!
         obj_script GAU
@@ -66999,7 +67049,7 @@ _cbc35a:
         obj_script SABIN
                 dir LEFT
                 end
-        dlg $0316, BOTTOM
+        dlg DLG_790, BOTTOM
                 ; SABIN: Not over here_
         call _cb2e34
         wait_30f
@@ -67079,7 +67129,7 @@ _cbc3d2:
         obj_script SABIN
                 action 34
                 end
-        dlg $0317
+        dlg DLG_791
                 ; SABIN: Tonic_
         give_item TONIC
         obj_script SABIN, ASYNC
@@ -67089,7 +67139,7 @@ _cbc3d2:
                 dir LEFT
                 end
         wait_30f
-        dlg $0318
+        dlg DLG_792
                 ; CYAN: T_this is Sir GAU's treasure?!
         obj_script GAU
                 action 31
@@ -67193,7 +67243,7 @@ _cbc4df:
                 branch _cbc4df
                 end
         wait_90f
-        dlg $0319, {ASYNC, BOTTOM}
+        dlg DLG_793, {ASYNC, BOTTOM}
                 ; SABIN: Hey, GAU.
                 ; What's wrong?
         obj_script SABIN
@@ -67217,7 +67267,7 @@ _cbc4df:
         obj_script GAU, ASYNC
                 action 15
                 end
-        dlg $031A, BOTTOM
+        dlg DLG_794, BOTTOM
                 ; GAU: GAU!!
         obj_script SABIN
                 action 31
@@ -67246,7 +67296,7 @@ _cbc4df:
         obj_script SABIN
                 action 31
                 end
-        dlg $031B, BOTTOM
+        dlg DLG_795, BOTTOM
                 ; SABIN: G'uh! My pouch! There was 500 GP in it_!
         obj_script GAU
                 speed FAST
@@ -67272,7 +67322,7 @@ _cbc53b:
         obj_script SABIN
                 action 23
                 end
-        dlg $031D
+        dlg DLG_797
                 ; SABIN: GAU_YOU!
         wait_30f
         obj_script CAMERA, ASYNC
@@ -67285,7 +67335,7 @@ _cbc53b:
                 end
         take_gil 500
         if_switch $01BE=1, _cbc5b2
-        dlg $031E, BOTTOM
+        dlg DLG_798, BOTTOM
                 ; CYAN: Oh, dear.
                 ; Sir SABIN, let me handle this.
         wait_15f
@@ -67308,7 +67358,7 @@ _cbc57e:
                 wait 1
                 branch _cbc57e
                 end
-        dlg $0320
+        dlg DLG_800
                 ; SABIN: Urggggh!
         wait_30f
         obj_script SABIN, ASYNC
@@ -67341,7 +67391,7 @@ _cbc5b2:
                 wait 5
                 dir RIGHT
                 end
-        dlg $031F
+        dlg DLG_799
                 ; CYAN: Sir SABIN_
                 ; Recall that you had me hold onto your pouch. Here.
         obj_script SABIN
@@ -67470,7 +67520,7 @@ _cbc66d:
         obj_script SABIN, ASYNC
                 dir DOWN
                 end
-        dlg $0321
+        dlg DLG_801
                 ; CYAN: Is this it?
                 ; GAU's ``treasure''?
         obj_script GAU, ASYNC
@@ -67497,7 +67547,7 @@ _cbc696:
                 wait 2
                 branch _cbc696
                 end
-        dlg $030F
+        dlg DLG_783
                 ; GAU: Treasure_yesss_
                 ; CYAN: Looks like glass_
                 ; SABIN: Looks like it just might fit_
@@ -67529,7 +67579,7 @@ _cbc6c0:
                 wait 2
                 branch _cbc6c0
                 end
-        dlg $0310
+        dlg DLG_784
                 ; SABIN: Hummm_
                 ; Is this of any use?
         wait_15f
@@ -67548,7 +67598,7 @@ _cbc6c0:
         call _cb6a22
         delete_obj NPC_1
         sort_obj
-        dlg $0311
+        dlg DLG_785
                 ; SABIN: Will this really let us breathe underwater?
         switch $01BB=0
         switch $0041=1
@@ -67562,7 +67612,7 @@ _cbc6c0:
         obj_script SABIN
                 action 24
                 end
-        dlg $0322
+        dlg DLG_802
                 ; SABIN: Let's go!
         wait_30f
         obj_script SABIN, ASYNC
@@ -67619,7 +67669,7 @@ _cbc6c0:
                 action 32
                 end
         wait 10
-        dlg $031C
+        dlg DLG_796
                 ; CYAN: Current's_fast.
                 ; SABIN: No kidding.
                 ; SABIN: But unless we hop in, we won't see our friends again_
@@ -67713,7 +67763,7 @@ _cbc6c0:
                 dir DOWN
                 end
         wait_45f
-        dlg $0322
+        dlg DLG_802
                 ; SABIN: Let's go!
         obj_script SABIN, ASYNC
                 action 22
@@ -67784,7 +67834,7 @@ _cbc84d:
         if_switch $0041=0, EventReturn
         if_switch $01F0=1, EventReturn
         switch $01F0=1
-        dlg $02E5
+        dlg DLG_741
                 ; Jump?
                 ; 0: (Why not?)
                 ; 1: (You crazy?)
@@ -67991,7 +68041,7 @@ _cbcb74:
                 dir LEFT
                 end
         wait_15f
-        dlg $0286
+        dlg DLG_646
                 ; TERRA: _
                 ; Where's GAU_?
                 ; LOCKE: He hates ships.
@@ -68064,7 +68114,7 @@ _cbcbde:
                 dir RIGHT
                 end
         wait_15f
-        dlg $0286
+        dlg DLG_646
                 ; TERRA: _
                 ; Where's GAU_?
                 ; LOCKE: He hates ships.
@@ -68082,43 +68132,43 @@ _cbcbde:
                 end
         return
 _cbcc48:
-        dlg $0280
+        dlg DLG_640
                 ; Stay clear of the engine room. It's dangerous.
         return
 _cbcc4c:
-        dlg $0767
+        dlg DLG_1895
                 ; General Leo's holding a meeting.
         return
 _cbcc50:
         if_switch $0086=1, _cbcc80
-        dlg $0282
+        dlg DLG_642
                 ; The Magitek Armor's being refurbished.
         return
 _cbcc5a:
-        dlg $0285
+        dlg DLG_645
                 ; Once we find an Esper, we'll be able to restore peace!
         return
 _cbcc5e:
         if_switch $0086=1, _cbcc7c
-        dlg $0766, BOTTOM
+        dlg DLG_1894, BOTTOM
                 ; General Leo's waiting for you.
         return
 _cbcc68:
         if_switch $0086=1, _cbcc5a
-        dlg $0280
+        dlg DLG_640
                 ; Stay clear of the engine room. It's dangerous.
         return
 _cbcc72:
         if_switch $0086=1, _cbcc80
-        dlg $0280
+        dlg DLG_640
                 ; Stay clear of the engine room. It's dangerous.
         return
 _cbcc7c:
-        dlg $0281
+        dlg DLG_641
                 ; We're almost to Crescent Island.
         return
 _cbcc80:
-        dlg $0284
+        dlg DLG_644
                 ; Rumor has it that the power of magic still exists on Crescent Island.
         return
 _cbcc84:
@@ -68138,7 +68188,7 @@ _cbcc84:
         show_obj NPC_6
         show_obj NPC_7
         sort_obj
-        dlg $0760, BOTTOM
+        dlg DLG_1888, BOTTOM
                 ; LEO: There you are. Another of the Empire's generals, and a person I hired in town will be traveling with us.
         if_switch $01B2=1, _cbccbc
         if_switch $01B0=1, _cbccc8
@@ -68220,7 +68270,7 @@ _cbcd24:
         play_song SHADOW, PAUSE_CURRENT
         switch $009A=1
         wait_1s
-        dlg $03E4, BOTTOM
+        dlg DLG_996, BOTTOM
                 ; I've forsaken the world.
                 ; Some people call me_
         hide_obj NPC_1
@@ -68241,7 +68291,7 @@ _cbcd24:
                 move DOWN_RIGHT
                 end
         wait_1s
-        dlg $00C1, {TEXT_ONLY, BOTTOM}
+        dlg DLG_193, {TEXT_ONLY, BOTTOM}
                 ; He owes allegiance to no one,
                 ; and will do anything for money.
                 ; He comes and goes like the wind_
@@ -68284,7 +68334,7 @@ _cbcd24:
         if_switch $0127=0, _cbcd99
         return
 _cbcd99:
-        dlg $0768, BOTTOM
+        dlg DLG_1896, BOTTOM
                 ; LEO: Let me introduce_
                 ; General CELES_and SHADOW.
         wait_45f
@@ -68304,16 +68354,16 @@ _cbcd99:
                 dir DOWN
                 end
         wait_15f
-        dlg $0769, BOTTOM
+        dlg DLG_1897, BOTTOM
                 ; LEO: Is something wrong?
                 ; LOCKE: No_
         wait_45f
-        dlg $076A, BOTTOM
+        dlg DLG_1898, BOTTOM
                 ; LEO: Our departure isn't till tomorrow. I've arranged some lodging for you.
         obj_script NPC_4
                 dir LEFT
                 end
-        dlg $076B, BOTTOM
+        dlg DLG_1899, BOTTOM
                 ; LEO: Please, get some rest.
         wait_30f
         obj_script NPC_4
@@ -68341,7 +68391,7 @@ _cbcdc7:
         obj_script NPC_5, ASYNC
                 dir LEFT
                 end
-        dlg $0762, BOTTOM
+        dlg DLG_1890, BOTTOM
                 ; TERRA: CELES_
                 ; CELES: __
         wait_30f
@@ -68368,7 +68418,7 @@ _cbcdc7:
                 action 33
                 wait 8
                 end
-        dlg $0763, BOTTOM
+        dlg DLG_1891, BOTTOM
                 ; LOCKE: CELES_
         pass_off TERRA
         pass_off LOCKE
@@ -68391,23 +68441,23 @@ _cbcdc7:
         player_ctrl_on
         return
 _cbce26:
-        dlg $0765
+        dlg DLG_1893
                 ; SHADOW: I'm working for the Empire. But don't worry_
                 ; I'm not going to garrote you!
         return
 _cbce2a:
-        dlg $076C
+        dlg DLG_1900
                 ; SHADOW: You kids stay out of trouble now, you hear?
         obj_script NPC_8
                 action 9 | ACTION_H_FLIP
                 end
         return
 _cbce32:
-        dlg $076B, BOTTOM
+        dlg DLG_1899, BOTTOM
                 ; LEO: Please, get some rest.
         return
 _cbce36:
-        dlg $0764
+        dlg DLG_1892
                 ; LEO: Right_let's go.
         switch $0083=1
         switch $0542=0
@@ -68467,7 +68517,7 @@ _cbce36:
                 wait 8
                 dir DOWN
                 end
-        dlg $0287
+        dlg DLG_647
                 ; SOLDIER: All systems A-O-K.
         obj_script NPC_13
                 dir RIGHT
@@ -68478,7 +68528,7 @@ _cbce36:
                 wait 9
                 dir DOWN
                 end
-        dlg $0761
+        dlg DLG_1889
                 ; LEO: We should arrive tomorrow morning. Why not rest until then?
         loop 2
                 obj_script NPC_12, ASYNC
@@ -68530,7 +68580,7 @@ _cbce36:
 _cbcefc:
         play_song AWAKENING
         lock_camera
-        dlg $0772
+        dlg DLG_1906
                 ; LEO: You all right?
         wait_30f
         if_switch $01B1=1, _cbcf1c
@@ -68560,7 +68610,7 @@ _cbcf1c:
                 speed SLOW
                 move RIGHT, 1
                 end
-        dlg $0773
+        dlg DLG_1907
                 ; LEO: Looks like you're feeling better_
         wait_45f
         obj_script SLOT_1
@@ -68593,7 +68643,7 @@ _cbcf4a:
                 speed SLOW
                 move UP_RIGHT
                 end
-        dlg $0773
+        dlg DLG_1907
                 ; LEO: Looks like you're feeling better_
         obj_script SLOT_1
                 speed SLOW
@@ -68621,7 +68671,7 @@ _cbcf77:
                 wait 3
                 action 35
                 end
-        dlg $0773
+        dlg DLG_1907
                 ; LEO: Looks like you're feeling better_
         obj_script SLOT_1
                 speed SLOW
@@ -68654,7 +68704,7 @@ _cbcfa0:
                 speed SLOW
                 move DOWN_RIGHT
                 end
-        dlg $0773
+        dlg DLG_1907
                 ; LEO: Looks like you're feeling better_
         obj_script SLOT_1
                 speed NORMAL
@@ -68671,7 +68721,7 @@ _cbcfce:
                 action 32
                 end
         wait_2s
-        dlg $0774, ASYNC
+        dlg DLG_1908, ASYNC
                 ; TERRA: Funny, isn't it_
                 ; I was used by the Empire_
                 ; even had my thoughts ripped from me_
@@ -68685,7 +68735,7 @@ _cbcfce:
                 wait 4
                 dir RIGHT
                 end
-        dlg $0775
+        dlg DLG_1909
                 ; LEO: People are people.
                 ; Not all of us are like Kefka.
         wait_obj SLOT_1
@@ -68697,7 +68747,7 @@ _cbcfce:
                 wait 11
                 dir LEFT
                 end
-        dlg $0776
+        dlg DLG_1910
                 ; TERRA: What_
                 ; what's with you?
         wait_15f 5
@@ -68710,7 +68760,7 @@ _cbcfce:
                 action 33
                 wait 6
                 end
-        dlg $0777
+        dlg DLG_1911
                 ; LEO: I knew you were being used as a kind of biological weapon_
                 ; And because I didn't do anything about it, I'm no different than Kefka_
         wait_15f 10
@@ -68725,14 +68775,14 @@ _cbcfce:
                 action 34 | ACTION_H_FLIP
                 end
         wait_30f
-        dlg $0778
+        dlg DLG_1912
                 ; TERRA: I'm the product of a human and an Esper_
                 ; Will I ever be able to love someone?
         wait_45f
         obj_script NPC_18
                 dir LEFT
                 end
-        dlg $0779
+        dlg DLG_1913
                 ; LEO: Of course!
         wait_30f
         obj_script SLOT_1
@@ -68741,7 +68791,7 @@ _cbcfce:
                 wait 5
                 action 32
                 end
-        dlg $077A
+        dlg DLG_1914
                 ; TERRA: But_
                 ; I haven't felt that way yet_
         obj_script NPC_18, ASYNC
@@ -68762,7 +68812,7 @@ _cbcfce:
                 move DOWN, 2
                 dir LEFT
                 end
-        dlg $077B
+        dlg DLG_1915
                 ; LEO: You're just young.
                 ; _but I understand what you mean. I understand only too well_
         wait_2s
@@ -68798,7 +68848,7 @@ _cbcfce:
                 action 35
                 end
         wait_1s
-        dlg $077C
+        dlg DLG_1916
                 ; TERRA: But_
                 ; I want to know what love is_
                 ; now!
@@ -68812,7 +68862,7 @@ _cbcfce:
         obj_script SLOT_1
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $077D
+        dlg DLG_1917
                 ; TERRA: Who is it?
         wait_90f
         obj_script NPC_15
@@ -68822,7 +68872,7 @@ _cbcfce:
                 wait 2
                 action 35
                 end
-        dlg $077E
+        dlg DLG_1918
                 ; SHADOW: Thought I'd sleep out under the stars.
         wait_1s
         obj_script SLOT_1, ASYNC
@@ -68830,7 +68880,7 @@ _cbcfce:
                 wait 6
                 action 35
                 end
-        dlg $077F
+        dlg DLG_1919
                 ; TERRA: Did you hear_
                 ; _what we were just talking about?
         wait_obj SLOT_1
@@ -68840,7 +68890,7 @@ _cbcfce:
                 move LEFT, 2
                 dir UP
                 end
-        dlg $0782
+        dlg DLG_1922
                 ; SHADOW: I didn't mean to overhear anything.
         wait_1s
         obj_script SLOT_1
@@ -68848,7 +68898,7 @@ _cbcfce:
                 move UP, 1
                 end
         wait_30f
-        dlg $0780
+        dlg DLG_1920
                 ; TERRA: Umm_
         obj_script NPC_15
                 action 35
@@ -68862,7 +68912,7 @@ _cbcfce:
                 dir DOWN
                 end
         wait_30f
-        dlg $0781
+        dlg DLG_1921
                 ; SHADOW: I can't help you.
                 ; You must look within for answers.
         wait_45f
@@ -68875,7 +68925,7 @@ _cbcfce:
                 move DOWN, 1
                 move RIGHT, 3
                 end
-        dlg $0783
+        dlg DLG_1923
                 ; SHADOW: TERRA.
         wait_2s
         obj_script NPC_15
@@ -68883,7 +68933,7 @@ _cbcfce:
                 move DOWN, 1
                 end
         wait_30f
-        dlg $0784
+        dlg DLG_1924
                 ; SHADOW: In this world are many like me who've killed their emotions. Don't forget that.
         wait_2s
         pass_off SLOT_1
@@ -68916,7 +68966,7 @@ _cbcfce:
                 anim_off
                 move UP_LEFT
                 end
-        dlg $0288, BOTTOM
+        dlg DLG_648, BOTTOM
                 ; LOCKE: Urgh_ Uooh_ Argh_
         wait_45f
         obj_script NPC_14
@@ -68927,7 +68977,7 @@ _cbcfce:
                 action 40
                 end
         wait_15f 5
-        dlg $027F, BOTTOM
+        dlg DLG_639, BOTTOM
                 ; LOCKE: Ooh_ Ohhhhhhh_
         wait_90f
         obj_script NPC_14
@@ -68942,7 +68992,7 @@ _cbcfce:
                 move UP, 1
                 dir UP
                 end
-        dlg $027E, BOTTOM
+        dlg DLG_638, BOTTOM
                 ; LOCKE: I think I'm gonna_
         wait_2s
         obj_script NPC_14
@@ -68963,7 +69013,7 @@ _cbcfce:
         obj_script NPC_14
                 action 9
                 end
-        dlg $076D, BOTTOM
+        dlg DLG_1901, BOTTOM
                 ; LOCKE: Not a word of this to anyone else, o shrouded one_
         wait_90f
         obj_script NPC_14
@@ -68977,7 +69027,7 @@ _cbcfce:
                 move UP, 1
                 dir UP
                 end
-        dlg $027E, BOTTOM
+        dlg DLG_638, BOTTOM
                 ; LOCKE: I think I'm gonna_
         fade_out 2
         wait_fade
@@ -69056,7 +69106,7 @@ _cbcfce:
         return
 _cbd1f3:
         if_switch $0089=1, _cbd205
-        dlg $0785
+        dlg DLG_1925
                 ; LEO: We're almost at Crescent Island. When we disembark, we'll split into two groups.
                 ; CELES and I will form one group. TERRA, you go with LOCKE and SHADOW.
                 ; If you spot the Espers, report at once!
@@ -69068,7 +69118,7 @@ _cbd1f3:
                 end
         return
 _cbd205:
-        dlg $0786
+        dlg DLG_1926
                 ; LEO: TERRA, we'll continue yesterday's conversation later_
         return
 _cbd209:
@@ -69077,14 +69127,14 @@ _cbd209:
                 speed NORMAL
                 move RIGHT, 3
                 end
-        dlg $0787
+        dlg DLG_1927
                 ; LOCKE: Let's go.
         wait_45f
         obj_script NPC_14
                 dir LEFT
                 end
         wait_30f
-        dlg $07C0
+        dlg DLG_1984
                 ; LOCKE: SHADOW!
         wait_30f
         obj_script NPC_6
@@ -69101,9 +69151,9 @@ _cbd209:
                 speed NORMAL
                 move RIGHT, 1
                 end
-        dlg $0283
+        dlg DLG_643
                 ; CELES: Hey_LOCKE_
-        dlg $0788, ASYNC
+        dlg DLG_1928, ASYNC
                 ; CELES: Um, I_
         obj_script NPC_5
                 speed NORMAL
@@ -69127,7 +69177,7 @@ _cbd209:
         obj_script NPC_14
                 dir RIGHT
                 end
-        dlg $0789, BOTTOM
+        dlg DLG_1929, BOTTOM
                 ; LOCKE: Come on.
         lock_camera
         obj_script SLOT_1, ASYNC
@@ -69524,7 +69574,7 @@ _cbd73f:
                 goto _cbd769
         if_switch $0090=1, _cbd75e
         if_switch $008E=1, _cbd7e1
-        dlg $079D, BOTTOM
+        dlg DLG_1949, BOTTOM
                 ; 1 GP per night.
                 ; Why not relax for a spell?
                 ; 0:  Yes
@@ -69532,7 +69582,7 @@ _cbd73f:
         choice _cbd7ac, EventReturn
         return
 _cbd75e:
-        dlg $079D, BOTTOM
+        dlg DLG_1949, BOTTOM
                 ; 1 GP per night.
                 ; Why not relax for a spell?
                 ; 0:  Yes
@@ -69540,7 +69590,7 @@ _cbd75e:
         choice _cbd7ac, EventReturn
         return
 _cbd769:
-        dlg $0790, BOTTOM
+        dlg DLG_1936, BOTTOM
                 ; You're strangers_
                 ; 1500 GP if you wanna stay.
                 ; 0:  (Well, okay.)
@@ -69595,7 +69645,7 @@ _cbd7ac:
         call _cacf96
         return
 _cbd7e1:
-        dlg $07C4, BOTTOM
+        dlg DLG_1988, BOTTOM
                 ; FIRE!!
         return
 _cbd7e5:
@@ -69603,34 +69653,34 @@ _cbd7e5:
         if_switch $007D=0, _cbd801
         if_switch $0190=1, _cbd87b
         if_switch $008D=1, _cbd87f
-        dlg $0791
+        dlg DLG_1937
                 ; Espers? What in blazes are they? If they're animals, talk to the old guy that lives on the edge of town.
         return
 _cbd801:
-        dlg $079A, BOTTOM
+        dlg DLG_1946, BOTTOM
                 ; I've never seen you before.
         return
 _cbd805:
         if_switch $007D=0, _cbd801
         if_switch $0090=1, _cbd81b
         if_switch $0190=1, _cbd87b
-        dlg $078B
+        dlg DLG_1931
                 ; MAYOR: Welcome, welcome!
                 ; Magic_? What is this ``magic''?
         return
 _cbd81b:
-        dlg $078C
+        dlg DLG_1932
                 ; MAYOR: No one is to divulge that we are able to use magic!
         return
 _cbd81f:
         if_switch $007D=0, _cbd82f
         if_switch $0190=1, _cbd87b
-        dlg $078A
+        dlg DLG_1930
                 ; Oh, wow!!!
                 ; Strangers!!
         return
 _cbd82f:
-        dlg $079B
+        dlg DLG_1947
                 ; __ Right!
         return
 _cbd833:
@@ -69640,16 +69690,16 @@ _cbd833:
                 switch $007D=0
                 goto _cbd84f
         if_switch $0190=1, _cbd87b
-        dlg $078E
+        dlg DLG_1934
                 ; Have you talked to old man STRAGO? Do so, and the inn keeper may be more reasonable.
         return
 _cbd84b:
-        dlg $078D
+        dlg DLG_1933
                 ; Use rods as items during battle for some amazing results!
                 ; Only problem is they break after being used once!
         return
 _cbd84f:
-        dlg $078F
+        dlg DLG_1935
                 ; For some reason the inn keeper doesn't like strangers!
         return
 _cbd853:
@@ -69657,47 +69707,47 @@ _cbd853:
         if_switch $0090=1, _cbd873
         if_switch $0190=1, _cbd877
         if_switch $008D=1, _cbd887
-        dlg $0792
+        dlg DLG_1938
                 ; Ha!
                 ; No admittance!
         return
 _cbd86f:
-        dlg $0799
+        dlg DLG_1945
                 ; Get outta the way!
         return
 _cbd873:
-        dlg $0798
+        dlg DLG_1944
                 ; My house burned down!
         return
 _cbd877:
-        dlg $07C2
+        dlg DLG_1986
                 ; Waaah_my beautiful house_!
         return
 _cbd87b:
-        dlg $07C4
+        dlg DLG_1988
                 ; FIRE!!
         return
 _cbd87f:
-        dlg $0793
+        dlg DLG_1939
                 ; Old man STRAGO looks like he's on his last legs, but he used to be a powerful warrior.
         return
 _cbd883:
-        dlg $0796
+        dlg DLG_1942
                 ; STRAGO is a Blue Mage by training. He can memorize the attacks of monsters he has fought_
         return
 _cbd887:
-        dlg $0794
+        dlg DLG_1940
                 ; Have you met little RELM? She loves to paint pictures! Wonder if she'd do my portrait?
         return
 _cbd88b:
         if_switch $007D=0, _cbd82f
         if_switch $008D=1, _cbd89b
-        dlg $0797
+        dlg DLG_1943
                 ; Listen, I have to tell you_
                 ; Naaah_never mind.
         return
 _cbd89b:
-        dlg $0795
+        dlg DLG_1941
                 ; Actually, RELM isn't STRAGO's real grandchild.
                 ; I heard she's his friend's daughter.
         return
@@ -69710,7 +69760,7 @@ _cbd89f:
         create_obj NPC_7
         show_obj NPC_7
         sort_obj
-        dlg $07A1, BOTTOM
+        dlg DLG_1953, BOTTOM
                 ; Uh?! What was that?
         obj_script SLOT_1
                 speed NORMAL
@@ -69718,7 +69768,7 @@ _cbd89f:
                 move RIGHT, 5
                 end
         wait_15f 5
-        dlg $07A0, BOTTOM
+        dlg DLG_1952, BOTTOM
                 ; FIRE!!
         wait_30f
         sfx 22
@@ -69727,7 +69777,7 @@ _cbd89f:
         wait_15f
         hide_obj NPC_6
         wait_1s
-        dlg $07A0, BOTTOM
+        dlg DLG_1952, BOTTOM
                 ; FIRE!!
         sfx 22
         show_obj NPC_6
@@ -69738,7 +69788,7 @@ _cbd89f:
                 dir LEFT
                 end
         wait_45f
-        dlg $07A2, BOTTOM
+        dlg DLG_1954, BOTTOM
                 ; N'ga! Oh no!
         wait_15f
         obj_script NPC_7
@@ -69763,7 +69813,7 @@ _cbd8f9:
         create_obj NPC_9
         show_obj NPC_9
         sort_obj
-        dlg $07A1, BOTTOM
+        dlg DLG_1953, BOTTOM
                 ; Uh?! What was that?
         obj_script SLOT_1
                 speed NORMAL
@@ -69772,10 +69822,10 @@ _cbd8f9:
                 dir UP
                 end
         wait_45f
-        dlg $07A3, BOTTOM
+        dlg DLG_1955, BOTTOM
                 ; Mama_it hurts_
         wait_30f
-        dlg $07A4, {ASYNC, BOTTOM}
+        dlg DLG_1956, {ASYNC, BOTTOM}
                 ; Oh all right. Cure_
         obj_script NPC_8
                 speed SLOW
@@ -69808,7 +69858,7 @@ _cbd8f9:
                 move DOWN, 2
                 end
         wait_1s
-        dlg $07A5, {ASYNC, BOTTOM}
+        dlg DLG_1957, {ASYNC, BOTTOM}
                 ; _medicine_where is my cure medicine?!
         obj_script NPC_8
                 speed NORMAL
@@ -69820,7 +69870,7 @@ _cbd8f9:
                 end
         wait_dlg
         wait_30f
-        dlg $07A6, {ASYNC, BOTTOM}
+        dlg DLG_1958, {ASYNC, BOTTOM}
                 ; Mama!
                 ; Please use cure on me!
         obj_script NPC_9
@@ -69841,7 +69891,7 @@ _cbd8f9:
         switch $0506=0
         return
 _cbd97e:
-        dlg $079C, BOTTOM
+        dlg DLG_1948, BOTTOM
                 ; And who might YOU be?
         return
 _cbd982:
@@ -69880,7 +69930,7 @@ _cbd982:
                 dir UP
                 end
         wait_1s
-        dlg $079E, BOTTOM
+        dlg DLG_1950, BOTTOM
                 ; Whatcha want with me?
         wait_30f
         switch $01CC=1
@@ -69895,7 +69945,7 @@ _cbd982:
                 dir DOWN
                 end
         wait_1s
-        dlg $079F, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1951, {TEXT_ONLY, BOTTOM}
                 ; An elderly gentleman, pure of heart, and learned in the ways of monsters_
         wait_30f
         obj_gfx STRAGO, STRAGO
@@ -69912,7 +69962,7 @@ _cbd982:
         show_obj NPC_5
         sort_obj
         wait_45f
-        dlg $07A7, BOTTOM
+        dlg DLG_1959, BOTTOM
                 ; STRAGO: Espers?
                 ; Espers_Hmm_
                 ; Not really familiar with that word.
@@ -69938,7 +69988,7 @@ _cbd982:
                 dir DOWN
                 end
         wait_30f
-        dlg $07A8, BOTTOM
+        dlg DLG_1960, BOTTOM
                 ; STRAGO: Nope, uhn uhn_
                 ; Can't say I have.
                 ; Honestly can't say I have!
@@ -69972,14 +70022,14 @@ _cbd982:
         obj_script TERRA
                 action 32
                 end
-        dlg $07AD
+        dlg DLG_1965
                 ; That's odd_
         wait_45f
         fade_out_song $08
         wait_song
         play_song RELM
         wait_1s
-        dlg $07A9, BOTTOM
+        dlg DLG_1961, BOTTOM
                 ; Grandpa!
         wait_30f
         obj_script TERRA, ASYNC
@@ -70044,7 +70094,7 @@ _cbd982:
                 move LEFT, 1
                 end
         wait_30f
-        dlg $07AA, {ASYNC, BOTTOM}
+        dlg DLG_1962, {ASYNC, BOTTOM}
                 ; STRAGO: Hey_HEY!
         loop 3
                 obj_script NPC_2
@@ -70062,7 +70112,7 @@ _cbd982:
                 end_loop
         wait_dlg
         wait_30f
-        dlg $07AB, {ASYNC, BOTTOM}
+        dlg DLG_1963, {ASYNC, BOTTOM}
                 ; STRAGO: What in blazes_
                 ; What're you doing?
         obj_script NPC_1
@@ -70088,7 +70138,7 @@ _cbd982:
                 move LEFT_LEFT_DOWN
                 end
         wait_90f
-        dlg $07AC, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1964, {TEXT_ONLY, BOTTOM}
                 ; In her pictures she captures everything:
                 ; forests, water, light_
                 ; the very essence of life_
@@ -70134,7 +70184,7 @@ _cbdb1f:
                 move DOWN, 1
                 dir UP
                 end
-        dlg $07AE, BOTTOM
+        dlg DLG_1966, BOTTOM
                 ; RELM: Grandpa.
                 ; Who are these people? Friends? Can they use magic, too?
                 ; STRAGO: Yaa! Hush!
@@ -70160,7 +70210,7 @@ _cbdb1f:
                 move DOWN, 1
                 dir RIGHT
                 end
-        dlg $07AF
+        dlg DLG_1967
                 ; RELM: What a cute doggy!
                 ; SHADOW: Get away.
                 ; He bites.
@@ -70182,7 +70232,7 @@ _cbdb1f:
         obj_script NPC_2, ASYNC
                 dir UP
                 end
-        dlg $07B0
+        dlg DLG_1968
                 ; STRAGO: Go to your room!
                 ; RELM: I will not!
                 ; What a fussy old man!
@@ -70190,7 +70240,7 @@ _cbdb1f:
         obj_script NPC_1, ASYNC
                 action 24
                 end
-        dlg $07B1
+        dlg DLG_1969
                 ; STRAGO: Please_leave us!
                 ; RELM: Well_all right_
         wait_15f
@@ -70224,7 +70274,7 @@ _cbdb1f:
         obj_script NPC_1
                 dir UP
                 end
-        dlg $07B3, BOTTOM
+        dlg DLG_1971, BOTTOM
                 ; STRAGO: Hoo boy_
                 ; Seems to like your dog_
         wait_1s
@@ -70233,7 +70283,7 @@ _cbdb1f:
                 move DOWN, 3
                 end
         wait_30f
-        dlg $07B2, BOTTOM
+        dlg DLG_1970, BOTTOM
                 ; RELM: What a sweet puppy!
         wait_30f
         obj_script NPC_2
@@ -70262,7 +70312,7 @@ _cbdb1f:
                 wait 2
                 action 34
                 end
-        dlg $07B4, BOTTOM
+        dlg DLG_1972, BOTTOM
                 ; STRAGO: This is terrible_
         wait_30f
         obj_script NPC_1, ASYNC
@@ -70283,7 +70333,7 @@ _cbdb1f:
                 move UP, 2
                 dir RIGHT
                 end
-        dlg $07B5, BOTTOM
+        dlg DLG_1973, BOTTOM
                 ; STRAGO: Sorry.
                 ; SHADOW: No problem.
                 ; The dog usually doesn't like people, though_
@@ -70299,7 +70349,7 @@ _cbdb1f:
                 move DOWN, 1
                 dir LEFT
                 end
-        dlg $07B6
+        dlg DLG_1974
                 ; STRAGO: Please excuse her.
                 ; She's just young.
                 ; LOCKE: Hmmm_
@@ -70315,7 +70365,7 @@ _cbdb1f:
                 dir LEFT
                 end
         wait_45f
-        dlg $07B7
+        dlg DLG_1975
                 ; LOCKE: I see_
                 ; There's something wrong here_
                 ; TERRA: Let's have a look around.
@@ -70352,7 +70402,7 @@ _cbdb1f:
                 dir RIGHT
                 end
         wait_15f
-        dlg $07B8, BOTTOM
+        dlg DLG_1976, BOTTOM
                 ; LOCKE: Thanks for your time!
                 ; STRAGO: Sorry I couldn't have been more helpful!
         wait_30f
@@ -70360,7 +70410,7 @@ _cbdb1f:
                 dir UP
                 end
         wait_30f
-        dlg $07B9, BOTTOM
+        dlg DLG_1977, BOTTOM
                 ; SHADOW: Interceptor!
                 ; Come!
         wait_30f
@@ -70386,7 +70436,7 @@ _cbdb1f:
                 dir RIGHT
                 end
         wait_15f
-        dlg $07BA, BOTTOM
+        dlg DLG_1978, BOTTOM
                 ; RELM: Oh, all right_
         wait_30f
         call _cb6abf, 2
@@ -70431,22 +70481,22 @@ _cbdb1f:
         fade_in
         return
 _cbdcb3:
-        dlg $07BB
+        dlg DLG_1979
                 ; STRAGO: What a beautiful day.
         return
 _cbdcb7:
-        dlg $07BC
+        dlg DLG_1980
                 ; RELM: Interceptor, please come back again and play!
         return
 _cbdcbb:
-        dlg $07E4
+        dlg DLG_2020
                 ; RELM: What a fuddy duddy_
         obj_script NPC_2
                 action 9
                 end
         return
 _cbdcc3:
-        dlg $07E4
+        dlg DLG_2020
                 ; RELM: What a fuddy duddy_
         return
 _cbdcc7:
@@ -70566,7 +70616,7 @@ _cbdd70:
                 wait 1
                 branch _cbdd70
                 end
-        dlg $07BD
+        dlg DLG_1981
                 ; STRAGO: This is awful!
                 ; RELM_she's_
         obj_script TERRA
@@ -70588,7 +70638,7 @@ _cbdd8b:
                 wait 1
                 branch _cbdd8b
                 end
-        dlg $07BE
+        dlg DLG_1982
                 ; TERRA: RELM's in danger?
                 ; STRAGO: Yes!
                 ; She was at a neighbor's house when a fire broke out. I won't be able to stand it if something happens to her!
@@ -70601,7 +70651,7 @@ _cbdd9a:
                 wait 1
                 branch _cbdd9a
                 end
-        dlg $07BF
+        dlg DLG_1983
                 ; STRAGO: Please!
                 ; Won't you help?!
         wait_30f
@@ -70639,7 +70689,7 @@ _cbdd9a:
                 move UP, 2
                 dir LEFT
                 end
-        dlg $07C0, BOTTOM
+        dlg DLG_1984, BOTTOM
                 ; LOCKE: SHADOW!
         wait_30f
         obj_script SHADOW
@@ -70674,7 +70724,7 @@ _cbdd9a:
                 wait 4
                 dir DOWN
                 end
-        dlg $07C1, BOTTOM
+        dlg DLG_1985, BOTTOM
                 ; SHADOW: Interceptor_
                 ; Where are you?!
         wait_1s
@@ -70717,7 +70767,7 @@ _cbde44:
                 wait 1
                 branch _cbde44
                 end
-        dlg $07C3
+        dlg DLG_1987
                 ; STRAGO: RELM's inside that house!
         wait_15f 5
         lock_camera
@@ -70799,7 +70849,7 @@ _cbde44:
                 move DOWN, 3
                 end
         wait_15f
-        dlg $07C5, ASYNC
+        dlg DLG_1989, ASYNC
                 ; STRAGO: RELM!!!!!
         obj_script NPC_5, ASYNC
 _cbdf1f:
@@ -70837,10 +70887,10 @@ _cbdf3a:
                 dir DOWN
                 end
         wait_15f
-        dlg $07C6
+        dlg DLG_1990
                 ; LOCKE: What're you doing?
         wait_45f
-        dlg $07C7
+        dlg DLG_1991
                 ; Flames be GONE!!!
         obj_script TERRA, ASYNC
                 action 31
@@ -71007,7 +71057,7 @@ _cbdf3a:
                 speed FAST
                 move RIGHT, 8
                 end
-        dlg $07C8, ASYNC
+        dlg DLG_1992, ASYNC
                 ; MAYOR: Magic is forbidden!
                 ; TERRA: Magic_?!
         wait_1s
@@ -71016,7 +71066,7 @@ _cbdf3a:
                 end
         wait_dlg
         wait_45f
-        dlg $07C9, ASYNC
+        dlg DLG_1993, ASYNC
                 ; STRAGO: I don't care!
                 ; RELM's inside!!!
         obj_script NPC_5
@@ -71070,7 +71120,7 @@ _cbe057:
                 end
         show_obj NPC_13
         show_obj NPC_15
-        dlg $07C7
+        dlg DLG_1991
                 ; Flames be GONE!!!
         wait_15f
         sfx 23
@@ -71198,7 +71248,7 @@ _cbe057:
                 dir LEFT
                 end
         wait_30f
-        dlg $07CA
+        dlg DLG_1994
                 ; Mayor!!
         wait_45f
         obj_script NPC_11
@@ -71206,14 +71256,14 @@ _cbe057:
                 speed NORMAL
                 move RIGHT, 2
                 end
-        dlg $07CB
+        dlg DLG_1995
                 ; MAYOR: All right.
                 ; We really have no choice.
         wait_30f
         obj_script NPC_11
                 dir UP
                 end
-        dlg $07CC
+        dlg DLG_1996
                 ; MAYOR: Stand back.
         wait_30f
         obj_script TERRA, ASYNC
@@ -71307,7 +71357,7 @@ _cbe057:
                 end
         show_obj NPC_13
         show_obj NPC_15
-        dlg $07C7
+        dlg DLG_1991
                 ; Flames be GONE!!!
         wait_15f
         sfx 23
@@ -71440,7 +71490,7 @@ _cbe057:
                 end
         show_obj NPC_13
         show_obj NPC_15
-        dlg $07C7
+        dlg DLG_1991
                 ; Flames be GONE!!!
         wait_15f
         sfx 23
@@ -71567,7 +71617,7 @@ _cbe057:
                 end
         show_obj NPC_13
         show_obj NPC_15
-        dlg $07C7
+        dlg DLG_1991
                 ; Flames be GONE!!!
         wait_15f
         sfx 23
@@ -71761,7 +71811,7 @@ _cbe503:
         obj_script NPC_11, ASYNC
                 dir RIGHT
                 end
-        dlg $07CD
+        dlg DLG_1997
                 ; STRAGO: It's no use.
                 ; The fire's too strong!
                 ; MAYOR: I think that's because they keep so many Fire Rods in here_
@@ -71770,7 +71820,7 @@ _cbe503:
                 dir UP
                 move UP, 1
                 end
-        dlg $07CE
+        dlg DLG_1998
                 ; STRAGO: I'm going in!
         obj_script LOCKE, ASYNC
                 speed FAST
@@ -71801,7 +71851,7 @@ _cbe538:
                 wait 2
                 branch _cbe538
                 end
-        dlg $07CF, BOTTOM
+        dlg DLG_1999, BOTTOM
                 ; TERRA: Wait_I'm going too.
                 ; LOCKE: Count me in. You'd better stay out here, gramps.
                 ; STRAGO: Fool!
@@ -71864,7 +71914,7 @@ _cbe538:
         obj_script SLOT_1, ASYNC
                 dir UP
                 end
-        dlg $07D0, BOTTOM
+        dlg DLG_2000, BOTTOM
                 ; Quickly!
         obj_script SLOT_1
                 speed FAST
@@ -71920,7 +71970,7 @@ _cbe5e4:
                 move UP_LEFT
                 dir DOWN
                 end
-        dlg $07D2
+        dlg DLG_2002
                 ; LOCKE: Try to avoid the flames.
                 ; TERRA: Easier said than done.
                 ; STRAGO: Hurry!
@@ -71939,7 +71989,7 @@ _cbe5e4:
 _cbe622:
         switch $050A=1
         pass_off SLOT_1
-        dlg $07D4, {ASYNC, BOTTOM}
+        dlg DLG_2004, {ASYNC, BOTTOM}
                 ; Huh!?
         sfx 137
         obj_script SLOT_1
@@ -72147,7 +72197,7 @@ _cbe767:
                 dir UP
                 end
         wait_15f
-        dlg $07D1, BOTTOM
+        dlg DLG_2001, BOTTOM
                 ; Is this the source of our blaze_?
         wait_30f
         obj_script NPC_9
@@ -72222,7 +72272,7 @@ _cbe7ed:
                 wait 1
                 branch _cbe7ed
                 end
-        dlg $07D5
+        dlg DLG_2005
                 ; STRAGO: RELM!!!
                 ; Where are you?!
         wait_45f
@@ -72330,7 +72380,7 @@ _cbe7ed:
                 dir RIGHT
                 end
         wait_30f
-        dlg $07C5, {ASYNC, BOTTOM}
+        dlg DLG_1989, {ASYNC, BOTTOM}
                 ; STRAGO: RELM!!!!!
         obj_script STRAGO, ASYNC
 _cbe88a:
@@ -72352,7 +72402,7 @@ _cbe88a:
         obj_script STRAGO, ASYNC
                 action 31
                 end
-        dlg $07D3, {ASYNC, BOTTOM}
+        dlg DLG_2003, {ASYNC, BOTTOM}
                 ; Uwaaa!!
                 ; Too late!
         shake ALL, 3, 2
@@ -72612,7 +72662,7 @@ _cbe88a:
                 move LEFT, 1
                 dir DOWN
                 end
-        dlg $07D6, BOTTOM
+        dlg DLG_2006, BOTTOM
                 ; SHADOW: Let's get outta here! I'll use a Smoke Bomb!!
         obj_script NPC_14
                 action 9
@@ -72705,7 +72755,7 @@ _cbeabc:
                 wait 3
                 branch _cbeabc
                 end
-        dlg $07D7
+        dlg DLG_2007
                 ; STRAGO: Are you okay?
                 ; RELM: Yes. Thanks, Grandpa!
         wait_30f
@@ -72716,7 +72766,7 @@ _cbeabc:
                 dir DOWN
                 end
         wait_30f
-        dlg $07D8
+        dlg DLG_2008
                 ; STRAGO: Save your thanks for these people.
                 ; RELM: Thank you_
         wait_30f
@@ -72733,14 +72783,14 @@ _cbeabc:
         obj_script STRAGO
                 dir DOWN
                 end
-        dlg $07D9
+        dlg DLG_2009
                 ; STRAGO: I guess our town's little secret is out now_
         wait_30f
         obj_script LOCKE
                 speed SLOW
                 move UP, 1
                 end
-        dlg $07DA
+        dlg DLG_2010
                 ; LOCKE: Can everyone here use magic? What's going on here?
         wait_45f
         play_song NARSHE
@@ -72754,7 +72804,7 @@ _cbeabc:
                 wait 8
                 dir LEFT
                 end
-        dlg $07DB
+        dlg DLG_2011
                 ; STRAGO: This is_
                 ; _the village of the Mage Warriors_
         wait_30f
@@ -72775,7 +72825,7 @@ _cbeabc:
                 wait 5
                 dir DOWN
                 end
-        dlg $07DC
+        dlg DLG_2012
                 ; STRAGO: Long ago humans used Magicite to gain magical powers. They came to be known as Mage Warriors.
         wait_30f
         loop 2
@@ -72790,7 +72840,7 @@ _cbeabc:
         obj_script LOCKE
                 dir UP
                 end
-        dlg $07DD
+        dlg DLG_2013
                 ; LOCKE: But I thought they perished centuries ago_
         wait_30f
         obj_script STRAGO
@@ -72816,7 +72866,7 @@ _cbeabc:
                 dir DOWN
                 move DOWN, 1
                 end
-        dlg $07DE
+        dlg DLG_2014
                 ; STRAGO: After the War of the Magi, the Espers fled to their new world behind the sealed gate.
                 ; They wished to live peacefully, without fear of being used by humans. They left us here to fend for ourselves_
                 ; But we were despised by normal people. Everyone felt we had begun that war_
@@ -72828,7 +72878,7 @@ _cbeabc:
                 wait 4
                 action 33
                 end
-        dlg $07DF
+        dlg DLG_2015
                 ; STRAGO: They sent people to hunt us down like animals.
                 ; There weren't even any trials_
                 ; TERRA: Even though the only difference was that you could use magic_?
@@ -72838,7 +72888,7 @@ _cbeabc:
                 wait 2
                 dir DOWN
                 end
-        dlg $07E0
+        dlg DLG_2016
                 ; STRAGO: A few Mage Warriors escaped and found their way here. They were our ancestors.
                 ; Our powers have weakened over time, but some of it remains.
         wait_obj STRAGO
@@ -72847,7 +72897,7 @@ _cbeabc:
                 speed SLOW
                 move UP, 1
                 end
-        dlg $07E1
+        dlg DLG_2017
                 ; TERRA: Look, if you're up to it, we could use your help.
                 ; STRAGO: So, you're after the Espers, eh_?
         wait_obj TERRA
@@ -72860,7 +72910,7 @@ _cbeabc:
                 wait 4
                 dir DOWN
                 end
-        dlg $07E2
+        dlg DLG_2018
                 ; STRAGO: Well, I owe you for saving RELM. I'll help you find your Espers.
         wait_obj STRAGO
         wait_30f
@@ -72884,7 +72934,7 @@ _cbeba7:
                 wait 2
                 branch _cbeba7
                 end
-        dlg $07E3
+        dlg DLG_2019
                 ; RELM: Me too!
                 ; STRAGO: I don't think so.
         obj_script STRAGO, ASYNC
@@ -72899,10 +72949,10 @@ _cbeba7:
                 wait 4
                 action 32
                 end
-        dlg $07E4
+        dlg DLG_2020
                 ; RELM: What a fuddy duddy_
         wait_1s
-        dlg $07E5
+        dlg DLG_2021
                 ; LOCKE: But_where do we start looking?
                 ; STRAGO: Hmm_
                 ; If they're here, they must be  hiding in the mountains to the west.
@@ -72926,7 +72976,7 @@ _cbeba7:
         obj_script STRAGO
                 move DOWN, 1
                 end
-        dlg $07E6
+        dlg DLG_2022
                 ; LOCKE: Why there?
                 ; STRAGO: Those mountains have powerful magical properties.
                 ; They say the Espers were created there_
@@ -72967,7 +73017,7 @@ _cbec11:
                 wait 4
                 branch _cbec11
                 end
-        dlg $07E7
+        dlg DLG_2023
                 ; TERRA: Maybe they're drawn to that place?
         obj_script STRAGO
                 dir DOWN
@@ -72978,7 +73028,7 @@ _cbec11:
                 move UP, 2
                 dir LEFT
                 end
-        dlg $07E8
+        dlg DLG_2024
                 ; LOCKE: I think it's worth a look.
         obj_script LOCKE, ASYNC
                 action 34
@@ -73126,7 +73176,7 @@ _cbec92:
                 action 9 | ACTION_H_FLIP
                 end
         wait_15f 5
-        dlg $07E9
+        dlg DLG_2025
                 ; SHADOW: Don't misunderstand me. I just wanted my dog back.
         wait_45f
         obj_script LOCKE
@@ -73155,7 +73205,7 @@ _cbec92:
         obj_script LOCKE, ASYNC
                 dir DOWN
                 end
-        dlg $07EA
+        dlg DLG_2026
                 ; LOCKE: Going somewhere?
                 ; SHADOW: I'll search for the Espers in my own way.
         wait_45f
@@ -73247,7 +73297,7 @@ _cbec92:
                 wait 3
                 action 35
                 end
-        dlg $07B9
+        dlg DLG_1977
                 ; SHADOW: Interceptor!
                 ; Come!
         wait_45f
@@ -73617,7 +73667,7 @@ _cbefee:
         obj_script NPC_1
                 dir DOWN
                 end
-        dlg $07EB, BOTTOM
+        dlg DLG_2027, BOTTOM
                 ; ULTROS: G'heh, heh_these shiny statues are all mine!
                 ; These'll get Ziegfried's attention!
         wait_45f
@@ -73639,7 +73689,7 @@ _cbefee:
                 wait 2
                 end
         wait_30f
-        dlg $07EC, BOTTOM
+        dlg DLG_2028, BOTTOM
                 ; ULTROS: Oh!
                 ; They're glowing!!
                 ; They're_beautiful!
@@ -73711,7 +73761,7 @@ _cbefee:
                 dir UP
                 end
         wait_obj NPC_1
-        dlg $07ED
+        dlg DLG_2029
                 ; LOCKE: Hey, squidball!
                 ; Don't you ever learn?
                 ; ULTROS: Uh, well they always said I was a slow learner_
@@ -73765,7 +73815,7 @@ _cbf0fd:
                 end
         fade_in
         wait_fade
-        dlg $07EE, BOTTOM
+        dlg DLG_2030, BOTTOM
                 ; RELM: Hey! Did you see me? I was awesome!
                 ; Wouldn't I be more helpful than Gramps?
                 ; STRAGO: G_GRAMPS!!?
@@ -73790,7 +73840,7 @@ _cbf0fd:
                 dir LEFT
                 end
         wait_30f
-        dlg $07EF, BOTTOM
+        dlg DLG_2031, BOTTOM
                 ; TERRA: I suppose it wouldn't hurt to have you along_
         wait_45f
         obj_script STRAGO
@@ -73801,7 +73851,7 @@ _cbf0fd:
                 dir DOWN
                 wait 2
                 end
-        dlg $0842, BOTTOM
+        dlg DLG_2114, BOTTOM
                 ; STRAGO: All right all ready!
                 ; If you insist_
                 ; RELM: That's better!
@@ -73866,7 +73916,7 @@ _cbf168:
                 wait 3
                 jump_high
                 end
-        dlg $07F0, BOTTOM
+        dlg DLG_2032, BOTTOM
                 ; STRAGO: I can't believe it_
                 ; The Statues_!
                 ; TERRA: ``The'' Statues?!
@@ -73883,7 +73933,7 @@ _cbf168:
                 move UP, 1
                 action 9 | ACTION_H_FLIP
                 end
-        dlg $07F2, BOTTOM
+        dlg DLG_2034, BOTTOM
                 ; LOCKE: Some faint letters are carved on the back of the stone figures_
         wait_45f
         wait_obj STRAGO
@@ -73895,7 +73945,7 @@ _cbf168:
                 wait 4
                 dir LEFT
                 end
-        dlg $07F3, BOTTOM
+        dlg DLG_2035, BOTTOM
                 ; LOCKE: Say, old man, what else can you tell us about these goddesses?
         wait_obj STRAGO
         switch $0521=1
@@ -73922,7 +73972,7 @@ _cbf168:
                 wait 8
                 dir DOWN
                 end
-        dlg $07F4, BOTTOM
+        dlg DLG_2036, BOTTOM
                 ; STRAGO: They quite literally created magic, as we know it.
                 ; LOCKE: So, they're the goddesses of magic, then?
                 ; STRAGO: You could say that.
@@ -73942,7 +73992,7 @@ _cbf168:
         obj_script STRAGO, ASYNC
                 dir RIGHT
                 end
-        dlg $07F5, BOTTOM
+        dlg DLG_2037, BOTTOM
                 ; TERRA: I can feel their power_
                 ; STRAGO: The Statues are the source of all magic.
                 ; It's said the Espers made these images, and put them in a very special place.
@@ -73952,7 +74002,7 @@ _cbf168:
                 move DOWN, 2
                 dir LEFT
                 end
-        dlg $07F6, BOTTOM
+        dlg DLG_2038, BOTTOM
                 ; TERRA: Our Espers no doubt came to this island to bask in all this magical power!
         obj_script LOCKE
                 action 25
@@ -73969,7 +74019,7 @@ _cbf168:
                 wait 3
                 dir DOWN
                 end
-        dlg $07FA, BOTTOM
+        dlg DLG_2042, BOTTOM
                 ; LOCKE: Say, old timer,
                 ; what happened to the stone goddesses?
                 ; STRAGO: Legend has it that they're hidden somewhere beyond the reach of humans.
@@ -73977,7 +74027,7 @@ _cbf168:
         obj_script TERRA
                 move LEFT, 1
                 end
-        dlg $07FB, BOTTOM
+        dlg DLG_2043, BOTTOM
                 ; TERRA: I wonder if the barrier that protects that place is generated by those stone goddesses?
         obj_script LOCKE
                 dir DOWN
@@ -73990,7 +74040,7 @@ _cbf168:
                 wait 2
                 dir DOWN
                 end
-        dlg $07F9, BOTTOM
+        dlg DLG_2041, BOTTOM
                 ; LOCKE: Phew_what a story.
                 ; TERRA: If the Espers were attracted here by these statues, they must be around here somewhere!
         obj_script LOCKE, ASYNC
@@ -74014,7 +74064,7 @@ _cbf168:
         obj_script STRAGO
                 dir DOWN
                 end
-        dlg $07E8, BOTTOM
+        dlg DLG_2024, BOTTOM
                 ; LOCKE: I think it's worth a look.
         obj_script NPC_2
                 speed SLOW
@@ -74060,13 +74110,13 @@ _cbf168:
         player_ctrl_on
         return
 _cbf296:
-        dlg $07F1, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2033, {TEXT_ONLY, BOTTOM}
                 ; The birth of magic_
                 ; 3 goddesses were banished here. In time they began quarreling, which led to all-out war.
                 ; Those unlucky humans who got in the way were transformed into Espers, and used as living war machines_
         return
 _cbf29a:
-        dlg $07F7, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2039, {TEXT_ONLY, BOTTOM}
                 ; The goddesses finally realized that they were being laughed at by those who had banished them here.
                 ; In a rare moment of mutual clarity, they agreed to seal themselves away from the world.
                 ; With their last ounce of energy they gave the Espers back their own free will, and then transformed themselves_
@@ -74074,7 +74124,7 @@ _cbf29a:
                 ; Their only request was that the Espers keep them sealed away for all eternity.
         return
 _cbf29e:
-        dlg $07F8, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2040, {TEXT_ONLY, BOTTOM}
                 ; The Espers created these statues as a symbol of their vow to let the goddesses sleep in peace.
                 ; The Espers have sworn to keep the goddesses' power from being abused.
         return
@@ -74140,7 +74190,7 @@ _cbf2b5:
         wait_obj RELM
         wait_obj STRAGO
         wait_1s
-        dlg $07FC, ASYNC
+        dlg DLG_2044, ASYNC
                 ; RELM: Are these_Espers?!
         wait_90f
         fade_in_song ESPER_WORLD, 240
@@ -74299,7 +74349,7 @@ _cbf3c5:
         obj_script STRAGO, ASYNC
                 action 31
                 end
-        dlg $07FE
+        dlg DLG_2046
                 ; STRAGO: What about you?
         create_obj NPC_9
         create_obj NPC_10
@@ -74334,7 +74384,7 @@ _cbf3e8:
                 wait 10
                 dir LEFT
                 end
-        dlg $07FD, BOTTOM
+        dlg DLG_2045, BOTTOM
                 ; TERRA: I didn't think they'd look so_
                 ; LOCKE: Gramps, take RELM and clear outta here!
         wait_30f
@@ -74615,7 +74665,7 @@ _cbf576:
                 action 10
                 end
         wait_2s
-        dlg $07FF, BOTTOM
+        dlg DLG_2047, BOTTOM
                 ; YURA: Halt!
         obj_script TERRA, ASYNC
                 wait 3
@@ -74859,7 +74909,7 @@ _cbf63d:
                 speed SLOWER
                 move DOWN, 1
                 end
-        dlg $0800, BOTTOM
+        dlg DLG_2048, BOTTOM
                 ; RELM: What is it?
                 ; STRAGO: I sense some immense magical power in TERRA_ It_frightens me_
         flash BLUE
@@ -74872,7 +74922,7 @@ _cbf63d:
         obj_script LOCKE, ASYNC
                 action 31
                 end
-        dlg $0801, BOTTOM
+        dlg DLG_2049, BOTTOM
                 ; LOCKE: I wonder if she's gonna go ballistic again?!
         obj_script LOCKE, ASYNC
                 dir DOWN
@@ -75058,7 +75108,7 @@ _cbf7d0:
                 wait 2
                 dir DOWN
                 end
-        dlg $0802, BOTTOM
+        dlg DLG_2050, BOTTOM
                 ; YURA: You're somehow different_
                 ; I sense a familiar power radiating from you_
                 ; TERRA: Yes.
@@ -75075,7 +75125,7 @@ _cbf7d0:
                 wait 9
                 dir LEFT
                 end
-        dlg $0803, BOTTOM
+        dlg DLG_2051, BOTTOM
                 ; STRAGO: You're the Espers that fled through the sealed gate?
                 ; YURA: As a rule, we are not allowed to visit to your world.
                 ; We few had gathered near the gate, and were wondering how we could save the Espers that had been kidnapped.
@@ -75096,7 +75146,7 @@ _cbf7d0:
                 wait 10
                 dir UP
                 end
-        dlg $0804, BOTTOM
+        dlg DLG_2052, BOTTOM
                 ; TERRA: I felt_
                 ; your presence_
                 ; through the gate.
@@ -75108,7 +75158,7 @@ _cbf7d0:
                 wait 10
                 dir DOWN
                 end
-        dlg $0805, BOTTOM
+        dlg DLG_2053, BOTTOM
                 ; YURA: We completely leveled a city_and took some innocent lives_
         wait_obj NPC_2
         wait_45f
@@ -75116,7 +75166,7 @@ _cbf7d0:
                 wait 3
                 action 32
                 end
-        dlg $0806, BOTTOM
+        dlg DLG_2054, BOTTOM
                 ; TERRA: That's what happened to me! I lost all control of my power_
         wait_obj TERRA
         wait_30f
@@ -75128,7 +75178,7 @@ _cbf848:
                 wait 3
                 branch _cbf848
                 end
-        dlg $0807, BOTTOM
+        dlg DLG_2055, BOTTOM
                 ; STRAGO: There must be something in your world that allows you to focus your power differently.
                 ; You must use caution while in our world_
         obj_script STRAGO
@@ -75143,7 +75193,7 @@ _cbf848:
                 wait 5
                 dir UP
                 end
-        dlg $0808, BOTTOM
+        dlg DLG_2056, BOTTOM
                 ; YURA: We are deeply sorry to have caused you humans such suffering and pain.
         wait_obj NPC_2
         wait_45f
@@ -75162,7 +75212,7 @@ _cbf848:
                 wait 5
                 dir UP
                 end
-        dlg $0809, BOTTOM
+        dlg DLG_2057, BOTTOM
                 ; LOCKE: The past is history. The Empire seems to want to talk peace with you. Why not come with us?
                 ; YURA: They would forgive us so easily?
         wait_obj NPC_2
@@ -75183,7 +75233,7 @@ _cbf848:
         obj_script TERRA
                 dir LEFT
                 end
-        dlg $080A, BOTTOM
+        dlg DLG_2058, BOTTOM
                 ; LOCKE: Let's go to Thamasa and talk with General Leo.
                 ; TERRA: Right!
         switch $0099=1
@@ -75287,7 +75337,7 @@ _cbf928:
                 wait 2
                 dir LEFT
                 end
-        dlg $080B
+        dlg DLG_2059
                 ; LOCKE: General Leo.
                 ; LEO: LOCKE_you're back! And you've made the Espers understand our desire for peace!
         wait_obj NPC_1
@@ -75323,7 +75373,7 @@ _cbf928:
                 wait 5
                 dir LEFT
                 end
-        dlg $080C
+        dlg DLG_2060
                 ; LEO: I am General Leo.
                 ; May I have your name, please?
                 ; YURA: I am called Yura.
@@ -75331,7 +75381,7 @@ _cbf928:
                 speed SLOW
                 move RIGHT, 1
                 end
-        dlg $080D
+        dlg DLG_2061
                 ; YURA: We have done something inexcusable to your people.
                 ; YURA: This probably isn't the time or place to ask for your forgiveness, but_
         wait_obj NPC_1
@@ -75345,7 +75395,7 @@ _cbf928:
                 wait 2
                 dir LEFT
                 end
-        dlg $080E
+        dlg DLG_2062
                 ; LEO: Speak no further.
                 ; It is we who owe you an apology. We hungered for your power_
                 ; How close we came to reenacting the War of the Magi!!!
@@ -75360,14 +75410,14 @@ _cbf928:
                 move UP_RIGHT
                 dir RIGHT
                 end
-        dlg $0810
+        dlg DLG_2064
                 ; LOCKE: I believe our job is finally over! I, for one, could use some peace and quiet_
                 ; CELES: Let's return to Vector.
         wait_1s
         obj_script LOCKE, ASYNC
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $0763
+        dlg DLG_1891
                 ; LOCKE: CELES_
         wait_30f
         obj_script NPC_2
@@ -75379,7 +75429,7 @@ _cbf928:
                 wait 2
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $0811
+        dlg DLG_2065
                 ; CELES: Please, not another word.
         obj_script NPC_2, ASYNC
                 dir LEFT
@@ -75404,7 +75454,7 @@ _cbf928:
                 action 35
                 end
         wait_45f
-        dlg $0812
+        dlg DLG_2066
                 ; RELM: I'm too hot, Grandpa.
                 ; STRAGO: Kids!!
         wait_15f 5
@@ -75752,7 +75802,7 @@ _cbfadd:
                 dir DOWN
                 end
         wait_1s
-        dlg $0819, {ASYNC, BOTTOM}
+        dlg DLG_2073, {ASYNC, BOTTOM}
                 ; KEFKA: Hee, hee_!
                 ; How 'bout a little Magitek mayhem!
         loop 8
@@ -75953,7 +76003,7 @@ _cbfc26:
                 move DOWN_LEFT
                 dir DOWN
                 end
-        dlg $0813
+        dlg DLG_2067
                 ; LEO: Kefka! What ARE you doing?!
                 ; KEFKA: G'ha, ha, ha! Emperor's orders!
                 ; I'm to bring the Magicite remains of these Espers to his excellency! Behold! A Magicite mother lode!!
@@ -76226,7 +76276,7 @@ _cbfdb2:
         obj_script NPC_3
                 action 24
                 end
-        dlg $007A, BOTTOM
+        dlg DLG_122, BOTTOM
                 ; KEFKA: Idiots!
         obj_script CAMERA, ASYNC
                 speed NORMAL
@@ -76239,7 +76289,7 @@ _cbfdb2:
                 action 23
                 end
         wait_obj CAMERA
-        dlg $080F, BOTTOM
+        dlg DLG_2063, BOTTOM
                 ; KEFKA: I don't care for the appearance of this pitiful little hamlet_
                 ; So burn it!!
         obj_script NPC_3
@@ -76293,7 +76343,7 @@ _cbfdb2:
                         action 30
                         end
                 end_loop
-        dlg $0814, ASYNC
+        dlg DLG_2068, ASYNC
                 ; LEO: Kefka! No!
         obj_script NPC_1
                 speed NORMAL
@@ -76312,7 +76362,7 @@ _cbfdb2:
         obj_script NPC_3
                 action 24
                 end
-        dlg $0815
+        dlg DLG_2069
                 ; KEFKA: Shut up!
         wait_30f
         obj_script NPC_3
@@ -76487,7 +76537,7 @@ _cbfff4:
         obj_script NPC_18
                 dir DOWN
                 end
-        dlg $0818, BOTTOM
+        dlg DLG_2072, BOTTOM
                 ; LEO: Kefka!
                 ; Your behavior is dishonorable!
                 ; I can't allow this!
@@ -76617,7 +76667,7 @@ _cc00c5:
                 move RIGHT, 1
                 branch _cc00c5
                 end
-        dlg $081B, BOTTOM
+        dlg DLG_2075, BOTTOM
                 ; KEFKA: Whoa! Yes, I feel some incredible magic power here, today! Wave after wave of pure, magical energy_
         fade_out 2
         spc_cmd $82, $5A, $00
@@ -76709,14 +76759,14 @@ _cc0163:
         fade_in 2
         wait_fade
         wait_45f
-        dlg $081C, BOTTOM
+        dlg DLG_2076, BOTTOM
                 ; KEFKA: I'd say you're all charged up, boys and girls_or whatever_
                 ; Say, remind me to show you my Magicite collection someday! You might see a few familiar faces!!!
         wait_15f 5
         obj_script NPC_18
                 action 24
                 end
-        dlg $081A, BOTTOM
+        dlg DLG_2074, BOTTOM
                 ; KEFKA: Now for a little Magicite hocus-pocus_!
         pass_off NPC_18
         obj_script NPC_18
@@ -76725,7 +76775,7 @@ _cc0163:
                 wait 5
                 action 22
                 end
-        dlg $081D, BOTTOM
+        dlg DLG_2077, BOTTOM
                 ; KEFKA: First, let's neutralize your abilities.
         wait_45f
         sfx 11
@@ -76814,7 +76864,7 @@ _cc0163:
                 wait 5
                 action 24
                 end
-        dlg $081E, BOTTOM
+        dlg DLG_2078, BOTTOM
                 ; KEFKA: Now, little Espers_
                 ; Let's see whatcha got!
         wait_30f
@@ -76971,7 +77021,7 @@ _cc0163:
         obj_script NPC_18
                 dir DOWN
                 end
-        dlg $0820, BOTTOM
+        dlg DLG_2080, BOTTOM
                 ; KEFKA: Eh?!
                 ; You wanna take me on?
                 ; Fine. Here I am_
@@ -76988,7 +77038,7 @@ _cc0163:
         fade_in 4
         wait_fade
         wait_1s
-        dlg $081F, BOTTOM
+        dlg DLG_2079, BOTTOM
                 ; KEFKA: This is ridiculous!
                 ; I had no idea you were such wimps! Time to put a stop to all of this.
         wait_15f 5
@@ -77221,7 +77271,7 @@ _cc0163:
         hide_obj NPC_28
         hide_obj NPC_30
         wait_1s
-        dlg $0821, {ASYNC, BOTTOM}
+        dlg DLG_2081, {ASYNC, BOTTOM}
                 ; KEFKA: Phew_
                 ; I think I have plenty of Magicite for the time being_
                 ; that is, until I make my way through your precious sealed gate!!
@@ -77247,7 +77297,7 @@ _cc0163:
         obj_script NPC_18
                 action 31
                 end
-        dlg $06B5, BOTTOM
+        dlg DLG_1717, BOTTOM
                 ; KEFKA: I don't believe this!
         fade_out 2
         sfx SFX::KEFKA_LAUGH
@@ -77341,7 +77391,7 @@ _cc0163:
         wait_fade
         lock_camera
         wait_2s
-        dlg $0826, BOTTOM
+        dlg DLG_2086, BOTTOM
                 ; TERRA: General Leo_
         switch $009C=1
         obj_script TERRA
@@ -77359,13 +77409,13 @@ _cc0163:
                 end
         wait_90f
         unlock_camera
-        dlg $0827, BOTTOM
+        dlg DLG_2087, BOTTOM
                 ; TERRA: People only seem to want power. Do they really want to be like me?
         wait_2s
         obj_script TERRA
                 dir UP
                 end
-        dlg $0828, BOTTOM
+        dlg DLG_2088, BOTTOM
                 ; TERRA: I_I wanted to learn so much more from you_
         wait_15f 5
         obj_script NPC_2, ASYNC
@@ -77428,7 +77478,7 @@ _cc0163:
         obj_script RELM
                 action 31
                 end
-        dlg $0829
+        dlg DLG_2089
                 ; Interceptor!?
                 ; That's a nasty wound!
         wait_45f
@@ -77447,7 +77497,7 @@ _cc0163:
         obj_script RELM, ASYNC
                 dir LEFT
                 end
-        dlg $082A
+        dlg DLG_2090
                 ; LOCKE: We not only lost Leo, but SHADOW, too_
                 ; Curse the Empire!
         obj_script NPC_2, ASYNC
@@ -77471,7 +77521,7 @@ _cc0163:
                 wait 3
                 action 34
                 end
-        dlg $082B
+        dlg DLG_2091
                 ; LOCKE: This'll have to do_
         obj_script STRAGO, ASYNC
                 wait 8
@@ -77484,7 +77534,7 @@ _cc0163:
                 move RIGHT, 1
                 dir DOWN
                 end
-        dlg $082C
+        dlg DLG_2092
                 ; CELES: He was so gentle_
         wait_30f
         obj_script NPC_3, ASYNC
@@ -77495,7 +77545,7 @@ _cc0163:
                 move UP, 1
                 action 9
                 end
-        dlg $082D
+        dlg DLG_2093
                 ; RELM: I'll go with you.
         wait_45f
         obj_script LOCKE
@@ -77505,7 +77555,7 @@ _cc0163:
                 wait 4
                 dir DOWN
                 end
-        dlg $082E
+        dlg DLG_2094
                 ; LOCKE: Now I'm worried about EDGAR and the others_
                 ; TERRA: I wish I could say they were safe_
         wait_obj TERRA
@@ -77594,7 +77644,7 @@ _cc0163:
                 move RIGHT, 6
                 end
         wait_45f
-        dlg $082F
+        dlg DLG_2095
                 ; SETZER: We've been had!!
                 ; The Emperor is a liar!
         wait_30f
@@ -77604,7 +77654,7 @@ _cc0163:
                 move RIGHT, 3
                 dir DOWN
                 end
-        dlg $0830, BOTTOM
+        dlg DLG_2096, BOTTOM
                 ; CYAN: Thanks to EDGAR, we escaped before anything bad happened_
         obj_script LOCKE, ASYNC
 _cc06c4:
@@ -77614,7 +77664,7 @@ _cc06c4:
                 wait 5
                 branch _cc06c4
                 end
-        dlg $0831, BOTTOM
+        dlg DLG_2097, BOTTOM
                 ; LOCKE: Way to go, EDGAR!
         obj_script LOCKE
                 dir LEFT
@@ -77624,7 +77674,7 @@ _cc06c4:
                 move DOWN, 1
                 move RIGHT, 3
                 end
-        dlg $0832
+        dlg DLG_2098
                 ; EDGAR: I got to know the gal who brought us tea.
                 ; After a while, she just blurted out the whole crooked plan.
         wait_obj NPC_7
@@ -77640,7 +77690,7 @@ _cc06c4:
         obj_script NPC_5
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $0833
+        dlg DLG_2099
                 ; SABIN: So_you finally hit pay dirt, eh?
         wait_30f
         loop 4
@@ -77651,7 +77701,7 @@ _cc06c4:
                         wait 1
                         end
                 end_loop
-        dlg $0834
+        dlg DLG_2100
                 ; EDGAR: Watch your mouth!
                 ; There're ladies present!
                 ; I was a perfect gentleman.
@@ -77666,7 +77716,7 @@ _cc06c4:
                 wait 3
                 action 35
                 end
-        dlg $0835
+        dlg DLG_2101
                 ; LOCKE: General Leo's gone_
                 ; Kefka did him in_
         wait_30f
@@ -77678,7 +77728,7 @@ _cc06c4:
                 wait 5
                 action 32
                 end
-        dlg $0836, BOTTOM
+        dlg DLG_2102, BOTTOM
                 ; CYAN: Sir Leo?! Gone?!
                 ; What a waste_
                 ; He was their finest soldier_
@@ -77692,7 +77742,7 @@ _cc06c4:
         obj_script NPC_6, ASYNC
                 dir DOWN
                 end
-        dlg $0837
+        dlg DLG_2103
                 ; EDGAR: We need to rethink our plans. Let's return to the airship.
         wait_45f
         obj_script STRAGO
@@ -77712,27 +77762,27 @@ _cc06c4:
                 dir RIGHT
                 end
         wait_30f
-        dlg $0838
+        dlg DLG_2104
                 ; STRAGO: May I accompany you?
         obj_script NPC_7
                 speed NORMAL
                 move UP, 1
                 move RIGHT, 1
                 end
-        dlg $0839
+        dlg DLG_2105
                 ; EDGAR: Who're you?
         wait_30f
         obj_script LOCKE
                 dir DOWN
                 end
-        dlg $083A
+        dlg DLG_2106
                 ; LOCKE: He's one of this town's citizens.
         obj_script TERRA
                 speed NORMAL
                 move DOWN, 1
                 dir LEFT
                 end
-        dlg $083B
+        dlg DLG_2107
                 ; TERRA: He's descended from the Mage Warriors of yore_
                 ; I think he can be a big help.
         wait_30f
@@ -77750,7 +77800,7 @@ _cc06c4:
                 wait 10
                 dir DOWN
                 end
-        dlg $083C
+        dlg DLG_2108
                 ; STRAGO: We must expect the Empire to flex its new-found muscle soon.
         wait_obj STRAGO
         obj_script RELM, ASYNC
@@ -77770,7 +77820,7 @@ _cc0791:
                 wait 3
                 branch _cc0791
                 end
-        dlg $07E3
+        dlg DLG_2019
                 ; RELM: Me too!
                 ; STRAGO: I don't think so.
         obj_script NPC_5
@@ -77793,7 +77843,7 @@ _cc0791:
         obj_script NPC_5, ASYNC
                 dir DOWN
                 end
-        dlg $083E
+        dlg DLG_2110
                 ; SABIN: Yeah, right kid!
         obj_script RELM, ASYNC
                 speed FAST
@@ -77809,7 +77859,7 @@ _cc07be:
                 wait 13
                 action 24
                 end
-        dlg $083F
+        dlg DLG_2111
                 ; RELM: What?
                 ; Who is this puffed up aerobics instructor, anyway?
                 ; SABIN: Kid's got quite a lip!
@@ -77821,7 +77871,7 @@ _cc07be:
         obj_script NPC_5, ASYNC
                 dir DOWN
                 end
-        dlg $0840
+        dlg DLG_2112
                 ; RELM: Aaack!
                 ; I'm gonna paint your portrait!
         obj_script LOCKE, ASYNC
@@ -77858,7 +77908,7 @@ _cc0804:
                 wait 1
                 branch _cc0804
                 end
-        dlg $0841
+        dlg DLG_2113
                 ; Uwaaa! S_stop!
         obj_script LOCKE, ASYNC
                 dir DOWN
@@ -77881,7 +77931,7 @@ _cc0804:
                 wait 5
                 action 29
                 end
-        dlg $0842
+        dlg DLG_2114
                 ; STRAGO: All right all ready!
                 ; If you insist_
                 ; RELM: That's better!
@@ -77889,7 +77939,7 @@ _cc0804:
                 wait 3
                 action 24
                 end
-        dlg $0322
+        dlg DLG_802
                 ; SABIN: Let's go!
         call _cb2e34
         pass_off NPC_4
@@ -77947,7 +77997,7 @@ _cc0804:
                 wait 4
                 move RIGHT, 5
                 end
-        dlg $0843
+        dlg DLG_2115
                 ; RELM: What's wrong, lover boy?
                 ; EDGAR: How old are you?
                 ; RELM: 10_why?
@@ -77971,7 +78021,7 @@ _cc0804:
         obj_script RELM
                 dir RIGHT
                 end
-        dlg $083D
+        dlg DLG_2109
                 ; RELM: I'm coming along, too.
         obj_script RELM
                 speed FAST
@@ -77984,7 +78034,7 @@ _cc0804:
                 wait 3
                 action 32
                 end
-        dlg $0844, BOTTOM
+        dlg DLG_2116, BOTTOM
                 ; EDGAR: You've grown up entirely too fast!
                 ; Lighten up, okay?!
         obj_script NPC_7, ASYNC
@@ -78076,12 +78126,12 @@ _cc0960:
                 switch $009B=1
                 switch $018A=0
                 goto EventReturn
-        dlg $0816
+        dlg DLG_2070
                 ; M.TEK TROOPER: General Leo, prepare yourself!
         battle 75
         call _ca5ea9
         fade_in
-        dlg $0817
+        dlg DLG_2071
                 ; LEO: No.
                 ; I won't let this happen!
         return
@@ -78090,31 +78140,31 @@ _cc0977:
                 switch $01B4=0
                 switch $01B0=0
                 goto EventReturn
-        dlg $0845, BOTTOM
+        dlg DLG_2117, BOTTOM
                 ; General Leo_
         return
 _cc0983:
         if_switch $00A4=1, _cb7d83
-        dlg $0823
+        dlg DLG_2083
                 ; Curse the Empire_Curse Kefka!
         return
 _cc098d:
         if_switch $00A4=1, _cb7562
-        dlg $0822
+        dlg DLG_2082
                 ; It hurts_
         return
 _cc0997:
         if_switch $00A4=1, _cb7566
-        dlg $0824
+        dlg DLG_2084
                 ; The Espers_are they all_?
         return
 _cc09a1:
         if_switch $00A4=1, _cb756a
-        dlg $0825
+        dlg DLG_2085
                 ; MAYOR: I can only take some comfort in the fact that there were so few casualties.
         return
 _cc09ab:
-        dlg $09E9
+        dlg DLG_2537
                 ; I've learned a lot about our new world from the thieves and travelers that have come through here.
                 ; What shall I talk about?
                 ; 0:  (Narshe)
@@ -78269,7 +78319,7 @@ _cc0a22:
         player_ctrl_on
         return
 _cc0a9a:
-        dlg $0A09
+        dlg DLG_2569
                 ; Locked!
         return
 _cc0a9e:
@@ -78328,7 +78378,7 @@ _cc0aee:
         return
 _cc0b1e:
         if_switch $00B6=1, _cc0b6c
-        dlg $05ED
+        dlg DLG_1517
                 ; I've been waiting for you!
                 ; I wanted to give you this.
         create_obj NPC_2
@@ -78338,7 +78388,7 @@ _cc0b1e:
         call _cc9ad5
         show_obj NPC_2
         call _cc9ad5
-        dlg $05EF
+        dlg DLG_1519
                 ; I ran a Weapon Shop for 70 years!
                 ; This stone gives off an eerie aura!
                 ; If I melted it, and forged a sword, it'd be powerful!
@@ -78349,7 +78399,7 @@ _cc0b1e:
         choice _cc0b42, _cc0b58
         return
 _cc0b42:
-        dlg $05F0
+        dlg DLG_1520
                 ; Right.
         sfx 103
         call _cc9ad5
@@ -78360,7 +78410,7 @@ _cc0b42:
         switch $00B6=1
         return
 _cc0b58:
-        dlg $05F0
+        dlg DLG_1520
                 ; Right.
         sfx 103
         call _cc9ad5
@@ -78370,19 +78420,19 @@ _cc0b58:
         switch $00B6=1
         return
 _cc0b6c:
-        dlg $05F1
+        dlg DLG_1521
                 ; I'll stay here.
                 ; This is my home.
         return
 _cc0b70:
         if_switch $00B8=1, _cc0b88
-        dlg $05F2
+        dlg DLG_1522
                 ; Cough_
                 ; Take_this_
         wait_30f
         sfx 103
         call _cc9ae0
-        dlg $05F3
+        dlg DLG_1523
                 ; ``Cursed Shld''_
                 ; If we could break its curse_
                 ; Imagine its defensive power!
@@ -78390,7 +78440,7 @@ _cc0b70:
         give_item CURSED_SHLD
         return
 _cc0b88:
-        dlg $05F3
+        dlg DLG_1523
                 ; ``Cursed Shld''_
                 ; If we could break its curse_
                 ; Imagine its defensive power!
@@ -78449,7 +78499,7 @@ _cc0bcf:
                 end
         return
 _cc0bd4:
-        dlg $05E3
+        dlg DLG_1507
                 ; DUNCAN: Look out! Move!
                 ; Cough_wheeze_
                 ; Darn this old body_
@@ -78499,7 +78549,7 @@ _cc0bd8:
                 anim_on
                 move UP, 1
                 end
-        dlg $05E4
+        dlg DLG_1508
                 ; SABIN: Duncan!!
         obj_script NPC_1
                 action 31
@@ -78533,7 +78583,7 @@ _cc0bd8:
         obj_script NPC_1
                 dir RIGHT
                 end
-        dlg $05E5
+        dlg DLG_1509
                 ; DUNCAN: Wa, ha, ha_
                 ; Why the surprised face?
                 ; Did you think I'd_gone?
@@ -78542,7 +78592,7 @@ _cc0bd8:
                 action 34
                 end
         wait_90f
-        dlg $05E6
+        dlg DLG_1510
                 ; SABIN: Duncan_
                 ; I'm so glad you're safe!!!
         wait_1s
@@ -78581,7 +78631,7 @@ _cc0bd8:
                 dir RIGHT
                 end
         wait_30f
-        dlg $05E7
+        dlg DLG_1511
                 ; DUNCAN: Whoa?!
                 ; SABIN, this can't be_
                 ; Tears??
@@ -78632,7 +78682,7 @@ _cc0bd8:
                 dir DOWN
                 end
         wait_30f
-        dlg $05E8, BOTTOM
+        dlg DLG_1512, BOTTOM
                 ; DUNCAN: Wa, ha, ha_ Nothing happened to me! The earth yawned right open to take me but I scrambled to safety!
         play_song FIGARO
         wait_1s
@@ -78646,7 +78696,7 @@ _cc0bd8:
                 dir UP
                 end
         wait_30f
-        dlg $05E9, BOTTOM
+        dlg DLG_1513, BOTTOM
                 ; DUNCAN: SABIN!!
                 ; It is now time to complete your training. Use these new skills to smash Kefka!
         obj_script NPC_1
@@ -78659,7 +78709,7 @@ _cc0bd8:
                 dir UP
                 end
         wait_30f
-        dlg $05EA, BOTTOM
+        dlg DLG_1514, BOTTOM
                 ; Put 'em up!
         wait_1s
         lock_camera
@@ -79000,7 +79050,7 @@ _cc0bd8:
                 wait 8
                 end
         wait_30f
-        dlg $05EB
+        dlg DLG_1515
                 ; I call this the ``Bum Rush''!!
         wait_30f
         obj_script SABIN
@@ -79017,7 +79067,7 @@ _cc0bd8:
                 action 24
                 end
         wait_30f
-        dlg $05EC
+        dlg DLG_1516
                 ; DUNCAN: Go!
                 ; Give Kefka the boot!
         wait_1s
@@ -79104,7 +79154,7 @@ _cc0f4c:
         obj_script NPC_2
                 dir DOWN
                 end
-        dlg $05EE
+        dlg DLG_1518
                 ; DUNCAN: Cough_wheeze_
                 ; Don't worry about me! Go!
                 ; Destroy Kefka!
@@ -79816,7 +79866,7 @@ _cc14cd:
         player_ctrl_on
         return
 _cc14f0:
-        dlg $0A09
+        dlg DLG_2569
                 ; Locked!
         return
 _cc14f4:
@@ -79869,7 +79919,7 @@ _cc14f4:
         player_ctrl_on
         return
 _cc1544:
-        dlg $06DA
+        dlg DLG_1754
                 ; Look out!
                 ; Get outta the way!
         return
@@ -80228,7 +80278,7 @@ _cc17df:
                 wait 2
                 end_loop
         wait_30f
-        dlg $06DB
+        dlg DLG_1755
                 ; Defeat the Statues, and magical power will not disappear_
                 ; Kefka drained the Statues' power, the source of magic_?
         return
@@ -80578,7 +80628,7 @@ _cc1a60:
                 wait 8
                 end
         wait_30f
-        dlg $0964
+        dlg DLG_2404
                 ; What the_?
         lock_camera
         wait_30f
@@ -80778,7 +80828,7 @@ _cc1a60:
                 action 24
                 end
         wait_30f
-        dlg $0965, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2405, {TEXT_ONLY, BOTTOM}
                 ; It's an Esper attack!
                 ; Let's show him some of OUR Esper magic!
         wait_30f
@@ -80812,7 +80862,7 @@ _cc1a60:
                 dir DOWN
                 end
         wait_30f
-        dlg $0966
+        dlg DLG_2406
                 ; A 1000 years in the past, a battle was waged here_
         wait_1s
         fade_out 8
@@ -80835,7 +80885,7 @@ _cc1a60:
         fade_in 4
         wait_fade
         wait_1s
-        dlg $0967, TEXT_ONLY
+        dlg DLG_2407, TEXT_ONLY
                 ; ``Only Odin is here!''
                 ; ``Are your wounds healed?''
         wait_30f
@@ -80851,7 +80901,7 @@ _cc1a60:
                 action 33
                 end
         wait_1s
-        dlg $0968, TEXT_ONLY
+        dlg DLG_2408, TEXT_ONLY
                 ; We're fresh outta options.
                 ; We'll have to leave this battle in Odin's hands_
         wait_30f
@@ -80900,7 +80950,7 @@ _cc1a60:
                 move UP, 2
                 end
         wait_30f
-        dlg $0969
+        dlg DLG_2409
                 ; A city, ruined during the War of the Magi_
         fade_out 4
         wait_fade
@@ -80937,7 +80987,7 @@ _cc1a60:
         pass_off NPC_15
         pass_off NPC_16
         pass_off NPC_17
-        dlg $0972, {ASYNC, TEXT_ONLY}
+        dlg DLG_2418, {ASYNC, TEXT_ONLY}
                 ; Atom Edge!
         wait_45f
         sfx 127
@@ -81090,7 +81140,7 @@ _cc1a60:
                 speed FAST
                 move DOWN, 1
                 end
-        dlg $0972, {ASYNC, TEXT_ONLY}
+        dlg DLG_2418, {ASYNC, TEXT_ONLY}
                 ; Atom Edge!
         wait_45f
         sfx 127
@@ -81176,7 +81226,7 @@ _cc1a60:
         sfx 9
         filter_pal {RED, GREEN, BLUE}, {238, 239}
         wait_1s
-        dlg $096A, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2410, {TEXT_ONLY, BOTTOM}
                 ; ODIN: Don't do it_
                 ; You can't turn me into Magicite_
         wait_1s
@@ -81198,7 +81248,7 @@ _cc1a60:
                 dir DOWN
                 end
         wait_1s
-        dlg $096B
+        dlg DLG_2411
                 ; There's an ancient legend_
                 ; It tells of a battle between
                 ; Odin and a powerful sorcerer
@@ -81260,7 +81310,7 @@ _cc1ea5:
         hide_obj NPC_18
         hide_obj NPC_19
         wait_30f
-        dlg $0971, BOTTOM
+        dlg DLG_2417, BOTTOM
                 ;
                 ; Odin turned into a
                 ; Magicite shard_
@@ -81287,7 +81337,7 @@ _cc1ede:
                 dir UP
                 end
         wait_30f
-        dlg $096C
+        dlg DLG_2412
                 ; A book,
                 ; with a gem-
                 ; encrusted cover_
@@ -81329,7 +81379,7 @@ _cc1ede:
                 action 34
                 end
         wait_1s
-        dlg $096D
+        dlg DLG_2413
                 ; TERRA: Love between a human and an Esper_
         wait_30f
         obj_script SLOT_3, ASYNC
@@ -81361,7 +81411,7 @@ _cc1f49:
                 anim_on
                 end
         wait_30f
-        dlg $096E, BOTTOM
+        dlg DLG_2414, BOTTOM
                 ; Even the Queen was turned to stone_
         wait_30f
         create_obj NPC_1
@@ -81376,14 +81426,14 @@ _cc1f49:
         sfx SFX::MAGICITE_PICKUP
         hide_obj NPC_1
         wait_30f
-        dlg $096F, BOTTOM
+        dlg DLG_2415, BOTTOM
                 ; A tear comes_
                 ; From the stone_?
         wait_1s
         sfx 103
         call _cc9ad5
         wait_1s
-        dlg $0970, BOTTOM
+        dlg DLG_2416, BOTTOM
                 ;
                 ;    The Magicite ``Odin'' gains
                 ; a level_
@@ -81410,56 +81460,56 @@ _cc1f8b:
 _cc1f9f:
         cmp_var 6, 8
         if_switch $01A0=0, _cc1fb1
-        dlg $05DA, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1498, {TEXT_ONLY, BOTTOM}
                 ; 7 dragons left.
         sub_var 6, 1
         return
 _cc1fb1:
         cmp_var 6, 7
         if_switch $01A0=0, _cc1fc3
-        dlg $05DB, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1499, {TEXT_ONLY, BOTTOM}
                 ; 6 dragons left.
         sub_var 6, 1
         return
 _cc1fc3:
         cmp_var 6, 6
         if_switch $01A0=0, _cc1fd5
-        dlg $05DC, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1500, {TEXT_ONLY, BOTTOM}
                 ; 5 dragons left.
         sub_var 6, 1
         return
 _cc1fd5:
         cmp_var 6, 5
         if_switch $01A0=0, _cc1fe7
-        dlg $05DD, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1501, {TEXT_ONLY, BOTTOM}
                 ; 4 dragons left.
         sub_var 6, 1
         return
 _cc1fe7:
         cmp_var 6, 4
         if_switch $01A0=0, _cc1ff9
-        dlg $05DE, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1502, {TEXT_ONLY, BOTTOM}
                 ; 3 dragons left.
         sub_var 6, 1
         return
 _cc1ff9:
         cmp_var 6, 3
         if_switch $01A0=0, _cc200b
-        dlg $05DF, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1503, {TEXT_ONLY, BOTTOM}
                 ; 2 dragons left.
         sub_var 6, 1
         return
 _cc200b:
         cmp_var 6, 2
         if_switch $01A0=0, _cc201d
-        dlg $05E0, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1504, {TEXT_ONLY, BOTTOM}
                 ; 1 dragon left.
         sub_var 6, 1
         return
 _cc201d:
         cmp_var 6, 1
         if_switch $01A0=0, EventReturn
-        dlg $05E1, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1505, {TEXT_ONLY, BOTTOM}
                 ;   Defeated all 8 dragons_
                 ;     Dragon Seal broken!!
         sub_var 6, 1
@@ -81473,7 +81523,7 @@ _cc201d:
         wait_30f
         shake ALL, 0, 1
         wait_30f
-        dlg $05E2, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1506, {TEXT_ONLY, BOTTOM}
                 ;
                 ; Received the Magicite
                 ; ``Crusader''!!
@@ -81573,7 +81623,7 @@ _cc2090:
         update_party
         wait_30f
         unlock_camera
-        dlg $0A37, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2615, {TEXT_ONLY, BOTTOM}
                 ; Split up into 2 parties.
                 ; Use the Y Button to switch between groups.
         switch $01CE=1
@@ -82966,7 +83016,7 @@ _cc2b43:
         wait_30f
         sfx 103
         wait_1s
-        dlg $0A20, BOTTOM
+        dlg DLG_2592, BOTTOM
                 ; LOCKE!!
         obj_script NPC_1
                 action 31
@@ -82981,14 +83031,14 @@ _cc2b43:
                 move DOWN, 1
                 end
         wait_30f
-        dlg $0A21, BOTTOM
+        dlg DLG_2593, BOTTOM
                 ; LOCKE: You're all safe!  Behold_
                 ; A legendary relic that can restore life_
         wait_30f
         show_obj NPC_2
         sfx 103
         wait_1s
-        dlg $0A22, BOTTOM
+        dlg DLG_2594, BOTTOM
                 ; That looks like_
                 ; Magicite_
                 ; LOCKE: Correct!
@@ -83001,7 +83051,7 @@ _cc2b43:
         wait_30f
         set_case PARTY_CHARS
         if_switch $01A6=0, _cc2baf
-        dlg $0A23, BOTTOM
+        dlg DLG_2595, BOTTOM
                 ; CELES: LOCKE_
                 ; That's for Rachel, isn't it_?
 _cc2baf:
@@ -83010,12 +83060,12 @@ _cc2baf:
                 action 32
                 end
         wait_90f
-        dlg $0A24, BOTTOM
+        dlg DLG_2596, BOTTOM
                 ; LOCKE: I wasn't able to save Rachel_
                 ; I've lost all sense of purpose_
                 ; My life will have no meaning until I can right this terrible wrong_
         wait_90f
-        dlg $0A25, BOTTOM
+        dlg DLG_2597, BOTTOM
                 ; Will you come with us?
                 ; Only as far as Kohlingen_
         wait_1s
@@ -83052,7 +83102,7 @@ _cc2baf:
         hide_obj SLOT_2
         hide_obj SLOT_3
         hide_obj SLOT_4
-        dlg $0A26, {ASYNC, TEXT_ONLY}
+        dlg DLG_2598, {ASYNC, TEXT_ONLY}
                 ;
                 ;
                 ;
@@ -83221,7 +83271,7 @@ _cc2baf:
                 move LEFT, 2
                 end
         wait_1s
-        dlg $0A27
+        dlg DLG_2599
                 ; PATRIARCH: If only the Magicite didn't bear those deep cracks_
                 ; I think you've been wasting your time, young man!
         wait_30f
@@ -83395,7 +83445,7 @@ _cc2baf:
                 end
         wait 5
         wait_1s
-        dlg $0A29, BOTTOM
+        dlg DLG_2601, BOTTOM
                 ; PATRIARCH: Uwaaaaaa!
                 ; The Magicite's gonna shatter!
         wait_1s
@@ -83415,13 +83465,13 @@ _cc2baf:
                 dir DOWN
                 end
         wait_30f
-        dlg $0A2A, BOTTOM
+        dlg DLG_2602, BOTTOM
                 ; RACHEL: LOCKE_
         obj_script LOCKE
                 dir LEFT
                 end
         wait_30f
-        dlg $0A28, BOTTOM
+        dlg DLG_2600, BOTTOM
                 ; LOCKE: Rachel!!!
         wait_1s
         play_song FOREVER_RACHEL
@@ -83442,7 +83492,7 @@ _cc2baf:
                 mod_bg_pal INC, RED, 3, 5
                 end_loop
         wait_2s
-        dlg $0A2C, BOTTOM
+        dlg DLG_2604, BOTTOM
                 ; RACHEL: LOCKE_
                 ; I've dreamed of seeing you.
                 ; I wanted to hear your voice.
@@ -83467,7 +83517,7 @@ _cc2baf:
                 dir LEFT
                 end
         wait_30f
-        dlg $0A2D, BOTTOM
+        dlg DLG_2605, BOTTOM
                 ; LOCKE: __
                 ; RACHEL: LOCKE_ _
                 ; With you I was so happy_
@@ -83488,7 +83538,7 @@ _cc2baf:
                 move DOWN, 2
                 dir RIGHT
                 end
-        dlg $0A2E, BOTTOM
+        dlg DLG_2606, BOTTOM
                 ; LOCKE: RACHEL!!!!
                 ; RACHEL: I have to go now_
                 ; _I'll always love you_
@@ -83519,7 +83569,7 @@ _cc2baf:
                 move UP, 1
                 end
         wait_30f
-        dlg $0A28, BOTTOM
+        dlg DLG_2600, BOTTOM
                 ; LOCKE: Rachel!!!
         wait_90f
         wait_30f
@@ -83876,14 +83926,14 @@ _cc2baf:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0A30
+        dlg DLG_2608
                 ; CELES: LOCKE_
         wait_1s
         obj_script LOCKE
                 dir RIGHT
                 end
         wait_1s
-        dlg $0A31
+        dlg DLG_2609
                 ; LOCKE: Thanks, I'm okay_
                 ; I feel lighter than air_
                 ; From here on_
@@ -83976,7 +84026,7 @@ _cc3188:
                 dir UP
                 end
         wait_30f
-        dlg $0A32
+        dlg DLG_2610
                 ; CELES: What's up?
         wait_30f
         obj_script LOCKE
@@ -84050,7 +84100,7 @@ _cc3188:
                 action 36
                 end
         wait_30f
-        dlg $0A33
+        dlg DLG_2611
                 ;
                 ; ``X-Potion''!
                 ;
@@ -84077,14 +84127,14 @@ _cc3188:
                 dir DOWN
                 end
         wait_30f
-        dlg $0A34
+        dlg DLG_2612
                 ; LOCKE: The treasures of the Phoenix Cave!
         wait_1s
         obj_script LOCKE
                 action 36
                 end
         wait_30f
-        dlg $0A35
+        dlg DLG_2613
                 ; LOCKE: Right, let's move out! We have an appointment with Kefka!
         wait_45f
         obj_script CELES
@@ -84166,7 +84216,7 @@ _cc32db:
                 end_loop
         return
 _cc3300:
-        dlg $0A36
+        dlg DLG_2614
                 ; Have you heard of something called the Exp. Egg?
                 ; Huh? Have ya?
                 ; Long ago it was buried in a tomb to the west.
@@ -84177,7 +84227,7 @@ _cc3304:
         wait_30f
 _cc330f:
         if_switch $00A4=0, _cc3332
-        dlg $06D8
+        dlg DLG_1752
                 ; The Chocobo is the noblest of creatures!
         wait_15f
         sfx 106
@@ -84197,7 +84247,7 @@ _cc330f:
         wait_obj NPC_2
         wait_30f
 _cc3332:
-        dlg $03A7, BOTTOM
+        dlg DLG_935, BOTTOM
                 ; Chocobo ride, 100 GP!
                 ; How about it?
                 ; 0:  Yes
@@ -84258,17 +84308,17 @@ _cc338f:
         return
 _cc339c:
         if_switch $00A4=1, _cc33a6
-        dlg $0257
+        dlg DLG_599
                 ; This is a classroom for the beginner. Here we answer your questions about the world.
                 ; Think of us as your advisors_
         return
 _cc33a6:
-        dlg $0258
+        dlg DLG_600
                 ; Welcome to this classroom.
                 ; We'll be here for you even if the world should crumble.
         return
 _cc33aa:
-        dlg $0259
+        dlg DLG_601
                 ; This is water from a recovery spring. It'll restore your HP and MP. Such springs are located throughout the world.
         return
 _cc33ae:
@@ -84282,7 +84332,7 @@ _cc33b8:
         obj_script NPC_27
                 dir DOWN
                 end
-        dlg $0257
+        dlg DLG_599
                 ; This is a classroom for the beginner. Here we answer your questions about the world.
                 ; Think of us as your advisors_
         wait_30f
@@ -84306,31 +84356,31 @@ _cc33b8:
         player_ctrl_on
         return
 _cc33e1:
-        dlg $025A
+        dlg DLG_602
                 ; This is a Save Point.
-        dlg $06D4
+        dlg DLG_1748
                 ; At Save Points you can use a ``Sleeping Bag'' or ``Tent'', and also save a game.
                 ; If you should perish, you'll automatically be able to play from your last save.
                 ; Though any GP, treasures, etc. you found will have to be found again, your Level and Exp. data will be retained.
                 ; You can save a game anywhere on the world map.
         return
 _cc33e8:
-        dlg $025B
+        dlg DLG_603
                 ; Valuables are often hidden in pots such as this one.
         return
 _cc33ec:
-        dlg $025C
+        dlg DLG_604
                 ; Use curative items to restore your HP. Staying at an Inn will revive your party in full.
         return
 _cc33f0:
-        dlg $025D
+        dlg DLG_605
                 ; Ha!
                 ; Sometimes monsters lurk inside of treasure chests!
         return
 _cc33f4:
-        dlg $025E
+        dlg DLG_606
                 ; Heard about Relics?
-        dlg $06D2
+        dlg DLG_1746
                 ; Relics give your party members a variety of abilities.
                 ; For example_
                 ; ``Sprint Shoes'' double your speed.
@@ -84340,11 +84390,11 @@ _cc33f4:
                 ; Use the Main Menu to equip up to 2 relics per person.
         return
 _cc33fb:
-        dlg $025F
+        dlg DLG_607
                 ; Choose with the A Button. Cancel a choice with the B Button. View the Main Menu with the X Button.
         return
 _cc33ff:
-        dlg $0260
+        dlg DLG_608
                 ; When buying armor and weapons you'll see some symbols next to your characters:
                 ; Triangles pointing up indicate increasing battle power.
                 ; Triangles pointing down indicate decreasing battle power.
@@ -84353,46 +84403,46 @@ _cc33ff:
                 ; A symbol under a character means that person is now in your party.
         return
 _cc3403:
-        dlg $0261
+        dlg DLG_609
                 ; If you select the ``Wait'' Battle Mode from the Config Menu_
                 ; You can take all the time you need to select spells or items without being attacked.
         return
 _cc3407:
-        dlg $0262
+        dlg DLG_610
                 ; Run from some battles by pressing (and holding) both the L and R Buttons.
         return
 _cc340b:
-        dlg $0263
+        dlg DLG_611
                 ; A full meter in the lower right means that character will be next to accept battle commands.
                 ; Press the X or Y button to pass that character's battle opportunity to the next character.
         return
 _cc340f:
-        dlg $0264
+        dlg DLG_612
                 ; When selecting a spell, press the L or R Button to select multiple targets.
         return
 _cc3413:
-        dlg $0265
+        dlg DLG_613
                 ; During a battle, press left or right on the control pad to select ``Row'' or ``Defense.''
                 ; ``Defense'' cuts received damage in half, and works until your next command input.
         return
 _cc3417:
-        dlg $0266
+        dlg DLG_614
                 ; Damage is more severe when caught in a pincer attack!
                 ; Use care when running!
         return
 _cc341b:
-        dlg $0267
+        dlg DLG_615
                 ; White numerals appearing during battle are damage points. Green numerals are recovery points.
         return
 _cc341f:
-        dlg $0268
+        dlg DLG_616
                 ; In the back row, damage and attack power are halved.
                 ; Change rows using the Main Menu: press left on the Control Pad, then press the A Button.
         return
 _cc3423:
-        dlg $0277
+        dlg DLG_631
                 ; Color changes indicate changes in status.
-        dlg $0278, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_632, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; Blue = Rflect
                 ;
                 ; Spells are reflected.
@@ -84405,7 +84455,7 @@ _cc3423:
                 mod_sprite_pal INC, BLUE, 3, 81
                 end_loop
         call _cc34f3
-        dlg $0279, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_633, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; Yellow = ``Safe''
                 ;
                 ; Defense up!
@@ -84418,7 +84468,7 @@ _cc3423:
                 mod_sprite_pal INC, {RED, GREEN}, 3, 81
                 end_loop
         call _cc34f3
-        dlg $027A, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_634, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; Green = ``Shell''
                 ;
                 ; Magic defense up!
@@ -84431,7 +84481,7 @@ _cc3423:
                 mod_sprite_pal INC, GREEN, 3, 81
                 end_loop
         call _cc34f3
-        dlg $027B, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_635, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; Red = ``Haste''
                 ;
                 ; Speed up!
@@ -84444,7 +84494,7 @@ _cc3423:
                 mod_sprite_pal INC, RED, 3, 81
                 end_loop
         call _cc34f3
-        dlg $027C, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_636, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; White = ``Slow''
                 ;
                 ; Speed way down!
@@ -84457,7 +84507,7 @@ _cc3423:
                 mod_sprite_pal INC, {RED, GREEN, BLUE}, 3, 81
                 end_loop
         call _cc34f3
-        dlg $027D, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_637, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; Pink = ``Stop''
                 ;
                 ; Time stops!
@@ -84483,7 +84533,7 @@ _cc350c:
         load_pal 14, LOCKE
         return
 _cc3510:
-        dlg $06DC
+        dlg DLG_1756
                 ; Unequip some party members?
                 ; 0:  Those not now in your party.
                 ; 1:  All members.
@@ -84637,14 +84687,14 @@ _cc3664:
         player_ctrl_on
         return
 _cc3677:
-        dlg $0269
+        dlg DLG_617
                 ; Need status info?
                 ; 0:  Yes
                 ; 1:  No
         choice _cc3682, EventReturn
         return
 _cc3682:
-        dlg $026A
+        dlg DLG_618
                 ; ``Clear''
                 ; Enemy can't strike you, but you're an easy target for spells.
                 ; You'll revert to normal if a spell hits you.
@@ -84656,26 +84706,26 @@ _cc3682:
                 ; You'll revert to normal when struck by a weapon.
         return
 _cc3686:
-        dlg $026B
+        dlg DLG_619
                 ; Use a curative spell or item on an undead creature for maximum damage.
         return
 _cc368a:
-        dlg $026C
+        dlg DLG_620
                 ; ``Life 3''
                 ; Automatically brought back even if status is affected.
                 ; ``Regen''
                 ; HP gradually come back.
         return
 _cc368e:
-        dlg $026D
+        dlg DLG_621
                 ; 3-way attack indicates a fire, ice and lightning attack.
         return
 _cc3692:
-        dlg $026E
+        dlg DLG_622
                 ; ``Rflect'' spells will fade over time, and can't block certain magic attacks.
         return
 _cc3696:
-        dlg $026F
+        dlg DLG_623
                 ; ``Runic''
                 ; Turns many magic attacks into MP! Can be used repeatedly.
                 ; ``Morph''
@@ -84684,19 +84734,19 @@ _cc3696:
                 ; Once selected, will continue until the battle is over.
         return
 _cc369a:
-        dlg $0270
+        dlg DLG_624
                 ; When multiple images of your characters flash on the screen, weapons won't touch you.
         return
 _cc369e:
-        dlg $0271
+        dlg DLG_625
                 ; Might want to go out and get some experience in the world before coming in here!
         return
 _cc36a2:
-        dlg $0272
+        dlg DLG_626
                 ; Near-fatal status can result in special hidden skills. See what happens if you select command ``Fight''_
         return
 _cc36a6:
-        dlg $0273
+        dlg DLG_627
                 ; Seems you have a piece of Magicite.
                 ; Want to learn more about Espers?
                 ; 0:  Yes
@@ -84704,7 +84754,7 @@ _cc36a6:
         choice _cc36b1, EventReturn
         return
 _cc36b1:
-        dlg $0274
+        dlg DLG_628
                 ; To use an Esper it must be equipped. Choose ``Skills'' from the menu, then select ``Espers.''
                 ; During battle, select Magic, and press up on the Control Pad. Press the A Button to use the Esper.
                 ; Remember, an Esper can only be used once per battle.
@@ -84715,12 +84765,12 @@ _cc36b1:
                 ; When equipped, some Espers will raise qualities (Strength, HP, MP etc.) to their maximum limits at the next ``level up.''
         return
 _cc36b5:
-        dlg $0275
+        dlg DLG_629
                 ; Each SwdTech sword has its own unique name.
                 ; You'll gain more SwdTech skills over time.
         return
 _cc36b9:
-        dlg $0276
+        dlg DLG_630
                 ; ``About Rflect''
                 ; ``Rflect'' doesn't block spells that have been ``Rflected'' off others.
                 ; Enemy protected by Rflect?
@@ -84765,7 +84815,7 @@ _cc36f2:
                 move DOWN, 3
                 end
         wait_30f
-        dlg $0A38
+        dlg DLG_2616
                 ; PICKPOCKET: Eh!?
                 ; What're you doing here?
                 ; Doesn't matter, really_
@@ -84815,7 +84865,7 @@ _cc3719:
         fade_in 8
         wait_fade
         wait_30f
-        dlg $0A39, BOTTOM
+        dlg DLG_2617, BOTTOM
                 ; ESPER: You HUMANS freed me from that prison of ice?
                 ; You possess Magicite?!
                 ; Who are you?!
@@ -84842,7 +84892,7 @@ _cc3719:
         call _cc9ad5
         hide_obj NPC_2
         wait_1s
-        dlg $0A3A, BOTTOM
+        dlg DLG_2618, BOTTOM
                 ;
                 ; Received the Magicite
                 ; ``Tritoch!''
@@ -84889,7 +84939,7 @@ _cc37c3:
         return
 _cc37e7:
         if_switch $029E=0, EventReturn
-        dlg $0A3B
+        dlg DLG_2619
                 ; There's an opening in the cliff. Hop into it?
                 ; 0:  Yes
                 ; 1:  No
@@ -85085,7 +85135,7 @@ _cc396c:
                 dir DOWN
                 end
         wait_30f
-        dlg $0A3C
+        dlg DLG_2620
                 ; MOG: Kupoppo! You're alive!
                 ; I thought you were all feeding the worms, kupo!
                 ; Kupohoho! Let's go!
@@ -85158,7 +85208,7 @@ _cc396c:
                 action 36
                 end
         wait_30f
-        dlg $0A3D
+        dlg DLG_2621
                 ; MOG: Say, we could use some sasquatch muscle!!
                 ; Besides, he'd be helpless here without me!
                 ; He's somewhere in the mines. Once we find him, I'll order him to join us!
@@ -85243,7 +85293,7 @@ _cc3a4c:
         obj_script NPC_1
                 dir DOWN
                 end
-        dlg $0A3E
+        dlg DLG_2622
                 ; Kupo!!!
                 ; Don't scare me like that!
         wait_30f
@@ -85255,7 +85305,7 @@ _cc3a4c:
                 dir UP
                 end
         wait_30f
-        dlg $06DF
+        dlg DLG_1759
                 ; Can you talk?!
         wait_30f
         loop 12
@@ -85286,7 +85336,7 @@ _cc3a4c:
                 end
         shake ALL, 3, 0
         wait_30f
-        dlg $06E0, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1760, {TEXT_ONLY, BOTTOM}
                 ; Human-loving, fast-talking,
                 ; street-smart, SLAM-dancing_
                 ; Moogle_
@@ -85309,7 +85359,7 @@ _cc3a4c:
         wait_fade
         call _cad015
         wait_30f
-        dlg $06E1
+        dlg DLG_1761
                 ; That old psycho, Ramuh, came to me in a dream and told me to be expectin' you!
                 ; And now_  I'm_
                 ; gonna join your party!
@@ -85318,7 +85368,7 @@ _cc3a4c:
                 action 36
                 end
         wait_30f
-        dlg $0A3D
+        dlg DLG_2621
                 ; MOG: Say, we could use some sasquatch muscle!!
                 ; Besides, he'd be helpless here without me!
                 ; He's somewhere in the mines. Once we find him, I'll order him to join us!
@@ -85346,7 +85396,7 @@ _cc3ade:
         player_ctrl_on
         return
 _cc3af8:
-        dlg $0A2B
+        dlg DLG_2603
                 ; I'm an Imperial Trooper!
                 ; Probably, the last of 'em_
                 ; I have some valuable information for you!
@@ -85365,7 +85415,7 @@ _cc3b0e:
         play_song KIDS_RUN_THROUGH_THE_CITY
         return
 _cc3b11:
-        dlg $0985
+        dlg DLG_2437
                 ; Those beautiful days will never return_
         wait_30f
         mosaic 4
@@ -85464,17 +85514,17 @@ _cc3b71:
         return
 _cc3ba2:
         if_switch $00CA=1, _cc3bac
-        dlg $0986
+        dlg DLG_2438
                 ; Narshe is filled with monsters. I don't have any place to go home to_
         return
 _cc3bac:
-        dlg $0987
+        dlg DLG_2439
                 ; But I refuse to give up!
                 ; I'm going back to Narshe.
                 ; There's that frozen Esper_
                 ; With you guys along, we'll be able to wake that thing up!
         return
-        dlg $0988
+        dlg DLG_2440
                 ; LOCKE just left here a while ago. He was happy_
                 ; _saying something about learning where some mystic treasure was_
         set_case PARTY_CHARS
@@ -85483,38 +85533,38 @@ _cc3bac:
         return
 _cc3bbf:
         wait_30f
-        dlg $0989
+        dlg DLG_2441
                 ; CELES: LOCKE_
                 ; He's alive!!
         return
 _cc3bc4:
-        dlg $098A
+        dlg DLG_2442
                 ; We planted some seeds, but nothing's growing_
         return
 _cc3bc8:
-        dlg $098B
+        dlg DLG_2443
                 ; It's as if the plants have lost their will to live_
         return
 _cc3bcc:
         if_switch $00A3=1, _cc3bd6
-        dlg $098C
+        dlg DLG_2444
                 ; There's a real mean guy fighting at the colosseum. Seems he's looking for a weapon called the ``Striker''_
         return
 _cc3bd6:
-        dlg $098D
+        dlg DLG_2445
                 ; Unless life begins to flourish again, it doesn't matter how beautifully we restore our village.
         return
 _cc3bda:
-        dlg $098E
+        dlg DLG_2446
                 ; A handsome man with a quaint way of talking visited our village recently. He kept saying, ``Thou'' to everyone!
         return
 _cc3bde:
-        dlg $0995
+        dlg DLG_2453
                 ; There're still some people with vision, even in this world.
                 ; Like my brother up north.
         return
 _cc3be2:
-        dlg $0996
+        dlg DLG_2454
                 ; Don't step there!
                 ; Give the seedlings a chance!
         obj_script SLOT_1
@@ -85556,7 +85606,7 @@ _cc3bf8:
                 dir DOWN
                 end
         wait_30f
-        dlg $098F
+        dlg DLG_2447
                 ; CELES: SETZER!
                 ; SETZER: You're alive!?
         wait_30f
@@ -85583,7 +85633,7 @@ _cc3bf8:
                 dir UP
                 wait 8
                 end
-        dlg $0990
+        dlg DLG_2448
                 ; CELES: Come along with us!
                 ; We're after Kefka!
                 ; SETZER: Phew_
@@ -85614,7 +85664,7 @@ _cc3bf8:
                 dir RIGHT
                 end
         wait_30f
-        dlg $0991
+        dlg DLG_2449
                 ; CELES: But before the world collapsed, you fought with all your heart! You were absolutely fearless_
                 ; SETZER: That was then_
                 ; We can never have that world back!
@@ -85639,7 +85689,7 @@ _cc3bf8:
                 action 35
                 end
         wait_30f
-        dlg $0992
+        dlg DLG_2450
                 ; SETZER: Mwa ha!
                 ; All right_you win!
                 ; I'm starting to feel lucky!!
@@ -85651,7 +85701,7 @@ _cc3bf8:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0993
+        dlg DLG_2451
                 ; SETZER: Thanks_
                 ; I needed that.
                 ; Now, let's go visit Daryl's Tomb.
@@ -85694,7 +85744,7 @@ _cc3bf8:
                 action 36
                 end
         wait_30f
-        dlg $0994
+        dlg DLG_2452
                 ; SETZER: __
                 ; We're gonna get us another one_
                 ; Airship, that is_!
@@ -85801,7 +85851,7 @@ _cc3d73:
         if_switch $00D2=1, _cc3e45
         if_switch $0296=1, _cc3dfc
         if_switch $0295=1, _cc3dbc
-        dlg $09EE
+        dlg DLG_2542
                 ; LOLA: Look!
                 ; My boyfriend in Mobliz sent me all these flowers!
                 ; They're all hand-made of silk. And these are letters he has written to me_
@@ -85830,7 +85880,7 @@ _cc3d73:
                         end
                 end_loop
         wait_30f
-        dlg $09EF
+        dlg DLG_2543
                 ; ???
                 ; But wasn't Mobliz demolished by Kefka? Somebody else must have written these_
         switch $0294=1
@@ -85859,7 +85909,7 @@ _cc3dd4:
                 end
 _cc3ddf:
         wait_30f
-        dlg $09F3
+        dlg DLG_2547
                 ; LOLA: Could you please attach this reply to a carrier pigeon?
                 ; Do this favor for Lola?
                 ; 0:  Yes
@@ -85873,28 +85923,28 @@ _cc3deb:
                 wait 4
                 end
         wait_30f
-        dlg $09F4
+        dlg DLG_2548
                 ; LOLA: Thank you.
         switch $0296=1
         switch $01D7=1
         player_ctrl_on
         return
 _cc3dfc:
-        dlg $09F5
+        dlg DLG_2549
                 ; LOLA: I hope his reply comes soon!
         return
 _cc3e00:
         if_switch $00D2=1, _cc3eef
 _cc3e06:
         if_switch $0294=0, EventReturn
-        dlg $09F0
+        dlg DLG_2544
                 ; Read the letter?
                 ; 0:  Yes
                 ; 1:  No
         choice _cc3e17, EventReturn
         return
 _cc3e17:
-        dlg $09F1
+        dlg DLG_2545
                 ; My beloved Lola,
                 ; We're still busy trying to rebuild this town_
                 ; If all goes well I'll be able to come home to you soon_
@@ -85915,7 +85965,7 @@ _cc3e17:
                         end
                 end_loop
         wait_30f
-        dlg $09F2
+        dlg DLG_2546
                 ; _this handwriting_
                 ; It looks a lot like CYAN's_ But where is he mailing them from?
         switch $0295=1
@@ -85924,7 +85974,7 @@ _cc3e17:
         player_ctrl_on
         return
 _cc3e41:
-        dlg $09F6
+        dlg DLG_2550
                 ; Silk flowers_
                 ; Beautifully made, too_
         return
@@ -85933,7 +85983,7 @@ _cc3e45:
         obj_script NPC_2
                 dir DOWN
                 end
-        dlg $09F7
+        dlg DLG_2551
                 ; LOLA: I knew that these flowers and letters weren't sent by my boyfriend. I just didn't want to admit it.
                 ; I was lying to myself_
                 ; But I'm all right now.
@@ -85969,7 +86019,7 @@ _cc3e45:
                 dir UP
                 wait 4
                 end
-        dlg $09F8
+        dlg DLG_2552
                 ; Actually, _
         wait_30f
         obj_script CYAN
@@ -86010,7 +86060,7 @@ _cc3e45:
                 dir UP
                 end
         wait_30f
-        dlg $09F9
+        dlg DLG_2553
                 ; CYAN: Look to the future_
                 ; We have a lot of life left to live_
         wait_30f
@@ -86041,7 +86091,7 @@ _cc3e45:
         switch $029C=1
         return
 _cc3eeb:
-        dlg $09FA
+        dlg DLG_2554
                 ; I feel like I have a future now! I'll take your words to heart_
                 ; I'll be okay.
         return
@@ -86049,20 +86099,20 @@ _cc3eef:
         if_switch $029D=1, _cc3f03
         set_case PARTY_CHARS
         if_switch $01A2=0, _cc3e06
-        dlg $09FB
+        dlg DLG_2555
                 ; CYAN exchanged the letters_
         switch $029D=1
         player_ctrl_on
         return
 _cc3f03:
-        dlg $09F0
+        dlg DLG_2544
                 ; Read the letter?
                 ; 0:  Yes
                 ; 1:  No
         choice _cc3f0e, EventReturn
         return
 _cc3f0e:
-        dlg $0A08
+        dlg DLG_2568
                 ; Dear Lola,
                 ; I am writing to beg for your forgiveness. I am guilty of perpetuating a terrible lie_
                 ; I have only now realized the error of my ways. I hope I can correct a great wrong.
@@ -86228,7 +86278,7 @@ _cc3fe8:
                 move DOWN, 6
                 end
         wait_30f
-        dlg $09FC, {ASYNC, TEXT_ONLY, BOTTOM}
+        dlg DLG_2556, {ASYNC, TEXT_ONLY, BOTTOM}
                 ;
                 ;   The world before the fall_
                 ; Delightful is the light of dawn_
@@ -86242,7 +86292,7 @@ _cc3fe8:
         obj_script SLOT_1
                 move UP, 1
                 end
-        dlg $09FD, BOTTOM
+        dlg DLG_2557, BOTTOM
                 ; CYAN!!
         obj_script NPC_3
                 action 31
@@ -86252,7 +86302,7 @@ _cc3fe8:
                 dir DOWN
                 end
         wait_30f
-        dlg $09FE, BOTTOM
+        dlg DLG_2558, BOTTOM
                 ; CYAN: Hey!!
                 ; You're alive!?
         wait_30f
@@ -86287,7 +86337,7 @@ _cc3fe8:
                 wait 8
                 end
         wait_30f
-        dlg $09FF, BOTTOM
+        dlg DLG_2559, BOTTOM
                 ; CYAN_
         wait_1s
         obj_script NPC_3
@@ -86296,7 +86346,7 @@ _cc3fe8:
                 dir DOWN
                 end
         wait_30f
-        dlg $0A00
+        dlg DLG_2560
                 ; CYAN: I shall go with you!
                 ; I shan't leave the world as it is!
                 ; But how did you find me?
@@ -86531,7 +86581,7 @@ _cc3fe8:
                 dir RIGHT
                 end
         wait_15f
-        dlg $0A01, BOTTOM
+        dlg DLG_2561, BOTTOM
                 ; CYAN: These_
                 ; they're_ um_
                 ; Merely a diversion of mine_
@@ -86543,7 +86593,7 @@ _cc3fe8:
                 dir LEFT
                 end
         wait_30f
-        dlg $0A02, BOTTOM
+        dlg DLG_2562, BOTTOM
                 ; CYAN.
                 ; These flowers are gorgeous!
         wait_30f
@@ -86560,7 +86610,7 @@ _cc3fe8:
                 action 24
                 end
         wait_1s
-        dlg $0A03, BOTTOM
+        dlg DLG_2563, BOTTOM
                 ; CYAN: Mm_m_!?
                 ; This is an outrage_!
         wait_1s
@@ -86573,7 +86623,7 @@ _cc3fe8:
                 move UP, 1
                 end
         wait_90f
-        dlg $0A04, BOTTOM
+        dlg DLG_2564, BOTTOM
                 ; CYAN: Seriously?
         obj_script SLOT_1
                 dir DOWN
@@ -86628,7 +86678,7 @@ _cc3fe8:
                 dir DOWN
                 end
         wait_2s
-        dlg $0A05, BOTTOM
+        dlg DLG_2565, BOTTOM
                 ; CYAN: I learned of that poor girl when I passed through Maranda.
                 ; When I heard that she sent a letter each day, but never received any replies_
                 ; Something inside me snapped_
@@ -86646,7 +86696,7 @@ _cc3fe8:
         obj_script NPC_9
                 action 34
                 end
-        dlg $0A06, BOTTOM
+        dlg DLG_2566, BOTTOM
                 ; CYAN: As I wrote to that girl, I realized I was very much like her.
                 ; I was looking behind_full of despair. My eyes were closed_
                 ; And then something changed_
@@ -86683,7 +86733,7 @@ _cc3fe8:
         wait_1s
         set_case AVAIL_CHARS
         if_switch $01AB=1, _cc427b
-        dlg $0A07, BOTTOM
+        dlg DLG_2567, BOTTOM
                 ; I bumped into Sir GAU in Maranda. He said he had to become stronger if he was to face Kefka.
                 ; He probably returned to the Veldt.
         wait_30f
@@ -86717,7 +86767,7 @@ _cc42a1:
         player_ctrl_on
         return
 _cc42bb:
-        dlg $0A08, {TEXT_ONLY, BOTTOM}
+        dlg DLG_2568, {TEXT_ONLY, BOTTOM}
                 ; Dear Lola,
                 ; I am writing to beg for your forgiveness. I am guilty of perpetuating a terrible lie_
                 ; I have only now realized the error of my ways. I hope I can correct a great wrong.
@@ -86730,7 +86780,7 @@ _cc42bb:
         return
 _cc42bf:
         if_switch $0297=1, _cc42c9
-        dlg $0A09
+        dlg DLG_2569
                 ; Locked!
         return
 _cc42c9:
@@ -86739,7 +86789,7 @@ _cc42c9:
         mod_bg_tiles BG1, {42, 54}, {1, 1}
                 .byte $12
         wait_30f
-        dlg $0A0A
+        dlg DLG_2570
                 ; W_why_
                 ; A child could use this machine!
                 ; This is a joke! I'll never be afraid of machines again!
@@ -86780,7 +86830,7 @@ _cc42c9:
                 dir LEFT
                 end
         wait_30f
-        dlg $0A0B
+        dlg DLG_2571
                 ; CYAN: No!
                 ; That's mine!!!
         obj_script SLOT_1
@@ -86829,7 +86879,7 @@ _cc434c:
         return
 _cc4355:
         sfx SFX::MAGICITE_PICKUP
-        dlg $0A0C
+        dlg DLG_2572
                 ; Found the key to CYAN's treasure chest.
         hide_obj NPC_4
         switch $0685=0
@@ -86947,7 +86997,7 @@ _cc43e2:
                 dir RIGHT
                 wait 2
                 end
-        dlg $08CC
+        dlg DLG_2252
                 ; Uwaaa!
                 ; Someone's coming!!
         obj_script CAMERA, ASYNC
@@ -86972,10 +87022,10 @@ _cc4447:
                 dir DOWN
                 end
         wait_30f
-        dlg $08CD
+        dlg DLG_2253
                 ; You're gonna have to fight your way in here, chumps!!
         wait_1s
-        dlg $08CE, TEXT_ONLY
+        dlg DLG_2254, TEXT_ONLY
                 ;
                 ; Wait!
         wait_30f
@@ -86992,7 +87042,7 @@ _cc4447:
                 move DOWN, 2
                 end
         wait_30f
-        dlg $08CF, BOTTOM
+        dlg DLG_2255, BOTTOM
                 ; TERRA!!
         wait_30f
         obj_script NPC_1
@@ -87000,7 +87050,7 @@ _cc4447:
                 move UP, 2
                 end
         wait_30f
-        dlg $08D0, BOTTOM
+        dlg DLG_2256, BOTTOM
                 ; Mama!
                 ; Are these your friends?!
         wait_30f
@@ -87047,11 +87097,11 @@ _cc4447:
                 wait 6
                 end
         wait_30f
-        dlg $08D1, BOTTOM
+        dlg DLG_2257, BOTTOM
                 ; TERRA: Oh! I'm so glad to see that you're safe!
                 ; I've missed you!
         wait_1s
-        dlg $08D2, BOTTOM
+        dlg DLG_2258, BOTTOM
                 ; ``TERRA_come one, let's go! Unless we stop Kefka, all's lost_''
                 ; TERRA: I_
         wait_30f
@@ -87099,56 +87149,56 @@ _cc4447:
 _cc44fb:
         if_switch $00BF=1, _cc505a
         if_switch $00BE=1, _cc4b37
-        dlg $08FD
+        dlg DLG_2301
                 ; Our papas and mamas are gone_
         return
 _cc450b:
         if_switch $00BE=1, _cc4b37
-        dlg $08FE
+        dlg DLG_2302
                 ; But we'll be happy,
                 ; if TERRA'll come back to us!
         return
 _cc4515:
         if_switch $00BE=1, _cc4b3b
-        dlg $08FF
+        dlg DLG_2303
                 ; A badly wounded soldier passed away here in Mobliz.
         return
 _cc451f:
         if_switch $00BE=1, _cc4b3f
-        dlg $0900
+        dlg DLG_2304
                 ; Everyone here calls TERRA, ``Mama.''
         return
 _cc4529:
         if_switch $00BF=1, _cc505e
         if_switch $00BE=1, _cc4b43
-        dlg $0901
+        dlg DLG_2305
                 ; Duane and Katarin are the oldest ones here.
         return
 _cc4539:
         if_switch $00BF=1, _cc5062
-        dlg $0902
+        dlg DLG_2306
                 ; I saw Duane kissing Katarin!
         return
 _cc4543:
         if_switch $00BF=1, _cc5066
-        dlg $0903
+        dlg DLG_2307
                 ; You're not gonna take TERRA away, are you?
         return
 _cc454d:
         if_switch $00BF=1, _cc506a
         if_switch $00BE=1, _cc4b37
-        dlg $0904
+        dlg DLG_2308
                 ; The light took everyone_
                 ; _everyone_ _
                 ; Dad_Mom_
         return
 _cc455d:
-        dlg $0905
+        dlg DLG_2309
                 ; DUANE: This is our village.
                 ; You can't just waltz in here and start barking out orders!
         return
 _cc4561:
-        dlg $0906
+        dlg DLG_2310
                 ; KATARIN: TERRA's helped us all to survive. Ever since she's been here, we've felt hopeful for the future.
         return
 _cc4565:
@@ -87158,7 +87208,7 @@ _cc4565:
                 dir DOWN
                 end
         wait_30f
-        dlg $08D3
+        dlg DLG_2259
                 ; TERRA: That is I_ um_
                 ; I can't fight any longer_
         wait_30f
@@ -87167,7 +87217,7 @@ _cc4565:
                 end
         fade_out_song $A0
         wait_2s
-        dlg $08D4
+        dlg DLG_2260
                 ; TERRA: The very day the world fell, Kefka turned some kind of beam on this town.
                 ; Almost all of the adults perished trying to save their children_
         switch $01CC=1
@@ -87258,7 +87308,7 @@ _cc4565:
                 dir LEFT
                 end
         wait_30f
-        dlg $0911, TEXT_ONLY
+        dlg DLG_2321, TEXT_ONLY
                 ; It's heading this way!
                 ; Protect the kids!!!
         wait_30f
@@ -87471,7 +87521,7 @@ _cc4565:
                 speed FAST
                 move DOWN, 6
                 end
-        dlg $0912, {ASYNC, TEXT_ONLY}
+        dlg DLG_2322, {ASYNC, TEXT_ONLY}
                 ; Papa!!
                 ; Mama!!!
         wait_90f
@@ -87494,7 +87544,7 @@ _cc4565:
         fade_in 2
         wait_fade
         wait_30f
-        dlg $08D5
+        dlg DLG_2261
                 ; TERRA: There were only children here_
                 ; The moment I arrived, I felt needed_
         lock_camera
@@ -87542,7 +87592,7 @@ _cc4565:
                 dir RIGHT
                 end
         wait_30f
-        dlg $08D6
+        dlg DLG_2262
                 ; DUANE: You can't take TERRA away!
         wait_30f
         obj_script NPC_15
@@ -87571,7 +87621,7 @@ _cc4565:
                 end
         hide_obj NPC_14
         wait_1s
-        dlg $08D7
+        dlg DLG_2263
                 ; KATARIN: Duane_
                 ; Please excuse him. It's just that if TERRA goes, she takes with her the very spirit of our survival_
         wait_30f
@@ -87596,7 +87646,7 @@ _cc4565:
                 dir RIGHT
                 end
         wait_1s
-        dlg $08D8
+        dlg DLG_2264
                 ; TERRA: I don't know why these kids need me_
                 ; But they've made me feel things I've never felt before.
                 ; The moment I sensed this, I lost my will to fight.
@@ -87606,7 +87656,7 @@ _cc4565:
                 end
         fade_out_song $F0
         wait_2s
-        dlg $08D9
+        dlg DLG_2265
                 ; TERRA: I can honestly say I don't know what's going on inside of me_
                 ; And the more I try to understand it, the less inclined I am to fight.
         play_song SILENCE
@@ -87615,7 +87665,7 @@ _cc4565:
         player_ctrl_on
         return
 _cc498c:
-        dlg $08D9
+        dlg DLG_2265
                 ; TERRA: I can honestly say I don't know what's going on inside of me_
                 ; And the more I try to understand it, the less inclined I am to fight.
         return
@@ -87655,7 +87705,7 @@ _cc4990:
                 dir DOWN
                 end
         wait_15f
-        dlg $08DA, BOTTOM
+        dlg DLG_2266, BOTTOM
                 ; Help!!! Run!!!
                 ; Phunbaba's coming!!
         obj_script NPC_2
@@ -87716,7 +87766,7 @@ _cc4990:
                 action 22
                 end
         wait_1s
-        dlg $08DB
+        dlg DLG_2267
                 ; TERRA: Phunbaba's an ancient demon who was released when the world was undone.
         wait_30f
         battle 128
@@ -87756,7 +87806,7 @@ _cc4990:
                 action 9
                 end
         wait_30f
-        dlg $08DC
+        dlg DLG_2268
                 ; TERRA!!
                 ; Wake up!
                 ; Uh, oh_here it comes!!
@@ -87783,7 +87833,7 @@ _cc4990:
         fade_in 2
         wait_fade
         wait_2s
-        dlg $08DD
+        dlg DLG_2269
                 ; TERRA: I've really lost it_
                 ; My fighting edge_
         wait_30f
@@ -87798,11 +87848,11 @@ _cc4990:
                 wait 2
                 end
         wait_30f
-        dlg $08DE
+        dlg DLG_2270
                 ; Mama!
                 ; Are you okay?!
         wait_30f
-        dlg $08DF
+        dlg DLG_2271
                 ; TERRA: I'm staying here.
                 ; As you can see, I can't be of any help to you.
                 ; And besides, the children really need me.
@@ -87814,7 +87864,7 @@ _cc4990:
                 dir RIGHT
                 end
         wait_1s
-        dlg $08E0
+        dlg DLG_2272
                 ; TERRA: Maybe after a little more time passes_
                 ; I need to understand what's happening to me_
         switch $01CC=0
@@ -87835,7 +87885,7 @@ _cc4abd:
                 dir UP
                 end
         wait_30f
-        dlg $08E1
+        dlg DLG_2273
                 ; Thanks for scaring Phunbaba away! In his haste, he dropped this. Here!
                 ;
                 ; Received the Magicite
@@ -87853,19 +87903,19 @@ _cc4abd:
         player_ctrl_on
         return
 _cc4ae0:
-        dlg $08E2
+        dlg DLG_2274
                 ; Mama_are you all right?
         return
 _cc4ae4:
-        dlg $08E3
+        dlg DLG_2275
                 ; You can't take Mama away!
         return
 _cc4ae8:
-        dlg $08E4
+        dlg DLG_2276
                 ; I'll have you if something happens to Mama!!
         return
 _cc4aec:
-        dlg $08E5
+        dlg DLG_2277
                 ; TERRA: I'm sorry_
                 ; I'm staying!
                 ; The children need me.
@@ -87908,23 +87958,23 @@ _cc4b29:
         player_ctrl_on
         return
 _cc4b37:
-        dlg $08E6
+        dlg DLG_2278
                 ; Katarin's gone_
         return
 _cc4b3b:
-        dlg $08E8
+        dlg DLG_2280
                 ; Katarin's belly's growing bigger!
         return
 _cc4b3f:
-        dlg $08E7
+        dlg DLG_2279
                 ; Duane was being mean to her, so Katarin took off!
         return
 _cc4b43:
-        dlg $08E9
+        dlg DLG_2281
                 ; I know! Katarin's gonna have a baby! My Mom looked like that before my brother appeared!
         return
 _cc4b47:
-        dlg $08EA
+        dlg DLG_2282
                 ; DUANE: I_don't know what to do. Katarin's pregnant_
         return
 _cc4b4b:
@@ -87940,7 +87990,7 @@ _cc4b4b:
                 dir RIGHT
                 end
         wait_30f
-        dlg $08EB
+        dlg DLG_2283
                 ; TERRA: Hey you guys!
         wait_30f
         obj_script SLOT_1
@@ -87950,7 +88000,7 @@ _cc4b4b:
                 end
         unlock_camera
         wait_30f
-        dlg $08EC
+        dlg DLG_2284
                 ; TERRA: Katarin's having a baby.
         wait_30f
         obj_script NPC_2
@@ -87959,7 +88009,7 @@ _cc4b4b:
                 dir RIGHT
                 end
         wait_30f
-        dlg $08ED
+        dlg DLG_2285
                 ; KATARIN: I'm so happy to have had a child_
                 ; But Duane seems miserable_
         wait_30f
@@ -87986,7 +88036,7 @@ _cc4b4b:
                 dir UP
                 end
         wait_30f
-        dlg $08EE
+        dlg DLG_2286
                 ; DUANE: Katarin_ _
                 ; I'm sorry.
                 ; I didn't know how to handle this.
@@ -88043,7 +88093,7 @@ _cc4b4b:
                 dir RIGHT
                 end
         wait_30f
-        dlg $08EF
+        dlg DLG_2287
                 ; Waaaaa!
                 ; Phunbaba's back again!
         obj_script SLOT_1
@@ -88075,21 +88125,21 @@ _cc4b4b:
         player_ctrl_on
         return
 _cc4c0b:
-        dlg $08F0
+        dlg DLG_2288
                 ; TERRA: Please!
                 ; Save this village!
                 ; I simply can't fight_
         return
 _cc4c0f:
-        dlg $08F1
+        dlg DLG_2289
                 ; DUANE: I'll keep Katarin safe.
         return
 _cc4c13:
-        dlg $08F2
+        dlg DLG_2290
                 ; KATARIN: I feel safe when Duane's around.
         return
 _cc4c17:
-        dlg $08F3
+        dlg DLG_2291
                 ; Please!!
                 ; Rid us of Phunbaba once and for all!
         return
@@ -88159,7 +88209,7 @@ _cc4c1b:
                 dir DOWN
                 end
         wait_30f
-        dlg $08CF
+        dlg DLG_2255
                 ; TERRA!!
         wait_30f
         obj_script NPC_14
@@ -88464,7 +88514,7 @@ _cc4c1b:
                 dir LEFT
                 end
         wait_30f
-        dlg $08F4, BOTTOM
+        dlg DLG_2292, BOTTOM
                 ; Monster again_
                 ; I'm afraid_
                 ; I'm always afraid_
@@ -88539,7 +88589,7 @@ _cc4c1b:
                 move RIGHT, 1
                 end
         wait_30f
-        dlg $08F5
+        dlg DLG_2293
                 ; Mama_
                 ; It is you, isn't it!
                 ; I can tell_
@@ -88589,7 +88639,7 @@ _cc4c1b:
                 wait 4
                 end
         wait_30f
-        dlg $08F6, BOTTOM
+        dlg DLG_2294, BOTTOM
                 ; Huh? Mama?
                 ; TERRA?
         wait_30f
@@ -88632,7 +88682,7 @@ _cc4c1b:
                 move UP, 2
                 dir RIGHT
                 end
-        dlg $08F7, BOTTOM
+        dlg DLG_2295, BOTTOM
                 ; Mama!!
                 ; TERRA!!!
         wait_30f
@@ -88676,14 +88726,14 @@ _cc4c1b:
                 dir DOWN
                 end
         wait_30f
-        dlg $08F8, BOTTOM
+        dlg DLG_2296, BOTTOM
                 ; TERRA: I_I can fight!
         wait_30f
         obj_script NPC_13
                 action 32
                 end
         wait_30f
-        dlg $08F9, BOTTOM
+        dlg DLG_2297, BOTTOM
                 ; TERRA: Finally_
                 ; I understand that feeling_
                 ; Even though I kept it buried for so long.
@@ -88762,7 +88812,7 @@ _cc4fd3:
                 branch _cc4fd3
                 end
         wait_15f 10
-        dlg $08FA, BOTTOM
+        dlg DLG_2298, BOTTOM
                 ; TERRA: Duane_
                 ; Katarin needs your help_
                 ; so does your new baby.
@@ -88806,7 +88856,7 @@ _cc4fd3:
                 wait 2
                 end
         wait_30f
-        dlg $08FB, BOTTOM
+        dlg DLG_2299, BOTTOM
                 ; ``Mama_
                 ; I'm not gonna cry!''
                 ; ``Me either!''
@@ -88818,7 +88868,7 @@ _cc4fd3:
                 action 32
                 end
         wait_1s
-        dlg $08FC, BOTTOM
+        dlg DLG_2300, BOTTOM
                 ; TERRA: Thank you_
                 ; You helped me to understand a part of myself.
                 ; Now I must go to war. We must all believe we have a future. We must fight for those who aren't even born yet!
@@ -88857,49 +88907,49 @@ _cc4fd3:
         player_ctrl_on
         return
 _cc505a:
-        dlg $0907
+        dlg DLG_2311
                 ; I wanna see Katarin's baby!
         return
 _cc505e:
-        dlg $0908
+        dlg DLG_2312
                 ; We'll be okay 'till mama comes back!
         return
 _cc5062:
-        dlg $0909
+        dlg DLG_2313
                 ; Mama_
                 ; Don't feel sad.
                 ; We'll be okay.
         return
 _cc5066:
-        dlg $090A
+        dlg DLG_2314
                 ; Duane and Katarin'll take good care of us.
         return
 _cc506a:
-        dlg $090B
+        dlg DLG_2315
                 ; I'm not gonna cry.
                 ; If I do, TERRA'll feel sad_
         return
 _cc506e:
-        dlg $090C
+        dlg DLG_2316
                 ; The baby in Katarin's belly is kicking!
         return
 _cc5072:
-        dlg $090D
+        dlg DLG_2317
                 ; See!
                 ; It just did it again!
         return
 _cc5076:
-        dlg $090E
+        dlg DLG_2318
                 ; Say, Katarin.
                 ; What're you gonna name the baby?
         return
 _cc507a:
-        dlg $090F
+        dlg DLG_2319
                 ; DUANE: A new life_
                 ; I've got to do my best to help make the world a safer place_
         return
 _cc507e:
-        dlg $0910
+        dlg DLG_2320
                 ; KATARIN: We'll be okay.
                 ; Just make sure these kids'll have a world to grow up in!
         return
@@ -89084,17 +89134,17 @@ _cc51eb:
                 end
         return
 _cc51f7:
-        dlg $08C6
+        dlg DLG_2246
                 ; The members of the ``Cult of Kefka'' live in this tower.
                 ; There's something wondrous atop it!
                 ; You can only use magic attacks inside, so unless your magic's strong, you'll never make it to the top!
         return
 _cc51fb:
-        dlg $08C7
+        dlg DLG_2247
                 ; Treasure_treasure_
         return
 _cc51ff:
-        dlg $08C8
+        dlg DLG_2248
                 ; For 100000 GP I'll tell ya 'bout a secret treasure!
                 ; 0:  (Hand over 100000 GP!)
                 ; 1:  (No way!)
@@ -89105,7 +89155,7 @@ _cc520a:
         if_switch $01BE=1, _cb69ff
         take_gil 40000
         if_switch $01BE=1, _cc5220
-        dlg $08C9
+        dlg DLG_2249
                 ; Hooey!!!!
                 ; Right, here's the scoop:
                 ; Beneath the Desert of Figaro lies an ancient castle_
@@ -89117,7 +89167,7 @@ _cc5220:
         if_switch $022F=0, _cb69ff
         return
 _cc522a:
-        dlg $08CA
+        dlg DLG_2250
                 ; No use talking to them. They've sold their hearts to Kefka.
                 ; All they do is mope around, thinking of him_
         return
@@ -89205,7 +89255,7 @@ _cc5275:
                 action 24
                 end
         wait_30f
-        dlg $08C1
+        dlg DLG_2241
                 ; RELM: You!!
                 ; You old fool!!!
                 ; You're still standing?!
@@ -89271,7 +89321,7 @@ _cc52eb:
                 wait 6
                 end
         wait_30f
-        dlg $08C2
+        dlg DLG_2242
                 ; STRAGO: RELM!
                 ; Is that you, my dear?
                 ; You're alive!!
@@ -89305,7 +89355,7 @@ _cc52eb:
                 dir LEFT
                 end
         wait_30f
-        dlg $08C3
+        dlg DLG_2243
                 ; RELM: Idiot!
                 ; Of course I'm all right!
                 ; STRAGO: Oh_
@@ -89342,7 +89392,7 @@ _cc52eb:
                 dir LEFT
                 end
         wait_30f
-        dlg $08C4
+        dlg DLG_2244
                 ; STRAGO: You're as foul-mouthed as ever, bless your heart!
                 ; RELM: Come along now_
                 ; We're all glad to see you!
@@ -89406,7 +89456,7 @@ _cc52eb:
                 action 22
                 end
         wait_30f
-        dlg $08C5
+        dlg DLG_2245
                 ; STRAGO: Whoa!
                 ; Well I'll be_
                 ; All right, make room for me!
@@ -89652,7 +89702,7 @@ _cc544b:
                 move UP, 1
                 dir LEFT
                 end
-        dlg $08CB, {ASYNC, TEXT_ONLY}
+        dlg DLG_2251, {ASYNC, TEXT_ONLY}
                 ;    Master Kefka's treasure_
                 ; Return it_   Now_!
         wait_30f
@@ -89704,7 +89754,7 @@ _cc558b:
         switch $0694=0
         fade_in
         wait_fade
-        dlg $06DD
+        dlg DLG_1757
                 ;
                 ; Got ``Pearl Lance''!
         give_item HOLY_LANCE
@@ -89990,7 +90040,7 @@ _cc58d4:
                 dir UP
                 end
         wait_30f
-        dlg $08B2
+        dlg DLG_2226
                 ; Come on!!
                 ; Please help!
         wait_30f
@@ -90012,7 +90062,7 @@ _cc58ff:
         if_switch $028C=1, EventReturn
         set_case PARTY_CHARS
         if_switch $01A6=0, _cc591c
-        dlg $08A7
+        dlg DLG_2215
                 ; CELES: SABIN!
                 ; SABIN: Hey! CELES!
                 ; CELES: Let's head in!
@@ -90020,13 +90070,13 @@ _cc58ff:
         if_switch $022F=0, _cc591f
         return
 _cc591c:
-        dlg $08A8
+        dlg DLG_2216
                 ; ``SABIN!!''
                 ; SABIN: Hey! You're alive!!!
                 ; Get in there, quick!
 _cc591f:
         wait_30f
-        dlg $08A9
+        dlg DLG_2217
                 ; SABIN: If I move_
                 ; The whole house'll collapse. First_ save the child that's in there_
                 ; I can't hold this up forever, so_
@@ -90044,7 +90094,7 @@ _cc592e:
         fade_in 4
         wait_fade
         wait_1s
-        dlg $08AA, {ASYNC, TEXT_ONLY}
+        dlg DLG_2218, {ASYNC, TEXT_ONLY}
                 ; SABIN: I_I_
                 ; I'm losing my grip_
                 ; Keep up the fight, brother!
@@ -90068,7 +90118,7 @@ _cc5958:
                 switch $01B4=0
                 switch $028B=1
                 goto EventReturn
-        dlg $08B4, BOTTOM
+        dlg DLG_2228, BOTTOM
                 ; ``I'm scared_!''
                 ; ``Don't worry, you're safe now.''
         wait_30f
@@ -90085,7 +90135,7 @@ _cc5958:
         return
 _cc5976:
         if_switch $028B=1, _cc5980
-        dlg $08A9
+        dlg DLG_2217
                 ; SABIN: If I move_
                 ; The whole house'll collapse. First_ save the child that's in there_
                 ; I can't hold this up forever, so_
@@ -90097,7 +90147,7 @@ _cc5980:
         obj_script SLOT_1
                 dir LEFT
                 end
-        dlg $08AB
+        dlg DLG_2219
                 ; SABIN: Wait!
         pass_off SLOT_1
         pass_off NPC_3
@@ -90199,13 +90249,13 @@ _cc5980:
         unlock_camera
         set_case PARTY_CHARS
         if_switch $01A6=0, _cc5a27
-        dlg $08AC
+        dlg DLG_2220
                 ; CELES: SABIN!
                 ; You're alive!
         if_switch $022F=0, _cc5a2a
         return
 _cc5a27:
-        dlg $08AD
+        dlg DLG_2221
                 ; SABIN!
                 ; You're alive!
 _cc5a2a:
@@ -90230,7 +90280,7 @@ _cc5a2a:
                 dir LEFT
                 end
         wait_30f
-        dlg $08AE
+        dlg DLG_2222
                 ; SABIN: But of course!
                 ; You think a minor thing like the end of the world was gonna do me in?
         play_song FIGARO
@@ -90246,7 +90296,7 @@ _cc5a2a:
         set_case PARTY_CHARS
         if_switch $01A6=0, _cc5a67
         wait_30f
-        dlg $08AF
+        dlg DLG_2223
                 ; CELES: I thought everyone was gone_
                 ; I had given up all hope_
                 ; But_ fortunately, I was wrong! Now I know they're all alive! We need to find everyone! Then_
@@ -90254,7 +90304,7 @@ _cc5a2a:
         return
 _cc5a67:
         wait_30f
-        dlg $08B0
+        dlg DLG_2224
                 ; We thought everyone was gone_
                 ; We'd given up all hope_
                 ; But_ fortunately, I was wrong! Now I know they're all alive! We need to find everyone! Then_
@@ -90270,7 +90320,7 @@ _cc5a6b:
                 dir LEFT
                 end
         wait_30f
-        dlg $08B1
+        dlg DLG_2225
                 ; SABIN: I know, I know_
                 ; We smash Kefka, and deliver peace unto the world_
         wait_30f
@@ -90313,65 +90363,65 @@ _cc5aad:
         player_ctrl_on
         return
 _cc5ac9:
-        dlg $08A2
+        dlg DLG_2210
                 ; My child's inside!
                 ; Do something!
         return
 _cc5acd:
-        dlg $08A3
+        dlg DLG_2211
                 ; Must have irritated Kefka_
         return
 _cc5ad1:
-        dlg $08A4
+        dlg DLG_2212
                 ; There are monsters inside! They keep petrifying everyone who goes in to help. You using suitable Relics?
         return
 _cc5ad5:
-        dlg $08A5
+        dlg DLG_2213
                 ; We resisted Kefka, so he unleashed his Light of Judgment on us!
         return
 _cc5ad9:
-        dlg $08A6
+        dlg DLG_2214
                 ; Hurry, or the house'll collapse!
         return
 _cc5add:
-        dlg $0899
+        dlg DLG_2201
                 ; Thanks for saving the child!
         return
 _cc5ae1:
-        dlg $089B
+        dlg DLG_2203
                 ; Anyone who opposes Kefka is doomed. He uses his ``Light of Judgment'' from high atop his tower to burn whole towns.
         return
 _cc5ae5:
-        dlg $089A
+        dlg DLG_2202
                 ; I was on lookout duty for Kefka_
                 ; But I lost my nerve_
         return
 _cc5ae9:
-        dlg $089C
+        dlg DLG_2204
                 ; I saw it! Kefka used a light beam to burn the village of Mobliz, to the east.
                 ; Most of the adults there perished trying to save their children_
         return
 _cc5aed:
-        dlg $089D
+        dlg DLG_2205
                 ; The ``Serpent Trench'' used to be deep under water.
                 ; Now it's above sea level.
                 ; Some ``Cult of Kefka'' members have built a tower there_
         return
 _cc5af1:
-        dlg $089E
+        dlg DLG_2206
                 ; Many monsters nowadays attack with ``Zombie'', ``Petrify'' and the like. Have you equipped suitable Relics?
         return
 _cc5af5:
-        dlg $089F
+        dlg DLG_2207
                 ; To the east you'll find the ``Serpent Trench.'' Further east you'll find the village of Mobliz.
                 ; Boy, the Light of Judgment really fried that town_
         return
 _cc5af9:
-        dlg $08A0
+        dlg DLG_2208
                 ; Head north on the Serpent Trench and you'll reach Nikeah. Ships still sail from there.
         return
 _cc5afd:
-        dlg $08A1
+        dlg DLG_2209
                 ; Heeeeee_
                 ; I've never been more frightened!
         return
@@ -90419,7 +90469,7 @@ _cc5b68:
                 end
         return
 _cc5b79:
-        dlg $08BF
+        dlg DLG_2239
                 ; Oh_I think back on how nice the world used to be_
         wait_30f
         mosaic 2
@@ -90459,7 +90509,7 @@ _cc5b79:
         fade_in 4
         wait_fade
         wait_30f
-        dlg $08C0
+        dlg DLG_2240
                 ; _and realize it'll never be the same again_
         player_ctrl_on
         return
@@ -90477,61 +90527,61 @@ _cc5bca:
         player_ctrl_on
         return
 _cc5bd9:
-        dlg $08B5
+        dlg DLG_2229
                 ; Did you see that tower_?
         return
 _cc5bdd:
-        dlg $08B6
+        dlg DLG_2230
                 ; Kefka's up there, 'n he's using the power of the Statues_
                 ; He's like a god_
         return
 _cc5be1:
-        dlg $08B7
+        dlg DLG_2231
                 ; Everything changed on that day_
         return
 _cc5be5:
-        dlg $08B8
+        dlg DLG_2232
                 ; Anyone who opposes Kefka gets his or her town fried by the ``Light of Judgment.''
         return
 _cc5be9:
-        dlg $08B9
+        dlg DLG_2233
                 ; On THAT day, debris from all over the world floated eerily to the center of this land mass, and formed that tower_
         return
 _cc5bed:
-        dlg $08BA
+        dlg DLG_2234
                 ; How can ya make a GP in a world like this?
         return
 _cc5bf1:
-        dlg $08BB
+        dlg DLG_2235
                 ; When the world was ripped apart, many long-sealed monsters were released_
                 ; Phunbaba_Doom Gaze_
                 ; And the 8 Dragons_
         return
 _cc5bf5:
-        dlg $08BC
+        dlg DLG_2236
                 ; I saw Doom Gaze soaring through the sky!
                 ; I'd rather take an acid bath than fight that thing!
         return
 _cc5bf9:
-        dlg $08BD
+        dlg DLG_2237
                 ; Uh? You again_?
                 ; Oh, sorry. You look just like a man who was here searching for his friends_
                 ; He said he was going north, to Tzen.
         return
 _cc5bfd:
-        dlg $08BE
+        dlg DLG_2238
                 ; You_the sparkle in your eye_
                 ; You're the spittin' image of a man who came through here recently.
         return
 _cc5c01:
-        dlg $0639
+        dlg DLG_1593
                 ; I found this in a 1000 year-old text:
                 ; 8 dragons seal away this awesome beast.
                 ; Its name is Crusader_
                 ; Defeat these dragons, and its power can be released_
         return
 _cc5c05:
-        dlg $063A
+        dlg DLG_1594
                 ; I'm a scholar of weapons. 1000 years ago, during the War of the Magi, 2 so-called Atma Weapons existed.
                 ; One changed a person's power into a sword, the other was an monster, bred for mass destruction.
         return
@@ -90592,14 +90642,14 @@ _cc5c8d:
         flash BLUE
         sfx SFX::RECOVERY_SPRING
         wait_30f
-        dlg $08B3
+        dlg DLG_2227
                 ; All I can do now is restore your health.
                 ; Please_go back inside and save that child!!
         call RestoreParty
         player_ctrl_on
         return
 _cc5ca3:
-        dlg $062A, BOTTOM
+        dlg DLG_1578, BOTTOM
                 ; 350 GP per night!
                 ; Rest a while?
                 ; 0:  Yes
@@ -90736,65 +90786,65 @@ _cc5d86:
         return
 _cc5d89:
         if_switch $007D=1, _cc5dc5
-        dlg $0615
+        dlg DLG_1557
                 ; Most of the town's youths were led off to serve as Imperial troopers.
         return
 _cc5d93:
         if_switch $007D=1, _cc5dc9
-        dlg $0617
+        dlg DLG_1559
                 ; I heard there's a huge gate deep inside a cave to the east.
         return
 _cc5d9d:
         if_switch $007D=1, _cc5dcd
-        dlg $0619
+        dlg DLG_1561
                 ; Our royal family was slaughtered by the Empire.
         return
 _cc5da7:
         if_switch $007D=1, _cc5dd1
-        dlg $061B
+        dlg DLG_1563
                 ; Some friendly advice! There's a weapon called the Guardian.
                 ; It can't move, but it's very powerful. Run, if you meet it!
         return
 _cc5db1:
         if_switch $007D=1, _cc5dd5
-        dlg $061D
+        dlg DLG_1565
                 ; I said it's dangerous outside,
                 ; so you can't go out!
         return
 _cc5dbb:
         if_switch $007D=1, _cc5dd9
-        dlg $061F
+        dlg DLG_1567
                 ; Our kid's still not home.
                 ; Even though we said it was dangerous outside!
         return
 _cc5dc5:
-        dlg $0616
+        dlg DLG_1558
                 ; Our poor kids'll be back soon, won't they?
         return
 _cc5dc9:
-        dlg $0618
+        dlg DLG_1560
                 ; Time to put Tzen back together!
         return
 _cc5dcd:
-        dlg $061A
+        dlg DLG_1562
                 ; Thanks to you people peace has been achieved!
         return
 _cc5dd1:
-        dlg $061C
+        dlg DLG_1564
                 ; The world seems to be getting back to normal_
         return
 _cc5dd5:
-        dlg $061E
+        dlg DLG_1566
                 ; Waaah! I wanna play outside!
         return
 _cc5dd9:
-        dlg $0620
+        dlg DLG_1568
                 ; The Imperial troopers are gone. Now we can live in peace.
         return
 _cc5ddd:
         if_switch $027C=1, _cc5e27
         if_switch $00A4=1, _cc5df4
-        dlg $0621
+        dlg DLG_1569
                 ; Oh, NO!
                 ; Whew_don't SCARE people like that! I thought you were a trooper!
                 ; A while ago someone broke into the Magitek Research Facility, and raised a ruckus! I took the opportunity to grab this.
@@ -90804,7 +90854,7 @@ _cc5ddd:
         choice _cc5dff, EventReturn
         return
 _cc5df4:
-        dlg $0622
+        dlg DLG_1570
                 ; The world's going to heck in a hand basket_just look at this weird stone!
                 ; If you want it, just give me 10 GP.
                 ; 0:  Yes
@@ -90817,7 +90867,7 @@ _cc5dff:
         give_genju SRAPHIM
         switch $027C=1
         sfx SFX::MAGICITE_PICKUP
-        dlg $0624
+        dlg DLG_1572
                 ;
                 ; Received the Magicite
                 ; ``Sraphim.''
@@ -90829,34 +90879,34 @@ _cc5e13:
         give_genju SRAPHIM
         switch $027C=1
         sfx SFX::MAGICITE_PICKUP
-        dlg $0624
+        dlg DLG_1572
                 ;
                 ; Received the Magicite
                 ; ``Sraphim.''
         player_ctrl_on
         return
 _cc5e27:
-        dlg $0623
+        dlg DLG_1571
                 ; Got any juicy gossip?!
         return
 _cc5e2b:
-        dlg $0625
+        dlg DLG_1573
                 ; The Empire strings up anyone who opposes it.
         return
 _cc5e2f:
-        dlg $0626
+        dlg DLG_1574
                 ; 3 cheers for the Empire!
         return
 _cc5e33:
-        dlg $0627
+        dlg DLG_1575
                 ; You're in the way! Git!
         return
 _cc5e37:
-        dlg $0628
+        dlg DLG_1576
                 ; Everything belongs to the Empire!
         return
 _cc5e3b:
-        dlg $0629
+        dlg DLG_1577
                 ; Mess with the Empire and_!
         return
 _cc5e3f:
@@ -91057,178 +91107,178 @@ _cc5fa2:
         return
 _cc5faf:
         if_switch $00A4=1, _cc5fb9
-        dlg $06D6
+        dlg DLG_1750
                 ; Emperor Gestahl himself asked me to do his portrait_
                 ; What if he doesn't like it_?
         return
 _cc5fb9:
-        dlg $06D7
+        dlg DLG_1751
                 ; I finished the Emperor's portrait. It was a true representation of the Emperor_ but he hated it.
                 ; I ended selling it to Owzer, a rich man who lives in Jidoor.
         return
 _cc5fbd:
         if_switch $009E=1, _cc600f
         if_switch $007D=1, _cc6003
-        dlg $062B
+        dlg DLG_1579
                 ; This is Albrook, the occupied city_
         return
 _cc5fcd:
         if_switch $009E=1, _cc6013
         if_switch $007D=1, _cc6007
-        dlg $062E
+        dlg DLG_1582
                 ; They say there's something valuable to the east_
                 ; The Empire built a base there, and no one may enter.
         return
 _cc5fdd:
         if_switch $009E=1, _cc6017
         if_switch $007D=1, _cc600b
-        dlg $0631
+        dlg DLG_1585
                 ; We have to bribe the troopers to do business here_
         return
 _cc5fed:
-        dlg $0635
+        dlg DLG_1589
                 ; Vector, capital of the Empire, is at the center of this continent.
         return
 _cc5ff1:
         if_switch $0069=1, _cc5ffb
-        dlg $0636
+        dlg DLG_1590
                 ; You'll find some good weapons and items in Tzen and Maranda.
         return
 _cc5ffb:
-        dlg $0637
+        dlg DLG_1591
                 ; Some strange guy's tryin' to sell glowing stones_
                 ; When I wouldn't take one, he said he was going to Tzen.
         return
 _cc5fff:
-        dlg $0638
+        dlg DLG_1592
                 ; I'm a scholar of magic. Monsters on this continent have only weak magical power.
         return
 _cc6003:
-        dlg $062C
+        dlg DLG_1580
                 ; Business is picking up in the port! Maybe economy will make a recovery!
         return
 _cc6007:
-        dlg $062F
+        dlg DLG_1583
                 ; I heard some Espers flew outta the mountains near the base and thrashed the troopers there!
         return
 _cc600b:
-        dlg $0632
+        dlg DLG_1586
                 ; And they're such TIGHTWADS!
                 ; They're raking in the cash!
         return
 _cc600f:
-        dlg $062D
+        dlg DLG_1581
                 ; How could an island float in the sky?!
         return
 _cc6013:
-        dlg $0634
+        dlg DLG_1588
                 ; People're disappearing,
                 ; islands are flying_
                 ; I have a bad feeling about this_
         return
 _cc6017:
-        dlg $0630
+        dlg DLG_1584
                 ; Yeah, thanks to that flying island, this town was shrouded in darkness!
         return
 _cc601b:
-        dlg $063B
+        dlg DLG_1595
                 ; No entry into the port!
         return
 _cc601f:
         if_switch $007D=1, _cc6051
-        dlg $0625
+        dlg DLG_1573
                 ; The Empire strings up anyone who opposes it.
         return
 _cc6029:
         if_switch $007D=1, _cc6055
-        dlg $0626
+        dlg DLG_1574
                 ; 3 cheers for the Empire!
         return
 _cc6033:
         if_switch $007D=1, _cc6059
-        dlg $0627
+        dlg DLG_1575
                 ; You're in the way! Git!
         return
 _cc603d:
         if_switch $007D=1, _cc605d
-        dlg $0628
+        dlg DLG_1576
                 ; Everything belongs to the Empire!
         return
 _cc6047:
         if_switch $007D=1, _cc6061
-        dlg $0629
+        dlg DLG_1577
                 ; Mess with the Empire and_!
         return
 _cc6051:
-        dlg $0640
+        dlg DLG_1600
                 ; Look out if you're caught working with the Returners.
         return
 _cc6055:
-        dlg $0641
+        dlg DLG_1601
                 ; Now maybe we can get on with our lives.
         return
 _cc6059:
-        dlg $0642
+        dlg DLG_1602
                 ; I heard that Espers attacked the Empire_
         return
 _cc605d:
-        dlg $0643
+        dlg DLG_1603
                 ; All's well!
         return
 _cc6061:
-        dlg $0633
+        dlg DLG_1587
                 ; Wouldn't want to be in their shoes, though!
         return
 _cc6065:
-        dlg $063C
+        dlg DLG_1596
                 ; Ah_welcome!
         return
 _cc6069:
-        dlg $063D
+        dlg DLG_1597
                 ; Hey_you're not of the Empire!
                 ; Get outta here!
         return
 _cc606d:
-        dlg $063E
+        dlg DLG_1598
                 ; In any case, you're probably broke!
         return
 _cc6071:
-        dlg $063F
+        dlg DLG_1599
                 ; Ahaaa!!
                 ; Whooopie!
         return
         return
 _cc6076:
-        dlg $0645
+        dlg DLG_1605
                 ; Nuts!
                 ; These soldiers are absolutely insane!
         return
 _cc607a:
         if_switch $00A4=1, _cc5b79
         if_switch $007D=1, _cc608a
-        dlg $0646
+        dlg DLG_1606
                 ; This cafe is like an Imperial soldiers' dormitory!
         return
 _cc608a:
-        dlg $0647
+        dlg DLG_1607
                 ; Since the soldiers are leaving, business is bound to pick up. Oops_better keep my mouth shut.
         return
 _cc608e:
         sfx 184
-        dlg $0648
+        dlg DLG_1608
                 ; Sure! No problem!
         sfx 184
         return
-        dlg $076E
+        dlg DLG_1902
                 ; LOCKE: Come on_!
                 ; Why won't you speak to me?
-        dlg $076F
+        dlg DLG_1903
                 ; LOCKE: CELES_
-        dlg $0770
+        dlg DLG_1904
                 ; LOCKE: Even if it was only a little_
                 ; I doubted you_
                 ; But I'm still your friend_
-        dlg $0771
+        dlg DLG_1905
                 ; LOCKE: CELES!
 _cc60a2:
         if_switch $00A4=1, _cc60ab
@@ -91303,7 +91353,7 @@ _cc6143:
 _cc614a:
         if_switch $0085=0, _cc62a6
         if_switch $0087=1, _cc62a6
-        dlg $064A
+        dlg DLG_1610
                 ; General Leo told us about you. By all means_
         wait_30f
         if_switch $01B0=0, _cc6166
@@ -91419,7 +91469,7 @@ _cc6166:
                 end
         unlock_camera
         wait_90f
-        dlg $076F
+        dlg DLG_1903
                 ; LOCKE: CELES_
         wait_90f
         obj_script NPC_13
@@ -91430,7 +91480,7 @@ _cc6166:
                 action 35
                 end
         wait_2s
-        dlg $076E
+        dlg DLG_1902
                 ; LOCKE: Come on_!
                 ; Why won't you speak to me?
         wait_1s
@@ -91443,7 +91493,7 @@ _cc6166:
                 action 34
                 end
         wait_1s
-        dlg $0770
+        dlg DLG_1904
                 ; LOCKE: Even if it was only a little_
                 ; I doubted you_
                 ; But I'm still your friend_
@@ -91455,7 +91505,7 @@ _cc6166:
                 move LEFT, 1
                 end
         wait_15f
-        dlg $0771
+        dlg DLG_1905
                 ; LOCKE: CELES!
         wait_1s
         obj_script NPC_13
@@ -91526,7 +91576,7 @@ _cc6166:
         player_ctrl_on
         return
 _cc62a6:
-        dlg $0649
+        dlg DLG_1609
                 ; 300 GP if you wanna stay.
                 ; How 'bout it?
                 ; 0:  Yes
@@ -91599,7 +91649,7 @@ _cc62f2:
                 dir UP
                 end
         wait_30f
-        dlg $063B
+        dlg DLG_1595
                 ; No entry into the port!
         obj_script SLOT_1
                 action 9 | ACTION_H_FLIP
@@ -91641,7 +91691,7 @@ _cc632d:
                 dir UP
                 end
         wait_30f
-        dlg $063B
+        dlg DLG_1595
                 ; No entry into the port!
         obj_script SLOT_1
                 action 9
@@ -91880,58 +91930,58 @@ _cc6496:
 _cc64ae:
         if_switch $00A4=1, _cc64c2
         if_switch $007D=1, _cc64be
-        dlg $0601
+        dlg DLG_1537
                 ; Say, you wanna get hitched?
         return
 _cc64be:
-        dlg $0614
+        dlg DLG_1556
                 ; I feel a little down_
         return
 _cc64c2:
-        dlg $09ED
+        dlg DLG_2541
                 ; Recently Lola has been receiving a lot of letters.
                 ; Must be from that guy in Mobliz_?
         return
 _cc64c6:
-        dlg $0602
+        dlg DLG_1538
                 ; Aishya, no!!
         return
 _cc64ca:
-        dlg $0603
+        dlg DLG_1539
                 ; You should hear the gossip floating around here!
         return
 _cc64ce:
-        dlg $0604
+        dlg DLG_1540
                 ; Phew!
         return
 _cc64d2:
-        dlg $0605
+        dlg DLG_1541
                 ; My dog's the fiercest!
         return
 _cc64d6:
-        dlg $0606
+        dlg DLG_1542
                 ; Place all bets here!
         return
 _cc64da:
-        dlg $0607
+        dlg DLG_1543
                 ; Scram!!
         return
 _cc64de:
-        dlg $0608
+        dlg DLG_1544
                 ; This is our only means of recreation.
         return
 _cc64e2:
         if_switch $00A4=1, _cc64f6
         if_switch $007D=1, _cc64f2
-        dlg $0609
+        dlg DLG_1545
                 ; Maranda used to be this continent's most beautiful town! Look what the Empire's done to it!
         return
 _cc64f2:
-        dlg $060F
+        dlg DLG_1551
                 ; We must begin to rebuild!
         return
 _cc64f6:
-        dlg $09E4
+        dlg DLG_2532
                 ; A Knight came through here recently_
                 ; He was amazing! But his heart was full of chaos_
                 ; When he can cope with his pain, he'll be the mightiest warrior alive.
@@ -91939,81 +91989,81 @@ _cc64f6:
 _cc64fa:
         if_switch $00A4=1, _cc09ab
         if_switch $007D=1, _cc650a
-        dlg $060A
+        dlg DLG_1546
                 ; My son's being forced to serve in the Empire's army.
         return
 _cc650a:
-        dlg $0610
+        dlg DLG_1552
                 ; That boy made to serve as a soldier has returned!
         return
 _cc650e:
         if_switch $00A4=1, _cc6522
         if_switch $007D=1, _cc651e
-        dlg $060B
+        dlg DLG_1547
                 ; These troopers are crazy!
                 ; How long can things keep going on like this?
         return
 _cc651e:
-        dlg $0611
+        dlg DLG_1553
                 ; When peace was reached, the soldiers left our town.
         return
 _cc6522:
-        dlg $09E8
+        dlg DLG_2536
                 ; A spell ago, some oddball came strolling through here.
                 ; Kept callin' people ``thou.''
         return
 _cc6526:
         if_switch $00A4=1, _cc653a
         if_switch $007D=1, _cc6536
-        dlg $060C
+        dlg DLG_1548
                 ; Tzen and Albrook, too, fell to the Empire.
         return
 _cc6536:
-        dlg $0612
+        dlg DLG_1554
                 ; The Imperial troopers are gone! Let's dance! Let's sing!
         return
 _cc653a:
         switch $069A=1
-        dlg $09EB
+        dlg DLG_2539
                 ; Your own past can be your worst enemy. Friends_family_gotta let 'em all go_
         wait_30f
         set_case PARTY_CHARS
         if_switch $01A2=0, EventReturn
         if_switch $00DA=1, EventReturn
-        dlg $09EC
+        dlg DLG_2540
                 ; Could that have been you,
                 ; CYAN_?
                 ; You look so confused, maybe
                 ; you'd better go back home.
         return
 _cc6551:
-        dlg $060E
+        dlg DLG_1550
                 ; Hee, hee_
                 ; This town is ours to play with!
         return
 _cc6555:
         if_switch $00A4=1, _cc655f
-        dlg $0613
+        dlg DLG_1555
                 ; I was forced into the Empire's army. They made me do some awful things_
         return
 _cc655f:
-        dlg $09EA
+        dlg DLG_2538
                 ; You know that guy in Zozo who says,
                 ; ``This place is dangerous!''?
                 ; He's the only one guy in that town who tells the truth.
                 ; Maybe he can help you.
         return
 _cc6563:
-        dlg $09E5
+        dlg DLG_2533
                 ; I used to be a thief.
                 ; But one day I uncovered a secret so awesome, I had to run and hide!
         return
 _cc6567:
-        dlg $09E6
+        dlg DLG_2534
                 ; I'm a former thief. My old accomplice used to mumble this in his sleep, ``To the right of the treasure chest_''
         return
 _cc656b:
-        dlg $09E7
+        dlg DLG_2535
                 ; I used to be a thief. I climbed the tower of Kefka's followers, in spite of the danger.
                 ; But I got hurt, and had to turn back after the first treasure room_
         return
@@ -92032,7 +92082,7 @@ _cc6584:
         shop_menu MARANDA_ARMOR_2
         return
 _cc6587:
-        dlg $060D
+        dlg DLG_1549
                 ; 200 GP per night!
                 ; Need a rest?
                 ; 0:  Sure
@@ -92173,7 +92223,7 @@ _cc664c:
         call _cc6928
         return
 _cc6653:
-        dlg $064B
+        dlg DLG_1611
                 ; You look tired!
                 ; 100 GP for a snooze.
                 ; 0:  Yes
@@ -92212,56 +92262,56 @@ _cc6694:
         call _cc6928
         return
 _cc669b:
-        dlg $02E8
+        dlg DLG_744
                 ; You came via Baren Falls?
                 ; Unbelievable! It's flowing like there's no tomorrow_!
         return
 _cc669f:
-        dlg $02E9
+        dlg DLG_745
                 ; Only carrier pigeons link our village to the outside.
         return
 _cc66a3:
-        dlg $02EA
+        dlg DLG_746
                 ; Letters tell us that war has broken out!
         return
 _cc66a7:
-        dlg $02EB
+        dlg DLG_747
                 ; Duane and Katrin are both 16 and in love!
         return
 _cc66ab:
-        dlg $02ED
+        dlg DLG_749
                 ; DUANE: __
         return
 _cc66af:
-        dlg $02EC
+        dlg DLG_748
                 ; KATARIN: __
         return
 _cc66b3:
-        dlg $02EE
+        dlg DLG_750
                 ; You stop by the house up in the far north? The guy there's a tad psycho.
                 ; Threw his own kid out, thinking it was a monster!
         return
 _cc66b7:
-        dlg $02EF
+        dlg DLG_751
                 ; This region's called the Veldt. Monsters from all over the world migrate here.
         return
 _cc66bb:
-        dlg $02F0
+        dlg DLG_752
                 ; Out hunting, I noticed a kid running with a herd of beasts!
                 ; His parents know where he is?
         return
 _cc66bf:
-        dlg $02F4
+        dlg DLG_756
                 ; Some soldier wandered here. Busted up pretty bad, too.
                 ; It doesn't look good_
                 ; Only the letters coming from the town of Maranda are keeping him going_
         return
 _cc66c3:
-        dlg $02F5
+        dlg DLG_757
                 ; The soldier in here is hurt pretty bad.
         return
 _cc66c7:
-        dlg $02F1
+        dlg DLG_753
                 ; Strong currents run through the Serpent Trench.
                 ; Heard about it?
                 ; 0:  Yes
@@ -92281,14 +92331,14 @@ _cc66d2:
                 dir DOWN
                 end
         wait_30f
-        dlg $02F3
+        dlg DLG_755
                 ; Hop into the current, and you'll be swept to Nikeah!
                 ; Too bad our under water breathing device was stolen!
         call _cc6928
         player_ctrl_on
         return
 _cc66f1:
-        dlg $02F2
+        dlg DLG_754
                 ; If you had a helmet you could make it to Nikeah.
         return
 _cc66f5:
@@ -92332,15 +92382,15 @@ _cc66f5:
         set_script_mode EVENT
         return
 _cc6755:
-        dlg $02F6
+        dlg DLG_758
                 ; Keep your voices down!
         return
 _cc6759:
-        dlg $02F7
+        dlg DLG_759
                 ; I threw some ``Dried Meat'' into a herd of hungry animals, and some kid emerged and grabbed it!
         return
 _cc675d:
-        dlg $02F9
+        dlg DLG_761
                 ; The entrance to the Serpent Trench is south of Crescent Mountain.
         return
 _cc6761:
@@ -92354,7 +92404,7 @@ _cc6768:
         if_switch $027F=1, _cc6780
         if_switch $0289=0, EventReturn
         call _cc67c0
-        dlg $02FB
+        dlg DLG_763
                 ; I can't get used to Imperial troopers walking the streets of Maranda, but otherwise things are okay.
                 ; Flowers are blooming in the garden, telling me spring is here.
                 ; How are you doing?
@@ -92367,7 +92417,7 @@ _cc6768:
 _cc6780:
         if_switch $0280=1, _cc6790
         call _cc67c0
-        dlg $0300
+        dlg DLG_768
                 ; I can't find your favorite record_
                 ; I thought I'd play it and you'd be with me, but_
         switch $0280=1
@@ -92375,7 +92425,7 @@ _cc6780:
 _cc6790:
         if_switch $0281=1, _cc67a0
         call _cc67c0
-        dlg $0302
+        dlg DLG_770
                 ; Mother's taken ill. We can't afford medicine.
                 ; If only we had some Tonic_
         switch $0281=1
@@ -92383,7 +92433,7 @@ _cc6790:
 _cc67a0:
         if_switch $0282=1, _cc67b0
         call _cc67c0
-        dlg $0304
+        dlg DLG_772
                 ; I haven't heard from you.
                 ; I'm so worried_
         switch $0282=1
@@ -92391,7 +92441,7 @@ _cc67a0:
 _cc67b0:
         if_switch $0283=1, EventReturn
         call _cc67c0
-        dlg $0306
+        dlg DLG_774
                 ; You said you were reading a book. If only I could read it, too_
         switch $0283=1
         return
@@ -92413,7 +92463,7 @@ _cc67cf:
                 switch $027F=0
                 switch $0284=1
                 goto _cc67f0
-        dlg $02FD
+        dlg DLG_765
                 ; Postage to Maranda is 500 GP.
                 ; Gonna send a letter for that soldier, right?
                 ; 0:  (Send it)
@@ -92431,7 +92481,7 @@ _cc67f0:
                 switch $0280=0
                 switch $0285=1
                 goto _cc6811
-        dlg $0301
+        dlg DLG_769
                 ; For 500 GP you can send a record.
                 ; 0:  (Send it)
                 ; 1:  (Forget it)
@@ -92448,7 +92498,7 @@ _cc6811:
                 switch $0281=0
                 switch $0286=1
                 goto _cc6832
-        dlg $0303
+        dlg DLG_771
                 ; For 500 GP you can send Tonic.
                 ; 0:  (Send it)
                 ; 1:  (Forget it)
@@ -92465,7 +92515,7 @@ _cc6832:
                 switch $0282=0
                 switch $0287=1
                 goto _cc6853
-        dlg $0305
+        dlg DLG_773
                 ; For 500 GP you can send a letter.
                 ; 0:  (Send it)
                 ; 1:  (Forget it)
@@ -92482,7 +92532,7 @@ _cc6853:
                 switch $0283=0
                 switch $0288=1
                 goto _cc6874
-        dlg $0307
+        dlg DLG_775
                 ; For 500 GP you can send a book.
                 ; 0:  (Send it)
                 ; 1:  (Forget it)
@@ -92495,7 +92545,7 @@ _cc6866:
         switch $027E=0
         return
 _cc6874:
-        dlg $02F8
+        dlg DLG_760
                 ; I am at your service.
                 ; I send things all over the world.
         return
@@ -92504,7 +92554,7 @@ _cc6878:
                 switch $0288=0
                 switch $028D=1
                 goto _cc6888
-        dlg $030E
+        dlg DLG_782
                 ; I heard_
                 ; In my name you send Lola many things_
                 ; I wish to thank you.
@@ -92516,7 +92566,7 @@ _cc6878:
         return
 _cc6888:
         if_switch $027F=1, _cc6894
-        dlg $02FA
+        dlg DLG_762
                 ; INJURED LAD: I'm from Maranda. The Empire invaded, and made me join their army.
                 ; I fled when I heard we were making for Doma.
                 ; They caught me_and did this_
@@ -92528,7 +92578,7 @@ _cc6888:
         return
 _cc6894:
         if_switch $0284=1, _cc689e
-        dlg $02FC
+        dlg DLG_764
                 ; I'd like to write her back, but I can't even pick up a pen.
         return
 _cc689e:
@@ -92536,7 +92586,7 @@ _cc689e:
                 switch $027F=0
                 switch $0284=1
                 goto _cc68aa
-        dlg $030D
+        dlg DLG_781
                 ; I'd give Lola everything_
                 ; If only I could move_
         return
@@ -92545,7 +92595,7 @@ _cc68aa:
                 switch $0280=0
                 switch $0285=1
                 goto _cc68b6
-        dlg $030D
+        dlg DLG_781
                 ; I'd give Lola everything_
                 ; If only I could move_
         return
@@ -92554,7 +92604,7 @@ _cc68b6:
                 switch $0281=0
                 switch $0286=1
                 goto _cc68c2
-        dlg $030D
+        dlg DLG_781
                 ; I'd give Lola everything_
                 ; If only I could move_
         return
@@ -92563,7 +92613,7 @@ _cc68c2:
                 switch $0282=0
                 switch $0287=1
                 goto _cc68ce
-        dlg $030D
+        dlg DLG_781
                 ; I'd give Lola everything_
                 ; If only I could move_
         return
@@ -92572,17 +92622,17 @@ _cc68ce:
                 switch $0283=0
                 switch $0288=1
                 goto _cc68da
-        dlg $030D
+        dlg DLG_781
                 ; I'd give Lola everything_
                 ; If only I could move_
         return
 _cc68da:
         if_switch $027E=0, _cc68e4
-        dlg $02FF
+        dlg DLG_767
                 ; Another letter has arrived. Could you read it?
         return
 _cc68e4:
-        dlg $02FE
+        dlg DLG_766
                 ; I want to get better!
                 ; I want to see Lola_
         return
@@ -92591,7 +92641,7 @@ _cc68e8:
                 switch $0288=0
                 switch $027E=1
                 goto _cc68f4
-        dlg $030B
+        dlg DLG_779
                 ; He sent that book!
                 ; I'll read it every evening, before bed!
         return
@@ -92600,7 +92650,7 @@ _cc68f4:
                 switch $0287=0
                 switch $027E=1
                 goto _cc6900
-        dlg $0308
+        dlg DLG_776
                 ; A letter came from him!
                 ; He's all right!
         return
@@ -92609,7 +92659,7 @@ _cc6900:
                 switch $0286=0
                 switch $027E=1
                 goto _cc690c
-        dlg $030A
+        dlg DLG_778
                 ; He sent some Tonic for Mom!
                 ; He's so kind!
         return
@@ -92618,7 +92668,7 @@ _cc690c:
                 switch $0285=0
                 switch $027E=1
                 goto _cc6918
-        dlg $0309
+        dlg DLG_777
                 ; He sent me a record!
                 ; I'm so happy!
         return
@@ -92627,12 +92677,12 @@ _cc6918:
                 switch $0284=0
                 switch $027E=1
                 goto _cc6924
-        dlg $0308
+        dlg DLG_776
                 ; A letter came from him!
                 ; He's all right!
         return
 _cc6924:
-        dlg $030C
+        dlg DLG_780
                 ; My love hasn't sent me back any letters since he's been gone. I'm sick with worry_
         return
 _cc6928:
@@ -92717,7 +92767,7 @@ _cc69c7:
         shop_menu KOHLINGEN_ITEMS_2
         return
 _cc69ca:
-        dlg $060D
+        dlg DLG_1549
                 ; 200 GP per night!
                 ; Need a rest?
                 ; 0:  Sure
@@ -92740,59 +92790,59 @@ _cc69d5:
                 end
         call _cacf96
         return
-        dlg $03DC
+        dlg DLG_988
                 ; That shining creature!
                 ; So frightening to us all!
                 ; But I found it_ beautiful!
         return
 _cc69fe:
-        dlg $03DA
+        dlg DLG_986
                 ; Oh_!  It came to my house!
                 ; A monster of light_
                 ; Looked somehow human!
         call _cc6a2d
         return
 _cc6a06:
-        dlg $03DB
+        dlg DLG_987
                 ; Everyone was scared when the glowing creature stopped here.
                 ; It left to the south, toward Jidoor.
         return
 _cc6a0a:
-        dlg $03DC
+        dlg DLG_988
                 ; That shining creature!
                 ; So frightening to us all!
                 ; But I found it_ beautiful!
         return
 _cc6a0e:
-        dlg $03DD
+        dlg DLG_989
                 ; My dream is to see an opera at the opera house south of Jidoor. I'd wear a sequined dress_
                 ; And bring a handsome escort_!
         return
 _cc6a12:
         set_case PARTY_CHARS
         if_switch $01A1=0, _cc6a1d
-        dlg $03DE
+        dlg DLG_990
                 ; Hey, 'zat you, LOCKE?
                 ; Have you stopped to see Rachel?
         return
 _cc6a1d:
-        dlg $03DF
+        dlg DLG_991
                 ; You a friend of LOCKE's?
                 ; He always stops by Rachel's house when he comes here!
         return
 _cc6a21:
-        dlg $03E0
+        dlg DLG_992
                 ; Best stay away from the house on the eastern edge of town.
                 ; The old coot there spends his days mixing curious herbs.
                 ; I heard he keeps ghosts under his house!
         return
 _cc6a25:
-        dlg $03E1
+        dlg DLG_993
                 ; My brother's a bit_touched.
                 ; Lives alone to the north, and dreams of building a colosseum!
         return
 _cc6a29:
-        dlg $03E2
+        dlg DLG_994
                 ; Was it really a ghost?
                 ; It stopped right in front of me. I could see it had gentle eyes_
         return
@@ -92834,7 +92884,7 @@ _cc6a2e:
                 action 33
                 end
         wait_1s
-        dlg $03E8
+        dlg DLG_1000
                 ; LOCKE: _wasn't able to_
                 ; save her when she needed me_
         switch $01CC=1
@@ -92868,7 +92918,7 @@ _cc6a2e:
                 move DOWN, 1
                 move RIGHT, 3
                 end
-        dlg $03E9
+        dlg DLG_1001
                 ; RACHEL: LOCKE!
                 ; What are we off to find today?
         wait_30f
@@ -92878,7 +92928,7 @@ _cc6a2e:
                 dir LEFT
                 end
         wait_30f
-        dlg $03EA
+        dlg DLG_1002
                 ; LOCKE: Soon, you'll_
         wait_15f
         obj_script LOCKE
@@ -92897,7 +92947,7 @@ _cc6a2e:
                 dir RIGHT
                 end
         wait_30f
-        dlg $03EB
+        dlg DLG_1003
                 ; LOCKE: You're not going to believe what awaits us up here!
                 ; Come on, it's worth a fortune!
         wait_30f
@@ -92928,7 +92978,7 @@ _cc6a2e:
         wait_30f
         shake ALL, 2, 1
         wait_30f
-        dlg $03EC
+        dlg DLG_1004
                 ; RACHEL: LOCKE!
                 ; Look out!
         wait_30f
@@ -92969,7 +93019,7 @@ _cc6a2e:
                 action 9
                 end
         wait_30f
-        dlg $03ED
+        dlg DLG_1005
                 ; LOCKE: RACHEL!!
         wait_1s
         obj_script LOCKE
@@ -93013,7 +93063,7 @@ _cc6a2e:
                 dir LEFT
                 end
         wait_30f
-        dlg $03EE
+        dlg DLG_1006
                 ; LOCKE: Rachel!
                 ; Are you awake?
         wait_1s
@@ -93032,7 +93082,7 @@ _cc6a2e:
                 dir DOWN
                 end
         wait_1s
-        dlg $03EF
+        dlg DLG_1007
                 ; RACHEL: _
                 ; __?
                 ; I_
@@ -93091,7 +93141,7 @@ _cc6a2e:
                 move DOWN, 2
                 end
         wait_30f
-        dlg $03F0
+        dlg DLG_1008
                 ; RACHEL'S DAD: Get outta here!
                 ; It's your fault she's lost her memory!
                 ; LOCKE: Wait a minute!
@@ -93109,7 +93159,7 @@ _cc6a2e:
                 dir DOWN
                 end
         wait_30f
-        dlg $03F1
+        dlg DLG_1009
                 ; RACHEL: Go!
                 ; I don't know who you are, but ever since you came here my parents have been upset!
         wait_1s
@@ -93151,7 +93201,7 @@ _cc6a2e:
                 dir LEFT
                 end
         wait_1s
-        dlg $03F2
+        dlg DLG_1010
                 ; You'd best leave Rachel alone.
                 ; She's going to have to make a new start of it.
                 ; LOCKE_
@@ -93207,7 +93257,7 @@ _cc6a2e:
                 action 33
                 end
         wait_1s
-        dlg $03F3
+        dlg DLG_1011
                 ; A year passed_
                 ; When I returned here, I learned that Rachel had perished in an Imperial attack.
                 ; Her memory returned just before she passed away.
@@ -93284,12 +93334,12 @@ _cc6ce4:
         return
 _cc6d1e:
         if_switch $004D=1, _cc6d28
-        dlg $03F4
+        dlg DLG_1012
                 ; A girl named Rachel used to live in that house.
                 ; Now it's deserted.
         return
 _cc6d28:
-        dlg $03F5
+        dlg DLG_1013
                 ; Rachel's_
                 ; _memory returned just before she passed away.
                 ; She said, ``If a man named LOCKE returns, please tell him I love him_''
@@ -93312,7 +93362,7 @@ _cc6d31:
         if_switch $00A4=1, _cc6d6b
         set_case PARTY_CHARS
         if_switch $01A1=0, _cc6d5e
-        dlg $03FA
+        dlg DLG_1018
                 ; Oh! Is that you, LOCKE?
                 ; It's been a while!
                 ; Uh? Oh, that?! Worry not!
@@ -93327,7 +93377,7 @@ _cc6d31:
                 end
         return
 _cc6d5e:
-        dlg $0404
+        dlg DLG_1028
                 ; That?
                 ; Oh, that's LOCKE's_
                 ; Dear, me! Almost spilled the beans! Kwa, ha!
@@ -93340,7 +93390,7 @@ _cc6d5e:
                 end
         return
 _cc6d6b:
-        dlg $0984
+        dlg DLG_2436
                 ; Huh?!
                 ; LOCKE?
                 ; He must be searching the world over for that fabled treasure_
@@ -93355,7 +93405,7 @@ _cc6d6b:
         return
 _cc6d78:
         if_switch $00A4=1, _cc6d82
-        dlg $03FB
+        dlg DLG_1019
                 ; Are we through here?
                 ; All done? Finished?
                 ; Mwa, ha, ha!
@@ -93363,14 +93413,14 @@ _cc6d78:
 _cc6d82:
         set_case PARTY_CHARS
         if_switch $01A1=1, _cc6d8d
-        dlg $0984
+        dlg DLG_2436
                 ; Huh?!
                 ; LOCKE?
                 ; He must be searching the world over for that fabled treasure_
                 ; Find the treasure, and you'll find LOCKE!
         return
 _cc6d8d:
-        dlg $03FB
+        dlg DLG_1019
                 ; Are we through here?
                 ; All done? Finished?
                 ; Mwa, ha, ha!
@@ -93384,7 +93434,7 @@ _cc6d91:
                 dir DOWN
                 wait 6
                 end
-        dlg $03FD, BOTTOM
+        dlg DLG_1021, BOTTOM
                 ; I used some herbs to put her into suspended animation.
                 ; She won't age a day! Uwaa, ha!
                 ; That's what you wanted, right?
@@ -93414,7 +93464,7 @@ _cc6d91:
         fade_in 8
         wait_fade
         wait_1s
-        dlg $03FC
+        dlg DLG_1020
                 ; LOCKE: Rachel_
         create_obj NPC_3
         obj_script NPC_3
@@ -93437,7 +93487,7 @@ _cc6d91:
                 dir LEFT
                 end
         wait_30f
-        dlg $03FE
+        dlg DLG_1022
                 ; LOCKE: You mean those herbs have actually saved her?
         wait_30f
         obj_script NPC_3
@@ -93450,7 +93500,7 @@ _cc6d91:
                 dir RIGHT
                 end
         wait_30f
-        dlg $03FF
+        dlg DLG_1023
                 ; Of course!
                 ; The love of your life will sleep here like this forever.
                 ; Kwa, ha, ha!
@@ -93459,7 +93509,7 @@ _cc6d91:
                 action 34
                 end
         wait_2s
-        dlg $0400
+        dlg DLG_1024
                 ; LOCKE: What if there were some way to_call her back?
         wait_30f
         obj_script NPC_3
@@ -93468,7 +93518,7 @@ _cc6d91:
                 dir UP
                 end
         wait_30f
-        dlg $0401
+        dlg DLG_1025
                 ; If you could call her back_
                 ; _she'd come back!
                 ; Wah, ha, ha!
@@ -93525,7 +93575,7 @@ _cc6e5c:
         fade_in 8
         wait_fade
         wait_90f
-        dlg $0402
+        dlg DLG_1026
                 ; I_
                 ; failed her_
         wait_2s
@@ -93604,7 +93654,7 @@ _cc6e5c:
                 dir LEFT
                 end
         wait_1s
-        dlg $0403
+        dlg DLG_1027
                 ; CELES: LOCKE_
         wait_1s
 _cc6eee:
@@ -93623,21 +93673,21 @@ _cc6f07:
         if_switch $00CA=1, _cc6f25
         if_switch $00A4=1, _cc6f21
         if_switch $018E=1, _cc6f1d
-        dlg $03F6
+        dlg DLG_1014
                 ; Stay away from that guy.
                 ; He's an assasin!
         return
 _cc6f1d:
-        dlg $03F7
+        dlg DLG_1015
                 ; I never want to return to Zozo! Phew!
         return
 _cc6f21:
-        dlg $0997
+        dlg DLG_2455
                 ; Cough_
                 ; This world's already on the heap!
         return
 _cc6f25:
-        dlg $0998
+        dlg DLG_2456
                 ; I overheard your conversation_
                 ; I, too, still have faith in this world!
         return
@@ -93645,19 +93695,19 @@ _cc6f29:
         if_switch $00CA=1, _cc6f47
         if_switch $00A4=1, _cc6f43
         if_switch $018E=1, _cc6f3f
-        dlg $03F8
+        dlg DLG_1016
                 ; Some pretty bad sorts come in here. That guy's an assasin!
         return
 _cc6f3f:
-        dlg $03F9
+        dlg DLG_1017
                 ; 'Till a moment ago, an assasin sat over there!
         return
 _cc6f43:
-        dlg $0999
+        dlg DLG_2457
                 ; Hope_
         return
 _cc6f47:
-        dlg $099A
+        dlg DLG_2458
                 ; Hope_
                 ; We must never give up hope!
         return
@@ -93684,7 +93734,7 @@ _cc6f84:
         obj_script NPC_1
                 dir DOWN
                 end
-        dlg $03E4
+        dlg DLG_996
                 ; I've forsaken the world.
                 ; Some people call me_
         wait_30f
@@ -93699,7 +93749,7 @@ _cc6f84:
         obj_script NPC_1
                 action 35 | ACTION_H_FLIP
                 end
-        dlg $00C1, {TEXT_ONLY, BOTTOM}
+        dlg DLG_193, {TEXT_ONLY, BOTTOM}
                 ; He owes allegiance to no one,
                 ; and will do anything for money.
                 ; He comes and goes like the wind_
@@ -93727,7 +93777,7 @@ _cc6f84:
                 dir LEFT
                 end
         wait_1s
-        dlg $03E6
+        dlg DLG_998
                 ; People call me_
                 ; SHADOW_
         wait_30f
@@ -93736,7 +93786,7 @@ _cc6f84:
         call _cc6feb
         return
 _cc6fe2:
-        dlg $03E3
+        dlg DLG_995
                 ; SHADOW: We meet again_
         wait_1s
         obj_script NPC_1
@@ -93747,7 +93797,7 @@ _cc6feb:
         call _cac5c1
         if_switch $01A3=1, _cc707b
         wait_1s
-        dlg $03E7
+        dlg DLG_999
                 ; SHADOW: Just need 'nough to feed my dog.
                 ; Say, oh_3000 GP.
                 ; Buy SHADOW's help?
@@ -93821,7 +93871,7 @@ _cc704f:
         player_ctrl_on
         return
 _cc707b:
-        dlg $03E5
+        dlg DLG_997
                 ; SHADOW: Leave me alone_
         return
 _cc707f:
@@ -93871,7 +93921,7 @@ _cc70ab:
                 move DOWN, 4
                 end
         wait_30f
-        dlg $064C
+        dlg DLG_1612
                 ; We've been waiting for you.
                 ; This way, please_
         wait_30f
@@ -93949,7 +93999,7 @@ _cc7137:
                 move DOWN, 1
                 end
         wait_30f
-        dlg $064D, BOTTOM
+        dlg DLG_1613, BOTTOM
                 ; BANON: Oh, you're here!
                 ; The people of Narshe have finally decided to battle the Empire.
                 ; How did it go at Vector_?
@@ -93975,7 +94025,7 @@ _cc7137:
                 wait_1s
                 end_loop
         wait_30f
-        dlg $064E, BOTTOM
+        dlg DLG_1614, BOTTOM
                 ; ARVIS: I see_ Your plan would combine Narshe's money with Figaro's machinery to storm the Empire_
                 ; not enough manpower, though_
         wait_1s
@@ -93983,7 +94033,7 @@ _cc7137:
                 action 32
                 end
         wait_90f
-        dlg $064F, BOTTOM
+        dlg DLG_1615, BOTTOM
                 ; BANON: We have to open the sealed gate_
         wait_30f
         set_case PARTY_CHARS
@@ -94021,7 +94071,7 @@ _cc7137:
         obj_script NPC_25
                 dir DOWN
                 end
-        dlg $0657, BOTTOM
+        dlg DLG_1623, BOTTOM
                 ; TERRA!?
         if_switch $022F=0, _cc71c9
 _cc71ab:
@@ -94050,21 +94100,21 @@ _cc71ab:
                 end
 _cc71c9:
         wait_90f
-        dlg $0650, BOTTOM
+        dlg DLG_1616, BOTTOM
                 ; TERRA: To the Esper World_?
         wait_1s
         obj_script NPC_25
                 move DOWN, 1
                 end
         wait_30f
-        dlg $0651, BOTTOM
+        dlg DLG_1617, BOTTOM
                 ; ARVIS: We'll never beat the Empire without them.
         wait_30f
         obj_script TERRA
                 dir UP
                 end
         wait_1s
-        dlg $0652, BOTTOM
+        dlg DLG_1618, BOTTOM
                 ; BANON: When the gate has been opened, the Espers can attack from the east.
                 ; We'll storm in at the same time, from the north.
         wait_30f
@@ -94087,7 +94137,7 @@ _cc71f1:
         obj_script SLOT_4
                 dir UP
                 end
-        dlg $0658, BOTTOM
+        dlg DLG_1624, BOTTOM
                 ; No way around it.
         wait_30f
         obj_script NPC_24
@@ -94100,7 +94150,7 @@ _cc71f1:
                 dir DOWN
                 end
         wait_1s
-        dlg $0653, BOTTOM
+        dlg DLG_1619, BOTTOM
                 ; BANON: We MUST get the Espers to understand.
                 ; We have to establish a bond of trust between humans and Espers. Only one person can do this_
         fade_out_song $80
@@ -94131,10 +94181,10 @@ _cc7224:
         wait_90f
         play_song AWAKENING
         wait_2s
-        dlg $0655, BOTTOM
+        dlg DLG_1621, BOTTOM
                 ; TERRA_
         wait_15f 14
-        dlg $0654, TEXT_ONLY
+        dlg DLG_1620, TEXT_ONLY
                 ; Half human, half Esper_
                 ; My existence is proof
                 ; that such a bond CAN exist_
@@ -94149,7 +94199,7 @@ _cc7224:
                 dir LEFT
                 end
         wait_90f
-        dlg $0656, BOTTOM
+        dlg DLG_1622, BOTTOM
                 ; TERRA: I'll do it.
                 ; I'm the only one who can!
         wait_90f
@@ -94209,17 +94259,17 @@ _cc7268:
         player_ctrl_on
         return
 _cc72ba:
-        dlg $0659
+        dlg DLG_1625
                 ; NARSHE'S ELDER: Our battle lies before us. We must make ourselves ready.
         return
 _cc72be:
-        dlg $065A
+        dlg DLG_1626
                 ; BANON: Get the Espers to understand, and we can bring this war to a screeching halt.
                 ; TERRA_
                 ; I know you can do this_
         return
 _cc72c2:
-        dlg $065B
+        dlg DLG_1627
                 ; ARVIS: The sealed gate stands at the eastern edge of the Empire.
                 ; There's a base there, but somehow we'll have to slip through_
         return
@@ -94448,7 +94498,7 @@ _cc7451:
                 dir DOWN
                 end
         wait_45f
-        dlg $055C, ASYNC
+        dlg DLG_1372, ASYNC
                 ; KEFKA: I'm all-powerful!
                 ; Hee, hee, haw!
                 ; I'm collecting Espers!
@@ -94514,7 +94564,7 @@ _cc7451:
                 move DOWN, 7
                 end
         wait_30f
-        dlg $055D
+        dlg DLG_1373
                 ; KEFKA: You've been completely drained of your powers!
                 ; Now you're useless to me!
         wait_30f
@@ -94558,7 +94608,7 @@ _cc7451:
                 dir UP
                 end
         wait_1s
-        dlg $055E
+        dlg DLG_1374
                 ; KEFKA: And you! Take a hike!
         wait_30f
         obj_script NPC_8
@@ -95312,7 +95362,7 @@ _cc7937:
         fade_in
         wait_fade
         wait_1s
-        dlg $055F
+        dlg DLG_1375
                 ; IFRIT: Hmmm_
                 ; SHIVA: Well, Ramuh DID entrust them with his power.
         wait_30f
@@ -95341,7 +95391,7 @@ _cc7937:
         player_ctrl_on
         return
 _cc7986:
-        dlg $0560
+        dlg DLG_1376
                 ; IFRIT: Gestahl has grabbed our friends and is trying to drain them of their power.
                 ; I, too, suffered my turn in one of the glass tubes_
         switch $0272=1
@@ -95349,7 +95399,7 @@ _cc7986:
         return
 _cc7992:
         if_switch $0060=0, EventReturn
-        dlg $0561
+        dlg DLG_1377
                 ; SHIVA: They drained our powers, then threw us away to_
                 ; We haven't long to live_
         switch $0274=1
@@ -95357,7 +95407,7 @@ _cc7992:
         return
 _cc79a4:
         wait_30f
-        dlg $0562
+        dlg DLG_1378
                 ; We will follow Ramuh's lead, and give to you our power_
         flash WHITE
         sfx 80
@@ -95373,7 +95423,7 @@ _cc79a4:
         hide_obj NPC_6
         sort_obj
         wait_1s
-        dlg $0563, TEXT_ONLY
+        dlg DLG_1379, TEXT_ONLY
                 ; Our friends are all gone_
                 ; We haven't much time left_
                 ; No choice but to entrust you with our essences_
@@ -95384,7 +95434,7 @@ _cc79a4:
         player_ctrl_on
         return
 _cc79cd:
-        dlg $0564
+        dlg DLG_1380
                 ;
                 ; Received the Magicite
                 ; ``Ifrit.''
@@ -95397,7 +95447,7 @@ _cc79cd:
         player_ctrl_on
         return
 _cc79dd:
-        dlg $0565
+        dlg DLG_1381
                 ;
                 ; Received the Magicite
                 ; ``Shiva.''
@@ -95505,7 +95555,7 @@ _cc7a60:
         obj_script NPC_6
                 speed NORMAL
                 end
-        dlg $0566
+        dlg DLG_1382
                 ; ESPER: You want to help me_
                 ; But_ I haven't long to live.
                 ; Just as Ifrit did before me,
@@ -95539,7 +95589,7 @@ _cc7a60:
         delete_obj NPC_6
         sort_obj
         wait_1s
-        dlg $0567
+        dlg DLG_1383
                 ; CID: What are you doing there?
         lock_camera
         obj_script SLOT_1, ASYNC
@@ -95595,7 +95645,7 @@ _cc7a60:
         obj_script NPC_13
                 dir DOWN
                 end
-        dlg $0568
+        dlg DLG_1384
                 ; CID: W_what's this!?
         obj_script NPC_13, ASYNC
                 speed FAST
@@ -95627,7 +95677,7 @@ _cc7a60:
                 move UP, 2
                 end
         wait_90f
-        dlg $0569
+        dlg DLG_1385
                 ; CID: So_Esper magical power can only truly be transferred when one of them passes away_
         wait_1s
         pass_off NPC_7
@@ -95798,7 +95848,7 @@ _cc7a60:
         delete_obj NPC_12
         sort_obj
         wait_30f
-        dlg $056A
+        dlg DLG_1386
                 ;
                 ; Received Magicite!
         give_genju MADUIN
@@ -95850,7 +95900,7 @@ _cc7a60:
                 dir DOWN
                 end
         wait_30f
-        dlg $056B
+        dlg DLG_1387
                 ; CELES: Professor Cid.
                 ; CID: General CELES!
                 ; And who might these dubious characters be? Your troops?
@@ -95859,7 +95909,7 @@ _cc7a60:
                 action 33
                 end
         wait_1s
-        dlg $056C
+        dlg DLG_1388
                 ; CELES: No_
                 ; You see, _
                 ; CID: Can it be true that you came here as a spy, seeking to cause an uprising?!
@@ -95875,7 +95925,7 @@ _cc7a60:
         obj_script CELES
                 dir LEFT
                 end
-        dlg $056E
+        dlg DLG_1390
                 ; LOCKE: !?
                 ; CELES_?
         wait_90f
@@ -95906,7 +95956,7 @@ _cc7a60:
                 move UP, 6
                 end
         wait_30f
-        dlg $056F
+        dlg DLG_1391
                 ; KEFKA: So that's it!
                 ; Magicite_
                 ; Cid, you miserable blockhead! Now_
@@ -95918,7 +95968,7 @@ _cc7a60:
                 anim_on
                 end
         wait_30f
-        dlg $0570
+        dlg DLG_1392
                 ; KEFKA: General CELES!!
                 ; The game's over.
                 ; Bring me those Magicite shards!
@@ -95934,14 +95984,14 @@ _cc7a60:
                 dir LEFT
                 end
         wait_30f
-        dlg $0571
+        dlg DLG_1393
                 ; LOCKE: CELES!
                 ; You_deceived me?!
                 ; CELES: Of course not!
                 ; Have a little faith!
         if_switch $01A2=0, _cc7d27
         wait_1s
-        dlg $0572
+        dlg DLG_1394
                 ; CYAN: See!
                 ; I knew she couldn't be trusted!
 _cc7d27:
@@ -95961,7 +96011,7 @@ _cc7d27:
                         end
                 end_loop
         wait_30f
-        dlg $0573
+        dlg DLG_1395
                 ; KEFKA: G'hee, hee, hee!
                 ; She has tricked you all!
                 ; CELES, that's so_YOU!
@@ -95974,7 +96024,7 @@ _cc7d27:
                 action 34 | ACTION_H_FLIP
                 end
         wait_30f
-        dlg $0574
+        dlg DLG_1396
                 ; CELES: LOCKE_
                 ; Please believe me_
                 ; LOCKE: I_ _ _
@@ -95996,7 +96046,7 @@ _cc7d27:
                 action 27
                 end
         wait_30f
-        dlg $0575
+        dlg DLG_1397
                 ; KEFKA: NOW!!
         create_obj NPC_15
         create_obj NPC_16
@@ -96017,7 +96067,7 @@ _cc7d27:
         obj_script CELES
                 dir DOWN
                 end
-        dlg $0576
+        dlg DLG_1398
                 ; KEFKA: Exterminate all of them!
         obj_script NPC_14
                 action 23
@@ -96103,7 +96153,7 @@ _cc7d27:
                 move DOWN, 5
                 end
         wait_2s
-        dlg $0577, BOTTOM
+        dlg DLG_1399, BOTTOM
                 ; CELES: LOCKE_
                 ; Let me protect you for once_
                 ; Maybe now_
@@ -96138,7 +96188,7 @@ _cc7d27:
                 mod_sprite_pal DEC, RED, 3
                 end_loop
         wait_1s
-        dlg $056D
+        dlg DLG_1389
                 ; KEFKA: CELES!
                 ; W_what are you doing?
                 ; Stop it!!!
@@ -96217,7 +96267,7 @@ _cc7d27:
                 action 32
                 end
         wait_1s
-        dlg $0578
+        dlg DLG_1400
                 ; LOCKE: CELES_
         wait_90f
         obj_script SLOT_2
@@ -96252,7 +96302,7 @@ _cc7d27:
                 speed NORMAL
                 move LEFT, 6
                 end
-        dlg $0579
+        dlg DLG_1401
                 ; CID: Ooh, ooh_
                 ; What happened?
         wait_2s
@@ -96287,7 +96337,7 @@ _cc7d27:
                 move DOWN, 1
                 end
         wait_30f
-        dlg $057A
+        dlg DLG_1402
                 ; CID: This is a disaster!
                 ; Your fighting has caused the capsules to rupture! Their contents are spilling out!
         pass_off NPC_13
@@ -96315,7 +96365,7 @@ _cc7d27:
                 move DOWN, 1
                 dir RIGHT
                 end
-        dlg $057B
+        dlg DLG_1403
                 ; CID: Quick! Over here!
         call _cb2e2b
         unlock_camera
@@ -96398,7 +96448,7 @@ _cc7f98:
         fade_in 8
         wait_fade
         wait_2s
-        dlg $057C
+        dlg DLG_1404
                 ; CID: Kefka has used me_
                 ; used the Empire.
                 ; What have I done_?
@@ -96410,7 +96460,7 @@ _cc7fa7:
                 branch _cc7fa7
                 end
         wait_1s
-        dlg $057D
+        dlg DLG_1405
                 ; CID: The life-energy of those Espers_
         wait_1s
         obj_script NPC_1, ASYNC
@@ -96420,7 +96470,7 @@ _cc7fb3:
                 branch _cc7fb3
                 end
         wait_1s
-        dlg $057E
+        dlg DLG_1406
                 ; CID: You've helped me come to a decision. I'm going to talk to the Emperor and have this stupid war stopped!
         obj_script NPC_1, ASYNC
                 dir LEFT
@@ -96490,7 +96540,7 @@ _cc801c:
 _cc8022:
         call _caca8d
         wait_30f
-        dlg $057F
+        dlg DLG_1407
                 ; CID: CELES_
                 ; I've known her since she was a baby. I raised her as if she was my own daughter!
                 ; But she was forced to become a Magitek Knight, and has done some awful things.
@@ -96509,7 +96559,7 @@ _cc8022:
                 move DOWN, 4
                 end
         wait_30f
-        dlg $0580
+        dlg DLG_1408
                 ; CID: No! It's Kefka!
         wait_30f
         obj_script NPC_1
@@ -96535,7 +96585,7 @@ _cc8022:
                 jump_low
                 move RIGHT, 2
                 end
-        dlg $0581
+        dlg DLG_1409
                 ; CID: GO!!
         wait_30f
         sfx 214
@@ -96759,7 +96809,7 @@ _cc818c:
                 dir LEFT
                 end
         wait_30f
-        dlg $0582
+        dlg DLG_1410
                 ; SETZER: I was starting to worry_
         wait_30f
         call _cac6ac
@@ -96781,7 +96831,7 @@ _cc818c:
                 speed NORMAL
                 dir LEFT
                 end
-        dlg $0583
+        dlg DLG_1411
                 ; SETZER: ?
                 ; What's up with CELES?
                 ; LOCKE: __
@@ -96806,7 +96856,7 @@ _cc818c:
                         end
                 end_loop
         wait_30f
-        dlg $0586
+        dlg DLG_1414
                 ; SETZER: We'll talk later.
                 ; Let's get outta here!
         wait_30f
@@ -96896,7 +96946,7 @@ _cc818c:
         obj_script NPC_1
                 action 24
                 end
-        dlg $0585
+        dlg DLG_1413
                 ; KEFKA: Crud!
                 ; What a mess!!
         wait_30f
@@ -96938,7 +96988,7 @@ _cc818c:
                 action 24
                 end
         wait_30f
-        dlg $0587
+        dlg DLG_1415
                 ; KEFKA: I don't think so_!
                 ; You won't get away!
         wait_30f
@@ -97077,7 +97127,7 @@ _cc835c:
                 dir LEFT
                 end
         wait_30f
-        dlg $06A6
+        dlg DLG_1702
                 ; The Emperor's expecting you.
                 ; This way_
         pass_off NPC_3
@@ -97124,23 +97174,23 @@ _cc839e:
         switch $062D=0
         return
 _cc83c6:
-        dlg $06A7
+        dlg DLG_1703
                 ; Emperor Gestahl waits inside.
         return
 _cc83ca:
         if_switch $007C=1, _cc83de
-        dlg $06AC
+        dlg DLG_1708
                 ; The power of the Espers_
                 ; Phenomenal_
         return
 _cc83d4:
         if_switch $007C=1, _cc83de
-        dlg $06AE
+        dlg DLG_1710
                 ; Peace at last_
         return
 _cc83de:
         if_switch $013C=1, _cc8673
-        dlg $06C4
+        dlg DLG_1732
                 ; Dinner preparations underway.
                 ; One moment, please.
         return
@@ -97162,7 +97212,7 @@ _cc83e8:
                 action 9
                 end
         wait_90f
-        dlg $06B4, BOTTOM
+        dlg DLG_1716, BOTTOM
                 ; KEFKA: Grrr!
                 ; How DARE they put me in a place like this!
         wait_30f
@@ -97180,7 +97230,7 @@ _cc8415:
                 action 37
                 wait 1
                 branch_end _cc8415
-        dlg $06B5, BOTTOM
+        dlg DLG_1717, BOTTOM
                 ; KEFKA: I don't believe this!
         wait_30f
         loop 3
@@ -97238,7 +97288,7 @@ _cc8415:
                         end
                 end_loop
         wait_30f
-        dlg $06B6, BOTTOM
+        dlg DLG_1718, BOTTOM
                 ; KEFKA: What a bore.
         wait_30f
         obj_script SLOT_1, ASYNC
@@ -97275,7 +97325,7 @@ _cc8490:
         call _cb2e34
         pass_off NPC_7
         pass_off NPC_6
-        dlg $06BB, BOTTOM
+        dlg DLG_1723, BOTTOM
                 ; GESTAHL: I've lost my will to fight_
         wait_30f
         lock_camera
@@ -97299,7 +97349,7 @@ _cc8490:
                 move DOWN, 4
                 end
         sort_obj
-        dlg $06BC, BOTTOM
+        dlg DLG_1724, BOTTOM
                 ; CID: The Emperor's had a change of heart_
         call _cac6ac
         call _cb2e34
@@ -97323,14 +97373,14 @@ _cc8490:
                 dir UP
                 wait 6
                 end
-        dlg $06BD, BOTTOM
+        dlg DLG_1725, BOTTOM
                 ; Cid!!
         wait_30f
         obj_script NPC_7
                 move DOWN, 1
                 end
         wait_30f
-        dlg $06BE, BOTTOM
+        dlg DLG_1726, BOTTOM
                 ; CID: The Espers came to save their friends. When they learned the others had perished, they went berserk,
                 ; and trashed the town_
                 ; Never will I forget their shrieks of rage_
@@ -97341,14 +97391,14 @@ _cc8490:
         obj_script NPC_9
                 move DOWN, 1
                 end
-        dlg $06BF, BOTTOM
+        dlg DLG_1727, BOTTOM
                 ; SENTRY: We're hanging up our weapons and armor for good.
         wait_1s
         obj_script NPC_6
                 dir DOWN
                 end
         wait_1s
-        dlg $06C0, BOTTOM
+        dlg DLG_1728, BOTTOM
                 ; GESTAHL: The power of those Espers_
                 ; I had no idea_
                 ; They'll shred the world_!
@@ -97359,7 +97409,7 @@ _cc8490:
                 move LEFT, 1
                 end
         wait_90f
-        dlg $06C1, BOTTOM
+        dlg DLG_1729, BOTTOM
                 ; CID: No human's going to make them sit down and listen_
         wait_1s
         obj_script NPC_6
@@ -97373,7 +97423,7 @@ _cc8490:
                 dir DOWN
                 end
         wait_30f
-        dlg $06C2, BOTTOM
+        dlg DLG_1730, BOTTOM
                 ; GESTAHL: But for now my friends_
                 ; Let us feast and rejoice!
         wait_30f
@@ -97400,7 +97450,7 @@ _cc8490:
                 dir DOWN
                 end
         wait_30f
-        dlg $06C3, BOTTOM
+        dlg DLG_1731, BOTTOM
                 ; CID: There're some people here who'd prefer to keep fighting.
                 ; Please, before we dine, talk to as many soldiers as you can! Make them understand!
         wait_30f
@@ -97419,7 +97469,7 @@ _cc8490:
                 move DOWN, 2
                 end
         unlock_camera
-        dlg $06C5
+        dlg DLG_1733
                 ; TROOPER: Please talk to as many soldiers as you can. You have 4 minutes until dinner.
         obj_script SLOT_2, ASYNC
                 move UP_LEFT
@@ -97548,7 +97598,7 @@ _cc860d:
         switch $01F1=1
         return
 _cc8637:
-        dlg $06A8
+        dlg DLG_1704
                 ; The Espers that emerged from the gate are terrifying the Empire!
         if_any
                 switch $0217=1
@@ -97559,7 +97609,7 @@ _cc8637:
         switch $0217=1
         return
 _cc864b:
-        dlg $06A9
+        dlg DLG_1705
                 ; We've lost our will to fight.
         if_any
                 switch $0218=1
@@ -97570,7 +97620,7 @@ _cc864b:
         switch $0218=1
         return
 _cc865f:
-        dlg $06AA
+        dlg DLG_1706
                 ; Kefka's been imprisoned for unspeakable war crimes.
                 ; He's on his last legs_
         if_any
@@ -97582,7 +97632,7 @@ _cc865f:
         switch $0219=1
         return
 _cc8673:
-        dlg $06AB
+        dlg DLG_1707
                 ; The war's over_
         if_any
                 switch $021A=1
@@ -97593,7 +97643,7 @@ _cc8673:
         switch $021A=1
         return
 _cc8687:
-        dlg $06AD
+        dlg DLG_1709
                 ; The Espers surely came to free their friends_
         if_any
                 switch $021B=1
@@ -97604,7 +97654,7 @@ _cc8687:
         switch $021B=1
         return
 _cc869b:
-        dlg $06AF
+        dlg DLG_1711
                 ; The Magitek Research Facility's been dismantled.
         if_any
                 switch $021C=1
@@ -97615,7 +97665,7 @@ _cc869b:
         switch $021C=1
         return
 _cc86af:
-        dlg $06B1
+        dlg DLG_1713
                 ; The Empire's talking peace now!
         if_any
                 switch $021D=1
@@ -97626,7 +97676,7 @@ _cc86af:
         switch $021D=1
         return
 _cc86c3:
-        dlg $06B2
+        dlg DLG_1714
                 ; When the Emperor learned that Kefka used poison in battle, he imprisoned the fiend!
         if_any
                 switch $021E=1
@@ -97637,7 +97687,7 @@ _cc86c3:
         switch $021E=1
         return
 _cc86d7:
-        dlg $06B3
+        dlg DLG_1715
                 ; Kefka! Using poison_
                 ; how low can you get?!
                 ; I've always hated you!
@@ -97650,7 +97700,7 @@ _cc86d7:
         switch $021F=1
         return
 _cc86eb:
-        dlg $06B7
+        dlg DLG_1719
                 ; Kefka's scum_
                 ; It serves him right!
         if_any
@@ -97662,7 +97712,7 @@ _cc86eb:
         switch $0220=1
         return
 _cc86ff:
-        dlg $06B8
+        dlg DLG_1720
                 ; My whole family was lost in the war_
         if_any
                 switch $0221=1
@@ -97673,7 +97723,7 @@ _cc86ff:
         switch $0221=1
         return
 _cc8713:
-        dlg $06B9
+        dlg DLG_1721
                 ; The war ended before we could use this machine_
         if_any
                 switch $0222=1
@@ -97684,7 +97734,7 @@ _cc8713:
         switch $0222=1
         return
 _cc8727:
-        dlg $06BA
+        dlg DLG_1722
                 ; Kefka's in jail!
         if_any
                 switch $0223=1
@@ -97695,7 +97745,7 @@ _cc8727:
         switch $0223=1
         return
 _cc873b:
-        dlg $0748
+        dlg DLG_1864
                 ; I heard you're the strongest of the Returners_so just how strong are you_?
         if_any
                 switch $022B=1
@@ -97719,13 +97769,13 @@ _cc8772:
 _cc8776:
         fade_in
         wait_fade
-        dlg $0749
+        dlg DLG_1865
                 ; Not bad_pretty strong!
         call _cc88bf
         switch $022B=1
         return
 _cc8782:
-        dlg $074A
+        dlg DLG_1866
                 ; Someone outta thrash ya!
         if_any
                 switch $022C=1
@@ -97736,7 +97786,7 @@ _cc8782:
         switch $022C=1
         return
 _cc8796:
-        dlg $073F
+        dlg DLG_1855
                 ; I've slain too many people.
                 ; I'll never live a normal life.
         if_switch $0224=1, EventReturn
@@ -97744,14 +97794,14 @@ _cc8796:
         switch $0224=1
         return
 _cc87a6:
-        dlg $0740
+        dlg DLG_1856
                 ; You're not wanted!
         if_switch $0225=1, EventReturn
         call _cc88bf
         switch $0225=1
         return
 _cc87b6:
-        dlg $0741
+        dlg DLG_1857
                 ; I oppose peace!
         if_switch $0226=1, EventReturn
         battle 27
@@ -97771,20 +97821,20 @@ _cc87e9:
 _cc87ed:
         fade_in
         wait_fade
-        dlg $0742
+        dlg DLG_1858
                 ; Some people fight harder after they're cast down!
         call _cc88bf
         switch $0226=1
         return
 _cc87f9:
-        dlg $0743
+        dlg DLG_1859
                 ; The Empire'll never die!
         if_switch $0227=1, EventReturn
         call _cc88bf
         switch $0227=1
         return
 _cc8809:
-        dlg $0744
+        dlg DLG_1860
                 ; You deserve a thrashing!
         if_switch $0228=1, EventReturn
         battle 27
@@ -97804,14 +97854,14 @@ _cc883c:
 _cc8840:
         fade_in
         wait_fade
-        dlg $0745
+        dlg DLG_1861
                 ; You're strong_
                 ; Maybe you really CAN defeat the Espers_
         call _cc88bf
         switch $0228=1
         return
 _cc884c:
-        dlg $0746
+        dlg DLG_1862
                 ; Espers_
                 ; Who'd have dreamed they were that powerful_
         if_switch $0229=1, EventReturn
@@ -97819,14 +97869,14 @@ _cc884c:
         switch $0229=1
         return
 _cc885c:
-        dlg $0747
+        dlg DLG_1863
                 ; We'll never knuckle under_
         if_switch $022A=1, EventReturn
         call _cc88bf
         switch $022A=1
         return
 _cc886c:
-        dlg $074B
+        dlg DLG_1867
                 ; Phepppp. Returner scum!
         if_switch $022D=1, EventReturn
         battle 27
@@ -97846,14 +97896,14 @@ _cc889f:
 _cc88a3:
         fade_in
         wait_fade
-        dlg $074C
+        dlg DLG_1868
                 ; Hm.
                 ; Not bad!
         call _cc88bf
         switch $022D=1
         return
 _cc88af:
-        dlg $074D
+        dlg DLG_1869
                 ; Everything'll be settled after the banquet_
         if_switch $022E=1, EventReturn
         call _cc88bf
@@ -97863,181 +97913,181 @@ _cc88bf:
         if_switch $014F=1, _cc88cf
         switch $014F=1
         add_var 0, 1
-        dlg $0727, TEXT_ONLY
+        dlg DLG_1831, TEXT_ONLY
                 ; 1 person
         return
 _cc88cf:
         if_switch $0200=1, _cc88df
         switch $0200=1
         add_var 0, 1
-        dlg $0728, TEXT_ONLY
+        dlg DLG_1832, TEXT_ONLY
                 ; 2 people
         return
 _cc88df:
         if_switch $0201=1, _cc88ef
         switch $0201=1
         add_var 0, 1
-        dlg $0729, TEXT_ONLY
+        dlg DLG_1833, TEXT_ONLY
                 ; 3 people
         return
 _cc88ef:
         if_switch $0202=1, _cc88ff
         switch $0202=1
         add_var 0, 1
-        dlg $072A, TEXT_ONLY
+        dlg DLG_1834, TEXT_ONLY
                 ; 4 people
         return
 _cc88ff:
         if_switch $0203=1, _cc890f
         switch $0203=1
         add_var 0, 1
-        dlg $072B, TEXT_ONLY
+        dlg DLG_1835, TEXT_ONLY
                 ; 5 people
         return
 _cc890f:
         if_switch $0204=1, _cc891f
         switch $0204=1
         add_var 0, 1
-        dlg $072C, TEXT_ONLY
+        dlg DLG_1836, TEXT_ONLY
                 ; 6 people
         return
 _cc891f:
         if_switch $0205=1, _cc892f
         switch $0205=1
         add_var 0, 1
-        dlg $072D, TEXT_ONLY
+        dlg DLG_1837, TEXT_ONLY
                 ; 7 people
         return
 _cc892f:
         if_switch $0206=1, _cc893f
         switch $0206=1
         add_var 0, 1
-        dlg $072E, TEXT_ONLY
+        dlg DLG_1838, TEXT_ONLY
                 ; 8 people
         return
 _cc893f:
         if_switch $0207=1, _cc894f
         switch $0207=1
         add_var 0, 1
-        dlg $072F, TEXT_ONLY
+        dlg DLG_1839, TEXT_ONLY
                 ; 9 people
         return
 _cc894f:
         if_switch $0208=1, _cc895f
         switch $0208=1
         add_var 0, 1
-        dlg $0730, TEXT_ONLY
+        dlg DLG_1840, TEXT_ONLY
                 ; 10 people
         return
 _cc895f:
         if_switch $0209=1, _cc896f
         switch $0209=1
         add_var 0, 1
-        dlg $0731, TEXT_ONLY
+        dlg DLG_1841, TEXT_ONLY
                 ; 11 people
         return
 _cc896f:
         if_switch $020A=1, _cc897f
         switch $020A=1
         add_var 0, 1
-        dlg $0732, TEXT_ONLY
+        dlg DLG_1842, TEXT_ONLY
                 ; 12 people
         return
 _cc897f:
         if_switch $020B=1, _cc898f
         switch $020B=1
         add_var 0, 1
-        dlg $0733, TEXT_ONLY
+        dlg DLG_1843, TEXT_ONLY
                 ; 13 people
         return
 _cc898f:
         if_switch $020C=1, _cc899f
         switch $020C=1
         add_var 0, 1
-        dlg $0734, TEXT_ONLY
+        dlg DLG_1844, TEXT_ONLY
                 ; 14 people
         return
 _cc899f:
         if_switch $020D=1, _cc89af
         switch $020D=1
         add_var 0, 1
-        dlg $0735, TEXT_ONLY
+        dlg DLG_1845, TEXT_ONLY
                 ; 15 people
         return
 _cc89af:
         if_switch $020E=1, _cc89bf
         switch $020E=1
         add_var 0, 1
-        dlg $0736, TEXT_ONLY
+        dlg DLG_1846, TEXT_ONLY
                 ; 16 people
         return
 _cc89bf:
         if_switch $020F=1, _cc89cf
         switch $020F=1
         add_var 0, 1
-        dlg $0737, TEXT_ONLY
+        dlg DLG_1847, TEXT_ONLY
                 ; 17 people
         return
 _cc89cf:
         if_switch $0210=1, _cc89df
         switch $0210=1
         add_var 0, 1
-        dlg $0738, TEXT_ONLY
+        dlg DLG_1848, TEXT_ONLY
                 ; 18 people
         return
 _cc89df:
         if_switch $0211=1, _cc89ef
         switch $0211=1
         add_var 0, 1
-        dlg $0739, TEXT_ONLY
+        dlg DLG_1849, TEXT_ONLY
                 ; 19 people
         return
 _cc89ef:
         if_switch $0212=1, _cc89ff
         switch $0212=1
         add_var 0, 1
-        dlg $073A, TEXT_ONLY
+        dlg DLG_1850, TEXT_ONLY
                 ; 20 people
         return
 _cc89ff:
         if_switch $0213=1, _cc8a0f
         switch $0213=1
         add_var 0, 1
-        dlg $073B, TEXT_ONLY
+        dlg DLG_1851, TEXT_ONLY
                 ; 21 people
         return
 _cc8a0f:
         if_switch $0214=1, _cc8a1f
         switch $0214=1
         add_var 0, 1
-        dlg $073C, TEXT_ONLY
+        dlg DLG_1852, TEXT_ONLY
                 ; 22 people
         return
 _cc8a1f:
         if_switch $0215=1, _cc8a2f
         switch $0215=1
         add_var 0, 1
-        dlg $073D, TEXT_ONLY
+        dlg DLG_1853, TEXT_ONLY
                 ; 23 people
         return
 _cc8a2f:
         if_switch $0216=1, EventReturn
         switch $0216=1
         add_var 0, 1
-        dlg $073E, TEXT_ONLY
+        dlg DLG_1854, TEXT_ONLY
                 ; 24 people
         return
 _cc8a3f:
-        dlg $0709
+        dlg DLG_1801
                 ; GESTAHL: __
         return
 _cc8a43:
-        dlg $070A
+        dlg DLG_1802
                 ; CID: All will be put right if we can achieve peace_!
         return
 _cc8a47:
         if_switch $0237=1, _cc8a92
-        dlg $070B
+        dlg DLG_1803
                 ; TROOPERS: We want to test your strength!
                 ; Won't you fight with us for a couple of minutes?
                 ; 0:  Sure
@@ -98066,7 +98116,7 @@ _cc8a8c:
         wait_fade
         switch $0237=1
 _cc8a92:
-        dlg $070C
+        dlg DLG_1804
                 ; TROOPER: Just as we thought_
         return
 _cc8a96:
@@ -98084,7 +98134,7 @@ _cc8a96:
         sort_obj
         fade_in
         wait_fade
-        dlg $06E7, TEXT_ONLY
+        dlg DLG_1767, TEXT_ONLY
                 ;
                 ; That evening, the banquet
                 ; with the Emperor took place_
@@ -98109,7 +98159,7 @@ _cc8a96:
                 dir LEFT
                 end
         wait_30f
-        dlg $06E8
+        dlg DLG_1768
                 ; TROOPER: This way, please.
         pass_off NPC_8
         obj_script NPC_8
@@ -98180,7 +98230,7 @@ _cc8a96:
                 dir LEFT
                 end
         wait_30f
-        dlg $06E9
+        dlg DLG_1769
                 ; CID: You can count me in as a Returner!
         wait_30f
         obj_script NPC_7
@@ -98205,18 +98255,18 @@ _cc8a96:
                 move UP, 5
                 end
         wait_1s
-        dlg $06EA
+        dlg DLG_1770
                 ; GESTAHL: Imagine!
                 ; All of us here together, sharing a meal! First we must have a toast!
         wait_30f
-        dlg $06EB
+        dlg DLG_1771
                 ; 0:  To the Empire_
                 ; 1:  To the Returners_
                 ; 2:  To our hometowns_
         choice _cc8b81, _cc8b93, _cc8ba5
         return
 _cc8b81:
-        dlg $06ED
+        dlg DLG_1773
                 ; GESTAHL: Well then_
                 ; To the Empire!
         add_var 0, 2
@@ -98224,7 +98274,7 @@ _cc8b81:
         if_switch $022F=0, _cc8be3
         return
 _cc8b93:
-        dlg $06EE
+        dlg DLG_1774
                 ; GESTAHL: Well then_
                 ; To the Returners!
         add_var 0, 1
@@ -98232,7 +98282,7 @@ _cc8b93:
         if_switch $022F=0, _cc8be3
         return
 _cc8ba5:
-        dlg $06EC
+        dlg DLG_1772
                 ; GESTAHL: Well then_
                 ; To our hometowns!
         add_var 0, 5
@@ -98275,11 +98325,11 @@ _cc8bb7:
         wait_30f
         return
 _cc8be3:
-        dlg $06EF
+        dlg DLG_1775
                 ; GESTAHL: As you know, Kefka's in jail for war crimes.
                 ; What shall we do with him?
         wait_30f
-        dlg $06F0
+        dlg DLG_1776
                 ; 0:  Leave him in jail_
                 ; 1:  Pardon him_
                 ; 2:  Execute him_
@@ -98299,7 +98349,7 @@ _cc8c0b:
         return
 _cc8c16:
         wait_30f
-        dlg $06F7
+        dlg DLG_1783
                 ; GESTAHL: Hmm_
                 ; Well, let's let him stew in his cell for a while. Then we'll decide what to do.
         wait_1s
@@ -98307,14 +98357,14 @@ _cc8c16:
                 action 44
                 end
         wait_90f
-        dlg $0721
+        dlg DLG_1825
                 ; GESTAHL: I truly apologize about the poisoning of Doma.
                 ; No one dreamed Kefka would use poison.
         obj_script NPC_1
                 dir DOWN
                 end
         wait_30f
-        dlg $0722
+        dlg DLG_1826
                 ; 0:  What's done is done_
                 ; 1:  That was inexcusable.
                 ; 2:  Apologize again!!
@@ -98338,17 +98388,17 @@ _cc8c58:
                 action 44
                 end
         wait_1s
-        dlg $0723
+        dlg DLG_1827
                 ; GESTAHL: I'm so terribly sorry! Kefka's being severely punished, and we're cleaning up the poison.
         obj_script NPC_1
                 dir DOWN
                 end
         wait_30f
-        dlg $0724
+        dlg DLG_1828
                 ; GESTAHL: By the way_
                 ; With regard to General CELES_
         wait_45f
-        dlg $0725
+        dlg DLG_1829
                 ; 0:  Was she an Imperial spy?
                 ; 1:  CELES is one of us!
                 ; 2:  We trust CELES!
@@ -98367,12 +98417,12 @@ _cc8c8e:
         if_switch $022F=0, _cc8c99
         return
 _cc8c99:
-        dlg $0726
+        dlg DLG_1830
                 ; GESTAHL: Kefka was lying.
                 ; General CELES realized the war was stupid before anyone else.
                 ; That's why she joined the returners. Any other questions for me?
         wait_45f
-        dlg $06F8
+        dlg DLG_1784
                 ; 0:  Why'd you start the war?
                 ; 1:  Why do you want peace now?
                 ; 2:  Why'd we have to talk to
@@ -98380,7 +98430,7 @@ _cc8c99:
         choice _cc8cab, _cc8cc5, _cc8cdf
         return
 _cc8cab:
-        dlg $06F9
+        dlg DLG_1785
                 ; GESTAHL: My desire for power got the best of me.
                 ; Now I've come to my senses.
         switch $0234=1
@@ -98392,7 +98442,7 @@ _cc8cbe:
         if_switch $022F=0, _cc8cf9
         return
 _cc8cc5:
-        dlg $06FA
+        dlg DLG_1786
                 ; GESTAHL: I feel we need each other's help at this time_
         switch $0235=1
         add_var 0, 2
@@ -98403,7 +98453,7 @@ _cc8cd8:
         if_switch $022F=0, _cc8cf9
         return
 _cc8cdf:
-        dlg $06FB
+        dlg DLG_1787
                 ; GESTAHL: Some of my men refuse to embrace peace. I felt they'd understand if they actually met you face to face.
         switch $0236=1
         add_var 0, 2
@@ -98415,10 +98465,10 @@ _cc8cf2:
         return
 _cc8cf9:
         wait_1s
-        dlg $06FC
+        dlg DLG_1788
                 ; GESTAHL: With your permission, I'd like to talk about the Espers_
         wait_30f
-        dlg $06FD
+        dlg DLG_1789
                 ; 0:  One more question please!
                 ; 1:  Okay.
         choice _cc8d09, _cc8d7d
@@ -98430,7 +98480,7 @@ _cc8d09:
                 dir DOWN
                 end
         wait_1s
-        dlg $06F8
+        dlg DLG_1784
                 ; 0:  Why'd you start the war?
                 ; 1:  Why do you want peace now?
                 ; 2:  Why'd we have to talk to
@@ -98439,7 +98489,7 @@ _cc8d09:
         return
 _cc8d1f:
         if_switch $0234=1, _cc8d61
-        dlg $06F9
+        dlg DLG_1785
                 ; GESTAHL: My desire for power got the best of me.
                 ; Now I've come to my senses.
         add_var 0, 2
@@ -98448,7 +98498,7 @@ _cc8d1f:
         return
 _cc8d35:
         if_switch $0235=1, _cc8d61
-        dlg $06FA
+        dlg DLG_1786
                 ; GESTAHL: I feel we need each other's help at this time_
         add_var 0, 2
         switch $0235=1
@@ -98456,7 +98506,7 @@ _cc8d35:
         return
 _cc8d4b:
         if_switch $0236=1, _cc8d61
-        dlg $06FB
+        dlg DLG_1787
                 ; GESTAHL: Some of my men refuse to embrace peace. I felt they'd understand if they actually met you face to face.
         add_var 0, 2
         switch $0236=1
@@ -98464,7 +98514,7 @@ _cc8d4b:
         return
 _cc8d61:
         wait_30f
-        dlg $06FF
+        dlg DLG_1791
                 ; GESTAHL: I assure you, I have answered your questions truthfully.
         wait_30f
         sub_var 0, 10
@@ -98472,18 +98522,18 @@ _cc8d61:
         return
 _cc8d71:
         wait_30f
-        dlg $06FE
+        dlg DLG_1790
                 ; 0:  One more question please!
                 ; 1:  Let's talk about Espers_
         choice _cc8d09, _cc8d7d
         return
 _cc8d7d:
         wait_30f
-        dlg $0700
+        dlg DLG_1792
                 ; GESTAHL: My Empire's been decimated by the Espers that emerged from the sealed gate.
                 ; They're acting spiteful. Unless they're stopped, they'll rip the world asunder!
         wait_30f
-        dlg $0701
+        dlg DLG_1793
                 ; 0:  Yes, the Espers have gone
                 ; too far.
                 ; 1:  But you unleashed their
@@ -98505,13 +98555,13 @@ _cc8da3:
                 dir DOWN
                 end
         wait_30f
-        dlg $0702
+        dlg DLG_1794
                 ; GESTAHL: After the Espers went on their rampage, I knew I couldn't go on with my war.
                 ; I asked myself why I had started it in the first place.
                 ; By the way_
                 ; About those questions you asked me_
                 ; which did you ask first?
-        dlg $06F8
+        dlg DLG_1784
                 ; 0:  Why'd you start the war?
                 ; 1:  Why do you want peace now?
                 ; 2:  Why'd we have to talk to
@@ -98535,7 +98585,7 @@ _cc8dde:
         return
 _cc8def:
         wait_30f
-        dlg $0703
+        dlg DLG_1795
                 ; GESTAHL: Right. Anyway, more than anything I want peace. That's my true dream. I want you to understand that!
         wait_30f
         obj_script NPC_7
@@ -98543,7 +98593,7 @@ _cc8def:
                 dir RIGHT
                 end
         wait_30f
-        dlg $0704
+        dlg DLG_1796
                 ; CID: You seem a bit tired.
                 ; Care for a rest break?
         obj_script SLOT_1, ASYNC
@@ -98562,7 +98612,7 @@ _cc8def:
                 dir LEFT
                 end
         wait_1s
-        dlg $0705
+        dlg DLG_1797
                 ; 0:  Yes, let's take a break.
                 ; 1:  Let's keep talking.
         choice _cc8e1d, _cc8eb5
@@ -98622,7 +98672,7 @@ _cc8e63:
         if_switch $007D=1, EventReturn
         if_switch $01B5=1, EventReturn
         switch $01B5=1
-        dlg $0706
+        dlg DLG_1798
                 ; Shall we begin again?
                 ; 0:  Yes
                 ; 1:  No
@@ -98686,10 +98736,10 @@ _cc8eb5:
                 end
 _cc8ece:
         wait_30f
-        dlg $0707
+        dlg DLG_1799
                 ; GESTAHL: Is there anything you wish to hear me say?
         wait_30f
-        dlg $0708
+        dlg DLG_1800
                 ; 0:  That all you really want
                 ; is peace.
                 ; 1:  That your war's truly over.
@@ -98697,21 +98747,21 @@ _cc8ece:
         choice _cc8ee1, _cc8eef, _cc8efd
         return
 _cc8ee1:
-        dlg $070D
+        dlg DLG_1805
                 ; GESTAHL: I understand.
                 ; My only dream in life is_peace! Now I must ask for a favor_
         add_var 0, 3
         if_switch $022F=0, _cc8f0b
         return
 _cc8eef:
-        dlg $070E
+        dlg DLG_1806
                 ; GESTAHL: I understand.
                 ; I've ordered this war to be over! Now I must ask for a favor_
         add_var 0, 5
         if_switch $022F=0, _cc8f0b
         return
 _cc8efd:
-        dlg $070F
+        dlg DLG_1807
                 ; GESTAHL: I understand.
                 ; I'm truly sorry for what I've done! Now I must ask for a favor_
         add_var 0, 1
@@ -98742,7 +98792,7 @@ _cc8f0b:
                 dir DOWN
                 end
         wait_1s
-        dlg $0710
+        dlg DLG_1808
                 ; GESTAHL: After they devastated my Empire, the Espers headed northward, toward Crescent Island.
                 ; They must be found_!
                 ; We must tell them we're no longer their enemy.
@@ -98763,14 +98813,14 @@ _cc8f0b:
                 dir DOWN
                 end
         wait_30f
-        dlg $0711
+        dlg DLG_1809
                 ; Only TERRA can bridge the gap between Esper and human.
         wait_30f
         obj_script NPC_1
                 move DOWN, 1
                 end
         wait_30f
-        dlg $0712
+        dlg DLG_1810
                 ; GESTAHL: We must make for Crescent Island aboard the freighter from Albrook.
                 ; Will you accompany me?
                 ; 0:  Yes
@@ -98778,7 +98828,7 @@ _cc8f0b:
         choice _cc8f5e, _cc8f53
         return
 _cc8f53:
-        dlg $0713
+        dlg DLG_1811
                 ; GESTAHL: We cannot simply ignore the Espers!!
                 ; Please_come with me!
                 ; 0:  Yes
@@ -98788,7 +98838,7 @@ _cc8f53:
 _cc8f5e:
         add_var 0, 3
 _cc8f62:
-        dlg $0714
+        dlg DLG_1812
                 ; GESTAHL: I'll have my finest warrior accompany us!
                 ; General Leo!
         obj_script NPC_1
@@ -98841,13 +98891,13 @@ _cc8f62:
                 dir DOWN
                 end
         wait_30f
-        dlg $0715
+        dlg DLG_1813
                 ; LEO: I'm General Leo
                 ; Nice to meet you.
         set_case PARTY_CHARS
         if_switch $01A5=0, _cc8fb5
         wait_1s
-        dlg $0716, BOTTOM
+        dlg DLG_1814, BOTTOM
                 ; SABIN: Didn't I see you at Doma?
                 ; _I'm SURE I did_
                 ; So that was General Leo_
@@ -98855,7 +98905,7 @@ _cc8fb5:
         set_case PARTY_CHARS
         if_switch $01A2=0, _cc8fc1
         wait_90f
-        dlg $0717
+        dlg DLG_1815
                 ; LEO: You! You're CYAN, liege to the king of Doma!
                 ; Please forgive me for not being there to stop Kefka_
                 ; CYAN: __
@@ -98882,7 +98932,7 @@ _cc8fc1:
         obj_script NPC_2
                 action 34 | ACTION_H_FLIP
                 end
-        dlg $0718
+        dlg DLG_1816
                 ; LEO: I'll be waiting for you in Albrook.
         wait_30f
         obj_script NPC_2
@@ -98913,7 +98963,7 @@ _cc8fc1:
                 dir DOWN
                 end
         wait_30f
-        dlg $0719
+        dlg DLG_1817
                 ; GESTAHL: We must find the Espers and come to terms with them! You are our last hope!
         wait_1s
         fade_out 4
@@ -99024,14 +99074,14 @@ _cc9058:
                 dir DOWN
                 end
         wait_30f
-        dlg $071A
+        dlg DLG_1818
                 ; LOCKE: If TERRA goes, I'll go.
         wait_30f
         obj_script TERRA
                 dir UP
                 end
         wait_30f
-        dlg $071B
+        dlg DLG_1819
                 ; TERRA: LOCKE_
                 ; Thank you_
         wait_30f
@@ -99043,7 +99093,7 @@ _cc9058:
                 dir LEFT
                 end
         wait_30f
-        dlg $071C
+        dlg DLG_1820
                 ; LOCKE: The rest of you wait here. I smell a rat_
         wait_30f
         obj_script EDGAR
@@ -99052,7 +99102,7 @@ _cc9058:
                 dir RIGHT
                 end
         wait_30f
-        dlg $071D
+        dlg DLG_1821
                 ; EDGAR: Agreed_
                 ; It's hard to trust the Emperor just like that_
         wait_30f
@@ -99060,7 +99110,7 @@ _cc9058:
                 move RIGHT, 1
                 end
         wait_30f
-        dlg $071E
+        dlg DLG_1822
                 ; CYAN: We'll stay here and investigate.
         wait_30f
         obj_script LOCKE
@@ -99073,7 +99123,7 @@ _cc9058:
                 dir DOWN
                 end
         wait_30f
-        dlg $071F
+        dlg DLG_1823
                 ; LOCKE: Please do.
                 ; Leave no stone unturned!
         obj_script SETZER, ASYNC
@@ -99086,7 +99136,7 @@ _cc9058:
                 dir LEFT
                 end
         wait_30f
-        dlg $0720
+        dlg DLG_1824
                 ; EDGAR: Right.
                 ; And you be careful!
         wait_30f
@@ -99215,11 +99265,11 @@ _cc91d9:
                 dir DOWN
                 end
         wait_30f
-        dlg $074E
+        dlg DLG_1870
                 ; A message from the Emperor_
                 ; Because you were able to talk to so many soldiers, you are to be rewarded as follows.
         wait_30f
-        dlg $074F
+        dlg DLG_1871
                 ; Imperial troops have withdrawn from South Figaro.
         call _cac7f1
         switch $0276=1
@@ -99231,7 +99281,7 @@ _cc91d9:
                 end_case
         return
 _cc9223:
-        dlg $0750
+        dlg DLG_1872
                 ; In addition, our troops have also pulled out of Doma.
         switch $0512=0
         switch $0277=1
@@ -99244,7 +99294,7 @@ _cc9223:
         return
         wait_30f
 _cc923b:
-        dlg $0751
+        dlg DLG_1873
                 ; We hereby give you the right to take any weapons you desire from the Imperial base to the east, near the sealed gate.
         call _cb2566
         switch $0278=1
@@ -99256,7 +99306,7 @@ _cc923b:
                 end_case
         return
 _cc9254:
-        dlg $0752
+        dlg DLG_1874
                 ; And this is from the Emperor himself_
                 ;
                 ; Received ``Tintinabar.''
@@ -99269,14 +99319,14 @@ _cc9254:
                 end_case
         return
 _cc9269:
-        dlg $0754
+        dlg DLG_1876
                 ; Your behavior at the banquet was impeccable. Please take this as well!
                 ;
                 ; Received ``Charm Bangle.''
         give_item CHARM_BANGLE
 _cc926e:
         wait_30f
-        dlg $0756
+        dlg DLG_1878
                 ; Well_
         wait_30f
         obj_script NPC_5
@@ -99290,7 +99340,7 @@ _cc926e:
         player_ctrl_on
         return
 _cc9284:
-        dlg $06F1
+        dlg DLG_1777
                 ; EDGAR: Albrook's a port to the south of the Empire.
                 ; A Magitek Armor hauling ship plies the waters between__
                 ; __there and Crescent Island_
@@ -99300,75 +99350,75 @@ _cc9284:
         hide_obj EDGAR
         return
 _cc928d:
-        dlg $06F2
+        dlg DLG_1778
                 ; SABIN: Can we really trust the Empire?! I have an awful feeling about this_
         delete_obj SABIN
         sort_obj
         hide_obj SABIN
         return
 _cc9296:
-        dlg $06F3
+        dlg DLG_1779
                 ; CYAN: Never will I be able to forgive Kefka_
         delete_obj CYAN
         sort_obj
         hide_obj CYAN
         return
 _cc929f:
-        dlg $06F4
+        dlg DLG_1780
                 ; GAU: Smells like parents' house here_why so familiar?
         delete_obj GAU
         sort_obj
         hide_obj GAU
         return
 _cc92a8:
-        dlg $06F5
+        dlg DLG_1781
                 ; MOG: Kupo!
         delete_obj MOG
         sort_obj
         hide_obj MOG
         return
 _cc92b1:
-        dlg $06F6
+        dlg DLG_1782
                 ; MAJESTY: General Leo's waiting in Albrook. Please head for Crescent Island and look for the Espers_
         return
 _cc92b5:
         if_switch $0238=1, _cc92bf
-        dlg $0543
+        dlg DLG_1347
                 ; BANON: What ARE you talking about_?!
                 ; __!!
                 ; Talking with_Espers_?
         return
 _cc92bf:
-        dlg $0546
+        dlg DLG_1350
                 ; BANON: Could Gestahl have meant such a thing? Team up with the Empire to track down an Esper_  Hmm_
         return
 _cc92c3:
         if_switch $0238=1, _cc92cd
-        dlg $0544
+        dlg DLG_1348
                 ; ARVIS: It was like this when we got here.
         return
 _cc92cd:
-        dlg $0547
+        dlg DLG_1351
                 ; ARVIS: Makes sense.
                 ; Can't just forget about Espers_
         return
 _cc92d1:
         if_switch $0238=1, _cc92db
-        dlg $0545
+        dlg DLG_1349
                 ; RETURNER: What on earth_
         return
 _cc92db:
-        dlg $0548
+        dlg DLG_1352
                 ; RETURNER: The war_
                 ; It's over_right?
         return
 _cc92df:
         if_switch $0238=1, _cc92e9
-        dlg $054A
+        dlg DLG_1354
                 ; NARSHE GUARD: What's going on?
         return
 _cc92e9:
-        dlg $0549
+        dlg DLG_1353
                 ; NARSHE GUARD: We didn't have to do a thing!
                 ; The Empire's troops just ran away in terror!
         return
@@ -99421,20 +99471,20 @@ _cc9366:
         load_map 253, {29, 2}, DOWN, STARTUP_EVENT
         return
 _cc936d:
-        dlg $0531
+        dlg DLG_1329
                 ; Ugly brute_
                 ; Better make tracks!
         return
 _cc9371:
         if_switch $0136=1, _cc93c0
-        dlg $0532
+        dlg DLG_1330
                 ; Pledge your allegiance to the Empire?
                 ; 0:  Yes
                 ; 1:  No
         choice _cc93bc, _cc9382
         return
 _cc9382:
-        dlg $0533
+        dlg DLG_1331
                 ; What!!
         create_obj NPC_2
         create_obj NPC_3
@@ -99468,17 +99518,17 @@ _cc9382:
                 dir UP
                 end
         wait_30f
-        dlg $0553
+        dlg DLG_1363
                 ; Right_
                 ; I'm sure you can do it!
         switch $0136=1
         return
 _cc93bc:
-        dlg $0534
+        dlg DLG_1332
                 ; Fine.
         return
 _cc93c0:
-        dlg $0554
+        dlg DLG_1364
                 ; Young people_
                 ; Hang in there!
         flash BLUE
@@ -99489,27 +99539,27 @@ _cc93c0:
         return
 _cc93ce:
         if_switch $007B=1, _cc93d8
-        dlg $0535
+        dlg DLG_1333
                 ; Magitek Research Facility.
                 ; No Entry!
         return
 _cc93d8:
-        dlg $06AF
+        dlg DLG_1711
                 ; The Magitek Research Facility's been dismantled.
         return
 _cc93dc:
-        dlg $06B0
+        dlg DLG_1712
                 ; You!?
                 ; How'd you get in here?
         call _cc93f1
         return
 _cc93e4:
-        dlg $0536
+        dlg DLG_1334
                 ; Cid, the director of Magitek research, is a genius! He gave my child the gift of cure magic!
         return
 _cc93e8:
         if_switch $007B=1, _cc941a
-        dlg $0537
+        dlg DLG_1335
                 ; Hey, YOU! _ _
                 ; You're Returners!!
 _cc93f1:
@@ -99531,25 +99581,25 @@ _cc93f4:
                 action 9
                 end
         wait_30f
-        dlg $0555
+        dlg DLG_1365
                 ; Danger_danger_
         unlock_camera
         player_ctrl_on
         return
 _cc941a:
-        dlg $0538
+        dlg DLG_1336
                 ; Peaceful times are here_
         return
 _cc941e:
         if_switch $007B=1, _cc941a
-        dlg $0537
+        dlg DLG_1335
                 ; Hey, YOU! _ _
                 ; You're Returners!!
         battle 28
         call _cc93f4
         return
 _cc942f:
-        dlg $0539
+        dlg DLG_1337
                 ; And_CURE!!!
         sfx SFX::CURE_B
         flash BLUE
@@ -99559,29 +99609,29 @@ _cc942f:
         inc_hp SLOT_4, HP_1
         return
 _cc9443:
-        dlg $0540
+        dlg DLG_1344
                 ; General Leo refused a Magitek infusion! He's a warrior's warrior!
         return
 _cc9447:
         if_switch $007D=1, _cc9451
-        dlg $0541
+        dlg DLG_1345
                 ; General CELES turned traitor! Why? The other side's sure to lose!
         return
 _cc9451:
-        dlg $0542
+        dlg DLG_1346
                 ; Your friends_
                 ; They're in the cafe.
         return
 _cc9455:
-        dlg $0557
+        dlg DLG_1367
                 ; Guess I'll stay here and volunteer to be a soldier_
         return
 _cc9459:
-        dlg $0558
+        dlg DLG_1368
                 ; In the army that destroyed our village??? What about your promise to begin anew in Maranda?
         return
 _cc945d:
-        dlg $0559
+        dlg DLG_1369
                 ; It's on the house.
                 ; Have a snooze!
                 ; 0:  Yes
@@ -99674,7 +99724,7 @@ _cc9468:
         wait_30f
         take_gil 1000
         if_switch $01BE=1, _cc94e1
-        dlg $055A
+        dlg DLG_1370
                 ; 1000 GP stolen!
         wait_30f
 _cc94e1:
@@ -99873,22 +99923,22 @@ _cc95dd:
                 end
         return
 _cc95f3:
-        dlg $054B
+        dlg DLG_1355
                 ; Is it true they extract magic from monsters inside the facility?
         return
 _cc95f7:
-        dlg $053A
+        dlg DLG_1338
                 ; General Leo's a good man.
                 ; Compared to him, Kefka's a_
                 ; Oh! What am I saying?!
         return
 _cc95fb:
-        dlg $053B
+        dlg DLG_1339
                 ; Tzen_Maranda_Albrook_
                 ; They're all controlled by the Empire. It's all because of the Returners_
         return
 _cc95ff:
-        dlg $053C
+        dlg DLG_1340
                 ; You're Returners?
         wait_15f
         obj_script SLOT_1
@@ -99898,32 +99948,32 @@ _cc95ff:
         obj_script SLOT_1
                 dir LEFT
                 end
-        dlg $053D
+        dlg DLG_1341
                 ; Not a problem by me. Shall I tell you something neat?
                 ; 0:  Yes
                 ; 1:  No
         choice _cc9617, _cc961f
         return
 _cc9617:
-        dlg $053E
+        dlg DLG_1342
                 ; All the soldiers in the Magitek Research Facility can use magic! That Prof. Cid is truly a genius!
         wait_45f
-        dlg $053F
+        dlg DLG_1343
                 ; Here's one for you_
                 ; That guy Kefka? He was Cid's first experimental Magitek Knight.
                 ; But the process wasn't perfected yet. Something in Kefka's mind snapped that day_!
         return
 _cc961f:
-        dlg $0552
+        dlg DLG_1362
                 ; Phew!
         return
-        dlg $054F
+        dlg DLG_1359
                 ; Who goes there?!
                 ; This is off-limits!
         return
 _cc9627:
         if_switch $01F0=1, _cc96c5
-        dlg $054C
+        dlg DLG_1356
                 ; Shh!
                 ; I'm a Returner sympathizer!
                 ; I've heard of you!
@@ -99941,7 +99991,7 @@ _cc9627:
                 dir LEFT
                 end
         wait_30f
-        dlg $054D
+        dlg DLG_1357
                 ; While I distract the soldiers, climb onto the steel tower from this box, and enter the facility!
         wait_30f
         obj_script SLOT_1
@@ -99950,7 +100000,7 @@ _cc9627:
                 dir LEFT
                 end
         wait_30f
-        dlg $054E
+        dlg DLG_1358
                 ; All ready?
                 ; 0:  Yes
                 ; 1:  No
@@ -100026,7 +100076,7 @@ _cc9659:
         obj_script NPC_1
                 dir RIGHT
                 end
-        dlg $0550
+        dlg DLG_1360
                 ; MAN: I_I'm gonna be sick!
                 ; SOLDIER: Get outta here!
         obj_script CAMERA
@@ -100045,7 +100095,7 @@ _cc96bd:
         pass_on NPC_1
         return
 _cc96c5:
-        dlg $0550
+        dlg DLG_1360
                 ; MAN: I_I'm gonna be sick!
                 ; SOLDIER: Get outta here!
         return
@@ -100080,7 +100130,7 @@ _cc96c9:
                 action 9 | ACTION_H_FLIP
                 end
         wait_1s
-        dlg $0551
+        dlg DLG_1361
                 ; MAN: Urghh_
                 ; Gonna toss it all_
                 ; SOLDIER: Hey_
@@ -100217,7 +100267,7 @@ _cc9798:
                 move DOWN, 1
                 end
         wait_30f
-        dlg $0556, BOTTOM
+        dlg DLG_1366, BOTTOM
                 ; SOLDIER: Returner scum!
         wait_30f
         create_obj NPC_2
@@ -100345,7 +100395,7 @@ _cc985b:
                 move UP, 8
                 move UP, 2
                 end
-        dlg $0006, {ASYNC, TEXT_ONLY}
+        dlg DLG_6, {ASYNC, TEXT_ONLY}
                 ;  Long ago, the War of the Magi
                 ;      reduced the world to a
                 ; scorched wasteland, and magic
@@ -100375,7 +100425,7 @@ _cc985b:
         obj_script CAMERA
                 speed SLOW
                 end
-        dlg $0007, {ASYNC, TEXT_ONLY}
+        dlg DLG_7, {ASYNC, TEXT_ONLY}
                 ; 1000 years have passed_ Iron,
                 ; gunpowder, and steam engines
                 ;   have been rediscovered, and
@@ -100407,7 +100457,7 @@ _cc985b:
         obj_script CAMERA
                 speed SLOW
                 end
-        dlg $0008, {ASYNC, TEXT_ONLY}
+        dlg DLG_8, {ASYNC, TEXT_ONLY}
                 ;     But there are some who
                 ;   would enslave the world by
                 ; reviving the dread destructive
@@ -100439,7 +100489,7 @@ _cc985b:
         obj_script CAMERA
                 speed SLOW
                 end
-        dlg $0009, {ASYNC, TEXT_ONLY}
+        dlg DLG_9, {ASYNC, TEXT_ONLY}
                 ; Can it be that those
                 ;   in power are on the verge of
                 ; repeating a senseless
@@ -100540,7 +100590,7 @@ _cc985b:
         wait_obj WEDGE
         wait_90f
         lock_camera
-        dlg $0001
+        dlg DLG_1
                 ; VICKS: There's the town_
                 ; WEDGE: Hard to believe an Esper's been found intact there, 1000 years after the War of the Magi_
         wait_1s
@@ -100553,7 +100603,7 @@ _cc985b:
         sfx SFX::SNOW_FOOTSTEP
         wait_obj VICKS
         wait_1s
-        dlg $0002
+        dlg DLG_2
                 ; VICKS: Think it's still alive?
                 ; WEDGE: Probably_
                 ; _judging from the urgency of our orders.
@@ -100579,7 +100629,7 @@ _cc985b:
         sfx SFX::SNOW_FOOTSTEP
         wait_obj VICKS
         wait_30f
-        dlg $0003
+        dlg DLG_3
                 ; VICKS: And this woman, this_sorcerer. Why's she here?
                 ; I heard she fried 50 of our Magitek Armored soldiers in under 3 minutes.
         wait_1s
@@ -100589,7 +100639,7 @@ _cc985b:
         sfx SFX::SNOW_FOOTSTEP
         wait_obj WEDGE
         wait_30f
-        dlg $0004
+        dlg DLG_4
                 ; WEDGE: Not to worry. The Slave Crown on her head robs her of all conscious thought. She'll follow orders.
         wait_1s
         obj_script WEDGE, ASYNC
@@ -100609,7 +100659,7 @@ _cc985b:
         sfx SFX::SNOW_FOOTSTEP
         wait_obj WEDGE
         wait_30f
-        dlg $0005
+        dlg DLG_5
                 ; WEDGE: We'll approach from the east.
                 ; Move out!
         wait_30f
@@ -100727,7 +100777,7 @@ _cc9a4f:
                 wait 8
                 dir LEFT
                 end
-        dlg $000B
+        dlg DLG_11
                 ; WEDGE: Let's put her on point.
                 ; No sense taking any risks.
                 ; Forward!
@@ -100790,7 +100840,7 @@ query_save_info:
         switch $01B5=1
         switch $0133=1
         switch $01BF=1
-        dlg $000A
+        dlg DLG_10
                 ; An eerie glow surrounds you.
                 ; Want info about Save Points?
                 ;  0:  Yes
@@ -100800,7 +100850,7 @@ query_save_info:
         return
 
 show_save_info:
-        dlg $06D4
+        dlg DLG_1748
                 ; At Save Points you can use a ``Sleeping Bag'' or ``Tent'', and also save a game.
                 ; If you should perish, you'll automatically be able to play from your last save.
                 ; Though any GP, treasures, etc. you found will have to be found again, your Level and Exp. data will be retained.
@@ -100847,7 +100897,7 @@ _cc9b1d:
                 wait 2
                 dir LEFT
                 end
-        dlg $000C
+        dlg DLG_12
                 ; WEDGE: The Esper's gotta be in here.
                 ; Move out!
         obj_script WEDGE, ASYNC
@@ -100888,7 +100938,7 @@ _cc9b71:
         obj_script NPC_2
                 move DOWN, 3
                 end
-        dlg $000D, BOTTOM
+        dlg DLG_13, BOTTOM
                 ; GUARD: Imperial Magitek Armor?
                 ; Not even Narshe's safe anymore!
         obj_script NPC_1, ASYNC
@@ -100933,7 +100983,7 @@ _cc9bb3:
         obj_script NPC_3
                 move DOWN, 4
                 end
-        dlg $000E, BOTTOM
+        dlg DLG_14, BOTTOM
                 ; GUARD: Machine-riding,
                 ; self-important swine!
                 ; Take this!
@@ -101013,7 +101063,7 @@ _cc9c08:
                 move DOWN, 6
                 move LEFT, 1
                 end
-        dlg $000F
+        dlg DLG_15
                 ; GUARD: Narshe's freedom depends on us!
         wait_30f
         sfx SFX::DOG_BARK
@@ -101100,7 +101150,7 @@ _cc9c94:
         obj_script SLOT_1
                 dir RIGHT
                 end
-        dlg $0012
+        dlg DLG_18
                 ; GUARD: We've got 'em trapped, now!
         sfx SFX::DOG_BARK
         wait_15f
@@ -101165,7 +101215,7 @@ _cc9d0d:
         show_obj NPC_3
         show_obj NPC_4
         sort_obj
-        dlg $0013
+        dlg DLG_19
                 ; GUARD: We must defend the mines!
         obj_script SLOT_1
                 dir UP
@@ -101284,7 +101334,7 @@ _cc9db2:
                 dir LEFT
                 end
         wait_30f
-        dlg $0010
+        dlg DLG_16
                 ; WEDGE: According to our source, the frozen Esper was found in a new mine shaft.
                 ; _Maybe this one_
         wait_1s
@@ -101357,7 +101407,7 @@ _cc9e23:
                 dir DOWN
                 end
         wait_30f
-        dlg $0011
+        dlg DLG_17
                 ; VICKS: I'll handle this.
                 ; Stand back!
         obj_script WEDGE, ASYNC
@@ -101461,7 +101511,7 @@ _cc9f37:
                 dir UP
                 end
         wait_30f
-        dlg $0B6E
+        dlg DLG_2926
                 ; GUARD: We won't hand over the Esper!!
         wait_30f
         obj_script NPC_1
@@ -101469,7 +101519,7 @@ _cc9f37:
                 end
         hide_obj NPC_1
         sort_obj
-        dlg $0B6F
+        dlg DLG_2927
                 ; GUARD: Whelk! Get them!
         switch $02BC=0
         battle 64
@@ -101537,7 +101587,7 @@ _cc9f6d:
                 move UP, 4
                 end
         wait_2s
-        dlg $0B6D, BOTTOM
+        dlg DLG_2925, BOTTOM
                 ; This is the frozen Esper_
         wait_1s
         sfx 103
@@ -101651,12 +101701,12 @@ _cca06f:
         max_hp SLOT_3
         max_hp SLOT_4
         pass_off NPC_2
-        dlg $0015
+        dlg DLG_21
                 ; GIRL: Where am I_?
         wait_30f
         mosaic 15
         wait_30f
-        dlg $0016
+        dlg DLG_22
                 ; OLD MAN: Whoa!
                 ; And I only just removed the crown!
                 ;
@@ -101692,7 +101742,7 @@ _cca06f:
                 move LEFT, 1
                 end
         wait_1s
-        dlg $0017
+        dlg DLG_23
                 ; OLD MAN: Easy! This is a Slave Crown. The others had complete control over you while you were wearing it.
         obj_script TERRA
                 action 1
@@ -101700,7 +101750,7 @@ _cca06f:
                 action 32
                 wait 8
                 end
-        dlg $0018
+        dlg DLG_24
                 ; GIRL: I can't remember a thing_
                 ; OLD MAN: Don't worry.
                 ; It'll all come back to you_in time, that is.
@@ -101730,7 +101780,7 @@ _cca06f:
         hide_obj NPC_5
         sort_obj
         call _cad00f
-        dlg $001F, {TEXT_ONLY, BOTTOM}
+        dlg DLG_31, {TEXT_ONLY, BOTTOM}
                 ; A mysterious young woman, controlled by the Empire, and born with the gift of magic__
         wait_30f
         obj_script TERRA
@@ -101758,7 +101808,7 @@ _cca06f:
                 speed NORMAL
                 end
         wait_30f
-        dlg $0019
+        dlg DLG_25
                 ; My name_
                 ; _is_TERRA_
                 ; OLD MAN: Impressive!
@@ -101863,7 +101913,7 @@ _cca06f:
         sfx SFX::DOOR_KNOCK
         wait_15f
         sfx SFX::DOOR_KNOCK
-        dlg $001A
+        dlg DLG_26
                 ; SOLDIER: Open up!
                 ; Give us back the girl and the Empire's Magitek Armor!!
         pass_on NPC_1
@@ -101909,7 +101959,7 @@ _cca06f:
         sfx SFX::DOOR_KNOCK
         wait_15f
         sfx SFX::DOOR_KNOCK
-        dlg $001B
+        dlg DLG_27
                 ; SOLDIER: Open this door!
                 ; We want that girl!
                 ; She's an officer of the Empire!
@@ -101919,13 +101969,13 @@ _cca06f:
                 move DOWN_LEFT
                 move LEFT, 1
                 end
-        dlg $001C
+        dlg DLG_28
                 ; TERRA: Empire_?
                 ; Magitek Armor_?
         obj_script NPC_2
                 move RIGHT, 4
                 end
-        dlg $001D
+        dlg DLG_29
                 ; OLD MAN: Look,
                 ; I have to get you out of here!
                 ; I don't have time to explain!
@@ -101946,7 +101996,7 @@ _cca06f:
                 wait 4
                 end
         unlock_camera
-        dlg $001E
+        dlg DLG_30
                 ; OLD MAN: Over here!
         player_ctrl_on
         wait_30f
@@ -101968,7 +102018,7 @@ _cca06f:
         return
 _cca25e:
         if_switch $0001=1, _cca268
-        dlg $0014
+        dlg DLG_20
                 ; Locked.
         return
 _cca268:
@@ -101977,13 +102027,13 @@ _cca268:
         sfx SFX::DOOR_KNOCK
         wait_15f
         sfx SFX::DOOR_KNOCK
-        dlg $001B
+        dlg DLG_27
                 ; SOLDIER: Open this door!
                 ; We want that girl!
                 ; She's an officer of the Empire!
         return
 _cca274:
-        dlg $0021
+        dlg DLG_33
                 ; OLD MAN: Make your way out through the mines! I'll keep these brutes occupied!
         return
         return
@@ -101999,7 +102049,7 @@ _cca279:
         show_obj NPC_16
         show_obj NPC_17
         sort_obj
-        dlg $0023
+        dlg DLG_35
                 ; She's up there!
         obj_script NPC_17, ASYNC
                 move DOWN, 4
@@ -102063,7 +102113,7 @@ _cca2e5:
                 speed NORMAL
                 move UP, 2
                 end
-        dlg $0022, BOTTOM
+        dlg DLG_34, BOTTOM
                 ; Got her!
         obj_script TERRA
                 dir LEFT
@@ -102309,7 +102359,7 @@ _cca2e5:
         sort_obj
         fade_in 4
         wait_fade
-        dlg $0024, TEXT_ONLY
+        dlg DLG_36, TEXT_ONLY
                 ; KEFKA: My sweet little magic
                 ; user_! Uweee, he, he! With this Slave Crown I'll practically OWN you!!
         wait_30f
@@ -102421,7 +102471,7 @@ _cca4a6:
                 action 42
                 end
         wait_30f
-        dlg $0026, TEXT_ONLY
+        dlg DLG_38, TEXT_ONLY
                 ; GESTAHL: We stand on the brink of a major breakthrough! In the days to come, we'll witness a total revival of magic!
                 ; GESTAHL: It is our destiny, and ours alone, to take this mystic force and claim what is rightfully ours!
         obj_script NPC_2
@@ -102444,7 +102494,7 @@ _cca4a6:
                 action 42
                 end
         wait_30f
-        dlg $0028, {ASYNC, TEXT_ONLY}
+        dlg DLG_40, {ASYNC, TEXT_ONLY}
                 ; GESTAHL: With our new-found power, nothing can stand in our way!
                 ; Hurrah!!!
                 ; Long live Emperor Gestahl!!!
@@ -102668,7 +102718,7 @@ _cca5ed:
         obj_script NPC_2
                 move RIGHT, 1
                 end
-        dlg $0029
+        dlg DLG_41
                 ; OLD MAN: Took you long enough!
                 ; How goes the robbing and plundering trade?
         obj_script LOCKE
@@ -102698,7 +102748,7 @@ _cca5ed:
                 speed SLOW
                 move DOWN_RIGHT, 2
                 end
-        dlg $0030, {TEXT_ONLY, BOTTOM}
+        dlg DLG_48, {TEXT_ONLY, BOTTOM}
                 ; Treasure hunter and trail-worn traveler, searching the world over for relics of the past_
         wait_30f
         obj_script LOCKE
@@ -102726,7 +102776,7 @@ _cca5ed:
                 end
         sort_obj
         wait_30f
-        dlg $002A
+        dlg DLG_42
                 ; LOCKE: I PREFER the term treasure hunting!
                 ; OLD MAN: Ha!
                 ; Semantic nonsense!
@@ -102753,7 +102803,7 @@ _cca5ed:
         obj_script LOCKE
                 move LEFT, 1
                 end
-        dlg $002B
+        dlg DLG_43
                 ; LOCKE: Anyway, were you the one who sent for me?
                 ; OLD MAN: Yeah.
                 ; There's a girl I'd like you to meet.
@@ -102764,7 +102814,7 @@ _cca5ed:
                 speed NORMAL
                 end
         wait_30f
-        dlg $002C
+        dlg DLG_44
                 ; LOCKE: __!?
                 ; This better not have anything to do with that Magitek-riding, imperial_witch!!!
         wait_30f
@@ -102777,7 +102827,7 @@ _cca5ed:
                 dir DOWN
                 end
         wait_30f
-        dlg $002D
+        dlg DLG_45
                 ; OLD MAN: Imperial troops are pursuing her even as we speak.
                 ; This town is no match for the Empire.
                 ; Our independence can only be assured if we join forces with the Returners, an underground resistance movement.
@@ -102801,7 +102851,7 @@ _cca5ed:
         obj_script LOCKE
                 dir LEFT
                 end
-        dlg $002E
+        dlg DLG_46
                 ; LOCKE: All right_
                 ; I think we'd better help her_
         wait_30f
@@ -102810,7 +102860,7 @@ _cca5ed:
                 dir RIGHT
                 end
         wait_30f
-        dlg $002F
+        dlg DLG_47
                 ; OLD MAN: Agreed.
                 ; Make your way first to Figaro, and talk to the king.
         unlock_camera
@@ -102924,7 +102974,7 @@ _cca5ed:
                 speed FAST
                 move UP, 6
                 end
-        dlg $0031, BOTTOM
+        dlg DLG_49, BOTTOM
                 ; GUARD: Now we gotcha!
         obj_script NPC_4
                 pos {20, 33}
@@ -103005,11 +103055,11 @@ _cca5ed:
                 end
         unlock_camera
         wait_30f
-        dlg $0032
+        dlg DLG_50
                 ; LOCKE: Wonderful_
                 ; There's a whole bunch of 'em_
         wait_90f
-        dlg $0033, TEXT_ONLY
+        dlg DLG_51, TEXT_ONLY
                 ;
                 ; Kupo_
         wait_30f
@@ -103066,7 +103116,7 @@ _cca5ed:
                 action 25
                 end
         wait_30f
-        dlg $0034, BOTTOM
+        dlg DLG_52, BOTTOM
                 ; LOCKE: Moogles_!
                 ; Are you saying you want to help me?
         wait_30f
@@ -103091,7 +103141,7 @@ _cca5ed:
                 dir DOWN
                 end
         wait_1s
-        dlg $0035, {ASYNC, BOTTOM}
+        dlg DLG_53, {ASYNC, BOTTOM}
                 ; Kupo!!!
         obj_script NPC_1
                 jump_high
@@ -103154,7 +103204,7 @@ _cca5ed:
                 dir DOWN
                 end
         wait_30f
-        dlg $0036
+        dlg DLG_54
                 ; MOOGLE: Use us to save TERRA from the guards!
                 ; Need more information?
                 ; 0:  Yes
@@ -103162,7 +103212,7 @@ _cca5ed:
         choice _cca938, _cca93d
         return
 _cca938:
-        dlg $0037
+        dlg DLG_55
                 ; You'll fight using 3 different groups. Press the Y Button to switch between them.
                 ; Your job is to defeat the commander of the guards before his men reach TERRA. Save her, or else_
         fade_out
@@ -103317,7 +103367,7 @@ _cca93d:
 _ccaab3:
         update_party
         return
-        dlg $0038, ASYNC
+        dlg DLG_56, ASYNC
                 ; TERRA: Unh_
         return
         return
@@ -103898,7 +103948,7 @@ _ccadbf:
                 dir DOWN
                 end
         wait_1s
-        dlg $0039
+        dlg DLG_57
                 ; LOCKE: Thanks, Moogles!
                 ; We're in your debt!
         wait_30f
@@ -104000,7 +104050,7 @@ _ccadbf:
                 move UP, 2
                 end
         wait_1s
-        dlg $003A
+        dlg DLG_58
                 ; LOCKE: I think this switch'll_
         wait_30f
         obj_script LOCKE
@@ -104054,7 +104104,7 @@ _ccadbf:
                 move DOWN, 2
                 move RIGHT, 1
                 end
-        dlg $003B
+        dlg DLG_59
                 ; LOCKE: Eh?
                 ; You back with us now?!
         wait_30f
@@ -104065,14 +104115,14 @@ _ccadbf:
         obj_script TERRA
                 dir LEFT
                 end
-        dlg $003C
+        dlg DLG_60
                 ; TERRA: You_saved me?
                 ; LOCKE: Save your thanks for the Moogles!
         wait_30f
         obj_script TERRA
                 action 9
                 end
-        dlg $003D
+        dlg DLG_61
                 ; TERRA: Uhh_I can't remember anything_past or present_
         obj_script LOCKE
                 action 31
@@ -104101,7 +104151,7 @@ _ccadbf:
         obj_script LOCKE
                 dir RIGHT
                 end
-        dlg $003E
+        dlg DLG_62
                 ; LOCKE: You have amnesia?!
         obj_script TERRA
                 action 32
@@ -104121,7 +104171,7 @@ _ccadbf:
                 dir LEFT
                 end
         wait_15f
-        dlg $003F
+        dlg DLG_63
                 ; TERRA: A man said my memory would come back_
                 ; LOCKE: Give it time. You're safe with me! I give you my word!
                 ; TERRA: ???
@@ -104258,7 +104308,7 @@ _ccb07b:
                 move DOWN_LEFT
                 dir DOWN
                 end
-        dlg $0B6B
+        dlg DLG_2923
                 ; Eh?__
                 ; Who might you be?
         obj_script CAMERA
@@ -104309,7 +104359,7 @@ _ccb07b:
                 dir DOWN
                 wait 6
                 end
-        dlg $0B6C
+        dlg DLG_2924
                 ; LOCKE: This is the pits.
                 ; We'd better hightail it southward, to Figaro.
         wait_30f
@@ -104419,7 +104469,7 @@ _ccb154:
                 dir UP
                 end
         wait_30f
-        dlg $01AA
+        dlg DLG_426
                 ; TERRA: When LOCKE first helped me, he fiddled with somethihg right around here.
         obj_script WEDGE
                 dir RIGHT
@@ -104434,7 +104484,7 @@ _ccb154:
                 dir DOWN
                 end
         wait_30f
-        dlg $01AB
+        dlg DLG_427
                 ; EDGAR: Knowing him there's probably some secret switch in this rock wall_
         obj_script EDGAR
                 dir RIGHT
@@ -104550,7 +104600,7 @@ _ccb230:
         obj_script NPC_16
                 move DOWN, 1
                 end
-        dlg $01A0, BOTTOM
+        dlg DLG_416, BOTTOM
                 ; Hey, lady_didn't you just bust in here wearing Magitek armor?
         update_party
         hide_obj SLOT_1
@@ -104581,7 +104631,7 @@ _ccb230:
                 move UP, 1
                 end
         wait_30f
-        dlg $01A1, BOTTOM
+        dlg DLG_417, BOTTOM
                 ; BANON: Wait a sec!
         wait_30f
         obj_script NPC_14, ASYNC
@@ -104591,7 +104641,7 @@ _ccb230:
                 move DOWN, 1
                 end
         wait_30f
-        dlg $01A2, BOTTOM
+        dlg DLG_418, BOTTOM
                 ; Get out of here!
                 ; If you don't_
         wait_30f
@@ -104609,7 +104659,7 @@ _ccb230:
                 move UP, 1
                 end
         wait_30f
-        dlg $01A3, BOTTOM
+        dlg DLG_419, BOTTOM
                 ; EDGAR: Hold on.
                 ; I'm King EDGAR of Figaro_
                 ; GUARD: Liar!!!
@@ -104643,7 +104693,7 @@ _ccb230:
                 dir DOWN
                 end
         wait_30f
-        dlg $01A4
+        dlg DLG_420
                 ; BANON: Aye yai yai_
                 ; EDGAR: That kind of attitude is deadly!
                 ; He won't even listen!
@@ -104787,7 +104837,7 @@ _ccb37f:
                 move DOWN, 4
                 dir LEFT
                 end
-        dlg $01A2
+        dlg DLG_418
                 ; Get out of here!
                 ; If you don't_
         wait_30f
@@ -104879,7 +104929,7 @@ _ccb3fa:
                 move DOWN, 2
                 dir LEFT
                 end
-        dlg $01A5
+        dlg DLG_421
                 ; ARVIS: Banon! King EDGAR!
                 ; _and TERRA!!!
         obj_script NPC_2
@@ -104890,7 +104940,7 @@ _ccb3fa:
                 move LEFT, 1
                 end
         wait_30f
-        dlg $01A6
+        dlg DLG_422
                 ; BANON: Arvis!
                 ; What's happening here in Narshe?
                 ; ARVIS: The town's neutral.
@@ -104906,7 +104956,7 @@ _ccb3fa:
                 dir DOWN
                 end
         wait_30f
-        dlg $01A7
+        dlg DLG_423
                 ; EDGAR: First, how are your people doing?
                 ; ARVIS: They all went_slightly berserk when the Esper was discovered.
         wait_30f
@@ -104949,7 +104999,7 @@ _ccb3fa:
                 dir RIGHT
                 end
         wait_30f
-        dlg $01A8
+        dlg DLG_424
                 ; BANON: We believe this young woman is our only hope of reaching out to that Esper.
                 ; ARVIS: My people are dying to know what the Esper looks like.
                 ; Maybe TERRA can help restore some order to our town_?
@@ -104970,7 +105020,7 @@ _ccb3fa:
                 dir DOWN
                 end
         wait_1s
-        dlg $01A9
+        dlg DLG_425
                 ; EDGAR: That Esper is either going to save us_or dig us an early grave_
         wait_1s
         pass_on TERRA
@@ -105060,7 +105110,7 @@ _ccb4da:
                 dir DOWN
                 end
         wait_30f
-        dlg $0345
+        dlg DLG_837
                 ; ELDER: I understand all of it_ Except_
                 ; How can WE be encouraging bloodshed?
                 ; ARVIS: I never said_that!
@@ -105069,7 +105119,7 @@ _ccb4da:
                 move LEFT, 2
                 end
         wait_30f
-        dlg $0346
+        dlg DLG_838
                 ; BANON: Ha! He's right you know!
         obj_script TERRA
                 dir LEFT
@@ -105085,7 +105135,7 @@ _ccb4da:
                 dir UP
                 end
         wait_30f
-        dlg $0347
+        dlg DLG_839
                 ; ARVIS: Banon!
                 ; BANON: Our blood will spill because of you.
         obj_script WEDGE
@@ -105104,7 +105154,7 @@ _ccb4da:
                 dir RIGHT
                 end
         wait_30f
-        dlg $0348
+        dlg DLG_840
                 ; BANON: Emperor Gestahl's racing to acquire Magitek power. He's set his sights on the Esper that was found here!
                 ; The increased use of magitek power'll surely lead to global destruction_
         wait_30f
@@ -105112,7 +105162,7 @@ _ccb4da:
                 action 44
                 end
         wait_2s
-        dlg $0349
+        dlg DLG_841
                 ; ELDER: The War of the Magi_
         obj_script NPC_7
                 dir RIGHT
@@ -105121,14 +105171,14 @@ _ccb4da:
                 dir LEFT
                 end
         wait_30f
-        dlg $034A
+        dlg DLG_842
                 ; The mythical battle that set mankind back a thousand years_
                 ; Can this really be happening?
                 ; ELDER: People will never learn_
         wait_2s
         sfx SFX::DOOR_OPEN
         wait_30f
-        dlg $0365
+        dlg DLG_869
                 ; SABIN: Brother!
         wait_30f
         obj_script EDGAR, ASYNC
@@ -105179,7 +105229,7 @@ _ccb4da:
                 move RIGHT, 1
                 end
         wait_30f
-        dlg $0366
+        dlg DLG_870
                 ; EDGAR: SABIN!
                 ; You're all right!
         wait_30f
@@ -105193,7 +105243,7 @@ _ccb4da:
                 dir DOWN
                 end
         wait_30f
-        dlg $0367
+        dlg DLG_871
                 ; EDGAR: Who's with you?
         wait_30f
         obj_script SABIN
@@ -105217,7 +105267,7 @@ _ccb4da:
                 wait 6
                 dir LEFT
                 end
-        dlg $034B
+        dlg DLG_843
                 ; CYAN: I'm CYAN,
                 ; retainer to the lord of Doma!
         wait_30f
@@ -105235,32 +105285,32 @@ _ccb4da:
                 dir LEFT
                 end
         wait_30f
-        dlg $034C
+        dlg DLG_844
                 ; GAU: GAU_GAU!
         wait_1s
         obj_script SABIN
                 action 32
                 end
         wait_45f
-        dlg $034D
+        dlg DLG_845
                 ; SABIN: The people of Doma were wiped out by the Empire_
         obj_script CYAN
                 action 34
                 end
         wait_90f
-        dlg $034E
+        dlg DLG_846
                 ; CYAN: Kefka poisoned_everyone_
         obj_script NPC_6
                 dir DOWN
                 end
         wait_30f
-        dlg $034F
+        dlg DLG_847
                 ; ELDER: Barbaric!
         obj_script WEDGE
                 move UP, 1
                 end
         wait_30f
-        dlg $0350
+        dlg DLG_848
                 ; BANON: Elder!
                 ; ELDER: But_that was only because Doma was collaborating with the Returners!
                 ; If we make that mistake_
@@ -105271,7 +105321,7 @@ _ccb4da:
         wait_2s
         sfx SFX::DOOR_OPEN
         wait_30f
-        dlg $0351
+        dlg DLG_849
                 ; LOCKE: That's nonsense!!
         obj_script NPC_6, ASYNC
                 dir DOWN
@@ -105329,7 +105379,7 @@ _ccb4da:
                 move DOWN_RIGHT, 3
                 wait 6
                 end
-        dlg $0352
+        dlg DLG_850
                 ; TERRA: LOCKE!
                 ; LOCKE: The Empire's poised to attack Narshe right now!
                 ; EDGAR: What?!
@@ -105362,7 +105412,7 @@ _ccb4da:
                 move DOWN, 1
                 end
         wait_30f
-        dlg $0353
+        dlg DLG_851
                 ; BANON: LOCKE.
                 ; Where'd you hear that?
                 ; LOCKE: CELES, here, was one of the Empire's generals_
@@ -105374,7 +105424,7 @@ _ccb4da:
         obj_script CYAN
                 action 31
                 end
-        dlg $0354
+        dlg DLG_852
                 ; CYAN: Grrr!
                 ; I knew she seemed familiar.
                 ; Sir GAU, out of my way!
@@ -105437,7 +105487,7 @@ _ccb4da:
                 dir LEFT
                 wait 8
                 end
-        dlg $0355
+        dlg DLG_853
                 ; CYAN: This's General CELES! She torched Maranda! She's an Imperial spy! Now, stand aside!
         obj_script LOCKE
                 speed FAST
@@ -105448,7 +105498,7 @@ _ccb4da:
                 speed NORMAL
                 end
         wait_30f
-        dlg $0356
+        dlg DLG_854
                 ; LOCKE: WAIT!
                 ; CELES has joined the Returners! She's fighting with us, now!
                 ; CYAN: But_!
@@ -105459,7 +105509,7 @@ _ccb4da:
                 dir RIGHT
                 end
         wait_30f
-        dlg $0357
+        dlg DLG_855
                 ; EDGAR: LOCKE_
                 ; Are you still thinking about_
                 ; that?
@@ -105475,7 +105525,7 @@ _ccb4da:
         obj_script TERRA
                 dir RIGHT
                 end
-        dlg $0358
+        dlg DLG_856
                 ; TERRA: I was also an Imperial soldier.
                 ; CYAN: WHAT!!
         obj_script CYAN
@@ -105508,7 +105558,7 @@ _ccb4da:
                 action 32
                 end
         wait_1s
-        dlg $0359
+        dlg DLG_857
                 ; EDGAR: The Empire's evil.
                 ; But not ALL of its citizens are!
         obj_script LOCKE, ASYNC
@@ -105553,7 +105603,7 @@ _ccb4da:
                 dir RIGHT
                 end
         wait_1s
-        dlg $0368
+        dlg DLG_872
                 ; SABIN: Oh, this is_
         wait_15f 11
         create_obj NPC_11
@@ -105567,7 +105617,7 @@ _ccb4da:
         obj_script NPC_11
                 move UP, 4
                 end
-        dlg $035A
+        dlg DLG_858
                 ; Emergency!!
                 ; The Empire cometh!!
         obj_script EDGAR, ASYNC
@@ -105704,10 +105754,10 @@ _ccb8a1:
                 move RIGHT, 1
                 branch _ccb8a1
                 end
-        dlg $035B
+        dlg DLG_859
                 ; KEFKA: I don't care what you do here, JUST GET ME THAT ESPER!!
         wait_90f
-        dlg $035C
+        dlg DLG_860
                 ; SOLDIER: Lord Kefka!
                 ; There're civilians here_!
                 ; KEFKA: Exterminate everyone!
@@ -105724,7 +105774,7 @@ _ccb8b0:
                 move RIGHT, 1
                 branch _ccb8b0
                 end
-        dlg $035D
+        dlg DLG_861
                 ; KEFKA: Read my lips!!
                 ; Dispose of any who oppose us!
                 ; March!
@@ -105888,7 +105938,7 @@ _ccb8c0:
         sort_obj
         fade_in 8
         wait_fade
-        dlg $035E
+        dlg DLG_862
                 ; ELDER: We really have no choice.
                 ; Let's make ready for war!
         obj_script WEDGE
@@ -105897,7 +105947,7 @@ _ccb8c0:
                 dir LEFT
                 end
         wait_30f
-        dlg $035F
+        dlg DLG_863
                 ; BANON: They're after the Esper.
                 ; ELDER: We moved it into the hills.
         wait_30f
@@ -105952,7 +106002,7 @@ _ccb8c0:
                 dir DOWN
                 end
         wait_30f
-        dlg $0360
+        dlg DLG_864
                 ; EDGAR: Then we're going up after it!
         obj_script TERRA, ASYNC
                 action 32
@@ -106124,9 +106174,9 @@ _ccb8c0:
                 move UP, 8
                 end
         wait_90f
-        dlg $0361
+        dlg DLG_865
                 ; EDGAR: LOCKE has a complicated past. I wouldn't go thinking he's fallen for you or something!
-        dlg $0362
+        dlg DLG_866
                 ; CELES: I'm a soldier, not some love-starved twit!
                 ; EDGAR: Cold as ice__
         wait_obj LOCKE
@@ -106222,7 +106272,7 @@ _ccb8c0:
                 wait 6
                 dir DOWN
                 end
-        dlg $0363
+        dlg DLG_867
                 ; CELES: So, you were born with the power of magic!?
                 ; Isn't it a lovely gift_
                 ; TERRA: You_can use magic, too?
@@ -106325,7 +106375,7 @@ _ccb8c0:
                 dir DOWN
                 end
         wait_30f
-        dlg $0364
+        dlg DLG_868
                 ; CYAN: Don't think for a moment I trust you!
                 ; CELES: Fine. Use your own eyes, then decide.
         wait_30f
@@ -106395,7 +106445,7 @@ _ccbcb1:
         fade_out_song $08
         fade_in
         wait_fade
-        dlg $0377
+        dlg DLG_887
                 ; KEFKA: Aack!!
                 ; I won't forget this!
         loop 6
@@ -106437,7 +106487,7 @@ _ccbcb1:
                 end
         wait_90f
         play_song SILENCE
-        dlg $0378
+        dlg DLG_888
                 ; EDGAR: Where's the Esper?
                 ; LOCKE: Is it okay?
         wait_30f
@@ -106518,7 +106568,7 @@ _ccbcb1:
                 move UP_LEFT, 11
                 end
         wait_2s
-        dlg $0379
+        dlg DLG_889
                 ; EDGAR: That was a close call!
                 ; CYAN: Can it still be alive?
                 ; SABIN: Impossible_right?!
@@ -106561,7 +106611,7 @@ _ccbcb1:
         obj_script GAU
                 dir DOWN
                 end
-        dlg $037A
+        dlg DLG_890
                 ; LOCKE: TERRA!!
                 ; What is it!?
         obj_script TERRA
@@ -106627,7 +106677,7 @@ _ccbcb1:
                 end
         wait_90f
         fade_out_song $40
-        dlg $037B
+        dlg DLG_891
                 ; TERRA: Nooo!!
         wait_1s
         play_song SILENCE
@@ -106721,7 +106771,7 @@ _ccbcb1:
         sfx 103
         call _cc9ad5
         wait_1s
-        dlg $037C
+        dlg DLG_892
                 ; SABIN: TERRA 'n the Esper_
                 ; EDGAR: There's_some kinda reaction!
         unlock_camera
@@ -106948,7 +106998,7 @@ _ccbcb1:
                 end
         wait_fade
         wait_30f
-        dlg $037D
+        dlg DLG_893
                 ; LOCKE: Unhh_
                 ; CELES: You're awake?
         wait_1s
@@ -106971,7 +107021,7 @@ _ccbcb1:
         obj_script LOCKE
                 dir RIGHT
                 end
-        dlg $037E
+        dlg DLG_894
                 ; LOCKE: _
                 ; Where's TERRA?!
         wait_30f
@@ -106979,7 +107029,7 @@ _ccbcb1:
                 action 34
                 end
         wait_1s
-        dlg $037F
+        dlg DLG_895
                 ; CELES: She changed into a_something, and_took off.
                 ; She looked like_
         wait_30f
@@ -106996,7 +107046,7 @@ _ccbcb1:
                 dir DOWN
                 end
         wait_30f
-        dlg $0380
+        dlg DLG_896
                 ; CELES: She looked like_
                 ; an Esper_
         obj_script LOCKE
@@ -107038,7 +107088,7 @@ _ccbcb1:
         obj_script CELES
                 dir LEFT
                 end
-        dlg $0381
+        dlg DLG_897
                 ; EDGAR: LOCKE!
                 ; You okay?
         wait_30f
@@ -107066,7 +107116,7 @@ _ccbcb1:
                 dir DOWN
                 end
         wait_30f
-        dlg $0382
+        dlg DLG_898
                 ; EDGAR: Something happened to TERRA_ There seems to be some connection between Espers and her_
                 ; Anyway, we need to find her.
                 ; Witnesses saw her screaming across the sky to the west.
@@ -107107,7 +107157,7 @@ _ccbcb1:
                 dir UP
                 end
         wait_30f
-        dlg $0383
+        dlg DLG_899
                 ; LOCKE: Let's go!
                 ; I promised her I'd_
         wait_30f
@@ -107130,7 +107180,7 @@ _ccbcb1:
         pass_on CELES
         pass_on EDGAR
         wait_30f
-        dlg $0384
+        dlg DLG_900
                 ; CELES: LOCKE_
                 ; EDGAR: Think, people!
                 ; The Empire still wants that Esper.
@@ -107140,7 +107190,7 @@ _ccbcb1:
                 action 32
                 end
         wait_1s
-        dlg $0387
+        dlg DLG_903
                 ; CYAN: A former Imperial soldier_
                 ; But we've no choice.
                 ; We must help her!
@@ -107189,7 +107239,7 @@ _ccbcb1:
                 dir LEFT
                 end
         wait_1s
-        dlg $0385
+        dlg DLG_901
                 ; EDGAR: Let's split up.
                 ; Those who aren't searching for TERRA will stay and guard Narshe.
                 ; Figaro Castle can shuttle us to the western province.
@@ -107305,7 +107355,7 @@ _ccc232:
         wait_fade
         return
 _ccc241:
-        dlg $0386
+        dlg DLG_902
                 ; Change group members?
                 ; 0:  Yes
                 ; 1:  No
@@ -107317,66 +107367,66 @@ _ccc24d:
         player_ctrl_on
         return
 _ccc253:
-        dlg $0388
+        dlg DLG_904
                 ; LOCKE: I promised TERRA I'd_keep her safe_
         call _ccc241
         return
 _ccc25b:
-        dlg $0389
+        dlg DLG_905
                 ; CELES: She ripped outta here!
                 ; Looked just like_an Esper_
         call _ccc241
         return
 _ccc263:
         if_switch $0054=1, _ccc29b
-        dlg $038A
+        dlg DLG_906
                 ; CYAN: We have to help her!
         call _ccc241
         return
 _ccc271:
         if_switch $0054=1, _ccc2a3
-        dlg $038B
+        dlg DLG_907
                 ; EDGAR: Find TERRA!
         call _ccc241
         return
 _ccc27f:
         if_switch $0054=1, _ccc2ab
-        dlg $038C
+        dlg DLG_908
                 ; SABIN: I'll watch over Narshe!
                 ; Go quickly!
         call _ccc241
         return
 _ccc28d:
         if_switch $0054=1, _ccc2b3
-        dlg $038D
+        dlg DLG_909
                 ; GAU: GAU_
                 ; GAU do his best!
         call _ccc241
         return
 _ccc29b:
-        dlg $038E
+        dlg DLG_910
                 ; CYAN: Can we just march right into the Empire?
         call _ccc2bb
         return
 _ccc2a3:
-        dlg $038F
+        dlg DLG_911
                 ; EDGAR: The Empire's Magitek Research Facility_
                 ; Could the secret lie therein?
         call _ccc2bb
         return
 _ccc2ab:
-        dlg $0390
+        dlg DLG_912
                 ; SABIN: Leave Narshe to me!
         call _ccc2bb
         return
 _ccc2b3:
-        dlg $0391
+        dlg DLG_913
                 ; GAU: GAU_
                 ; GAU do his best!
         call _ccc2bb
         return
 _ccc2bb:
-        dlg $0386
+        dlg DLG_902
                 ; Change group members?
                 ; 0:  Yes
                 ; 1:  No
@@ -107793,7 +107843,7 @@ _ccc581:
         player_ctrl_on
         return
 _ccc605:
-        dlg $036A
+        dlg DLG_874
                 ; BANON: Prepared?
                 ; 0:  Yes
                 ; 1:  No
@@ -107825,7 +107875,7 @@ _ccc611:
                 dir DOWN
                 end
         wait_30f
-        dlg $036D
+        dlg DLG_877
                 ; Save the Esper from Kefka!
                 ; Need some info?
                 ; 0:  Yes
@@ -107833,7 +107883,7 @@ _ccc611:
         choice _ccc642, _ccc645
         return
 _ccc642:
-        dlg $036E
+        dlg DLG_878
                 ; You'll fight in 3 groups.
                 ; Use the Y Button to switch between them.
                 ; Defeat Kefka before his men reach Banon. Otherwise, you lose!
@@ -107914,7 +107964,7 @@ _ccc645:
         fade_in 4
         wait_fade
         fade_out_song $80
-        dlg $0369
+        dlg DLG_873
                 ; BANON: They're coming!
         play_song SAVE_THEM
         switch $01CC=1
@@ -107964,7 +108014,7 @@ _ccc645:
                 move UP, 3
                 end
         wait_30f
-        dlg $036B
+        dlg DLG_875
                 ; KEFKA: Oho!!
                 ; It's General CELES, the traitor!
                 ; How delightful! This'll be fun!
@@ -108135,7 +108185,7 @@ _ccc645:
                 action 22
                 end
         wait_30f
-        dlg $036C
+        dlg DLG_876
                 ; KEFKA: Go!!
                 ; Get those vile insects!
         wait_1s
@@ -108213,7 +108263,7 @@ _ccc8ab:
         obj_script TERRA
                 action 32
                 end
-        dlg $036F, ASYNC
+        dlg DLG_879, ASYNC
                 ; TERRA: Kefka_
                 ; He stuck that crown on me?
         return
@@ -108221,7 +108271,7 @@ _ccc8b3:
         obj_script LOCKE
                 action 36
                 end
-        dlg $0370, ASYNC
+        dlg DLG_880, ASYNC
                 ; LOCKE: Bloody Empire!!
                 ; We are your worst enemy!
         return
@@ -108229,7 +108279,7 @@ _ccc8bb:
         obj_script CELES
                 action 24
                 end
-        dlg $0371, ASYNC
+        dlg DLG_881, ASYNC
                 ; CELES: I'm free_
                 ; The Empire can't control me!
         return
@@ -108237,7 +108287,7 @@ _ccc8c3:
         obj_script EDGAR
                 action 35
                 end
-        dlg $0372, ASYNC
+        dlg DLG_882, ASYNC
                 ; EDGAR: Kefka_grr_
                 ; What's he up to_?
         return
@@ -108245,25 +108295,25 @@ _ccc8cb:
         obj_script SABIN
                 action 10
                 end
-        dlg $0373, ASYNC
+        dlg DLG_883, ASYNC
                 ; SABIN: Master Duncan's techniques mustn't fail me.
         return
 _ccc8d3:
         obj_script CYAN
                 action 10
                 end
-        dlg $0374, ASYNC
+        dlg DLG_884, ASYNC
                 ; CYAN: I will avenge the people of Doma!!
         return
 _ccc8db:
         obj_script GAU
                 action 10
                 end
-        dlg $0375, ASYNC
+        dlg DLG_885, ASYNC
                 ; GAU: GAU hit hard!!!
         return
 _ccc8e3:
-        dlg $0376, ASYNC
+        dlg DLG_886, ASYNC
                 ; BANON: We're history if they reach me!
                 ; Good luck!
         return
@@ -108676,7 +108726,7 @@ _cccb82:
                 action 9
                 end
         wait_90f
-        dlg $06D0
+        dlg DLG_1744
                 ; LOCKE: Couldn't hold out_?!
                 ; Uh oh_
         wait_30f
@@ -108701,7 +108751,7 @@ _cccbaa:
                 action 9
                 end
         wait_90f
-        dlg $06D1
+        dlg DLG_1745
                 ; BANON: Couldn't hold out!?
                 ; I have a bad feeling about this_
         wait_30f
@@ -109730,96 +109780,96 @@ _ccd1d5:
                 end
         return
 _ccd1e3:
-        dlg $0392
+        dlg DLG_914
                 ; BANON: Go find TERRA!
                 ; She holds the future to our survival.
         return
 _ccd1e7:
-        dlg $0393
+        dlg DLG_915
                 ; ARVIS: Heard TERRA turned into light and streaked away toward the west.
                 ; Make your way to Figaro Castle.
                 ; Maybe they can help you, there.
         return
 _ccd1eb:
-        dlg $0394
+        dlg DLG_916
                 ; ELDER: I'm troubled_
                 ; I want to avoid fighting_
                 ; But_
         return
 _ccd1ef:
-        dlg $03A3
+        dlg DLG_931
                 ; I saw some Moogles walkin' with a sasquatch.
         return
 _ccd1f3:
-        dlg $03A4
+        dlg DLG_932
                 ; Geothermal devices keep this town warm!
         return
 _ccd1f7:
-        dlg $0395
+        dlg DLG_917
                 ; Moogles live deep within the mines!
         return
 _ccd1fb:
-        dlg $0396
+        dlg DLG_918
                 ; We follow our Elder's advice!
         return
 _ccd1ff:
-        dlg $0397
+        dlg DLG_919
                 ; So_magic really DOES exist!?
         return
 _ccd203:
-        dlg $0398
+        dlg DLG_920
                 ; Magic?!
                 ; Pshaw! What nonsense!
         return
 _ccd207:
         if_switch $0076=1, _ccd211
-        dlg $0399
+        dlg DLG_921
                 ; Narshe is a neutral city.
                 ; We want no war here.
                 ; But that #@%!* Empire won't
                 ; listen_
         return
 _ccd211:
-        dlg $039E
+        dlg DLG_926
                 ; Looks like war's a'comin'!
         return
 _ccd215:
         if_switch $0076=1, _ccd21f
-        dlg $039A
+        dlg DLG_922
                 ; Figaro Castle can burrow under the desert, and take you to Kohlingen!
         return
 _ccd21f:
-        dlg $039F
+        dlg DLG_927
                 ; There's a sasquatch that lives inside the mine_or so I heard.
         return
 _ccd223:
         if_switch $0076=1, _ccd22d
-        dlg $039B
+        dlg DLG_923
                 ; The house to the far right contains the treasures I've collected! Take them, before the Empire does!
                 ; Only one of them is locked. Now what do ya suppose is inside_?!
         return
 _ccd22d:
-        dlg $03A0
+        dlg DLG_928
                 ; Lone Wolf, the infamous thief, has been sighted here.
                 ; Are my treasures safe?
         return
 _ccd231:
         if_switch $0076=1, _ccd23b
-        dlg $039C
+        dlg DLG_924
                 ; A glowing form soared off toward Figaro Castle.
                 ; It seemed almost_human.
         return
 _ccd23b:
-        dlg $03A1
+        dlg DLG_929
                 ; Weapon and Armor shops are selling some new stuff for the coming war.
         return
 _ccd23f:
         if_switch $0076=1, _ccd249
-        dlg $039D
+        dlg DLG_925
                 ; Curse the day we dug up that Esper! That's what brought the Empire here!
         return
 _ccd249:
-        dlg $03A2
+        dlg DLG_930
                 ; Can we harness the Esper's power? I think not_!
         return
 _ccd24d:
@@ -109873,7 +109923,7 @@ _ccd2a4:
         shop_menu VECTOR_ARMOR
         return
 _ccd2a7:
-        dlg $060D
+        dlg DLG_1549
                 ; 200 GP per night!
                 ; Need a rest?
                 ; 0:  Sure
@@ -109905,20 +109955,20 @@ _ccd2b2:
         player_ctrl_on
         return
 _ccd2e4:
-        dlg $03A5
+        dlg DLG_933
                 ; Wanna know how to ride a chocobo?
         wait_30f
-        dlg $03A6
+        dlg DLG_934
                 ; Press the A Button, or up on the Control Pad, to go forward.
                 ; Steer with the Control Pad.
                 ; Press the B Button to dismount. Careful! Once you get off, the bird'll return to its pen!
         switch $0134=1
         return
 _ccd2ee:
-        dlg $03A5
+        dlg DLG_933
                 ; Wanna know how to ride a chocobo?
         wait_30f
-        dlg $03A6
+        dlg DLG_934
                 ; Press the A Button, or up on the Control Pad, to go forward.
                 ; Steer with the Control Pad.
                 ; Press the B Button to dismount. Careful! Once you get off, the bird'll return to its pen!
@@ -109948,7 +109998,7 @@ _ccd2f6:
                 dir DOWN
                 end
         wait_30f
-        dlg $06D2
+        dlg DLG_1746
                 ; Relics give your party members a variety of abilities.
                 ; For example_
                 ; ``Sprint Shoes'' double your speed.
@@ -110013,7 +110063,7 @@ _ccd35c:
                 dir UP
                 end
         wait_30f
-        dlg $06D3
+        dlg DLG_1747
                 ; SHADOW: I've worn out my welcome_
         obj_script SHADOW
                 move DOWN, 3
@@ -110049,11 +110099,11 @@ _ccd35c:
         unlock_camera
         return
 _ccd3c6:
-        dlg $06C6
+        dlg DLG_1734
                 ; Only the chest in the back is locked. Can it be opened_?
         return
 _ccd3ca:
-        dlg $06E4
+        dlg DLG_1764
                 ; Locked_
         return
 _ccd3ce:
@@ -110074,7 +110124,7 @@ _ccd3ce:
                 dir DOWN
                 wait 4
                 end
-        dlg $06C7
+        dlg DLG_1735
                 ; G'whoa! I've been made!
         player_ctrl_on
         wait_90f
@@ -110092,7 +110142,7 @@ _ccd3ce:
         obj_script NPC_22
                 dir RIGHT
                 end
-        dlg $06C8
+        dlg DLG_1736
                 ; I am Lone Wolf, the pickpocket! I wanted that treasure!
         obj_script NPC_22
                 dir DOWN
@@ -110124,7 +110174,7 @@ _ccd424:
                 wait 1
                 dir DOWN
                 end
-        dlg $06C9, BOTTOM
+        dlg DLG_1737, BOTTOM
                 ; G'heh!
         wait_30f
         obj_script NPC_26
@@ -110198,7 +110248,7 @@ _ccd48a:
                 move LEFT, 2
                 end
         wait_30f
-        dlg $06CA, BOTTOM
+        dlg DLG_1738, BOTTOM
                 ; Persistent, aren't you!
         switch $023C=1
         player_ctrl_on
@@ -110272,7 +110322,7 @@ _ccd4fe:
                 dir UP
                 end
         wait_30f
-        dlg $06CB
+        dlg DLG_1739
                 ; Halt!
                 ; Don't move or this one's dust_!
         wait_30f
@@ -110311,7 +110361,7 @@ _ccd52d:
         obj_script NPC_13
                 dir DOWN
                 end
-        dlg $06CC, BOTTOM
+        dlg DLG_1740, BOTTOM
                 ; Kupo!!
         obj_script NPC_13, ASYNC
 _ccd551:
@@ -110325,7 +110375,7 @@ _ccd551:
                 wait 1
                 branch _ccd551
                 end
-        dlg $06CD, BOTTOM
+        dlg DLG_1741, BOTTOM
                 ; G'heh!
                 ; Got a wild one, here_!
                 ; Uwaaa!
@@ -110353,7 +110403,7 @@ _ccd551:
         sfx SFX::FLOOR_SWITCH
         shake ALL, 3, 0
         wait_1s
-        dlg $06E5, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1765, {TEXT_ONLY, BOTTOM}
                 ;
                 ; Grrrr_
                 ; You'll never get this
@@ -110369,13 +110419,13 @@ _ccd551:
         return
 _ccd594:
         if_switch $023F=0, EventReturn
-        dlg $06CE
+        dlg DLG_1742
                 ; Took the treasure from Lone Wolf, the pickpocket!
                 ;
                 ; Got ``Gold Hairpin''!
         wait_30f
         give_item GOLD_HAIRPIN
-        dlg $06CF, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1743, {TEXT_ONLY, BOTTOM}
                 ;
                 ;
                 ;
@@ -110401,7 +110451,7 @@ _ccd594:
                 speed NORMAL
                 end
         wait_1s
-        dlg $06D9
+        dlg DLG_1753
                 ; WOLF: Hmmm_if this is how it's gonna be then_take this!
         pass_off NPC_12
         sfx SFX::FALLING
@@ -110447,7 +110497,7 @@ _ccd5df:
                 end
         switch $01CC=1
         play_song MOG
-        dlg $06DE
+        dlg DLG_1758
                 ; Thankupo!
         wait_30f
         loop 6
@@ -110461,7 +110511,7 @@ _ccd5df:
         obj_script SLOT_1
                 dir LEFT
                 end
-        dlg $06DF
+        dlg DLG_1759
                 ; Can you talk?!
         wait_30f
         obj_script NPC_13
@@ -110489,7 +110539,7 @@ _ccd5df:
                 speed SLOW
                 move LEFT, 2
                 end
-        dlg $06E0, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1760, {TEXT_ONLY, BOTTOM}
                 ; Human-loving, fast-talking,
                 ; street-smart, SLAM-dancing_
                 ; Moogle_
@@ -110527,7 +110577,7 @@ _ccd5df:
                 dir RIGHT
                 end
         wait_30f
-        dlg $06E1
+        dlg DLG_1761
                 ; That old psycho, Ramuh, came to me in a dream and told me to be expectin' you!
                 ; And now_  I'm_
                 ; gonna join your party!
@@ -110548,7 +110598,7 @@ _ccd5df:
                 action 25
                 end
         wait_90f
-        dlg $06D9
+        dlg DLG_1753
                 ; WOLF: Hmmm_if this is how it's gonna be then_take this!
         pass_off NPC_12
         sfx SFX::FALLING
@@ -110582,7 +110632,7 @@ _ccd5df:
                 dir DOWN
                 end
         wait_30f
-        dlg $06E2
+        dlg DLG_1762
                 ; I'll wait in the airship, kupo!
         wait_30f
         obj_script NPC_13
@@ -110608,17 +110658,17 @@ _ccd5df:
         player_ctrl_on
         return
 _ccd6e3:
-        dlg $06E3
+        dlg DLG_1763
                 ; Kupo!
         return
 _ccd6e7:
-        dlg $06E6
+        dlg DLG_1766
                 ; Kupo_  _  po!
         return
 _ccd6eb:
         if_switch $027A=1, EventReturn
         call _caca8d
-        dlg $05F4
+        dlg DLG_1524
                 ; What's with this carving?
                 ; Looks like bone_
                 ; Something_in that eye_
@@ -110627,7 +110677,7 @@ _ccd6eb:
         sfx 103
         flash BLUE
         wait_1s
-        dlg $05F5
+        dlg DLG_1525
                 ; Remove the Magicite from the eye of the carving?
                 ; 0:  Yes
                 ; 1:  No
@@ -110661,7 +110711,7 @@ _ccd709:
         sort_obj
         wait_30f
         sfx SFX::MAGICITE_PICKUP
-        dlg $05F6
+        dlg DLG_1526
                 ;
                 ; Received the Magicite
                 ; ``Terrato''
@@ -110765,7 +110815,7 @@ _ccd793:
                 dir LEFT
                 end
         wait_30f
-        dlg $05F8
+        dlg DLG_1528
                 ; MOG: I'm your boss, kupo!
                 ; You're gonna join us, kupo!!!
         wait_30f
@@ -110805,7 +110855,7 @@ _ccd793:
                 speed SLOWER
                 move RIGHT, 1
                 end
-        dlg $05F9, {TEXT_ONLY, BOTTOM}
+        dlg DLG_1529, {TEXT_ONLY, BOTTOM}
                 ; Admirer of bone-carvings,
                 ; as strong as a gigas,
                 ; a sasquatch pal with muscle!
@@ -110838,7 +110888,7 @@ _ccd793:
                 end
         unlock_camera
         wait_30f
-        dlg $05FA
+        dlg DLG_1530
                 ; Ooh_me UMARO_
                 ; Yes, boss_
                 ; Me join you!
@@ -110885,7 +110935,7 @@ _ccd793:
                 dir LEFT
                 end
         wait_30f
-        dlg $05FB
+        dlg DLG_1531
                 ; Ooo_me wait for you in big airship!
         wait_30f
         obj_script NPC_2
@@ -110898,7 +110948,7 @@ _ccd793:
         player_ctrl_on
         return
 _ccd88e:
-        dlg $05F7
+        dlg DLG_1527
                 ; Ooh_
         obj_script NPC_2
                 action 9
@@ -111114,7 +111164,7 @@ _ccd9c4:
                 wait 4
                 end
         wait_30f
-        dlg $01AC
+        dlg DLG_428
                 ; EDGAR: Goodness_
                 ; TERRA: What's that_?
                 ; EDGAR: I think this's a security check point. If we follow the light exactly, we'll probably be okay.
@@ -113128,7 +113178,7 @@ _cce486:
         wait_1s
         play_song REST_IN_PEACE
         wait_1s
-        dlg $06d5, {BOTTOM, TEXT_ONLY}
+        dlg DLG_1749, {BOTTOM, TEXT_ONLY}
         fade_out_song $80
         fade_out 4
         wait_fade

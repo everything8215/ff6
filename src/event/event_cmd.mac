@@ -182,10 +182,10 @@ EVENT_CMD_MAC = 1
 
 .mac dlg dlg_id, flags
         .ifblank flags
-                _cmd_word $4b, dlg_id, EVENT
+                _cmd_word $4b, DLG::dlg_id, EVENT
         .else
                 _dlg_op flags
-                make_bitmask .word, dlg_id, DLG_FLAGS, flags
+                make_bitmask .word, DLG::dlg_id, DLG_FLAGS, flags
         .endif
 .endmac
 
