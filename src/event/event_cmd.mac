@@ -1001,7 +1001,7 @@ _multi_switch_index .set 0
 
 .mac action aa
         .assert (is_script_mode OBJ) || (is_script_mode WORLD), error, "Invalid script mode"
-        _cmd_impl aa
+        _cmd_impl MAP_SPRITE_FRAME::aa
 .endmac
 
 .mac dir dd

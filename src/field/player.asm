@@ -452,7 +452,7 @@ UpdatePlayerMovement:
 @4978:  lda     $07
         and     #$01
         beq     @4996                   ; branch if right button is not pressed
-        lda     #$47                    ; set graphic position
+        lda     #MAP_SPRITE_FRAME::WALKING_RIGHT_2
         sta     $0877,y
         lda     #$01                    ; set facing direction
         sta     $087f,y
@@ -465,7 +465,7 @@ UpdatePlayerMovement:
 @4996:  lda     $07
         and     #$02
         beq     @49b4                   ; branch if left button is not pressed
-        lda     #$07
+        lda     #MAP_SPRITE_FRAME::WALKING_LEFT_2
         sta     $0877,y
         lda     #$03
         sta     $087f,y
@@ -478,7 +478,7 @@ UpdatePlayerMovement:
 @49b4:  lda     $07
         and     #$08
         beq     @49d1                   ; branch if up button is not pressed
-        lda     #$04
+        lda     #MAP_SPRITE_FRAME::WALKING_UP_2
         sta     $0877,y
         clr_a
         sta     $087f,y
@@ -491,7 +491,7 @@ UpdatePlayerMovement:
 @49d1:  lda     $07
         and     #$04
         beq     @49ef                   ; branch if down button is not pressed
-        lda     #$01
+        lda     #MAP_SPRITE_FRAME::WALKING_DOWN_2
         sta     $0877,y
         lda     #$02
         sta     $087f,y

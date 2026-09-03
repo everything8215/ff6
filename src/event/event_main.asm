@@ -299,7 +299,7 @@ EventScript:
         sfx SFX::MAGICITE_PICKUP
         flash WHITE
         obj_script SLOT_1
-                action $10
+                action CASTING_1
                 end
         pass_on SLOT_1
         dlg DLG_2975
@@ -322,16 +322,16 @@ EventScript:
         fade_in
         fade_out_song $30
         obj_script SLOT_1, ASYNC
-                action 9
+                action NEAR_FATAL
                 wait 6
-                action 39
+                action TENT
                 end
         play_song NIGHTY_NIGHT, PAUSE_CURRENT
         call _cacfbd
         wait_song
         resume_song $10
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         call _cac7fe, 3
@@ -413,15 +413,15 @@ PhoenixCaveWarp:
         switch $01c2=0
         play_song NIGHTY_NIGHT, PAUSE_CURRENT
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 wait 6
-                action 39
+                action TENT
                 end
         call _cacfbd
         wait_song
         resume_song $10
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         call _cac7fe, 3
@@ -441,7 +441,7 @@ StragoDlg:
         obj_script STRAGO
                 speed SLOW
                 move LEFT, 1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script EDGAR
                 dir RIGHT
@@ -526,7 +526,7 @@ SkipDlg:
 :       if_switch $02f9=0, :+
         obj_script SETZER, ASYNC
                 pos {15, 8}
-                action 10
+                action READY
                 end
 :       hide_obj MOG
         hide_obj GAU
@@ -541,23 +541,23 @@ SkipDlg:
                 speed NORMAL
                 move DOWN, 1
                 wait 8
-                action 25
+                action WAVING_1_DOWN
                 end
         dlg DLG_2976
                 ; {edgar}: It's time to break into Kefka's domain!{0}
         wait_30f
         obj_script CELES
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
                 speed SLOW
                 move UP, 2
-                action 28
+                action WAVING_2_UP
                 end
         obj_script SETZER, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script EDGAR
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_2977, BOTTOM
                 ; {setzer}: What's wrong?{n}
@@ -578,7 +578,7 @@ SkipDlg:
         wait_30f
         loop 3
                 obj_script CELES
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script CELES
                         dir LEFT
@@ -586,7 +586,7 @@ SkipDlg:
                 end_loop
         wait_30f
         obj_script CELES
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_2980, BOTTOM
                 ; {celes}: I'm really not sure,{n}
@@ -602,7 +602,7 @@ SkipDlg:
         wait_1s
         loop 3
                 obj_script EDGAR
-                        action 21 | ACTION_H_FLIP
+                        action EYES_CLOSED_RIGHT
                         end
                 obj_script EDGAR
                         dir RIGHT
@@ -613,7 +613,7 @@ SkipDlg:
                 ; {edgar}: And then_{0}
         wait_45f
         obj_script CELES
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_2984, BOTTOM
                 ; {celes}: What will happen to _{n}
@@ -628,7 +628,7 @@ SkipDlg:
                 move RIGHT, 1
                 end
         obj_script TERRA
-                action 32
+                action HEAD_DOWN_DOWN
                 end
 _ca02d5:
         wait_2s
@@ -681,7 +681,7 @@ _ca02d5:
         show_obj SLOT_1
         obj_script SLOT_1
                 pos {11, 0}
-                action 22
+                action ARMS_UP_DOWN
                 speed FAST
                 end
         update_party
@@ -694,14 +694,14 @@ _ca02d5:
                 anim_off
                 layer 2
                 move DOWN, 10
-                action 31
+                action SURPRISED
                 speed FAST
                 jump_high
                 move LEFT_DOWN_DOWN, 2
                 speed NORMAL
                 jump_high
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 anim_on
                 layer 0
                 end
@@ -718,10 +718,10 @@ _ca02d5:
         obj_script SLOT_1
                 speed FASTER
                 layer 2
-                action 31
+                action SURPRISED
                 anim_off
                 move DOWN, 14
-                action 9
+                action NEAR_FATAL
                 anim_on
                 layer 0
                 end
@@ -737,7 +737,7 @@ _ca02d5:
         wait_45f
         obj_script SLOT_1
                 move DOWN, 13
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_on
                 end
         wait_obj CAMERA
@@ -796,7 +796,7 @@ _ca03e7:
         obj_script SLOT_1
                 jump_low
                 move UP, 1
-                action 15
+                action JUMPING
                 anim_off
                 end
         obj_script NPC_1, ASYNC
@@ -883,11 +883,11 @@ _ca03e7:
 .proc _ca0469
         update_party
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 wait 3
                 layer 2
                 speed NORMAL
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 jump_high
                 move DOWN, 2
@@ -1069,7 +1069,7 @@ _ca055d:
         show_obj NPC_1
         sort_obj
         obj_script NPC_1, ASYNC
-                action $1d
+                action LAUGHING_1
                 end
         wait_30f
         loop 31
@@ -1096,20 +1096,20 @@ _ca055d:
         pass_off NPC_4
         pass_off NPC_5
         obj_script NPC_1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 3
-                action 16
+                action CASTING_1
                 end
 
 ; levitate party 3 top char
         obj_script SLOT_1, ASYNC
                 speed FASTER
-                action 31
+                action SURPRISED
                 anim_off
                 move LEFT_LEFT_UP, 2
                 move LEFT_UP
                 move LEFT_UP_UP, 2
-                action 11
+                action HIT
                 speed SLOWER
 Loop:           move UP, 1
                 move DOWN, 1
@@ -1117,7 +1117,7 @@ Loop:           move UP, 1
                 end
         wait_15f
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         dlg DLG_2988, {BOTTOM, TEXT_ONLY}
                 ; KEFKA: Such magnificent power!{n}
@@ -1127,18 +1127,18 @@ Loop:           move UP, 1
         activate_party 2
         sort_obj
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 wait 3
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 end
         obj_script SLOT_1, ASYNC
                 speed FASTER
-                action 31
+                action SURPRISED
                 anim_off
                 move RIGHT_RIGHT_UP, 2
                 move RIGHT_UP
                 move RIGHT_UP_UP, 2
-                action 11
+                action HIT
                 speed SLOWER
 Loop2:          move UP, 1
                 move DOWN, 1
@@ -1146,50 +1146,50 @@ Loop2:          move UP, 1
                 end
         wait_15f
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         dlg DLG_2989, {BOTTOM, TEXT_ONLY}
                 ; KEFKA: I will exterminate everyone, and everything!{0}
 
 ; throw levitating chars down
         obj_script NPC_1
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 16
+                action CASTING_1
                 end
         obj_script SLOT_1
                 speed FASTER
-                action 31
+                action SURPRISED
                 move LEFT_DOWN_DOWN
-                action 11
+                action HIT
                 speed FAST
                 jump_high
                 move LEFT_DOWN_DOWN, 2
                 jump_high
                 move DOWN, 4
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         activate_party 3
         sort_obj
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 wait 2
-                action 25 | ACTION_H_FLIP
+                action WAVING_1_DOWN_FLIP
                 wait 2
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 end
         obj_script SLOT_1
                 speed FASTER
-                action 31
+                action SURPRISED
                 move RIGHT_DOWN_DOWN
-                action 11
+                action HIT
                 speed FAST
                 jump_high
                 move RIGHT_DOWN_DOWN, 2
                 jump_high
                 move DOWN, 4
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
 
@@ -1214,7 +1214,7 @@ Loop2:          move UP, 1
         obj_script NPC_1
                 dir RIGHT
                 wait 4
-                action 23
+                action ARMS_UP_UP
                 end
         dlg DLG_2991, {TEXT_ONLY, ASYNC}
                 ; KEFKA: Then I'll destroy those too. Why do people rebuild things they know are going to be destroyed?{page}
@@ -1306,11 +1306,11 @@ Loop2:          move UP, 1
 
 ; throw character
         obj_script NPC_1
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 end
         wait_1s
         obj_script NPC_1
-                action 27
+                action WAVING_1_UP
                 wait 1
                 dir LEFT
                 end
@@ -1333,7 +1333,7 @@ Loop2:          move UP, 1
         fixed_clr BLACK, 0, 2
         loop 4
                 obj_script NPC_1
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script NPC_1
                         dir LEFT
@@ -1408,25 +1408,25 @@ Loop2:          move UP, 1
                 end_loop
         spc_cmd $82, $80, $00
         obj_script NPC_1
-                action $20
+                action HEAD_DOWN_DOWN
                 wait 6
-                action $22 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 6
-                action $21
+                action HEAD_DOWN_UP
                 wait 12
                 dir LEFT
                 wait 1
-                action $20
+                action HEAD_DOWN_DOWN
                 wait 1
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         play_song KEFKA
         wait_30f
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 24
+                action ANGRY
                 end
         dlg DLG_3008, {TEXT_ONLY, BOTTOM}
                 ; KEFKA: This is sickening_{n}
@@ -1439,9 +1439,9 @@ Loop2:          move UP, 1
                 end_loop
         wait_30f
         obj_script NPC_1
-                action 11
+                action HIT
                 wait 3
-                action 22
+                action ARMS_UP_DOWN
                 end
         mod_bg_pal ADD, {RED, GREEN, BLUE}, 3, {5, 7}
         fixed_clr RED, 1, 3
@@ -1712,9 +1712,9 @@ Loop2:          move UP, 1
         scroll_bg BG1, {0, 0}, ALT
         scroll_bg BG3, {0, 0}, ALT
         obj_script NPC_1, ASYNC
-@loop7:         action 36
+@loop7:         action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
                 branch @loop7
                 end
@@ -1775,7 +1775,7 @@ Loop2:          move UP, 1
                 anim_off
 @loop8:         jump_low
                 dir DOWN
-                action 24
+                action ANGRY
                 wait 2
                 branch @loop8
                 end
@@ -1820,17 +1820,17 @@ Loop2:          move UP, 1
                 ; We will not allow you to harm another living thing.
         wait_45f
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 wait 3
-                action 16
+                action CASTING_1
                 end
         dlg DLG_3016, TEXT_ONLY
                 ; KEFKA: Hee, hee, hee!!
                 ; But what fun is destruction if no ``precious'' lives are lost!
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 wait 4
-                action 22
+                action ARMS_UP_DOWN
                 end
         sfx 196
         loop 31
@@ -1894,7 +1894,7 @@ Loop2:          move UP, 1
         pass_off NPC_1
         hide_obj SLOT_1
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         fade_in
         wait_2s
@@ -1904,7 +1904,7 @@ Loop2:          move UP, 1
         wait_45f
         loop 3
                 obj_script NPC_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_1
                         dir DOWN
@@ -1950,10 +1950,10 @@ Loop2:          move UP, 1
         wait_30f
         create_obj NPC_2
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_2
-                action 9
+                action NEAR_FATAL
                 end
         loop 31
                 mod_sprite_pal INC, {GREEN, BLUE}, 3
@@ -1972,7 +1972,7 @@ Loop2:          move UP, 1
                 end
         obj_script NPC_2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 layer 2
                 speed FASTER
                 move UP, 23
@@ -1998,12 +1998,12 @@ skip_terra_scene:
         pyramid_on NPC_1
         fixed_clr {GREEN, BLUE}, 0, 3
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         sfx 196
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         lock_camera
         obj_script CAMERA, ASYNC
@@ -2059,14 +2059,14 @@ skip_terra_scene:
         show_obj EDGAR
         obj_script EDGAR
                 pos {16, 20}
-                action 10
+                action READY
                 anim_on
                 end
 :       if_switch $01A5=0, :+
         show_obj SABIN
         obj_script SABIN
                 pos {13, 23}
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 anim_on
                 end
 :       if_switch $01A6=0, :+
@@ -2087,14 +2087,14 @@ skip_terra_scene:
         show_obj RELM
         obj_script RELM
                 pos {18, 20}
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
 :       if_switch $01A9=0, :+
         show_obj SETZER
         obj_script SETZER
                 pos {12, 24}
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 anim_on
                 end
 :       if_switch $01AA=0, :+
@@ -2108,7 +2108,7 @@ skip_terra_scene:
         show_obj GAU
         obj_script GAU
                 pos {19, 22}
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
 :       if_switch $01AC=0, :+
@@ -2157,7 +2157,7 @@ skip_terra_scene:
                 speed FAST
                 move UP, 4
                 move UP_LEFT, 2
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         switch $01F0=1
 :       if_any
@@ -2199,7 +2199,7 @@ skip_terra_scene:
                 speed FAST
                 move UP, 6
                 move UP_RIGHT
-                action 10
+                action READY
                 end
         switch $01F0=1
 :       if_any
@@ -2213,7 +2213,7 @@ skip_terra_scene:
                 speed FAST
                 move UP, 3
                 move LEFT_LEFT_UP
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         switch $01F0=1
 :       if_any
@@ -2255,7 +2255,7 @@ skip_terra_scene:
                 speed FAST
                 move UP, 7
                 move RIGHT, 3
-                action 9
+                action NEAR_FATAL
                 end
         switch $01F0=1
 :       if_any
@@ -2269,7 +2269,7 @@ skip_terra_scene:
                 speed FAST
                 move UP, 3
                 move LEFT, 3
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         switch $01F0=1
 :       if_any
@@ -2283,7 +2283,7 @@ skip_terra_scene:
                 speed FAST
                 move UP, 3
                 move RIGHT, 3
-                action 10
+                action READY
                 end
         switch $01F0=1
 :       if_any
@@ -2297,7 +2297,7 @@ skip_terra_scene:
                 speed FAST
                 move UP, 5
                 move RIGHT, 4
-                action 9
+                action NEAR_FATAL
                 end
         switch $01F0=1
 :       if_any
@@ -2343,14 +2343,14 @@ skip_terra_scene:
         obj_script NPC_2
                 anim_off
                 speed FASTER
-                action 10
+                action READY
                 move LEFT_DOWN_DOWN, 4
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         sfx 181
         obj_script CELES
-                action 31
+                action SURPRISED
                 wait 4
                 dir LEFT
                 end
@@ -2387,12 +2387,12 @@ _ca1230:
         obj_script NPC_2
                 speed NORMAL
                 move DOWN, 2
-                action 40
+                action DEAD_HORZ
                 end
         obj_script CELES
                 speed NORMAL
                 move LEFT, 1
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_3021
                 ; CELES: TERRA!
@@ -2537,15 +2537,15 @@ _ca12f3:
                 dir UP
                 end
         obj_script EDGAR
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_3026
                 ; CELES: You mean TERRA too?
         wait_1s
         obj_script NPC_2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 16
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
                 dir DOWN
                 end
@@ -2641,9 +2641,9 @@ _ca12f3:
         obj_script EDGAR
                 move DOWN, 1
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 4
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         wait_obj CAMERA
@@ -2657,11 +2657,11 @@ _ca12f3:
                 move DOWN, 2
                 end
         obj_script EDGAR
-                action 31
+                action SURPRISED
                 wait 2
                 speed FASTER
                 move DOWN, 1
-                action 23
+                action ARMS_UP_UP
                 end
         obj_script CYAN
                 dir RIGHT
@@ -2678,57 +2678,57 @@ _ca12f3:
                 move UP_LEFT
                 dir RIGHT
                 wait 5
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 8
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_1s
         loop 3
                 obj_script CYAN
                         speed FASTER
                         move RIGHT, 2
-                        action 9
+                        action NEAR_FATAL
                         wait 3
                         move DOWN_LEFT
-                        action 28
+                        action WAVING_2_UP
                         wait 3
                         move UP_LEFT
-                        action 9 | ACTION_H_FLIP
+                        action NEAR_FATAL_FLIP
                         end
                 end_loop
         wait_90f
         obj_script CYAN
-                action 24
+                action ANGRY
                 wait 8
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 8
                 speed NORMAL
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 4
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 anim_off
                 jump_low
                 move RIGHT, 1
-                action 9
+                action NEAR_FATAL
                 end
         flash WHITE
         shake ALL, 3, 0
         call _cc114e
         obj_script EDGAR, ASYNC
-                action 11
+                action HIT
                 anim_off
-                action 40
+                action DEAD_HORZ
                 jump_high
                 move DOWN, 1
                 anim_on
                 end
         obj_script CYAN
-                action 11
+                action HIT
                 jump_low
                 move RIGHT, 1
-                action 40
+                action DEAD_HORZ
                 wait 3
                 dir LEFT
                 anim_on
@@ -2741,23 +2741,23 @@ _ca12f3:
                 move LEFT, 1
                 move DOWN, 1
                 wait 2
-                action 22
+                action ARMS_UP_DOWN
                 wait 3
-                action 24
+                action ANGRY
                 end
         obj_script EDGAR
                 speed NORMAL
                 move DOWN, 1
                 move DOWN_RIGHT
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_3045, {TEXT_ONLY, BOTTOM}
                 ; CYAN: You just have to show technology who's boss!!
         obj_script CYAN, ASYNC
 _ca1487:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _ca1487
                 end
@@ -2851,10 +2851,10 @@ _ca14d6:
                 .byte $72
         obj_script SETZER
                 anim_off
-                action 11
+                action HIT
                 jump_high
                 move DOWN, 2
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         wait_30f
@@ -2869,14 +2869,14 @@ _ca14d6:
                 .byte $51,$51,$51
         wait_30f
         obj_script SETZER, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 5
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         loop 3
                 obj_script SETZER
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script SETZER
                         dir DOWN
@@ -2885,9 +2885,9 @@ _ca14d6:
         wait_30f
         obj_script SETZER
                 move DOWN, 1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
-                action 25
+                action WAVING_1_DOWN
                 end
         create_obj NPC_1
         sort_obj
@@ -2903,9 +2903,9 @@ _ca14d6:
                 end
         wait_15f
         obj_script SETZER
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 2
-                action 27
+                action WAVING_1_UP
                 end
         wait_45f
         obj_script SETZER
@@ -2923,11 +2923,11 @@ _ca14d6:
                 anim_off
                 jump_high
                 dir LEFT
-                action 31
+                action SURPRISED
                 anim_on
                 end
         obj_script SETZER
-                action 24
+                action ANGRY
                 end
         dlg DLG_3046, {TEXT_ONLY, BOTTOM}
                 ; SETZER: Wait!
@@ -2942,9 +2942,9 @@ _ca14d6:
                 move DOWN, 1
                 dir LEFT
                 wait 4
-                action 25
+                action WAVING_1_DOWN
                 wait 3
-                action 26
+                action WAVING_2_DOWN
                 end
         wait_45f
         obj_script SETZER, ASYNC
@@ -2987,7 +2987,7 @@ _ca14d6:
                 .byte $08,$09,$0A
                 .byte $18,$19,$1A
         obj_script CELES, ASYNC
-                action 31
+                action SURPRISED
                 wait 8
                 dir LEFT
                 end
@@ -3023,9 +3023,9 @@ _ca1633:        move LEFT, 2
         delete_obj NPC_4
         delete_obj NPC_5
         obj_script SETZER, ASYNC
-_ca164a:        action 36
+_ca164a:        action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
                 branch _ca164a
                 end
@@ -3046,7 +3046,7 @@ _ca164a:        action 36
         obj_script SETZER
                 speed NORMAL
                 move DOWN, 1
-                action 24
+                action ANGRY
                 end
         dlg DLG_3048, {TEXT_ONLY, BOTTOM}
                 ;
@@ -3092,9 +3092,9 @@ _ca16bc:
         obj_script EDGAR, ASYNC
                 move UP, 7
 _ca16bf:
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 1
                 branch _ca16bf
                 end
@@ -3111,16 +3111,16 @@ _ca16bf:
                 end
         wait_45f
         obj_script EDGAR
-                action 31
+                action SURPRISED
                 end
         if_switch $02F5=0, _ca16ea
         obj_script SABIN, ASYNC
-                action 31
+                action SURPRISED
                 wait 10
                 move UP, 3
                 move UP_LEFT
                 move UP, 1
-                action 22
+                action ARMS_UP_DOWN
                 end
 _ca16ea:
         loop 2
@@ -3130,7 +3130,7 @@ _ca16ea:
         scroll_bg BG2, {0, -26}, ALT
         if_switch $02F5=0, _ca1775
         obj_script EDGAR
-                action 40
+                action DEAD_HORZ
                 end
         wait_1s
         scroll_bg BG2, {0, 0}, ALT
@@ -3139,14 +3139,14 @@ _ca16ea:
         wait_30f
         scroll_bg BG2, {0, 0}, ALT
         obj_script EDGAR
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         obj_script EDGAR, ASYNC
 _ca1711:
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 1
                 branch _ca1711
                 end
@@ -3162,20 +3162,20 @@ _ca1711:
         wait_15f
         obj_script EDGAR
                 move DOWN, 1
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 1
-                action 27
+                action WAVING_1_UP
                 end
         obj_script SABIN
                 jump_low
                 dir DOWN
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         obj_script CELES, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         obj_script SETZER
-                action 9
+                action NEAR_FATAL
                 end
         mod_bg_tiles BG1, {6, 4}, {3, 1}
                 .byte $08,$09,$0A
@@ -3207,16 +3207,16 @@ _ca1711:
         wait_30f
         obj_script EDGAR
                 move LEFT, 1
-                action 36
+                action WAGGING_FINGER_1
                 end
         wait_30f
         if_switch $0127=0, _ca1834
 _ca1775:
         obj_script EDGAR, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 5
                 layer 2
-                action 31
+                action SURPRISED
                 anim_off
                 speed FAST
                 move DOWN, 2
@@ -3231,7 +3231,7 @@ _ca178c:
                 layer 2
                 move UP, 1
 _ca178f:
-                action 23
+                action ARMS_UP_UP
                 anim_off
                 speed SLOWER
                 end
@@ -3262,7 +3262,7 @@ _ca17b8:
                         speed FAST
                         anim_on
                         move RIGHT, 1
-                        action 23
+                        action ARMS_UP_UP
                         speed SLOWER
                         anim_off
                         end
@@ -3277,7 +3277,7 @@ _ca17c1:
         wait_dlg
         obj_script SETZER, ASYNC
 _ca17cd:
-                action 10
+                action READY
                 anim_on
                 layer 0
                 speed NORMAL
@@ -3297,14 +3297,14 @@ _ca17d5:
         wait_30f
         obj_script EDGAR
                 move UP, 2
-                action 27
+                action WAVING_1_UP
                 end
         obj_script CELES
                 dir LEFT
                 end
         wait_15f
         obj_script EDGAR
-                action 28
+                action WAVING_2_UP
                 end
         shake ALL, 2, 0
         mod_bg_tiles BG1, {6, 4}, {3, 2}
@@ -3317,12 +3317,12 @@ _ca17d5:
                 end
         wait_15f
         obj_script EDGAR, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
 _ca180e:
                 wait 1
-                action 36 | ACTION_H_FLIP
+                action WAGGING_FINGER_1_FLIP
                 wait 1
-                action 37 | ACTION_H_FLIP
+                action WAGGING_FINGER_2_FLIP
                 branch _ca180e
                 end
         wait_30f
@@ -3331,7 +3331,7 @@ _ca180e:
                 ; EDGAR: Ladies first!
         obj_script EDGAR
                 move LEFT, 1
-                action 36 | ACTION_H_FLIP
+                action WAGGING_FINGER_1_FLIP
                 end
         wait_30f
         obj_script SETZER, ASYNC
@@ -3396,20 +3396,20 @@ _ca1834:
                 .byte $00,$00,$00
                 .byte $00,$00,$00
         obj_script MOG, ASYNC
-                action 31
+                action SURPRISED
                 anim_off
                 jump_low
                 move LEFT, 1
-                action 15
+                action JUMPING
                 speed FAST
                 move DOWN, 1
                 end
         obj_script EDGAR
-                action 31
+                action SURPRISED
                 anim_off
                 speed FAST
                 move DOWN, 1
-                action 23
+                action ARMS_UP_UP
                 anim_on
                 end
         wait_90f
@@ -3418,7 +3418,7 @@ _ca1834:
                 layer 2
                 jump_high
                 move UP, 2
-                action 9
+                action NEAR_FATAL
                 wait 8
                 dir DOWN
                 end
@@ -3427,16 +3427,16 @@ _ca1834:
                 ;
                 ; MOG: Heeeeelp! Save me!
         obj_script EDGAR, ASYNC
-                action 9
+                action NEAR_FATAL
                 wait 3
-                action 36
+                action WAGGING_FINGER_1
                 wait 4
                 move UP, 1
                 move RIGHT, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
                 anim_on
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 speed FAST
                 jump_high
                 move RIGHT, 2
@@ -3451,9 +3451,9 @@ _ca18e1:
                 wait 3
                 dir UP
                 wait 2
-                action 27
+                action WAVING_1_UP
                 wait 4
-                action 28
+                action WAVING_2_UP
                 end
         wait_obj EDGAR
         obj_script NPC_2
@@ -3473,7 +3473,7 @@ _ca18e1:
                 end
         obj_script MOG
                 layer 2
-                action 31
+                action SURPRISED
                 speed SLOW
                 move UP, 3
                 wait 2
@@ -3481,7 +3481,7 @@ _ca18e1:
                 end
         obj_script MOG, ASYNC
 _ca190f:
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 wait 1
@@ -3495,17 +3495,17 @@ _ca190f:
         wait_30f
         obj_script MOG
                 layer 0
-                action 22
+                action ARMS_UP_DOWN
                 wait 3
-                action 24
+                action ANGRY
                 anim_on
                 end
         wait_30f
         obj_script EDGAR, ASYNC
 _ca192a:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _ca192a
                 end
@@ -3583,9 +3583,9 @@ _ca197a:
                 move UP, 8
                 wait 8
 _ca19c2:
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 1
                 branch _ca19c2
                 end
@@ -3607,7 +3607,7 @@ _ca19c2:
                 move DOWN, 2
                 dir UP
                 anim_off
-                action 11
+                action HIT
                 speed FAST
                 move UP, 2
                 end
@@ -3617,7 +3617,7 @@ _ca19c2:
                 move DOWN, 1
                 speed SLOW
                 move DOWN, 1
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         obj_script CAMERA, ASYNC
@@ -3640,9 +3640,9 @@ _ca19c2:
                 end
         obj_script UMARO, ASYNC
 _ca1a09:
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
-                action 9
+                action NEAR_FATAL
                 wait 2
                 branch _ca1a09
                 end
@@ -3657,10 +3657,10 @@ _ca1a09:
                 .byte $DC,$20
                 .byte $FB,$FB
         obj_script CELES
-                action 31
+                action SURPRISED
                 end
         obj_script SETZER
-                action 31
+                action SURPRISED
                 end
         call _ca1ab3
         call _ca1aa6
@@ -3710,9 +3710,9 @@ _ca1a09:
                 end
         obj_script UMARO, ASYNC
 _ca1a91:
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 9
+                action NEAR_FATAL
                 wait 1
                 branch _ca1a91
                 end
@@ -3724,7 +3724,7 @@ _ca1a91:
         if_switch $0127=0, _ca1afa
 _ca1aa6:
         obj_script UMARO
-                action 10
+                action READY
                 wait 2
                 speed FAST
                 anim_off
@@ -3809,7 +3809,7 @@ _ca1afa:
         create_obj CELES
         show_obj CELES
         obj_script NPC_15, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script GOGO, ASYNC
 _ca1b48:
@@ -3861,23 +3861,23 @@ _ca1b54:
                 .byte $00,$D4,$D5,$69
         shake ALL, 3, 0
         obj_script GOGO, ASYNC
-                action 31
+                action SURPRISED
                 anim_off
                 speed NORMAL
                 jump_low
                 move UP_LEFT
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         obj_script SETZER, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script EDGAR
-                action 31
+                action SURPRISED
                 end
         wait_45f
         obj_script CELES
-                action 35
+                action HEAD_TURNED
                 wait 8
                 move LEFT, 1
                 move DOWN, 1
@@ -3897,17 +3897,17 @@ _ca1b54:
                 move UP, 4
                 end
         obj_script GOGO
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script CELES
                 move UP, 2
                 end
         obj_script CELES
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 end
         wait_15f
         obj_script CELES
-                action 28 | ACTION_H_FLIP
+                action WAVING_2_UP_FLIP
                 end
         obj_script GOGO, ASYNC
                 dir DOWN
@@ -3947,10 +3947,10 @@ _ca1beb:
         wait_15f
         loop 3
                 obj_script CELES, ASYNC
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script GOGO
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script CELES, ASYNC
                         dir DOWN
@@ -3963,43 +3963,43 @@ _ca1beb:
         obj_script CELES, ASYNC
                 speed FAST
                 move UP, 2
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 3
                 move DOWN, 1
                 move RIGHT, 1
                 move UP_RIGHT, 2
                 dir UP
                 wait 2
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 3
                 move DOWN_LEFT, 2
                 move UP, 1
-                action 23
+                action ARMS_UP_UP
                 wait 4
                 end
         obj_script GOGO, ASYNC
                 speed FAST
                 move UP, 2
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 3
                 move DOWN, 1
                 move LEFT, 1
                 move UP_LEFT, 2
                 dir UP
                 wait 2
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 3
                 move DOWN_RIGHT, 2
                 move UP, 1
-                action 23
+                action ARMS_UP_UP
                 wait 4
                 end
         wait_obj GOGO
@@ -4086,7 +4086,7 @@ _ca1cbb:
                 wait 8
                 move RIGHT, 1
                 wait 1
-                action 31
+                action SURPRISED
                 wait 4
                 speed FASTER
                 move DOWN, 1
@@ -4104,9 +4104,9 @@ _ca1cbb:
         obj_script NPC_15, ASYNC
                 pos {85, 17}
 _ca1cff:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 1
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 1
                 branch _ca1cff
                 end
@@ -4189,7 +4189,7 @@ _ca1d4e:
                 move DOWN_LEFT, 3
                 move LEFT, 6
                 wait 8
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         obj_script GAU, ASYNC
@@ -4198,14 +4198,14 @@ _ca1d4e:
                 move LEFT, 2
                 move DOWN, 1
                 wait 10
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         obj_script EDGAR
                 move DOWN, 3
                 move DOWN_LEFT, 3
                 move LEFT, 4
-                action 31
+                action SURPRISED
                 wait 3
                 dir LEFT
                 wait 6
@@ -4223,15 +4223,15 @@ _ca1d4e:
         obj_script GAU
                 speed NORMAL
                 move RIGHT, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 8
                 anim_off
                 layer 2
                 jump_low
                 move RIGHT, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 8
-                action 9
+                action NEAR_FATAL
                 end
         shake ALL, 2, 0
         obj_script CAMERA, ASYNC
@@ -4328,7 +4328,7 @@ _ca1e32:
                 pos {18, 49}
 _ca1e53:
                 move DOWN, 3
-                action 31
+                action SURPRISED
                 wait 2
                 dir DOWN
                 end
@@ -4337,15 +4337,15 @@ _ca1e53:
                 branch _ca1e53
                 end
         obj_script GAU
-                action 23
+                action ARMS_UP_UP
                 wait 6
                 jump_high
                 dir UP
-                action 23
+                action ARMS_UP_UP
                 wait 8
                 jump_high
                 dir UP
-                action 23
+                action ARMS_UP_UP
                 wait 8
                 end
         dlg DLG_3056, {TEXT_ONLY, BOTTOM}
@@ -4359,18 +4359,18 @@ _ca1e53:
                 dir DOWN
                 end
         obj_script CELES
-                action 31
+                action SURPRISED
                 layer 2
                 end
         obj_script GAU
-                action 9
+                action NEAR_FATAL
                 wait 2
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script CELES
                 speed NORMAL
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move DOWN, 1
                 end
@@ -4394,12 +4394,12 @@ _ca1e94:
         wait_2s
         obj_script GAU
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 wait 4
-                action 15
+                action JUMPING
                 jump_low
                 move DOWN_LEFT
-                action 9
+                action NEAR_FATAL
                 end
         obj_script GAU, ASYNC
 _ca1eb3:
@@ -4502,7 +4502,7 @@ _ca1f0b:
                 move RIGHT_RIGHT_UP
                 move RIGHT, 4
                 wait 1
-                action 35
+                action HEAD_TURNED
                 end
 _ca1f61:
         call _cac819
@@ -4533,7 +4533,7 @@ _ca1f61:
                 move RIGHT_RIGHT_DOWN
                 move RIGHT, 3
                 wait 5
-                action 9
+                action NEAR_FATAL
                 end
         wait_15f 10
         obj_script CELES, ASYNC
@@ -4541,7 +4541,7 @@ _ca1f61:
                 move UP, 1
                 move RIGHT, 2
                 anim_off
-                action 31
+                action SURPRISED
                 speed SLOW
                 move RIGHT, 1
                 end
@@ -4551,9 +4551,9 @@ _ca1f61:
         show_obj NPC_1
         wait_obj CELES
         obj_script EDGAR
-                action 15
+                action JUMPING
                 wait 3
-                action 10
+                action READY
                 end
         wait_30f
         dlg DLG_3059, {TEXT_ONLY, BOTTOM}
@@ -4562,7 +4562,7 @@ _ca1f61:
                 ; This floor's about to break apart!
         loop 3
                 obj_script CELES
-                        action 21 | ACTION_H_FLIP
+                        action EYES_CLOSED_RIGHT
                         end
                 obj_script CELES
                         dir RIGHT
@@ -4574,7 +4574,7 @@ _ca1f61:
                 speed FAST
                 move LEFT, 3
                 wait 4
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         delete_obj NPC_1
@@ -4582,7 +4582,7 @@ _ca1f61:
         obj_script CELES
                 dir DOWN
                 wait 4
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
         obj_script CELES, ASYNC
@@ -4590,7 +4590,7 @@ _ca1f61:
                 speed NORMAL
                 jump_high
                 dir DOWN
-                action 31
+                action SURPRISED
                 end
         shake ALL, 2, 0
         mod_bg_tiles BG1, {0, 7}, {2, 3}, ASYNC
@@ -4624,7 +4624,7 @@ _ca1f61:
                 wait 3
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         scroll_bg BG2, {0, 0}, ALT
         shake ALL, 2, 0
@@ -4638,25 +4638,25 @@ _ca1f61:
                 .byte $17,$18
         wait_bg
         obj_script CELES, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_off
                 speed SLOW
                 move DOWN, 2
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_low
                 speed NORMAL
                 move RIGHT, 1
-                action 23
+                action ARMS_UP_UP
                 end
         scroll_bg BG2, {0, -8}, ALT
         wait_1s
         if_switch $02F1=0, _ca2079
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 wait 6
                 move LEFT, 4
                 anim_off
-                action 40
+                action DEAD_HORZ
                 speed NORMAL
                 move DOWN_LEFT
                 end
@@ -4674,11 +4674,11 @@ _ca1f61:
         obj_script LOCKE, ASYNC
                 anim_off
                 speed FAST
-                action 15
+                action JUMPING
 _ca206a:
                 move UP_RIGHT
                 speed SLOW
-                action 9
+                action NEAR_FATAL
                 move RIGHT, 1
                 anim_on
                 wait 8
@@ -4687,11 +4687,11 @@ _ca206a:
         if_switch $0127=0, _ca2092
 _ca2079:
         obj_script SETZER
-                action 31
+                action SURPRISED
                 wait 6
                 move LEFT, 4
                 anim_off
-                action 40
+                action DEAD_HORZ
                 speed NORMAL
                 move LEFT, 1
                 end
@@ -4708,11 +4708,11 @@ _ca2092:
         obj_script CELES, ASYNC
                 jump_high
                 move UP, 2
-                action 40
+                action DEAD_HORZ
                 end
         wait_1s
         obj_script CELES
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_30f
         if_switch $02F1=0, _ca20bb
@@ -4721,11 +4721,11 @@ _ca2092:
                 move LEFT, 1
                 wait 4
 _ca20a9 := * - 1
-                action 15
+                action JUMPING
                 wait 1
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_3063, {TEXT_ONLY, BOTTOM}
                 ;
@@ -4749,7 +4749,7 @@ _ca20c3:
         obj_script CELES
                 dir DOWN
                 wait 6
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_30f
         shake ALL, 3, 0
@@ -4761,29 +4761,29 @@ _ca20c3:
                 move RIGHT, 8
                 end
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 wait 10
                 dir LEFT
                 wait 4
                 move UP, 1
                 move LEFT, 1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 4
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 anim_off
                 speed FAST
                 end
         obj_script LOCKE, ASYNC
                 move DOWN_RIGHT
                 move RIGHT, 4
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 2
-                action 25
+                action WAVING_1_DOWN
                 speed NORMAL
                 jump_high
                 move RIGHT, 2
                 anim_on
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 3
                 speed FAST
                 dir RIGHT
@@ -4792,17 +4792,17 @@ _ca20c3:
                 end
         obj_script CELES
                 speed FAST
-                action 11
+                action HIT
                 move DOWN_RIGHT
                 move RIGHT, 4
-                action 9
+                action NEAR_FATAL
                 wait 2
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move RIGHT, 2
                 anim_on
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 3
                 speed FAST
                 move UP_RIGHT
@@ -4828,7 +4828,7 @@ _ca2127:
         obj_script CELES
                 dir RIGHT
                 wait 8
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 anim_on
                 speed NORMAL
                 end
@@ -4836,7 +4836,7 @@ _ca2127:
                 ; CELES: This is my good luck charm_ When I found this, my life took a turn for the better_
         obj_script CELES
                 move RIGHT, 3
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_3066, {TEXT_ONLY, BOTTOM}
                 ; CELES: LOCKE_
@@ -4888,11 +4888,11 @@ _ca2154:
                 move DOWN, 5
                 move LEFT, 8
                 move LEFT, 5
-                action 31
+                action SURPRISED
                 wait 6
                 dir DOWN
                 wait 6
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_30f
         obj_script CAMERA, ASYNC
@@ -4979,7 +4979,7 @@ _ca21ed:
                 ; You will probably be able to remain in this world as a human being_
         wait_30f
         obj_script NPC_1
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 end
@@ -5023,7 +5023,7 @@ _ca21ed:
         wait_15f 8
         loop 3
                 obj_script CELES
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script CELES
                         dir LEFT
@@ -5074,31 +5074,31 @@ _ca226f:
                 speed SLOWER
                 move DOWN, 1
 _ca22b6:
-                action 0
+                action WALKING_DOWN_1
                 wait 1
-                action 1
+                action WALKING_DOWN_2
                 wait 1
                 branch _ca22b6
                 end
         wait_2s
         obj_script STRAGO
-                action 9
+                action NEAR_FATAL
                 anim_off
                 speed SLOW
                 move UP, 3
                 anim_on
                 end
         obj_script RELM
-                action 31
+                action SURPRISED
                 wait 2
                 speed FAST
                 move UP, 3
-                action 23
+                action ARMS_UP_UP
                 anim_off
                 speed SLOW
                 end
         obj_script STRAGO
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_3070, {TEXT_ONLY, BOTTOM}
                 ;
@@ -5109,29 +5109,29 @@ _ca22b6:
                 move UP, 1
                 dir RIGHT
                 wait 3
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_45f
         obj_script STRAGO
                 jump_low
                 dir DOWN
-                action 22
-                action 32
+                action ARMS_UP_DOWN
+                action HEAD_DOWN_DOWN
                 end
         obj_script RELM
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_3071, {TEXT_ONLY, BOTTOM}
                 ; STRAGO: Sorry, dear_
                 ; RELM: If I hear even a peep out of you, I'm gonna draw your portrait!
         obj_script STRAGO, ASYNC
                 jump_low
-                action 31
+                action SURPRISED
                 move UP, 1
 _ca22f7:
                 dir DOWN
                 wait 1
-                action 31
+                action SURPRISED
                 wait 1
                 branch _ca22f7
                 end
@@ -5141,9 +5141,9 @@ _ca22f7:
                 ; Anything but that!
         obj_script RELM
                 move UP, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script STRAGO
                 jump_low
@@ -5209,7 +5209,7 @@ _ca235d:
                 jump_low
                 move DOWN_LEFT
                 speed FAST
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 40
                 move DOWN, 3
                 hide_obj
@@ -5244,7 +5244,7 @@ _ca2377:
 _ca2395:
                 jump_low
                 dir DOWN
-                action 25
+                action WAVING_1_DOWN
                 wait 8
                 branch _ca2395
                 end
@@ -5253,7 +5253,7 @@ _ca2395:
                 ; RELM: How about a nice portrait for you, hmm?!
         show_obj CELES
         obj_script CELES, ASYNC
-                action 31
+                action SURPRISED
                 anim_off
                 speed SLOW
                 move UP, 5
@@ -5261,7 +5261,7 @@ _ca2395:
         wait_30f
         show_obj EDGAR
         obj_script EDGAR, ASYNC
-                action 31
+                action SURPRISED
                 anim_off
                 speed SLOW
                 move UP, 4
@@ -5269,7 +5269,7 @@ _ca2395:
         wait_30f
         show_obj SETZER
         obj_script SETZER
-                action 31
+                action SURPRISED
                 anim_off
                 speed SLOW
                 move UP, 3
@@ -5284,18 +5284,18 @@ _ca2395:
         obj_script CELES, ASYNC
 _ca23c9:
                 speed FAST
-                action 11
+                action HIT
                 move UP_RIGHT
 _ca23cc:
                 wait 1
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         wait 6
         obj_script EDGAR, ASYNC
                 speed FAST
-                action 11
+                action HIT
                 move UP_LEFT
                 branch _ca23cc
                 end
@@ -5316,22 +5316,22 @@ _ca23ec:
                 end
         loop 10
                 obj_script RELM
-                        action 0
+                        action WALKING_DOWN_1
                         end
                 obj_script RELM
-                        action 1
+                        action WALKING_DOWN_2
                         end
                 end_loop
         obj_script RELM
-                action 31
+                action SURPRISED
                 wait 2
-                action 40
+                action DEAD_HORZ
                 anim_off
                 speed SLOW
                 move UP, 3
                 dir DOWN
                 wait 2
-                action 24
+                action ANGRY
                 anim_on
                 end
         return
@@ -5443,7 +5443,7 @@ _ca249d:
                 move LEFT_UP_UP
                 move UP_LEFT, 2
                 move LEFT, 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 10
                 move UP, 7
                 move RIGHT, 1
@@ -5461,9 +5461,9 @@ _ca249d:
                 move UP, 7
                 dir RIGHT
 _ca24d7:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 1
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 1
                 branch _ca24d7
                 end
@@ -5471,17 +5471,17 @@ _ca24d7:
         obj_script SHADOW
                 dir LEFT
                 wait 8
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 4
                 dir DOWN
                 end
         loop 3
                 obj_script SHADOW
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 wait_15f
                 obj_script SHADOW
-                        action 35
+                        action HEAD_TURNED
                         end
                 wait_15f
                 end_loop
@@ -5498,9 +5498,9 @@ _ca24d7:
                 end
         wait_15f
         obj_script SHADOW
-                action 9
+                action NEAR_FATAL
                 wait 2
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script NPC_5
                 anim_off
@@ -5511,16 +5511,16 @@ _ca24d7:
                 end
         wait_15f
         obj_script SHADOW
-                action 26
+                action WAVING_2_DOWN
                 wait 4
-                action 25
+                action WAVING_1_DOWN
                 end
         dlg DLG_3075, {TEXT_ONLY, BOTTOM}
                 ;
                 ; SHADOW: Interceptor!
                 ; Get going!
         obj_script SHADOW
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_15f
         obj_script NPC_5
@@ -5533,9 +5533,9 @@ _ca24d7:
                 end
         wait_1s
         obj_script SHADOW
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script NPC_5
                 speed SLOWER
@@ -5554,12 +5554,12 @@ _ca24d7:
                 move UP, 8
                 dir LEFT
                 wait 12
-                action 34
+                action HEAD_DOWN_LEFT
                 anim_off
                 wait 13
                 speed SLOW
                 move RIGHT, 1
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         obj_script CAMERA
@@ -5661,7 +5661,7 @@ _ca25e2:
                 move UP, 6
                 move RIGHT, 7
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 end
         wait_30f
         obj_script RELM
@@ -5679,7 +5679,7 @@ _ca25e2:
                 obj_script STRAGO
                         jump_high
                         dir UP
-                        action 27
+                        action WAVING_1_UP
                         end
                 wait_30f
                 end_loop
@@ -5689,7 +5689,7 @@ _ca25e2:
                 end
         wait_30f
         obj_script STRAGO
-                action 24
+                action ANGRY
                 end
         wait_obj CAMERA
         dlg DLG_3078, {TEXT_ONLY, BOTTOM}
@@ -5702,24 +5702,24 @@ _ca25e2:
                 move UP, 7
                 end
         obj_script STRAGO
-                action 9
+                action NEAR_FATAL
                 wait 4
-                action 23
+                action ARMS_UP_UP
                 jump_low
                 move UP, 1
-                action 9
+                action NEAR_FATAL
                 wait 3
-                action 23
+                action ARMS_UP_UP
                 jump_high
                 move LEFT_UP_UP
-                action 23
+                action ARMS_UP_UP
                 jump_high
                 move LEFT_UP_UP
                 jump_low
                 move UP_LEFT
-                action 9
+                action NEAR_FATAL
                 wait 6
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script RELM
                 layer 2
@@ -5734,7 +5734,7 @@ _ca25e2:
                 obj_script STRAGO
                         jump_high
                         dir UP
-                        action 27
+                        action WAVING_1_UP
                         end
                 wait_30f
                 end_loop
@@ -5742,7 +5742,7 @@ _ca25e2:
         obj_script STRAGO
                 speed FAST
                 move UP, 3
-                action 25
+                action WAVING_1_DOWN
                 end
         dlg DLG_3079, {TEXT_ONLY, BOTTOM}
                 ;
@@ -5898,7 +5898,7 @@ _ca2746:
                 end
         wait_30f
         obj_script NPC_4
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         hide_obj NPC_4
@@ -5916,9 +5916,9 @@ _ca2746:
                 move LEFT_LEFT_UP, 6
                 end
         obj_script SETZER
-                action 15
+                action JUMPING
                 wait 6
-                action 10
+                action READY
                 end
         wait_obj CAMERA
         wait_15f
@@ -6088,9 +6088,9 @@ _ca2851:
         obj_script CELES, ASYNC
                 move LEFT, 7
                 move UP_LEFT
-                action 15
+                action JUMPING
                 wait 2
-                action 9
+                action NEAR_FATAL
                 end
         wait_45f
         obj_script EDGAR, ASYNC
@@ -6099,7 +6099,7 @@ _ca2851:
         wait_15f
         obj_script SETZER, ASYNC
                 move LEFT, 5
-                action 10
+                action READY
                 end
         loop 13
                 mod_sprite_pal DEC, {RED, GREEN, BLUE}, 3, {96, 111}
@@ -6131,7 +6131,7 @@ _ca2851:
         wait_30f
         obj_script CELES
                 move DOWN_RIGHT
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_15f
         wait_obj NPC_1
@@ -6139,14 +6139,14 @@ _ca2851:
                 dir DOWN
                 end
         obj_script EDGAR
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
-                action 15
+                action JUMPING
                 wait 1
-                action 27
+                action WAVING_1_UP
                 end
         obj_script SETZER
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -6476,37 +6476,37 @@ _ca2a06:
         call _ca375e
         obj_script TERRA, ASYNC
                 pos {11, 7}
-                action 40
+                action DEAD_HORZ
                 end
         if_switch $02F1=0, _ca2af0
         obj_script LOCKE, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 255
-                action 9
+                action NEAR_FATAL
                 wait 255
                 dir LEFT
                 end
 _ca2af0:
         if_switch $02F2=0, _ca2b02
         obj_script CYAN, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 255
                 wait 48
-                action 9
+                action NEAR_FATAL
                 wait 168
                 dir LEFT
                 end
 _ca2b02:
         obj_script EDGAR, ASYNC
                 pos {17, 9}
-                action 40
+                action DEAD_HORZ
                 end
         if_switch $02F5=0, _ca2b1e
         obj_script SABIN, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 255
                 wait 32
-                action 9
+                action NEAR_FATAL
                 wait 160
                 dir LEFT
                 wait 8
@@ -6515,35 +6515,35 @@ _ca2b02:
 _ca2b1e:
         obj_script CELES, ASYNC
                 pos {14, 9}
-                action 40
+                action DEAD_HORZ
                 end
         if_switch $02F7=0, _ca2b37
         obj_script STRAGO, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 255
                 wait 40
-                action 9
+                action NEAR_FATAL
                 wait 160
                 dir LEFT
                 end
 _ca2b37:
         if_switch $02F8=0, _ca2b49
         obj_script RELM, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 255
                 wait 32
-                action 9
+                action NEAR_FATAL
                 wait 64
                 dir LEFT
                 end
 _ca2b49:
         obj_script SETZER, ASYNC
                 pos {15, 8}
-                action 40
+                action DEAD_HORZ
                 end
         if_switch $02FA=0, _ca2b5f
         obj_script MOG, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 255
                 wait 28
                 dir LEFT
@@ -6551,28 +6551,28 @@ _ca2b49:
 _ca2b5f:
         if_switch $02FB=0, _ca2b6e
         obj_script GAU, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 255
                 wait 24
-                action 9
+                action NEAR_FATAL
                 end
 _ca2b6e:
         if_switch $02FC=0, _ca2b80
         obj_script GOGO, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 255
                 wait 40
-                action 9
+                action NEAR_FATAL
                 wait 160
                 dir LEFT
                 end
 _ca2b80:
         if_switch $02FD=0, _ca2b8f
         obj_script UMARO, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 255
                 wait 64
-                action 9
+                action NEAR_FATAL
                 end
 _ca2b8f:
         fade_in
@@ -6587,35 +6587,35 @@ _ca2b8f:
                 ; _for a while longer_
         wait_2s
         obj_script CELES
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_30f
         obj_script EDGAR
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         dlg DLG_3039
                 ; Just a little longer_
         obj_script EDGAR
-                action 35
+                action HEAD_TURNED
                 end
         wait_90f
         obj_script CELES
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
         wait_30f
         loop 4
                 obj_script CELES
-                        action 21 | ACTION_H_FLIP
+                        action EYES_CLOSED_RIGHT
                         end
                 obj_script CELES
                         dir RIGHT
                         end
                 end_loop
         obj_script SETZER, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_3040
                 ; Where's TERRA!?
@@ -6633,21 +6633,21 @@ _ca2b8f:
                 move DOWN, 1
                 dir RIGHT
                 wait 3
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
                 move UP, 1
                 move RIGHT, 1
                 wait 6
-                action 35
+                action HEAD_TURNED
                 wait 3
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 6
-                action 35
+                action HEAD_TURNED
                 wait 10
                 anim_off
                 jump_low
                 dir DOWN
-                action 31
+                action SURPRISED
                 wait 10
                 dir LEFT
                 anim_on
@@ -6667,7 +6667,7 @@ _ca2b8f:
                 move LEFT, 4
                 move UP, 1
                 move LEFT, 5
-                action 9
+                action NEAR_FATAL
                 end
         wait_obj CAMERA
         pass_off TERRA
@@ -6687,20 +6687,20 @@ _ca2b8f:
         obj_script SETZER
                 speed NORMAL
                 move UP, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script EDGAR, ASYNC
                 dir UP
                 end
         wait_2s
         obj_script TERRA
-                action 9
+                action NEAR_FATAL
                 wait 10
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 6
                 dir DOWN
                 wait 8
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_3042
                 ; TERRA: Thank you,
@@ -6709,15 +6709,15 @@ _ca2b8f:
         obj_script SETZER
                 dir RIGHT
                 wait 8
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 4
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 6
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         dlg DLG_3043
                 ; SETZER: Didn't I say it before?! This is the world's fastest ship!
@@ -6726,7 +6726,7 @@ _ca2b8f:
                 end
         wait_45f
         obj_script TERRA
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         fade_out
         wait_fade
@@ -6747,13 +6747,13 @@ _ca2b8f:
                 speed SLOW
                 move LEFT, 1
                 move UP, 2
-                action 33
+                action HEAD_DOWN_UP
                 wait 12
                 move DOWN, 3
                 move LEFT, 1
                 move DOWN, 1
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         obj_script CAMERA, ASYNC
@@ -7118,9 +7118,9 @@ _ca2daa:
         wait_1s
         loop 4
                 obj_script TERRA
-                        action 25
+                        action WAVING_1_DOWN
                         wait 1
-                        action 26
+                        action WAVING_2_DOWN
                         wait 1
                         end
                 end_loop
@@ -7131,9 +7131,9 @@ _ca2daa:
                 end
         obj_script TERRA, ASYNC
 _ca2eb6:
-                action 29
+                action LAUGHING_1
                 wait 2
-                action 30
+                action LAUGHING_2
                 wait 2
                 branch _ca2eb6
                 end
@@ -7141,7 +7141,7 @@ _ca2eb6:
         obj_script STRAGO, ASYNC
                 dir DOWN
                 wait 6
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
 _ca2ecd:
@@ -7153,7 +7153,7 @@ _ca2ecd:
                 jump_high
                 dir DOWN
                 wait 6
-                action 30
+                action LAUGHING_2
                 end
 _ca2edf:
         wait_obj CAMERA
@@ -7226,36 +7226,36 @@ _ca2f3b:
                 end
         obj_script NPC_13, ASYNC
 _ca2f46:
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 1
                 branch _ca2f46
                 end
         obj_script NPC_11, ASYNC
 _ca2f51:
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 wait 1
-                action 28 | ACTION_H_FLIP
+                action WAVING_2_UP_FLIP
                 wait 1
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 wait 1
-                action 28 | ACTION_H_FLIP
+                action WAVING_2_UP_FLIP
                 wait 1
                 move RIGHT, 2
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 wait 1
-                action 28 | ACTION_H_FLIP
+                action WAVING_2_UP_FLIP
                 wait 1
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 wait 1
-                action 28 | ACTION_H_FLIP
+                action WAVING_2_UP_FLIP
                 wait 1
                 move LEFT, 2
                 branch _ca2f51
                 end
         obj_script NPC_12, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         wait_15f 10
         call _ca36ee
@@ -7344,9 +7344,9 @@ _ca2f51:
                 move UP_LEFT
                 move UP, 2
                 wait 8
-                action 33
+                action HEAD_DOWN_UP
                 wait 10
-                action 16
+                action CASTING_1
                 end
         wait_1s
         obj_script CELES
@@ -7355,7 +7355,7 @@ _ca2f51:
         wait_1s
         loop 3
                 obj_script CELES
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script CELES
                         dir LEFT
@@ -7372,7 +7372,7 @@ _ca2f51:
                 move LEFT, 1
                 move DOWN, 1
                 wait 10
-                action 35
+                action HEAD_TURNED
                 end
 _ca3078:
         if_switch $02F5=0, _ca3084
@@ -7390,9 +7390,9 @@ _ca3084:
                 move UP, 2
                 wait 5
 _ca3094:
-                action 36
+                action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
                 branch _ca3094
                 end
@@ -7403,14 +7403,14 @@ _ca309d:
                 wait 22
                 dir RIGHT
                 wait 6
-                action 31
+                action SURPRISED
                 wait 2
                 dir RIGHT
                 end
         wait_30f
         loop 5
                 obj_script EDGAR
-                        action 21 | ACTION_H_FLIP
+                        action EYES_CLOSED_RIGHT
                         end
                 obj_script EDGAR
                         dir RIGHT
@@ -7418,14 +7418,14 @@ _ca309d:
                 end_loop
         wait_2s
         obj_script CELES
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         if_switch $02F1=0, _ca30cc
         obj_script LOCKE, ASYNC
                 wait 3
-                action 22
+                action ARMS_UP_DOWN
                 wait 3
-                action 36
+                action WAGGING_FINGER_1
                 end
 _ca30cc:
         wait_2s
@@ -7476,7 +7476,7 @@ _ca30cc:
         if_switch $02F1=0, _ca313b
         obj_script LOCKE, ASYNC
                 pos {18, 10}
-                action 35
+                action HEAD_TURNED
                 end
 _ca313b:
         obj_script EDGAR, ASYNC
@@ -7490,7 +7490,7 @@ _ca313b:
         if_switch $02F8=0, _ca3156
         obj_script RELM, ASYNC
                 pos {17, 6}
-                action 29
+                action LAUGHING_1
                 end
 _ca3156:
         obj_script TERRA
@@ -7502,22 +7502,22 @@ _ca3156:
         obj_script SABIN, ASYNC
                 speed NORMAL
                 move UP, 3
-                action 27
+                action WAVING_1_UP
                 end
 _ca316a:
         wait_1s
         obj_script EDGAR
                 dir DOWN
                 wait 4
-                action 22
+                action ARMS_UP_DOWN
                 wait 3
-                action 24
+                action ANGRY
                 end
         wait_15f 2
         if_switch $02F8=0, _ca3196
         loop 2
                 obj_script RELM
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script RELM
                         dir LEFT
@@ -7538,7 +7538,7 @@ _ca3196:
         obj_script SABIN, ASYNC
                 move LEFT, 1
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 end
         obj_script EDGAR
                 dir LEFT
@@ -7674,7 +7674,7 @@ _ca3196:
         if_switch $02F1=0, _ca3299
         obj_script LOCKE, ASYNC
                 pos {18, 10}
-                action 35
+                action HEAD_TURNED
                 end
 _ca3299:
         if_switch $02F5=0, _ca32ae
@@ -7682,9 +7682,9 @@ _ca3299:
                 pos {15, 6}
                 dir UP
 _ca32a5:
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 1
                 branch _ca32a5
                 end
@@ -7728,14 +7728,14 @@ _ca32ae:
                 end
         wait_4s
         obj_script TERRA
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 10
                 dir LEFT
                 end
         wait_2s
         loop 3
                 obj_script TERRA
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script TERRA
                         dir LEFT
@@ -7743,7 +7743,7 @@ _ca32ae:
                 end_loop
         wait_2s
         obj_script TERRA
-                action 15
+                action JUMPING
                 end
         wait_1s
         wait_obj CAMERA
@@ -8312,7 +8312,7 @@ _ca3638:
         if_switch $02F1=0, _ca366d
         obj_script LOCKE, ASYNC
                 pos {18, 10}
-                action 35
+                action HEAD_TURNED
                 end
 _ca366d:
         if_switch $02F5=0, _ca367a
@@ -8385,9 +8385,9 @@ _ca36b1:
                 end
         wait_30f
         obj_script SETZER, ASYNC
-                action 15
+                action JUMPING
                 wait 6
-                action 10
+                action READY
                 end
         obj_script CAMERA, ASYNC
                 speed NORMAL
@@ -8493,13 +8493,13 @@ _ca375e:
         if_switch $02F1=0, _ca376b
         obj_script LOCKE, ASYNC
                 pos {19, 9}
-                action 9
+                action NEAR_FATAL
                 end
 _ca376b:
         if_switch $02F2=0, _ca3778
         obj_script CYAN, ASYNC
                 pos {18, 7}
-                action 10
+                action READY
                 end
 _ca3778:
         if_switch $02F5=0, _ca3785
@@ -8517,19 +8517,19 @@ _ca3792:
         if_switch $02F8=0, _ca379f
         obj_script RELM, ASYNC
                 pos {22, 8}
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
 _ca379f:
         if_switch $02FA=0, _ca37ac
         obj_script MOG, ASYNC
                 pos {25, 9}
-                action 9
+                action NEAR_FATAL
                 end
 _ca37ac:
         if_switch $02FB=0, _ca37b9
         obj_script GAU, ASYNC
                 pos {24, 6}
-                action 9
+                action NEAR_FATAL
                 end
 _ca37b9:
         if_switch $02FC=0, _ca37c6
@@ -8988,11 +8988,11 @@ _ca39e8:
                 end
         return
         obj_script NPC_1
-                action 29
+                action LAUGHING_1
                 end
         wait 8
         obj_script NPC_1
-                action 30
+                action LAUGHING_2
                 end
         wait 8
         return
@@ -9167,21 +9167,21 @@ _ca3ac0:
 _ca3ace:
         obj_script TERRA
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9189,21 +9189,21 @@ _ca3ace:
 _ca3ae8:
         obj_script LOCKE
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9211,21 +9211,21 @@ _ca3ae8:
 _ca3b02:
         obj_script EDGAR
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9233,21 +9233,21 @@ _ca3b02:
 _ca3b1c:
         obj_script CELES
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9255,21 +9255,21 @@ _ca3b1c:
 _ca3b36:
         obj_script SABIN
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9277,21 +9277,21 @@ _ca3b36:
 _ca3b50:
         obj_script CYAN
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9299,21 +9299,21 @@ _ca3b50:
 _ca3b6a:
         obj_script SHADOW
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9321,21 +9321,21 @@ _ca3b6a:
 _ca3b84:
         obj_script STRAGO
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9343,21 +9343,21 @@ _ca3b84:
 _ca3b9e:
         obj_script RELM
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9365,21 +9365,21 @@ _ca3b9e:
 _ca3bb8:
         obj_script SETZER
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9387,21 +9387,21 @@ _ca3bb8:
 _ca3bd2:
         obj_script MOG
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9409,21 +9409,21 @@ _ca3bd2:
 _ca3bec:
         obj_script GAU
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9431,21 +9431,21 @@ _ca3bec:
 _ca3c06:
         obj_script GOGO
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9453,21 +9453,21 @@ _ca3c06:
 _ca3c20:
         obj_script UMARO
                 speed FASTEST
-                action 31
+                action SURPRISED
                 anim_off
                 move UP_LEFT, 2
                 move LEFT_LEFT_UP
                 move LEFT, 1
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move DOWN_LEFT, 2
                 speed SLOW
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 12
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2993, TEXT_ONLY
                 ; It's enough if people are able to experience the joy that each day can bring!
@@ -9484,7 +9484,7 @@ _ca3c3a:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9502,7 +9502,7 @@ _ca3c4e:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9520,7 +9520,7 @@ _ca3c62:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9538,7 +9538,7 @@ _ca3c76:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9556,7 +9556,7 @@ _ca3c8a:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9574,7 +9574,7 @@ _ca3c9e:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9592,7 +9592,7 @@ _ca3cb2:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9610,7 +9610,7 @@ _ca3cc6:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9628,7 +9628,7 @@ _ca3cda:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9646,7 +9646,7 @@ _ca3cee:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9664,7 +9664,7 @@ _ca3d02:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9682,7 +9682,7 @@ _ca3d16:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9700,7 +9700,7 @@ _ca3d2a:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9718,7 +9718,7 @@ _ca3d3e:
                 speed NORMAL
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 4
                 anim_on
@@ -9990,9 +9990,9 @@ _ca3f83:
                 ; Nothing scared her_
         wait_1s
         obj_script SETZER
-                action 27
+                action WAVING_1_UP
                 wait 8
-                action 28
+                action WAVING_2_UP
                 end
         switch $00CB=1
         sfx SFX::FLOOR_SWITCH
@@ -10002,9 +10002,9 @@ _ca3f83:
         obj_script SETZER
                 dir DOWN
                 wait 6
-                action 35
+                action HEAD_TURNED
                 wait 4
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_2460
                 ; SETZER: Could be anything lurking down here, so keep your eyes peeled!
@@ -10223,7 +10223,7 @@ _ca4131:
                 ; ERAUQS SI DLROW EHT
         switch $0112=1
         obj_script SLOT_1
-                action 33
+                action HEAD_DOWN_UP
                 end
         fade_out_song $10
         wait_song
@@ -10440,7 +10440,7 @@ _ca422e:
                 speed NORMAL
                 jump_high
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 anim_off
                 speed SLOW
                 end
@@ -10465,12 +10465,12 @@ _ca4259:
                 move UP, 3
                 end
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 anim_off
                 speed SLOW
                 move UP, 3
                 wait 1
-                action 23
+                action ARMS_UP_UP
                 speed NORMAL
                 jump_high
                 move UP, 2
@@ -10506,7 +10506,7 @@ _ca4299:
                 speed NORMAL
                 jump_low
                 move RIGHT, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_off
                 speed SLOW
                 end
@@ -10518,7 +10518,7 @@ _ca4299:
                 move RIGHT, 7
                 move UP, 3
                 wait 2
-                action 23
+                action ARMS_UP_UP
                 speed NORMAL
                 jump_high
                 move UP, 2
@@ -10541,7 +10541,7 @@ _ca42c0:
                 speed NORMAL
                 jump_low
                 move DOWN, 1
-                action 9
+                action NEAR_FATAL
                 anim_off
                 speed SLOW
                 end
@@ -10553,7 +10553,7 @@ _ca42c0:
                 move DOWN, 3
                 move LEFT, 7
                 wait 2
-                action 15
+                action JUMPING
                 speed NORMAL
                 jump_low
                 move LEFT, 1
@@ -10587,9 +10587,9 @@ _ca42f1:
         call _cac7fe, 2
         wait_15f
         obj_script SLOT_1
-                action 35
+                action HEAD_TURNED
                 wait 4
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         battle 85
@@ -10599,9 +10599,9 @@ _ca42f1:
         obj_script SLOT_1
                 dir UP
                 wait 6
-                action 27
+                action WAVING_1_UP
                 wait 4
-                action 28
+                action WAVING_2_UP
                 end
         sfx SFX::FLOOR_SWITCH
         shake ALL, 2, 0
@@ -10675,7 +10675,7 @@ _ca435d:
         obj_script NPC_2, ASYNC
                 dir DOWN
                 wait 8
-                action 24
+                action ANGRY
                 end
         wait_15f
         dlg DLG_2465, {TEXT_ONLY, BOTTOM}
@@ -10757,9 +10757,9 @@ _ca44ba:
         wait_30f
         obj_script NPC_4, ASYNC
 _ca44e0:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _ca44e0
                 end
@@ -10837,9 +10837,9 @@ _ca4502:
         call _ca48a4
         obj_script SETZER, ASYNC
 _ca4576:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _ca4576
                 end
@@ -10854,9 +10854,9 @@ _ca4576:
         obj_script SETZER
                 dir LEFT
                 wait 8
-                action 15
+                action JUMPING
                 wait 4
-                action 10
+                action READY
                 end
         dlg DLG_2468, BOTTOM
                 ; SETZER: There's nothing like flying!
@@ -10887,7 +10887,7 @@ _ca4576:
                 ; DARYL: Or do you like chewing on my wake!
         loop 3
                 obj_script SETZER
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script SETZER
                         dir LEFT
@@ -10898,7 +10898,7 @@ _ca4576:
                 speed NORMAL
                 move UP, 1
                 move UP_LEFT
-                action 27
+                action WAVING_1_UP
                 end
         obj_script NPC_14, ASYNC
                 speed FASTER
@@ -10971,9 +10971,9 @@ _ca4576:
                 ; I'm going to break every record!
                 ; I'll be known as the woman who flew closest to the stars!
         obj_script SETZER
-                action 15
+                action JUMPING
                 wait 5
-                action 10
+                action READY
                 end
         dlg DLG_2474
                 ; SETZER: Be back before sunset! I'll be waiting for you on our hill.
@@ -11040,11 +11040,11 @@ _ca4685:
                 speed SLOW
                 dir LEFT
                 wait 12
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 16
                 move DOWN, 1
                 wait 20
-                action 35
+                action HEAD_TURNED
                 end
         wait_2s
         loop 17
@@ -11121,9 +11121,9 @@ _ca46ff:
                 ; SETZER: I restored the craft, and then put it to rest down here.
         wait_45f
         obj_script EDGAR
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 8
-                action 35
+                action HEAD_TURNED
                 end
         wait_45f
         dlg DLG_2477
@@ -11131,11 +11131,11 @@ _ca46ff:
         fade_out_song $40
         wait_1s
         obj_script SETZER
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 10
                 dir RIGHT
                 wait 8
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 16
@@ -11162,9 +11162,9 @@ _ca46ff:
                 speed NORMAL
                 move LEFT, 5
                 wait 8
-                action 15
+                action JUMPING
                 wait 4
-                action 10
+                action READY
                 end
         bg_anim_rate 0, 32
         bg_anim_rate 1, 32
@@ -11193,14 +11193,14 @@ _ca46ff:
                 ; EDGAR: The Falcon's going to give us one last chance at that guy_
         wait_1s
         obj_script SETZER
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_2479
                 ; SETZER: But first we need to find our friends!
         obj_script EDGAR
                 move LEFT, 1
                 wait 6
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 3
                 dir LEFT
                 end
@@ -11228,13 +11228,13 @@ _ca46ff:
                 end
         wait_30f
         obj_script CELES
-                action 31
+                action SURPRISED
                 wait 10
                 speed NORMAL
                 move DOWN_LEFT, 2
                 move DOWN, 1
                 wait 6
-                action 35
+                action HEAD_TURNED
                 end
         obj_script EDGAR, ASYNC
                 dir DOWN
@@ -11282,7 +11282,7 @@ _ca46ff:
         wait_1s
         loop 3
                 obj_script CELES
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script CELES
                         dir LEFT
@@ -11292,7 +11292,7 @@ _ca46ff:
         obj_script CELES
                 dir UP
                 wait 4
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2482
                 ; CELES: SETZER!
@@ -11303,7 +11303,7 @@ _ca46ff:
         obj_script CELES
                 dir DOWN
                 wait 8
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         fade_out 2
@@ -11400,7 +11400,7 @@ _ca48d6:
         load_map 10, {14, 6}, LEFT, {ASYNC, Z_UPPER, NO_FADE_IN}
         obj_script SLOT_1
                 pos {14, 0}
-                action 11
+                action HIT
                 anim_off
                 speed FAST
                 layer 2
@@ -11408,11 +11408,11 @@ _ca48d6:
         fade_in
         obj_script SLOT_1, ASYNC
                 move DOWN, 6
-                action 31
+                action SURPRISED
                 speed NORMAL
                 jump_high
                 move RIGHT, 2
-                action 40
+                action DEAD_HORZ
                 wait 8
                 anim_on
                 dir DOWN
@@ -11828,12 +11828,12 @@ _ca4c0d:
                 dir RIGHT
                 end
         obj_script NPC_2, ASYNC
-                action 25
+                action WAVING_1_DOWN
                 wait 4
-                action 26
+                action WAVING_2_DOWN
                 wait 4
                 move RIGHT, 3
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_3, ASYNC
                 move RIGHT, 3
@@ -11853,67 +11853,67 @@ _ca4c0d:
         obj_script NPC_6, ASYNC
                 move LEFT_LEFT_DOWN
                 wait 3
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_7, ASYNC
                 wait 4
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
-                action 10
+                action READY
                 end
         obj_script NPC_8, ASYNC
                 move LEFT_LEFT_DOWN
-                action 24
+                action ANGRY
                 end
         wait_fade
         wait_1s
         flash WHITE
         obj_script NPC_1, ASYNC
                 anim_off
-                action 31
+                action SURPRISED
                 speed NORMAL
                 jump_high
                 move LEFT, 2
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_2, ASYNC
                 jump_high
                 dir DOWN
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 end
         obj_script NPC_3, ASYNC
                 speed FASTER
-                action 11
+                action HIT
                 anim_off
                 move UP_LEFT
-                action 31
+                action SURPRISED
                 wait 3
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_5, ASYNC
                 anim_off
-                action 31
+                action SURPRISED
                 jump_high
                 move UP, 2
-                action 23
+                action ARMS_UP_UP
                 end
         obj_script NPC_6, ASYNC
-                action 31
+                action SURPRISED
                 anim_off
                 speed SLOWER
                 move RIGHT, 1
                 end
         obj_script NPC_7, ASYNC
-                action 9
+                action NEAR_FATAL
                 wait 6
                 move UP_LEFT, 2
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_8, ASYNC
 _ca4e75:
-                action 31
+                action SURPRISED
                 wait 1
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 branch _ca4e75
                 end
@@ -11926,12 +11926,12 @@ _ca4e75:
         wait_1s
         scroll_bg BG2, {-4, 0}, ALT
         obj_script NPC_7, ASYNC
-                action 15
+                action JUMPING
                 end
         obj_script NPC_8, ASYNC
                 speed FASTER
                 anim_off
-                action 11
+                action HIT
                 move DOWN_LEFT
                 move DOWN, 3
                 hide_obj
@@ -11939,16 +11939,16 @@ _ca4e75:
         wait_15f
         scroll_bg BG2, {0, 0}, ALT
         obj_script NPC_7, ASYNC
-                action 23
+                action ARMS_UP_UP
                 wait 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script NPC_2, ASYNC
                 speed FASTER
                 move RIGHT_UP_UP
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 move RIGHT_DOWN_DOWN
-                action 40
+                action DEAD_HORZ
                 end
         wait_15f
         scroll_bg BG2, {32, 0}, ALT
@@ -11956,7 +11956,7 @@ _ca4e75:
         wait_15f
         scroll_bg BG2, {0, 0}, ALT
         obj_script NPC_6, ASYNC
-                action 40
+                action DEAD_HORZ
                 speed FASTER
                 move LEFT_LEFT_DOWN, 3
                 end
@@ -12010,16 +12010,16 @@ _ca4f10:
         wait_30f
         obj_script NPC_2, ASYNC
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 move LEFT_DOWN_DOWN, 2
                 move DOWN, 2
                 speed NORMAL
-                action 31
+                action SURPRISED
                 jump_high
                 move LEFT, 2
                 speed FASTER
-                action 10
+                action READY
                 move DOWN, 8
                 end
         wait_4s
@@ -12093,7 +12093,7 @@ _ca4f10:
         show_obj NPC_5
         delete_obj NPC_4
         obj_script NPC_5, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
 _ca4fd7:
         sfx 18
@@ -12126,9 +12126,9 @@ _ca4fd7:
                 jump_high
                 move DOWN, 1
 _ca50fb:
-                action 35
+                action HEAD_TURNED
                 wait 3
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 3
                 branch _ca50fb
                 end
@@ -12136,10 +12136,10 @@ _ca50fb:
                 move RIGHT, 1
                 end
         obj_script NPC_12, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_11, ASYNC
-                action 40
+                action DEAD_HORZ
                 anim_off
                 move DOWN_RIGHT
                 end
@@ -12148,40 +12148,40 @@ _ca50fb:
                 wait 2
                 move DOWN, 1
                 wait 8
-                action 10
+                action READY
                 end
         obj_script NPC_13, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 wait 3
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         scroll_bg BG2, {2, -12}, ALT
         wait_30f
         obj_script NPC_12, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script NPC_1, ASYNC
                 speed FAST
                 move RIGHT_DOWN_DOWN
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script NPC_9, ASYNC
                 anim_off
                 speed FASTER
-                action 23
+                action ARMS_UP_UP
                 move DOWN, 1
                 end
         wait_15f 5
         obj_script NPC_9, ASYNC
-                action 11
+                action HIT
                 move DOWN, 4
                 speed NORMAL
                 jump_high
                 move LEFT_LEFT_DOWN
-                action 40
+                action DEAD_HORZ
                 speed FAST
                 move DOWN_LEFT
                 move LEFT_DOWN_DOWN
@@ -12193,7 +12193,7 @@ _ca50fb:
         call _cad033, 2
         obj_script NPC_8, ASYNC
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 move RIGHT, 4
                 move RIGHT_RIGHT_DOWN
@@ -12204,7 +12204,7 @@ _ca50fb:
                 end
         obj_script NPC_1, ASYNC
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 speed FASTER
                 move DOWN_RIGHT
                 move RIGHT_DOWN_DOWN
@@ -12214,15 +12214,15 @@ _ca50fb:
         obj_script SLOT_1, ASYNC
                 speed NORMAL
                 anim_off
-                action 11
+                action HIT
                 move RIGHT, 1
                 speed FASTER
-                action 23
+                action ARMS_UP_UP
                 move DOWN, 2
                 end
         obj_script NPC_13, ASYNC
                 move RIGHT_RIGHT_DOWN
-                action 40
+                action DEAD_HORZ
                 end
         wait_15f
         sfx 18
@@ -12249,7 +12249,7 @@ _ca5189:
                 hide_obj
                 end
         obj_script NPC_13
-                action 11
+                action HIT
                 anim_off
                 jump_high
                 move DOWN, 1
@@ -12340,7 +12340,7 @@ _ca5189:
         wait_obj NPC_1
         wait_2s
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -12420,7 +12420,7 @@ _ca5189:
                 ; The few others who washed up here with us passed away of boredom and despair.
         wait_45f
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         dlg DLG_2173
@@ -12621,9 +12621,9 @@ _ca5419:
                 anim_off
                 speed SLOWER
                 move LEFT, 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 24
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_15f 10
         dlg DLG_2190
@@ -12631,7 +12631,7 @@ _ca5419:
                 ; You promised you'd stay here with me!!
         wait_90f
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 2
@@ -12643,9 +12643,9 @@ _ca5419:
                 end
         obj_script SLOT_1, ASYNC
 _ca5461:
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 1
                 branch _ca5461
                 end
@@ -12653,12 +12653,12 @@ _ca5461:
                 ; CELES: Granddad, ANSWER ME!
                 ; Tell me you're just joking!
         obj_script SLOT_1
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_2s
         lock_camera
         obj_script SLOT_1, ASYNC
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 anim_off
                 speed SLOWER
                 move DOWN_LEFT
@@ -12712,7 +12712,7 @@ _ca54ba:
         call _cacad9
         wait_15f 10
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 16
                 anim_off
                 speed SLOW
@@ -12726,17 +12726,17 @@ _ca54ba:
                 ; The world's slowly ebbing away_
         wait_4s
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 24
-                action 35
+                action HEAD_TURNED
                 wait 32
                 move LEFT, 1
                 wait 32
-                action 21
+                action EYES_CLOSED_LEFT
                 wait 96
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
-                action 9
+                action NEAR_FATAL
                 end
         wait_15f
         loop 31
@@ -12745,7 +12745,7 @@ _ca54ba:
                 end_loop
         lock_camera
         obj_script SLOT_1, ASYNC
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 anim_off
                 speed SLOWER
                 move DOWN_LEFT
@@ -12816,7 +12816,7 @@ _ca54ba:
         unlock_camera
         load_map 400, {10, 9}, UP, {ASYNC, Z_UPPER, NO_FADE_IN}
         obj_script SLOT_1, ASYNC
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         wait_6s
@@ -12839,7 +12839,7 @@ _ca54ba:
                 end
         wait_4s
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         wait_2s
         dlg DLG_2197
@@ -12858,14 +12858,14 @@ _ca54ba:
         hide_obj NPC_6
         wait_1s
         obj_script SLOT_1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_45f
         call _cac807, 3
         wait_1s
         call _cacad9
         obj_script SLOT_1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2198
                 ; CELES: A bandana???
@@ -12885,7 +12885,7 @@ _ca54ba:
                 end
         wait_4s
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_90f
         dlg DLG_2199
@@ -12906,7 +12906,7 @@ _ca55e5:
         return
 _ca55e9:
         obj_script SLOT_1
-                action 16
+                action CASTING_1
                 end
         sfx SFX::MAGICITE_PICKUP
         give_genju PALIDOR
@@ -12950,7 +12950,7 @@ _ca55fe:
         wait_1s
         play_song DAY_AFTER
         obj_script SLOT_1
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 wait 10
@@ -12962,7 +12962,7 @@ _ca5633:
         pass_off SLOT_1
         pass_off NPC_4
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 wait 5
                 dir DOWN
                 anim_off
@@ -12987,9 +12987,9 @@ _ca5633:
         show_obj NPC_2
         obj_script SLOT_1, ASYNC
 _ca5666:
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 1
                 branch _ca5666
                 end
@@ -13000,7 +13000,7 @@ _ca5679:
         fade_in 8
         wait_6s
         obj_script SLOT_1
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_3s
         dlg DLG_2194, TEXT_ONLY
@@ -13014,7 +13014,7 @@ _ca5686:
                 dir LEFT
                 wait 6
                 speed SLOWER
-                action 9
+                action NEAR_FATAL
                 anim_off
                 end
         loop 4
@@ -13084,7 +13084,7 @@ _ca5686:
         set_script_mode WORLD
         show_obj
         show_minimap
-        action 40
+        action DEAD_HORZ
         end
         set_script_mode EVENT
 
@@ -13231,21 +13231,21 @@ _ca57b3:
                 pos {104, 12}
                 anim_off
                 speed SLOW
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 end
         show_obj SHADOW
         obj_script SHADOW
                 move RIGHT, 2
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 speed NORMAL
                 move RIGHT_RIGHT_DOWN
                 speed FAST
                 move RIGHT_RIGHT_DOWN
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_30f
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 3
                 dir LEFT
                 end
@@ -13261,11 +13261,11 @@ _ca57b3:
                 move RIGHT, 1
                 move DOWN_RIGHT, 3
                 wait 3
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 9
+                action NEAR_FATAL
                 wait 1
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 anim_off
                 jump_high
                 move DOWN, 2
@@ -13278,10 +13278,10 @@ _ca5806:
         lock_camera
         obj_script SLOT_1, ASYNC
                 speed NORMAL
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 2
                 speed FASTER
@@ -13627,7 +13627,7 @@ _ca5a16:
         clr_overlay
         obj_script SLOT_1
                 layer 2
-                action 31
+                action SURPRISED
                 anim_off
                 speed NORMAL
                 jump_high
@@ -13646,12 +13646,12 @@ _ca5a42:
         lock_camera
         obj_script SLOT_1, ASYNC
                 pos {4, 0}
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 move DOWN, 8
                 move DOWN, 4
-                action 9
+                action NEAR_FATAL
                 end
         fade_in
         obj_script CAMERA, ASYNC
@@ -13663,7 +13663,7 @@ _ca5a42:
         unlock_camera
         wait_1s
         obj_script SLOT_1
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 anim_on
                 end
         dlg DLG_2129
@@ -13702,13 +13702,13 @@ _ca5a8a:
                 end
         fade_in
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 move DOWN, 6
-                action 11
+                action HIT
                 speed NORMAL
                 jump_high
                 move RIGHT, 2
-                action 40
+                action DEAD_HORZ
                 anim_on
                 layer 0
                 end
@@ -13720,9 +13720,9 @@ _ca5abe:
         obj_script SLOT_1, ASYNC
                 layer 2
                 speed NORMAL
-                action 9
+                action NEAR_FATAL
                 wait 2
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 move DOWN, 2
                 speed FAST
@@ -13750,7 +13750,7 @@ _ca5ade:
         fade_in
         wait_1s
         obj_script SETZER
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_2121, BOTTOM
                 ; SETZER: The Empire's after the sealed gate! They're looking for some statues or something.
@@ -13759,7 +13759,7 @@ _ca5ade:
                 speed SLOW
                 move LEFT, 2
                 wait 8
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_30f
         fade_out_song $20
@@ -13799,9 +13799,9 @@ _ca5ade:
         obj_script NPC_7, ASYNC
                 speed NORMAL
 _ca5b43:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _ca5b43
                 end
@@ -13815,9 +13815,9 @@ _ca5b43:
         dlg DLG_2124
                 ; GESTAHL: Come quickly!
         obj_script NPC_7
-                action 31
+                action SURPRISED
                 wait 4
-                action 24 | ACTION_H_FLIP
+                action ANGRY_FLIP
                 end
         wait_45f
         obj_script NPC_10, ASYNC
@@ -13848,14 +13848,14 @@ _ca5b43:
                 move RIGHT, 1
                 move DOWN, 2
                 wait 10
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         wait_3s
         obj_script CELES
                 speed NORMAL
                 move DOWN_RIGHT
                 move DOWN, 1
-                action 35
+                action HEAD_TURNED
                 end
         wait_45f
         fade_out_song $80
@@ -13865,7 +13865,7 @@ _ca5b43:
                 ; The world is groaning in pain_
         wait_30f
         obj_script TERRA
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_30f
         sfx 165
@@ -13907,14 +13907,14 @@ _ca5b43:
         flash WHITE
         sfx 18
         obj_script NPC_1, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 end
         call _ca5dcc
         wait_1s
         obj_script NPC_5, ASYNC
                 jump_high
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 end
         shake ALL, 3, 0
         sfx 18
@@ -13927,19 +13927,19 @@ _ca5b43:
         obj_script NPC_2, ASYNC
                 jump_high
                 move RIGHT, 1
-                action 45
+                action NPC_SPECIAL_2
                 end
         obj_script NPC_1, ASYNC
                 anim_off
                 jump_low
                 move DOWN_LEFT
-                action 45
+                action NPC_SPECIAL_2
                 wait 10
                 dir DOWN
                 wait 16
                 dir RIGHT
                 wait 16
-                action 45
+                action NPC_SPECIAL_2
                 speed FASTER
                 move LEFT_DOWN_DOWN
                 layer 3
@@ -13954,7 +13954,7 @@ _ca5b43:
         obj_script NPC_4, ASYNC
                 jump_high
                 move UP_LEFT
-                action 45
+                action NPC_SPECIAL_2
                 wait 8
                 dir UP
                 wait 3
@@ -13969,9 +13969,9 @@ _ca5b43:
                 jump_high
                 move DOWN, 2
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 wait 24
-                action 11
+                action HIT
                 layer 3
                 speed FASTER
                 move DOWN, 8
@@ -14068,9 +14068,9 @@ _ca5b43:
                 dir DOWN
                 wait 3
 _ca5d0e:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _ca5d0e
                 end
@@ -14096,14 +14096,14 @@ _ca5d0e:
                 end
         obj_script CELES
                 pos {17, 7}
-                action 35
+                action HEAD_TURNED
                 end
         fade_in
         wait_2s
         obj_script STRAGO
                 dir DOWN
                 wait 10
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_2119, BOTTOM
                 ; STRAGO: The beginning of all magic_
@@ -14407,7 +14407,7 @@ _ca5fba:
         obj_script EDGAR
                 dir DOWN
                 wait 16
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_149
                 ; EDGAR: I guess I have no choice_
@@ -14451,7 +14451,7 @@ _ca5fba:
                 speed NORMAL
                 jump_low
                 move LEFT, 1
-                action 9
+                action NEAR_FATAL
                 end
         wait_15f
         sfx 184
@@ -14474,7 +14474,7 @@ _ca5fba:
         obj_script EDGAR, ASYNC
                 wait 2
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 jump_high
                 move LEFT, 2
                 anim_on
@@ -14526,10 +14526,10 @@ _ca5fba:
         wait_15f
         loop 4
                 obj_script NPC_5
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_5
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_30f
@@ -14635,7 +14635,7 @@ _ca5fba:
                 move DOWN, 1
                 wait 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed NORMAL
                 jump_high
                 move DOWN, 2
@@ -14654,7 +14654,7 @@ _ca5fba:
                 move DOWN, 1
                 wait 3
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed NORMAL
                 jump_high
                 move DOWN, 2
@@ -14695,7 +14695,7 @@ _ca5fba:
                 end
         loop 2
                 obj_script NPC_5
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_5
                         dir DOWN
@@ -14709,7 +14709,7 @@ _ca5fba:
                 anim_off
                 jump_low
                 dir DOWN
-                action 31
+                action SURPRISED
                 end
         shake ALL, 3, 1
         wait_90f
@@ -14840,7 +14840,7 @@ _ca5fba:
                 end
         obj_script NPC_5
                 pos {31, 49}
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_2s
@@ -14850,21 +14850,21 @@ _ca5fba:
         shake ALL, 0, 2
         wait_1s
         obj_script NPC_5
-                action 9
+                action NEAR_FATAL
                 wait 4
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_30f
         loop 4
                 obj_script NPC_5
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_5
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_5
-                action 24
+                action ANGRY
                 end
         wait_30f
         dlg DLG_158, BOTTOM
@@ -14874,9 +14874,9 @@ _ca5fba:
                 dir DOWN
                 wait 2
 _ca632f:
-                action 25 | ACTION_H_FLIP
+                action WAVING_1_DOWN_FLIP
                 wait 1
-                action 26 | ACTION_H_FLIP
+                action WAVING_2_DOWN_FLIP
                 wait 1
                 branch _ca632f
                 end
@@ -14969,7 +14969,7 @@ _ca632f:
 _ca63bf:
                 jump_low
                 dir RIGHT
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 3
                 branch _ca63bf
                 end
@@ -15306,7 +15306,7 @@ _ca6623:
                 end
         loop 3
                 obj_script LOCKE
-                        action 33
+                        action HEAD_DOWN_UP
                         wait 1
                         dir UP
                         wait 4
@@ -15331,13 +15331,13 @@ _ca6623:
                 dir RIGHT
                 end
         obj_script NPC_1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 8
                 dir LEFT
                 end
         wait_1s
         obj_script TERRA
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         obj_script TERRA
                 dir RIGHT
@@ -15355,7 +15355,7 @@ _ca6623:
                 ; TERRA: Who do you think you are?
         wait_30f
         obj_script NPC_1
-                action 33
+                action HEAD_DOWN_UP
                 end
         dlg DLG_66
                 ; MAN: Oh_sorry!
@@ -15368,16 +15368,16 @@ _ca6623:
                 dir RIGHT
                 end
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_1
                 dir DOWN
                 end
         obj_script NPC_1
-                action 37
+                action WAGGING_FINGER_2
                 end
         obj_script NPC_1
-                action 36
+                action WAGGING_FINGER_1
                 end
         dlg DLG_67
                 ; MAN: How rude of me to turn my back to a lady!
@@ -15430,14 +15430,14 @@ _ca6623:
                 end
         loop 3
                 obj_script NPC_1, ASYNC
-                        action 34 | ACTION_H_FLIP
+                        action HEAD_DOWN_RIGHT
                         wait 1
                         dir RIGHT
                         wait 3
                         end
                 obj_script LOCKE
                         wait 3
-                        action 34
+                        action HEAD_DOWN_LEFT
                         wait 1
                         dir LEFT
                         end
@@ -15460,7 +15460,7 @@ _ca6623:
         obj_script NPC_1
                 move RIGHT, 1
                 move DOWN, 4
-                action 35
+                action HEAD_TURNED
                 end
         char_party LOCKE, 0
         delete_obj LOCKE
@@ -15480,9 +15480,9 @@ _ca6623:
                 ; Is it because of my_abilities?
         loop 4
                 obj_script NPC_1
-                        action 36
+                        action WAGGING_FINGER_1
                         wait 1
-                        action 37
+                        action WAGGING_FINGER_2
                         wait 1
                         end
                 end_loop
@@ -15500,7 +15500,7 @@ _ca6623:
                 end
         obj_script NPC_1
                 wait 16
-                action 35
+                action HEAD_TURNED
                 end
         call _cac7fe, 2
         wait_30f
@@ -15510,7 +15510,7 @@ _ca6623:
         obj_script NPC_1
                 move DOWN, 1
                 wait 16
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_77
                 ; EDGAR: Guess my technique's getting a bit rusty_
@@ -15522,7 +15522,7 @@ _ca6623:
         obj_script TERRA
                 dir DOWN
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_79
                 ; TERRA: Hmm_I suppose a normal girl would have found him dashing.
@@ -15895,7 +15895,7 @@ _ca6a28:
 _ca6a2c:
         if_switch $026E=1, EventReturn
         obj_script NPC_8
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         dlg DLG_2381
@@ -15950,7 +15950,7 @@ _ca6a48:
         wait_30f
         obj_script NPC_11
                 move UP, 3
-                action 10
+                action READY
                 end
         dlg DLG_2384
                 ; GERAD: You guys get in there while I keep this thing busy!
@@ -15986,9 +15986,9 @@ _ca6a48:
                 ; CELES: EDGAR!
         wait_15f 10
         obj_script NPC_11
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
-                action 36
+                action WAGGING_FINGER_1
                 end
         dlg DLG_2386
                 ; EDGAR: What're ya waiting for, CELES?
@@ -16048,11 +16048,11 @@ _ca6a48:
         obj_script NPC_11
                 speed FAST
                 move UP, 4
-                action 27
+                action WAVING_1_UP
                 wait 10
-                action 31
+                action SURPRISED
                 wait 4
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_2389, BOTTOM
                 ; EDGAR: Uh, oh_!
@@ -16060,19 +16060,19 @@ _ca6a48:
         obj_script NPC_11, ASYNC
                 move LEFT, 2
                 move UP, 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script SLOT_2, ASYNC
                 speed FAST
                 move UP, 8
                 move LEFT, 2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script SLOT_1
                 speed FAST
                 move UP, 6
                 move RIGHT, 2
-                action 9
+                action NEAR_FATAL
                 end
         wait_90f
         mod_bg_tiles BG1, {29, 5}, {1, 2}
@@ -16177,7 +16177,7 @@ _ca6b93:
         if_case CHAR::SABIN, _ca6bf7
         play_song FIGARO
         obj_script NPC_11
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
@@ -16211,15 +16211,15 @@ _ca6bf3:
         return
 _ca6bf7:
         obj_script SLOT_2, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 2
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 2
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 6
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         wait_30f
         dlg DLG_2394
@@ -16332,7 +16332,7 @@ _ca6c85:
                 end
         obj_script SLOT_1
                 speed NORMAL
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_15f 5
         obj_script NPC_4
@@ -16351,7 +16351,7 @@ _ca6c85:
         wait_45f
         loop 2
                 obj_script NPC_4
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script NPC_4
                         dir LEFT
@@ -16373,7 +16373,7 @@ _ca6c85:
                 ; YOUTH: Brother!
         wait_45f
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_90f
         obj_script NPC_4, ASYNC
@@ -16394,7 +16394,7 @@ _ca6c85:
                 move UP, 1
                 end
         obj_script NPC_4
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script NPC_4
                 dir DOWN
@@ -16469,7 +16469,7 @@ _ca6d63:
         play_song KEFKA
         wait_30f
         obj_script NPC_1
-                action 24 | ACTION_H_FLIP
+                action ANGRY_FLIP
                 end
         dlg DLG_117
                 ; EDGAR: Probably Kefka!
@@ -16514,9 +16514,9 @@ _ca6d63:
                 wait 10
                 dir DOWN
                 wait 6
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
-                action 9
+                action NEAR_FATAL
                 end
         wait_2s
         dlg DLG_118, BOTTOM
@@ -16527,32 +16527,32 @@ _ca6d63:
                 anim_off
                 jump_low
                 dir DOWN
-                action 25
+                action WAVING_1_DOWN
                 jump_high
                 dir DOWN
-                action 25
+                action WAVING_1_DOWN
                 wait 1
-                action 24
+                action ANGRY
                 end
         dlg DLG_119, BOTTOM
                 ; KEFKA: EDGAR, you pinhead!
                 ; Why do you have to live in the middle of nowhere?
                 ; These recon jobs are the pits!
         obj_script NPC_5
-                action 35
+                action HEAD_TURNED
                 wait 6
-                action 25
+                action WAVING_1_DOWN
                 wait 1
-                action 26
+                action WAVING_2_DOWN
                 end
         dlg DLG_120, BOTTOM
                 ; KEFKA: Ahem_there's SAND on my boots!
         obj_script NPC_5
-                action 10
+                action READY
                 end
         wait_15f
         obj_script NPC_6, ASYNC
-                action 31
+                action SURPRISED
                 wait 4
                 dir DOWN
                 wait 4
@@ -16561,7 +16561,7 @@ _ca6d63:
                 end
         wait_15f
         obj_script NPC_7
-                action 31
+                action SURPRISED
                 wait 4
                 dir DOWN
                 wait 2
@@ -16574,21 +16574,21 @@ _ca6d63:
                 end
         loop 8
                 obj_script NPC_6
-                        action 27 | ACTION_H_FLIP
+                        action WAVING_1_UP_FLIP
                         end
                 obj_script NPC_6
-                        action 28 | ACTION_H_FLIP
+                        action WAVING_2_UP_FLIP
                         end
                 sfx 13
                 end_loop
         obj_script NPC_6
                 move UP_LEFT
-                action 26
+                action WAVING_2_DOWN
                 speed NORMAL
                 end
         wait_15f
         obj_script NPC_5, ASYNC
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         obj_script NPC_7
                 move DOWN_LEFT
@@ -16596,16 +16596,16 @@ _ca6d63:
                 end
         loop 8
                 obj_script NPC_7
-                        action 27
+                        action WAVING_1_UP
                         end
                 obj_script NPC_7
-                        action 28
+                        action WAVING_2_UP
                         end
                 sfx 13
                 end_loop
         obj_script NPC_7
                 move UP_RIGHT
-                action 26
+                action WAVING_2_DOWN
                 speed NORMAL
                 end
         wait_30f
@@ -16616,7 +16616,7 @@ _ca6d63:
                 ; SOLDIERS: Yes, Sir!
                 ; All set, Sir!
         obj_script NPC_5
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -16624,15 +16624,15 @@ _ca6d63:
         sfx SFX::KEFKA_LAUGH
         loop 8
                 obj_script NPC_5
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_5
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_15f 10
         obj_script NPC_5
-                action 24
+                action ANGRY
                 end
         dlg DLG_122, BOTTOM
                 ; KEFKA: Idiots!
@@ -16761,7 +16761,7 @@ _ca6f02:
                 ; She_merely stole something of minor value.
                 ; Is she here?
         obj_script EDGAR
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_126
                 ; EDGAR: That's a tough one!
@@ -16861,11 +16861,11 @@ _ca6f60:
                 end
         obj_script EDGAR, ASYNC
                 move DOWN, 3
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script NPC_12
                 move DOWN, 3
-                action 35
+                action HEAD_TURNED
                 end
         wait_45f
         dlg DLG_130, BOTTOM
@@ -16913,9 +16913,9 @@ _ca6f60:
         call _cad04f
         wait_15f
         obj_script NPC_12, ASYNC
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 26
+                action WAVING_2_DOWN
                 wait 4
                 move DOWN, 8
                 move DOWN, 3
@@ -16959,14 +16959,14 @@ _ca700e:
                 ; I am his contact with that group_
         wait_30f
         obj_script NPC_4
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_136
                 ; LOCKE: The old man you met in Narshe is one of us.
                 ; TERRA: Empire_but I'm a soldier of the Empire_!
         wait_30f
         obj_script TERRA
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_15f
         obj_script NPC_4
@@ -16979,9 +16979,9 @@ _ca700e:
                 ; Things are different now.
         loop 3
                 obj_script TERRA
-                        action 35
+                        action HEAD_TURNED
                         wait 1
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         wait 1
                         end
                 end_loop
@@ -16994,7 +16994,7 @@ _ca700e:
                 move RIGHT, 1
                 end
         obj_script TERRA
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_139
                 ; LOCKE: I can't tell you what to do.
@@ -17014,7 +17014,7 @@ _ca700e:
         obj_script TERRA
                 dir DOWN
                 wait 48
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         sort_obj
         wait_2s
@@ -17047,7 +17047,7 @@ _ca700e:
                 move LEFT, 1
                 move DOWN, 4
                 wait 8
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_141
                 ; EDGAR: _?
@@ -17282,7 +17282,7 @@ _ca71d9:
                 wait 24
                 dir LEFT
                 wait 26
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 16
                 end
         dlg DLG_951
@@ -17424,7 +17424,7 @@ _ca71d9:
                 move UP, 4
                 move RIGHT, 1
                 move UP, 3
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 4
                 dir LEFT
                 wait 6
@@ -17483,9 +17483,9 @@ _ca71d9:
                 wait 8
                 dir LEFT
                 wait 16
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 10
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_30f
         dlg DLG_958, BOTTOM
@@ -17495,7 +17495,7 @@ _ca71d9:
                 ; They went and told you_
         obj_script SABIN, ASYNC
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script EDGAR
                 move LEFT_DOWN_DOWN
@@ -17520,7 +17520,7 @@ _ca71d9:
                 ; MATRON: Your father_
                 ; He just uttered his last wish that Figaro be divided between you_
         obj_script SABIN
-                action 24
+                action ANGRY
                 end
         dlg DLG_961, BOTTOM
                 ; SABIN: This is NONSENSE!!
@@ -17528,9 +17528,9 @@ _ca71d9:
                 ; And the only thing on your minds is ``Who's going to be the next king?!''
                 ; You're all pathetic!
         obj_script SABIN
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 7
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         dlg DLG_962, BOTTOM
@@ -17538,12 +17538,12 @@ _ca71d9:
                 ; MATRON: That's not_
         obj_script SABIN
                 speed NORMAL
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 dir RIGHT
                 move UP, 1
                 anim_off
-                action 27
+                action WAVING_1_UP
                 end
         pass_off NPC_22
         pass_off SABIN
@@ -17574,7 +17574,7 @@ _ca71d9:
         obj_script EDGAR
                 dir RIGHT
                 wait 10
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_2s
         obj_script SABIN
@@ -17584,7 +17584,7 @@ _ca71d9:
                 dir UP
                 end
         obj_script SABIN
-                action 27
+                action WAVING_1_UP
                 end
         obj_script CAMERA, ASYNC
                 speed NORMAL
@@ -17653,7 +17653,7 @@ _ca71d9:
                 ; EDGAR: _freedom_
         wait_1s
         obj_script EDGAR
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_1s
         dlg DLG_966
@@ -17674,7 +17674,7 @@ _ca71d9:
         wait_15f
         loop 3
                 obj_script SABIN
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script SABIN
                         dir LEFT
@@ -17686,11 +17686,11 @@ _ca71d9:
                 ; We'll choose whichever path we want, without any regrets. Okay?
         wait_90f
         obj_script SABIN
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_1s
         obj_script EDGAR
-                action 10
+                action READY
                 end
         wait_30f
         dlg DLG_969
@@ -17699,7 +17699,7 @@ _ca71d9:
                 dir RIGHT
                 end
         obj_script EDGAR
-                action 27
+                action WAVING_1_UP
                 anim_off
                 end
         obj_script EDGAR, ASYNC
@@ -17741,7 +17741,7 @@ _ca71d9:
         hide_obj NPC_3
         obj_script SABIN, ASYNC
                 pos {101, 42}
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script EDGAR
                 pos {106, 43}
@@ -17751,7 +17751,7 @@ _ca71d9:
         dlg DLG_970
                 ; EDGAR: And then, you opted for your freedom.
         obj_script SABIN
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 end
@@ -17787,14 +17787,14 @@ _ca71d9:
                 ; I often wonder if he'd be proud of me_
         wait_1s
         obj_script SABIN
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         dlg DLG_973
                 ; SABIN: Don't you ever doubt that!
         wait_1s
         obj_script EDGAR
-                action 35
+                action HEAD_TURNED
                 end
         wait_30f
         dlg DLG_974
@@ -17802,11 +17802,11 @@ _ca71d9:
                 ; SABIN: Where has the time gone_?
         wait_30f
         obj_script EDGAR
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_15f 5
         obj_script SABIN
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_4s
         obj_script EDGAR
@@ -17816,7 +17816,7 @@ _ca71d9:
                 dir LEFT
                 end
         obj_script SABIN
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_975
                 ; EDGAR: Here's to a couple of confused grownups!
@@ -17830,9 +17830,9 @@ _ca71d9:
         obj_script EDGAR
                 move DOWN, 3
                 wait 10
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
-                action 25
+                action WAVING_1_DOWN
                 end
         wait_obj CAMERA
         dlg DLG_976
@@ -17840,18 +17840,18 @@ _ca71d9:
         obj_script SABIN
                 move DOWN, 3
                 wait 1
-                action 25
+                action WAVING_1_DOWN
                 end
         dlg DLG_977
                 ; SABIN: _to Mom_
                 ; _and to Figaro.
         wait_15f
         obj_script SABIN
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_1s
         obj_script EDGAR
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         fade_out 2
@@ -17956,7 +17956,7 @@ _ca75ee:
                 end
         wait_30f
         obj_script EDGAR
-                action 33
+                action HEAD_DOWN_UP
                 wait 3
                 dir UP
                 end
@@ -18099,9 +18099,9 @@ _ca76e1:
         obj_script NPC_6
                 move DOWN, 2
                 wait 8
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 7
-                action 35
+                action HEAD_TURNED
                 wait 8
                 move UP, 3
                 end
@@ -18204,7 +18204,7 @@ _ca7782:
         obj_script NPC_1, ASYNC
                 dir DOWN
                 wait 2
-                action 45
+                action NPC_SPECIAL_2
                 wait 4
                 dir DOWN
                 wait 8
@@ -18352,7 +18352,7 @@ _ca77ec:
                 speed NORMAL
                 jump_high
                 move RIGHT, 2
-                action 9
+                action NEAR_FATAL
                 wait 8
                 dir LEFT
                 end
@@ -18447,7 +18447,7 @@ _ca78dc:
                 ; These double my walking speed!
         obj_script NPC_5
                 anim_off
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 speed FAST
                 move LEFT, 1
                 speed SLOW
@@ -18459,11 +18459,11 @@ _ca78dc:
         sfx 96
         shake ALL, 3, 0
         obj_script NPC_5
-                action 31
+                action SURPRISED
                 anim_off
                 jump_low
                 move LEFT, 2
-                action 40
+                action DEAD_HORZ
                 anim_on
                 wait 12
                 move RIGHT, 1
@@ -18708,7 +18708,7 @@ _ca7a90:
                 ; SABIN, where's Vargas?
                 ; Where's my husband?
         obj_script SABIN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_30f
         dlg DLG_187
@@ -18728,7 +18728,7 @@ _ca7a90:
                 ; SABIN: For 10 years you've treated me like a son. I am eternally grateful!
         obj_script SABIN
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 4
@@ -18972,7 +18972,7 @@ _ca7c3a:
                 ; Wait a minute_!
         wait_15f
         obj_script EDGAR
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         lock_camera
         obj_script CAMERA
@@ -19021,7 +19021,7 @@ _ca7c3a:
                 ; EDGAR: That's SHADOW_!
                 ; He'd slit his mama's throat for a nickel!
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -19147,7 +19147,7 @@ _ca7d7d:
 _ca7d97:
         obj_script NPC_7
                 move LEFT, 4
-                action 28
+                action WAVING_2_UP
                 end
         wait_30f
         mod_bg_tiles BG2, {71, 36}, {1, 2}
@@ -19190,13 +19190,13 @@ _ca7dde:
                 move LEFT, 3
                 dir UP
                 wait 2
-                action 27
+                action WAVING_1_UP
                 wait 2
-                action 28
+                action WAVING_2_UP
                 wait 2
-                action 27
+                action WAVING_1_UP
                 wait 2
-                action 28
+                action WAVING_2_UP
                 end
         mod_bg_tiles BG2, {71, 36}, {1, 2}
                 .byte $BA
@@ -19391,7 +19391,7 @@ _ca7f19:
         return
 _ca7f39:
         obj_script SLOT_1
-                action 26 | ACTION_H_FLIP
+                action WAVING_2_DOWN_FLIP
                 end
         dlg DLG_178
                 ; Took the Clock Key!
@@ -19400,14 +19400,14 @@ _ca7f39:
         obj_script NPC_2
                 anim_off
                 speed NORMAL
-                action 14
+                action ATTACKING_3
                 jump_low
                 move LEFT, 1
                 end
         obj_script SLOT_1
                 anim_off
                 speed FAST
-                action 31
+                action SURPRISED
                 move LEFT, 2
                 anim_on
                 wait 16
@@ -19420,7 +19420,7 @@ _ca7f39:
         obj_script NPC_2
                 dir LEFT
                 wait 8
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 5
                 speed SLOWER
                 move RIGHT, 1
@@ -19585,7 +19585,7 @@ _ca808d:
                 ; CELES: Be polite now_
                 ; EDGAR!
         obj_script NPC_6
-                action 35
+                action HEAD_TURNED
                 end
         create_obj NPC_7
         show_obj NPC_7
@@ -19678,7 +19678,7 @@ _ca80ef:
                 wait 2
                 dir DOWN
                 wait 6
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_237, BOTTOM
                 ; EDGAR: Hm_
@@ -19724,7 +19724,7 @@ _ca814e:
                 wait 1
                 dir DOWN
                 wait 16
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_241, BOTTOM
                 ; EDGAR: SABIN_he was_here?!
@@ -19768,9 +19768,9 @@ _ca8198:
         dlg DLG_242
                 ; EDGAR: What the_
         obj_script EDGAR
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 4
-                action 36
+                action WAGGING_FINGER_1
                 wait 10
                 dir UP
                 end
@@ -19778,11 +19778,11 @@ _ca8198:
                 ; EDGAR: You know this guy?
         obj_script NPC_1
                 wait 1
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -19826,13 +19826,13 @@ _ca820f:
         obj_script NPC_1, ASYNC
                 pos {25, 17}
                 wait 16
-                action 9
+                action NEAR_FATAL
                 wait 1
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 9
+                action NEAR_FATAL
                 wait 1
-                action 22
+                action ARMS_UP_DOWN
                 wait 8
                 move UP, 2
                 pos {0, 0}
@@ -19852,7 +19852,7 @@ _ca8230:
                 speed FAST
                 move DOWN, 1
                 speed NORMAL
-                action 9
+                action NEAR_FATAL
                 wait 4
                 move RIGHT, 1
                 jump_high
@@ -19919,7 +19919,7 @@ _ca828f:
         obj_script TERRA, ASYNC
                 speed FAST
                 anim_off
-                action 40
+                action DEAD_HORZ
                 move DOWN, 2
                 speed NORMAL
                 move DOWN, 1
@@ -19928,25 +19928,25 @@ _ca828f:
         obj_script LOCKE, ASYNC
                 speed FAST
                 anim_off
-                action 31
+                action SURPRISED
                 move LEFT_DOWN_DOWN
-                action 40
+                action DEAD_HORZ
                 anim_on
                 speed NORMAL
                 end
         obj_script EDGAR
                 speed FAST
                 anim_off
-                action 31
+                action SURPRISED
                 move LEFT_LEFT_DOWN
-                action 9
+                action NEAR_FATAL
                 anim_on
                 speed NORMAL
                 end
         wait_1s
         obj_script LOCKE
                 wait 6
-                action 9
+                action NEAR_FATAL
                 wait 8
                 dir UP
                 end
@@ -19967,11 +19967,11 @@ _ca828f:
         obj_script LOCKE
                 dir UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 end
         wait_45f
         obj_script TERRA
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_250
                 ; LOCKE: You were shadowing us earlier, right?
@@ -19996,7 +19996,7 @@ _ca828f:
         hide_obj NPC_1
         obj_script SABIN
                 pos {22, 32}
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 speed NORMAL
                 end
         show_obj SABIN
@@ -20009,18 +20009,18 @@ _ca828f:
         dlg DLG_254
                 ; EDGAR: SABIN!!!
         obj_script SABIN
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 12
                 dir DOWN
                 end
         wait_30f
         loop 2
                 obj_script SABIN
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script SABIN
                         dir DOWN
@@ -20028,32 +20028,32 @@ _ca828f:
                 end_loop
         wait_1s
         obj_script SABIN
-                action 35
+                action HEAD_TURNED
                 end
         wait_2s
         dlg DLG_255
                 ; SABIN: Big brother?
         obj_script LOCKE, ASYNC
                 move UP_RIGHT
-                action 27
+                action WAVING_1_UP
                 wait 2
-                action 28
+                action WAVING_2_UP
                 wait 4
                 move LEFT, 1
                 move UP, 1
                 dir RIGHT
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 3
-                action 35
+                action HEAD_TURNED
                 wait 5
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_obj LOCKE
         wait_30f
@@ -20064,11 +20064,11 @@ _ca828f:
                 move UP, 2
                 dir LEFT
                 wait 4
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -20085,7 +20085,7 @@ _ca828f:
                 end
         obj_script SABIN
                 move DOWN, 2
-                action 24
+                action ANGRY
                 end
         wait_30f
         dlg DLG_258
@@ -20093,11 +20093,11 @@ _ca828f:
         wait_30f
         loop 6
                 obj_script SABIN
-                        action 29
+                        action LAUGHING_1
                         end
                 wait 2
                 obj_script SABIN
-                        action 30
+                        action LAUGHING_2
                         end
                 wait 2
                 end_loop
@@ -20117,7 +20117,7 @@ _ca828f:
                 ; SABIN: To the Returner hideout, no doubt?
         wait_15f
         obj_script EDGAR
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -20135,11 +20135,11 @@ _ca828f:
                 ; At this rate, Figaro will be reduced to a puppet state.
         loop 3
                 obj_script EDGAR
-                        action 35
+                        action HEAD_TURNED
                         end
                 wait 6
                 obj_script EDGAR
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 wait 6
                 end_loop
@@ -20155,18 +20155,18 @@ _ca828f:
                 ; The Empire's going to pay for what it has done_
         wait_30f
         obj_script SABIN
-                action 9
+                action NEAR_FATAL
                 wait 3
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 24
+                action ANGRY
                 end
         wait_30f
         dlg DLG_263, BOTTOM
                 ; SABIN: Think a ``bear'' like me could help you in your fight?
         wait_30f
         obj_script EDGAR
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         dlg DLG_264, BOTTOM
@@ -20183,13 +20183,13 @@ _ca828f:
                 end
         wait_90f
         obj_script SABIN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
         wait_45f
         obj_script EDGAR
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -20338,12 +20338,12 @@ _ca84ab:
                 layer 2
                 move LEFT, 4
                 move UP, 1
-                action 10
+                action READY
                 speed NORMAL
                 wait 40
                 dir DOWN
                 wait 16
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script NPC_18
                 speed FAST
@@ -20433,7 +20433,7 @@ _ca85ba:
         obj_gfx LOCKE, LOCKE
         obj_pal LOCKE, LOCKE
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 end
         fade_in 2
         wait_4s
@@ -20474,7 +20474,7 @@ _ca8608:
         switch $0103=0
 _ca8617:
         obj_script NPC_1
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -20562,13 +20562,13 @@ _ca869c:
 _ca86a4:
         wait_30f
         obj_script SLOT_1
-                action 23
+                action ARMS_UP_UP
                 wait 16
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         dlg DLG_377
@@ -20639,14 +20639,14 @@ _ca86a4:
                 ; GUARD: So, the mighty CELES has fallen!
         loop 7
                 obj_script NPC_3
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_3
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_15f
         dlg DLG_381, BOTTOM
@@ -20656,10 +20656,10 @@ _ca86a4:
                 dir RIGHT
                 wait 1
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 end
         obj_script NPC_1
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_382, BOTTOM
                 ; CELES: Isn't it true Kefka's going to poison the people of Doma, to the east?
@@ -20675,9 +20675,9 @@ _ca86a4:
                 end
         call _ca880f
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 wait 6
-                action 40
+                action DEAD_HORZ
                 end
         sfx 199
         wait_45f
@@ -20685,7 +20685,7 @@ _ca86a4:
                 ; GUARD: I'd hate to be in your shoes tomorrow!
         obj_script NPC_3
                 move DOWN, 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
         dlg DLG_384
@@ -20693,9 +20693,9 @@ _ca86a4:
         obj_script NPC_2
                 dir DOWN
                 wait 2
-                action 25
+                action WAVING_1_DOWN
                 wait 1
-                action 26
+                action WAVING_2_DOWN
                 end
         dlg DLG_385
                 ; Yes, Sir!
@@ -20725,7 +20725,7 @@ _ca87a7:
         obj_script LOCKE
                 pos {38, 11}
                 layer 2
-                action 40
+                action DEAD_HORZ
                 end
 _ca87b0:
         fade_in
@@ -20749,9 +20749,9 @@ _ca87b0:
                 wait 2
                 dir DOWN
                 wait 4
-                action 25
+                action WAVING_1_DOWN
                 wait 1
-                action 26
+                action WAVING_2_DOWN
                 end
         obj_script CAMERA
                 speed SLOW
@@ -20772,18 +20772,18 @@ _ca87e7:
                 anim_off
                 move DOWN, 1
                 wait 6
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         wait_obj CAMERA
         sfx 40
         obj_script LOCKE
                 speed FAST
-                action 22
+                action ARMS_UP_DOWN
                 jump_low
                 move LEFT, 1
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 anim_on
                 layer 0
                 end
@@ -20794,7 +20794,7 @@ _ca880a:
         return
 _ca880f:
         obj_script NPC_3
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         wait_45f
         obj_script NPC_3
@@ -20806,14 +20806,14 @@ _ca880f:
                 dir RIGHT
                 end
         obj_script NPC_3
-                action 27
+                action WAVING_1_UP
                 end
         obj_script NPC_3, ASYNC
                 dir LEFT
                 end
         sfx 51
         obj_script NPC_1
-                action 11
+                action HIT
                 wait 8
                 dir DOWN
                 end
@@ -20842,9 +20842,9 @@ _ca8842:
         loop 3
                 obj_script LOCKE
                         speed NORMAL
-                        action 27
+                        action WAVING_1_UP
                         wait 1
-                        action 28
+                        action WAVING_2_UP
                         wait 1
                         end
                 end_loop
@@ -20859,9 +20859,9 @@ _ca8842:
                 end
         sfx 199
         obj_script NPC_1
-                action 40
+                action DEAD_HORZ
                 wait 10
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_90f
         if_switch $0103=0, _ca888a
@@ -20890,9 +20890,9 @@ _ca889d:
                 goto _ca88b6
         wait_30f
         obj_script LOCKE
-                action 9
+                action NEAR_FATAL
                 wait 2
-                action 22
+                action ARMS_UP_DOWN
                 end
         call _ca867c
         wait_30f
@@ -20900,7 +20900,7 @@ _ca88b6:
         obj_script LOCKE
                 dir DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_390, BOTTOM
                 ; LOCKE: I'm with the Returners. Name's LOCKE.
@@ -20913,7 +20913,7 @@ _ca88b6:
                 end
         wait_1s
         obj_script NPC_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 8
                 dir RIGHT
                 end
@@ -20923,13 +20923,13 @@ _ca88b6:
         obj_script NPC_1
                 dir DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 end
         dlg DLG_392
@@ -20944,7 +20944,7 @@ _ca88b6:
                 wait 2
                 move DOWN, 1
                 wait 12
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_393
                 ; CELES: I'm grateful, but_
@@ -20961,7 +20961,7 @@ _ca88b6:
         wait_45f
         loop 2
                 obj_script NPC_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_1
                         dir DOWN
@@ -20973,7 +20973,7 @@ _ca88b6:
                 end
         wait_45f
         obj_script LOCKE
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -20987,7 +20987,7 @@ _ca88b6:
                 dir DOWN
                 end
         obj_script LOCKE
-                action 20
+                action WINKING_DOWN
                 wait 1
                 dir DOWN
                 wait 8
@@ -20995,9 +20995,9 @@ _ca88b6:
                 move LEFT, 1
                 dir UP
                 wait 4
-                action 28
+                action WAVING_2_UP
                 wait 1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_396
                 ; LOCKE: Let's go!
@@ -21008,7 +21008,7 @@ _ca88b6:
                 ; CELES: Wait.
         wait_30f
         obj_script LOCKE
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
         dlg DLG_400, BOTTOM
@@ -21050,7 +21050,7 @@ _ca8973:
                 ; LOCKE: You remind me of someone_
         wait_45f
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 8
                 dir RIGHT
                 end
@@ -21206,7 +21206,7 @@ _ca8a6f:
                 end
         wait_1s
         obj_script EDGAR
-                action 33
+                action HEAD_DOWN_UP
                 end
         dlg DLG_944
                 ; EDGAR: If only SABIN were here_
@@ -21383,7 +21383,7 @@ _ca8be3:
         wait_15f 10
         set_parent_map 0, {117, 61}, RIGHT
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 layer 0
                 end
         fade_in 2
@@ -21544,7 +21544,7 @@ _ca8d22:
                 end
         obj_script SLOT_3, ASYNC
                 pos {9, 17}
-                action 9
+                action NEAR_FATAL
                 end
         obj_script SABIN
                 pos {20, 18}
@@ -21606,7 +21606,7 @@ _ca8d22:
         obj_script SABIN
                 speed NORMAL
                 wait 10
-                action 35
+                action HEAD_TURNED
                 wait 8
                 move LEFT_LEFT_UP
                 move LEFT, 2
@@ -21615,7 +21615,7 @@ _ca8d22:
                 ; SABIN: I hope the others arrived safely!
         wait_30f
         obj_script CYAN
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
         dlg DLG_829
@@ -21633,11 +21633,11 @@ _ca8d22:
 _ca8ed7:
         obj_script GAU
                 speed NORMAL
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 6
                 jump_low
                 move RIGHT, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_830
                 ; GAU: Me hope so, too_
@@ -21875,11 +21875,11 @@ _ca9009:
                 end
         obj_script CYAN
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move DOWN_LEFT
                 wait 6
-                action 24
+                action ANGRY
                 end
         wait_1s
         dlg DLG_816, BOTTOM
@@ -21910,17 +21910,17 @@ _ca9009:
                 end
         obj_script CYAN
                 layer 2
-                action 31
+                action SURPRISED
                 jump_high
                 dir DOWN
-                action 31
+                action SURPRISED
                 wait 6
                 jump_low
                 dir DOWN
-                action 31
+                action SURPRISED
                 wait 6
                 speed FAST
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 move LEFT, 4
                 end
         sfx 219
@@ -21928,23 +21928,23 @@ _ca9009:
                 speed SLOW
                 jump_high
                 move RIGHT, 1
-                action 40
+                action DEAD_HORZ
                 anim_on
                 speed NORMAL
                 layer 0
                 end
         obj_script SLOT_2, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SLOT_3, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SLOT_4, ASYNC
-                action 31
+                action SURPRISED
                 end
         wait_30f
         obj_script CYAN
-                action 9
+                action NEAR_FATAL
                 wait 1
                 dir DOWN
                 end
@@ -21953,14 +21953,14 @@ _ca9009:
                 end
         loop 5
                 obj_script CYAN
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script CYAN
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script CYAN
-                action 31
+                action SURPRISED
                 end
         dlg DLG_818, BOTTOM
                 ; CYAN: B_baby?!
@@ -21981,19 +21981,19 @@ _ca9009:
                 end
         loop 6
                 obj_script CYAN
-                        action 31
+                        action SURPRISED
                         end
                 obj_script CYAN
                         dir DOWN
                         end
                 end_loop
         obj_script CYAN, ASYNC
-                action 24
+                action ANGRY
                 wait 32
 _ca90f5:
                 dir RIGHT
                 wait 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 branch _ca90f5
                 end
@@ -22019,9 +22019,9 @@ _ca9117:
         wait_1s
         obj_script SLOT_2, ASYNC
 _ca911a:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _ca911a
                 end
@@ -22081,16 +22081,16 @@ _ca915a:
                 ; CYAN: I'm not like that!
         wait_30f
         obj_script SABIN
-                action 37
+                action WAGGING_FINGER_2
                 end
         wait_30f
         dlg DLG_820, BOTTOM
                 ; SABIN: No one thinks you are. Just let it go.
         obj_script SABIN, ASYNC
 _ca917a:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _ca917a
                 end
@@ -22169,7 +22169,7 @@ _ca91da:
                 dir RIGHT
                 switch $01F1=1
 _ca91fa:
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
@@ -22204,7 +22204,7 @@ _ca921a:
                 dir DOWN
                 end
         obj_script NPC_11
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_2344
                 ; GERAD: I'll be busy getting ready for our departure to Figaro.
@@ -22224,18 +22224,18 @@ _ca921a:
         dlg DLG_2347
                 ; CELES: Only EDGAR would say, ``my lady.''
         obj_script NPC_11
-                action 31
+                action SURPRISED
                 wait 3
                 dir DOWN
                 wait 6
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_15f 8
         obj_script NPC_11, ASYNC
 _ca9256:
-                action 36
+                action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
                 branch _ca9256
                 end
@@ -22271,15 +22271,15 @@ _ca9282:
                 speed NORMAL
                 move DOWN_LEFT
                 wait 4
-                action 9
+                action NEAR_FATAL
                 wait 6
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_low
                 move DOWN, 1
                 speed FAST
                 move DOWN, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_on
                 end
         lock_camera
@@ -22297,9 +22297,9 @@ _ca9282:
         obj_script NPC_6
                 move UP, 1
                 wait 8
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
-                action 24
+                action ANGRY
                 end
         dlg DLG_2334
                 ; GERAD: Yeah, You lead the way since it's buried.
@@ -22315,7 +22315,7 @@ _ca9282:
                 move DOWN, 2
                 jump_low
                 move DOWN_LEFT
-                action 9
+                action NEAR_FATAL
                 end
         wait_2s
         switch $03FE=1
@@ -22335,7 +22335,7 @@ _ca92ca:
         set_parent_map 1, {113, 95}, UP
         if_switch $00AC=1, EventReturn
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_7, ASYNC
                 move UP, 1
@@ -22391,7 +22391,7 @@ _ca9337:
         dlg DLG_1157
                 ; IMPRESARIO: Maria!?
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 6
                 speed NORMAL
                 end
@@ -22465,7 +22465,7 @@ _ca9337:
         call _cac7fe, 3
         wait_1s
         obj_script SLOT_1
-                action 37
+                action WAGGING_FINGER_2
                 end
         wait_2s
         pass_off SLOT_1
@@ -22534,9 +22534,9 @@ _ca93fa:
                 ; He's been in a tizzy ever since that letter arrived.
         wait_1s
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 wait 4
-                action 28
+                action WAVING_2_UP
                 end
         hide_obj NPC_3
         sort_obj
@@ -22564,7 +22564,7 @@ _ca93fa:
 _ca943d:
                 dir UP
                 wait 4
-                action 33
+                action HEAD_DOWN_UP
                 wait 4
                 branch _ca943d
                 end
@@ -22648,7 +22648,7 @@ _ca943d:
                 ; That's SETZER, owner of the world's only airship.
         wait_2s
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_1167
                 ; CELES: If we could get that airship, we'd make the Empire in no time.
@@ -22817,7 +22817,7 @@ _ca95c6:
         if_switch $01B3=0, EventReturn
         call _ca961c
         obj_script SLOT_1
-                action 15
+                action JUMPING
                 jump_high
                 move LEFT, 1
                 move LEFT_LEFT_DOWN
@@ -22828,7 +22828,7 @@ _ca95dc:
         if_switch $01B1=0, EventReturn
         call _ca961c
         obj_script SLOT_1
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT, 1
                 move RIGHT_RIGHT_DOWN
@@ -22839,7 +22839,7 @@ _ca95f2:
         if_switch $01B3=0, EventReturn
         call _ca961c
         obj_script SLOT_1
-                action 15
+                action JUMPING
                 jump_low
                 move LEFT_LEFT_DOWN
                 end
@@ -22849,7 +22849,7 @@ _ca9607:
         if_switch $01B1=0, EventReturn
         call _ca961c
         obj_script SLOT_1
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_low
                 move RIGHT_RIGHT_DOWN
                 end
@@ -22857,11 +22857,11 @@ _ca9607:
         return
 _ca961c:
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 wait 1
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 9
+                action NEAR_FATAL
                 wait 4
                 anim_off
                 speed FAST
@@ -22870,14 +22870,14 @@ _ca961c:
         return
 _ca962d:
         obj_script SLOT_1
-                action 23
+                action ARMS_UP_UP
                 speed NORMAL
                 wait 4
-                action 10
+                action READY
                 jump_low
                 move UP, 1
                 layer 0
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         player_ctrl_on
@@ -22899,13 +22899,13 @@ _ca9653:
         obj_script SLOT_1
                 layer 2
                 speed NORMAL
-                action 9
+                action NEAR_FATAL
                 wait 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 3
-                action 23
+                action ARMS_UP_UP
                 speed SLOW
                 end
         obj_script NPC_1, ASYNC
@@ -22957,7 +22957,7 @@ _ca9653:
         obj_script SLOT_1
                 speed FASTER
                 move DOWN, 3
-                action 9
+                action NEAR_FATAL
                 anim_on
                 layer 0
                 speed NORMAL
@@ -23075,7 +23075,7 @@ _ca9749:
         wait_1s
         loop 2
                 obj_script NPC_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_1
                         dir DOWN
@@ -23090,7 +23090,7 @@ _ca9749:
                 end
         wait_45f
         obj_script SLOT_2, ASYNC
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         wait 1
         obj_script SLOT_2, ASYNC
@@ -23116,23 +23116,23 @@ _ca9749:
                 ; TERRA?
         wait_30f
         obj_script SLOT_1, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_15f
         obj_script SLOT_4, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_15f 5
         dlg DLG_1074, {TEXT_ONLY, BOTTOM}
                 ; RAMUH: She's scared, you know.
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 end
         obj_script SLOT_2, ASYNC
                 wait 1
-                action 31
+                action SURPRISED
                 wait 2
                 dir RIGHT
                 end
@@ -23149,7 +23149,7 @@ _ca9749:
                 hide_obj NPC_2
                 sort_obj
                 obj_script NPC_2
-                        action 0
+                        action WALKING_DOWN_1
                         end
                 show_obj NPC_2
                 sort_obj
@@ -23161,7 +23161,7 @@ _ca9749:
                 end
         loop 2
                 obj_script SLOT_4, ASYNC
-                        action 21 | ACTION_H_FLIP
+                        action EYES_CLOSED_RIGHT
                         end
                 wait 1
                 obj_script SLOT_4, ASYNC
@@ -23184,13 +23184,13 @@ _ca9749:
                 ; RAMUH: This girl is your friend?
         wait_30f
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 10
-                action 35
+                action HEAD_TURNED
                 wait 8
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 8
                 move RIGHT, 1
                 end
@@ -23212,18 +23212,18 @@ _ca9749:
         wait_45f
         loop 5
                 obj_script NPC_1
-                        action 24
+                        action ANGRY
                         end
                 obj_script NPC_1
                         dir DOWN
                         end
                 end_loop
         obj_script SLOT_1
-                action 35
+                action HEAD_TURNED
                 end
         loop 5
                 obj_script NPC_1
-                        action 24
+                        action ANGRY
                         end
                 obj_script NPC_1
                         dir DOWN
@@ -23235,20 +23235,20 @@ _ca9749:
                 end
         wait_15f 3
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SLOT_2, ASYNC
-                action 31
+                action SURPRISED
                 wait 2
                 dir LEFT
                 end
         obj_script SLOT_3, ASYNC
-                action 31
+                action SURPRISED
                 wait 4
                 dir UP
                 end
         obj_script SLOT_4, ASYNC
-                action 31
+                action SURPRISED
                 wait 3
                 dir UP
                 end
@@ -23257,11 +23257,11 @@ _ca9749:
                 layer 0
                 jump_low
                 move UP_LEFT
-                action 9
+                action NEAR_FATAL
                 wait 6
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 2
-                action 9
+                action NEAR_FATAL
                 anim_off
                 end
         wait_1s
@@ -23275,29 +23275,29 @@ _ca9749:
                 end
         obj_script NPC_1, ASYNC
                 speed FASTER
-                action 22
+                action ARMS_UP_DOWN
                 move LEFT_DOWN_DOWN
-                action 9
+                action NEAR_FATAL
                 wait 3
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 move DOWN_RIGHT, 3
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 2
-                action 23
+                action ARMS_UP_UP
                 move RIGHT_UP_UP
                 move LEFT_UP_UP
                 move UP_RIGHT, 2
-                action 9
-                action 10
+                action NEAR_FATAL
+                action READY
                 jump_low
                 move UP_LEFT
-                action 9
-                action 23
+                action NEAR_FATAL
+                action ARMS_UP_UP
                 jump_low
                 move LEFT_UP_UP
-                action 9
+                action NEAR_FATAL
                 wait 8
-                action 40
+                action DEAD_HORZ
                 end
         sfx 195
         wait_30f
@@ -23310,7 +23310,7 @@ _ca9749:
                 end
         sfx 195
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 anim_off
                 wait 4
                 dir DOWN
@@ -23329,7 +23329,7 @@ _ca9749:
                 move UP, 3
                 wait 4
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 wait 12
                 dir UP
                 wait 8
@@ -23376,9 +23376,9 @@ _ca9749:
                 case CHAR::GAU, _caacdf
                 end_case
         obj_script NPC_2
-                action 48
+                action RAMUH_STAFF_RAISED
                 wait 1
-                action 0
+                action WALKING_DOWN_1
                 end
         wait_15f
         call _caacbe, 2
@@ -23401,7 +23401,7 @@ _ca9749:
                 end
         wait_1s
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -23421,7 +23421,7 @@ _ca9749:
                 ; RAMUH: Humans and Espers can't survive together.
         wait_45f
         obj_script SLOT_1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         if_case
@@ -23441,7 +23441,7 @@ _ca9749:
                 ; We started out as friends.
                 ; Then along came the War of the Magi_
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 end
@@ -23449,7 +23449,7 @@ _ca9749:
         call _cac7fe, 2
         wait_15f
         obj_script SLOT_2, ASYNC
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         wait 1
         obj_script SLOT_2, ASYNC
@@ -23458,7 +23458,7 @@ _ca9749:
         dlg DLG_1096, BOTTOM
                 ; War of the Magi_
         obj_script SLOT_3, ASYNC
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         wait 1
         obj_script SLOT_3, ASYNC
@@ -23466,17 +23466,17 @@ _ca9749:
                 end
         wait 1
         obj_script SLOT_2, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script SLOT_1
                 move DOWN, 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_90f
         obj_script NPC_2
-                action 48
+                action RAMUH_STAFF_RAISED
                 wait 1
-                action 0
+                action WALKING_DOWN_1
                 end
         wait_1s
         dlg DLG_1097, BOTTOM
@@ -23523,11 +23523,11 @@ _ca9749:
         load_map 226, {81, 17}, DOWN, {Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
         switch $01CC=0
         obj_script NPC_2, ASYNC
-                action 49
+                action RAMUH_EYES_CLOSED
                 end
         obj_script NPC_1, ASYNC
                 pos {82, 12}
-                action 40
+                action DEAD_HORZ
                 end
         obj_script SLOT_2, ASYNC
                 pos {81, 15}
@@ -23543,7 +23543,7 @@ _ca9749:
                 end
         obj_script SLOT_1
                 pos {83, 15}
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         show_obj SLOT_1
         show_obj SLOT_2
@@ -23558,7 +23558,7 @@ _ca9749:
                 ; I fled here to avoid a similar fate.
         wait_2s
         obj_script SLOT_1
-                action 35
+                action HEAD_TURNED
                 wait 12
                 dir LEFT
                 end
@@ -23577,7 +23577,7 @@ _ca9749:
         obj_script SLOT_1
                 move UP_LEFT
                 move UP, 1
-                action 23
+                action ARMS_UP_UP
                 anim_off
                 end
         wait_2s
@@ -23595,24 +23595,24 @@ _ca9749:
                 end
         wait_1s
         obj_script SLOT_1, ASYNC
-                action 10
+                action READY
                 anim_on
                 end
         obj_script NPC_1
                 move DOWN_LEFT
-                action 21
+                action EYES_CLOSED_LEFT
                 wait 10
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         wait_2s
         obj_script NPC_2
-                action 0
+                action WALKING_DOWN_1
                 end
         dlg DLG_1103, BOTTOM
                 ; RAMUH: That's right, relax.
         wait_45f
         obj_script SLOT_2, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         obj_script SLOT_1
@@ -23632,7 +23632,7 @@ _ca9749:
                 ; ``TERRA's_an Esper?''
         wait_2s
         obj_script NPC_2
-                action 49
+                action RAMUH_EYES_CLOSED
                 end
         obj_script SLOT_4, ASYNC
                 move RIGHT, 2
@@ -23657,21 +23657,21 @@ _ca9749:
         obj_script SLOT_1
                 move LEFT_LEFT_UP
                 wait 6
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 8
                 dir LEFT
                 wait 10
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_1108, BOTTOM
                 ; ``How can we help her?''
         wait_2s
         obj_script NPC_2
-                action 0
+                action WALKING_DOWN_1
                 wait 12
-                action 48
+                action RAMUH_STAFF_RAISED
                 wait 1
-                action 0
+                action WALKING_DOWN_1
                 end
         dlg DLG_1109, BOTTOM
                 ; RAMUH: When she accepts this aspect of herself, I think she'll be all right.
@@ -23683,7 +23683,7 @@ _ca9749:
                 move RIGHT, 1
                 dir DOWN
                 wait 3
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         dlg DLG_1110, BOTTOM
@@ -23703,7 +23703,7 @@ _ca9749:
                 end_case
         wait_1s
         obj_script NPC_2
-                action 49
+                action RAMUH_EYES_CLOSED
                 end
         wait_1s
         dlg DLG_1115, BOTTOM
@@ -23715,9 +23715,9 @@ _ca9749:
                 ; ``What do you mean?''
         wait_30f
         obj_script NPC_2
-                action 48
+                action RAMUH_STAFF_RAISED
                 wait 1
-                action 0
+                action WALKING_DOWN_1
                 end
         wait_30f
         dlg DLG_1117, BOTTOM
@@ -23783,17 +23783,17 @@ _ca9749:
                 end
         obj_script NPC_4, ASYNC
                 anim_off
-                action 0
+                action WALKING_DOWN_1
                 move DOWN, 6
                 end
         obj_script NPC_5, ASYNC
                 anim_off
-                action 0
+                action WALKING_DOWN_1
                 move DOWN, 5
                 end
         obj_script NPC_6, ASYNC
                 anim_off
-                action 0
+                action WALKING_DOWN_1
                 move DOWN, 5
                 end
         wait_2s
@@ -23817,9 +23817,9 @@ _ca9749:
         wait_1s
         wait_obj CAMERA
         obj_script NPC_2
-                action 49
+                action RAMUH_EYES_CLOSED
                 wait 6
-                action 48
+                action RAMUH_STAFF_RAISED
                 end
         sfx 196
         call _cad01b
@@ -23832,13 +23832,13 @@ _ca9749:
                 move LEFT, 2
                 end
         obj_script SLOT_2, ASYNC
-                action 11
+                action HIT
                 anim_off
                 move UP_LEFT
                 anim_on
                 end
         obj_script SLOT_3, ASYNC
-                action 11
+                action HIT
                 anim_off
                 speed FAST
                 move LEFT, 1
@@ -23847,20 +23847,20 @@ _ca9749:
                 anim_on
                 end
         obj_script SLOT_4, ASYNC
-                action 10
+                action READY
                 anim_off
                 speed FAST
                 move LEFT_DOWN_DOWN
                 anim_on
                 end
         obj_script SLOT_1, ASYNC
-                action 11
+                action HIT
                 anim_off
                 speed SLOW
                 move LEFT, 1
                 anim_on
                 wait 10
-                action 9
+                action NEAR_FATAL
                 end
         call _cad033, 2
         create_obj NPC_3
@@ -23870,7 +23870,7 @@ _ca9749:
         wait_4s
         wait_obj CAMERA
         obj_script SLOT_2, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_15f 3
         obj_script SLOT_3, ASYNC
@@ -23886,10 +23886,10 @@ _ca9749:
         wait_1s
         loop 7
                 obj_script SLOT_1
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script SLOT_1
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script SLOT_1
@@ -23898,7 +23898,7 @@ _ca9749:
         wait_1s
         call _cac7fe, 3
         obj_script SLOT_2, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_2s
         pass_off SLOT_2
@@ -23917,7 +23917,7 @@ _ca9749:
                 speed SLOW
                 move RIGHT, 1
                 wait 10
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_obj CAMERA
         wait_2s
@@ -23980,7 +23980,7 @@ _ca9749:
         call _cac7fe, 2
         wait_45f
         obj_script SLOT_1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_2s
         obj_script SLOT_1
@@ -24019,7 +24019,7 @@ _ca9d14:
         create_obj NPC_4
         obj_script NPC_4
                 pos {82, 17}
-                action 50
+                action SPECIAL_ANIM_1
                 end
         show_obj NPC_4
         sort_obj
@@ -25136,7 +25136,7 @@ _caa2a2:
                 anim_off
                 speed FAST
                 move DOWN, 3
-                action 45
+                action NPC_SPECIAL_2
                 speed NORMAL
                 jump_low
                 move UP_LEFT
@@ -25158,9 +25158,9 @@ _caa2a2:
                 move DOWN, 2
                 dir LEFT
                 wait 4
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
-                action 9
+                action NEAR_FATAL
                 wait 10
                 move UP_LEFT
                 dir DOWN
@@ -25188,7 +25188,7 @@ _caa2a2:
         obj_script NPC_9, ASYNC
                 move DOWN, 1
                 move DOWN_LEFT
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script NPC_4
                 move UP, 4
@@ -25210,7 +25210,7 @@ _caa2a2:
                 end
         obj_script NPC_9, ASYNC
                 move RIGHT, 1
-                action 27
+                action WAVING_1_UP
                 end
         obj_script NPC_4
                 dir DOWN
@@ -25219,9 +25219,9 @@ _caa2a2:
         wait_1s
         obj_script NPC_9, ASYNC
 _caa452:
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 wait 4
-                action 27
+                action WAVING_1_UP
                 wait 1
                 dir LEFT
                 wait 6
@@ -25252,7 +25252,7 @@ _caa460:
         obj_script NPC_9
                 speed SLOW
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 move UP, 4
                 anim_on
                 hide_obj
@@ -25374,7 +25374,7 @@ _caa4e0:
                 ; MADUIN: Madonna!!
         obj_script SLOT_1, ASYNC
                 speed FASTER
-                action 45
+                action NPC_SPECIAL_2
                 move UP, 6
                 anim_on
                 hide_obj
@@ -25392,13 +25392,13 @@ _caa4e0:
         shake ALL, 1, 3
         pass_off NPC_2
         obj_script NPC_1, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 end
         obj_script NPC_2, ASYNC
-                action 41
+                action NPC_SPECIAL_1
                 end
         obj_script NPC_4
-                action 45
+                action NPC_SPECIAL_2
                 end
         hide_obj SLOT_1
         fade_in
@@ -25451,13 +25451,13 @@ _caa4e0:
         obj_script NPC_2
                 move RIGHT, 1
                 wait 8
-                action 42 | ACTION_H_FLIP
+                action NPC_WAVING_1_FLIP
                 wait 2
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 end
         sfx 51
         obj_script NPC_1
-                action 45
+                action NPC_SPECIAL_2
                 end
         wait_15f 10
         obj_script NPC_2
@@ -25551,7 +25551,7 @@ _caa5fb:
                 ; TERRA: That was my father_?
         wait_1s
         obj_script TERRA
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_1492
                 ; TERRA: I'm the product of an Esper and a human_
@@ -25584,7 +25584,7 @@ _caa5fb:
                 ; Maybe we should head back that way.
         wait_1s
         obj_script SLOT_1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 3
                 dir LEFT
                 end
@@ -25594,11 +25594,11 @@ _caa5fb:
                 move RIGHT, 1
                 dir DOWN
                 wait 6
-                action 25
+                action WAVING_1_DOWN
                 wait 4
-                action 26
+                action WAVING_2_DOWN
                 wait 4
-                action 36
+                action WAGGING_FINGER_1
                 end
         dlg DLG_1496
                 ; SETZER: The airship's ready!
@@ -25681,18 +25681,18 @@ _caa714:
         obj_script SETZER
                 dir DOWN
                 wait 3
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_1313, BOTTOM
                 ; SETZER: By all means!
                 ; Take a turn at the wheel!
         obj_script SETZER
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1314, BOTTOM
                 ; Operating instructions:
         obj_script SETZER, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -25778,12 +25778,12 @@ _caa78f:
                 move UP, 4
                 end
         obj_script NPC_16, ASYNC
-                action 9
+                action NEAR_FATAL
                 anim_off
                 move UP, 1
                 wait 1
                 move UP, 2
-                action 31
+                action SURPRISED
                 speed FASTER
                 move LEFT_UP_UP, 2
                 move UP, 2
@@ -25794,7 +25794,7 @@ _caa78f:
         obj_script NPC_17
                 anim_off
                 move UP, 2
-                action 11
+                action HIT
                 speed FASTER
                 move UP, 4
                 move LEFT_UP_UP
@@ -25822,7 +25822,7 @@ _caa78f:
                 speed NORMAL
                 move DOWN, 1
                 anim_off
-                action 41
+                action NPC_SPECIAL_1
                 speed SLOWER
                 move UP, 1
                 wait 8
@@ -25863,7 +25863,7 @@ _caa7f5:
         sort_obj
         sfx SFX::MAGICITE_PICKUP
         obj_script SLOT_1
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 end
         wait_30f
         dlg DLG_1133
@@ -25951,7 +25951,7 @@ _caa890:
         obj_script GAU
                 layer 2
                 pos {29, 33}
-                action 23
+                action ARMS_UP_UP
                 anim_off
                 end
 _caa8d1:
@@ -25960,7 +25960,7 @@ _caa8d1:
         create_obj SHADOW
         obj_script SHADOW
                 pos {60, 44}
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         show_obj SHADOW
 _caa8e3:
@@ -26076,16 +26076,16 @@ _caa8e3:
                 speed NORMAL
                 jump_high
                 move RIGHT_DOWN_DOWN
-                action 9
+                action NEAR_FATAL
                 wait 2
                 speed NORMAL
-                action 14
+                action ATTACKING_3
                 jump_low
                 move LEFT, 1
                 speed FAST
                 move DOWN, 8
                 pos {53, 39}
-                action 9
+                action NEAR_FATAL
                 end
 _caa9c1:
         obj_script SABIN, ASYNC
@@ -26101,7 +26101,7 @@ _caa9c1:
                 move DOWN, 1
                 move DOWN_LEFT, 2
                 wait 10
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_1s
         dlg DLG_1139, {ASYNC, BOTTOM}
@@ -26110,11 +26110,11 @@ _caa9c1:
         wait_1s
         loop 3
                 obj_script CELES
-                        action 35
+                        action HEAD_TURNED
                         end
                 wait_15f
                 obj_script CELES
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 wait_15f
                 end_loop
@@ -26130,10 +26130,10 @@ _caa9c1:
                 move UP, 1
                 move RIGHT, 4
                 move DOWN, 1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script CELES
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 move DOWN_LEFT
                 layer 3
@@ -26196,11 +26196,11 @@ _caa9c1:
                 ; EDGAR: We'd best split into 2 groups.
                 ; We still need to beef up our defenses in Narshe.
         obj_script EDGAR
-                action 35
+                action HEAD_TURNED
                 end
         wait_30f
         obj_script CYAN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
@@ -26255,17 +26255,17 @@ _caa9c1:
         wait_obj CELES
         wait_45f
         obj_script LOCKE
-                action 26
+                action WAVING_2_DOWN
                 wait 2
-                action 25
+                action WAVING_1_DOWN
                 wait 6
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1144, BOTTOM
                 ; LOCKE: Don't worry, I'll go with her.
         loop 3
                 obj_script CELES
-                        action 21 | ACTION_H_FLIP
+                        action EYES_CLOSED_RIGHT
                         end
                 obj_script CELES
                         dir RIGHT
@@ -26277,15 +26277,15 @@ _caa9c1:
         if_switch $01AB=0, _caaae5
         obj_script GAU, ASYNC
                 wait 16
-                action 22
+                action ARMS_UP_DOWN
                 jump_low
                 move DOWN, 3
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 1
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_low
                 move RIGHT, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_on
                 layer 0
                 end
@@ -26294,7 +26294,7 @@ _caaae5:
                 wait 4
                 dir RIGHT
                 wait 10
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -26319,7 +26319,7 @@ _caaae5:
         set_case PARTY_CHARS
         if_switch $01A3=0, _caab51
         obj_script SHADOW
-                action 35
+                action HEAD_TURNED
                 end
         wait_30f
         dlg DLG_1148, BOTTOM
@@ -26330,26 +26330,26 @@ _caaae5:
                 end
         loop 2
                 obj_script SHADOW
-                        action 36
+                        action WAGGING_FINGER_1
                         end
                 wait_15f
                 obj_script SHADOW
-                        action 37
+                        action WAGGING_FINGER_2
                         end
                 wait_15f
                 end_loop
         wait_1s
         obj_script SHADOW
                 speed NORMAL
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 wait 1
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT_RIGHT_UP
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 1
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 speed FAST
                 move UP_RIGHT, 3
                 anim_on
@@ -26401,7 +26401,7 @@ _caab51:
         show_obj GAU
         obj_script GAU
                 pos {54, 42}
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         set_case PARTY_CHARS
         if_switch $01AB=1, _caabbc
@@ -26447,7 +26447,7 @@ _caabef:
                 ; ``If you wish to change group members, head for Narshe.''
         wait_30f
         obj_script LOCKE, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -26484,14 +26484,14 @@ _caac30:
 _caac3d:
         wait_2s
         obj_script LOCKE
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1149, BOTTOM
                 ; CELES: So_how we gonna get there? The Empire's on the continent to the south. No boats go there_
                 ; LOCKE: The people of Jidoor, a town to the south, can probably help us.
         loop 2
                 obj_script CELES
-                        action 21 | ACTION_H_FLIP
+                        action EYES_CLOSED_RIGHT
                         end
                 obj_script CELES
                         dir RIGHT
@@ -26502,7 +26502,7 @@ _caac3d:
                 ; LOCKE: Yes?
                 ; CELES: Why are you coming with me?
         obj_script LOCKE
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_1151, BOTTOM
                 ; LOCKE: Well_
@@ -26511,7 +26511,7 @@ _caac3d:
         obj_script LOCKE
                 dir DOWN
                 wait 6
-                action 20
+                action WINKING_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -26573,10 +26573,10 @@ _caacaf:
         return
 _caacbe:
         obj_script NPC_2
-                action 49
+                action RAMUH_EYES_CLOSED
                 end
         obj_script NPC_2
-                action 0
+                action WALKING_DOWN_1
                 end
         return
 _caacc7:
@@ -26655,7 +26655,7 @@ _caad0f:
         obj_script CELES
                 dir DOWN
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         dlg DLG_1114, BOTTOM
@@ -26845,7 +26845,7 @@ _caae15:
                 move UP_RIGHT
                 move RIGHT, 1
                 wait 4
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -26862,7 +26862,7 @@ _caae15:
                 jump_low
                 dir DOWN
                 wait 4
-                action 45
+                action NPC_SPECIAL_2
                 end
         dlg DLG_1173
                 ; IMPRESARIO: Dear me, NO!
@@ -26880,9 +26880,9 @@ _caae15:
                 move UP_RIGHT, 2
                 dir DOWN
                 wait 6
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 24 | ACTION_H_FLIP
+                action ANGRY_FLIP
                 end
         obj_script NPC_3
                 dir DOWN
@@ -26899,7 +26899,7 @@ _caae15:
                         end
                 wait 8
                 obj_script NPC_3
-                        action 45
+                        action NPC_SPECIAL_2
                         end
                 wait 8
                 end_loop
@@ -26924,7 +26924,7 @@ _caae15:
                 end
         wait_15f
         obj_script CELES, ASYNC
-                action 31
+                action SURPRISED
                 wait 6
                 dir DOWN
                 wait 2
@@ -26965,9 +26965,9 @@ _caae15:
         obj_script LOCKE
                 dir DOWN
                 wait 6
-                action 35
+                action HEAD_TURNED
                 wait 8
-                action 37
+                action WAGGING_FINGER_2
                 end
         dlg DLG_1176
                 ; LOCKE: We'll use CELES as a decoy. After she's abducted, I'll follow 'em right to his airship!
@@ -26979,12 +26979,12 @@ _caae15:
         call _cac7fe, 2
         wait_45f
         obj_script LOCKE
-                action 35
+                action HEAD_TURNED
                 end
         wait_30f
         loop 2
                 obj_script CELES
-                        action 21 | ACTION_H_FLIP
+                        action EYES_CLOSED_RIGHT
                         end
                 obj_script CELES
                         dir RIGHT
@@ -27026,7 +27026,7 @@ _caaf05:
                 move RIGHT, 3
                 dir UP
                 wait 2
-                action 31
+                action SURPRISED
                 wait 10
                 dir DOWN
                 wait 2
@@ -27040,7 +27040,7 @@ _caaf05:
                 move RIGHT, 3
                 move UP, 3
                 move RIGHT, 1
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_90f
         obj_script SLOT_3, ASYNC
@@ -27072,11 +27072,11 @@ _caaf05:
         wait_15f
         loop 4
                 obj_script LOCKE
-                        action 36
+                        action WAGGING_FINGER_1
                         end
                 wait_15f
                 obj_script LOCKE
-                        action 37
+                        action WAGGING_FINGER_2
                         end
                 wait_15f
                 end_loop
@@ -27084,24 +27084,24 @@ _caaf05:
         dlg DLG_1179
                 ; LOCKE: You said SHE looks like Maria, right?
         obj_script LOCKE, ASYNC
-                action 35
+                action HEAD_TURNED
                 end
         obj_script NPC_3, ASYNC
                 dir LEFT
                 end
         obj_script CELES
-                action 31
+                action SURPRISED
                 wait 3
                 dir DOWN
                 wait 8
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
         dlg DLG_1180
                 ; CELES: Now just a minute_
         wait_15f 5
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -27122,7 +27122,7 @@ _caaf9c:
                 end
         loop 4
                 obj_script CELES
-                        action 31
+                        action SURPRISED
                         end
                 obj_script CELES
                         dir DOWN
@@ -27130,10 +27130,10 @@ _caaf9c:
                 end_loop
         loop 6
                 obj_script CELES
-                        action 22
+                        action ARMS_UP_DOWN
                         end
                 obj_script CELES
-                        action 9
+                        action NEAR_FATAL
                         end
                 end_loop
         obj_script CELES
@@ -27144,9 +27144,9 @@ _caaf9c:
                 move LEFT, 1
                 move RIGHT, 1
                 wait 2
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 24
+                action ANGRY
                 end
         wait_45f
         dlg DLG_1183
@@ -27157,7 +27157,7 @@ _caaf9c:
                 move UP, 5
                 jump_high
                 move DOWN, 2
-                action 40
+                action DEAD_HORZ
                 layer 0
                 end
         obj_script NPC_3, ASYNC
@@ -27168,25 +27168,25 @@ _caaf9c:
         obj_script LOCKE, ASYNC
                 speed NORMAL
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move RIGHT, 1
                 anim_on
-                action 40
+                action DEAD_HORZ
                 end
         wait_30f
         sfx 219
         shake ALL, 3, 0
         wait_90f
         obj_script CELES
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         wait_45f
         loop 3
                 obj_script CELES
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script CELES
                         dir DOWN
@@ -27195,10 +27195,10 @@ _caaf9c:
         pass_on CELES
         pass_on LOCKE
         obj_script CELES
-                action 36
+                action WAGGING_FINGER_1
                 wait 10
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 end
         sfx SFX::DOOR_OPEN
         mod_bg_tiles BG1, {82, 32}, {1, 2}
@@ -27219,16 +27219,16 @@ _caaf9c:
                 move RIGHT_UP_UP
                 end
         obj_script LOCKE
-                action 9
+                action NEAR_FATAL
                 wait 8
                 dir LEFT
                 wait 8
                 move UP_LEFT
                 move UP, 1
                 wait 6
-                action 27
+                action WAVING_1_UP
                 wait 8
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         obj_script NPC_3, ASYNC
                 move UP_RIGHT
@@ -27245,19 +27245,19 @@ _caaf9c:
         wait_1s
         loop 10
                 obj_script LOCKE
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script LOCKE
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_1s
         obj_script LOCKE, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 10
+                action READY
                 wait 2
-                action 36
+                action WAGGING_FINGER_1
                 end
         wait_45f
         dlg DLG_1185
@@ -27313,9 +27313,9 @@ _caaf9c:
                 end
         wait_obj NPC_8
         obj_script LOCKE
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 26
+                action WAVING_2_DOWN
                 end
         dlg DLG_1187, BOTTOM
                 ; LOCKE: Let's get ready!
@@ -27553,7 +27553,7 @@ _caaf9c:
                 end
         wait_15f
         obj_script NPC_3, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 wait 100
                 dir DOWN
                 end
@@ -27573,15 +27573,15 @@ _caaf9c:
                 ;    Please, hear my voice!
                 ;    How I long to be with you! ♬
         obj_script NPC_3, ASYNC
-                action 54
+                action OPERA_SINGER_MOUTH_OPEN
                 end
         wait 136
         loop 3
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 18
                 end_loop
@@ -27592,91 +27592,91 @@ _caaf9c:
                 end
         wait 54
         obj_script NPC_3, ASYNC
-                action 54
+                action OPERA_SINGER_MOUTH_OPEN
                 end
         wait 150
         loop 3
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 18
                 end_loop
         wait 144
         loop 3
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 16
                 end_loop
         wait 24
         obj_script NPC_3
-                action 55
+                action OPERA_SINGER_MOUTH_CLOSED
                 end
         obj_script NPC_3
-                action 54
+                action OPERA_SINGER_MOUTH_OPEN
                 end
         wait 96
         loop 3
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 16
                 end_loop
         wait 136
         loop 2
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 16
                 end_loop
         loop 3
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 44
                 end_loop
         wait 40
         loop 2
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 10
                 end_loop
         wait 112
         loop 4
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 18
                 end_loop
         wait 192
         loop 3
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait_90f
                 end_loop
@@ -27939,7 +27939,7 @@ _cab497:
         wait_bg
         loop 6
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         end
                 obj_script SLOT_1
                         dir DOWN
@@ -27970,14 +27970,14 @@ _cab497:
         unlock_camera
         show_obj SLOT_1
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 layer 0
                 end
         fade_in
         obj_script SLOT_1
                 speed FAST
                 move LEFT, 1
-                action 40
+                action DEAD_HORZ
                 speed NORMAL
                 move LEFT, 1
                 speed SLOW
@@ -27990,14 +27990,14 @@ _cab497:
                 wait 6
                 jump_high
                 dir DOWN
-                action 31
+                action SURPRISED
                 wait 6
-                action 9
+                action NEAR_FATAL
                 wait 16
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
-                action 9
-                action 8
+                action NEAR_FATAL
+                action WALKING_LEFT_3
                 anim_on
                 speed FAST
                 move RIGHT, 1
@@ -28027,7 +28027,7 @@ _cab497:
         hide_obj SLOT_1
         obj_script SLOT_1
                 anim_off
-                action 31
+                action SURPRISED
                 speed FAST
                 end
         fade_in
@@ -28042,9 +28042,9 @@ _cab497:
                 speed SLOW
                 move DOWN, 1
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
-                action 36
+                action WAGGING_FINGER_1
                 anim_on
                 end
         wait_30f
@@ -28071,46 +28071,46 @@ _cab570:
         hide_obj SLOT_1
         fade_in
         obj_script NPC_1, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_2, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_3, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_4, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_5, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_6, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_7, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_8, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_9, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_10, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_11, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_12, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_13, ASYNC
-                action 50
+                action SPECIAL_ANIM_1
                 end
         obj_script NPC_14
-                action 50
+                action SPECIAL_ANIM_1
                 end
         wait_30f
         loop 31
@@ -28121,9 +28121,9 @@ _cab570:
         obj_script NPC_1, ASYNC
                 pos {14, 34}
 _cab5cf:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 1
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 1
                 branch _cab5cf
                 end
@@ -28132,9 +28132,9 @@ _cab5cf:
         obj_script NPC_12, ASYNC
                 pos {18, 38}
 _cab5e1:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 2
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 3
                 branch _cab5e1
                 end
@@ -28143,9 +28143,9 @@ _cab5e1:
         obj_script NPC_5, ASYNC
                 pos {16, 35}
 _cab5f3:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 3
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 4
                 branch _cab5f3
                 end
@@ -28154,9 +28154,9 @@ _cab5f3:
         obj_script NPC_10, ASYNC
                 pos {18, 37}
 _cab605:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 5
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 8
                 branch _cab605
                 end
@@ -28165,9 +28165,9 @@ _cab605:
         obj_script NPC_3, ASYNC
                 pos {18, 34}
 _cab617:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 2
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 1
                 branch _cab617
                 end
@@ -28176,9 +28176,9 @@ _cab617:
         obj_script NPC_4, ASYNC
                 pos {15, 35}
 _cab629:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 3
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 5
                 branch _cab629
                 end
@@ -28187,9 +28187,9 @@ _cab629:
         obj_script NPC_9, ASYNC
                 pos {17, 37}
 _cab63b:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 7
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 1
                 branch _cab63b
                 end
@@ -28198,9 +28198,9 @@ _cab63b:
         obj_script NPC_7, ASYNC
                 pos {14, 37}
 _cab64d:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 1
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 1
                 branch _cab64d
                 end
@@ -28209,9 +28209,9 @@ _cab64d:
         obj_script NPC_8, ASYNC
                 pos {15, 37}
 _cab65f:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 2
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 3
                 branch _cab65f
                 end
@@ -28220,9 +28220,9 @@ _cab65f:
         obj_script NPC_14, ASYNC
                 pos {16, 39}
 _cab671:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 3
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 1
                 branch _cab671
                 end
@@ -28231,9 +28231,9 @@ _cab671:
         obj_script NPC_2, ASYNC
                 pos {15, 34}
 _cab683:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 6
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 3
                 branch _cab683
                 end
@@ -28242,9 +28242,9 @@ _cab683:
         obj_script NPC_6, ASYNC
                 pos {18, 35}
 _cab695:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 1
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 3
                 branch _cab695
                 end
@@ -28253,9 +28253,9 @@ _cab695:
         obj_script NPC_11, ASYNC
                 pos {14, 38}
 _cab6a7:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 2
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 2
                 branch _cab6a7
                 end
@@ -28264,9 +28264,9 @@ _cab6a7:
         obj_script NPC_13, ASYNC
                 pos {19, 38}
 _cab6b9:
-                action 50
+                action SPECIAL_ANIM_1
                 wait 4
-                action 50 | ACTION_H_FLIP
+                action SPECIAL_ANIM_1_FLIP
                 wait 1
                 branch _cab6b9
                 end
@@ -28514,7 +28514,7 @@ _cab744:
         obj_script NPC_2, ASYNC
                 jump_high
                 move RIGHT, 2
-                action 45
+                action NPC_SPECIAL_2
                 anim_on
                 end
         wait_obj NPC_19
@@ -28552,10 +28552,10 @@ _cab744:
                 ; ♬ Maria
         loop 3
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait_45f
                 end_loop
@@ -28570,30 +28570,30 @@ _cab744:
                 ;    I knew you'd come. ♬
         loop 3
                 obj_script NPC_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait_45f
                 end_loop
         wait_45f
         loop 4
                 obj_script NPC_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait_15f
                 end_loop
         wait 13
         loop 6
                 obj_script NPC_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait_15f
                 end_loop
@@ -28611,40 +28611,40 @@ _cab744:
                 ;    have to become my queen! ♬
         loop 4
                 obj_script NPC_2
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_2
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 3
                 end_loop
         wait_15f 5
         loop 6
                 obj_script NPC_2
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_2
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 2
                 end_loop
         wait_1s
         loop 4
                 obj_script NPC_2
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_2
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 3
                 end_loop
         wait 22
         loop 2
                 obj_script NPC_2
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_2
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait_15f
                 wait 4
@@ -28652,10 +28652,10 @@ _cab744:
         wait 22
         loop 6
                 obj_script NPC_2
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_2
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait_15f
                 end_loop
@@ -28675,20 +28675,20 @@ _cab744:
         wait_30f
         loop 3
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait_15f
                 end_loop
         wait_1s
         loop 3
                 obj_script NPC_3
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_3
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait_15f
                 end_loop
@@ -28697,10 +28697,10 @@ _cab744:
                 ;   It's a duel! ♬
         loop 4
                 obj_script NPC_2
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script NPC_2
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 1
                 end_loop
@@ -28745,7 +28745,7 @@ _cab961:
         obj_script NPC_8
                 dir RIGHT
                 wait 10
-                action 45
+                action NPC_SPECIAL_2
                 end
         dlg DLG_1241, BOTTOM
                 ; ULTROS: N'ghaaa!
@@ -28753,7 +28753,7 @@ _cab961:
         if_switch $0127=0, _cab99b
 _cab994:
         obj_script NPC_8
-                action 45
+                action NPC_SPECIAL_2
                 end
         dlg DLG_1242, BOTTOM
                 ; ULTROS: N'ghooo!
@@ -28832,7 +28832,7 @@ _caba0b:
 _caba19:
                 dir DOWN
                 wait 1
-                action 45
+                action NPC_SPECIAL_2
                 wait 1
                 branch _caba19
                 end
@@ -28871,7 +28871,7 @@ _caba44:
         wait_15f
         if_switch $0113=1, _cabacf
         obj_script SLOT_1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 8
                 dir LEFT
                 wait 8
@@ -28914,7 +28914,7 @@ _caba44:
 _caba96:
         wait_3s
         obj_script SLOT_1
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1201
                 ; LOCKE: That ribbon suits you.
@@ -28956,7 +28956,7 @@ _cabacf:
         obj_script LOCKE, ASYNC
                 move DOWN, 3
                 wait 6
-                action 35
+                action HEAD_TURNED
                 end
         wait_15f
         obj_script CELES
@@ -29045,144 +29045,144 @@ _cabb3d:
                 ;    1: (I'm the darkness)
         loop 3
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 37
                 end_loop
         wait 15
         obj_script SLOT_1
-                action 55
+                action OPERA_SINGER_MOUTH_CLOSED
                 end
         obj_script SLOT_1
-                action 54
+                action OPERA_SINGER_MOUTH_OPEN
                 end
         wait 78
         loop 3
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 27
                 end_loop
         wait 16
         obj_script SLOT_1
-                action 55
+                action OPERA_SINGER_MOUTH_CLOSED
                 end
         obj_script SLOT_1
-                action 54
+                action OPERA_SINGER_MOUTH_OPEN
                 end
         wait 92
         loop 3
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 16
                 end_loop
         wait 54
         loop 2
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 24
                 end_loop
         wait 25
         loop 2
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 34
                 end_loop
         wait 144
         loop 2
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 16
                 end_loop
         wait 34
         loop 3
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 16
                 end_loop
         wait 56
         loop 2
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 16
                 end_loop
         wait 34
         loop 3
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 16
                 end_loop
         wait 64
         loop 2
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 13
                 end_loop
         wait 88
         obj_script SLOT_1
-                action 55
+                action OPERA_SINGER_MOUTH_CLOSED
                 end
         obj_script SLOT_1
-                action 54
+                action OPERA_SINGER_MOUTH_OPEN
                 end
         wait 48
         loop 3
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 13
                 end_loop
         wait 82
         obj_script SLOT_1
-                action 55
+                action OPERA_SINGER_MOUTH_CLOSED
                 end
         obj_script SLOT_1
-                action 54
+                action OPERA_SINGER_MOUTH_OPEN
                 end
         wait 86
         obj_script SLOT_1
-                action 55
+                action OPERA_SINGER_MOUTH_CLOSED
                 end
         wait 32
         wait_song 2
@@ -29215,20 +29215,20 @@ _cabc25:
         wait 8
         loop 2
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 24
                 end_loop
         wait 25
         loop 2
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 34
                 end_loop
@@ -29262,64 +29262,64 @@ _cabc71:
                 ;    Speak to me once more! ♬
         loop 3
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 14
                 end_loop
         wait 17
         obj_script SLOT_1
-                action 55
+                action OPERA_SINGER_MOUTH_CLOSED
                 end
         obj_script SLOT_1
-                action 54
+                action OPERA_SINGER_MOUTH_OPEN
                 end
         wait 88
         loop 3
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 15
                 end_loop
         wait 23
         obj_script SLOT_1
-                action 55
+                action OPERA_SINGER_MOUTH_CLOSED
                 end
         obj_script SLOT_1
-                action 54
+                action OPERA_SINGER_MOUTH_OPEN
                 end
         wait 96
         loop 3
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 16
                 end_loop
         wait 54
         loop 2
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 24
                 end_loop
         wait 25
         loop 2
                 obj_script SLOT_1
-                        action 55
+                        action OPERA_SINGER_MOUTH_CLOSED
                         end
                 obj_script SLOT_1
-                        action 54
+                        action OPERA_SINGER_MOUTH_OPEN
                         end
                 wait 34
                 end_loop
@@ -29552,7 +29552,7 @@ _cabe6d:
                 end
         wait_song 4
         obj_script SLOT_1
-                action 45
+                action NPC_SPECIAL_2
                 end
         obj_script NPC_1, ASYNC
                 wait 128
@@ -29711,7 +29711,7 @@ _cabf4b:
                 dir RIGHT
                 end
         obj_script SLOT_1
-                action 10
+                action READY
                 end
         wait_30f
         obj_script NPC_8
@@ -29724,12 +29724,12 @@ _cabf4b:
         obj_script NPC_8, ASYNC
                 speed FAST
                 move UP_RIGHT
-                action 45
+                action NPC_SPECIAL_2
                 end
         obj_script SLOT_1
                 speed FAST
                 move RIGHT_RIGHT_UP
-                action 31
+                action SURPRISED
                 end
         loop 4
                 sfx 13
@@ -29740,10 +29740,10 @@ _cabf4b:
                         dir DOWN
                         end
                 obj_script NPC_8, ASYNC
-                        action 45
+                        action NPC_SPECIAL_2
                         end
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         end
                 end_loop
         wait_1s
@@ -29764,12 +29764,12 @@ _cabf4b:
         lock_camera
         sfx SFX::FALLING
         obj_script NPC_8, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 speed FASTER
                 move DOWN, 8
                 end
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 speed FASTER
                 move DOWN, 8
                 end
@@ -29782,7 +29782,7 @@ _cabf4b:
         obj_script SLOT_1
                 pos {16, 8}
                 anim_off
-                action 31
+                action SURPRISED
                 end
         call _cac6ac
         party_chars LOCKE
@@ -29839,28 +29839,28 @@ _cabf4b:
                 speed SLOW
                 jump_high
                 move DOWN, 2
-                action 45
+                action NPC_SPECIAL_2
                 end
         obj_script NPC_2, ASYNC
                 speed SLOW
                 jump_high
                 move RIGHT_RIGHT_UP
-                action 45
+                action NPC_SPECIAL_2
                 end
         obj_script SLOT_1, ASYNC
                 speed SLOW
-                action 11
+                action HIT
                 jump_high
                 move LEFT_LEFT_DOWN
-                action 40
+                action DEAD_HORZ
                 end
         obj_script SLOT_2, ASYNC
                 speed NORMAL
                 anim_off
-                action 31
+                action SURPRISED
                 jump_high
                 move LEFT_DOWN_DOWN
-                action 40
+                action DEAD_HORZ
                 speed SLOWER
                 move LEFT_DOWN_DOWN
                 anim_on
@@ -29868,16 +29868,16 @@ _cabf4b:
         obj_script SLOT_3, ASYNC
                 speed NORMAL
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move UP_LEFT
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         obj_script NPC_20
                 speed SLOW
                 anim_off
-                action 45
+                action NPC_SPECIAL_2
                 jump_low
                 move RIGHT, 1
                 dir LEFT
@@ -29893,7 +29893,7 @@ _cabf4b:
                 speed FAST
                 move LEFT, 5
                 wait 6
-                action 45
+                action NPC_SPECIAL_2
                 end
         wait_30f
         dlg DLG_1244
@@ -29901,7 +29901,7 @@ _cabf4b:
                 ; If the two heroes are flattened, the opera's over! Then who'll win the girl?!
         wait_15f 8
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         play_song SILENCE
         play_song GRAND_FINALE_1
@@ -29911,15 +29911,15 @@ _cabf4b:
                 end
         wait_15f 8
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_90f
         loop 8
                 obj_script SLOT_1
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script SLOT_1
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_18, ASYNC
@@ -29932,9 +29932,9 @@ _cabf4b:
         show_obj NPC_21
         sort_obj
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 end
         obj_script NPC_21
                 jump_high
@@ -29946,32 +29946,32 @@ _cabf4b:
         call _cac7fe, 3
         wait_15f 10
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 end
         dlg DLG_1245
                 ; LOCKE: Neither Draco nor Ralse will save CELES!
         wait_30f
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 wait 1
                 jump_high
                 dir DOWN
                 end
         obj_script SLOT_1
-                action 15
+                action JUMPING
                 end
         obj_script SLOT_1
-                action 23
+                action ARMS_UP_UP
                 end
         obj_script SLOT_1
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 end
         obj_script SLOT_1
-                action 24
+                action ANGRY
                 anim_on
                 end
         dlg DLG_1246
@@ -29979,7 +29979,7 @@ _cabf4b:
         sfx 208
         wait_30f
         obj_script NPC_18
-                action 45
+                action NPC_SPECIAL_2
                 end
         wait_30f
         dlg DLG_1247
@@ -30057,21 +30057,21 @@ _cac128:
         sfx 208
         loop 12
                 obj_script SLOT_1
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script SLOT_1
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         fade_out_song $40
         dlg DLG_1250, TEXT_ONLY
                 ; Just a darn minute!
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 wait 8
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         hide_obj NPC_2
@@ -30125,17 +30125,17 @@ _cac128:
         sort_obj
         obj_script CELES, ASYNC
                 pos {16, 17}
-                action 9
+                action NEAR_FATAL
                 speed FAST
                 end
         obj_script SLOT_1, ASYNC
                 dir UP
                 end
         obj_script NPC_22
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 move DOWN, 6
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         sfx 181
         obj_script NPC_22
@@ -30147,13 +30147,13 @@ _cac128:
         wait_45f
         obj_script NPC_22, ASYNC
                 speed FASTER
-                action 17 | ACTION_H_FLIP
+                action CASTING_2_FLIP
                 anim_off
                 move RIGHT, 1
                 wait 8
                 anim_on
                 move LEFT, 1
-                action 22
+                action ARMS_UP_DOWN
                 end
         loop 6
                 obj_script NPC_1
@@ -30174,7 +30174,7 @@ _cac128:
         hide_obj NPC_1
         sort_obj
         obj_script NPC_22
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_1s
         pass_off NPC_22
@@ -30194,9 +30194,9 @@ _cac128:
         wait_15f
         obj_script NPC_22, ASYNC
 _cac2e2:
-                action 36
+                action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
                 branch _cac2e2
                 end
@@ -30204,20 +30204,20 @@ _cac2e2:
                 ; IMPRESARIO: SETZER!
                 ; SETZER: I'm a man of my word, music man!
         obj_script NPC_22
-                action 9
+                action NEAR_FATAL
                 end
         wait 6
         dlg DLG_1253, {ASYNC, TEXT_ONLY, BOTTOM}
                 ; CELES: That's HIM_?!
         obj_script NPC_22, ASYNC
                 speed FAST
-                action 25
+                action WAVING_1_DOWN
                 move LEFT_UP_UP, 4
                 end
         obj_script CELES, ASYNC
                 speed FAST
                 anim_off
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 move LEFT_UP_UP, 4
                 anim_on
                 end
@@ -30370,13 +30370,13 @@ _cac3c7:
                 speed SLOW
                 move LEFT, 1
                 wait 8
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_1416
                 ; LOCKE: I'm worried about TERRA. Let's return to Zozo.
         wait_1s
         obj_script SETZER
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         dlg DLG_1417
@@ -30462,7 +30462,7 @@ _cac4b0:
         party_chars LOCKE, SETZER
         obj_script LOCKE, ASYNC
                 speed NORMAL
-                action 16
+                action CASTING_1
                 end
         obj_script SLOT_3, ASYNC
                 speed NORMAL
@@ -30495,13 +30495,13 @@ _cac4b0:
         wait_30f
         call _cac7fe, 3
         obj_script SETZER, ASYNC
-                action 31
+                action SURPRISED
                 end
         call _ca9d14
         dlg DLG_1421
                 ; LOCKE: Magicite!!
         obj_script LOCKE
-                action 35
+                action HEAD_TURNED
                 end
         sfx 94
         loop 2
@@ -30532,7 +30532,7 @@ _cac4b0:
                 ; TERRA: Father_?
         loop 4
                 obj_script NPC_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_1
                         dir DOWN
@@ -30848,7 +30848,7 @@ _cac7f1:
         return
 _cac7fe:
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
@@ -30856,7 +30856,7 @@ _cac7fe:
         return
 _cac807:
         obj_script SLOT_1
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         obj_script SLOT_1
                 dir LEFT
@@ -30864,7 +30864,7 @@ _cac807:
         return
 _cac810:
         obj_script SLOT_1
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         obj_script SLOT_1
                 dir RIGHT
@@ -31550,7 +31550,7 @@ _cacd5b:
         show_obj NPC_1
         fade_in 8
         obj_script NPC_1, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 end
         call _cacdd4, 4
         create_obj NPC_2
@@ -31698,7 +31698,7 @@ _cace51:
         mod_bg_pal SUB, {RED, GREEN, BLUE}, 0
         mod_sprite_pal SUB, {RED, GREEN, BLUE}, 0
         obj_script NPC_2
-                action 45
+                action NPC_SPECIAL_2
                 end
         fade_in
         wait_fade
@@ -31794,7 +31794,7 @@ _cace51:
                 ; BARAM: Clyde!!!
         wait_15f 8
         obj_script NPC_1
-                action 45
+                action NPC_SPECIAL_2
                 end
         wait_2s
         dlg DLG_470, TEXT_ONLY
@@ -32211,7 +32211,7 @@ _cad566:
         obj_script SLOT_1
                 layer 3
                 anim_off
-                action 31
+                action SURPRISED
                 wait 3
                 speed FAST
                 move DOWN, 2
@@ -32602,14 +32602,14 @@ _cad916:
         lock_camera
         obj_script SLOT_1
                 pos {8, 0}
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed NORMAL
                 end
         fade_in
         obj_script SLOT_1
                 move DOWN, 8
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         unlock_camera
@@ -32620,7 +32620,7 @@ _cad940:
         lock_camera
         sfx 48
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed NORMAL
                 move UP, 8
@@ -32670,16 +32670,16 @@ _cad9a7:
         call _cacab3
         if_switch $002A=1, _cad9f4
         obj_script NPC_12
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_2130
                 ; SHADOW: Down with the Empire! Once I outlived my usefulness, they tried to off me!
                 ; ``We thought you were a goner!''
         wait_30f
         obj_script NPC_12
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_2131
                 ; SHADOW: Is Interceptor all right?
@@ -32692,7 +32692,7 @@ _cad9a7:
                 dir UP
                 end
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 end
@@ -32745,13 +32745,13 @@ _cad9fc:
         obj_script SHADOW
                 speed FASTER
                 move RIGHT, 5
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 anim_off
                 speed NORMAL
                 jump_high
                 move RIGHT_RIGHT_DOWN
-                action 9
-                action 2
+                action NEAR_FATAL
+                action WALKING_DOWN_3
                 move RIGHT, 3
                 hide_obj
                 end
@@ -33125,7 +33125,7 @@ _cadda2:
                 ; GESTAHL: Fwa, ha, ha_
                 ; Then you're just in time to perish. Behold! The Statues!!
         obj_script NPC_13
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 6
@@ -33182,7 +33182,7 @@ _cadddd:
                 end
         loop 12
                 obj_script NPC_13
-                        action 44
+                        action NPC_HEAD_DOWN_DOWN
                         end
                 obj_script NPC_13
                         dir DOWN
@@ -33203,7 +33203,7 @@ _cadddd:
                 pos {0, 0}
                 end
         obj_script NPC_13
-                action 42
+                action NPC_WAVING_1
                 end
         obj_script CAMERA
                 move UP, 3
@@ -33258,20 +33258,20 @@ _cadddd:
                 end
         wait_15f
         obj_script CELES, ASYNC
-                action 11
+                action HIT
                 anim_off
                 speed FASTER
                 move RIGHT, 3
                 speed SLOW
-                action 40
+                action DEAD_HORZ
                 move DOWN_RIGHT
                 end
         wait_obj NPC_16
         call _cad033
         obj_script SLOT_2, ASYNC
-                action 31
+                action SURPRISED
                 wait 5
-                action 9
+                action NEAR_FATAL
                 end
         obj_script SLOT_3, ASYNC
                 move UP, 1
@@ -33291,17 +33291,17 @@ _cadddd:
                 end_case
         wait_2s
         obj_script CELES
-                action 9
+                action NEAR_FATAL
                 wait 8
                 dir DOWN
                 end
         wait_1s
         loop 8
                 obj_script CELES
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 obj_script CELES
-                        action 35
+                        action HEAD_TURNED
                         end
                 end_loop
         wait_2s
@@ -33315,12 +33315,12 @@ _cadddd:
                 dir UP
                 end
         obj_script NPC_2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
         obj_script NPC_13, ASYNC
 _cadecb:
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 branch _cadecb
@@ -33342,16 +33342,16 @@ _cadecb:
         sfx SFX::KEFKA_LAUGH
         loop 15
                 obj_script NPC_2
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_2
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_90f
         obj_script NPC_2
                 move UP, 1
-                action 16
+                action CASTING_1
                 end
         obj_script NPC_13
                 dir RIGHT
@@ -33360,23 +33360,23 @@ _cadecb:
         obj_script NPC_2
                 dir DOWN
                 wait 8
-                action 9
+                action NEAR_FATAL
                 wait 1
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 1
-                action 22
-                action 10
+                action ARMS_UP_DOWN
+                action READY
                 wait 2
-                action 25
+                action WAVING_1_DOWN
                 end
         dlg DLG_2142, BOTTOM
                 ; KEFKA: Take this sword!
                 ; Take care of them. Immediately!!
         wait_15f 5
         obj_script CELES
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 12
                 dir LEFT
                 wait 10
@@ -33386,11 +33386,11 @@ _cadecb:
                 dir DOWN
                 end
         obj_script CELES
-                action 33
+                action HEAD_DOWN_UP
                 wait 8
                 dir UP
                 wait 6
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 wait 8
                 dir UP
                 wait 8
@@ -33408,7 +33408,7 @@ _cadecb:
                 move DOWN, 1
                 end
         obj_script NPC_2
-                action 35
+                action HEAD_TURNED
                 end
         obj_script NPC_13
                 move LEFT, 1
@@ -33422,7 +33422,7 @@ _cadecb:
                 ; Think of it_!
         loop 3
                 obj_script NPC_2
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_2
                         dir DOWN
@@ -33430,23 +33430,23 @@ _cadecb:
                 end_loop
         obj_script NPC_2
                 anim_off
-                action 16
+                action CASTING_1
                 move LEFT, 1
                 wait 1
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 wait 1
-                action 16
+                action CASTING_1
                 wait 1
-                action 17
+                action CASTING_2
                 wait 1
-                action 24
+                action ANGRY
                 speed FAST
                 end
         wait_2s
         obj_script CELES
-                action 25
+                action WAVING_1_DOWN
                 wait 20
-                action 32
+                action HEAD_DOWN_DOWN
                 speed FAST
                 end
         wait_1s
@@ -33461,7 +33461,7 @@ _cadecb:
                 wait 8
                 dir LEFT
                 wait 1
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 anim_off
                 move UP, 1
                 end
@@ -33477,7 +33477,7 @@ _cadecb:
                 end
         obj_script NPC_2
                 anim_off
-                action 11
+                action HIT
                 move UP, 1
                 end
         wait_4s
@@ -33490,9 +33490,9 @@ _cadecb:
         wait_2s
         sfx 199
         obj_script NPC_2
-                action 40
+                action DEAD_HORZ
                 wait 16
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_on
                 end
         wait_1s
@@ -33512,29 +33512,29 @@ _cadecb:
                 end
         loop 10
                 obj_script NPC_2
-                        action 31
+                        action SURPRISED
                         end
                 obj_script NPC_2
-                        action 24
+                        action ANGRY
                         end
                 end_loop
         dlg DLG_2146, BOTTOM
                 ; KEFKA: B_blood!?
         wait_1s
         obj_script NPC_2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2147, BOTTOM
                 ; KEFKA: You_vicious brat!
         wait_1s
         obj_script NPC_2
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_2148, BOTTOM
                 ; Grrr_ Aargh_
         wait_1s
         obj_script NPC_2
-                action 40
+                action DEAD_HORZ
                 end
         dlg DLG_2149, BOTTOM
                 ; I
@@ -33561,7 +33561,7 @@ _cadecb:
                 wait 1
                 dir UP
                 wait 6
-                action 23
+                action ARMS_UP_UP
                 end
         wait_obj CAMERA
         dlg DLG_2150
@@ -33570,11 +33570,11 @@ _cadecb:
         wait_90f
         obj_script NPC_2, ASYNC
                 move UP, 1
-                action 11
+                action HIT
                 anim_off
                 speed FAST
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         sfx 80
@@ -33585,7 +33585,7 @@ _cadecb:
         obj_script CELES
                 speed FAST
                 anim_off
-                action 11
+                action HIT
                 move DOWN_LEFT
                 wait 6
                 anim_on
@@ -33594,10 +33594,10 @@ _cadecb:
         wait_obj NPC_2
         loop 8
                 obj_script NPC_2
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 obj_script NPC_2
-                        action 35
+                        action HEAD_TURNED
                         end
                 end_loop
         obj_script NPC_2
@@ -33606,7 +33606,7 @@ _cadecb:
                 anim_on
                 move UP, 2
                 wait 4
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_45f
         dlg DLG_2151
@@ -33626,9 +33626,9 @@ _cadecb:
                 wait 4
                 dir DOWN
                 wait 12
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
-                action 24
+                action ANGRY
                 end
         dlg DLG_2152, BOTTOM
                 ; KEFKA: Listen to me,
@@ -33646,7 +33646,7 @@ _cadecb:
         battle 127
         obj_script NPC_13
                 pos {57, 7}
-                action 41
+                action NPC_SPECIAL_1
                 end
         fade_in
         wait_90f
@@ -33661,7 +33661,7 @@ _cadecb:
         obj_script NPC_2
                 speed NORMAL
                 move DOWN_LEFT, 2
-                action 9
+                action NEAR_FATAL
                 wait 8
                 speed SLOWER
                 end
@@ -33676,15 +33676,15 @@ _cadecb:
                 end
         wait_1s
         obj_script NPC_2
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         wait_15f 8
         obj_script NPC_2
-                action 16
+                action CASTING_1
                 end
         sfx SFX::FALLING
         obj_script NPC_13
-                action 41
+                action NPC_SPECIAL_1
                 speed FAST
                 move DOWN_LEFT, 5
                 move DOWN, 4
@@ -33706,7 +33706,7 @@ _cadecb:
         obj_script CELES
                 move UP_RIGHT
                 move UP, 2
-                action 27
+                action WAVING_1_UP
                 end
         obj_script NPC_2
                 dir DOWN
@@ -33715,7 +33715,7 @@ _cadecb:
                 ; CELES: Snap out of it, Kefka!
         wait_30f
         obj_script NPC_2
-                action 15
+                action JUMPING
                 end
         wait_30f
         sfx 51
@@ -33724,18 +33724,18 @@ _cadecb:
                 wait 1
                 dir RIGHT
                 wait 1
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 end
         obj_script CELES
-                action 11
+                action HIT
                 anim_off
                 speed FASTER
                 move RIGHT_RIGHT_DOWN
                 speed NORMAL
-                action 31
+                action SURPRISED
                 jump_low
                 move RIGHT_RIGHT_DOWN
-                action 40
+                action DEAD_HORZ
                 speed SLOW
                 move DOWN_RIGHT, 2
                 end
@@ -33779,15 +33779,15 @@ _cadecb:
                 move DOWN_LEFT
                 move LEFT, 1
 _cae13a:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _cae13a
                 end
         wait_30f
         obj_script CELES
-                action 9
+                action NEAR_FATAL
                 end
         wait_45f
         wait_obj CAMERA
@@ -33869,7 +33869,7 @@ _cae13a:
                 anim_on
                 speed NORMAL
                 move DOWN_LEFT
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script NPC_15
                 speed FASTER
@@ -33913,16 +33913,16 @@ _cae1cd:
                 pos {70, 1}
                 speed SLOWER
                 anim_off
-                action 15
+                action JUMPING
                 move LEFT_DOWN_DOWN
                 speed NORMAL
                 move LEFT_DOWN_DOWN
-                action 11
+                action HIT
                 speed FAST
                 move LEFT_DOWN_DOWN
                 speed FASTER
                 move LEFT_DOWN_DOWN
-                action 9
+                action NEAR_FATAL
                 end
         wait_obj CAMERA
         wait_15f
@@ -33934,24 +33934,24 @@ _cae1cd:
         sfx 24
         obj_script NPC_12, ASYNC
                 speed FAST
-                action 25
+                action WAVING_1_DOWN
                 move UP_LEFT, 2
                 move LEFT, 1
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 move DOWN_LEFT
                 move LEFT_LEFT_DOWN
                 speed SLOW
                 move LEFT, 2
                 end
         obj_script CELES
-                action 11
+                action HIT
                 anim_off
                 speed FAST
                 move UP_LEFT, 2
                 move LEFT, 1
                 move LEFT_LEFT_DOWN
                 speed SLOW
-                action 40
+                action DEAD_HORZ
                 move LEFT, 2
                 end
         wait_obj CAMERA
@@ -33960,7 +33960,7 @@ _cae1cd:
                 speed NORMAL
                 anim_on
                 move LEFT, 1
-                action 23
+                action ARMS_UP_UP
                 anim_off
                 speed SLOWER
                 end
@@ -33997,7 +33997,7 @@ _cae1cd:
                 dir RIGHT
                 speed SLOWER
                 anim_off
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         sfx 6
         obj_script NPC_12, ASYNC
@@ -34035,13 +34035,13 @@ _cae1cd:
                 pos {0, 0}
                 end
         obj_script SLOT_2
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script SLOT_3, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script SLOT_4, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_1s
         obj_script SLOT_2
@@ -34055,7 +34055,7 @@ _cae1cd:
                 end
         wait_45f
         obj_script CELES
-                action 9
+                action NEAR_FATAL
                 wait 6
                 dir LEFT
                 wait 2
@@ -34154,18 +34154,18 @@ _cae37f:
                 branch _cae376
                 end
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 anim_off
                 speed FASTER
                 move RIGHT_RIGHT_DOWN
                 speed NORMAL
-                action 11
+                action HIT
                 jump_high
                 move RIGHT_DOWN_DOWN
                 jump_high
                 move RIGHT_DOWN_DOWN
                 pos {67, 16}
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         wait_30f
@@ -34210,7 +34210,7 @@ _cae37f:
         load_map 393, {67, 16}, DOWN, {ASYNC, Z_UPPER, NO_FADE_IN, STARTUP_EVENT}
         unlock_camera
         obj_script SLOT_1, ASYNC
-                action 40
+                action DEAD_HORZ
                 wait 10
                 dir LEFT
                 wait 3
@@ -34242,7 +34242,7 @@ _cae414:
         sfx 165
         shake ALL, 3, 1
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         obj_script CAMERA, ASYNC
                 speed NORMAL
@@ -34270,11 +34270,11 @@ _cae437:
                 end
         obj_script SLOT_4
                 speed FAST
-                action 31
+                action SURPRISED
                 anim_off
                 move DOWN, 1
                 wait 4
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_15f
 _cae453:
@@ -34291,11 +34291,11 @@ _cae453:
                 end
         obj_script SLOT_3
                 speed FAST
-                action 31
+                action SURPRISED
                 anim_off
                 move DOWN, 1
                 wait 4
-                action 9
+                action NEAR_FATAL
                 end
         return
 _cae46f:
@@ -34313,11 +34313,11 @@ _cae480:
         call _cae580
         obj_script SLOT_1
                 speed NORMAL
-                action 31
+                action SURPRISED
                 anim_off
                 jump_high
                 move RIGHT, 2
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         call _cae5b2
@@ -34327,7 +34327,7 @@ _cae49d:
         if_switch $01F1=1, EventReturn
         lock_camera
         obj_script SLOT_1, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script CAMERA
                 speed NORMAL
@@ -34360,7 +34360,7 @@ _cae4da:
         call _cad033
         call _cae703
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 4
                 dir RIGHT
                 end
@@ -34937,19 +34937,19 @@ _caeb73:
 _caeb80:
         if_switch $01B6=1, EventReturn
         obj_script NPC_4, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script NPC_5, ASYNC
 _caeb8c:
-                action 27
+                action WAVING_1_UP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 1
                 branch _caeb8c
                 end
         obj_script NPC_9, ASYNC
 _caeb97:
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
@@ -34994,16 +34994,16 @@ _caebc9:
 _caebdc:
                 wait 32
 _caebde:
-                action 27
+                action WAVING_1_UP
                 wait 3
-                action 28
+                action WAVING_2_UP
                 wait 3
                 branch_rand _caebde
                 move UP, 1
 _caebe7:
                 dir RIGHT
                 wait 3
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 3
                 branch_rand _caebe7
                 wait 16
@@ -35157,7 +35157,7 @@ _caecdc:
         obj_script NPC_2, ASYNC
 _caece4:
                 wait 10
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 branch_rand _caece4
@@ -35353,7 +35353,7 @@ _caee93:
 _caee96:
         if_switch $0338=0, _caeea0
         obj_script NPC_2, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 end
 _caeea0:
         if_all
@@ -35390,7 +35390,7 @@ _caeec3:
         shake ALL, 1, 3
         call _ca9fa6
         obj_script NPC_13
-                action 45
+                action NPC_SPECIAL_2
                 end
         obj_script NPC_1, ASYNC
                 speed FAST
@@ -35520,7 +35520,7 @@ _caef93:
                 branch _caef93
                 end
         obj_script NPC_12, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 end
         return
 _caefb8:
@@ -36000,12 +36000,12 @@ _caf3a1:
         if_switch $035E=0, _caf3bb
         if_switch $002A=1, _caf3b7
         obj_script NPC_12
-                action 40
+                action DEAD_HORZ
                 end
         if_switch $0127=0, _caf3bb
 _caf3b7:
         obj_script NPC_12
-                action 24
+                action ANGRY
                 end
 _caf3bb:
         if_switch $01B6=1, EventReturn
@@ -36106,7 +36106,7 @@ _caf468:
         call _cac8f6
         if_switch $0370=0, EventReturn
         obj_script NPC_1, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 end
         return
 _caf477:
@@ -36213,7 +36213,7 @@ _caf548:
         if_switch $009E=1, _caf579
         if_switch $0170=1, _caf56e
         obj_script SLOT_1
-                action 15
+                action JUMPING
                 wait 6
                 dir LEFT
                 end
@@ -36241,7 +36241,7 @@ _caf579:
         return
 _caf58d:
         obj_script SLOT_1
-                action 15
+                action JUMPING
                 wait 6
                 dir LEFT
                 end
@@ -36492,13 +36492,13 @@ _caf76e:
                 ; Did you speak with Banon?
         obj_script SLOT_1, ASYNC
                 wait 6
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
@@ -36605,7 +36605,7 @@ _caf7dc:
                 anim_off
                 move UP, 1
                 anim_on
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_1
                 wait 12
@@ -36616,7 +36616,7 @@ _caf7dc:
                 move DOWN, 1
                 end
         obj_script TERRA
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_277
                 ; BANON: Carrier pigeons brought word that she wiped out 50 of the Empire's best soldiers in a few minutes.
@@ -36625,7 +36625,7 @@ _caf7dc:
                 wait 2
                 speed NORMAL
                 move LEFT, 1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_278
                 ; TERRA: That's a lie!!!
@@ -36634,7 +36634,7 @@ _caf7dc:
                 move LEFT, 1
                 speed NORMAL
                 move LEFT, 1
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script EDGAR
                 wait 12
@@ -36691,7 +36691,7 @@ _caf7dc:
                 dir LEFT
                 end
         obj_script TERRA
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 24
                 dir DOWN
                 wait 8
@@ -36733,23 +36733,23 @@ _caf7dc:
         obj_script TERRA
                 dir DOWN
                 wait 6
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 12
                 end
         obj_script EDGAR, ASYNC
                 dir UP
                 wait 8
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script SABIN, ASYNC
                 move LEFT, 1
                 wait 16
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script LOCKE
                 dir UP
                 wait 8
-                action 33
+                action HEAD_DOWN_UP
                 wait 24
                 end
         unlock_camera
@@ -36877,17 +36877,17 @@ _caf9af:
                 ; But don't you DARE tell him I said that!
         player_ctrl_on
         obj_script NPC_4, ASYNC
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 2
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 2
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 2
                 dir DOWN
                 end
@@ -36903,7 +36903,7 @@ _caf9cf:
                 wait 3
                 dir DOWN
                 wait 15
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_301
                 ; TERRA: But_I have no significant ``other'' in my life_
@@ -36911,9 +36911,9 @@ _caf9cf:
                 ; Besides, I'm sure there are people who feel YOU'RE important to them! They are counting on you_
         wait 16
         obj_script NPC_4
-                action 15
+                action JUMPING
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -36934,7 +36934,7 @@ _cafa01:
                 wait 3
                 dir DOWN
                 wait 15
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_301
                 ; TERRA: But_I have no significant ``other'' in my life_
@@ -36942,9 +36942,9 @@ _cafa01:
                 ; Besides, I'm sure there are people who feel YOU'RE important to them! They are counting on you_
         wait 16
         obj_script NPC_4
-                action 23
+                action ARMS_UP_UP
                 wait 1
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 end
@@ -36964,7 +36964,7 @@ _cafa33:
                 wait 3
                 dir UP
                 wait 15
-                action 33
+                action HEAD_DOWN_UP
                 end
         dlg DLG_301
                 ; TERRA: But_I have no significant ``other'' in my life_
@@ -36972,9 +36972,9 @@ _cafa33:
                 ; Besides, I'm sure there are people who feel YOU'RE important to them! They are counting on you_
         wait 16
         obj_script NPC_4
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -37057,11 +37057,11 @@ _cafac3:
         if_switch $0017=1, _cafbc9
         if_switch $01B0=0, _cafb31
         obj_script NPC_1, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -37071,7 +37071,7 @@ _cafac3:
                 wait 8
                 dir LEFT
                 wait 5
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_307
                 ; TERRA: But_
@@ -37084,7 +37084,7 @@ _cafac3:
         obj_script NPC_1
                 dir UP
                 wait 4
-                action 33
+                action HEAD_DOWN_UP
                 wait 8
                 dir UP
                 wait 4
@@ -37106,7 +37106,7 @@ _cafac3:
                 ; Received ``Gauntlet''!
         obj_script TERRA
                 wait 8
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 wait 6
@@ -37114,7 +37114,7 @@ _cafac3:
         obj_script NPC_1, ASYNC
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -37122,7 +37122,7 @@ _cafac3:
                 ; BANON: I have a plan!
                 ; Please get everyone together!
         obj_script TERRA
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 wait 10
@@ -37130,11 +37130,11 @@ _cafac3:
 _cafb31:
         if_switch $01B1=0, _cafb99
         obj_script NPC_1, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -37144,7 +37144,7 @@ _cafb31:
                 wait 8
                 dir DOWN
                 wait 5
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_307
                 ; TERRA: But_
@@ -37157,7 +37157,7 @@ _cafb31:
         obj_script NPC_1
                 dir UP
                 wait 4
-                action 33
+                action HEAD_DOWN_UP
                 wait 8
                 dir UP
                 wait 4
@@ -37179,7 +37179,7 @@ _cafb31:
                 ; Received ``Gauntlet''!
         obj_script TERRA
                 wait 8
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 6
@@ -37187,7 +37187,7 @@ _cafb31:
         obj_script NPC_1, ASYNC
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -37195,7 +37195,7 @@ _cafb31:
                 ; BANON: I have a plan!
                 ; Please get everyone together!
         obj_script TERRA
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 10
@@ -37229,11 +37229,11 @@ _cafba6:
 _cafbc9:
         if_switch $01B1=0, _cafc2b
         obj_script NPC_1, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 3
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -37241,25 +37241,25 @@ _cafbc9:
                 ; BANON: You will? Really!!
         obj_script TERRA
                 wait 6
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 4
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_307
                 ; TERRA: But_
                 ; I'm scared_
         obj_script NPC_1, ASYNC
-                action 15
+                action JUMPING
                 wait 1
                 dir LEFT
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -37272,7 +37272,7 @@ _cafbc9:
                 wait 2
                 dir RIGHT
                 wait 4
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 3
                 dir RIGHT
                 wait 8
@@ -37280,7 +37280,7 @@ _cafbc9:
         obj_script NPC_1, ASYNC
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -37288,7 +37288,7 @@ _cafbc9:
                 ; BANON: I have a plan!
                 ; Please get everyone together!
         obj_script TERRA
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 10
@@ -37296,11 +37296,11 @@ _cafbc9:
 _cafc2b:
         if_switch $01B0=0, _cafc8d
         obj_script NPC_1, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -37308,25 +37308,25 @@ _cafc2b:
                 ; BANON: You will? Really!!
         obj_script TERRA
                 wait 6
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 4
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_307
                 ; TERRA: But_
                 ; I'm scared_
         obj_script NPC_1, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 dir DOWN
                 wait 1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 wait 1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -37339,7 +37339,7 @@ _cafc2b:
                 wait 2
                 dir UP
                 wait 4
-                action 33
+                action HEAD_DOWN_UP
                 wait 3
                 dir UP
                 wait 8
@@ -37347,7 +37347,7 @@ _cafc2b:
         obj_script NPC_1, ASYNC
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -37355,7 +37355,7 @@ _cafc2b:
                 ; BANON: I have a plan!
                 ; Please get everyone together!
         obj_script TERRA
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 wait 10
@@ -37371,36 +37371,36 @@ _cafc98:
         obj_script TERRA
                 dir DOWN
                 wait 4
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_1, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
 _cafcbb:
         if_switch $01B0=0, _cafcd8
         obj_script TERRA
                 dir DOWN
                 wait 4
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_1, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
 _cafcd8:
         dlg DLG_308
@@ -37418,40 +37418,40 @@ _cafcea:
         obj_script TERRA
                 dir DOWN
                 wait 4
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_1, ASYNC
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
 _cafd10:
         if_switch $01B0=0, _cafd30
         obj_script TERRA
                 dir DOWN
                 wait 4
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_1, ASYNC
                 dir RIGHT
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
 _cafd30:
         dlg DLG_309
@@ -37467,44 +37467,44 @@ _cafd40:
         obj_script TERRA
                 dir DOWN
                 wait 4
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_1, ASYNC
                 dir DOWN
                 wait 3
                 dir RIGHT
                 wait 6
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
 _cafd63:
         if_switch $01B0=0, _cafd86
         obj_script TERRA
                 dir DOWN
                 wait 4
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_1, ASYNC
                 dir RIGHT
                 wait 3
                 dir UP
                 wait 6
-                action 33
+                action HEAD_DOWN_UP
                 end
 _cafd86:
         dlg DLG_310
@@ -37548,7 +37548,7 @@ _cafdcb:
                 speed SLOW
                 move UP, 3
                 wait 16
-                action 33
+                action HEAD_DOWN_UP
                 end
         dlg DLG_320
                 ; TERRA: Hope_
@@ -37585,7 +37585,7 @@ _cafdcb:
                 wait 10
                 move RIGHT, 1
                 wait 12
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 12
                 end
         fade_out_song $FF
@@ -37679,12 +37679,12 @@ _cafdcb:
                 end
         obj_script NPC_10, ASYNC
                 dir RIGHT
-                action 45
+                action NPC_SPECIAL_2
                 end
         obj_script NPC_5, ASYNC
                 move UP, 5
                 dir RIGHT
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         obj_script NPC_6, ASYNC
                 speed FAST
@@ -37766,7 +37766,7 @@ _cafdcb:
         obj_script NPC_5, ASYNC
                 dir DOWN
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_327
                 ; BANON: They've found us_
@@ -37774,13 +37774,13 @@ _cafdcb:
         obj_script EDGAR, ASYNC
                 dir LEFT
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
         obj_script LOCKE, ASYNC
                 wait 10
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -37818,11 +37818,11 @@ _cafdcb:
         hide_obj LOCKE
         loop 3
                 obj_script EDGAR
-                        action 31
+                        action SURPRISED
                         wait 1
                         dir DOWN
                         wait 1
-                        action 31
+                        action SURPRISED
                         wait 1
                         dir DOWN
                         wait 1
@@ -37830,15 +37830,15 @@ _cafdcb:
                 end_loop
         wait 32
         obj_script SABIN, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 wait 1
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 wait 1
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 end
@@ -37849,7 +37849,7 @@ _cafdcb:
         obj_script NPC_5, ASYNC
                 dir DOWN
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir RIGHT
                 end
@@ -37870,7 +37870,7 @@ _cafdcb:
                 move DOWN, 1
                 dir RIGHT
                 wait 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -37879,19 +37879,19 @@ _cafdcb:
                 ; You'll probably even gain some understanding of your own abilities_
         obj_script TERRA
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 16
                 dir LEFT
                 wait 6
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
         wait 24
         obj_script NPC_5
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 dir RIGHT
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 dir RIGHT
                 end
         dlg DLG_333
@@ -37917,7 +37917,7 @@ _cafdcb:
         give_item GENJI_GLOVE
         obj_script TERRA
                 wait 2
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -37972,7 +37972,7 @@ _cb002b:
         if_switch $016B=1, EventReturn
         switch $016B=1
         obj_script SLOT_1, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_299
                 ; Someone dropped a scrap of paper_
@@ -37985,13 +37985,13 @@ _cb0052:
                 speed NORMAL
                 dir DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 4
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 4
                 move RIGHT, 1
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 end
         sfx 154
         obj_script SLOT_1
@@ -38072,27 +38072,27 @@ _cb0080:
                 end
         if_switch $016A=0, _cb0106
         obj_script NPC_5
-                action 31
+                action SURPRISED
                 wait 1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_300
                 ; BANON: Who did this?
                 ; Who left this piece of paper here?
         obj_script TERRA, ASYNC
-                action 31
+                action SURPRISED
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 8
                 dir RIGHT
                 end
         obj_script NPC_5
-                action 9
+                action NEAR_FATAL
                 wait 2
                 move RIGHT, 1
                 wait 1
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 end
         sfx 154
         obj_script NPC_5
@@ -38102,7 +38102,7 @@ _cb0080:
                 end
 _cb0106:
         obj_script NPC_5, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_340
                 ; BANON: Right_
@@ -38113,30 +38113,30 @@ _cb0106:
         dlg DLG_337
                 ; BANON: We all know that the Empire is using Magitek power in battle. The point is, how has the Emperor created it?
         obj_script NPC_5, ASYNC
-                action 35
+                action HEAD_TURNED
                 end
         obj_script EDGAR, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 dir UP
-                action 33
+                action HEAD_DOWN_UP
                 dir UP
                 wait 2
-                action 33
+                action HEAD_DOWN_UP
                 dir UP
-                action 33
+                action HEAD_DOWN_UP
                 dir UP
                 end
         dlg DLG_338
                 ; EDGAR: I had LOCKE look into the rumor that the Empire is forcing the world's finest scholars to study Espers.
         obj_script LOCKE, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 dir UP
-                action 33
+                action HEAD_DOWN_UP
                 dir UP
                 wait 2
-                action 33
+                action HEAD_DOWN_UP
                 dir UP
-                action 33
+                action HEAD_DOWN_UP
                 dir UP
                 end
         dlg DLG_339
@@ -38149,7 +38149,7 @@ _cb0106:
                 ; TERRA: You mean there's some connection between Espers and Magitek?
                 ; BANON: I can only recall one thing linking Espers with Magitek power_
         obj_script EDGAR, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script NPC_5, ASYNC
                 wait 16
@@ -38186,7 +38186,7 @@ _cb0106:
                         end
                 end_loop
         obj_script LOCKE, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         dlg DLG_344
                 ; LOCKE: My Grandma used to tell me stories about magical machines_
@@ -38195,7 +38195,7 @@ _cb0106:
                 dir UP
                 end
         obj_script EDGAR, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 4
                 dir UP
                 end
@@ -38205,25 +38205,25 @@ _cb0106:
                 ; But historical studies have provided a number of conflicting and frightening theories_
                 ; According to one theory, humans and machines were imbued with powers drained from Espers_
         obj_script TERRA, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_346
                 ; TERRA: That could explain Magitek power_
         obj_script NPC_5, ASYNC
                 move LEFT, 2
                 wait 8
-                action 31
-                action 1
+                action SURPRISED
+                action WALKING_DOWN_2
                 dir DOWN
                 wait 1
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 end
         dlg DLG_347
                 ; EDGAR: We can only fight Magitek enemies with Magitek weapons_
         obj_script NPC_5, ASYNC
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_348
                 ; BANON: It's risky, but if we have TERRA_speak with that Esper, it might just wake up_
@@ -38245,7 +38245,7 @@ _cb0106:
                 dir LEFT
                 end
         obj_script NPC_5, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_349
                 ; BANON: Who can say?
@@ -38370,7 +38370,7 @@ _cb0106:
                 dir RIGHT
                 wait 32
                 dir DOWN
-                action 45
+                action NPC_SPECIAL_2
                 end
         sfx 199
         obj_script NPC_6, ASYNC
@@ -38463,7 +38463,7 @@ _cb0106:
                 end
         obj_script NPC_5, ASYNC
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -38480,7 +38480,7 @@ _cb0106:
                 wait 4
                 dir DOWN
                 wait 1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -38530,31 +38530,31 @@ _cb0106:
                 move UP, 1
                 dir RIGHT
                 wait 2
-                action 13 | ACTION_H_FLIP
+                action ATTACKING_2_FLIP
                 wait 1
                 dir RIGHT
                 wait 8
                 end
         obj_script EDGAR
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 wait 1
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 wait 1
-                action 31
+                action SURPRISED
                 wait 1
-                action 24
+                action ANGRY
                 wait 8
                 end
         obj_script SABIN, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 wait 1
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 end
@@ -38574,11 +38574,11 @@ _cb0106:
                 dir LEFT
                 end
         obj_script NPC_5, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -38599,11 +38599,11 @@ _cb0106:
                 dir LEFT
                 end
         obj_script EDGAR, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -38612,7 +38612,7 @@ _cb0106:
                 ; You'll probably even gain some understanding of your own abilities_
         obj_script TERRA
                 wait 6
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 3
                 dir LEFT
                 wait 6
@@ -38679,7 +38679,7 @@ _cb0412:
                 ; The Empire's invading!
         play_song TROOPS_MARCH_ON
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 wait 8
                 end
         dlg DLG_356
@@ -38693,11 +38693,11 @@ _cb0412:
                 end
         fade_out_song $40
         obj_script SLOT_1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
                 dir DOWN
                 wait 8
@@ -38761,7 +38761,7 @@ _cb04aa:
         return
 _cb04b7:
         obj_script SLOT_1, ASYNC
-                action 49
+                action RAMUH_EYES_CLOSED
                 speed NORMAL
                 move UP, 1
                 move RIGHT_UP_UP
@@ -38793,7 +38793,7 @@ _cb04b7:
         return
 _cb04e6:
         obj_script SLOT_1, ASYNC
-                action 49
+                action RAMUH_EYES_CLOSED
                 speed NORMAL
                 move UP, 3
                 speed SLOW
@@ -38843,7 +38843,7 @@ _cb051c:
         call _cb2e2b
         wait_30f
         obj_script SLOT_1, ASYNC
-                action 49
+                action RAMUH_EYES_CLOSED
                 speed SLOWER
                 move RIGHT, 1
                 speed SLOW
@@ -38874,7 +38874,7 @@ _cb055c:
         call _cb2e2b
         wait_30f
         obj_script SLOT_1, ASYNC
-                action 49
+                action RAMUH_EYES_CLOSED
                 speed SLOWER
                 move RIGHT, 1
                 speed SLOW
@@ -39401,7 +39401,7 @@ _cb08db:
         obj_script SABIN
                 speed NORMAL
                 pos {119, 28}
-                action 40
+                action DEAD_HORZ
                 anim_off
                 end
         fade_in 8
@@ -39692,11 +39692,11 @@ _cb0b10:
         sfx SFX::DOG_BARK
         obj_script SLOT_1, ASYNC
                 speed FAST
-                action 31
+                action SURPRISED
                 wait 1
                 move RIGHT, 2
                 move UP, 1
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_455
                 ; Whoa_
@@ -39709,12 +39709,12 @@ _cb0b2a:
         sfx SFX::DOG_BARK
         obj_script SLOT_1, ASYNC
                 speed FAST
-                action 31
+                action SURPRISED
                 wait 1
                 move DOWN, 1
                 move RIGHT, 3
                 move UP, 1
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_455
                 ; Whoa_
@@ -39872,7 +39872,7 @@ _cb0c2f:
                 speed FAST
                 move UP, 1
                 move RIGHT, 2
-                action 9
+                action NEAR_FATAL
                 end
         call _cb0c75
         return
@@ -39882,7 +39882,7 @@ _cb0c47:
         obj_script SLOT_1
                 speed FAST
                 move RIGHT, 1
-                action 9
+                action NEAR_FATAL
                 end
         call _cb0c75
         return
@@ -39892,7 +39892,7 @@ _cb0c5e:
         obj_script SLOT_1
                 speed FAST
                 move RIGHT, 4
-                action 9
+                action NEAR_FATAL
                 end
         call _cb0c75
         return
@@ -40110,7 +40110,7 @@ _cb0c87:
         return
 _cb0d87:
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 2
                 end
         call _cb0e1c
@@ -40164,7 +40164,7 @@ _cb0dcc:
                 dir LEFT
                 wait 1
                 dir DOWN
-                action 11
+                action HIT
                 end
         dlg DLG_511
                 ; Yeeeouch!
@@ -40215,16 +40215,16 @@ _cb0e1c:
         return
 _cb0e2d:
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 wait 6
                 dir UP
                 wait 1
-                action 33
+                action HEAD_DOWN_UP
                 end
         sfx 152
         obj_script SLOT_1, ASYNC
                 speed NORMAL
-                action 11
+                action HIT
                 anim_off
                 jump_low
                 move DOWN, 1
@@ -40238,7 +40238,7 @@ _cb0e2d:
         dlg DLG_513
                 ; SOLDIER: Who goes there?
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 jump_low
                 move UP, 1
                 anim_on
@@ -40247,13 +40247,13 @@ _cb0e2d:
                 ; No! A sentry!
         call _cb2e34
         obj_script SLOT_1
-                action 35
+                action HEAD_TURNED
                 dir LEFT
-                action 35
+                action HEAD_TURNED
                 dir DOWN
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 dir RIGHT
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 dir DOWN
                 speed FAST
                 move UP, 1
@@ -40313,7 +40313,7 @@ _cb0e2d:
         hide_obj NPC_12
         show_obj SLOT_1
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 6
                 dir DOWN
                 end
@@ -40377,7 +40377,7 @@ _cb0f19:
                 layer 2
                 jump_high
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 wait 4
                 move RIGHT, 1
                 layer 0
@@ -40387,13 +40387,13 @@ _cb0f2e:
         if_switch $002B=1, EventReturn
         lock_camera
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 wait 6
                 speed FAST
                 move RIGHT, 3
                 dir DOWN
                 wait 3
-                action 9
+                action NEAR_FATAL
                 end
         obj_script CAMERA
                 wait 6
@@ -40423,15 +40423,15 @@ _cb0f2e:
         obj_script NPC_4
                 dir DOWN
                 wait 2
-                action 32
-                action 24
-                action 35
+                action HEAD_DOWN_DOWN
+                action ANGRY
+                action HEAD_TURNED
                 end
         dlg DLG_496
                 ; LEO: You're from Maranda, right?
                 ; SOLDIER: Y_yes Sir. Why?
         obj_script NPC_4, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_497
                 ; LEO: And your family lives there? Fall in battle, and I'll have to deliver the bad news_
@@ -40462,17 +40462,17 @@ _cb0f2e:
                 end
         obj_script SLOT_1, ASYNC
                 wait 4
-                action 35
+                action HEAD_TURNED
                 wait 8
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 wait 1
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_4, ASYNC
                 wait 24
-                action 35
+                action HEAD_TURNED
                 end
         obj_script NPC_9
                 speed FAST
@@ -40494,13 +40494,13 @@ _cb0f2e:
                 move RIGHT, 1
                 end
         obj_script NPC_4
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 wait 1
                 dir UP
                 wait 4
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script NPC_9
                 anim_off
@@ -40523,7 +40523,7 @@ _cb0f2e:
         dlg DLG_504
                 ; SOLDIER: I understand, Sir.
         obj_script NPC_4, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -40538,7 +40538,7 @@ _cb0f2e:
                 ; SOLDIER: Sir!
                 ; Leave it to us, Sir!
         obj_script NPC_4, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -40583,12 +40583,12 @@ _cb1032:
         if_switch $002C=1, EventReturn
         lock_camera
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 6
                 speed FAST
                 move UP, 1
                 move RIGHT, 3
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_6, ASYNC
                 speed SLOW
@@ -40629,7 +40629,7 @@ _cb1032:
                 ; KEFKA: You loser!
                 ; I'll take care of this situation in no time!
         obj_script NPC_4, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 4
                 dir DOWN
                 end
@@ -40913,7 +40913,7 @@ _cb1209:
                 ; Uwa, ha, ha!
         obj_script NPC_6
                 wait 6
-                action 9
+                action NEAR_FATAL
                 end
         wait_2s
         loop 8
@@ -40950,16 +40950,16 @@ _cb1283:
         obj_script CYAN
                 speed NORMAL
                 move UP, 2
-                action 31
+                action SURPRISED
                 wait 1
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 wait 5
                 speed FAST
                 move UP, 2
                 move RIGHT, 3
                 move UP, 3
                 dir RIGHT
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_546, BOTTOM
                 ; CYAN: Elayne!
@@ -40967,7 +40967,7 @@ _cb1283:
         wait_2s
         lock_camera
         obj_script CYAN, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_547, BOTTOM
                 ; CYAN: This_
@@ -40997,7 +40997,7 @@ _cb1283:
                 wait 3
                 speed NORMAL
                 move LEFT, 1
-                action 45
+                action NPC_SPECIAL_2
                 anim_on
                 end
         wait_15f 5
@@ -41012,35 +41012,35 @@ _cb1283:
                 end
         wait_dlg
         obj_script CYAN, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 8
                 move LEFT, 1
                 wait 11
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 wait 10
-                action 24
+                action ANGRY
                 end
         dlg DLG_561
                 ; CYAN: I_impossible!
                 ; Idiotic!!!
         wait_obj CYAN
         obj_script CYAN
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         play_song THE_UNFORGIVEN
         switch $01CC=1
         wait_2s
         obj_script CYAN
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_562
                 ; We can't forgive this!
@@ -41092,11 +41092,11 @@ _cb1337:
                 move RIGHT, 3
                 end
         obj_script NPC_3, ASYNC
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 wait 1
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 1
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         dlg DLG_564, BOTTOM
                 ; WARRIOR: I am CYAN,
@@ -41118,7 +41118,7 @@ _cb1337:
         call _cb13ff
         obj_script NPC_4, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41133,7 +41133,7 @@ _cb1337:
                 ; SABIN: !
         obj_script NPC_5, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41150,7 +41150,7 @@ _cb1337:
         call _cb13ff
         obj_script NPC_4, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41168,7 +41168,7 @@ _cb13b9:
         call _cb13ff
         obj_script NPC_4, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41183,7 +41183,7 @@ _cb13eb:
         call _cb13ff
         obj_script NPC_5, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41198,7 +41198,7 @@ _cb13ff:
         sfx 71
         obj_script NPC_3
                 speed FASTER
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 anim_off
                 move RIGHT, 1
                 jump_low
@@ -41213,7 +41213,7 @@ _cb140f:
         call _cb13ff
         obj_script NPC_6, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41227,7 +41227,7 @@ _cb142e:
         call _cb13ff
         obj_script NPC_7, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41243,7 +41243,7 @@ _cb1441:
         call _cb13ff
         obj_script NPC_8, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41257,7 +41257,7 @@ _cb1460:
         call _cb13ff
         obj_script NPC_9, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41273,7 +41273,7 @@ _cb1473:
                 speed FASTER
                 move RIGHT, 1
                 anim_off
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 jump_low
                 move LEFT, 1
                 anim_on
@@ -41290,7 +41290,7 @@ _cb1483:
         call _cb1473
         obj_script NPC_4, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41344,9 +41344,9 @@ _cb1483:
                 dir DOWN
                 end
         obj_script NPC_3, ASYNC
-                action 24
+                action ANGRY
                 wait 1
-                action 31
+                action SURPRISED
                 wait 1
                 dir RIGHT
                 end
@@ -41373,7 +41373,7 @@ _cb1483:
         call _cb1473
         obj_script NPC_6, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41384,7 +41384,7 @@ _cb1483:
         call _cb1473
         obj_script NPC_6, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41400,7 +41400,7 @@ _cb152c:
         call _cb1473
         obj_script NPC_6, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41494,7 +41494,7 @@ _cb152c:
         obj_script NPC_3, ASYNC
                 move UP_RIGHT
                 dir RIGHT
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         obj_script NPC_9, ASYNC
                 move LEFT_LEFT_DOWN
@@ -41507,7 +41507,7 @@ _cb152c:
                 end
         obj_script NPC_9, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41522,7 +41522,7 @@ _cb15d9:
         call _cb1473
         obj_script NPC_8, ASYNC
                 speed FASTER
-                action 10
+                action READY
                 anim_off
                 move LEFT, 1
                 jump_low
@@ -41576,7 +41576,7 @@ _cb1635:
         return
 _cb1646:
         obj_script CYAN, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 6
                 dir LEFT
                 end
@@ -41585,7 +41585,7 @@ _cb1646:
         obj_script SABIN, ASYNC
                 dir DOWN
                 wait 12
-                action 35
+                action HEAD_TURNED
                 wait 2
                 dir DOWN
                 wait 1
@@ -41595,7 +41595,7 @@ _cb1646:
                 ; SABIN: Allow me to thank you! I am SABIN, from Figaro.
                 ; Now, let's scram!
         obj_script CYAN, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_582
                 ; CYAN: But what of my home, my family_my friends?
@@ -41612,12 +41612,12 @@ _cb1646:
                 ; SOLDIER: Got 'em!
                 ; Over here!
         obj_script SABIN, ASYNC
-                action 31
+                action SURPRISED
                 wait 4
                 dir RIGHT
                 end
         obj_script CYAN
-                action 31
+                action SURPRISED
                 wait 6
                 dir LEFT
                 end
@@ -41697,9 +41697,9 @@ _cb16f8:
                 jump_high
                 move DOWN, 2
                 move DOWN, 1
-                action 35
+                action HEAD_TURNED
                 wait 4
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 8
                 dir DOWN
                 speed FASTEST
@@ -41777,26 +41777,26 @@ _cb1743:
                 dir RIGHT
                 end
         obj_script CYAN, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_597
                 ; CYAN: Sir SABIN!
                 ; How might these abominations be manipulated?
         obj_script SABIN
-                action 24
+                action ANGRY
                 wait 8
-                action 31
+                action SURPRISED
                 wait 1
                 dir RIGHT
                 end
         obj_script SABIN, ASYNC
-                action 19
+                action EYES_CLOSED_DOWN
                 wait 16
-                action 29
+                action LAUGHING_1
                 wait 4
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir RIGHT
                 end
@@ -41881,7 +41881,7 @@ _cb1743:
                 jump_high
                 move RIGHT, 2
                 anim_off
-                action 40
+                action DEAD_HORZ
                 speed FAST
                 jump_low
                 move RIGHT, 1
@@ -41902,7 +41902,7 @@ _cb1743:
                 speed FASTEST
                 jump_high
                 move LEFT_LEFT_UP
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_11, ASYNC
                 speed FAST
@@ -41910,7 +41910,7 @@ _cb1743:
                 speed FASTEST
                 jump_high
                 move RIGHT_RIGHT_UP
-                action 40
+                action DEAD_HORZ
                 end
         obj_script CYAN, ASYNC
                 move DOWN, 7
@@ -42000,8 +42000,8 @@ _cb18b3:
         obj_script SLOT_1, ASYNC
                 speed FAST
                 anim_off
-                action 31
-                action 40
+                action SURPRISED
+                action DEAD_HORZ
                 move DOWN, 2
                 end
         sfx 45
@@ -42009,17 +42009,17 @@ _cb18b3:
                 ; CYAN: Eeoooa!
                 ; Be you friend or enemy?!
         obj_script NPC_3, ASYNC
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         obj_script SLOT_1, ASYNC
                 anim_on
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 dir DOWN
                 end
         dlg DLG_579
@@ -42033,11 +42033,11 @@ _cb18d9:
         obj_script SLOT_1, ASYNC
                 anim_off
                 speed FAST
-                action 15
+                action JUMPING
                 move RIGHT, 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         dlg DLG_569
@@ -42253,7 +42253,7 @@ _cb1a5b:
                 move RIGHT_UP_UP
                 wait 4
                 move UP, 1
-                action 22
+                action ARMS_UP_DOWN
                 end
         dlg DLG_590, BOTTOM
                 ; SABIN: Can't believe we've made it this far_
@@ -42380,7 +42380,7 @@ _cb1b46:
                 speed FAST
                 anim_off
                 move DOWN, 3
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         sfx 199
@@ -42403,7 +42403,7 @@ _cb1b46:
         wait_45f
         sfx 150
         obj_script CELES
-                action 31
+                action SURPRISED
                 wait 4
                 dir LEFT
                 wait 4
@@ -42412,7 +42412,7 @@ _cb1b46:
         loop 3
                 sfx 154
                 obj_script CELES
-                        action 28
+                        action WAVING_2_UP
                         wait 1
                         dir UP
                         end
@@ -42421,7 +42421,7 @@ _cb1b46:
         loop 4
                 sfx 154
                 obj_script CELES
-                        action 28
+                        action WAVING_2_UP
                         wait 1
                         dir UP
                         end
@@ -42430,7 +42430,7 @@ _cb1b46:
         obj_script CELES
                 dir UP
                 wait 4
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_1s
         play_song SILENCE
@@ -42441,7 +42441,7 @@ _cb1b46:
         unlock_camera
         sfx SFX::MAGICITE_PICKUP
         obj_script CELES
-                action 20
+                action WINKING_DOWN
                 wait 4
                 dir DOWN
                 end
@@ -42461,9 +42461,9 @@ _cb1b46:
                 move LEFT, 4
                 dir UP
                 wait 24
-                action 28
+                action WAVING_2_UP
                 wait 4
-                action 33
+                action HEAD_DOWN_UP
                 end
         spc_cmd $83, $00, $5A
         sfx 40
@@ -42476,7 +42476,7 @@ _cb1b46:
         show_obj CYAN
         pass_off CYAN
         obj_script CYAN, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 move UP, 1
@@ -42487,7 +42487,7 @@ _cb1b46:
         sfx 106
         wait_obj CYAN
         obj_script CYAN, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         wait_obj CYAN
@@ -42497,7 +42497,7 @@ _cb1b46:
                 end
         wait_30f
         obj_script CYAN
-                action 33
+                action HEAD_DOWN_UP
                 end
 _cb1c1f:
         if_switch $01A4=0, _cb1c5f
@@ -42513,7 +42513,7 @@ _cb1c37:
         show_obj EDGAR
         pass_off EDGAR
         obj_script EDGAR, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 move UP, 1
@@ -42524,7 +42524,7 @@ _cb1c37:
         sfx 106
         wait_obj EDGAR
         obj_script EDGAR, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         wait_obj EDGAR
@@ -42534,7 +42534,7 @@ _cb1c37:
                 end
         wait_30f
         obj_script EDGAR
-                action 33
+                action HEAD_DOWN_UP
                 end
 _cb1c5f:
         if_switch $01A5=0, _cb1ca1
@@ -42553,7 +42553,7 @@ _cb1c79:
         show_obj SABIN
         pass_off SABIN
         obj_script SABIN, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 move UP, 1
@@ -42564,7 +42564,7 @@ _cb1c79:
         sfx 106
         wait_obj SABIN
         obj_script SABIN, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         wait_obj SABIN
@@ -42574,7 +42574,7 @@ _cb1c79:
                 end
         wait_30f
         obj_script SABIN
-                action 33
+                action HEAD_DOWN_UP
                 end
 _cb1ca1:
         if_switch $01AB=0, _cb1cd5
@@ -42585,7 +42585,7 @@ _cb1ca1:
         show_obj GAU
         pass_off GAU
         obj_script GAU, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 move UP, 1
@@ -42596,7 +42596,7 @@ _cb1ca1:
         sfx 106
         wait_obj GAU
         obj_script GAU, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         wait_obj GAU
@@ -42606,7 +42606,7 @@ _cb1ca1:
                 end
         wait_30f
         obj_script GAU
-                action 33
+                action HEAD_DOWN_UP
                 end
 _cb1cd5:
         obj_script LOCKE
@@ -42623,7 +42623,7 @@ _cb1cd5:
         show_obj LOCKE
         pass_off LOCKE
         obj_script LOCKE, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 move UP, 1
@@ -42634,7 +42634,7 @@ _cb1cd5:
         sfx 106
         wait_obj LOCKE
         obj_script LOCKE, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         spc_cmd $83, $00, $80
@@ -42660,7 +42660,7 @@ _cb1cd5:
                 end
         wait_15f
         obj_script LOCKE, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -42674,15 +42674,15 @@ _cb1cd5:
                 end
         obj_script SLOT_3, ASYNC
                 wait 12
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script SLOT_4, ASYNC
                 wait 16
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
         obj_script LOCKE
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_1267
                 ; LOCKE: But this is the tough one! Part 2 begins now!
@@ -42729,7 +42729,7 @@ _cb1cd5:
                 end
         wait_15f
         obj_script CELES, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -42763,7 +42763,7 @@ _cb1cd5:
                 ; CELES: Wait!
                 ; We were told your ship is the finest vessel in the world.
         obj_script CELES, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script LOCKE
                 speed FAST
@@ -42793,7 +42793,7 @@ _cb1cd5:
         if_switch $01A2=0, _cb1deb
         wait_15f
         obj_script CYAN, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -42802,7 +42802,7 @@ _cb1cd5:
 _cb1deb:
         wait_15f
         obj_script NPC_1
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_90f
         obj_script NPC_1
@@ -42844,7 +42844,7 @@ _cb1deb:
         return
 _cb1e33:
         obj_script EDGAR, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -42854,7 +42854,7 @@ _cb1e33:
         return
 _cb1e40:
         obj_script SABIN, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -42979,23 +42979,23 @@ _cb1ee6:
                 move UP, 1
                 dir RIGHT
                 wait 4
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
         wait_15f
         obj_script EDGAR
-                action 34
+                action HEAD_DOWN_LEFT
                 dir LEFT
-                action 34
+                action HEAD_DOWN_LEFT
                 dir LEFT
                 wait 4
                 dir UP
-                action 33
+                action HEAD_DOWN_UP
                 wait 6
                 dir UP
                 wait 1
@@ -43003,7 +43003,7 @@ _cb1ee6:
                 end
         wait_15f
         obj_script CELES
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 4
                 dir RIGHT
                 wait 4
@@ -43023,23 +43023,23 @@ _cb1f28:
                 move UP, 1
                 dir RIGHT
                 wait 4
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
         wait_15f
         obj_script EDGAR
-                action 34
+                action HEAD_DOWN_LEFT
                 dir LEFT
-                action 34
+                action HEAD_DOWN_LEFT
                 dir LEFT
                 wait 4
                 dir UP
-                action 33
+                action HEAD_DOWN_UP
                 wait 6
                 dir UP
                 wait 1
@@ -43047,7 +43047,7 @@ _cb1f28:
                 end
         wait_15f
         obj_script CELES
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 4
                 dir RIGHT
                 wait 4
@@ -43064,23 +43064,23 @@ _cb1f6a:
                 move UP, 2
                 dir RIGHT
                 wait 4
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
         wait_15f
         obj_script EDGAR
-                action 34
+                action HEAD_DOWN_LEFT
                 dir LEFT
-                action 34
+                action HEAD_DOWN_LEFT
                 dir LEFT
                 wait 4
                 dir UP
-                action 33
+                action HEAD_DOWN_UP
                 wait 6
                 dir UP
                 wait 1
@@ -43088,7 +43088,7 @@ _cb1f6a:
                 end
         wait_15f
         obj_script CELES
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 4
                 dir RIGHT
                 wait 4
@@ -43101,7 +43101,7 @@ _cb1f6a:
         return
 _cb1f9f:
         obj_script CELES, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -43109,7 +43109,7 @@ _cb1f9f:
                 ; CELES: Stop thinking of yourself. Many towns and villages have been smashed by the Empire.
         wait_30f
         obj_script LOCKE, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -43119,7 +43119,7 @@ _cb1f9f:
         set_case PARTY_CHARS
         if_switch $01A4=0, _cb1fc7
         obj_script EDGAR, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -43130,7 +43130,7 @@ _cb1f9f:
 _cb1fc7:
         if_switch $01A5=0, _cb1fd8
         obj_script SABIN, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -43140,7 +43140,7 @@ _cb1fc7:
 _cb1fd8:
         if_switch $01A2=0, _cb1fe5
         obj_script CYAN
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_1285
                 ; CYAN: _I lost my friends_
@@ -43148,7 +43148,7 @@ _cb1fd8:
 _cb1fe5:
         wait_1s
         obj_script NPC_1
-                action 33
+                action HEAD_DOWN_UP
                 end
         dlg DLG_1286
                 ; SETZER: The Empire _evil_?
@@ -43210,7 +43210,7 @@ _cb2041:
         pass_on CELES
         call _cb1f9f
         obj_script CELES, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -43253,28 +43253,28 @@ _cb2096:
                 speed FAST
                 move UP, 1
                 move LEFT, 2
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1289
                 ; LOCKE: WHAT!
                 ; Are you stupid!?
         wait_90f
         obj_script CELES, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
         dlg DLG_1290
                 ; CELES: We haven't any choice.
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 wait 7
                 move RIGHT, 1
                 dir DOWN
                 end
         wait_30f
         obj_script NPC_1, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -43282,7 +43282,7 @@ _cb2096:
                 ; SETZER: Yes! It's settled!
         wait_1s
         obj_script CELES, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -43295,13 +43295,13 @@ _cb2096:
                 ; If it's heads, you'll help us. If it's tails, I'll go with you.
                 ; Well, Mr. Gambler_?
         obj_script NPC_1, ASYNC
-                action 29 | ACTION_H_FLIP
+                action LAUGHING_1_FLIP
                 wait 1
-                action 30 | ACTION_H_FLIP
+                action LAUGHING_2_FLIP
                 wait 2
-                action 29 | ACTION_H_FLIP
+                action LAUGHING_1_FLIP
                 wait 1
-                action 30 | ACTION_H_FLIP
+                action LAUGHING_2_FLIP
                 dir RIGHT
                 end
         dlg DLG_1294
@@ -43318,7 +43318,7 @@ _cb2096:
         if_switch $01A2=0, _cb2103
         wait_30f
         obj_script CYAN, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -43332,14 +43332,14 @@ _cb2103:
         obj_script CELES
                 dir UP
                 wait 8
-                action 33
+                action HEAD_DOWN_UP
                 wait 3
                 dir UP
                 end
         wait_45f
         obj_script LOCKE, ASYNC
                 wait 6
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script CELES
                 move RIGHT, 1
@@ -43360,11 +43360,11 @@ _cb2103:
         obj_script CELES
                 dir DOWN
                 wait 2
-                action 19
+                action EYES_CLOSED_DOWN
                 wait 16
                 dir LEFT
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 6
                 dir LEFT
                 end
@@ -43393,10 +43393,10 @@ _cb2103:
         sfx SFX::MAGICITE_PICKUP
         wait_1s
         obj_script CELES, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script LOCKE, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_90f
         fixed_clr WHITE, 1, 3
@@ -43418,15 +43418,15 @@ _cb2103:
         hide_obj NPC_2
         obj_script NPC_1
                 wait 8
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         spc_cmd $81, $1E, $FF
         pass_on NPC_1
         obj_script NPC_1
                 wait 4
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 12
                 dir DOWN
                 end
@@ -43442,7 +43442,7 @@ _cb2103:
                 end
         obj_script EDGAR, ASYNC
                 wait 12
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_1306
                 ; SABIN: That coin_!?
@@ -43495,7 +43495,7 @@ _cb21ca:
                 end
         wait_45f
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -43522,7 +43522,7 @@ _cb21ca:
         sfx SFX::MAGICITE_PICKUP
         wait_1s
         obj_script NPC_1, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
@@ -43619,11 +43619,11 @@ _cb22bb:
                 end
         obj_script SLOT_3, ASYNC
                 pos {13, 4}
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script SLOT_4, ASYNC
                 pos {15, 4}
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script LOCKE
                 pos {14, 7}
@@ -43655,7 +43655,7 @@ _cb22bb:
         obj_script NPC_1
                 dir DOWN
                 wait 3
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 12
                 dir DOWN
                 end
@@ -43676,7 +43676,7 @@ _cb22bb:
                 move LEFT, 3
                 end
         obj_script LOCKE, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -43774,11 +43774,11 @@ _cb23d8:
                 end
         obj_script NPC_1, ASYNC
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 dir DOWN
                 end
         obj_script NPC_5, ASYNC
@@ -43789,14 +43789,14 @@ _cb23d8:
         wait_obj NPC_5
         loop 2
                 obj_script NPC_1
-                        action 32
+                        action HEAD_DOWN_DOWN
                         wait 1
                         dir DOWN
                         end
                 sfx 71
                 end_loop
         obj_script NPC_1, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_5
                 move DOWN, 1
@@ -43808,7 +43808,7 @@ _cb23d8:
                 end
         loop 3
                 obj_script NPC_1
-                        action 32
+                        action HEAD_DOWN_DOWN
                         wait 1
                         dir DOWN
                         end
@@ -43817,7 +43817,7 @@ _cb23d8:
                 end_loop
         wait_45f
         obj_script NPC_1, ASYNC
-                action 9
+                action NEAR_FATAL
                 wait 12
                 dir DOWN
                 end
@@ -43828,7 +43828,7 @@ _cb23d8:
         wait_obj NPC_1
         pass_off NPC_1
         obj_script NPC_1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
                 hide_obj
                 end
@@ -43854,7 +43854,7 @@ _cb23d8:
                 ; SETZER: Don't touch anything!
         loop 2
                 obj_script NPC_1
-                        action 32
+                        action HEAD_DOWN_DOWN
                         wait 1
                         dir DOWN
                         end
@@ -43862,7 +43862,7 @@ _cb23d8:
                 sfx 150
                 end_loop
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 wait 3
                 hide_obj
                 end
@@ -43874,12 +43874,12 @@ _cb23d8:
                 end
         obj_script NPC_1
                 pos {56, 13}
-                action 9
+                action NEAR_FATAL
                 end
         show_obj NPC_1
         wait_30f
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         loop 5
                 sfx 150
@@ -43890,13 +43890,13 @@ _cb23d8:
         wait_obj NPC_1
         wait_30f
         obj_script NPC_1, ASYNC
-                action 31
+                action SURPRISED
                 wait 1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
-                action 31
+                action SURPRISED
                 wait 1
-                action 24
+                action ANGRY
                 end
         dlg DLG_1881, BOTTOM
                 ; SETZER: __
@@ -43926,7 +43926,7 @@ _cb23d8:
         sort_obj
         loop 3
                 obj_script NPC_1
-                        action 32
+                        action HEAD_DOWN_DOWN
                         wait 1
                         dir DOWN
                         end
@@ -43934,13 +43934,13 @@ _cb23d8:
                 end_loop
         wait_1s
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 end
         sfx 74
         wait_30f
         loop 2
                 obj_script NPC_1
-                        action 32
+                        action HEAD_DOWN_DOWN
                         wait 1
                         dir DOWN
                         end
@@ -43969,9 +43969,9 @@ _cb23d8:
                 wait_15f
                 end_loop
         obj_script TERRA, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_1883
                 ; TERRA: You love this ship, more than anything, huh?
@@ -43983,7 +43983,7 @@ _cb23d8:
         dlg DLG_1884
                 ; TERRA: _huh?
         obj_script NPC_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_1885
                 ; SETZER: In my youth I dreamed of having the world's fastest airship.
@@ -44002,7 +44002,7 @@ _cb23d8:
                 ; I felt like I lost my spirit.
         wait_90f
         obj_script NPC_1, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_1887
                 ; SETZER: _
@@ -44033,7 +44033,7 @@ _cb2569:
         update_party
         load_map 377, {6, 17}, LEFT, ASYNC
         obj_script SLOT_1, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         dlg DLG_1634
                 ;
@@ -44060,7 +44060,7 @@ _cb2599:
         update_party
         load_map 377, {6, 17}, LEFT, ASYNC
         obj_script SLOT_1, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         dlg DLG_1634
                 ;
@@ -44138,7 +44138,7 @@ _cb2627:
                 end
         show_obj LOCKE
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44155,7 +44155,7 @@ _cb2645:
                 end
         show_obj CYAN
         obj_script CYAN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44172,7 +44172,7 @@ _cb2668:
                 end
         show_obj EDGAR
         obj_script EDGAR
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44189,7 +44189,7 @@ _cb268b:
                 end
         show_obj SABIN
         obj_script SABIN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44206,7 +44206,7 @@ _cb26ae:
                 end
         show_obj SETZER
         obj_script SETZER
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44222,7 +44222,7 @@ _cb26d4:
         set_case PARTY_CHARS
         if_switch $01A1=1, _cb26e7
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44233,7 +44233,7 @@ _cb26e7:
         if_switch $01F2=1, EventReturn
         if_switch $01A2=1, _cb26ff
         obj_script CYAN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44244,7 +44244,7 @@ _cb26ff:
         if_switch $01F2=1, EventReturn
         if_switch $01A4=1, _cb2717
         obj_script EDGAR
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44255,7 +44255,7 @@ _cb2717:
         if_switch $01F2=1, EventReturn
         if_switch $01A5=1, _cb272f
         obj_script SABIN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44266,7 +44266,7 @@ _cb272f:
         if_switch $01F2=1, EventReturn
         if_switch $01A9=1, _cb2745
         obj_script SETZER
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44282,7 +44282,7 @@ _cb274a:
         set_case PARTY_CHARS
         if_switch $01A1=1, _cb275d
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44293,7 +44293,7 @@ _cb275d:
         if_switch $01F4=1, EventReturn
         if_switch $01A2=1, _cb2775
         obj_script CYAN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44304,7 +44304,7 @@ _cb2775:
         if_switch $01F4=1, EventReturn
         if_switch $01A4=1, _cb278d
         obj_script EDGAR
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44315,7 +44315,7 @@ _cb278d:
         if_switch $01F4=1, EventReturn
         if_switch $01A5=1, _cb27a5
         obj_script SABIN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44326,7 +44326,7 @@ _cb27a5:
         if_switch $01F4=1, EventReturn
         if_switch $01A9=1, _cb27bb
         obj_script SETZER
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
@@ -44372,8 +44372,8 @@ _cb280e:
 _cb280f:
         obj_script SLOT_1
                 speed FAST
-                action 31
-                action 2
+                action SURPRISED
+                action WALKING_DOWN_3
                 move RIGHT, 1
                 dir LEFT
                 end
@@ -44605,7 +44605,7 @@ _cb2948:
         wait_6s
         update_party
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 end
         fade_in 2
         wait_fade
@@ -44947,7 +44947,7 @@ _cb2dae:
 _cb2dbb:
         if_switch $01F5=0, EventReturn
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         sfx 80
         flash RED
@@ -44957,7 +44957,7 @@ _cb2dbb:
 _cb2dd2:
         if_switch $01F6=0, EventReturn
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         sfx 80
         flash RED
@@ -44966,7 +44966,7 @@ _cb2dd2:
         return
 _cb2de9:
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         sfx 80
         flash RED
@@ -44994,7 +44994,7 @@ _cb2dfa:
 _cb2e1b:
         obj_script SLOT_1
                 pos {2, 6}
-                action 40
+                action DEAD_HORZ
                 end
         call _cb0e1c
         call _cb2dfa
@@ -45169,15 +45169,15 @@ _cb2fe7:
                 end
         loop 2
                 obj_script SLOT_1
-                        action 22
+                        action ARMS_UP_DOWN
                         wait 1
-                        action 31
+                        action SURPRISED
                         end
                 end_loop
         obj_script SLOT_1
-                action 32
-                action 9
-                action 40
+                action HEAD_DOWN_DOWN
+                action NEAR_FATAL
+                action DEAD_HORZ
                 move DOWN, 5
                 end
         sfx 152
@@ -46117,7 +46117,7 @@ _cb39ca:
         call _cb3890
         wait_30f
         obj_script TERRA
-                action 33
+                action HEAD_DOWN_UP
                 end
         show_obj NPC_7
         show_obj NPC_8
@@ -46163,12 +46163,12 @@ _cb39ca:
                 ; TERRA!
                 ; _the gate_quickly!
         obj_script SLOT_2, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         call _cb38ac
         obj_script TERRA
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -46290,16 +46290,16 @@ _cb39ca:
         call _cb3980
         obj_script TERRA, ASYNC
                 pos {8, 17}
-                action 40
+                action DEAD_HORZ
                 end
         obj_script SLOT_2, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script SLOT_3, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script SLOT_4, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script CAMERA
                 speed FAST
@@ -46319,11 +46319,11 @@ _cb39ca:
         spc_cmd $10, $39, $64
         obj_script SLOT_2, ASYNC
                 wait 12
-                action 9
+                action NEAR_FATAL
                 end
         obj_script SLOT_3, ASYNC
                 wait 24
-                action 9
+                action NEAR_FATAL
                 end
         wait_15f 10
         obj_script SLOT_2, ASYNC
@@ -46337,12 +46337,12 @@ _cb39ca:
         wait_90f
         spc_cmd $10, $39, $96
         obj_script SLOT_4, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_1650
                 ; What about those Espers_?
         obj_script TERRA, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         wait_2s
         obj_script TERRA
@@ -46359,12 +46359,12 @@ _cb39ca:
                 end
         wait_90f
         obj_script SLOT_4, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 3
                 dir LEFT
                 end
         obj_script SLOT_3, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 3
                 dir RIGHT
                 end
@@ -46938,7 +46938,7 @@ _cb3f9a:
         set_case PARTY_CHARS
         if_switch $01A1=0, _cb3fac
         obj_script LOCKE, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -46948,7 +46948,7 @@ _cb3f9a:
 _cb3fac:
         if_switch $01A2=0, _cb3fbd
         obj_script CYAN, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -46958,7 +46958,7 @@ _cb3fac:
 _cb3fbd:
         if_switch $01A4=0, _cb3fce
         obj_script EDGAR, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -46968,7 +46968,7 @@ _cb3fbd:
 _cb3fce:
         if_switch $01A5=0, _cb3fdf
         obj_script SABIN, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -46978,7 +46978,7 @@ _cb3fce:
 _cb3fdf:
         if_switch $01A9=0, _cb3ff0
         obj_script SETZER, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -47033,30 +47033,30 @@ _cb3ff1:
                 end
         wait_1s
         obj_script LOCKE, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 wait 3
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1323, BOTTOM
                 ; LOCKE: Let's not overstay our visit. We're outta here on the double!
         wait_obj LOCKE
         obj_script SLOT_3, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 wait 1
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 end
         obj_script SLOT_4, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -47065,7 +47065,7 @@ _cb3ff1:
                 end
         wait_15f 3
         obj_script SETZER, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 15
@@ -47090,19 +47090,19 @@ _cb3ff1:
                 wait_30f
                 end_loop
         obj_script SLOT_3, ASYNC
-                action 19
+                action EYES_CLOSED_DOWN
                 wait 1
                 dir DOWN
                 wait 1
-                action 19
+                action EYES_CLOSED_DOWN
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
         obj_script SLOT_3, ASYNC
-                action 31
+                action SURPRISED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         call _cb40f2
         obj_script SLOT_4, ASYNC
@@ -47116,31 +47116,31 @@ _cb3ff1:
                 wait_30f
                 end_loop
         obj_script SLOT_4, ASYNC
-                action 19
+                action EYES_CLOSED_DOWN
                 wait 1
                 dir DOWN
                 wait 1
-                action 19
+                action EYES_CLOSED_DOWN
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_1s
         wait_30f
         obj_script SLOT_4, ASYNC
-                action 31
+                action SURPRISED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         call _cb4132
         obj_script SETZER, ASYNC
                 speed FAST
                 move DOWN, 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script LOCKE
                 speed FAST
                 move DOWN, 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 end
         call _cb2e2b
@@ -48337,7 +48337,7 @@ _cb49f3:
         if_switch $0258=1, EventReturn
         obj_script SLOT_1
                 speed SLOWER
-                action 32
+                action HEAD_DOWN_DOWN
                 layer 2
                 anim_off
                 move UP, 3
@@ -48347,7 +48347,7 @@ _cb49f3:
                 end
         sfx 199
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 2
                 dir DOWN
                 end
@@ -48360,13 +48360,13 @@ _cb49f3:
                 move DOWN, 1
                 end
         obj_script SLOT_1
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         battle 151
         call _ca5ea9
@@ -48379,7 +48379,7 @@ _cb49f3:
         fade_in
         obj_script SLOT_1
                 speed FAST
-                action 40
+                action DEAD_HORZ
                 anim_off
                 move DOWN, 3
                 layer 0
@@ -48388,7 +48388,7 @@ _cb49f3:
         sfx 199
         wait_30f
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 wait 1
                 dir LEFT
                 end
@@ -48593,7 +48593,7 @@ _cb4b86:
                 layer 2
                 anim_off
                 move DOWN, 2
-                action 40
+                action DEAD_HORZ
                 wait 8
                 layer 0
                 anim_on
@@ -48624,7 +48624,7 @@ _cb4bb5:
                 layer 2
                 anim_off
                 move DOWN, 3
-                action 40
+                action DEAD_HORZ
                 wait 8
                 layer 0
                 anim_on
@@ -48654,7 +48654,7 @@ _cb4bea:
                 layer 2
                 anim_off
                 move DOWN, 2
-                action 40
+                action DEAD_HORZ
                 wait 8
                 layer 0
                 anim_on
@@ -48726,12 +48726,12 @@ _cb4ca1:
         play_song MAGIC_HOUSE
         obj_script NPC_4, ASYNC
 _cb4cab:
-                action 27
+                action WAVING_1_UP
                 wait 3
-                action 28
+                action WAVING_2_UP
                 wait 3
                 branch_rand _cb4cab
-                action 33
+                action HEAD_DOWN_UP
                 wait 12
                 branch _cb4cab
                 end
@@ -48846,9 +48846,9 @@ _cb4cfa:
         obj_script NPC_4
                 dir DOWN
                 wait 2
-                action 31
+                action SURPRISED
                 wait 1
-                action 25
+                action WAVING_1_DOWN
                 wait 4
                 dir DOWN
                 end
@@ -48858,11 +48858,11 @@ _cb4cfa:
         obj_script NPC_4
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 jump_low
                 move DOWN_LEFT
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         obj_script NPC_4
@@ -48873,7 +48873,7 @@ _cb4cfa:
                 end
         wait_1s
         obj_script SLOT_1
-                action 33
+                action HEAD_DOWN_UP
                 wait 8
                 dir UP
                 end
@@ -48883,7 +48883,7 @@ _cb4cfa:
                 ; What are you talking about?
         wait_30f
         obj_script SLOT_3, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 8
                 dir UP
                 end
@@ -48941,7 +48941,7 @@ _cb4dc6:
         if_switch $0253=0, EventReturn
         if_switch $0240=1, EventReturn
         obj_script SLOT_1
-                action 33
+                action HEAD_DOWN_UP
                 end
         dlg DLG_2723
                 ; ``This is Magicite_''
@@ -48959,7 +48959,7 @@ _cb4dc6:
         obj_script NPC_4
                 dir RIGHT
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2754, BOTTOM
                 ; RELM: I have to go!
@@ -49152,7 +49152,7 @@ _cb4ecc:
 _cb4f33:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2676
                 ;
@@ -49260,7 +49260,7 @@ _cb4f73:
 _cb4fc7:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2659
                 ;
@@ -49418,7 +49418,7 @@ _cb509c:
                 wait 2
                 dir RIGHT
                 wait 2
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2659
                 ;
@@ -49672,7 +49672,7 @@ _cb5197:
 _cb51f5:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2657
                 ;
@@ -49772,7 +49772,7 @@ _cb527c:
         wait_1s
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2663
                 ;
@@ -49970,7 +49970,7 @@ _cb5312:
 _cb5394:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2677
                 ;
@@ -50057,7 +50057,7 @@ _cb5407:
         wait_1s
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2659
                 ;
@@ -50191,7 +50191,7 @@ _cb5460:
 _cb54bd:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2676
                 ;
@@ -50306,7 +50306,7 @@ _cb5508:
 _cb5559:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2663
                 ;
@@ -50439,7 +50439,7 @@ _cb55b0:
 _cb5617:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2659
                 ;
@@ -50554,7 +50554,7 @@ _cb566a:
 _cb56b4:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2664
                 ;
@@ -50669,7 +50669,7 @@ _cb5750:
                 wait 2
                 dir RIGHT
                 wait 2
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2659
                 ;
@@ -50717,7 +50717,7 @@ _cb5766:
         choice _cb579a, _cb57a5
 _cb579a:
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2661
                 ;
@@ -50802,7 +50802,7 @@ _cb57a5:
         choice _cb580f, _cb581a
 _cb580f:
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2662
                 ;
@@ -51055,7 +51055,7 @@ _cb58fa:
 _cb5958:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2656
                 ;
@@ -51155,7 +51155,7 @@ _cb59df:
         wait_1s
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2663
                 ;
@@ -51314,7 +51314,7 @@ _cb5a39:
 _cb5ab9:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2677
                 ;
@@ -51401,7 +51401,7 @@ _cb5b2c:
         wait_1s
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2659
                 ;
@@ -51520,7 +51520,7 @@ _cb5b85:
 _cb5bd9:
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2676
                 ;
@@ -51614,7 +51614,7 @@ _cb5c57:
         wait_1s
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2659
                 ;
@@ -51684,15 +51684,15 @@ _cb5cad:
         show_obj NPC_16
         wait_90f
         obj_script NPC_16, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 wait 8
                 dir DOWN
                 wait 2
-                action 19
+                action EYES_CLOSED_DOWN
                 wait 2
                 dir DOWN
                 wait 1
-                action 19
+                action EYES_CLOSED_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -51725,9 +51725,9 @@ _cb5cad:
                 ;
                 ; 50 GP!
         obj_script NPC_16
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 4
-                action 24
+                action ANGRY
                 end
         obj_script NPC_16, ASYNC
                 dir DOWN
@@ -51751,7 +51751,7 @@ _cb5cad:
                 ;
                 ; 2000 GP!
         obj_script NPC_16
-                action 29
+                action LAUGHING_1
                 end
         obj_script NPC_16
                 dir DOWN
@@ -51771,16 +51771,16 @@ _cb5d28:
                 wait 2
                 dir RIGHT
                 wait 2
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2676
                 ;
                 ; 5000 GP!
         wait_obj SLOT_1
         obj_script NPC_16
-                action 35
+                action HEAD_TURNED
                 wait 4
-                action 29
+                action LAUGHING_1
                 end
         obj_script SLOT_1
                 dir UP
@@ -51876,7 +51876,7 @@ _cb5d49:
         choice _cb5dc0, _cb5dcb
 _cb5dc0:
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2660
                 ;
@@ -51903,7 +51903,7 @@ _cb5dcb:
                 ; PAPA: 1000000 GP!
         sfx 225
         obj_script NPC_16, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_1, ASYNC
                 jump_low
@@ -52033,7 +52033,7 @@ _cb5dcb:
                 end
         sfx 199
         obj_script NPC_16
-                action 40
+                action DEAD_HORZ
                 end
         wait_30f
         sfx 57
@@ -52183,11 +52183,11 @@ _cb5f92:
                 end_loop
         return
         obj_script SLOT_1, ASYNC
-                action 27
+                action WAVING_1_UP
                 wait 2
                 dir UP
                 wait 4
-                action 27
+                action WAVING_1_UP
                 wait 2
                 dir UP
                 end
@@ -52215,7 +52215,7 @@ _cb5faf:
                 dir LEFT
                 end
         obj_script GAU
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
                 end
         call _cb62b3
@@ -52223,7 +52223,7 @@ _cb5faf:
         wait_fade
         loop 3
                 obj_script GAU
-                        action 36
+                        action WAGGING_FINGER_1
                         wait 2
                         dir DOWN
                         end
@@ -52233,7 +52233,7 @@ _cb5faf:
         wait_1s
         loop 4
                 obj_script GAU
-                        action 37
+                        action WAGGING_FINGER_2
                         wait 2
                         dir DOWN
                         end
@@ -52243,9 +52243,9 @@ _cb5faf:
         wait_90f
         loop 2
                 obj_script GAU
-                        action 35
+                        action HEAD_TURNED
                         wait 1
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script GAU
@@ -52254,16 +52254,16 @@ _cb5faf:
         wait_45f
         sfx 219
         obj_script GAU
-                action 32
-                action 8
+                action HEAD_DOWN_DOWN
+                action WALKING_LEFT_3
                 dir DOWN
                 end
         obj_script SLOT_2, ASYNC
-                action 27
+                action WAVING_1_UP
                 wait 2
                 dir UP
                 wait 1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_2806
                 ; SABIN: No, GAU!
@@ -52277,32 +52277,32 @@ _cb5faf:
                 wait 12
                 end
         obj_script GAU, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 6
                 dir DOWN
                 end
         dlg DLG_2807
                 ; GAU: Yaoooo_
         obj_script SLOT_2, ASYNC
-                action 23
+                action ARMS_UP_UP
                 wait 2
                 dir UP
                 wait 2
-                action 23
+                action ARMS_UP_UP
                 wait 1
                 dir UP
                 end
         dlg DLG_2808
                 ; SABIN: Don't say ``Yaoooo'' when you mean ``Yes!''
         obj_script GAU, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
-                action 25
+                action WAVING_1_DOWN
                 end
         dlg DLG_2809
                 ; GAU: Ho!
         obj_script SLOT_2, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         dlg DLG_2810
                 ; SABIN: __
@@ -52363,7 +52363,7 @@ _cb60b2:
                 end
         obj_script GAU
                 pos {34, 18}
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
                 end
         call _cb637c
@@ -52377,7 +52377,7 @@ _cb60b2:
         set_case AVAIL_CHARS
         if_switch $01A0=0, _cb6119
         obj_script NPC_2, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir DOWN
                 end
@@ -52394,17 +52394,17 @@ _cb60b2:
                 ; Hm_oh well_
         wait_obj GAU
         obj_script NPC_2, ASYNC
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
-                action 31
+                action SURPRISED
                 wait 1
-                action 24
+                action ANGRY
                 end
         obj_script SABIN, ASYNC
-                action 31
+                action SURPRISED
                 wait 3
-                action 9
+                action NEAR_FATAL
                 end
         sfx 195
         dlg DLG_2812
@@ -52415,19 +52415,19 @@ _cb60b2:
                 dir DOWN
                 end
         obj_script NPC_2, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_30f
 _cb6119:
         set_case AVAIL_CHARS
         if_switch $01A6=0, _cb615d
         obj_script NPC_7, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir DOWN
                 end
         obj_script SABIN, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script GAU, ASYNC
                 dir RIGHT
@@ -52437,24 +52437,24 @@ _cb6119:
                 ; Do you think it becomes GAU?
                 ; Well_
         obj_script SLOT_2, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 end
         wait_45f
         obj_script NPC_7, ASYNC
                 speed FAST
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
-                action 31
+                action SURPRISED
                 wait 1
-                action 24
+                action ANGRY
                 end
         obj_script SABIN, ASYNC
-                action 31
+                action SURPRISED
                 wait 3
-                action 9
+                action NEAR_FATAL
                 wait 2
                 end
         dlg DLG_2814
@@ -52474,7 +52474,7 @@ _cb615d:
         set_case AVAIL_CHARS
         if_switch $01A2=0, _cb619b
         obj_script NPC_4, ASYNC
-                action 9
+                action NEAR_FATAL
                 wait 2
                 dir DOWN
                 end
@@ -52485,18 +52485,18 @@ _cb615d:
                 ; CYAN: What a jaunty hat!
                 ; ``Not at_''
         obj_script SLOT_2, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 end
         wait_45f
         obj_script NPC_4, ASYNC
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
-                action 31
+                action SURPRISED
                 wait 1
-                action 24
+                action ANGRY
                 end
         dlg DLG_2816
                 ; CYAN: Wait a minute!
@@ -52505,7 +52505,7 @@ _cb615d:
         obj_script NPC_4
                 dir LEFT
                 wait 4
-                action 9
+                action NEAR_FATAL
                 end
         obj_script SABIN, ASYNC
                 dir DOWN
@@ -52517,7 +52517,7 @@ _cb619b:
         sort_obj
         show_obj NPC_11
         obj_script SABIN, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -52533,7 +52533,7 @@ _cb619b:
         set_case AVAIL_CHARS
         if_switch $01A9=0, _cb61c8
         obj_script NPC_10, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 3
                 dir RIGHT
                 end
@@ -52558,7 +52558,7 @@ _cb61c8:
         obj_gfx GAU, SPIFFY_GAU
         show_obj GAU
         obj_script SABIN
-                action 31
+                action SURPRISED
                 wait 4
                 dir DOWN
                 end
@@ -52573,10 +52573,10 @@ _cb61c8:
                 end
         sfx 220
         obj_script SABIN, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script EDGAR
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 3
                 dir LEFT
                 end
@@ -52585,16 +52585,16 @@ _cb61c8:
                 ; A tuxedo, silk hat_and_
                 ; _a rose in his teeth!
         obj_script SABIN, ASYNC
-                action 35
+                action HEAD_TURNED
                 end
         obj_script LOCKE, ASYNC
-                action 36
+                action WAGGING_FINGER_1
                 wait 2
-                action 37
+                action WAGGING_FINGER_2
                 wait 2
-                action 36
+                action WAGGING_FINGER_1
                 wait 2
-                action 37
+                action WAGGING_FINGER_2
                 end
         dlg DLG_2820
                 ; LOCKE: I think that's overdoing it just a bit_
@@ -52606,22 +52606,22 @@ _cb61c8:
         show_obj NPC_12
         wait_1s
         obj_script EDGAR
-                action 29
+                action LAUGHING_1
                 wait 2
-                action 30
+                action LAUGHING_2
                 wait 4
                 dir LEFT
                 end
         dlg DLG_2821
                 ; EDGAR: What's so great about a bandana? Most of the time I see 'em tied around dogs at the beach!
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 wait 2
-                action 31
+                action SURPRISED
                 wait 1
-                action 24
+                action ANGRY
                 end
         sfx 195
         dlg DLG_2822
@@ -52633,12 +52633,12 @@ _cb61c8:
                 move DOWN, 1
                 end
         obj_script EDGAR, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE
                 move RIGHT, 2
                 wait 2
-                action 27
+                action WAVING_1_UP
                 anim_off
                 jump_low
                 anim_on
@@ -53302,7 +53302,7 @@ _cb66a4:
                 ; The truth is, he's alive!
                 ; Come here, GAU!
         obj_script SABIN, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -53339,7 +53339,7 @@ _cb66a4:
                 ; It was crying like crazy when I arrived on the Veldt.
                 ; SABIN: But, Sir_!
         obj_script SABIN
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -53353,7 +53353,7 @@ _cb66a4:
                 ; I turned and started to run.
                 ; SABIN: I'm trying to tell you_
         obj_script SABIN
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_1s
         obj_script NPC_1, ASYNC
@@ -53364,7 +53364,7 @@ _cb66a4:
                 wait 2
                 dir DOWN
                 wait 12
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2831, BOTTOM
                 ; AGED MAN: Suddenly the crying stopped. I turned around and saw a frightful monster_
@@ -53384,7 +53384,7 @@ _cb66a4:
                 dir UP
                 end
         obj_script SABIN, ASYNC
-                action 31
+                action SURPRISED
                 wait 2
                 dir UP
                 end
@@ -53394,7 +53394,7 @@ _cb66a4:
                 ; GAU, I'm gonna clobber him!!
         wait_obj SABIN
         obj_script SABIN
-                action 27
+                action WAVING_1_UP
                 end
         wait_45f
         obj_script GAU
@@ -53409,7 +53409,7 @@ _cb66a4:
         wait_obj GAU
         wait_45f
         obj_script SABIN, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script GAU
                 speed SLOW
@@ -53494,7 +53494,7 @@ _cb66a4:
                 end
         wait_30f
         obj_script SABIN, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2839
                 ; SABIN: I_I'm sorry_
@@ -53502,12 +53502,12 @@ _cb66a4:
         call _cac5c1
         if_switch $01A2=0, _cb67d3
         obj_script SLOT_2, ASYNC
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 12
                 dir DOWN
                 end
         obj_script SLOT_3, ASYNC
-                action 35
+                action HEAD_TURNED
                 wait 12
                 dir DOWN
                 end
@@ -53725,7 +53725,7 @@ _cb6912:
                 dir RIGHT
                 end
         obj_script SLOT_1
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 wait 2
@@ -53861,16 +53861,16 @@ _cb6a03:
 _cb6a09:
         wait_30f
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script SLOT_1
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script SLOT_1
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script SLOT_1
@@ -53932,7 +53932,7 @@ _cb6a77:
         return
 _cb6a83:
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 anim_off
                 end
         wait_30f
@@ -53956,15 +53956,15 @@ _cb6a9f:
         fade_in 4
         obj_script SLOT_1
                 speed FAST
-                action 31
+                action SURPRISED
                 move DOWN, 8
                 end
         shake ALL, 3, 2
         sfx 199
         obj_script SLOT_1, ASYNC
-                action 9
+                action NEAR_FATAL
                 jump_low
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         wait_1s
@@ -53981,7 +53981,7 @@ _cb6abf:
         return
 _cb6ac3:
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 wait 6
                 dir UP
                 end
@@ -54501,7 +54501,7 @@ _cb70eb:
                 ; Skinflint!
                 ; Git outta here!
         obj_script SLOT_1
-                action 11
+                action HIT
                 anim_off
                 move DOWN, 1
                 dir UP
@@ -54529,7 +54529,7 @@ _cb711b:
         dlg DLG_2877, BOTTOM
                 ; You must have more than one of those!
         obj_script SLOT_1
-                action 11
+                action HIT
                 anim_off
                 move DOWN, 1
                 dir UP
@@ -54543,7 +54543,7 @@ _cb7127:
                 ; Bring me some more!!
         call _cb7137
         obj_script SLOT_1
-                action 11
+                action HIT
                 anim_off
                 move DOWN, 1
                 dir UP
@@ -54580,7 +54580,7 @@ _cb714f:
         wait_1s
         loop 3
                 obj_script SLOT_1
-                        action 23
+                        action ARMS_UP_UP
                         wait 1
                         dir UP
                         wait 1
@@ -54635,7 +54635,7 @@ _cb71bc:
                 switch $019C=1
                 goto EventReturn
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         dlg DLG_2889, BOTTOM
                 ; STRAGO: That's Hidon!
@@ -54661,7 +54661,7 @@ _cb71d2:
         call _cb7410
         obj_script NPC_5, ASYNC
 _cb71f7:
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
                 dir DOWN
                 wait 2
@@ -54677,10 +54677,10 @@ _cb71f7:
                 end
         loop 4
                 obj_script NPC_5
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_5
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         dlg DLG_2891, BOTTOM
@@ -54726,7 +54726,7 @@ _cb71f7:
                 end
         obj_script NPC_17, ASYNC
 _cb725c:
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 1
                 dir RIGHT
                 wait 1
@@ -54745,10 +54745,10 @@ _cb725c:
                 ; STRAGO: Gungho_!
         loop 4
                 obj_script NPC_17
-                        action 13
+                        action ATTACKING_2
                         end
                 obj_script NPC_17
-                        action 12
+                        action ATTACKING_1
                         end
                 end_loop
         wait_dlg
@@ -54767,7 +54767,7 @@ _cb725c:
                 end
         obj_script NPC_17, ASYNC
 _cb7292:
-                action 23
+                action ARMS_UP_UP
                 wait 1
                 dir UP
                 wait 1
@@ -54820,10 +54820,10 @@ _cb72ae:
                 ; If I didn't know better, I'd say that Hidon wasn't my only enemy!
         loop 8
                 obj_script NPC_17
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_17
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_dlg
@@ -54870,7 +54870,7 @@ _cb72ae:
         load_map 349, {44, 22}, UP, {ASYNC, NO_FADE_IN}
         obj_script NPC_20, ASYNC
 _cb7318:
-                action 15
+                action JUMPING
                 wait 1
                 dir LEFT
                 wait 1
@@ -54991,9 +54991,9 @@ _cb7341:
         wait_45f
         obj_script NPC_16, ASYNC
 _cb73ae:
-                action 36
+                action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
                 branch _cb73ae
                 end
@@ -55005,7 +55005,7 @@ _cb73ae:
                 end
         wait_90f
         obj_script NPC_16
-                action 10
+                action READY
                 wait 3
                 end
         obj_script NPC_16, ASYNC
@@ -55302,7 +55302,7 @@ _cb75d5:
         pass_off NPC_9
         obj_script NPC_9, ASYNC
 _cb75fb:
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
                 dir DOWN
                 wait 2
@@ -55321,7 +55321,7 @@ _cb75fb:
                 wait 8
                 dir DOWN
                 wait 3
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2859, BOTTOM
                 ; STRAGO: Time to relax!
@@ -55339,7 +55339,7 @@ _cb75fb:
                 end
         obj_script NPC_9, ASYNC
 _cb762c:
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 dir DOWN
                 wait 1
@@ -55352,7 +55352,7 @@ _cb762c:
                 dir DOWN
                 end
         obj_script NPC_8
-                action 31
+                action SURPRISED
                 end
         dlg DLG_2845, BOTTOM
                 ; STRAGO: G_Gungho?!
@@ -55384,7 +55384,7 @@ _cb762c:
                 ; GUNGHO: It was_Hidon, the beast you and I used to hunt.
                 ; I almost had it_
         obj_script NPC_14, ASYNC
-                action 31
+                action SURPRISED
                 end
         dlg DLG_2865
                 ; STRAGO: You took on Hidon_?
@@ -55396,7 +55396,7 @@ _cb762c:
                 ; GUNGHO: Oooh_cough, cough_
         obj_script NPC_14, ASYNC
 _cb767e:
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 2
                 dir RIGHT
                 wait 2
@@ -55423,14 +55423,14 @@ _cb767e:
         obj_script NPC_14
                 speed SLOWER
                 wait 10
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 18
                 move LEFT, 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 15
                 dir DOWN
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_2s
         obj_script NPC_13
@@ -55439,14 +55439,14 @@ _cb767e:
                 end
         loop 3
                 obj_script NPC_13
-                        action 13 | ACTION_H_FLIP
+                        action ATTACKING_2_FLIP
                         end
                 obj_script NPC_13
-                        action 12 | ACTION_H_FLIP
+                        action ATTACKING_1_FLIP
                         end
                 end_loop
         obj_script NPC_13
-                action 24 | ACTION_H_FLIP
+                action ANGRY_FLIP
                 end
         dlg DLG_2866
                 ; RELM: Gramps!
@@ -55563,7 +55563,7 @@ _cb767e:
         obj_script NPC_15
                 dir DOWN
                 wait 5
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 21
                 dir DOWN
                 wait 16
@@ -55576,7 +55576,7 @@ _cb767e:
                 ; Unless I go alone, it will not show itself.
         obj_script NPC_16, ASYNC
 _cb7770:
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
@@ -55607,13 +55607,13 @@ _cb7770:
                 move LEFT, 1
                 dir DOWN
                 wait 6
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2874, BOTTOM
                 ; RELM: Phew_
         wait_1s
         obj_script NPC_16, ASYNC
-                action 31
+                action SURPRISED
                 wait 5
                 speed FAST
                 move DOWN, 3
@@ -55676,7 +55676,7 @@ _cb77e8:
                 wait 8
                 dir DOWN
                 wait 7
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 16
                 end
         obj_script NPC_13
@@ -55692,7 +55692,7 @@ _cb77e8:
         obj_script STRAGO
                 dir RIGHT
                 wait 8
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_2855, BOTTOM
                 ; STRAGO: I didn't really quit!
@@ -55702,7 +55702,7 @@ _cb77e8:
                 wait 8
                 dir DOWN
                 wait 16
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 16
                 end
         dlg DLG_2856, BOTTOM
@@ -55852,16 +55852,16 @@ _cb78d9:
         wait_45f
         loop 2
                 obj_script NPC_12
-                        action 36
+                        action WAGGING_FINGER_1
                         end
                 obj_script NPC_12
-                        action 37
+                        action WAGGING_FINGER_2
                         end
                 end_loop
         wait_dlg
         wait_1s
         obj_script NPC_12, ASYNC
-                action 35
+                action HEAD_TURNED
                 wait 4
                 dir RIGHT
                 end
@@ -55934,10 +55934,10 @@ _cb797e:
         return
 _cb7982:
         obj_script NPC_3, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_4, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         if_switch $016E=0, EventReturn
         mod_bg_tiles BG1, {43, 14}, {1, 1}, ASYNC
@@ -56015,9 +56015,9 @@ _cb7a18:
         if_switch $0199=1, EventReturn
         wait_1s
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 4
-                action 10
+                action READY
                 end
         lock_camera
         obj_script CAMERA
@@ -56039,7 +56039,7 @@ _cb7a18:
                 move LEFT, 1
                 move DOWN, 6
                 move LEFT, 1
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_2578, ASYNC
                 ; Look at those wounds_
@@ -56066,7 +56066,7 @@ _cb7a18:
                 wait 2
                 dir RIGHT
                 wait 1
-                action 31
+                action SURPRISED
                 end
         pass_off NPC_5
         obj_script NPC_5
@@ -56086,11 +56086,11 @@ _cb7a18:
         wait_fade
         obj_script SLOT_1
                 wait 3
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
                 dir DOWN
                 wait 7
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_2579
                 ; We can't do anything for her here.
@@ -56294,17 +56294,17 @@ _cb7be3:
         call _cb6a6e
         hide_obj SLOT_1
         obj_script NPC_10
-                action 33
+                action HEAD_DOWN_UP
                 end
         fade_in 4
         mosaic 13
         wait_2s
         loop 2
                 obj_script NPC_11
-                        action 13
+                        action ATTACKING_2
                         end
                 obj_script NPC_11
-                        action 12
+                        action ATTACKING_1
                         end
                 end_loop
         obj_script NPC_11
@@ -56315,7 +56315,7 @@ _cb7be3:
                 end
         loop 2
                 obj_script NPC_11
-                        action 23
+                        action ARMS_UP_UP
                         end
                 obj_script NPC_11
                         dir UP
@@ -56328,10 +56328,10 @@ _cb7be3:
                 end
         loop 2
                 obj_script NPC_11
-                        action 13 | ACTION_H_FLIP
+                        action ATTACKING_2_FLIP
                         end
                 obj_script NPC_11
-                        action 12 | ACTION_H_FLIP
+                        action ATTACKING_1_FLIP
                         end
                 end_loop
         obj_script NPC_11
@@ -56340,7 +56340,7 @@ _cb7be3:
                 end
         loop 2
                 obj_script NPC_11
-                        action 22
+                        action ARMS_UP_DOWN
                         end
                 obj_script NPC_11
                         dir DOWN
@@ -56352,7 +56352,7 @@ _cb7be3:
                 end
         obj_script NPC_11
                 wait 10
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         sfx SFX::DOG_BARK
         wait_30f
@@ -56392,7 +56392,7 @@ _cb7c6a:
                 end
         loop 3
                 obj_script NPC_10
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_10
                         dir DOWN
@@ -56400,7 +56400,7 @@ _cb7c6a:
                 end_loop
         obj_script NPC_10
                 wait 5
-                action 9
+                action NEAR_FATAL
                 wait 4
                 end
         dlg DLG_2588, {TEXT_ONLY, BOTTOM}
@@ -56412,7 +56412,7 @@ _cb7c6a:
                 move DOWN, 1
                 dir RIGHT
                 wait 6
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         obj_script NPC_9
                 wait 5
@@ -56652,7 +56652,7 @@ _cb7e4c:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 jump_high
                 move UP, 2
                 dir UP
@@ -56669,7 +56669,7 @@ _cb7e63:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 2
                 dir DOWN
@@ -56686,7 +56686,7 @@ _cb7e7a:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15
+                action JUMPING
                 jump_high
                 move LEFT, 2
                 dir LEFT
@@ -56703,7 +56703,7 @@ _cb7e91:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT, 2
                 dir RIGHT
@@ -56723,7 +56723,7 @@ _cb7eb1:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15
+                action JUMPING
                 jump_high
                 move LEFT, 2
                 dir LEFT
@@ -56733,7 +56733,7 @@ _cb7eb1:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15
+                action JUMPING
                 jump_high
                 move LEFT, 2
                 dir LEFT
@@ -56748,7 +56748,7 @@ _cb7ed2:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 jump_high
                 move UP, 2
                 dir UP
@@ -56758,7 +56758,7 @@ _cb7ed2:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 jump_high
                 move UP, 2
                 dir UP
@@ -56768,7 +56768,7 @@ _cb7ed2:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 jump_high
                 move UP, 2
                 dir UP
@@ -56783,7 +56783,7 @@ _cb7f01:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15
+                action JUMPING
                 jump_high
                 move LEFT, 2
                 dir LEFT
@@ -56793,7 +56793,7 @@ _cb7f01:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15
+                action JUMPING
                 jump_high
                 move LEFT, 2
                 dir LEFT
@@ -56808,7 +56808,7 @@ _cb7f22:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 2
                 dir DOWN
@@ -56818,7 +56818,7 @@ _cb7f22:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 2
                 dir DOWN
@@ -56828,7 +56828,7 @@ _cb7f22:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 2
                 dir DOWN
@@ -56843,7 +56843,7 @@ _cb7f51:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT, 2
                 dir RIGHT
@@ -56853,7 +56853,7 @@ _cb7f51:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT, 2
                 dir RIGHT
@@ -56868,7 +56868,7 @@ _cb7f72:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15
+                action JUMPING
                 jump_high
                 move LEFT, 2
                 dir LEFT
@@ -56878,7 +56878,7 @@ _cb7f72:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15
+                action JUMPING
                 jump_high
                 move LEFT, 2
                 dir LEFT
@@ -56893,7 +56893,7 @@ _cb7f93:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 jump_high
                 move UP, 2
                 dir UP
@@ -56903,7 +56903,7 @@ _cb7f93:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 jump_high
                 move UP, 2
                 dir UP
@@ -56918,7 +56918,7 @@ _cb7fb4:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 2
                 dir DOWN
@@ -56928,7 +56928,7 @@ _cb7fb4:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move DOWN, 2
                 dir DOWN
@@ -56943,7 +56943,7 @@ _cb7fd5:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT, 2
                 dir RIGHT
@@ -56953,7 +56953,7 @@ _cb7fd5:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT, 2
                 dir RIGHT
@@ -56968,7 +56968,7 @@ _cb7ff6:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT, 2
                 dir RIGHT
@@ -56978,7 +56978,7 @@ _cb7ff6:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT, 2
                 dir RIGHT
@@ -57112,7 +57112,7 @@ _cb8170:
         wait_15f
         obj_script SLOT_1, ASYNC
                 layer 2
-                action 9
+                action NEAR_FATAL
                 end
         scroll_bg BG2, {0, 0}
         sfx SFX::FLOOR_SWITCH
@@ -57125,7 +57125,7 @@ _cb8170:
 _cb818a:
         wait_15f
         obj_script SLOT_1, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         scroll_bg BG2, {0, 0}
         sfx SFX::FLOOR_SWITCH
@@ -57186,7 +57186,7 @@ _cb81c6:
                 ; My miming skills will astonish you.
         wait_45f
         obj_script NPC_1, ASYNC
-                action 31
+                action SURPRISED
                 wait 4
                 dir DOWN
                 end
@@ -57196,7 +57196,7 @@ _cb81c6:
         obj_script NPC_1, ASYNC
                 wait 4
 _cb8212:
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 wait 6
@@ -57208,7 +57208,7 @@ _cb8212:
                 end
         wait_2s
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 wait 4
                 dir DOWN
                 end
@@ -57239,7 +57239,7 @@ _cb824d:
 _cb8251:
         sfx 45
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 anim_off
                 speed FAST
                 jump_high
@@ -57372,16 +57372,16 @@ _cb82b1:
                 move DOWN, 2
                 move LEFT, 1
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_1s
         loop 2
                 obj_script SLOT_1
-                        action 13
+                        action ATTACKING_2
                         wait 1
                         end
                 obj_script SLOT_1
-                        action 12
+                        action ATTACKING_1
                         wait 1
                         end
                 end_loop
@@ -57405,7 +57405,7 @@ _cb82b1:
         obj_script SLOT_1, ASYNC
                 wait 5
                 anim_off
-                action 10
+                action READY
                 jump_low
                 move RIGHT, 1
                 anim_on
@@ -57612,7 +57612,7 @@ _cb83b9:
         update_party
         load_map 317, {20, 54}, DOWN, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 end
         fade_in 4
         wait_fade
@@ -57620,82 +57620,82 @@ _cb83b9:
         return
 _cb8496:
         obj_script NPC_1, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_2, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_3, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_4, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_5, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_6, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_7, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_8, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_9, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_10, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_11, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_12, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_13, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_14, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_15, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_16, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_17, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_18, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_19, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_20, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_21, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_22, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_23, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_24, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_25, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_26, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         return
 _cb84ff:
@@ -57864,16 +57864,16 @@ _cb866f:
         call _cacaff
         wait_30f
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_1
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_1
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_1
@@ -57896,16 +57896,16 @@ _cb86a0:
         call _cacaff
         wait_30f
         obj_script NPC_2
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_2
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_2
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_2
@@ -57928,16 +57928,16 @@ _cb86d1:
         call _cacaff
         wait_30f
         obj_script NPC_3
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_3
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_3
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_3
@@ -57960,16 +57960,16 @@ _cb8702:
         call _cacaff
         wait_30f
         obj_script NPC_4
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_4
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_4
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_4
@@ -57992,16 +57992,16 @@ _cb8733:
         call _cacaff
         wait_30f
         obj_script NPC_5
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_5
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_5
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_5
@@ -58024,16 +58024,16 @@ _cb8764:
         call _cacaff
         wait_30f
         obj_script NPC_6
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_6
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_6
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_6
@@ -58056,16 +58056,16 @@ _cb8795:
         call _cacaff
         wait_30f
         obj_script NPC_7
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_7
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_7
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_7
@@ -58088,16 +58088,16 @@ _cb87c6:
         call _cacaff
         wait_30f
         obj_script NPC_8
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_8
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_8
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_8
@@ -58120,16 +58120,16 @@ _cb87f7:
         call _cacaff
         wait_30f
         obj_script NPC_9
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_9
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_9
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_9
@@ -58152,16 +58152,16 @@ _cb8828:
         call _cacaff
         wait_30f
         obj_script NPC_10
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_10
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_10
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_10
@@ -58184,16 +58184,16 @@ _cb8859:
         call _cacaff
         wait_30f
         obj_script NPC_11
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_11
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_11
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_11
@@ -58216,16 +58216,16 @@ _cb888a:
         call _cacaff
         wait_30f
         obj_script NPC_12
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_12
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_12
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_12
@@ -58248,16 +58248,16 @@ _cb88bb:
         call _cacaff
         wait_30f
         obj_script NPC_13
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_13
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_13
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_13
@@ -58280,16 +58280,16 @@ _cb88ec:
         call _cacaff
         wait_30f
         obj_script NPC_14
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_14
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_14
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_14
@@ -58312,16 +58312,16 @@ _cb891d:
         call _cacaff
         wait_30f
         obj_script NPC_15
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_15
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_15
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_15
@@ -58344,16 +58344,16 @@ _cb894e:
         call _cacaff
         wait_30f
         obj_script NPC_16
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_16
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_16
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_16
@@ -58376,16 +58376,16 @@ _cb897f:
         call _cacaff
         wait_30f
         obj_script NPC_17
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_17
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_17
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_17
@@ -58408,16 +58408,16 @@ _cb89b0:
         call _cacaff
         wait_30f
         obj_script NPC_18
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_18
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_18
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_18
@@ -58440,16 +58440,16 @@ _cb89e1:
         call _cacaff
         wait_30f
         obj_script NPC_19
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_19
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_19
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_19
@@ -58472,16 +58472,16 @@ _cb8a12:
         call _cacaff
         wait_30f
         obj_script NPC_20
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_20
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_20
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_20
@@ -58504,16 +58504,16 @@ _cb8a43:
         call _cacaff
         wait_30f
         obj_script NPC_21
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_21
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_21
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_21
@@ -58536,16 +58536,16 @@ _cb8a74:
         call _cacaff
         wait_30f
         obj_script NPC_22
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_22
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_22
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_22
@@ -58568,16 +58568,16 @@ _cb8aa5:
         call _cacaff
         wait_30f
         obj_script NPC_23
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_23
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_23
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_23
@@ -58600,16 +58600,16 @@ _cb8ad6:
         call _cacaff
         wait_30f
         obj_script NPC_24
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_24
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_24
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_24
@@ -58632,16 +58632,16 @@ _cb8b07:
         call _cacaff
         wait_30f
         obj_script NPC_25
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_25
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_25
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_25
@@ -58664,16 +58664,16 @@ _cb8b38:
         call _cacaff
         wait_30f
         obj_script NPC_26
-                action 9
+                action NEAR_FATAL
                 wait 3
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_26
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_26
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_26
@@ -58839,7 +58839,7 @@ _cb8c59:
         switch $0191=1
         load_map 143, {107, 8}, DOWN, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 end
         wait_2s
         mosaic 8
@@ -59499,7 +59499,7 @@ _cb926c:
                 switch $01B0=0
                 goto _cb924a
         obj_script SLOT_1
-                action 23
+                action ARMS_UP_UP
                 wait 5
                 dir UP
                 end
@@ -59609,7 +59609,7 @@ _cb9335:
         obj_script NPC_1
                 speed FAST
                 move LEFT, 6
-                action 15
+                action JUMPING
                 anim_off
                 move UP_LEFT, 2
                 move LEFT, 3
@@ -59627,29 +59627,29 @@ _cb9335:
                 end
         obj_script NPC_1
                 move DOWN, 1
-                action 31
+                action SURPRISED
                 wait 6
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 move UP_RIGHT
                 move DOWN, 1
                 jump_low
                 anim_on
-                action 40
+                action DEAD_HORZ
                 wait 5
                 dir DOWN
                 end
         loop 3
                 obj_script NPC_1
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_1
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         wait_obj NPC_2
         obj_script NPC_1
-                action 31 | ACTION_H_FLIP
+                action SURPRISED_FLIP
                 wait 4
                 speed FAST
                 move LEFT, 2
@@ -59764,14 +59764,14 @@ _cb93bf:
                 wait 5
                 move LEFT, 1
                 move UP, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 7
                 move LEFT, 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 8
                 dir UP
                 wait 5
-                action 31
+                action SURPRISED
                 wait 7
                 end
         create_obj NPC_3
@@ -59873,7 +59873,7 @@ _cb94e7:
         unlock_camera
         load_map 126, {8, 8}, DOWN, {ASYNC, NO_FADE_IN, STARTUP_EVENT}
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 end
         wait_2s
         mosaic 8
@@ -59896,7 +59896,7 @@ _cb94e7:
                 speed NORMAL
                 jump_high
                 move DOWN, 2
-                action 10
+                action READY
                 end
         switch $0547=1
         create_obj NPC_2
@@ -59913,7 +59913,7 @@ _cb94e7:
         sfx 2
         wait_30f
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 3
                 end
         mosaic 14
@@ -59992,11 +59992,11 @@ _cb95b8:
                 wait 4
                 end
         obj_script SLOT_1
-                action 33
+                action HEAD_DOWN_UP
                 wait 3
                 dir UP
                 wait 3
-                action 33
+                action HEAD_DOWN_UP
                 wait 3
                 dir UP
                 end
@@ -60034,7 +60034,7 @@ _cb95f3:
         show_obj NPC_2
         pass_off NPC_1
         obj_script NPC_2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         player_ctrl_on
         wait_45f
@@ -60089,7 +60089,7 @@ _cb9643:
                         speed FASTER
                         move RIGHT, 1
                         anim_off
-                        action 10 | ACTION_H_FLIP
+                        action READY_FLIP
                         jump_low
                         move LEFT, 1
                         wait 5
@@ -60115,7 +60115,7 @@ _cb9643:
                 end
         obj_script NPC_4, ASYNC
 _cb968e:
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 5
                 dir RIGHT
                 wait 8
@@ -60179,11 +60179,11 @@ _cb96c3:
                 ; Sweetheart__
                 ; Do you love me?
         obj_script NPC_5
-                action 31
+                action SURPRISED
                 wait 2
                 dir DOWN
                 wait 2
-                action 31
+                action SURPRISED
                 wait 3
                 speed NORMAL
                 move UP, 1
@@ -60203,18 +60203,18 @@ _cb96c3:
                 end
         obj_script NPC_5
                 wait 15
-                action 27
+                action WAVING_1_UP
                 wait 2
-                action 28
+                action WAVING_2_UP
                 wait 3
-                action 27
+                action WAVING_1_UP
                 wait 2
-                action 28
+                action WAVING_2_UP
                 wait 3
                 speed SLOW
                 move DOWN, 1
                 wait 5
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_2782, {TEXT_ONLY, BOTTOM}
                 ; I__I_loveth you.
@@ -60246,7 +60246,7 @@ _cb9742:
                 end
         obj_script NPC_5, ASYNC
 _cb974a:
-                action 31
+                action SURPRISED
                 wait 2
                 dir DOWN
                 wait 2
@@ -60311,7 +60311,7 @@ _cb9755:
         return
 _cb97a1:
         obj_script NPC_8, ASYNC
-                action 40 | ACTION_H_FLIP
+                action DEAD_HORZ_FLIP
                 end
         call _cb6a55
         return
@@ -60420,7 +60420,7 @@ _cb97d6:
                 ; CYAN: Thanks be to you.
         wait_2s
         obj_script CYAN, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_2789
                 ; CYAN: I heard my wife and children calling out to me!
@@ -60453,13 +60453,13 @@ _cb97d6:
         sfx 2
         obj_script SLOT_2, ASYNC
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move DOWN, 1
                 end
         obj_script SLOT_3, ASYNC
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move DOWN, 1
                 jump_low
@@ -60467,7 +60467,7 @@ _cb97d6:
                 end
         obj_script SLOT_4, ASYNC
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move DOWN, 1
                 jump_low
@@ -60486,7 +60486,7 @@ _cb97d6:
                 end
         wait_45f
         obj_script CYAN
-                action 31
+                action SURPRISED
                 wait 4
                 speed FAST
                 move RIGHT, 1
@@ -60526,7 +60526,7 @@ _cb98bb:
                 end
         wait_2s
         obj_script CYAN
-                action 33
+                action HEAD_DOWN_UP
                 wait 6
                 end
         dlg DLG_2792, BOTTOM
@@ -60559,7 +60559,7 @@ _cb98bb:
         obj_script CYAN
                 dir RIGHT
                 wait 15
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 10
                 end
         obj_script NPC_10
@@ -60573,7 +60573,7 @@ _cb98bb:
                 wait 32
                 dir DOWN
                 wait 16
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 48
                 end
         obj_script NPC_10
@@ -60661,7 +60661,7 @@ _cb98bb:
         fade_out_song $F0
         wait_4s
         obj_script CYAN
-                action 9
+                action NEAR_FATAL
                 end
         wait_15f 15
         switch $0549=1
@@ -60707,7 +60707,7 @@ _cb98bb:
                 ; We'll always be at your side_
         wait_2s
         obj_script CYAN
-                action 33
+                action HEAD_DOWN_UP
                 wait 21
                 end
         obj_script CAMERA, ASYNC
@@ -60718,7 +60718,7 @@ _cb98bb:
                 speed SLOWER
                 move UP, 1
                 wait 8
-                action 27
+                action WAVING_1_UP
                 end
         wait_2s
         mosaic 8
@@ -60736,7 +60736,7 @@ _cb98bb:
         player_ctrl_off
         give_item AURA
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 end
         wait_2s
         mosaic 8
@@ -60771,7 +60771,7 @@ _cb98bb:
         fade_in 4
         wait_2s
         obj_script CYAN, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
                 dir DOWN
                 end
@@ -60785,14 +60785,14 @@ _cb98bb:
                 speed SLOWER
                 move DOWN, 1
                 wait 8
-                action 25
+                action WAVING_1_DOWN
                 end
         dlg DLG_2797
                 ;
                 ; CYAN's soul cleared itself of all doubt and confusion.
         wait_45f
         obj_script CYAN, ASYNC
-                action 24
+                action ANGRY
                 end
         sfx 109
         flash WHITE
@@ -60844,7 +60844,7 @@ _cb9a7a:
         return
 _cb9a8d:
         obj_script SLOT_1
-                action 11
+                action HIT
                 speed NORMAL
                 anim_off
                 jump_low
@@ -60855,7 +60855,7 @@ _cb9a8d:
         return
 _cb9a98:
         obj_script SLOT_1
-                action 11
+                action HIT
                 speed NORMAL
                 anim_off
                 jump_low
@@ -60866,7 +60866,7 @@ _cb9a98:
         return
 _cb9aa3:
         obj_script SLOT_1
-                action 11
+                action HIT
                 speed NORMAL
                 anim_off
                 jump_low
@@ -60899,12 +60899,12 @@ _cb9aae:
         obj_script NPC_1
                 dir DOWN
                 wait 6
-                action 22
+                action ARMS_UP_DOWN
                 wait 5
                 end
         obj_script NPC_1, ASYNC
                 wait 11
-                action 27
+                action WAVING_1_UP
                 end
         wait_15f 5
         obj_script NPC_1, ASYNC
@@ -61061,25 +61061,25 @@ _cb9ba7:
                 wait 6
                 speed NORMAL
                 anim_off
-                action 40
+                action DEAD_HORZ
                 jump_low
                 move DOWN, 1
                 anim_on
                 wait 3
-                action 9
+                action NEAR_FATAL
                 wait 6
                 dir DOWN
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 wait 6
@@ -61091,7 +61091,7 @@ _cb9bcd:
                 move DOWN, 3
                 dir UP
                 wait 2
-                action 10
+                action READY
                 wait 6
                 speed FASTER
                 move UP, 3
@@ -61099,17 +61099,17 @@ _cb9bcd:
                 speed NORMAL
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 10
                 anim_on
                 dir DOWN
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 wait 6
@@ -61142,14 +61142,14 @@ _cb9c09:
         obj_script NPC_7, ASYNC
 _cb9c14:
                 speed NORMAL
-                action 9
+                action NEAR_FATAL
                 wait 6
                 dir UP
                 wait 3
-                action 10
+                action READY
                 wait 1
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 wait 8
                 move DOWN, 1
                 wait 6
@@ -61159,22 +61159,22 @@ _cb9c14:
 _cb9c2a:
                 anim_off
                 speed NORMAL
-                action 27
+                action WAVING_1_UP
                 wait 4
-                action 23
+                action ARMS_UP_UP
                 wait 3
                 dir UP
                 move UP, 1
                 wait 3
-                action 28
+                action WAVING_2_UP
                 wait 4
-                action 23
+                action ARMS_UP_UP
                 dir UP
                 move UP, 1
                 wait 3
                 speed FASTER
                 move DOWN, 2
-                action 40 | ACTION_H_FLIP
+                action DEAD_HORZ_FLIP
                 jump_low
                 move DOWN, 1
                 wait 6
@@ -61182,11 +61182,11 @@ _cb9c2a:
                 branch_end _cb9c2a
         obj_script NPC_9, ASYNC
 _cb9c4a:
-                action 3
+                action WALKING_UP_1
                 wait 1
-                action 4
+                action WALKING_UP_2
                 wait 1
-                action 5
+                action WALKING_UP_3
                 wait 1
                 branch _cb9c4a
                 end
@@ -61214,7 +61214,7 @@ _cb9c58:
                 ; We can't keep them out.
         wait_45f
         obj_script NPC_10
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_531, BOTTOM
                 ; DOMA SENTRY: So, it's finally happening_
@@ -61301,7 +61301,7 @@ _cb9c58:
                 ; CYAN: If we can fell their commander, they'll surely give up.
         wait_45f
         obj_script CYAN
-                action 25 | ACTION_H_FLIP
+                action WAVING_1_DOWN_FLIP
                 end
         dlg DLG_535
                 ; CYAN: Let us give it a try.
@@ -61374,25 +61374,25 @@ _cb9d85:
                 wait 6
                 speed NORMAL
                 anim_off
-                action 40
+                action DEAD_HORZ
                 jump_low
                 move DOWN, 1
                 anim_on
                 wait 3
-                action 9
+                action NEAR_FATAL
                 wait 6
                 dir DOWN
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 wait 6
@@ -61404,7 +61404,7 @@ _cb9dab:
                 move DOWN, 3
                 dir UP
                 wait 2
-                action 10
+                action READY
                 wait 6
                 speed FASTER
                 move UP, 3
@@ -61412,17 +61412,17 @@ _cb9dab:
                 speed NORMAL
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 wait 10
                 anim_on
                 dir DOWN
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 wait 6
@@ -61456,14 +61456,14 @@ _cb9de8:
         obj_script NPC_7, ASYNC
 _cb9df3:
                 speed NORMAL
-                action 9
+                action NEAR_FATAL
                 wait 6
                 dir UP
                 wait 3
-                action 10
+                action READY
                 wait 1
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 wait 8
                 move DOWN, 1
                 wait 6
@@ -61473,22 +61473,22 @@ _cb9df3:
 _cb9e09:
                 anim_off
                 speed NORMAL
-                action 27
+                action WAVING_1_UP
                 wait 4
-                action 23
+                action ARMS_UP_UP
                 wait 3
                 dir UP
                 move UP, 1
                 wait 3
-                action 28
+                action WAVING_2_UP
                 wait 4
-                action 23
+                action ARMS_UP_UP
                 dir UP
                 move UP, 1
                 wait 3
                 speed FASTER
                 move DOWN, 2
-                action 40 | ACTION_H_FLIP
+                action DEAD_HORZ_FLIP
                 jump_low
                 move DOWN, 1
                 wait 6
@@ -61496,11 +61496,11 @@ _cb9e09:
                 branch_end _cb9e09
         obj_script NPC_9, ASYNC
 _cb9e29:
-                action 3
+                action WALKING_UP_1
                 wait 1
-                action 4
+                action WALKING_UP_2
                 wait 1
-                action 5
+                action WALKING_UP_3
                 wait 1
                 branch _cb9e29
                 end
@@ -61605,7 +61605,7 @@ _cb9eb5:
         battle 46
         call _ca5ea9
         obj_script NPC_1, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_2, ASYNC
                 pos {29, 50}
@@ -61643,37 +61643,37 @@ _cb9eb5:
         fade_in 4
         wait_fade
         obj_script NPC_2, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_3, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_4, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_5, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_6, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_7, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_8, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_9, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_10, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_11, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_12, ASYNC
-                action 31
+                action SURPRISED
                 end
         dlg DLG_541
                 ; TROOPER: The general's been defeated! Run!!!
@@ -61726,7 +61726,7 @@ _cb9eb5:
                 move LEFT, 7
                 move DOWN, 5
                 dir LEFT
-                action 31
+                action SURPRISED
                 move DOWN, 8
                 move DOWN, 2
                 end
@@ -61783,19 +61783,19 @@ _cb9eb5:
                 ; CYAN: Walled up in there, we can wait out our enemy!
         loop 2
                 obj_script NPC_13, ASYNC
-                        action 33
+                        action HEAD_DOWN_UP
                         wait 2
                         dir UP
                         wait 2
                         end
                 obj_script NPC_14, ASYNC
-                        action 33
+                        action HEAD_DOWN_UP
                         wait 2
                         dir UP
                         wait 2
                         end
                 obj_script CYAN
-                        action 32
+                        action HEAD_DOWN_DOWN
                         wait 2
                         dir DOWN
                         wait 2
@@ -61892,38 +61892,38 @@ _cba07f:
         call _cba26e, 6
         if_switch $0031=0, EventReturn
         obj_script NPC_9, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_3, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_4, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_5, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_6, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_10, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_8, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         return
 _cba0b7:
         obj_script NPC_1, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script NPC_3, ASYNC
-                action 40 | ACTION_H_FLIP
+                action DEAD_HORZ_FLIP
                 end
         return
 _cba0c0:
         obj_script NPC_1, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 end
         return
 _cba0c5:
@@ -62002,14 +62002,14 @@ _cba0ec:
                 end
         wait_1s
         obj_script CYAN
-                action 26
+                action WAVING_2_DOWN
                 end
         dlg DLG_540
                 ; CYAN: Huh?
                 ; The water looks odd_
         wait_30f
         obj_script NPC_1
-                action 26
+                action WAVING_2_DOWN
                 end
         call _cba26e, 2
         wait_15f 5
@@ -62029,7 +62029,7 @@ _cba0ec:
                 dir DOWN
                 end
         obj_script NPC_3
-                action 40
+                action DEAD_HORZ
                 end
         wait_45f
         obj_script CAMERA
@@ -62040,20 +62040,20 @@ _cba0ec:
         call _cba26e
         obj_script NPC_2, ASYNC
                 wait 3
-                action 11
-                action 9
+                action HIT
+                action NEAR_FATAL
                 wait 4
-                action 9
+                action NEAR_FATAL
                 anim_off
                 wait 2
-                action 40
+                action DEAD_HORZ
                 layer 2
                 speed FAST
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 jump_low
                 move DOWN, 6
                 move DOWN, 3
-                action 40
+                action DEAD_HORZ
                 jump_low
                 move LEFT, 1
                 anim_on
@@ -62063,7 +62063,7 @@ _cba0ec:
         wait_45f
         obj_script NPC_4, ASYNC
                 wait 22
-                action 40
+                action DEAD_HORZ
                 end
         obj_script CAMERA, ASYNC
                 speed FAST
@@ -62084,36 +62084,36 @@ _cba0ec:
                 end
         obj_script NPC_5, ASYNC
                 wait 26
-                action 40
+                action DEAD_HORZ
                 end
         call _cba26e
         wait_90f
         obj_script NPC_6, ASYNC
                 wait 18
-                action 9
+                action NEAR_FATAL
                 wait 6
-                action 40
+                action DEAD_HORZ
                 end
         wait_15f 7
         call _cba26e
         obj_script NPC_7, ASYNC
                 wait 32
-                action 9
+                action NEAR_FATAL
                 wait 2
-                action 11
+                action HIT
                 anim_off
                 jump_low
                 move RIGHT, 1
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         wait_15f 10
         call _cba26e
         obj_script NPC_8, ASYNC
                 wait 24
-                action 31
+                action SURPRISED
                 wait 2
-                action 40
+                action DEAD_HORZ
                 end
         wait_15f 5
         wait_obj CAMERA
@@ -62136,7 +62136,7 @@ _cba0ec:
                 ; CYAN: This is_ POISON!
         wait_45f
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 wait 4
                 dir DOWN
                 end
@@ -62146,7 +62146,7 @@ _cba0ec:
         switch $01CC=1
         wait_song
         obj_script CYAN
-                action 31
+                action SURPRISED
                 end
         wait_45f
         obj_script CYAN
@@ -62161,20 +62161,20 @@ _cba0ec:
         switch $0030=1
         play_song THE_UNFORGIVEN
         obj_script CYAN, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 1
                 dir RIGHT
                 end
         obj_script NPC_1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -62241,7 +62241,7 @@ _cba29f:
         obj_script CYAN
                 speed FAST
                 move UP, 3
-                action 31
+                action SURPRISED
                 end
         wait_45f
         lock_camera
@@ -62249,7 +62249,7 @@ _cba29f:
                 speed FAST
                 move UP, 4
                 wait 2
-                action 9
+                action NEAR_FATAL
                 end
         obj_script CAMERA
                 speed FAST
@@ -62263,9 +62263,9 @@ _cba29f:
         obj_script CYAN, ASYNC
                 dir LEFT
                 wait 4
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 6
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_544
                 ; CYAN: CYAN, Excellency.
@@ -62281,19 +62281,19 @@ _cba29f:
                 ; Our kingdom is through.
         wait_obj CYAN
         obj_script CYAN
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_545
                 ; CYAN: Not yet, Highness!
@@ -62308,7 +62308,7 @@ _cba29f:
                 end
         obj_script CYAN
                 wait 10
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_2s
         obj_script NPC_1
@@ -62316,7 +62316,7 @@ _cba29f:
                 move UP_LEFT
                 move UP, 4
                 wait 4
-                action 31
+                action SURPRISED
                 wait 4
                 dir UP
                 end
@@ -62325,24 +62325,24 @@ _cba29f:
                 ; DOMA SENTRY: Sir CYAN!
         wait_1s
         obj_script CYAN
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
                 dir DOWN
                 end
         wait_1s
         obj_script CYAN, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 11
                 dir DOWN
                 end
         obj_script NPC_1
-                action 33
+                action HEAD_DOWN_UP
                 wait 13
                 dir UP
                 end
@@ -62381,7 +62381,7 @@ _cba386:
                 ; DOMA SENTRY: Sir CYAN!
         obj_script NPC_1, ASYNC
                 wait 10
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_555, BOTTOM
                 ; DOMA SENTRY: We're through.
@@ -62400,7 +62400,7 @@ _cba395:
                 wait 3
                 move DOWN, 1
                 wait 3
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 10
                 end
         dlg DLG_560
@@ -62509,7 +62509,7 @@ _cba4b4:
                 .byte $00
         wait_bg
         obj_script NPC_1, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         return
 _cba545:
@@ -62704,7 +62704,7 @@ _cba6f7:
         return
 _cba709:
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 anim_off
                 wait 3
                 end
@@ -62884,29 +62884,29 @@ _cba864:
                 ; But I thought Doma's railway had been destroyed_?
                 ; SABIN: May be survivors inside. Let's take a look.
         obj_script CYAN, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
         obj_script SHADOW, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 wait 2
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
         obj_script SABIN
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
@@ -62968,7 +62968,7 @@ _cba8f1:
                 dir UP
                 end
         obj_script CYAN
-                action 31
+                action SURPRISED
                 wait 9
                 dir UP
                 end
@@ -62976,13 +62976,13 @@ _cba8f1:
                 ; CYAN: Sir SABIN!
         obj_script SABIN
                 dir DOWN
-                action 36
+                action WAGGING_FINGER_1
                 wait 3
-                action 37
+                action WAGGING_FINGER_2
                 wait 3
-                action 36
+                action WAGGING_FINGER_1
                 wait 3
-                action 37
+                action WAGGING_FINGER_2
                 wait 3
                 end
         dlg DLG_678
@@ -62995,7 +62995,7 @@ _cba8f1:
         obj_script CYAN, ASYNC
                 speed FAST
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_677
                 ; CYAN: Sir SABIN!
@@ -63006,7 +63006,7 @@ _cba8f1:
         obj_script SABIN
                 wait 4
                 dir DOWN
-                action 20
+                action WINKING_DOWN
                 end
         dlg DLG_722
                 ; SABIN: Don't worry!
@@ -63074,9 +63074,9 @@ _cba8f1:
         wait_obj SABIN
         loop 2
                 obj_script SABIN
-                        action 25
+                        action WAVING_1_DOWN
                         wait 3
-                        action 26
+                        action WAVING_2_DOWN
                         wait 3
                         end
                 end_loop
@@ -63112,13 +63112,13 @@ _cba8f1:
         play_song PHANTOM_TRAIN
         switch $01CC=0
         obj_script CYAN, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SHADOW, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SABIN, ASYNC
-                action 31
+                action SURPRISED
                 end
         shake ALL, 3, 0
         wait_90f
@@ -63169,7 +63169,7 @@ _cbaa26:
         dlg DLG_709
                 ; SABIN: Won't open!
         obj_script CYAN, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_710
                 ; CYAN: We're too late.
@@ -63191,7 +63191,7 @@ _cbaa26:
                 ; CYAN: This is the Phantom Train_
                 ; It carries the departed to_the other side.
         obj_script SABIN
-                action 31
+                action SURPRISED
                 wait 9
                 dir RIGHT
                 end
@@ -63200,7 +63200,7 @@ _cbaa26:
                 ; I don't want to go THERE!
                 ; CYAN: We all have to go sometime_
         obj_script SABIN, ASYNC
-                action 24
+                action ANGRY
                 end
         dlg DLG_714
                 ; SABIN: I have things to do HERE.
@@ -63852,27 +63852,27 @@ _cbaf12:
                 ; SABIN: What's this?
                 ; Let me just give it a_
         obj_script CYAN
-                action 31
+                action SURPRISED
                 wait 4
                 dir UP
                 wait 2
-                action 27
+                action WAVING_1_UP
                 end
         dlg DLG_668
                 ; CYAN: Sir SABIN!
                 ; Maybe we shouldn't fumble with that!
         obj_script SABIN, ASYNC
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 end
         wait_obj SABIN
         sfx 150
@@ -63889,7 +63889,7 @@ _cbaf12:
                 ; SABIN: Gave it my best shot.
         obj_script CYAN
                 dir DOWN
-                action 31
+                action SURPRISED
                 anim_off
                 jump_low
                 anim_on
@@ -63907,7 +63907,7 @@ _cbaf12:
                 move RIGHT, 1
                 dir UP
                 wait 3
-                action 27
+                action WAVING_1_UP
                 wait 2
                 dir UP
                 end
@@ -63921,9 +63921,9 @@ _cbaf12:
                 end
         obj_script SABIN, ASYNC
 _cbafaa:
-                action 27
+                action WAVING_1_UP
                 wait 3
-                action 28
+                action WAVING_2_UP
                 wait 3
                 branch _cbafaa
                 end
@@ -63935,19 +63935,19 @@ _cbafaa:
                 dir UP
                 end
         obj_script CYAN
-                action 31
+                action SURPRISED
                 wait 4
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
@@ -63960,14 +63960,14 @@ _cbafaa:
                 ; SABIN: CYAN_
                 ; You're a total klutz when it comes to machines.
         obj_script CYAN, ASYNC
-                action 31
+                action SURPRISED
                 end
         dlg DLG_675
                 ; CYAN: SILENCE_!
                 ; H_how could you tell?
         obj_script SABIN
                 wait 5
-                action 33
+                action HEAD_DOWN_UP
                 wait 8
                 end
         obj_script SLOT_3, ASYNC
@@ -64085,11 +64085,11 @@ _cbb04d:
         if_switch $01A3=1, _cbb0e0
         obj_script SLOT_1, ASYNC
 _cbb09d:
-                action 31
+                action SURPRISED
                 wait 2
                 dir DOWN
                 wait 2
-                action 31 | ACTION_H_FLIP
+                action SURPRISED_FLIP
                 wait 2
                 dir DOWN
                 wait 2
@@ -64102,7 +64102,7 @@ _cbb09d:
 _cbb0b6:
         obj_script SLOT_1, ASYNC
 _cbb0b8:
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
                 dir DOWN
                 wait 2
@@ -64116,7 +64116,7 @@ _cbb0b8:
 _cbb0cb:
         obj_script SLOT_1, ASYNC
 _cbb0cd:
-                action 31
+                action SURPRISED
                 wait 2
                 dir DOWN
                 wait 2
@@ -64164,11 +64164,11 @@ _cbb0fe:
         obj_script SLOT_1
                 speed NORMAL
                 move RIGHT, 2
-                action 9
+                action NEAR_FATAL
                 wait 15
                 dir DOWN
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         obj_script NPC_3, ASYNC
@@ -64196,7 +64196,7 @@ _cbb0fe:
 _cbb140:
         wait_45f
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         dlg DLG_660, BOTTOM
@@ -64205,7 +64205,7 @@ _cbb140:
         sfx SFX::RECOVERY_SPRING
         flash BLUE
         obj_script SLOT_1
-                action 10
+                action READY
                 end
         call _cacfbd
         dlg DLG_2842, BOTTOM
@@ -64263,7 +64263,7 @@ _cbb193:
 _cbb19e:
                 dir LEFT
                 wait 2
-                action 15
+                action JUMPING
                 wait 2
                 branch _cbb19e
                 end
@@ -64274,7 +64274,7 @@ _cbb19e:
 _cbb1ac:
                 dir DOWN
                 wait 2
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
                 branch _cbb1ac
                 end
@@ -64328,7 +64328,7 @@ _cbb1ac:
                 wait 4
                 dir LEFT
                 wait 5
-                action 15
+                action JUMPING
                 end
         dlg DLG_658, BOTTOM
                 ; CYAN: A_are you going to be okay if you eat THIS?
@@ -64341,17 +64341,17 @@ _cbb1ac:
                 end
         obj_script SABIN, ASYNC
                 dir DOWN
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 end
         wait_obj SABIN
@@ -64365,15 +64365,15 @@ _cbb1ac:
                 wait 5
                 dir DOWN
                 wait 10
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 10
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_655, BOTTOM
                 ; CYAN: Hummm_
                 ; Sir! I won't hear any more of this kind of talk!
         obj_script SABIN
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         party_chars SABIN, CYAN
         sort_obj
@@ -64485,7 +64485,7 @@ _cbb292:
                 ; N.o_e.s.c.a.p.e_!
         obj_script SLOT_1, ASYNC
                 wait 3
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_1, ASYNC
                 speed SLOW
@@ -64529,7 +64529,7 @@ _cbb292:
         obj_script SLOT_1, ASYNC
                 speed NORMAL
                 move RIGHT, 3
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_1, ASYNC
                 speed SLOW
@@ -64578,7 +64578,7 @@ _cbb292:
                 speed NORMAL
                 move LEFT, 2
                 wait 2
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_1, ASYNC
                 speed SLOW
@@ -64831,7 +64831,7 @@ _cbb3e6:
                 dir LEFT
                 end
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 wait 6
                 dir DOWN
                 end
@@ -64858,7 +64858,7 @@ _cbb4d5:
                 dir LEFT
                 end
         obj_script CYAN, ASYNC
-                action 10
+                action READY
                 end
         dlg DLG_693, BOTTOM
                 ; CYAN: I believe we're stuck!
@@ -64872,13 +64872,13 @@ _cbb4d5:
                 dir DOWN
                 wait 9
                 dir UP
-                action 33
+                action HEAD_DOWN_UP
                 wait 10
                 dir DOWN
                 wait 5
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir DOWN
                 end
@@ -64909,7 +64909,7 @@ _cbb4d5:
         pass_on CYAN
         pass_on SABIN
         obj_script SABIN, ASYNC
-                action 10
+                action READY
                 end
         dlg DLG_696, BOTTOM
                 ; SABIN: Yahoooo!!
@@ -64920,7 +64920,7 @@ _cbb4d5:
         sfx 106
         obj_script SABIN
                 speed FAST
-                action 15
+                action JUMPING
                 anim_off
                 move UP_LEFT, 2
                 move LEFT, 3
@@ -64935,7 +64935,7 @@ _cbb4d5:
         obj_script SABIN
                 speed FAST
                 move LEFT, 1
-                action 15
+                action JUMPING
                 anim_off
                 move UP_LEFT, 2
                 move LEFT, 4
@@ -64955,35 +64955,35 @@ _cbb4d5:
                 anim_on
                 end
         obj_script SABIN
-                action 31
+                action SURPRISED
                 wait 6
                 end
         obj_script SABIN
                 anim_off
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 move UP_RIGHT
                 move DOWN, 1
                 jump_low
                 anim_on
-                action 40
+                action DEAD_HORZ
                 wait 15
-                action 9
+                action NEAR_FATAL
                 wait 3
                 end
         obj_script SABIN
                 dir DOWN
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
@@ -65037,16 +65037,16 @@ _cbb5b6:
                 move LEFT, 2
                 end
         obj_script SLOT_4, ASYNC
-                action 31 | ACTION_H_FLIP
+                action SURPRISED_FLIP
                 end
         obj_script SLOT_3, ASYNC
-                action 31 | ACTION_H_FLIP
+                action SURPRISED_FLIP
                 end
         obj_script CYAN, ASYNC
-                action 31 | ACTION_H_FLIP
+                action SURPRISED_FLIP
                 end
         obj_script SABIN
-                action 31 | ACTION_H_FLIP
+                action SURPRISED_FLIP
                 wait 3
                 end
         wait_15f 5
@@ -65300,17 +65300,17 @@ _cbb7f8:
         wait 10
         obj_script SABIN, ASYNC
                 dir DOWN
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 end
         wait_obj SABIN
@@ -65725,23 +65725,23 @@ _cbb9d4:
                 wait 5
                 jump_high
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 wait 1
                 dir DOWN
                 end
         obj_script NPC_17
                 dir DOWN
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
@@ -65767,25 +65767,25 @@ _cbb9d4:
         if_case CHAR::SHADOW, _cbbec4
         wait_90f
         obj_script NPC_17
-                action 24
+                action ANGRY
                 end
         dlg DLG_730
                 ; SABIN: We shouldn't be here. Let's go NOW!
         obj_script NPC_19, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
         obj_script NPC_18
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -65796,14 +65796,14 @@ _cbb9d4:
                 dir DOWN
                 end
         obj_script NPC_18
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script NPC_18
                 dir RIGHT
                 end
         wait_45f
         obj_script NPC_18
-                action 31
+                action SURPRISED
                 wait 6
                 dir RIGHT
                 end
@@ -65954,16 +65954,16 @@ _cbb9d4:
         hide_obj NPC_16
         sort_obj
         obj_script NPC_18
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         dlg DLG_728
                 ; CYAN: No!!!
                 ; Elayne! Owain!!
         obj_script NPC_17, ASYNC
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 end
         obj_script NPC_19, ASYNC
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 end
         wait_45f
         obj_script NPC_19, ASYNC
@@ -65988,7 +65988,7 @@ _cbb9d4:
         wait_30f
         obj_script NPC_17, ASYNC
 _cbbce0:
-                action 15
+                action JUMPING
                 wait 1
                 dir LEFT
                 wait 1
@@ -66003,13 +66003,13 @@ _cbbce0:
         sfx 146
         wait_1s
         obj_script NPC_18, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_19, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_17
-                action 31
+                action SURPRISED
                 end
         wait_45f
         obj_script NPC_17, ASYNC
@@ -66028,7 +66028,7 @@ _cbbce0:
         wait_30f
         obj_script NPC_17, ASYNC
                 wait 1
-                action 40
+                action DEAD_HORZ
                 speed NORMAL
                 anim_off
                 jump_high
@@ -66036,7 +66036,7 @@ _cbbce0:
                 jump_high
                 wait 2
                 speed FAST
-                action 31
+                action SURPRISED
                 move DOWN, 5
                 anim_on
                 end
@@ -66051,11 +66051,11 @@ _cbbce0:
                 wait 6
                 dir RIGHT
                 wait 13
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 10
                 speed FAST
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 move DOWN, 5
                 anim_on
                 end
@@ -66069,7 +66069,7 @@ _cbbce0:
         wait_obj NPC_18
         obj_script NPC_18, ASYNC
 _cbbd4e:
-                action 27
+                action WAVING_1_UP
                 wait 2
                 dir UP
                 wait 3
@@ -66224,7 +66224,7 @@ _cbbd4e:
         wait_1s
         obj_script NPC_18
                 wait 5
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_15f 5
         fade_out 2
@@ -66253,7 +66253,7 @@ _cbbd4e:
         wait_fade
         start_timer 0, 1200, _cbbea3
         obj_script NPC_1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         player_ctrl_on
         return
@@ -66412,7 +66412,7 @@ _cbbfa5:
                 dir UP
                 end
         obj_script SABIN, ASYNC
-                action 28
+                action WAVING_2_UP
                 end
         dlg DLG_736, BOTTOM
                 ; SABIN: This must be Baren Falls.
@@ -66537,7 +66537,7 @@ _cbc058:
         obj_script SLOT_1, ASYNC
                 speed FAST
                 move UP, 2
-                action 23
+                action ARMS_UP_UP
                 anim_off
                 move UP, 4
                 wait 8
@@ -66573,7 +66573,7 @@ _cbc058:
         lock_camera
         obj_script SLOT_1
                 speed SLOW
-                action 40
+                action DEAD_HORZ
                 wait 32
                 anim_off
                 move DOWN, 2
@@ -66612,14 +66612,14 @@ _cbc058:
                 wait 3
                 dir UP
                 wait 5
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_15f 5
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 wait 8
@@ -66628,11 +66628,11 @@ _cbc058:
                 dir DOWN
                 end
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 wait 6
                 dir RIGHT
                 wait 5
-                action 31
+                action SURPRISED
                 wait 4
                 speed FAST
                 move RIGHT, 5
@@ -66641,11 +66641,11 @@ _cbc058:
                 end
         wait_1s
         obj_script NPC_1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 10
                 dir DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 6
                 move DOWN, 1
                 move RIGHT, 2
@@ -66654,27 +66654,27 @@ _cbc058:
                 end
         wait_1s
         obj_script NPC_1
-                action 13
+                action ATTACKING_2
                 end
         obj_script NPC_1
-                action 12
+                action ATTACKING_1
                 end
         obj_script NPC_1
-                action 13
+                action ATTACKING_2
                 end
         obj_script NPC_1
-                action 12
+                action ATTACKING_1
                 end
         obj_script NPC_1
-                action 13
+                action ATTACKING_2
                 end
         obj_script NPC_1
-                action 12
+                action ATTACKING_1
                 end
         switch $01CC=1
         wait_90f
         obj_script NPC_1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_30f
         hide_obj SLOT_1
@@ -66715,13 +66715,13 @@ _cbc058:
         show_obj SLOT_1
         sort_obj
         obj_script NPC_1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_15f 5
         obj_script SLOT_1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 16
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 6
                 end
         wait_45f
@@ -66729,17 +66729,17 @@ _cbc058:
                 dir LEFT
                 end
         obj_script SLOT_1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
@@ -66752,7 +66752,7 @@ _cbc058:
                 ; And you are?
         wait_45f
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 wait 5
                 speed FAST
                 move DOWN, 4
@@ -66825,14 +66825,14 @@ _cbc228:
                 end
         wait_1s
         obj_script GAU
-                action 9
+                action NEAR_FATAL
                 anim_off
                 speed NORMAL
                 move LEFT, 1
                 wait 5
                 move LEFT, 1
                 wait 5
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 move DOWN_RIGHT
                 end
         wait_45f
@@ -66878,19 +66878,19 @@ _cbc228:
                 wait 3
                 move DOWN, 1
                 wait 3
-                action 9
+                action NEAR_FATAL
                 wait 1
                 move LEFT, 1
                 end
         obj_script CYAN, ASYNC
                 dir DOWN
                 wait 5
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script SABIN
                 dir DOWN
                 wait 5
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_45f
         obj_script SABIN
@@ -66900,7 +66900,7 @@ _cbc228:
         create_obj NPC_3
         sort_obj
         obj_script SABIN, ASYNC
-                action 10
+                action READY
                 end
         obj_script NPC_3
                 pos {12, 21}
@@ -66923,11 +66923,11 @@ _cbc228:
                 ; SABIN: CYAN!
                 ; The shiny thing GAU spoke of is in here.
         obj_script CYAN
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
@@ -66947,23 +66947,23 @@ _cbc228:
                 ; where exactly is it?
         wait_15f 5
         obj_script GAU, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 end
         dlg DLG_788, BOTTOM
                 ; GAU: GAU_forget!!
         obj_script GAU, ASYNC
 _cbc317:
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 26
+                action WAVING_2_DOWN
                 wait 2
                 branch _cbc317
                 end
         obj_script CYAN, ASYNC
-                action 11
+                action HIT
                 end
         obj_script SABIN
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 end
         wait_15f 5
         obj_script CYAN
@@ -67022,9 +67022,9 @@ _cbc35a:
         obj_script GAU
                 speed NORMAL
                 move RIGHT, 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 3
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_90f
         obj_script GAU
@@ -67035,9 +67035,9 @@ _cbc35a:
         wait_45f
         loop 2
                 obj_script GAU
-                        action 25
+                        action WAVING_1_DOWN
                         wait 2
-                        action 26
+                        action WAVING_2_DOWN
                         wait 2
                         end
                 end_loop
@@ -67088,7 +67088,7 @@ _cbc3d2:
                 speed SLOW
                 move DOWN_LEFT
                 wait 2
-                action 9
+                action NEAR_FATAL
                 end
         wait_45f
         obj_script GAU
@@ -67097,7 +67097,7 @@ _cbc3d2:
                 end
         wait_90f
         obj_script GAU
-                action 31
+                action SURPRISED
                 jump_low
                 anim_on
                 end
@@ -67109,11 +67109,11 @@ _cbc3d2:
                 end
         wait_15f
         obj_script GAU
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 end
         wait_15f
         obj_script SABIN
-                action 6
+                action WALKING_LEFT_1
                 end
         wait_45f
         obj_script GAU, ASYNC
@@ -67124,10 +67124,10 @@ _cbc3d2:
                 end
         wait_15f
         obj_script CYAN, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script SABIN
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_791
                 ; SABIN: Tonic_
@@ -67142,21 +67142,21 @@ _cbc3d2:
         dlg DLG_792
                 ; CYAN: T_this is Sir GAU's treasure?!
         obj_script GAU
-                action 31
+                action SURPRISED
                 end
         wait_45f
         obj_script GAU
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
@@ -67171,15 +67171,15 @@ _cbc3d2:
         wait_1s
         loop 2
                 obj_script CYAN, ASYNC
-                        action 25 | ACTION_H_FLIP
+                        action WAVING_1_DOWN_FLIP
                         wait 3
-                        action 26 | ACTION_H_FLIP
+                        action WAVING_2_DOWN_FLIP
                         wait 3
                         end
                 obj_script SABIN
-                        action 25
+                        action WAVING_1_DOWN
                         wait 3
-                        action 26
+                        action WAVING_2_DOWN
                         wait 3
                         end
                 end_loop
@@ -67225,7 +67225,7 @@ _cbc49f:
                 speed NORMAL
                 move LEFT, 4
                 wait 3
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 8
                 end
         obj_script GAU
@@ -67236,7 +67236,7 @@ _cbc49f:
                 end
         obj_script GAU, ASYNC
 _cbc4df:
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 3
                 dir RIGHT
                 wait 2
@@ -67256,7 +67256,7 @@ _cbc4df:
         wait_dlg
         wait_30f
         obj_script SABIN
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script GAU
                 speed SLOWER
@@ -67265,36 +67265,36 @@ _cbc4df:
                 move LEFT, 1
                 end
         obj_script GAU, ASYNC
-                action 15
+                action JUMPING
                 end
         dlg DLG_794, BOTTOM
                 ; GAU: GAU!!
         obj_script SABIN
-                action 31
+                action SURPRISED
                 end
         sfx SFX::FALLING
         wait_15f 5
         obj_script SABIN
-                action 13
+                action ATTACKING_2
                 end
         obj_script SABIN
-                action 12
+                action ATTACKING_1
                 end
         obj_script SABIN
-                action 13
+                action ATTACKING_2
                 end
         obj_script SABIN
-                action 12
+                action ATTACKING_1
                 end
         obj_script SABIN
-                action 13
+                action ATTACKING_2
                 end
         obj_script SABIN
-                action 12
+                action ATTACKING_1
                 end
         wait_30f
         obj_script SABIN
-                action 31
+                action SURPRISED
                 end
         dlg DLG_795, BOTTOM
                 ; SABIN: G'uh! My pouch! There was 500 GP in it_!
@@ -67305,9 +67305,9 @@ _cbc4df:
                 end
         obj_script GAU, ASYNC
 _cbc53b:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _cbc53b
                 end
@@ -67320,7 +67320,7 @@ _cbc53b:
                 end
         wait_15f
         obj_script SABIN
-                action 23
+                action ARMS_UP_UP
                 end
         dlg DLG_797
                 ; SABIN: GAU_YOU!
@@ -67346,13 +67346,13 @@ _cbc53b:
                 wait 5
                 end
         obj_script SABIN
-                action 32
+                action HEAD_DOWN_DOWN
                 speed FAST
                 wait 5
                 end
         obj_script SABIN, ASYNC
 _cbc57e:
-                action 22
+                action ARMS_UP_DOWN
                 wait 2
                 dir DOWN
                 wait 1
@@ -67401,13 +67401,13 @@ _cbc5b2:
                 dir DOWN
                 end
         obj_script SABIN
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 26
+                action WAVING_2_DOWN
                 wait 2
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 26
+                action WAVING_2_DOWN
                 wait 2
                 end
         wait_45f
@@ -67470,29 +67470,29 @@ _cbc5fb:
                 pos {24, 17}
                 end
         obj_script GAU
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script GAU
-                action 12
+                action ATTACKING_1
                 end
         obj_script GAU
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script GAU
-                action 12
+                action ATTACKING_1
                 end
         obj_script GAU
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script GAU
-                action 12
+                action ATTACKING_1
                 end
         wait_30f
         obj_script GAU
                 jump_low
                 move DOWN_LEFT
                 dir RIGHT
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         switch $05F7=1
         create_obj NPC_4
@@ -67500,17 +67500,17 @@ _cbc5fb:
         sfx 27
         show_obj NPC_4
         obj_script CYAN, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SABIN, ASYNC
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script GAU, ASYNC
 _cbc66d:
                 dir UP
                 wait 2
-                action 23
+                action ARMS_UP_UP
                 wait 2
                 branch _cbc66d
                 end
@@ -67531,19 +67531,19 @@ _cbc66d:
         obj_script CYAN, ASYNC
                 speed NORMAL
                 move DOWN, 1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script SABIN
                 speed NORMAL
                 move DOWN, 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_1s
         obj_script GAU, ASYNC
 _cbc696:
                 dir UP
                 wait 2
-                action 23
+                action ARMS_UP_UP
                 wait 2
                 branch _cbc696
                 end
@@ -67567,13 +67567,13 @@ _cbc696:
                 hide_obj
                 end
         obj_script SABIN
-                action 10
+                action READY
                 end
         wait_obj NPC_3
         wait_45f
         obj_script SABIN, ASYNC
 _cbc6c0:
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 2
@@ -67610,7 +67610,7 @@ _cbc6c0:
         switch $05F7=0
         wait_1s
         obj_script SABIN
-                action 24
+                action ANGRY
                 end
         dlg DLG_802
                 ; SABIN: Let's go!
@@ -67659,14 +67659,14 @@ _cbc6c0:
                 move DOWN_LEFT
                 dir DOWN
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script CYAN
                 speed NORMAL
                 move DOWN_RIGHT
                 dir DOWN
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait 10
         dlg DLG_796
@@ -67683,9 +67683,9 @@ _cbc6c0:
                 speed SLOW
                 move DOWN, 1
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 10
-                action 31
+                action SURPRISED
                 end
         obj_script SABIN, ASYNC
                 wait 5
@@ -67697,7 +67697,7 @@ _cbc6c0:
                 end
         obj_script GAU
                 layer 2
-                action 31
+                action SURPRISED
                 anim_off
                 jump_high
                 wait 5
@@ -67717,7 +67717,7 @@ _cbc6c0:
                 speed FAST
                 move UP, 1
                 wait 5
-                action 9
+                action NEAR_FATAL
                 end
         wait_2s
         obj_script SABIN, ASYNC
@@ -67729,31 +67729,31 @@ _cbc6c0:
                 end
         wait_2s
         obj_script SABIN, ASYNC
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 8
                 end
         obj_script CYAN
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 8
                 end
         obj_script SABIN, ASYNC
@@ -67766,14 +67766,14 @@ _cbc6c0:
         dlg DLG_802
                 ; SABIN: Let's go!
         obj_script SABIN, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 jump_high
                 move DOWN, 8
                 end
         obj_script CYAN
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 jump_high
@@ -67787,23 +67787,23 @@ _cbc6c0:
                 speed SLOW
                 move DOWN, 1
                 wait 3
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 9
                 move LEFT, 1
                 wait 3
-                action 9
+                action NEAR_FATAL
                 wait 10
                 move RIGHT, 2
                 wait 3
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 10
                 end
         obj_script GAU
                 move LEFT, 1
                 wait 3
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 10
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 jump_high
@@ -67843,7 +67843,7 @@ _cbc84d:
 _cbc866:
         lock_camera
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 speed FAST
                 jump_high
@@ -67876,18 +67876,18 @@ _cbc8a0:
         obj_script NPC_10, ASYNC
 _cbc8b6:
                 wait 15
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 branch _cbc8b6
                 end
         if_switch $0087=0, EventReturn
         obj_script NPC_8, ASYNC
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         return
 _cbc8d0:
@@ -67982,7 +67982,7 @@ _cbc8d0:
 _cbcb6b:
         call _cb6a77
         obj_script NPC_15, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         return
 _cbcb74:
@@ -68015,13 +68015,13 @@ _cbcb74:
                 end
         wait_30f
         obj_script GAU
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 26
+                action WAVING_2_DOWN
                 wait 2
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 26
+                action WAVING_2_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -68088,13 +68088,13 @@ _cbcbde:
                 end
         wait_30f
         obj_script GAU
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 26
+                action WAVING_2_DOWN
                 wait 2
-                action 25
+                action WAVING_1_DOWN
                 wait 2
-                action 26
+                action WAVING_2_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -68339,13 +68339,13 @@ _cbcd99:
                 ; General CELES_and SHADOW.
         wait_45f
         obj_script NPC_5
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 end
         wait_30f
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 wait 5
                 dir UP
                 end
@@ -68372,11 +68372,11 @@ _cbcd99:
         obj_script NPC_10, ASYNC
 _cbcdc7:
                 wait 15
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 branch _cbcdc7
@@ -68405,7 +68405,7 @@ _cbcdc7:
                 end
         wait_1s
         obj_script NPC_5
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_2s
         obj_script NPC_5
@@ -68415,7 +68415,7 @@ _cbcdc7:
         hide_obj NPC_5
         wait_2s
         obj_script LOCKE
-                action 33
+                action HEAD_DOWN_UP
                 wait 8
                 end
         dlg DLG_1891, BOTTOM
@@ -68449,7 +68449,7 @@ _cbce2a:
         dlg DLG_1900
                 ; SHADOW: You kids stay out of trouble now, you hear?
         obj_script NPC_8
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         return
 _cbce32:
@@ -68511,9 +68511,9 @@ _cbce36:
                 wait 10
                 dir DOWN
                 wait 2
-                action 25
+                action WAVING_1_DOWN
                 wait 1
-                action 26
+                action WAVING_2_DOWN
                 wait 8
                 dir DOWN
                 end
@@ -68522,7 +68522,7 @@ _cbce36:
         obj_script NPC_13
                 dir RIGHT
                 wait 3
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 3
                 dir RIGHT
                 wait 9
@@ -68532,13 +68532,13 @@ _cbce36:
                 ; LEO: We should arrive tomorrow morning. Why not rest until then?
         loop 2
                 obj_script NPC_12, ASYNC
-                        action 33
+                        action HEAD_DOWN_UP
                         wait 1
                         dir UP
                         wait 1
                         end
                 obj_script NPC_14
-                        action 33
+                        action HEAD_DOWN_UP
                         wait 1
                         dir UP
                         wait 1
@@ -68590,11 +68590,11 @@ _cbcefc:
         return
 _cbcf1c:
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
@@ -68604,7 +68604,7 @@ _cbcf1c:
                 move RIGHT, 1
                 move DOWN, 1
                 wait 3
-                action 35
+                action HEAD_TURNED
                 end
         obj_script CAMERA
                 speed SLOW
@@ -68623,11 +68623,11 @@ _cbcf1c:
         return
 _cbcf4a:
         obj_script SLOT_1
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 wait 2
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -68637,7 +68637,7 @@ _cbcf4a:
                 move RIGHT, 1
                 move DOWN, 1
                 wait 3
-                action 35
+                action HEAD_TURNED
                 end
         obj_script CAMERA
                 speed SLOW
@@ -68655,11 +68655,11 @@ _cbcf4a:
         return
 _cbcf77:
         obj_script SLOT_1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -68669,7 +68669,7 @@ _cbcf77:
                 move DOWN, 1
                 move RIGHT, 1
                 wait 3
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1907
                 ; LEO: Looks like you're feeling better_
@@ -68684,11 +68684,11 @@ _cbcf77:
         return
 _cbcfa0:
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -68698,7 +68698,7 @@ _cbcfa0:
                 move DOWN, 1
                 move RIGHT, 1
                 wait 3
-                action 35
+                action HEAD_TURNED
                 end
         obj_script CAMERA
                 speed SLOW
@@ -68718,7 +68718,7 @@ _cbcfa0:
 _cbcfce:
         wait_30f
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_2s
         dlg DLG_1908, ASYNC
@@ -68727,7 +68727,7 @@ _cbcfce:
                 ; even had my thoughts ripped from me_
                 ; But here I am cooperating with the ``enemy''_
         obj_script SLOT_1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_dlg
         wait_30f
@@ -68743,7 +68743,7 @@ _cbcfce:
         obj_script SLOT_1
                 dir DOWN
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 11
                 dir LEFT
                 end
@@ -68757,7 +68757,7 @@ _cbcfce:
                 speed SLOW
                 move UP, 1
                 wait 6
-                action 33
+                action HEAD_DOWN_UP
                 wait 6
                 end
         dlg DLG_1911
@@ -68772,7 +68772,7 @@ _cbcfce:
                 wait 3
                 dir RIGHT
                 wait 6
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_30f
         dlg DLG_1912
@@ -68789,14 +68789,14 @@ _cbcfce:
                 speed SLOW
                 move DOWN, 2
                 wait 5
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_1914
                 ; TERRA: But_
                 ; I haven't felt that way yet_
         obj_script NPC_18, ASYNC
                 wait 6
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_15f 5
         obj_script NPC_18
@@ -68818,7 +68818,7 @@ _cbcfce:
         wait_2s
         pass_off NPC_18
         obj_script NPC_18
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 15
                 speed NORMAL
                 move RIGHT, 8
@@ -68837,15 +68837,15 @@ _cbcfce:
         sort_obj
         wait_45f
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_90f
         obj_script SLOT_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_2s
         obj_script SLOT_1
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         dlg DLG_1916
@@ -68860,7 +68860,7 @@ _cbcfce:
         sfx SFX::DOOR_OPEN
         wait_45f
         obj_script SLOT_1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_1917
                 ; TERRA: Who is it?
@@ -68870,15 +68870,15 @@ _cbcfce:
                 move LEFT, 4
                 move DOWN, 1
                 wait 2
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1918
                 ; SHADOW: Thought I'd sleep out under the stars.
         wait_1s
         obj_script SLOT_1, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 6
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1919
                 ; TERRA: Did you hear_
@@ -68901,13 +68901,13 @@ _cbcfce:
         dlg DLG_1920
                 ; TERRA: Umm_
         obj_script NPC_15
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
                 dir DOWN
                 end
@@ -68917,7 +68917,7 @@ _cbcfce:
                 ; You must look within for answers.
         wait_45f
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_2s
         obj_script SLOT_1
@@ -68951,7 +68951,7 @@ _cbcfce:
         sort_obj
         wait_1s
         obj_script NPC_15
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 21
                 speed SLOW
                 move DOWN_LEFT
@@ -68962,7 +68962,7 @@ _cbcfce:
         wait_15f 5
         obj_script NPC_14
                 speed SLOW
-                action 9
+                action NEAR_FATAL
                 anim_off
                 move UP_LEFT
                 end
@@ -68974,19 +68974,19 @@ _cbcfce:
                 anim_off
                 move DOWN_LEFT
                 anim_on
-                action 40
+                action DEAD_HORZ
                 end
         wait_15f 5
         dlg DLG_639, BOTTOM
                 ; LOCKE: Ooh_ Ohhhhhhh_
         wait_90f
         obj_script NPC_14
-                action 31
+                action SURPRISED
                 wait 3
                 speed FAST
                 move LEFT, 2
                 move UP, 1
-                action 23
+                action ARMS_UP_UP
                 wait 2
                 anim_off
                 move UP, 1
@@ -68999,7 +68999,7 @@ _cbcfce:
                 speed FAST
                 jump_low
                 move DOWN, 2
-                action 40
+                action DEAD_HORZ
                 anim_on
                 end
         wait_15f 10
@@ -69011,17 +69011,17 @@ _cbcfce:
                 end
         wait_15f 5
         obj_script NPC_14
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_1901, BOTTOM
                 ; LOCKE: Not a word of this to anyone else, o shrouded one_
         wait_90f
         obj_script NPC_14
-                action 31
+                action SURPRISED
                 wait 3
                 speed FAST
                 move UP, 1
-                action 23
+                action ARMS_UP_UP
                 wait 2
                 anim_off
                 move UP, 1
@@ -69061,7 +69061,7 @@ _cbcfce:
         sort_obj
         obj_script NPC_6
                 pos {8, 15}
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_7
                 pos {7, 16}
@@ -69162,7 +69162,7 @@ _cbd209:
                 move RIGHT, 1
                 end
         obj_script NPC_7, ASYNC
-                action 3
+                action WALKING_UP_1
                 dir UP
                 speed SLOW
                 move RIGHT, 1
@@ -69171,7 +69171,7 @@ _cbd209:
                 end
         wait_dlg
         obj_script NPC_14
-                action 35
+                action HEAD_TURNED
                 end
         wait_90f
         obj_script NPC_14
@@ -69214,9 +69214,9 @@ _cbd209:
         obj_script NPC_5
                 dir DOWN
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_1s
         pass_off SLOT_1
@@ -69224,7 +69224,7 @@ _cbd209:
                 speed NORMAL
                 move LEFT, 1
                 wait 6
-                action 35
+                action HEAD_TURNED
                 wait 10
                 speed FAST
                 move DOWN, 2
@@ -69447,7 +69447,7 @@ _cbd50c:
                 end
         obj_script NPC_5, ASYNC
 _cbd514:
-                action 23
+                action ARMS_UP_UP
                 wait 1
                 dir UP
                 wait 1
@@ -69841,13 +69841,13 @@ _cbd8f9:
                 end
         wait_90f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 wait 2
-                action 28
+                action WAVING_2_UP
                 wait 2
-                action 27
+                action WAVING_1_UP
                 wait 2
-                action 28
+                action WAVING_2_UP
                 wait 2
                 dir UP
                 end
@@ -69969,21 +69969,21 @@ _cbd982:
                 ; LOCKE: But you've heard it before?
         wait_30f
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 wait 5
                 end
         obj_script NPC_1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
@@ -70014,13 +70014,13 @@ _cbd982:
                 end
         wait_1s
         obj_script LOCKE, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script SHADOW
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         obj_script TERRA
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_1965
                 ; That's odd_
@@ -70062,7 +70062,7 @@ _cbd982:
         obj_script NPC_1
                 speed NORMAL
                 wait 3
-                action 11
+                action HIT
                 anim_off
                 move RIGHT, 1
                 anim_on
@@ -70075,16 +70075,16 @@ _cbd982:
                 move LEFT, 1
                 dir DOWN
                 wait 7
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 3
                 move RIGHT, 2
                 dir DOWN
                 wait 7
-                action 35
+                action HEAD_TURNED
                 wait 3
                 end
         obj_script NPC_2
-                action 10
+                action READY
                 wait 2
                 speed FAST
                 move RIGHT, 2
@@ -70098,13 +70098,13 @@ _cbd982:
                 ; STRAGO: Hey_HEY!
         loop 3
                 obj_script NPC_2
-                        action 13
+                        action ATTACKING_2
                         end
                 obj_script NPC_1
-                        action 31
+                        action SURPRISED
                         end
                 obj_script NPC_2
-                        action 12
+                        action ATTACKING_1
                         end
                 obj_script NPC_1
                         dir LEFT
@@ -70174,7 +70174,7 @@ _cbd982:
         obj_script NPC_1, ASYNC
                 wait 11
 _cbdb1f:
-                action 31
+                action SURPRISED
                 wait 3
                 dir RIGHT
                 wait 3
@@ -70190,13 +70190,13 @@ _cbdb1f:
                 ; STRAGO: Yaa! Hush!
         wait_30f
         obj_script NPC_2
-                action 31
+                action SURPRISED
                 wait 4
                 speed FAST
                 move DOWN, 4
                 dir LEFT
                 move LEFT, 1
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_5
                 dir RIGHT
@@ -70238,7 +70238,7 @@ _cbdb1f:
                 ; What a fussy old man!
         wait_30f
         obj_script NPC_1, ASYNC
-                action 24
+                action ANGRY
                 end
         dlg DLG_1969
                 ; STRAGO: Please_leave us!
@@ -70310,7 +70310,7 @@ _cbdb1f:
                 move UP, 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_1972, BOTTOM
                 ; STRAGO: This is terrible_
@@ -70371,29 +70371,29 @@ _cbdb1f:
                 ; TERRA: Let's have a look around.
         wait_15f
         obj_script LOCKE, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
         obj_script SHADOW, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
         obj_script TERRA
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 wait 2
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -70492,7 +70492,7 @@ _cbdcbb:
         dlg DLG_2020
                 ; RELM: What a fuddy duddy_
         obj_script NPC_2
-                action 9
+                action NEAR_FATAL
                 end
         return
 _cbdcc3:
@@ -70551,32 +70551,32 @@ _cbdcc7:
                 move LEFT, 2
                 end
         obj_script NPC_2
-                action 13
+                action ATTACKING_2
                 end
         obj_script NPC_2
-                action 12
+                action ATTACKING_1
                 end
         obj_script NPC_2
-                action 13
+                action ATTACKING_2
                 end
         obj_script NPC_2
-                action 12
+                action ATTACKING_1
                 end
         obj_script NPC_2
-                action 13
+                action ATTACKING_2
                 end
         obj_script NPC_2
-                action 12
+                action ATTACKING_1
                 end
         obj_script LOCKE, ASYNC
                 speed SLOW
                 layer 2
                 anim_off
-                action 31
+                action SURPRISED
                 wait 1
                 jump_high
                 move LEFT, 1
-                action 40
+                action DEAD_HORZ
                 jump_low
                 move LEFT, 1
                 anim_on
@@ -70587,17 +70587,17 @@ _cbdcc7:
         wait_obj LOCKE
         obj_script LOCKE
                 layer 0
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
@@ -70610,7 +70610,7 @@ _cbdcc7:
                 end
         obj_script NPC_2, ASYNC
 _cbdd70:
-                action 23
+                action ARMS_UP_UP
                 wait 1
                 dir UP
                 wait 1
@@ -70632,7 +70632,7 @@ _cbdd70:
         wait_45f
         obj_script NPC_2, ASYNC
 _cbdd8b:
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 dir DOWN
                 wait 1
@@ -70645,7 +70645,7 @@ _cbdd8b:
         wait_15f
         obj_script NPC_2, ASYNC
 _cbdd9a:
-                action 23
+                action ARMS_UP_UP
                 wait 1
                 dir UP
                 wait 1
@@ -70720,7 +70720,7 @@ _cbdd9a:
                 move RIGHT, 1
                 dir DOWN
                 wait 6
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 4
                 dir DOWN
                 end
@@ -70761,7 +70761,7 @@ _cbde30:
                 end
         obj_script NPC_5, ASYNC
 _cbde44:
-                action 23
+                action ARMS_UP_UP
                 wait 1
                 dir UP
                 wait 1
@@ -70834,13 +70834,13 @@ _cbde44:
         wait_30f
         shake {BG1, BG2}, 0, 2
         obj_script LOCKE, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script TERRA, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_5
-                action 31
+                action SURPRISED
                 end
         wait_45f
         obj_script CAMERA
@@ -70853,7 +70853,7 @@ _cbde44:
                 ; STRAGO: RELM!!!!!
         obj_script NPC_5, ASYNC
 _cbdf1f:
-                action 23
+                action ARMS_UP_UP
                 wait 1
                 dir UP
                 wait 1
@@ -70868,20 +70868,20 @@ _cbdf1f:
         wait_dlg
         wait_30f
         obj_script NPC_5
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_90f
         obj_script NPC_5, ASYNC
 _cbdf3a:
-                action 16
+                action CASTING_1
                 wait 1
-                action 17
+                action CASTING_2
                 wait 1
                 branch _cbdf3a
                 end
         wait_45f
         obj_script LOCKE, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script TERRA, ASYNC
                 dir DOWN
@@ -70893,21 +70893,21 @@ _cbdf3a:
         dlg DLG_1991
                 ; Flames be GONE!!!
         obj_script TERRA, ASYNC
-                action 31
+                action SURPRISED
                 wait 5
                 dir RIGHT
                 end
         obj_script LOCKE, ASYNC
                 speed FAST
                 move RIGHT, 1
-                action 31
+                action SURPRISED
                 wait 5
                 dir LEFT
                 end
         obj_script NPC_5
                 speed NORMAL
                 move UP, 1
-                action 23
+                action ARMS_UP_UP
                 end
         sfx 1
         show_obj NPC_13
@@ -71076,7 +71076,7 @@ _cbdf3a:
                 end
         obj_script NPC_5, ASYNC
 _cbe057:
-                action 13
+                action ATTACKING_2
                 wait 1
                 dir LEFT
                 wait 1
@@ -71095,9 +71095,9 @@ _cbe057:
                 end
         loop 4
                 obj_script NPC_5
-                        action 16
+                        action CASTING_1
                         wait 1
-                        action 17
+                        action CASTING_2
                         wait 1
                         end
                 end_loop
@@ -71109,7 +71109,7 @@ _cbe057:
                 dir UP
                 end
         obj_script NPC_5
-                action 23
+                action ARMS_UP_UP
                 end
         sfx 1
         obj_script NPC_13
@@ -71336,15 +71336,15 @@ _cbe057:
                 end
         loop 4
                 obj_script NPC_5
-                        action 16
+                        action CASTING_1
                         wait 1
-                        action 17
+                        action CASTING_2
                         wait 1
                         end
                 end_loop
         wait_45f
         obj_script NPC_5
-                action 23
+                action ARMS_UP_UP
                 end
         sfx 1
         create_obj NPC_13
@@ -71802,7 +71802,7 @@ _cbe057:
                 end
         obj_script NPC_5, ASYNC
 _cbe503:
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 dir DOWN
                 wait 1
@@ -71905,7 +71905,7 @@ _cbe538:
                 jump_high
                 end
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 anim_off
                 jump_high
                 anim_on
@@ -72266,7 +72266,7 @@ _cbe767:
                 end
         obj_script STRAGO, ASYNC
 _cbe7ed:
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 dir DOWN
                 wait 1
@@ -72277,7 +72277,7 @@ _cbe7ed:
                 ; Where are you?!
         wait_45f
         obj_script NPC_12
-                action 40
+                action DEAD_HORZ
                 end
         call _cb6abf
         obj_script CAMERA, ASYNC
@@ -72309,17 +72309,17 @@ _cbe7ed:
                 move RIGHT, 1
                 end
         obj_script LOCKE, ASYNC
-                action 31
+                action SURPRISED
                 wait 19
                 dir UP
                 end
         obj_script STRAGO, ASYNC
-                action 31
+                action SURPRISED
                 wait 19
                 dir UP
                 end
         obj_script TERRA, ASYNC
-                action 31
+                action SURPRISED
                 wait 19
                 dir UP
                 end
@@ -72384,7 +72384,7 @@ _cbe7ed:
                 ; STRAGO: RELM!!!!!
         obj_script STRAGO, ASYNC
 _cbe88a:
-                action 23
+                action ARMS_UP_UP
                 wait 1
                 dir UP
                 wait 1
@@ -72394,13 +72394,13 @@ _cbe88a:
         wait_dlg
         sfx 137
         obj_script TERRA, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script STRAGO, ASYNC
-                action 31
+                action SURPRISED
                 end
         dlg DLG_2003, {ASYNC, BOTTOM}
                 ; Uwaaa!!
@@ -72424,19 +72424,19 @@ _cbe88a:
         wait_15f 15
         obj_script LOCKE, ASYNC
                 move RIGHT, 2
-                action 40
+                action DEAD_HORZ
                 end
         obj_script TERRA, ASYNC
                 move RIGHT, 2
-                action 40
+                action DEAD_HORZ
                 end
         obj_script STRAGO, ASYNC
                 move RIGHT, 1
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_12, ASYNC
                 move RIGHT, 1
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_1, ASYNC
                 pos {45, 41}
@@ -72523,19 +72523,19 @@ _cbe88a:
         wait_30f
         sfx SFX::FALLING
         obj_script NPC_14
-                action 25
+                action WAVING_1_DOWN
                 anim_off
                 speed FAST
                 move DOWN, 4
                 speed NORMAL
                 move DOWN, 3
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         wait_1s
         obj_script NPC_14
                 wait 3
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir RIGHT
                 end
@@ -72551,11 +72551,11 @@ _cbe88a:
         wait_obj NPC_13
         wait_30f
         obj_script NPC_14
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 2
@@ -72565,7 +72565,7 @@ _cbe88a:
                 end
         wait_30f
         obj_script NPC_14
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         wait_2s
         pass_off NPC_14
@@ -72620,7 +72620,7 @@ _cbe88a:
                 anim_on
                 dir RIGHT
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script NPC_13, ASYNC
                 anim_on
@@ -72633,7 +72633,7 @@ _cbe88a:
         call _cb6abf
         wait_obj NPC_13
         obj_script NPC_14
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script NPC_13, ASYNC
                 jump_low
@@ -72649,13 +72649,13 @@ _cbe88a:
         obj_script NPC_14
                 dir DOWN
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir RIGHT
                 wait 3
                 speed SLOW
                 move RIGHT, 2
-                action 9
+                action NEAR_FATAL
                 wait 15
                 dir DOWN
                 wait 4
@@ -72665,9 +72665,9 @@ _cbe88a:
         dlg DLG_2006, BOTTOM
                 ; SHADOW: Let's get outta here! I'll use a Smoke Bomb!!
         obj_script NPC_14
-                action 9
+                action NEAR_FATAL
                 wait 1
-                action 25
+                action WAVING_1_DOWN
                 wait 5
                 dir DOWN
                 end
@@ -72719,7 +72719,7 @@ _cbe88a:
                 speed FAST
                 move LEFT, 1
                 move UP, 3
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 layer 2
                 end
         fade_in 4
@@ -72727,7 +72727,7 @@ _cbe88a:
         wait_90f
         obj_script NPC_7, ASYNC
                 wait 15
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script NPC_2
                 speed SLOWER
@@ -72749,7 +72749,7 @@ _cbe88a:
         obj_script NPC_2, ASYNC
                 wait 5
 _cbeabc:
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 wait 3
@@ -72771,13 +72771,13 @@ _cbeabc:
                 ; RELM: Thank you_
         wait_30f
         obj_script NPC_2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 end
         wait_15f 5
         obj_script STRAGO
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         obj_script STRAGO
@@ -72795,12 +72795,12 @@ _cbeabc:
         wait_45f
         play_song NARSHE
         obj_script STRAGO
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 6
                 speed SLOWER
                 move LEFT, 1
                 wait 3
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 8
                 dir LEFT
                 end
@@ -72812,12 +72812,12 @@ _cbeabc:
                 dir LEFT
                 end
         obj_script TERRA, ASYNC
-                action 31
+                action SURPRISED
                 wait 6
                 dir UP
                 end
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 wait 6
                 dir UP
                 end
@@ -72830,7 +72830,7 @@ _cbeabc:
         wait_30f
         loop 2
                 obj_script LOCKE
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script LOCKE
                         dir DOWN
@@ -72844,7 +72844,7 @@ _cbeabc:
                 ; LOCKE: But I thought they perished centuries ago_
         wait_30f
         obj_script STRAGO
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 end
@@ -72852,7 +72852,7 @@ _cbeabc:
                 dir LEFT
                 end
         obj_script NPC_7, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script STRAGO, ASYNC
                 speed SLOWER
@@ -72876,7 +72876,7 @@ _cbeabc:
                 wait 4
                 dir UP
                 wait 4
-                action 33
+                action HEAD_DOWN_UP
                 end
         dlg DLG_2015
                 ; STRAGO: They sent people to hunt us down like animals.
@@ -72902,7 +72902,7 @@ _cbeabc:
                 ; STRAGO: So, you're after the Espers, eh_?
         wait_obj TERRA
         obj_script STRAGO
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_15f 5
         obj_script STRAGO, ASYNC
@@ -72919,7 +72919,7 @@ _cbeabc:
                 jump_low
                 move LEFT, 1
 _cbeb9a:
-                action 15
+                action JUMPING
                 wait 1
                 dir LEFT
                 wait 1
@@ -72928,9 +72928,9 @@ _cbeb9a:
         obj_script STRAGO, ASYNC
                 wait 13
 _cbeba7:
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
                 branch _cbeba7
                 end
@@ -72947,7 +72947,7 @@ _cbeba7:
         obj_script NPC_2
                 dir DOWN
                 wait 4
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2020
                 ; RELM: What a fuddy duddy_
@@ -72971,7 +72971,7 @@ _cbeba7:
                 wait 15
                 move RIGHT, 2
                 wait 15
-                action 9
+                action NEAR_FATAL
                 end
         obj_script STRAGO
                 move DOWN, 1
@@ -73011,7 +73011,7 @@ _cbeba7:
         obj_script STRAGO, ASYNC
                 wait 4
 _cbec11:
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 4
@@ -73031,29 +73031,29 @@ _cbec11:
         dlg DLG_2024
                 ; LOCKE: I think it's worth a look.
         obj_script LOCKE, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
         obj_script TERRA, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 wait 2
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
         obj_script STRAGO
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 wait 2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
@@ -73140,7 +73140,7 @@ _cbec92:
                 move DOWN, 3
                 dir LEFT
                 wait 2
-                action 15
+                action JUMPING
                 wait 4
                 dir LEFT
                 end
@@ -73150,19 +73150,19 @@ _cbec92:
                 end
         wait_15f 5
         obj_script STRAGO
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 6
                 dir LEFT
                 end
         wait_15f 5
         obj_script NPC_24
-                action 36
+                action WAGGING_FINGER_1
                 wait 2
-                action 37
+                action WAGGING_FINGER_2
                 wait 2
-                action 36
+                action WAGGING_FINGER_1
                 wait 2
-                action 37
+                action WAGGING_FINGER_2
                 wait 2
                 end
         obj_script NPC_25, ASYNC
@@ -73173,7 +73173,7 @@ _cbec92:
         obj_script NPC_24
                 speed SLOW
                 move UP, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_15f 5
         dlg DLG_2025
@@ -73199,7 +73199,7 @@ _cbec92:
                 end
         wait_30f
         obj_script LOCKE, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_2s
         obj_script LOCKE, ASYNC
@@ -73231,12 +73231,12 @@ _cbec92:
                 speed NORMAL
                 move DOWN, 2
                 wait 2
-                action 31
+                action SURPRISED
                 wait 4
                 speed FAST
                 move LEFT, 4
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 end
         wait_15f
         obj_script NPC_24
@@ -73250,35 +73250,35 @@ _cbec92:
         obj_script NPC_24
                 dir RIGHT
                 wait 7
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
         wait_90f
         obj_script TERRA, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
         obj_script STRAGO, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
         obj_script LOCKE
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -73295,7 +73295,7 @@ _cbec92:
                 speed NORMAL
                 move DOWN, 3
                 wait 3
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_1977
                 ; SHADOW: Interceptor!
@@ -73310,7 +73310,7 @@ _cbec92:
                 end
         wait_15f 5
         obj_script NPC_26, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_25, ASYNC
                 speed NORMAL
@@ -73401,7 +73401,7 @@ _cbee62:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_low
                 move RIGHT, 1
                 speed FAST
@@ -73415,7 +73415,7 @@ _cbee71:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15
+                action JUMPING
                 jump_low
                 move LEFT, 1
                 speed FAST
@@ -73429,7 +73429,7 @@ _cbee80:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_low
                 move RIGHT, 1
                 speed FAST
@@ -73564,7 +73564,7 @@ _cbef71:
                 move LEFT, 1
                 move UP, 1
                 wait 2
-                action 31
+                action SURPRISED
                 wait 3
                 move DOWN, 1
                 move RIGHT, 1
@@ -73595,7 +73595,7 @@ _cbefa5:
         obj_script LOCKE, ASYNC
                 speed NORMAL
                 anim_off
-                action 40
+                action DEAD_HORZ
                 jump_low
                 move RIGHT, 1
                 jump_low
@@ -73605,9 +73605,9 @@ _cbefa5:
         obj_script TERRA, ASYNC
                 speed FAST
                 anim_off
-                action 31
+                action SURPRISED
                 move DOWN_RIGHT
-                action 9
+                action NEAR_FATAL
                 jump_low
                 move DOWN, 1
                 anim_on
@@ -73615,7 +73615,7 @@ _cbefa5:
         obj_script STRAGO, ASYNC
                 speed NORMAL
                 anim_off
-                action 40
+                action DEAD_HORZ
                 jump_high
                 move DOWN, 2
                 jump_low
@@ -73635,7 +73635,7 @@ _cbefee:
                 dir DOWN
                 end
         obj_script TERRA
-                action 40
+                action DEAD_HORZ
                 end
         wait_45f
         obj_script NPC_1
@@ -73695,47 +73695,47 @@ _cbefee:
                 ; They're_beautiful!
         wait_obj NPC_1
         obj_script LOCKE, ASYNC
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
         obj_script TERRA, ASYNC
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
         obj_script STRAGO
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 end
@@ -73807,7 +73807,7 @@ _cbefee:
                 end
         obj_script RELM, ASYNC
 _cbf0fd:
-                action 15
+                action JUMPING
                 wait 1
                 dir LEFT
                 wait 1
@@ -73821,16 +73821,16 @@ _cbf0fd:
                 ; STRAGO: G_GRAMPS!!?
         wait_30f
         obj_script TERRA
-                action 13 | ACTION_H_FLIP
+                action ATTACKING_2_FLIP
                 end
         obj_script TERRA
-                action 12 | ACTION_H_FLIP
+                action ATTACKING_1_FLIP
                 end
         obj_script TERRA
-                action 13 | ACTION_H_FLIP
+                action ATTACKING_2_FLIP
                 end
         obj_script TERRA
-                action 12 | ACTION_H_FLIP
+                action ATTACKING_1_FLIP
                 end
         obj_script RELM
                 dir LEFT
@@ -73846,7 +73846,7 @@ _cbf0fd:
         obj_script STRAGO
                 dir DOWN
                 wait 5
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 5
                 dir DOWN
                 wait 2
@@ -73860,7 +73860,7 @@ _cbf0fd:
                 end
         wait_30f
         obj_script RELM
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         wait_30f
         obj_script RELM
@@ -73911,7 +73911,7 @@ _cbf168:
                 end
         wait_45f
         obj_script STRAGO
-                action 31
+                action SURPRISED
                 anim_off
                 wait 3
                 jump_high
@@ -73927,11 +73927,11 @@ _cbf168:
         obj_script LOCKE
                 speed NORMAL
                 move UP, 2
-                action 33
+                action HEAD_DOWN_UP
                 wait 5
                 move LEFT, 1
                 move UP, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         dlg DLG_2034, BOTTOM
                 ; LOCKE: Some faint letters are carved on the back of the stone figures_
@@ -73957,13 +73957,13 @@ _cbf168:
                 move DOWN, 2
                 move RIGHT, 1
                 move DOWN, 3
-                action 31
+                action SURPRISED
                 wait 5
                 speed FAST
                 move UP, 3
                 move LEFT, 1
                 move UP, 2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script STRAGO, ASYNC
                 anim_on
@@ -73980,11 +73980,11 @@ _cbf168:
         obj_script TERRA
                 speed NORMAL
                 move UP, 2
-                action 33
+                action HEAD_DOWN_UP
                 wait 5
                 move RIGHT, 1
                 move UP, 1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script LOCKE
                 move RIGHT, 1
@@ -74005,13 +74005,13 @@ _cbf168:
         dlg DLG_2038, BOTTOM
                 ; TERRA: Our Espers no doubt came to this island to bask in all this magical power!
         obj_script LOCKE
-                action 25
+                action WAVING_1_DOWN
                 wait 3
-                action 26
+                action WAVING_2_DOWN
                 wait 3
-                action 25
+                action WAVING_1_DOWN
                 wait 3
-                action 26
+                action WAVING_2_DOWN
                 wait 3
                 dir RIGHT
                 end
@@ -74032,11 +74032,11 @@ _cbf168:
         obj_script LOCKE
                 dir DOWN
                 wait 3
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -74092,7 +74092,7 @@ _cbf168:
                 end
         loop 3
                 obj_script NPC_2
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_2
                         dir DOWN
@@ -74132,13 +74132,13 @@ _cbf2a2:
         obj_script NPC_3, ASYNC
                 speed SLOW
 _cbf2a5:
-                action 0
+                action WALKING_DOWN_1
                 wait 2
-                action 1
+                action WALKING_DOWN_2
                 wait 2
-                action 2
+                action WALKING_DOWN_3
                 wait 2
-                action 1
+                action WALKING_DOWN_2
                 wait 2
                 branch _cbf2a5
                 end
@@ -74199,7 +74199,7 @@ _cbf2b5:
                 move DOWN, 2
                 dir RIGHT
                 wait 5
-                action 13 | ACTION_H_FLIP
+                action ATTACKING_2_FLIP
                 end
         wait_dlg
         wait_1s
@@ -74208,31 +74208,31 @@ _cbf2b5:
                 dir LEFT
                 speed SLOW
 _cbf31b:
-                action 6
+                action WALKING_LEFT_1
                 wait 2
-                action 7
+                action WALKING_LEFT_2
                 wait 2
-                action 8
+                action WALKING_LEFT_3
                 wait 2
-                action 7
+                action WALKING_LEFT_2
                 wait 2
                 branch _cbf31b
                 end
         obj_script RELM
                 speed NORMAL
-                action 31
+                action SURPRISED
                 wait 4
                 anim_off
                 jump_high
                 move UP, 2
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         wait_15f
         obj_script STRAGO
                 speed FAST
                 move DOWN_LEFT
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         wait_15f
         obj_script NPC_3, ASYNC
@@ -74240,13 +74240,13 @@ _cbf31b:
                 dir UP
                 speed SLOW
 _cbf344:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbf344
                 end
@@ -74254,7 +74254,7 @@ _cbf344:
                 speed NORMAL
                 jump_low
                 move DOWN_RIGHT
-                action 24
+                action ANGRY
                 end
         wait_2s
         pass_off NPC_6
@@ -74277,13 +74277,13 @@ _cbf344:
         obj_script NPC_5, ASYNC
                 speed SLOW
 _cbf376:
-                action 6
+                action WALKING_LEFT_1
                 wait 3
-                action 7
+                action WALKING_LEFT_2
                 wait 3
-                action 8
+                action WALKING_LEFT_3
                 wait 3
-                action 7
+                action WALKING_LEFT_2
                 wait 3
                 branch _cbf376
                 end
@@ -74300,20 +74300,20 @@ _cbf376:
         obj_script NPC_6, ASYNC
                 speed SLOW
 _cbf396:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 3
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 3
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 3
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 3
                 branch _cbf396
                 end
         obj_script RELM, ASYNC
                 speed NORMAL
                 move UP, 2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script STRAGO, ASYNC
                 wait 5
@@ -74335,19 +74335,19 @@ _cbf396:
         obj_script NPC_7, ASYNC
                 speed SLOW
 _cbf3c5:
-                action 3
+                action WALKING_UP_1
                 wait 3
-                action 4
+                action WALKING_UP_2
                 wait 3
-                action 5
+                action WALKING_UP_3
                 wait 3
-                action 4
+                action WALKING_UP_2
                 wait 3
                 branch _cbf3c5
                 end
         wait_45f
         obj_script STRAGO, ASYNC
-                action 31
+                action SURPRISED
                 end
         dlg DLG_2046
                 ; STRAGO: What about you?
@@ -74359,13 +74359,13 @@ _cbf3c5:
         obj_script NPC_9, ASYNC
                 speed SLOW
 _cbf3e8:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbf3e8
                 end
@@ -74391,7 +74391,7 @@ _cbf3e8:
         obj_script STRAGO
                 dir RIGHT
                 wait 6
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
@@ -74408,21 +74408,21 @@ _cbf3e8:
         wait_obj RELM
         wait_obj STRAGO
         obj_script STRAGO
-                action 13 | ACTION_H_FLIP
+                action ATTACKING_2_FLIP
                 end
         wait_15f
         obj_script RELM
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 wait 1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 1
                 dir LEFT
                 end
         wait_45f
         obj_script LOCKE, ASYNC
-                action 24
+                action ANGRY
                 end
         obj_script STRAGO, ASYNC
                 speed NORMAL
@@ -74441,7 +74441,7 @@ _cbf3e8:
         wait_45f
         obj_script RELM
                 speed NORMAL
-                action 31
+                action SURPRISED
                 anim_off
                 jump_high
                 move DOWN, 2
@@ -74460,7 +74460,7 @@ _cbf3e8:
                 move DOWN, 3
                 dir RIGHT
 _cbf46c:
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 1
                 dir RIGHT
                 wait 1
@@ -74478,7 +74478,7 @@ _cbf46c:
                 move RIGHT, 1
                 dir LEFT
                 wait 1
-                action 10
+                action READY
                 wait 4
                 move DOWN, 2
                 move RIGHT, 1
@@ -74486,11 +74486,11 @@ _cbf46c:
                 move RIGHT, 1
                 dir LEFT
                 wait 1
-                action 10
+                action READY
                 end
         obj_script RELM, ASYNC
                 wait 12
-                action 31
+                action SURPRISED
                 wait 4
                 dir UP
                 end
@@ -74502,13 +74502,13 @@ _cbf46c:
                 wait 1
                 move RIGHT, 1
 _cbf4a5:
-                action 0
+                action WALKING_DOWN_1
                 wait 2
-                action 1
+                action WALKING_DOWN_2
                 wait 2
-                action 2
+                action WALKING_DOWN_3
                 wait 2
-                action 1
+                action WALKING_DOWN_2
                 wait 2
                 branch _cbf4a5
                 end
@@ -74528,7 +74528,7 @@ _cbf4a5:
         obj_script TERRA
                 speed NORMAL
                 move UP, 1
-                action 10
+                action READY
                 end
         obj_script RELM
                 speed FAST
@@ -74538,27 +74538,27 @@ _cbf4a5:
         obj_script STRAGO
                 speed NORMAL
                 move DOWN, 1
-                action 10
+                action READY
                 end
         obj_script LOCKE
                 speed NORMAL
                 move RIGHT, 1
                 dir DOWN
                 wait 3
-                action 24
+                action ANGRY
                 end
         wait_30f
         obj_script NPC_5, ASYNC
                 wait 8
                 dir UP
 _cbf4e7:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbf4e7
                 end
@@ -74568,13 +74568,13 @@ _cbf4e7:
                 wait 1
                 dir RIGHT
 _cbf4fd:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbf4fd
                 end
@@ -74583,13 +74583,13 @@ _cbf4fd:
                 wait 4
                 move UP, 1
 _cbf512:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbf512
                 end
@@ -74605,13 +74605,13 @@ _cbf512:
                 wait 1
                 move UP, 1
 _cbf530:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbf530
                 end
@@ -74628,13 +74628,13 @@ _cbf530:
                 wait 1
                 dir DOWN
 _cbf550:
-                action 0
+                action WALKING_DOWN_1
                 wait 2
-                action 1
+                action WALKING_DOWN_2
                 wait 2
-                action 2
+                action WALKING_DOWN_3
                 wait 2
-                action 1
+                action WALKING_DOWN_2
                 wait 2
                 branch _cbf550
                 end
@@ -74647,22 +74647,22 @@ _cbf550:
         wait_15f 15
         obj_script TERRA, ASYNC
 _cbf56b:
-                action 16
+                action CASTING_1
                 wait 1
-                action 17
+                action CASTING_2
                 wait 1
                 branch _cbf56b
                 end
         obj_script STRAGO, ASYNC
 _cbf576:
-                action 16
+                action CASTING_1
                 wait 1
-                action 17
+                action CASTING_2
                 wait 1
                 branch _cbf576
                 end
         obj_script LOCKE
-                action 10
+                action READY
                 end
         wait_2s
         dlg DLG_2047, BOTTOM
@@ -74701,13 +74701,13 @@ _cbf576:
                 wait 8
                 dir UP
 _cbf5b3:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbf5b3
                 end
@@ -74727,13 +74727,13 @@ _cbf5b3:
                 move DOWN_RIGHT
                 dir LEFT
 _cbf5d5:
-                action 6
+                action WALKING_LEFT_1
                 wait 2
-                action 7
+                action WALKING_LEFT_2
                 wait 2
-                action 8
+                action WALKING_LEFT_3
                 wait 2
-                action 7
+                action WALKING_LEFT_2
                 wait 2
                 branch _cbf5d5
                 end
@@ -74742,13 +74742,13 @@ _cbf5d5:
                 wait 8
                 dir RIGHT
 _cbf5ea:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbf5ea
                 end
@@ -74761,13 +74761,13 @@ _cbf5ea:
                 move LEFT, 1
                 dir RIGHT
 _cbf602:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbf602
                 end
@@ -74783,13 +74783,13 @@ _cbf602:
                 wait 6
                 dir UP
 _cbf621:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbf621
                 end
@@ -74803,13 +74803,13 @@ _cbf621:
                 move UP, 1
                 dir DOWN
 _cbf63d:
-                action 0
+                action WALKING_DOWN_1
                 wait 2
-                action 1
+                action WALKING_DOWN_2
                 wait 2
-                action 2
+                action WALKING_DOWN_3
                 wait 2
-                action 1
+                action WALKING_DOWN_2
                 wait 2
                 branch _cbf63d
                 end
@@ -74833,7 +74833,7 @@ _cbf63d:
                 end
         obj_script RELM, ASYNC
                 speed NORMAL
-                action 31
+                action SURPRISED
                 anim_off
                 jump_low
                 move UP, 1
@@ -74841,7 +74841,7 @@ _cbf63d:
                 end
         obj_script LOCKE, ASYNC
                 speed NORMAL
-                action 31
+                action SURPRISED
                 anim_off
                 jump_low
                 move UP, 1
@@ -74849,7 +74849,7 @@ _cbf63d:
                 end
         obj_script STRAGO, ASYNC
                 speed NORMAL
-                action 31
+                action SURPRISED
                 anim_off
                 jump_low
                 move UP, 1
@@ -74920,7 +74920,7 @@ _cbf63d:
         wait_90f
         fixed_clr_off
         obj_script LOCKE, ASYNC
-                action 31
+                action SURPRISED
                 end
         dlg DLG_2049, BOTTOM
                 ; LOCKE: I wonder if she's gonna go ballistic again?!
@@ -75015,78 +75015,78 @@ _cbf63d:
         obj_script NPC_3, ASYNC
                 speed SLOW
 _cbf776:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbf776
                 end
         obj_script NPC_5, ASYNC
                 speed SLOW
 _cbf788:
-                action 6
+                action WALKING_LEFT_1
                 wait 2
-                action 7
+                action WALKING_LEFT_2
                 wait 2
-                action 8
+                action WALKING_LEFT_3
                 wait 2
-                action 7
+                action WALKING_LEFT_2
                 wait 2
                 branch _cbf788
                 end
         obj_script NPC_6, ASYNC
                 speed SLOW
 _cbf79a:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbf79a
                 end
         obj_script NPC_7, ASYNC
                 speed SLOW
 _cbf7ac:
-                action 6
+                action WALKING_LEFT_1
                 wait 2
-                action 7
+                action WALKING_LEFT_2
                 wait 2
-                action 8
+                action WALKING_LEFT_3
                 wait 2
-                action 7
+                action WALKING_LEFT_2
                 wait 2
                 branch _cbf7ac
                 end
         obj_script NPC_9, ASYNC
                 speed SLOW
 _cbf7be:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbf7be
                 end
         obj_script NPC_11, ASYNC
                 speed SLOW
 _cbf7d0:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbf7d0
                 end
@@ -75100,11 +75100,11 @@ _cbf7d0:
                 end
         obj_script TERRA, ASYNC
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -75134,11 +75134,11 @@ _cbf7d0:
         wait_15f
         obj_script TERRA, ASYNC
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -75164,7 +75164,7 @@ _cbf7d0:
         wait_45f
         obj_script TERRA, ASYNC
                 wait 3
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2054, BOTTOM
                 ; TERRA: That's what happened to me! I lost all control of my power_
@@ -75172,7 +75172,7 @@ _cbf7d0:
         wait_30f
         obj_script STRAGO, ASYNC
 _cbf848:
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 3
                 dir RIGHT
                 wait 3
@@ -75218,11 +75218,11 @@ _cbf848:
         wait_obj NPC_2
         wait_30f
         obj_script LOCKE
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -75302,26 +75302,26 @@ _cbf848:
         obj_script NPC_5, ASYNC
                 speed SLOW
 _cbf916:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbf916
                 end
         obj_script NPC_6, ASYNC
                 speed SLOW
 _cbf928:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbf928
                 end
@@ -75329,11 +75329,11 @@ _cbf928:
         wait_15f 5
         obj_script NPC_1, ASYNC
                 wait 5
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -75369,7 +75369,7 @@ _cbf928:
                 end
         wait_90f
         obj_script NPC_1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 5
                 dir LEFT
                 end
@@ -75387,11 +75387,11 @@ _cbf928:
         wait_obj NPC_1
         wait_45f
         obj_script NPC_1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -75415,19 +75415,19 @@ _cbf928:
                 ; CELES: Let's return to Vector.
         wait_1s
         obj_script LOCKE, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_1891
                 ; LOCKE: CELES_
         wait_30f
         obj_script NPC_2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_2065
                 ; CELES: Please, not another word.
@@ -75446,12 +75446,12 @@ _cbf928:
         wait_45f
         obj_script STRAGO
                 speed SLOWER
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         obj_script RELM
                 speed SLOWER
-                action 35
+                action HEAD_TURNED
                 end
         wait_45f
         dlg DLG_2066
@@ -75474,72 +75474,72 @@ _cbf928:
                 end
         wait_2s
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         wait_15f
         obj_script NPC_2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_1s
         loop 5
                 obj_script STRAGO, ASYNC
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script RELM
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script STRAGO, ASYNC
-                        action 30
+                        action LAUGHING_2
                         end
                 obj_script RELM
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_30f
         obj_script LOCKE, ASYNC
 _cbfa16:
-                action 25
+                action WAVING_1_DOWN
                 wait 1
-                action 26
+                action WAVING_2_DOWN
                 wait 1
                 branch _cbfa16
                 end
         loop 3
                 obj_script TERRA, ASYNC
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_1, ASYNC
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_10, ASYNC
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_11, ASYNC
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script STRAGO, ASYNC
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script RELM
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script TERRA, ASYNC
-                        action 30
+                        action LAUGHING_2
                         end
                 obj_script NPC_1, ASYNC
-                        action 30
+                        action LAUGHING_2
                         end
                 obj_script NPC_10, ASYNC
-                        action 30
+                        action LAUGHING_2
                         end
                 obj_script NPC_11, ASYNC
-                        action 30
+                        action LAUGHING_2
                         end
                 obj_script STRAGO, ASYNC
-                        action 30
+                        action LAUGHING_2
                         end
                 obj_script RELM
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         switch $051D=1
@@ -75579,7 +75579,7 @@ _cbfa16:
                 end
         loop 3
                 obj_script NPC_2
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_2
                         dir DOWN
@@ -75606,13 +75606,13 @@ _cbfa16:
         obj_script NPC_6, ASYNC
                 speed SLOW
 _cbfaab:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbfaab
                 end
@@ -75643,13 +75643,13 @@ _cbfaab:
         obj_script NPC_5, ASYNC
                 speed SLOW
 _cbfadd:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbfadd
                 end
@@ -75668,10 +75668,10 @@ _cbfadd:
         wait_30f
         loop 8
                 obj_script NPC_3
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_3
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_90f
@@ -75680,7 +75680,7 @@ _cbfadd:
                 end
         wait_45f
         obj_script NPC_3
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_1s
         create_obj NPC_7
@@ -75722,7 +75722,7 @@ _cbfadd:
                 end
         sfx 45
         obj_script NPC_3, ASYNC
-                action 40
+                action DEAD_HORZ
                 anim_off
                 jump_high
                 move DOWN_LEFT
@@ -75792,10 +75792,10 @@ _cbfadd:
         wait_15f
         loop 4
                 obj_script NPC_3
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_3
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_3
@@ -75807,22 +75807,22 @@ _cbfadd:
                 ; How 'bout a little Magitek mayhem!
         loop 8
                 obj_script NPC_3
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_3
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_dlg
         wait_45f
         obj_script NPC_3
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_45f
         obj_script NPC_3
                 dir RIGHT
                 wait 4
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 end
         wait_45f
         sfx 120
@@ -75851,7 +75851,7 @@ _cbfadd:
         obj_script NPC_3
                 dir DOWN
                 wait 3
-                action 22
+                action ARMS_UP_DOWN
                 wait 10
                 dir DOWN
                 end
@@ -75862,20 +75862,20 @@ _cbfadd:
         flash RED
         wait_30f
         obj_script NPC_10, ASYNC
-                action 11
+                action HIT
                 anim_off
                 speed NORMAL
                 jump_high
                 move RIGHT_RIGHT_UP
                 jump_low
                 move RIGHT, 1
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_11, ASYNC
-                action 31
+                action SURPRISED
                 anim_off
                 wait 4
-                action 40
+                action DEAD_HORZ
                 end
         flash RED
         wait_obj NPC_10
@@ -75884,7 +75884,7 @@ _cbfadd:
         wait_30f
         obj_script NPC_3, ASYNC
                 speed SLOWER
-                action 24
+                action ANGRY
                 anim_off
 _cbfc26:
                 jump_high
@@ -75905,7 +75905,7 @@ _cbfc26:
                 end
         wait_45f
         obj_script NPC_3
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script CAMERA, ASYNC
                 speed NORMAL
@@ -75919,39 +75919,39 @@ _cbfc26:
         obj_script LOCKE, ASYNC
                 speed NORMAL
                 anim_off
-                action 11
+                action HIT
                 jump_high
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_2, ASYNC
                 speed NORMAL
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move DOWN, 1
-                action 40
+                action DEAD_HORZ
                 end
         obj_script STRAGO, ASYNC
                 speed NORMAL
-                action 31
+                action SURPRISED
                 anim_off
                 jump_low
                 move DOWN, 1
                 end
         obj_script RELM, ASYNC
                 speed NORMAL
-                action 11
+                action HIT
                 anim_off
                 jump_high
                 move DOWN_RIGHT, 2
                 end
         obj_script TERRA, ASYNC
                 speed NORMAL
-                action 11
+                action HIT
                 anim_off
                 jump_low
                 move LEFT, 1
-                action 40
+                action DEAD_HORZ
                 end
         flash RED
         wait_obj NPC_2
@@ -75964,20 +75964,20 @@ _cbfc26:
         wait_45f
         obj_script NPC_1, ASYNC
                 speed NORMAL
-                action 31
+                action SURPRISED
                 wait 4
                 move DOWN, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
                 move LEFT, 1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         loop 12
                 obj_script NPC_3
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_3
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_15f 5
@@ -76014,7 +76014,7 @@ _cbfc26:
                 end
         wait_30f
         obj_script NPC_3
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         sfx 1
@@ -76058,13 +76058,13 @@ _cbfc26:
                 dir RIGHT
                 speed SLOW
 _cbfd0d:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbfd0d
                 end
@@ -76072,13 +76072,13 @@ _cbfd0d:
                 dir RIGHT
                 speed SLOW
 _cbfd20:
-                action 6 | ACTION_H_FLIP
+                action WALKING_RIGHT_1
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
-                action 8 | ACTION_H_FLIP
+                action WALKING_RIGHT_3
                 wait 2
-                action 7 | ACTION_H_FLIP
+                action WALKING_RIGHT_2
                 wait 2
                 branch _cbfd20
                 end
@@ -76086,11 +76086,11 @@ _cbfd20:
         obj_script NPC_1
                 dir DOWN
                 wait 2
-                action 31
+                action SURPRISED
                 end
         wait_30f
         obj_script NPC_3
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script NPC_13
                 speed FASTER
@@ -76106,15 +76106,15 @@ _cbfd20:
         wait_1s
         loop 8
                 obj_script NPC_3
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_3
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_45f
         obj_script NPC_3
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         sfx 1
@@ -76163,7 +76163,7 @@ _cbfd20:
                 end
         wait_30f
         obj_script NPC_3
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script NPC_13
                 speed FASTER
@@ -76173,13 +76173,13 @@ _cbfd20:
         obj_script NPC_5, ASYNC
                 speed SLOW
 _cbfdb2:
-                action 3
+                action WALKING_UP_1
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
-                action 5
+                action WALKING_UP_3
                 wait 2
-                action 4
+                action WALKING_UP_2
                 wait 2
                 branch _cbfdb2
                 end
@@ -76189,10 +76189,10 @@ _cbfdb2:
         wait_1s
         loop 8
                 obj_script NPC_3
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_3
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_45f
@@ -76201,7 +76201,7 @@ _cbfdb2:
                 move DOWN, 3
                 end
         obj_script NPC_3
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         sfx 1
@@ -76250,7 +76250,7 @@ _cbfdb2:
                 end
         wait_30f
         obj_script NPC_3
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script NPC_13
                 speed FASTER
@@ -76266,15 +76266,15 @@ _cbfdb2:
         wait_1s
         loop 8
                 obj_script NPC_3
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_3
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_15f 10
         obj_script NPC_3
-                action 24
+                action ANGRY
                 end
         dlg DLG_122, BOTTOM
                 ; KEFKA: Idiots!
@@ -76286,7 +76286,7 @@ _cbfdb2:
                 speed NORMAL
                 move UP, 2
                 move RIGHT, 2
-                action 23
+                action ARMS_UP_UP
                 end
         wait_obj CAMERA
         dlg DLG_2063, BOTTOM
@@ -76337,10 +76337,10 @@ _cbfdb2:
         shake ALL, 0, 3
         loop 6
                 obj_script NPC_3
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_3
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         dlg DLG_2068, ASYNC
@@ -76360,7 +76360,7 @@ _cbfdb2:
                 end
         wait_15f
         obj_script NPC_3
-                action 24
+                action ANGRY
                 end
         dlg DLG_2069
                 ; KEFKA: Shut up!
@@ -76368,7 +76368,7 @@ _cbfdb2:
         obj_script NPC_3
                 speed NORMAL
                 move RIGHT, 2
-                action 23
+                action ARMS_UP_UP
                 end
         sfx 120
         obj_script NPC_8
@@ -76395,7 +76395,7 @@ _cbfdb2:
         wait_1s
         shake ALL, 0, 2
         obj_script NPC_1
-                action 40
+                action DEAD_HORZ
                 end
         wait_30f
         obj_script NPC_3
@@ -76411,10 +76411,10 @@ _cbfdb2:
         sfx SFX::KEFKA_LAUGH
         loop 8
                 obj_script NPC_3
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_3
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         switch $018A=1
@@ -76451,7 +76451,7 @@ _cbfdb2:
         unlock_camera
         obj_script SLOT_1
                 pos {22, 22}
-                action 40
+                action DEAD_HORZ
                 end
         sort_obj
         pass_on NPC_13
@@ -76486,28 +76486,28 @@ _cbff70:
         return
 _cbffa6:
         obj_script NPC_14, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_15, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_16, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_17, ASYNC
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_2, ASYNC
                 pos {28, 30}
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_10, ASYNC
                 pos {33, 26}
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_11, ASYNC
                 pos {30, 29}
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_7, ASYNC
                 pos {9, 30}
@@ -76523,9 +76523,9 @@ _cbffa6:
                 end
         obj_script NPC_18, ASYNC
 _cbffe2:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch _cbffe2
                 end
@@ -76554,18 +76554,18 @@ _cbfff4:
         call _ca5ea9
         play_song SILENCE
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         lock_camera
         wait_fade
         wait_1s
         obj_script NPC_18
-                action 9
+                action NEAR_FATAL
                 end
         wait_15f 5
         obj_script NPC_18, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script SLOT_1
                 anim_off
@@ -76585,10 +76585,10 @@ _cbfff4:
         sfx SFX::KEFKA_LAUGH
         loop 9
                 obj_script NPC_18
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_18
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_2s
@@ -76616,7 +76616,7 @@ _cbfff4:
         wait_30f
         loop 3
                 obj_script NPC_18
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_18
                         dir DOWN
@@ -76631,7 +76631,7 @@ _cbfff4:
         mod_bg_pal RESTORE_ALT, {RED, GREEN, BLUE}, 3
         wait_1s
         obj_script NPC_18, ASYNC
-                action 31
+                action SURPRISED
                 anim_off
                 jump_high
                 wait 3
@@ -76764,7 +76764,7 @@ _cc0163:
                 ; Say, remind me to show you my Magicite collection someday! You might see a few familiar faces!!!
         wait_15f 5
         obj_script NPC_18
-                action 24
+                action ANGRY
                 end
         dlg DLG_2074, BOTTOM
                 ; KEFKA: Now for a little Magicite hocus-pocus_!
@@ -76773,7 +76773,7 @@ _cc0163:
                 speed SLOW
                 move DOWN, 1
                 wait 5
-                action 22
+                action ARMS_UP_DOWN
                 end
         dlg DLG_2077, BOTTOM
                 ; KEFKA: First, let's neutralize your abilities.
@@ -76853,23 +76853,23 @@ _cc0163:
         wait_15f 5
         loop 4
                 obj_script NPC_18
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_18
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_18
                 dir DOWN
                 wait 5
-                action 24
+                action ANGRY
                 end
         dlg DLG_2078, BOTTOM
                 ; KEFKA: Now, little Espers_
                 ; Let's see whatcha got!
         wait_30f
         obj_script NPC_18
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         sfx 1
@@ -76909,7 +76909,7 @@ _cc0163:
                 end
         show_obj NPC_13
         obj_script NPC_18
-                action 27
+                action WAVING_1_UP
                 end
         obj_script NPC_13
                 speed FASTER
@@ -76926,15 +76926,15 @@ _cc0163:
         wait_1s
         loop 4
                 obj_script NPC_18
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_18
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_45f
         obj_script NPC_18
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         sfx 1
@@ -76975,7 +76975,7 @@ _cc0163:
         show_obj NPC_13
         wait_30f
         obj_script NPC_18
-                action 25
+                action WAVING_1_DOWN
                 end
         obj_script NPC_13
                 speed FASTER
@@ -76996,10 +76996,10 @@ _cc0163:
         wait_1s
         loop 4
                 obj_script NPC_18
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_18
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_1s
@@ -77044,14 +77044,14 @@ _cc0163:
         wait_15f 5
         loop 7
                 obj_script NPC_18
-                        action 16
+                        action CASTING_1
                         end
                 obj_script NPC_18
-                        action 17
+                        action CASTING_2
                         end
                 end_loop
         obj_script NPC_18
-                action 22
+                action ARMS_UP_DOWN
                 end
         create_obj NPC_19
         create_obj NPC_20
@@ -77163,7 +77163,7 @@ _cc0163:
         wait_45f
         shake ALL, 0, 2
         obj_script NPC_18
-                action 23
+                action ARMS_UP_UP
                 end
         hide_obj NPC_12
         hide_obj NPC_19
@@ -77277,17 +77277,17 @@ _cc0163:
                 ; that is, until I make my way through your precious sealed gate!!
         loop 9
                 obj_script NPC_18
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_18
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_dlg
         wait_45f
         loop 3
                 obj_script NPC_18
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_18
                         dir DOWN
@@ -77295,7 +77295,7 @@ _cc0163:
                 end_loop
         wait_45f
         obj_script NPC_18
-                action 31
+                action SURPRISED
                 end
         dlg DLG_1717, BOTTOM
                 ; KEFKA: I don't believe this!
@@ -77303,10 +77303,10 @@ _cc0163:
         sfx SFX::KEFKA_LAUGH
         loop 9
                 obj_script NPC_18
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_18
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         switch $01CC=0
@@ -77405,7 +77405,7 @@ _cc0163:
                 move DOWN, 1
                 dir UP
                 wait 8
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_90f
         unlock_camera
@@ -77419,19 +77419,19 @@ _cc0163:
                 ; TERRA: I_I wanted to learn so much more from you_
         wait_15f 5
         obj_script NPC_2, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script TERRA, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script LOCKE, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script STRAGO, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script RELM
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_3s
         loop 7
@@ -77464,19 +77464,19 @@ _cc0163:
         sfx SFX::DOG_BARK
         wait_30f
         obj_script NPC_2, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script TERRA, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script STRAGO, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script RELM
-                action 31
+                action SURPRISED
                 end
         dlg DLG_2089
                 ; Interceptor!?
@@ -77507,7 +77507,7 @@ _cc0163:
                 dir DOWN
                 end
         obj_script LOCKE, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         obj_script RELM, ASYNC
                 speed NORMAL
@@ -77519,7 +77519,7 @@ _cc0163:
         obj_script LOCKE
                 dir LEFT
                 wait 3
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_2091
                 ; LOCKE: This'll have to do_
@@ -77543,7 +77543,7 @@ _cc0163:
         obj_script RELM
                 speed SLOW
                 move UP, 1
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_2093
                 ; RELM: I'll go with you.
@@ -77560,16 +77560,16 @@ _cc0163:
                 ; TERRA: I wish I could say they were safe_
         wait_obj TERRA
         obj_script LOCKE, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script TERRA, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_2, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script STRAGO, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_obj LOCKE
         wait_obj TERRA
@@ -77658,7 +77658,7 @@ _cc0163:
                 ; CYAN: Thanks to EDGAR, we escaped before anything bad happened_
         obj_script LOCKE, ASYNC
 _cc06c4:
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 3
                 dir LEFT
                 wait 5
@@ -77680,24 +77680,24 @@ _cc06c4:
         wait_obj NPC_7
         loop 5
                 obj_script NPC_7
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_7
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_15f 5
         obj_script NPC_5
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_2099
                 ; SABIN: So_you finally hit pay dirt, eh?
         wait_30f
         loop 4
                 obj_script NPC_7
-                        action 36
+                        action WAGGING_FINGER_1
                         wait 1
-                        action 37
+                        action WAGGING_FINGER_2
                         wait 1
                         end
                 end_loop
@@ -77714,7 +77714,7 @@ _cc06c4:
                 speed SLOW
                 move LEFT, 1
                 wait 3
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_2101
                 ; LOCKE: General Leo's gone_
@@ -77724,9 +77724,9 @@ _cc06c4:
                 dir RIGHT
                 end
         obj_script NPC_6
-                action 31
+                action SURPRISED
                 wait 5
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2102, BOTTOM
                 ; CYAN: Sir Leo?! Gone?!
@@ -77737,7 +77737,7 @@ _cc06c4:
                 speed SLOW
                 move DOWN, 1
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         obj_script NPC_6, ASYNC
                 dir DOWN
@@ -77751,10 +77751,10 @@ _cc06c4:
                 end
         loop 2
                 obj_script STRAGO
-                        action 13
+                        action ATTACKING_2
                         end
                 obj_script STRAGO
-                        action 12
+                        action ATTACKING_1
                         end
                 end_loop
         wait_30f
@@ -77796,7 +77796,7 @@ _cc06c4:
                 dir RIGHT
                 end
         obj_script STRAGO, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 10
                 dir DOWN
                 end
@@ -77805,7 +77805,7 @@ _cc06c4:
         wait_obj STRAGO
         obj_script RELM, ASYNC
 _cc0784:
-                action 15
+                action JUMPING
                 wait 1
                 dir LEFT
                 wait 1
@@ -77814,9 +77814,9 @@ _cc0784:
         obj_script STRAGO, ASYNC
                 wait 13
 _cc0791:
-                action 35
+                action HEAD_TURNED
                 wait 3
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 3
                 branch _cc0791
                 end
@@ -77830,14 +77830,14 @@ _cc0791:
                 dir DOWN
                 end
         obj_script STRAGO, ASYNC
-                action 35
+                action HEAD_TURNED
                 end
         loop 5
                 obj_script NPC_5
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_5
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_5, ASYNC
@@ -77851,13 +77851,13 @@ _cc0791:
 _cc07be:
                 dir UP
                 wait 1
-                action 23
+                action ARMS_UP_UP
                 wait 1
                 branch _cc07be
                 end
         obj_script NPC_5
                 wait 13
-                action 24
+                action ANGRY
                 end
         dlg DLG_2111
                 ; RELM: What?
@@ -77866,7 +77866,7 @@ _cc07be:
         obj_script RELM
                 dir DOWN
                 wait 5
-                action 24
+                action ANGRY
                 end
         obj_script NPC_5, ASYNC
                 dir DOWN
@@ -77875,18 +77875,18 @@ _cc07be:
                 ; RELM: Aaack!
                 ; I'm gonna paint your portrait!
         obj_script LOCKE, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script TERRA, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script STRAGO
-                action 31
+                action SURPRISED
                 end
         wait_15f 5
         obj_script LOCKE, ASYNC
 _cc07ee:
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 dir DOWN
                 wait 1
@@ -77894,7 +77894,7 @@ _cc07ee:
                 end
         obj_script TERRA, ASYNC
 _cc07f9:
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 dir DOWN
                 wait 1
@@ -77902,7 +77902,7 @@ _cc07f9:
                 end
         obj_script STRAGO, ASYNC
 _cc0804:
-                action 22
+                action ARMS_UP_DOWN
                 wait 1
                 dir DOWN
                 wait 1
@@ -77925,11 +77925,11 @@ _cc0804:
         call _cb6a22
         wait_45f
         obj_script STRAGO, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script RELM, ASYNC
                 wait 5
-                action 29
+                action LAUGHING_1
                 end
         dlg DLG_2114
                 ; STRAGO: All right all ready!
@@ -77937,7 +77937,7 @@ _cc0804:
                 ; RELM: That's better!
         obj_script NPC_5
                 wait 3
-                action 24
+                action ANGRY
                 end
         dlg DLG_802
                 ; SABIN: Let's go!
@@ -77988,7 +77988,7 @@ _cc0804:
                 move UP, 1
                 dir LEFT
                 wait 4
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script RELM
                 speed NORMAL
@@ -78004,13 +78004,13 @@ _cc0804:
         obj_script NPC_7
                 dir DOWN
                 wait 3
-                action 25
+                action WAVING_1_DOWN
                 wait 3
-                action 26
+                action WAVING_2_DOWN
                 wait 3
-                action 25
+                action WAVING_1_DOWN
                 wait 3
-                action 26
+                action WAVING_2_DOWN
                 end
         create_obj NPC_1
         sort_obj
@@ -78032,7 +78032,7 @@ _cc0804:
         obj_script NPC_7
                 dir DOWN
                 wait 3
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_2116, BOTTOM
                 ; EDGAR: You've grown up entirely too fast!
@@ -78262,11 +78262,11 @@ _cc0a22:
                 end
         loop 2
                 obj_script LOCKE
-                        action 27
+                        action WAVING_1_UP
                         end
                 wait 2
                 obj_script LOCKE
-                        action 28
+                        action WAVING_2_UP
                         end
                 wait 2
                 end_loop
@@ -78283,7 +78283,7 @@ _cc0a22:
                 end
         wait_30f
         obj_script LOCKE
-                action 20
+                action WINKING_DOWN
                 end
         wait_15f
         obj_script LOCKE
@@ -78450,19 +78450,19 @@ _cc0b8c:
         obj_script NPC_1, ASYNC
 _cc0b94:
                 anim_off
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 wait 8
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_high
                 move RIGHT, 2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 wait 8
-                action 36 | ACTION_H_FLIP
+                action WAGGING_FINGER_1_FLIP
                 jump_high
                 move RIGHT, 2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
                 dir RIGHT
                 wait 4
@@ -78470,19 +78470,19 @@ _cc0b94:
                 wait 1
                 dir LEFT
                 wait 8
-                action 10
+                action READY
                 wait 8
-                action 15
+                action JUMPING
                 jump_high
                 move LEFT, 2
-                action 9
+                action NEAR_FATAL
                 wait 4
-                action 10
+                action READY
                 wait 8
-                action 30
+                action LAUGHING_2
                 jump_high
                 move LEFT, 2
-                action 9
+                action NEAR_FATAL
                 wait 4
                 dir LEFT
                 wait 4
@@ -78495,7 +78495,7 @@ _cc0b94:
         return
 _cc0bcf:
         obj_script NPC_2, ASYNC
-                action 24
+                action ANGRY
                 end
         return
 _cc0bd4:
@@ -78552,7 +78552,7 @@ _cc0bd8:
         dlg DLG_1508
                 ; SABIN: Duncan!!
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script NPC_1
@@ -78572,11 +78572,11 @@ _cc0bd8:
         wait_90f
         loop 8
                 obj_script NPC_1
-                        action 29 | ACTION_H_FLIP
+                        action LAUGHING_1_FLIP
                         end
                 wait 2
                 obj_script NPC_1
-                        action 30 | ACTION_H_FLIP
+                        action LAUGHING_2_FLIP
                         end
                 wait 2
                 end_loop
@@ -78589,7 +78589,7 @@ _cc0bd8:
                 ; Did you think I'd_gone?
         wait_30f
         obj_script SABIN
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_90f
         dlg DLG_1510
@@ -78601,7 +78601,7 @@ _cc0bd8:
                 speed NORMAL
                 layer 2
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move DOWN_RIGHT
                 dir UP
@@ -78609,7 +78609,7 @@ _cc0bd8:
         wait_30f
         sfx 106
         obj_script NPC_1
-                action 30
+                action LAUGHING_2
                 jump_low
                 move UP_RIGHT
                 dir LEFT
@@ -78617,7 +78617,7 @@ _cc0bd8:
         wait_30f
         sfx 106
         obj_script NPC_1
-                action 20
+                action WINKING_DOWN
                 jump_low
                 move DOWN_LEFT
                 dir UP
@@ -78625,7 +78625,7 @@ _cc0bd8:
         wait_30f
         sfx 106
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 jump_low
                 move UP_LEFT
                 dir RIGHT
@@ -78641,12 +78641,12 @@ _cc0bd8:
                 end
         wait_30f
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 end
         wait_15f
         sfx 106
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 speed FASTER
                 move UP, 4
                 speed FAST
@@ -78654,14 +78654,14 @@ _cc0bd8:
                 wait 2
                 speed NORMAL
                 move DOWN, 1
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         obj_script SABIN
                 dir UP
                 end
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 speed NORMAL
                 jump_low
                 move UP_RIGHT
@@ -78670,11 +78670,11 @@ _cc0bd8:
         wait_30f
         loop 8
                 obj_script NPC_1
-                        action 29 | ACTION_H_FLIP
+                        action LAUGHING_1_FLIP
                         end
                 wait 2
                 obj_script NPC_1
-                        action 30 | ACTION_H_FLIP
+                        action LAUGHING_2_FLIP
                         end
                 wait 2
                 end_loop
@@ -78687,11 +78687,11 @@ _cc0bd8:
         play_song FIGARO
         wait_1s
         obj_script NPC_1
-                action 24
+                action ANGRY
                 end
         wait_2s
         obj_script SABIN
-                action 33
+                action HEAD_DOWN_UP
                 wait 4
                 dir UP
                 end
@@ -78704,7 +78704,7 @@ _cc0bd8:
                 end
         wait_30f
         obj_script SABIN
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -78721,13 +78721,13 @@ _cc0bd8:
                 end
         obj_script NPC_1, ASYNC
                 anim_off
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 speed FAST
                 move DOWN_RIGHT, 2
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 jump_low
                 move RIGHT_DOWN_DOWN
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script CAMERA
                 speed SLOW
@@ -78740,23 +78740,23 @@ _cc0bd8:
         flash WHITE
         sfx 96
         obj_script SLOT_2, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SLOT_3, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SLOT_4, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_1, ASYNC
-                action 11
+                action HIT
                 speed FAST
                 move UP, 2
                 wait 2
                 dir DOWN
                 end
         obj_script SABIN
-                action 11
+                action HIT
                 speed FAST
                 move DOWN, 2
                 wait 2
@@ -78775,7 +78775,7 @@ _cc0bd8:
                 layer 2
                 end
         obj_script NPC_1, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 jump_low
                 move UP_LEFT
                 wait 2
@@ -78783,7 +78783,7 @@ _cc0bd8:
                 end
         obj_script SABIN, ASYNC
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 jump_low
                 move LEFT_UP_UP
                 wait 2
@@ -78861,23 +78861,23 @@ _cc0bd8:
                 end
         wait_30f
         obj_script NPC_1
-                action 24
+                action ANGRY
                 end
         wait_1s
         obj_script SABIN
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
         wait_1s
         obj_script SABIN
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
         wait_15f
         obj_script SABIN
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
@@ -78960,7 +78960,7 @@ _cc0bd8:
                 dir DOWN
                 wait 1
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed FASTER
                 move UP, 8
                 move UP, 4
@@ -78969,7 +78969,7 @@ _cc0bd8:
                 dir UP
                 wait 1
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 speed FASTER
                 move UP, 8
                 move UP, 4
@@ -78979,10 +78979,10 @@ _cc0bd8:
         loop 16
                 sfx 96
                 obj_script SABIN
-                        action 3
+                        action WALKING_UP_1
                         end
                 obj_script SABIN
-                        action 5
+                        action WALKING_UP_3
                         end
                 end_loop
         flash WHITE
@@ -78992,20 +78992,20 @@ _cc0bd8:
         obj_script NPC_1, ASYNC
                 layer 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed FAST
                 move DOWN, 8
                 move DOWN, 4
-                action 9
+                action NEAR_FATAL
                 end
         obj_script SABIN
                 layer 2
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 speed FAST
                 move DOWN, 8
                 move DOWN, 4
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         wait_30f
@@ -79054,7 +79054,7 @@ _cc0bd8:
                 ; I call this the ``Bum Rush''!!
         wait_30f
         obj_script SABIN
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 4
                 dir LEFT
                 end
@@ -79064,7 +79064,7 @@ _cc0bd8:
                 end
         wait_30f
         obj_script NPC_1
-                action 24
+                action ANGRY
                 end
         wait_30f
         dlg DLG_1516
@@ -79085,16 +79085,16 @@ _cc0bd8:
                 end
         wait_45f
         obj_script SLOT_2, ASYNC
-                action 24
+                action ANGRY
                 end
         obj_script SLOT_3, ASYNC
-                action 24
+                action ANGRY
                 end
         obj_script SLOT_4, ASYNC
-                action 24
+                action ANGRY
                 end
         obj_script SABIN
-                action 24
+                action ANGRY
                 end
         wait_2s
         fade_out_song $A0
@@ -79125,30 +79125,30 @@ _cc0bd8:
 _cc0f2e:
         sfx 96
         obj_script SABIN, ASYNC
-                action 11
+                action HIT
                 end
         obj_script NPC_1
-                action 0
+                action WALKING_DOWN_1
                 end
         obj_script NPC_1
-                action 2
+                action WALKING_DOWN_3
                 end
         return
 _cc0f3d:
         sfx 96
         obj_script NPC_1, ASYNC
-                action 11
+                action HIT
                 end
         obj_script SABIN
-                action 3
+                action WALKING_UP_1
                 end
         obj_script SABIN
-                action 5
+                action WALKING_UP_3
                 end
         return
 _cc0f4c:
         obj_script NPC_2
-                action 29
+                action LAUGHING_1
                 end
         wait_1s
         obj_script NPC_2
@@ -79160,7 +79160,7 @@ _cc0f4c:
                 ; Destroy Kefka!
         wait_15f
         obj_script NPC_2
-                action 24
+                action ANGRY
                 end
         return
 _cc0f5e:
@@ -79169,7 +79169,7 @@ _cc0f5e:
                 end
         obj_script SLOT_1
                 anim_off
-                action 28
+                action WAVING_2_UP
                 layer 2
                 end
         lock_camera
@@ -79258,7 +79258,7 @@ _cc1001:
 _cc1008:
         obj_script SLOT_1
                 anim_off
-                action 36
+                action WAGGING_FINGER_1
                 speed NORMAL
                 move UP, 1
                 anim_on
@@ -79268,7 +79268,7 @@ _cc1008:
 _cc1012:
         obj_script SLOT_1
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 speed NORMAL
                 move DOWN, 1
                 anim_on
@@ -79604,7 +79604,7 @@ _cc1305:
         return
 _cc1326:
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         mod_bg_tiles BG2, {82, 46}, {1, 2}
                 .byte $1D
@@ -79621,7 +79621,7 @@ _cc1326:
                 speed FASTER
                 move UP, 8
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 layer 2
                 end
         sfx SFX::FALLING
@@ -79630,7 +79630,7 @@ _cc1326:
         obj_script SLOT_1
                 speed FAST
                 move DOWN, 8
-                action 9
+                action NEAR_FATAL
                 anim_on
                 layer 0
                 end
@@ -79644,21 +79644,21 @@ _cc135c:
                 .byte $04
                 .byte $14
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         wait_15f
         loop 3
                 obj_script SLOT_1
-                        action 22
+                        action ARMS_UP_DOWN
                         end
                 wait 2
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         end
                 wait 2
                 end_loop
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait 4
         sfx SFX::FALLING
@@ -79667,7 +79667,7 @@ _cc135c:
                 anim_off
                 speed FASTER
                 move DOWN, 6
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         obj_script SLOT_1
@@ -79705,16 +79705,16 @@ _cc1398:
 _cc13c6:
         if_switch $01B2=0, EventReturn
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         wait_15f
         loop 3
                 obj_script SLOT_1
-                        action 22
+                        action ARMS_UP_DOWN
                         end
                 wait 2
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         end
                 wait 2
                 end_loop
@@ -79736,7 +79736,7 @@ _cc13c6:
                 speed FASTER
                 move UP, 1
                 move DOWN, 1
-                action 31
+                action SURPRISED
                 end
         fade_in
         wait_fade
@@ -79744,7 +79744,7 @@ _cc13c6:
         obj_script SLOT_1
                 speed FAST
                 move DOWN, 2
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         obj_script SLOT_1
                 speed NORMAL
@@ -79758,21 +79758,21 @@ _cc13c6:
         return
 _cc1418:
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         wait_15f
         loop 3
                 obj_script SLOT_1
-                        action 22
+                        action ARMS_UP_DOWN
                         end
                 wait 2
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         end
                 wait 2
                 end_loop
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait 4
         sfx SFX::FALLING
@@ -79781,7 +79781,7 @@ _cc1418:
                 anim_off
                 speed FASTER
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         obj_script SLOT_1
@@ -79876,7 +79876,7 @@ _cc14f4:
         pass_off NPC_5
         obj_script SLOT_1
                 anim_off
-                action 24
+                action ANGRY
                 end
         wait_30f
         obj_script NPC_3, ASYNC
@@ -79930,7 +79930,7 @@ _cc1548:
         pass_off NPC_6
         obj_script SLOT_1
                 anim_off
-                action 24
+                action ANGRY
                 end
         wait_30f
         obj_script NPC_4, ASYNC
@@ -80138,7 +80138,7 @@ _cc16d6:
                 wait 1
                 dir DOWN
                 wait 3
-                action 10
+                action READY
                 anim_on
                 end
         wait_30f
@@ -80170,7 +80170,7 @@ _cc1716:
                 end
         wait_30f
         obj_script SLOT_1
-                action 10
+                action READY
                 end
         wait_30f
         sfx SFX::MAGICITE_PICKUP
@@ -80215,18 +80215,18 @@ _cc174f:
                 dir LEFT
                 jump_low
                 move LEFT, 1
-                action 36
+                action WAGGING_FINGER_1
                 end
         obj_script SLOT_1
                 speed FAST
                 move DOWN, 3
-                action 22
+                action ARMS_UP_DOWN
                 jump_low
                 move DOWN_RIGHT
                 end
         wait_30f
         obj_script SLOT_1
-                action 10
+                action READY
                 anim_on
                 layer 0
                 end
@@ -80269,7 +80269,7 @@ _cc17df:
         wait_30f
         loop 3
                 obj_script SLOT_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 wait 2
                 obj_script SLOT_1
@@ -80287,9 +80287,9 @@ _cc1803:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 28
+                action WAVING_2_UP
                 move UP, 1
-                action 28 | ACTION_H_FLIP
+                action WAVING_2_UP_FLIP
                 move UP, 1
                 dir UP
                 anim_on
@@ -80300,9 +80300,9 @@ _cc1815:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 28
+                action WAVING_2_UP
                 move DOWN, 1
-                action 28 | ACTION_H_FLIP
+                action WAVING_2_UP_FLIP
                 move DOWN, 1
                 dir DOWN
                 anim_on
@@ -80362,7 +80362,7 @@ _cc1872:
         wait_30f
         loop 2
                 obj_script SLOT_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 wait 2
                 obj_script SLOT_1
@@ -80402,11 +80402,11 @@ _cc18b4:
         fade_in
         wait_fade
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait 4
         obj_script SLOT_1
-                action 10
+                action READY
                 end
         wait_30f
         call _cc9ad5
@@ -80745,27 +80745,27 @@ _cc1a60:
         obj_script NPC_1, ASYNC
                 speed NORMAL
                 anim_off
-                action 11
+                action HIT
                 jump_high
                 move DOWN, 3
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_2, ASYNC
                 speed NORMAL
                 anim_off
-                action 11
+                action HIT
                 jump_high
                 move DOWN_LEFT, 2
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_3
                 speed NORMAL
                 anim_off
-                action 11
+                action HIT
                 jump_high
                 move DOWN_RIGHT
                 move RIGHT_DOWN_DOWN
-                action 40
+                action DEAD_HORZ
                 end
         wait_15f
         loop 3
@@ -80809,7 +80809,7 @@ _cc1a60:
                 end
         wait 4
         obj_script NPC_9
-                action 31
+                action SURPRISED
                 end
         wait 8
         obj_script NPC_9
@@ -80817,15 +80817,15 @@ _cc1a60:
                 end
         wait_15f
         obj_script NPC_9
-                action 25
+                action WAVING_1_DOWN
                 end
         wait 8
         obj_script NPC_9
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait 8
         obj_script NPC_9
-                action 24
+                action ANGRY
                 end
         wait_30f
         dlg DLG_2405, {TEXT_ONLY, BOTTOM}
@@ -80856,7 +80856,7 @@ _cc1a60:
                 end
         wait_30f
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
@@ -80895,10 +80895,10 @@ _cc1a60:
                 end
         wait_30f
         obj_script NPC_2, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 end
         obj_script NPC_3
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_1s
         dlg DLG_2408, TEXT_ONLY
@@ -81078,11 +81078,11 @@ _cc1a60:
                 wait 8
                 end
         obj_script NPC_17
-                action 14 | ACTION_H_FLIP
+                action ATTACKING_3_FLIP
                 end
         wait 5
         obj_script NPC_17
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         wait_1s
         obj_script NPC_4, ASYNC
@@ -81100,7 +81100,7 @@ _cc1a60:
                 move UP_RIGHT, 2
                 end
         obj_script NPC_17
-                action 11
+                action HIT
                 speed FAST
                 move UP_LEFT, 2
                 wait 4
@@ -81108,11 +81108,11 @@ _cc1a60:
                 end
         wait_90f
         obj_script NPC_17
-                action 14 | ACTION_H_FLIP
+                action ATTACKING_3_FLIP
                 end
         wait 5
         obj_script NPC_17
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         wait_1s
         obj_script NPC_4, ASYNC
@@ -81130,7 +81130,7 @@ _cc1a60:
                 move UP_LEFT
                 end
         obj_script NPC_17
-                action 11
+                action HIT
                 speed FAST
                 move DOWN, 3
                 dir UP
@@ -81163,11 +81163,11 @@ _cc1a60:
         wait_30f
         loop 6
                 obj_script NPC_17
-                        action 29
+                        action LAUGHING_1
                         end
                 wait 5
                 obj_script NPC_17
-                        action 30
+                        action LAUGHING_2
                         end
                 wait 5
                 end_loop
@@ -81181,11 +81181,11 @@ _cc1a60:
                 end
         wait_30f
         obj_script NPC_17
-                action 27
+                action WAVING_1_UP
                 end
         wait 8
         obj_script NPC_17
-                action 23
+                action ARMS_UP_UP
                 end
         wait_30f
         sfx 101
@@ -81323,11 +81323,11 @@ _cc1ea5:
         return
 _cc1ede:
         obj_script SLOT_1
-                action 28
+                action WAVING_2_UP
                 end
         wait 8
         obj_script SLOT_1
-                action 23
+                action ARMS_UP_UP
                 end
         wait_15f
         hide_obj NPC_3
@@ -81376,7 +81376,7 @@ _cc1ede:
                 end
         wait_30f
         obj_script TERRA
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_1s
         dlg DLG_2413
@@ -81594,9 +81594,9 @@ _cc2090:
         obj_script SLOT_1
                 speed FASTER
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 move DOWN, 7
-                action 9
+                action NEAR_FATAL
                 anim_on
                 speed NORMAL
                 end
@@ -81610,9 +81610,9 @@ _cc2090:
         obj_script SLOT_1
                 speed FASTER
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 move DOWN, 6
-                action 9
+                action NEAR_FATAL
                 anim_on
                 speed NORMAL
                 end
@@ -81640,7 +81640,7 @@ _cc20e5:
                 jump_low
                 move UP_LEFT
                 anim_off
-                action 15
+                action JUMPING
                 end
         wait_30f
         obj_script NPC_1, ASYNC
@@ -82549,7 +82549,7 @@ _cc27d7:
         obj_script SLOT_1
                 anim_off
                 jump_low
-                action 31
+                action SURPRISED
                 wait 1
                 dir DOWN
                 anim_on
@@ -82593,10 +82593,10 @@ _cc280e:
         obj_script SLOT_1
                 layer 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed FASTER
                 move DOWN, 8
-                action 9
+                action NEAR_FATAL
                 anim_on
                 layer 0
                 end
@@ -82843,7 +82843,7 @@ _cc2a1f:
                 switch $01B4=0
                 goto EventReturn
         obj_script SLOT_1
-                action 23
+                action ARMS_UP_UP
                 end
         sfx 150
         lock_camera
@@ -83019,7 +83019,7 @@ _cc2b43:
         dlg DLG_2592, BOTTOM
                 ; LOCKE!!
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 end
         wait_30f
         obj_script NPC_1
@@ -83057,7 +83057,7 @@ _cc2b43:
 _cc2baf:
         wait_30f
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_90f
         dlg DLG_2596, BOTTOM
@@ -83074,7 +83074,7 @@ _cc2baf:
                 end
         wait_1s
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 4
                 dir DOWN
                 end
@@ -83142,7 +83142,7 @@ _cc2baf:
         sort_obj
         obj_script NPC_4
                 anim_off
-                action 45
+                action NPC_SPECIAL_2
                 end
         lock_camera
         pass_off LOCKE
@@ -83230,7 +83230,7 @@ _cc2baf:
                 end
         wait_30f
         obj_script LOCKE
-                action 24
+                action ANGRY
                 end
         sfx SFX::MAGICITE_PICKUP
         obj_script NPC_14
@@ -83247,7 +83247,7 @@ _cc2baf:
         wait_1s
         wait_90f
         obj_script LOCKE
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         wait 3
         obj_script LOCKE
@@ -83255,7 +83255,7 @@ _cc2baf:
                 end
         wait_30f
         obj_script LOCKE
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         wait 3
         obj_script LOCKE
@@ -83263,7 +83263,7 @@ _cc2baf:
                 end
         wait_3s
         obj_script LOCKE
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_2s
         wait_30f
@@ -83450,7 +83450,7 @@ _cc2baf:
                 ; The Magicite's gonna shatter!
         wait_1s
         obj_script LOCKE
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_3s
         obj_script NPC_4
@@ -83458,7 +83458,7 @@ _cc2baf:
                 end
         wait_15f
         obj_script NPC_4
-                action 45
+                action NPC_SPECIAL_2
                 end
         wait_1s
         obj_script NPC_4
@@ -83502,7 +83502,7 @@ _cc2baf:
                 ; But I have something I must tell you_
         wait_30f
         obj_script LOCKE
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         wait 3
         obj_script LOCKE
@@ -83510,7 +83510,7 @@ _cc2baf:
                 end
         wait_30f
         obj_script LOCKE
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         wait 3
         obj_script LOCKE
@@ -83526,7 +83526,7 @@ _cc2baf:
                 ; I'll never forget you_
         wait_2s
         obj_script NPC_4
-                action 45
+                action NPC_SPECIAL_2
                 end
         wait_30f
         sfx 103
@@ -83734,7 +83734,7 @@ _cc2baf:
                 end
         wait_1s
         obj_script LOCKE
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_3s
         obj_script NPC_7, ASYNC
@@ -83918,7 +83918,7 @@ _cc2baf:
         wait_fade
         wait_1s
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_90f
         obj_script CELES
@@ -83951,7 +83951,7 @@ _cc2baf:
         play_song LOCKE
         wait_90f
         obj_script CELES
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 4
                 dir RIGHT
                 end
@@ -84030,11 +84030,11 @@ _cc3188:
                 ; CELES: What's up?
         wait_30f
         obj_script LOCKE
-                action 2
+                action WALKING_DOWN_3
                 end
         wait 8
         obj_script LOCKE
-                action 26
+                action WAVING_2_DOWN
                 end
         wait_1s
         obj_script LOCKE
@@ -84056,7 +84056,7 @@ _cc3188:
         wait_1s
         loop 3
                 obj_script CELES
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script CELES
                         dir DOWN
@@ -84089,15 +84089,15 @@ _cc3188:
                 end
         wait_30f
         obj_script LOCKE
-                action 26
+                action WAVING_2_DOWN
                 end
         wait 8
         obj_script LOCKE
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait 8
         obj_script LOCKE
-                action 36
+                action WAGGING_FINGER_1
                 end
         wait_30f
         dlg DLG_2611
@@ -84120,7 +84120,7 @@ _cc3188:
                 end
         wait_30f
         obj_script LOCKE
-                action 20
+                action WINKING_DOWN
                 end
         wait_15f
         obj_script LOCKE
@@ -84131,7 +84131,7 @@ _cc3188:
                 ; LOCKE: The treasures of the Phoenix Cave!
         wait_1s
         obj_script LOCKE
-                action 36
+                action WAGGING_FINGER_1
                 end
         wait_30f
         dlg DLG_2613
@@ -84139,14 +84139,14 @@ _cc3188:
         wait_45f
         obj_script CELES
                 anim_on
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 end
         wait_45f
         obj_script LOCKE
                 anim_on
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -84906,7 +84906,7 @@ _cc3719:
         sfx SFX::FLOOR_SWITCH
         shake ALL, 3, 0
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         call _cc37c3
         shake ALL, 3, 0
@@ -84955,12 +84955,12 @@ _cc37fe:
         wait_30f
         lock_camera
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         obj_script SLOT_1
                 anim_off
                 speed NORMAL
-                action 23
+                action ARMS_UP_UP
                 jump_low
                 move UP, 1
                 layer 3
@@ -84997,11 +84997,11 @@ _cc3839:
         obj_script SLOT_1
                 speed FAST
                 move DOWN, 1
-                action 31
+                action SURPRISED
                 end
         loop 4
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         end
                 obj_script SLOT_1
                         dir DOWN
@@ -85010,10 +85010,10 @@ _cc3839:
         sfx SFX::FALLING
         obj_script SLOT_1
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed FASTER
                 move DOWN, 6
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         obj_script SLOT_1
@@ -85030,11 +85030,11 @@ _cc3873:
                 speed FAST
                 move DOWN, 1
                 wait 6
-                action 24
+                action ANGRY
                 wait 1
                 dir DOWN
                 wait 1
-                action 24
+                action ANGRY
                 wait 1
                 dir DOWN
                 wait 1
@@ -85128,7 +85128,7 @@ _cc396c:
         if_switch $029F=0, _cc3a4c
         wait_30f
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script NPC_1
@@ -85173,21 +85173,21 @@ _cc396c:
                 end
         wait_1s
         obj_script NPC_1
-                action 26
+                action WAVING_2_DOWN
                 end
         wait 12
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait 12
         obj_script NPC_1
-                action 24
+                action ANGRY
                 end
         wait_30f
         sfx 220
         obj_script NPC_1
                 anim_off
-                action 29
+                action LAUGHING_1
                 jump_low
                 wait 8
                 anim_on
@@ -85197,7 +85197,7 @@ _cc396c:
                 end
         wait_30f
         obj_script NPC_1
-                action 20
+                action WINKING_DOWN
                 end
         wait_30f
         obj_script NPC_1
@@ -85205,7 +85205,7 @@ _cc396c:
                 end
         wait_30f
         obj_script NPC_1
-                action 36
+                action WAGGING_FINGER_1
                 end
         wait_30f
         dlg DLG_2621
@@ -85216,7 +85216,7 @@ _cc396c:
         sfx 220
         obj_script NPC_1
                 anim_off
-                action 29
+                action LAUGHING_1
                 jump_low
                 wait 8
                 anim_on
@@ -85252,7 +85252,7 @@ _cc396c:
         wait_30f
         obj_script NPC_1
                 anim_on
-                action 23
+                action ARMS_UP_UP
                 end
         wait_1s
         fade_out 8
@@ -85287,7 +85287,7 @@ _cc3a4c:
         sort_obj
         wait_30f
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script NPC_1
@@ -85298,7 +85298,7 @@ _cc3a4c:
                 ; Don't scare me like that!
         wait_30f
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script SLOT_1
@@ -85310,14 +85310,14 @@ _cc3a4c:
         wait_30f
         loop 12
                 obj_script NPC_1
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_1
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_1
-                action 29
+                action LAUGHING_1
                 end
         hide_obj SLOT_1
         call _cad00f
@@ -85332,7 +85332,7 @@ _cc3a4c:
                 move UP, 4
                 end
         obj_script NPC_1
-                action 9
+                action NEAR_FATAL
                 end
         shake ALL, 3, 0
         wait_30f
@@ -85342,7 +85342,7 @@ _cc3a4c:
                 ; Moogle_
         wait_30f
         obj_script NPC_1
-                action 29
+                action LAUGHING_1
                 end
         wait_1s
         fade_out
@@ -85365,7 +85365,7 @@ _cc3a4c:
                 ; gonna join your party!
         wait_1s
         obj_script NPC_1
-                action 36
+                action WAGGING_FINGER_1
                 end
         wait_30f
         dlg DLG_2621
@@ -85578,7 +85578,7 @@ _cc3be2:
                 move UP, 1
                 dir DOWN
                 wait 2
-                action 32
+                action HEAD_DOWN_DOWN
                 anim_on
                 end
         player_ctrl_on
@@ -85587,20 +85587,20 @@ _cc3bf8:
         call _caca8d
         wait_30f
         obj_script NPC_6
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script NPC_6
                 dir DOWN
                 end
         wait_30f
         obj_script NPC_6
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script NPC_6
                 dir DOWN
                 end
         obj_script NPC_6
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script NPC_6
                 dir DOWN
@@ -85644,7 +85644,7 @@ _cc3bf8:
                 ; This world is too chaotic for me. What's worse, I've lost my wings_
         wait_30f
         obj_script NPC_6
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         obj_script NPC_6
@@ -85655,7 +85655,7 @@ _cc3bf8:
                 end
         wait_90f
         obj_script NPC_6
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_90f
         obj_script CELES
@@ -85686,7 +85686,7 @@ _cc3bf8:
                 end
         wait_2s
         obj_script NPC_6
-                action 35
+                action HEAD_TURNED
                 end
         wait_30f
         dlg DLG_2450
@@ -85696,7 +85696,7 @@ _cc3bf8:
         play_song SETZER
         wait_30f
         obj_script CELES
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 4
                 dir RIGHT
                 end
@@ -85731,7 +85731,7 @@ _cc3bf8:
                 end
         wait_15f
         obj_script NPC_6
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_45f
         lock_camera
@@ -85741,7 +85741,7 @@ _cc3bf8:
                 end
         wait_30f
         obj_script NPC_6
-                action 36
+                action WAGGING_FINGER_1
                 end
         wait_30f
         dlg DLG_2452
@@ -85873,7 +85873,7 @@ _cc3d73:
         wait_30f
         loop 4
                 obj_script SLOT_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script SLOT_1
                         dir DOWN
@@ -85958,7 +85958,7 @@ _cc3e17:
         wait_30f
         loop 4
                 obj_script SLOT_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script SLOT_1
                         dir DOWN
@@ -86041,15 +86041,15 @@ _cc3e45:
                 end
         wait_30f
         obj_script CYAN
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
                 end
         obj_script CYAN
-                action 35
+                action HEAD_TURNED
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 2
                 dir DOWN
                 end
@@ -86065,7 +86065,7 @@ _cc3e45:
                 ; We have a lot of life left to live_
         wait_30f
         obj_script CYAN
-                action 33
+                action HEAD_DOWN_UP
                 wait 3
                 dir UP
                 end
@@ -86220,7 +86220,7 @@ _cc3fa7:
                 end
         wait_30f
         obj_script NPC_3
-                action 17
+                action CASTING_2
                 end
         wait_1s
         sfx SFX::BIRD_CHIRP
@@ -86295,7 +86295,7 @@ _cc3fe8:
         dlg DLG_2557, BOTTOM
                 ; CYAN!!
         obj_script NPC_3
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script NPC_3
@@ -86341,7 +86341,7 @@ _cc3fe8:
                 ; CYAN_
         wait_1s
         obj_script NPC_3
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 4
                 dir DOWN
                 end
@@ -86353,7 +86353,7 @@ _cc3fe8:
                 ; W_wait!
                 ; Tell me you didn't read my letters_!!
         obj_script NPC_3
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script SLOT_2, ASYNC
@@ -86452,11 +86452,11 @@ _cc3fe8:
                 end
         wait_1s
         obj_script NPC_9
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_1s
         obj_script NPC_9
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script NPC_9
@@ -86468,21 +86468,12 @@ _cc3fe8:
         obj_script NPC_9
                 anim_off
                 jump_low
-                action 23
+                action ARMS_UP_UP
                 wait 4
                 end
         obj_script NPC_9
                 jump_low
-                action 23
-                wait 4
-                end
-        obj_script NPC_1, ASYNC
-                speed SLOW
-                move DOWN, 1
-                end
-        obj_script NPC_9
-                jump_low
-                action 23
+                action ARMS_UP_UP
                 wait 4
                 end
         obj_script NPC_1, ASYNC
@@ -86491,7 +86482,16 @@ _cc3fe8:
                 end
         obj_script NPC_9
                 jump_low
-                action 23
+                action ARMS_UP_UP
+                wait 4
+                end
+        obj_script NPC_1, ASYNC
+                speed SLOW
+                move DOWN, 1
+                end
+        obj_script NPC_9
+                jump_low
+                action ARMS_UP_UP
                 wait 4
                 anim_on
                 end
@@ -86503,21 +86503,12 @@ _cc3fe8:
         obj_script NPC_9
                 anim_off
                 jump_low
-                action 23
+                action ARMS_UP_UP
                 wait 4
                 end
         obj_script NPC_9
                 jump_low
-                action 23
-                wait 4
-                end
-        obj_script NPC_2, ASYNC
-                speed SLOW
-                move DOWN, 1
-                end
-        obj_script NPC_9
-                jump_low
-                action 23
+                action ARMS_UP_UP
                 wait 4
                 end
         obj_script NPC_2, ASYNC
@@ -86526,7 +86517,16 @@ _cc3fe8:
                 end
         obj_script NPC_9
                 jump_low
-                action 23
+                action ARMS_UP_UP
+                wait 4
+                end
+        obj_script NPC_2, ASYNC
+                speed SLOW
+                move DOWN, 1
+                end
+        obj_script NPC_9
+                jump_low
+                action ARMS_UP_UP
                 wait 4
                 anim_on
                 end
@@ -86538,12 +86538,12 @@ _cc3fe8:
         obj_script NPC_9
                 anim_off
                 jump_low
-                action 23
+                action ARMS_UP_UP
                 wait 4
                 end
         obj_script NPC_9
                 jump_low
-                action 23
+                action ARMS_UP_UP
                 wait 4
                 anim_on
                 end
@@ -86560,7 +86560,7 @@ _cc3fe8:
                 end
         wait_30f
         obj_script NPC_9
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script NPC_9
@@ -86568,14 +86568,14 @@ _cc3fe8:
                 end
         wait_30f
         obj_script NPC_9
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         obj_script NPC_9
                 dir RIGHT
                 end
         wait_15f
         obj_script NPC_9
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         obj_script NPC_9
                 dir RIGHT
@@ -86607,7 +86607,7 @@ _cc3fe8:
                 jump_low
                 move DOWN, 1
                 wait 4
-                action 24
+                action ANGRY
                 end
         wait_1s
         dlg DLG_2563, BOTTOM
@@ -86615,7 +86615,7 @@ _cc3fe8:
                 ; This is an outrage_!
         wait_1s
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_9
                 jump_low
@@ -86630,27 +86630,27 @@ _cc3fe8:
                 end
         wait_30f
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
                 end
         wait_30f
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
                 end
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
                 end
         wait_30f
         obj_script SLOT_1
-                action 30
+                action LAUGHING_2
                 end
         wait_30f
         obj_script NPC_9
@@ -86660,10 +86660,10 @@ _cc3fe8:
         wait_1s
         loop 12
                 obj_script NPC_9
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_9
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_9
@@ -86694,7 +86694,7 @@ _cc3fe8:
                 move DOWN, 1
                 end
         obj_script NPC_9
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         dlg DLG_2566, BOTTOM
                 ; CYAN: As I wrote to that girl, I realized I was very much like her.
@@ -86720,13 +86720,13 @@ _cc3fe8:
                 wait 8
                 end
         obj_script SLOT_1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 4
                 dir LEFT
                 end
         wait_1s
         obj_script NPC_9
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 4
                 dir RIGHT
                 end
@@ -86834,7 +86834,7 @@ _cc42c9:
                 ; CYAN: No!
                 ; That's mine!!!
         obj_script SLOT_1
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         wait_1s
         obj_script SLOT_1
@@ -86848,10 +86848,10 @@ _cc42c9:
         wait_90f
         loop 10
                 obj_script SLOT_1
-                        action 36
+                        action WAGGING_FINGER_1
                         end
                 obj_script SLOT_1
-                        action 37
+                        action WAGGING_FINGER_2
                         end
                 end_loop
         wait_90f
@@ -87055,7 +87055,7 @@ _cc4447:
                 ; Are these your friends?!
         wait_30f
         obj_script NPC_2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 end
@@ -87106,7 +87106,7 @@ _cc4447:
                 ; TERRA: I_
         wait_30f
         obj_script NPC_2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_3s
         obj_script NPC_2
@@ -87213,7 +87213,7 @@ _cc4565:
                 ; I can't fight any longer_
         wait_30f
         obj_script NPC_2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         fade_out_song $A0
         wait_2s
@@ -87537,7 +87537,7 @@ _cc4565:
                 dir UP
                 end
         obj_script NPC_2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_2s
         fade_in_song AWAKENING, 160
@@ -87640,7 +87640,7 @@ _cc4565:
                 end
         wait_2s
         obj_script NPC_2
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         obj_script NPC_2
                 dir RIGHT
@@ -87652,7 +87652,7 @@ _cc4565:
                 ; The moment I sensed this, I lost my will to fight.
         wait_90f
         obj_script NPC_2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         fade_out_song $F0
         wait_2s
@@ -87683,7 +87683,7 @@ _cc4990:
         sort_obj
         wait_1s
         obj_script NPC_2, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         obj_script CAMERA
                 speed SLOW
@@ -87753,7 +87753,7 @@ _cc4990:
         obj_script TERRA
                 speed FAST
                 move DOWN, 4
-                action 24
+                action ANGRY
                 end
         wait_1s
         shake ALL, 3, 0
@@ -87763,7 +87763,7 @@ _cc4990:
         sfx SFX::BIG_FOOTSTEP
         wait_1s
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_1s
         dlg DLG_2267
@@ -87780,7 +87780,7 @@ _cc4990:
         obj_script TERRA
                 pos {16, 20}
                 speed NORMAL
-                action 40
+                action DEAD_HORZ
                 end
         show_obj TERRA
         sort_obj
@@ -87803,7 +87803,7 @@ _cc4990:
                 end
         wait_30f
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         dlg DLG_2268
@@ -88054,10 +88054,10 @@ _cc4b4b:
         shake ALL, 3, 0
         sfx SFX::BIG_FOOTSTEP
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script SLOT_1
@@ -88097,10 +88097,10 @@ _cc4b4b:
                 ; Waaaaa!
                 ; Phunbaba's back again!
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_1
-                action 31
+                action SURPRISED
                 end
         switch $01CC=1
         play_song THE_UNFORGIVEN
@@ -88190,12 +88190,12 @@ _cc4c1b:
         sort_obj
         obj_script NPC_13
                 pos {10, 24}
-                action 22
+                action ARMS_UP_DOWN
                 speed NORMAL
                 end
         load_pal 15, ESPER_TERRA
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         fade_in
         wait_fade
@@ -88213,11 +88213,11 @@ _cc4c1b:
                 ; TERRA!!
         wait_30f
         obj_script NPC_14
-                action 36
+                action WAGGING_FINGER_1
                 end
         wait 10
         obj_script NPC_14
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         loop 2
@@ -88401,14 +88401,14 @@ _cc4c1b:
         show_obj NPC_13
         obj_script NPC_13
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed FAST
                 move DOWN, 3
                 speed NORMAL
                 move DOWN, 2
                 speed SLOW
                 move DOWN, 1
-                action 9
+                action NEAR_FATAL
                 end
         shake ALL, 1, 0
         wait_1s
@@ -88520,15 +88520,15 @@ _cc4c1b:
                 ; I'm always afraid_
         wait_30f
         obj_script NPC_13
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         obj_script NPC_13
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_1s
         obj_script NPC_13
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         obj_script NPC_13
@@ -88536,28 +88536,28 @@ _cc4c1b:
                 end
         wait_30f
         obj_script NPC_13
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script NPC_13
                 dir DOWN
                 end
         wait_1s
         obj_script NPC_13
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script NPC_13
                 dir DOWN
                 end
         wait_30f
         obj_script NPC_13
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script NPC_13
                 dir DOWN
                 end
         wait_90f
         obj_script NPC_13
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_4s
         obj_script NPC_5
@@ -88600,7 +88600,7 @@ _cc4c1b:
                 end
         wait_30f
         obj_script NPC_13
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         obj_script NPC_13
@@ -88707,19 +88707,19 @@ _cc4c1b:
         obj_script NPC_13
                 dir DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 end
         wait_30f
         obj_script NPC_13
                 dir DOWN
                 wait 2
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_30f
         obj_script NPC_13
                 dir DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 end
         wait_30f
         obj_script NPC_13
@@ -88730,7 +88730,7 @@ _cc4c1b:
                 ; TERRA: I_I can fight!
         wait_30f
         obj_script NPC_13
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_30f
         dlg DLG_2297, BOTTOM
@@ -88865,7 +88865,7 @@ _cc4fd3:
                 ; Till then_you behave!
         wait_30f
         obj_script NPC_13
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         dlg DLG_2300, BOTTOM
@@ -89244,15 +89244,15 @@ _cc5275:
                 end
         wait_30f
         obj_script RELM
-                action 25
+                action WAVING_1_DOWN
                 end
         wait 8
         obj_script RELM
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait 8
         obj_script RELM
-                action 24
+                action ANGRY
                 end
         wait_30f
         dlg DLG_2241
@@ -89285,7 +89285,7 @@ _cc52eb:
                 branch _cc52eb
                 end
         obj_script NPC_4
-                action 31
+                action SURPRISED
                 wait 8
                 end
         wait_15f
@@ -89328,7 +89328,7 @@ _cc52eb:
         play_song RELM
         wait_1s
         obj_script RELM
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_90f
         obj_script RELM
@@ -89336,7 +89336,7 @@ _cc52eb:
                 end
         wait_15f
         obj_script RELM
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_2s
         obj_script RELM
@@ -89348,7 +89348,7 @@ _cc52eb:
                 end
         wait_30f
         obj_script RELM
-                action 10
+                action READY
                 end
         wait_1s
         obj_script RELM
@@ -89362,7 +89362,7 @@ _cc52eb:
                 ; I'm so happy_
                 ; RELM: Did you think I was gonna check out before you, old man?! Ah, ha, ha_
         obj_script NPC_4
-                action 31
+                action SURPRISED
                 end
         wait_15f
         obj_script RELM
@@ -89371,11 +89371,11 @@ _cc52eb:
         wait_15f
         loop 4
                 obj_script RELM
-                        action 29
+                        action LAUGHING_1
                         end
                 wait 4
                 obj_script RELM
-                        action 30
+                        action LAUGHING_2
                         end
                 wait 4
                 end_loop
@@ -89398,11 +89398,11 @@ _cc52eb:
                 ; We're all glad to see you!
         wait_30f
         obj_script RELM
-                action 15
+                action JUMPING
                 end
         wait_1s
         obj_script NPC_4
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 3
                 dir RIGHT
                 end
@@ -89420,7 +89420,7 @@ _cc52eb:
                 layer 2
                 jump_high
                 move LEFT_LEFT_DOWN
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         sfx 106
@@ -89431,7 +89431,7 @@ _cc52eb:
                 speed FAST
                 jump_high
                 move RIGHT_RIGHT_DOWN
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         sfx 106
@@ -89440,7 +89440,7 @@ _cc52eb:
                 jump_high
                 move RIGHT_DOWN_DOWN
                 move DOWN, 1
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         sfx 106
@@ -89448,12 +89448,12 @@ _cc52eb:
                 speed FAST
                 jump_high
                 move DOWN_LEFT
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script NPC_4
                 anim_on
                 layer 0
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         dlg DLG_2245
@@ -89477,28 +89477,28 @@ _cc52eb:
                 end
         wait_1s
         obj_script NPC_4
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 3
                 dir RIGHT
                 end
         wait_30f
         obj_script SLOT_2, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 3
                 dir UP
                 end
         obj_script SLOT_3, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 3
                 dir UP
                 end
         obj_script SLOT_4, ASYNC
-                action 33
+                action HEAD_DOWN_UP
                 wait 3
                 dir UP
                 end
         obj_script RELM
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 3
                 dir LEFT
                 wait 4
@@ -89536,7 +89536,7 @@ _cc544b:
         if_switch $02DB=1, EventReturn
         if_switch $02DA=0, EventReturn
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
@@ -89544,7 +89544,7 @@ _cc544b:
         wait_30f
         loop 2
                 obj_script SLOT_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script SLOT_1
                         dir DOWN
@@ -89891,7 +89891,7 @@ _cc57ea:
         obj_script NPC_15, ASYNC
 _cc5801:
                 wait 20
-                action 45
+                action NPC_SPECIAL_2
                 wait 8
                 dir DOWN
                 branch _cc5801
@@ -89912,7 +89912,7 @@ _cc581a:
                 move LEFT, 1
                 dir DOWN
                 wait 4
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 8
                 move RIGHT, 2
                 dir DOWN
@@ -89923,7 +89923,7 @@ _cc581a:
 _cc5829:
         if_switch $028A=1, EventReturn
         obj_script NPC_2
-                action 22
+                action ARMS_UP_DOWN
                 end
         if_any
                 switch $027D=0
@@ -89952,7 +89952,7 @@ _cc583e:
                         dir UP
                         end
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         end
                 flash WHITE
                 shake ALL, 3, 0
@@ -90102,7 +90102,7 @@ _cc592e:
         call _cad00f
         wait_1s
         obj_script NPC_2
-                action 9
+                action NEAR_FATAL
                 end
         wait_2s
         wait_dlg
@@ -90161,7 +90161,7 @@ _cc5980:
                 speed NORMAL
                 jump_low
                 move DOWN, 3
-                action 9
+                action NEAR_FATAL
                 wait 2
                 end
         lock_camera
@@ -90188,11 +90188,11 @@ _cc5980:
                 anim_on
                 end
         obj_script NPC_2, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 speed NORMAL
                 jump_low
                 move DOWN, 3
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         obj_script NPC_5, ASYNC
@@ -90266,10 +90266,10 @@ _cc5a2a:
         wait_1s
         loop 10
                 obj_script NPC_2
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_2
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_2
@@ -90286,11 +90286,11 @@ _cc5a2a:
         play_song FIGARO
         wait_30f
         obj_script NPC_2
-                action 10
+                action READY
                 end
         wait_2s
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_1s
         set_case PARTY_CHARS
@@ -90315,7 +90315,7 @@ _cc5a6b:
                 end
         wait_1s
         obj_script NPC_2
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -90329,7 +90329,7 @@ _cc5a6b:
                 end
         wait_90f
         obj_script SLOT_1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
@@ -90460,7 +90460,7 @@ _cc5b68:
                 wait 8
                 dir DOWN
                 wait 4
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 32
                 dir DOWN
                 wait 4
@@ -90517,7 +90517,7 @@ _cc5bca:
         sfx 22
         obj_script SLOT_1
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 move DOWN, 1
                 wait 1
@@ -90935,15 +90935,15 @@ _cc5e68:
 _cc5e72:
         obj_script NPC_3, ASYNC
 _cc5e74:
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 wait 8
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 wait 8
                 branch _cc5e74
                 end
         obj_script NPC_4, ASYNC
 _cc5e7f:
-                action 14
+                action ATTACKING_3
                 wait 4
                 dir LEFT
                 wait 8
@@ -90951,23 +90951,23 @@ _cc5e7f:
                 end
         obj_script NPC_5, ASYNC
 _cc5e8a:
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 wait 8
-                action 17 | ACTION_H_FLIP
+                action CASTING_2_FLIP
                 wait 8
                 branch _cc5e8a
                 end
         obj_script NPC_6, ASYNC
 _cc5e95:
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 4
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 wait 8
-                action 31
+                action SURPRISED
                 wait 4
                 dir LEFT
                 wait 8
@@ -91001,7 +91001,7 @@ _cc5eac:
                 wait 1
                 dir DOWN
                 wait 4
-                action 45
+                action NPC_SPECIAL_2
                 wait 16
                 branch _cc5eac
                 end
@@ -91033,7 +91033,7 @@ _cc5edb:
                 wait 1
                 dir DOWN
                 wait 4
-                action 45
+                action NPC_SPECIAL_2
                 wait 16
                 branch _cc5edb
                 end
@@ -91417,7 +91417,7 @@ _cc6166:
                 wait 8
                 move DOWN, 2
                 wait 5
-                action 35
+                action HEAD_TURNED
                 wait 8
                 move RIGHT, 3
                 move DOWN, 8
@@ -91444,7 +91444,7 @@ _cc6166:
                 end
         obj_script NPC_13
                 speed NORMAL
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         loop 7
                 mod_bg_pal DEC, {RED, GREEN}, 3
@@ -91454,7 +91454,7 @@ _cc6166:
         wait_fade
         wait_1s
         obj_script LOCKE
-                action 35
+                action HEAD_TURNED
                 end
         play_song CELES
         wait_90f
@@ -91477,7 +91477,7 @@ _cc6166:
                 end
         wait_90f
         obj_script NPC_13
-                action 35
+                action HEAD_TURNED
                 end
         wait_2s
         dlg DLG_1902
@@ -91490,7 +91490,7 @@ _cc6166:
                 end
         wait_2s
         obj_script LOCKE
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_1s
         dlg DLG_1904
@@ -91509,7 +91509,7 @@ _cc6166:
                 ; LOCKE: CELES!
         wait_1s
         obj_script NPC_13
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         wait_2s
         obj_script NPC_13
@@ -91523,7 +91523,7 @@ _cc6166:
                 end
         wait_90f
         obj_script LOCKE
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_4s
         fade_out_song $A0
@@ -91640,7 +91640,7 @@ _cc62f2:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 11 | ACTION_H_FLIP
+                action HIT_FLIP
                 jump_low
                 move UP, 1
                 end
@@ -91652,7 +91652,7 @@ _cc62f2:
         dlg DLG_1595
                 ; No entry into the port!
         obj_script SLOT_1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 wait 4
                 dir DOWN
                 anim_on
@@ -91682,7 +91682,7 @@ _cc632d:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 11
+                action HIT
                 jump_low
                 move UP, 1
                 end
@@ -91694,7 +91694,7 @@ _cc632d:
         dlg DLG_1595
                 ; No entry into the port!
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 wait 4
                 dir DOWN
                 anim_on
@@ -91788,33 +91788,33 @@ _cc63be:
                 end
         obj_script NPC_6, ASYNC
 _cc63e3:
-                action 25
+                action WAVING_1_DOWN
                 wait 4
                 dir DOWN
                 wait 4
-                action 25
+                action WAVING_1_DOWN
                 wait 4
                 dir DOWN
                 wait 8
-                action 31
+                action SURPRISED
                 wait 6
                 dir DOWN
                 wait 4
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 dir DOWN
                 wait 8
@@ -91822,35 +91822,35 @@ _cc63e3:
                 end
         obj_script NPC_10, ASYNC
 _cc6415:
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
-                action 35
+                action HEAD_TURNED
                 wait 1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 wait 1
                 dir DOWN
                 wait 16
-                action 36
+                action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
-                action 36
+                action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
-                action 36
+                action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
-                action 36
+                action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
                 dir DOWN
                 wait 16
@@ -91858,27 +91858,27 @@ _cc6415:
                 end
         obj_script NPC_15, ASYNC
 _cc644a:
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 1
                 dir RIGHT
                 wait 1
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 wait 1
                 dir RIGHT
                 wait 1
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 wait 8
                 dir RIGHT
                 wait 4
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 wait 1
-                action 17 | ACTION_H_FLIP
+                action CASTING_2_FLIP
                 wait 1
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 wait 1
-                action 17 | ACTION_H_FLIP
+                action CASTING_2_FLIP
                 wait 1
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 wait 8
                 dir RIGHT
                 wait 4
@@ -91888,21 +91888,21 @@ _cc644a:
 _cc6473:
                 dir UP
                 wait 8
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 wait 1
-                action 33
+                action HEAD_DOWN_UP
                 wait 1
                 dir UP
                 wait 1
-                action 23
+                action ARMS_UP_UP
                 wait 8
-                action 27
+                action WAVING_1_UP
                 wait 1
                 dir UP
                 wait 1
-                action 27
+                action WAVING_1_UP
                 wait 1
                 dir UP
                 wait 1
@@ -92881,7 +92881,7 @@ _cc6a2e:
                 end
         wait_1s
         obj_script LOCKE
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_1s
         dlg DLG_1000
@@ -92936,7 +92936,7 @@ _cc6a2e:
                 end
         wait_30f
         obj_script LOCKE
-                action 26
+                action WAVING_2_DOWN
                 end
         wait_1s
         obj_script LOCKE
@@ -92964,13 +92964,13 @@ _cc6a2e:
                 end
         wait_30f
         obj_script LOCKE
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script LOCKE
                 dir DOWN
                 end
         obj_script LOCKE
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script LOCKE
                 dir DOWN
@@ -92993,10 +92993,10 @@ _cc6a2e:
                 end
         obj_script LOCKE
                 anim_off
-                action 11
+                action HIT
                 speed FAST
                 move RIGHT, 4
-                action 9
+                action NEAR_FATAL
                 end
         shake ALL, 3, 0
         mod_bg_tiles BG1, {37, 53}, {3, 4}
@@ -93016,7 +93016,7 @@ _cc6a2e:
                 speed FAST
                 move DOWN_LEFT
                 move LEFT, 1
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         dlg DLG_1005
@@ -93024,7 +93024,7 @@ _cc6a2e:
         wait_1s
         obj_script LOCKE
                 anim_off
-                action 15
+                action JUMPING
                 jump_low
                 move LEFT, 1
                 speed FASTER
@@ -93042,7 +93042,7 @@ _cc6a2e:
         obj_script LOCKE
                 speed NORMAL
                 anim_on
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         unlock_camera
         create_obj NPC_1
@@ -93089,7 +93089,7 @@ _cc6a2e:
                 ; I can't remember anything_
         wait_30f
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         wait_15f
         obj_script LOCKE
@@ -93125,7 +93125,7 @@ _cc6a2e:
         show_obj LOCKE
         obj_script LOCKE
                 anim_off
-                action 11
+                action HIT
                 speed FAST
                 move DOWN, 5
                 end
@@ -93164,7 +93164,7 @@ _cc6a2e:
                 ; I don't know who you are, but ever since you came here my parents have been upset!
         wait_1s
         obj_script LOCKE
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_90f
         fade_out 8
@@ -93208,7 +93208,7 @@ _cc6a2e:
                 ; Your being here doesn't help.
         wait_1s
         obj_script LOCKE
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_2s
         obj_script LOCKE
@@ -93254,7 +93254,7 @@ _cc6a2e:
         wait_fade
         wait_1s
         obj_script LOCKE
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_1s
         dlg DLG_1011
@@ -93346,7 +93346,7 @@ _cc6d28:
         return
 _cc6d2c:
         obj_script NPC_4, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 end
         return
 _cc6d31:
@@ -93456,7 +93456,7 @@ _cc6d91:
         hide_obj NPC_3
         sort_obj
         obj_script LOCKE
-                action 34
+                action HEAD_DOWN_LEFT
                 speed NORMAL
                 end
         filter_pal {RED, GREEN}, {4, 119}
@@ -93506,7 +93506,7 @@ _cc6d91:
                 ; Kwa, ha, ha!
         wait_1s
         obj_script LOCKE
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_2s
         dlg DLG_1024
@@ -93570,7 +93570,7 @@ _cc6e5c:
                 end
         obj_script LOCKE
                 speed NORMAL
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         fade_in 8
         wait_fade
@@ -93647,7 +93647,7 @@ _cc6e5c:
                 end
         wait_1s
         obj_script CELES
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_2s
         obj_script CELES
@@ -93747,7 +93747,7 @@ _cc6f84:
         call _cad00f
         wait_45f
         obj_script NPC_1
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         dlg DLG_193, {TEXT_ONLY, BOTTOM}
                 ; He owes allegiance to no one,
@@ -94006,19 +94006,19 @@ _cc7137:
         wait_30f
         loop 2
                 obj_script NPC_24
-                        action 32
+                        action HEAD_DOWN_DOWN
                         wait 2
                         dir DOWN
                         wait 2
                         end
                 obj_script NPC_24
-                        action 32
+                        action HEAD_DOWN_DOWN
                         wait 2
                         dir DOWN
                         wait 2
                         end
                 obj_script NPC_24
-                        action 32
+                        action HEAD_DOWN_DOWN
                         wait 2
                         dir DOWN
                         end
@@ -94030,7 +94030,7 @@ _cc7137:
                 ; not enough manpower, though_
         wait_1s
         obj_script NPC_24
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_90f
         dlg DLG_1615, BOTTOM
@@ -94145,7 +94145,7 @@ _cc71f1:
                 end
         wait_1s
         obj_script NPC_24
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -94176,7 +94176,7 @@ _cc7224:
                 end
         wait_1s
         obj_script TERRA
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_90f
         play_song AWAKENING
@@ -94194,7 +94194,7 @@ _cc7224:
                 end
         wait_90f
         obj_script TERRA
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -94423,7 +94423,7 @@ _cc73e1:
         wait_30f
         loop 2
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         wait 1
                         end
                 obj_script SLOT_1
@@ -94434,7 +94434,7 @@ _cc73e1:
                 speed FAST
                 move LEFT, 1
                 move UP_LEFT
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         if_switch $022F=0, _cc7451
         return
@@ -94447,7 +94447,7 @@ _cc7409:
         wait_30f
         loop 2
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         wait 1
                         end
                 obj_script SLOT_1
@@ -94458,7 +94458,7 @@ _cc7409:
                 speed FAST
                 move LEFT, 2
                 move UP_LEFT
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         if_switch $022F=0, _cc7451
         return
@@ -94471,7 +94471,7 @@ _cc7431:
         wait_30f
         loop 2
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         wait 1
                         end
                 obj_script SLOT_1
@@ -94481,7 +94481,7 @@ _cc7431:
         obj_script SLOT_1
                 speed FAST
                 move UP_LEFT
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
 _cc7451:
         wait_1s
@@ -94508,10 +94508,10 @@ _cc7451:
         sfx SFX::KEFKA_LAUGH
         loop 12
                 obj_script NPC_8
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_8
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_8
@@ -94521,10 +94521,10 @@ _cc7451:
         sfx SFX::KEFKA_LAUGH
         loop 6
                 obj_script NPC_8
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_8
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_8
@@ -94534,10 +94534,10 @@ _cc7451:
         sfx SFX::KEFKA_LAUGH
         loop 12
                 obj_script NPC_8
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_8
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_8
@@ -94569,7 +94569,7 @@ _cc7451:
                 ; Now you're useless to me!
         wait_30f
         obj_script NPC_8
-                action 14
+                action ATTACKING_3
                 end
         obj_script NPC_10
                 speed FAST
@@ -94589,7 +94589,7 @@ _cc7451:
                 end
         wait_30f
         obj_script NPC_8
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script NPC_10
                 speed FASTER
@@ -94612,18 +94612,18 @@ _cc7451:
                 ; KEFKA: And you! Take a hike!
         wait_30f
         obj_script NPC_8
-                action 23
+                action ARMS_UP_UP
                 end
         wait_30f
         obj_script NPC_8, ASYNC
-                action 10
+                action READY
                 end
         obj_script NPC_9
                 speed FAST
                 move DOWN_RIGHT
                 end
         obj_script NPC_8, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script NPC_9
                 move DOWN_LEFT
@@ -94676,10 +94676,10 @@ _cc7451:
         sfx SFX::KEFKA_LAUGH
         loop 12
                 obj_script NPC_8
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_8
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_8
@@ -94701,7 +94701,7 @@ _cc7451:
 _cc7565:
         obj_script SLOT_1
                 anim_off
-                action 9
+                action NEAR_FATAL
                 speed NORMAL
                 move DOWN_RIGHT
                 end
@@ -94710,7 +94710,7 @@ _cc7565:
 _cc7573:
         obj_script SLOT_1
                 anim_off
-                action 9
+                action NEAR_FATAL
                 speed NORMAL
                 move DOWN_LEFT
                 end
@@ -94719,7 +94719,7 @@ _cc7573:
 _cc7581:
         obj_script SLOT_1
                 anim_off
-                action 9
+                action NEAR_FATAL
                 speed NORMAL
                 move DOWN, 1
                 end
@@ -94732,7 +94732,7 @@ _cc7588:
                 end
         sfx SFX::FALLING
         obj_script SLOT_1
-                action 22
+                action ARMS_UP_DOWN
                 speed FASTER
                 move DOWN, 1
                 end
@@ -94746,10 +94746,10 @@ _cc7588:
         wait_fade
         obj_script SLOT_1
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed FASTER
                 move DOWN, 3
-                action 9
+                action NEAR_FATAL
                 speed SLOW
                 move DOWN_LEFT, 3
                 anim_on
@@ -94762,7 +94762,7 @@ _cc7588:
 _cc75bb:
         obj_script SLOT_1
                 speed NORMAL
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_off
                 move DOWN_RIGHT
                 end
@@ -94771,7 +94771,7 @@ _cc75bb:
 _cc75c9:
         obj_script SLOT_1
                 speed NORMAL
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_off
                 move RIGHT, 1
                 end
@@ -94790,7 +94790,7 @@ _cc75d0:
         obj_script SLOT_1
                 pos {40, 26}
                 speed NORMAL
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         unlock_camera
         show_obj SLOT_1
@@ -94799,7 +94799,7 @@ _cc75d0:
                 anim_on
                 jump_low
                 move DOWN, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 layer 0
                 end
         player_ctrl_on
@@ -94815,7 +94815,7 @@ _cc75f6:
                 jump_low
                 move UP, 1
                 anim_off
-                action 28
+                action WAVING_2_UP
                 end
         sfx SFX::ELEVATOR
         obj_script SLOT_1, ASYNC
@@ -94839,7 +94839,7 @@ _cc75f6:
         obj_script SLOT_1
                 layer 3
                 anim_off
-                action 28
+                action WAVING_2_UP
                 end
         fade_in
         wait_fade
@@ -94866,7 +94866,7 @@ _cc75f6:
 _cc7651:
         obj_script SLOT_1
                 speed NORMAL
-                action 9
+                action NEAR_FATAL
                 anim_off
                 move DOWN_LEFT
                 end
@@ -94875,7 +94875,7 @@ _cc7651:
 _cc765f:
         obj_script SLOT_1
                 speed NORMAL
-                action 9
+                action NEAR_FATAL
                 anim_off
                 move LEFT, 1
                 end
@@ -94888,7 +94888,7 @@ _cc7666:
         load_map 263, {16, 9}, DOWN, STARTUP_EVENT
         obj_script SLOT_1
                 anim_off
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 move DOWN, 6
                 move RIGHT, 3
                 move DOWN_RIGHT, 2
@@ -94963,7 +94963,7 @@ _cc76cc:
                 jump_low
                 move RIGHT, 1
                 anim_off
-                action 15 | ACTION_H_FLIP
+                action JUMPING_FLIP
                 end
         obj_script SLOT_1
                 speed SLOW
@@ -94973,7 +94973,7 @@ _cc76cc:
                 speed NORMAL
                 jump_low
                 move RIGHT, 1
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_on
                 layer 0
                 end
@@ -94991,7 +94991,7 @@ _cc76f1:
                 jump_low
                 move LEFT, 1
                 anim_off
-                action 15
+                action JUMPING
                 end
         obj_script SLOT_1
                 speed SLOW
@@ -95001,7 +95001,7 @@ _cc76f1:
                 speed NORMAL
                 jump_low
                 move LEFT, 1
-                action 9
+                action NEAR_FATAL
                 anim_on
                 layer 0
                 end
@@ -95013,7 +95013,7 @@ _cc7716:
                 jump_low
                 move DOWN_LEFT
                 anim_off
-                action 9
+                action NEAR_FATAL
                 layer 3
                 end
         obj_script SLOT_1
@@ -95029,7 +95029,7 @@ _cc7716:
 _cc772c:
         obj_script SLOT_1
                 anim_off
-                action 23
+                action ARMS_UP_UP
                 move DOWN, 1
                 anim_on
                 end
@@ -95064,16 +95064,16 @@ _cc7771:
         obj_script SLOT_1
                 speed FAST
                 anim_off
-                action 27
+                action WAVING_1_UP
                 move DOWN, 1
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 move DOWN, 1
-                action 27
+                action WAVING_1_UP
                 move DOWN, 1
                 layer 3
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 move DOWN, 2
-                action 9
+                action NEAR_FATAL
                 end
         mod_bg_tiles BG1, {19, 24}, {1, 2}, ASYNC
                 .byte $33
@@ -95131,9 +95131,9 @@ _cc77ec:
         obj_script SLOT_1
                 speed FAST
                 anim_off
-                action 27
+                action WAVING_1_UP
                 move DOWN, 1
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 move DOWN, 1
                 end
         obj_script SLOT_1
@@ -95160,7 +95160,7 @@ _cc781b:
         obj_script SLOT_1
                 speed FAST
                 anim_off
-                action 27
+                action WAVING_1_UP
                 move UP, 1
                 end
         mod_bg_tiles BG1, {21, 24}, {1, 2}, ASYNC
@@ -95171,7 +95171,7 @@ _cc781b:
                 .byte $F2
         wait_bg
         obj_script SLOT_1
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 move UP, 1
                 speed NORMAL
                 anim_on
@@ -95206,11 +95206,11 @@ _cc787a:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 27
+                action WAVING_1_UP
                 move DOWN, 1
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 move DOWN, 1
-                action 27
+                action WAVING_1_UP
                 move DOWN, 1
                 end
         mod_bg_tiles BG1, {11, 17}, {1, 2}, ASYNC
@@ -95236,7 +95236,7 @@ _cc78a5:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 27
+                action WAVING_1_UP
                 move UP, 1
                 end
         mod_bg_tiles BG1, {11, 17}, {1, 2}, ASYNC
@@ -95247,9 +95247,9 @@ _cc78a5:
                 .byte $F2
         wait_bg
         obj_script SLOT_1
-                action 27 | ACTION_H_FLIP
+                action WAVING_1_UP_FLIP
                 move UP, 1
-                action 27
+                action WAVING_1_UP
                 move UP, 1
                 speed NORMAL
                 anim_on
@@ -95262,7 +95262,7 @@ _cc78d0:
                 layer 2
                 speed FAST
                 anim_off
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 move RIGHT, 8
                 anim_on
                 jump_low
@@ -95301,7 +95301,7 @@ _cc7905:
         sfx SFX::FALLING
         obj_script SLOT_1
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed FASTER
                 move DOWN, 4
                 end
@@ -95319,7 +95319,7 @@ _cc7905:
                 speed FAST
                 move DOWN, 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 layer 2
                 end
         show_obj SLOT_1
@@ -95328,7 +95328,7 @@ _cc7905:
                 speed FASTER
                 jump_low
                 move DOWN, 5
-                action 9
+                action NEAR_FATAL
                 anim_on
                 layer 0
                 end
@@ -95341,7 +95341,7 @@ _cc7937:
         pass_off SLOT_1
         obj_script SLOT_1
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 move RIGHT, 1
                 speed FAST
@@ -95352,7 +95352,7 @@ _cc7937:
                 move RIGHT, 1
                 speed SLOWER
                 move RIGHT, 1
-                action 9
+                action NEAR_FATAL
                 end
         pass_on SLOT_1
         flash RED
@@ -95372,7 +95372,7 @@ _cc7937:
                 end
         wait_30f
         obj_script SLOT_1
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         obj_script SLOT_1
                 dir LEFT
@@ -95380,7 +95380,7 @@ _cc7937:
         wait_30f
         loop 2
                 obj_script SLOT_1
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script SLOT_1
                         dir LEFT
@@ -95906,7 +95906,7 @@ _cc7a60:
                 ; And who might these dubious characters be? Your troops?
         wait_30f
         obj_script CELES
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_1s
         dlg DLG_1388
@@ -95915,7 +95915,7 @@ _cc7a60:
                 ; CID: Can it be true that you came here as a spy, seeking to cause an uprising?!
         wait_30f
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script LOCKE
@@ -95974,7 +95974,7 @@ _cc7a60:
                 ; Bring me those Magicite shards!
         wait_30f
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script LOCKE
@@ -96004,10 +96004,10 @@ _cc7d27:
         sfx SFX::KEFKA_LAUGH
         loop 12
                 obj_script NPC_14
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_14
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_30f
@@ -96021,7 +96021,7 @@ _cc7d27:
                 end
         wait_1s
         obj_script CELES
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_30f
         dlg DLG_1396
@@ -96030,7 +96030,7 @@ _cc7d27:
                 ; LOCKE: I_ _ _
         wait_30f
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         obj_script NPC_14
                 dir DOWN
@@ -96043,7 +96043,7 @@ _cc7d27:
                 end
         wait_30f
         obj_script NPC_14
-                action 27
+                action WAVING_1_UP
                 end
         wait_30f
         dlg DLG_1397
@@ -96070,7 +96070,7 @@ _cc7d27:
         dlg DLG_1398
                 ; KEFKA: Exterminate all of them!
         obj_script NPC_14
-                action 23
+                action ARMS_UP_UP
                 end
         sfx SFX::TORNADO
         flash RED
@@ -96084,7 +96084,7 @@ _cc7d27:
                 anim_on
                 end
         obj_script CELES, ASYNC
-                action 23
+                action ARMS_UP_UP
                 anim_off
                 speed NORMAL
                 jump_low
@@ -96110,24 +96110,24 @@ _cc7d27:
         obj_script LOCKE, ASYNC
                 speed FASTER
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 move UP, 3
-                action 40
+                action DEAD_HORZ
                 end
         obj_script SLOT_3, ASYNC
                 speed FASTER
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 move UP, 2
-                action 40
+                action DEAD_HORZ
                 end
         obj_script SLOT_4, ASYNC
                 speed FASTER
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 move UP, 1
                 move UP_RIGHT
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_15, ASYNC
                 move UP, 2
@@ -96176,7 +96176,7 @@ _cc7d27:
                 end
         wait_30f
         obj_script CELES
-                action 22
+                action ARMS_UP_DOWN
                 end
         sfx 2
         loop 31
@@ -96213,7 +96213,7 @@ _cc7d27:
                 end
         obj_script NPC_14
                 anim_off
-                action 31
+                action SURPRISED
                 speed FASTER
                 move UP, 8
                 move UP, 3
@@ -96251,7 +96251,7 @@ _cc7d27:
                 end
         obj_script LOCKE
                 speed SLOW
-                action 9
+                action NEAR_FATAL
                 end
         wait_90f
         obj_script LOCKE
@@ -96264,7 +96264,7 @@ _cc7d27:
                 end
         wait_1s
         obj_script LOCKE
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         dlg DLG_1400
@@ -96272,7 +96272,7 @@ _cc7d27:
         wait_90f
         obj_script SLOT_2
                 speed SLOW
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         obj_script SLOT_2
@@ -96286,7 +96286,7 @@ _cc7d27:
         wait_30f
         obj_script SLOT_3
                 speed SLOW
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         obj_script SLOT_3
@@ -96707,11 +96707,11 @@ _cc8022:
         sort_obj
         flash RED
         obj_script SLOT_1, ASYNC
-                action 11
+                action HIT
                 speed FAST
                 jump_high
                 move RIGHT, 2
-                action 40
+                action DEAD_HORZ
                 end
         obj_script NPC_1, ASYNC
                 speed FASTER
@@ -96755,7 +96755,7 @@ _cc8022:
         sort_obj
         switch $06A3=0
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 anim_on
                 end
         switch $0069=1
@@ -96837,11 +96837,11 @@ _cc818c:
                 ; LOCKE: __
         wait_30f
         obj_script LOCKE
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_30f
         obj_script NPC_9
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         obj_script NPC_9
                 dir RIGHT
@@ -96849,7 +96849,7 @@ _cc818c:
         wait_30f
         loop 3
                 obj_script NPC_9
-                        action 21 | ACTION_H_FLIP
+                        action EYES_CLOSED_RIGHT
                         end
                 obj_script NPC_9
                         dir RIGHT
@@ -96865,13 +96865,13 @@ _cc818c:
                 end
         wait_45f
         obj_script SLOT_2, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script SLOT_3, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script LOCKE
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_15f
         obj_script SLOT_2, ASYNC
@@ -96944,7 +96944,7 @@ _cc818c:
                 end
         wait_30f
         obj_script NPC_1
-                action 24
+                action ANGRY
                 end
         dlg DLG_1413
                 ; KEFKA: Crud!
@@ -96985,7 +96985,7 @@ _cc818c:
         wait_obj NPC_11
         wait_45f
         obj_script NPC_11
-                action 24
+                action ANGRY
                 end
         wait_30f
         dlg DLG_1415
@@ -97102,7 +97102,7 @@ _cc8342:
         obj_script SLOT_1
                 jump_low
                 move UP, 1
-                action 9
+                action NEAR_FATAL
                 end
         wait_2s
         sfx 95
@@ -97209,7 +97209,7 @@ _cc83e8:
         obj_script NPC_11
                 jump_low
                 move UP_LEFT
-                action 9
+                action NEAR_FATAL
                 end
         wait_90f
         dlg DLG_1716, BOTTOM
@@ -97225,9 +97225,9 @@ _cc83e8:
         wait_30f
         obj_script NPC_11, ASYNC
 _cc8415:
-                action 36
+                action WAGGING_FINGER_1
                 wait 1
-                action 37
+                action WAGGING_FINGER_2
                 wait 1
                 branch_end _cc8415
         dlg DLG_1717, BOTTOM
@@ -97240,30 +97240,30 @@ _cc8415:
                         end
                 sfx SFX::KEFKA_LAUGH
                 obj_script NPC_11
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_11
-                        action 30
+                        action LAUGHING_2
                         end
                 obj_script NPC_11
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_11
-                        action 30
+                        action LAUGHING_2
                         end
                 obj_script NPC_11
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_11
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         loop 9
                 obj_script NPC_11
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_11
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_1s
@@ -97281,7 +97281,7 @@ _cc8415:
         wait_30f
         loop 2
                 obj_script NPC_11
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script NPC_11
                         dir DOWN
@@ -97301,7 +97301,7 @@ _cc8415:
                 end
         unlock_camera
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
@@ -97309,7 +97309,7 @@ _cc8415:
         wait_30f
         loop 2
                 obj_script SLOT_1
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script SLOT_1
                         dir DOWN
@@ -97335,7 +97335,7 @@ _cc8490:
                 end
         wait_30f
         obj_script NPC_6
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 end
         wait_90f
         sfx SFX::DOOR_OPEN
@@ -98166,7 +98166,7 @@ _cc8a96:
                 move UP, 4
                 dir DOWN
                 wait 2
-                action 25 | ACTION_H_FLIP
+                action WAVING_1_DOWN_FLIP
                 end
         wait_30f
         obj_script SLOT_1
@@ -98291,20 +98291,20 @@ _cc8ba5:
         return
 _cc8bb7:
         obj_script NPC_1
-                action 42
+                action NPC_WAVING_1
                 end
         wait_30f
         obj_script SLOT_1
-                action 27
+                action WAVING_1_UP
                 end
         obj_script SLOT_2
-                action 27
+                action WAVING_1_UP
                 end
         obj_script SLOT_3
-                action 27
+                action WAVING_1_UP
                 end
         obj_script SLOT_4
-                action 27
+                action WAVING_1_UP
                 end
         wait_2s
         obj_script SLOT_1, ASYNC
@@ -98354,7 +98354,7 @@ _cc8c16:
                 ; Well, let's let him stew in his cell for a while. Then we'll decide what to do.
         wait_1s
         obj_script NPC_1
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 end
         wait_90f
         dlg DLG_1825
@@ -98385,7 +98385,7 @@ _cc8c4d:
 _cc8c58:
         wait_30f
         obj_script NPC_1
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 end
         wait_1s
         dlg DLG_1827
@@ -98475,7 +98475,7 @@ _cc8cf9:
         return
 _cc8d09:
         obj_script NPC_1
-                action 42
+                action NPC_WAVING_1
                 wait 3
                 dir DOWN
                 end
@@ -98550,7 +98550,7 @@ _cc8d98:
         return
 _cc8da3:
         obj_script NPC_1
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 12
                 dir DOWN
                 end
@@ -98886,7 +98886,7 @@ _cc8f62:
                 end
         wait_30f
         obj_script NPC_2
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 7
                 dir DOWN
                 end
@@ -98930,7 +98930,7 @@ _cc8fc1:
                 end
         wait_30f
         obj_script NPC_2
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         dlg DLG_1816
                 ; LEO: I'll be waiting for you in Albrook.
@@ -99097,7 +99097,7 @@ _cc9058:
                 ; LOCKE: The rest of you wait here. I smell a rat_
         wait_30f
         obj_script EDGAR
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 4
                 dir RIGHT
                 end
@@ -99118,7 +99118,7 @@ _cc9058:
                 end
         wait_30f
         obj_script LOCKE
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 4
                 dir DOWN
                 end
@@ -99141,7 +99141,7 @@ _cc9058:
                 ; And you be careful!
         wait_30f
         obj_script LOCKE
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 4
                 dir LEFT
                 end
@@ -99246,20 +99246,20 @@ _cc91d9:
                 move UP, 7
                 end
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
                 end
         wait_30f
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
                 end
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
@@ -99492,7 +99492,7 @@ _cc9382:
         show_obj NPC_3
         sort_obj
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_2, ASYNC
                 move RIGHT, 1
@@ -99578,7 +99578,7 @@ _cc93f4:
         obj_script SLOT_1
                 move DOWN_LEFT, 5
                 move DOWN, 4
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         dlg DLG_1365
@@ -99942,7 +99942,7 @@ _cc95ff:
                 ; You're Returners?
         wait_15f
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         wait_30f
         obj_script SLOT_1
@@ -99979,7 +99979,7 @@ _cc9627:
                 ; I've heard of you!
         wait_15f
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         pass_off NPC_1
         obj_script NPC_1
@@ -99995,7 +99995,7 @@ _cc9627:
                 ; While I distract the soldiers, climb onto the steel tower from this box, and enter the facility!
         wait_30f
         obj_script SLOT_1
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -100021,27 +100021,27 @@ _cc9659:
                 speed SLOW
                 end
         obj_script NPC_1
-                action 42
+                action NPC_WAVING_1
                 jump_low
                 move RIGHT, 1
                 end
         obj_script NPC_1
-                action 41
+                action NPC_SPECIAL_1
                 jump_low
                 move RIGHT, 1
                 end
         obj_script NPC_1
-                action 43
+                action NPC_WAVING_2
                 jump_low
                 move RIGHT, 1
                 end
         obj_script NPC_1
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 jump_low
                 move RIGHT, 1
                 end
         obj_script NPC_1
-                action 41
+                action NPC_SPECIAL_1
                 jump_low
                 move RIGHT, 1
                 end
@@ -100064,13 +100064,13 @@ _cc9659:
                         jump_low
                         end
                 obj_script NPC_1
-                        action 42
+                        action NPC_WAVING_1
                         end
                 obj_script NPC_1
-                        action 41
+                        action NPC_SPECIAL_1
                         end
                 obj_script NPC_1
-                        action 43
+                        action NPC_WAVING_2
                         end
                 end_loop
         obj_script NPC_1
@@ -100118,7 +100118,7 @@ _cc96c9:
         obj_script SLOT_1
                 jump_low
                 move LEFT, 1
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         obj_script SLOT_1
@@ -100127,7 +100127,7 @@ _cc96c9:
                 move LEFT, 1
                 move UP, 3
                 move RIGHT, 8
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_1s
         dlg DLG_1361
@@ -100143,7 +100143,7 @@ _cc96c9:
                 end
         wait_30f
         obj_script NPC_1
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 end
         wait_30f
         obj_script NPC_2
@@ -100156,17 +100156,17 @@ _cc96c9:
                 move RIGHT, 5
                 move DOWN, 1
                 move RIGHT, 3
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 14 | ACTION_H_FLIP
+                action ATTACKING_3_FLIP
                 jump_low
                 move UP, 1
                 layer 3
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 anim_on
                 end
         obj_script SLOT_1
@@ -100191,13 +100191,13 @@ _cc972c:
                 move DOWN, 2
                 end
         obj_script SLOT_1, ASYNC
-                action 31
+                action SURPRISED
                 wait 2
                 speed FAST
                 move DOWN, 1
                 move RIGHT, 8
                 move UP, 1
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_1
                 move RIGHT, 6
@@ -100243,7 +100243,7 @@ _cc9781:
         if_switch $0137=0, EventReturn
         loop 3
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         end
                 obj_script SLOT_1
                         dir DOWN
@@ -100288,12 +100288,12 @@ _cc9798:
                 layer 2
                 end
         obj_script NPC_2, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move LEFT, 1
                 end
         obj_script NPC_6
-                action 22
+                action ARMS_UP_DOWN
                 jump_high
                 move RIGHT, 1
                 end
@@ -100315,7 +100315,7 @@ _cc9798:
                 end
         wait_30f
         obj_script NPC_2, ASYNC
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 jump_high
                 move DOWN, 2
@@ -100323,7 +100323,7 @@ _cc9798:
                 move DOWN, 2
                 end
         obj_script NPC_6
-                action 22
+                action ARMS_UP_DOWN
                 anim_off
                 jump_high
                 move DOWN, 2
@@ -100331,10 +100331,10 @@ _cc9798:
                 move DOWN, 2
                 end
         obj_script NPC_2, ASYNC
-                action 9
+                action NEAR_FATAL
                 end
         obj_script NPC_6
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_30f
         obj_script NPC_2, ASYNC
@@ -100349,10 +100349,10 @@ _cc9798:
                 end
         wait_30f
         obj_script NPC_2, ASYNC
-                action 16
+                action CASTING_1
                 end
         obj_script NPC_6
-                action 16 | ACTION_H_FLIP
+                action CASTING_1_FLIP
                 end
         obj_script SLOT_1
                 dir UP
@@ -100372,7 +100372,7 @@ _cc9798:
                 speed SLOW
                 move DOWN, 2
                 move DOWN_LEFT
-                action 9
+                action NEAR_FATAL
                 speed NORMAL
                 end
         player_ctrl_on
@@ -101712,7 +101712,7 @@ _cca06f:
                 ;
                 ; GIRL: _head_hurts_
         obj_script TERRA
-                action 9
+                action NEAR_FATAL
                 end
         wait_30f
         loop 3
@@ -101745,9 +101745,9 @@ _cca06f:
         dlg DLG_23
                 ; OLD MAN: Easy! This is a Slave Crown. The others had complete control over you while you were wearing it.
         obj_script TERRA
-                action 1
+                action WALKING_DOWN_2
                 wait 8
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 8
                 end
         dlg DLG_24
@@ -101757,23 +101757,23 @@ _cca06f:
                 ; ___
         wait_2s
         obj_script TERRA
-                action 1
+                action WALKING_DOWN_2
                 wait 8
                 end
         loop 3
                 obj_script TERRA
-                        action 35
+                        action HEAD_TURNED
                         wait 1
                         end
                 obj_script TERRA
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         wait 1
                         end
                 end_loop
         obj_script TERRA
-                action 1
+                action WALKING_DOWN_2
                 wait 4
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         hide_obj NPC_2
@@ -102236,7 +102236,7 @@ _cca2e5:
                 end
         shake ALL, 2, 0
         obj_script TERRA
-                action 31
+                action SURPRISED
                 end
         mod_bg_tiles BG1, {55, 5}, {3, 3}, ASYNC
                 .byte $94,$27,$27
@@ -102252,7 +102252,7 @@ _cca2e5:
         obj_script TERRA
                 speed FASTER
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 move DOWN, 1
                 anim_on
                 end
@@ -102300,7 +102300,7 @@ _cca2e5:
         show_obj TERRA
         sort_obj
         obj_script TERRA
-                action 40
+                action DEAD_HORZ
                 anim_off
                 layer 2
                 move DOWN, 7
@@ -102309,7 +102309,7 @@ _cca2e5:
         wait_2s
         obj_script TERRA
                 anim_on
-                action 9
+                action NEAR_FATAL
                 layer 3
                 end
         wait_1s
@@ -102319,7 +102319,7 @@ _cca2e5:
                 move DOWN, 1
                 end
         obj_script TERRA
-                action 9
+                action NEAR_FATAL
                 end
         wait_2s
         mosaic 15
@@ -102327,7 +102327,7 @@ _cca2e5:
         mosaic 15
         wait_1s
         obj_script TERRA
-                action 40
+                action DEAD_HORZ
                 end
         wait_30f
         mosaic 1
@@ -102352,7 +102352,7 @@ _cca2e5:
                 speed NORMAL
                 end
         obj_script NPC_14
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         show_obj NPC_14
         show_obj NPC_11
@@ -102376,7 +102376,7 @@ _cca2e5:
                 end
         wait_30f
         obj_script NPC_11
-                action 23
+                action ARMS_UP_UP
                 end
         wait_2s
         obj_script NPC_11
@@ -102390,13 +102390,13 @@ _cca2e5:
                 end
         wait_1s
         obj_script NPC_11
-                action 33
+                action HEAD_DOWN_UP
                 wait 2
                 dir UP
                 end
         wait_1s
         obj_script NPC_14
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 1
                 dir DOWN
                 end
@@ -102409,9 +102409,9 @@ _cca2e5:
         wait_30f
         obj_script NPC_11, ASYNC
 _cca4a6:
-                action 29
+                action LAUGHING_1
                 wait 1
-                action 30
+                action LAUGHING_2
                 wait 1
                 branch_end _cca4a6
                 ; set_script_mode EVENT
@@ -102468,7 +102468,7 @@ _cca4a6:
                 end
         wait_30f
         obj_script NPC_2
-                action 42
+                action NPC_WAVING_1
                 end
         wait_30f
         dlg DLG_38, TEXT_ONLY
@@ -102491,7 +102491,7 @@ _cca4a6:
                 end
         wait_30f
         obj_script NPC_2
-                action 42
+                action NPC_WAVING_1
                 end
         wait_30f
         dlg DLG_40, {ASYNC, TEXT_ONLY}
@@ -102500,7 +102500,7 @@ _cca4a6:
                 ; Long live Emperor Gestahl!!!
         obj_script NPC_3, ASYNC
 _cca53d:
-                action 25
+                action WAVING_1_DOWN
                 wait 4
                 dir DOWN
                 wait 4
@@ -102508,7 +102508,7 @@ _cca53d:
                 end
         obj_script NPC_1, ASYNC
 _cca548:
-                action 25
+                action WAVING_1_DOWN
                 wait 4
                 dir DOWN
                 wait 4
@@ -102516,7 +102516,7 @@ _cca548:
                 end
         obj_script NPC_4, ASYNC
 _cca553:
-                action 25
+                action WAVING_1_DOWN
                 wait 4
                 dir DOWN
                 wait 4
@@ -102524,7 +102524,7 @@ _cca553:
                 end
         obj_script NPC_7, ASYNC
 _cca55e:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102532,7 +102532,7 @@ _cca55e:
                 end
         obj_script NPC_8, ASYNC
 _cca569:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102540,7 +102540,7 @@ _cca569:
                 end
         obj_script NPC_9, ASYNC
 _cca574:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102548,7 +102548,7 @@ _cca574:
                 end
         obj_script NPC_10, ASYNC
 _cca57f:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102556,7 +102556,7 @@ _cca57f:
                 end
         obj_script NPC_11, ASYNC
 _cca58a:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102564,7 +102564,7 @@ _cca58a:
                 end
         obj_script NPC_12, ASYNC
 _cca595:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102572,7 +102572,7 @@ _cca595:
                 end
         obj_script NPC_13, ASYNC
 _cca5a0:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102580,7 +102580,7 @@ _cca5a0:
                 end
         obj_script NPC_14, ASYNC
 _cca5ab:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102588,7 +102588,7 @@ _cca5ab:
                 end
         obj_script NPC_15, ASYNC
 _cca5b6:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102596,7 +102596,7 @@ _cca5b6:
                 end
         obj_script NPC_16, ASYNC
 _cca5c1:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102604,7 +102604,7 @@ _cca5c1:
                 end
         obj_script NPC_17, ASYNC
 _cca5cc:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102612,7 +102612,7 @@ _cca5cc:
                 end
         obj_script NPC_18, ASYNC
 _cca5d7:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102620,7 +102620,7 @@ _cca5d7:
                 end
         obj_script NPC_19, ASYNC
 _cca5e2:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102628,7 +102628,7 @@ _cca5e2:
                 end
         obj_script NPC_20, ASYNC
 _cca5ed:
-                action 27
+                action WAVING_1_UP
                 wait 4
                 dir UP
                 wait 4
@@ -102646,7 +102646,7 @@ _cca5ed:
         sort_obj
         obj_script TERRA
                 layer 0
-                action 40
+                action DEAD_HORZ
                 end
         fade_in 2
         wait_fade
@@ -102722,19 +102722,19 @@ _cca5ed:
                 ; OLD MAN: Took you long enough!
                 ; How goes the robbing and plundering trade?
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE
-                action 1
+                action WALKING_DOWN_2
                 end
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE
-                action 1
+                action WALKING_DOWN_2
                 end
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         wait_30f
         switch $01CC=1
@@ -102787,11 +102787,11 @@ _cca5ed:
                 end
         loop 4
                 obj_script LOCKE
-                        action 36
+                        action WAGGING_FINGER_1
                         wait 1
                         end
                 obj_script LOCKE
-                        action 37
+                        action WAGGING_FINGER_2
                         wait 1
                         end
                 end_loop
@@ -102822,7 +102822,7 @@ _cca5ed:
                 move LEFT, 1
                 dir DOWN
                 wait 2
-                action 45
+                action NPC_SPECIAL_2
                 wait 2
                 dir DOWN
                 end
@@ -102834,7 +102834,7 @@ _cca5ed:
                 ; That girl wasn't responsible for her actions. We must get her to understand our dilemma!
         wait_30f
         obj_script NPC_2
-                action 45
+                action NPC_SPECIAL_2
                 end
         wait_30f
         obj_script LOCKE
@@ -102843,7 +102843,7 @@ _cca5ed:
                 end
         wait_15f
         obj_script LOCKE
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -102875,7 +102875,7 @@ _cca5ed:
         show_obj TERRA
         sort_obj
         obj_script TERRA
-                action 40
+                action DEAD_HORZ
                 end
         lock_camera
         obj_script LOCKE
@@ -102889,11 +102889,11 @@ _cca5ed:
         wait_2s
         sfx SFX::FALLING
         obj_script LOCKE
-                action 25
+                action WAVING_1_DOWN
                 anim_off
                 move DOWN, 8
                 anim_on
-                action 9
+                action NEAR_FATAL
                 end
         sfx 181
         wait_45f
@@ -102913,7 +102913,7 @@ _cca5ed:
                 end
         wait_30f
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_90f
         obj_script LOCKE
@@ -102921,7 +102921,7 @@ _cca5ed:
                 end
         wait_1s
         obj_script LOCKE
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script LOCKE
                 dir DOWN
@@ -102929,7 +102929,7 @@ _cca5ed:
         wait_30f
         loop 3
                 obj_script LOCKE
-                        action 19
+                        action EYES_CLOSED_DOWN
                         end
                 obj_script LOCKE
                         dir DOWN
@@ -103102,7 +103102,7 @@ _cca5ed:
                 move DOWN, 1
                 dir RIGHT
                 wait 1
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_30f
         obj_script NPC_2
@@ -103113,7 +103113,7 @@ _cca5ed:
         obj_script NPC_2
                 move DOWN_LEFT
                 wait 2
-                action 25
+                action WAVING_1_DOWN
                 end
         wait_30f
         dlg DLG_52, BOTTOM
@@ -103128,10 +103128,10 @@ _cca5ed:
                 end
         wait_1s
         obj_script NPC_1, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script NPC_2
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_15f
         obj_script NPC_1, ASYNC
@@ -103157,7 +103157,7 @@ _cca5ed:
                 dir DOWN
                 end
         obj_script NPC_1
-                action 25
+                action WAVING_1_DOWN
                 end
         obj_script NPC_2
                 jump_high
@@ -103173,7 +103173,7 @@ _cca5ed:
                 dir DOWN
                 end
         obj_script NPC_2
-                action 25
+                action WAVING_1_DOWN
                 end
         wait_30f
         pass_on NPC_1
@@ -103199,7 +103199,7 @@ _cca5ed:
                 end
         wait_30f
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 end
@@ -103382,7 +103382,7 @@ _ccaaba:
         and_status SLOT_4, NONE
         party_pos {14, 11}
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 end
         restore_default_party
         return
@@ -103933,13 +103933,13 @@ _ccadbf:
         show_obj TERRA
         sort_obj
         obj_script TERRA
-                action 40
+                action DEAD_HORZ
                 end
         fade_in 8
         wait_fade
         wait_30f
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_1s
         obj_script LOCKE
@@ -103953,7 +103953,7 @@ _ccadbf:
                 ; We're in your debt!
         wait_30f
         obj_script LOCKE
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -104026,7 +104026,7 @@ _ccadbf:
         create_obj TERRA
         obj_script TERRA
                 pos {6, 31}
-                action 40
+                action DEAD_HORZ
                 speed SLOW
                 end
         show_obj TERRA
@@ -104037,7 +104037,7 @@ _ccadbf:
                 end
         wait_1s
         obj_script LOCKE
-                action 9 | ACTION_H_FLIP
+                action NEAR_FATAL_FLIP
                 end
         wait_2s
         obj_script LOCKE
@@ -104054,7 +104054,7 @@ _ccadbf:
                 ; LOCKE: I think this switch'll_
         wait_30f
         obj_script LOCKE
-                action 23
+                action ARMS_UP_UP
                 end
         wait_30f
         sfx 150
@@ -104074,12 +104074,12 @@ _ccadbf:
         create_obj TERRA
         obj_script TERRA
                 pos {7, 31}
-                action 40
+                action DEAD_HORZ
                 speed NORMAL
                 end
         obj_script LOCKE
                 pos {5, 29}
-                action 23
+                action ARMS_UP_UP
                 speed NORMAL
                 end
         show_obj TERRA
@@ -104093,7 +104093,7 @@ _ccadbf:
                 end
         wait_30f
         obj_script TERRA
-                action 9
+                action NEAR_FATAL
                 end
         wait_90f
         obj_script LOCKE
@@ -104109,7 +104109,7 @@ _ccadbf:
                 ; You back with us now?!
         wait_30f
         obj_script TERRA
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_1s
         obj_script TERRA
@@ -104120,30 +104120,30 @@ _ccadbf:
                 ; LOCKE: Save your thanks for the Moogles!
         wait_30f
         obj_script TERRA
-                action 9
+                action NEAR_FATAL
                 end
         dlg DLG_61
                 ; TERRA: Uhh_I can't remember anything_past or present_
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE
                 dir DOWN
                 end
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE
                 dir DOWN
                 end
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE
                 dir DOWN
                 end
         obj_script LOCKE
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE
                 dir DOWN
@@ -104154,7 +104154,7 @@ _ccadbf:
         dlg DLG_62
                 ; LOCKE: You have amnesia?!
         obj_script TERRA
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         obj_script TERRA
@@ -104166,7 +104166,7 @@ _ccadbf:
                 end
         wait_1s
         obj_script TERRA
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -104180,7 +104180,7 @@ _ccadbf:
                 ; Don't forget about it!
         wait_1s
         obj_script TERRA
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         obj_script TERRA
                 dir LEFT
@@ -104188,7 +104188,7 @@ _ccadbf:
         wait_30f
         loop 4
                 obj_script TERRA
-                        action 21
+                        action EYES_CLOSED_LEFT
                         end
                 obj_script TERRA
                         dir LEFT
@@ -104196,7 +104196,7 @@ _ccadbf:
                 end_loop
         wait_30f
         obj_script LOCKE
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         wait_1s
         obj_script LOCKE
@@ -104317,13 +104317,13 @@ _ccb07b:
                 move DOWN, 1
                 end
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         obj_script SLOT_1
                 dir DOWN
                 end
         obj_script SLOT_1
-                action 31
+                action SURPRISED
                 end
         obj_script SLOT_1
                 dir DOWN
@@ -104387,20 +104387,20 @@ _ccb10b:
                 dir DOWN
                 end
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
                 end
         wait_30f
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
                 end
         obj_script SLOT_1
-                action 19
+                action EYES_CLOSED_DOWN
                 end
         obj_script SLOT_1
                 dir DOWN
@@ -104479,7 +104479,7 @@ _ccb154:
                 end
         wait_30f
         obj_script EDGAR
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -104494,15 +104494,15 @@ _ccb154:
                 end
         wait_30f
         obj_script EDGAR
-                action 28
+                action WAVING_2_UP
                 wait 1
-                action 27
+                action WAVING_1_UP
                 end
         wait_30f
         obj_script EDGAR
-                action 28
+                action WAVING_2_UP
                 wait 1
-                action 27
+                action WAVING_1_UP
                 end
         wait_30f
         obj_script EDGAR
@@ -104648,7 +104648,7 @@ _ccb230:
         sfx SFX::DOOR_KNOCK
         obj_script WEDGE
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 move DOWN, 6
                 speed NORMAL
@@ -104667,7 +104667,7 @@ _ccb230:
         sfx SFX::DOOR_KNOCK
         obj_script EDGAR
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 move DOWN, 5
                 speed NORMAL
@@ -104700,7 +104700,7 @@ _ccb230:
                 ; TERRA: It's all my fault_
         wait_30f
         obj_script TERRA
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_30f
         obj_script EDGAR, ASYNC
@@ -104731,11 +104731,11 @@ _ccb230:
         wait_30f
         loop 2
                 obj_script EDGAR
-                        action 35
+                        action HEAD_TURNED
                         wait 1
                         end
                 obj_script EDGAR
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         wait 1
                         end
                 end_loop
@@ -104845,7 +104845,7 @@ _ccb37f:
         sfx SFX::DOOR_KNOCK
         obj_script SLOT_1
                 anim_off
-                action 11
+                action HIT
                 end
         obj_script SLOT_1
                 speed FASTER
@@ -104976,24 +104976,24 @@ _ccb3fa:
                 wait 8
                 end
         obj_script WEDGE
-                action 10
+                action READY
                 end
         wait_1s
         obj_script TERRA
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         obj_script TERRA
                 dir RIGHT
                 end
         wait_15f
         obj_script TERRA
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         obj_script TERRA
                 dir RIGHT
                 end
         obj_script TERRA
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 end
         obj_script TERRA
                 dir RIGHT
@@ -105009,7 +105009,7 @@ _ccb3fa:
                 end
         wait_15f
         obj_script EDGAR
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_90f
         obj_script EDGAR
@@ -105105,7 +105105,7 @@ _ccb4da:
         wait_fade
         wait_2s
         obj_script NPC_6
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -105159,7 +105159,7 @@ _ccb4da:
                 ; The increased use of magitek power'll surely lead to global destruction_
         wait_30f
         obj_script NPC_6
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 end
         wait_2s
         dlg DLG_841
@@ -105234,7 +105234,7 @@ _ccb4da:
                 ; You're all right!
         wait_30f
         obj_script SABIN
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -105263,7 +105263,7 @@ _ccb4da:
                 end
         wait_30f
         obj_script CYAN
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 6
                 dir LEFT
                 end
@@ -105276,10 +105276,10 @@ _ccb4da:
                 dir DOWN
                 end
         obj_script GAU
-                action 29
+                action LAUGHING_1
                 end
         obj_script GAU
-                action 30
+                action LAUGHING_2
                 end
         obj_script GAU
                 dir LEFT
@@ -105289,13 +105289,13 @@ _ccb4da:
                 ; GAU: GAU_GAU!
         wait_1s
         obj_script SABIN
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_45f
         dlg DLG_845
                 ; SABIN: The people of Doma were wiped out by the Empire_
         obj_script CYAN
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_90f
         dlg DLG_846
@@ -105316,7 +105316,7 @@ _ccb4da:
                 ; If we make that mistake_
         wait_30f
         obj_script NPC_6
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 end
         wait_2s
         sfx SFX::DOOR_OPEN
@@ -105384,16 +105384,16 @@ _ccb4da:
                 ; LOCKE: The Empire's poised to attack Narshe right now!
                 ; EDGAR: What?!
         obj_script EDGAR, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script CYAN, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SABIN, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script WEDGE
-                action 31
+                action SURPRISED
                 end
         wait_15f
         obj_script EDGAR, ASYNC
@@ -105422,24 +105422,24 @@ _ccb4da:
                 end
         wait_30f
         obj_script CYAN
-                action 31
+                action SURPRISED
                 end
         dlg DLG_852
                 ; CYAN: Grrr!
                 ; I knew she seemed familiar.
                 ; Sir GAU, out of my way!
         obj_script CYAN
-                action 22
+                action ARMS_UP_DOWN
                 end
         obj_script GAU
-                action 31
+                action SURPRISED
                 anim_off
                 end
         obj_script GAU
                 pos {109, 20}
                 end
         obj_script TERRA
-                action 31
+                action SURPRISED
                 pos {108, 19}
                 end
         sfx 219
@@ -105453,10 +105453,10 @@ _ccb4da:
                 end
         loop 7
                 obj_script GAU
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script GAU
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script GAU
@@ -105494,7 +105494,7 @@ _ccb4da:
                 move RIGHT, 1
                 move UP_RIGHT
                 dir LEFT
-                action 14
+                action ATTACKING_3
                 speed NORMAL
                 end
         wait_30f
@@ -105515,7 +105515,7 @@ _ccb4da:
                 ; that?
         wait_30f
         obj_script TERRA
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_90f
         obj_script TERRA
@@ -105529,7 +105529,7 @@ _ccb4da:
                 ; TERRA: I was also an Imperial soldier.
                 ; CYAN: WHAT!!
         obj_script CYAN
-                action 31
+                action SURPRISED
                 end
         wait_1s
         obj_script CYAN
@@ -105547,7 +105547,7 @@ _ccb4da:
                 end
         wait_30f
         obj_script TERRA
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         wait_1s
         obj_script EDGAR
@@ -105555,7 +105555,7 @@ _ccb4da:
                 end
         wait_30f
         obj_script EDGAR
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         dlg DLG_857
@@ -105596,7 +105596,7 @@ _ccb4da:
                 end
         wait_30f
         obj_script SABIN
-                action 16
+                action CASTING_1
                 end
         wait_30f
         obj_script CYAN
@@ -105621,31 +105621,31 @@ _ccb4da:
                 ; Emergency!!
                 ; The Empire cometh!!
         obj_script EDGAR, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script CYAN, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script SABIN, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script TERRA, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script LOCKE, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script CELES, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script GAU, ASYNC
-                action 31
+                action SURPRISED
                 end
         obj_script NPC_2, ASYNC
                 dir DOWN
                 end
         obj_script WEDGE
-                action 31
+                action SURPRISED
                 end
         wait_1s
         fade_out_song $40
@@ -105766,10 +105766,10 @@ _ccb8a1:
         obj_script NPC_1, ASYNC
                 anim_off
 _ccb8b0:
-                action 31
+                action SURPRISED
                 jump_low
                 move RIGHT, 1
-                action 24
+                action ANGRY
                 jump_low
                 move RIGHT, 1
                 branch _ccb8b0
@@ -105942,7 +105942,7 @@ _ccb8c0:
                 ; ELDER: We really have no choice.
                 ; Let's make ready for war!
         obj_script WEDGE
-                action 34
+                action HEAD_DOWN_LEFT
                 wait 2
                 dir LEFT
                 end
@@ -106005,52 +106005,52 @@ _ccb8c0:
         dlg DLG_864
                 ; EDGAR: Then we're going up after it!
         obj_script TERRA, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
         obj_script EDGAR, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
         obj_script WEDGE, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
         obj_script SABIN, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
         obj_script CYAN, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
         obj_script GAU, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
         obj_script LOCKE, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
         obj_script CELES, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
         obj_script NPC_2, ASYNC
-                action 45
+                action NPC_SPECIAL_2
                 wait 2
                 dir DOWN
                 end
         obj_script NPC_6
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 end
@@ -106483,7 +106483,7 @@ _ccbcb1:
         hide_obj NPC_21
         sort_obj
         obj_script SLOT_1
-                action 10
+                action READY
                 end
         wait_90f
         play_song SILENCE
@@ -106615,7 +106615,7 @@ _ccbcb1:
                 ; LOCKE: TERRA!!
                 ; What is it!?
         obj_script TERRA
-                action 33
+                action HEAD_DOWN_UP
                 end
         wait_90f
         sfx 103
@@ -106625,11 +106625,11 @@ _ccbcb1:
         flash WHITE
         obj_script LOCKE, ASYNC
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 move LEFT, 4
                 wait 1
-                action 23
+                action ARMS_UP_UP
                 speed FAST
                 move DOWN, 1
                 speed NORMAL
@@ -106690,59 +106690,59 @@ _ccbcb1:
         flash WHITE
         obj_script SABIN, ASYNC
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 jump_low
                 move DOWN_RIGHT
                 jump_low
                 move DOWN_RIGHT
-                action 40
+                action DEAD_HORZ
                 end
         obj_script EDGAR, ASYNC
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 jump_low
                 move LEFT, 2
                 speed FAST
                 move DOWN, 1
-                action 23
+                action ARMS_UP_UP
                 end
         obj_script GAU, ASYNC
                 layer 2
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 jump_low
                 move RIGHT, 2
                 speed FAST
                 move DOWN, 1
-                action 25
+                action WAVING_1_DOWN
                 end
         obj_script CELES, ASYNC
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 jump_low
                 move LEFT, 2
-                action 40
+                action DEAD_HORZ
                 end
         obj_script CYAN, ASYNC
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 jump_low
                 move UP_RIGHT, 2
-                action 40
+                action DEAD_HORZ
                 end
         obj_script LOCKE
                 anim_off
-                action 11
+                action HIT
                 speed FASTER
                 jump_low
                 move LEFT, 4
                 wait 1
-                action 23
+                action ARMS_UP_UP
                 speed FAST
                 move DOWN, 1
                 end
@@ -107012,10 +107012,10 @@ _ccbcb1:
         wait_30f
         loop 4
                 obj_script LOCKE
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script LOCKE
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script LOCKE
@@ -107026,7 +107026,7 @@ _ccbcb1:
                 ; Where's TERRA?!
         wait_30f
         obj_script CELES
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_1s
         dlg DLG_895
@@ -107039,7 +107039,7 @@ _ccbcb1:
                 end
         wait_90f
         obj_script CELES
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_90f
         obj_script CELES
@@ -107050,25 +107050,25 @@ _ccbcb1:
                 ; CELES: She looked like_
                 ; an Esper_
         obj_script LOCKE
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 wait 1
                 dir RIGHT
                 wait 2
                 end
         obj_script LOCKE
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
                 end
         obj_script LOCKE
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 wait 1
                 dir RIGHT
                 wait 4
                 end
         obj_script LOCKE
-                action 21 | ACTION_H_FLIP
+                action EYES_CLOSED_RIGHT
                 wait 1
                 dir RIGHT
                 wait 1
@@ -107093,7 +107093,7 @@ _ccbcb1:
                 ; You okay?
         wait_30f
         obj_script LOCKE
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 wait 2
                 dir RIGHT
                 end
@@ -107101,15 +107101,15 @@ _ccbcb1:
         obj_script EDGAR
                 dir DOWN
                 wait 2
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         obj_script EDGAR
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_1s
         obj_script EDGAR
-                action 35
+                action HEAD_TURNED
                 end
         wait_1s
         obj_script EDGAR
@@ -107187,7 +107187,7 @@ _ccbcb1:
                 ; SABIN: Banon needs our help, too_
         wait_30f
         obj_script LOCKE
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         wait_1s
         dlg DLG_903
@@ -107208,19 +107208,19 @@ _ccbcb1:
                 end
         wait_1s
         obj_script SABIN, ASYNC
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         obj_script LOCKE, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script CELES, ASYNC
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         obj_script GAU, ASYNC
-                action 34 | ACTION_H_FLIP
+                action HEAD_DOWN_RIGHT
                 end
         obj_script EDGAR
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_15f
         obj_script SABIN, ASYNC
@@ -107870,7 +107870,7 @@ _ccc611:
                 end
         wait_30f
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 end
@@ -107971,25 +107971,25 @@ _ccc645:
         switch $02BC=1
         wait_30f
         obj_script TERRA
-                action 10
+                action READY
                 end
         obj_script CYAN
-                action 10
+                action READY
                 end
         obj_script LOCKE
-                action 10
+                action READY
                 end
         obj_script GAU
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         obj_script SABIN
-                action 10
+                action READY
                 end
         obj_script CELES
-                action 10
+                action READY
                 end
         obj_script EDGAR
-                action 10 | ACTION_H_FLIP
+                action READY_FLIP
                 end
         lock_camera
         wait_2s
@@ -108026,10 +108026,10 @@ _ccc645:
         sfx SFX::KEFKA_LAUGH
         loop 12
                 obj_script NPC_1
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_1
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         wait_30f
@@ -108038,7 +108038,7 @@ _ccc645:
                 end
         wait_30f
         obj_script NPC_1
-                action 26
+                action WAVING_2_DOWN
                 end
         create_obj NPC_10
         create_obj NPC_11
@@ -108182,7 +108182,7 @@ _ccc645:
                 end
         wait_1s
         obj_script NPC_1
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         dlg DLG_876
@@ -108261,7 +108261,7 @@ _ccc645:
         return
 _ccc8ab:
         obj_script TERRA
-                action 32
+                action HEAD_DOWN_DOWN
                 end
         dlg DLG_879, ASYNC
                 ; TERRA: Kefka_
@@ -108269,7 +108269,7 @@ _ccc8ab:
         return
 _ccc8b3:
         obj_script LOCKE
-                action 36
+                action WAGGING_FINGER_1
                 end
         dlg DLG_880, ASYNC
                 ; LOCKE: Bloody Empire!!
@@ -108277,7 +108277,7 @@ _ccc8b3:
         return
 _ccc8bb:
         obj_script CELES
-                action 24
+                action ANGRY
                 end
         dlg DLG_881, ASYNC
                 ; CELES: I'm free_
@@ -108285,7 +108285,7 @@ _ccc8bb:
         return
 _ccc8c3:
         obj_script EDGAR
-                action 35
+                action HEAD_TURNED
                 end
         dlg DLG_882, ASYNC
                 ; EDGAR: Kefka_grr_
@@ -108293,21 +108293,21 @@ _ccc8c3:
         return
 _ccc8cb:
         obj_script SABIN
-                action 10
+                action READY
                 end
         dlg DLG_883, ASYNC
                 ; SABIN: Master Duncan's techniques mustn't fail me.
         return
 _ccc8d3:
         obj_script CYAN
-                action 10
+                action READY
                 end
         dlg DLG_884, ASYNC
                 ; CYAN: I will avenge the people of Doma!!
         return
 _ccc8db:
         obj_script GAU
-                action 10
+                action READY
                 end
         dlg DLG_885, ASYNC
                 ; GAU: GAU hit hard!!!
@@ -108328,7 +108328,7 @@ _ccc8e7:
         and_status SLOT_4, NONE
         party_pos {25, 5}
         obj_script SLOT_1
-                action 40
+                action DEAD_HORZ
                 end
         restore_default_party
         return
@@ -108340,7 +108340,7 @@ _ccc90c:
 _ccc919:
         if_switch $013E=1, _ccc935
         obj_script NPC_10
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108355,7 +108355,7 @@ _ccc919:
         return
 _ccc935:
         obj_script NPC_10
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108373,7 +108373,7 @@ _ccc943:
 _ccc950:
         if_switch $013F=1, _ccc96c
         obj_script NPC_11
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108388,7 +108388,7 @@ _ccc950:
         return
 _ccc96c:
         obj_script NPC_11
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108406,7 +108406,7 @@ _ccc97a:
 _ccc987:
         if_switch $0140=1, _ccc9a3
         obj_script NPC_12
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108421,7 +108421,7 @@ _ccc987:
         return
 _ccc9a3:
         obj_script NPC_12
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108439,7 +108439,7 @@ _ccc9b1:
 _ccc9be:
         if_switch $0141=1, _ccc9da
         obj_script NPC_13
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108454,7 +108454,7 @@ _ccc9be:
         return
 _ccc9da:
         obj_script NPC_13
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108472,7 +108472,7 @@ _ccc9e8:
 _ccc9f5:
         if_switch $0142=1, _ccca11
         obj_script NPC_14
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108487,7 +108487,7 @@ _ccc9f5:
         return
 _ccca11:
         obj_script NPC_14
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108505,7 +108505,7 @@ _ccca1f:
 _ccca2c:
         if_switch $0143=1, _ccca48
         obj_script NPC_15
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108520,7 +108520,7 @@ _ccca2c:
         return
 _ccca48:
         obj_script NPC_15
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108553,7 +108553,7 @@ _ccca6f:
 _ccca7c:
         if_switch $0144=1, _ccca98
         obj_script NPC_17
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108568,7 +108568,7 @@ _ccca7c:
         return
 _ccca98:
         obj_script NPC_17
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108586,7 +108586,7 @@ _cccaa6:
 _cccab3:
         if_switch $0145=1, _cccacf
         obj_script NPC_18
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108601,7 +108601,7 @@ _cccab3:
         return
 _cccacf:
         obj_script NPC_18
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108619,7 +108619,7 @@ _cccadd:
 _cccaea:
         if_switch $0146=1, _cccb06
         obj_script NPC_19
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108634,7 +108634,7 @@ _cccaea:
         return
 _cccb06:
         obj_script NPC_19
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108652,7 +108652,7 @@ _cccb14:
 _cccb21:
         if_switch $0147=1, _cccb3d
         obj_script NPC_20
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108667,7 +108667,7 @@ _cccb21:
         return
 _cccb3d:
         obj_script NPC_20
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108685,7 +108685,7 @@ _cccb4b:
 _cccb58:
         if_switch $0148=1, _cccb74
         obj_script NPC_21
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108700,7 +108700,7 @@ _cccb58:
         return
 _cccb74:
         obj_script NPC_21
-                action 40
+                action DEAD_HORZ
                 end
         fade_in
         wait_fade
@@ -108723,7 +108723,7 @@ _cccb82:
         restore_default_party
         wait_30f
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         wait_90f
         dlg DLG_1744
@@ -108748,7 +108748,7 @@ _cccbaa:
         restore_default_party
         wait_30f
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         wait_90f
         dlg DLG_1745
@@ -109618,7 +109618,7 @@ _ccd109:
         if_switch $01B6=1, EventReturn
         obj_script NPC_1, ASYNC
 _ccd111:
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 32
                 dir DOWN
                 wait 16
@@ -109636,7 +109636,7 @@ _ccd111:
                 end
         obj_script NPC_2, ASYNC
 _ccd128:
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 32
                 move RIGHT, 2
                 move DOWN, 3
@@ -109678,13 +109678,13 @@ _ccd143:
                 end
         obj_script NPC_4, ASYNC
 _ccd160:
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 48
                 dir DOWN
                 wait 16
                 move DOWN, 1
                 wait 32
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 48
                 dir DOWN
                 wait 16
@@ -109738,11 +109738,11 @@ _ccd1a3:
                 wait 8
                 dir DOWN
                 wait 8
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
-                action 44
+                action NPC_HEAD_DOWN_DOWN
                 wait 2
                 dir DOWN
                 wait 2
@@ -109993,7 +109993,7 @@ _ccd2f6:
                 end
         wait_30f
         obj_script NPC_1
-                action 32
+                action HEAD_DOWN_DOWN
                 wait 3
                 dir DOWN
                 end
@@ -110070,7 +110070,7 @@ _ccd35c:
                 end
         wait_1s
         obj_script SHADOW
-                action 35 | ACTION_H_FLIP
+                action HEAD_TURNED_FLIP
                 end
         wait_1s
         obj_script SHADOW
@@ -110283,7 +110283,7 @@ _ccd4a8:
         sort_obj
         obj_script NPC_13
                 anim_off
-                action 9
+                action NEAR_FATAL
                 end
         switch $0643=0
         player_ctrl_on
@@ -110328,7 +110328,7 @@ _ccd4fe:
         wait_30f
         obj_script NPC_13
                 anim_off
-                action 9
+                action NEAR_FATAL
                 end
         player_ctrl_on
         switch $023E=1
@@ -110352,10 +110352,10 @@ _ccd52d:
         wait_30f
         loop 4
                 obj_script NPC_13
-                        action 35
+                        action HEAD_TURNED
                         end
                 obj_script NPC_13
-                        action 35 | ACTION_H_FLIP
+                        action HEAD_TURNED_FLIP
                         end
                 end_loop
         obj_script NPC_13
@@ -110365,13 +110365,13 @@ _ccd52d:
                 ; Kupo!!
         obj_script NPC_13, ASYNC
 _ccd551:
-                action 26
+                action WAVING_2_DOWN
                 wait 1
-                action 13 | ACTION_H_FLIP
+                action ATTACKING_2_FLIP
                 wait 1
-                action 28
+                action WAVING_2_UP
                 wait 1
-                action 14
+                action ATTACKING_3
                 wait 1
                 branch _ccd551
                 end
@@ -110393,11 +110393,11 @@ _ccd551:
                 end
         obj_script NPC_13
                 anim_off
-                action 31
+                action SURPRISED
                 speed FASTER
                 jump_low
                 move LEFT, 4
-                action 9
+                action NEAR_FATAL
                 anim_off
                 end
         sfx SFX::FLOOR_SWITCH
@@ -110440,7 +110440,7 @@ _ccd594:
                 layer 2
                 speed FASTER
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 move DOWN, 8
                 end
         hide_obj NPC_13
@@ -110502,7 +110502,7 @@ _ccd5df:
         wait_30f
         loop 6
                 obj_script SLOT_1
-                        action 31
+                        action SURPRISED
                         end
                 obj_script SLOT_1
                         dir DOWN
@@ -110520,14 +110520,14 @@ _ccd5df:
         wait_30f
         loop 12
                 obj_script NPC_13
-                        action 29
+                        action LAUGHING_1
                         end
                 obj_script NPC_13
-                        action 30
+                        action LAUGHING_2
                         end
                 end_loop
         obj_script NPC_13
-                action 29
+                action LAUGHING_1
                 end
         hide_obj SLOT_1
         hide_obj NPC_12
@@ -110595,7 +110595,7 @@ _ccd5df:
                 dir DOWN
                 end
         obj_script NPC_13
-                action 25
+                action WAVING_1_DOWN
                 end
         wait_90f
         dlg DLG_1753
@@ -110636,7 +110636,7 @@ _ccd5df:
                 ; I'll wait in the airship, kupo!
         wait_30f
         obj_script NPC_13
-                action 25
+                action WAVING_1_DOWN
                 end
         wait_1s
         pass_off NPC_13
@@ -110696,7 +110696,7 @@ _ccd709:
                 move UP, 2
                 end
         obj_script SLOT_1
-                action 23
+                action ARMS_UP_UP
                 end
         sfx 103
         flash BLUE
@@ -110705,7 +110705,7 @@ _ccd709:
                 move DOWN, 2
                 end
         obj_script SLOT_1
-                action 23
+                action ARMS_UP_UP
                 end
         hide_obj NPC_3
         sort_obj
@@ -110721,7 +110721,7 @@ _ccd709:
         obj_script SLOT_1
                 speed NORMAL
                 anim_off
-                action 31
+                action SURPRISED
                 jump_low
                 dir DOWN
                 wait 4
@@ -110765,7 +110765,7 @@ _ccd709:
         call _ca5ea9
         obj_script NPC_2
                 pos {59, 13}
-                action 9
+                action NEAR_FATAL
                 end
         obj_script SLOT_1
                 dir RIGHT
@@ -110821,7 +110821,7 @@ _ccd793:
         wait_30f
         loop 2
                 obj_script SLOT_1
-                        action 15 | ACTION_H_FLIP
+                        action JUMPING_FLIP
                         end
                 wait_15f
                 obj_script SLOT_1
@@ -110832,7 +110832,7 @@ _ccd793:
         wait_30f
         loop 4
                 obj_script NPC_2
-                        action 34
+                        action HEAD_DOWN_LEFT
                         wait 2
                         dir LEFT
                         end
@@ -110861,7 +110861,7 @@ _ccd793:
                 ; a sasquatch pal with muscle!
         wait_30f
         obj_script NPC_2
-                action 22
+                action ARMS_UP_DOWN
                 end
         wait_30f
         fade_out
@@ -110897,7 +110897,7 @@ _ccd793:
         wait_30f
         loop 2
                 obj_script SLOT_1
-                        action 34 | ACTION_H_FLIP
+                        action HEAD_DOWN_RIGHT
                         wait 2
                         dir RIGHT
                         end
@@ -110951,14 +110951,14 @@ _ccd88e:
         dlg DLG_1527
                 ; Ooh_
         obj_script NPC_2
-                action 9
+                action NEAR_FATAL
                 end
         return
 _ccd896:
         if_switch $027A=0, EventReturn
         if_switch $007E=1, EventReturn
         obj_script NPC_2
-                action 9
+                action NEAR_FATAL
                 end
         return
 _ccd8a7:
@@ -111067,7 +111067,7 @@ _ccd994:
                 speed FAST
                 layer 3
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 move DOWN, 1
                 end
         hide_obj SLOT_1
@@ -111088,10 +111088,10 @@ _ccd9a6:
         obj_script SLOT_1
                 layer 2
                 anim_off
-                action 22
+                action ARMS_UP_DOWN
                 speed FASTER
                 move DOWN, 8
-                action 9
+                action NEAR_FATAL
                 anim_on
                 layer 0
                 end
@@ -113165,15 +113165,15 @@ _cce486:
         wait_fade
         wait_1s
         obj_script SLOT_1
-                action 21
+                action EYES_CLOSED_LEFT
                 end
         wait_30f
         obj_script SLOT_1
-                action 34
+                action HEAD_DOWN_LEFT
                 end
         wait_15f
         obj_script SLOT_1
-                action 9
+                action NEAR_FATAL
                 end
         wait_1s
         play_song REST_IN_PEACE

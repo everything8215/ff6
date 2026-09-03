@@ -972,25 +972,65 @@ Skip:   inc     $dc
 
 ; graphics positions for vehicle movement (chocobo/magitek only)
 ObjVehicleTileTbl:
-        .byte   $04,$05,$04,$03
-        .byte   $6e,$6f,$6e,$6f
-        .byte   $01,$02,$01,$00
-        .byte   $2e,$2f,$2e,$2f
+        .byte   MAP_SPRITE_FRAME::WALKING_UP_2
+        .byte   MAP_SPRITE_FRAME::WALKING_UP_3
+        .byte   MAP_SPRITE_FRAME::WALKING_UP_2
+        .byte   MAP_SPRITE_FRAME::WALKING_UP_1
+
+        .byte   MAP_SPRITE_FRAME::RIDING_RIGHT_1
+        .byte   MAP_SPRITE_FRAME::RIDING_RIGHT_2
+        .byte   MAP_SPRITE_FRAME::RIDING_RIGHT_1
+        .byte   MAP_SPRITE_FRAME::RIDING_RIGHT_2
+
+        .byte   MAP_SPRITE_FRAME::WALKING_DOWN_2
+        .byte   MAP_SPRITE_FRAME::WALKING_DOWN_3
+        .byte   MAP_SPRITE_FRAME::WALKING_DOWN_2
+        .byte   MAP_SPRITE_FRAME::WALKING_DOWN_1
+
+        .byte   MAP_SPRITE_FRAME::RIDING_LEFT_1
+        .byte   MAP_SPRITE_FRAME::RIDING_LEFT_2
+        .byte   MAP_SPRITE_FRAME::RIDING_LEFT_1
+        .byte   MAP_SPRITE_FRAME::RIDING_LEFT_2
 
 ; graphics positions for character movement
 ObjMoveTileTbl:
-        .byte   $04,$05,$04,$03
-        .byte   $47,$48,$47,$46
-        .byte   $01,$02,$01,$00
-        .byte   $07,$08,$07,$06
+        .byte   MAP_SPRITE_FRAME::WALKING_UP_2
+        .byte   MAP_SPRITE_FRAME::WALKING_UP_3
+        .byte   MAP_SPRITE_FRAME::WALKING_UP_2
+        .byte   MAP_SPRITE_FRAME::WALKING_UP_1
+
+        .byte   MAP_SPRITE_FRAME::WALKING_RIGHT_2
+        .byte   MAP_SPRITE_FRAME::WALKING_RIGHT_3
+        .byte   MAP_SPRITE_FRAME::WALKING_RIGHT_2
+        .byte   MAP_SPRITE_FRAME::WALKING_RIGHT_1
+
+        .byte   MAP_SPRITE_FRAME::WALKING_DOWN_2
+        .byte   MAP_SPRITE_FRAME::WALKING_DOWN_3
+        .byte   MAP_SPRITE_FRAME::WALKING_DOWN_2
+        .byte   MAP_SPRITE_FRAME::WALKING_DOWN_1
+
+        .byte   MAP_SPRITE_FRAME::WALKING_LEFT_2
+        .byte   MAP_SPRITE_FRAME::WALKING_LEFT_3
+        .byte   MAP_SPRITE_FRAME::WALKING_LEFT_2
+        .byte   MAP_SPRITE_FRAME::WALKING_LEFT_1
 
 ; graphics positions for standing still
 ObjStopTileTbl:
-        .byte   $04,$47,$01,$07
+        .byte   MAP_SPRITE_FRAME::WALKING_UP_2
+        .byte   MAP_SPRITE_FRAME::WALKING_RIGHT_2
+        .byte   MAP_SPRITE_FRAME::WALKING_DOWN_2
+        .byte   MAP_SPRITE_FRAME::WALKING_LEFT_2
 
 ; graphics positions for special animation (animation offset)
 ObjSpecialTileTbl:
-        .byte   $00,$00,$32,$28,$00,$00,$00,$00
+        .byte   0
+        .byte   0
+        .byte   MAP_SPRITE_FRAME::SPECIAL_ANIM_1
+        .byte   MAP_SPRITE_FRAME::DEAD_HORZ
+        .byte   0
+        .byte   0
+        .byte   0
+        .byte   0
 
 ; ------------------------------------------------------------------------------
 
@@ -4620,7 +4660,7 @@ ObjCmd_c8:
 ObjCmd_cc:
 @78ab:  clr_a
         sta     $087f,y
-        lda     #$04
+        lda     #MAP_SPRITE_FRAME::WALKING_UP_2
         sta     $0877,y
         jmp     IncObjScriptPtrContinue
 
@@ -4631,7 +4671,7 @@ ObjCmd_cc:
 ObjCmd_cd:
 @78b7:  lda     #$01
         sta     $087f,y
-        lda     #$47
+        lda     #MAP_SPRITE_FRAME::WALKING_RIGHT_2
         sta     $0877,y
         jmp     IncObjScriptPtrContinue
 
@@ -4642,7 +4682,7 @@ ObjCmd_cd:
 ObjCmd_ce:
 @78c4:  lda     #$02
         sta     $087f,y
-        lda     #$01
+        lda     #MAP_SPRITE_FRAME::WALKING_DOWN_2
         sta     $0877,y
         jmp     IncObjScriptPtrContinue
 
@@ -4653,7 +4693,7 @@ ObjCmd_ce:
 ObjCmd_cf:
 @78d1:  lda     #$03
         sta     $087f,y
-        lda     #$07
+        lda     #MAP_SPRITE_FRAME::WALKING_LEFT_2
         sta     $0877,y
         jmp     IncObjScriptPtrContinue
 
