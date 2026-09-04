@@ -3155,10 +3155,6 @@
       "format": "lz"
     },
     {
-      "asset_path": "assets/data/battle/magic_prop.en.bin",
-      "asset_range": "0xC46AC0-0xC478BF"
-    },
-    {
       "asset_path": "assets/sound/sample_brr/%s.brr",
       "asset_range": "0xC54A35-0xC85C79",
       "ptr_range": "0xC53C5F-0xC53D1B",

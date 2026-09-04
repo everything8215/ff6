@@ -1,0 +1,97 @@
+.ifndef MAGIC_PROP_MAC
+MAGIC_PROP_MAC = 1
+
+; ------------------------------------------------------------------------------
+
+_magic_prop_seq .set 0
+
+.mac magic_prop attack_id
+        .assert ATTACK::attack_id = _magic_prop_seq, error, .sprintf("Magic properties mismatch: %s", .string(attack_id))
+        _magic_prop_targetting .set 0
+        _magic_prop_element .set 0
+        _magic_prop_flags .set 0
+        _magic_prop_magic_flags .set 0
+        _magic_prop_mp_cost .set 0
+        _magic_prop_spell_power .set 0
+        _magic_prop_hit_rate .set 0
+        _magic_prop_misc_flags .set 0
+        _magic_prop_special_effect .set ATTACK_SPECIAL::NONE
+        _magic_prop_status12 .set 0
+        _magic_prop_status34 .set 0
+.endmac
+
+.mac targetting val
+        make_bitmask {_magic_prop_targetting .set }, 0, TARGET, val
+.endmac
+
+.mac element val
+        make_bitmask {_magic_prop_element .set }, 0, ELEMENT, val
+.endmac
+
+.mac flags val
+        make_bitmask {_magic_prop_flags .set }, 0, MAGIC_PROP_FLAGS, val
+.endmac
+
+.mac mp_cost val
+        _magic_prop_mp_cost .set val
+.endmac
+
+.mac spell_power val
+        _magic_prop_spell_power .set val
+.endmac
+
+.mac hit_rate val
+        _magic_prop_hit_rate .set val
+.endmac
+
+.mac status_block
+        _magic_prop_misc_flags .set _magic_prop_misc_flags | 1
+.endmac
+
+.mac show_msg
+        _magic_prop_misc_flags .set _magic_prop_misc_flags | 2
+.endmac
+
+.mac special_effect val
+        make_bitmask {_magic_prop_special_effect .set }, 0, ATTACK_SPECIAL, val
+.endmac
+
+.mac status12 val
+        make_bitmask {_magic_prop_status12 .set }, 0, STATUS12, val
+.endmac
+
+.mac status34 val
+        make_bitmask {_magic_prop_status34 .set }, 0, STATUS34, val
+.endmac
+
+.mac end_magic_prop
+        .byte _magic_prop_targetting, _magic_prop_element
+        .faraddr _magic_prop_flags
+        .byte _magic_prop_mp_cost, _magic_prop_spell_power
+        .byte _magic_prop_misc_flags, _magic_prop_hit_rate
+        .byte _magic_prop_special_effect
+        .word _magic_prop_status12, _magic_prop_status34
+        _magic_prop_seq .set _magic_prop_seq + 1
+.endmac
+
+; ------------------------------------------------------------------------------
+
+.else
+
+.delmac magic_prop
+.delmac targetting
+.delmac element
+.delmac flags
+.delmac mp_cost
+.delmac spell_power
+.delmac hit_rate
+.delmac status_block
+.delmac show_msg
+.delmac special_effect
+.delmac status12
+.delmac status34
+.delmac end_magic_prop
+
+.endif
+
+; ------------------------------------------------------------------------------

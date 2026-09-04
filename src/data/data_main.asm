@@ -18,6 +18,7 @@
         .include "imp_item.asm"
         .include "item_prop.asm"
         .include "level_up.asm"
+        .include "magic_prop.asm"
         .include "metamorph_prop.asm"
         .include "monster_align.asm"
         .include "monster_control.asm"

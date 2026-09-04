@@ -1,3 +1,5 @@
+.import MagicProp
+
 ; ------------------------------------------------------------------------------
 
 ; [ load character properties ]
@@ -276,17 +278,6 @@ LoadMagicProp:
 @2987:  plp
         plx
         rts
-
-.pushseg
-.segment "magic_prop"
-
-.export MagicProp
-
-; c4/6ac0
-MagicProp:
-        .incbin "assets/data/battle/magic_prop.bin"
-
-.popseg
 
 ; ------------------------------------------------------------------------------
 

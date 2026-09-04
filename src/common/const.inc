@@ -173,7 +173,7 @@ MAX_EXPERIENCE                          = 15000000
         ICE_ROD                         ;= $36  ; 54
         THUNDER_ROD                     ;= $37  ; 55
         POISON_ROD                      ;= $38  ; 56
-        HOLY_ROD                       ;= $39  ; 57
+        HOLY_ROD                        ;= $39  ; 57
         GRAVITY_ROD                     ;= $3a  ; 58
         PUNISHER                        ;= $3b  ; 59
         MAGUS_ROD                       ;= $3c  ; 60
@@ -1902,6 +1902,144 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         MORE_MP_CRIT                    ;= 15
 .endenum
 
+.enum ITEM_SPECIAL
+        INVALID
+        MAGICITE
+        SUPER_BALL
+        SMOKE_BOMB
+        ELIXIR
+        WARP_STONE
+        DRIED_MEAT
+        POSSESS                                 ; unused
+        GIL_TOSS                                ; unused
+        STEAL                                   ; unused
+        CONTROL                                 ; unused
+        LEAP                                    ; unused
+        SKETCH                                  ; unused
+        DEBILITATOR                             ; unused
+        AIR_ANCHOR                              ; unused
+        NONE                            = $ff
+.endenum
+
+.enum ATTACK_SPECIAL
+        NO_EFFECT                                                       ;= 0
+        RAND_STEAL = WEAPON_SPECIAL::RAND_STEAL                         ;= 1
+        ATMA_WEAPON = WEAPON_SPECIAL::ATMA_WEAPON                       ;= 2
+        INSTANT_DEATH = WEAPON_SPECIAL::INSTANT_DEATH                   ;= 3
+        STRONG_VS_HUMAN = WEAPON_SPECIAL::STRONG_VS_HUMAN               ;= 4
+        ABSORB_HP = WEAPON_SPECIAL::ABSORB_HP                           ;= 5
+        ABSORB_MP = WEAPON_SPECIAL::ABSORB_MP                           ;= 6
+        MP_CRIT = WEAPON_SPECIAL::MP_CRIT                               ;= 7
+        STRONG_VS_FLYING = WEAPON_SPECIAL::STRONG_VS_FLYING             ;= 8
+        DICE = WEAPON_SPECIAL::DICE                                     ;= 9
+        STRONG_WHEN_HP_LOW = WEAPON_SPECIAL::STRONG_WHEN_HP_LOW         ;= 10
+        RAND_WIND_SLASH = WEAPON_SPECIAL::RAND_WIND_SLASH               ;= 11
+        HEAL_HP = WEAPON_SPECIAL::HEAL_HP                               ;= 12
+        SCIMITAR_EFFECT = WEAPON_SPECIAL::SCIMITAR_EFFECT               ;= 13
+        RAND_BREAK = WEAPON_SPECIAL::RAND_BREAK                         ;= 14
+        MORE_MP_CRIT = WEAPON_SPECIAL::MORE_MP_CRIT                     ;= 15
+        SCAN                                                            ;= 16
+        GOLEM_BLOCK                                                     ;= 17
+        METAMORPH                                                       ;= 18
+        PALIDOR                                                         ;= 19
+        ATTACK_SPECIAL_20                                               ;= 20
+        MANTRA                                                          ;= 21
+        SPIRALER                                                        ;= 22
+        TAPIR                                                           ;= 23
+        WARP                                                            ;= 24
+        EXPLODER                                                        ;= 25
+        BLOW_FISH                                                       ;= 26
+        WHITE_WIND                                                      ;= 27
+        REFLECT_LORE                                                    ;= 28
+        PEARL_LORE                                                      ;= 29
+        STEP_MINE                                                       ;= 30
+        DISCHORD                                                        ;= 31
+        PEP_UP                                                          ;= 32
+        RIPPLER                                                         ;= 33
+        STONE                                                           ;= 34
+        NO_RETAL                                                        ;= 35
+        CRUSADER                                                        ;= 36
+        MISS_FLYING                                                     ;= 37
+        WALLCHANGE                                                      ;= 38
+        ESCAPE                                                          ;= 39
+        MIND_BLAST                                                      ;= 40
+        N_CROSS                                                         ;= 41
+        FLARE_STAR                                                      ;= 42
+        R_POLARITY                                                      ;= 43
+        LAUNCHER                                                        ;= 44
+        LOVE_TOKEN                                                      ;= 45
+        SEIZE                                                           ;= 46
+        TARGETTING                                                      ;= 47
+        SUPLEX                                                          ;= 48
+        FORCEFIELD                                                      ;= 49
+        QUADRA_SLAM                                                     ;= 50
+        BABABREATH                                                      ;= 51
+        CHARM                                                           ;= 52
+        DOOM                                                            ;= 53
+        EMPOWERER                                                       ;= 54
+        OVERCAST                                                        ;= 55
+        SNEEZE                                                          ;= 56
+        ENGULF                                                          ;= 57
+        ZINGER                                                          ;= 58
+        EVIL_TOOT                                                       ;= 59
+        RETORT                                                          ;= 60
+        REVENGE                                                         ;= 61
+        PHANTASM                                                        ;= 62
+        STUNNER                                                         ;= 63
+        FALLEN_ONE                                                      ;= 64
+        HALF_DMG                                                        ;= 65
+        QUARTER_DMG                                                     ;= 66
+        QUICK                                                           ;= 67
+        DISCARD                                                         ;= 68
+        CLEAR                                                           ;= 69
+        ATTACK_SPECIAL_70                                               ;= 70
+        ATTACK_SPECIAL_71                                               ;= 71
+        ATTACK_SPECIAL_72                                               ;= 72
+        MAGICITE = ITEM_SPECIAL::MAGICITE + 72                          ;= 73
+        SUPER_BALL = ITEM_SPECIAL::SUPER_BALL + 72                      ;= 74
+        SMOKE_BOMB = ITEM_SPECIAL::SMOKE_BOMB + 72                      ;= 75
+        ELIXIR = ITEM_SPECIAL::ELIXIR + 72                              ;= 76
+        WARP_STONE = ITEM_SPECIAL::WARP_STONE + 72                      ;= 77
+        DRIED_MEAT = ITEM_SPECIAL::DRIED_MEAT + 72                      ;= 78
+        ATTACK_SPECIAL_79                                               ;= 79
+        POSSESS = ITEM_SPECIAL::POSSESS + 72                            ;= 80
+        GIL_TOSS = ITEM_SPECIAL::GIL_TOSS + 72                          ;= 81
+        STEAL = ITEM_SPECIAL::STEAL + 72                                ;= 82
+        CONTROL = ITEM_SPECIAL::CONTROL + 72                            ;= 83
+        LEAP = ITEM_SPECIAL::LEAP + 72                                  ;= 84
+        SKETCH = ITEM_SPECIAL::SKETCH + 72                              ;= 85
+        DEBILITATOR = ITEM_SPECIAL::DEBILITATOR + 72                    ;= 86
+        AIR_ANCHOR = ITEM_SPECIAL::AIR_ANCHOR + 72                      ;= 87
+        NONE = $ff
+.endenum
+
+.enum MAGIC_PROP_FLAGS
+        PHYSICAL                        = %000000000000000000000001
+        INSTANT_DEATH                   = %000000000000000000000010
+        RESURRECT                       = %000000000000000000000100
+        INVERT_UNDEAD                   = %000000000000000000001000
+        RANDOM_TARGET                   = %000000000000000000010000
+        IGNORE_DEF                      = %000000000000000000100000
+        NO_DMG_SPLIT                    = %000000000000000001000000
+        MONSTERS_ONLY                   = %000000000000000010000000
+        MENU_USAGE                      = %000000000000000100000000
+        NO_REFLECT                      = %000000000000001000000000
+        LORE                            = %000000000000010000000000
+        RUNIC                           = %000000000000100000000000
+        QUICK_WARP                      = %000000000001000000000000
+        AUTO_RETARGET                   = %000000000010000000000000
+        AIR_ANCHOR                      = %000000000100000000000000
+        AFFECT_MP                       = %000000001000000000000000
+        RESTORATIVE                     = %000000010000000000000000
+        DRAIN                           = %000000100000000000000000
+        REMOVE_STATUS                   = %000001000000000000000000
+        TOGGLE_STATUS                   = %000010000000000000000000
+        STAMINA_DEF                     = %000100000000000000000000
+        NO_DODGE                        = %001000000000000000000000
+        LEVEL_DIV                       = %010000000000000000000000
+        HP_FRAC                         = %100000000000000000000000
+.endenum
+
 .enum RELIC_EFFECT1
         ATLAS_ARMLET                    = %00000001  ; +50% physical damage
         EARRING                         = %00000010  ; +100% magic damage
@@ -1956,25 +2094,6 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         ;                               = %00100000
         ;                               = %01000000
         MAKE_UNDEAD                     = %10000000  ; RELIC_RING (MONSTER_FLAG::UNDEAD)
-.endenum
-
-.enum ITEM_SPECIAL
-        INVALID
-        MAGICITE
-        SUPER_BALL
-        SMOKE_BOMB
-        ELIXIR
-        WARP_STONE
-        DRIED_MEAT
-        POSSESS                                 ; unused
-        GIL_TOSS                                ; unused
-        STEAL                                   ; unused
-        CONTROL                                 ; unused
-        LEAP                                    ; unused
-        SKETCH                                  ; unused
-        DEBILITATOR                             ; unused
-        AIR_ANCHOR                              ; unused
-        NONE                            = $ff
 .endenum
 
 .enum WEAPON_SPELL_FLAGS

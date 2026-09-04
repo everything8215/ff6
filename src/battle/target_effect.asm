@@ -338,7 +338,7 @@ TargetEffect_12:
         jmp     SetStatus1
 
 ; metamorph miss
-_3a8a:  jmp     _c23b1b
+_3a8a:  jmp     _c23b1b                 ; miss
 
 ; ------------------------------------------------------------------------------
 
@@ -352,7 +352,7 @@ TargetEffect_56:
 .if LANG_EN
         beq     _3a8a
 .else
-        beq     _c23b1b
+        beq     _c23b1b                 ; miss
 .endif
         jsr     RandBit
         pha
@@ -399,7 +399,7 @@ TargetEffect_53:
         lda     near wTargetProp2::RelicEffect3,x  ; RELIC_EFFECT3::INC_CONTROL_RATE
         lsr4
         jsr     CheckSketchHit
-        bcs     _c23b1b       ; branch if attack failed
+        bcs     _c23b1b                 ; miss if attack failed
         tya
         sta     near wTargetProp1::ControlTarget,x     ; target you control (attacker)
         txa
@@ -439,7 +439,7 @@ _c23b1b:
 TargetEffect_55:
 @3b29:  .a8
         cpy     #$08
-        bcc     _c23b1b
+        bcc     _c23b1b                 ; miss
         lda     near wTargetProp2::MonsterStatus,y
         bit     #MONSTER_STATUS::CANT_SKETCH
         bne     @3b64                   ; branch if target can't be sketched
@@ -448,7 +448,7 @@ TargetEffect_55:
         lda     near wTargetProp2::RelicEffect3,x  ; RELIC_EFFECT3::INC_SKETCH_RATE
         lsr3
         jsr     CheckSketchHit
-        bcs     _c23b1b
+        bcs     _c23b1b                 ; miss
         sty     near w7e3417
         tya
         sbc     #$07
@@ -467,7 +467,7 @@ TargetEffect_55:
         rts
 @3b64:  lda     #ATTACK_MSG::SKETCH_FAIL
         sta     near w7e3401
-        bra     _c23b1b
+        bra     _c23b1b                 ; miss
 
 ; ------------------------------------------------------------------------------
 
@@ -475,7 +475,7 @@ TargetEffect_55:
 
 TargetEffect_25:
 @3b6b:  lda     near wTargetProp3::w7e3ef9,y
-        bmi     _c23b1b       ; branch if target has float status
+        bmi     _c23b1b                 ; miss if target has float status
         rts
 
 ; ------------------------------------------------------------------------------
@@ -499,7 +499,7 @@ TargetEffect_54:
         rts
 @3b90:  lda     #ATTACK_MSG::LEAP_FAIL
         sta     near w7e3401
-        jmp     _c23b1b
+        jmp     _c23b1b                 ; miss
 
 ; ------------------------------------------------------------------------------
 
@@ -642,8 +642,8 @@ TargetEffect_10:
 TargetEffect_30:
 @3c6e:  lda     near wTargetProp2::MonsterStatus,y
         bit     #MONSTER_STATUS::CANT_SUPLEX
-        beq     _3c5a       ; branch if not immune to suplex
-_3c75:  jmp     _c23b1b
+        beq     _3c5a                   ; branch if not immune to suplex
+_3c75:  jmp     _c23b1b                 ; miss
 
 ; ------------------------------------------------------------------------------
 
@@ -718,7 +718,7 @@ TargetEffect_20:
         tsb     near w7e2f4c
         stz     near wTargetProp2::CurrHP,x
         stz     near wTargetProp2::CurrMP,x
-        bra     _3caf
+        bra     _3caf                   ; restore MP to max
 
 ; ------------------------------------------------------------------------------
 
@@ -771,7 +771,7 @@ TargetEffect_44:
 TargetEffect_4c:
 @3d17:  lda     #$80        ; update enabled spells/espers
         jsr     SetCharFlag
-        bra     _3caf
+        bra     _3caf                   ; restore MP to max
 
 ; ------------------------------------------------------------------------------
 
