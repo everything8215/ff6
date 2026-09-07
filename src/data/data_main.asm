@@ -2,6 +2,7 @@
         .include "src/common/macros.inc"
 
         .include "attack_anim_prop.asm"
+        .include "attack_gfx_prop.asm"
         .include "battle_bg_dance.asm"
         .include "battle_cmd_prop.asm"
         .include "battle_group.asm"

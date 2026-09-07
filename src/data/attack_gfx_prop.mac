@@ -1,0 +1,69 @@
+.ifndef ATTACK_GFX_PROP_MAC
+ATTACK_GFX_PROP_MAC = 1
+
+; ------------------------------------------------------------------------------
+
+_attack_gfx_prop_seq .set 0
+
+.mac attack_gfx_prop gfx_id
+        .assert ATTACK_ANIM_SCRIPT::gfx_id = _attack_gfx_prop_seq, error, .sprintf("Attack graphics properties mismatch: %s", .string(gfx_id))
+        _attack_gfx_prop_flags .set 0
+        _attack_gfx_prop_num_frames .set 1
+        _attack_gfx_prop_tile_offset .set 0
+        _attack_gfx_prop_frame_offset .set 0
+        _attack_gfx_prop_frame_width .set 1
+        _attack_gfx_prop_frame_height .set 1
+.endmac
+
+.mac is_2bpp
+        _attack_gfx_prop_flags .set _attack_gfx_prop_flags | $80
+.endmac
+
+.mac is_3bpp
+        _attack_gfx_prop_flags .set _attack_gfx_prop_flags & $7f
+.endmac
+
+.mac frames val
+        _attack_gfx_prop_num_frames .set val
+.endmac
+
+.mac tile_offset val
+        _attack_gfx_prop_tile_offset .set val & $ff
+        _attack_gfx_prop_flags .set _attack_gfx_prop_flags | ((val >> 2) & $40)
+.endmac
+
+.mac frame_offset val
+        _attack_gfx_prop_frame_offset .set val
+.endmac
+
+.mac _frame_size width, height
+        _attack_gfx_prop_frame_width .set width
+        _attack_gfx_prop_frame_height .set height
+.endmac
+
+.mac frame_size xy_size
+        _frame_size xy_size
+.endmac
+
+.mac end_attack_gfx_prop
+        .byte _attack_gfx_prop_flags | _attack_gfx_prop_num_frames
+        .byte _attack_gfx_prop_tile_offset
+        .word _attack_gfx_prop_frame_offset
+        .byte _attack_gfx_prop_frame_width, _attack_gfx_prop_frame_height
+        _attack_gfx_prop_seq .set _attack_gfx_prop_seq + 1
+.endmac
+
+; ------------------------------------------------------------------------------
+
+.else
+
+.delmac attack_gfx_prop
+.delmac is_2bpp
+.delmac frames
+.delmac tile_offset
+.delmac frame_offset
+.delmac _frame_size
+.delmac frame_size
+.delmac end_attack_gfx_prop
+
+.endif

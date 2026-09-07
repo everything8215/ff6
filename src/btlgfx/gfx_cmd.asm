@@ -12,7 +12,7 @@
 
 .import AttackGfx2bpp, AttackGfx3bpp
 .import AttackTiles2bpp, AttackTiles3bpp
-.import AttackAnimProp
+.import AttackAnimProp, AttackGfxProp
 .import WeaponAnimProp, MonsterAttackAnimProp
 
 ; ------------------------------------------------------------------------------
@@ -2489,15 +2489,6 @@ LoadAnimGfxProp:
         bne     @a19d
         shorta0
         rts
-
-.pushseg
-.segment "attack_gfx_prop"
-
-; d4/d000
-AttackGfxProp:
-        .incbin "assets/data/btlgfx/attack_gfx_prop.bin"
-
-.popseg
 
 ; ------------------------------------------------------------------------------
 

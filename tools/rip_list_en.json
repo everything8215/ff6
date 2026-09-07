@@ -2534,10 +2534,6 @@
       "asset_range": "0xD2EF00-0xD2EFFF"
     },
     {
-      "asset_path": "assets/data/btlgfx/attack_gfx_prop.en.bin",
-      "asset_range": "0xD4D000-0xD4DF3B"
-    },
-    {
       "asset_path": "assets/data/battle/battle_monsters.bin",
       "asset_range": "0xCF6200-0xCF83BF"
     },
