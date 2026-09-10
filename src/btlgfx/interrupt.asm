@@ -196,44 +196,47 @@ hdma_line_data_set:
 
 ; ------------------------------------------------------------------------------
 
-; pointers to buffers for command window
+; pointers to buffers for battle command windows
 ;   0: none
 ;   1: short
 ;   2: normal
 ;   3: control
 
-_c10461:
+CmdWindowTileBufTbl:
 @0461:  .addr   w7e9213,w7e9013,w7e9213,w7e9413
 
 ; ------------------------------------------------------------------------------
 
-; [ load "short" menu window tile data ]
+; [ transfer battle command menu window tilemap to VRAM ]
 
-_c10469:
-@0469:  lda     near w7e64b8       ; return if window mode is not short
+; When a battle command window needs to open, draw one row of the window per
+; frame. Takes 8 frames to fully draw the window.
+
+TfrCmdWindowTiles:
+@0469:  lda     near w7e64b8            ; return if no command window update is needed
         beq     @04c9
-        lda     near w7e64b9       ;
+        lda     near w7e64b9            ; reset the 8 row counter if needed
         bne     @0478
-        lda     #$08
+        lda     #8
         sta     near w7e64b9
-@0478:  lda     z98         ; frame counter
+@0478:  lda     z98                     ; frame counter
         and     #%111
         asl
         tax
         longa
-        lda     f:_c2d2a4,x
+        lda     f:CmdWindowTilesVRAMTbl,x
         sta     f:hVMADDL
         phx
         lda     near w7e64b8
         and     #$00ff
         asl
         tax
-        lda     f:_c10461,x
+        lda     f:CmdWindowTileBufTbl,x
         plx
         clc
-        adc     f:_c2d2b4,x
+        adc     f:MenuWindowTileBufTbl,x
         sta     f:hDMA7::ADDR
-        lda     #$0040
+        lda     #$0040                  ; transfer 1 row of tiles (64 bytes)
         sta     f:hDMA7::SIZE
         shorta0
         lda     #$7e
@@ -246,15 +249,18 @@ _c10469:
         sta     f:hMDMAEN
         dec     near w7e64b9
         bne     @04c9
-        stz     near w7e64b8
+        stz     near w7e64b8            ; disable command window update
 @04c9:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ copy menu window tile data to vram ]
 
-UpdateMenuWindowTiles:
-@04ca:  lda     near wEnableUpdateMenuWindowTiles
+; When a menu window needs to open, draw one row of the window per
+; frame. Takes 8 frames to fully draw the window.
+
+TfrMenuWindowTiles:
+@04ca:  lda     near wEnableTfrMenuWindowTiles
         beq     @050b                   ; return if menu window update is disabled
         inc     near w7e629b       ;
         lda     near w7e62aa       ; branch if copying a special number of strips
@@ -268,11 +274,11 @@ UpdateMenuWindowTiles:
         longa
         lda     near w7e7bbe       ; pointer to menu tile data in vram (bg2)
         clc
-        adc     f:_c2d294,x   ; add strip offset
+        adc     f:MenuWindowTilesVRAMTbl,x   ; add strip offset
         tay
         lda     near w7e7bc0       ; pointer to menu tile data buffer in ram (bg2)
         clc
-        adc     f:_c2d2b4,x   ; add strip offset
+        adc     f:MenuWindowTileBufTbl,x   ; add strip offset
         tax
         lda     #$0040      ; size = 32 tiles (8x8)
         sta     $36
@@ -281,7 +287,7 @@ UpdateMenuWindowTiles:
         jsr     TfrVRAM
         dec     near w7e62aa       ; next strip
         bne     @050b
-        stz     near wEnableUpdateMenuWindowTiles       ; disable menu window update
+        stz     near wEnableTfrMenuWindowTiles       ; disable menu window update
 @050b:  rts
 
 ; ------------------------------------------------------------------------------
@@ -385,7 +391,7 @@ _c10591:
 
 ; [ copy animation bg tile data to vram ]
 
-_c105a1:
+TfrAnimBGTiles:
 @05a1:  lda     near w7e7b15       ; branch if bg1 animation tile data doesn't need to be updated
         beq     @05e3
         stz     near w7e7b15       ; validate bg1 animation tile data
@@ -455,7 +461,7 @@ _c105a1:
 
 ; [ copy damage numeral graphics to vram ]
 
-_c10640:
+TfrDmgNumGfx:
 @0640:  lda     near w7e6316       ; return if damage numeral graphics update is disabled
         beq     @0658
         stz     near w7e6316       ; disable damage numeral graphics update
@@ -1073,11 +1079,11 @@ BattleNMI:
         lda     #$7e
         pha
         plb
-        jsr     _c10469       ; load "short" menu window tile data
-        jsr     UpdateMenuWindowTiles
-        jsr     UpdateMenuTextTiles
-        jsr     _c105a1       ; copy animation bg tile data to vram
-        jsr     _c10640       ; copy damage numeral graphics to vram
+        jsr     TfrCmdWindowTiles
+        jsr     TfrMenuWindowTiles
+        jsr     TfrMenuTextTiles
+        jsr     TfrAnimBGTiles
+        jsr     TfrDmgNumGfx
         jsr     PartialTfrVRAM
         jsl     _c2a88f
         lda     near w7eecef       ; branch if timer 0 is disabled

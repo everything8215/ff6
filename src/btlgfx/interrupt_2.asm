@@ -218,16 +218,17 @@ BGScrollHDMATbl:
 
 ; ------------------------------------------------------------------------------
 
-; vram offsets for each strip of menu window tiles
-_c2d294:
+; vram offsets for each row of menu window tiles
+MenuWindowTilesVRAMTbl:
 @d294:  .word   $0000,$0020,$0040,$0060,$0080,$00a0,$00c0,$00e0
 
-; pointers to bg2 tile data in vram (menu region)
-_c2d2a4:
+; pointers to battle command window tilemap rows in vram
+CmdWindowTilesVRAMTbl:
 @d2a4:  .word   $7140,$7160,$7180,$71a0,$71c0,$71e0,$7200,$7220
 
-; ram buffer offsets for each strip of menu window tiles
-_c2d2b4:
+; ram buffer offsets for each row of menu window tilemap
+; used for battle command window periodic updates and other window updates
+MenuWindowTileBufTbl:
 @d2b4:  .word   $0000,$0040,$0080,$00c0,$0100,$0140,$0180,$01c0
 
 ; pointers to character sprite graphics in ram (top)

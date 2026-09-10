@@ -15,6 +15,12 @@
         .incbin .sprintf("assets/gfx/battle_bg_gfx/%s.4bpp.lz", name)
 .endmac
 
+; loads map graphics for use in battle backgrounds
+; TODO: fix naming mismatches in many of these
+.macro map_gfx_alias id, map_gfx_id
+        array_item BATTLE_BG_GFX, {BATTLE_BG_GFX::id} := array_item MAP_GFX, MAP_GFX::map_gfx_id
+.endmac
+
 ; ------------------------------------------------------------------------------
 
 .segment "battle_bg"
@@ -749,23 +755,23 @@ BattleBGGfx:
         inc_battle_bg_gfx TRAIN_EXT_1, "train_ext_1"
         inc_battle_bg_gfx TRAIN_INT_1, "train_int_1"
         inc_battle_bg_gfx CAVES_1, "caves_1"
-        BATTLE_BG_GFX::_10 := array_item MAP_GFX, MAP_GFX::TRAIN_PARALLAX
-        BATTLE_BG_GFX::_11 := array_item MAP_GFX, MAP_GFX::MOUNTAIN_EXT_1
-        BATTLE_BG_GFX::_12 := array_item MAP_GFX, MAP_GFX::MOUNTAIN_INT_1
-        BATTLE_BG_GFX::_13 := array_item MAP_GFX, MAP_GFX::RIVER
-        BATTLE_BG_GFX::_14 := array_item MAP_GFX, MAP_GFX::IMP_CAMP_1
-        BATTLE_BG_GFX::_15 := array_item MAP_GFX, MAP_GFX::TRAIN_EXT_1
-        BATTLE_BG_GFX::_16 := array_item MAP_GFX, MAP_GFX::TRAIN_INT
-        BATTLE_BG_GFX::_17 := array_item MAP_GFX, MAP_GFX::CAVES
+        map_gfx_alias TRAIN_EXT_2, TRAIN_PARALLAX
+        map_gfx_alias MOUNTAINS_EXT_2, MOUNTAIN_EXT_1
+        map_gfx_alias MOUNTAINS_INT_2, MOUNTAIN_INT_1
+        map_gfx_alias RIVER_2, RIVER
+        map_gfx_alias IMP_CAMP_2, IMP_CAMP_1
+        map_gfx_alias GHOST_TRAIN_1, TRAIN_EXT_1
+        map_gfx_alias TRAIN_INT_2, TRAIN_INT
+        map_gfx_alias CAVES_2, CAVES
         inc_battle_bg_gfx FIELD_1, "field_1"
         inc_battle_bg_gfx FIELD_2, "field_2"
         inc_battle_bg_gfx FIELD_3, "field_3"
-        BATTLE_BG_GFX::_21 := array_item MAP_GFX, MAP_GFX::TRAIN_EXT_3
+        map_gfx_alias TRAIN_EXT_3, TRAIN_EXT_3
         inc_battle_bg_gfx COLOSSEUM, "colosseum"
         inc_battle_bg_gfx BATTLE_BG_GFX_23, "unused_23"
         inc_battle_bg_gfx DESERT_1, "desert_1"
         inc_battle_bg_gfx FOREST_1, "forest_1"
-        BATTLE_BG_GFX::_26 := array_item MAP_GFX, MAP_GFX::FOREST_2
+        map_gfx_alias FOREST_2, FOREST_2
         inc_battle_bg_gfx FIELD_WOR, "field_wor"
         inc_battle_bg_gfx VELDT, "veldt"
         inc_battle_bg_gfx DESERT_2, "desert_2"
@@ -778,26 +784,26 @@ BattleBGGfx:
         inc_battle_bg_gfx CASTLE_INT, "castle_int"
         inc_battle_bg_gfx MAGITEK_1, "magitek_1"
         inc_battle_bg_gfx CASTLE_EXT_1, "castle_ext_1"
-        BATTLE_BG_GFX::_39 := array_item MAP_GFX, MAP_GFX::FACTORY_1
-        BATTLE_BG_GFX::_40 := array_item MAP_GFX, MAP_GFX::IMP_CASTLE_INT
-        BATTLE_BG_GFX::_41 := array_item MAP_GFX, MAP_GFX::FLOATING_ISLAND_1
-        BATTLE_BG_GFX::_42 := array_item MAP_GFX, MAP_GFX::KEFKAS_TOWER_1
-        BATTLE_BG_GFX::_43 := array_item MAP_GFX, MAP_GFX::OPERA_2
-        BATTLE_BG_GFX::_44 := array_item MAP_GFX, MAP_GFX::BURNING_BUILDING
+        map_gfx_alias MAGITEK_2, FACTORY_1
+        map_gfx_alias IMP_CASTLE_2, IMP_CASTLE_INT
+        map_gfx_alias FLOATING_ISLAND_2, FLOATING_ISLAND_1
+        map_gfx_alias KEFKAS_TOWER_2, KEFKAS_TOWER_1
+        map_gfx_alias OPERA_CURTAIN, OPERA_2
+        map_gfx_alias BURNING_BLDG_2, BURNING_BUILDING
         inc_battle_bg_gfx TENTACLES, "tentacles"
-        BATTLE_BG_GFX::_46 := array_item MAP_GFX, MAP_GFX::CASTLE_EXT_1
+        map_gfx_alias CASTLE_EXT_2, CASTLE_EXT_1
         inc_battle_bg_gfx TOWN_INT_1, "town_int_1"
-        BATTLE_BG_GFX::_48 := array_item MAP_GFX, MAP_GFX::TOWN_INT_1
-        BATTLE_BG_GFX::_49 := array_item MAP_GFX, MAP_GFX::TRAIN_EXT_2
+        map_gfx_alias TOWN_INT_2, TOWN_INT_1
+        map_gfx_alias GHOST_TRAIN_2, TRAIN_EXT_2
         inc_battle_bg_gfx UNDERWATER, "underwater"
-        BATTLE_BG_GFX::_51 := array_item MAP_GFX, MAP_GFX::SEALED_GATE_1
+        map_gfx_alias SEALED_GATE_1, SEALED_GATE_1
         inc_battle_bg_gfx SEALED_GATE_2, "sealed_gate_2"
-        BATTLE_BG_GFX::_53 := array_item MAP_GFX, MAP_GFX::ZOZO_EXT_1
+        map_gfx_alias ZOZO_1, ZOZO_EXT_1
         inc_battle_bg_gfx ZOZO_2, "zozo_2"
-        BATTLE_BG_GFX::_55 := array_item MAP_GFX, MAP_GFX::AIRSHIP_4
-        BATTLE_BG_GFX::_56 := array_item MAP_GFX, MAP_GFX::AIRSHIP_5
+        map_gfx_alias CLOUDS_1, AIRSHIP_4
+        map_gfx_alias CLOUDS_2, AIRSHIP_5
         inc_battle_bg_gfx AIRSHIP, "airship"
-        BATTLE_BG_GFX::_58 := array_item MAP_GFX, MAP_GFX::DARILLS_TOMB_1
+        map_gfx_alias DARILLS_TOMB_1, DARILLS_TOMB_1
         inc_battle_bg_gfx DARILLS_TOMB_2, "darills_tomb_2"
         inc_battle_bg_gfx WATERFALL, "waterfall"
         inc_battle_bg_gfx FINAL_BATTLE_1, "final_battle_1"
@@ -810,9 +816,9 @@ BattleBGGfx:
         inc_battle_bg_gfx FINAL_BATTLE_8, "final_battle_8"
         inc_battle_bg_gfx FANATICS_TOWER, "fanatics_tower"
         inc_battle_bg_gfx MAGITEK_TRAIN_1, "magitek_train_1"
-        BATTLE_BG_GFX::_71 := array_item MAP_GFX, MAP_GFX::FACTORY_4
-        BATTLE_BG_GFX::_72 := array_item MAP_GFX, MAP_GFX::DARILLS_TOMB_2
-        BATTLE_BG_GFX::_73 := array_item MAP_GFX, MAP_GFX::FLOATING_ISLAND_2
+        map_gfx_alias MAGITEK_TRAIN_2, FACTORY_4
+        map_gfx_alias DARILLS_TOMB_3, DARILLS_TOMB_2
+        map_gfx_alias CYANS_DREAM_1, FLOATING_ISLAND_2
         inc_battle_bg_gfx CYANS_DREAM_2, "cyans_dream_2"
 
 ; stale data (last 21 bytes of cyans_dream_2)

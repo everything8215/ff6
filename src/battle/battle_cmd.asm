@@ -386,7 +386,7 @@ _161b:  tyx
         lsr
         lda     #1                      ; 1 attack
         bcc     @1626
-        lda     #7                      ; 7 attacks
+        lda     #7                      ; 7 extra attacks
 @1626:  sta     near w7e3a70
         jsr     CheckTargetsPresent
         jsr     _c23865
@@ -702,6 +702,12 @@ InitUmaroAttack:
         jsr     SpearEffect
         lda     near wTargetProp2::LHandItem,x
         jsr     SpearEffect
+
+; when dragon horn is equipped:
+;   2 attacks: 75% chance
+;   3 attacks: 18.75% chance
+;   4 attacks: 6.25% chance
+
         lda     near wTargetProp2::RelicEffect1,x  ; RELIC_EFFECT1::DRAGON_HORN
         bpl     @183c       ; branch if no dragon horn
         dec     near w7e3a8e       ; enable dragon horn effect

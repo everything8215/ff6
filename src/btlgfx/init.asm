@@ -525,7 +525,7 @@ user_init:
         jsr     _c1468f
         jsr     InitMenuText
         jsr     TfrTopMenuTiles
-        inc     near wEnableUpdateMenuWindowTiles
+        inc     near wEnableTfrMenuWindowTiles
         jsr     InitCharGfx
         jsr     LoadStatusPal
         jsr     InitCursorSprites

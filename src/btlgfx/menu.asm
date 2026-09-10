@@ -1016,7 +1016,7 @@ window_open:
         sta     near wMenuInput+1
         lda     #MENU_INPUT::WAIT
         sta     near wMenuInput
-        inc     near wEnableUpdateMenuWindowTiles                 ; enable menu window update
+        inc     near wEnableTfrMenuWindowTiles                 ; enable menu window update
         inc     near wMenuIsOpen             ; indicate that menu is open
         rts
 
@@ -1084,7 +1084,7 @@ DrawCharHPMPTbl:
 ; called every frame after NMI
 
 UpdateMenuWindow:
-@4504:  lda     near wEnableUpdateMenuWindowTiles       ; branch if battle menu update is disabled
+@4504:  lda     near wEnableTfrMenuWindowTiles       ; branch if battle menu update is disabled
         bne     @4515
         ldx     zZero
         stx     $10
@@ -1285,7 +1285,7 @@ DrawStatusMenuText:
         jsr     LoadMenuTextScrollData
         jsr     _c147ac
         jsr     _c14f77
-        inc     near wEnableUpdateMenuWindowTiles
+        inc     near wEnableTfrMenuWindowTiles
         lda     #MENU_WINDOW_STATE::WAIT_OPEN
         sta     near wMenuWindowState
         sta     near w7e7b85
@@ -1443,7 +1443,7 @@ _c14721:
 tfr_poi_set2:
 @4721:  phy
         pha
-@4723:  lda     near wEnableUpdateMenuWindowTiles
+@4723:  lda     near wEnableTfrMenuWindowTiles
         beq     @472d       ; branch if battle menu update is not pending
         jsr     WaitVblank
         bra     @4723
@@ -3027,7 +3027,7 @@ set_cgadd_sub:
 
 _c14f77:
 set_open_flag:
-@4f77:  inc     near wEnableUpdateMenuWindowTiles
+@4f77:  inc     near wEnableTfrMenuWindowTiles
 
 _c14f7a:
 @4f7a:  lda     #MENU_WINDOW_STATE::WAIT_OPEN
@@ -3042,7 +3042,7 @@ _c14f7a:
 ; [ close menu window ]
 
 set_close_flag:
-@4f89:  inc     near wEnableUpdateMenuWindowTiles
+@4f89:  inc     near wEnableTfrMenuWindowTiles
 
 _c14f8c:
 set_close_flag2:
@@ -3503,8 +3503,8 @@ ResetMenuTileBuf:
         bne     _523d
         lda     near w7e2f2e       ; command setting
         beq     _5235       ; branch if window
-        lda     #$01
-        sta     near w7e64b8       ; use short window
+        lda     #1
+        sta     near w7e64b8       ; draw short window
         jmp     GoToNextWindowState
 
 ; ------------------------------------------------------------------------------
@@ -3514,12 +3514,12 @@ ResetMenuTileBuf:
 ; called when command window is closed
 
         array_label MENU_WINDOW_STATE, MENU_WINDOW_STATE::RESET_CMD_SETTING
-_5235:  lda     #$02
-        sta     near w7e64b8       ; use normal window
+_5235:  lda     #2
+        sta     near w7e64b8       ; draw normal window
         jmp     GoToNextWindowState
 
-_523d:  lda     #$03
-        sta     near w7e64b8       ; use control window
+_523d:  lda     #3
+        sta     near w7e64b8       ; draw control window
         jmp     GoToNextWindowState
 
 ; ------------------------------------------------------------------------------
@@ -3579,27 +3579,27 @@ InitMenuWindows:
         lda     #WINDOW_BUF::CHAR_INFO
         jsr     DrawMenuWindow
         clr_a   ; #WINDOW_VRAM::TOP_MENU
-        jsr     TfrMenuWindowTiles       ; copy menu window tile data to vram (closed menu)
+        jsr     InitMenuWindowTiles       ; copy menu window tile data to vram (closed menu)
 
 ; transfer command window tiles
         lda     #WINDOW_BUF::CMD_WINDOW
         jsr     DrawMenuWindow
         jsr     _c15245       ; init command select menu window tile data
         lda     #WINDOW_VRAM::CMD
-        jsr     TfrMenuWindowTiles       ; copy menu window tile data to vram (command select)
+        jsr     InitMenuWindowTiles       ; copy menu window tile data to vram (command select)
 
 ; transfer slot window tiles
         lda     #WINDOW_BUF::SLOT
         jsr     DrawMenuWindow
         jsr     _c15335       ; init slot window tile data
         lda     #WINDOW_VRAM::SLOT
-        jsr     TfrMenuWindowTiles       ; copy menu window tile data to vram (slot)
+        jsr     InitMenuWindowTiles       ; copy menu window tile data to vram (slot)
 
 ; transfer list/dialog/etc. window tiles
         lda     #WINDOW_BUF::LIST
         jsr     DrawMenuWindow
         lda     #WINDOW_VRAM::LIST
-        jsr     TfrMenuWindowTiles       ; copy menu window tile data to vram (item/dialog/etc.)
+        jsr     InitMenuWindowTiles       ; copy menu window tile data to vram (item/dialog/etc.)
 
 ; transfer magic list window tiles
         lda     #WINDOW_BUF::MAGIC
@@ -3607,33 +3607,33 @@ InitMenuWindows:
         lda     #WINDOW_BUF::MP_REQD
         jsr     DrawMPWindow
         lda     #WINDOW_VRAM::MAGIC
-        jsr     TfrMenuWindowTiles       ; copy menu window tile data to vram (magic/lore select)
+        jsr     InitMenuWindowTiles       ; copy menu window tile data to vram (magic/lore select)
 
 ; transfer equip window tiles
         lda     #WINDOW_BUF::EQUIP
         jsr     DrawMenuWindow
         lda     #WINDOW_VRAM::EQUIP
-        jsr     TfrMenuWindowTiles       ; copy menu window tile data to vram (weapon select)
+        jsr     InitMenuWindowTiles       ; copy menu window tile data to vram (weapon select)
 
 ; transfer genju window tiles
         lda     #WINDOW_BUF::GENJU
         jsr     DrawMenuWindow
         lda     #WINDOW_VRAM::GENJU
-        jsr     TfrMenuWindowTiles       ; copy menu window tile data to vram (esper)
+        jsr     InitMenuWindowTiles       ; copy menu window tile data to vram (esper)
 
 ; transfer row/def window tiles
         jsr     ResetMenuTileBuf
         lda     #WINDOW_BUF::ROW_DEF
         jsr     DrawMenuWindow
         lda     #WINDOW_VRAM::ROW_DEF
-        jsr     TfrMenuWindowTiles       ; copy menu window tile data to vram (row/def.)
+        jsr     InitMenuWindowTiles       ; copy menu window tile data to vram (row/def.)
 
 ; transfer bushido window tiles
         jsr     ResetMenuTileBuf
         lda     #WINDOW_BUF::BUSHIDO
         jsr     DrawMenuWindow
         lda     #WINDOW_VRAM::BUSHIDO
-        jmp     TfrMenuWindowTiles       ; copy menu window tile data to vram (swdtech)
+        jmp     InitMenuWindowTiles       ; copy menu window tile data to vram (swdtech)
 
 ; ------------------------------------------------------------------------------
 
@@ -3696,7 +3696,7 @@ sp_window_frame_set:
 
 ; A: window location in vram (WINDOW_VRAM enum)
 
-TfrMenuWindowTiles:
+InitMenuWindowTiles:
 @5373:  asl
         tax
         longa
@@ -4083,7 +4083,7 @@ OpenEquipWindow:
 @5645:  jsr     DrawEquipListText
         ldx     #$7e40
         stx     near w7e7baa
-        inc     near wEnableUpdateMenuTextTiles
+        inc     near wEnableTfrMenuTextTiles
         lda     #MENU_WINDOW_STATE::EQUIP_OPEN
         sta     near wMenuWindowState
         lda     #MENU_INPUT_QUEUE::EQUIP
@@ -4307,7 +4307,7 @@ set_scr_vram_poi:
         sta     near w7e7baa
         lda     f:_c18291+1,x
         sta     near w7e7baa+1
-        inc     near wEnableUpdateMenuTextTiles
+        inc     near wEnableTfrMenuTextTiles
         inc     near w7e7ba6
         inc     near w7e7ba5
         lda     near w7e7ba5
@@ -4723,7 +4723,7 @@ OpenSummonWindow:
 @5a01:  jsr     DrawSummonMagicListText
         ldx     #$7b80
         stx     near w7e7baa
-        inc     near wEnableUpdateMenuTextTiles
+        inc     near wEnableTfrMenuTextTiles
         lda     #MENU_WINDOW_STATE::SUMMON_OPEN
         sta     near wMenuWindowState
         lda     #MENU_INPUT_QUEUE::SUMMON
@@ -4802,7 +4802,7 @@ _c15a5c:
 main_window_open:
 @5a5c:  lda     near w7e7bdd
         beq     @5ad0
-        lda     near wEnableUpdateMenuWindowTiles
+        lda     near wEnableTfrMenuWindowTiles
         bne     @5ad0
         lda     near w7e7bee
         bne     @5acd
@@ -4892,7 +4892,7 @@ _c15b14:
 back_window_open:
 @5b14:  lda     near w7e7bd1
         beq     @5b4b
-        lda     near wEnableUpdateMenuWindowTiles
+        lda     near wEnableTfrMenuWindowTiles
         bne     @5b4b
         longa
         ldx     near w7e7bd7
@@ -5225,8 +5225,8 @@ _5d5c:  sta     <$010e,x
 
 ; [ copy menu text tile data to vram ]
 
-UpdateMenuTextTiles:
-@5d99:  lda     near wEnableUpdateMenuTextTiles       ;
+TfrMenuTextTiles:
+@5d99:  lda     near wEnableTfrMenuTextTiles
         beq     @5db1
         ldx     #$0080      ; size = #$80
         stx     $36
@@ -5234,7 +5234,7 @@ UpdateMenuTextTiles:
         ldx     #near w7e5e4d
         lda     #^w7e5e4d
         jsr     TfrVRAM
-        stz     near wEnableUpdateMenuTextTiles
+        stz     near wEnableTfrMenuTextTiles
 @5db1:  lda     near w7e6285       ;
         bmi     @5dba
         jsl     TfrCharText

@@ -41,12 +41,12 @@ _item_seq .set 0
         _item_prop_spell_cast_flags .set 0
         _item_prop_power .set 0
         _item_prop_hit_rate .set 0
-        _item_prop_weapon_special .set 0
+        _item_prop_weapon_special .set ATTACK_SPECIAL_EFFECT::NO_EFFECT
         _item_prop_block_gfx .set 0
         _item_prop_block_type .set 0
         _item_prop_evade .set 0
         _item_prop_mblock .set 0
-        _item_prop_item_special .set 0
+        _item_prop_item_special .set ATTACK_SPECIAL_EFFECT::NONE
         _item_prop_price .set 0
 .endmac
 
@@ -206,11 +206,16 @@ _item_seq .set 0
 .endmac
 
 .mac weapon_special val
-        _item_prop_weapon_special .set WEAPON_SPECIAL::val
+        .assert ATTACK_SPECIAL_EFFECT::val < 16, error, .sprintf("Invalid weapon special effect: %s", .string(val))
+        _item_prop_weapon_special .set ATTACK_SPECIAL_EFFECT::val & $0f
 .endmac
 
 .mac item_special val
-        _item_prop_item_special .set ITEM_SPECIAL::val
+        .if ATTACK_SPECIAL_EFFECT::val = ATTACK_SPECIAL_EFFECT::NONE
+                _item_prop_item_special .set ATTACK_SPECIAL_EFFECT::val
+        .else
+                _item_prop_item_special .set ATTACK_SPECIAL_EFFECT::val - 72
+        .endif
 .endmac
 
 .mac block gfx, type

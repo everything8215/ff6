@@ -869,7 +869,7 @@ MagicProp:
         targetting {ONE_SIDE, INIT_HALF, MULTI_TARGET}
         flags {NO_REFLECT, NO_DODGE}
         mp_cost 33
-        special_effect GOLEM_BLOCK
+        special_effect GOLEM
         end_magic_prop
 
 ; ------------------------------------------------------------------------------

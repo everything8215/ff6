@@ -2986,7 +2986,7 @@ set_scr_line_tfr_poi:
         sta     near w7e7baa
         lda     f:_c18291+1,x
         sta     near w7e7baa+1
-        inc     near wEnableUpdateMenuTextTiles
+        inc     near wEnableTfrMenuTextTiles
         rts
 
 ; ------------------------------------------------------------------------------
@@ -4559,7 +4559,7 @@ _8d33:  lda     #$03
         sta     near w7e7baa
         lda     f:_c18291+1,x
         sta     near w7e7baa+1
-        inc     near wEnableUpdateMenuTextTiles
+        inc     near wEnableTfrMenuTextTiles
         inc     near w7e7ba7
         lda     near w7e7ba6
         cmp     #$04
@@ -4688,7 +4688,7 @@ set_hand_item_mess:
 @8e34:  jsr     DrawEquipListText
         ldx     #$7e40
         stx     near w7e7baa
-        inc     near wEnableUpdateMenuTextTiles
+        inc     near wEnableTfrMenuTextTiles
 ; fallthrough
 
 ; ------------------------------------------------------------------------------
@@ -4756,7 +4756,7 @@ SelectEquipItem:
         jsr     DrawEquipListText
         ldx     #$7e40
         stx     near w7e7baa
-        inc     near wEnableUpdateMenuTextTiles
+        inc     near wEnableTfrMenuTextTiles
         stz     near w7e7b02
         stz     near w7e7baf
         stz     near w7e7bb5
@@ -4798,7 +4798,7 @@ SelectEquipItem:
         jsr     DrawEquipListText
         ldx     #$7e40
         stx     near w7e7baa
-        inc     near wEnableUpdateMenuTextTiles
+        inc     near wEnableTfrMenuTextTiles
         stz     near w7e7b02
         stz     near w7e7baf
         stz     near w7e7bb5

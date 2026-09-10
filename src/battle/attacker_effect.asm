@@ -1,4 +1,8 @@
 
+.enum ATTACKER_EFFECT
+        COUNT = ATTACK_SPECIAL_EFFECT::COUNT
+.endenum
+
 ; ------------------------------------------------------------------------------
 
 ; [ execute attacker special effect ]
@@ -21,7 +25,7 @@ AttackerEffectNone:
 
 ; [ attacker special effect $01: thiefknife ]
 
-AttackerEffect_01:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::THIEFKNIFE
 @3e8b:  jsr     RandCarry
         bcs     @3e9f
         lda     #$a4        ; special effect $52 (steal)
@@ -37,7 +41,7 @@ AttackerEffect_01:
 
 ; [ attacker special effect $1e: step mine ]
 
-AttackerEffect_1e:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::STEP_MINE
 @3ea0:  stz     near w7e3414       ; disable damage modification
         longa
         clr_a
@@ -62,13 +66,13 @@ AttackerEffect_1e:
 
 ; [ attacker special effect $0e: organyx (ogre nix) ]
 
-AttackerEffect_0e:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::OGRE_NIX
 @3eca:  lda     zb1         ; counterattack flag
         lsr
-        bcs     AttackerEffect_07       ; branch if a counterattack
+        bcs     array_item ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::MP_CRIT       ; branch if a counterattack
         lda     near wTargetProp2::w7e3aa0,y
         bit     #$04
-        bne     AttackerEffect_07       ; branch if $3aa0.2 is set (ogre nix can't be broken)
+        bne     array_item ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::MP_CRIT       ; branch if $3aa0.2 is set (ogre nix can't be broken)
         lda     near wTargetProp2::CurrHP_H,y
         xba
         lda     near wTargetProp2::CurrHP_L,y
@@ -78,7 +82,7 @@ AttackerEffect_0e:
         txa
         jsr     RandA
         dec
-        bpl     AttackerEffect_07
+        bpl     array_item ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::MP_CRIT
         tya
         lsr
         tax
@@ -99,7 +103,7 @@ AttackerEffect_0e:
         ldx     $ee
         lda     near wRHandItemList::ItemID,x
         cmp     #ITEM::OGRE_NIX
-        bne     AttackerEffect_07
+        bne     array_item ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::MP_CRIT
         lda     #ITEM::UNARMED
         sta     near wRHandItemList::ItemID,x
         sta     near wRHandItemList::UsageFlags,x
@@ -114,7 +118,7 @@ AttackerEffect_0e:
 
 ; rune edge, illumina, ragnarok, punisher
 
-AttackerEffect_07:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::MP_CRIT
 @3f22:  lda     #12                     ; use 12 mp
 _3f24:  sta     $ee
         lda     zb2
@@ -142,7 +146,7 @@ _3f24:  sta     $ee
 
 ; [ attacker special effect $0f: use more mp for critical (unused) ]
 
-AttackerEffect_0f:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::MORE_MP_CRIT
 @3f50:  .a8
         lda     #28                     ; use 28 mp
         bra     _3f24
@@ -151,7 +155,7 @@ AttackerEffect_0f:
 
 ; [ attacker special effect $1b: pearl wind ]
 
-AttackerEffect_1b:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::WHITE_WIND
 @3f54:  lda     #$60
         tsb     $11a2
         stz     near w7e3414       ; disable damage modification
@@ -164,7 +168,7 @@ AttackerEffect_1b:
 
 ; [ attacker special effect $11: golem ]
 
-AttackerEffect_11:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::GOLEM
 @3f65:  longa
         lda     near wTargetProp2::CurrHP,y
         sta     near wGolemHP
@@ -174,7 +178,7 @@ AttackerEffect_11:
 
 ; [ attacker special effect $06: soul sabre ]
 
-AttackerEffect_06:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::SOUL_SABRE
 @3f6e:  .a8
         lda     #$80
         tsb     $11a3
@@ -184,7 +188,7 @@ AttackerEffect_06:
 
 ; [ attacker special effect $05: drainer ]
 
-AttackerEffect_05:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::DRAINER
 @3f73:  lda     #$08
         tsb     $11a2
         lda     #$02
@@ -195,7 +199,7 @@ AttackerEffect_05:
 
 ; [ attacker special effect $0c: heal rod ]
 
-AttackerEffect_0c:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::HEAL_ROD
 @3f7e:  lda     #$20
         tsb     $11a2
         lda     #$01
@@ -208,7 +212,7 @@ AttackerEffect_0c:
 
 ; increase damage by (max hp - current hp)
 
-AttackerEffect_0a:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::VALIANTKNIFE
 @3f89:  lda     #$20
         tsb     $11a2
         longa
@@ -224,20 +228,20 @@ AttackerEffect_0a:
 
 ; [ attacker special effect $0b: tempest ]
 
-AttackerEffect_0b:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::TEMPEST
 @3f9f:  .a8
         jsr     Rand
         cmp     #$80
         bcs     _3fb6       ; 50% chance to return
         stz     $11a6       ; clear attack power
-        lda     #$65        ; cast wind slash
+        lda     #ATTACK::WIND_SLASH
         bra     _3fb0
 
 ; ------------------------------------------------------------------------------
 
 ; [ attacker special effect $49: magicite ]
 
-AttackerEffect_49:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::MAGICITE
 @3fad:  jsr     RandGenju
 _3fb0:  sta     near w7e3400       ; current spell
         inc     near w7e3a70       ; increment number of attacks
@@ -247,7 +251,7 @@ _3fb6:  rts
 
 ; [ attacker special effect $51: gp rain ]
 
-AttackerEffect_51:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::GIL_TOSS
 @3fb7:  lda     near wTargetProp2::Level,y
         xba
         lda     #$1e
@@ -284,7 +288,7 @@ AttackerEffect_51:
 
 ; [ attacker special effect $19: exploder ]
 
-AttackerEffect_19:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::EXPLODER
 @3ffc:  .a8
         tyx
         stz     zbc
@@ -312,7 +316,7 @@ AttackerEffect_19:
 
 ; [ attacker special effect $4a: super ball ]
 
-AttackerEffect_4a:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::SUPER_BALL
 @402c:  .a8
         lda     #$7d
         sta     zb6
@@ -324,7 +328,7 @@ AttackerEffect_4a:
 
 ; [ attacker special effect $2c: launcher ]
 
-AttackerEffect_2c:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::LAUNCHER
 @4037:  lda     #$07
 _4039:  sta     near w7e3405
         longa
@@ -336,7 +340,7 @@ _4039:  sta     near w7e3405
 
 ; [ attacker special effect $02: atma weapon ]
 
-AttackerEffect_02:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::ATMA_WEAPON
 @4044:  .a8
         lda     #$20
         tsb     $11a2       ; ignore target's defense
@@ -348,8 +352,8 @@ AttackerEffect_02:
 
 ; [ attacker special effect $18/$4d: warp/warp stone ]
 
-AttackerEffect_18:
-AttackerEffect_4d:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::WARP
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::WARP_STONE
 @404e:  lda     zb1
         bit     #$04
         bne     @405a       ; branch if can't run away
@@ -364,7 +368,7 @@ AttackerEffect_4d:
 
 ; [ attacker special effect $33: bababreath ]
 
-AttackerEffect_33:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::BABABREATH
 @4061:  stz     $ee
         ldx     #$06
 @4065:  lda     near wTargetProp2::w7e3aa0,x
@@ -394,7 +398,7 @@ AttackerEffect_33:
 
 ; [ attacker special effect $50: possess ]
 
-AttackerEffect_50:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::POSSESS
 @4095:  jsr     Rand
         cmp     #150
         bcc     _40ba       ; ~60% chance to return (40% chance to miss)
@@ -411,7 +415,7 @@ AttackerEffectMiss:
 
 ; hits targets with level divisble by last digit of gp
 
-AttackerEffect_1d:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::PEARL_LORE
 @40a1:  lda     $1862       ; gp
         xba
         lda     $1861
@@ -429,7 +433,7 @@ _40ba:  rts
 
 ; [ attacker special effect $27: escape ]
 
-AttackerEffect_27:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::ESCAPE
 @40bb:  cpy     #$08
         bcs     _40ba       ; return if attacker is a monster
         lda     #GFX_BATTLE_CMD::RUN_AWAY
@@ -444,7 +448,7 @@ AttackerEffect_27:
 
 ; characters run away
 
-AttackerEffect_4b:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::SMOKE_BOMB
 @40c8:  lda     #$04
         bit     zb1
         beq     _40ba       ; return if party can run away
@@ -460,7 +464,7 @@ _40d6:  sta     near w7e3401
 
 ; [ attacker special effect $31: forcefield ]
 
-AttackerEffect_31:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::FORCEFIELD
 @40da:  clr_a
         lda     #$ff
         eor     near w7e3eb0 + 24       ; elements nullified by forcefield
@@ -477,9 +481,9 @@ AttackerEffect_31:
 
 ; [ attacker special effect $32: quadra slam/slice ]
 
-AttackerEffect_32:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::QUADRA_SLAM
 @40f1:  lda     #3
-        sta     near w7e3a70       ; 4 attacks
+        sta     near w7e3a70       ; 3 extra attacks
         lda     #$40
         tsb     zba         ; random target
         stz     $11a9       ; disable special effect
@@ -489,7 +493,7 @@ AttackerEffect_32:
 
 ; [ attacker special effect $1a: blow fish ]
 
-AttackerEffect_1a:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::BLOW_FISH
 @40fe:  lda     #$60        ;
         tsb     $11a2
         stz     near w7e3414       ; disable damage modification
@@ -502,7 +506,7 @@ AttackerEffect_1a:
 
 ; [ attacker special effect $2a: flare star ]
 
-AttackerEffect_2a:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::FLARE_STAR
 @410f:  stz     near w7e3414       ; disable damage modification
         longa
         lda     za2
@@ -524,7 +528,7 @@ AttackerEffect_2a:
 
 ; [ attacker special effect $4c: elixir/megalixir ]
 
-AttackerEffect_4c:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::ELIXIR
 @4136:  .a8
         lda     #$80
         trb     $11a3
@@ -534,7 +538,7 @@ AttackerEffect_4c:
 
 ; [ attacker special effect $28: mind blast ]
 
-AttackerEffect_28:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::MIND_BLAST
 @413c:  longa
         ldy     #$06
 @4140:  lda     za4         ; character targets hit
@@ -548,7 +552,7 @@ AttackerEffect_28:
 
 ; [ attacker special effect $29: n. cross ]
 
-AttackerEffect_29:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::N_CROSS
 @414d:  .a8
         jsr     Rand
         trb     za4_L         ; random character targets
@@ -560,7 +564,7 @@ AttackerEffect_29:
 
 ; [ attacker special effect $09: dice/fixed dice ]
 
-AttackerEffect_09:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::DICE
 @4158:  stz     near w7e3414       ; disable damage modification
         lda     #$20
         tsb     $11a4       ; can't dodge
@@ -637,7 +641,7 @@ AttackerEffect_09:
 
 ; [ attacker special effect $3d: revenge ]
 
-AttackerEffect_3d:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::REVENGE
 @41e6:  stz     near w7e3414       ; disable damage modification
         longa
         sec
@@ -650,7 +654,7 @@ AttackerEffect_3d:
 
 ; [ attacker special effect $13: sonic dive ]
 
-AttackerEffect_13:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::PALIDOR
 @41f6:  .a8
         lda     #$10
         tsb     near w7e3a46       ; set $3a46.4
@@ -673,7 +677,7 @@ AttackerEffect_13:
 
 ; [ attacker special effect $36: empowerer ]
 
-AttackerEffect_36:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::EMPOWERER
 @421b:  .a8
         lda     $11a3       ; toggle "affect mp" flag
         eor     #$80
@@ -691,7 +695,7 @@ AttackerEffect_36:
 
 ; [ attacker special effect $16: spiraler ]
 
-AttackerEffect_16:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::SPIRALER
 @4234:  tyx
         lda     near wTargetMask,x
         trb     za2_L
@@ -707,7 +711,7 @@ _424a:  rts
 
 ; [ attacker special effect $44: discard ]
 
-AttackerEffect_44:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::DISCARD
 @424b:  .a8
         jsr     AttackerEffectMiss
         lda     #$20
@@ -724,7 +728,7 @@ AttackerEffect_44:
 
 ; [ attacker special effect $15: mantra ]
 
-AttackerEffect_15:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::MANTRA
 @4263:  .a8
         lda     #$60
         tsb     $11a2
@@ -745,7 +749,7 @@ AttackerEffect_15:
 
 ; unused
 
-AttackerEffect_42:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::QUARTER_DMG
 @4280:  longa
         lsr     $11b0       ; divide damage by 4
 ; fall through
@@ -756,7 +760,7 @@ AttackerEffect_42:
 
 ; unused
 
-AttackerEffect_41:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::HALF_DMG
 @4285:  longa
         lsr     $11b0       ; divide damage by 2
         rts
@@ -765,7 +769,7 @@ AttackerEffect_41:
 
 ; [ attacker special effect $30: suplex ]
 
-AttackerEffect_30:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::SUPLEX
 @428b:  .a8
         lda     #$10
         tsb     zb0
@@ -794,7 +798,7 @@ AttackerEffect_30:
 
 ; misses targets that do not have reflect status
 
-AttackerEffect_1c:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::REFLECT_LORE
 @42b7:  longa
         ldx     #$12
 @42bb:  lda     near wTargetProp3::w7e3ef8 - 1,x     ; check each character/monster's status 3
@@ -809,7 +813,7 @@ AttackerEffect_1c:
 
 ; [ attacker special effect $43: quick ]
 
-AttackerEffect_43:
+        array_label ATTACKER_EFFECT, ATTACK_SPECIAL_EFFECT::QUICK
         .a8
 @42ca:  lda     near w7e3402                   ; quick counter
         bpl     @42d8                   ; branch if another target is already quick
@@ -826,95 +830,15 @@ AttackerEffect_43:
 
 ; ------------------------------------------------------------------------------
 
+; define labels for unused target effects
+.repeat ATTACK_SPECIAL_EFFECT::COUNT, i
+        .ifndef array_item ATTACKER_EFFECT, i
+                array_item ATTACKER_EFFECT, {i} := AttackerEffectNone
+        .endif
+.endrep
+
 ; attacker special effect jump table
 AttackerEffectTbl:
-@42e1:  .addr   AttackerEffectNone
-        .addr   AttackerEffect_01
-        .addr   AttackerEffect_02
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_05
-        .addr   AttackerEffect_06
-        .addr   AttackerEffect_07
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_09
-        .addr   AttackerEffect_0a
-        .addr   AttackerEffect_0b
-        .addr   AttackerEffect_0c
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_0e
-        .addr   AttackerEffect_0f
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_11
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_13
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_15
-        .addr   AttackerEffect_16
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_18
-        .addr   AttackerEffect_19
-        .addr   AttackerEffect_1a
-        .addr   AttackerEffect_1b
-        .addr   AttackerEffect_1c
-        .addr   AttackerEffect_1d
-        .addr   AttackerEffect_1e
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_27
-        .addr   AttackerEffect_28
-        .addr   AttackerEffect_29
-        .addr   AttackerEffect_2a
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_2c
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_30
-        .addr   AttackerEffect_31
-        .addr   AttackerEffect_32
-        .addr   AttackerEffect_33
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_36
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_3d
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_41
-        .addr   AttackerEffect_42
-        .addr   AttackerEffect_43
-        .addr   AttackerEffect_44
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_49
-        .addr   AttackerEffect_4a
-        .addr   AttackerEffect_4b
-        .addr   AttackerEffect_4c
-        .addr   AttackerEffect_4d
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffect_50
-        .addr   AttackerEffect_51
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
-        .addr   AttackerEffectNone
+        ptr_tbl ATTACKER_EFFECT
 
 ; ------------------------------------------------------------------------------

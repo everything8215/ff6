@@ -73,7 +73,7 @@ ItemProp:
         equip {LOCKE, SHADOW}, MERIT
         targeting {MANUAL, INIT_SINGLE, ENEMY}
         weapon_flags {TWO_HAND, RUNIC}
-        weapon_special RAND_STEAL
+        weapon_special THIEFKNIFE
         attack_power 88
         hit_rate 180
         speed +3
@@ -109,7 +109,7 @@ ItemProp:
         equip {TERRA, LOCKE, SHADOW, EDGAR, CELES, STRAGO, RELM, SETZER, GOGO}, MERIT
         targeting {MANUAL, INIT_SINGLE, ENEMY}
         weapon_flags {TWO_HAND, RUNIC}
-        weapon_special STRONG_VS_HUMAN
+        weapon_special MAN_EATER
         attack_power 146
         hit_rate 180
         mblock +10
@@ -155,7 +155,7 @@ ItemProp:
         equip LOCKE, MERIT
         targeting {MANUAL, INIT_SINGLE, ENEMY}
         weapon_flags {TWO_HAND, RUNIC}
-        weapon_special STRONG_WHEN_HP_LOW
+        weapon_special VALIANTKNIFE
         attack_power 145
         hit_rate 180
         evade +10
@@ -288,7 +288,7 @@ ItemProp:
         equip {TERRA, LOCKE, EDGAR, CELES}, MERIT
         targeting {MANUAL, INIT_SINGLE, ENEMY}
         weapon_flags {BUSHIDO, TWO_HAND, RUNIC}
-        weapon_special ABSORB_HP
+        weapon_special DRAINER
         attack_power 121
         hit_rate 150
         evade +10
@@ -348,7 +348,7 @@ ItemProp:
         equip {TERRA, LOCKE, EDGAR, CELES}, MERIT
         targeting {MANUAL, INIT_SINGLE, ENEMY}
         weapon_flags {BUSHIDO, TWO_HAND, RUNIC}
-        weapon_special ABSORB_MP
+        weapon_special SOUL_SABRE
         attack_power 125
         hit_rate 150
         evade +10
@@ -365,7 +365,7 @@ ItemProp:
         equip {TERRA, EDGAR, CELES}, MERIT
         targeting {MANUAL, INIT_SINGLE, ENEMY}
         weapon_flags {BUSHIDO, TWO_HAND, RUNIC}
-        weapon_special RAND_BREAK
+        weapon_special OGRE_NIX
         attack_power 182
         hit_rate 150
         price 2
@@ -399,7 +399,7 @@ ItemProp:
         equip {TERRA, CYAN, EDGAR, CELES}, MERIT
         targeting {MANUAL, INIT_SINGLE, ENEMY}
         weapon_flags {BUSHIDO, TWO_HAND, RUNIC}
-        weapon_special SCIMITAR_EFFECT
+        weapon_special SCIMITAR
         attack_power 208
         hit_rate 150
         price 2
@@ -705,7 +705,7 @@ ItemProp:
         equip CYAN, MERIT
         targeting {MANUAL, INIT_SINGLE, ENEMY}
         weapon_flags {BUSHIDO, TWO_HAND, RUNIC}
-        weapon_special RAND_WIND_SLASH
+        weapon_special TEMPEST
         attack_power 101
         hit_rate 150
         elem_attack WIND
@@ -776,7 +776,7 @@ ItemProp:
         equip {STRAGO, RELM, GOGO}, MERIT
         targeting {MANUAL, INIT_SINGLE}
         weapon_flags TWO_HAND
-        weapon_special HEAL_HP
+        weapon_special HEAL_ROD
         attack_power 200
         hit_rate 255
         price 2
@@ -2286,6 +2286,7 @@ ItemProp:
         item_prop FIRE_SKEAN, CONSUMABLE
         usage THROW
         targeting {ONE_SIDE, INIT_HALF, MULTI_TARGET, ENEMY}
+        item_special ATTACK_SPECIAL_EFFECT_72
         price 500
         end_item_prop
 
@@ -2295,6 +2296,7 @@ ItemProp:
         item_prop WATER_EDGE, CONSUMABLE
         usage THROW
         targeting {ONE_SIDE, INIT_HALF, MULTI_TARGET, ENEMY}
+        item_special ATTACK_SPECIAL_EFFECT_72
         price 500
         end_item_prop
 
@@ -2304,6 +2306,7 @@ ItemProp:
         item_prop BOLT_EDGE, CONSUMABLE
         usage THROW
         targeting {ONE_SIDE, INIT_HALF, MULTI_TARGET, ENEMY}
+        item_special ATTACK_SPECIAL_EFFECT_72
         price 500
         end_item_prop
 
@@ -2313,7 +2316,6 @@ ItemProp:
         item_prop INVIZ_EDGE, CONSUMABLE
         usage THROW
         targeting SELF
-        item_special NONE
         item_status12 VANISH
         price 200
         end_item_prop
@@ -2324,7 +2326,6 @@ ItemProp:
         item_prop SHADOW_EDGE, CONSUMABLE
         usage THROW
         targeting SELF
-        item_special NONE
         item_status12 IMAGE
         price 400
         end_item_prop
@@ -2848,7 +2849,6 @@ ItemProp:
         item_prop RENAME_CARD, CONSUMABLE
         usage MENU
         targeting {MANUAL, ONE_SIDE, INIT_SINGLE}
-        item_special NONE
         price 2
         end_item_prop
 
@@ -2859,7 +2859,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags {INVERT_UNDEAD, AFFECT_HP}
-        item_special NONE
         item_power 50
         price 50
         end_item_prop
@@ -2871,7 +2870,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags {INVERT_UNDEAD, AFFECT_HP}
-        item_special NONE
         item_power 250
         price 300
         end_item_prop
@@ -2883,7 +2881,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags {INVERT_UNDEAD, AFFECT_HP, FRACTIONAL_POWER}
-        item_special NONE
         item_power 16
         price 2
         end_item_prop
@@ -2895,7 +2892,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags AFFECT_MP
-        item_special NONE
         item_power 50
         price 1500
         end_item_prop
@@ -2907,7 +2903,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags AFFECT_MP
-        item_special NONE
         item_power 150
         price 2
         end_item_prop
@@ -2919,7 +2914,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags {AFFECT_MP, FRACTIONAL_POWER}
-        item_special NONE
         item_power 16
         price 2
         end_item_prop
@@ -2955,7 +2949,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags {INVERT_UNDEAD, AFFECT_HP, REMOVE_STATUS, FRACTIONAL_POWER}
-        item_special NONE
         item_power 2
         item_status12 DEAD
         price 500
@@ -2968,7 +2961,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags {INVERT_UNDEAD, AFFECT_HP, REMOVE_STATUS, FRACTIONAL_POWER}
-        item_special NONE
         item_power 2
         item_status12 ZOMBIE
         price 300
@@ -2981,7 +2973,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags REMOVE_STATUS
-        item_special NONE
         item_status12 POISON
         price 50
         end_item_prop
@@ -2993,7 +2984,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags REMOVE_STATUS
-        item_special NONE
         item_status12 BLIND
         price 50
         end_item_prop
@@ -3005,7 +2995,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags REMOVE_STATUS
-        item_special NONE
         item_status12 PETRIFY
         price 200
         end_item_prop
@@ -3017,7 +3006,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags REMOVE_STATUS
-        item_special NONE
         item_status12 {BLIND, POISON, IMP, PETRIFY, SILENCE, SAP}
         price 1000
         end_item_prop
@@ -3029,7 +3017,6 @@ ItemProp:
         usage MENU
         targeting {MANUAL, INIT_SINGLE}
         item_flags {AFFECT_HP, AFFECT_MP, REMOVE_STATUS, FRACTIONAL_POWER}
-        item_special NONE
         item_power 16
         item_status12 {BLIND, ZOMBIE, POISON, VANISH, IMP, PETRIFY}
         item_status34 FLOAT
@@ -3042,7 +3029,6 @@ ItemProp:
         item_prop TENT, CONSUMABLE
         usage MENU
         item_flags {AFFECT_HP, AFFECT_MP, REMOVE_STATUS, FRACTIONAL_POWER}
-        item_special NONE
         item_power 16
         item_status12 {BLIND, ZOMBIE, POISON, VANISH, IMP, PETRIFY, DEAD}
         item_status34 FLOAT
@@ -3056,7 +3042,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags REMOVE_STATUS
-        item_special NONE
         item_status12 IMP
         price 150
         end_item_prop
@@ -3091,7 +3076,6 @@ ItemProp:
         usage {BATTLE, MENU}
         targeting {MANUAL, INIT_SINGLE}
         item_flags REMOVE_STATUS
-        item_special NONE
         item_status12 SILENCE
         price 120
         end_item_prop

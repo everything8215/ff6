@@ -1883,66 +1883,28 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         MAGIC                           = %00001000
 .endenum
 
-.enum WEAPON_SPECIAL
-        NONE                            ;= 0
-        RAND_STEAL                      ;= 1
-        ATMA_WEAPON                     ;= 2
-        INSTANT_DEATH                   ;= 3
-        STRONG_VS_HUMAN                 ;= 4
-        ABSORB_HP                       ;= 5
-        ABSORB_MP                       ;= 6
-        MP_CRIT                         ;= 7
-        STRONG_VS_FLYING                ;= 8
-        DICE                            ;= 9
-        STRONG_WHEN_HP_LOW              ;= 10
-        RAND_WIND_SLASH                 ;= 11
-        HEAL_HP                         ;= 12
-        SCIMITAR_EFFECT                 ;= 13
-        RAND_BREAK                      ;= 14
-        MORE_MP_CRIT                    ;= 15
-.endenum
-
-.enum ITEM_SPECIAL
-        INVALID
-        MAGICITE
-        SUPER_BALL
-        SMOKE_BOMB
-        ELIXIR
-        WARP_STONE
-        DRIED_MEAT
-        POSSESS                                 ; unused
-        GIL_TOSS                                ; unused
-        STEAL                                   ; unused
-        CONTROL                                 ; unused
-        LEAP                                    ; unused
-        SKETCH                                  ; unused
-        DEBILITATOR                             ; unused
-        AIR_ANCHOR                              ; unused
-        NONE                            = $ff
-.endenum
-
-.enum ATTACK_SPECIAL
+.enum ATTACK_SPECIAL_EFFECT
         NO_EFFECT                                                       ;= 0
-        RAND_STEAL = WEAPON_SPECIAL::RAND_STEAL                         ;= 1
-        ATMA_WEAPON = WEAPON_SPECIAL::ATMA_WEAPON                       ;= 2
-        INSTANT_DEATH = WEAPON_SPECIAL::INSTANT_DEATH                   ;= 3
-        STRONG_VS_HUMAN = WEAPON_SPECIAL::STRONG_VS_HUMAN               ;= 4
-        ABSORB_HP = WEAPON_SPECIAL::ABSORB_HP                           ;= 5
-        ABSORB_MP = WEAPON_SPECIAL::ABSORB_MP                           ;= 6
-        MP_CRIT = WEAPON_SPECIAL::MP_CRIT                               ;= 7
-        STRONG_VS_FLYING = WEAPON_SPECIAL::STRONG_VS_FLYING             ;= 8
-        DICE = WEAPON_SPECIAL::DICE                                     ;= 9
-        STRONG_WHEN_HP_LOW = WEAPON_SPECIAL::STRONG_WHEN_HP_LOW         ;= 10
-        RAND_WIND_SLASH = WEAPON_SPECIAL::RAND_WIND_SLASH               ;= 11
-        HEAL_HP = WEAPON_SPECIAL::HEAL_HP                               ;= 12
-        SCIMITAR_EFFECT = WEAPON_SPECIAL::SCIMITAR_EFFECT               ;= 13
-        RAND_BREAK = WEAPON_SPECIAL::RAND_BREAK                         ;= 14
-        MORE_MP_CRIT = WEAPON_SPECIAL::MORE_MP_CRIT                     ;= 15
+        THIEFKNIFE                                                      ;= 1
+        ATMA_WEAPON                                                     ;= 2
+        INSTANT_DEATH                                                   ;= 3
+        MAN_EATER                                                       ;= 4
+        DRAINER                                                         ;= 5
+        SOUL_SABRE                                                      ;= 6
+        MP_CRIT                                                         ;= 7
+        STRONG_VS_FLYING                                                ;= 8
+        DICE                                                            ;= 9
+        VALIANTKNIFE                                                    ;= 10
+        TEMPEST                                                         ;= 11
+        HEAL_ROD                                                        ;= 12
+        SCIMITAR                                                        ;= 13
+        OGRE_NIX                                                        ;= 14
+        MORE_MP_CRIT                                                    ;= 15
         SCAN                                                            ;= 16
-        GOLEM_BLOCK                                                     ;= 17
+        GOLEM                                                           ;= 17
         METAMORPH                                                       ;= 18
         PALIDOR                                                         ;= 19
-        ATTACK_SPECIAL_20                                               ;= 20
+        ATTACK_SPECIAL_EFFECT_20                                        ;= 20
         MANTRA                                                          ;= 21
         SPIRALER                                                        ;= 22
         TAPIR                                                           ;= 23
@@ -1992,24 +1954,26 @@ CHAR_PROP_FIXED_EQUIP                   = %00010000
         QUICK                                                           ;= 67
         DISCARD                                                         ;= 68
         CLEAR                                                           ;= 69
-        ATTACK_SPECIAL_70                                               ;= 70
-        ATTACK_SPECIAL_71                                               ;= 71
-        ATTACK_SPECIAL_72                                               ;= 72
-        MAGICITE = ITEM_SPECIAL::MAGICITE + 72                          ;= 73
-        SUPER_BALL = ITEM_SPECIAL::SUPER_BALL + 72                      ;= 74
-        SMOKE_BOMB = ITEM_SPECIAL::SMOKE_BOMB + 72                      ;= 75
-        ELIXIR = ITEM_SPECIAL::ELIXIR + 72                              ;= 76
-        WARP_STONE = ITEM_SPECIAL::WARP_STONE + 72                      ;= 77
-        DRIED_MEAT = ITEM_SPECIAL::DRIED_MEAT + 72                      ;= 78
-        ATTACK_SPECIAL_79                                               ;= 79
-        POSSESS = ITEM_SPECIAL::POSSESS + 72                            ;= 80
-        GIL_TOSS = ITEM_SPECIAL::GIL_TOSS + 72                          ;= 81
-        STEAL = ITEM_SPECIAL::STEAL + 72                                ;= 82
-        CONTROL = ITEM_SPECIAL::CONTROL + 72                            ;= 83
-        LEAP = ITEM_SPECIAL::LEAP + 72                                  ;= 84
-        SKETCH = ITEM_SPECIAL::SKETCH + 72                              ;= 85
-        DEBILITATOR = ITEM_SPECIAL::DEBILITATOR + 72                    ;= 86
-        AIR_ANCHOR = ITEM_SPECIAL::AIR_ANCHOR + 72                      ;= 87
+        ATTACK_SPECIAL_EFFECT_70                                        ;= 70
+        ATTACK_SPECIAL_EFFECT_71                                        ;= 71
+        ATTACK_SPECIAL_EFFECT_72                                        ;= 72
+        MAGICITE                                                        ;= 73
+        SUPER_BALL                                                      ;= 74
+        SMOKE_BOMB                                                      ;= 75
+        ELIXIR                                                          ;= 76
+        WARP_STONE                                                      ;= 77
+        DRIED_MEAT                                                      ;= 78
+        ATTACK_SPECIAL_EFFECT_79                                        ;= 79
+        POSSESS                                                         ;= 80
+        GIL_TOSS                                                        ;= 81
+        STEAL                                                           ;= 82
+        CONTROL                                                         ;= 83
+        LEAP                                                            ;= 84
+        SKETCH                                                          ;= 85
+        DEBILITATOR                                                     ;= 86
+        AIR_ANCHOR                                                      ;= 87
+
+        COUNT
         NONE = $ff
 .endenum
 

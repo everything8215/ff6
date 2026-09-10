@@ -710,13 +710,13 @@
         ram_byte w7e7b15  ; wEnableBG1AnimUpdate
         ram_word w7e7b16  ; wBG1AnimOffsetX
         ram_word w7e7b18  ; wBG1AnimOffsetY
-        ram_faraddr w7e7b1a  ; wBG1AnimTilesBufPtr
+        ram_faraddr w7e7b1a  ; wBG1AnimTileBufPtr
         ram_word w7e7b1d  ; wBG3AnimPosX
         ram_word w7e7b1f  ; wBG3AnimPosY
         ram_byte w7e7b21  ; wEnableBG3AnimUpdate
         ram_word w7e7b22  ; wBG3AnimOffsetX
         ram_word w7e7b24  ; wBG3AnimOffsetY
-        ram_faraddr w7e7b26  ; wBG3AnimTilesBufPtr
+        ram_faraddr w7e7b26  ; wBG3AnimTileBufPtr
         ram_word w7e7b29  ; wBG3AnimPosX
         ram_word w7e7b2b  ; wBG3AnimPosY
         ram_word w7e7b2d
@@ -793,7 +793,7 @@
         ram_byte w7e7ba6
         ram_byte w7e7ba7
         ram_byte w7e7ba8
-        ram_byte wEnableUpdateMenuTextTiles
+        ram_byte wEnableTfrMenuTextTiles
         ram_word w7e7baa
         ram_byte w7e7bac
         ram_byte wForceCharGfxTfr     ; char id or $ff to disable
@@ -808,7 +808,7 @@
         ram_byte w7e7bb8
         ram_byte w7e7bb9
         ram_byte w7e7bba
-        ram_byte wEnableUpdateMenuWindowTiles
+        ram_byte wEnableTfrMenuWindowTiles
         ram_word w7e7bbc
         ram_word w7e7bbe
         ram_word w7e7bc0

@@ -83,7 +83,7 @@ last_init2:
         jsr     _c1468f
         jsr     InitMenuText
         jsr     TfrTopMenuTiles
-        inc     near wEnableUpdateMenuWindowTiles       ; enable battle menu update
+        inc     near wEnableTfrMenuWindowTiles       ; enable battle menu update
         jsr     _c10f8f       ; check if characters can change equipment
         jsr     UpdateDrawOrder
         jsl     LoadCursorMem
@@ -219,7 +219,7 @@ _c1016b:
         bne     @0186
         jsr     TfrTopMenuTiles
         jsr     _c147ac
-        inc     near wEnableUpdateMenuWindowTiles       ; enable menu window update
+        inc     near wEnableTfrMenuWindowTiles       ; enable menu window update
 @0186:  rtl
 
 ; ------------------------------------------------------------------------------
@@ -231,7 +231,7 @@ _c1016b:
 RedrawTopMenu:
         jsr     DrawMonsterNames
         jsr     TfrTopMenuTiles
-        inc     near wEnableUpdateMenuWindowTiles
+        inc     near wEnableTfrMenuWindowTiles
         jsr     WaitFrame
         jsr     CopyMonsterNameBuffer
         rtl
@@ -254,7 +254,7 @@ UpdateMonsterNames:
         bne     @01bc
         jsr     DrawMonsterNames
         jsr     TfrTopMenuTiles
-        inc     near wEnableUpdateMenuWindowTiles       ; enable battle menu update
+        inc     near wEnableTfrMenuWindowTiles       ; enable battle menu update
         jsr     WaitFrame
         jsr     CopyMonsterNameBuffer
 @01bc:  rtl
@@ -481,7 +481,7 @@ CheckMenuReady:
         ora     near wMenuWindowState
         ora     near w7e628b
         ora     near wMenuIsOpen
-        ora     near wEnableUpdateMenuWindowTiles
+        ora     near wEnableTfrMenuWindowTiles
         ora     near w7e7bcc
         bne     @02f9
         stz     near wCloseMenu              ; un-close menu (allow to open)

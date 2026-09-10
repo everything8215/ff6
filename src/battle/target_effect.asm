@@ -1,6 +1,10 @@
 
 .import MonsterSketch, MetamorphProp
 
+.enum TARGET_EFFECT
+        COUNT = ATTACK_SPECIAL_EFFECT::COUNT
+.endenum
+
 ; ------------------------------------------------------------------------------
 
 ; [ execute target special effect ]
@@ -23,7 +27,7 @@ TargetEffectNone:
 
 ; [ target special effect $0d: scimitar/zantetsuken (instant kill) ]
 
-TargetEffect_0d:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::SCIMITAR
 @388d:  sec
         lda     #$ee
 
@@ -78,7 +82,7 @@ ScimitarEffect:
 
 ; [ target special effect $04: man eater ]
 
-TargetEffect_04:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::MAN_EATER
 @38f2:  lda     near wTargetProp2::MonsterFlags,y
         bit     #MONSTER_FLAG::HUMAN
         beq     _38fd       ; return if not human
@@ -92,7 +96,7 @@ _38fd:  rts
 
 ; 1/2 chance to deal +50% damage or +150% damage vs. flying target (changes command to throw)
 
-TargetEffect_08:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::STRONG_VS_FLYING
 @38fe:  jsr     RandCarry
         bcc     _38fd       ; 1/2 chance to return
         inc     zbc         ; +50% damage
@@ -115,7 +119,7 @@ TargetEffect_08:
 
 ; [ target special effect $22: stone ]
 
-TargetEffect_22:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::STONE
 @3922:  lda     5,s
         tax
         lda     near wTargetProp2::Level,x
@@ -130,7 +134,7 @@ TargetEffect_22:
 
 ; [ target special effect $13: palidor ]
 
-TargetEffect_13:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::PALIDOR
 @3934:  lda     #$01        ; flag for character that just jumped - remove all actions from action queue
         jsr     SetCharFlag
         lda     near wTargetProp1::w7e32cc,y     ; old command list pointer
@@ -156,7 +160,7 @@ TargetEffect_13:
 
 ; [ target special effect $39: engulf ]
 
-TargetEffect_39:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::ENGULF
 @395e:  .a8
         lda     near wTargetMask,y
         tsb     near w7e3a8a       ; set target as engulfed
@@ -166,7 +170,7 @@ TargetEffect_39:
 
 ; [ target special effect $33: bababreath ]
 
-TargetEffect_33:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::BABABREATH
 @3966:  lda     near wTargetMask,y
         tsb     near w7e3a88
 ; fall through
@@ -175,9 +179,9 @@ TargetEffect_33:
 
 ; [ target special effect $27/$38/$4b: escape/sneeze/smoke bomb ]
 
-TargetEffect_27:
-TargetEffect_38:
-TargetEffect_4b:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::ESCAPE
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::SNEEZE
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::SMOKE_BOMB
 _396c:  longa
         lda     near wTargetMask,y
         tsb     near w7e2f4c
@@ -188,7 +192,7 @@ _396c:  longa
 
 ; [ target special effect $1f: dischord ]
 
-TargetEffect_1f:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::DISCHORD
 @3978:  tyx
         inc     near wTargetProp2::Level,x
         lsr     near wTargetProp2::Level,x
@@ -198,7 +202,7 @@ TargetEffect_1f:
 
 ; [ target special effect $2b: r. polarity ]
 
-TargetEffect_2b:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::R_POLARITY
 @3980:  .a8
         lda     near wTargetProp2::w7e3aa1,y     ; $3aa1.5 toggle target's row
         eor     #$20
@@ -209,7 +213,7 @@ TargetEffect_2b:
 
 ; [ target special effect $26: wallchange ]
 
-TargetEffect_26:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::WALLCHANGE
         .a8
 @3989:  clr_a
         lda     #$ff
@@ -225,7 +229,7 @@ TargetEffect_26:
 
 ; [ target special effect $52: steal ]
 
-TargetEffect_52:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::STEAL
 @399e:  lda     5,s
         tax
         lda     #ATTACK_MSG::STEAL_MSG
@@ -303,7 +307,7 @@ TargetEffect_52:
 
 ; [ target special effect $12: metamorph ]
 
-TargetEffect_12:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::METAMORPH
 @3a3c:  cpy     #$08
         bcc     _3a8a
         lda     near wTargetProp2::MetamorphProp,y
@@ -344,7 +348,7 @@ _3a8a:  jmp     _c23b1b                 ; miss
 
 ; [ target special effect $56: debilitator ]
 
-TargetEffect_56:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::DEBILITATOR
 @3a8d:  clr_a
         lda     near wTargetProp2::ElemWeak,y
         ora     near w7e3eb0 + 24
@@ -381,7 +385,7 @@ TargetEffect_56:
 
 ; [ target special effect $53: control ]
 
-TargetEffect_53:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::CONTROL
 @3ac5:  .a8
         .i8
         cpy     #$08
@@ -436,7 +440,7 @@ _c23b1b:
 
 ; [ target special effect $55: sketch ]
 
-TargetEffect_55:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::SKETCH
 @3b29:  .a8
         cpy     #$08
         bcc     _c23b1b                 ; miss
@@ -473,7 +477,7 @@ TargetEffect_55:
 
 ; [ target special effect $25: misses floating targets ]
 
-TargetEffect_25:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::MISS_FLYING
 @3b6b:  lda     near wTargetProp3::w7e3ef9,y
         bmi     _c23b1b                 ; miss if target has float status
         rts
@@ -482,7 +486,7 @@ TargetEffect_25:
 
 ; [ target special effect $54: leap ]
 
-TargetEffect_54:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::LEAP
 @3b71:  lda     near w7e2f49
         bit     #$08
         bne     @3b90       ; branch if leap is disabled
@@ -505,7 +509,7 @@ TargetEffect_54:
 
 ; [ target special effect $50: possess ]
 
-TargetEffect_50:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::POSSESS
 @3b98:  lda     5,s
         tax
         lda     near wTargetMask,x
@@ -522,7 +526,7 @@ TargetEffect_50:
 
 ; [ target special effect $28: mind blast ]
 
-TargetEffect_28:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::MIND_BLAST
 @3bb0:  longa
         jsr     ResetStatusMod
         lda     near wTargetMask,y
@@ -542,7 +546,7 @@ TargetEffect_28:
 
 ; [ target special effect $3b: evil toot ]
 
-TargetEffect_3b:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::EVIL_TOOT
 @3bcb:  longa
         jsr     ResetStatusMod
 
@@ -575,7 +579,7 @@ siren_atmk:
 
 ; [ target special effect $21: rippler ]
 
-TargetEffect_21:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::RIPPLER
 @3c04:  lda     5,s
         tax
         longa
@@ -609,7 +613,7 @@ TargetEffect_21:
 
 ; [ target special effect $19: exploder ]
 
-TargetEffect_19:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::EXPLODER
 @3c4c:  .a8
         lda     5,s
         tax
@@ -624,7 +628,7 @@ _3c5a:  rts
 
 ; [ target special effect $10: scan ]
 
-TargetEffect_10:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::SCAN
 @3c5b:  lda     near wTargetProp2::MonsterStatus,y
         bit     #MONSTER_STATUS::CANT_SCAN
         bne     @3c68                   ; branch if target can't be scanned
@@ -639,7 +643,7 @@ TargetEffect_10:
 
 ; [ target special effect $30: suplex ]
 
-TargetEffect_30:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::SUPLEX
 @3c6e:  lda     near wTargetProp2::MonsterStatus,y
         bit     #MONSTER_STATUS::CANT_SUPLEX
         beq     _3c5a                   ; branch if not immune to suplex
@@ -649,7 +653,7 @@ _3c75:  jmp     _c23b1b                 ; miss
 
 ; [ target special effect $57: air anchor ]
 
-TargetEffect_57:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::AIR_ANCHOR
 @3c78:  lda     near wTargetProp2::w7e3aa1,y
         bit     #$04
         bne     _3c75       ; branch if $3aa1.2 set (instant death protection)
@@ -664,7 +668,7 @@ TargetEffect_57:
 
 ; [ target special effect $23: disable counterattack ]
 
-TargetEffect_23:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::NO_RETAL
 @3c8c:  stz     near w7e341a       ; disable counterattack
         rts
 
@@ -672,14 +676,14 @@ TargetEffect_23:
 
 ; [ target special effect $1c: reflect??? ]
 
-TargetEffect_1c:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::REFLECT_LORE
 @3c90:  rts
 
 ; ------------------------------------------------------------------------------
 
 ; [ target special effect $34: charm ]
 
-TargetEffect_34:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::CHARM
 @3c91:  lda     5,s       ; attacker
         tax
         lda     near wTargetProp1::CharmTarget,x     ; charm target
@@ -694,7 +698,7 @@ TargetEffect_34:
 
 ; [ target special effect $17: tapir ]
 
-TargetEffect_17:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::TAPIR
 @3ca2:  lda     near wTargetProp3::w7e3ee5,y
         bpl     _3c75                   ; sleep
         longa
@@ -709,7 +713,7 @@ _3caf:  longa
 
 ; [ target special effect $20: pep up ]
 
-TargetEffect_20:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::PEP_UP
 @3cb8:  lda     5,s
         tax
         jsr     _c2384a
@@ -724,7 +728,7 @@ TargetEffect_20:
 
 ; [ target special effect $2e: seize ]
 
-TargetEffect_2e:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::SEIZE
 @3cce:  .a8
         lda     5,s       ; attacker
         tax
@@ -751,7 +755,7 @@ TargetEffect_2e:
 
 ; [ target special effect $44: discard ]
 
-TargetEffect_44:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::DISCARD
 @3cfd:  lda     5,s       ; attacker
         tax
         lda     near wTargetProp2::MonsterVar,x     ; clear msb of attacker's character/monster variable
@@ -768,7 +772,7 @@ TargetEffect_44:
 
 ; [ target special effect $4c: elixir/megalixir ]
 
-TargetEffect_4c:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::ELIXIR
 @3d17:  lda     #$80        ; update enabled spells/espers
         jsr     SetCharFlag
         bra     _3caf                   ; restore MP to max
@@ -777,7 +781,7 @@ TargetEffect_4c:
 
 ; [ target special effect $37: overcast ]
 
-TargetEffect_37:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::OVERCAST
 @3d1e:  lda     near wTargetProp2::ExtraStatus,y     ; set overcast status ($3e4d.1)
         ora     #STATUS1::ZOMBIE
         sta     near wTargetProp2::ExtraStatus,y
@@ -787,7 +791,7 @@ TargetEffect_37:
 
 ; [ target special effect $3a: zinger ]
 
-TargetEffect_3a:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::ZINGER
 @3d27:  lda     5,s       ; attacker
         tax
         stx     near wZingerAttacker
@@ -800,7 +804,7 @@ TargetEffect_3a:
 
 ; [ target special effect $2d: love token ]
 
-TargetEffect_2d:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::LOVE_TOKEN
 @3d37:  lda     5,s       ; attacker
         tax
         tya
@@ -815,7 +819,7 @@ TargetEffect_2d:
 
 ; striker, wing edge, trump
 
-TargetEffect_03:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::INSTANT_DEATH
 @3d43:  clc
         lda     #$7e
         jsr     ScimitarEffect
@@ -825,7 +829,7 @@ TargetEffect_03:
 
 ; [ target special effect $35: doom ]
 
-TargetEffect_35:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::DOOM
 @3d49:  lda     near wTargetProp2::MonsterFlags,y  ; MONSTER_FLAG::UNDEAD
         bpl     @3d62
         cpy     #$08
@@ -856,7 +860,7 @@ TargetEffect_35:
 
 ; [ target special effect $3e: phantasm ]
 
-TargetEffect_3e:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::PHANTASM
 @3d7c:  .a8
         lda     near wTargetProp2::ExtraStatus,y
         ora     #STATUS2::SAP
@@ -867,7 +871,7 @@ TargetEffect_3e:
 
 ; [ target special effect $3f: stunner ]
 
-TargetEffect_3f:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::STUNNER
 @3d85:  jsr     Rand
         cmp     $11a8
         bcc     @3da7
@@ -886,7 +890,7 @@ TargetEffect_3f:
 
 ; [ target special effect $2f: targetting ]
 
-TargetEffect_2f:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::TARGETTING
 @3da8:  .a8
         lda     5,s
         tax
@@ -898,7 +902,7 @@ TargetEffect_2f:
 
 ; [ target special effect $40: fallen one ]
 
-TargetEffect_40:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::FALLEN_ONE
 @3db0:  longa
         clr_a
         inc
@@ -909,7 +913,7 @@ TargetEffect_40:
 
 ; [ target special effect $4a: super ball ]
 
-TargetEffect_4a:
+        array_label TARGET_EFFECT, ATTACK_SPECIAL_EFFECT::SUPER_BALL
 @3db8:  .a8
         jsr     Rand
         and     #$07        ; (1..8)
@@ -935,105 +939,15 @@ MetamorphRateTbl:
 
 ; ------------------------------------------------------------------------------
 
+; define labels for unused target effects
+.repeat ATTACK_SPECIAL_EFFECT::COUNT, i
+        .ifndef array_item TARGET_EFFECT, i
+                array_item TARGET_EFFECT, {i} := TargetEffectNone
+        .endif
+.endrep
+
 ; target special effect jump table
 TargetEffectTbl:
-@3dcd:  .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_03
-        .addr   TargetEffect_04
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-
-        .addr   TargetEffect_08
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_0d
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-
-        .addr   TargetEffect_10
-        .addr   TargetEffectNone
-        .addr   TargetEffect_12
-        .addr   TargetEffect_13
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_17
-
-        .addr   TargetEffectNone
-        .addr   TargetEffect_19
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_1c
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_1f
-
-        .addr   TargetEffect_20
-        .addr   TargetEffect_21
-        .addr   TargetEffect_22
-        .addr   TargetEffect_23
-        .addr   TargetEffectNone
-        .addr   TargetEffect_25
-        .addr   TargetEffect_26
-        .addr   TargetEffect_27
-
-        .addr   TargetEffect_28
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_2b
-        .addr   TargetEffectNone
-        .addr   TargetEffect_2d
-        .addr   TargetEffect_2e
-        .addr   TargetEffect_2f
-
-        .addr   TargetEffect_30
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_33
-        .addr   TargetEffect_34
-        .addr   TargetEffect_35
-        .addr   TargetEffectNone
-        .addr   TargetEffect_37
-
-        .addr   TargetEffect_38
-        .addr   TargetEffect_39
-        .addr   TargetEffect_3a
-        .addr   TargetEffect_3b
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_3e
-        .addr   TargetEffect_3f
-
-        .addr   TargetEffect_40
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_44
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffect_4a
-        .addr   TargetEffect_4b
-        .addr   TargetEffect_4c
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-        .addr   TargetEffectNone
-
-        .addr   TargetEffect_50
-        .addr   TargetEffectNone
-        .addr   TargetEffect_52
-        .addr   TargetEffect_53
-        .addr   TargetEffect_54
-        .addr   TargetEffect_55
-        .addr   TargetEffect_56
-        .addr   TargetEffect_57
+        ptr_tbl TARGET_EFFECT
 
 ; ------------------------------------------------------------------------------

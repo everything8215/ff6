@@ -15,7 +15,7 @@ _magic_prop_seq .set 0
         _magic_prop_spell_power .set 0
         _magic_prop_hit_rate .set 0
         _magic_prop_misc_flags .set 0
-        _magic_prop_special_effect .set ATTACK_SPECIAL::NONE
+        _magic_prop_special_effect .set ATTACK_SPECIAL_EFFECT::NONE
         _magic_prop_status12 .set 0
         _magic_prop_status34 .set 0
 .endmac
@@ -53,7 +53,7 @@ _magic_prop_seq .set 0
 .endmac
 
 .mac special_effect val
-        make_bitmask {_magic_prop_special_effect .set }, 0, ATTACK_SPECIAL, val
+        _magic_prop_special_effect .set ATTACK_SPECIAL_EFFECT::val
 .endmac
 
 .mac status12 val

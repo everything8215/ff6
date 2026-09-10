@@ -19,15 +19,15 @@
 
 ; menu window tile data vram pointers (WINDOW_VRAM enum)
 MenuWindowVRAMPtrs:
-        menu_vram_ptr_bg2 {0, 0}  ; $00: closed menu
-        menu_vram_ptr_bg2 {0, 10}  ; $01: command select
+        menu_vram_ptr_bg2 {0, 0}    ; $00: closed menu
+        menu_vram_ptr_bg2 {0, 10}   ; $01: command select
         menu_vram_ptr_bg2 {32, 16}  ; $02: slot
-        menu_vram_ptr_bg2 {0, 24}  ; $03: item/dialog/etc.
-        menu_vram_ptr_bg2 {32, 0}  ; $04: magic/lore select
-        menu_vram_ptr_bg2 {32, 8}  ; $05: weapon select
+        menu_vram_ptr_bg2 {0, 24}   ; $03: item/dialog/etc.
+        menu_vram_ptr_bg2 {32, 0}   ; $04: magic/lore select
+        menu_vram_ptr_bg2 {32, 8}   ; $05: weapon select
         menu_vram_ptr_bg2 {32, 24}  ; $06: esper
-        menu_vram_ptr_bg1 {0, 0}  ; $07: row/def. (bg1)
-        menu_vram_ptr_bg1 {0, 8}  ; $08: swdtech (bg1)
+        menu_vram_ptr_bg1 {0, 0}    ; $07: row/def. (bg1)
+        menu_vram_ptr_bg1 {0, 8}    ; $08: swdtech (bg1)
 
 ; ------------------------------------------------------------------------------
 
@@ -51,11 +51,11 @@ MenuWindowVRAMPtrs:
 
 WindowBufTbl:
 @dd9e:  menu_window_bg2 {1, 0}, {12, 8}  ; $00: monster name
-        menu_window_bg2 {13, 0}, {18, 8}  ; $01: character name/hp/gauge
+        menu_window_bg2 {13, 0}, {18, 8} ; $01: character name/hp/gauge
 .if LANG_EN
         menu_window_bg2 {2, 0}, {10, 8}  ; $02: command (window mode)
 .else
-        menu_window_bg2 {3, 0}, {9, 8}  ; $02: command (window mode)
+        menu_window_bg2 {3, 0}, {9, 8}   ; $02: command (window mode)
 .endif
         menu_window_bg2 {1, 0}, {30, 8}  ; $03: slot window
         menu_window_bg2 {1, 0}, {30, 8}  ; $04: item/dialog/etc.
@@ -63,7 +63,7 @@ WindowBufTbl:
         menu_window_bg2 {1, 0}, {30, 5}  ; $06: weapon select
         menu_window_bg2 {1, 0}, {21, 8}  ; $07: magic/lore select
         menu_window_bg2 {1, 0}, {30, 4}  ; $08: esper
-        menu_window_bg2 {0, 0}, {7, 4}  ; $09: row/def. (all positions)
+        menu_window_bg2 {0, 0}, {7, 4}   ; $09: row/def. (all positions)
         menu_window_bg2 {0, 0}, {12, 5}  ; $0a: swdtech
 .if LANG_EN
         menu_window_bg1 {1, 1}, {30, 4}  ; $0b: wide message (top of screen)
