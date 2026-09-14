@@ -1,5 +1,7 @@
 ; ------------------------------------------------------------------------------
 
+.import MapParallax
+
 .include "treasure_prop.inc"
 
 .a8
@@ -189,15 +191,6 @@ InitParallax:
         lda     f:MapParallax+7,x       ; bg3 vertical scroll multiplier
         sta     $0556
         rts
-
-.pushseg
-.segment "map_parallax"
-
-; c0/fe40
-MapParallax:
-        .incbin "assets/data/field/map_parallax.bin"
-
-.popseg
 
 ; ------------------------------------------------------------------------------
 

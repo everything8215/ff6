@@ -1,0 +1,85 @@
+; ------------------------------------------------------------------------------
+
+.ifndef MAP_PARALLAX_MAC
+MAP_PARALLAX_MAC = 1
+
+_map_parallax_seq .set 0
+
+.mac map_parallax id
+        .assert _map_parallax_seq = MAP_PARALLAX::id, error, .sprintf("Map parallax index mismatch: %s", .string(id))
+        _map_parallax_bg2_speed_x .set 0
+        _map_parallax_bg2_speed_y .set 0
+        _map_parallax_bg3_speed_x .set 0
+        _map_parallax_bg3_speed_y .set 0
+        _map_parallax_bg2_mult_x .set 16
+        _map_parallax_bg2_mult_y .set 16
+        _map_parallax_bg3_mult_x .set 16
+        _map_parallax_bg3_mult_y .set 16
+.endmac
+
+.mac _bg2_speed xx, yy
+        _map_parallax_bg2_speed_x .set xx
+        _map_parallax_bg2_speed_y .set yy
+.endmac
+
+.mac bg2_speed xy_speed
+        _bg2_speed xy_speed
+.endmac
+
+.mac _bg3_speed xx, yy
+        _map_parallax_bg3_speed_x .set xx
+        _map_parallax_bg3_speed_y .set yy
+.endmac
+
+.mac bg3_speed xy_speed
+        _bg3_speed xy_speed
+.endmac
+
+.mac _bg2_mult xx, yy
+        _map_parallax_bg2_mult_x .set xx
+        _map_parallax_bg2_mult_y .set yy
+.endmac
+
+.mac bg2_mult xy_mult
+        _bg2_mult xy_mult
+.endmac
+
+.mac _bg3_mult xx, yy
+        _map_parallax_bg3_mult_x .set xx
+        _map_parallax_bg3_mult_y .set yy
+.endmac
+
+.mac bg3_mult xy_mult
+        _bg3_mult xy_mult
+.endmac
+
+.mac end_map_parallax
+        .byte <_map_parallax_bg2_speed_x
+        .byte <_map_parallax_bg2_speed_y
+        .byte <_map_parallax_bg3_speed_x
+        .byte <_map_parallax_bg3_speed_y
+        .byte _map_parallax_bg2_mult_x
+        .byte _map_parallax_bg2_mult_y
+        .byte _map_parallax_bg3_mult_x
+        .byte _map_parallax_bg3_mult_y
+        _map_parallax_seq .set _map_parallax_seq + 1
+.endmac
+
+; ------------------------------------------------------------------------------
+
+.else
+
+.delmac map_parallax
+.delmac _bg2_speed
+.delmac bg2_speed
+.delmac _bg3_speed
+.delmac bg3_speed
+.delmac _bg2_mult
+.delmac bg2_mult
+.delmac _bg3_mult
+.delmac bg3_mult
+.delmac end_map_parallax
+
+.endif
+
+; ------------------------------------------------------------------------------
