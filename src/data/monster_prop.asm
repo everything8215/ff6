@@ -1,4 +1,4 @@
-.export MonsterProp
+.export MonsterProp, MonsterSpecialAnim
 
 ; ------------------------------------------------------------------------------
 
@@ -6,10 +6,17 @@
 
 ; ------------------------------------------------------------------------------
 
+; cf/0000
 .segment "monster_prop"
 
-; cf/0000
 MonsterProp:
+
+; ------------------------------------------------------------------------------
+
+; cf/37c0
+.segment "monster_special_anim"
+
+MonsterSpecialAnim:
 
 ; ------------------------------------------------------------------------------
 
@@ -26,7 +33,7 @@ MonsterProp:
         gil 48
         level 5
         attack_anim DIRK
-        special_attack DMG_150_PCT
+        special_attack RED_STAB, DMG_150_PCT
         metamorph 0, 0
         monster_flags HUMAN
         elem_weak POISON
@@ -46,7 +53,7 @@ MonsterProp:
         gil 48
         level 11
         attack_anim RUNE_EDGE
-        special_attack DMG_150_PCT
+        special_attack RED_STAB, DMG_150_PCT
         metamorph 0, 0
         monster_flags HUMAN
         monster_status CANT_ESCAPE
@@ -69,7 +76,7 @@ MonsterProp:
         gil 96
         level 11
         attack_anim TRIDENT
-        special_attack DMG_200_PCT
+        special_attack VERT_SLASH, DMG_200_PCT
         metamorph 1, 2
         monster_flags HUMAN
         monster_status CANT_ESCAPE
@@ -93,7 +100,7 @@ MonsterProp:
         gil 520
         level 27
         attack_anim FORGED
-        special_attack VANISH, NO_DMG
+        special_attack BUBBLE, VANISH, NO_DMG
         metamorph 25, 4
         monster_flags HUMAN
         monster_status CANT_ESCAPE
@@ -120,7 +127,7 @@ MonsterProp:
         gil 791
         level 40
         attack_anim FORGED
-        special_attack DEAD, NO_DMG
+        special_attack ARC_SLASH, DEAD, NO_DMG
         metamorph 16, 4
         monster_flags {HUMAN, IMP_DMG_BONUS}
         elem_weak POISON
@@ -143,7 +150,7 @@ MonsterProp:
         gil 716
         level 30
         attack_anim PARTISAN
-        special_attack ZOMBIE, NO_DMG
+        special_attack SMALL_PIERCE, ZOMBIE, NO_DMG
         metamorph 1, 3
         monster_flags {HUMAN, UNDEAD}
         elem_absorb POISON
@@ -167,7 +174,7 @@ MonsterProp:
         gil 277
         level 19
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack WHEEL, DMG_150_PCT
         metamorph 4, 4
         monster_status CANT_ESCAPE
         elem_absorb ICE
@@ -193,7 +200,7 @@ MonsterProp:
         gil 2000
         level 59
         attack_anim FORGED
-        special_attack DEAD, NO_DMG
+        special_attack SKULL_SLASH, DEAD, NO_DMG
         metamorph 16, 4
         monster_flags {HUMAN, IMP_DMG_BONUS}
         monster_status HARDER_TO_RUN
@@ -217,7 +224,7 @@ MonsterProp:
         gil 101
         level 12
         attack_anim ICE_ROD
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 0, 0
         monster_flags {DIE_AT_0_MP, HUMAN}
         elem_weak HOLY
@@ -241,7 +248,7 @@ MonsterProp:
         gil 1260
         level 37
         attack_anim ICE_ROD
-        special_attack BLIND, NO_DMG
+        special_attack BLACK_CLOUD, BLIND, NO_DMG
         metamorph 19, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status CANT_ESCAPE
@@ -252,7 +259,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: RAIN_MAN
+; 10: RAIN_MAN
         monster_prop RAIN_MAN
         speed 34
         attack_power 13
@@ -266,7 +273,7 @@ MonsterProp:
         gil 485
         level 39
         attack_anim UNARMED
-        special_attack SLEEP, NO_DMG
+        special_attack THIN_HORZ_SLASH, SLEEP, NO_DMG
         metamorph 0, 0
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status CANT_SUPLEX
@@ -278,7 +285,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: BRAWLER
+; 11: BRAWLER
         monster_prop BRAWLER
         speed 35
         attack_power 14
@@ -291,7 +298,7 @@ MonsterProp:
         gil 84
         level 9
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 0, 0
         monster_flags {HUMAN, IMP_DMG_BONUS}
         elem_absorb POISON
@@ -302,7 +309,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: APOKRYPHOS
+; 12: APOKRYPHOS
         monster_prop APOKRYPHOS
         speed 37
         attack_power 18
@@ -315,7 +322,7 @@ MonsterProp:
         gil 525
         level 26
         attack_anim ICE_ROD
-        special_attack SILENCE, NO_DMG
+        special_attack SINGLE_PUNCH, SILENCE, NO_DMG
         metamorph 14, 3
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, CANT_SUPLEX}
@@ -326,7 +333,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: DARK_FORCE
+; 13: DARK_FORCE
         monster_prop DARK_FORCE
         speed 35
         attack_power 12
@@ -339,7 +346,7 @@ MonsterProp:
         gil 600
         level 55
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 14, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status HARDER_TO_RUN
@@ -351,7 +358,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: WHISPER
+; 14: WHISPER
         monster_prop WHISPER
         speed 30
         attack_power 12
@@ -364,7 +371,7 @@ MonsterProp:
         gil 125
         level 12
         attack_anim UNARMED
-        special_attack IMP, NO_DMG
+        special_attack FLOWER, IMP, NO_DMG
         metamorph 0, 0
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -378,7 +385,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: OVER_MIND
+; 15: OVER_MIND
         monster_prop OVER_MIND
         speed 30
         attack_power 12
@@ -391,7 +398,7 @@ MonsterProp:
         gil 228
         level 13
         attack_anim ICE_ROD
-        special_attack CONFUSE, NO_DMG
+        special_attack SMALL_PIERCE, CONFUSE, NO_DMG
         metamorph 3, 2
         monster_flags UNDEAD
         elem_absorb POISON
@@ -402,7 +409,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: OSTEOSAUR
+; 16: OSTEOSAUR
         monster_prop OSTEOSAUR
         speed 33
         attack_power 45
@@ -415,7 +422,7 @@ MonsterProp:
         gil 542
         level 30
         attack_anim DRAGON_CLAW
-        special_attack ZOMBIE, NO_DMG
+        special_attack BONE, ZOMBIE, NO_DMG
         metamorph 3, 4
         monster_flags {DIE_AT_0_MP, UNDEAD}
         elem_absorb POISON
@@ -426,7 +433,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: COMMANDER
+; 17: COMMANDER
         monster_prop COMMANDER
         speed 30
         attack_power 13
@@ -439,7 +446,7 @@ MonsterProp:
         gil 153
         level 10
         attack_anim RUNE_EDGE
-        special_attack DMG_200_PCT
+        special_attack THIN_HORZ_SLASH, DMG_200_PCT
         metamorph 0, 0
         monster_flags HUMAN
         elem_weak POISON
@@ -447,7 +454,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: RHODOX
+; 18: RHODOX
         monster_prop RHODOX
         speed 30
         attack_power 11
@@ -460,7 +467,7 @@ MonsterProp:
         gil 80
         level 7
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack LIGHT_BEAM, DMG_500_PCT
         metamorph 2, 0
         monster_status CANT_SUPLEX
         immune_status1 BLIND
@@ -469,7 +476,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: WERE_RAT
+; 19: WERE_RAT
         monster_prop WERE_RAT
         speed 30
         attack_power 13
@@ -482,7 +489,7 @@ MonsterProp:
         gil 22
         level 4
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 2, 0
         monster_flags IMP_DMG_BONUS
         elem_absorb POISON
@@ -493,7 +500,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: URSUS
+; 20: URSUS
         monster_prop URSUS
         speed 34
         attack_power 15
@@ -507,7 +514,7 @@ MonsterProp:
         gil 2000
         level 34
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack DIAG_CLAW, DMG_150_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         elem_weak FIRE
@@ -517,7 +524,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: RHINOTAUR
+; 21: RHINOTAUR
         monster_prop RHINOTAUR
         speed 35
         attack_power 25
@@ -530,7 +537,7 @@ MonsterProp:
         gil 186
         level 8
         attack_anim DRAGON_CLAW
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         elem_absorb LIGHTNING
@@ -540,7 +547,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: STEROIDITE
+; 22: STEROIDITE
         monster_prop STEROIDITE
         speed 45
         attack_power 13
@@ -553,7 +560,7 @@ MonsterProp:
         gil 100
         level 54
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 8, 4
         monster_flags IMP_DMG_BONUS
         monster_status HARDER_TO_RUN
@@ -564,7 +571,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: LEAFER
+; 23: LEAFER
         monster_prop LEAFER
         speed 30
         attack_power 13
@@ -577,7 +584,7 @@ MonsterProp:
         gil 45
         level 5
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 2, 0
         elem_absorb ICE
         elem_weak {FIRE, WATER}
@@ -585,7 +592,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: STRAY_CAT
+; 24: STRAY_CAT
         monster_prop STRAY_CAT
         speed 30
         attack_power 9
@@ -598,13 +605,13 @@ MonsterProp:
         gil 90
         level 10
         attack_anim UNARMED
-        special_attack DMG_400_PCT
+        special_attack SMALL_PIERCE, DMG_400_PCT
         metamorph 10, 4
         end_monster_prop
 
 ; ------------------------------------------------------------------------------
 
-; 5: LOBO
+; 25: LOBO
         monster_prop LOBO
         speed 35
         attack_power 20
@@ -617,7 +624,7 @@ MonsterProp:
         gil 30
         level 5
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 2, 0
         monster_status CANT_ESCAPE
         elem_weak FIRE
@@ -625,7 +632,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: DOBERMAN
+; 26: DOBERMAN
         monster_prop DOBERMAN
         speed 35
         attack_power 10
@@ -637,14 +644,14 @@ MonsterProp:
         gil 83
         level 12
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 2, 0
         elem_weak FIRE
         end_monster_prop
 
 ; ------------------------------------------------------------------------------
 
-; 7: VOMAMMOTH
+; 27: VOMAMMOTH
         monster_prop VOMAMMOTH
         speed 25
         attack_power 110
@@ -656,7 +663,7 @@ MonsterProp:
         gil 90
         level 1
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 2, 2
         monster_status CANT_ESCAPE
         elem_weak FIRE
@@ -665,7 +672,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: FIDOR
+; 28: FIDOR
         monster_prop FIDOR
         speed 35
         attack_power 25
@@ -678,7 +685,7 @@ MonsterProp:
         gil 180
         level 13
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack HORZ_CLAW, DMG_200_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         monster_status CANT_ESCAPE
@@ -689,7 +696,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: BASKERVOR
+; 29: BASKERVOR
         monster_prop BASKERVOR
         speed 35
         attack_power 17
@@ -702,7 +709,7 @@ MonsterProp:
         gil 458
         level 22
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack DIAG_CLAW, DMG_150_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         immune_status1 {POISON, DEAD}
@@ -711,7 +718,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: SURIANDER
+; 30: SURIANDER
         monster_prop SURIANDER
         speed 30
         attack_power 13
@@ -724,7 +731,7 @@ MonsterProp:
         gil 435
         level 40
         attack_anim UNARMED
-        special_attack SLEEP, NO_DMG
+        special_attack MUSIC_NOTE, SLEEP, NO_DMG
         metamorph 1, 3
         elem_weak HOLY
         immune_status1 {ZOMBIE, MAGITEK, VANISH, IMP, DEAD}
@@ -734,7 +741,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: CHIMERA
+; 31: CHIMERA
         monster_prop CHIMERA
         speed 45
         attack_power 25
@@ -747,7 +754,7 @@ MonsterProp:
         gil 760
         level 22
         attack_anim TRIDENT
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 20, 4
         immune_status1 ALL
         immune_status2 {CONDEMNED, NEAR_FATAL, IMAGE, SILENCE, CONFUSE, SAP, SLEEP}
@@ -756,7 +763,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: BEHEMOTH
+; 32: BEHEMOTH
         monster_prop BEHEMOTH
         speed 50
         attack_power 25
@@ -768,7 +775,7 @@ MonsterProp:
         exp 2055
         level 28
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack MULTI_PUNCH, DMG_300_PCT
         metamorph 14, 4
         elem_weak ICE
         immune_status1 {BLIND, POISON, IMP}
@@ -778,7 +785,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: MESOSAUR
+; 33: MESOSAUR
         monster_prop MESOSAUR
         speed 30
         attack_power 13
@@ -791,14 +798,14 @@ MonsterProp:
         gil 456
         level 26
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack SMALL_PIERCE, SAP, NO_DMG
         metamorph 0, 0
         elem_weak ICE
         end_monster_prop
 
 ; ------------------------------------------------------------------------------
 
-; 4: PTERODON
+; 34: PTERODON
         monster_prop PTERODON
         speed 45
         attack_power 25
@@ -811,7 +818,7 @@ MonsterProp:
         gil 325
         level 12
         attack_anim DRAGON_CLAW
-        special_attack SAP, NO_DMG
+        special_attack BLUE_STAB_1, SAP, NO_DMG
         metamorph 0, 2
         monster_status CANT_SUPLEX
         elem_weak FIRE
@@ -821,7 +828,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: FOSSILFANG
+; 35: FOSSILFANG
         monster_prop FOSSILFANG
         speed 35
         attack_power 25
@@ -834,7 +841,7 @@ MonsterProp:
         gil 1870
         level 20
         attack_anim UNARMED
-        special_attack ZOMBIE, NO_DMG
+        special_attack BONE, ZOMBIE, NO_DMG
         metamorph 3, 2
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -846,7 +853,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: WHITE_DRGN
+; 36: WHITE_DRGN
         monster_prop WHITE_DRGN
         speed 55
         attack_power 13
@@ -857,7 +864,7 @@ MonsterProp:
         mp 12000
         level 71
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 24, 4
         monster_status {CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb HOLY
@@ -867,7 +874,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: DOOM_DRGN
+; 37: DOOM_DRGN
         monster_prop DOOM_DRGN
         speed 48
         attack_power 13
@@ -880,7 +887,7 @@ MonsterProp:
         gil 2700
         level 54
         attack_anim UNARMED
-        special_attack VANISH, NO_DMG
+        special_attack BUBBLE, VANISH, NO_DMG
         metamorph 14, 4
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, CANT_SUPLEX}
@@ -892,7 +899,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: BRACHOSAUR
+; 38: BRACHOSAUR
         monster_prop BRACHOSAUR
         speed 95
         attack_power 55
@@ -906,7 +913,7 @@ MonsterProp:
         exp 14396
         level 77
         attack_anim UNARMED
-        special_attack DMG_600_PCT
+        special_attack HORZ_CLAW, DMG_600_PCT
         metamorph 2, 2
         elem_weak ICE
         immune_status1 {BLIND, ZOMBIE, MAGITEK, IMP, PETRIFY, DEAD}
@@ -916,7 +923,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: TYRANOSAUR
+; 39: TYRANOSAUR
         monster_prop TYRANOSAUR
         speed 55
         attack_power 33
@@ -928,7 +935,7 @@ MonsterProp:
         exp 8800
         level 57
         attack_anim DRAGON_CLAW
-        special_attack DMG_700_PCT
+        special_attack SMALL_PIERCE, DMG_700_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         monster_status HARDER_TO_RUN
@@ -940,7 +947,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: DARK_WIND
+; 40: DARK_WIND
         monster_prop DARK_WIND
         speed 30
         attack_power 13
@@ -953,7 +960,7 @@ MonsterProp:
         gil 41
         level 5
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack THIN_DIAG_SLASH, DMG_150_PCT
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_weak FIRE
@@ -963,7 +970,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: BEAKOR
+; 41: BEAKOR
         monster_prop BEAKOR
         speed 30
         attack_power 12
@@ -976,7 +983,7 @@ MonsterProp:
         gil 135
         level 11
         attack_anim ICE_ROD
-        special_attack POISON, NO_DMG
+        special_attack SMALL_PIERCE, POISON, NO_DMG
         metamorph 0, 0
         monster_flags IMP_DMG_BONUS
         elem_weak FIRE
@@ -985,7 +992,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: VULTURE
+; 42: VULTURE
         monster_prop VULTURE
         speed 30
         attack_power 13
@@ -998,7 +1005,7 @@ MonsterProp:
         gil 485
         level 15
         attack_anim ICE_ROD
-        special_attack BLIND, NO_DMG
+        special_attack SMALL_PIERCE, BLIND, NO_DMG
         metamorph 1, 2
         monster_status CANT_SUPLEX
         elem_weak WIND
@@ -1008,7 +1015,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: HARPY
+; 43: HARPY
         monster_prop HARPY
         speed 35
         attack_power 13
@@ -1021,7 +1028,7 @@ MonsterProp:
         gil 1221
         level 42
         attack_anim ICE_ROD
-        special_attack DMG_200_PCT
+        special_attack HORZ_CLAW, DMG_200_PCT
         metamorph 18, 4
         monster_status CANT_SUPLEX
         immune_status1 {IMP, PETRIFY, DEAD}
@@ -1031,7 +1038,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: HERMITCRAB
+; 44: HERMITCRAB
         monster_prop HERMITCRAB
         speed 10
         attack_power 5
@@ -1044,7 +1051,7 @@ MonsterProp:
         gil 400
         level 26
         attack_anim UNARMED
-        special_attack PETRIFY, NO_DMG
+        special_attack SINGLE_PUNCH, PETRIFY, NO_DMG
         metamorph 0, 0
         elem_weak WATER
         immune_status1 {BLIND, IMP, PETRIFY}
@@ -1054,7 +1061,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: TRAPPER
+; 45: TRAPPER
         monster_prop TRAPPER
         speed 35
         attack_power 13
@@ -1067,7 +1074,7 @@ MonsterProp:
         gil 200
         level 19
         attack_anim UNARMED
-        special_attack REFLECT, NO_DMG
+        special_attack MULTI_PUNCH, REFLECT, NO_DMG
         metamorph 4, 2
         monster_status CANT_SUPLEX
         elem_weak {LIGHTNING, WATER}
@@ -1078,7 +1085,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: HORNET
+; 46: HORNET
         monster_prop HORNET
         speed 30
         attack_power 16
@@ -1091,7 +1098,7 @@ MonsterProp:
         gil 64
         level 6
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack STING, DMG_150_PCT
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_weak FIRE
@@ -1101,7 +1108,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: CRASSHOPPR
+; 47: CRASSHOPPR
         monster_prop CRASSHOPPR
         speed 30
         attack_power 10
@@ -1114,7 +1121,7 @@ MonsterProp:
         gil 145
         level 11
         attack_anim UNARMED
-        special_attack BERSERK, NO_DMG
+        special_attack MUSIC_NOTE, BERSERK, NO_DMG
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_weak {FIRE, WIND}
@@ -1125,7 +1132,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: DELTA_BUG
+; 48: DELTA_BUG
         monster_prop DELTA_BUG
         speed 30
         attack_power 11
@@ -1138,7 +1145,7 @@ MonsterProp:
         gil 211
         level 26
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 0, 2
         elem_weak FIRE
         immune_status1 {BLIND, POISON, IMP}
@@ -1147,7 +1154,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: GILOMANTIS
+; 49: GILOMANTIS
         monster_prop GILOMANTIS
         speed 35
         attack_power 16
@@ -1160,7 +1167,7 @@ MonsterProp:
         gil 756
         level 26
         attack_anim RUNE_EDGE
-        special_attack DMG_150_PCT
+        special_attack THICK_DIAG_SLASH, DMG_150_PCT
         metamorph 1, 3
         elem_weak FIRE
         immune_status1 {IMP, DEAD}
@@ -1169,7 +1176,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: TRILIUM
+; 50: TRILIUM
         monster_prop TRILIUM
         speed 30
         attack_power 13
@@ -1182,7 +1189,7 @@ MonsterProp:
         gil 134
         level 9
         attack_anim MAGICAL_BRSH
-        special_attack POISON, NO_DMG
+        special_attack SMALL_PIERCE, POISON, NO_DMG
         metamorph 3, 2
         monster_status CANT_SUPLEX
         elem_absorb WATER
@@ -1192,7 +1199,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: NIGHTSHADE
+; 51: NIGHTSHADE
         monster_prop NIGHTSHADE
         speed 35
         attack_power 13
@@ -1205,7 +1212,7 @@ MonsterProp:
         gil 767
         level 37
         attack_anim UNARMED
-        special_attack POISON, NO_DMG
+        special_attack BUBBLE, POISON, NO_DMG
         metamorph 3, 3
         elem_absorb WATER
         elem_weak FIRE
@@ -1216,7 +1223,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: TUMBLEWEED
+; 52: TUMBLEWEED
         monster_prop TUMBLEWEED
         speed 30
         attack_power 10
@@ -1229,7 +1236,7 @@ MonsterProp:
         gil 1333
         level 55
         attack_anim UNARMED
-        special_attack BLIND, NO_DMG
+        special_attack SMALL_PIERCE, BLIND, NO_DMG
         metamorph 3, 3
         elem_absorb WATER
         elem_weak FIRE
@@ -1239,7 +1246,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: BLOOMPIRE
+; 53: BLOOMPIRE
         monster_prop BLOOMPIRE
         speed 35
         attack_power 13
@@ -1252,7 +1259,7 @@ MonsterProp:
         gil 896
         level 26
         attack_anim MAGICAL_BRSH
-        special_attack ZOMBIE, NO_DMG
+        special_attack BLOB_MAN, ZOMBIE, NO_DMG
         metamorph 3, 3
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status CANT_SUPLEX
@@ -1264,7 +1271,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: TRILOBITER
+; 54: TRILOBITER
         monster_prop TRILOBITER
         speed 30
         attack_power 11
@@ -1277,7 +1284,7 @@ MonsterProp:
         gil 135
         level 12
         attack_anim UNARMED
-        special_attack POISON, NO_DMG
+        special_attack STING, POISON, NO_DMG
         metamorph 0, 0
         immune_status1 IMP
         apply_status3 SAFE
@@ -1285,7 +1292,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: SIEGFRIED_1
+; 55: SIEGFRIED_1
         monster_prop SIEGFRIED_1
         speed 90
         attack_power 53
@@ -1298,7 +1305,7 @@ MonsterProp:
         mp 6000
         level 53
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack SINGLE_PUNCH, DMG_500_PCT
         metamorph 23, 4
         monster_flags {HUMAN, IMP_DMG_BONUS}
         elem_weak {FIRE, ICE, LIGHTNING, POISON, WIND, HOLY, EARTH, WATER}
@@ -1309,7 +1316,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: NAUTILOID
+; 56: NAUTILOID
         monster_prop NAUTILOID
         speed 35
         attack_power 18
@@ -1322,7 +1329,7 @@ MonsterProp:
         gil 173
         level 11
         attack_anim MAGICAL_BRSH
-        special_attack BLIND, NO_DMG
+        special_attack BLACK_CLOUD, BLIND, NO_DMG
         metamorph 0, 0
         elem_absorb WATER
         elem_weak {FIRE, LIGHTNING}
@@ -1332,7 +1339,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: EXOCITE
+; 57: EXOCITE
         monster_prop EXOCITE
         speed 30
         attack_power 19
@@ -1345,7 +1352,7 @@ MonsterProp:
         gil 153
         level 11
         attack_anim HARDENED
-        special_attack DMG_150_PCT
+        special_attack THICK_HORZ_SLASH, DMG_150_PCT
         metamorph 0, 0
         elem_absorb WATER
         elem_weak {FIRE, LIGHTNING}
@@ -1354,7 +1361,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: ANGUIFORM
+; 58: ANGUIFORM
         monster_prop ANGUIFORM
         speed 25
         attack_power 14
@@ -1367,7 +1374,7 @@ MonsterProp:
         gil 358
         level 13
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack HORZ_CLAW, DMG_500_PCT
         metamorph 1, 2
         monster_status HARDER_TO_RUN
         elem_absorb WATER
@@ -1378,7 +1385,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: REACH_FROG
+; 59: REACH_FROG
         monster_prop REACH_FROG
         speed 35
         attack_power 13
@@ -1391,7 +1398,7 @@ MonsterProp:
         gil 2600
         level 52
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack BLUE_STAB_2, SAP, NO_DMG
         metamorph 0, 2
         elem_weak ICE
         immune_status1 POISON
@@ -1400,7 +1407,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: LIZARD
+; 60: LIZARD
         monster_prop LIZARD
         speed 30
         attack_power 14
@@ -1413,7 +1420,7 @@ MonsterProp:
         gil 356
         level 26
         attack_anim UNARMED
-        special_attack IMP, NO_DMG
+        special_attack THICK_HORZ_SLASH, IMP, NO_DMG
         metamorph 0, 2
         elem_absorb POISON
         elem_weak ICE
@@ -1423,7 +1430,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: CHICKENLIP
+; 61: CHICKENLIP
         monster_prop CHICKENLIP
         speed 30
         attack_power 11
@@ -1436,7 +1443,7 @@ MonsterProp:
         gil 279
         level 18
         attack_anim ICE_ROD
-        special_attack SILENCE, NO_DMG
+        special_attack LARGE_PIERCE, SILENCE, NO_DMG
         metamorph 0, 0
         elem_weak ICE
         immune_status1 {POISON, IMP, PETRIFY, DEAD}
@@ -1445,7 +1452,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: HOOVER
+; 62: HOOVER
         monster_prop HOOVER
         speed 54
         attack_power 54
@@ -1460,7 +1467,7 @@ MonsterProp:
         gil 10000
         level 49
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack SINGLE_PUNCH, DMG_500_PCT
         metamorph 14, 4
         monster_status {HARDER_TO_RUN, CANT_SUPLEX}
         elem_weak {ICE, WATER}
@@ -1470,7 +1477,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: RIDER
+; 63: RIDER
         monster_prop RIDER
         speed 45
         attack_power 48
@@ -1483,7 +1490,7 @@ MonsterProp:
         gil 1290
         level 14
         attack_anim TRIDENT
-        special_attack DMG_300_PCT
+        special_attack RED_STAB, DMG_300_PCT
         metamorph 5, 3
         monster_flags HUMAN
         monster_status CANT_ESCAPE
@@ -1494,7 +1501,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: CHUPON_COLOSSEUM
+; 64: CHUPON_COLOSSEUM
         monster_prop CHUPON_COLOSSEUM
         speed 99
         attack_power 13
@@ -1505,7 +1512,7 @@ MonsterProp:
         mp 55530
         level 53
         attack_anim DRAGON_CLAW
-        special_attack POISON, NO_DMG
+        special_attack BLOB_MAN, POISON, NO_DMG
         metamorph 24, 4
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb FIRE
@@ -1516,7 +1523,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: PIPSQUEAK
+; 65: PIPSQUEAK
         monster_prop PIPSQUEAK
         speed 25
         attack_power 13
@@ -1529,7 +1536,7 @@ MonsterProp:
         gil 100
         level 18
         attack_anim DIRK
-        special_attack IMP, NO_DMG
+        special_attack MULTI_PUNCH, IMP, NO_DMG
         metamorph 4, 3
         monster_flags HUMAN
         elem_weak {LIGHTNING, WATER}
@@ -1539,7 +1546,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: M_TEKARMOR
+; 66: M_TEKARMOR
         monster_prop M_TEKARMOR
         speed 25
         attack_power 18
@@ -1550,7 +1557,7 @@ MonsterProp:
         mp 250
         level 8
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack ARC_SLASH, DMG_150_PCT
         metamorph 4, 3
         monster_status {CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_weak LIGHTNING
@@ -1561,7 +1568,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: SKY_ARMOR
+; 67: SKY_ARMOR
         monster_prop SKY_ARMOR
         speed 30
         attack_power 16
@@ -1574,7 +1581,7 @@ MonsterProp:
         gil 400
         level 24
         attack_anim FORGED
-        special_attack SILENCE, NO_DMG
+        special_attack DIAG_CLAW, SILENCE, NO_DMG
         metamorph 4, 4
         monster_status {CANT_SUPLEX, CANT_ESCAPE}
         elem_weak {LIGHTNING, WIND}
@@ -1585,7 +1592,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: TELSTAR
+; 68: TELSTAR
         monster_prop TELSTAR
         speed 35
         attack_power 20
@@ -1596,7 +1603,7 @@ MonsterProp:
         mp 250
         level 14
         attack_anim DRAGON_CLAW
-        special_attack CONFUSE, NO_DMG
+        special_attack MUSIC_NOTE, CONFUSE, NO_DMG
         metamorph 4, 4
         monster_status {CANT_SUPLEX, CANT_ESCAPE, CANT_CONTROL}
         elem_weak {LIGHTNING, WATER}
@@ -1607,7 +1614,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: LETHAL_WPN
+; 69: LETHAL_WPN
         monster_prop LETHAL_WPN
         speed 55
         attack_power 18
@@ -1622,7 +1629,7 @@ MonsterProp:
         gil 1189
         level 47
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack AIR_ANCHOR, DMG_200_PCT
         metamorph 5, 4
         elem_weak {LIGHTNING, WATER}
         immune_status1 {BLIND, ZOMBIE, POISON, MAGITEK, VANISH, IMP, PETRIFY}
@@ -1632,7 +1639,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: VAPORITE
+; 70: VAPORITE
         monster_prop VAPORITE
         speed 30
         attack_power 13
@@ -1645,7 +1652,7 @@ MonsterProp:
         gil 29
         level 5
         attack_anim UNARMED
-        special_attack SLOW, NO_DMG
+        special_attack FLOWER, SLOW, NO_DMG
         metamorph 0, 0
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -1658,7 +1665,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: FLAN
+; 71: FLAN
         monster_prop FLAN
         speed 30
         attack_power 13
@@ -1671,7 +1678,7 @@ MonsterProp:
         gil 120
         level 19
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack BLOB_MAN, SAP, NO_DMG
         metamorph 0, 0
         elem_null {POISON, WIND, HOLY, EARTH, WATER}
         elem_weak FIRE
@@ -1680,7 +1687,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: ING
+; 72: ING
         monster_prop ING
         speed 35
         attack_power 18
@@ -1693,7 +1700,7 @@ MonsterProp:
         gil 442
         level 21
         attack_anim UNARMED
-        special_attack BLIND, NO_DMG
+        special_attack THICK_HORZ_SLASH, BLIND, NO_DMG
         metamorph 3, 2
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -1706,7 +1713,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: HUMPTY
+; 73: HUMPTY
         monster_prop HUMPTY
         speed 30
         attack_power 8
@@ -1719,7 +1726,7 @@ MonsterProp:
         gil 326
         level 27
         attack_anim UNARMED
-        special_attack CONFUSE, NO_DMG
+        special_attack FLOWER, CONFUSE, NO_DMG
         metamorph 0, 3
         monster_flags {DIE_AT_0_MP, IMP_DMG_BONUS, UNDEAD}
         elem_absorb POISON
@@ -1730,7 +1737,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: BRAINPAN
+; 74: BRAINPAN
         monster_prop BRAINPAN
         speed 35
         attack_power 24
@@ -1743,7 +1750,7 @@ MonsterProp:
         gil 600
         level 25
         attack_anim UNARMED
-        special_attack STOP, NO_DMG
+        special_attack HEART, STOP, NO_DMG
         metamorph 1, 2
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status CANT_SUPLEX
@@ -1756,7 +1763,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: CRULLER
+; 75: CRULLER
         monster_prop CRULLER
         speed 30
         attack_power 11
@@ -1770,7 +1777,7 @@ MonsterProp:
         gil 797
         level 28
         attack_anim UNARMED
-        special_attack CONFUSE, NO_DMG
+        special_attack LIGHTNING, CONFUSE, NO_DMG
         metamorph 14, 4
         monster_flags {DIE_AT_0_MP, UNDEAD}
         elem_absorb POISON
@@ -1783,7 +1790,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: CACTROT
+; 76: CACTROT
         monster_prop CACTROT
         speed 39
         attack_power 1
@@ -1797,7 +1804,7 @@ MonsterProp:
         gil 10000
         level 27
         attack_anim ICE_ROD
-        special_attack BERSERK, NO_DMG
+        special_attack STING, BERSERK, NO_DMG
         metamorph 7, 4
         elem_weak {ICE, WATER}
         immune_status1 {BLIND, ZOMBIE, POISON, MAGITEK, VANISH, IMP, PETRIFY}
@@ -1806,7 +1813,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: REPO_MAN
+; 77: REPO_MAN
         monster_prop REPO_MAN
         speed 35
         attack_power 19
@@ -1819,7 +1826,7 @@ MonsterProp:
         gil 25
         level 5
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack WRENCH, DMG_150_PCT
         metamorph 0, 0
         monster_flags HUMAN
         elem_weak POISON
@@ -1827,7 +1834,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: HARVESTER
+; 78: HARVESTER
         monster_prop HARVESTER
         speed 50
         attack_power 13
@@ -1840,7 +1847,7 @@ MonsterProp:
         gil 314
         level 16
         attack_anim RUNE_EDGE
-        special_attack DMG_150_PCT
+        special_attack THIN_DIAG_SLASH, DMG_150_PCT
         metamorph 0, 2
         monster_flags HUMAN
         elem_weak POISON
@@ -1851,7 +1858,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: BOMB
+; 79: BOMB
         monster_prop BOMB
         speed 30
         attack_power 10
@@ -1864,7 +1871,7 @@ MonsterProp:
         gil 80
         level 8
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 20, 4
         monster_status CANT_SUPLEX
         elem_absorb FIRE
@@ -1875,7 +1882,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: STILL_LIFE
+; 80: STILL_LIFE
         monster_prop STILL_LIFE
         speed 45
         attack_power 13
@@ -1888,7 +1895,7 @@ MonsterProp:
         gil 1574
         level 37
         attack_anim UNARMED
-        special_attack POISON, NO_DMG
+        special_attack HEART, POISON, NO_DMG
         metamorph 14, 4
         monster_flags DIE_AT_0_MP
         monster_status {CANT_SUPLEX, CANT_ESCAPE}
@@ -1900,7 +1907,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: BOXED_SET
+; 81: BOXED_SET
         monster_prop BOXED_SET
         speed 30
         attack_power 13
@@ -1913,7 +1920,7 @@ MonsterProp:
         gil 465
         level 45
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack LIGHTNING, DMG_300_PCT
         metamorph 17, 4
         monster_flags DIE_AT_0_MP
         monster_status CANT_SUPLEX
@@ -1925,7 +1932,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: SLAMDANCER
+; 82: SLAMDANCER
         monster_prop SLAMDANCER
         speed 35
         attack_power 13
@@ -1938,7 +1945,7 @@ MonsterProp:
         gil 296
         level 15
         attack_anim DIRK
-        special_attack SLEEP, NO_DMG
+        special_attack HORZ_CLAW, SLEEP, NO_DMG
         metamorph 9, 4
         monster_flags HUMAN
         elem_weak POISON
@@ -1948,7 +1955,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: HADESGIGAS
+; 83: HADESGIGAS
         monster_prop HADESGIGAS
         speed 40
         attack_power 18
@@ -1961,7 +1968,7 @@ MonsterProp:
         gil 600
         level 16
         attack_anim UNARMED
-        special_attack DMG_400_PCT
+        special_attack SINGLE_PUNCH, DMG_400_PCT
         metamorph 8, 4
         monster_flags {HUMAN, IMP_DMG_BONUS}
         elem_absorb EARTH
@@ -1970,7 +1977,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: PUG
+; 84: PUG
         monster_prop PUG
         speed 35
         attack_power 13
@@ -1985,7 +1992,7 @@ MonsterProp:
         gil 3333
         level 27
         attack_anim FORGED
-        special_attack DMG_800_PCT
+        special_attack VERT_SLASH, DMG_800_PCT
         metamorph 7, 4
         monster_flags IMP_DMG_BONUS
         elem_absorb WATER
@@ -1997,7 +2004,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: MAGIC_URN
+; 85: MAGIC_URN
         monster_prop MAGIC_URN
         speed 40
         attack_power 5
@@ -2009,7 +2016,7 @@ MonsterProp:
         mp 10000
         level 31
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 11, 5
         monster_flags DIE_AT_0_MP
         elem_absorb {FIRE, ICE, LIGHTNING, POISON, WIND, HOLY, EARTH, WATER}
@@ -2020,7 +2027,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: MOVER
+; 86: MOVER
         monster_prop MOVER
         speed 85
         attack_power 20
@@ -2033,7 +2040,7 @@ MonsterProp:
         exp 1500
         level 51
         attack_anim UNARMED
-        special_attack SILENCE, NO_DMG
+        special_attack SMALL_PIERCE, SILENCE, NO_DMG
         metamorph 3, 3
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, CANT_SUPLEX}
@@ -2045,7 +2052,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: FIGALIZ
+; 87: FIGALIZ
         monster_prop FIGALIZ
         speed 30
         attack_power 29
@@ -2058,7 +2065,7 @@ MonsterProp:
         gil 554
         level 45
         attack_anim TRIDENT
-        special_attack POISON, NO_DMG
+        special_attack FLOWER, POISON, NO_DMG
         metamorph 0, 2
         monster_flags IMP_DMG_BONUS
         elem_weak ICE
@@ -2069,7 +2076,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: BUFFALAX
+; 88: BUFFALAX
         monster_prop BUFFALAX
         speed 30
         attack_power 15
@@ -2082,7 +2089,7 @@ MonsterProp:
         gil 458
         level 26
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 1, 3
         monster_flags IMP_DMG_BONUS
         elem_weak {FIRE, WATER}
@@ -2093,7 +2100,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: ASPIK
+; 89: ASPIK
         monster_prop ASPIK
         speed 40
         attack_power 2
@@ -2106,7 +2113,7 @@ MonsterProp:
         gil 115
         level 12
         attack_anim UNARMED
-        special_attack STOP, NO_DMG
+        special_attack STING, STOP, NO_DMG
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_absorb WATER
@@ -2119,7 +2126,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: GHOST
+; 90: GHOST
         monster_prop GHOST
         speed 30
         attack_power 1
@@ -2132,7 +2139,7 @@ MonsterProp:
         gil 75
         level 10
         attack_anim ICE_ROD
-        special_attack STOP, NO_DMG
+        special_attack HAMMER, STOP, NO_DMG
         metamorph 0, 2
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -2145,7 +2152,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: CRAWLER
+; 91: CRAWLER
         monster_prop CRAWLER
         speed 40
         attack_power 13
@@ -2158,7 +2165,7 @@ MonsterProp:
         gil 1224
         level 51
         attack_anim UNARMED
-        special_attack POISON, NO_DMG
+        special_attack BLUE_STAB_2, POISON, NO_DMG
         metamorph 0, 2
         monster_status HARDER_TO_RUN
         elem_weak ICE
@@ -2167,7 +2174,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: SAND_RAY
+; 92: SAND_RAY
         monster_prop SAND_RAY
         speed 30
         attack_power 20
@@ -2180,14 +2187,14 @@ MonsterProp:
         gil 54
         level 6
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack ARC_SLASH, DMG_150_PCT
         metamorph 0, 0
         elem_weak {ICE, WATER}
         end_monster_prop
 
 ; ------------------------------------------------------------------------------
 
-; 3: ARENEID
+; 93: ARENEID
         monster_prop ARENEID
         speed 30
         attack_power 20
@@ -2200,14 +2207,14 @@ MonsterProp:
         gil 94
         level 6
         attack_anim ICE_ROD
-        special_attack STOP, NO_DMG
+        special_attack STING, STOP, NO_DMG
         metamorph 0, 0
         elem_weak {ICE, WATER}
         end_monster_prop
 
 ; ------------------------------------------------------------------------------
 
-; 4: ACTANEON
+; 94: ACTANEON
         monster_prop ACTANEON
         speed 35
         attack_power 13
@@ -2220,7 +2227,7 @@ MonsterProp:
         gil 125
         level 12
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 0, 0
         elem_absorb WATER
         elem_weak {FIRE, LIGHTNING}
@@ -2231,7 +2238,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: SAND_HORSE
+; 95: SAND_HORSE
         monster_prop SAND_HORSE
         speed 30
         attack_power 15
@@ -2244,7 +2251,7 @@ MonsterProp:
         gil 726
         level 27
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack SMALL_PIERCE, DMG_500_PCT
         metamorph 1, 3
         monster_flags DIE_AT_0_MP
         elem_weak {ICE, WATER}
@@ -2254,7 +2261,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: DARK_SIDE
+; 96: DARK_SIDE
         monster_prop DARK_SIDE
         speed 30
         attack_power 10
@@ -2267,7 +2274,7 @@ MonsterProp:
         gil 138
         level 13
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack SMALL_PIERCE, SAP, NO_DMG
         metamorph 0, 2
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -2281,7 +2288,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: MAD_OSCAR
+; 97: MAD_OSCAR
         monster_prop MAD_OSCAR
         speed 30
         attack_power 20
@@ -2295,7 +2302,7 @@ MonsterProp:
         gil 2292
         level 30
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack BLOB_MAN, SAP, NO_DMG
         metamorph 3, 2
         elem_absorb {POISON, WATER}
         elem_weak FIRE
@@ -2305,7 +2312,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: CRAWLY
+; 98: CRAWLY
         monster_prop CRAWLY
         speed 30
         attack_power 13
@@ -2318,7 +2325,7 @@ MonsterProp:
         gil 120
         level 7
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack BLOB_MAN, SAP, NO_DMG
         metamorph 0, 2
         monster_status CANT_SUPLEX
         elem_weak FIRE
@@ -2326,7 +2333,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: BLEARY
+; 99: BLEARY
         monster_prop BLEARY
         speed 30
         attack_power 13
@@ -2339,14 +2346,14 @@ MonsterProp:
         gil 80
         level 7
         attack_anim UNARMED
-        special_attack SLEEP, NO_DMG
+        special_attack MUSIC_NOTE, SLEEP, NO_DMG
         metamorph 0, 2
         elem_weak FIRE
         end_monster_prop
 
 ; ------------------------------------------------------------------------------
 
-; 0: MARSHAL
+; 100: MARSHAL
         monster_prop MARSHAL
         speed 40
         attack_power 60
@@ -2358,7 +2365,7 @@ MonsterProp:
         gil 350
         level 8
         attack_anim DIRK
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {FIRST_STRIKE, CANT_ESCAPE}
@@ -2368,7 +2375,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: TROOPER
+; 101: TROOPER
         monster_prop TROOPER
         speed 25
         attack_power 15
@@ -2381,7 +2388,7 @@ MonsterProp:
         gil 96
         level 13
         attack_anim RUNE_EDGE
-        special_attack DMG_200_PCT
+        special_attack BLUE_STAB_2, DMG_200_PCT
         metamorph 0, 0
         monster_flags HUMAN
         monster_status CANT_ESCAPE
@@ -2390,7 +2397,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: GENERAL
+; 102: GENERAL
         monster_prop GENERAL
         speed 30
         attack_power 13
@@ -2403,7 +2410,7 @@ MonsterProp:
         gil 308
         level 19
         attack_anim FORGED
-        special_attack SAP, NO_DMG
+        special_attack SMALL_PIERCE, SAP, NO_DMG
         metamorph 1, 2
         monster_flags {HUMAN, IMP_DMG_BONUS}
         elem_weak POISON
@@ -2412,7 +2419,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: COVERT
+; 103: COVERT
         monster_prop COVERT
         speed 35
         attack_power 25
@@ -2426,7 +2433,7 @@ MonsterProp:
         gil 1768
         level 44
         attack_anim FORGED
-        special_attack VANISH, NO_DMG
+        special_attack LIGHT_BEAM, VANISH, NO_DMG
         metamorph 25, 4
         monster_flags {HUMAN, IMP_DMG_BONUS}
         monster_status CANT_ESCAPE
@@ -2438,7 +2445,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: OGOR
+; 104: OGOR
         monster_prop OGOR
         speed 32
         attack_power 19
@@ -2453,7 +2460,7 @@ MonsterProp:
         gil 869
         level 44
         attack_anim DRAGON_CLAW
-        special_attack ZOMBIE, NO_DMG
+        special_attack SMALL_PIERCE, ZOMBIE, NO_DMG
         metamorph 1, 4
         monster_flags HUMAN
         elem_weak {LIGHTNING, POISON}
@@ -2463,7 +2470,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: WARLOCK
+; 105: WARLOCK
         monster_prop WARLOCK
         speed 39
         attack_power 10
@@ -2476,7 +2483,7 @@ MonsterProp:
         gil 333
         level 38
         attack_anim ICE_ROD
-        special_attack DRAIN_MP
+        special_attack FLOWER, DRAIN_MP
         metamorph 0, 2
         monster_flags {DIE_AT_0_MP, HUMAN}
         elem_weak {LIGHTNING, POISON}
@@ -2486,7 +2493,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: MADAM
+; 106: MADAM
         monster_prop MADAM
         speed 35
         attack_power 8
@@ -2499,7 +2506,7 @@ MonsterProp:
         gil 700
         level 53
         attack_anim HARDENED
-        special_attack BLIND, NO_DMG
+        special_attack SMALL_PIERCE, BLIND, NO_DMG
         metamorph 19, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status HARDER_TO_RUN
@@ -2510,7 +2517,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: JOKER
+; 107: JOKER
         monster_prop JOKER
         speed 35
         attack_power 13
@@ -2523,7 +2530,7 @@ MonsterProp:
         gil 320
         level 17
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack THICK_HORZ_SLASH, DMG_200_PCT
         metamorph 0, 0
         monster_flags HUMAN
         monster_status CANT_SUPLEX
@@ -2534,7 +2541,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: IRON_FIST
+; 108: IRON_FIST
         monster_prop IRON_FIST
         speed 35
         attack_power 13
@@ -2547,7 +2554,7 @@ MonsterProp:
         gil 249
         level 15
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 0, 0
         monster_flags {HUMAN, IMP_DMG_BONUS}
         elem_absorb POISON
@@ -2555,7 +2562,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: GOBLIN
+; 109: GOBLIN
         monster_prop GOBLIN
         speed 30
         attack_power 18
@@ -2568,7 +2575,7 @@ MonsterProp:
         gil 960
         level 46
         attack_anim ICE_ROD
-        special_attack DMG_400_PCT
+        special_attack SINGLE_PUNCH, DMG_400_PCT
         metamorph 14, 4
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, CANT_SUPLEX}
@@ -2580,7 +2587,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: APPARITE
+; 110: APPARITE
         monster_prop APPARITE
         speed 35
         attack_power 17
@@ -2593,7 +2600,7 @@ MonsterProp:
         gil 300
         level 20
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack SMALL_PIERCE, SAP, NO_DMG
         metamorph 0, 0
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -2608,7 +2615,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: POWERDEMON
+; 111: POWERDEMON
         monster_prop POWERDEMON
         speed 40
         attack_power 13
@@ -2621,7 +2628,7 @@ MonsterProp:
         gil 385
         level 29
         attack_anim ICE_ROD
-        special_attack DRAIN_HP
+        special_attack HORZ_CLAW, DRAIN_HP
         metamorph 3, 3
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status HARDER_TO_RUN
@@ -2634,7 +2641,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: DISPLAYER
+; 112: DISPLAYER
         monster_prop DISPLAYER
         speed 44
         attack_power 13
@@ -2648,7 +2655,7 @@ MonsterProp:
         gil 393
         level 38
         attack_anim DRAGON_CLAW
-        special_attack DMG_200_PCT
+        special_attack BONE, DMG_200_PCT
         metamorph 3, 3
         monster_flags {DIE_AT_0_MP, UNDEAD}
         elem_absorb POISON
@@ -2659,7 +2666,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: VECTOR_PUP
+; 113: VECTOR_PUP
         monster_prop VECTOR_PUP
         speed 25
         attack_power 14
@@ -2672,7 +2679,7 @@ MonsterProp:
         gil 83
         level 11
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 2, 0
         elem_weak FIRE
         apply_status3 HASTE
@@ -2680,7 +2687,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: PEEPERS
+; 114: PEEPERS
         monster_prop PEEPERS
         speed 35
         attack_power 7
@@ -2692,7 +2699,7 @@ MonsterProp:
         exp 2
         level 23
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack ARC_SLASH, DMG_150_PCT
         metamorph 2, 0
         monster_status CANT_SUPLEX
         elem_weak {ICE, WATER}
@@ -2702,7 +2709,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: SEWER_RAT
+; 115: SEWER_RAT
         monster_prop SEWER_RAT
         speed 30
         attack_power 13
@@ -2715,7 +2722,7 @@ MonsterProp:
         gil 156
         level 16
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 2, 0
         monster_status CANT_ESCAPE
         elem_absorb POISON
@@ -2724,7 +2731,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: SLATTER
+; 116: SLATTER
         monster_prop SLATTER
         speed 35
         attack_power 13
@@ -2739,7 +2746,7 @@ MonsterProp:
         gil 415
         level 37
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack ARC_SLASH, DMG_150_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         elem_weak HOLY
@@ -2749,7 +2756,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: RHINOX
+; 117: RHINOX
         monster_prop RHINOX
         speed 30
         attack_power 13
@@ -2762,7 +2769,7 @@ MonsterProp:
         gil 400
         level 19
         attack_anim UNARMED
-        special_attack POISON, NO_DMG
+        special_attack SMALL_PIERCE, POISON, NO_DMG
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         elem_absorb LIGHTNING
@@ -2773,7 +2780,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: RHOBITE
+; 118: RHOBITE
         monster_prop RHOBITE
         speed 30
         attack_power 9
@@ -2786,14 +2793,14 @@ MonsterProp:
         gil 110
         level 10
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 2, 0
         elem_weak WATER
         end_monster_prop
 
 ; ------------------------------------------------------------------------------
 
-; 9: WILD_CAT
+; 119: WILD_CAT
         monster_prop WILD_CAT
         speed 30
         attack_power 17
@@ -2807,7 +2814,7 @@ MonsterProp:
         gil 416
         level 36
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack HORZ_CLAW, DMG_150_PCT
         metamorph 10, 4
         elem_weak {FIRE, WATER}
         immune_status2 SILENCE
@@ -2815,7 +2822,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: RED_FANG
+; 120: RED_FANG
         monster_prop RED_FANG
         speed 30
         attack_power 13
@@ -2828,13 +2835,13 @@ MonsterProp:
         gil 185
         level 14
         attack_anim DRAGON_CLAW
-        special_attack POISON, NO_DMG
+        special_attack BUBBLE, POISON, NO_DMG
         metamorph 2, 0
         end_monster_prop
 
 ; ------------------------------------------------------------------------------
 
-; 1: BOUNTY_MAN
+; 121: BOUNTY_MAN
         monster_prop BOUNTY_MAN
         speed 32
         attack_power 16
@@ -2847,7 +2854,7 @@ MonsterProp:
         gil 55
         level 13
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 2, 0
         monster_status CANT_ESCAPE
         elem_weak FIRE
@@ -2855,7 +2862,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: TUSKER
+; 122: TUSKER
         monster_prop TUSKER
         speed 30
         attack_power 28
@@ -2868,7 +2875,7 @@ MonsterProp:
         gil 102
         level 10
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         elem_weak FIRE
@@ -2876,7 +2883,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: RALPH
+; 123: RALPH
         monster_prop RALPH
         speed 35
         attack_power 14
@@ -2889,7 +2896,7 @@ MonsterProp:
         gil 345
         level 17
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         immune_status1 PETRIFY
@@ -2897,7 +2904,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: CHITONID
+; 124: CHITONID
         monster_prop CHITONID
         speed 25
         attack_power 13
@@ -2910,7 +2917,7 @@ MonsterProp:
         gil 356
         level 26
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         elem_weak LIGHTNING
@@ -2921,7 +2928,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: WART_PUCK
+; 125: WART_PUCK
         monster_prop WART_PUCK
         speed 35
         attack_power 15
@@ -2934,7 +2941,7 @@ MonsterProp:
         gil 1169
         level 44
         attack_anim UNARMED
-        special_attack SLEEP, NO_DMG
+        special_attack MUSIC_NOTE, SLEEP, NO_DMG
         metamorph 1, 3
         elem_weak FIRE
         immune_status1 {POISON, IMP, DEAD}
@@ -2944,7 +2951,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: RHYOS
+; 126: RHYOS
         monster_prop RHYOS
         speed 60
         attack_power 40
@@ -2957,7 +2964,7 @@ MonsterProp:
         gil 1889
         level 36
         attack_anim TRIDENT
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 21, 4
         monster_status CANT_ESCAPE
         immune_status1 {BLIND, IMP, PETRIFY, DEAD}
@@ -2966,7 +2973,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: SRBEHEMOTH_UNDEAD
+; 127: SRBEHEMOTH_UNDEAD
         monster_prop SRBEHEMOTH_UNDEAD
         speed 39
         attack_power 27
@@ -2977,7 +2984,7 @@ MonsterProp:
         mp 9999
         level 49
         attack_anim UNARMED
-        special_attack SLEEP, NO_DMG
+        special_attack BLACK_CLOUD, SLEEP, NO_DMG
         metamorph 23, 4
         monster_flags UNDEAD
         monster_status {CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -2990,7 +2997,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: VECTAUR
+; 128: VECTAUR
         monster_prop VECTAUR
         speed 30
         attack_power 13
@@ -3003,7 +3010,7 @@ MonsterProp:
         gil 350
         level 59
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 0, 3
         monster_status HARDER_TO_RUN
         elem_weak {ICE, WATER}
@@ -3014,7 +3021,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: WYVERN
+; 129: WYVERN
         monster_prop WYVERN
         speed 30
         attack_power 15
@@ -3027,7 +3034,7 @@ MonsterProp:
         gil 434
         level 18
         attack_anim DRAGON_CLAW
-        special_attack SAP, NO_DMG
+        special_attack HORZ_CLAW, SAP, NO_DMG
         metamorph 0, 2
         monster_status CANT_SUPLEX
         elem_weak ICE
@@ -3036,7 +3043,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: ZOMBONE
+; 130: ZOMBONE
         monster_prop ZOMBONE
         speed 40
         attack_power 29
@@ -3049,7 +3056,7 @@ MonsterProp:
         gil 309
         level 21
         attack_anim UNARMED
-        special_attack ZOMBIE, NO_DMG
+        special_attack BONE, ZOMBIE, NO_DMG
         metamorph 3, 3
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -3061,7 +3068,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: DRAGON
+; 131: DRAGON
         monster_prop DRAGON
         speed 55
         attack_power 45
@@ -3074,7 +3081,7 @@ MonsterProp:
         exp 2931
         level 29
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack ARC_SLASH, DMG_500_PCT
         metamorph 14, 4
         monster_status HARDER_TO_RUN
         elem_weak LIGHTNING
@@ -3084,7 +3091,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: BRONTAUR
+; 132: BRONTAUR
         monster_prop BRONTAUR
         speed 35
         attack_power 15
@@ -3097,7 +3104,7 @@ MonsterProp:
         gil 1200
         level 50
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack SINGLE_PUNCH, DMG_500_PCT
         metamorph 2, 0
         monster_status HARDER_TO_RUN
         elem_weak ICE
@@ -3107,7 +3114,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: ALLOSAURUS
+; 133: ALLOSAURUS
         monster_prop ALLOSAURUS
         speed 15
         attack_power 10
@@ -3120,7 +3127,7 @@ MonsterProp:
         gil 731
         level 38
         attack_anim DRAGON_CLAW
-        special_attack POISON, NO_DMG
+        special_attack SKULL_SLASH, POISON, NO_DMG
         metamorph 2, 2
         monster_status HARDER_TO_RUN
         elem_weak {FIRE, HOLY}
@@ -3131,7 +3138,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: CIRPIUS
+; 134: CIRPIUS
         monster_prop CIRPIUS
         speed 30
         attack_power 13
@@ -3144,7 +3151,7 @@ MonsterProp:
         gil 102
         level 10
         attack_anim ICE_ROD
-        special_attack PETRIFY, NO_DMG
+        special_attack SMALL_PIERCE, PETRIFY, NO_DMG
         metamorph 0, 0
         monster_status CANT_SUPLEX
         immune_status1 IMP
@@ -3153,7 +3160,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: SPRINTER
+; 135: SPRINTER
         monster_prop SPRINTER
         speed 55
         attack_power 13
@@ -3166,7 +3173,7 @@ MonsterProp:
         gil 1420
         level 53
         attack_anim ICE_ROD
-        special_attack DRAIN_MP
+        special_attack SMALL_PIERCE, DRAIN_MP
         metamorph 0, 0
         elem_weak LIGHTNING
         immune_status1 {BLIND, POISON, IMP, PETRIFY}
@@ -3176,7 +3183,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: GOBBLER
+; 136: GOBBLER
         monster_prop GOBBLER
         speed 30
         attack_power 13
@@ -3189,7 +3196,7 @@ MonsterProp:
         gil 250
         level 19
         attack_anim ICE_ROD
-        special_attack SILENCE, NO_DMG
+        special_attack BLUE_STAB_1, SILENCE, NO_DMG
         metamorph 1, 2
         monster_status CANT_SUPLEX
         immune_status1 IMP
@@ -3198,7 +3205,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: HARPIAI
+; 137: HARPIAI
         monster_prop HARPIAI
         speed 30
         attack_power 19
@@ -3211,7 +3218,7 @@ MonsterProp:
         gil 909
         level 29
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack DIAG_CLAW, DMG_150_PCT
         metamorph 18, 4
         monster_status CANT_SUPLEX
         elem_weak WIND
@@ -3223,7 +3230,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: GLOOMSHELL
+; 138: GLOOMSHELL
         monster_prop GLOOMSHELL
         speed 35
         attack_power 13
@@ -3236,7 +3243,7 @@ MonsterProp:
         gil 421
         level 41
         attack_anim UNARMED
-        special_attack PETRIFY, NO_DMG
+        special_attack NET, PETRIFY, NO_DMG
         metamorph 0, 2
         elem_weak ICE
         immune_status1 {BLIND, POISON, IMP, PETRIFY}
@@ -3245,7 +3252,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: DROP
+; 139: DROP
         monster_prop DROP
         speed 30
         attack_power 6
@@ -3258,7 +3265,7 @@ MonsterProp:
         gil 427
         level 27
         attack_anim UNARMED
-        special_attack CONFUSE, NO_DMG
+        special_attack THICK_HORZ_SLASH, CONFUSE, NO_DMG
         metamorph 4, 2
         monster_flags DIE_AT_0_MP
         monster_status CANT_SUPLEX
@@ -3270,7 +3277,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: MIND_CANDY
+; 140: MIND_CANDY
         monster_prop MIND_CANDY
         speed 30
         attack_power 14
@@ -3283,7 +3290,7 @@ MonsterProp:
         gil 168
         level 15
         attack_anim ICE_ROD
-        special_attack SLEEP, NO_DMG
+        special_attack STING, SLEEP, NO_DMG
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_weak {FIRE, WIND}
@@ -3294,7 +3301,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: WEEDFEEDER
+; 141: WEEDFEEDER
         monster_prop WEEDFEEDER
         speed 30
         attack_power 13
@@ -3307,7 +3314,7 @@ MonsterProp:
         gil 234
         level 17
         attack_anim UNARMED
-        special_attack BERSERK, NO_DMG
+        special_attack MUSIC_NOTE, BERSERK, NO_DMG
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_weak {FIRE, WIND}
@@ -3318,7 +3325,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: LURIDAN
+; 142: LURIDAN
         monster_prop LURIDAN
         speed 33
         attack_power 12
@@ -3332,7 +3339,7 @@ MonsterProp:
         gil 1000
         level 34
         attack_anim ICE_ROD
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 0, 2
         elem_weak {FIRE, WIND}
         immune_status1 {BLIND, IMP}
@@ -3342,7 +3349,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: TOE_CUTTER
+; 143: TOE_CUTTER
         monster_prop TOE_CUTTER
         speed 40
         attack_power 21
@@ -3356,7 +3363,7 @@ MonsterProp:
         gil 726
         level 36
         attack_anim RUNE_EDGE
-        special_attack DRAIN_HP
+        special_attack RED_STAB, DRAIN_HP
         metamorph 1, 3
         elem_absorb ICE
         elem_weak {FIRE, WIND}
@@ -3366,7 +3373,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: OVER_GRUNK
+; 144: OVER_GRUNK
         monster_prop OVER_GRUNK
         speed 30
         attack_power 13
@@ -3379,7 +3386,7 @@ MonsterProp:
         gil 365
         level 15
         attack_anim MAGICAL_BRSH
-        special_attack POISON, NO_DMG
+        special_attack SMALL_PIERCE, POISON, NO_DMG
         metamorph 3, 0
         monster_status CANT_SUPLEX
         elem_weak FIRE
@@ -3389,7 +3396,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: EXORAY
+; 145: EXORAY
         monster_prop EXORAY
         speed 33
         attack_power 13
@@ -3402,7 +3409,7 @@ MonsterProp:
         gil 370
         level 29
         attack_anim UNARMED
-        special_attack ZOMBIE, NO_DMG
+        special_attack FLOWER, ZOMBIE, NO_DMG
         metamorph 3, 2
         monster_flags UNDEAD
         elem_absorb POISON
@@ -3414,7 +3421,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: CRUSHER
+; 146: CRUSHER
         monster_prop CRUSHER
         speed 30
         attack_power 13
@@ -3427,7 +3434,7 @@ MonsterProp:
         gil 577
         level 36
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack SINGLE_PUNCH, DMG_500_PCT
         metamorph 3, 2
         elem_weak FIRE
         immune_status1 {BLIND, IMP, PETRIFY, DEAD}
@@ -3436,7 +3443,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: UROBUROS
+; 147: UROBUROS
         monster_prop UROBUROS
         speed 40
         attack_power 13
@@ -3449,7 +3456,7 @@ MonsterProp:
         gil 390
         level 48
         attack_anim MAGICAL_BRSH
-        special_attack ZOMBIE, NO_DMG
+        special_attack SMALL_PIERCE, ZOMBIE, NO_DMG
         metamorph 3, 2
         elem_absorb FIRE
         elem_weak ICE
@@ -3459,7 +3466,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: PRIMORDITE
+; 148: PRIMORDITE
         monster_prop PRIMORDITE
         speed 30
         attack_power 13
@@ -3472,7 +3479,7 @@ MonsterProp:
         gil 115
         level 11
         attack_anim UNARMED
-        special_attack STOP, NO_DMG
+        special_attack BLUE_STAB_1, STOP, NO_DMG
         metamorph 0, 2
         elem_weak LIGHTNING
         immune_status1 IMP
@@ -3480,7 +3487,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: SKY_CAP
+; 149: SKY_CAP
         monster_prop SKY_CAP
         speed 35
         attack_power 13
@@ -3493,7 +3500,7 @@ MonsterProp:
         gil 441
         level 40
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack BLUE_STAB_1, SAP, NO_DMG
         metamorph 4, 2
         monster_status CANT_SUPLEX
         elem_weak {LIGHTNING, WIND, WATER}
@@ -3504,7 +3511,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: CEPHALER
+; 150: CEPHALER
         monster_prop CEPHALER
         speed 30
         attack_power 10
@@ -3517,7 +3524,7 @@ MonsterProp:
         gil 280
         level 21
         attack_anim MAGICAL_BRSH
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 0, 0
         elem_weak LIGHTNING
         immune_status1 {IMP, DEAD}
@@ -3527,7 +3534,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: MALIGA
+; 151: MALIGA
         monster_prop MALIGA
         speed 30
         attack_power 15
@@ -3540,7 +3547,7 @@ MonsterProp:
         gil 576
         level 26
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack THICK_DIAG_SLASH, DMG_150_PCT
         metamorph 0, 2
         elem_weak {ICE, LIGHTNING, WATER}
         immune_status1 {BLIND, IMP, PETRIFY}
@@ -3549,7 +3556,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: GIGAN_TOAD
+; 152: GIGAN_TOAD
         monster_prop GIGAN_TOAD
         speed 30
         attack_power 11
@@ -3562,7 +3569,7 @@ MonsterProp:
         gil 340
         level 26
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 0, 2
         elem_weak ICE
         immune_status1 {POISON, DEAD}
@@ -3571,7 +3578,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: GECKOREX
+; 153: GECKOREX
         monster_prop GECKOREX
         speed 35
         attack_power 13
@@ -3586,7 +3593,7 @@ MonsterProp:
         gil 1120
         level 54
         attack_anim UNARMED
-        special_attack PETRIFY, NO_DMG
+        special_attack THICK_HORZ_SLASH, PETRIFY, NO_DMG
         metamorph 0, 3
         elem_weak ICE
         immune_status1 PETRIFY
@@ -3594,7 +3601,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: CLUCK
+; 154: CLUCK
         monster_prop CLUCK
         speed 33
         attack_power 13
@@ -3607,7 +3614,7 @@ MonsterProp:
         gil 422
         level 38
         attack_anim ICE_ROD
-        special_attack PETRIFY, NO_DMG
+        special_attack THICK_HORZ_SLASH, PETRIFY, NO_DMG
         metamorph 0, 2
         elem_absorb POISON
         elem_weak ICE
@@ -3617,7 +3624,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: LAND_WORM
+; 155: LAND_WORM
         monster_prop LAND_WORM
         speed 30
         attack_power 13
@@ -3629,7 +3636,7 @@ MonsterProp:
         exp 4600
         level 59
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 14, 4
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE}
         elem_absorb EARTH
@@ -3639,7 +3646,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: TEST_RIDER
+; 156: TEST_RIDER
         monster_prop TEST_RIDER
         speed 40
         attack_power 27
@@ -3652,7 +3659,7 @@ MonsterProp:
         gil 520
         level 32
         attack_anim TRIDENT
-        special_attack DMG_300_PCT
+        special_attack HORZ_CLAW, DMG_300_PCT
         metamorph 21, 4
         monster_flags {DIE_AT_0_MP, HUMAN, IMP_DMG_BONUS}
         monster_status HARDER_TO_RUN
@@ -3663,7 +3670,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: PLUTOARMOR
+; 157: PLUTOARMOR
         monster_prop PLUTOARMOR
         speed 35
         attack_power 13
@@ -3676,7 +3683,7 @@ MonsterProp:
         gil 629
         level 39
         attack_anim TRIDENT
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 4, 3
         elem_weak {LIGHTNING, WATER}
         immune_status1 {ZOMBIE, POISON, MAGITEK, IMP, PETRIFY}
@@ -3685,7 +3692,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: TOMB_THUMB
+; 158: TOMB_THUMB
         monster_prop TOMB_THUMB
         speed 32
         attack_power 10
@@ -3698,7 +3705,7 @@ MonsterProp:
         gil 150
         level 33
         attack_anim DIRK
-        special_attack HASTE, NO_DMG
+        special_attack LIGHT_BEAM, HASTE, NO_DMG
         metamorph 4, 2
         monster_flags HUMAN
         elem_weak {LIGHTNING, WATER}
@@ -3708,7 +3715,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: HEAVYARMOR
+; 159: HEAVYARMOR
         monster_prop HEAVYARMOR
         speed 40
         attack_power 53
@@ -3721,7 +3728,7 @@ MonsterProp:
         gil 195
         level 13
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack AIR_ANCHOR, DMG_150_PCT
         metamorph 4, 3
         elem_weak {LIGHTNING, WATER}
         immune_status1 {ZOMBIE, POISON, MAGITEK, IMP, PETRIFY}
@@ -3731,7 +3738,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: CHASER
+; 160: CHASER
         monster_prop CHASER
         speed 40
         attack_power 13
@@ -3744,7 +3751,7 @@ MonsterProp:
         gil 380
         level 19
         attack_anim DRAGON_CLAW
-        special_attack SHELL, NO_DMG
+        special_attack MULTI_PUNCH, SHELL, NO_DMG
         metamorph 4, 3
         monster_status CANT_SUPLEX
         elem_weak {LIGHTNING, WATER}
@@ -3755,7 +3762,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: SCULLION
+; 161: SCULLION
         monster_prop SCULLION
         speed 40
         attack_power 13
@@ -3767,7 +3774,7 @@ MonsterProp:
         exp 9000
         level 57
         attack_anim UNARMED
-        special_attack CONDEMNED, NO_DMG
+        special_attack LIGHT_BEAM, CONDEMNED, NO_DMG
         metamorph 5, 4
         monster_status HARDER_TO_RUN
         elem_weak {LIGHTNING, WATER}
@@ -3777,7 +3784,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: POPLIUM
+; 162: POPLIUM
         monster_prop POPLIUM
         speed 25
         attack_power 13
@@ -3790,7 +3797,7 @@ MonsterProp:
         gil 55
         level 11
         attack_anim UNARMED
-        special_attack SLOW, NO_DMG
+        special_attack NET, SLOW, NO_DMG
         metamorph 0, 2
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -3803,7 +3810,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: INTANGIR
+; 163: INTANGIR
         monster_prop INTANGIR
         speed 50
         attack_power 25
@@ -3815,7 +3822,7 @@ MonsterProp:
         mp 16000
         level 26
         attack_anim UNARMED
-        special_attack VANISH, {NO_DMG, CANT_MISS}
+        special_attack BUBBLE, VANISH, {NO_DMG, CANT_MISS}
         metamorph 11, 4
         monster_flags {DIE_AT_0_MP, IMP_DMG_BONUS}
         elem_absorb {FIRE, ICE, LIGHTNING, POISON, WIND, HOLY, EARTH, WATER}
@@ -3827,7 +3834,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: MISFIT
+; 164: MISFIT
         monster_prop MISFIT
         speed 35
         attack_power 26
@@ -3840,7 +3847,7 @@ MonsterProp:
         gil 786
         level 26
         attack_anim UNARMED
-        special_attack BLIND, NO_DMG
+        special_attack THICK_HORZ_SLASH, BLIND, NO_DMG
         metamorph 1, 2
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status CANT_SUPLEX
@@ -3853,7 +3860,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: ELAND
+; 165: ELAND
         monster_prop ELAND
         speed 32
         attack_power 13
@@ -3867,7 +3874,7 @@ MonsterProp:
         gil 550
         level 37
         attack_anim UNARMED
-        special_attack CONFUSE, NO_DMG
+        special_attack FLOWER, CONFUSE, NO_DMG
         metamorph 0, 2
         elem_weak LIGHTNING
         immune_status1 IMP
@@ -3876,7 +3883,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: ENUO
+; 166: ENUO
         monster_prop ENUO
         speed 30
         attack_power 13
@@ -3889,7 +3896,7 @@ MonsterProp:
         gil 968
         level 46
         attack_anim UNARMED
-        special_attack SLOW, NO_DMG
+        special_attack BLOB_MAN, SLOW, NO_DMG
         metamorph 14, 4
         elem_weak HOLY
         immune_status1 {BLIND, POISON, IMP}
@@ -3901,7 +3908,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: DEEP_EYE
+; 167: DEEP_EYE
         monster_prop DEEP_EYE
         speed 30
         attack_power 14
@@ -3914,7 +3921,7 @@ MonsterProp:
         gil 485
         level 28
         attack_anim UNARMED
-        special_attack SLEEP, NO_DMG
+        special_attack FLOWER, SLEEP, NO_DMG
         metamorph 0, 2
         elem_weak FIRE
         immune_status1 IMP
@@ -3923,7 +3930,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: GREASEMONK
+; 168: GREASEMONK
         monster_prop GREASEMONK
         speed 35
         attack_power 15
@@ -3936,7 +3943,7 @@ MonsterProp:
         gil 256
         level 8
         attack_anim DIRK
-        special_attack DMG_150_PCT
+        special_attack WRENCH, DMG_150_PCT
         metamorph 0, 0
         monster_flags HUMAN
         elem_weak POISON
@@ -3945,7 +3952,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: NECKHUNTER
+; 169: NECKHUNTER
         monster_prop NECKHUNTER
         speed 30
         attack_power 5
@@ -3958,7 +3965,7 @@ MonsterProp:
         gil 1330
         level 28
         attack_anim RUNE_EDGE
-        special_attack CONFUSE, NO_DMG
+        special_attack BLUE_STAB_1, CONFUSE, NO_DMG
         metamorph 0, 2
         monster_flags {HUMAN, IMP_DMG_BONUS}
         elem_weak POISON
@@ -3968,7 +3975,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: GRENADE
+; 170: GRENADE
         monster_prop GRENADE
         speed 30
         attack_power 13
@@ -3980,7 +3987,7 @@ MonsterProp:
         gil 500
         level 17
         attack_anim UNARMED
-        special_attack BERSERK, NO_DMG
+        special_attack THIN_HORZ_SLASH, BERSERK, NO_DMG
         metamorph 20, 4
         monster_status CANT_SUPLEX
         elem_absorb FIRE
@@ -3991,7 +3998,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: CRITIC
+; 171: CRITIC
         monster_prop CRITIC
         speed 30
         attack_power 13
@@ -4004,7 +4011,7 @@ MonsterProp:
         gil 531
         level 40
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack BLUE_STAB_1, SAP, NO_DMG
         metamorph 24, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         immune_status1 {BLIND, ZOMBIE, POISON, IMP, PETRIFY}
@@ -4014,7 +4021,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: PAN_DORA
+; 172: PAN_DORA
         monster_prop PAN_DORA
         speed 25
         attack_power 13
@@ -4027,7 +4034,7 @@ MonsterProp:
         gil 461
         level 39
         attack_anim UNARMED
-        special_attack SLEEP, NO_DMG
+        special_attack BUBBLE, SLEEP, NO_DMG
         metamorph 19, 4
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status CANT_SUPLEX
@@ -4040,7 +4047,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: SOULDANCER
+; 173: SOULDANCER
         monster_prop SOULDANCER
         speed 30
         attack_power 1
@@ -4053,7 +4060,7 @@ MonsterProp:
         gil 769
         level 22
         attack_anim HARDENED
-        special_attack DRAIN_HP
+        special_attack DIAG_CLAW, DRAIN_HP
         metamorph 9, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status HARDER_TO_RUN
@@ -4064,7 +4071,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: GIGANTOS
+; 174: GIGANTOS
         monster_prop GIGANTOS
         speed 50
         attack_power 20
@@ -4076,7 +4083,7 @@ MonsterProp:
         exp 7550
         level 25
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack DIAG_CLAW, DMG_500_PCT
         metamorph 8, 4
         monster_flags HUMAN
         monster_status CANT_ESCAPE
@@ -4087,7 +4094,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: MAG_ROADER_2
+; 175: MAG_ROADER_2
         monster_prop MAG_ROADER_2
         speed 25
         attack_power 10
@@ -4100,7 +4107,7 @@ MonsterProp:
         gil 300
         level 18
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 4, 3
         monster_status CANT_ESCAPE
         elem_weak ICE
@@ -4111,7 +4118,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: SPEK_TOR
+; 176: SPEK_TOR
         monster_prop SPEK_TOR
         speed 70
         attack_power 30
@@ -4125,7 +4132,7 @@ MonsterProp:
         gil 1524
         level 50
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack DIAG_CLAW, DMG_150_PCT
         metamorph 10, 4
         monster_flags IMP_DMG_BONUS
         elem_weak WATER
@@ -4135,7 +4142,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: PARASITE
+; 177: PARASITE
         monster_prop PARASITE
         speed 20
         attack_power 1
@@ -4148,7 +4155,7 @@ MonsterProp:
         gil 461
         level 39
         attack_anim UNARMED
-        special_attack STOP, NO_DMG
+        special_attack LIGHT_BEAM, STOP, NO_DMG
         metamorph 0, 2
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, CANT_SUPLEX}
@@ -4160,7 +4167,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: EARTHGUARD
+; 178: EARTHGUARD
         monster_prop EARTHGUARD
         speed 45
         attack_power 6
@@ -4172,7 +4179,7 @@ MonsterProp:
         exp 1
         level 23
         attack_anim UNARMED
-        special_attack POISON, NO_DMG
+        special_attack ARC_SLASH, POISON, NO_DMG
         metamorph 0, 2
         elem_weak WATER
         immune_status1 {BLIND, IMP, PETRIFY}
@@ -4183,7 +4190,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: COELECITE
+; 179: COELECITE
         monster_prop COELECITE
         speed 35
         attack_power 20
@@ -4196,7 +4203,7 @@ MonsterProp:
         gil 270
         level 20
         attack_anim ICE_ROD
-        special_attack SLEEP, NO_DMG
+        special_attack STING, SLEEP, NO_DMG
         metamorph 0, 0
         elem_absorb FIRE
         elem_weak ICE
@@ -4206,7 +4213,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: ANEMONE
+; 180: ANEMONE
         monster_prop ANEMONE
         speed 33
         attack_power 10
@@ -4219,7 +4226,7 @@ MonsterProp:
         gil 550
         level 33
         attack_anim UNARMED
-        special_attack IMP, NO_DMG
+        special_attack SMALL_PIERCE, IMP, NO_DMG
         metamorph 0, 2
         elem_absorb {LIGHTNING, WATER}
         elem_weak {FIRE, LIGHTNING}
@@ -4229,7 +4236,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: HIPOCAMPUS
+; 181: HIPOCAMPUS
         monster_prop HIPOCAMPUS
         speed 37
         attack_power 15
@@ -4242,7 +4249,7 @@ MonsterProp:
         gil 669
         level 37
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack SMALL_PIERCE, SAP, NO_DMG
         metamorph 0, 2
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status CANT_SUPLEX
@@ -4256,7 +4263,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: SPECTRE
+; 182: SPECTRE
         monster_prop SPECTRE
         speed 35
         attack_power 1
@@ -4268,7 +4275,7 @@ MonsterProp:
         gil 138
         level 13
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack LARGE_PIERCE, DMG_150_PCT
         metamorph 0, 0
         monster_flags {HUMAN, UNDEAD}
         monster_status CANT_SUPLEX
@@ -4280,7 +4287,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: EVIL_OSCAR
+; 183: EVIL_OSCAR
         monster_prop EVIL_OSCAR
         speed 30
         attack_power 13
@@ -4293,7 +4300,7 @@ MonsterProp:
         gil 1320
         level 56
         attack_anim UNARMED
-        special_attack DEAD, NO_DMG
+        special_attack SKULL_SLASH, DEAD, NO_DMG
         metamorph 3, 3
         monster_status HARDER_TO_RUN
         elem_absorb {ICE, LIGHTNING, POISON, WIND, HOLY, EARTH, WATER}
@@ -4304,7 +4311,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: SLURM
+; 184: SLURM
         monster_prop SLURM
         speed 30
         attack_power 12
@@ -4317,7 +4324,7 @@ MonsterProp:
         gil 270
         level 23
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack BLOB_MAN, SAP, NO_DMG
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_weak FIRE
@@ -4328,7 +4335,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: LATIMERIA
+; 185: LATIMERIA
         monster_prop LATIMERIA
         speed 35
         attack_power 15
@@ -4341,7 +4348,7 @@ MonsterProp:
         gil 971
         level 27
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 1, 2
         elem_weak LIGHTNING
         immune_status1 {BLIND, POISON, IMP, DEAD}
@@ -4350,7 +4357,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: STILLGOING
+; 186: STILLGOING
         monster_prop STILLGOING
         speed 30
         attack_power 10
@@ -4363,7 +4370,7 @@ MonsterProp:
         gil 135
         level 12
         attack_anim DIRK
-        special_attack SAP, NO_DMG
+        special_attack SMALL_PIERCE, SAP, NO_DMG
         metamorph 0, 0
         monster_flags {HUMAN, UNDEAD}
         elem_absorb POISON
@@ -4374,7 +4381,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: ALLO_VER
+; 187: ALLO_VER
         monster_prop ALLO_VER
         speed 55
         attack_power 13
@@ -4385,7 +4392,7 @@ MonsterProp:
         mp 8000
         level 19
         attack_anim RUNE_EDGE
-        special_attack DEAD, NO_DMG
+        special_attack SKULL_SLASH, DEAD, NO_DMG
         metamorph 3, 4
         monster_flags {HUMAN, UNDEAD}
         monster_status CANT_ESCAPE
@@ -4398,7 +4405,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: PHASE
+; 188: PHASE
         monster_prop PHASE
         speed 30
         attack_power 11
@@ -4411,7 +4418,7 @@ MonsterProp:
         gil 890
         level 47
         attack_anim UNARMED
-        special_attack STOP, NO_DMG
+        special_attack MUSIC_NOTE, STOP, NO_DMG
         metamorph 14, 4
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, CANT_ESCAPE}
@@ -4424,7 +4431,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: OUTSIDER
+; 189: OUTSIDER
         monster_prop OUTSIDER
         speed 40
         attack_power 15
@@ -4437,7 +4444,7 @@ MonsterProp:
         gil 2800
         level 18
         attack_anim FORGED
-        special_attack DEAD, NO_DMG
+        special_attack SKULL_SLASH, DEAD, NO_DMG
         metamorph 25, 4
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, CANT_SUPLEX}
@@ -4450,7 +4457,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: BARB_E
+; 190: BARB_E
         monster_prop BARB_E
         speed 30
         attack_power 13
@@ -4463,7 +4470,7 @@ MonsterProp:
         gil 631
         level 39
         attack_anim HARDENED
-        special_attack SILENCE, NO_DMG
+        special_attack MULTI_PUNCH, SILENCE, NO_DMG
         metamorph 19, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         elem_weak POISON
@@ -4473,7 +4480,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: PARASOUL
+; 191: PARASOUL
         monster_prop PARASOUL
         speed 30
         attack_power 13
@@ -4486,7 +4493,7 @@ MonsterProp:
         gil 674
         level 47
         attack_anim UNARMED
-        special_attack CONFUSE, NO_DMG
+        special_attack THICK_HORZ_SLASH, CONFUSE, NO_DMG
         metamorph 0, 0
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status CANT_SUPLEX
@@ -4500,7 +4507,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: PM_STALKER
+; 192: PM_STALKER
         monster_prop PM_STALKER
         speed 20
         attack_power 9
@@ -4513,7 +4520,7 @@ MonsterProp:
         gil 491
         level 26
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack SMALL_PIERCE, SAP, NO_DMG
         metamorph 0, 0
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status CANT_SUPLEX
@@ -4527,7 +4534,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: HEMOPHYTE
+; 193: HEMOPHYTE
         monster_prop HEMOPHYTE
         speed 40
         attack_power 12
@@ -4540,7 +4547,7 @@ MonsterProp:
         gil 200
         level 56
         attack_anim FORGED
-        special_attack SAP, NO_DMG
+        special_attack THICK_HORZ_SLASH, SAP, NO_DMG
         metamorph 1, 2
         monster_flags HUMAN
         monster_status HARDER_TO_RUN
@@ -4550,7 +4557,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: SP_FORCES
+; 194: SP_FORCES
         monster_prop SP_FORCES
         speed 40
         attack_power 13
@@ -4562,7 +4569,7 @@ MonsterProp:
         exp 200
         level 21
         attack_anim RUNE_EDGE
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 1, 2
         monster_flags {HUMAN, IMP_DMG_BONUS}
         monster_status CANT_ESCAPE
@@ -4575,7 +4582,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: NOHRABBIT
+; 195: NOHRABBIT
         monster_prop NOHRABBIT
         speed 30
         attack_power 7
@@ -4586,7 +4593,7 @@ MonsterProp:
         mp 200
         level 26
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 2, 0
         elem_weak WATER
         immune_status2 {CONDEMNED, NEAR_FATAL, SILENCE, BERSERK}
@@ -4595,7 +4602,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: WIZARD
+; 196: WIZARD
         monster_prop WIZARD
         speed 33
         attack_power 13
@@ -4608,7 +4615,7 @@ MonsterProp:
         gil 388
         level 32
         attack_anim ICE_ROD
-        special_attack ZOMBIE, NO_DMG
+        special_attack MUSIC_NOTE, ZOMBIE, NO_DMG
         metamorph 0, 0
         monster_flags HUMAN
         elem_weak {LIGHTNING, POISON}
@@ -4618,7 +4625,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: SCRAPPER
+; 197: SCRAPPER
         monster_prop SCRAPPER
         speed 37
         attack_power 10
@@ -4632,7 +4639,7 @@ MonsterProp:
         gil 2000
         level 34
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack ARC_SLASH, DMG_150_PCT
         metamorph 0, 0
         monster_flags {HUMAN, IMP_DMG_BONUS}
         monster_status HARDER_TO_RUN
@@ -4644,7 +4651,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: CERITOPS
+; 198: CERITOPS
         monster_prop CERITOPS
         speed 34
         attack_power 10
@@ -4657,7 +4664,7 @@ MonsterProp:
         gil 850
         level 33
         attack_anim UNARMED
-        special_attack IMP, NO_DMG
+        special_attack FLOWER, IMP, NO_DMG
         metamorph 2, 2
         monster_flags {DIE_AT_0_MP, IMP_DMG_BONUS}
         elem_absorb LIGHTNING
@@ -4669,7 +4676,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: COMMANDO
+; 199: COMMANDO
         monster_prop COMMANDO
         speed 30
         attack_power 13
@@ -4682,7 +4689,7 @@ MonsterProp:
         gil 273
         level 18
         attack_anim RUNE_EDGE
-        special_attack SILENCE, NO_DMG
+        special_attack MULTI_PUNCH, SILENCE, NO_DMG
         metamorph 0, 0
         monster_flags HUMAN
         elem_weak {LIGHTNING, WATER}
@@ -4692,7 +4699,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: OPINICUS
+; 200: OPINICUS
         monster_prop OPINICUS
         speed 38
         attack_power 22
@@ -4706,7 +4713,7 @@ MonsterProp:
         gil 519
         level 38
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 1, 3
         monster_flags {IMP_DMG_BONUS, UNDEAD}
         monster_status HARDER_TO_RUN
@@ -4719,7 +4726,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: POPPERS
+; 201: POPPERS
         monster_prop POPPERS
         speed 34
         attack_power 5
@@ -4732,7 +4739,7 @@ MonsterProp:
         gil 350
         level 33
         attack_anim UNARMED
-        special_attack IMP, NO_DMG
+        special_attack ARC_SLASH, IMP, NO_DMG
         metamorph 2, 0
         monster_status CANT_SUPLEX
         elem_weak FIRE
@@ -4742,7 +4749,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: LUNARIS
+; 202: LUNARIS
         monster_prop LUNARIS
         speed 25
         attack_power 13
@@ -4755,7 +4762,7 @@ MonsterProp:
         gil 247
         level 26
         attack_anim DRAGON_CLAW
-        special_attack BLIND, NO_DMG
+        special_attack SMALL_PIERCE, BLIND, NO_DMG
         metamorph 2, 0
         immune_status1 DEAD
         immune_status2 {CONDEMNED, NEAR_FATAL, SILENCE, SLEEP}
@@ -4763,7 +4770,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: GARM
+; 203: GARM
         monster_prop GARM
         speed 30
         attack_power 13
@@ -4776,7 +4783,7 @@ MonsterProp:
         gil 343
         level 19
         attack_anim DRAGON_CLAW
-        special_attack CONFUSE, NO_DMG
+        special_attack MULTI_PUNCH, CONFUSE, NO_DMG
         metamorph 4, 0
         elem_weak {LIGHTNING, WATER}
         immune_status1 {ZOMBIE, POISON, MAGITEK, IMP, PETRIFY}
@@ -4785,7 +4792,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: VINDR
+; 204: VINDR
         monster_prop VINDR
         speed 30
         attack_power 14
@@ -4799,7 +4806,7 @@ MonsterProp:
         gil 497
         level 36
         attack_anim ICE_ROD
-        special_attack PETRIFY, NO_DMG
+        special_attack SMALL_PIERCE, PETRIFY, NO_DMG
         metamorph 0, 0
         monster_status {HARDER_TO_RUN, CANT_SUPLEX}
         elem_weak FIRE
@@ -4810,7 +4817,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: KIWOK
+; 205: KIWOK
         monster_prop KIWOK
         speed 33
         attack_power 10
@@ -4823,7 +4830,7 @@ MonsterProp:
         gil 750
         level 33
         attack_anim UNARMED
-        special_attack IMP, NO_DMG
+        special_attack SMALL_PIERCE, IMP, NO_DMG
         metamorph 0, 0
         monster_flags IMP_DMG_BONUS
         monster_status HARDER_TO_RUN
@@ -4834,7 +4841,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: NASTIDON
+; 206: NASTIDON
         monster_prop NASTIDON
         speed 35
         attack_power 13
@@ -4847,7 +4854,7 @@ MonsterProp:
         gil 298
         level 32
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack HORZ_CLAW, DMG_150_PCT
         metamorph 2, 2
         elem_weak FIRE
         immune_status1 DEAD
@@ -4857,7 +4864,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: RINN
+; 207: RINN
         monster_prop RINN
         speed 25
         attack_power 10
@@ -4870,7 +4877,7 @@ MonsterProp:
         gil 100
         level 11
         attack_anim UNARMED
-        special_attack SLOW, NO_DMG
+        special_attack NET, SLOW, NO_DMG
         metamorph 0, 0
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -4883,7 +4890,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: INSECARE
+; 208: INSECARE
         monster_prop INSECARE
         speed 35
         attack_power 15
@@ -4896,7 +4903,7 @@ MonsterProp:
         gil 410
         level 23
         attack_anim UNARMED
-        special_attack BERSERK, NO_DMG
+        special_attack MUSIC_NOTE, BERSERK, NO_DMG
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_weak {FIRE, WIND}
@@ -4907,7 +4914,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: VERMIN
+; 209: VERMIN
         monster_prop VERMIN
         speed 35
         attack_power 20
@@ -4920,7 +4927,7 @@ MonsterProp:
         gil 235
         level 16
         attack_anim UNARMED
-        special_attack SAP, NO_DMG
+        special_attack BUBBLE, SAP, NO_DMG
         metamorph 2, 0
         monster_flags IMP_DMG_BONUS
         monster_status CANT_ESCAPE
@@ -4930,7 +4937,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: MANTODEA
+; 210: MANTODEA
         monster_prop MANTODEA
         speed 45
         attack_power 180
@@ -4943,7 +4950,7 @@ MonsterProp:
         gil 501
         level 54
         attack_anim RUNE_EDGE
-        special_attack DRAIN_MP
+        special_attack BLUE_STAB_1, DRAIN_MP
         metamorph 1, 3
         monster_status HARDER_TO_RUN
         elem_weak FIRE
@@ -4953,7 +4960,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: BOGY
+; 211: BOGY
         monster_prop BOGY
         speed 30
         attack_power 15
@@ -4966,7 +4973,7 @@ MonsterProp:
         gil 1200
         level 29
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         immune_status1 PETRIFY
@@ -4975,7 +4982,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: PRUSSIAN
+; 212: PRUSSIAN
         monster_prop PRUSSIAN
         speed 35
         attack_power 13
@@ -4988,7 +4995,7 @@ MonsterProp:
         gil 773
         level 41
         attack_anim DRAGON_CLAW
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 2, 2
         immune_status1 PETRIFY
         immune_status2 {NEAR_FATAL, CONFUSE}
@@ -4996,7 +5003,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: BLACK_DRGN
+; 213: BLACK_DRGN
         monster_prop BLACK_DRGN
         speed 30
         attack_power 14
@@ -5009,7 +5016,7 @@ MonsterProp:
         gil 502
         level 26
         attack_anim UNARMED
-        special_attack ZOMBIE, NO_DMG
+        special_attack FLOWER, ZOMBIE, NO_DMG
         metamorph 3, 3
         monster_flags UNDEAD
         monster_status CANT_SUPLEX
@@ -5022,7 +5029,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: ADAMANCHYT
+; 214: ADAMANCHYT
         monster_prop ADAMANCHYT
         speed 40
         attack_power 22
@@ -5035,7 +5042,7 @@ MonsterProp:
         gil 189
         level 24
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack DIAG_CLAW, DMG_150_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         immune_status1 {PETRIFY, DEAD}
@@ -5045,7 +5052,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: DANTE
+; 215: DANTE
         monster_prop DANTE
         speed 40
         attack_power 17
@@ -5058,7 +5065,7 @@ MonsterProp:
         gil 712
         level 28
         attack_anim TRIDENT
-        special_attack DMG_300_PCT
+        special_attack ARC_SLASH, DMG_300_PCT
         metamorph 22, 4
         monster_flags {DIE_AT_0_MP, HUMAN, UNDEAD}
         elem_weak POISON
@@ -5068,7 +5075,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: WIREY_DRGN
+; 216: WIREY_DRGN
         monster_prop WIREY_DRGN
         speed 31
         attack_power 35
@@ -5081,7 +5088,7 @@ MonsterProp:
         gil 1300
         level 26
         attack_anim DRAGON_CLAW
-        special_attack DMG_200_PCT
+        special_attack HORZ_CLAW, DMG_200_PCT
         metamorph 6, 4
         monster_status CANT_SUPLEX
         immune_status1 IMP
@@ -5090,7 +5097,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: DUELLER
+; 217: DUELLER
         monster_prop DUELLER
         speed 35
         attack_power 13
@@ -5103,7 +5110,7 @@ MonsterProp:
         gil 800
         level 53
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack LIGHTNING, DMG_300_PCT
         metamorph 4, 3
         monster_status HARDER_TO_RUN
         elem_weak {LIGHTNING, WATER}
@@ -5113,7 +5120,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: PSYCHOT
+; 218: PSYCHOT
         monster_prop PSYCHOT
         speed 33
         attack_power 14
@@ -5126,7 +5133,7 @@ MonsterProp:
         gil 275
         level 32
         attack_anim UNARMED
-        special_attack DRAIN_MP
+        special_attack LIGHTNING, DRAIN_MP
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_absorb FIRE
@@ -5138,7 +5145,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: MUUS
+; 219: MUUS
         monster_prop MUUS
         speed 30
         attack_power 11
@@ -5151,7 +5158,7 @@ MonsterProp:
         gil 287
         level 28
         attack_anim UNARMED
-        special_attack SLOW, NO_DMG
+        special_attack BLOB_MAN, SLOW, NO_DMG
         metamorph 0, 0
         monster_flags DIE_AT_0_MP
         monster_status HARDER_TO_RUN
@@ -5163,7 +5170,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: KARKASS
+; 220: KARKASS
         monster_prop KARKASS
         speed 33
         attack_power 13
@@ -5176,7 +5183,7 @@ MonsterProp:
         gil 826
         level 43
         attack_anim UNARMED
-        special_attack IMP, NO_DMG
+        special_attack BLOB_MAN, IMP, NO_DMG
         metamorph 3, 2
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status CANT_SUPLEX
@@ -5189,7 +5196,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: PUNISHER
+; 221: PUNISHER
         monster_prop PUNISHER
         speed 35
         attack_power 28
@@ -5203,7 +5210,7 @@ MonsterProp:
         gil 3000
         level 35
         attack_anim RUNE_EDGE
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 0, 2
         monster_flags {HUMAN, IMP_DMG_BONUS}
         monster_status HARDER_TO_RUN
@@ -5216,7 +5223,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: BALLOON
+; 222: BALLOON
         monster_prop BALLOON
         speed 25
         attack_power 11
@@ -5229,7 +5236,7 @@ MonsterProp:
         gil 300
         level 22
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 20, 4
         monster_status CANT_SUPLEX
         elem_absorb FIRE
@@ -5241,7 +5248,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: GABBLDEGAK
+; 223: GABBLDEGAK
         monster_prop GABBLDEGAK
         speed 30
         attack_power 13
@@ -5254,7 +5261,7 @@ MonsterProp:
         gil 126
         level 15
         attack_anim DIRK
-        special_attack DMG_150_PCT
+        special_attack WRENCH, DMG_150_PCT
         metamorph 0, 0
         monster_flags HUMAN
         elem_weak POISON
@@ -5262,7 +5269,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: GTBEHEMOTH
+; 224: GTBEHEMOTH
         monster_prop GTBEHEMOTH
         speed 35
         attack_power 7
@@ -5275,7 +5282,7 @@ MonsterProp:
         gil 2900
         level 58
         attack_anim UNARMED
-        special_attack DMG_400_PCT
+        special_attack SINGLE_PUNCH, DMG_400_PCT
         metamorph 14, 4
         monster_status {HARDER_TO_RUN, CANT_ESCAPE}
         immune_status1 {BLIND, IMP, PETRIFY, DEAD}
@@ -5284,7 +5291,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: SCORPION
+; 225: SCORPION
         monster_prop SCORPION
         speed 20
         attack_power 10
@@ -5297,7 +5304,7 @@ MonsterProp:
         gil 336
         level 26
         attack_anim ICE_ROD
-        special_attack CONDEMNED, NO_DMG
+        special_attack STING, CONDEMNED, NO_DMG
         metamorph 0, 0
         immune_status1 {BLIND, IMP, PETRIFY}
         immune_status2 {NEAR_FATAL, SILENCE, BERSERK, CONFUSE, SLEEP}
@@ -5305,7 +5312,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: CHAOS_DRGN
+; 226: CHAOS_DRGN
         monster_prop CHAOS_DRGN
         speed 30
         attack_power 13
@@ -5318,7 +5325,7 @@ MonsterProp:
         gil 1000
         level 44
         attack_anim DRAGON_CLAW
-        special_attack DEAD, NO_DMG
+        special_attack LIGHTNING, DEAD, NO_DMG
         metamorph 2, 3
         monster_flags IMP_DMG_BONUS
         elem_absorb FIRE
@@ -5329,7 +5336,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: SPIT_FIRE
+; 227: SPIT_FIRE
         monster_prop SPIT_FIRE
         speed 35
         attack_power 17
@@ -5342,7 +5349,7 @@ MonsterProp:
         gil 300
         level 25
         attack_anim TRIDENT
-        special_attack DMG_150_PCT
+        special_attack HORZ_CLAW, DMG_150_PCT
         metamorph 5, 3
         monster_status {CANT_SUPLEX, CANT_ESCAPE}
         elem_weak {LIGHTNING, WIND}
@@ -5353,7 +5360,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: VECTAGOYLE
+; 228: VECTAGOYLE
         monster_prop VECTAGOYLE
         speed 37
         attack_power 22
@@ -5368,7 +5375,7 @@ MonsterProp:
         gil 900
         level 57
         attack_anim TRIDENT
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 22, 4
         monster_status HARDER_TO_RUN
         immune_status1 {BLIND, IMP, PETRIFY, DEAD}
@@ -5378,7 +5385,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: LICH
+; 229: LICH
         monster_prop LICH
         speed 35
         attack_power 1
@@ -5391,7 +5398,7 @@ MonsterProp:
         gil 350
         level 20
         attack_anim UNARMED
-        special_attack CONFUSE, NO_DMG
+        special_attack SMALL_PIERCE, CONFUSE, NO_DMG
         metamorph 0, 0
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status CANT_SUPLEX
@@ -5405,7 +5412,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: OSPREY
+; 230: OSPREY
         monster_prop OSPREY
         speed 25
         attack_power 12
@@ -5418,7 +5425,7 @@ MonsterProp:
         gil 596
         level 26
         attack_anim DRAGON_CLAW
-        special_attack PETRIFY, NO_DMG
+        special_attack SMALL_PIERCE, PETRIFY, NO_DMG
         metamorph 1, 2
         monster_status CANT_SUPLEX
         elem_weak ICE
@@ -5429,7 +5436,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: MAG_ROADER_3
+; 231: MAG_ROADER_3
         monster_prop MAG_ROADER_3
         speed 33
         attack_power 13
@@ -5442,7 +5449,7 @@ MonsterProp:
         gil 352
         level 32
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack WHEEL, DMG_150_PCT
         metamorph 5, 4
         monster_flags DIE_AT_0_MP
         monster_status HARDER_TO_RUN
@@ -5452,7 +5459,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: BUG
+; 232: BUG
         monster_prop BUG
         speed 35
         attack_power 13
@@ -5465,7 +5472,7 @@ MonsterProp:
         gil 210
         level 16
         attack_anim ICE_ROD
-        special_attack PETRIFY, NO_DMG
+        special_attack STING, PETRIFY, NO_DMG
         metamorph 0, 0
         monster_status CANT_SUPLEX
         elem_weak {ICE, WATER}
@@ -5476,7 +5483,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: SEA_FLOWER
+; 233: SEA_FLOWER
         monster_prop SEA_FLOWER
         speed 30
         attack_power 13
@@ -5489,7 +5496,7 @@ MonsterProp:
         gil 670
         level 47
         attack_anim RUNE_EDGE
-        special_attack POISON, NO_DMG
+        special_attack BLUE_STAB_2, POISON, NO_DMG
         metamorph 0, 0
         elem_absorb {FIRE, WATER}
         elem_weak {ICE, LIGHTNING}
@@ -5499,7 +5506,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: FORTIS
+; 234: FORTIS
         monster_prop FORTIS
         speed 35
         attack_power 5
@@ -5512,7 +5519,7 @@ MonsterProp:
         gil 250
         level 54
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack AIR_ANCHOR, DMG_200_PCT
         metamorph 4, 3
         monster_status HARDER_TO_RUN
         elem_weak {LIGHTNING, WATER}
@@ -5522,7 +5529,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: ABOLISHER
+; 235: ABOLISHER
         monster_prop ABOLISHER
         speed 35
         attack_power 16
@@ -5535,7 +5542,7 @@ MonsterProp:
         gil 525
         level 24
         attack_anim ICE_ROD
-        special_attack POISON, NO_DMG
+        special_attack FLOWER, POISON, NO_DMG
         metamorph 0, 2
         immune_status1 {IMP, PETRIFY}
         immune_status2 {SILENCE, SLEEP}
@@ -5543,7 +5550,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: AQUILA
+; 236: AQUILA
         monster_prop AQUILA
         speed 40
         attack_power 13
@@ -5557,7 +5564,7 @@ MonsterProp:
         gil 906
         level 49
         attack_anim ICE_ROD
-        special_attack DMG_500_PCT
+        special_attack MULTI_PUNCH, DMG_500_PCT
         metamorph 18, 4
         monster_status CANT_SUPLEX
         elem_absorb FIRE
@@ -5569,7 +5576,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: JUNK
+; 237: JUNK
         monster_prop JUNK
         speed 35
         attack_power 2
@@ -5582,7 +5589,7 @@ MonsterProp:
         gil 1100
         level 53
         attack_anim UNARMED
-        special_attack VANISH, NO_DMG
+        special_attack LIGHT_BEAM, VANISH, NO_DMG
         metamorph 4, 2
         monster_status HARDER_TO_RUN
         elem_weak {LIGHTNING, WATER}
@@ -5593,7 +5600,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: MANDRAKE
+; 238: MANDRAKE
         monster_prop MANDRAKE
         speed 30
         attack_power 16
@@ -5606,7 +5613,7 @@ MonsterProp:
         gil 450
         level 23
         attack_anim HARDENED
-        special_attack PETRIFY, NO_DMG
+        special_attack SMALL_PIERCE, PETRIFY, NO_DMG
         metamorph 3, 0
         monster_status CANT_SUPLEX
         elem_absorb WATER
@@ -5618,7 +5625,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: FIRST_CLASS
+; 239: FIRST_CLASS
         monster_prop FIRST_CLASS
         speed 30
         attack_power 13
@@ -5631,7 +5638,7 @@ MonsterProp:
         gil 112
         level 11
         attack_anim DIRK
-        special_attack DMG_150_PCT
+        special_attack WRENCH, DMG_150_PCT
         metamorph 0, 2
         monster_flags HUMAN
         elem_weak POISON
@@ -5639,7 +5646,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: TAP_DANCER
+; 240: TAP_DANCER
         monster_prop TAP_DANCER
         speed 39
         attack_power 13
@@ -5652,7 +5659,7 @@ MonsterProp:
         gil 526
         level 43
         attack_anim DIRK
-        special_attack CONFUSE, NO_DMG
+        special_attack HORZ_CLAW, CONFUSE, NO_DMG
         metamorph 9, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         elem_weak POISON
@@ -5662,7 +5669,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: NECROMANCR
+; 241: NECROMANCR
         monster_prop NECROMANCR
         speed 25
         attack_power 13
@@ -5675,7 +5682,7 @@ MonsterProp:
         gil 791
         level 48
         attack_anim ICE_ROD
-        special_attack ZOMBIE, NO_DMG
+        special_attack SKULL_SLASH, ZOMBIE, NO_DMG
         metamorph 0, 0
         monster_flags {DIE_AT_0_MP, HUMAN, UNDEAD}
         monster_status CANT_SUPLEX
@@ -5688,7 +5695,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: BORRAS
+; 242: BORRAS
         monster_prop BORRAS
         speed 43
         attack_power 23
@@ -5703,7 +5710,7 @@ MonsterProp:
         gil 2500
         level 35
         attack_anim UNARMED
-        special_attack DMG_500_PCT
+        special_attack SINGLE_PUNCH, DMG_500_PCT
         metamorph 8, 4
         monster_flags {HUMAN, IMP_DMG_BONUS}
         monster_status HARDER_TO_RUN
@@ -5714,7 +5721,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: MAG_ROADER_4
+; 243: MAG_ROADER_4
         monster_prop MAG_ROADER_4
         speed 33
         attack_power 14
@@ -5727,7 +5734,7 @@ MonsterProp:
         gil 284
         level 32
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 4, 2
         monster_flags DIE_AT_0_MP
         monster_status HARDER_TO_RUN
@@ -5738,7 +5745,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: WILD_RAT
+; 244: WILD_RAT
         monster_prop WILD_RAT
         speed 30
         attack_power 10
@@ -5751,7 +5758,7 @@ MonsterProp:
         gil 135
         level 12
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack DIAG_CLAW, DMG_150_PCT
         metamorph 2, 0
         elem_absorb POISON
         elem_weak FIRE
@@ -5759,7 +5766,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: GOLD_BEAR
+; 245: GOLD_BEAR
         monster_prop GOLD_BEAR
         speed 25
         attack_power 13
@@ -5772,14 +5779,14 @@ MonsterProp:
         gil 185
         level 13
         attack_anim DRAGON_CLAW
-        special_attack DMG_250_PCT
+        special_attack SINGLE_PUNCH, DMG_250_PCT
         metamorph 2, 2
         monster_flags IMP_DMG_BONUS
         end_monster_prop
 
 ; ------------------------------------------------------------------------------
 
-; 6: INNOC
+; 246: INNOC
         monster_prop INNOC
         speed 33
         attack_power 13
@@ -5792,7 +5799,7 @@ MonsterProp:
         gil 1950
         level 52
         attack_anim UNARMED
-        special_attack CONFUSE, NO_DMG
+        special_attack BUBBLE, CONFUSE, NO_DMG
         metamorph 4, 3
         monster_status HARDER_TO_RUN
         elem_weak {LIGHTNING, WATER}
@@ -5804,7 +5811,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: TRIXTER
+; 247: TRIXTER
         monster_prop TRIXTER
         speed 30
         attack_power 13
@@ -5817,7 +5824,7 @@ MonsterProp:
         gil 826
         level 49
         attack_anim MAGICAL_BRSH
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 17, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status CANT_SUPLEX
@@ -5830,7 +5837,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: RED_WOLF
+; 248: RED_WOLF
         monster_prop RED_WOLF
         speed 25
         attack_power 10
@@ -5843,7 +5850,7 @@ MonsterProp:
         gil 412
         level 32
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 2, 2
         monster_status HARDER_TO_RUN
         immune_status1 {BLIND, POISON, PETRIFY, DEAD}
@@ -5853,7 +5860,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: DIDALOS
+; 249: DIDALOS
         monster_prop DIDALOS
         speed 37
         attack_power 13
@@ -5865,7 +5872,7 @@ MonsterProp:
         exp 3500
         level 59
         attack_anim UNARMED
-        special_attack POISON, NO_DMG
+        special_attack SMALL_PIERCE, POISON, NO_DMG
         metamorph 23, 4
         monster_flags UNDEAD
         monster_status HARDER_TO_RUN
@@ -5878,7 +5885,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: WOOLLY
+; 250: WOOLLY
         monster_prop WOOLLY
         speed 32
         attack_power 17
@@ -5892,7 +5899,7 @@ MonsterProp:
         gil 826
         level 43
         attack_anim UNARMED
-        special_attack BERSERK, NO_DMG
+        special_attack BUBBLE, BERSERK, NO_DMG
         metamorph 17, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status CANT_SUPLEX
@@ -5906,7 +5913,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: VETERAN
+; 251: VETERAN
         monster_prop VETERAN
         speed 30
         attack_power 11
@@ -5918,7 +5925,7 @@ MonsterProp:
         exp 2820
         level 51
         attack_anim UNARMED
-        special_attack DMG_250_PCT
+        special_attack RED_STAB, DMG_250_PCT
         metamorph 23, 4
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, CANT_SUPLEX}
@@ -5928,7 +5935,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: SKY_BASE
+; 252: SKY_BASE
         monster_prop SKY_BASE
         speed 35
         attack_power 10
@@ -5941,7 +5948,7 @@ MonsterProp:
         gil 670
         level 52
         attack_anim UNARMED
-        special_attack STOP, NO_DMG
+        special_attack LIGHT_BEAM, STOP, NO_DMG
         metamorph 4, 3
         monster_status HARDER_TO_RUN
         elem_weak {LIGHTNING, WATER}
@@ -5951,7 +5958,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: IRONHITMAN
+; 253: IRONHITMAN
         monster_prop IRONHITMAN
         speed 31
         attack_power 13
@@ -5964,7 +5971,7 @@ MonsterProp:
         gil 700
         level 52
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack LIGHTNING, DMG_200_PCT
         metamorph 4, 3
         monster_status HARDER_TO_RUN
         elem_weak {LIGHTNING, WATER}
@@ -5974,7 +5981,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: IO
+; 254: IO
         monster_prop IO
         speed 60
         attack_power 13
@@ -5987,7 +5994,7 @@ MonsterProp:
         gil 1995
         level 39
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 5, 4
         elem_null {POISON, WIND, EARTH}
         elem_weak {LIGHTNING, HOLY, WATER}
@@ -5998,7 +6005,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: PUGS
+; 255: PUGS
         monster_prop PUGS
         speed 70
         attack_power 5
@@ -6010,7 +6017,7 @@ MonsterProp:
         mp 11000
         level 99
         attack_anim DIRK
-        special_attack DMG_800_PCT
+        special_attack VERT_SLASH, DMG_800_PCT
         metamorph 7, 4
         monster_flags IMP_DMG_BONUS
         monster_status {HARDER_TO_RUN, CANT_ESCAPE}
@@ -6023,7 +6030,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: WHELK
+; 256: WHELK
         monster_prop WHELK
         speed 25
         attack_power 13
@@ -6034,7 +6041,7 @@ MonsterProp:
         mp 120
         level 4
         attack_anim UNARMED
-        special_attack DMG_400_PCT
+        special_attack MULTI_PUNCH, DMG_400_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb LIGHTNING
@@ -6045,7 +6052,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: PRESENTER
+; 257: PRESENTER
         monster_prop PRESENTER
         speed 30
         attack_power 53
@@ -6057,7 +6064,7 @@ MonsterProp:
         gil 1000
         level 19
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, SPECIAL_EVENT, CANT_CONTROL}
@@ -6071,7 +6078,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: MEGA_ARMOR
+; 258: MEGA_ARMOR
         monster_prop MEGA_ARMOR
         speed 45
         attack_power 19
@@ -6083,7 +6090,7 @@ MonsterProp:
         exp 350
         level 21
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_weak {LIGHTNING, WATER}
@@ -6094,7 +6101,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: VARGAS
+; 259: VARGAS
         monster_prop VARGAS
         speed 30
         attack_power 13
@@ -6105,7 +6112,7 @@ MonsterProp:
         mp 220
         level 12
         attack_anim UNARMED
-        special_attack CONDEMNED, CANT_MISS
+        special_attack SINGLE_PUNCH, CONDEMNED, CANT_MISS
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
@@ -6116,7 +6123,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: TUNNELARMR
+; 260: TUNNELARMR
         monster_prop TUNNELARMR
         speed 40
         attack_power 10
@@ -6128,7 +6135,7 @@ MonsterProp:
         gil 250
         level 16
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack DRILL, DMG_200_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_weak {LIGHTNING, WATER}
@@ -6139,7 +6146,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: PROMETHEUS
+; 261: PROMETHEUS
         monster_prop PROMETHEUS
         speed 47
         attack_power 13
@@ -6152,7 +6159,7 @@ MonsterProp:
         gil 1300
         level 56
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack DRILL, DMG_150_PCT
         metamorph 0, 7
         monster_status HARDER_TO_RUN
         elem_weak {LIGHTNING, WATER}
@@ -6163,7 +6170,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: GHOSTTRAIN
+; 262: GHOSTTRAIN
         monster_prop GHOSTTRAIN
         speed 30
         attack_power 10
@@ -6174,7 +6181,7 @@ MonsterProp:
         mp 350
         level 14
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack WHEEL, DMG_200_PCT
         metamorph 0, 7
         monster_flags UNDEAD
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6187,7 +6194,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: DADALUMA
+; 263: DADALUMA
         monster_prop DADALUMA
         speed 30
         attack_power 12
@@ -6200,7 +6207,7 @@ MonsterProp:
         gil 1210
         level 22
         attack_anim UNARMED
-        special_attack SAP
+        special_attack ARC_SLASH, SAP
         metamorph 0, 7
         monster_flags {HUMAN, IMP_DMG_BONUS}
         monster_status {HARDER_TO_RUN, CANT_ESCAPE}
@@ -6211,7 +6218,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: SHIVA
+; 264: SHIVA
         monster_prop SHIVA
         speed 35
         attack_power 15
@@ -6224,7 +6231,7 @@ MonsterProp:
         mp 500
         level 21
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb ICE
@@ -6237,7 +6244,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: IFRIT
+; 265: IFRIT
         monster_prop IFRIT
         speed 35
         attack_power 25
@@ -6250,7 +6257,7 @@ MonsterProp:
         mp 600
         level 21
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb FIRE
@@ -6263,7 +6270,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: NUMBER_024
+; 266: NUMBER_024
         monster_prop NUMBER_024
         speed 40
         attack_power 20
@@ -6274,7 +6281,7 @@ MonsterProp:
         mp 777
         level 24
         attack_anim RUNE_EDGE
-        special_attack CONFUSE, NO_DMG
+        special_attack MULTI_PUNCH, CONFUSE, NO_DMG
         metamorph 0, 7
         monster_flags {DIE_AT_0_MP, HUMAN, IMP_DMG_BONUS}
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, CANT_CONTROL}
@@ -6285,7 +6292,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: NUMBER_128
+; 267: NUMBER_128
         monster_prop NUMBER_128
         speed 30
         attack_power 13
@@ -6296,7 +6303,7 @@ MonsterProp:
         mp 810
         level 23
         attack_anim RUNE_EDGE
-        special_attack DRAIN_HP
+        special_attack ARC_SLASH, DRAIN_HP
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb ICE
@@ -6307,7 +6314,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: INFERNO
+; 268: INFERNO
         monster_prop INFERNO
         speed 45
         attack_power 13
@@ -6318,7 +6325,7 @@ MonsterProp:
         mp 9700
         level 67
         attack_anim RUNE_EDGE
-        special_attack DMG_300_PCT
+        special_attack ARC_SLASH, DMG_300_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb FIRE
@@ -6330,7 +6337,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: CRANE_1
+; 269: CRANE_1
         monster_prop CRANE_1
         speed 35
         attack_power 14
@@ -6341,7 +6348,7 @@ MonsterProp:
         mp 447
         level 23
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack BLACK_BALL, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb LIGHTNING
@@ -6353,7 +6360,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: CRANE_2
+; 270: CRANE_2
         monster_prop CRANE_2
         speed 30
         attack_power 14
@@ -6364,7 +6371,7 @@ MonsterProp:
         mp 447
         level 24
         attack_anim PARTISAN
-        special_attack DMG_200_PCT
+        special_attack BLACK_BALL, DMG_200_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb FIRE
@@ -6376,7 +6383,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: UMARO_1
+; 271: UMARO_1
         monster_prop UMARO_1
         speed 30
         attack_power 13
@@ -6387,7 +6394,7 @@ MonsterProp:
         mp 150
         level 14
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6400,7 +6407,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: UMARO_2
+; 272: UMARO_2
         monster_prop UMARO_2
         speed 45
         attack_power 25
@@ -6412,7 +6419,7 @@ MonsterProp:
         gil 10
         level 33
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6425,7 +6432,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: GUARDIAN_VECTOR
+; 273: GUARDIAN_VECTOR
         monster_prop GUARDIAN_VECTOR
         speed 50
         attack_power 250
@@ -6438,7 +6445,7 @@ MonsterProp:
         mp 5000
         level 71
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -6448,7 +6455,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: GUARDIAN_BOSS
+; 274: GUARDIAN_BOSS
         monster_prop GUARDIAN_BOSS
         speed 80
         attack_power 13
@@ -6459,7 +6466,7 @@ MonsterProp:
         mp 5200
         level 67
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack BLACK_CLOUD, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, CANT_CONTROL}
         elem_weak {LIGHTNING, WATER}
@@ -6470,7 +6477,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: AIR_FORCE
+; 275: AIR_FORCE
         monster_prop AIR_FORCE
         speed 35
         attack_power 10
@@ -6481,7 +6488,7 @@ MonsterProp:
         mp 750
         level 25
         attack_anim TRIDENT
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_weak {LIGHTNING, WATER}
@@ -6492,7 +6499,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: TRITOCH_INTRO
+; 276: TRITOCH_INTRO
         monster_prop TRITOCH_INTRO
         speed 30
         attack_power 13
@@ -6503,7 +6510,7 @@ MonsterProp:
         mp 600
         level 19
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -6513,7 +6520,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: TRITOCH_MORPH
+; 277: TRITOCH_MORPH
         monster_prop TRITOCH_MORPH
         speed 30
         attack_power 13
@@ -6524,7 +6531,7 @@ MonsterProp:
         mp 12000
         level 19
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -6534,7 +6541,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: FLAMEEATER
+; 278: FLAMEEATER
         monster_prop FLAMEEATER
         speed 34
         attack_power 13
@@ -6547,7 +6554,7 @@ MonsterProp:
         mp 480
         level 26
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6561,7 +6568,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: ATMAWEAPON
+; 279: ATMAWEAPON
         monster_prop ATMAWEAPON
         speed 67
         attack_power 45
@@ -6574,7 +6581,7 @@ MonsterProp:
         mp 5000
         level 37
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 0, 7
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6586,7 +6593,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: NERAPA
+; 280: NERAPA
         monster_prop NERAPA
         speed 48
         attack_power 11
@@ -6597,7 +6604,7 @@ MonsterProp:
         mp 280
         level 26
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6612,7 +6619,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: SRBEHEMOTH
+; 281: SRBEHEMOTH
         monster_prop SRBEHEMOTH
         speed 60
         attack_power 11
@@ -6623,7 +6630,7 @@ MonsterProp:
         mp 1600
         level 43
         attack_anim UNARMED
-        special_attack REMOVE_REFLECT, CANT_MISS
+        special_attack DIAG_CLAW, REMOVE_REFLECT, CANT_MISS
         metamorph 0, 7
         monster_flags IMP_DMG_BONUS
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, CANT_CONTROL}
@@ -6635,7 +6642,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: KEFKA_1
+; 282: KEFKA_1
         monster_prop KEFKA_1
         speed 65
         attack_power 13
@@ -6646,7 +6653,7 @@ MonsterProp:
         mp 60000
         level 83
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -6655,7 +6662,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: TENTACLE
+; 283: TENTACLE
         monster_prop TENTACLE
         speed 25
         attack_power 13
@@ -6666,7 +6673,7 @@ MonsterProp:
         mp 800
         level 31
         attack_anim MAGICAL_BRSH
-        special_attack SLOW, NO_DMG
+        special_attack BLUE_STAB_2, SLOW, NO_DMG
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb FIRE
@@ -6678,7 +6685,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: DULLAHAN
+; 284: DULLAHAN
         monster_prop DULLAHAN
         speed 55
         attack_power 55
@@ -6691,7 +6698,7 @@ MonsterProp:
         mp 1721
         level 37
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack SINGLE_PUNCH, DMG_200_PCT
         metamorph 0, 7
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6705,7 +6712,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: DOOM_GAZE
+; 285: DOOM_GAZE
         monster_prop DOOM_GAZE
         speed 95
         attack_power 35
@@ -6719,7 +6726,7 @@ MonsterProp:
         mp 38000
         level 68
         attack_anim DRAGON_CLAW
-        special_attack POISON, NO_DMG
+        special_attack DIAG_CLAW, POISON, NO_DMG
         metamorph 0, 7
         monster_flags DIE_AT_0_MP
         monster_status {CANT_SUPLEX, SPECIAL_EVENT, CANT_CONTROL}
@@ -6733,7 +6740,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: CHADARNOOK_1
+; 286: CHADARNOOK_1
         monster_prop CHADARNOOK_1
         speed 50
         attack_power 13
@@ -6744,7 +6751,7 @@ MonsterProp:
         mp 9400
         level 37
         attack_anim MAGICAL_BRSH
-        special_attack CONDEMNED, NO_DMG
+        special_attack HEART, CONDEMNED, NO_DMG
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb {HOLY, WATER}
@@ -6756,7 +6763,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: CURLEY
+; 287: CURLEY
         monster_prop CURLEY
         speed 35
         attack_power 1
@@ -6767,7 +6774,7 @@ MonsterProp:
         mp 2000
         level 47
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 0, 7
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6781,7 +6788,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: LARRY
+; 288: LARRY
         monster_prop LARRY
         speed 30
         attack_power 2
@@ -6792,7 +6799,7 @@ MonsterProp:
         mp 2000
         level 47
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6806,7 +6813,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: MOE
+; 289: MOE
         monster_prop MOE
         speed 25
         attack_power 4
@@ -6817,7 +6824,7 @@ MonsterProp:
         mp 2000
         level 47
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 0, 7
         monster_flags {DIE_AT_0_MP, HUMAN, IMP_DMG_BONUS}
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6830,7 +6837,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: WREXSOUL
+; 290: WREXSOUL
         monster_prop WREXSOUL
         speed 40
         attack_power 27
@@ -6841,7 +6848,7 @@ MonsterProp:
         mp 5066
         level 53
         attack_anim UNARMED
-        special_attack CONDEMNED, NO_DMG
+        special_attack ARC_SLASH, CONDEMNED, NO_DMG
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb {FIRE, HOLY}
@@ -6853,7 +6860,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: HIDON
+; 291: HIDON
         monster_prop HIDON
         speed 55
         attack_power 13
@@ -6864,7 +6871,7 @@ MonsterProp:
         mp 12500
         level 43
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags UNDEAD
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -6877,7 +6884,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: KATANASOUL
+; 292: KATANASOUL
         monster_prop KATANASOUL
         speed 75
         attack_power 25
@@ -6891,7 +6898,7 @@ MonsterProp:
         gil 30000
         level 61
         attack_anim FORGED
-        special_attack DEAD, NO_DMG
+        special_attack SKULL_SLASH, DEAD, NO_DMG
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {SPECIAL_EVENT, CANT_CONTROL}
@@ -6903,7 +6910,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: L30_MAGIC
+; 293: L30_MAGIC
         monster_prop L30_MAGIC
         speed 36
         attack_power 10
@@ -6915,7 +6922,7 @@ MonsterProp:
         mp 700
         level 54
         attack_anim HARDENED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 0
         monster_flags DIE_AT_0_MP
         monster_status CANT_ESCAPE
@@ -6928,7 +6935,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: HIDONITE
+; 294: HIDONITE
         monster_prop HIDONITE
         speed 30
         attack_power 13
@@ -6939,7 +6946,7 @@ MonsterProp:
         mp 1000
         level 43
         attack_anim DRAGON_CLAW
-        special_attack POISON, NO_DMG
+        special_attack DIAG_CLAW, POISON, NO_DMG
         metamorph 0, 7
         monster_status SPECIAL_EVENT
         elem_absorb POISON
@@ -6950,7 +6957,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: DOOM
+; 295: DOOM
         monster_prop DOOM
         speed 61
         attack_power 60
@@ -6961,7 +6968,7 @@ MonsterProp:
         mp 4800
         level 73
         attack_anim UNARMED
-        special_attack DMG_400_PCT, CANT_MISS
+        special_attack SINGLE_PUNCH, DMG_400_PCT, CANT_MISS
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb {ICE, POISON}
@@ -6973,7 +6980,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: GODDESS
+; 296: GODDESS
         monster_prop GODDESS
         speed 50
         attack_power 13
@@ -6984,7 +6991,7 @@ MonsterProp:
         mp 19000
         level 68
         attack_anim MAGICAL_BRSH
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb {LIGHTNING, HOLY}
@@ -6996,7 +7003,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: POLTRGEIST
+; 297: POLTRGEIST
         monster_prop POLTRGEIST
         speed 53
         attack_power 15
@@ -7007,7 +7014,7 @@ MonsterProp:
         mp 18900
         level 67
         attack_anim FORGED
-        special_attack DMG_200_PCT
+        special_attack VERT_SLASH, DMG_200_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb {FIRE, WIND}
@@ -7020,7 +7027,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: FINAL_KEFKA
+; 298: FINAL_KEFKA
         monster_prop FINAL_KEFKA
         speed 72
         attack_power 80
@@ -7033,7 +7040,7 @@ MonsterProp:
         mp 38000
         level 71
         attack_anim UNARMED
-        special_attack DMG_400_PCT
+        special_attack HORZ_CLAW, DMG_400_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
@@ -7046,7 +7053,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: L40_MAGIC
+; 299: L40_MAGIC
         monster_prop L40_MAGIC
         speed 38
         attack_power 10
@@ -7058,7 +7065,7 @@ MonsterProp:
         mp 1000
         level 55
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 2
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status CANT_ESCAPE
@@ -7072,7 +7079,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: ULTROS_RIVER
+; 300: ULTROS_RIVER
         monster_prop ULTROS_RIVER
         speed 35
         attack_power 15
@@ -7083,7 +7090,7 @@ MonsterProp:
         mp 640
         level 13
         attack_anim MAGICAL_BRSH
-        special_attack BLIND
+        special_attack BLACK_CLOUD, BLIND
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb WATER
@@ -7094,7 +7101,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: ULTROS_OPERA
+; 301: ULTROS_OPERA
         monster_prop ULTROS_OPERA
         speed 40
         attack_power 13
@@ -7106,7 +7113,7 @@ MonsterProp:
         gil 2
         level 19
         attack_anim MAGICAL_BRSH
-        special_attack BLIND
+        special_attack BLACK_CLOUD, BLIND
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb WATER
@@ -7117,7 +7124,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: ULTROS_MOUNTAIN
+; 302: ULTROS_MOUNTAIN
         monster_prop ULTROS_MOUNTAIN
         speed 35
         attack_power 22
@@ -7129,7 +7136,7 @@ MonsterProp:
         gil 3
         level 25
         attack_anim MAGICAL_BRSH
-        special_attack BLIND
+        special_attack BLACK_CLOUD, BLIND
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb WATER
@@ -7141,7 +7148,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: CHUPON_AIRSHIP
+; 303: CHUPON_AIRSHIP
         monster_prop CHUPON_AIRSHIP
         speed 10
         attack_power 13
@@ -7152,7 +7159,7 @@ MonsterProp:
         mp 40000
         level 26
         attack_anim DRAGON_CLAW
-        special_attack POISON, NO_DMG
+        special_attack MULTI_PUNCH, POISON, NO_DMG
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb FIRE
@@ -7163,7 +7170,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: L20_MAGIC
+; 304: L20_MAGIC
         monster_prop L20_MAGIC
         speed 35
         attack_power 10
@@ -7175,7 +7182,7 @@ MonsterProp:
         mp 500
         level 51
         attack_anim FLAIL
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 0
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status CANT_ESCAPE
@@ -7188,7 +7195,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: SIEGFRIED_2
+; 305: SIEGFRIED_2
         monster_prop SIEGFRIED_2
         speed 30
         attack_power 1
@@ -7200,7 +7207,7 @@ MonsterProp:
         gil 1
         level 7
         attack_anim FORGED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -7209,7 +7216,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: L10_MAGIC
+; 306: L10_MAGIC
         monster_prop L10_MAGIC
         speed 33
         attack_power 10
@@ -7221,7 +7228,7 @@ MonsterProp:
         mp 300
         level 48
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 0
         monster_flags {DIE_AT_0_MP, HUMAN, UNDEAD}
         monster_status {CANT_SUPLEX, CANT_ESCAPE}
@@ -7235,7 +7242,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: L50_MAGIC
+; 307: L50_MAGIC
         monster_prop L50_MAGIC
         speed 45
         attack_power 10
@@ -7247,7 +7254,7 @@ MonsterProp:
         mp 2000
         level 57
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 3, 2
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status CANT_ESCAPE
@@ -7259,7 +7266,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: HEAD
+; 308: HEAD
         monster_prop HEAD
         speed 45
         attack_power 22
@@ -7270,7 +7277,7 @@ MonsterProp:
         mp 1000
         level 6
         attack_anim UNARMED
-        special_attack SLOW, NO_DMG
+        special_attack BLOB_MAN, SLOW, NO_DMG
         metamorph 0, 7
         monster_flags HIDE_NAME
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
@@ -7280,7 +7287,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: WHELK_HEAD
+; 309: WHELK_HEAD
         monster_prop WHELK_HEAD
         speed 35
         attack_power 75
@@ -7292,7 +7299,7 @@ MonsterProp:
         gil 1000
         level 31
         attack_anim UNARMED
-        special_attack PETRIFY, NO_DMG
+        special_attack ARC_SLASH, PETRIFY, NO_DMG
         metamorph 0, 7
         monster_flags HIDE_NAME
         monster_status {CANT_SUPLEX, SPECIAL_EVENT, CANT_CONTROL}
@@ -7305,7 +7312,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: COLOSSUS
+; 310: COLOSSUS
         monster_prop COLOSSUS
         speed 73
         attack_power 10
@@ -7316,7 +7323,7 @@ MonsterProp:
         mp 2000
         level 73
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_weak WIND
@@ -7326,7 +7333,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: CZARDRAGON
+; 311: CZARDRAGON
         monster_prop CZARDRAGON
         speed 30
         attack_power 13
@@ -7337,7 +7344,7 @@ MonsterProp:
         mp 60000
         level 83
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -7346,7 +7353,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: MASTER_PUG
+; 312: MASTER_PUG
         monster_prop MASTER_PUG
         speed 45
         attack_power 13
@@ -7357,7 +7364,7 @@ MonsterProp:
         mp 1200
         level 73
         attack_anim DIRK
-        special_attack DMG_800_PCT
+        special_attack VERT_SLASH, DMG_800_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb WATER
@@ -7368,7 +7375,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: L60_MAGIC
+; 313: L60_MAGIC
         monster_prop L60_MAGIC
         speed 35
         attack_power 10
@@ -7380,7 +7387,7 @@ MonsterProp:
         mp 5000
         level 58
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 17, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -7394,7 +7401,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: MERCHANT
+; 314: MERCHANT
         monster_prop MERCHANT
         speed 30
         attack_power 10
@@ -7407,7 +7414,7 @@ MonsterProp:
         gil 60
         level 5
         attack_anim DIRK
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
@@ -7417,7 +7424,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: B_DAY_SUIT
+; 315: B_DAY_SUIT
         monster_prop B_DAY_SUIT
         speed 30
         attack_power 13
@@ -7430,7 +7437,7 @@ MonsterProp:
         gil 54
         level 6
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_weak POISON
@@ -7440,7 +7447,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: TENTACLE_1
+; 316: TENTACLE_1
         monster_prop TENTACLE_1
         speed 30
         attack_power 13
@@ -7451,7 +7458,7 @@ MonsterProp:
         mp 700
         level 32
         attack_anim MAGICAL_BRSH
-        special_attack SLOW, NO_DMG
+        special_attack BLUE_STAB_2, SLOW, NO_DMG
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb {ICE, WATER}
@@ -7463,7 +7470,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: TENTACLE_2
+; 317: TENTACLE_2
         monster_prop TENTACLE_2
         speed 35
         attack_power 13
@@ -7474,7 +7481,7 @@ MonsterProp:
         mp 600
         level 33
         attack_anim MAGICAL_BRSH
-        special_attack SLOW, NO_DMG
+        special_attack BLUE_STAB_2, SLOW, NO_DMG
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb {LIGHTNING, WATER}
@@ -7485,7 +7492,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: TENTACLE_3
+; 318: TENTACLE_3
         monster_prop TENTACLE_3
         speed 40
         attack_power 13
@@ -7496,7 +7503,7 @@ MonsterProp:
         mp 500
         level 34
         attack_anim MAGICAL_BRSH
-        special_attack SLOW, NO_DMG
+        special_attack BLUE_STAB_2, SLOW, NO_DMG
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb {EARTH, WATER}
@@ -7506,7 +7513,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: RIGHTBLADE
+; 319: RIGHTBLADE
         monster_prop RIGHTBLADE
         speed 30
         attack_power 20
@@ -7517,7 +7524,7 @@ MonsterProp:
         mp 150
         level 21
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack LARGE_PIERCE, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb ICE
@@ -7527,7 +7534,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: LEFT_BLADE
+; 320: LEFT_BLADE
         monster_prop LEFT_BLADE
         speed 30
         attack_power 13
@@ -7538,7 +7545,7 @@ MonsterProp:
         mp 470
         level 22
         attack_anim RUNE_EDGE
-        special_attack DMG_200_PCT
+        special_attack THICK_HORZ_SLASH, DMG_200_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb ICE
@@ -7548,7 +7555,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: ROUGH
+; 321: ROUGH
         monster_prop ROUGH
         speed 30
         attack_power 13
@@ -7559,7 +7566,7 @@ MonsterProp:
         mp 770
         level 69
         attack_anim ICE_ROD
-        special_attack DMG_150_PCT
+        special_attack LARGE_PIERCE, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb LIGHTNING
@@ -7570,7 +7577,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: STRIKER
+; 322: STRIKER
         monster_prop STRIKER
         speed 26
         attack_power 13
@@ -7581,7 +7588,7 @@ MonsterProp:
         mp 2600
         level 67
         attack_anim RUNE_EDGE
-        special_attack DMG_200_PCT
+        special_attack THICK_HORZ_SLASH, DMG_200_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb ICE
@@ -7592,7 +7599,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: L70_MAGIC
+; 323: L70_MAGIC
         monster_prop L70_MAGIC
         speed 40
         attack_power 10
@@ -7604,7 +7611,7 @@ MonsterProp:
         mp 3000
         level 56
         attack_anim HARDENED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 14, 3
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status CANT_ESCAPE
@@ -7617,7 +7624,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: TRITOCH_BOSS
+; 324: TRITOCH_BOSS
         monster_prop TRITOCH_BOSS
         speed 40
         attack_power 19
@@ -7628,7 +7635,7 @@ MonsterProp:
         mp 50000
         level 62
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb ICE
@@ -7642,7 +7649,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: LASER_GUN
+; 325: LASER_GUN
         monster_prop LASER_GUN
         speed 30
         attack_power 12
@@ -7653,7 +7660,7 @@ MonsterProp:
         mp 335
         level 24
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT}
         elem_weak {LIGHTNING, WATER}
@@ -7663,7 +7670,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: SPECK
+; 326: SPECK
         monster_prop SPECK
         speed 15
         attack_power 12
@@ -7674,7 +7681,7 @@ MonsterProp:
         mp 285
         level 25
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         retal_flags MONSTER_RUNIC
@@ -7685,7 +7692,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: MISSILEBAY
+; 327: MISSILEBAY
         monster_prop MISSILEBAY
         speed 20
         attack_power 12
@@ -7696,7 +7703,7 @@ MonsterProp:
         mp 7000
         level 25
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT}
         elem_weak {LIGHTNING, WATER}
@@ -7706,7 +7713,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: CHADARNOOK_2
+; 328: CHADARNOOK_2
         monster_prop CHADARNOOK_2
         speed 61
         attack_power 18
@@ -7717,7 +7724,7 @@ MonsterProp:
         mp 7600
         level 41
         attack_anim UNARMED
-        special_attack CONDEMNED, NO_DMG
+        special_attack MULTI_PUNCH, CONDEMNED, NO_DMG
         metamorph 0, 7
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -7730,7 +7737,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: ICE_DRAGON
+; 329: ICE_DRAGON
         monster_prop ICE_DRAGON
         speed 60
         attack_power 13
@@ -7741,7 +7748,7 @@ MonsterProp:
         mp 9000
         level 74
         attack_anim UNARMED
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 6, 4
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -7754,7 +7761,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: KEFKA_NARSHE
+; 330: KEFKA_NARSHE
         monster_prop KEFKA_NARSHE
         speed 45
         attack_power 25
@@ -7767,7 +7774,7 @@ MonsterProp:
         mp 3000
         level 18
         attack_anim DIRK
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
@@ -7777,7 +7784,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: STORM_DRGN
+; 331: STORM_DRGN
         monster_prop STORM_DRGN
         speed 65
         attack_power 13
@@ -7788,7 +7795,7 @@ MonsterProp:
         mp 1250
         level 74
         attack_anim DRAGON_CLAW
-        special_attack DMG_300_PCT
+        special_attack RED_STAB, DMG_300_PCT
         metamorph 6, 4
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb WIND
@@ -7801,7 +7808,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: DIRT_DRGN
+; 332: DIRT_DRGN
         monster_prop DIRT_DRGN
         speed 55
         attack_power 23
@@ -7812,7 +7819,7 @@ MonsterProp:
         mp 16500
         level 53
         attack_anim DRAGON_CLAW
-        special_attack DMG_500_PCT
+        special_attack HORZ_CLAW, DMG_500_PCT
         metamorph 6, 4
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_weak {WIND, WATER}
@@ -7824,7 +7831,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: IPOOH
+; 333: IPOOH
         monster_prop IPOOH
         speed 35
         attack_power 18
@@ -7835,7 +7842,7 @@ MonsterProp:
         mp 60
         level 11
         attack_anim DRAGON_CLAW
-        special_attack DMG_150_PCT
+        special_attack DIAG_CLAW, DMG_150_PCT
         metamorph 0, 7
         monster_flags IMP_DMG_BONUS
         elem_weak FIRE
@@ -7845,7 +7852,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: LEADER
+; 334: LEADER
         monster_prop LEADER
         speed 35
         attack_power 18
@@ -7857,7 +7864,7 @@ MonsterProp:
         gil 50
         level 12
         attack_anim FORGED
-        special_attack DMG_150_PCT
+        special_attack VERT_SLASH, DMG_150_PCT
         metamorph 0, 7
         monster_flags {HUMAN, IMP_DMG_BONUS}
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -7866,7 +7873,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: GRUNT
+; 335: GRUNT
         monster_prop GRUNT
         speed 35
         attack_power 11
@@ -7878,7 +7885,7 @@ MonsterProp:
         gil 48
         level 12
         attack_anim RUNE_EDGE
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status CANT_ESCAPE
@@ -7886,7 +7893,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: GOLD_DRGN
+; 336: GOLD_DRGN
         monster_prop GOLD_DRGN
         speed 75
         attack_power 13
@@ -7897,7 +7904,7 @@ MonsterProp:
         mp 4000
         level 62
         attack_anim UNARMED
-        special_attack DMG_400_PCT
+        special_attack MULTI_PUNCH, DMG_400_PCT
         metamorph 6, 4
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -7910,7 +7917,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: SKULL_DRGN
+; 337: SKULL_DRGN
         monster_prop SKULL_DRGN
         speed 57
         attack_power 15
@@ -7937,7 +7944,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: BLUE_DRGN
+; 338: BLUE_DRGN
         monster_prop BLUE_DRGN
         speed 75
         attack_power 13
@@ -7948,7 +7955,7 @@ MonsterProp:
         mp 3800
         level 65
         attack_anim UNARMED
-        special_attack DRAIN_MP
+        special_attack MULTI_PUNCH, DRAIN_MP
         metamorph 6, 4
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb WATER
@@ -7960,7 +7967,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: RED_DRAGON
+; 339: RED_DRAGON
         monster_prop RED_DRAGON
         speed 75
         attack_power 13
@@ -7971,7 +7978,7 @@ MonsterProp:
         mp 1780
         level 67
         attack_anim UNARMED
-        special_attack REMOVE_REFLECT, CANT_MISS
+        special_attack LIGHT_BEAM, REMOVE_REFLECT, CANT_MISS
         metamorph 6, 4
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb FIRE
@@ -7983,7 +7990,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: PIRANHA
+; 340: PIRANHA
         monster_prop PIRANHA
         speed 30
         attack_power 13
@@ -7994,7 +8001,7 @@ MonsterProp:
         mp 60
         level 9
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         retal_flags PIRANHA
@@ -8005,7 +8012,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: RIZOPAS
+; 341: RIZOPAS
         monster_prop RIZOPAS
         speed 40
         attack_power 14
@@ -8016,7 +8023,7 @@ MonsterProp:
         mp 39
         level 13
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SMALL_PIERCE, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb WATER
@@ -8028,7 +8035,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: SPECTER
+; 342: SPECTER
         monster_prop SPECTER
         speed 40
         attack_power 15
@@ -8039,7 +8046,7 @@ MonsterProp:
         mp 10000
         level 19
         attack_anim PARTISAN
-        special_attack DMG_200_PCT
+        special_attack LIGHTNING, DMG_200_PCT
         metamorph 0, 7
         monster_flags {DIE_AT_0_MP, UNDEAD}
         monster_status {CANT_ESCAPE, CANT_CONTROL}
@@ -8052,7 +8059,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: SHORT_ARM
+; 343: SHORT_ARM
         monster_prop SHORT_ARM
         speed 37
         attack_power 50
@@ -8064,7 +8071,7 @@ MonsterProp:
         mp 10000
         level 73
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack SINGLE_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HIDE_NAME
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, CANT_CONTROL}
@@ -8076,7 +8083,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: LONG_ARM
+; 344: LONG_ARM
         monster_prop LONG_ARM
         speed 39
         attack_power 35
@@ -8088,7 +8095,7 @@ MonsterProp:
         mp 10000
         level 73
         attack_anim UNARMED
-        special_attack DRAIN_HP
+        special_attack DIAG_CLAW, DRAIN_HP
         metamorph 0, 7
         monster_flags HIDE_NAME
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, CANT_CONTROL}
@@ -8100,7 +8107,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: FACE
+; 345: FACE
         monster_prop FACE
         speed 44
         attack_power 63
@@ -8112,7 +8119,7 @@ MonsterProp:
         mp 10000
         level 74
         attack_anim PARTISAN
-        special_attack SAP, NO_DMG
+        special_attack LARGE_PIERCE, SAP, NO_DMG
         metamorph 0, 7
         monster_flags {HIDE_NAME, HUMAN}
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, CANT_CONTROL}
@@ -8125,7 +8132,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: TIGER
+; 346: TIGER
         monster_prop TIGER
         speed 21
         attack_power 13
@@ -8136,7 +8143,7 @@ MonsterProp:
         mp 10000
         level 70
         attack_anim RUNE_EDGE
-        special_attack ZOMBIE, NO_DMG
+        special_attack HORZ_CLAW, ZOMBIE, NO_DMG
         metamorph 0, 7
         monster_flags HIDE_NAME
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
@@ -8149,7 +8156,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: TOOLS
+; 347: TOOLS
         monster_prop TOOLS
         speed 29
         attack_power 13
@@ -8160,7 +8167,7 @@ MonsterProp:
         mp 10000
         level 73
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HIDE_NAME
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
@@ -8173,7 +8180,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: MAGIC
+; 348: MAGIC
         monster_prop MAGIC
         speed 35
         attack_power 1
@@ -8184,7 +8191,7 @@ MonsterProp:
         mp 10000
         level 72
         attack_anim DIRK
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags {HIDE_NAME, HUMAN}
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
@@ -8197,7 +8204,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: HIT
+; 349: HIT
         monster_prop HIT
         speed 33
         attack_power 6
@@ -8208,7 +8215,7 @@ MonsterProp:
         mp 10000
         level 73
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags {HIDE_NAME, HUMAN}
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
@@ -8221,7 +8228,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: GIRL
+; 350: GIRL
         monster_prop GIRL
         speed 41
         attack_power 73
@@ -8232,7 +8239,7 @@ MonsterProp:
         mp 10000
         level 58
         attack_anim HARDENED
-        special_attack SLEEP, NO_DMG
+        special_attack HEART, SLEEP, NO_DMG
         metamorph 0, 7
         monster_flags HIDE_NAME
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
@@ -8246,7 +8253,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: SLEEP
+; 351: SLEEP
         monster_prop SLEEP
         speed 46
         attack_power 63
@@ -8257,7 +8264,7 @@ MonsterProp:
         mp 10000
         level 71
         attack_anim ICE_ROD
-        special_attack DEAD, NO_DMG
+        special_attack LIGHT_BEAM, DEAD, NO_DMG
         metamorph 0, 7
         monster_flags {HIDE_NAME, HUMAN}
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
@@ -8269,7 +8276,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: HIDONITE_1
+; 352: HIDONITE_1
         monster_prop HIDONITE_1
         speed 30
         attack_power 13
@@ -8280,7 +8287,7 @@ MonsterProp:
         mp 1000
         level 43
         attack_anim DRAGON_CLAW
-        special_attack CONFUSE, NO_DMG
+        special_attack DIAG_CLAW, CONFUSE, NO_DMG
         metamorph 0, 7
         monster_flags DIE_AT_0_MP
         elem_absorb {FIRE, ICE, LIGHTNING, POISON, WIND, HOLY, WATER}
@@ -8292,7 +8299,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: HIDONITE_2
+; 353: HIDONITE_2
         monster_prop HIDONITE_2
         speed 30
         attack_power 13
@@ -8303,7 +8310,7 @@ MonsterProp:
         mp 1000
         level 43
         attack_anim DRAGON_CLAW
-        special_attack ZOMBIE, NO_DMG
+        special_attack DIAG_CLAW, ZOMBIE, NO_DMG
         metamorph 0, 7
         monster_flags UNDEAD
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -8315,7 +8322,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: HIDONITE_3
+; 354: HIDONITE_3
         monster_prop HIDONITE_3
         speed 30
         attack_power 13
@@ -8326,7 +8333,7 @@ MonsterProp:
         mp 1000
         level 43
         attack_anim DRAGON_CLAW
-        special_attack DMG_400_PCT
+        special_attack DIAG_CLAW, DMG_400_PCT
         metamorph 0, 7
         monster_flags IMP_DMG_BONUS
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -8338,7 +8345,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: L80_MAGIC
+; 355: L80_MAGIC
         monster_prop L80_MAGIC
         speed 37
         attack_power 10
@@ -8350,7 +8357,7 @@ MonsterProp:
         mp 2800
         level 53
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 19, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status CANT_ESCAPE
@@ -8362,7 +8369,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: L90_MAGIC
+; 356: L90_MAGIC
         monster_prop L90_MAGIC
         speed 38
         attack_power 10
@@ -8374,7 +8381,7 @@ MonsterProp:
         mp 9000
         level 55
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 17, 4
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status {CANT_SUPLEX, CANT_ESCAPE}
@@ -8387,7 +8394,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: PROTOARMOR
+; 357: PROTOARMOR
         monster_prop PROTOARMOR
         speed 30
         attack_power 12
@@ -8400,7 +8407,7 @@ MonsterProp:
         gil 296
         level 19
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 6, 4
         elem_weak LIGHTNING
         immune_status1 {ZOMBIE, POISON, MAGITEK, IMP, PETRIFY}
@@ -8409,7 +8416,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: MAGIMASTER
+; 358: MAGIMASTER
         monster_prop MAGIMASTER
         speed 90
         attack_power 1
@@ -8421,7 +8428,7 @@ MonsterProp:
         mp 50000
         level 68
         attack_anim TRIDENT
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags {DIE_AT_0_MP, HUMAN}
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -8432,7 +8439,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: SOULSAVER
+; 359: SOULSAVER
         monster_prop SOULSAVER
         speed 15
         attack_power 50
@@ -8443,7 +8450,7 @@ MonsterProp:
         mp 566
         level 41
         attack_anim ICE_ROD
-        special_attack DRAIN_MP
+        special_attack LIGHT_BEAM, DRAIN_MP
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {CANT_ESCAPE, CANT_CONTROL}
@@ -8456,7 +8463,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: ULTROS_AIRSHIP
+; 360: ULTROS_AIRSHIP
         monster_prop ULTROS_AIRSHIP
         speed 30
         attack_power 10
@@ -8467,7 +8474,7 @@ MonsterProp:
         mp 8000
         level 26
         attack_anim MAGICAL_BRSH
-        special_attack BLIND
+        special_attack BLACK_CLOUD, BLIND
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
         elem_absorb WATER
@@ -8479,7 +8486,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: NAUGHTY
+; 361: NAUGHTY
         monster_prop NAUGHTY
         speed 48
         attack_power 11
@@ -8490,7 +8497,7 @@ MonsterProp:
         mp 195
         level 24
         attack_anim PARTISAN
-        special_attack DMG_200_PCT
+        special_attack MULTI_PUNCH, DMG_200_PCT
         metamorph 0, 7
         monster_flags {DIE_AT_0_MP, HUMAN, IMP_DMG_BONUS}
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_CONTROL}
@@ -8505,7 +8512,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: PHUNBABA_1
+; 362: PHUNBABA_1
         monster_prop PHUNBABA_1
         speed 30
         attack_power 53
@@ -8516,7 +8523,7 @@ MonsterProp:
         mp 10000
         level 26
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 0, 7
         monster_flags IMP_DMG_BONUS
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -8529,7 +8536,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: PHUNBABA_2
+; 363: PHUNBABA_2
         monster_prop PHUNBABA_2
         speed 30
         attack_power 15
@@ -8540,7 +8547,7 @@ MonsterProp:
         mp 10000
         level 31
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 0, 7
         monster_flags IMP_DMG_BONUS
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -8553,7 +8560,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: PHUNBABA_3
+; 364: PHUNBABA_3
         monster_prop PHUNBABA_3
         speed 30
         attack_power 15
@@ -8564,7 +8571,7 @@ MonsterProp:
         mp 10000
         level 31
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 0, 7
         monster_flags IMP_DMG_BONUS
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -8577,7 +8584,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: PHUNBABA_4
+; 365: PHUNBABA_4
         monster_prop PHUNBABA_4
         speed 35
         attack_power 15
@@ -8588,7 +8595,7 @@ MonsterProp:
         mp 10000
         level 31
         attack_anim UNARMED
-        special_attack DMG_300_PCT
+        special_attack SINGLE_PUNCH, DMG_300_PCT
         metamorph 0, 7
         monster_flags IMP_DMG_BONUS
         monster_status {HARDER_TO_RUN, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -8601,7 +8608,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: TERRA_FLASHBACK
+; 366: TERRA_FLASHBACK
         monster_prop TERRA_FLASHBACK
         speed 30
         attack_power 13
@@ -8612,7 +8619,7 @@ MonsterProp:
         mp 0
         level 5
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
@@ -8622,7 +8629,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: KEFKA_IMP_CAMP
+; 367: KEFKA_IMP_CAMP
         monster_prop KEFKA_IMP_CAMP
         speed 30
         attack_power 13
@@ -8633,7 +8640,7 @@ MonsterProp:
         mp 0
         level 11
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, SPECIAL_EVENT, CANT_CONTROL}
@@ -8643,7 +8650,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: CYAN_IMP_CAMP
+; 368: CYAN_IMP_CAMP
         monster_prop CYAN_IMP_CAMP
         speed 30
         attack_power 25
@@ -8654,7 +8661,7 @@ MonsterProp:
         mp 0
         level 11
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -8663,7 +8670,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: ZONE_EATER
+; 369: ZONE_EATER
         monster_prop ZONE_EATER
         speed 60
         attack_power 23
@@ -8676,7 +8683,7 @@ MonsterProp:
         gil 2000
         level 61
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags DIE_AT_0_MP
         monster_status {CANT_SUPLEX, SPECIAL_EVENT, CANT_CONTROL}
@@ -8690,7 +8697,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: GAU_VELDT
+; 370: GAU_VELDT
         monster_prop GAU_VELDT
         speed 30
         attack_power 13
@@ -8701,7 +8708,7 @@ MonsterProp:
         mp 1000
         level 1
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -8710,7 +8717,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: KEFKA_VS_LEO
+; 371: KEFKA_VS_LEO
         monster_prop KEFKA_VS_LEO
         speed 30
         attack_power 13
@@ -8721,7 +8728,7 @@ MonsterProp:
         mp 1000
         level 1
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -8730,7 +8737,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: KEFKA_ESPER_GATE
+; 372: KEFKA_ESPER_GATE
         monster_prop KEFKA_ESPER_GATE
         speed 30
         attack_power 13
@@ -8741,7 +8748,7 @@ MonsterProp:
         mp 1000
         level 1
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -8750,7 +8757,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: OFFICER
+; 373: OFFICER
         monster_prop OFFICER
         speed 30
         attack_power 13
@@ -8763,7 +8770,7 @@ MonsterProp:
         gil 66
         level 7
         attack_anim RUNE_EDGE
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status CANT_ESCAPE
@@ -8775,7 +8782,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 4: CADET
+; 374: CADET
         monster_prop CADET
         speed 30
         attack_power 13
@@ -8787,7 +8794,7 @@ MonsterProp:
         gil 144
         level 13
         attack_anim TRIDENT
-        special_attack DMG_150_PCT
+        special_attack VERT_SLASH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HUMAN
         monster_status CANT_ESCAPE
@@ -8797,7 +8804,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 5: MONSTER_0177
+; 375: MONSTER_0177
         monster_prop MONSTER_0177
         speed 30
         attack_power 13
@@ -8808,7 +8815,7 @@ MonsterProp:
         mp 1000
         level 1
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -8817,7 +8824,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 6: MONSTER_0178
+; 376: MONSTER_0178
         monster_prop MONSTER_0178
         speed 30
         attack_power 13
@@ -8828,7 +8835,7 @@ MonsterProp:
         mp 1000
         level 1
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -8837,7 +8844,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 7: SOLDIER_FLASHBACK
+; 377: SOLDIER_FLASHBACK
         monster_prop SOLDIER_FLASHBACK
         speed 1
         attack_power 1
@@ -8849,7 +8856,7 @@ MonsterProp:
         mp 50
         level 2
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -8860,7 +8867,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 8: KEFKA_GENJU_MAGICITE
+; 378: KEFKA_GENJU_MAGICITE
         monster_prop KEFKA_GENJU_MAGICITE
         speed 30
         attack_power 1
@@ -8871,7 +8878,7 @@ MonsterProp:
         mp 10000
         level 2
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HIDE_NAME
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
@@ -8881,7 +8888,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 9: EVENT
+; 379: EVENT
         monster_prop EVENT
         speed 30
         attack_power 13
@@ -8892,7 +8899,7 @@ MonsterProp:
         mp 1000
         level 1
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags HIDE_NAME
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
@@ -8902,7 +8909,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 0: MONSTER_017C
+; 380: MONSTER_017C
         monster_prop MONSTER_017C
         speed 30
         attack_power 13
@@ -8913,7 +8920,7 @@ MonsterProp:
         mp 1000
         level 1
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -8922,7 +8929,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 1: ATMA
+; 381: ATMA
         monster_prop ATMA
         speed 63
         attack_power 20
@@ -8933,7 +8940,7 @@ MonsterProp:
         mp 19000
         level 67
         attack_anim UNARMED
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_flags DIE_AT_0_MP
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, SPECIAL_EVENT, CANT_CONTROL}
@@ -8945,7 +8952,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 2: SHADOW_COLOSSEUM
+; 382: SHADOW_COLOSSEUM
         monster_prop SHADOW_COLOSSEUM
         speed 30
         attack_power 13
@@ -8956,7 +8963,7 @@ MonsterProp:
         mp 1000
         level 1
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL
@@ -8965,7 +8972,7 @@ MonsterProp:
 
 ; ------------------------------------------------------------------------------
 
-; 3: COLOSSEUM
+; 383: COLOSSEUM
         monster_prop COLOSSEUM
         speed 30
         attack_power 13
@@ -8976,7 +8983,7 @@ MonsterProp:
         mp 0
         level 1
         attack_anim PARTISAN
-        special_attack DMG_150_PCT
+        special_attack MULTI_PUNCH, DMG_150_PCT
         metamorph 0, 7
         monster_status {HARDER_TO_RUN, FIRST_STRIKE, CANT_SUPLEX, CANT_ESCAPE, CANT_SCAN, CANT_SKETCH, SPECIAL_EVENT, CANT_CONTROL}
         immune_status1 ALL

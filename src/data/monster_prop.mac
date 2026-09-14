@@ -36,9 +36,11 @@ _monster_prop_seq .set 0
         _monster_prop_retal_flags .set 0
         _monster_prop_metamorph_items .set 0
         _monster_prop_metamorph_rate .set 0
+        _monster_prop_special_anim .set MONSTER_SPECIAL_ANIM::MULTI_PUNCH
 .endmac
 
 .mac end_monster_prop
+        .segment "monster_prop"
         .byte _monster_prop_speed
         .byte _monster_prop_attack_power
         .byte _monster_prop_hit_rate
@@ -67,6 +69,8 @@ _monster_prop_seq .set 0
         .byte _monster_prop_apply_status3
         .byte _monster_prop_retal_flags
         .byte _monster_prop_special_attack
+        .segment "monster_special_anim"
+        .byte _monster_prop_special_anim
         _monster_prop_seq .set _monster_prop_seq + 1
 .endmac
 
@@ -126,12 +130,13 @@ _monster_prop_seq .set 0
         _monster_prop_attack_anim .set ITEM::val
 .endmac
 
-.mac special_attack val, flags
+.mac special_attack anim, effect, flags
         .ifnblank flags
-                make_bitmask {_monster_prop_special_attack .set}, MONSTER_SPECIAL_EFFECT::val, MONSTER_SPECIAL_FLAGS, flags
+                make_bitmask {_monster_prop_special_attack .set}, MONSTER_SPECIAL_EFFECT::effect, MONSTER_SPECIAL_FLAGS, flags
         .else
-                _monster_prop_special_attack .set MONSTER_SPECIAL_EFFECT::val
+                _monster_prop_special_attack .set MONSTER_SPECIAL_EFFECT::effect
         .endif
+        _monster_prop_special_anim .set MONSTER_SPECIAL_ANIM::anim
 .endmac
 
 .mac immune_status1 val

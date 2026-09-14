@@ -28,7 +28,6 @@
         .include "monster_prop.asm"
         .include "monster_sketch.asm"
         .include "monster_rage.asm"
-        .include "monster_special_anim.asm"
         .include "natural_magic.asm"
         .include "shop_prop.asm"
         .include "weapon_anim_prop.asm"
